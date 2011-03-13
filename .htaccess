@@ -22,6 +22,8 @@ ServerSignature Off
    
   RewriteCond %{REQUEST_FILENAME} !-f
 
+  // @todo Ignore .php
+
   RewriteRule .* index.php/$0
           
 </IfModule>
