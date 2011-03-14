@@ -1,0 +1,2 @@
+<?php
+define('GOTEO_PATH', __DIR__ . DIRECTORY_SEPARATOR);
