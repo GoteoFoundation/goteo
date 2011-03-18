@@ -8,7 +8,8 @@ namespace Goteo\Model {
 			// Profile data
 			$id,
 			$email,
-			$image,
+            $name,  //Nickname
+			$avatar, //imagen
 			$about,
 			$interests = array(),
 			$twitter,
@@ -16,12 +17,7 @@ namespace Goteo\Model {
 			$linkedIn,
                 
 			// Personal data
-			$firstName,
-			$lastName,
-			$nif,
-			$phone,
-			$postalCode,
-			$city,
+			$realName, //Nombre completo
 			$country;
 		
 		/**
