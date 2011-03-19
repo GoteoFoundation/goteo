@@ -5,12 +5,17 @@ namespace Goteo\Controller {
 	use Goteo\Model\Content;
 
 	class Dashboard extends \Goteo\Core\Controller {
-		
-		public function index () {
-			
+
+		/*
+		 *  La manera de obtener el id del usuario validado cambiará al tener la session
+		 */
+		public function index ($id = null) {
+
+			// si tenemos id
+
 			$content = new Content('dashboard');
             $title = $content->title;
-            $message = $content->message;
+            $message = $content->message . $id;
             $modules = $content->modules;
 
             include 'view/index.html.php';

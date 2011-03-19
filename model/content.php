@@ -36,7 +36,7 @@ namespace Goteo\Model {
 
 				case 'dashboard':
 					$this->title = 'Goteo.org';
-					$this->message = 'Panel del usuario, acceso restringido';
+					$this->message = 'Panel del usuario ';
 					$this->menu[] = 'DASHBOARD MENU';
 					$this->modules[] = 'DASHBOARD MAIN';
 				break;

@@ -33,7 +33,8 @@ namespace Goteo\Core {
         /**
          * @return  bool
          */
-        abstract public function save ();
+//		esta declaración de metodo abstracto me esta tocando los cojones... 
+//                abstract public function save ();
                 
         /**
          * @return bool
@@ -64,7 +65,26 @@ namespace Goteo\Core {
 			
 			return $result;
         }
-        
+
+		/**
+		 * Formatea una cadena para ser usada como id varchar(50)
+		 *
+		 * @param string $value
+		 * @return string $id
+		 *
+		 */
+		public static function idealiza ($value) {
+			$id = trim(strtolower($value));
+			// Acentos
+			$id = strtr($id, "ÁÀÄÂáàâäÉÈËÊéèêëÍÌÏÎíìîïÓÒÖÔóòôöÚÙÛÜúùûüÇçÑñ", "aaaaaaaaeeeeeeeeiiiiiiiioooooooouuuuuuuuccnn");
+			// Separadores
+			$id = preg_replace("/[\s\,\;\_\/\-]+/i", "-", $id);
+			$id = preg_replace("/[^a-z0-9\.\-\+]/", "", $id);
+			$id = substr($id, 0, 50);
+
+			return $id;
+		}
+
     }
     
 }

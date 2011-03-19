@@ -31,26 +31,36 @@ namespace Goteo\Controller {
 
 			include 'view/index.html.php';
 		}
-                        
+
+		/*
+		 *  Para loguear se puede usar el email o el user name (campo `user`)
+		 */
         public function login () {
 
+			$content = '';
+
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-				$content = '<pre>' . print_r($_POST, 1) . '</pre>';
-				$content .= 'validarlo y saltar a su dashboard';
+				$id = Model\User::validate($_POST['user'], $_POST['pass']);
+				if ($id != false) {
+					header('Location: /dashboard/' . $id);
+					die;
+				}
+				else {
+					$content .= '<span style="color:red;">Error en la validación</span><hr />';
+				}
 			}
-			else {
 			/*
 			$content = new Model\Content('user-login');
 			 * esto nos dará el objeto con el que la vista pintará lo de abajo
 			 */
-				$content = <<<EOD
+				$content .= <<<EOD
 				<div id="validate">
 					<form action="/user/login" method="post">
 						<dl>
 							<dt><laber for="user">Usuario</label></dt>
-							<dd><input type="text" id="user" name="user"/></dd>
-							<dt><laber for="pass">Contrase&ntilde;</label></dt>
-							<dd><input type="password" id="pass" name="pass"/></dd>
+							<dd><input type="text" id="user" name="user" value=""/></dd>
+							<dt><laber for="pass">Contrase&ntilde;a</label></dt>
+							<dd><input type="password" id="pass" name="pass" value=""/></dd>
 						</dl>
 						<input type="submit" name="login" value="Accede" />
 					</form>
@@ -60,17 +70,45 @@ namespace Goteo\Controller {
 					<a href="/user/register">Reg&iacute;strate</a>
 				</div>
 EOD;
-			}
 			
             include 'view/user/login.html.php';
 
         }
 
         public function register () {
-            
+
+			$content = '';
+
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-				$content = '<pre>' . print_r($_POST, 1) . '</pre>';
-				$content .= 'darlo de alta y saltar a profile';
+
+				$errors = array();
+				// comprobamos lo que quieren registrar
+				$checked = Model\User::check($_POST, $errors);
+
+				if ($checked === false) {
+					foreach ($errors as $error) {
+						$content .= '<span style="color:red;">' . $error . '</span><br />';
+					}
+					$content .= '<pre>' . print_r($_POST, 1) . '</pre>';
+				} 
+				else {
+					// ok, lo creamos
+					$data = array(
+						'user'=>$_POST['user'],
+						'email'=>$_POST['email'],
+						'pass'=>$_POST['pass']
+					);
+
+					$user = new Model\User();
+					$user->create($data);
+					if ($user->id) {
+						// lo pasamos por la validación
+						header('Location: /user/profile/' . $user->id);
+					}
+					else {
+						throw new Error('No se ha creado el usuario');
+					}
+				}
 			}
 			else {
 			/*
@@ -79,19 +117,19 @@ EOD;
 			 */
 
 				$content = <<<EOD
-				<div id="validate">
+				<div>
 					<form action="/user/register" method="post">
 						<dl>
-							<dt><laber for="user">Usuario</label></dt>
-							<dd><input type="text" id="user" name="user"/></dd>
-							<dt><laber for="email">Email</label></dt>
-							<dd><input type="text" id="email" name="email"/></dd>
-							<dt><laber for="cemail">Confirmar email</label></dt>
-							<dd><input type="text" id="cemail" name="cemail"/></dd>
-							<dt><laber for="pass">Contrase&ntilde;</label></dt>
-							<dd><input type="password" id="pass" name="pass"/></dd>
-							<dt><laber for="cpass">Confirmar contrase&ntilde;</label></dt>
-							<dd><input type="password" id="cpass" name="cpass"/></dd>
+							<dt><laber for="user">Nombre de usuario *</label></dt>
+							<dd><input type="text" id="user" name="user" value=""/></dd>
+							<dt><laber for="email">Email *</label></dt>
+							<dd><input type="text" id="email" name="email" value=""/></dd>
+							<dt><laber for="cemail">Confirmar email *</label></dt>
+							<dd><input type="text" id="cemail" name="cemail" value=""/></dd>
+							<dt><laber for="pass">Contrase&ntilde;a *</label></dt>
+							<dd><input type="password" id="pass" name="pass" value=""/></dd>
+							<dt><laber for="cpass">Confirmar contrase&ntilde;a *</label></dt>
+							<dd><input type="password" id="cpass" name="cpass" value=""/></dd>
 						</dl>
 						<input type="submit" name="register" value="Enviar" />
 					</form>
@@ -102,95 +140,118 @@ EOD;
             include 'view/user/register.html.php';
             
         }
-        
-        public function edit () {
-            
+
+		/*
+		 *  este $id no vendrá por aqui una vez tengamos la validación de usuario
+		 */
+        public function edit ($id = null) {
+
+			$user = new Model\User($id);
+			$content = '';
+
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-				$content = '<pre>' . print_r($_POST, 1) . '</pre>';
-				$content .= 'comprobar el cambio de usuario, email y contraseña, enviar los emails de verificación';
+				if ($user->save($_POST)) {
+					$content .= 'Datos guardados<hr />';
+				}
+				else {
+					$content .= 'Error al guardar los datos<hr />';
+				}
+				$content .= '<pre>' . print_r($_POST, 1) . '</pre>';
+				$content .= 'comprobar el cambio de usuario, email y contraseña, enviar los emails de verificación<hr />';
 			}
-			else {
+			
 			/*
 			$content = new Model\Content('user-edit');
 			 * esto nos dará el objeto con el que la vista pintará lo de abajo
 			 */
 				$content = <<<EOD
-				<div id="validate">
+				<div>
 					<form action="/user/edit" method="post">
-						<input type="hidden" name="user" value=""/>
-						<input type="hidden" name="email" value=""/>
+						<input type="hidden" name="user" value="{$user->user}"/>
+						<input type="hidden" name="email" value="{$user->email}"/>
 						<dl>
-							<dt><laber for="nuser">Usuario</label></dt>
-							<dd><input type="text" id="nuser" name="nuser" value=""/></dd>
+							<dt><laber for="nuser">Nombre de usuario</label></dt>
+							<dd><input type="text" id="nuser" name="nuser" value="{$user->user}"/></dd>
 							<dt><laber for="nemail">Email</label></dt>
-							<dd><input type="text" id="nemail" name="nemail" value=""/></dd>
+							<dd><input type="text" id="nemail" name="nemail" value="{$user->email}"/></dd>
+						<hr />
 							<dt><laber for="pass">Contrase&ntilde; antigua</label></dt>
-							<dd><input type="password" id="pass" name="pass"/></dd>
+							<dd><input type="password" id="pass" name="pass" value=""/></dd>
 							<dt><laber for="npass">Contrase&ntilde; nueva</label></dt>
-							<dd><input type="password" id="npass" name="npass"/></dd>
+							<dd><input type="password" id="npass" name="npass" value=""/></dd>
 							<dt><laber for="cpass">Confirmar contrase&ntilde;</label></dt>
-							<dd><input type="password" id="cpass" name="cpass"/></dd>
+							<dd><input type="password" id="cpass" name="cpass" value=""/></dd>
 						</dl>
 						<input type="submit" name="edit" value="Guardar cambios" />
 					</form>
 				</div>
 EOD;
-			}
+			
 			
             include 'view/user/edit.html.php';
             
         }
         
-        public function profile () {
+		/*
+		 *  este $id no vendrá por aqui una vez tengamos la validación de usuario
+		 */
+        public function profile ($id = null) {
 
+			$user = new Model\User($id);
+			$content = '';
+			
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-				$content = '<pre>' . print_r($_POST, 1) . '</pre>';
-				$content .= 'guardar los cambios';
+
+				// @TODO hay que hacer el tratamiento de la imagen
+
+				if ($user->update($_POST)) {
+					$content .= 'Datos guardados<hr />';
+				}
+				else {
+					$content .= 'Error al guardar los datos<hr />';
+				}
 			}
-			else {
+			
 			/*
 			$content = new Model\Content('user-profile');
 			 * esto nos dará el objeto con el que la vista pintará lo de abajo
 			 */
-				$content = <<<EOD
-				<div id="validate">
-					<form action="/user/profile" method="post">
+				$content .= <<<EOD
+				<div>
+					<form action="/user/profile/{$id}" method="post">
 						<dl>
 							<dt><laber for="name">Nombre completo</label></dt>
-							<dd><input type="text" id="name" name="name" value=""/></dd>
+							<dd><input type="text" id="name" name="name" value="{$user->name}"/></dd>
 
 							<dt><laber for="avatar">Tu imagen</label></dt>
-							<dd><input type="file" id="avatar" name="avatar"/> <img src="imagen-actual.jpg" /></dd>
+							<dd><input type="file" id="avatar" name="avatar" value="{$user->avatar}"/> <img src="imagen-actual.jpg" /></dd>
 
 							<dt><laber for="about">Cu&eacute;ntanos algo sobre t&iacute;</label></dt>
-							<dd><textarea id="about" name="about"></textarea></dd>
+							<dd><textarea id="about" name="about">{$user->about}</textarea></dd>
 
 							<dt><laber for="interests">Intereses</label></dt>
-							<dd><input type="text" id="interests" name="interests" value=""/></dd>
+							<dd><input type="text" id="interests" name="interests" value="{$user->interests}"/></dd>
 
 							<dt><laber for="contribution">Qué podrías aportar a Goteo</label></dt>
-							<dd><textarea id="contribution" name="contribution"></textarea></dd>
-
-
+							<dd><textarea id="contribution" name="contribution">{$user->contribution}</textarea></dd>
 
 							<dt><laber for="blog">Blog</label></dt>
-							<dd><input type="text" id="blog" name="blog" value=""/></dd>
+							<dd><input type="text" id="blog" name="blog" value="{$user->blog}"/></dd>
 
 							<dt><laber for="twitter">Twitter</label></dt>
-							<dd><input type="text" id="twitter" name="twitter" value=""/></dd>
+							<dd><input type="text" id="twitter" name="twitter" value="{$user->twitter}"/></dd>
 
 							<dt><laber for="facebook">Facebook</label></dt>
-							<dd><input type="text" id="facebook" name="facebook" value=""/></dd>
+							<dd><input type="text" id="facebook" name="facebook" value="{$user->facebook}"/></dd>
 
 							<dt><laber for="linkedin">Linkedin</label></dt>
-							<dd><input type="text" id="linkedin" name="linkedin" value=""/></dd>
+							<dd><input type="text" id="linkedin" name="linkedin" value="{$user->linkedin}"/></dd>
 
 						</dl>
 						<input type="submit" name="profile" value="Aplicar cambios" />
 					</form>
 				</div>
 EOD;
-			}
 			
             include 'view/user/profile.html.php';
 

@@ -16,3 +16,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   lastedit date DEFAULT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Usuarios';
+
+-- Modificaciones
+ALTER TABLE `user` ADD `user` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'login' AFTER `id` ;
+ALTER TABLE `user` CHANGE `active` `active` TINYINT( 1 ) NOT NULL DEFAULT '1';
