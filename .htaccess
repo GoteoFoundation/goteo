@@ -6,6 +6,11 @@ ServerSignature Off
     Deny From All
 </Files>
 
+<Files *.php>
+    Order Deny,Allow
+    Deny From All
+</Files>
+
 <IfModule mod_php5.c>
   php_value  magic_quotes_runtime   "0"
   php_value  magic_quotes_gpc       "0"
@@ -21,5 +26,3 @@ ServerSignature Off
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule .* index.php/$0
 </IfModule>
-
-# EOF
