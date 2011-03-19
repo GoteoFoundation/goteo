@@ -8,10 +8,10 @@ namespace Goteo\Controller {
 		
 		public function index () {
 			
-			$contents = new Content('dashboard');
-            $title = $contents->title;
-            $message = $contents->message;
-            $modules = $contents->modules;
+			$content = new Content('dashboard');
+            $title = $content->title;
+            $message = $content->message;
+            $modules = $content->modules;
 
             include 'view/index.html.php';
 

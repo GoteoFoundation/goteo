@@ -8,10 +8,10 @@ namespace Goteo\Controller {
         
         public function index ($node = null) {
 
-			$contents = new Content('home', $node);
-            $title = $contents->title;
-            $message = $contents->message;
-            $modules = $contents->modules; // los modulos de la home ordenados segun la prioridad gestionada, instancias de model/content/module.php
+			$content = new Content('home', $node);
+            $title = $content->title;
+            $message = $content->message;
+            $modules = $content->modules; // los modulos de la home ordenados segun la prioridad gestionada, instancias de model/content/module.php
             
             include 'view/index.html.php';
             
