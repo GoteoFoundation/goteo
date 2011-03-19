@@ -25,7 +25,7 @@ spl_autoload_register(
         }
         
         if ($file !== false) {        
-            include $file;
+            include_once $file;
         }
     
     }

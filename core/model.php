@@ -12,7 +12,7 @@ namespace Goteo\Core {
          * @param   type $key
          * @return  static
          */                
-        abstract static public function get ();
+        abstract static public function get ($id);
         
         public function __construct () {
             
@@ -38,10 +38,31 @@ namespace Goteo\Core {
         /**
          * @return bool
          */
-        abstract public function validate ();
+        // abstract public function validate ();
         
+        /**
+         * Devuelve un objeto de la clase PDOStatement
+         * http://www.php.net/manual/es/class.pdostatement.php
+         * 
+         * @param string $query
+         * @param array $params
+         */
         public static function query ($query, $params = null) {
-            
+			$db = new DB;
+			$result = $db->prepare($query);
+			
+			# @TODO: Modo de recoger los parámetros, forma A o B
+			
+			# Forma A
+			$result->execute($params);
+
+			# Forma B
+			//$args = func_get_args();
+        	//array_shift($args);
+        	//var_dump($args);
+			//$result->execute($args);
+			
+			return $result;
         }
         
     }

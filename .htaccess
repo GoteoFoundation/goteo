@@ -21,14 +21,8 @@ ServerSignature Off
 </IfModule>
 
 <IfModule mod_rewrite.c>  
-
   RewriteEngine On  
   RewriteBase /
-   
   RewriteCond %{REQUEST_FILENAME} !-f
-
   RewriteRule .* index.php/$0
-          
 </IfModule>
-
-# EOF
