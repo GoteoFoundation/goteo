@@ -11,14 +11,14 @@ namespace Goteo\Model {
             $user,  //nombre de usuario que aparece en sus mensajes
 			$email,
 			$name,  // nombre completo
-			$avatar, //imagen
+			$avatar = 'no-avatar.jpg', //imagen
 			$about,  // texto: que nos puede contar
-			$interests = array(),
+			$interests, // ya aclararemos esto @TODO
 			$contribution,  // texto: que puede aportar a Goteo
 			$blog,
 			$twitter,
 			$facebook,
-			$linkedIn,
+			$linkedin,
 			$country,
 			$worth;  // total de contribución
 
@@ -27,12 +27,17 @@ namespace Goteo\Model {
 		 */
 		public function __construct($id = null) {
 			if ($id != null) {
-				$fields = self::get($id);
+				$this->id = $id;
+				$this->load();
+			}
+		}
 
-				foreach ($fields as $data=>$value) {
-					if (property_exists($this, $data)) {
-						$this->$data = $value;
-					}
+		private function load() {
+			$fields = self::get($this->id);
+
+			foreach ($fields as $data=>$value) {
+				if (property_exists($this, $data) && !empty($value)) {
+					$this->$data = $value;
 				}
 			}
 		}
@@ -163,7 +168,7 @@ namespace Goteo\Model {
 		 */
 		public function save ($data, &$errors = array()) {
 			if (!is_array($data)) {
-					echo 'parametros';
+					$errors[] = 'Datos insuficientes';
 					return false;
 				}
 
@@ -267,6 +272,7 @@ namespace Goteo\Model {
 
 					$sql = "UPDATE user SET " . $set . " WHERE id = :id";
 					if (self::query($sql, $values)) {
+						$this->load();
 						return true;
 					} else {
 						echo "ERROR $sql<br />Al actualizar los datos<pre>" . print_r($values, 1) . "</pre>";
@@ -286,9 +292,48 @@ namespace Goteo\Model {
 
 		/*
 		 *  Método para grabar la información adicional de usuario
+		 *	este metodo no trata la imagen de avatar, en el controlador se captura esa gestión hacia un modelo/libreria de imagenes o algo así
+		 *  lo que si hace es guardar el nombre de la imagen en el campo ;)
+		 *
 		 *   para los datos sensibles usar el método save
 		 */
-		public function update ($data) {
+		public function update ($data, $errors = array()) {
+			if (!is_array($data)) {
+					$errors[] = 'Datos insuficientes';
+					return false;
+				}
+
+			$fields = array('name', 'about', 'avatar', 'contribution', 'blog', 'twitter', 'facebook', 'linkedin');
+			$set = '';
+			$values = array();
+
+			foreach ($fields as $field) {
+				if (!empty($data[$field])) {
+					$set .= "$field = :$field, ";
+					$values[":$field"] = $data[$field];
+				}
+			}
+
+			if (!empty($values)) {
+				$set .= "lastedit = :lastedit";
+				$values[':lastedit'] = date('Y-m-d');
+				$values[':id'] = $this->id;
+
+				$sql = "UPDATE user SET " . $set . " WHERE id = :id";
+//				echo "QUERY: $sql<br />Datos<pre>" . print_r($values, 1) . "</pre>";
+				if (self::query($sql, $values)) {
+					$this->load();
+					return true;
+				} else {
+					echo "ERROR $sql<br />Al actualizar los datos<pre>" . print_r($values, 1) . "</pre>";
+					return false;
+				}
+			}
+			else {
+				// nada nuevo bajo el sol
+				$errors[] = 'No hay ningún cambio que guardar';
+				return false;
+			}
 		}
 
 	}   

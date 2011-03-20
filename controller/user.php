@@ -50,6 +50,7 @@ namespace Goteo\Controller {
 				}
 			}
 			/*
+			 @TODO
 			$content = new Model\Content('user-login');
 			 * esto nos dará el objeto con el que la vista pintará lo de abajo
 			 */
@@ -112,6 +113,7 @@ EOD;
 			}
 			else {
 			/*
+			 @TODO
 			$content = new Model\Content('user-register');
 			 * esto nos dará el objeto con el que la vista pintará lo de abajo
 			 */
@@ -165,6 +167,7 @@ EOD;
 			}
 			
 			/*
+			 @TODO
 			$content = new Model\Content('user-edit');
 			 * esto nos dará el objeto con el que la vista pintará lo de abajo
 			 */
@@ -208,18 +211,23 @@ EOD;
 			$content = '';
 			
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
+//				$content .= '<pre>' . print_r($_POST, 1) . '</pre>';
 				// @TODO hay que hacer el tratamiento de la imagen
-
-				if ($user->update($_POST)) {
+				$_POST['avatar'] = $_POST['image'];
+				$errors = array();
+				if ($user->update($_POST, $errors)) {
 					$content .= 'Datos guardados<hr />';
 				}
 				else {
-					$content .= 'Error al guardar los datos<hr />';
+					foreach ($errors as $k=>$error) {
+						$content .= '<span syle="color:red">' . $error . '</span><br />';
+					}
+					$content .= '<br />Error al guardar los datos<hr />';
 				}
 			}
 			
 			/*
+			 @TODO
 			$content = new Model\Content('user-profile');
 			 * esto nos dará el objeto con el que la vista pintará lo de abajo
 			 */
@@ -230,8 +238,9 @@ EOD;
 							<dt><laber for="name">Nombre completo</label></dt>
 							<dd><input type="text" id="name" name="name" value="{$user->name}"/></dd>
 
-							<dt><laber for="avatar">Tu imagen</label></dt>
-							<dd><input type="file" id="avatar" name="avatar" value="{$user->avatar}"/> <img src="imagen-actual.jpg" /></dd>
+							<dt><laber for="image">Tu imagen</label></dt>
+							<dd><input type="file" id="theimage" name="theimage" value=""/> img src="{$user->avatar}" </dd>
+							<input type="text" name="image" value="avatar.jpg" /> <- como texto hasta tener el tratamiento de imagen
 
 							<dt><laber for="about">Cu&eacute;ntanos algo sobre t&iacute;</label></dt>
 							<dd><textarea id="about" name="about">{$user->about}</textarea></dd>
@@ -243,16 +252,16 @@ EOD;
 							<dd><textarea id="contribution" name="contribution">{$user->contribution}</textarea></dd>
 
 							<dt><laber for="blog">Blog</label></dt>
-							<dd><input type="text" id="blog" name="blog" value="{$user->blog}"/></dd>
+							<dd>http://<input type="text" id="blog" name="blog" value="{$user->blog}"/></dd>
 
 							<dt><laber for="twitter">Twitter</label></dt>
-							<dd><input type="text" id="twitter" name="twitter" value="{$user->twitter}"/></dd>
+							<dd>http://twitter.com/<input type="text" id="twitter" name="twitter" value="{$user->twitter}"/></dd>
 
 							<dt><laber for="facebook">Facebook</label></dt>
-							<dd><input type="text" id="facebook" name="facebook" value="{$user->facebook}"/></dd>
+							<dd>http://facebook.com/<input type="text" id="facebook" name="facebook" value="{$user->facebook}"/></dd>
 
 							<dt><laber for="linkedin">Linkedin</label></dt>
-							<dd><input type="text" id="linkedin" name="linkedin" value="{$user->linkedin}"/></dd>
+							<dd>http://linkedin.com/<input type="text" id="linkedin" name="linkedin" value="{$user->linkedin}"/></dd>
 
 						</dl>
 						<input type="submit" name="profile" value="Aplicar cambios" />
