@@ -22,7 +22,7 @@ namespace Goteo\Controller {
 			$content = new Model\Content('user');
 			 * 
 			 */
-			$message = "Perfil público del usuario $id";
+			$message = "Perfil público del usuario $id <br />";
 
 			// saca los datos del usuario, si no existe tendria que enviarlo a la portada
 			$data = Model\User::get($id);
@@ -116,7 +116,7 @@ EOD;
 			 * esto nos dará el objeto con el que la vista pintará lo de abajo
 			 */
 
-				$content = <<<EOD
+				$content .= <<<EOD
 				<div>
 					<form action="/user/register" method="post">
 						<dl>
@@ -147,39 +147,46 @@ EOD;
         public function edit ($id = null) {
 
 			$user = new Model\User($id);
+//			echo '<pre>' . print_r($user, 1) . '</pre>';
 			$content = '';
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-				if ($user->save($_POST)) {
+//				$content .= '<pre>' . print_r($_POST, 1) . '</pre>';
+				$errors = array();
+				if ($user->save($_POST, $errors)) {
 					$content .= 'Datos guardados<hr />';
 				}
 				else {
-					$content .= 'Error al guardar los datos<hr />';
+					foreach ($errors as $k=>$error) {
+						$content .= '<span syle="color:red">' . $error . '</span><br />';
+					}
+					$content .= '<br />Error al guardar los datos<hr />';
 				}
-				$content .= '<pre>' . print_r($_POST, 1) . '</pre>';
-				$content .= 'comprobar el cambio de usuario, email y contraseña, enviar los emails de verificación<hr />';
 			}
 			
 			/*
 			$content = new Model\Content('user-edit');
 			 * esto nos dará el objeto con el que la vista pintará lo de abajo
 			 */
-				$content = <<<EOD
+				$content .= <<<EOD
 				<div>
-					<form action="/user/edit" method="post">
-						<input type="hidden" name="user" value="{$user->user}"/>
-						<input type="hidden" name="email" value="{$user->email}"/>
+					<form action="/user/edit/{$user->id}" method="post">
+						Nombre de usuario actual: {$user->user}<br />
+						Email actual: {$user->email}<br />
 						<dl>
-							<dt><laber for="nuser">Nombre de usuario</label></dt>
-							<dd><input type="text" id="nuser" name="nuser" value="{$user->user}"/></dd>
-							<dt><laber for="nemail">Email</label></dt>
-							<dd><input type="text" id="nemail" name="nemail" value="{$user->email}"/></dd>
+							<dt><laber for="nuser">Nuevo nombre de usuario</label></dt>
+							<dd><input type="text" id="nuser" name="nuser" value=""/></dd>
 						<hr />
-							<dt><laber for="pass">Contrase&ntilde; antigua</label></dt>
+							<dt><laber for="nemail">Nuevo email</label></dt>
+							<dd><input type="text" id="nemail" name="nemail" value=""/></dd>
+							<dt><laber for="nemail">Confirmar nuevo email</label></dt>
+							<dd><input type="text" id="cemail" name="cemail" value=""/></dd>
+						<hr />
+							<dt><laber for="pass">Contrase&ntilde;a antigua</label></dt>
 							<dd><input type="password" id="pass" name="pass" value=""/></dd>
-							<dt><laber for="npass">Contrase&ntilde; nueva</label></dt>
+							<dt><laber for="npass">Contrase&ntilde;a nueva</label></dt>
 							<dd><input type="password" id="npass" name="npass" value=""/></dd>
-							<dt><laber for="cpass">Confirmar contrase&ntilde;</label></dt>
+							<dt><laber for="cpass">Confirmar contrase&ntilde;a</label></dt>
 							<dd><input type="password" id="cpass" name="cpass" value=""/></dd>
 						</dl>
 						<input type="submit" name="edit" value="Guardar cambios" />

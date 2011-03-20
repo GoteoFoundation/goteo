@@ -1,4 +1,5 @@
 <?php
+//echo '<pre>' . print_r($fields, 1) . '</pre>';
 
 namespace Goteo\Model {
 
@@ -29,7 +30,7 @@ namespace Goteo\Model {
 				$fields = self::get($id);
 
 				foreach ($fields as $data=>$value) {
-					if (isset($this->$data)) {
+					if (property_exists($this, $data)) {
 						$this->$data = $value;
 					}
 				}
@@ -51,6 +52,8 @@ namespace Goteo\Model {
 
 		/*
 		 *  Metodo para verificar los datos del usuario que se quiere registrar
+		 *
+		 *  @FIXME si se parte en cachos se podrá reutilizar en el metodo save
 		 */
 		public static function check($data, &$errors = array()) {
 			echo 'Verificando <pre>' . print_r($data, 1) . '</pre>';
@@ -72,7 +75,7 @@ namespace Goteo\Model {
 			// mirar si el email esta registrado
 			$query = self::query("SELECT email FROM user WHERE email = :email", array(':email' => $data['email']));
 			$exist = $query->fetchObject();
-			if (!empty($exist->user)) {
+			if (!empty($exist->email)) {
 				$errors[] = 'El email ya corresponde a un usuario registrado';
 			}
 
@@ -158,25 +161,135 @@ namespace Goteo\Model {
 		 * , para guardar la información del usuario usar el método update
 		 * 
 		 */
-		public function save ($data) {
-			if (!is_array($data) ||
-				empty($data['user']) ||
-				empty($data['email']) ||
-				empty($data['pass'])) {
+		public function save ($data, &$errors = array()) {
+			if (!is_array($data)) {
+					echo 'parametros';
 					return false;
 				}
 
-			// si cambian el usuario o el email tiene que verificar que no exista 
+			// si cambian el usuario o el email tiene que verificar que no exista
+			if (!empty($data['nuser'])) {
+				$ok_nuser = true;
+				if (strcmp($data['nuser'], $this->user) !== 0) {
+					$query = self::query("SELECT user FROM user WHERE user = :user", array(':user' => $data['nuser']));
+					$exist = $query->fetchObject();
+					if (!empty($exist->user)) {
+						$errors[] = 'El usuario ya existe';
+						$ok_nuser = false;
+					}
+				}
+				else {
+					// no han cambiado el usuario
+					$errors[] = 'El nuevo nombre de usuario deberia ser diferente al actual';
+					$ok_nuser = false;
+				}
+			}
+			
+			if (!empty($data['nemail'])) {
+				$ok_nemail = true;
+				if (strcmp($data['nemail'], $this->email) !== 0) {
+					$query = self::query("SELECT email FROM user WHERE email = :email", array(':email' => $data['nemail']));
+					$exist = $query->fetchObject();
+					if (!empty($exist->email)) {
+						$errors[] = 'El email ya corresponde a un usuario registrado';
+						$ok_nemail = false;
+					}
+				}
+				else {
+					// no han cambiado el email
+					$errors[] = 'El nuevo email deberia ser diferente al actual';
+					$ok_nemail = false;
+				}
 
-			// si cambian el nombre de usuario seria ideal que cambiaramos el id en todas las tablas relacionadas... currazo
-
-			// si ponen un nuevo email tiene que corresponderse la comprobación
-			//  y no deberia cambiar hasta recibir el email de confirmación
-
+				// si ponen un nuevo email tiene que corresponderse la comprobación
+				if (strcmp($data['nemail'], $data['cemail']) !== 0) {
+					$errors[] = 'La comprobación de email no coincide';
+					$ok_nemail = false;
+				}
+				// @TODO  y no deberia cambiar hasta recibir el email de confirmación
+			}
 
 			// si ponen una nueva contraseña, debe corresponderse con la comprobacion
-			//  y sobretodo , tiene que ser correcta la antigua
+			if (!empty($data['npass'])) {
+				$ok_npass = true;
+				// tiene que ser correcta la antigua
+				$query = self::query("SELECT id FROM user WHERE BINARY user = :user AND BINARY password = :pass", array(':user' => $this->user, ':pass' => md5($data['pass'])));
+				$exist = $query->fetchObject();
+				if (!$exist->id) {
+					$errors[] = 'La contraseña antigua no es correcta';
+					$ok_npass = false;
+				}
+				
+				if (strcmp(md5($data['npass']), $this->pass) !== 0) {
+					if (strcmp($data['npass'], $data['cpass']) !== 0) {
+						$errors[] = 'La comprobación de contraseña no coincide';
+						$ok_npass = false;
+					}
+				}
+				else {
+					//no ha cambiado la contraseña
+					$errors[] = 'La contraseña nueva deberia ser diferente a la actual';
+					$ok_npass = false;
+				}
+			}
+
+			// @TODO si cambian el nombre de usuario seria ideal que cambiáramos
+			//  el id en todas las tablas relacionadas... @currazo
+			//	':id'	=> self::idealiza($data['user']),
+			
+			if (!empty($errors)) {
+				return false;
+			} else {
+
+				$set = '';
+				$values = array();
+
+				if ($ok_nuser) {
+					$set .= "user = :user, ";
+					$values[':user'] = $data['nuser'];
+					// @TODO además deberia enviar un email para avisar
+				}
+				if ($ok_nemail) {
+					$set .= "email = :email, ";
+					$values[':email'] = $data['nemail'];
+					// @TODO además deberia enviar un email para avisar
+				}
+				if ($ok_npass) {
+					$set .= "pass = :pass, ";
+					$values[':pass'] = md5($data['npass']);
+					// @TODO además deberia enviar un email para avisar
+				}
+
+				if (!empty($values)) {
+					$set .= "lastedit = :lastedit";
+					$values[':lastedit'] = date('Y-m-d');
+					$values[':id'] = $this->id;
+
+					$sql = "UPDATE user SET " . $set . " WHERE id = :id";
+					if (self::query($sql, $values)) {
+						return true;
+					} else {
+						echo "ERROR $sql<br />Al actualizar los datos<pre>" . print_r($values, 1) . "</pre>";
+						return false;
+					}
+				}
+				else {
+					// nada nuevo bajo el sol
+					$errors[] = 'No hay ningún cambio que guardar';
+					return false;
+				}
+
+			}
+
 
 		}
+
+		/*
+		 *  Método para grabar la información adicional de usuario
+		 *   para los datos sensibles usar el método save
+		 */
+		public function update ($data) {
+		}
+
 	}   
 }
