@@ -5,7 +5,40 @@ namespace Goteo\Controller {
 	use Goteo\Model;
 
 	class Prueba extends \Goteo\Core\Controller {
+
+		public function index () {
+
+			/*
+			 *  Prueba de paypal
+			 * 
+			 */
+
+			/*
+			 *  Prueba de textos
+			echo '<pre>' . print_r($content, 1) . '</pre>';
+			echo '<hr>';
+			echo Model\Text::get('test uno');
+			echo '<hr>';
+			echo Model\Text::get('test dos');
+			 *
+			 */
+
+			/*
+			 * Prueba de contenidos
+			$content = new Model\Content('test');
+            $title = $content->title;
+            $message = $content->message;
+            $modules = $content->modules;
+			$widgets = $content->widgets;
+			$stuff = $content->stuff;
+
+            include 'view/index.html.php';
+			 *
+			 */
+
+		}
 		
+
 		/**
 		 * Usuarios
 		 * <id> = Perfil usuario
@@ -13,7 +46,7 @@ namespace Goteo\Controller {
 		 *
 		 * @param string $id
 		 */
-		public function index ($user = null) {
+		public function users ($user = null) {
 
 			// Pruebas modelo usuario
 			if(empty($id)) {
@@ -27,26 +60,6 @@ namespace Goteo\Controller {
 					throw new Error(404);
 				}*/
 			}
-
-
-			$content = new Model\Content('test');
-			echo '<pre>' . print_r($content, 1) . '</pre>';
-			echo '<hr>';
-			echo Model\Text::get('test uno');
-			echo '<hr>';
-			echo Model\Text::get('test dos');
-
-			/*
-            $title = $content->title;
-            $message = $content->message;
-            $modules = $content->modules;
-			$widgets = $content->widgets;
-			$stuff = $content->stuff;
-
-            include 'view/index.html.php';
-			 *
-			 */
-
 		}
 		
 	}
