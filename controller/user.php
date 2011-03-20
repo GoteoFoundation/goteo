@@ -3,7 +3,7 @@
 namespace Goteo\Controller {
 
 	use Goteo\Core\Redirection,
-		Goteo\Model;        
+		Goteo\Model\User;
 
 	class User extends \Goteo\Core\Controller {
 
@@ -25,7 +25,7 @@ namespace Goteo\Controller {
 			$message = "Perfil público del usuario $id <br />";
 
 			// saca los datos del usuario, si no existe tendria que enviarlo a la portada
-			$data = Model\User::get($id);
+			$data = User::get($id);
 			$message .= '<pre>' . print_r($data, 1) . '</pre>';
 
 
@@ -40,7 +40,7 @@ namespace Goteo\Controller {
 			$content = '';
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-				$id = Model\User::validate($_POST['user'], $_POST['pass']);
+				$id = User::validate($_POST['user'], $_POST['pass']);
 				if ($id != false) {
 					header('Location: /dashboard/' . $id);
 					die;
@@ -84,7 +84,7 @@ EOD;
 
 				$errors = array();
 				// comprobamos lo que quieren registrar
-				$checked = Model\User::check($_POST, $errors);
+				$checked = User::check($_POST, $errors);
 
 				if ($checked === false) {
 					foreach ($errors as $error) {
@@ -100,7 +100,7 @@ EOD;
 						'pass'=>$_POST['pass']
 					);
 
-					$user = new Model\User();
+					$user = new User();
 					$user->create($data);
 					if ($user->id) {
 						// lo pasamos por la validación
@@ -148,7 +148,7 @@ EOD;
 		 */
         public function edit ($id = null) {
 
-			$user = new Model\User($id);
+			$user = new User($id);
 //			echo '<pre>' . print_r($user, 1) . '</pre>';
 			$content = '';
 
@@ -207,7 +207,7 @@ EOD;
 		 */
         public function profile ($id = null) {
 
-			$user = new Model\User($id);
+			$user = new User($id);
 			$content = '';
 			
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {

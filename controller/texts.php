@@ -2,7 +2,8 @@
 
 namespace Goteo\Controller {
 
-	use Goteo\Model;
+	use Goteo\Library\Text,
+		Goteo\Library\Lang;
 
 	class Texts extends \Goteo\Core\Controller {
 		
@@ -10,10 +11,10 @@ namespace Goteo\Controller {
 
 			$content = '';
 
-			$using = Model\Lang::get($lang);
+			$using = Lang::get($lang);
 			$content .= "Viendo textos en {$using->name} <hr />";
 			
-			$texts = Model\Text::getAll($lang);
+			$texts = Text::getAll($lang);
 
 			foreach ($texts as $text) {
 				$content .= <<<EOD
@@ -29,7 +30,7 @@ EOD;
 
 			$content = '';
 
-			$using = Model\Lang::get($lang);
+			$using = Lang::get($lang);
 			$content .= "Editando {$using->name} <hr />";
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -46,7 +47,7 @@ EOD;
 							'lang' => $lang
 						);
 						
-						Model\Text::save($data, $errors);
+						Text::save($data, $errors);
 					}
 				}
 
@@ -57,7 +58,7 @@ EOD;
 				}
 			}
 			
-			$texts = Model\Text::getAll($lang);
+			$texts = Text::getAll($lang);
 
 			$content .= <<<EOD
 				<form action="/texts/translate" method="post">
