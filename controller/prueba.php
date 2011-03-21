@@ -1,8 +1,8 @@
 <?php
-
 namespace Goteo\Controller {
 
-	use Goteo\Model;
+	use \Goteo\Library\Paypal,
+		\Goteo\Model\User;
 
 	class Prueba extends \Goteo\Core\Controller {
 
@@ -10,22 +10,16 @@ namespace Goteo\Controller {
 
 			/*
 			 *  Prueba de paypal
-			 * 
+			 *  Usaremos adaptive payments
 			 */
+//			echo Text::get('test uno');
 
-			/*
-			 *  Prueba de textos
-			echo '<pre>' . print_r($content, 1) . '</pre>';
-			echo '<hr>';
-			echo Model\Text::get('test uno');
-			echo '<hr>';
-			echo Model\Text::get('test dos');
-			 *
-			 */
+
 
 			/*
 			 * Prueba de contenidos
 			$content = new Model\Content('test');
+			echo '<pre>' . print_r($content, 1) . '</pre>';
             $title = $content->title;
             $message = $content->message;
             $modules = $content->modules;
@@ -50,11 +44,11 @@ namespace Goteo\Controller {
 
 			// Pruebas modelo usuario
 			if(empty($id)) {
-				$list = Model\User::getAll();
+				$list = User::getAll();
 				echo '<pre>' . print_r($list, 1) . '</pre>';
 			}
 			else {
-				$data = Model\User::get($user);
+				$data = User::get($user);
 				echo '<pre>' . print_r($data, 1) . '</pre>';
 /*				if ($data === false) {
 					throw new Error(404);
