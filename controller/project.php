@@ -1,4 +1,8 @@
 <?php
+// @FIXME !!!! 
+// estamos arrastrando el id del proyecto por toda la url porque todavia no hemos hecho todo el tema de la session
+// ...............................................................................................................
+
 
 namespace Goteo\Controller {
     
@@ -6,25 +10,34 @@ namespace Goteo\Controller {
         Goteo\Model\Project as Prj;
     
     class Project extends \Goteo\Core\Controller {
-        
-        public function index ($id = null) {
-            
-            if ($id === null) {
+
+		public function index ($id = null) {
+            if (!$id) {
 				header('Location: /');
 				die;
             } else {
                 $project = new Prj($id);
-            
+
                 if (!$project->id) {
                     throw new Error(404);
                 }
                 else {
 					include 'view/project/public.html.php';
 				}
-                
+
             }
+		}
+
+        public function manage ($id = null) {
             
-            
+            if (!$id) {
+				header('Location: /');
+				die;
+            } else {
+				$_SESSION['current_project'] = $id;
+				header('Location: /project/edit');
+				die;
+            }
         }
 
 		/*
@@ -32,21 +45,25 @@ namespace Goteo\Controller {
 		 * @TODO : de nuevo el usuario no deberia llegar por la url sino por la session
 		 * pero aun no tenemos la validación de usuario...
 		 */
-        public function crear ($user = null) {
+        public function create () {
 
-            if ($user === null) {
+			$user = $_SESSION['user'];
+
+            if (!$user) {
 				header('Location: /');
 				die;
             } else {
                 $project = new Prj();
 
                 if ($project->create($user)) {
-					header('Location: /project/user');
+					$_SESSION['current_project'] = $project->id;
+					header('Location: /project/user/');
 					die;
 				}
 				else {
-					header('Location: /');
-					die;
+					echo 'ERROR al crear el proyecto';
+//					header('Location: /ERROR');
+//					die;
 				}
 
             }
@@ -60,6 +77,14 @@ namespace Goteo\Controller {
 		 */
         public function user () {
 
+			$id = $_SESSION['current_project'];
+
+            if (!$id) {
+				header('Location: /');
+				die;
+            } else {
+                $project = new Prj($id);
+			}
             include 'view/project/user.html.php';
 
         }
@@ -68,7 +93,15 @@ namespace Goteo\Controller {
 		 * Paso 2 - DATOS PERSONALES
 		 */
         public function register () {
-            
+
+			$id = $_SESSION['current_project'];
+
+            if (!$id) {
+				header('Location: /');
+				die;
+            } else {
+                $project = new Prj($id);
+			}
             include 'view/project/register.html.php'; 
             
         }
@@ -78,6 +111,14 @@ namespace Goteo\Controller {
 		 */
         public function edit () {
 
+			$id = $_SESSION['current_project'];
+
+            if (!$id) {
+				header('Location: /');
+				die;
+            } else {
+                $project = new Prj($id);
+			}
             include 'view/project/edit.html.php';
 
         }
@@ -87,6 +128,14 @@ namespace Goteo\Controller {
 		 */
         public function tasks () {
 
+			$id = $_SESSION['current_project'];
+
+            if (!$id) {
+				header('Location: /');
+				die;
+            } else {
+                $project = new Prj($id);
+			}
             include 'view/project/tasks.html.php';
 
         }
@@ -96,6 +145,14 @@ namespace Goteo\Controller {
 		 */
         public function rewards () {
 
+			$id = $_SESSION['current_project'];
+
+            if (!$id) {
+				header('Location: /');
+				die;
+            } else {
+                $project = new Prj($id);
+			}
             include 'view/project/rewards.html.php';
 
         }
@@ -105,6 +162,14 @@ namespace Goteo\Controller {
 		 */
         public function supports () {
 
+			$id = $_SESSION['current_project'];
+
+            if (!$id) {
+				header('Location: /');
+				die;
+            } else {
+                $project = new Prj($id);
+			}
             include 'view/project/supports.html.php';
 
         }
@@ -114,6 +179,14 @@ namespace Goteo\Controller {
 		 */
         public function overview () {
 
+			$id = $_SESSION['current_project'];
+
+            if (!$id) {
+				header('Location: /');
+				die;
+            } else {
+                $project = new Prj($id);
+			}
             include 'view/project/overview.html.php';
 
         }
@@ -128,7 +201,10 @@ namespace Goteo\Controller {
 		 */
         public function close () {
 
-			echo 'FIN';
+			$id = $_SESSION['current_project'];
+
+			echo "Proyecto $id listo para revisión<br />";
+			unset($_SESSION['current_project']);
 
         }
 

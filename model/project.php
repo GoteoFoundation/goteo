@@ -56,40 +56,18 @@ namespace Goteo\Model {
 		 */
 		public function __construct($id = null) {
 			if ($id != null) {
-				$fields = self::get($id);
-				
-				// metemos los datos del proyecto en la instancia
-				foreach ($fields as $data=>$value) {
-					if (property_exists($this, $data) && !empty($value)) {
-						$this->$data = $value;
+				if ($fields = self::get($id)) {
+					// metemos los datos del proyecto en la instancia
+					foreach ($fields as $data=>$value) {
+						if (property_exists($this, $data) && !empty($value)) {
+							$this->$data = $value;
+						}
 					}
 				}
+				else {
+					echo 'Fallo al crear la instancia de Project<br />';
+				}
 			}
-		}
-
-		/**
-		 * Coge todos los campos de la tabla
-		 * @param string $id
-		 */
-		public static function get ($id) {
-			$query = self::query("SELECT * FROM project WHERE id = :id", array(':id' => $id));
-			return $query->fetchObject();
-		}
-
-		/**
-		 * Saca una lista de proyectos
-		 * @TODO: filtros
-		 */
-		public static function getAll($filters = array()) {
-			$vals = array();
-			$filter = "";
-			foreach ($filters as $field=>$value) {
-				$filter .= $filter == "" ? " WHERE" : " AND";
-				$filter .= " $field = ?";
-				$vals[] = $value;
-			}
-			$query = self::query("SELECT * FROM project" . $filter, $vals);
-			return $query->fetchAll();
 		}
 
 
@@ -116,6 +94,7 @@ namespace Goteo\Model {
 				':progress'	=> 0,
 				':owner' => $user,
 				':node' => $node,
+				':amount' => 0,
 				':created'	=> date('Y-m-d')
 				);
 
@@ -151,6 +130,57 @@ namespace Goteo\Model {
 
 		}
 
+		/*
+		 * Lista de proyectos de un usuario
+		 */
+		public static function ofmine($owner = null)
+		{
+			$filters = array('owner'=>$owner);
+			$projects = self::getAll($filters, 'name ASC');
+			$list = array();
+			foreach ($projects as $proj) {
+				$list[] = (object) array('id'=>$proj['id'], 'name'=>$proj['name']);
+			}
+			return $list;
+		}
+
+
+
+
+		/**
+		 * Coge todos los campos de la tabla
+		 * @param string $id
+		 */
+		public static function get ($id) {
+			if ($query = self::query("SELECT * FROM project WHERE id = ?", array($id))) {
+				return $query->fetchObject();
+			}
+			else {
+				return false;
+			}
+		}
+
+		/**
+		 * Saca una lista de proyectos
+		 * @TODO: filtros
+		 */
+		public static function getAll($filters = array(), $order = '') {
+			$vals = array();
+			$filter = "";
+			foreach ($filters as $field=>$value) {
+				$filter .= $filter == "" ? " WHERE" : " AND";
+				$filter .= " $field = ?";
+				$vals[] = $value;
+			}
+
+			if (!empty ($order)) {
+				$order = " ORDER BY $order";
+			}
+
+			$query = self::query("SELECT * FROM project" . $filter . $order, $vals);
+			return $query->fetchAll();
+		}
+
     }
-    
+
 }

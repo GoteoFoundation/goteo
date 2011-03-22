@@ -2,23 +2,29 @@
 
 namespace Goteo\Controller {
 
-	use Goteo\Model\Content;
+	use Goteo\Library\Content,
+		Goteo\Model\Project;
 
 	class Dashboard extends \Goteo\Core\Controller {
 
 		/*
 		 *  La manera de obtener el id del usuario validado cambiará al tener la session
 		 */
-		public function index ($id = null) {
+		public function index () {
 
-			// si tenemos id
+			// si tenemos usuario logueado
+			$id = $_SESSION['user'];
 
-			$content = new Content('dashboard');
-            $title = $content->title;
-            $message = $content->message . $id;
-            $modules = $content->modules;
+			if (!$id) {
+				header('Location: /');
+				die;
+			}
 
-            include 'view/index.html.php';
+            $message = "Hola $id<br />";
+
+			$projects = Project::ofmine($id);
+
+            include 'view/dashboard.html.php';
 
 		}
 		

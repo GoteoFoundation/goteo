@@ -1,6 +1,8 @@
 <?php
 
 namespace Goteo\Core {
+
+	use Goteo\Core\Error;
     
     abstract class Model {
         
@@ -56,7 +58,14 @@ namespace Goteo\Core {
 			# @TODO: Modo de recoger los parámetros, forma A o B
 			
 			# Forma A
-			$result->execute($params);
+			if ($result->execute($params)) {
+				return $result;
+			}
+			else {
+			 echo 'FAIL!<br />';
+			 echo self::showQuery($query, $params) . '<br />';
+			 return false;
+			}
 
 			# Forma B
 			//$args = func_get_args();
@@ -85,6 +94,34 @@ namespace Goteo\Core {
 
 			return $id;
 		}
+
+		/*
+		 * Para ver el query que envia
+		 */
+		public static function showQuery($query, $params)
+			{
+				$keys = array();
+				$values = array();
+
+				# build a regular expression for each parameter
+				foreach ($params as $key=>$value)
+				{
+					$keys[] = '/'.$key.'/';
+
+					if(is_numeric($value))
+					{
+						$values[] = intval($value);
+					}
+					else
+					{
+						$values[] = '"'.$value .'"';
+					}
+				}
+
+				$query = preg_replace($keys, $values, $query, 1, $count);
+				return $query;
+			}
+
 
     }
     

@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 use Goteo\Core\Error,
     Goteo\Core\Redirection;

@@ -1,4 +1,6 @@
-ESTADO DEL PROYECTO | ESTADO GLOBAL DE LA INFORMACIÓN: fiuu!<br />
+<p><a href="/dashboard">[DASHBOARD]</a></p>
+<hr />
+<p>ESTADO DEL PROYECTO | ESTADO GLOBAL DE LA INFORMACIÓN: fiuu!</p>
 <hr />
 <a href="/project/user">PERFIL</a>&nbsp;
 <a href="/project/register">DATOS PERSONALES</a>&nbsp;

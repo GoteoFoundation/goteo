@@ -13,7 +13,7 @@ namespace Goteo\Controller {
 		 */
 		public function index ($id = null) {
 
-			if ($id === null) {
+			if (!$id) {
 				header('Location: /');
 				die;
 			}
@@ -41,11 +41,13 @@ namespace Goteo\Controller {
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				$id = Usr::validate($_POST['user'], $_POST['pass']);
-				if ($id != false) {
-					header('Location: /dashboard/' . $id);
+				if ($id) {
+					$_SESSION['user'] = $id;
+					header('Location: /dashboard');
 					die;
 				}
 				else {
+					unset($_SESSION);
 					$content .= '<span style="color:red;">Error en la validación</span><hr />';
 				}
 			}
@@ -146,7 +148,14 @@ EOD;
 		/*
 		 *  este $id no vendrá por aqui una vez tengamos la validación de usuario
 		 */
-        public function edit ($id = null) {
+        public function edit () {
+
+			$id = $_SESSION['user'];
+
+			if (!$id) {
+				header('Location: /');
+				die;
+			}
 
 			$user = new Usr($id);
 //			echo '<pre>' . print_r($user, 1) . '</pre>';
@@ -205,8 +214,15 @@ EOD;
 		/*
 		 *  este $id no vendrá por aqui una vez tengamos la validación de usuario
 		 */
-        public function profile ($id = null) {
+        public function profile () {
 
+			$id = $_SESSION['user'];
+			
+			if (!$id) {
+				header('Location: /');
+				die;
+			}
+			
 			$user = new Usr($id);
 			$content = '';
 			

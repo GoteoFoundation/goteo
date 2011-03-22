@@ -1,13 +1,13 @@
 <?php
 
-namespace Goteo\Model {
+namespace Goteo\Library {
 
 	use Goteo\Core\Error;
 	/*
 	 * Clase para sacar contenidos dinámicos para las páginas institucionales
 	 * manejará el multi-idioma
 	 */
-    class Content extends \Goteo\Core\Model {
+    class Content {
 
 		public
 			$title,
