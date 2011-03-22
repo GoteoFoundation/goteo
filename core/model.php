@@ -31,10 +31,11 @@ namespace Goteo\Core {
         }
         
         /**
+		 * @param array $data
+		 * @param array errors
          * @return  bool
          */
-//		esta declaración de metodo abstracto me esta tocando los cojones... 
-//                abstract public function save ();
+         abstract public function save ($data, &$errors = array());
                 
         /**
          * @return bool
