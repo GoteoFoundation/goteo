@@ -60,9 +60,9 @@ namespace Goteo\Controller {
 				<div id="validate">
 					<form action="/user/login" method="post">
 						<dl>
-							<dt><laber for="user">Usuario</label></dt>
+							<dt><label for="user">Usuario</label></dt>
 							<dd><input type="text" id="user" name="user" value=""/></dd>
-							<dt><laber for="pass">Contrase&ntilde;a</label></dt>
+							<dt><label for="pass">Contrase&ntilde;a</label></dt>
 							<dd><input type="password" id="pass" name="pass" value=""/></dd>
 						</dl>
 						<input type="submit" name="login" value="Accede" />
@@ -124,15 +124,15 @@ EOD;
 				<div>
 					<form action="/user/register" method="post">
 						<dl>
-							<dt><laber for="user">Nombre de usuario *</label></dt>
+							<dt><label for="user">Nombre de usuario *</label></dt>
 							<dd><input type="text" id="user" name="user" value=""/></dd>
-							<dt><laber for="email">Email *</label></dt>
+							<dt><label for="email">Email *</label></dt>
 							<dd><input type="text" id="email" name="email" value=""/></dd>
-							<dt><laber for="cemail">Confirmar email *</label></dt>
+							<dt><label for="cemail">Confirmar email *</label></dt>
 							<dd><input type="text" id="cemail" name="cemail" value=""/></dd>
-							<dt><laber for="pass">Contrase&ntilde;a *</label></dt>
+							<dt><label for="pass">Contrase&ntilde;a *</label></dt>
 							<dd><input type="password" id="pass" name="pass" value=""/></dd>
-							<dt><laber for="cpass">Confirmar contrase&ntilde;a *</label></dt>
+							<dt><label for="cpass">Confirmar contrase&ntilde;a *</label></dt>
 							<dd><input type="password" id="cpass" name="cpass" value=""/></dd>
 						</dl>
 						<input type="submit" name="register" value="Enviar" />
@@ -182,23 +182,23 @@ EOD;
 			 */
 				$content .= <<<EOD
 				<div>
-					<form action="/user/edit/{$user->id}" method="post">
+					<form action="/user/edit" method="post">
 						Nombre de usuario actual: {$user->user}<br />
 						Email actual: {$user->email}<br />
 						<dl>
-							<dt><laber for="nuser">Nuevo nombre de usuario</label></dt>
+							<dt><label for="nuser">Nuevo nombre de usuario</label></dt>
 							<dd><input type="text" id="nuser" name="nuser" value=""/></dd>
 						<hr />
-							<dt><laber for="nemail">Nuevo email</label></dt>
+							<dt><label for="nemail">Nuevo email</label></dt>
 							<dd><input type="text" id="nemail" name="nemail" value=""/></dd>
-							<dt><laber for="nemail">Confirmar nuevo email</label></dt>
+							<dt><label for="nemail">Confirmar nuevo email</label></dt>
 							<dd><input type="text" id="cemail" name="cemail" value=""/></dd>
 						<hr />
-							<dt><laber for="pass">Contrase&ntilde;a antigua</label></dt>
+							<dt><label for="pass">Contrase&ntilde;a antigua</label></dt>
 							<dd><input type="password" id="pass" name="pass" value=""/></dd>
-							<dt><laber for="npass">Contrase&ntilde;a nueva</label></dt>
+							<dt><label for="npass">Contrase&ntilde;a nueva</label></dt>
 							<dd><input type="password" id="npass" name="npass" value=""/></dd>
-							<dt><laber for="cpass">Confirmar contrase&ntilde;a</label></dt>
+							<dt><label for="cpass">Confirmar contrase&ntilde;a</label></dt>
 							<dd><input type="password" id="cpass" name="cpass" value=""/></dd>
 						</dl>
 						<input type="submit" name="edit" value="Guardar cambios" />
@@ -249,34 +249,34 @@ EOD;
 			 */
 				$content .= <<<EOD
 				<div>
-					<form action="/user/profile/{$id}" method="post">
+					<form action="/user/profile" method="post">
 						<dl>
-							<dt><laber for="name">Nombre completo</label></dt>
+							<dt><label for="name">Nombre completo</label></dt>
 							<dd><input type="text" id="name" name="name" value="{$user->name}"/></dd>
 
-							<dt><laber for="image">Tu imagen</label></dt>
+							<dt><label for="image">Tu imagen</label></dt>
 							<dd><input type="file" id="theimage" name="theimage" value=""/> img src="{$user->avatar}" </dd>
 							<input type="text" name="image" value="avatar.jpg" /> <- como texto hasta tener el tratamiento de imagen
 
-							<dt><laber for="about">Cu&eacute;ntanos algo sobre t&iacute;</label></dt>
-							<dd><textarea id="about" name="about">{$user->about}</textarea></dd>
+							<dt><label for="about">Cu&eacute;ntanos algo sobre t&iacute;</label></dt>
+							<dd><textarea id="about" name="about" cols="100" rows="10">{$user->about}</textarea></dd>
 
-							<dt><laber for="interests">Intereses</label></dt>
+							<dt><label for="interests">Intereses</label></dt>
 							<dd><input type="text" id="interests" name="interests" value="{$user->interests}"/></dd>
 
-							<dt><laber for="contribution">Qué podrías aportar a Goteo</label></dt>
-							<dd><textarea id="contribution" name="contribution">{$user->contribution}</textarea></dd>
+							<dt><label for="contribution">Qué podrías aportar a Goteo</label></dt>
+							<dd><textarea id="contribution" name="contribution" cols="100" rows="10">{$user->contribution}</textarea></dd>
 
-							<dt><laber for="blog">Blog</label></dt>
+							<dt><label for="blog">Blog</label></dt>
 							<dd>http://<input type="text" id="blog" name="blog" value="{$user->blog}"/></dd>
 
-							<dt><laber for="twitter">Twitter</label></dt>
+							<dt><label for="twitter">Twitter</label></dt>
 							<dd>http://twitter.com/<input type="text" id="twitter" name="twitter" value="{$user->twitter}"/></dd>
 
-							<dt><laber for="facebook">Facebook</label></dt>
+							<dt><label for="facebook">Facebook</label></dt>
 							<dd>http://facebook.com/<input type="text" id="facebook" name="facebook" value="{$user->facebook}"/></dd>
 
-							<dt><laber for="linkedin">Linkedin</label></dt>
+							<dt><label for="linkedin">Linkedin</label></dt>
 							<dd>http://linkedin.com/<input type="text" id="linkedin" name="linkedin" value="{$user->linkedin}"/></dd>
 
 						</dl>

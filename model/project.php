@@ -128,7 +128,111 @@ namespace Goteo\Model {
 					return false;
 				}
 
+			// nif y telefono sin guinoes, espacios ni puntos
+			if (isset($data['contract_nif'])) {
+				$data['contract_nif'] = str_replace(array('_', '.', ' ', '-'), '', $data['contract_nif']);
+			}
+			if (isset($data['phone'])) {
+				$data['phone'] = str_replace(array('_', '.', ' ', '-'), '', $data['phone']);
+			}
+
+			$fields = array(
+				'contract_name',
+				'contract_surname',
+				'contract_nif',
+				'contract_email',
+				'phone',
+				'address',
+				'zipcode',
+				'location',
+				'country',
+				'name',
+				'image',
+				'description',
+				'motivation',
+				'about',
+				'goal',
+				'related',
+				'category',
+				'media',
+				'currently',
+				'project_location',
+				'resource'
+				);
+			
+			$set = '';
+			$values = array();
+
+			foreach ($fields as $field) {
+				if (isset($data[$field])) {
+					$set .= "$field = :$field, ";
+					$values[":$field"] = $data[$field];
+				}
+			}
+
+			if (!empty($values)) {
+				$set .= "updated = :updated";
+				$values[':updated'] = date('Y-m-d');
+				$values[':id'] = $this->id;
+
+				$sql = "UPDATE project SET " . $set . " WHERE id = :id";
+				if (self::query($sql, $values)) {
+					foreach ($fields as $field) {
+						if (isset($data[$field])) {
+							$this->$field = $data[$field];
+						}
+					}
+					return true;
+				} else {
+					$errors[] = 'No se ha grabado correctamete. Por favor, revise los datos.';
+					return false;
+				}
+			}
+			else {
+				// nada nuevo bajo el sol
+				$errors[] = 'No hay ningún cambio que guardar';
+				return false;
+			}
 		}
+
+		/*
+		 *  Para validar proyectos
+		 */
+		public function validate ($step, &$errors = array(), &$success = '', &$finish = false) {
+			if ($step == 'overview') {
+				$success = 'Enhorabuiena, ha completado todos los datos del proyecto. Lo revisaremos en cuanto lo deje LISTO.';
+				$finish = true;
+			}
+		}
+
+		/*
+		 * Para cambiar el id temporal a idealiza
+		 */
+		public function rebase() {
+			// idealizar el nombre
+			$newid = self::checkId(self::idealiza($this->name));
+			// actualizar las tablas relacionadas
+//			self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$id));
+			// actualizar el registro
+			self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$id));
+		}
+
+		/*
+		 *  Para verificar id única
+		 */
+		private static function checkId($id, &$num = 1) {
+			$query = self::query("SELECT id FROM project WHERE id = :id", array(':id'=>$id));
+			$exist = $query->fetchObject();
+			// si  ya existe, cambiar las últimas letras por un número
+			if ($exist->id) {
+				$sufix = (string) $num;
+				$take = strlen($id) - strlen($sufix);
+				$id = substr($id, 0, $take) . $sufix;
+				$id = self::checkId($id, $num);
+			}
+			return $id;
+		}
+
 
 		/*
 		 * Lista de proyectos de un usuario

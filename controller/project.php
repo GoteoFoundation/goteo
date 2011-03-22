@@ -1,8 +1,4 @@
 <?php
-// @FIXME !!!! 
-// estamos arrastrando el id del proyecto por toda la url porque todavia no hemos hecho todo el tema de la session
-// ...............................................................................................................
-
 
 namespace Goteo\Controller {
     
@@ -78,12 +74,23 @@ namespace Goteo\Controller {
         public function user () {
 
 			$id = $_SESSION['current_project'];
+			$userid = $_SESSION['user'];
 
-            if (!$id) {
+            if (!$id || !$userid) {
 				header('Location: /');
 				die;
             } else {
                 $project = new Prj($id);
+
+				$user = new Usr($userid);
+
+				if ($_SERVER['REQUEST_METHOD'] == $_POST) {
+					if ($user->save($_POST, $errors)) {
+						header('Location: /project/register');
+						die;
+					}
+				}
+
 			}
             include 'view/project/user.html.php';
 
@@ -101,6 +108,15 @@ namespace Goteo\Controller {
 				die;
             } else {
                 $project = new Prj($id);
+
+				if ($_SERVER['REQUEST_METHOD'] == $_POST) {
+					$errors = array();
+					if ($project->save($_POST, $errors)) {
+						header('Location: /project/edit');
+						die;
+					}
+				}
+
 			}
             include 'view/project/register.html.php'; 
             
@@ -118,6 +134,15 @@ namespace Goteo\Controller {
 				die;
             } else {
                 $project = new Prj($id);
+
+				if ($_SERVER['REQUEST_METHOD'] == $_POST) {
+					$errors = array();
+					if ($project->save($_POST, $errors)) {
+						header('Location: /project/tasks');
+						die;
+					}
+				}
+
 			}
             include 'view/project/edit.html.php';
 
@@ -135,6 +160,15 @@ namespace Goteo\Controller {
 				die;
             } else {
                 $project = new Prj($id);
+
+				if ($_SERVER['REQUEST_METHOD'] == $_POST) {
+					$errors = array();
+					if ($project->save($_POST, $errors)) {
+						header('Location: /project/rewards');
+						die;
+					}
+				}
+
 			}
             include 'view/project/tasks.html.php';
 
@@ -152,6 +186,15 @@ namespace Goteo\Controller {
 				die;
             } else {
                 $project = new Prj($id);
+
+				if ($_SERVER['REQUEST_METHOD'] == $_POST) {
+					$errors = array();
+					if ($project->save($_POST, $errors)) {
+						header('Location: /project/supports');
+						die;
+					}
+				}
+
 			}
             include 'view/project/rewards.html.php';
 
@@ -169,6 +212,15 @@ namespace Goteo\Controller {
 				die;
             } else {
                 $project = new Prj($id);
+
+				if ($_SERVER['REQUEST_METHOD'] == $_POST) {
+					$errors = array();
+					if ($project->save($_POST, $errors)) {
+						header('Location: /project/overview');
+						die;
+					}
+				}
+
 			}
             include 'view/project/supports.html.php';
 
@@ -186,6 +238,10 @@ namespace Goteo\Controller {
 				die;
             } else {
                 $project = new Prj($id);
+				$errors = array();
+				$success = '';
+				$finish = false;
+				$project->validate(__FUNCTION__);
 			}
             include 'view/project/overview.html.php';
 
@@ -203,12 +259,27 @@ namespace Goteo\Controller {
 
 			$id = $_SESSION['current_project'];
 
-			echo "Proyecto $id listo para revisión<br />";
-			unset($_SESSION['current_project']);
+            if (!$id) {
+				header('Location: /');
+				die;
+            } else {
+                $project = new Prj($id);
+				
+				$sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
+				if (Prj::query($sql, array(':status'=>2, ':updated'=>date('Y-m-d'), ':id'=>$id))) {
+					$project->rebase();
+					unset($_SESSION['current_project']);
+					header('Location: /dashboard');
+					die;
+				}
+				else {
+					header('Location: /project/overview');
+					die;
+				}
 
+			}
         }
 
-        
     }
     
 }
