@@ -89,7 +89,7 @@ namespace Goteo\Model {
 
 			$values = array(
 				':id'	=> md5($user.'-'.$num),
-				':name'	=> $num,
+				':name'	=> "Mi proyecto $num",
 				':status'	=> 1,
 				':progress'	=> 0,
 				':owner' => $user,
@@ -116,17 +116,29 @@ namespace Goteo\Model {
 			}
 		}
 
+		/*
+		 * Recupera los datos de contrato del anterior proyecto
+		 */
+		public function lastContract() {
+			$filters = array(
+				'owner'=>$this->owner,
+				'contract_nif'=>'IS NOT NULL',
+				'id'=>"!{$this->id}"
+				);
+			$proj = self::getAll($filters, 'created DESC LIMIT 1');
+			$this->contract_name = $proj[0]['contract_name'];
+			$this->contract_surname = $proj[0]['contract_surname'];
+			$this->contract_nif = $proj[0]['contract_nif'];
+			$this->contract_email = $proj[0]['contract_email'];
+			
+		}
 
 		/**
 		 * actualiza en un proyecto pares de campo=>valor
 		 * @param array $data
 		 * @param array $errors
 		 */
-		public function save ($data, &$errors = array()) {
-			if (empty($data)) {
-					$errors[] = 'Datos insuficientes';
-					return false;
-				}
+		public function save ($data = array(), &$errors = array()) {
 
 			// nif y telefono sin guinoes, espacios ni puntos
 			if (isset($data['contract_nif'])) {
@@ -189,9 +201,7 @@ namespace Goteo\Model {
 				}
 			}
 			else {
-				// nada nuevo bajo el sol
-				$errors[] = 'No hay ningún cambio que guardar';
-				return false;
+				return true;
 			}
 		}
 
@@ -200,40 +210,50 @@ namespace Goteo\Model {
 		 */
 		public function validate ($step, &$errors = array(), &$success = '', &$finish = false) {
 			if ($step == 'overview') {
-				$success = 'Enhorabuena, ha completado todos los datos del proyecto. Lo revisaremos en cuanto lo deje LISTO.';
-				$finish = true;
+				if ($this->status === 1) {
+					$success = 'Enhorabuena, ha completado todos los datos del proyecto. Lo revisaremos en cuanto lo deje LISTO.';
+					$finish = true;
+				}
+				else {
+					$success = 'Ya estamos revisando este proyecto. Sería conveniente que no hicieras modificacinoes importantes. Te avisaremos si tienes que arreglar alguna cosa.';
+					$finish = false;
+				}
 			}
 			return true;
 		}
 
 		/*
 		 * Para cambiar el id temporal a idealiza
+		 * solo si es md5
 		 */
 		public function rebase() {
-			// idealizar el nombre
-			$newid = self::checkId(self::idealiza($this->name));
-			if ($newid == false) return false;
-			// actualizar las tablas relacionadas
-//			self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$id));
-			// actualizar el registro
-			if (self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id)))
-				return true;
-			else
-				return false;
-
+			if (preg_match('/^[A-Fa-f0-9]{32}$/',$this->id)) {
+				// idealizar el nombre
+				$newid = self::checkId(self::idealiza($this->name));
+				if ($newid == false) return false;
+				// actualizar las tablas relacionadas
+	//			self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$id));
+				// actualizar el registro
+				self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
+			}
 		}
 
 		/*
 		 *  Para verificar id única
 		 */
-		private static function checkId($id, &$num = 1) {
+		public static function checkId($id, $num = 1) {
+			if($num > 10) return false;
 			if ($query = self::query("SELECT id FROM project WHERE id = :id", array(':id'=>$id))) {
 				$exist = $query->fetchObject();
 				// si  ya existe, cambiar las últimas letras por un número
-				if ($exist->id) {
+				
+				if (!empty($exist->id)) {
 					$sufix = (string) $num;
-					$take = strlen($id) - strlen($sufix);
-					$id = substr($id, 0, $take) . $sufix;
+					if ((strlen($id)+strlen($sufix)) > 49) 
+						$id = substr($id, 0, (strlen($id) - strlen($sufix))) . $sufix;
+					else 
+						$id = $id . $sufix;
+					$num++;
 					$id = self::checkId($id, $num);
 				}
 				return $id;
@@ -277,23 +297,40 @@ namespace Goteo\Model {
 
 		/**
 		 * Saca una lista de proyectos
-		 * @TODO: filtros
+		 *
+		 * @param array $filters
+		 * @param string $order
+		 * @return array or false
 		 */
 		public static function getAll($filters = array(), $order = '') {
 			$vals = array();
 			$filter = "";
 			foreach ($filters as $field=>$value) {
 				$filter .= $filter == "" ? " WHERE" : " AND";
-				$filter .= " $field = ?";
-				$vals[] = $value;
+				if (strtolower(substr($value, 0, 2)) == 'is') {
+					$filter .= " $field " . $value;
+				}
+				elseif (substr($value, 0, 1) == '!') {
+					$filter .= " $field != :$field";
+					$vals[":$field"] = substr($value, 1);
+				}
+				else {
+					$filter .= " $field = :$field";
+					$vals[":$field"] = $value;
+				}
+
 			}
 
 			if (!empty ($order)) {
 				$order = " ORDER BY $order";
 			}
 
-			$query = self::query("SELECT * FROM project" . $filter . $order, $vals);
-			return $query->fetchAll();
+			if ($query = self::query("SELECT * FROM project" . $filter . $order, $vals)) {
+				return $query->fetchAll();
+			}
+			else {
+				return false;
+			}
 		}
 
     }

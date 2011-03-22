@@ -116,6 +116,18 @@ namespace Goteo\Controller {
 						header('Location: /project/edit');
 						die;
 					}
+				} else {
+					/*
+					// en este punto, si no tiene los campos contract, los cargamos de su último proyecto
+					if (empty($project->contract_name) && 
+						empty($project->contract_surname) &&
+						empty($project->contract_nif) &&
+						empty($project->contract_email)) {
+							$project->lastContract();
+					}
+					 *  No estoy seguro de que esto sea tan bueno, si estan revisando y lo ven rellenado pensaran que esta ok
+					 * y si aparece error pensara que no funciona...
+					 */
 				}
 
 			}

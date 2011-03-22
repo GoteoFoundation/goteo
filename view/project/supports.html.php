@@ -4,7 +4,7 @@ PROYECTO / Colaboraciones<br />
 GUÍA<br />
 <?php include 'view/project/errors.html.php' ?>
 FORMULARIO <br />
-<form action="/project/rewards" method="post">
+<form action="/project/supports" method="post">
 	<dl>
 		<?php foreach ($project->supports as $support) : ?>
 			<div>
