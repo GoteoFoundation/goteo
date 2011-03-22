@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 20-03-2011 a las 15:06:52
+-- Tiempo de generación: 22-03-2011 a las 21:48:08
 -- Versión del servidor: 5.1.49
 -- Versión de PHP: 5.3.3-1ubuntu9.3
 
@@ -128,6 +128,7 @@ CREATE TABLE project (
   node varchar(50) NOT NULL COMMENT 'nodo en el que se ha creado',
   amount int(6) DEFAULT NULL COMMENT 'acumulado actualmente',
   created date DEFAULT NULL,
+  updated date DEFAULT NULL,
   published date DEFAULT NULL,
   success date DEFAULT NULL,
   closed date DEFAULT NULL,
@@ -140,6 +141,17 @@ CREATE TABLE project (
   zipcode varchar(10) DEFAULT NULL,
   location varchar(255) DEFAULT NULL,
   country varchar(50) DEFAULT NULL,
+  image varchar(256) DEFAULT NULL,
+  description text,
+  motivation text,
+  about text,
+  goal text,
+  related text,
+  category varchar(50) DEFAULT NULL,
+  media varchar(256) DEFAULT NULL,
+  currently int(1) DEFAULT NULL,
+  project_location varchar(256) DEFAULT NULL,
+  resource text,
   PRIMARY KEY (id),
   KEY `owner` (`owner`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Proyectos de la plataforma';
@@ -148,6 +160,8 @@ CREATE TABLE project (
 -- Volcar la base de datos para la tabla 'project'
 --
 
+INSERT INTO project VALUES('the-brand-new-project', 'The brand new project', 2, 0, 'root', 'goteo', 0, '2011-03-22', '2011-03-22', NULL, NULL, NULL, 'contract_name', 'contract_surname', 'contractni', 'example@example.com', 'phone', 'address', 'zipcode', 'location', 'country', 'project.jpg', 'asdf asdfa dsf asdf ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO project VALUES('the-ultimate-grat-project-of-the-wolrd-united-nat1', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship', 2, 0, 'root', 'goteo', 0, '2011-03-22', '2011-03-22', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'project.jpg', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -167,10 +181,10 @@ CREATE TABLE `text` (
 -- Volcar la base de datos para la tabla 'text'
 --
 
-INSERT INTO `text` VALUES('test cuatro', 'es', 'CUATRO');
-INSERT INTO `text` VALUES('test dos', 'es', 'DOS');
-INSERT INTO `text` VALUES('test tres', 'es', 'TRES');
-INSERT INTO `text` VALUES('test uno', 'es', 'UNO');
+INSERT INTO `text` VALUES('test cuatro', 'es', '4');
+INSERT INTO `text` VALUES('test dos', 'es', '2');
+INSERT INTO `text` VALUES('test tres', 'es', '3');
+INSERT INTO `text` VALUES('test uno', 'es', '1');
 
 -- --------------------------------------------------------
 
