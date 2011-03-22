@@ -28,6 +28,34 @@ namespace Goteo\Controller {
         }
 
 		/*
+		 * Paso cero de nuevo proyecto
+		 * @TODO : de nuevo el usuario no deberia llegar por la url sino por la session
+		 * pero aun no tenemos la validación de usuario...
+		 */
+        public function crear ($user = null) {
+
+            if ($user === null) {
+				header('Location: /');
+				die;
+            } else {
+                $project = new Prj();
+
+                if ($project->create($user)) {
+					header('Location: /project/user');
+					die;
+				}
+				else {
+					header('Location: /');
+					die;
+				}
+
+            }
+
+        }
+
+
+
+		/*
 		 * Paso 1 - PERFIL
 		 */
         public function user () {

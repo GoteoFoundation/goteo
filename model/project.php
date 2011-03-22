@@ -5,29 +5,49 @@ namespace Goteo\Model {
     class Project extends \Goteo\Core\Model {
         
         public        
-            // Node this project belongs to
-            $node,
-        
-            // Description
             $id,
+			$owner, // User who created it
+            $node, // Node this project belongs to
+			$status,
+			$progress,
+			$amount, // Current donated amount
+
+			// Register contract data
+			$contract_name,
+			$contract_surname,
+			$contract_nif, // Guardar sin espacios ni puntos ni guiones
+			$contract_email,
+			$phone, // guardar sin espacios ni puntos
+			$address,
+			$zipcode,
+			$location, // owner's location
+			$country,
+
+            // Edit project description
             $name,
             $image,
             $description,
-            $motivations,
-            $about,
-            $goals,
-            $categories = array(),
+             $motivation,
+             $about,
+             $goal,
+			 $related,
+            $category,
             $media,
-            $keywords = array(),
-            $status,
-            $location,
+            $keywords = array(), // related to the project category
+            $currently, // Current development status of the project
+            $project_location, // project execution location
                 
             // Tasks
-            $tasks,
-            $schedule,
+            $tasks = array(),  // project\task instances with type
+            $schedule, // picture of the tasks schedule
+			$resource, // other current resources
             
             // Rewards
-            $rewards;
+            $social_rewards = array(), // instances of project\reward for the public (collective type)
+            $invest_rewards = array(), // instances of project\reward for investors  (individual type)
+
+			// Collaborations
+			$supports = array(); // instances of project\support
         
 
 		/*
@@ -79,27 +99,34 @@ namespace Goteo\Model {
 		 * @param array $data
 		 * @return boolean
 		 */
-		public function create($data = array()) {
-			if (empty($data) ||
-				empty($data['user']) ||
-				empty($data['node']) ||
-				empty($data['name'])) {
+		public function create($user = null, $node = 'goteo') {
+			if ($user == null) {
 					return false;
 				}
 
+			// cojemos el número de proyecto de este usuario
+			$query = self::query("SELECT COUNT(id) as num FROM project WHERE owner = ?", array($user));
+			$now = $query->fetchObject();
+			$num = $now->num + 1;
+
 			$values = array(
-				':id'	=> self::idealiza($data['name']),
-				':owner' => $data['user'],
-				':name'	=> $data['name'],
-				':node' => $data['node'],
-				':created'	=> date('Y-m-d'),
-				':status'	=> 1
+				':id'	=> md5($user.'-'.$num),
+				':name'	=> $num,
+				':status'	=> 1,
+				':progress'	=> 0,
+				':owner' => $user,
+				':node' => $node,
+				':created'	=> date('Y-m-d')
 				);
 
-			$sql = "INSERT INTO project (id, user, name, email, password, signup, active)
-				 VALUES (:id, :user, :name, :email, :password, :signup, :active)";
+			$sql = "INSERT INTO project (id, name, status, progress, owner, node, amount, created)
+				 VALUES (:id, :name, :status, :progress, :owner, :node, :amount, :created)";
 			if (self::query($sql, $values)) {
 				$this->id = $values[':id'];
+				$this->owner = $user;
+				$this->node = $node;
+				$this->status = 1;
+				$this->progress = 0;
 
 				// cargar los datos legales del usuario
 
