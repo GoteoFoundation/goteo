@@ -200,9 +200,10 @@ namespace Goteo\Model {
 		 */
 		public function validate ($step, &$errors = array(), &$success = '', &$finish = false) {
 			if ($step == 'overview') {
-				$success = 'Enhorabuiena, ha completado todos los datos del proyecto. Lo revisaremos en cuanto lo deje LISTO.';
+				$success = 'Enhorabuena, ha completado todos los datos del proyecto. Lo revisaremos en cuanto lo deje LISTO.';
 				$finish = true;
 			}
+			return true;
 		}
 
 		/*
@@ -211,26 +212,36 @@ namespace Goteo\Model {
 		public function rebase() {
 			// idealizar el nombre
 			$newid = self::checkId(self::idealiza($this->name));
+			if ($newid == false) return false;
 			// actualizar las tablas relacionadas
 //			self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$id));
 			// actualizar el registro
-			self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$id));
+			if (self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id)))
+				return true;
+			else
+				return false;
+
 		}
 
 		/*
 		 *  Para verificar id única
 		 */
 		private static function checkId($id, &$num = 1) {
-			$query = self::query("SELECT id FROM project WHERE id = :id", array(':id'=>$id));
-			$exist = $query->fetchObject();
-			// si  ya existe, cambiar las últimas letras por un número
-			if ($exist->id) {
-				$sufix = (string) $num;
-				$take = strlen($id) - strlen($sufix);
-				$id = substr($id, 0, $take) . $sufix;
-				$id = self::checkId($id, $num);
+			if ($query = self::query("SELECT id FROM project WHERE id = :id", array(':id'=>$id))) {
+				$exist = $query->fetchObject();
+				// si  ya existe, cambiar las últimas letras por un número
+				if ($exist->id) {
+					$sufix = (string) $num;
+					$take = strlen($id) - strlen($sufix);
+					$id = substr($id, 0, $take) . $sufix;
+					$id = self::checkId($id, $num);
+				}
+				return $id;
 			}
-			return $id;
+			else {
+				echo "Fallo en $id, $num <br />";
+				return false;
+			}
 		}
 
 

@@ -3,7 +3,8 @@
 namespace Goteo\Controller {
     
     use Goteo\Core\Error,
-        Goteo\Model\Project as Prj;
+        Goteo\Model\Project as Prj,
+		Goteo\Model\User as Usr; // <-- solo para el primer paso
     
     class Project extends \Goteo\Core\Controller {
 
@@ -84,7 +85,7 @@ namespace Goteo\Controller {
 
 				$user = new Usr($userid);
 
-				if ($_SERVER['REQUEST_METHOD'] == $_POST) {
+				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					if ($user->save($_POST, $errors)) {
 						header('Location: /project/register');
 						die;
@@ -109,7 +110,7 @@ namespace Goteo\Controller {
             } else {
                 $project = new Prj($id);
 
-				if ($_SERVER['REQUEST_METHOD'] == $_POST) {
+				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$errors = array();
 					if ($project->save($_POST, $errors)) {
 						header('Location: /project/edit');
@@ -135,7 +136,7 @@ namespace Goteo\Controller {
             } else {
                 $project = new Prj($id);
 
-				if ($_SERVER['REQUEST_METHOD'] == $_POST) {
+				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$errors = array();
 					if ($project->save($_POST, $errors)) {
 						header('Location: /project/tasks');
@@ -161,7 +162,7 @@ namespace Goteo\Controller {
             } else {
                 $project = new Prj($id);
 
-				if ($_SERVER['REQUEST_METHOD'] == $_POST) {
+				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$errors = array();
 					if ($project->save($_POST, $errors)) {
 						header('Location: /project/rewards');
@@ -187,7 +188,7 @@ namespace Goteo\Controller {
             } else {
                 $project = new Prj($id);
 
-				if ($_SERVER['REQUEST_METHOD'] == $_POST) {
+				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$errors = array();
 					if ($project->save($_POST, $errors)) {
 						header('Location: /project/supports');
@@ -213,7 +214,7 @@ namespace Goteo\Controller {
             } else {
                 $project = new Prj($id);
 
-				if ($_SERVER['REQUEST_METHOD'] == $_POST) {
+				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$errors = array();
 					if ($project->save($_POST, $errors)) {
 						header('Location: /project/overview');
@@ -241,7 +242,7 @@ namespace Goteo\Controller {
 				$errors = array();
 				$success = '';
 				$finish = false;
-				$project->validate(__FUNCTION__);
+				$project->validate(__FUNCTION__, $errors, $success, $finish);
 			}
             include 'view/project/overview.html.php';
 
@@ -267,10 +268,14 @@ namespace Goteo\Controller {
 				
 				$sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
 				if (Prj::query($sql, array(':status'=>2, ':updated'=>date('Y-m-d'), ':id'=>$id))) {
-					$project->rebase();
-					unset($_SESSION['current_project']);
-					header('Location: /dashboard');
-					die;
+					if ($project->rebase()) {
+						unset($_SESSION['current_project']);
+						header('Location: /dashboard');
+						die;
+					} else {
+						echo 'Error catastrofico al remontar el proyecto!!';
+						die;
+					}
 				}
 				else {
 					header('Location: /project/overview');

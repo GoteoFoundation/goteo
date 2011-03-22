@@ -4,6 +4,12 @@
         <p><?php echo $message; ?></p>
 
 		<p>
+			Cambiar usuario/email/contraseña: <a href="/user/edit">Editar datos</a><br />
+			Cambiar imagen/descripción/información: <a href="/user/profile">Gestionar perfil</a><br />
+		</p>
+
+
+		<p>
 			Mis proyectos:<br />
 		<?php
 		foreach ($projects as $proj) {
