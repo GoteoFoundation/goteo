@@ -12,8 +12,8 @@ GUÍA<br />
 		
 		<?php foreach ($project->costs as $cost) : ?>
 			<div>
-				<dt><label for="cost<?php echo $cost->num; ?>">Descripción</label></dt>
-				<dd><input type="text" name="cost<?php echo $cost->num; ?>" value="<?php echo $cost->text; ?>"/></dd>
+				<dt><label for="cost<?php echo $cost->id; ?>">Descripción</label></dt>
+				<dd><input type="text" name="cost<?php echo $cost->id; ?>" value="<?php echo $cost->cost; ?>"/></dd>
 			</div>
 		<?php endforeach; ?>
 
@@ -25,7 +25,7 @@ GUÍA<br />
 		<div>
 			AGENDA<br />Tiempo de producción del proyecto
 			<?php foreach ($project->costs as $cost) : ?>
-				<span><?php echo $cost->text; ?></span>
+				<span><?php echo $cost->name; ?></span>
 			<?php endforeach; ?>
 		</div>
 		

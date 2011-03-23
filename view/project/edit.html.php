@@ -35,7 +35,11 @@ GUÍA<br />
 		<dd><input type="text" id="media" name="media" value="<?php echo $project->media; ?>"/></dd>
 
 		<dt><label for="keywords">Palabras clave</label></dt>
-		<dd><textarea id="keywords" name="keywords" cols="50" rows="3"><?php echo implode(', ', $project->keywords); ?></textarea></dd>
+		<dd>Añadir:<input type="text" id="keywords" name="keywords" value=""/>(separadas por comas)</dd>
+		<input type="button" id="new-keyword" value="Nuevo" />
+		<div><?php foreach ($project->keywords as $keyword) : ?>
+			<span><a href="#remove-keyword-<?php echo $keyword->id; ?>">(X)</a> <?php echo $keyword->keyword; ?></span>
+		<?php endforeach; ?></div>
 
 		<dt><label for="currently">Estado del proyecto</label></dt>
 		<dd><select id="currently" name="currently">

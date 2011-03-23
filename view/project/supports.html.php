@@ -8,7 +8,7 @@ GUÍA<br />
 	<dl>
 		<div>
 			<dt><label for="nsupport">Nueva colaboración</label></dt>
-			<dd><input type="text" name="nsupport-name" value=""/></dd>
+			<dd><input type="text" name="nsupport" value=""/></dd>
 
 			<dt><label for="nsupport-type">Tipo</label></dt>
 			<dd><select name="nsupport-type">
@@ -16,23 +16,23 @@ GUÍA<br />
 					<option value="lend">Préstamo</option>
 				</select></dd>
 
-			<dt><label for="support-description<?php echo $support->num; ?>">Descripción</label></dt>
-			<dd><textarea name="support-description<?php echo $support->num; ?>" cols="50" rows="5"><?php echo $support->description; ?></textarea></dd>
+			<dt><label for="nsupport-description">Descripción</label></dt>
+			<dd><textarea name="nsupport-description" cols="50" rows="5"></textarea></dd>
 		</div>
 
 		<?php foreach ($project->supports as $support) : ?>
 			<div>
-				<dt><label for="support<?php echo $support->num; ?>">Colaboración</label></dt>
-				<dd><input type="text" name="support-name<?php echo $support->num; ?>" value="<?php echo $support->name; ?>"/></dd>
+				<dt><label for="support<?php echo $support->id; ?>">Colaboración</label></dt>
+				<dd><input type="text" name="support<?php echo $support->id; ?>" value="<?php echo $support->support; ?>"/></dd>
 
-				<dt><label for="support-type<?php echo $support->num; ?>">Tipo</label></dt>
-				<dd><select name="support-type<?php echo $support->num; ?>">
+				<dt><label for="support-type<?php echo $support->id; ?>">Tipo</label></dt>
+				<dd><select name="support-type<?php echo $support->id; ?>">
 						<option value="task" <?php if ($support->type=='task') echo ' selected="selected"'; ?>>Tarea</option>
 						<option value="lend" <?php if ($support->type=='lend') echo ' selected="selected"'; ?>>Préstamo</option>
 					</select></dd>
 
-				<dt><label for="support-description<?php echo $support->num; ?>">Descripción</label></dt>
-				<dd><textarea name="support-description<?php echo $support->num; ?>" cols="50" rows="5"><?php echo $support->description; ?></textarea></dd>
+				<dt><label for="support-description<?php echo $support->id; ?>">Descripción</label></dt>
+				<dd><textarea name="support-description<?php echo $support->id; ?>" cols="50" rows="5"><?php echo $support->description; ?></textarea></dd>
 			</div>
 		<?php endforeach; ?>
 

@@ -153,7 +153,16 @@ namespace Goteo\Controller {
 				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$errors = array();
 					//tratar imagen
+					
 					//tratar keywords
+					if (!empty($_POST['keywords'])) {
+						$keys = explode(',', $_POST['keywords']);
+						foreach ($keys as $key) {
+							$project->newKeyword($key, $errors);
+						}
+					}
+
+
 					if ($project->save($_POST, $errors)) {
 						header('Location: /project/costs');
 						die;
@@ -184,35 +193,40 @@ namespace Goteo\Controller {
 					//tratar costes existentes
 					foreach ($project->costs as $cost) {
 						$data = array(
-							'cost'=>$_POST['cost' . $cost->num],
-							'amount'=>$_POST['cost-amount' . $cost->num],
-							'type'=>$_POST['cost-type' . $cost->num],
-							'required'=>$_POST['cost-required' . $cost->num],
-							'from'=>$_POST['cost-from' . $cost->num],
-							'until'=>$_POST['cost-until' . $cost->num]
+							'id'=>$cost->id,
+							'cost'=>$_POST['cost' . $cost->id],
+							'amount'=>$_POST['cost-amount' . $cost->id],
+							'type'=>$_POST['cost-type' . $cost->id],
+							'required'=>$_POST['cost-required' . $cost->id],
+							'from'=>$_POST['cost-from' . $cost->id],
+							'until'=>$_POST['cost-until' . $cost->id]
 						);
 						$cost->save($data, $errors);
 					}
 
 					//tratar nuevo coste
-					$newCost = array(
-						'cost'=>$_POST['ncost'],
-						'amount'=>$_POST['ncost-amount'],
-						'type'=>$_POST['ncost-type'],
-						'required'=>$_POST['ncost-required'],
-						'from'=>$_POST['ncost-from'],
-						'until'=>$_POST['ncost-until']
-					);
-					$project->newCost($newCost, $errors);
+					if (!empty($_POST['ncost'])) {
+						$newCost = array(
+							'cost'=>$_POST['ncost'],
+							'amount'=>$_POST['ncost-amount'],
+							'type'=>$_POST['ncost-type'],
+							'required'=>$_POST['ncost-required'],
+							'from'=>$_POST['ncost-from'],
+							'until'=>$_POST['ncost-until']
+						);
+						$project->newCost($newCost, $errors);
+					}
 
 					// otros recursos
 					$project->save(array('resource'=>$_POST['resource']), $errors);
-/*
+
+					/*
 					if (empty($errors)) {
 						header('Location: /project/rewards');
 						die;
 					}
- */
+					 *
+					 */
 				}
 
 			}
@@ -234,46 +248,60 @@ namespace Goteo\Controller {
                 $project = new Prj($id);
 
 				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
 					$errors = array();
 					// tratar retornos existentes
-					foreach ($project->rewards as $reward) {
+					foreach ($project->social_rewards as $reward) {
 						$data = array(
-							'reward'=>$_POST[$reward->type.'_reward' . $reward->num],
-							'type'=>$reward->type,
-							'icon'=>$_POST[$reward->type.'_reward-icon' . $reward->num],
-							'license'=>$_POST[$reward->type.'_reward-license' . $reward->num],
-							'amount'=>$_POST[$reward->type.'_reward-amount' . $reward->num],
-							'units'=>$_POST[$reward->type.'_reward-units' . $reward->num]
+							'reward'=>$_POST['social_reward' . $reward->id],
+							'icon'=>$_POST['social_reward-icon' . $reward->id],
+							'license'=>$_POST['social_reward-license' . $reward->id]
 						);
+
 						$reward->save($data, $errors);
 					}
 					
+					foreach ($project->individual_rewards as $reward) {
+						$data = array(
+							'reward'=>$_POST['individual_reward' . $reward->id],
+							'icon'=>$_POST['individual_reward-icon' . $reward->id],
+							'amount'=>$_POST['individual_reward-amount' . $reward->id],
+							'units'=>$_POST['individual_reward-units' . $reward->id]
+						);
+
+						$reward->save($data, $errors);
+					}
+
+
 					// tratar nuevos retornos
-					$newSocialReward = array(
-						'reward'=>$_POST['social_reward'],
-						'type'=>'social',
-						'icon'=>$_POST['social_reward-icon'],
-						'license'=>$_POST['social_reward-license']
-					);
-					$project->newSocialReward($newSocialReward, $errors);
+					if (!empty($_POST['nsocial_reward'])) {
+						$newSocialReward = array(
+							'reward'=>$_POST['nsocial_reward'],
+							'type'=>'social',
+							'icon'=>$_POST['nsocial_reward-icon'],
+							'license'=>$_POST['nsocial_reward-license']
+						);
+						$project->newSocialReward($newSocialReward, $errors);
+					}
 
-					$newIndividualReward = array(
-						'reward'=>$_POST['individual_reward'],
-						'type'=>'individual',
-						'icon'=>$_POST['individual_reward-icon'],
-						'amount'=>$_POST['individual_reward-amount'],
-						'units'=>$_POST['individual_reward-units']
-					);
-					$project->newIndividualReward($newIndividualReward, $errors);
+					if (!empty($_POST['nindividual_reward'])) {
+						$newIndividualReward = array(
+							'reward'=>$_POST['nindividual_reward'],
+							'type'=>'individual',
+							'icon'=>$_POST['nindividual_reward-icon'],
+							'amount'=>$_POST['nindividual_reward-amount'],
+							'units'=>$_POST['nindividual_reward-units']
+						);
+						$project->newIndividualReward($newIndividualReward, $errors);
+					}
 
-					// otros recursos
-					$project->save(array('resource'=>$_POST['resource']), $errors);
-/*
+					/*
 					if (empty($errors)) {
 						header('Location: /project/supports');
 						die;
 					}
- */
+					 *
+					 */
 				}
 
 			}
@@ -299,26 +327,28 @@ namespace Goteo\Controller {
 					// tratar colaboraciones existentes
 					foreach ($project->supports as $support) {
 						$data = array(
-							'name'=>$_POST['support-name' . $support->num],
-							'type'=>$_POST['support-type' . $support->num],
-							'description'=>$_POST['support-description' . $support->num]
+							'support'=>$_POST['support' . $support->id],
+							'type'=>$_POST['support-type' . $support->id],
+							'description'=>$_POST['support-description' . $support->id]
 						);
 						$support->save($data, $errors);
 					}
 
 					// tratar nueva colaboracion
-					$newSupport = array(
-							'name'=>$_POST['nsupport-name'],
-							'type'=>$_POST['nsupport-type'],
-							'description'=>$_POST['nsupport-description']
-					);
-					$project->newSupport($newSupport, $errors);
-
+					if (!empty($_POST['nsupport'])) {
+						$newSupport = array(
+								'support'=>$_POST['nsupport'],
+								'type'=>$_POST['nsupport-type'],
+								'description'=>$_POST['nsupport-description']
+						);
+						$project->newSupport($newSupport, $errors);
+					}
 /*
 					if (empty($errors)) {
 						header('Location: /project/overview');
 						die;
 					}
+ *
  */
 				}
 
@@ -365,17 +395,11 @@ namespace Goteo\Controller {
 				die;
             } else {
                 $project = new Prj($id);
-				
-				$sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
-				if (Prj::query($sql, array(':status'=>2, ':updated'=>date('Y-m-d'), ':id'=>$id))) {
-					if ($project->rebase()) {
-						unset($_SESSION['current_project']);
-						header('Location: /dashboard');
-						die;
-					} else {
-						echo 'Error catastrofico al remontar el proyecto!!';
-						die;
-					}
+
+				if ($project->ready()) {
+					unset($_SESSION['current_project']);
+					header('Location: /dashboard');
+					die;
 				}
 				else {
 					header('Location: /project/overview');

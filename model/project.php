@@ -2,11 +2,6 @@
 
 namespace Goteo\Model {
 
-	use Goteo\Model\Keyword,
-		Goteo\Model\Cost,
-		Goteo\Model\Reward,
-		Goteo\Model\Support;
-
     class Project extends \Goteo\Core\Model {
         
         public        
@@ -69,11 +64,46 @@ namespace Goteo\Model {
 						}
 					}
 
-					$this->keywords = Keyword::get($id);
-					$this->costs = Cost::get($id);
-					$this->social_rewards = Reward::get($id, 'social');
-					$this->individual_rewards = Reward::get($id, 'individual');
-					$this->supports = Support::get($id);
+					if ($query = self::query("SELECT * FROM keyword WHERE project = ?", array($id))) {
+						if ($items = $query->fetchAll(\PDO::FETCH_CLASS, "Goteo\Model\Project\Keyword")) {
+							foreach ($items as $item) {
+								$this->keywords[] = $item;
+							}
+						}
+					}
+
+					if ($query = self::query("SELECT * FROM cost WHERE project = ?", array($id))) {
+						if ($items = $query->fetchAll(\PDO::FETCH_CLASS, "Goteo\Model\Project\Cost")) {
+							foreach ($items as $item) {
+								$this->costs[] = $item;
+							}
+						}
+					}
+
+					if ($query = self::query("SELECT * FROM reward WHERE project = ? AND type='social'", array($id))) {
+						if ($items = $query->fetchAll(\PDO::FETCH_CLASS, "Goteo\Model\Project\Reward")) {
+							foreach ($items as $item) {
+								$this->social_rewards[] = $item;
+							}
+						}
+					}
+
+					if ($query = self::query("SELECT * FROM reward WHERE project = ? AND type='individual'", array($id))) {
+						if ($items = $query->fetchAll(\PDO::FETCH_CLASS, "Goteo\Model\Project\Reward")) {
+							foreach ($items as $item) {
+								$this->individual_rewards[] = $item;
+							}
+						}
+					}
+
+					if ($query = self::query("SELECT * FROM support WHERE project = ?", array($id))) {
+						if ($items = $query->fetchAll(\PDO::FETCH_CLASS, "Goteo\Model\Project\Support")) {
+							foreach ($items as $item) {
+								$this->supports[] = $item;
+							}
+						}
+					}
+					
 				}
 				else {
 					echo 'Fallo al crear la instancia de Project<br />';
@@ -220,23 +250,24 @@ namespace Goteo\Model {
 		 * Para añadir nuevos registros en tablas relacionadas
 		 */
 		public function newKeyword($data, &$errors) {
-			$this->keywords[] = Keyword::create($this->id, $data, $errors);
+			// $this->keywords[] = hm...
+			Project\Keyword::create($this->id, $data, $errors);
 		}
 
 		public function newCost($data, &$errors) {
-			$this->costs[] = Cost::create($this->id, $data, $errors);
+			$this->costs[] = Project\Cost::create($this->id, $data, $errors);
 		}
 
 		public function newSocialReward($data, &$errors) {
-			$this->social_rewards[] = Reward::create($this->id, $data, $errors);
+			$this->social_rewards[] = Project\Reward::create($this->id, $data, $errors);
 		}
 
 		public function newIndividualReward($data, &$errors) {
-			$this->individual_rewards[] = Reward::create($this->id, $data, $errors);
+			$this->individual_rewards[] = Project\Reward::create($this->id, $data, $errors);
 		}
 
 		public function newSupport($data, &$errors) {
-			$this->supports[] = Support::create($this->id, $data, $errors);
+			$this->supports[] = Project\Support::create($this->id, $data, $errors);
 		}
 
 
@@ -246,16 +277,34 @@ namespace Goteo\Model {
 		 */
 		public function validate ($step, &$errors = array(), &$success = '', &$finish = false) {
 			if ($step == 'overview') {
-				if ($this->status === 1) {
+				if ($this->status == 1) {
 					$success = 'Enhorabuena, ha completado todos los datos del proyecto. Lo revisaremos en cuanto lo deje LISTO.';
 					$finish = true;
 				}
 				else {
-					$success = 'Ya estamos revisando este proyecto. Sería conveniente que no hicieras modificacinoes importantes. Te avisaremos si tienes que arreglar alguna cosa.';
+					$success = 'Ya estamos revisando este proyecto. Sería conveniente que no hicieras modificaciones importantes, te avisaremos si tienes que arreglar alguna cosa.';
 					$finish = false;
 				}
 			}
 			return true;
+		}
+
+		/*
+		 * Listo para revisión
+		 */
+		public function ready() {
+			$sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
+			if (self::query($sql, array(':status'=>2, ':updated'=>date('Y-m-d'), ':id'=>$this->id))) {
+				if ($this->rebase()) {
+					return true;
+				} else {
+					echo 'Error catastrófico al remontar el proyecto!!';
+					die;
+				}
+			}
+			else {
+				return false;
+			}
 		}
 
 		/*
@@ -268,17 +317,21 @@ namespace Goteo\Model {
 				$newid = self::checkId(self::idealiza($this->name));
 				if ($newid == false) return false;
 				// actualizar las tablas relacionadas
-	//			self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$id));
+				self::query("UPDATE keyword SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+				self::query("UPDATE cost SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+				self::query("UPDATE reward SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+				self::query("UPDATE support SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
 				// actualizar el registro
 				self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
 			}
+
+			return true;
 		}
 
 		/*
 		 *  Para verificar id única
 		 */
 		public static function checkId($id, $num = 1) {
-			if($num > 10) return false;
 			if ($query = self::query("SELECT id FROM project WHERE id = :id", array(':id'=>$id))) {
 				$exist = $query->fetchObject();
 				// si  ya existe, cambiar las últimas letras por un número
@@ -295,7 +348,7 @@ namespace Goteo\Model {
 				return $id;
 			}
 			else {
-				echo "Fallo en $id, $num <br />";
+				echo "Fallo rebase en $id, $num <br />";
 				return false;
 			}
 		}
