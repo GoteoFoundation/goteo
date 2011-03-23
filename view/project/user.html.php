@@ -3,7 +3,7 @@
 USUARIO / Perfil<br />
 GUÍA: Si vas a publicar un proyecto, es mejor ofrecer más información acerca de ti para atraer a posibles aportadores.<br />
 <?php include 'view/project/errors.html.php' ?>
-FORMULARIO <br />
+<hr />
 <form action="/project/user" method="post">
 	<dl>
 		<dt><label for="name">Nombre completo</label></dt>

@@ -3,7 +3,7 @@
 USUARIO / Datos personales<br />
 GUÍA<br />
 <?php include 'view/project/errors.html.php' ?>
-FORMULARIO <br />
+<hr />
 <form action="/project/register" method="post">
 	<dl>
 		<dt><label for="contract_name">Nombre</label></dt>

@@ -148,10 +148,14 @@ namespace Goteo\Controller {
             } else {
                 $project = new Prj($id);
 
+				$currents = Prj::currentStatus();
+
 				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$errors = array();
+					//tratar imagen
+					//tratar keywords
 					if ($project->save($_POST, $errors)) {
-						header('Location: /project/tasks');
+						header('Location: /project/costs');
 						die;
 					}
 				}
@@ -164,7 +168,7 @@ namespace Goteo\Controller {
 		/*
 		 * Paso 4 - COSTES
 		 */
-        public function tasks () {
+        public function costs () {
 
 			$id = $_SESSION['current_project'];
 
@@ -176,14 +180,43 @@ namespace Goteo\Controller {
 
 				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$errors = array();
-					if ($project->save($_POST, $errors)) {
+
+					//tratar costes existentes
+					foreach ($project->costs as $cost) {
+						$data = array(
+							'cost'=>$_POST['cost' . $cost->num],
+							'amount'=>$_POST['cost-amount' . $cost->num],
+							'type'=>$_POST['cost-type' . $cost->num],
+							'required'=>$_POST['cost-required' . $cost->num],
+							'from'=>$_POST['cost-from' . $cost->num],
+							'until'=>$_POST['cost-until' . $cost->num]
+						);
+						$cost->save($data, $errors);
+					}
+
+					//tratar nuevo coste
+					$newCost = array(
+						'cost'=>$_POST['ncost'],
+						'amount'=>$_POST['ncost-amount'],
+						'type'=>$_POST['ncost-type'],
+						'required'=>$_POST['ncost-required'],
+						'from'=>$_POST['ncost-from'],
+						'until'=>$_POST['ncost-until']
+					);
+					$project->newCost($newCost, $errors);
+
+					// otros recursos
+					$project->save(array('resource'=>$_POST['resource']), $errors);
+/*
+					if (empty($errors)) {
 						header('Location: /project/rewards');
 						die;
 					}
+ */
 				}
 
 			}
-            include 'view/project/tasks.html.php';
+            include 'view/project/costs.html.php';
 
         }
 
@@ -202,10 +235,45 @@ namespace Goteo\Controller {
 
 				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$errors = array();
-					if ($project->save($_POST, $errors)) {
+					// tratar retornos existentes
+					foreach ($project->rewards as $reward) {
+						$data = array(
+							'reward'=>$_POST[$reward->type.'_reward' . $reward->num],
+							'type'=>$reward->type,
+							'icon'=>$_POST[$reward->type.'_reward-icon' . $reward->num],
+							'license'=>$_POST[$reward->type.'_reward-license' . $reward->num],
+							'amount'=>$_POST[$reward->type.'_reward-amount' . $reward->num],
+							'units'=>$_POST[$reward->type.'_reward-units' . $reward->num]
+						);
+						$reward->save($data, $errors);
+					}
+					
+					// tratar nuevos retornos
+					$newSocialReward = array(
+						'reward'=>$_POST['social_reward'],
+						'type'=>'social',
+						'icon'=>$_POST['social_reward-icon'],
+						'license'=>$_POST['social_reward-license']
+					);
+					$project->newSocialReward($newSocialReward, $errors);
+
+					$newIndividualReward = array(
+						'reward'=>$_POST['individual_reward'],
+						'type'=>'individual',
+						'icon'=>$_POST['individual_reward-icon'],
+						'amount'=>$_POST['individual_reward-amount'],
+						'units'=>$_POST['individual_reward-units']
+					);
+					$project->newIndividualReward($newIndividualReward, $errors);
+
+					// otros recursos
+					$project->save(array('resource'=>$_POST['resource']), $errors);
+/*
+					if (empty($errors)) {
 						header('Location: /project/supports');
 						die;
 					}
+ */
 				}
 
 			}
@@ -228,10 +296,30 @@ namespace Goteo\Controller {
 
 				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$errors = array();
-					if ($project->save($_POST, $errors)) {
+					// tratar colaboraciones existentes
+					foreach ($project->supports as $support) {
+						$data = array(
+							'name'=>$_POST['support-name' . $support->num],
+							'type'=>$_POST['support-type' . $support->num],
+							'description'=>$_POST['support-description' . $support->num]
+						);
+						$support->save($data, $errors);
+					}
+
+					// tratar nueva colaboracion
+					$newSupport = array(
+							'name'=>$_POST['nsupport-name'],
+							'type'=>$_POST['nsupport-type'],
+							'description'=>$_POST['nsupport-description']
+					);
+					$project->newSupport($newSupport, $errors);
+
+/*
+					if (empty($errors)) {
 						header('Location: /project/overview');
 						die;
 					}
+ */
 				}
 
 			}

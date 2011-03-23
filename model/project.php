@@ -1,7 +1,12 @@
 <?php
 
 namespace Goteo\Model {
-    
+
+	use Goteo\Model\Keyword,
+		Goteo\Model\Cost,
+		Goteo\Model\Reward,
+		Goteo\Model\Support;
+
     class Project extends \Goteo\Core\Model {
         
         public        
@@ -33,13 +38,13 @@ namespace Goteo\Model {
 			 $related,
             $category,
             $media,
-            $keywords = array(), // related to the project category
+            $keywords = array(), // related to the project category project\keyword
             $currently, // Current development status of the project
             $project_location, // project execution location
                 
-            // Tasks
-            $tasks = array(),  // project\task instances with type
-            $schedule, // picture of the tasks schedule
+            // costs
+            $costs = array(),  // project\cost instances with type
+            $schedule, // picture of the costs schedule
 			$resource, // other current resources
             
             // Rewards
@@ -63,6 +68,12 @@ namespace Goteo\Model {
 							$this->$data = $value;
 						}
 					}
+
+					$this->keywords = Keyword::get($id);
+					$this->costs = Cost::get($id);
+					$this->social_rewards = Reward::get($id, 'social');
+					$this->individual_rewards = Reward::get($id, 'individual');
+					$this->supports = Support::get($id);
 				}
 				else {
 					echo 'Fallo al crear la instancia de Project<br />';
@@ -206,6 +217,31 @@ namespace Goteo\Model {
 		}
 
 		/*
+		 * Para añadir nuevos registros en tablas relacionadas
+		 */
+		public function newKeyword($data, &$errors) {
+			$this->keywords[] = Keyword::create($this->id, $data, $errors);
+		}
+
+		public function newCost($data, &$errors) {
+			$this->costs[] = Cost::create($this->id, $data, $errors);
+		}
+
+		public function newSocialReward($data, &$errors) {
+			$this->social_rewards[] = Reward::create($this->id, $data, $errors);
+		}
+
+		public function newIndividualReward($data, &$errors) {
+			$this->individual_rewards[] = Reward::create($this->id, $data, $errors);
+		}
+
+		public function newSupport($data, &$errors) {
+			$this->supports[] = Support::create($this->id, $data, $errors);
+		}
+
+
+
+		/*
 		 *  Para validar proyectos
 		 */
 		public function validate ($step, &$errors = array(), &$success = '', &$finish = false) {
@@ -333,6 +369,17 @@ namespace Goteo\Model {
 			}
 		}
 
+		/*
+		 * Estados de desarrollo del propyecto
+		 */
+		public static function currentStatus () {
+			return array(
+				0=>'0',
+				1=>'Inicial',
+				2=>'Medio',
+				3=>'Avanzado',
+				4=>'Finalizado');
+		}
     }
 
 }
