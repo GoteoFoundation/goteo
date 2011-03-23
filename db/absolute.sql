@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 22-03-2011 a las 21:48:08
+-- Tiempo de generación: 23-03-2011 a las 19:03:51
 -- Versión del servidor: 5.1.49
 -- Versión de PHP: 5.3.3-1ubuntu9.3
 
@@ -44,6 +44,30 @@ CREATE TABLE charge (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla 'cost'
+--
+
+DROP TABLE IF EXISTS cost;
+CREATE TABLE cost (
+  id int(12) NOT NULL AUTO_INCREMENT,
+  project varchar(50) NOT NULL,
+  cost tinytext NOT NULL,
+  `type` varchar(50) NOT NULL DEFAULT 'task',
+  amount int(5) NOT NULL DEFAULT '0',
+  required tinyint(1) NOT NULL DEFAULT '0',
+  `from` date DEFAULT NULL,
+  `until` date DEFAULT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Desglose de costes de proyectos';
+
+--
+-- Volcar la base de datos para la tabla 'cost'
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla 'invest'
 --
 
@@ -64,6 +88,26 @@ CREATE TABLE invest (
 
 --
 -- Volcar la base de datos para la tabla 'invest'
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla 'keyword'
+--
+
+DROP TABLE IF EXISTS keyword;
+CREATE TABLE keyword (
+  id int(12) NOT NULL AUTO_INCREMENT,
+  project varchar(50) NOT NULL,
+  keyword tinytext NOT NULL,
+  category tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Keywords de proyectos';
+
+--
+-- Volcar la base de datos para la tabla 'keyword'
 --
 
 
@@ -160,8 +204,51 @@ CREATE TABLE project (
 -- Volcar la base de datos para la tabla 'project'
 --
 
-INSERT INTO project VALUES('the-brand-new-project', 'The brand new project', 2, 0, 'root', 'goteo', 0, '2011-03-22', '2011-03-22', NULL, NULL, NULL, 'contract_name', 'contract_surname', 'contractni', 'example@example.com', 'phone', 'address', 'zipcode', 'location', 'country', 'project.jpg', 'asdf asdfa dsf asdf ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO project VALUES('the-ultimate-grat-project-of-the-wolrd-united-nat1', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship', 2, 0, 'root', 'goteo', 0, '2011-03-22', '2011-03-22', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'project.jpg', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla 'reward'
+--
+
+DROP TABLE IF EXISTS reward;
+CREATE TABLE reward (
+  id int(12) NOT NULL AUTO_INCREMENT,
+  project varchar(50) NOT NULL,
+  reward tinytext NOT NULL,
+  `type` varchar(50) NOT NULL,
+  icon varchar(50) DEFAULT NULL,
+  license varchar(50) DEFAULT NULL,
+  amount int(5) DEFAULT NULL,
+  units int(5) DEFAULT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Retornos colectivos e individuales';
+
+--
+-- Volcar la base de datos para la tabla 'reward'
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla 'support'
+--
+
+DROP TABLE IF EXISTS support;
+CREATE TABLE support (
+  id int(12) NOT NULL AUTO_INCREMENT,
+  project varchar(50) NOT NULL,
+  support tinytext NOT NULL,
+  description text NOT NULL,
+  `type` varchar(50) NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Colaboraciones';
+
+--
+-- Volcar la base de datos para la tabla 'support'
+--
+
 
 -- --------------------------------------------------------
 
