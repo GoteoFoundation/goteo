@@ -2,6 +2,8 @@
 
 namespace Goteo\Model {
 
+	use Goteo\Library\Check;
+
     class Project extends \Goteo\Core\Model {
         
         public        
@@ -59,7 +61,6 @@ namespace Goteo\Model {
 
 		/*
 		 *  Cargamos los datos del usuario al crear la instancia
-		 *  @TODO: tener en cuenta la diferencia entre querer cargar un proyecto que no existe y querer crear un proyecto
 		 */
 		public function __construct($id = null) {
 			if ($id != null) {
@@ -198,10 +199,10 @@ namespace Goteo\Model {
 
 			// nif y telefono sin guinoes, espacios ni puntos
 			if (isset($data['contract_nif'])) {
-				$data['contract_nif'] = str_replace(array('_', '.', ' ', '-'), '', $data['contract_nif']);
+				$data['contract_nif'] = str_replace(array('_', '.', ' ', '-', ','), '', $data['contract_nif']);
 			}
 			if (isset($data['phone'])) {
-				$data['phone'] = str_replace(array('_', '.', ' ', '-'), '', $data['phone']);
+				$data['phone'] = str_replace(array('_', '.', ' ', '-', ','), '', $data['phone']);
 			}
 
 			$fields = array(
@@ -316,7 +317,7 @@ namespace Goteo\Model {
 //				'contract_name',  //mandatory +1
 			if (empty($this->contract_name)) {
 				$this->badfields[] = 'contract_name';
-				$this->badmessages[] = "El campo NOMBRE es obligatorio en el paso {$step['register']}.";
+				$this->badmessages[] = "Es obligatorio poner el NOMBRE del responsable del proyecto, paso {$step['register']}.";
 				--$score;
 			} else {
 				++$score;
@@ -326,7 +327,7 @@ namespace Goteo\Model {
 //				'contract_surname',  //mandatory +1
 			if (empty($this->contract_surname)) {
 				$this->badfields[] = 'contract_surname';
-				$this->badmessages[] = "El campo APELLIDOS es obligatorio en el paso {$step['register']}.";
+				$this->badmessages[] = "Es obligatorio poner los APELLIDOS del responsable del proyecto, paso {$step['register']}.";
 				--$score;
 			} else {
 				++$score;
@@ -336,28 +337,40 @@ namespace Goteo\Model {
 //				'contract_nif',  //mandatory  validation nif +1
 			if (empty($this->contract_nif)) {
 				$this->badfields[] = 'contract_nif';
-				$this->badmessages[] = "El campo NIF es obligatorio en el paso {$step['register']}.";
+				$this->badmessages[] = "Es obligatorio poner el NIF del responsable del proyecto, paso {$step['register']}.";
 				--$score;
-			} else {
-				// @TODO nif validation
-				++$score;
-			}
+			} elseif (!Check::Nif($this->contract_nif)) {
+					$this->badfields[] = 'contract_nif';
+					$this->badmessages[] = "El NIF no es correcto, paso {$step['register']}.";
+					--$score;
+				} else {
+					++$score;
+				}
 			++$max;
 
 //				'contract_email',  //mandatory validation email +1
 			if (empty($this->contract_email)) {
 				$this->badfields[] = 'contract_email';
-				$this->badmessages[] = "El campo EMAIL es obligatorio en el paso {$step['register']}.";
+				$this->badmessages[] = "Es obligatorio poner el EMAIL del responsable del proyecto, paso {$step['register']}.";
 				--$score;
-			} else {
-				// @TODO mail validation
-				++$score;
-			}
+			} elseif (!Check::Mail($this->contract_email)) {
+					$this->badfields[] = 'contract_email';
+					$this->badmessages[] = "El EMAIL no es correcto, paso {$step['register']}.";
+					--$score;
+				} else {
+					++$score;
+				}
 			++$max;
 
 //				'phone', // +1
 			if (!empty($this->phone)) {
-				++$score;
+				if (!Check::Phone($this->phone)) {
+					$this->badfields[] = 'phone';
+					$this->badmessages[] = "El TELÉFONO no es correcto, paso {$step['register']}.";
+					--$score;
+				} else {
+					++$score;
+				}
 			}
 			++$max;
 
@@ -376,7 +389,7 @@ namespace Goteo\Model {
 //				'location', // mandatory  +1
 			if (empty($this->location)) {
 				$this->badfields[] = 'location';
-				$this->badmessages[] = "El campo LUGAR DE RESIDENCIA es obligatorio en el paso {$step['register']}.";
+				$this->badmessages[] = "Es obligatorio poner el LUGAR DE RESIDENCIA del responsable del proyecto, paso {$step['register']}.";
 				--$score;
 			} else {
 				++$score;
@@ -392,7 +405,7 @@ namespace Goteo\Model {
 //				'name', // mandatory +1
 			if (empty($this->name)) {
 				$this->badfields[] = 'name';
-				$this->badmessages[] = "El campo NOMBRE DEL PROYECTO es obligatorio en el paso {$step['edit']}.";
+				$this->badmessages[] = "Es obligatorio poner un NOMBRE al proyecto, paso {$step['edit']}.";
 				--$score;
 			} else {
 				++$score;
@@ -408,12 +421,17 @@ namespace Goteo\Model {
 //				'description', // mandatory +1 validation 150 words (+5 if so)
 			if (empty($this->description)) {
 				$this->badfields[] = 'description';
-				$this->badmessages[] = "El campo DESCRIPCIÓN es obligatorio en el paso {$step['edit']}.";
+				$this->badmessages[] = "Es obligatorio poner una DESCRIPCIÓN al proyecto, paso {$step['edit']}.";
 				--$score;
 			} else {
 				++$score;
-				// @TODO >150 words 
-				$score += 5;
+				if (!Check::Words($this->description, 150)) {
+					$this->badfields[] = 'description';
+					$this->badmessages[] = "La DESCRIPCIÓN del proyecto es demasiado corta, paso {$step['edit']}.";
+					$score -= 5;
+				} else {
+					$score += 5;
+				}
 			}
 			$max += 6;
 
@@ -444,7 +462,7 @@ namespace Goteo\Model {
 //				'category', // mandatory +1
 			if (empty($this->category)) {
 				$this->badfields[] = 'category';
-				$this->badmessages[] = "El campo CATEGORIA es obligatorio en el paso {$step['edit']}.";
+				$this->badmessages[] = "Es obligatorio elegir una CATEGORIA para el proyecto, paso {$step['edit']}.";
 				--$score;
 			} else {
 				++$score;
@@ -472,7 +490,7 @@ namespace Goteo\Model {
 //				'project_location', // mandatory +1
 			if (empty($this->project_location)) {
 				$this->badfields[] = 'project_location';
-				$this->badmessages[] = "El campo LOCALIZACIÓN es obligatorio en el paso {$step['edit']}.";
+				$this->badmessages[] = "Es obligatorio poner la LOCALIZACIÓN del proyecto, paso {$step['edit']}.";
 				--$score;
 			}
 			else {
@@ -483,7 +501,7 @@ namespace Goteo\Model {
 //				'costs', // mandatory at least 2 costs (with amount)+5 if so ;  validation dates
 			if (count($this->costs) < 2) {
 				$this->badfields[] = 'ncost';
-				$this->badmessages[] = "Debe desglosar en al menos dos COSTES en el paso {$step['costs']}.";
+				$this->badmessages[] = "Debe desglosar en al menos DOS COSTES, paso {$step['costs']}.";
 				$score -= 5;
 			}
 			else {
@@ -508,7 +526,7 @@ namespace Goteo\Model {
 			$maxdif = $this->mincost * 0.40;
 			if ($costdif > $maxdif ) {
 				$this->badfields[] = 'total-costs';
-				$this->badmessages[] = "El coste óptimo no puede superar al coste mínimo en más de 40%. Revisar el DESGLOSE DE COSTES en el paso {$step['costs']}.";
+				$this->badmessages[] = "El coste óptimo no puede superar en más de un 40% al coste mínimo. Revisar el DESGLOSE DE COSTES, paso {$step['costs']}.";
 				$score -= 5;
 			}
 			else {
@@ -540,6 +558,7 @@ namespace Goteo\Model {
 				// rate over max
 				$progress = 100 * $score / $max;
 				$progress = round($progress, 0);
+				if ($progress > 100) $progress = 100;
 			}
 
 			$this->fiuuu = "Obtenido $score sobre $max = $progress %";

@@ -170,11 +170,10 @@ namespace Goteo\Controller {
 						}
 					}
 
-
-					/*if ($project->save($_POST, $errors)) {
+					if ($project->save($_POST, $errors)) {
 						header('Location: /project/costs');
 						die;
-					}*/
+					}
 				}
 
 			}
