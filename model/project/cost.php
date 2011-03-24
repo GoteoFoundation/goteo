@@ -32,11 +32,9 @@ namespace Goteo\Model\Project {
 			$values = array();
 
 			foreach ($fields as $field) {
-				if (isset($data[$field])) {
-					if ($set != '') $set .= ", ";
-					$set .= "$field = :$field ";
-					$values[":$field"] = $data[$field];
-				}
+				if ($set != '') $set .= ", ";
+				$set .= "`$field` = :$field ";
+				$values[":$field"] = $data[$field];
 			}
 
 			if (!empty($values)) {
@@ -76,11 +74,9 @@ namespace Goteo\Model\Project {
 			$values = array();
 
 			foreach ($fields as $field) {
-				if (!empty($data[$field])) {
-					if ($set != '') $set .= ", ";
-					$set .= "$field = :$field ";
-					$values[":$field"] = $data[$field];
-				}
+				if ($set != '') $set .= ", ";
+				$set .= "`$field` = :$field ";
+				$values[":$field"] = $data[$field];
 			}
 
 			if (!empty($values)) {

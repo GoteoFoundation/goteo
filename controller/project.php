@@ -31,9 +31,17 @@ namespace Goteo\Controller {
 				header('Location: /');
 				die;
             } else {
-				$_SESSION['current_project'] = $id;
-				header('Location: /project/edit');
-				die;
+                $project = new Prj($id);
+
+				if ($project->status > 1) {
+					header('Location: /project/' . $id);
+					die;
+				}
+				else {
+					$_SESSION['current_project'] = $id;
+					header('Location: /project/edit');
+					die;
+				}
             }
         }
 
@@ -163,10 +171,10 @@ namespace Goteo\Controller {
 					}
 
 
-					if ($project->save($_POST, $errors)) {
+					/*if ($project->save($_POST, $errors)) {
 						header('Location: /project/costs');
 						die;
-					}
+					}*/
 				}
 
 			}
@@ -189,6 +197,8 @@ namespace Goteo\Controller {
 
 				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$errors = array();
+
+//					echo '<pre>' . print_r($_POST, 1) . '</pre>';
 
 					//tratar costes existentes
 					foreach ($project->costs as $cost) {
@@ -220,13 +230,10 @@ namespace Goteo\Controller {
 					// otros recursos
 					$project->save(array('resource'=>$_POST['resource']), $errors);
 
-					/*
-					if (empty($errors)) {
+					/*if (empty($errors)) {
 						header('Location: /project/rewards');
 						die;
-					}
-					 *
-					 */
+					}*/
 				}
 
 			}
@@ -295,13 +302,10 @@ namespace Goteo\Controller {
 						$project->newIndividualReward($newIndividualReward, $errors);
 					}
 
-					/*
-					if (empty($errors)) {
+					/*if (empty($errors)) {
 						header('Location: /project/supports');
 						die;
-					}
-					 *
-					 */
+					}*/
 				}
 
 			}
@@ -343,13 +347,11 @@ namespace Goteo\Controller {
 						);
 						$project->newSupport($newSupport, $errors);
 					}
-/*
-					if (empty($errors)) {
+
+					/*if (empty($errors)) {
 						header('Location: /project/overview');
 						die;
-					}
- *
- */
+					}*/
 				}
 
 			}
@@ -369,11 +371,20 @@ namespace Goteo\Controller {
 				die;
             } else {
                 $project = new Prj($id);
-				$errors = array();
-				$success = '';
+
 				$finish = false;
-				$project->validate(__FUNCTION__, $errors, $success, $finish);
+				if (!empty($project->badmessages)) {
+					$errors = $project->badmessages;
+				}
+				else {
+					$success[] = 'Todos los campos del formulario son correctos';
+					if ($project->progress > 60 && $project->status == 1) {
+						$success .= 'Pulse el botón finalizar para que revisemos su proyecto. No podrá modificar los datos del proyecto una vez finalizado.';
+						$finish = true;
+					}
+				}
 			}
+			
             include 'view/project/overview.html.php';
 
         }

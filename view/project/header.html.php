@@ -1,6 +1,6 @@
 <p><a href="/dashboard">[DASHBOARD]</a></p>
 <hr />
-<p>ESTADO DEL PROYECTO | ESTADO GLOBAL DE LA INFORMACIÓN: fiuu!</p>
+<p>ESTADO DEL PROYECTO | ESTADO GLOBAL DE LA INFORMACIÓN: <?php echo $project->fiuuu; ?></p>
 <hr />
 <a href="/project/user">PERFIL</a>&nbsp;
 <a href="/project/register">DATOS PERSONALES</a>&nbsp;

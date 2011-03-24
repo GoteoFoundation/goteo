@@ -9,7 +9,7 @@ namespace Goteo\Model {
 			$owner, // User who created it
             $node, // Node this project belongs to
 			$status,
-			$progress,
+			$progress, // puntuation from  1 to 100 for the fiuuu
 			$amount, // Current donated amount
 
 			// Register contract data
@@ -47,8 +47,15 @@ namespace Goteo\Model {
             $invest_rewards = array(), // instances of project\reward for investors  (individual type)
 
 			// Collaborations
-			$supports = array(); // instances of project\support
-        
+			$supports = array(), // instances of project\support
+
+			//Operative purpose properties
+			$mincost = 0,
+			$maxcost = 0,
+			$badfields = array(), // when a project is validated, this contains any incorrect form field
+			$badmessages = array(), // this contains human readable incorrections in the form
+			$fiuuu = '';
+
 
 		/*
 		 *  Cargamos los datos del usuario al crear la instancia
@@ -76,6 +83,13 @@ namespace Goteo\Model {
 						if ($items = $query->fetchAll(\PDO::FETCH_CLASS, "Goteo\Model\Project\Cost")) {
 							foreach ($items as $item) {
 								$this->costs[] = $item;
+								if ($item->required == 1) {
+									$this->mincost += $item->amount;
+									$this->maxcost += $item->amount;
+								}
+								else {
+									$this->maxcost += $item->amount;
+								}
 							}
 						}
 					}
@@ -103,11 +117,12 @@ namespace Goteo\Model {
 							}
 						}
 					}
-					
 				}
 				else {
 					echo 'Fallo al crear la instancia de Project<br />';
 				}
+
+				$this->validate();
 			}
 		}
 
@@ -273,20 +288,266 @@ namespace Goteo\Model {
 
 
 		/*
-		 *  Para validar proyectos
+		 *  Para validar los campos del proyecto
+		 * cualquier campo incorrecto lo guarda en badfields y en badmessages
+		 * luego se consulta para pintar el checkbox lateral o los errores
+		 * También cuenta la puntuación del 1 al 100 para el proyecto y lo guarda
+		 *
+		 * Hay que ver el perfil del usuario, tener un perfil decente también da puntos, no?
+		 *
 		 */
-		public function validate ($step, &$errors = array(), &$success = '', &$finish = false) {
-			if ($step == 'overview') {
-				if ($this->status == 1) {
-					$success = 'Enhorabuena, ha completado todos los datos del proyecto. Lo revisaremos en cuanto lo deje LISTO.';
-					$finish = true;
-				}
-				else {
-					$success = 'Ya estamos revisando este proyecto. Sería conveniente que no hicieras modificaciones importantes, te avisaremos si tienes que arreglar alguna cosa.';
-					$finish = false;
+		public function validate ()
+		{
+			$score = 0;
+			$max = 0; // el máximo que se puede conseguir
+
+			$step = array(
+				'register' => '2 Datos personales',
+				'edit' => '3 Descripción',
+				'costs' => '4 Costes',
+				'rewards' => '5 Retorno',
+				'supports' => '6 Colaboraciones'
+				);
+
+/*
+			// debe tener en cuenta los errores y quitar puntos por ellos
+ */
+
+//				'contract_name',  //mandatory +1
+			if (empty($this->contract_name)) {
+				$this->badfields[] = 'contract_name';
+				$this->badmessages[] = "El campo NOMBRE es obligatorio en el paso {$step['register']}.";
+				--$score;
+			} else {
+				++$score;
+			}
+			++$max;
+
+//				'contract_surname',  //mandatory +1
+			if (empty($this->contract_surname)) {
+				$this->badfields[] = 'contract_surname';
+				$this->badmessages[] = "El campo APELLIDOS es obligatorio en el paso {$step['register']}.";
+				--$score;
+			} else {
+				++$score;
+			}
+			++$max;
+
+//				'contract_nif',  //mandatory  validation nif +1
+			if (empty($this->contract_nif)) {
+				$this->badfields[] = 'contract_nif';
+				$this->badmessages[] = "El campo NIF es obligatorio en el paso {$step['register']}.";
+				--$score;
+			} else {
+				// @TODO nif validation
+				++$score;
+			}
+			++$max;
+
+//				'contract_email',  //mandatory validation email +1
+			if (empty($this->contract_email)) {
+				$this->badfields[] = 'contract_email';
+				$this->badmessages[] = "El campo EMAIL es obligatorio en el paso {$step['register']}.";
+				--$score;
+			} else {
+				// @TODO mail validation
+				++$score;
+			}
+			++$max;
+
+//				'phone', // +1
+			if (!empty($this->phone)) {
+				++$score;
+			}
+			++$max;
+
+//				'address', // +1
+			if (!empty($this->address)) {
+				++$score;
+			}
+			++$max;
+
+//				'zipcode', // +1
+			if (!empty($this->zipcode)) {
+				++$score;
+			}
+			++$max;
+
+//				'location', // mandatory  +1
+			if (empty($this->location)) {
+				$this->badfields[] = 'location';
+				$this->badmessages[] = "El campo LUGAR DE RESIDENCIA es obligatorio en el paso {$step['register']}.";
+				--$score;
+			} else {
+				++$score;
+			}
+			++$max;
+
+//				'country', // +1
+			if (!empty($this->country)) {
+				++$score;
+			}
+			++$max;
+
+//				'name', // mandatory +1
+			if (empty($this->name)) {
+				$this->badfields[] = 'name';
+				$this->badmessages[] = "El campo NOMBRE DEL PROYECTO es obligatorio en el paso {$step['edit']}.";
+				--$score;
+			} else {
+				++$score;
+			}
+			++$max;
+
+//				'image', // +5
+			if (!empty($this->image)) {
+				$score += 5;
+			}
+			$max += 5;
+
+//				'description', // mandatory +1 validation 150 words (+5 if so)
+			if (empty($this->description)) {
+				$this->badfields[] = 'description';
+				$this->badmessages[] = "El campo DESCRIPCIÓN es obligatorio en el paso {$step['edit']}.";
+				--$score;
+			} else {
+				++$score;
+				// @TODO >150 words 
+				$score += 5;
+			}
+			$max += 6;
+
+//				'motivation', // +1
+			if (!empty($this->motivation)) {
+				++$score;
+			}
+			++$max;
+
+//				'about', // +1
+			if (!empty($this->about)) {
+				++$score;
+			}
+			++$max;
+
+//				'goal', // +1
+			if (!empty($this->goal)) {
+				++$score;
+			}
+			++$max;
+
+//				'related', // +1
+			if (!empty($this->related)) {
+				++$score;
+			}
+			++$max;
+
+//				'category', // mandatory +1
+			if (empty($this->category)) {
+				$this->badfields[] = 'category';
+				$this->badmessages[] = "El campo CATEGORIA es obligatorio en el paso {$step['edit']}.";
+				--$score;
+			} else {
+				++$score;
+			}
+			++$max;
+
+//				'media', // +5
+			if (!empty($this->media)) {
+				$score += 5;
+			}
+			$max += 5;
+
+//				'keywords', // +1 * keyword until +5
+			if (!empty($this->keywords)) {
+				$score += count($this->keywords) > 5 ? 5 : count($this->keywords);
+			}
+			$max += 5;
+			
+//				'currently', // +1 * value
+			if (!empty($this->currently)) {
+				$score += $this->currently;
+			}
+			++$max;
+			
+//				'project_location', // mandatory +1
+			if (empty($this->project_location)) {
+				$this->badfields[] = 'project_location';
+				$this->badmessages[] = "El campo LOCALIZACIÓN es obligatorio en el paso {$step['edit']}.";
+				--$score;
+			}
+			else {
+				++$score;
+			}
+			++$max;
+
+//				'costs', // mandatory at least 2 costs (with amount)+5 if so ;  validation dates
+			if (count($this->costs) < 2) {
+				$this->badfields[] = 'ncost';
+				$this->badmessages[] = "Debe desglosar en al menos dos COSTES en el paso {$step['costs']}.";
+				$score -= 5;
+			}
+			else {
+				$score += 5;
+//				+1 * cost  until +5
+				$score += count($this->costs) > 5 ? 5 : count($this->costs);
+			}
+			$max += 10;
+//			+2 * cost with date from->until   until +10
+			$got = 0;
+			foreach($this->costs as $cost) {
+				if (!empty($cost->from) && !empty($cost->until))  {
+					// @TODO validar si fecha desde es menor que hasta
+					$got += 2; // si es asi, sino -2
 				}
 			}
-			return true;
+			$score += $got > 10 ? 10 : $got;
+			$max += 10;
+
+//			mandatory  max cost = min cost +40%   +5
+			$costdif = $this->maxcost - $this->mincost;
+			$maxdif = $this->mincost * 0.40;
+			if ($costdif > $maxdif ) {
+				$this->badfields[] = 'total-costs';
+				$this->badmessages[] = "El coste óptimo no puede superar al coste mínimo en más de 40%. Revisar el DESGLOSE DE COSTES en el paso {$step['costs']}.";
+				$score -= 5;
+			}
+			else {
+				$score += 5;
+			}
+			$max += 5;
+
+//				'resource', // +0
+
+//				'rewards', // +2 * reward until + 10
+			$score += count($this->social_rewards) > 5 ? 5 : count($this->social_rewards);
+			$score += count($this->individual_rewards) > 5 ? 5 : count($this->individual_rewards);
+			$max += 10;
+
+//			+2 if any license selected
+			foreach ($this->social_rewards as $social) {
+				if (!empty($social->license)) {
+					$score += 2;
+					break;
+				}
+			}
+			$max += 2;
+//				'supports' // +0
+
+			// total score
+			if ($score < 0) {
+				$progress = 0;
+			} else {
+				// rate over max
+				$progress = 100 * $score / $max;
+				$progress = round($progress, 0);
+			}
+
+			$this->fiuuu = "Obtenido $score sobre $max = $progress %";
+
+			$sql = "UPDATE project SET progress = :progress WHERE id = :id";
+			if (self::query($sql, array(':progress'=>$progress, ':id'=>$this->id))) {
+				$this->progress = $progress;
+			}
 		}
 
 		/*

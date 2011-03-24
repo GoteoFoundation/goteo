@@ -15,15 +15,15 @@ GUÍA<br />
 		<?php foreach ($project->social_rewards as $social) : ?>
 			<div>
 				<dt><label for="social_reward<?php echo $social->id; ?>">Descripción</label></dt>
-				<dd><textarea name="social_reward<?php echo $social->id; ?>" cols="50" rows="5"><?php echo $social->reward; ?></textarea></dd>
+				<dd><textarea id="social_reward<?php echo $social->id; ?>" name="social_reward<?php echo $social->id; ?>" cols="50" rows="5"><?php echo $social->reward; ?></textarea></dd>
 			</div>
 		<?php endforeach; ?>
 
 	</dl>
 	RETORNOS INDIVIDUALES:
 	<dl>
-		<label>Cantidad solicitada (&euro;):<input type="text" name="nindividual_reward-amount" value="" /></label><br />
-		<label>Unidades disponibles:<input type="text" name="nindividual_reward-units" value="" /></label><br />
+		<label>Cantidad solicitada (&euro;):<input type="text" id="nindividual_reward-amount" name="nindividual_reward-amount" value="" /></label><br />
+		<label>Unidades disponibles:<input type="text" id="nindividual_reward-units" name="nindividual_reward-units" value="" /></label><br />
 
 		<dt><label for="nindividual_reward">Nuevo retorno individual</label></dt>
 		<dd><textarea id="nindividual_reward" name="nindividual_reward" cols="50" rows="5"></textarea></dd>
@@ -31,11 +31,11 @@ GUÍA<br />
 
 		<?php foreach ($project->individual_rewards as $individual) : ?>
 			<div>
-				<label>Cantidad solicitada (&euro;):<input type="text" name="individual_reward-amount<?php echo $individual->id; ?>" value="<?php echo $individual->amount; ?>" /></label>
-				<label>Unidades disponibles:<input type="text" name="individual_reward-units<?php echo $individual->id; ?>" value="<?php echo $individual->units; ?>" /></label>
+				<label>Cantidad solicitada (&euro;):<input type="text" id="individual_reward-amount<?php echo $individual->id; ?>" name="individual_reward-amount<?php echo $individual->id; ?>" value="<?php echo $individual->amount; ?>" /></label>
+				<label>Unidades disponibles:<input type="text" id="individual_reward-units<?php echo $individual->id; ?>" name="individual_reward-units<?php echo $individual->id; ?>" value="<?php echo $individual->units; ?>" /></label>
 
 				<dt><label for="individual_reward<?php echo $individual->id; ?>">Descripción</label></dt>
-				<dd><textarea name="individual_reward<?php echo $individual->id; ?>" cols="50" rows="5"><?php echo $individual->reward; ?></textarea></dd>
+				<dd><textarea id="individual_reward<?php echo $individual->id; ?>" name="individual_reward<?php echo $individual->id; ?>" cols="50" rows="5"><?php echo $individual->reward; ?></textarea></dd>
 			</div>
 		<?php endforeach; ?>
 

@@ -13,7 +13,7 @@
 			Mis proyectos:<br />
 		<?php
 		foreach ($projects as $proj) {
-			echo '<a href="/project/manage/' . $proj->id . '">' . $proj->name . '</a><br />';
+			echo '<a href="/project/manage/' . $proj->id . '">' . ($proj->name != '' ? $proj->name : $proj->id) . '</a><br />';
 		}
 		?>
 		</p>
