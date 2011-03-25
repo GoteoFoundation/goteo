@@ -22,6 +22,10 @@ namespace Goteo\Controller {
 
             $message = "Hola $id<br />";
 
+			if ($id == 'root') {
+				$message .= '<a href="/texts">Gestión de textos</a>';
+			}
+
 			$projects = Project::ofmine($id);
 
             include 'view/dashboard.html.php';

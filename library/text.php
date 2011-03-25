@@ -28,9 +28,25 @@ namespace Goteo\Library {
 				return $_cache[$id][$lang] = $exist->text;
 			} else {
 				// lo metemos en la tabla pero no en cache
-				Model::query("INSERT INTO text (id, lang, text) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
+				Model::query("REPLACE INTO text (id, lang, text) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
+				Model::query("REPLACE INTO purpose (text, purpose) VALUES (:text, :purpose)", array(':text' => $id, ':purpose' => "Texto $id"));
 
 				return $id;
+			}
+		}
+
+		static public function getPurpose ($id = null) {
+			if ($id === null)
+				return '';
+
+			// buscamos la explicación del texto en la tabla
+			$query = Model::query("SELECT purpose FROM purpose WHERE text = :id", array(':id' => $id));
+			$exist = $query->fetchObject();
+			if ($exist->purpose) {
+				return $exist->purpose;
+			} else {
+				Model::query("REPLACE INTO purpose (text, purpose) VALUES (:text, :purpose)", array(':text' => $id, ':purpose' => "Texto $id"));
+				return "Texto $id";
 			}
 		}
 
@@ -66,7 +82,6 @@ namespace Goteo\Library {
 
 
 		}
-
 
 		/*
 		 *   Método para formatear friendly un texto para ponerlo en la url

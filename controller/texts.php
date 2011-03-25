@@ -9,16 +9,28 @@ namespace Goteo\Controller {
 		
 		public function index ($lang = 'es') {
 
+			// si tenemos usuario logueado
+			$id = $_SESSION['user'];
+
+			if (!$id || $id != 'root') {
+				header('Location: /');
+				die;
+			}
+
 			$content = '';
 
 			$using = Lang::get($lang);
-			$content .= "Viendo textos en {$using->name} <hr />";
+			$content .= "Viendo textos en {$using->name}<br /><a href='/texts/translate'>Gestionarlos</a><hr />";
 			
 			$texts = Text::getAll($lang);
 
 			foreach ($texts as $text) {
 				$content .= <<<EOD
-					{$text->id}: {$text->text}<br />
+					<strong>{$text->id} :</strong><br />
+					<span style="font-style:italic;">{$purpose}</span><br />
+					&gt; {$text->text}<br />
+					<hr />
+
 EOD;
 			}
 
@@ -28,10 +40,18 @@ EOD;
 		
 		public function translate ($lang = 'es') {
 
+			// si tenemos usuario logueado
+			$id = $_SESSION['user'];
+
+			if (!$id || $id != 'root') {
+				header('Location: /');
+				die;
+			}
+
 			$content = '';
 
 			$using = Lang::get($lang);
-			$content .= "Editando {$using->name} <hr />";
+			$content .= "Editando {$using->name}<hr />";
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -69,9 +89,12 @@ EOD;
 
 			foreach ($texts as $text) {
 				$id = md5($text->id);
+				$purpose = Text::getPurpose($text->id);
 				$content .= <<<EOD
 					<dt><label for="{$id}">{$text->id}</label></dt>
-					<dd><textarea id="{$id}" name="text_{$id}">{$text->text}</textarea></dd>
+					<dd><textarea id="{$id}" name="text_{$id}" cols="100" rows="6">{$text->text}</textarea></dd>
+					<span style="font-style:italic;">{$purpose}</span><br />
+					<hr />
 EOD;
 			}
 

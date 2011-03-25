@@ -1,7 +1,7 @@
 <?php include 'view/header.html.php' ?>
 <?php include 'view/project/header.html.php' ?>
 PROYECTO / Previsualización<br />
-GUÍA<br />
+GUÍA: <?php echo $guideText;  ?><br />
 <?php include 'view/project/errors.html.php' ?>
 <?php if ($finish == true) : ?>
 <a href="/project/close">[LISTO PARA REVISIÓN]</a>
