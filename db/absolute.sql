@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 20-03-2011 a las 15:06:52
+-- Tiempo de generación: 23-03-2011 a las 19:03:51
 -- Versión del servidor: 5.1.49
 -- Versión de PHP: 5.3.3-1ubuntu9.3
 
@@ -44,6 +44,30 @@ CREATE TABLE charge (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla 'cost'
+--
+
+DROP TABLE IF EXISTS cost;
+CREATE TABLE cost (
+  id int(12) NOT NULL AUTO_INCREMENT,
+  project varchar(50) NOT NULL,
+  cost tinytext NOT NULL,
+  `type` varchar(50) NOT NULL DEFAULT 'task',
+  amount int(5) NOT NULL DEFAULT '0',
+  required tinyint(1) NOT NULL DEFAULT '0',
+  `from` date DEFAULT NULL,
+  `until` date DEFAULT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Desglose de costes de proyectos';
+
+--
+-- Volcar la base de datos para la tabla 'cost'
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla 'invest'
 --
 
@@ -64,6 +88,26 @@ CREATE TABLE invest (
 
 --
 -- Volcar la base de datos para la tabla 'invest'
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla 'keyword'
+--
+
+DROP TABLE IF EXISTS keyword;
+CREATE TABLE keyword (
+  id int(12) NOT NULL AUTO_INCREMENT,
+  project varchar(50) NOT NULL,
+  keyword tinytext NOT NULL,
+  category tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Keywords de proyectos';
+
+--
+-- Volcar la base de datos para la tabla 'keyword'
 --
 
 
@@ -128,6 +172,7 @@ CREATE TABLE project (
   node varchar(50) NOT NULL COMMENT 'nodo en el que se ha creado',
   amount int(6) DEFAULT NULL COMMENT 'acumulado actualmente',
   created date DEFAULT NULL,
+  updated date DEFAULT NULL,
   published date DEFAULT NULL,
   success date DEFAULT NULL,
   closed date DEFAULT NULL,
@@ -140,12 +185,68 @@ CREATE TABLE project (
   zipcode varchar(10) DEFAULT NULL,
   location varchar(255) DEFAULT NULL,
   country varchar(50) DEFAULT NULL,
+  image varchar(256) DEFAULT NULL,
+  description text,
+  motivation text,
+  about text,
+  goal text,
+  related text,
+  category varchar(50) DEFAULT NULL,
+  media varchar(256) DEFAULT NULL,
+  currently int(1) DEFAULT NULL,
+  project_location varchar(256) DEFAULT NULL,
+  resource text,
   PRIMARY KEY (id),
   KEY `owner` (`owner`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Proyectos de la plataforma';
 
 --
 -- Volcar la base de datos para la tabla 'project'
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla 'reward'
+--
+
+DROP TABLE IF EXISTS reward;
+CREATE TABLE reward (
+  id int(12) NOT NULL AUTO_INCREMENT,
+  project varchar(50) NOT NULL,
+  reward tinytext NOT NULL,
+  `type` varchar(50) NOT NULL,
+  icon varchar(50) DEFAULT NULL,
+  license varchar(50) DEFAULT NULL,
+  amount int(5) DEFAULT NULL,
+  units int(5) DEFAULT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Retornos colectivos e individuales';
+
+--
+-- Volcar la base de datos para la tabla 'reward'
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla 'support'
+--
+
+DROP TABLE IF EXISTS support;
+CREATE TABLE support (
+  id int(12) NOT NULL AUTO_INCREMENT,
+  project varchar(50) NOT NULL,
+  support tinytext NOT NULL,
+  description text NOT NULL,
+  `type` varchar(50) NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Colaboraciones';
+
+--
+-- Volcar la base de datos para la tabla 'support'
 --
 
 
@@ -167,10 +268,10 @@ CREATE TABLE `text` (
 -- Volcar la base de datos para la tabla 'text'
 --
 
-INSERT INTO `text` VALUES('test cuatro', 'es', 'CUATRO');
-INSERT INTO `text` VALUES('test dos', 'es', 'DOS');
-INSERT INTO `text` VALUES('test tres', 'es', 'TRES');
-INSERT INTO `text` VALUES('test uno', 'es', 'UNO');
+INSERT INTO `text` VALUES('test cuatro', 'es', '4');
+INSERT INTO `text` VALUES('test dos', 'es', '2');
+INSERT INTO `text` VALUES('test tres', 'es', '3');
+INSERT INTO `text` VALUES('test uno', 'es', '1');
 
 -- --------------------------------------------------------
 

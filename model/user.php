@@ -281,8 +281,8 @@ namespace Goteo\Model {
 				}
 				else {
 					// nada nuevo bajo el sol
-					$errors[] = 'No hay ningún cambio que guardar';
-					return false;
+//					$errors[] = 'No hay ningún cambio que guardar';
+					return true;
 				}
 
 			}

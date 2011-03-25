@@ -1,13 +1,14 @@
 <?php
 
-namespace Goteo\Model {
+namespace Goteo\Library {
 
+	use Goteo\Core\Model;
 	/*
 	 * Clase para sacar textos estáticos de la tabla text
 	 *  (por ahora utilizar gettext no nos compensa, quizás más adelante)
 	 *
 	 */
-    class Text extends \Goteo\Core\Model {
+    class Text {
 		
 		static public function get ($id = null) {
 			if ($id === null)
@@ -21,13 +22,13 @@ namespace Goteo\Model {
 				return $_cache[$id][$lang];
 
 			// buscamos el texto en la tabla
-			$query = self::query("SELECT text FROM text WHERE id = :id AND lang = :lang", array(':id' => $id, ':lang' => $lang));
+			$query = Model::query("SELECT text FROM text WHERE id = :id AND lang = :lang", array(':id' => $id, ':lang' => $lang));
 			$exist = $query->fetchObject();
 			if ($exist->text) {
 				return $_cache[$id][$lang] = $exist->text;
 			} else {
 				// lo metemos en la tabla pero no en cache
-				self::query("INSERT INTO text (id, lang, text) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
+				Model::query("INSERT INTO text (id, lang, text) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
 
 				return $id;
 			}
@@ -40,7 +41,7 @@ namespace Goteo\Model {
 			if ($lang === null)
 				return false;
 
-			$query = self::query("SELECT id, text FROM text WHERE lang = ?", array($lang));
+			$query = Model::query("SELECT id, text FROM text WHERE lang = ?", array($lang));
 			return $query->fetchAll(\PDO::FETCH_CLASS);
 		}
 
@@ -55,7 +56,7 @@ namespace Goteo\Model {
 					return false;
 			}
 
-			if (self::query("UPDATE text SET text = :text WHERE MD5(id) = :id AND lang = :lang", array(':text' => $data['text'], ':id' => $data['id'], ':lang' => $data['lang']))) {
+			if (Model::query("UPDATE text SET text = :text WHERE MD5(id) = :id AND lang = :lang", array(':text' => $data['text'], ':id' => $data['id'], ':lang' => $data['lang']))) {
 				return true;
 			}
 			else {

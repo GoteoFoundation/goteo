@@ -1,19 +1,20 @@
 <?php
 
-namespace Goteo\Model {
+namespace Goteo\Library {
 
+	use Goteo\Core\Model;
 	/*
 	 * Clase para sacar textos estáticos de la tabla text
 	 *  (por ahora utilizar gettext no nos compensa, quizás más adelante)
 	 *
 	 */
-    class Lang extends \Goteo\Core\Model {
+    class Lang {
 		
 		static public function get ($id = null) {
 			if ($id === null)
 				return false;
 
-			$query = self::query("SELECT * FROM lang WHERE id = :id", array(':id' => $id));
+			$query = Model::query("SELECT * FROM lang WHERE id = :id", array(':id' => $id));
 			return $query->fetchObject();
 		}
 
@@ -28,7 +29,7 @@ namespace Goteo\Model {
 					return false;
 			}
 
-			if (self::query("REPLACE INTO lang (id, name, active) VALUES (:id, :name, :active)", array(':id' => $data['id'], ':name' => $data['name'], ':active' => $data['active']))) {
+			if (Model::query("REPLACE INTO lang (id, name, active) VALUES (:id, :name, :active)", array(':id' => $data['id'], ':name' => $data['name'], ':active' => $data['active']))) {
 				return true;
 			}
 			else {

@@ -2,7 +2,7 @@
 
 namespace Goteo\Controller {
 
-	use Goteo\Model\Content;
+	use Goteo\Library\Content;
 
     class Index extends \Goteo\Core\Controller {
         
