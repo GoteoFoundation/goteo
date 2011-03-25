@@ -10,11 +10,9 @@ namespace Goteo\Library {
 	 */
     class Text {
 		
-		static public function get ($id = null) {
+		static public function get ($id = null, $lang = 'es') {
 			if ($id === null)
 				return '';
-
-			$lang = 'es'; // por ahora solo español
 
 			// buscamos el texto en cache
 			static $_cache = array();
@@ -72,7 +70,7 @@ namespace Goteo\Library {
 					return false;
 			}
 
-			if (Model::query("UPDATE text SET text = :text WHERE MD5(id) = :id AND lang = :lang", array(':text' => $data['text'], ':id' => $data['id'], ':lang' => $data['lang']))) {
+			if (Model::query("UPDATE text SET text = :text WHERE id = :id AND lang = :lang", array(':text' => $data['text'], ':id' => $data['id'], ':lang' => $data['lang']))) {
 				return true;
 			}
 			else {

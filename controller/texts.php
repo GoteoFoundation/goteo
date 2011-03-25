@@ -20,15 +20,19 @@ namespace Goteo\Controller {
 			$content = '';
 
 			$using = Lang::get($lang);
-			$content .= "Viendo textos en {$using->name}<br /><a href='/texts/translate'>Gestionarlos</a><hr />";
+			$content .= '<a href="/dashboard">Volver al panel</a><br />';
+			$content .= "Viendo textos en {$using->name}<br /><hr />";
 			
 			$texts = Text::getAll($lang);
 
 			foreach ($texts as $text) {
+				$urlText = rawurlencode($text->id);
+				$purpose = Text::getPurpose($text->id);
 				$content .= <<<EOD
 					<strong>{$text->id} :</strong><br />
 					<span style="font-style:italic;">{$purpose}</span><br />
 					&gt; {$text->text}<br />
+					<a href='/texts/translate/{$urlText}'>Gestionar</a><br />
 					<hr />
 
 EOD;
@@ -38,7 +42,7 @@ EOD;
 //            include 'view/index.html.php';
 		}
 		
-		public function translate ($lang = 'es') {
+		public function translate ($text = null, $lang = 'es') {
 
 			// si tenemos usuario logueado
 			$id = $_SESSION['user'];
@@ -52,53 +56,40 @@ EOD;
 
 			$using = Lang::get($lang);
 			$content .= "Editando {$using->name}<hr />";
+			$content .= '<a href="/texts">Volver</a>';
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 				$errors = array();
 
-				foreach ($_POST as $key=>$val) {
+				$data = array(
+					'id' => $text,
+					'text' => $_POST['newtext'],
+					'lang' => $lang
+				);
 
-					if (substr($key, 0, 5) == 'text_') {
-						$parts = explode('_', $key);
-						$data = array(
-							'id' => $parts[1],
-							'text' => $val,
-							'lang' => $lang
-						);
-						
-						Text::save($data, $errors);
-					}
+				if (Text::save($data, $errors)) {
+					header('Location: /texts');
+					die;
 				}
-
-				if (!empty($errors)) {
+				else {
 					foreach ($errors as $error) {
 						$content .= '<span style="color:red;">' . $error . '</span><br />';
 					}
 				}
 			}
 			
-			$texts = Text::getAll($lang);
+			$es_text = Text::get($text, 'es');
+			$lang_text = Text::get($text, $lang);
+			$purpose = Text::getPurpose($text);
 
 			$content .= <<<EOD
-				<form action="/texts/translate" method="post">
-					<input type="hidden" name="lang" value="{$lang}" />
-					<dl>
-EOD;
-			
-
-			foreach ($texts as $text) {
-				$id = md5($text->id);
-				$purpose = Text::getPurpose($text->id);
-				$content .= <<<EOD
-					<dt><label for="{$id}">{$text->id}</label></dt>
-					<dd><textarea id="{$id}" name="text_{$id}" cols="100" rows="6">{$text->text}</textarea></dd>
+				<form action="/texts/translate/{$text}/{$lang}" method="post">
 					<span style="font-style:italic;">{$purpose}</span><br />
-					<hr />
-EOD;
-			}
-
-			$content .= <<<EOD
+					<p>{$es_text}</p>
+					<dl>
+						<dt><label for="newtext">{$text}</label></dt>
+						<dd>{$lang}<textarea id="newtext" name="newtext" cols="100" rows="6">{$lang_text}</textarea></dd>
 					</dl>
 					<input type="submit" name="translate" value="Aplicar" />
 				</form>
