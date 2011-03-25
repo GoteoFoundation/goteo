@@ -293,7 +293,7 @@ div#footer div.platoniq * {
 
 div#footer div.platoniq a {
     display: block;
-    width: 93px;
+    width: 94px;
     height: 17px;
     text-indent: 2000px;
     line-height: 2000px;
@@ -355,5 +355,5 @@ div#footer div.goteo a {
 /* Main container */
 div#main {    
     max-width: 940px;
-    margin: 101px auto 0;
+    margin: 40px auto;
 }
