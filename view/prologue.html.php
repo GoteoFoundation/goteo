@@ -5,8 +5,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Goteo.org <?php // cambiar a $content->title; ?></title>
         <link rel="stylesheet" type="text/css" href="/view/css/goteo.css" />
+        <?php if (!isset($useJQuery) || !empty($useJQuery)): ?>
+        <script type="text/javascript" src="/view/js/jquery.js"></script>
+        <?php endif ?>
     </head>
     
     <body<?php if (isset($bodyClass)) echo ' class="' . htmlspecialchars($bodyClass) . '"' ?>>
+        
+        <noscript><!-- Please enable JavaScript --></noscript>
         
         <div id="wrapper">
