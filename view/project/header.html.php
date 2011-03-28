@@ -1,3 +1,4 @@
+<?php use Goteo\Library\Text; ?>
 <p><a href="/dashboard">[DASHBOARD]</a></p>
 <hr />
 <p>ESTADO DEL PROYECTO | ESTADO GLOBAL DE LA INFORMACIÓN: <?php echo $project->fiuuu; ?></p>

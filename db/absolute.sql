@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 23-03-2011 a las 19:03:51
+-- Tiempo de generación: 28-03-2011 a las 15:39:33
 -- Versión del servidor: 5.1.49
 -- Versión de PHP: 5.3.3-1ubuntu9.3
 
@@ -58,12 +58,17 @@ CREATE TABLE cost (
   `from` date DEFAULT NULL,
   `until` date DEFAULT NULL,
   PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Desglose de costes de proyectos';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Desglose de costes de proyectos';
 
 --
 -- Volcar la base de datos para la tabla 'cost'
 --
 
+INSERT INTO cost VALUES(2, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'Para comprar madera', 'structure', 1000, 1, '0000-00-00', '0000-00-00');
+INSERT INTO cost VALUES(3, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'Para comprar madera', 'structure', 10000, 1, '2011-03-24', '2011-03-24');
+INSERT INTO cost VALUES(4, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'Para comprar madera', 'structure', 1000, 0, '2011-03-24', '2011-03-24');
+INSERT INTO cost VALUES(5, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'Para comprar madera', 'structure', 1000, 0, '2011-03-24', '2011-03-24');
+INSERT INTO cost VALUES(6, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'Para comprar madera', 'structure', 1000, 0, '2011-03-24', '2011-03-24');
 
 -- --------------------------------------------------------
 
@@ -104,12 +109,18 @@ CREATE TABLE keyword (
   keyword tinytext NOT NULL,
   category tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Keywords de proyectos';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Keywords de proyectos';
 
 --
 -- Volcar la base de datos para la tabla 'keyword'
 --
 
+INSERT INTO keyword VALUES(1, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'key1', 0);
+INSERT INTO keyword VALUES(2, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'key 2', 0);
+INSERT INTO keyword VALUES(3, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'key 3', 0);
+INSERT INTO keyword VALUES(4, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'key4', 0);
+INSERT INTO keyword VALUES(5, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'key5', 0);
+INSERT INTO keyword VALUES(6, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'key6', 0);
 
 -- --------------------------------------------------------
 
@@ -204,6 +215,103 @@ CREATE TABLE project (
 -- Volcar la base de datos para la tabla 'project'
 --
 
+INSERT INTO project VALUES('984990664ca1a1a98522b2640b0fc535', 'Mi proyecto 2', 1, 1, 'root', 'goteo', 0, '2011-03-24', '2011-03-24', NULL, NULL, NULL, 'JuliÃ¡n', 'CÃ¡naves Bover', '43108914Z', 'julian.canaves@gmail.com', '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO project VALUES('e4ae82c6a3497c04d2338fe63961c92c', 'Mi proyecto 3', 1, 0, 'root', 'goteo', 0, '2011-03-25', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO project VALUES('the-ultimate-grat-project-of-the-wolrd-united-nati', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship', 2, 100, 'root', 'goteo', 0, '2011-03-23', '2011-03-24', NULL, NULL, NULL, 'JuliÃ¡n', 'CÃ¡naves Bover', '43108914Z', 'julian.canaves@gmail.com', '649085539', 'C/ Patata, 1', '07014', 'Palma de Mallorca', 'EspaÃ±a', 'project.jpg', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n\r\nOF THE APPOCALIPSE!!!\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n\r\n', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'stuff', 'fasdfasdfasdfasdfasddf', 4, 'Online', '');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla 'purpose'
+--
+
+DROP TABLE IF EXISTS purpose;
+CREATE TABLE purpose (
+  `text` varchar(50) NOT NULL,
+  purpose tinytext NOT NULL,
+  PRIMARY KEY (`text`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Explicación del propósito de los textos';
+
+--
+-- Volcar la base de datos para la tabla 'purpose'
+--
+
+INSERT INTO purpose VALUES('error sql guardar proyecto', 'La sentencia UPDATE para grabar los datos de un proyecto en la base de datos falla.');
+INSERT INTO purpose VALUES('explain project progress', 'Texto bajo el título Estado global de la información');
+INSERT INTO purpose VALUES('guide project contract information', 'Texto guía en el paso DATOS PERSONALES del formulario de proyecto');
+INSERT INTO purpose VALUES('guide project costs', 'Texto guía en el paso COSTES del formulario de proyecto');
+INSERT INTO purpose VALUES('guide project description', 'Texto guía en el paso DESCRIPCIÓN del formulario de proyecto');
+INSERT INTO purpose VALUES('guide project overview', 'Texto guía en el paso PREVISUALIZACIÓN del formulario de proyecto');
+INSERT INTO purpose VALUES('guide project rewards', 'Texto guía en el paso RETORNO del formulario de proyecto');
+INSERT INTO purpose VALUES('guide project support', 'Texto guía en el paso COLABORACIONES del formulario de proyecto');
+INSERT INTO purpose VALUES('guide user data', 'Texto guía en la edición de datos sensibles del usuario');
+INSERT INTO purpose VALUES('guide user information', 'Texto guía en el paso PERFIL del formulario de proyecto');
+INSERT INTO purpose VALUES('guide user register', 'Texto guía en el registro de usuario');
+INSERT INTO purpose VALUES('mandatory project field category', 'La categoría del proyecto es obligatoria');
+INSERT INTO purpose VALUES('mandatory project field contract email', 'El email del responsable del proyecto es obligatorio');
+INSERT INTO purpose VALUES('mandatory project field contract name', 'El nombre del responsable del proyecto es obligatorio');
+INSERT INTO purpose VALUES('mandatory project field contract nif', 'El nif del responsable del proyecto es obligatorio');
+INSERT INTO purpose VALUES('mandatory project field contract surname', 'El apellido del responsable del proyecto es obligatorio');
+INSERT INTO purpose VALUES('mandatory project field description', 'La descripción del proyecto es obligatorio');
+INSERT INTO purpose VALUES('mandatory project field location', 'La localización del proyecto es obligatoria');
+INSERT INTO purpose VALUES('mandatory project field name', 'El nombre del proyecto es obligatorio');
+INSERT INTO purpose VALUES('mandatory project field residence', 'El lugar de residencia del responsable del proyecto es obligatorio');
+INSERT INTO purpose VALUES('regular mandatory', 'Texto genérico para indicar campo obligatorio');
+INSERT INTO purpose VALUES('step 1', 'Paso 1, información del usuario');
+INSERT INTO purpose VALUES('step 2', 'Paso 2, información del responsable');
+INSERT INTO purpose VALUES('step 3', 'Paso 3, descripción del proyecto');
+INSERT INTO purpose VALUES('step 4', 'Paso 4, desglose de costes');
+INSERT INTO purpose VALUES('step 5', 'Paso 5, retornos');
+INSERT INTO purpose VALUES('step 6', 'Paso 6, colaboraciones');
+INSERT INTO purpose VALUES('step 7', 'paso 7, previsualización');
+INSERT INTO purpose VALUES('tooltip project about', 'Consejo para rellenar el campo qué es');
+INSERT INTO purpose VALUES('tooltip project address', 'Consejo para rellenar el address del responsable del proyecto');
+INSERT INTO purpose VALUES('tooltip project category', 'Consejo para rellenar la categoría del proyecto');
+INSERT INTO purpose VALUES('tooltip project contract_email', 'Consejo para rellenar el email del responsable del proyecto');
+INSERT INTO purpose VALUES('tooltip project contract_name', 'Consejo para rellenar el nombre del responsable del proyecto');
+INSERT INTO purpose VALUES('tooltip project contract_nif', 'Consejo para rellenar el nif del responsable del proyecto');
+INSERT INTO purpose VALUES('tooltip project contract_surname', 'Consejo para rellenar el apellido del responsable del proyecto');
+INSERT INTO purpose VALUES('tooltip project cost', 'Consejo para editar desgloses existentes');
+INSERT INTO purpose VALUES('tooltip project country', 'Consejo para rellenar el país del responsable del proyecto');
+INSERT INTO purpose VALUES('tooltip project currently', 'Consejo para rellenar el estado de desarrollo del proyecto');
+INSERT INTO purpose VALUES('tooltip project description', 'Consejo para rellenar la descripción del proyecto');
+INSERT INTO purpose VALUES('tooltip project goal', 'Consejo para rellenar el campo objetivos');
+INSERT INTO purpose VALUES('tooltip project image', 'Consejo para rellenar la imagen del proyecto');
+INSERT INTO purpose VALUES('tooltip project individual_reward', 'Consejo para editar retornos individuales existentes');
+INSERT INTO purpose VALUES('tooltip project keywords', 'Consejo para rellenar las palabras clave del proyecto');
+INSERT INTO purpose VALUES('tooltip project location', 'Consejo para rellenar el lugar de residencia del responsable del proyecto');
+INSERT INTO purpose VALUES('tooltip project media', 'Consejo para rellenar el media del proyecto');
+INSERT INTO purpose VALUES('tooltip project motivation', 'Consejo para rellenar el campo motivación');
+INSERT INTO purpose VALUES('tooltip project name', 'Consejo para rellenar el nombre del proyecto');
+INSERT INTO purpose VALUES('tooltip project ncost', 'Consejo para rellenar un nuevo desglose de costes');
+INSERT INTO purpose VALUES('tooltip project nindividual_reward', 'Consejo para rellenar un nuevo retorno individual');
+INSERT INTO purpose VALUES('tooltip project nsocial_reward', 'Consejo para rellenar un nuevo retorno colectivo');
+INSERT INTO purpose VALUES('tooltip project nsupport', 'Consejo para rellenar una nueva colaboración');
+INSERT INTO purpose VALUES('tooltip project phone', 'Consejo para rellenar el teléfono del responsable del proyecto');
+INSERT INTO purpose VALUES('tooltip project project_location', 'Consejo para rellenar la localización del proyecto');
+INSERT INTO purpose VALUES('tooltip project related', 'Consejo para rellenar el campo experiencia relacionada y equipo');
+INSERT INTO purpose VALUES('tooltip project resource', 'Consejo para rellenar el campo Cuenta con otros recursos?');
+INSERT INTO purpose VALUES('tooltip project social_reward', 'Consejo para editar retornos colectivos existentes');
+INSERT INTO purpose VALUES('tooltip project support', 'Consejo para editar colaboraciones existentes');
+INSERT INTO purpose VALUES('tooltip project zipcode', 'Consejo para rellenar el zipcode del responsable del proyecto');
+INSERT INTO purpose VALUES('tooltip user about', 'Consejo para rellenar el cuéntanos algo sobre tí');
+INSERT INTO purpose VALUES('tooltip user blog', 'Consejo para rellenar la web');
+INSERT INTO purpose VALUES('tooltip user contribution', 'Consejo para rellenar el qué podrías aportar en goteo');
+INSERT INTO purpose VALUES('tooltip user email', 'Consejo para rellenar el email de registro de usuario');
+INSERT INTO purpose VALUES('tooltip user facebook', 'Consejo para rellenar el facebook');
+INSERT INTO purpose VALUES('tooltip user image', 'Consejo para rellenar la imagen del usuario');
+INSERT INTO purpose VALUES('tooltip user interests', 'Consejo para rellenar tus intereses');
+INSERT INTO purpose VALUES('tooltip user linkedin', 'Consejo para rellenar el linkedin');
+INSERT INTO purpose VALUES('tooltip user name', 'Consejo para rellenar el nombre completo del usuario');
+INSERT INTO purpose VALUES('tooltip user twitter', 'Consejo para rellenar el twitter');
+INSERT INTO purpose VALUES('tooltip user user', 'Consejo para rellenar el nombre de usuario para login');
+INSERT INTO purpose VALUES('validate project field contract email', 'El email del responsable del proyecto debe ser correcto');
+INSERT INTO purpose VALUES('validate project value contract email', 'Texto validate project value contract email');
+INSERT INTO purpose VALUES('validate project value contract nif', 'El nif del responsable del proyecto debe ser correcto');
+INSERT INTO purpose VALUES('validate project value description', 'La descripción del proyecto debe se suficientemente extensa');
+INSERT INTO purpose VALUES('validate project value phone', 'El teléfono debe ser correcto');
+INSERT INTO purpose VALUES('validation project min costs', 'Mínimo de costes a desglosar en un proyecto');
+INSERT INTO purpose VALUES('validation project total costs', 'El coste óptimo no puede exceder demasiado al coste mínimo');
 
 -- --------------------------------------------------------
 
@@ -222,12 +330,26 @@ CREATE TABLE reward (
   amount int(5) DEFAULT NULL,
   units int(5) DEFAULT NULL,
   PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Retornos colectivos e individuales';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Retornos colectivos e individuales';
 
 --
 -- Volcar la base de datos para la tabla 'reward'
 --
 
+INSERT INTO reward VALUES(1, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'social', NULL, NULL, NULL, NULL);
+INSERT INTO reward VALUES(2, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'individual', NULL, NULL, 5, 1);
+INSERT INTO reward VALUES(3, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'social', NULL, NULL, NULL, NULL);
+INSERT INTO reward VALUES(4, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'individual', NULL, NULL, 12, 11);
+INSERT INTO reward VALUES(5, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'social', NULL, NULL, NULL, NULL);
+INSERT INTO reward VALUES(6, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'individual', NULL, NULL, 0, 0);
+INSERT INTO reward VALUES(7, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'social', NULL, NULL, NULL, NULL);
+INSERT INTO reward VALUES(8, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'individual', NULL, NULL, 0, 0);
+INSERT INTO reward VALUES(9, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'social', NULL, NULL, NULL, NULL);
+INSERT INTO reward VALUES(10, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'individual', NULL, NULL, 0, 0);
+INSERT INTO reward VALUES(11, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'social', NULL, NULL, NULL, NULL);
+INSERT INTO reward VALUES(12, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'individual', NULL, NULL, NULL, NULL);
+INSERT INTO reward VALUES(13, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'social', NULL, NULL, NULL, NULL);
+INSERT INTO reward VALUES(14, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'individual', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -243,12 +365,14 @@ CREATE TABLE support (
   description text NOT NULL,
   `type` varchar(50) NOT NULL,
   PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Colaboraciones';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Colaboraciones';
 
 --
 -- Volcar la base de datos para la tabla 'support'
 --
 
+INSERT INTO support VALUES(1, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'Contar arroz', 'Contar mil sacos de arroz', 'task');
+INSERT INTO support VALUES(2, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'Clavar clavos', 'en las maderas', 'task');
 
 -- --------------------------------------------------------
 
@@ -268,10 +392,81 @@ CREATE TABLE `text` (
 -- Volcar la base de datos para la tabla 'text'
 --
 
-INSERT INTO `text` VALUES('test cuatro', 'es', '4');
-INSERT INTO `text` VALUES('test dos', 'es', '2');
-INSERT INTO `text` VALUES('test tres', 'es', '3');
-INSERT INTO `text` VALUES('test uno', 'es', '1');
+INSERT INTO `text` VALUES('error sql guardar proyecto', 'es', 'El proyecto no se ha grabado correctamete. Por favor, revise los datos.');
+INSERT INTO `text` VALUES('explain project progress', 'es', 'Texto bajo el título Estado global de la información');
+INSERT INTO `text` VALUES('guide project contract information', 'es', 'Texto guía en el paso DATOS PERSONALES del formulario de proyecto.');
+INSERT INTO `text` VALUES('guide project costs', 'es', 'Texto guía en el paso COSTES del formulario de proyecto.');
+INSERT INTO `text` VALUES('guide project description', 'es', 'Texto guía en el paso DESCRIPCIÓN del formulario de proyecto.');
+INSERT INTO `text` VALUES('guide project overview', 'es', 'Texto guía en el paso PREVISUALIZACIÓN del formulario de proyecto.');
+INSERT INTO `text` VALUES('guide project rewards', 'es', 'Texto guía en el paso RETORNO del formulario de proyecto.');
+INSERT INTO `text` VALUES('guide project support', 'es', 'Texto guía en el paso COLABORACIONES del formulario de proyecto.');
+INSERT INTO `text` VALUES('guide user data', 'es', 'Texto guía en la edición de campos sensibles.');
+INSERT INTO `text` VALUES('guide user information', 'es', 'Texto guía en el paso PERFIL del formulario de proyecto.');
+INSERT INTO `text` VALUES('guide user register', 'es', 'Texto guía en el registro de un nuevo usuario.');
+INSERT INTO `text` VALUES('mandatory project field category', 'es', 'Es obligatorio elegir una CATEGORIA para el proyecto, paso 3: Descripción.');
+INSERT INTO `text` VALUES('mandatory project field contract email', 'es', 'Es obligatorio poner el EMAIL del responsable del proyecto, paso 2: Datos personales.');
+INSERT INTO `text` VALUES('mandatory project field contract name', 'es', 'Es obligatorio poner el NOMBRE del responsable del proyecto, paso 2: Datos personales.');
+INSERT INTO `text` VALUES('mandatory project field contract nif', 'es', 'Es obligatorio poner el NIF del responsable del proyecto, paso 2: Datos personales.');
+INSERT INTO `text` VALUES('mandatory project field contract surname', 'es', 'Es obligatorio poner los APELLIDOS del responsable del proyecto, paso 2: Datos personales.');
+INSERT INTO `text` VALUES('mandatory project field description', 'es', 'Es obligatorio poner una DESCRIPCIÓN al proyecto, paso 3: Descripción.');
+INSERT INTO `text` VALUES('mandatory project field location', 'es', 'Es obligatorio poner la LOCALIZACIÓN del proyecto, paso 3: Descripción.');
+INSERT INTO `text` VALUES('mandatory project field name', 'es', 'Es obligatorio poner un NOMBRE al proyecto, paso 3: Descripción.');
+INSERT INTO `text` VALUES('mandatory project field residence', 'es', 'Es obligatorio poner el LUGAR DE RESIDENCIA del responsable del proyecto, paso 2: Datos personales.');
+INSERT INTO `text` VALUES('regular mandatory', 'es', 'campo obligatorio!');
+INSERT INTO `text` VALUES('step 1', 'es', 'PERFIL');
+INSERT INTO `text` VALUES('step 2', 'es', 'DATOS PERSONALES');
+INSERT INTO `text` VALUES('step 3', 'es', 'DESCRIPCIÓN');
+INSERT INTO `text` VALUES('step 4', 'es', 'COSTES');
+INSERT INTO `text` VALUES('step 5', 'es', 'RETORNO');
+INSERT INTO `text` VALUES('step 6', 'es', 'COLABORACIONES');
+INSERT INTO `text` VALUES('step 7', 'es', 'PREVISUALIZACIÓN');
+INSERT INTO `text` VALUES('tooltip project about', 'es', 'Consejo para rellenar el campo qué es');
+INSERT INTO `text` VALUES('tooltip project address', 'es', 'Consejo para rellenar el address del responsable del proyecto');
+INSERT INTO `text` VALUES('tooltip project category', 'es', 'Consejo para rellenar la categoría del proyecto');
+INSERT INTO `text` VALUES('tooltip project contract_email', 'es', 'Consejo para rellenar el email del responsable del proyecto');
+INSERT INTO `text` VALUES('tooltip project contract_name', 'es', 'Consejo para rellenar el nombre del responsable del proyecto');
+INSERT INTO `text` VALUES('tooltip project contract_nif', 'es', 'Consejo para rellenar el nif del responsable del proyecto');
+INSERT INTO `text` VALUES('tooltip project contract_surname', 'es', 'Consejo para rellenar el apellido del responsable del proyecto');
+INSERT INTO `text` VALUES('tooltip project cost', 'es', 'Consejo para editar desgloses existentes');
+INSERT INTO `text` VALUES('tooltip project country', 'es', 'Consejo para rellenar el país del responsable del proyecto');
+INSERT INTO `text` VALUES('tooltip project currently', 'es', 'Consejo para rellenar el estado de desarrollo del proyecto');
+INSERT INTO `text` VALUES('tooltip project description', 'es', 'Consejo para rellenar la descripción del proyecto');
+INSERT INTO `text` VALUES('tooltip project goal', 'es', 'Consejo para rellenar el campo objetivos');
+INSERT INTO `text` VALUES('tooltip project image', 'es', 'Consejo para rellenar la imagen del proyecto');
+INSERT INTO `text` VALUES('tooltip project individual_reward', 'es', 'Consejo para editar retornos individuales existentes');
+INSERT INTO `text` VALUES('tooltip project keywords', 'es', 'Consejo para rellenar las palabras clave del proyecto');
+INSERT INTO `text` VALUES('tooltip project location', 'es', 'Consejo para rellenar el lugar de residencia del responsable del proyecto');
+INSERT INTO `text` VALUES('tooltip project media', 'es', 'Consejo para rellenar el media del proyecto');
+INSERT INTO `text` VALUES('tooltip project motivation', 'es', 'Consejo para rellenar el campo motivación');
+INSERT INTO `text` VALUES('tooltip project name', 'es', 'Consejo para rellenar el nombre del proyecto');
+INSERT INTO `text` VALUES('tooltip project ncost', 'es', 'Consejo para rellenar un nuevo desglose de costes');
+INSERT INTO `text` VALUES('tooltip project nindividual_reward', 'es', 'Consejo para rellenar un nuevo retorno individual');
+INSERT INTO `text` VALUES('tooltip project nsocial_reward', 'es', 'Consejo para rellenar un nuevo retorno colectivo');
+INSERT INTO `text` VALUES('tooltip project nsupport', 'es', 'Consejo para rellenar una nueva colaboración');
+INSERT INTO `text` VALUES('tooltip project phone', 'es', 'Consejo para rellenar el teléfono del responsable del proyecto');
+INSERT INTO `text` VALUES('tooltip project project_location', 'es', 'Consejo para rellenar la localización del proyecto');
+INSERT INTO `text` VALUES('tooltip project related', 'es', 'Consejo para rellenar el campo experiencia relacionada y equipo');
+INSERT INTO `text` VALUES('tooltip project resource', 'es', 'Consejo para rellenar el campo Cuenta con otros recursos?');
+INSERT INTO `text` VALUES('tooltip project social_reward', 'es', 'Consejo para editar retornos colectivos existentes');
+INSERT INTO `text` VALUES('tooltip project support', 'es', 'Consejo para editar colaboraciones existentes');
+INSERT INTO `text` VALUES('tooltip project zipcode', 'es', 'Consejo para rellenar el zipcode del responsable del proyecto');
+INSERT INTO `text` VALUES('tooltip user about', 'es', 'Consejo para rellenar el cuéntanos algo sobre tí');
+INSERT INTO `text` VALUES('tooltip user blog', 'es', 'Consejo para rellenar la web');
+INSERT INTO `text` VALUES('tooltip user contribution', 'es', 'Consejo para rellenar el qué podrías aportar en goteo');
+INSERT INTO `text` VALUES('tooltip user email', 'es', 'Consejo para rellenar el email de registro de usuario');
+INSERT INTO `text` VALUES('tooltip user facebook', 'es', 'Consejo para rellenar el facebook');
+INSERT INTO `text` VALUES('tooltip user image', 'es', 'Consejo para rellenar la imagen del usuario');
+INSERT INTO `text` VALUES('tooltip user interests', 'es', 'Consejo para rellenar tus intereses');
+INSERT INTO `text` VALUES('tooltip user linkedin', 'es', 'Consejo para rellenar el linkedin');
+INSERT INTO `text` VALUES('tooltip user name', 'es', 'Consejo para rellenar el nombre completo del usuario');
+INSERT INTO `text` VALUES('tooltip user twitter', 'es', 'Consejo para rellenar el twitter');
+INSERT INTO `text` VALUES('tooltip user user', 'es', 'Consejo para rellenar el nombre de usuario para login');
+INSERT INTO `text` VALUES('validate project value contract email', 'es', 'El EMAIL no es correcto, paso 2: Datos personales.');
+INSERT INTO `text` VALUES('validate project value contract nif', 'es', 'El NIF no es correcto, paso 2: Datos personales.');
+INSERT INTO `text` VALUES('validate project value description', 'es', 'La DESCRIPCIÓN del proyecto es demasiado corta, paso 3: Descripción.');
+INSERT INTO `text` VALUES('validate project value phone', 'es', 'El TELÉFONO no es correcto, paso 2: Datos personales.');
+INSERT INTO `text` VALUES('validation project min costs', 'es', 'Debe desglosar en al menos DOS COSTES, paso 4 costes.');
+INSERT INTO `text` VALUES('validation project total costs', 'es', 'El coste óptimo no puede superar en más de un 40% al coste mínimo. Revisar el DESGLOSE DE COSTES, paso 4 costes.');
 
 -- --------------------------------------------------------
 
@@ -306,7 +501,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` VALUES('pepa', 'Josefa', 'Pepa PÃ©rez', 'josefa@doukeshi.org', '281ffbf5eb2a3916b9c1eb8f28637836', 'Yo soy JOSEFAAAA!!!!!', '2011-03-19', 1, 'avatar.jpg', 'mucho arte', 'lajosefaisthebest.com', '@josefa', 'feisbuc.com/josefaaaaa', 'ein?', NULL, '2011-03-20');
 INSERT INTO `user` VALUES('pepe', 'pepe', 'pepe', 'asdf', '926e27eecdbc7a18858b3798ba99bddd', NULL, '2011-03-19', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `user` VALUES('root', 'root', 'Super administrador', 'goteo@doukeshi.org', 'e053011ca09aab4a67703ef2350514b3', 'Super administrador de la plataforma Goteo.org', '2011-03-16', 1, NULL, 'Super administrador de la plataforma Goteo.org', NULL, NULL, NULL, NULL, NULL, '2011-03-16');
+INSERT INTO `user` VALUES('root', 'root', 'Super administrador', 'goteo@doukeshi.org', 'd671012171cd41644b3f750ff5e2c857', 'Super administrador de la plataforma Goteo.org', '2011-03-16', 1, NULL, 'Super administrador de la plataforma Goteo.org', NULL, NULL, NULL, NULL, NULL, '2011-03-16');
 
 -- --------------------------------------------------------
 

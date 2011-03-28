@@ -1,3 +1,4 @@
+<?php use Goteo\Library\Text; ?>
 <hr />
 <a href="/project/user"><?php echo Text::get('step 1'); ?></a>&nbsp;
 <a href="/project/register"><?php echo Text::get('step 2'); ?></a>&nbsp;

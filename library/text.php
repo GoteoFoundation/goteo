@@ -23,6 +23,7 @@ namespace Goteo\Library {
 			$query = Model::query("SELECT text FROM text WHERE id = :id AND lang = :lang", array(':id' => $id, ':lang' => $lang));
 			$exist = $query->fetchObject();
 			if ($exist->text) {
+				$exist->text = utf8_encode($exist->text);
 				return $_cache[$id][$lang] = $exist->text;
 			} else {
 				// lo metemos en la tabla pero no en cache

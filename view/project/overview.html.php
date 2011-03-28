@@ -1,5 +1,6 @@
 <?php include 'view/header.html.php' ?>
 <?php include 'view/project/header.html.php' ?>
+<?php use Goteo\Library\Text; ?>
 PROYECTO / Previsualización<br />
 GUÍA: <?php echo $guideText;  ?><br />
 <?php include 'view/project/errors.html.php' ?>
