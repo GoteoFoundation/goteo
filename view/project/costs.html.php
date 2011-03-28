@@ -1,7 +1,8 @@
 <?php include 'view/header.html.php' ?>
 <?php include 'view/project/header.html.php' ?>
+<?php use Goteo\Library\Text; ?>
 PROYECTO / Costes<br />
-GUÍA<br />
+GUÍA: <?php echo $guideText;  ?><br />
 <?php include 'view/project/errors.html.php' ?>
 <hr />
 <form action="/project/costs" method="post">
@@ -23,6 +24,7 @@ GUÍA<br />
 		<dt><label for="ncost-until">Hasta</label></dt>
 		<dd><input type="text" id="ncost-until" name="ncost-until" value="<?php echo date('Y-m-d'); ?>" /></dd>
 		<input type="button" id="new-cost" value="Nueva" />
+		<span><?php echo Text::get('tooltip project ncost'); ?></span><br />
 		
 		<?php foreach ($project->costs as $cost) : ?>
 			<div>
@@ -42,6 +44,7 @@ GUÍA<br />
 				<dd><input type="text" id="cost-from<?php echo $cost->id; ?>" name="cost-from<?php echo $cost->id; ?>" value="<?php echo $cost->from; ?>" /></dd>
 				<dt><label for="cost-until<?php echo $cost->id; ?>">Hasta</label></dt>
 				<dd><input type="text" id="cost-until<?php echo $cost->id; ?>" name="cost-until<?php echo $cost->id; ?>" value="<?php echo $cost->until; ?>" /></dd>
+				<span><?php echo Text::get('tooltip project cost'); ?></span><br />
 			</div>
 		<?php endforeach; ?>
 
@@ -49,6 +52,7 @@ GUÍA<br />
 
 		<dt><label for="resource">Cuenta con otros recursos?<br />Otras ayudas económicas o infraestructura</label></dt>
 		<dd><textarea id="resource" name="resource" cols="50" rows="5"><?php echo $project->resource; ?></textarea></dd>
+		<span><?php echo Text::get('tooltip project resource'); ?></span><br />
 
 		<div>
 			AGENDA<br />Tiempo de producción del proyecto

@@ -10,11 +10,9 @@ namespace Goteo\Library {
 	 */
     class Text {
 		
-		static public function get ($id = null) {
+		static public function get ($id = null, $lang = 'es') {
 			if ($id === null)
 				return '';
-
-			$lang = 'es'; // por ahora solo español
 
 			// buscamos el texto en cache
 			static $_cache = array();
@@ -25,12 +23,29 @@ namespace Goteo\Library {
 			$query = Model::query("SELECT text FROM text WHERE id = :id AND lang = :lang", array(':id' => $id, ':lang' => $lang));
 			$exist = $query->fetchObject();
 			if ($exist->text) {
+				$exist->text = utf8_encode($exist->text);
 				return $_cache[$id][$lang] = $exist->text;
 			} else {
 				// lo metemos en la tabla pero no en cache
-				Model::query("INSERT INTO text (id, lang, text) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
+				Model::query("REPLACE INTO text (id, lang, text) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
+				Model::query("REPLACE INTO purpose (text, purpose) VALUES (:text, :purpose)", array(':text' => $id, ':purpose' => "Texto $id"));
 
 				return $id;
+			}
+		}
+
+		static public function getPurpose ($id = null) {
+			if ($id === null)
+				return '';
+
+			// buscamos la explicación del texto en la tabla
+			$query = Model::query("SELECT purpose FROM purpose WHERE text = :id", array(':id' => $id));
+			$exist = $query->fetchObject();
+			if ($exist->purpose) {
+				return $exist->purpose;
+			} else {
+				Model::query("REPLACE INTO purpose (text, purpose) VALUES (:text, :purpose)", array(':text' => $id, ':purpose' => "Texto $id"));
+				return "Texto $id";
 			}
 		}
 
@@ -56,7 +71,7 @@ namespace Goteo\Library {
 					return false;
 			}
 
-			if (Model::query("UPDATE text SET text = :text WHERE MD5(id) = :id AND lang = :lang", array(':text' => $data['text'], ':id' => $data['id'], ':lang' => $data['lang']))) {
+			if (Model::query("UPDATE text SET text = :text WHERE id = :id AND lang = :lang", array(':text' => $data['text'], ':id' => $data['id'], ':lang' => $data['lang']))) {
 				return true;
 			}
 			else {
@@ -66,7 +81,6 @@ namespace Goteo\Library {
 
 
 		}
-
 
 		/*
 		 *   Método para formatear friendly un texto para ponerlo en la url

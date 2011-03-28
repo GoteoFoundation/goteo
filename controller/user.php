@@ -3,54 +3,48 @@
 namespace Goteo\Controller {
 
 	use Goteo\Core\Redirection,
-		Goteo\Model\User as Usr;
+		Goteo\Model;
 
 	class User extends \Goteo\Core\Controller {
 
-		/*
-		 *  Página pública de usuario
-		 *  si no tenemos el id del usuario en la url debería saltar a otra página
-		 */
-		public function index ($id = null) {
-
-			if (!$id) {
-				header('Location: /');
-				die;
-			}
-
-			/*
-			$content = new Model\Content('user');
-			 * 
-			 */
-			$message = "Perfil público del usuario $id <br />";
-
-			// saca los datos del usuario, si no existe tendria que enviarlo a la portada
-			$user = new Usr($id);
-			$message .= '<pre>' . print_r($user, 1) . '</pre>';
-
-
-			include 'view/index.html.php';
+	    /**
+	     * Atajo al perfil de usuario.
+	     * @param string $id   Nombre de usuario
+	     */
+		public function index ($id) {
+		    throw new Redirection('/user/profile/' .  $id);
 		}
-
-		/*
-		 *  Para loguear se puede usar el email o el user name (campo `user`)
+		
+		/**
+		 * Inicio de sesión
+		 * Si no se le pasan parámetros carga el tpl de identificación.
+		 * 
+		 * @param string $username Nombre de usuario
+		 * @param string $password Contraseña
 		 */
         public function login () {
-
-			$content = '';
-
-			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-				$id = Usr::validate($_POST['user'], $_POST['pass']);
-				if ($id) {
-					$_SESSION['user'] = $id;
-					header('Location: /dashboard');
-					die;
-				}
-				else {
-					unset($_SESSION);
-					$content .= '<span style="color:red;">Error en la validación</span><hr />';
-				}
+        	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        	    $username = $_POST['username'];
+        	    $password = $_POST['password'];
+        		if (false !== ($user = (Model\User::login($username, $password)))) {
+        			$_SESSION['user'] = $user;
+        			throw new Redirection('/dashboard');
+        		}
+        		else {
+        		    $error = true;
+        		}
+        	}
+        	include 'view/user/login.html.php';
+		}
+        
+		/**
+		 * Cerrar sesión.
+		 */
+        public function logout() {
+			if (isset($_COOKIE[session_name()])) {
+			    setcookie(session_name(), '', time()-42000, '/');
 			}
+<<<<<<< HEAD
 			/*
 			 @TODO
 			$content = new Model\Content('user-login');
@@ -76,9 +70,18 @@ EOD;
 			
             include 'view/user/login.html.php';
 
+=======
+			session_destroy();
+			throw new Redirection('/');
+            die;
+>>>>>>> Users
         }
 
+        /**
+         * Registro de usuario.
+         */
         public function register () {
+<<<<<<< HEAD
 
 			$content = '';
 
@@ -141,39 +144,43 @@ EOD;
 EOD;
 			}
 			
+=======
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            	$errors = array();
+                if (strcmp($_POST['email'], $_POST['remail']) !== 0) {
+                    $errors['email'] = 'La comprobación de email no coincide.';
+                }
+                if(strcmp($_POST['password'], $_POST['rpassword']) !== 0) {
+                    $errors['password'] = 'La comprobación de contraseña no coincide.';
+                }
+                if(empty($errors)) {
+                	$user = new Model\User();
+                	$user->id = $_POST['username'];
+                	$user->email = $_POST['email'];
+                	$user->password = $_POST['password'];
+                	$user->save($errors);
+                	if(empty($errors)) {
+                	  throw new Redirection('/user/profile/' .  $user->id);
+                	}
+                }
+           	    // Devuelve los valores a la vista
+           	    extract($_POST);
+            }
+>>>>>>> Users
             include 'view/user/register.html.php';
-            
         }
-
-		/*
-		 *  este $id no vendrá por aqui una vez tengamos la validación de usuario
-		 */
+        
+        /**
+         * Modificación perfil de usuario.
+         */
         public function edit () {
-
-			$id = $_SESSION['user'];
-
-			if (!$id) {
-				header('Location: /');
-				die;
-			}
-
-			$user = new Usr($id);
-//			echo '<pre>' . print_r($user, 1) . '</pre>';
-			$content = '';
-
+            Model\User::restrict();             
+            $user = $_SESSION['user'];
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-//				$content .= '<pre>' . print_r($_POST, 1) . '</pre>';
-				$errors = array();
-				if ($user->save($_POST, $errors)) {
-					$content .= 'Datos guardados<hr />';
-				}
-				else {
-					foreach ($errors as $k=>$error) {
-						$content .= '<span syle="color:red">' . $error . '</span><br />';
-					}
-					$content .= '<br />Error al guardar los datos<hr />';
-				}
+			    // @TODO: Guardar datos
+				echo '<pre>' . print_r($_POST, 1) . '</pre>';
 			}
+<<<<<<< HEAD
 			
 			/*
 			 @TODO
@@ -207,15 +214,12 @@ EOD;
 EOD;
 			
 			
+=======
+>>>>>>> Users
             include 'view/user/edit.html.php';
-            
         }
-        
-		/*
-		 *  este $id no vendrá por aqui una vez tengamos la validación de usuario
-		 */
-        public function profile () {
 
+<<<<<<< HEAD
 			$id = $_SESSION['user'];
 			
 			if (!$id) {
@@ -285,8 +289,16 @@ EOD;
 				</div>
 EOD;
 			
+=======
+        /**
+         * Perfil público de usuario.
+         * 
+         * @param string $id    Nombre de usuario
+         */
+        public function profile ($id) {
+            $user = Model\User::get($id);
+>>>>>>> Users
             include 'view/user/profile.html.php';
-
         }
 
     }

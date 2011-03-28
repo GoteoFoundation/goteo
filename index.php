@@ -15,14 +15,14 @@ spl_autoload_register(
     function ($cls) {
             
         $file = __DIR__ . '/' . implode('/', explode('\\', strtolower(substr($cls, 6)))) . '.php';
-    
         $file = realpath($file);
         
         if ($file === false) {
             
             // Try in library
-            $file = __DIR__ . '/library/' . implode('/', explode('\\', strtolower(substr($cls, 6)))) . '.php';
-            
+//            $file = __DIR__ . '/library/' . implode('/', explode('\\', strtolower(substr($cls, 6)))) . '.php';
+            $file = __DIR__ . '/library/' . strtolower($cls) . '.php';
+//            die($cls . ' - ' . $file); //Si uso Text::get(id) no lo pilla
         }
         
         if ($file !== false) {        
@@ -109,9 +109,8 @@ try {
     throw new Error(Error::NOT_FOUND);    
     
 } catch (Redirection $redirection) {
-    
-    $url = $error->getURL();
-    $code = $error->getCode();
+    $url = $redirection->getURL();
+    $code = $redirection->getCode();
     header("Location: {$url}");
     
 } catch (Error $error) {

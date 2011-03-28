@@ -1,7 +1,8 @@
 <?php include 'view/header.html.php' ?>
 <?php include 'view/project/header.html.php' ?>
+<?php use Goteo\Library\Text; ?>
 PROYECTO / Colaboraciones<br />
-GUÍA<br />
+GUÍA: <?php echo $guideText;  ?><br />
 <?php include 'view/project/errors.html.php' ?>
 <hr />
 <form action="/project/supports" method="post">
@@ -18,6 +19,7 @@ GUÍA<br />
 
 			<dt><label for="nsupport-description">Descripción</label></dt>
 			<dd><textarea id="nsupport-description" name="nsupport-description" cols="50" rows="5"></textarea></dd>
+			<span><?php echo Text::get('tooltip project nsupport'); ?></span><br />
 		</div>
 
 		<?php foreach ($project->supports as $support) : ?>
@@ -33,6 +35,7 @@ GUÍA<br />
 
 				<dt><label for="support-description<?php echo $support->id; ?>">Descripción</label></dt>
 				<dd><textarea id="support-description<?php echo $support->id; ?>" name="support-description<?php echo $support->id; ?>" cols="50" rows="5"><?php echo $support->description; ?></textarea></dd>
+				<span><?php echo Text::get('tooltip project support'); ?></span><br />
 			</div>
 		<?php endforeach; ?>
 

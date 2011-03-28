@@ -3,6 +3,7 @@
 namespace Goteo\Controller {
     
     use Goteo\Core\Error,
+		Goteo\Library\Text,
         Goteo\Model\Project as Prj,
 		Goteo\Model\User as Usr; // <-- solo para el primer paso
     
@@ -101,6 +102,8 @@ namespace Goteo\Controller {
 				}
 
 			}
+
+			$guideText = Text::get('guide project user information');
             include 'view/project/user.html.php';
 
         }
@@ -139,6 +142,8 @@ namespace Goteo\Controller {
 				}
 
 			}
+
+			$guideText = Text::get('guide project contract information');
             include 'view/project/register.html.php'; 
             
         }
@@ -177,6 +182,8 @@ namespace Goteo\Controller {
 				}
 
 			}
+
+			$guideText = Text::get('guide project description');
             include 'view/project/edit.html.php';
 
         }
@@ -196,8 +203,6 @@ namespace Goteo\Controller {
 
 				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$errors = array();
-
-//					echo '<pre>' . print_r($_POST, 1) . '</pre>';
 
 					//tratar costes existentes
 					foreach ($project->costs as $cost) {
@@ -236,6 +241,8 @@ namespace Goteo\Controller {
 				}
 
 			}
+
+			$guideText = Text::get('guide project costs');
             include 'view/project/costs.html.php';
 
         }
@@ -308,6 +315,8 @@ namespace Goteo\Controller {
 				}
 
 			}
+
+			$guideText = Text::get('guide project rewards');
             include 'view/project/rewards.html.php';
 
         }
@@ -354,6 +363,8 @@ namespace Goteo\Controller {
 				}
 
 			}
+
+			$guideText = Text::get('guide project support');
             include 'view/project/supports.html.php';
 
         }
@@ -384,6 +395,7 @@ namespace Goteo\Controller {
 				}
 			}
 			
+			$guideText = Text::get('guide project overview');
             include 'view/project/overview.html.php';
 
         }
