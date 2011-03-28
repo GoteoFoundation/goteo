@@ -2,36 +2,29 @@
 
 namespace Goteo\Controller {
 
-	use Goteo\Library\Content,
-		Goteo\Model\Project;
+    use Goteo\Library\Content,
+        Goteo\Model;
 
-	class Dashboard extends \Goteo\Core\Controller {
+    class Dashboard extends \Goteo\Core\Controller {
 
-		/*
-		 *  La manera de obtener el id del usuario validado cambiará al tener la session
-		 */
-		public function index () {
-
-			// si tenemos usuario logueado
-			$id = $_SESSION['user'];
-
-			if (!$id) {
-				header('Location: /');
-				die;
-			}
-
+        /*
+         *  La manera de obtener el id del usuario validado cambiará al tener la session
+         */
+        public function index () {
+            Model\User::restrict(); 
+            
             $message = "Hola $id<br />";
 
-			if ($id == 'root') {
-				$message .= '<a href="/texts">Gestión de textos</a>';
-			}
+            if ($id == 'root') {
+                $message .= '<a href="/texts">Gestión de textos</a>';
+            }
 
-			$projects = Project::ofmine($id);
+            $projects = Model\Project::ofmine($id);
 
             include 'view/dashboard.html.php';
 
-		}
-		
-	}
-	
+        }
+        
+    }
+    
 }
