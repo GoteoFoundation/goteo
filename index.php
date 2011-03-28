@@ -15,7 +15,6 @@ spl_autoload_register(
     function ($cls) {
             
         $file = __DIR__ . '/' . implode('/', explode('\\', strtolower(substr($cls, 6)))) . '.php';
-    
         $file = realpath($file);
         
         if ($file === false) {
@@ -109,9 +108,8 @@ try {
     throw new Error(Error::NOT_FOUND);    
     
 } catch (Redirection $redirection) {
-    
-    $url = $error->getURL();
-    $code = $error->getCode();
+    $url = $redirection->getURL();
+    $code = $redirection->getCode();
     header("Location: {$url}");
     
 } catch (Error $error) {

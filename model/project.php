@@ -122,12 +122,8 @@ namespace Goteo\Model {
 		 * @param array $data
 		 * @param array $errors
 		 */
-		public function save ($data, &$errors = array()) {
-			if (empty($data)) {
-					$errors[] = 'Datos insuficientes';
-					return false;
-				}
-
+		public function save (&$errors = array()) {
+            throw new Exception('Not implemented.');
 		}
 
 		/*

@@ -9,7 +9,7 @@ namespace Goteo\Core {
         public function __construct ($url, $code = 301) {
             
             $this->url = $url;
-            parent::__contruct($code);
+            parent::__construct($code);
             
         }
         

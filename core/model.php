@@ -8,80 +8,67 @@ namespace Goteo\Core {
         
         protected static 
             $__connections = array();
-                
+
         /**
-         *
-         * @param   type $key
-         * @return  static
-         */                
-        abstract static public function get ($id);
-        
+         * Constructor.
+         */
         public function __construct () {
-            
             if (\func_num_args() >= 1) {
-                
                 $data = \func_get_arg(0);
-                
                 if (is_array($data) || is_object($data)) {
                     foreach ($data as $k => $v) {
                         $this->$k = $v;
                     }
                 }
-                
             }
-            
         }
         
         /**
-		 * @param array $data
-		 * @param array errors
-         * @return  bool
+         * Obtener.
+         * @param   type mixed  $id     Identificador
+         * @return  type object         Objeto
          */
-         abstract public function save ($data, &$errors = array());
-                
-        /**
-         * @return bool
-         */
-        // abstract public function validate ();
+        abstract static public function get ($id);
         
         /**
+		 * Guardar.
+         * @param   type array  $errors     Errores devueltos pasados por referencia.
+         * @return  type bool   true|false
+         */
+         abstract public function save (&$errors = array());
+        
+        /**
+         * Validar.
+         * @param   type array  $errors     Errores devueltos pasados por referencia.
+         * @return  type bool   true|false
+         */
+        abstract public function validate (&$errors = array());
+        
+        /**
+         * Consulta.
          * Devuelve un objeto de la clase PDOStatement
          * http://www.php.net/manual/es/class.pdostatement.php
          * 
-         * @param string $query
-         * @param array $params
+         * @param   type string $query      Consulta SQL
+         * @param   type array  $params     Parámetros
+         * $return  type object PDOStatement
          */
         public static function query ($query, $params = null) {
 			$db = new DB;
 			$result = $db->prepare($query);
-			
-			# @TODO: Modo de recoger los parámetros, forma A o B
-			
-			# Forma A
+			$params = func_num_args() === 2 && is_array($params) ? $params : array_slice(func_get_args(), 1);
 			if ($result->execute($params)) {
 				return $result;
 			}
-			else {
-			 echo 'FAIL!<br />';
-			 echo self::showQuery($query, $params) . '<br />';
-			 return false;
-			}
-
-			# Forma B
-			//$args = func_get_args();
-        	//array_shift($args);
-        	//var_dump($args);
-			//$result->execute($args);
-			
-			return $result;
+			throw new Exception($query);
         }
 
 		/**
+		 * Formato.
 		 * Formatea una cadena para ser usada como id varchar(50)
 		 *
 		 * @param string $value
 		 * @return string $id
-		 *
 		 */
 		public static function idealiza ($value) {
 			$id = trim(strtolower($value));
@@ -95,34 +82,6 @@ namespace Goteo\Core {
 			return $id;
 		}
 
-		/*
-		 * Para ver el query que envia
-		 */
-		public static function showQuery($query, $params)
-			{
-				$keys = array();
-				$values = array();
-
-				# build a regular expression for each parameter
-				foreach ($params as $key=>$value)
-				{
-					$keys[] = '/'.$key.'/';
-
-					if(is_numeric($value))
-					{
-						$values[] = intval($value);
-					}
-					else
-					{
-						$values[] = '"'.$value .'"';
-					}
-				}
-
-				$query = preg_replace($keys, $values, $query, 1, $count);
-				return $query;
-			}
-
-
     }
-    
+
 }
