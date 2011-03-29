@@ -18,7 +18,7 @@ html, body {
     background-color: #e7e7e7;    
 }
 
-body, td, th, a, input, textarea, button {
+body, td, th, a, a:link, a:visited, a:active, a:hover, input, textarea, button {
     font-size: 14px;
 }
 
@@ -57,16 +57,16 @@ div#menu > ul {
     padding: 0;
     z-index: 999;    
     height: 40px;
-    max-width: 824px;    
-    padding-left: 116px;
+    max-width: 940px;    
     position: relative;
     margin: 0 auto;    
 }
 
 div#menu > ul > li {
-    display: table-cell;
-    vertical-align: bottom;    
-    border-right: 1px solid #7f8083;    
+    border: 1px solid #7f8083; 
+    border-width: 0 1px 0 0;
+    display: inline-block;
+    position: relative;
 }
 
 div#menu > ul > li,
@@ -89,16 +89,14 @@ div#menu > ul > li > a > span {
 }
 
 div#menu > ul > li > a:hover {
-    background-color: #808285;
+    background-color: #7f8083;
 }
 
-div#menu > ul > li.home {
-    position: absolute;
-    top: 0;
-    left: 0;
+div#menu > ul > li.home {    
     width: 116px;
     height: 47px;
     border: none;
+    float: left;
 }
 
 div#menu > ul > li.home a {
@@ -138,10 +136,6 @@ div#menu > ul > li.community > a {
     background-image: url('community.png');
 }
 
-div#menu > ul > li.explore {
-    margin-left: 200px;
-}
-
 div#menu > ul > li.explore > a > span, 
 div#menu > ul > li.create > a > span {
   border-bottom: 2px solid;  
@@ -164,18 +158,13 @@ div#menu > ul > li.create > a:hover {
   background-color: #20b3b2; 
 }
 
-
-
 div#menu > ul > li.blog {}
 div#menu > ul > li.faq {}
 
-div#menu > ul > li.search {
-    width: 100%;
-}
-
-div#menu > ul > li.search,
-div#menu > ul > li.search > form {    
-    text-align: center;    
+div#menu > ul > li.search {    
+    height: 100%;
+    border: none;
+    min-width: 14em;
 }
 
 div#menu > ul > li.search form {    
@@ -183,7 +172,11 @@ div#menu > ul > li.search form {
     margin: 8px 14px;
     border: solid white;
     border-width: 0 1px 1px;
-    position: relative;    
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;    
+    text-align: center; 
 }
 
 div#menu > ul > li.search form input[name="query"] {
@@ -213,31 +206,93 @@ div#menu > ul > li.search form input[type="submit"] {
     cursor: pointer;
 }
 
-div#menu > ul > li.dashboard {}
+div#menu > ul > li.login,
+div#menu > ul > li.dashboard {
+    position: relative;
+    float: right;
+    border-left-width: 1px;
+}
+
 
 div#menu > ul > li.login > a > span {
     padding-right: 14px;
 }
 
-div#menu > ul > li.login > div {
-    display: none;
-    position: relative;
+div#menu > ul > li.dashboard > a > span {
+    padding-right: 60px;    
 }
 
-div#menu > ul > li.login > div > form {
-    background-color: #808285;
+div#menu > ul > li.dashboard > a > span > em {
+    display: block;
+    position: absolute;
+    right: 14px;
+    bottom: 4px;
+    background: url('user.jpg') no-repeat;
+    overflow: hidden;
+    width: 32px;
+    height: 32px;
+    line-height: 2000px;
+    text-indent: 1000px;
+    overflow: hidden;
+}
+
+div#menu > ul > li.login > div,
+div#menu > ul > li.dashboard > div {
+    position: absolute;
+    background-color: #21b0b0;
+    display: none;
+    min-width: 100%;
+    right: 0;
+}
+
+div#menu > ul > li.dashboard > div > ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+div#menu > ul > li.dashboard > div > ul > li {
+    border-bottom: 1px solid white;
+}
+
+div#menu > ul > li.dashboard > div > ul > li a {    
+    font-size: 12px;
+    text-decoration: none;
+    color: white;
+    text-transform: none;
+    padding: 8px 14px;
+    display: block;
+}
+
+div#menu > ul > li.dashboard > div > ul > li a:hover {
+    background-color: #77c2c3;
+}
+
+div#menu > ul > li.dashboard > div > ul > li.logout {
+    border-bottom: none;
+}
+
+div#menu > ul > li.dashboard > div > ul > li.logout a {
+    color: #ee4843;
+}
+
+div#menu > ul > li.dashboard > div > ul {
+    list-style: none;
+}
+
+div#menu > ul > li.login > div > form {    
     padding: 10px;
     margin:  0;
 }
 
-div#menu > ul > li.login:hover {
-    background-color: #808285;
+div#menu > ul > li.login:hover,
+div#menu > ul > li.dashboard:hover {
+    background-color: #7f8083;
 }
 
-div#menu > ul > li.login:hover > div {
+div#menu > ul > li.login:hover > div,
+div#menu > ul > li.dashboard:hover > div {
     display: block;
-    position: absolute;    
-    top: 100%;
 }
 
 /* Footer */

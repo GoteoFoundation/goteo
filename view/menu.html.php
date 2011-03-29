@@ -37,12 +37,15 @@
                 </form>
             </li>
             <?php if (!empty($_SESSION['user'])): ?>            
-            <li class="dashboard"><a href="/user/dashboard"><span>Dashboard <em>(Jaume)</em></span></a>
-                <ul>
-                    <li><a href="/user/dashboard/activity"><span>Mi actividad</span></a></li>
-                    <li><a href="/user/dashboard/profile"><span>Mi perfil</span></a></li>
-                    <li><a href="/user/dashboard/projects"><span>Mis proyectos</span></a></li>
-                </ul>
+            <li class="dashboard"><a href="/user/dashboard"><span>Mi Dashboard <em>(Jaume)</em></span></a>
+                <div>
+                    <ul>
+                        <li><a href="/user/dashboard/activity"><span>Mi actividad</span></a></li>
+                        <li><a href="/user/dashboard/profile"><span>Mi perfil</span></a></li>
+                        <li><a href="/user/dashboard/projects"><span>Mis proyectos</span></a></li>
+                        <li class="logout""><a href="/user/logout"><span>Cerrar sesión</span></a></li>
+                    </ul>
+                </div>
             </li>            
             <?php else: ?>            
             <li class="login"><a href="/user/login"><span>Accede</span></a>
@@ -50,7 +53,7 @@
                     <form method="post" action="/user/login">
                         <div>
                             <label>Nombre de usuario: 
-                            <input type="text" name="user" />
+                            <input type="text" name="username" />
                         </div>
                         <div>
                             <label>Contraseña: 
