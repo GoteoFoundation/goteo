@@ -40,9 +40,9 @@
             <li class="dashboard"><a href="/user/dashboard"><span>Mi Dashboard <em>(Jaume)</em></span></a>
                 <div>
                     <ul>
-                        <li><a href="/user/dashboard/activity"><span>Mi actividad</span></a></li>
-                        <li><a href="/user/dashboard/profile"><span>Mi perfil</span></a></li>
-                        <li><a href="/user/dashboard/projects"><span>Mis proyectos</span></a></li>
+                        <li><a href="/dashboard/activity"><span>Mi actividad</span></a></li>
+                        <li><a href="/dashboard/profile"><span>Mi perfil</span></a></li>
+                        <li><a href="/dashboard/projects"><span>Mis proyectos</span></a></li>
                         <li class="logout""><a href="/user/logout"><span>Cerrar sesión</span></a></li>
                     </ul>
                 </div>
