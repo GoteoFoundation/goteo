@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 use Goteo\Core\Error,
@@ -44,8 +45,8 @@ set_error_handler (
     
 );
 
-// This may not work on other systems
-$uri = substr($_SERVER['PHP_SELF'], strlen($_SERVER['SCRIPT_NAME']));
+// Get URI without query string
+$uri = strtok($_SERVER['REQUEST_URI'], '?');
 
 // Get requested segments
 $segments = preg_split('!\s*/+\s*!', $uri, -1, \PREG_SPLIT_NO_EMPTY);
@@ -92,14 +93,14 @@ try {
 
             // Invoke method
             $method->invokeArgs($instance, $segments);
-
+            
             // Get buffer contents
             $buffer = \ob_get_clean();
-
+            
             // Output buffer
             echo $buffer;
 
-            // Farewell
+            // Farewell            
             die;      
             
         }        
