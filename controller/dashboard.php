@@ -14,10 +14,8 @@ namespace Goteo\Controller {
             Model\User::restrict(); 
 
 			$user = $_SESSION['user'];
+			$user = unserialize(serialize($user));
 			
-			echo '<pre>' . print_r($user, 1) . '</pre>';
-			var_dump($user);
-
             $message = "Hola {$user->id}<br />";
 
             if ($id == 'root') {

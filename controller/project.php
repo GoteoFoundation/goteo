@@ -47,6 +47,7 @@ namespace Goteo\Controller {
             Model\User::restrict();
 
 			$user = $_SESSION['user'];
+			$user = unserialize(serialize($user));
 
             if (!$user) {
 				header('Location: /');
@@ -77,7 +78,8 @@ namespace Goteo\Controller {
             Model\User::restrict();
 
 			$id = $_SESSION['current_project'];
-			$userid = $_SESSION['user'];
+			$user = $_SESSION['user'];
+			$user = unserialize(serialize($user));
 
             if (!$id || !$userid) {
 				header('Location: /');
@@ -85,19 +87,20 @@ namespace Goteo\Controller {
             } else {
                 $project = Model\Project::get($id);
 
-				$user = Model\User::get($userid);
-
+				$user = Model\User::get($user->id);
+/*
 				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					if ($user->save($_POST, $errors)) {
 						header('Location: /project/register');
 						die;
 					}
 				}
-
-			}
+*/
 
 			$guideText = Text::get('guide project user information');
             include 'view/project/user.html.php';
+
+			}
 
         }
 
