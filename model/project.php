@@ -62,7 +62,7 @@ namespace Goteo\Model {
         /*
          *  Cargamos los datos del usuario al crear la instancia
          */
-        public function get($id) {
+        public static function get($id) {
             try {
 				// metemos los datos del proyecto en la instancia
 				$query = self::query("SELECT * FROM project WHERE id = ?", array($id));
@@ -104,11 +104,10 @@ namespace Goteo\Model {
 				return $project;
 
 			} catch(\PDOException $e) {
+				echo $e->getMessage();
 				return false;
 			}
 		}
-
-//                $this->validate();
 
         /**
          * Inserta un proyecto con los datos mínimos
@@ -134,7 +133,7 @@ namespace Goteo\Model {
                 ':created'  => date('Y-m-d')
                 );
 
-            $sql = "INSERT INTO project (id, name, status, progress, owner, node, amount, created)
+            $sql = "REPLACE INTO project (id, name, status, progress, owner, node, amount, created)
                  VALUES (:id, :name, :status, :progress, :owner, :node, :amount, :created)";
             try {
 				self::query($sql, $values);
@@ -601,15 +600,11 @@ namespace Goteo\Model {
         /*
          * Lista de proyectos de un usuario
          */
-        public static function ofmine($owner = null)
+        public static function ofmine($owner)
         {
             $filters = array('owner'=>$owner);
             $projects = self::getAll($filters, 'name ASC');
-            $list = array();
-            foreach ($projects as $proj) {
-                $list[] = (object) array('id'=>$proj['id'], 'name'=>$proj['name']);
-            }
-            return $list;
+            return $projects;
         }
 
 
@@ -645,10 +640,11 @@ namespace Goteo\Model {
                 $order = " ORDER BY $order";
             }
 
-            if ($query = self::query("SELECT * FROM project" . $filter . $order, $vals)) {
-                return $query->fetchAll();
-            }
-            else {
+			try {
+				$query = self::query("SELECT * FROM project" . $filter . $order, $vals);
+                return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+            } catch (\PDOException $e) {
+				echo $e->getMessage();
                 return false;
             }
         }

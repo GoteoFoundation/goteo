@@ -26,6 +26,8 @@ namespace Goteo\Controller {
 		}
 
         public function manage ($id = null) {
+            Model\User::restrict();
+
             if (!$id) {
 				header('Location: /');
 				die;
@@ -42,6 +44,7 @@ namespace Goteo\Controller {
 		 * pero aun no tenemos la validación de usuario...
 		 */
         public function create () {
+            Model\User::restrict();
 
 			$user = $_SESSION['user'];
 
@@ -51,7 +54,7 @@ namespace Goteo\Controller {
             } else {
                 $project = new Model\Project();
 
-                if ($project->create($user)) {
+                if ($project->create($user->id)) {
 					$_SESSION['current_project'] = $project->id;
 					header('Location: /project/user/');
 					die;
@@ -71,6 +74,7 @@ namespace Goteo\Controller {
 		 * Paso 1 - PERFIL
 		 */
         public function user () {
+            Model\User::restrict();
 
 			$id = $_SESSION['current_project'];
 			$userid = $_SESSION['user'];
@@ -101,6 +105,7 @@ namespace Goteo\Controller {
 		 * Paso 2 - DATOS PERSONALES
 		 */
         public function register () {
+            Model\User::restrict();
 
 			$id = $_SESSION['current_project'];
 
@@ -142,6 +147,7 @@ namespace Goteo\Controller {
 		 * Paso 3 - DESCRIPCIÓN
 		 */
         public function edit () {
+            Model\User::restrict();
 
 			$id = $_SESSION['current_project'];
 
@@ -208,6 +214,7 @@ namespace Goteo\Controller {
 		 * Paso 4 - COSTES
 		 */
         public function costs () {
+            Model\User::restrict();
 
 			$id = $_SESSION['current_project'];
 
@@ -270,6 +277,7 @@ namespace Goteo\Controller {
 		 * Paso 5 - RETORNO
 		 */
         public function rewards () {
+            Model\User::restrict();
 
 			$id = $_SESSION['current_project'];
 
@@ -351,6 +359,7 @@ namespace Goteo\Controller {
 		 * Paso 6 - COLABORACIONES
 		 */
         public function supports () {
+            Model\User::restrict();
 
 			$id = $_SESSION['current_project'];
 
@@ -399,6 +408,7 @@ namespace Goteo\Controller {
 		 * Paso 7 - PREVIEW
 		 */
         public function overview () {
+            Model\User::restrict();
 
 			$id = $_SESSION['current_project'];
 
@@ -435,6 +445,7 @@ namespace Goteo\Controller {
 		 *		(ojo en las tablas relacionadas)
 		 */
         public function close () {
+            Model\User::restrict();
 
 			$id = $_SESSION['current_project'];
 
