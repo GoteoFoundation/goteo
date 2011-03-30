@@ -8,7 +8,7 @@ namespace Goteo\Model {
     class Project extends \Goteo\Core\Model {
         
         public        
-            $id,
+            $id = null,
             $owner, // User who created it
             $node, // Node this project belongs to
             $status,
@@ -59,75 +59,56 @@ namespace Goteo\Model {
             $badmessages = array(), // this contains human readable incorrections in the form
             $fiuuu = '';
 
-
         /*
          *  Cargamos los datos del usuario al crear la instancia
          */
-        public function __construct($id = null) {
-            if ($id != null) {
-                if ($fields = self::get($id)) {
-                    // metemos los datos del proyecto en la instancia
-                    foreach ($fields as $data=>$value) {
-                        if (property_exists($this, $data) && !empty($value)) {
-                            $this->$data = $value;
-                        }
-                    }
+        public function get($id) {
+            try {
+				// metemos los datos del proyecto en la instancia
+				$query = self::query("SELECT * FROM project WHERE id = ?", array($id));
+				$project = $query->fetchObject(__CLASS__);
 
-                    if ($query = self::query("SELECT * FROM keyword WHERE project = ?", array($id))) {
-                        if ($items = $query->fetchAll(\PDO::FETCH_CLASS, "Goteo\Model\Project\Keyword")) {
-                            foreach ($items as $item) {
-                                $this->keywords[] = $item;
-                            }
-                        }
-                    }
+				/*
+				foreach ($fields as $data=>$value) {
+					if (property_exists($this, $data) && !empty($value)) {
+						$this->$data = $value;
+					}
+				}
+				 *
+				 */
 
-                    if ($query = self::query("SELECT * FROM cost WHERE project = ?", array($id))) {
-                        if ($items = $query->fetchAll(\PDO::FETCH_CLASS, "Goteo\Model\Project\Cost")) {
-                            foreach ($items as $item) {
-                                $this->costs[] = $item;
-                                if ($item->required == 1) {
-                                    $this->mincost += $item->amount;
-                                    $this->maxcost += $item->amount;
-                                }
-                                else {
-                                    $this->maxcost += $item->amount;
-                                }
-                            }
-                        }
-                    }
+				// las palabras clave
+				$project->keywords = Project\Keyword::getAll($id);
 
-                    if ($query = self::query("SELECT * FROM reward WHERE project = ? AND type='social'", array($id))) {
-                        if ($items = $query->fetchAll(\PDO::FETCH_CLASS, "Goteo\Model\Project\Reward")) {
-                            foreach ($items as $item) {
-                                $this->social_rewards[] = $item;
-                            }
-                        }
-                    }
+				// costes y los sumammos
+				$project->costs = Project\Cost::getAll($id);
 
-                    if ($query = self::query("SELECT * FROM reward WHERE project = ? AND type='individual'", array($id))) {
-                        if ($items = $query->fetchAll(\PDO::FETCH_CLASS, "Goteo\Model\Project\Reward")) {
-                            foreach ($items as $item) {
-                                $this->individual_rewards[] = $item;
-                            }
-                        }
-                    }
+				foreach ($project->costs as $item) {
+					if ($item->required == 1) {
+						$project->mincost += $item->amount;
+						$project->maxcost += $item->amount;
+					}
+					else {
+						$project->maxcost += $item->amount;
+					}
+				}
 
-                    if ($query = self::query("SELECT * FROM support WHERE project = ?", array($id))) {
-                        if ($items = $query->fetchAll(\PDO::FETCH_CLASS, "Goteo\Model\Project\Support")) {
-                            foreach ($items as $item) {
-                                $this->supports[] = $item;
-                            }
-                        }
-                    }
-                }
-                else {
-                    die("Fallo al crear la instancia de Project para $id");
-                }
+				// retornos colectivos
+				$project->social_rewards = Project\Reward::getAll($id, 'social');
+				// retornos individuales
+				$project->individual_rewards = Project\Reward::getAll($id, 'individual');
 
-                $this->validate();
-            }
-        }
+				// colaboraciones
+				$project->supports = Project\Support::getAll($id);
 
+				return $project;
+
+			} catch(\PDOException $e) {
+				return false;
+			}
+		}
+
+//                $this->validate();
 
         /**
          * Inserta un proyecto con los datos mínimos
@@ -135,10 +116,7 @@ namespace Goteo\Model {
          * @param array $data
          * @return boolean
          */
-        public function create($user = null, $node = 'goteo') {
-            if ($user == null) {
-                    return false;
-                }
+        public function create($user, $node = 'goteo') {
 
             // cojemos el número de proyecto de este usuario
             $query = self::query("SELECT COUNT(id) as num FROM project WHERE owner = ?", array($user));
@@ -158,7 +136,9 @@ namespace Goteo\Model {
 
             $sql = "INSERT INTO project (id, name, status, progress, owner, node, amount, created)
                  VALUES (:id, :name, :status, :progress, :owner, :node, :amount, :created)";
-            if (self::query($sql, $values)) {
+            try {
+				self::query($sql, $values);
+
                 $this->id = $values[':id'];
                 $this->owner = $user;
                 $this->node = $node;
@@ -167,8 +147,8 @@ namespace Goteo\Model {
 
                 // cargar los datos legales del usuario
 
-                return true;
-            } else {
+                return $this->id;
+            } catch (\PDOException $e) {
                 echo "ERROR al crear un nuevo proyecto<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>";
                 return false;
             }
@@ -176,7 +156,8 @@ namespace Goteo\Model {
 
         /*
          * Recupera los datos de contrato del anterior proyecto
-         */
+		 * No es tan util como se pensaba...
+         *
         public function lastContract() {
             $filters = array(
                 'owner'=>$this->owner,
@@ -190,23 +171,22 @@ namespace Goteo\Model {
             $this->contract_email = $proj[0]['contract_email'];
             
         }
+		 * 
+		 */
 
         /**
          * actualiza en un proyecto pares de campo=>valor
          * @param array $data
          * @param array $errors
          */
-        public function save ($data = array(), &$errors = array()) {
+        public function save (&$errors = array()) {
 
             // nif y telefono sin guinoes, espacios ni puntos
-            if (isset($data['contract_nif'])) {
-                $data['contract_nif'] = str_replace(array('_', '.', ' ', '-', ','), '', $data['contract_nif']);
-            }
-            if (isset($data['phone'])) {
-                $data['phone'] = str_replace(array('_', '.', ' ', '-', ','), '', $data['phone']);
-            }
+            $this->contract_nif = str_replace(array('_', '.', ' ', '-', ','), '', $this->contract_nif);
+            $this->phone = str_replace(array('_', '.', ' ', '-', ','), '', $this->phone);
 
             $fields = array(
+				'id',
                 'contract_name',
                 'contract_surname',
                 'contract_nif',
@@ -229,43 +209,53 @@ namespace Goteo\Model {
                 'project_location',
                 'resource'
                 );
-            
+
             $set = '';
             $values = array();
 
             foreach ($fields as $field) {
-                if (isset($data[$field])) {
+                if (!empty($this->$field)) {
                     $set .= "$field = :$field, ";
-                    $values[":$field"] = $data[$field];
+                    $values[":$field"] = $this->$field;
                 }
             }
 
-            if (!empty($values)) {
-                $set .= "updated = :updated";
-                $values[':updated'] = date('Y-m-d');
-                $values[':id'] = $this->id;
+			try {
+				$set .= "updated = :updated";
+				$values[':updated'] = date('Y-m-d');
 
-                $sql = "UPDATE project SET " . $set . " WHERE id = :id";
-                if (self::query($sql, $values)) {
-                    foreach ($fields as $field) {
-                        if (isset($data[$field])) {
-                            $this->$field = $data[$field];
-                        }
-                    }
-                    return true;
-                } else {
-                    $errors[] = Text::get('error sql guardar proyecto');
-                    return false;
-                }
-            }
-            else {
-                return true;
-            }
+				$sql = "REPLACE INTO project SET " . $set;
+				$res = self::query($sql, $values);
+
+				if (empty($this->id)) {
+					$this->id = \PDO::lastInsertId;
+				}
+				
+			} catch(\PDOException $e) {
+                $errors[] = Text::get('error sql guardar proyecto');
+			}
+
+
+			// salvamos el resto de registros relacionados
+				//keywords
+				//costes
+				//retornos sociales
+				//retornos indivuiduales
+				//colaboraciones
+			$data = array('keywords', 'costs', 'social_rewards', 'individual_rewards', 'supports');
+
+			foreach ($data as $array) {
+				if (!empty($array) && is_array($array)) {
+					foreach ($array as $item) {
+						$item->save();
+					}
+				}
+			}
+
         }
 
         /*
          * Para añadir nuevos registros en tablas relacionadas
-         */
         public function newKeyword($data, &$errors) {
             // $this->keywords[] = hm...
             Project\Keyword::create($this->id, $data, $errors);
@@ -286,6 +276,7 @@ namespace Goteo\Model {
         public function newSupport($data, &$errors) {
             $this->supports[] = Project\Support::create($this->id, $data, $errors);
         }
+         */
 
 
 
@@ -298,7 +289,7 @@ namespace Goteo\Model {
          * Hay que ver el perfil del usuario, tener un perfil decente también da puntos, no?
          *
          */
-        public function validate ()
+        public function validate (&$errors = array())
         {
             $score = 0;
             $max = 0; // el máximo que se puede conseguir
@@ -307,9 +298,7 @@ namespace Goteo\Model {
 
 //              'contract_name',  //mandatory +1
             if (empty($this->contract_name)) {
-                $this->badfields[] = 'contract_name';
-                $this->badmessages[] = Text::get('mandatory project field contract name');
-                    "";
+                $errors['contract_name'] = Text::get('mandatory project field contract name');
                 --$score;
             } else {
                 ++$score;
@@ -318,8 +307,7 @@ namespace Goteo\Model {
 
 //              'contract_surname',  //mandatory +1
             if (empty($this->contract_surname)) {
-                $this->badfields[] = 'contract_surname';
-                $this->badmessages[] = Text::get('mandatory project field contract surname');
+                $errors['contract_surname'] = Text::get('mandatory project field contract surname');
                 --$score;
             } else {
                 ++$score;
@@ -328,12 +316,10 @@ namespace Goteo\Model {
 
 //              'contract_nif',  //mandatory  validation nif +1
             if (empty($this->contract_nif)) {
-                $this->badfields[] = 'contract_nif';
-                $this->badmessages[] = Text::get('mandatory project field contract nif');
+                $errors['contract_nif'] = Text::get('mandatory project field contract nif');
                 --$score;
             } elseif (!Check::Nif($this->contract_nif)) {
-                    $this->badfields[] = 'contract_nif';
-                    $this->badmessages[] = Text::get('validate project value contract nif');
+                    $errors['contract_nif'] = Text::get('validate project value contract nif');
                     --$score;
                 } else {
                     ++$score;
@@ -342,12 +328,10 @@ namespace Goteo\Model {
 
 //              'contract_email',  //mandatory validation email +1
             if (empty($this->contract_email)) {
-                $this->badfields[] = 'contract_email';
-                $this->badmessages[] = Text::get('mandatory project field contract email');
+                $errors['contract_email'] = Text::get('mandatory project field contract email');
                 --$score;
             } elseif (!Check::Mail($this->contract_email)) {
-                    $this->badfields[] = 'contract_email';
-                    $this->badmessages[] = Text::get('validate project value contract email');
+                    $errors['contract_email'] = Text::get('validate project value contract email');
                     --$score;
                 } else {
                     ++$score;
@@ -357,8 +341,7 @@ namespace Goteo\Model {
 //              'phone', // +1
             if (!empty($this->phone)) {
                 if (!Check::Phone($this->phone)) {
-                    $this->badfields[] = 'phone';
-                    $this->badmessages[] = Text::get('validate project value phone');
+                    $errors['phone'] = Text::get('validate project value phone');
                     --$score;
                 } else {
                     ++$score;
@@ -380,8 +363,7 @@ namespace Goteo\Model {
 
 //              'location', // mandatory  +1
             if (empty($this->location)) {
-                $this->badfields[] = 'location';
-                $this->badmessages[] = Text::get('mandatory project field residence');
+                $errors['location'] = Text::get('mandatory project field residence');
                 --$score;
             } else {
                 ++$score;
@@ -396,8 +378,7 @@ namespace Goteo\Model {
 
 //              'name', // mandatory +1
             if (empty($this->name)) {
-                $this->badfields[] = 'name';
-                $this->badmessages[] = Text::get('mandatory project field name');
+                $errors['name'] = Text::get('mandatory project field name');
                 --$score;
             } else {
                 ++$score;
@@ -412,14 +393,12 @@ namespace Goteo\Model {
 
 //              'description', // mandatory +1 validation 150 words (+5 if so)
             if (empty($this->description)) {
-                $this->badfields[] = 'description';
-                $this->badmessages[] = Text::get('mandatory project field description');
+                $errors['description'] = Text::get('mandatory project field description');
                 --$score;
             } else {
                 ++$score;
                 if (!Check::Words($this->description, 150)) {
-                    $this->badfields[] = 'description';
-                    $this->badmessages[] = Text::get('validate project value description');
+                    $errors['description'] = Text::get('validate project value description');
                     "";
                     $score -= 5;
                 } else {
@@ -454,8 +433,7 @@ namespace Goteo\Model {
 
 //              'category', // mandatory +1
             if (empty($this->category)) {
-                $this->badfields[] = 'category';
-                $this->badmessages[] = Text::get('mandatory project field category');
+                $errors['category'] = Text::get('mandatory project field category');
                 --$score;
             } else {
                 ++$score;
@@ -482,8 +460,7 @@ namespace Goteo\Model {
             
 //              'project_location', // mandatory +1
             if (empty($this->project_location)) {
-                $this->badfields[] = 'project_location';
-                $this->badmessages[] = Text::get('mandatory project field location');
+                $errors['project_location'] = Text::get('mandatory project field location');
                 --$score;
             }
             else {
@@ -493,8 +470,7 @@ namespace Goteo\Model {
 
 //              'costs', // mandatory at least 2 costs (with amount)+5 if so ;  validation dates
             if (count($this->costs) < 2) {
-                $this->badfields[] = 'ncost';
-                $this->badmessages[] = Text::get('validation project min costs');
+                $errors['ncost'] = Text::get('validation project min costs');
                 $score -= 5;
             }
             else {
@@ -518,8 +494,7 @@ namespace Goteo\Model {
             $costdif = $this->maxcost - $this->mincost;
             $maxdif = $this->mincost * 0.40;
             if ($costdif > $maxdif ) {
-                $this->badfields[] = 'total-costs';
-                $this->badmessages[] = Text::get('validation project total cost');
+                $errors['total-costs'] = Text::get('validation project total cost');
                 $score -= 5;
             }
             else {
@@ -566,16 +541,11 @@ namespace Goteo\Model {
          * Listo para revisión
          */
         public function ready() {
-            $sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
-            if (self::query($sql, array(':status'=>2, ':updated'=>date('Y-m-d'), ':id'=>$this->id))) {
-                if ($this->rebase()) {
-                    return true;
-                } else {
-                    echo 'Error catastrófico al remontar el proyecto!!';
-                    die;
-                }
-            }
-            else {
+			try {
+				$sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
+				self::query($sql, array(':status'=>2, ':updated'=>date('Y-m-d'), ':id'=>$this->id));
+				$this->rebase();
+            } catch (\PDOException $e) {
                 return false;
             }
         }
@@ -596,6 +566,7 @@ namespace Goteo\Model {
                 self::query("UPDATE support SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                 // actualizar el registro
                 self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
+				$this->id = $newid;
             }
 
             return true;
@@ -643,19 +614,6 @@ namespace Goteo\Model {
 
 
 
-
-        /**
-         * Coge todos los campos de la tabla
-         * @param string $id
-         */
-        public static function get ($id) {
-            if ($query = self::query("SELECT * FROM project WHERE id = ?", array($id))) {
-                return $query->fetchObject();
-            }
-            else {
-                return false;
-            }
-        }
 
         /**
          * Saca una lista de proyectos

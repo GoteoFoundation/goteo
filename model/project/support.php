@@ -11,12 +11,32 @@ namespace Goteo\Model\Project {
 			$description,
 			$type;
 
-	 	public static function get ($id) {}
+	 	public static function get ($id) {
+            try {
+                $query = static::query("SELECT * FROM cost WHERE id = :id", array(':id' => $id));
+                return $query->fetchObject(__CLASS__);
+            } catch(\PDOException $e) {
+                return false;
+            }
+		}
 
-		public function save ($data, &$errors = array()) {
-//			echo 'Save support <pre>' . print_r($data, 1) . '</pre>';
+		public static function getAll ($project) {
+            try {
+				$query = self::query("SELECT * FROM cost WHERE project = ?", array($project));
+				$items = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+				return $items;
+			} catch (\PDOException $e) {
+				return array();
+			}
+		}
+
+		public function validate(&$errors = array()) {}
+
+		public function save (&$errors = array()) {
 
 			$fields = array(
+				'id',
+				'project',
 				'support',
 				'type',
 				'description'
@@ -26,35 +46,27 @@ namespace Goteo\Model\Project {
 			$values = array();
 
 			foreach ($fields as $field) {
-				if (isset($data[$field])) {
-					if ($set != '') $set .= ", ";
-					$set .= "$field = :$field ";
-					$values[":$field"] = $data[$field];
-				}
+				if ($set != '') $set .= ", ";
+				$set .= "$field = :$field ";
+				$values[":$field"] = $this->$field;
 			}
 
-			if (!empty($values)) {
-				$values[':id'] = $this->id;
-				$values[':project'] = $this->project;
+			try {
+				$sql = "REPLACE INTO support SET " . $set;
+				$res = self::query($sql, $values);
 
-				$sql = "UPDATE support SET " . $set . " WHERE id = :id AND project = :project";
-				if ($res = self::query($sql, $values)) {
-					foreach ($fields as $field) {
-						if (isset($data[$field])) {
-							$this->$field = $data[$field];
-						}
-					}
-					return true;
-				} else {
-					$errors[] = "La colaboración {$data['support']} no se ha grabado correctamente. Por favor, revise los datos.";
-					return false;
+				if (empty($this->id)) {
+					$this->id = \PDO::lastInsertId;
 				}
-			}
-			else {
+
 				return true;
+			} catch (\PDOException $e) {
+				$errors[] = "La colaboración {$data['support']} no se ha grabado correctamente. Por favor, revise los datos.";
+				return false;
 			}
 		}
 
+		/*
 		public static function create ($project, $data, &$errors) {
 //			echo 'New support <pre>' . print_r($data, 1) . '</pre>';
 			$fields = array(
@@ -90,6 +102,8 @@ namespace Goteo\Model\Project {
 				return true;
 			}
 		}
+		 * 
+		 */
 
 		/**
 		 * Quitar una colaboracion de un proyecto
@@ -99,17 +113,17 @@ namespace Goteo\Model\Project {
 		 * @param array $errors
 		 * @return boolean
 		 */
-		public function remove ($project, $id, &$errors = array()) {
+		public function remove (&$errors = array()) {
 			$values = array (
-				':project'=>$project,
-				':id'=>$id,
+				':project'=>$this->project,
+				':id'=>$this->id,
 			);
 
 			if (self::query("DELETE FROM support WHERE id = :id AND project = :project", $values)) {
 				return true;
 			}
 			else {
-				$errors[] = 'No se ha podido quitar la colaboracion del proyecto ' . $project;
+				$errors[] = 'No se ha podido quitar la colaboracion del proyecto ' . $this->project;
 				return false;
 			}
 		}
