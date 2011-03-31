@@ -60,6 +60,7 @@ div#menu > ul {
     max-width: 940px;    
     position: relative;
     margin: 0 auto;    
+    font-size: 0; /* aka *Ignore whitespace between li's* */
 }
 
 div#menu > ul > li {
