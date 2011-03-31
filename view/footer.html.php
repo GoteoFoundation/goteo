@@ -17,7 +17,7 @@
             <ul>
                 <li><a href="/about">Sobre Goteo</a></li>
                 <li><a href="/blog">Blog</li>
-                <li><a href="/contact">Contacto</a></li>
+                <li><a href="/about/contact">Contacto</a></li>
                 <li><a href="/about/team">Equipo</a></li>
                 <li><a href="/about/credits">Créditos</a></li>                
             </ul>
@@ -25,7 +25,7 @@
         
         <div class="">
             <ul>
-                <li><a href="/faq">FAQ</a></li>
+                <li><a href="/about/faq">FAQ</a></li>
                 <li><a href="/user/register">Registrarse</li>
                 <li><a href="/user/login">Acceder</a></li>
                 <li><a href="/about/legal">Términos legales</a></li>
