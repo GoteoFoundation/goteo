@@ -4,8 +4,7 @@ namespace Goteo\Controller {
     
     use Goteo\Core\Error,
 		Goteo\Library\Text,
-        Goteo\Model\Project as Prj,
-		Goteo\Model\User as Usr; // <-- solo para el primer paso
+        Goteo\Model; // <-- solo para el primer paso
     
     class Project extends \Goteo\Core\Controller {
 
@@ -14,7 +13,7 @@ namespace Goteo\Controller {
 				header('Location: /');
 				die;
             } else {
-                $project = new Prj($id);
+                $project = Model\Project::get($id);
 
                 if (!$project->id) {
                     throw new Error(404);
@@ -27,22 +26,15 @@ namespace Goteo\Controller {
 		}
 
         public function manage ($id = null) {
-            
+            Model\User::restrict();
+
             if (!$id) {
 				header('Location: /');
 				die;
             } else {
-                $project = new Prj($id);
-
-				if ($project->status > 1) {
-					header('Location: /project/' . $id);
-					die;
-				}
-				else {
-					$_SESSION['current_project'] = $id;
-					header('Location: /project/edit');
-					die;
-				}
+				$_SESSION['current_project'] = $id;
+				header('Location: /project/edit');
+				die;
             }
         }
 
@@ -52,24 +44,25 @@ namespace Goteo\Controller {
 		 * pero aun no tenemos la validación de usuario...
 		 */
         public function create () {
+            Model\User::restrict();
 
 			$user = $_SESSION['user'];
+			$user = unserialize(serialize($user));
 
             if (!$user) {
 				header('Location: /');
 				die;
             } else {
-                $project = new Prj();
+                $project = new Model\Project();
 
-                if ($project->create($user)) {
+                if ($project->create($user->id)) {
 					$_SESSION['current_project'] = $project->id;
 					header('Location: /project/user/');
 					die;
 				}
 				else {
 					echo 'ERROR al crear el proyecto';
-//					header('Location: /ERROR');
-//					die;
+					die;
 				}
 
             }
@@ -82,29 +75,32 @@ namespace Goteo\Controller {
 		 * Paso 1 - PERFIL
 		 */
         public function user () {
+            Model\User::restrict();
 
 			$id = $_SESSION['current_project'];
-			$userid = $_SESSION['user'];
+			$user = $_SESSION['user'];
+			$user = unserialize(serialize($user));
 
             if (!$id || !$userid) {
 				header('Location: /');
 				die;
             } else {
-                $project = new Prj($id);
+                $project = Model\Project::get($id);
 
-				$user = new Usr($userid);
-
+				$user = Model\User::get($user->id);
+/*
 				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					if ($user->save($_POST, $errors)) {
 						header('Location: /project/register');
 						die;
 					}
 				}
-
-			}
+*/
 
 			$guideText = Text::get('guide project user information');
             include 'view/project/user.html.php';
+
+			}
 
         }
 
@@ -112,6 +108,7 @@ namespace Goteo\Controller {
 		 * Paso 2 - DATOS PERSONALES
 		 */
         public function register () {
+            Model\User::restrict();
 
 			$id = $_SESSION['current_project'];
 
@@ -119,39 +116,41 @@ namespace Goteo\Controller {
 				header('Location: /');
 				die;
             } else {
-                $project = new Prj($id);
+                $project = Model\Project::get($id);
 
-				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+				if (isset($_POST['submit'])) {
+
+					// campos que guarda este paso
+					$fields = array(
+						'contract_name',
+						'contract_surname',
+						'contract_nif',
+						'contract_email',
+						'phone',
+						'address',
+						'zipcode',
+						'location',
+						'country'
+						);
+
+					foreach ($fields as $field) {
+						$project->$field = $_POST[$filed];
+					}
+
 					$errors = array();
-					if ($project->save($_POST, $errors)) {
-						header('Location: /project/edit');
-						die;
-					}
-				} else {
-					/*
-					// en este punto, si no tiene los campos contract, los cargamos de su último proyecto
-					if (empty($project->contract_name) && 
-						empty($project->contract_surname) &&
-						empty($project->contract_nif) &&
-						empty($project->contract_email)) {
-							$project->lastContract();
-					}
-					 *  No estoy seguro de que esto sea tan bueno, si estan revisando y lo ven rellenado pensaran que esta ok
-					 * y si aparece error pensara que no funciona...
-					 */
+					$project->save($errors);
 				}
 
+				$guideText = Text::get('guide project contract information');
+				include 'view/project/register.html.php';
 			}
-
-			$guideText = Text::get('guide project contract information');
-            include 'view/project/register.html.php'; 
-            
         }
         
 		/*
 		 * Paso 3 - DESCRIPCIÓN
 		 */
         public function edit () {
+            Model\User::restrict();
 
 			$id = $_SESSION['current_project'];
 
@@ -159,9 +158,33 @@ namespace Goteo\Controller {
 				header('Location: /');
 				die;
             } else {
-                $project = new Prj($id);
+                $project = Model\Project::get($id);
 
-				$currents = Prj::currentStatus();
+				if (isset($_POST['submit'])) {
+
+					// campos que guarda este paso
+					$fields = array(
+						'name',
+						'image',
+						'description',
+						'motivation',
+						'about',
+						'goal',
+						'related',
+						'category',
+						'media',
+						'currently',
+						'project_location'
+						);
+
+					foreach ($fields as $field) {
+						$project->$field = $_POST[$filed];
+					}
+
+					$errors = array();
+					$project->save($errors);
+				}
+
 
 				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$errors = array();
@@ -181,10 +204,12 @@ namespace Goteo\Controller {
 					}
 				}
 
-			}
+				$currents = Model\Project::currentStatus();
 
-			$guideText = Text::get('guide project description');
-            include 'view/project/edit.html.php';
+				$guideText = Text::get('guide project description');
+				include 'view/project/edit.html.php';
+
+			}
 
         }
 
@@ -192,6 +217,7 @@ namespace Goteo\Controller {
 		 * Paso 4 - COSTES
 		 */
         public function costs () {
+            Model\User::restrict();
 
 			$id = $_SESSION['current_project'];
 
@@ -199,45 +225,48 @@ namespace Goteo\Controller {
 				header('Location: /');
 				die;
             } else {
-                $project = new Prj($id);
+                $project = Model\Project::get($id);
 
-				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+				if (isset($_POST['submit'])) {
+
 					$errors = array();
+
+					$this->resource = $_POST['resource'];
+					$project->save($errors);
 
 					//tratar costes existentes
 					foreach ($project->costs as $cost) {
-						$data = array(
-							'id'=>$cost->id,
-							'cost'=>$_POST['cost' . $cost->id],
-							'amount'=>$_POST['cost-amount' . $cost->id],
-							'type'=>$_POST['cost-type' . $cost->id],
-							'required'=>$_POST['cost-required' . $cost->id],
-							'from'=>$_POST['cost-from' . $cost->id],
-							'until'=>$_POST['cost-until' . $cost->id]
-						);
-						$cost->save($data, $errors);
+						if (!empty($_POST['cost' . $cost->id])) {
+						
+							$cost->cost = $_POST['cost' . $cost->id];
+							$cost->amount = $_POST['cost-amount' . $cost->id];
+							$cost->type = $_POST['cost-type' . $cost->id];
+							$cost->required = $_POST['cost-required' . $cost->id];
+							$cost->from = $_POST['cost-from' . $cost->id];
+							$cost->until = $_POST['cost-until' . $cost->id];
+						
+							$cost->save($errors);
+						}
 					}
 
 					//tratar nuevo coste
 					if (!empty($_POST['ncost'])) {
-						$newCost = array(
-							'cost'=>$_POST['ncost'],
-							'amount'=>$_POST['ncost-amount'],
-							'type'=>$_POST['ncost-type'],
-							'required'=>$_POST['ncost-required'],
-							'from'=>$_POST['ncost-from'],
-							'until'=>$_POST['ncost-until']
-						);
-						$project->newCost($newCost, $errors);
+
+						$cost = new Model\Project\Cost();
+
+						$cost->id = '';
+						$cost->project = $project->id;
+						$cost->cost = $_POST['ncost'];
+						$cost->amount = $_POST['ncost-amount'];
+						$cost->type = $_POST['ncost-type'];
+						$cost->required = $_POST['ncost-required'];
+						$cost->from = $_POST['ncost-from'];
+						$cost->until = $_POST['ncost-until'];
+
+						$cost->save($errors);
+
+						$project->costs[] = $cost;
 					}
-
-					// otros recursos
-					$project->save(array('resource'=>$_POST['resource']), $errors);
-
-					/*if (empty($errors)) {
-						header('Location: /project/rewards');
-						die;
-					}*/
 				}
 
 			}
@@ -251,6 +280,7 @@ namespace Goteo\Controller {
 		 * Paso 5 - RETORNO
 		 */
         public function rewards () {
+            Model\User::restrict();
 
 			$id = $_SESSION['current_project'];
 
@@ -258,66 +288,73 @@ namespace Goteo\Controller {
 				header('Location: /');
 				die;
             } else {
-                $project = new Prj($id);
+                $project = Model\Project::get($id);
 
-				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+				if (isset($_POST['submit'])) {
 
 					$errors = array();
-					// tratar retornos existentes
+
+					//tratar retornos sociales
 					foreach ($project->social_rewards as $reward) {
-						$data = array(
-							'reward'=>$_POST['social_reward' . $reward->id],
-							'icon'=>$_POST['social_reward-icon' . $reward->id],
-							'license'=>$_POST['social_reward-license' . $reward->id]
-						);
-
-						$reward->save($data, $errors);
+						if (!empty ($_POST['social_reward' . $reward->id])) {
+							$reward->reward = $_POST['social_reward' . $reward->id];
+							$reward->icon = $_POST['social_reward-icon' . $reward->id];
+							$reward->license = $_POST['social_reward-license' . $reward->id];
+						}
+						$reward->save($errors);
 					}
-					
+
+					// retornos individuales
 					foreach ($project->individual_rewards as $reward) {
-						$data = array(
-							'reward'=>$_POST['individual_reward' . $reward->id],
-							'icon'=>$_POST['individual_reward-icon' . $reward->id],
-							'amount'=>$_POST['individual_reward-amount' . $reward->id],
-							'units'=>$_POST['individual_reward-units' . $reward->id]
-						);
-
-						$reward->save($data, $errors);
+						if (!empty ($_POST['individual_reward' . $reward->id])) {
+							$reward->reward = $_POST['individual_reward' . $reward->id];
+							$reward->icon = $_POST['individual_reward-icon' . $reward->id];
+							$reward->amount = $_POST['individual_reward-amount' . $reward->id];
+							$reward->units = $_POST['individual_reward-units' . $reward->id];
+						}
+						$reward->save($errors);
 					}
+
 
 
 					// tratar nuevos retornos
 					if (!empty($_POST['nsocial_reward'])) {
-						$newSocialReward = array(
-							'reward'=>$_POST['nsocial_reward'],
-							'type'=>'social',
-							'icon'=>$_POST['nsocial_reward-icon'],
-							'license'=>$_POST['nsocial_reward-license']
-						);
-						$project->newSocialReward($newSocialReward, $errors);
+						$reward = new Model\Project\Reward();
+
+						$reward->id = '';
+						$reward->project = $project->id;
+						$reward->reward = $_POST['nsocial_reward'];
+						$reward->type = 'social';
+						$reward->icon = $_POST['nsocial_reward-icon'];
+						$reward->license = $_POST['nsocial_reward-license'];
+
+						$reward->save($errors);
+
+						$project->social_rewards[] = $reward;
 					}
 
 					if (!empty($_POST['nindividual_reward'])) {
-						$newIndividualReward = array(
-							'reward'=>$_POST['nindividual_reward'],
-							'type'=>'individual',
-							'icon'=>$_POST['nindividual_reward-icon'],
-							'amount'=>$_POST['nindividual_reward-amount'],
-							'units'=>$_POST['nindividual_reward-units']
-						);
-						$project->newIndividualReward($newIndividualReward, $errors);
+						$reward = new Model\Project\Reward();
+
+						$reward->id = '';
+						$reward->project = $project->id;
+						$reward->reward = $_POST['nindividual_reward'];
+						$reward->type = 'individual';
+						$reward->icon = $_POST['nindividual_reward-icon'];
+						$reward->amount = $_POST['nindividual_reward-amount'];
+						$reward->units = $_POST['nindividual_reward-units'];
+
+						$reward->save($errors);
+
+						$project->individual_rewards[] = $reward;
 					}
 
-					/*if (empty($errors)) {
-						header('Location: /project/supports');
-						die;
-					}*/
 				}
 
-			}
+				$guideText = Text::get('guide project rewards');
+				include 'view/project/rewards.html.php';
 
-			$guideText = Text::get('guide project rewards');
-            include 'view/project/rewards.html.php';
+			}
 
         }
 
@@ -325,6 +362,7 @@ namespace Goteo\Controller {
 		 * Paso 6 - COLABORACIONES
 		 */
         public function supports () {
+            Model\User::restrict();
 
 			$id = $_SESSION['current_project'];
 
@@ -332,40 +370,40 @@ namespace Goteo\Controller {
 				header('Location: /');
 				die;
             } else {
-                $project = new Prj($id);
+                $project = Model\Project::get($id);
 
-				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+				if (isset($_POST['submit'])) {
 					$errors = array();
+
 					// tratar colaboraciones existentes
 					foreach ($project->supports as $support) {
-						$data = array(
-							'support'=>$_POST['support' . $support->id],
-							'type'=>$_POST['support-type' . $support->id],
-							'description'=>$_POST['support-description' . $support->id]
-						);
-						$support->save($data, $errors);
+						if (!empty ($_POST['support' . $support->id])) {
+							$support->support = $_POST['support' . $support->id];
+							$support->type = $_POST['support-type' . $support->id];
+							$support->description = $_POST['support-description' . $support->id];
+						}
+						$support->save($errors);
 					}
 
 					// tratar nueva colaboracion
 					if (!empty($_POST['nsupport'])) {
-						$newSupport = array(
-								'support'=>$_POST['nsupport'],
-								'type'=>$_POST['nsupport-type'],
-								'description'=>$_POST['nsupport-description']
-						);
-						$project->newSupport($newSupport, $errors);
-					}
+						$support = new Model\Project\Support();
 
-					/*if (empty($errors)) {
-						header('Location: /project/overview');
-						die;
-					}*/
+						$support->id = '';
+						$support->project = $project->id;
+						$support->support = $_POST['nsupport'];
+						$support->type = $_POST['nsupport-type'];
+						$support->description = $_POST['nsupport-description'];
+
+						$project->supports[] = $support;
+					}
+					
 				}
 
-			}
+				$guideText = Text::get('guide project support');
+				include 'view/project/supports.html.php';
 
-			$guideText = Text::get('guide project support');
-            include 'view/project/supports.html.php';
+			}
 
         }
 
@@ -373,6 +411,7 @@ namespace Goteo\Controller {
 		 * Paso 7 - PREVIEW
 		 */
         public function overview () {
+            Model\User::restrict();
 
 			$id = $_SESSION['current_project'];
 
@@ -380,24 +419,24 @@ namespace Goteo\Controller {
 				header('Location: /');
 				die;
             } else {
-                $project = new Prj($id);
+                $project = Model\Project::get($id);
 
 				$finish = false;
-				if (!empty($project->badmessages)) {
-					$errors = $project->badmessages;
-				}
-				else {
+				$errors = array();
+				$project->validate($errors);
+				if (empty($errors)) {
 					$success[] = 'Todos los campos del formulario son correctos';
 					if ($project->progress > 60 && $project->status == 1) {
 						$success .= 'Pulse el botón finalizar para que revisemos su proyecto. No podrá modificar los datos del proyecto una vez finalizado.';
 						$finish = true;
 					}
 				}
+				
+				$guideText = Text::get('guide project overview');
+				include 'view/project/overview.html.php';
+
 			}
 			
-			$guideText = Text::get('guide project overview');
-            include 'view/project/overview.html.php';
-
         }
 
 		/*
@@ -409,6 +448,7 @@ namespace Goteo\Controller {
 		 *		(ojo en las tablas relacionadas)
 		 */
         public function close () {
+            Model\User::restrict();
 
 			$id = $_SESSION['current_project'];
 
@@ -416,7 +456,7 @@ namespace Goteo\Controller {
 				header('Location: /');
 				die;
             } else {
-                $project = new Prj($id);
+                $project = Model\Project::get($id);
 
 				if ($project->ready()) {
 					unset($_SESSION['current_project']);

@@ -12,14 +12,17 @@ namespace Goteo\Controller {
          */
         public function index () {
             Model\User::restrict(); 
-            
-            $message = "Hola $id<br />";
+
+			$user = $_SESSION['user'];
+			$user = unserialize(serialize($user));
+			
+            $message = "Hola {$user->id}<br />";
 
             if ($id == 'root') {
                 $message .= '<a href="/texts">Gestión de textos</a>';
             }
 
-            $projects = Model\Project::ofmine($id);
+            $projects = Model\Project::ofmine($user->id);
 
             include 'view/dashboard.html.php';
 
