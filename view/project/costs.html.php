@@ -1,11 +1,5 @@
-<?php include 'view/header.html.php' ?>
 <?php include 'view/project/header.html.php' ?>
-<?php
-
-use Goteo\Library\Text;
-
-$types = Goteo\Model\Project\Cost::types();
-?>
+<?php use Goteo\Library\Text; ?>
 PROYECTO / Costes<br />
 GUÍA: <?php echo $guideText; ?><br />
 <?php include 'view/project/errors.html.php' ?>
@@ -107,4 +101,3 @@ GUÍA: <?php echo $guideText; ?><br />
 	<input type="submit" name="submit" value="CONTINUAR" />
 </form>
 <?php include 'view/project/footer.html.php' ?>
-<?php include 'view/footer.html.php' ?>

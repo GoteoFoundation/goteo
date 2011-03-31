@@ -6,3 +6,5 @@ CREATE TABLE IF NOT EXISTS keyword (
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Keywords de proyectos';
 
 ALTER TABLE `keyword` DROP `category` ;
+ALTER TABLE `keyword` ADD `user` VARCHAR( 50 ) NULL AFTER `id`;
+ALTER TABLE `keyword` CHANGE `project` `project` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL ;

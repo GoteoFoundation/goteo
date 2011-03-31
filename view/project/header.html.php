@@ -1,3 +1,9 @@
+<?php $bodyClass = 'home'; include 'view/prologue.html.php' ?>
+
+        <?php include 'view/header.html.php' ?>
+
+        <div id="main">
+
 <?php use Goteo\Library\Text;
 $status = Goteo\Model\Project::status();
 ?>

@@ -1,4 +1,3 @@
-<?php include 'view/header.html.php' ?>
 <?php include 'view/project/header.html.php' ?>
 <?php use Goteo\Library\Text; ?>
 USUARIO / Datos personales<br />
@@ -47,4 +46,3 @@ GUÍA: <?php echo $guideText;  ?><br />
 	<input type="submit" name="submit" value="CONTINUAR" />
 </form>
 <?php include 'view/project/footer.html.php' ?>
-<?php include 'view/footer.html.php' ?>

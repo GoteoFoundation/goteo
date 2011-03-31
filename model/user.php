@@ -185,5 +185,17 @@ namespace Goteo\Model {
 				throw new Redirection('/user/login');
 			}
 		}
+
+		public static function interests() {
+            return array(
+                1=>'Educación',
+                2=>'Economía solidaria',
+                3=>'Empresa abierta',
+                4=>'Formación técnica',
+                5=>'Desarrollo',
+                6=>'Software',
+                7=>'Hardware');
+		}
+
 	}   
 }

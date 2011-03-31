@@ -110,28 +110,10 @@ namespace Goteo\Model\Project {
 				return true;
 			}
 			else {
-				$errors[] = 'No se ha podido quitar la palabra clave del proyecto ' . $this->project;
+				$errors[] = 'No se ha podido quitar la palabra clave ' . $this->id . ' del proyecto ' . $this->project;
 				return false;
 			}
 		}
-
-		/*
-		public static function create ($project, $keyword, &$errors) {
-			$values = array (
-				':project'=>$project,
-				':keyword'=>trim($keyword),
-			);
-
-			if ($res = self::query("INSERT INTO keyword (id, project, keyword) VALUES('', :project, :keyword)", $values)) {
-				return $res->fetchObject();
-			}
-			else {
-				$errors[] = 'No se ha guardado la palabra clave ' . $keyword;
-				return false;
-			}
-		}
-		 * *
-		 */
 
 	}
     

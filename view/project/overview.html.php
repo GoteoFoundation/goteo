@@ -1,4 +1,3 @@
-<?php include 'view/header.html.php' ?>
 <?php include 'view/project/header.html.php' ?>
 <?php use Goteo\Library\Text; ?>
 PROYECTO / Previsualización<br />
@@ -10,4 +9,3 @@ GUÍA: <?php echo $guideText;  ?><br />
 <hr />
 <pre><?php echo print_r($project, 1) ?></pre>
 <?php include 'view/project/footer.html.php' ?>
-<?php include 'view/footer.html.php' ?>

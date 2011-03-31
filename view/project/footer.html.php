@@ -7,3 +7,9 @@
 <a href="/project/rewards"><?php echo Text::get('step 5'); ?></a>&nbsp;
 <a href="/project/supports"><?php echo Text::get('step 6'); ?></a>&nbsp;
 <a href="/project/overview"><?php echo Text::get('step 7'); ?></a>&nbsp;
+
+        </div>
+
+        <?php include 'view/footer.html.php' ?>
+
+<?php include 'view/epilogue.html.php' ?>

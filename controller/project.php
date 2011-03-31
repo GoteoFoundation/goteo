@@ -78,29 +78,23 @@ namespace Goteo\Controller {
             Model\User::restrict();
 
 			$id = $_SESSION['current_project'];
-			$user = $_SESSION['user'];
-			$user = unserialize(serialize($user));
+			$usr = unserialize(serialize($_SESSION['user']));
 
-            if (!$id || !$userid) {
-				header('Location: /');
-				die;
-            } else {
-                $project = Model\Project::get($id);
+			$project = Model\Project::get($id);
 
-				$user = Model\User::get($user->id);
-/*
-				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-					if ($user->save($_POST, $errors)) {
-						header('Location: /project/register');
-						die;
-					}
-				}
-*/
+			$user = Model\User::get($usr->id);
+			if (isset($_POST['submit'])) {
+
+				echo '<pre>' . print_r($user, 1) . '</pre>';
+				echo '<pre>' . print_r($_POST, 1) . '</pre>';
+
+				$user->save($errors);
+			}
+
+			$interests = Model\User::interests();
 
 			$guideText = Text::get('guide project user information');
             include 'view/project/user.html.php';
-
-			}
 
         }
 
@@ -134,7 +128,7 @@ namespace Goteo\Controller {
 						);
 
 					foreach ($fields as $field) {
-						$project->$field = $_POST[$filed];
+						$project->$field = $_POST[$field];
 					}
 
 					$errors = array();
@@ -295,6 +289,8 @@ namespace Goteo\Controller {
 
 			}
 
+			$types = Model\Project\Cost::types();
+
 			$guideText = Text::get('guide project costs');
             include 'view/project/costs.html.php';
 
@@ -391,6 +387,9 @@ namespace Goteo\Controller {
 
 				}
 
+				$stypes = Model\Project\Reward::types('social');
+				$itypes = Model\Project\Reward::types('individual');
+
 				$guideText = Text::get('guide project rewards');
 				include 'view/project/rewards.html.php';
 
@@ -446,6 +445,8 @@ namespace Goteo\Controller {
 					
 				}
 
+				$types = Model\Project\Support::types();
+
 				$guideText = Text::get('guide project support');
 				include 'view/project/supports.html.php';
 
@@ -478,7 +479,7 @@ namespace Goteo\Controller {
 						$finish = true;
 					}
 				}
-				
+
 				$guideText = Text::get('guide project overview');
 				include 'view/project/overview.html.php';
 

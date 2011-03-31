@@ -1,4 +1,3 @@
-<?php include 'view/header.html.php' ?>
 <?php include 'view/project/header.html.php' ?>
 <?php use Goteo\Library\Text; ?>
 PROYECTO / Descripción<br />
@@ -42,14 +41,13 @@ GUÍA: <?php echo $guideText;  ?><br />
 				<option value="<?php echo $Id; ?>" <?php if ($project->category == $Id) echo ' selected="selected"'; ?>><?php echo $Val; ?></option>
 				<?php endforeach; ?>
 			</select></dd>
-		<dd><input type="text" id="" name="category" value="<?php echo $project->category; ?>"/></dd>
 		<span><?php echo Text::get('tooltip project category'); ?></span><br />
 
 		<dt><label for="keywords">Palabras clave</label></dt>
 		<dd>Añadir:<input type="text" id="keywords" name="keywords" value=""/>(separadas por comas)</dd>
 		<input type="button" id="new-keyword" value="Nuevo" />
 		<div><?php foreach ($project->keywords as $keyword) : ?>
-			<label>REMOVE! <input type="checkbox" name="remove-keyword<?php echo $keyword->id; ?>" value="<?php echo $keyword->id; ?>" /></label>
+			<label>(X)<input type="checkbox" name="remove-keyword<?php echo $keyword->id; ?>" value="<?php echo $keyword->id; ?>" /></label>
 			<span><?php echo $keyword->keyword; ?></span>
 		<?php endforeach; ?></div>
 		<span><?php echo Text::get('tooltip project keywords'); ?></span><br />
@@ -74,4 +72,3 @@ GUÍA: <?php echo $guideText;  ?><br />
 	<input type="submit" name="submit" value="CONTINUAR" />
 </form>
 <?php include 'view/project/footer.html.php' ?>
-<?php include 'view/footer.html.php' ?>
