@@ -1,11 +1,9 @@
-<?php include 'view/header.html.php' ?>
-    <div id="registro">
-        <h2>Registro</h2>
-        <style type="text/css">
-            /** @FIXME: BORRAME **/
-            li em { color: red; }
-        </style>
-        <form action="/user/register" method="post">
+<?php $bodyClass = 'user-register'; include 'view/prologue.html.php' ?>
+
+    <?php include 'view/header.html.php' ?>
+
+    <div id="main">        
+        <form action="" method="post">
             <fieldset>
                 <legend>Registro de usuario</legend>
                 <ol>
@@ -22,6 +20,8 @@
             </fieldset>
         </form>
     </div>
+        
+
 <?php
 if (!empty($errors)) {
     foreach ($errors as $error) {

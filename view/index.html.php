@@ -1,7 +1,11 @@
-<?php include 'view/header.html.php' ?>
+<?php $bodyClass = 'home'; include 'view/prologue.html.php' ?>
 
-        <p><?php echo $message; ?></p>
+        <?php include 'view/header.html.php' ?>
 
-		<p><a href="/user/login">Accede</a></p>
+        <div id="main">
+            
+        </div>        
+
+        <?php include 'view/footer.html.php' ?>
     
-<?php include 'view/footer.html.php' ?>
+<?php include 'view/epilogue.html.php' ?>
