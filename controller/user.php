@@ -12,7 +12,7 @@ namespace Goteo\Controller {
 	     * @param string $id   Nombre de usuario
 	     */
 		public function index ($id) {
-		    throw new Redirection('/user/profile/' .  $id);
+		    throw new Redirection('/user/profile/' .  $id, Redirection::PERMANENT);
 		}
 		
 		/**

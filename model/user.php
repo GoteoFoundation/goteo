@@ -182,7 +182,7 @@ namespace Goteo\Model {
 		 */
 		public static function restrict() {
 			if(!static::isLogged()) {
-				throw new Redirection("/user/login");
+				throw new Redirection('/user/login');
 			}
 		}
 	}   
