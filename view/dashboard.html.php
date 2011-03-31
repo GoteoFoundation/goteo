@@ -1,5 +1,9 @@
-<?php include 'view/header.html.php' ?>
-
+<?php 
+$bodyClass = 'dashboard';
+include 'view/prologue.html.php';
+include 'view/header.html.php'; ?>
+        
+        <div id="main">
 
         <p><?php echo $message; ?></p>
 
@@ -21,5 +25,7 @@
 		<p>
 			Nuevo proyecto: <a href="/project/create">Crear</a><br />
 		</p>
+                
+        </div>
     
 <?php include 'view/footer.html.php' ?>

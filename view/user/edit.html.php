@@ -1,12 +1,13 @@
-<?php include 'view/header.html.php' ?>
-    <p><a href="/dashboard">[DASHBOARD]</a></p>
-    <div id="editar">
+<?php 
+$bodyClass = 'user-edit';
+include 'view/prologue.html.php';
+include 'view/header.html.php'; ?>
+    
+    <div id="main">
+        
         <h2>Editar</h2>
-        <style type="text/css">
-            /** @FIXME: BORRAME **/
-            li textarea { display: block; }
-        </style>
-        <form action="/user/edit" method="post">
+        
+        <form action="" method="post">
             <fieldset>
                 <legend>Datos de acceso</legend>
                 <ol>
