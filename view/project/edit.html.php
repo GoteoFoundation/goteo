@@ -37,25 +37,31 @@ GUÍA: <?php echo $guideText;  ?><br />
 		<span><?php echo Text::get('tooltip project related'); ?></span><br />
 
 		<dt><label for="category">Categoría</label></dt>
-		<dd><input type="text" id="category" name="category" value="<?php echo $project->category; ?>"/></dd>
+		<dd><select id="category" name="category">
+				<?php foreach ($category as $Id=>$Val) : ?>
+				<option value="<?php echo $Id; ?>" <?php if ($project->category == $Id) echo ' selected="selected"'; ?>><?php echo $Val; ?></option>
+				<?php endforeach; ?>
+			</select></dd>
+		<dd><input type="text" id="" name="category" value="<?php echo $project->category; ?>"/></dd>
 		<span><?php echo Text::get('tooltip project category'); ?></span><br />
-
-		<dt><label for="media">Media</label></dt>
-		<dd><input type="text" id="media" name="media" value="<?php echo $project->media; ?>"/></dd>
-		<span><?php echo Text::get('tooltip project media'); ?></span><br />
 
 		<dt><label for="keywords">Palabras clave</label></dt>
 		<dd>Añadir:<input type="text" id="keywords" name="keywords" value=""/>(separadas por comas)</dd>
 		<input type="button" id="new-keyword" value="Nuevo" />
 		<div><?php foreach ($project->keywords as $keyword) : ?>
-			<span><a href="#remove-keyword-<?php echo $keyword->id; ?>">(X)</a> <?php echo $keyword->keyword; ?></span>
+			<label>REMOVE! <input type="checkbox" name="remove-keyword<?php echo $keyword->id; ?>" value="<?php echo $keyword->id; ?>" /></label>
+			<span><?php echo $keyword->keyword; ?></span>
 		<?php endforeach; ?></div>
 		<span><?php echo Text::get('tooltip project keywords'); ?></span><br />
 
-		<dt><label for="currently">Estado del proyecto</label></dt>
+		<dt><label for="media">Media</label></dt>
+		<dd><input type="text" id="media" name="media" value="<?php echo $project->media; ?>"/></dd>
+		<span><?php echo Text::get('tooltip project media'); ?></span><br />
+
+		<dt><label for="currently">Estado actual de desarrollo</label></dt>
 		<dd><select id="currently" name="currently">
-				<?php foreach ($currents as $curId=>$curVal) : ?>
-				<option value="<?php echo $curId; ?>" <?php if ($project->currently == $curId) echo ' selected="selected"'; ?>><?php echo $curVal; ?></option>
+				<?php foreach ($currently as $Id=>$Val) : ?>
+				<option value="<?php echo $Id; ?>" <?php if ($project->currently == $Id) echo ' selected="selected"'; ?>><?php echo $Val; ?></option>
 				<?php endforeach; ?>
 			</select></dd>
 		<span><?php echo Text::get('tooltip project currently'); ?></span><br />
@@ -63,9 +69,9 @@ GUÍA: <?php echo $guideText;  ?><br />
 		<dt><label for="project_location">Localización</label></dt>
 		<dd><input type="text" id="project_location" name="project_location" value="<?php echo $project->project_location; ?>"/></dd>
 		<span><?php echo Text::get('tooltip project project_location'); ?></span><br />
-
 	</dl>
-	<input type="submit" value="CONTINUAR" />
+	
+	<input type="submit" name="submit" value="CONTINUAR" />
 </form>
 <?php include 'view/project/footer.html.php' ?>
 <?php include 'view/footer.html.php' ?>

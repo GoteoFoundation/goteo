@@ -44,7 +44,7 @@ GUÍA: <?php echo $guideText;  ?><br />
 		<span><?php echo Text::get('tooltip user linkedin'); ?></span><br />
 
 	</dl>
-	<input type="submit" value="CONTINUAR" />
+	<input type="submit" name="submit" value="CONTINUAR" />
 </form>
 <?php include 'view/project/footer.html.php' ?>
 <?php include 'view/footer.html.php' ?>

@@ -185,7 +185,6 @@ namespace Goteo\Model {
             $this->phone = str_replace(array('_', '.', ' ', '-', ','), '', $this->phone);
 
             $fields = array(
-				'id',
                 'contract_name',
                 'contract_surname',
                 'contract_nif',
@@ -222,14 +221,11 @@ namespace Goteo\Model {
 			try {
 				$set .= "updated = :updated";
 				$values[':updated'] = date('Y-m-d');
+				$values[':id'] = $this->id;
 
-				$sql = "REPLACE INTO project SET " . $set;
+				$sql = "UPDATE project SET " . $set . " WHERE id = :id";
 				$res = self::query($sql, $values);
 
-				if (empty($this->id)) {
-					$this->id = \PDO::lastInsertId;
-				}
-				
 			} catch(\PDOException $e) {
                 $errors[] = Text::get('error sql guardar proyecto');
 			}
@@ -337,25 +333,32 @@ namespace Goteo\Model {
                 }
             ++$max;
 
-//              'phone', // +1
-            if (!empty($this->phone)) {
-                if (!Check::Phone($this->phone)) {
+//              'phone', // mandatory validation phone +1
+            if (empty($this->phone)) {
+                $errors['phone'] = Text::get('mandatory project field phone');
+                --$score;
+            } elseif (!Check::Phone($this->phone)) {
                     $errors['phone'] = Text::get('validate project value phone');
                     --$score;
                 } else {
                     ++$score;
                 }
-            }
             ++$max;
 
 //              'address', // +1
             if (!empty($this->address)) {
+                $errors['address'] = Text::get('mandatory project field address');
+                --$score;
+			} else {
                 ++$score;
             }
             ++$max;
 
 //              'zipcode', // +1
-            if (!empty($this->zipcode)) {
+            if (empty($this->zipcode)) {
+                $errors['zipcode'] = Text::get('mandatory project field zipcode');
+                --$score;
+			} else {
                 ++$score;
             }
             ++$max;
@@ -369,8 +372,11 @@ namespace Goteo\Model {
             }
             ++$max;
 
-//              'country', // +1
-            if (!empty($this->country)) {
+//              'country', // mandatory +1
+            if (empty($this->country)) {
+                $errors['country'] = Text::get('mandatory project field country');
+                --$score;
+			} else {
                 ++$score;
             }
             ++$max;
@@ -384,8 +390,11 @@ namespace Goteo\Model {
             }
             ++$max;
 
-//              'image', // +5
+//              'image', // mandatory +5
             if (!empty($this->image)) {
+                $errors['image'] = Text::get('mandatory project field image');
+                $score -= 5;
+			} else {
                 $score += 5;
             }
             $max += 5;
@@ -398,7 +407,6 @@ namespace Goteo\Model {
                 ++$score;
                 if (!Check::Words($this->description, 150)) {
                     $errors['description'] = Text::get('validate project value description');
-                    "";
                     $score -= 5;
                 } else {
                     $score += 5;
@@ -407,25 +415,37 @@ namespace Goteo\Model {
             $max += 6;
 
 //              'motivation', // +1
-            if (!empty($this->motivation)) {
+            if (empty($this->motivation)) {
+                $errors['motivation'] = Text::get('mandatory project field motivation');
+                --$score;
+            } else {
                 ++$score;
             }
             ++$max;
 
 //              'about', // +1
-            if (!empty($this->about)) {
+            if (empty($this->about)) {
+                $errors['about'] = Text::get('mandatory project field about');
+                --$score;
+            } else {
                 ++$score;
             }
             ++$max;
 
 //              'goal', // +1
-            if (!empty($this->goal)) {
+            if (empty($this->goal)) {
+                $errors['goal'] = Text::get('mandatory project field goal');
+                --$score;
+            } else {
                 ++$score;
             }
             ++$max;
 
 //              'related', // +1
             if (!empty($this->related)) {
+                $errors['related'] = Text::get('mandatory project field related');
+                --$score;
+            } else {
                 ++$score;
             }
             ++$max;
@@ -649,12 +669,25 @@ namespace Goteo\Model {
             }
         }
 
+		/*
+		 * Categorías de proyectos
+		 */
+        public static function categories () {
+            return array(
+                1=>'Educación',
+                2=>'Economía solidaria',
+                3=>'Empresa abierta',
+                4=>'Formación técnica',
+                5=>'Desarrollo',
+                6=>'Software',
+                7=>'Hardware');
+        }
+
         /*
          * Estados de desarrollo del propyecto
          */
         public static function currentStatus () {
             return array(
-                0=>'0',
                 1=>'Inicial',
                 2=>'Medio',
                 3=>'Avanzado',
@@ -664,7 +697,7 @@ namespace Goteo\Model {
         /*
          * Estados de publicación de un proyecto
          */
-        public static function Status () {
+        public static function status () {
             return array(
                 1=>'Editándose',
                 2=>'Pendiente valoración',

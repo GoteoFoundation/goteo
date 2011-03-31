@@ -15,6 +15,7 @@ namespace Goteo\Model\Project {
                 $query = static::query("SELECT * FROM keyword WHERE id = :id", array(':id' => $id));
                 return $query->fetchObject(__CLASS__);
             } catch(\PDOException $e) {
+				echo $e->getMessage();
                 return false;
             }
 		}
@@ -25,6 +26,7 @@ namespace Goteo\Model\Project {
 				$items = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
 				return $items;
 			} catch (\PDOException $e) {
+				echo $e->getMessage();
 				return array();
 			}
 		}
@@ -74,14 +76,17 @@ namespace Goteo\Model\Project {
 
 			try {
 				$sql = "REPLACE INTO keyword SET " . $set;
-				$res = self::query($sql, $values);
+				if ($res = self::query($sql, $values))  {
 
-				if (empty($this->id)) {
-					$this->id = \PDO::lastInsertId;
+					if (empty($this->id)) $this->id = \PDO::lastInsertId;
+
+					return true;
 				}
-
-				return true;
+				else {
+					echo "$sql<br /><pre>" . print_r($values, 1) . "</pre>";
+				}
 			} catch(\PDOException $e) {
+				$errors[] = $e->getMessage();
 				$errors[] = "La palabra clave {$this->keyword} no se ha grabado correctamente. Por favor, revise los datos.";
 				return false;
 			}

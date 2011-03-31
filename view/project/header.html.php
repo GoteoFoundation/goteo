@@ -1,7 +1,9 @@
-<?php use Goteo\Library\Text; ?>
+<?php use Goteo\Library\Text;
+$status = Goteo\Model\Project::status();
+?>
 <p><a href="/dashboard">[DASHBOARD]</a></p>
 <hr />
-<p>ESTADO DEL PROYECTO | ESTADO GLOBAL DE LA INFORMACIÓN: <?php echo $project->fiuuu; ?></p>
+<p>ESTADO DEL PROYECTO <?php echo $status[$project->status]; ?> | ESTADO GLOBAL DE LA INFORMACIÓN: <?php echo $project->fiuuu; ?></p>
 <span><?php echo Text::get('explain project progress'); ?></span><br />
 <hr />
 <a href="/project/user"><?php echo Text::get('step 1'); ?></a>&nbsp;

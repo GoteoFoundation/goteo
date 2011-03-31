@@ -8,6 +8,7 @@ namespace Goteo\Model\Project {
             $id,
 			$project,
 			$reward,
+			$description,
 			$type,
 			$icon,
 			$license,
@@ -38,6 +39,7 @@ namespace Goteo\Model\Project {
 				'id',
 				'project',
 				'reward',
+				'description',
 				'type',
 				'icon',
 				'license',
@@ -56,14 +58,17 @@ namespace Goteo\Model\Project {
 
 			try {
 				$sql = "REPLACE INTO reward SET " . $set;
-				$res = self::query($sql, $values);
+				if ($res = self::query($sql, $values))  {
 
-				if (empty($this->id)) {
-					$this->id = \PDO::lastInsertId;
+					if (empty($this->id)) $this->id = \PDO::lastInsertId;
+
+					return true;
 				}
-
-				return true;
-			} catch (\PDOException $e) {
+				else {
+					echo "$sql<br /><pre>" . print_r($values, 1) . "</pre>";
+				}
+			} catch(\PDOException $e) {
+				$errors[] = $e->getMessage();
 				$errors[] = "El retorno {$this->reward} no se ha grabado correctamente. Por favor, revise los datos.";
 				return false;
 			}
@@ -93,6 +98,19 @@ namespace Goteo\Model\Project {
 		}
 
 		public function validate(&$errors = array()) {}
+
+		public static function icons($type = 'social') {
+            $icons = array(
+                1=>'Archivos digitales',
+                2=>'Dinero',
+                3=>'Código fuente',
+                4=>'Servicios',
+                5=>'Manuales');
+
+			if ($type == 'individual') {
+				$icons[6] = 'Producto';
+			}
+		}
 
 	}
 

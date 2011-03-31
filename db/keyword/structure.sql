@@ -4,3 +4,5 @@ CREATE TABLE IF NOT EXISTS keyword (
 `keyword` TINYTEXT NOT NULL ,
 `category` BOOLEAN NOT NULL DEFAULT '0'
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Keywords de proyectos';
+
+ALTER TABLE `keyword` DROP `category` ;

@@ -8,3 +8,6 @@ CREATE TABLE IF NOT EXISTS `reward` (
 `amount` INT( 5 ) NULL ,
 `units` INT( 5 ) NULL
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Retornos colectivos e individuales';
+
+ALTER TABLE `reward` ADD `description` TINYTEXT NULL AFTER `reward` ;
+ALTER TABLE `reward` CHANGE `reward` `reward` VARCHAR( 256 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;

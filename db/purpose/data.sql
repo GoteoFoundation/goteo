@@ -19,6 +19,11 @@ INSERT INTO purpose VALUES ('guide project rewards', 'Texto guía en el paso RET
 INSERT INTO purpose VALUES ('guide project support', 'Texto guía en el paso COLABORACIONES del formulario de proyecto');
 INSERT INTO purpose VALUES ('guide project overview', 'Texto guía en el paso PREVISUALIZACIÓN del formulario de proyecto');
 
+INSERT INTO purpose VALUES ('guide project success noerrors', 'Todos los campos obligatorios estan rellenados');
+INSERT INTO purpose VALUES ('guide project success minprogress', 'Ha llegado al porcentaje mínimo');
+INSERT INTO purpose VALUES ('guide project success okfinish', 'Puede enviar para valoración');
+INSERT INTO purpose VALUES ('guide project error mandatories', 'Faltan campos obligatorios');
+
 INSERT INTO purpose VALUES ('error sql guardar proyecto', 'La sentencia UPDATE para grabar los datos de un proyecto en la base de datos falla.');
 INSERT INTO purpose VALUES ('mandatory project field contract name', 'El nombre del responsable del proyecto es obligatorio');
 INSERT INTO purpose VALUES ('mandatory project field contract surname', 'El apellido del responsable del proyecto es obligatorio');
@@ -35,6 +40,15 @@ INSERT INTO purpose VALUES ('mandatory project field category', 'La categoría d
 INSERT INTO purpose VALUES ('mandatory project field location', 'La localización del proyecto es obligatoria');
 INSERT INTO purpose VALUES ('validation project min costs', 'Mínimo de costes a desglosar en un proyecto');
 INSERT INTO purpose VALUES ('validation project total costs', 'El coste óptimo no puede exceder demasiado al coste mínimo');
+INSERT INTO purpose VALUES ('mandatory project field phone', 'El teléfono del responsable del proyecto es obligatorio');
+INSERT INTO purpose VALUES ('mandatory project field address', 'La dirección del responsable del proyecto es obligatoria');
+INSERT INTO purpose VALUES ('mandatory project field zipcode', 'El código postal del responsable del proyecto es obligatorio');
+INSERT INTO purpose VALUES ('mandatory project field country', 'El país del responsable del proyecto es obligatorio');
+INSERT INTO purpose VALUES ('mandatory project field image', 'Es obligatorio poner una imagen al proyecto');
+INSERT INTO purpose VALUES ('mandatory project field motivation', 'Es obligatorio explicar la motivación en la descripción del proyecto');
+INSERT INTO purpose VALUES ('mandatory project field about', 'Es obligatorio explicar qué es en la descripción del proyecto');
+INSERT INTO purpose VALUES ('mandatory project field goal', 'Es obligatorio explicar los objetivos en la descripción del proyecto');
+INSERT INTO purpose VALUES ('mandatory project field related', 'Es obligatorio explicar la experiencia relacionada y el equipo en la descripción del proyecto');
 
 INSERT INTO purpose VALUES ('tooltip user user', 'Consejo para rellenar el nombre de usuario para login');
 INSERT INTO purpose VALUES ('tooltip user email', 'Consejo para rellenar el email de registro de usuario');

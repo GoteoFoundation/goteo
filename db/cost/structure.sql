@@ -8,3 +8,8 @@ CREATE TABLE IF NOT EXISTS `cost` (
 `from` DATE NULL ,
 `until` DATE NULL
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Desglose de costes de proyectos';
+
+ALTER TABLE `cost` ADD `description` TINYTEXT NULL AFTER `cost`;
+ALTER TABLE `cost` CHANGE `cost` `cost` VARCHAR( 256 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;
+ALTER TABLE `cost` CHANGE `required` `required` TINYINT( 1 ) NULL DEFAULT '0';
+ALTER TABLE `cost` CHANGE `amount` `amount` INT( 5 ) NULL DEFAULT '0';

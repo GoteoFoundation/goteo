@@ -6,7 +6,7 @@ INSERT INTO `text` VALUES ('step 5', 'es', 'RETORNO');
 INSERT INTO `text` VALUES ('step 6', 'es', 'COLABORACIONES');
 INSERT INTO `text` VALUES ('step 7', 'es', 'PREVISUALIZACIÓN');
 
-INSERT INTO `text` VALUES ('regular mandatory', 'es', 'campo obligatorio!');
+INSERT INTO `text` VALUES ('regular mandatory', 'es', 'Campo obligatorio!');
 INSERT INTO `text` VALUES ('explain project progress', 'es', 'Texto bajo el título Estado global de la información');
 
 INSERT INTO `text` VALUES ('guide user register', 'es', 'Texto guía en el registro de un nuevo usuario.');
@@ -18,6 +18,11 @@ INSERT INTO `text` VALUES ('guide project costs', 'es', 'Texto guía en el paso 
 INSERT INTO `text` VALUES ('guide project rewards', 'es', 'Texto guía en el paso RETORNO del formulario de proyecto.');
 INSERT INTO `text` VALUES ('guide project support', 'es', 'Texto guía en el paso COLABORACIONES del formulario de proyecto.');
 INSERT INTO `text` VALUES ('guide project overview', 'es', 'Texto guía en el paso PREVISUALIZACIÓN del formulario de proyecto.');
+
+INSERT INTO `text` VALUES ('guide project success noerrors', 'es', 'Todos los campos obligatorios estan rellenados');
+INSERT INTO `text` VALUES ('guide project success minprogress', 'es', 'Ha llegado al porcentaje mínimo');
+INSERT INTO `text` VALUES ('guide project success okfinish', 'es', 'Puede enviar para valoración');
+INSERT INTO `text` VALUES ('guide project error mandatories', 'es', 'Faltan campos obligatorios');
 
 INSERT INTO `text` VALUES ('error sql guardar proyecto', 'es', 'El proyecto no se ha grabado correctamete. Por favor, revise los datos.');
 INSERT INTO `text` VALUES ('mandatory project field contract name', 'es', 'Es obligatorio poner el NOMBRE del responsable del proyecto, paso 2: Datos personales.');
@@ -35,6 +40,15 @@ INSERT INTO `text` VALUES ('mandatory project field category', 'es', 'Es obligat
 INSERT INTO `text` VALUES ('mandatory project field location', 'es', 'Es obligatorio poner la LOCALIZACIÓN del proyecto, paso 3: Descripción.');
 INSERT INTO `text` VALUES ('validation project min costs', 'es', 'Debe desglosar en al menos DOS COSTES, paso 4 costes.');
 INSERT INTO `text` VALUES ('validation project total costs', 'es', 'El coste óptimo no puede superar en más de un 40% al coste mínimo. Revisar el DESGLOSE DE COSTES, paso 4 costes.');
+INSERT INTO `text` VALUES ('mandatory project field phone', 'es', 'El teléfono del responsable del proyecto es obligatorio');
+INSERT INTO `text` VALUES ('mandatory project field address', 'es', 'La dirección del responsable del proyecto es obligatoria');
+INSERT INTO `text` VALUES ('mandatory project field zipcode', 'es', 'El código postal del responsable del proyecto es obligatorio');
+INSERT INTO `text` VALUES ('mandatory project field country', 'es', 'El país del responsable del proyecto es obligatorio');
+INSERT INTO `text` VALUES ('mandatory project field image', 'es', 'Es obligatorio poner una imagen al proyecto');
+INSERT INTO `text` VALUES ('mandatory project field motivation', 'es', 'Es obligatorio explicar la motivación en la descripción del proyecto');
+INSERT INTO `text` VALUES ('mandatory project field about', 'es', 'Es obligatorio explicar qué es en la descripción del proyecto');
+INSERT INTO `text` VALUES ('mandatory project field goal', 'es', 'Es obligatorio explicar los objetivos en la descripción del proyecto');
+INSERT INTO `text` VALUES ('mandatory project field related', 'es', 'Es obligatorio explicar la experiencia relacionada y el equipo en la descripción del proyecto');
 
 INSERT INTO `text` VALUES ('tooltip user user', 'es', 'Consejo para rellenar el nombre de usuario para login');
 INSERT INTO `text` VALUES ('tooltip user email', 'es', 'Consejo para rellenar el email de registro de usuario');
