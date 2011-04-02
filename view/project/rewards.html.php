@@ -29,6 +29,7 @@ GUÍA: <?php echo $guideText; ?><br />
 	<h3>Retornos colectivos</h3>
 <?php foreach ($project->social_rewards as $social) : ?>
 		<fieldset><legend>Retorno colectivo <?php echo $social->id; ?></legend>
+			<label>REMOVE! <input type="checkbox" name="remove-social_reward<?php echo $social->id; ?>" value="1" /></label><br />
 			<span>Tipo: <?php echo $stypes[$social->icon]; ?></span>
 			<dl>
 				<dt><label for="social_reward<?php echo $social->id; ?>">Retorno colectivo</label></dt>
@@ -72,10 +73,11 @@ GUÍA: <?php echo $guideText; ?><br />
 	<h3>Recompensas individuales</h3>
 <?php foreach ($project->individual_rewards as $individual) : ?>
 				<fieldset><legend>recompensa <?php echo $individual->id; ?></legend>
+        			<label>REMOVE! <input type="checkbox" name="remove-individual_reward<?php echo $individual->id; ?>" value="1" /></label><br />
+					<span>Tipo: <?php echo $itypes[$individual->icon]; ?></span>
+
 					<label>Cantidad solicitada (&euro;):<input type="text" id="individual_reward-amount<?php echo $individual->id; ?>" name="individual_reward-amount<?php echo $individual->id; ?>" value="<?php echo $individual->amount; ?>" /></label>
 					<label>Unidades disponibles:<input type="text" id="individual_reward-units<?php echo $individual->id; ?>" name="individual_reward-units<?php echo $individual->id; ?>" value="<?php echo $individual->units; ?>" /></label>
-
-					<span>Tipo: <?php echo $itypes[$individual->icon]; ?></span>
 
 					<dl>
 						<dt><label for="individual_reward<?php echo $individual->id; ?>">Recompensa</label></dt>

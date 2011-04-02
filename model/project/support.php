@@ -13,7 +13,7 @@ namespace Goteo\Model\Project {
 
 	 	public static function get ($id) {
             try {
-                $query = static::query("SELECT * FROM cost WHERE id = :id", array(':id' => $id));
+                $query = static::query("SELECT * FROM support WHERE id = :id", array(':id' => $id));
                 return $query->fetchObject(__CLASS__);
             } catch(\PDOException $e) {
                 return false;
@@ -22,7 +22,7 @@ namespace Goteo\Model\Project {
 
 		public static function getAll ($project) {
             try {
-				$query = self::query("SELECT * FROM cost WHERE project = ?", array($project));
+				$query = self::query("SELECT * FROM support WHERE project = ?", array($project));
 				$items = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
 				return $items;
 			} catch (\PDOException $e) {
@@ -55,7 +55,7 @@ namespace Goteo\Model\Project {
 				$sql = "REPLACE INTO support SET " . $set;
 				if ($res = self::query($sql, $values))  {
 
-					if (empty($this->id)) $this->id = \PDO::lastInsertId;
+//					if (empty($this->id)) $this->id = \PDO::lastInsertId;
 
 					return true;
 				}

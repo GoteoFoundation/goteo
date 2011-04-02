@@ -55,7 +55,8 @@ INSERT INTO purpose VALUES ('tooltip user email', 'Consejo para rellenar el emai
 INSERT INTO purpose VALUES ('tooltip user name', 'Consejo para rellenar el nombre completo del usuario');
 INSERT INTO purpose VALUES ('tooltip user image', 'Consejo para rellenar la imagen del usuario');
 INSERT INTO purpose VALUES ('tooltip user about', 'Consejo para rellenar el cuéntanos algo sobre tí');
-INSERT INTO purpose VALUES ('tooltip user interests', 'Consejo para rellenar tus intereses');
+INSERT INTO purpose VALUES ('tooltip user interests', 'Consejo para seleccionar tus intereses');
+INSERT INTO purpose VALUES ('tooltip user keywords', 'Consejo para rellenar tus palabras clave');
 INSERT INTO purpose VALUES ('tooltip user contribution', 'Consejo para rellenar el qué podrías aportar en goteo');
 INSERT INTO purpose VALUES ('tooltip user blog', 'Consejo para rellenar la web');
 INSERT INTO purpose VALUES ('tooltip user twitter', 'Consejo para rellenar el twitter');
@@ -79,9 +80,9 @@ INSERT INTO purpose VALUES ('tooltip project motivation', 'Consejo para rellenar
 INSERT INTO purpose VALUES ('tooltip project about', 'Consejo para rellenar el campo qué es');
 INSERT INTO purpose VALUES ('tooltip project goal', 'Consejo para rellenar el campo objetivos');
 INSERT INTO purpose VALUES ('tooltip project related', 'Consejo para rellenar el campo experiencia relacionada y equipo');
-INSERT INTO purpose VALUES ('tooltip project category', 'Consejo para rellenar la categoría del proyecto');
-INSERT INTO purpose VALUES ('tooltip project media', 'Consejo para rellenar el media del proyecto');
+INSERT INTO purpose VALUES ('tooltip project category', 'Consejo para seleccionar la categoría del proyecto');
 INSERT INTO purpose VALUES ('tooltip project keywords', 'Consejo para rellenar las palabras clave del proyecto');
+INSERT INTO purpose VALUES ('tooltip project media', 'Consejo para rellenar el media del proyecto');
 INSERT INTO purpose VALUES ('tooltip project currently', 'Consejo para rellenar el estado de desarrollo del proyecto');
 INSERT INTO purpose VALUES ('tooltip project project_location', 'Consejo para rellenar la localización del proyecto');
 

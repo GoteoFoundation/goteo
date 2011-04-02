@@ -26,10 +26,11 @@ namespace Goteo\Model\Project {
 
 		public static function getAll ($project, $type) {
             try {
-				$query = self::query("SELECT * FROM reward WHERE project = :project AND type= :type", array($project, $type));
+				$query = self::query("SELECT * FROM reward WHERE project = ? AND type= ?", array($project, $type));
 				$items = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
 				return $items;
 			} catch (\PDOException $e) {
+                echo $e->getMessage();
 				return array();
 			}
 		}
@@ -60,7 +61,7 @@ namespace Goteo\Model\Project {
 				$sql = "REPLACE INTO reward SET " . $set;
 				if ($res = self::query($sql, $values))  {
 
-					if (empty($this->id)) $this->id = \PDO::lastInsertId;
+//					if (empty($this->id)) $this->id = \PDO::lastInsertId;
 
 					return true;
 				}
@@ -110,6 +111,8 @@ namespace Goteo\Model\Project {
 			if ($type == 'individual') {
 				$icons[6] = 'Producto';
 			}
+
+            return $icons;
 		}
 
 	}

@@ -60,6 +60,9 @@ namespace Goteo\Core {
 			if ($result->execute($params)) {
 				return $result;
 			}
+            else {
+                die("FAIL!! $query <pre>" . print_r($params, 1) . "</pre>");
+            }
 			throw new Exception($query);
         }
 

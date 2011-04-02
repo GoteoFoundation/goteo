@@ -34,9 +34,9 @@ namespace Goteo\Model {
              $about,
              $goal,
              $related,
-            $category,
+            $categories = array(),
             $media,
-            $keywords = array(), // related to the project category project\keyword
+            $keywords, // por ahora se guarda en texto tal cual
             $currently, // Current development status of the project
             $project_location, // project execution location
                 
@@ -47,7 +47,7 @@ namespace Goteo\Model {
             
             // Rewards
             $social_rewards = array(), // instances of project\reward for the public (collective type)
-            $invest_rewards = array(), // instances of project\reward for investors  (individual type)
+            $individual_rewards = array(), // instances of project\reward for investors  (individual type)
 
             // Collaborations
             $supports = array(), // instances of project\support
@@ -68,17 +68,12 @@ namespace Goteo\Model {
 				$query = self::query("SELECT * FROM project WHERE id = ?", array($id));
 				$project = $query->fetchObject(__CLASS__);
 
-				/*
-				foreach ($fields as $data=>$value) {
-					if (property_exists($this, $data) && !empty($value)) {
-						$this->$data = $value;
-					}
-				}
-				 *
-				 */
-
-				// las palabras clave
-				$project->keywords = Project\Keyword::getAll($id);
+				// categorias
+				$query = self::query("SELECT category FROM project_category WHERE project = ?", array($id));
+                $cats = $query->fetchAll();
+                foreach ($cats as $cat) {
+                    $project->categories[] = $cat[0];
+                }
 
 				// costes y los sumammos
 				$project->costs = Project\Cost::getAll($id);
@@ -100,6 +95,7 @@ namespace Goteo\Model {
 
 				// colaboraciones
 				$project->supports = Project\Support::getAll($id);
+
 
 				return $project;
 
@@ -201,7 +197,7 @@ namespace Goteo\Model {
                 'about',
                 'goal',
                 'related',
-                'category',
+                'keywords',
                 'media',
                 'currently',
                 'project_location',
@@ -230,50 +226,7 @@ namespace Goteo\Model {
                 $errors[] = Text::get('error sql guardar proyecto');
 			}
 
-
-			// salvamos el resto de registros relacionados
-				//keywords
-				//costes
-				//retornos sociales
-				//retornos indivuiduales
-				//colaboraciones
-			$data = array('keywords', 'costs', 'social_rewards', 'individual_rewards', 'supports');
-
-			foreach ($data as $array) {
-				if (!empty($array) && is_array($array)) {
-					foreach ($array as $item) {
-						$item->save();
-					}
-				}
-			}
-
         }
-
-        /*
-         * Para añadir nuevos registros en tablas relacionadas
-        public function newKeyword($data, &$errors) {
-            // $this->keywords[] = hm...
-            Project\Keyword::create($this->id, $data, $errors);
-        }
-
-        public function newCost($data, &$errors) {
-            $this->costs[] = Project\Cost::create($this->id, $data, $errors);
-        }
-
-        public function newSocialReward($data, &$errors) {
-            $this->social_rewards[] = Project\Reward::create($this->id, $data, $errors);
-        }
-
-        public function newIndividualReward($data, &$errors) {
-            $this->individual_rewards[] = Project\Reward::create($this->id, $data, $errors);
-        }
-
-        public function newSupport($data, &$errors) {
-            $this->supports[] = Project\Support::create($this->id, $data, $errors);
-        }
-         */
-
-
 
         /*
          *  Para validar los campos del proyecto
@@ -467,7 +420,8 @@ namespace Goteo\Model {
 
 //              'keywords', // +1 * keyword until +5
             if (!empty($this->keywords)) {
-                $score += count($this->keywords) > 5 ? 5 : count($this->keywords);
+                $keywords = explode(',', $this->keywords);
+                $score += count($keywords) > 5 ? 5 : count($keywords);
             }
             $max += 5;
             
@@ -579,7 +533,7 @@ namespace Goteo\Model {
                 $newid = self::checkId(self::idealiza($this->name));
                 if ($newid == false) return false;
                 // actualizar las tablas relacionadas
-                self::query("UPDATE keyword SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                self::query("UPDATE project_category SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                 self::query("UPDATE cost SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                 self::query("UPDATE reward SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                 self::query("UPDATE support SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
@@ -667,20 +621,6 @@ namespace Goteo\Model {
 				echo $e->getMessage();
                 return false;
             }
-        }
-
-		/*
-		 * Categorías de proyectos
-		 */
-        public static function categories () {
-            return array(
-                1=>'Educación',
-                2=>'Economía solidaria',
-                3=>'Empresa abierta',
-                4=>'Formación técnica',
-                5=>'Desarrollo',
-                6=>'Software',
-                7=>'Hardware');
         }
 
         /*

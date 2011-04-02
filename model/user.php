@@ -14,6 +14,7 @@ namespace Goteo\Model {
             $avatar = 'no-avatar.jpg', //imagen
             $about,  // texto: que nos puede contar
             $interests, // ya aclararemos esto @TODO
+            $keywords, // un campo de texto separadas por comas
             $contribution,  // texto: que puede aportar a Goteo
             $blog,
             $twitter,

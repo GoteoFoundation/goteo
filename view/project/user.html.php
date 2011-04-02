@@ -19,21 +19,14 @@ GUÍA: <?php echo $guideText;  ?><br />
 		<dd><textarea id="about" name="about" cols="100" rows="10"><?php echo $user->about; ?></textarea></dd>
 		<span><?php echo Text::get('tooltip user about'); ?></span><br />
 
-		<dt><label for="interests">Intereses</label></dt>
-		<dd><select id="interests" name="interests">
-				<?php foreach ($interests as $Id=>$Val) : ?>
-				<option value="<?php echo $Id; ?>" <?php if ($user->interests == $Id) echo ' selected="selected"'; ?>><?php echo $Val; ?></option>
-				<?php endforeach; ?>
-			</select></dd>
+		<dt>Intereses</dt>
+		<dd><?php foreach ($interests as $Id=>$Val) : ?>
+			<label><input type="checkbox" name="interests[]" value="<?php echo $Id; ?>" <?php if (in_array($Id, $user->interests)) echo ' checked="checked"'; ?> /><?php echo $Val; ?></label>
+		<?php endforeach; ?></dd>
 		<span><?php echo Text::get('tooltip user interests'); ?></span><br />
 
 		<dt><label for="keywords">Palabras clave</label></dt>
-		<dd>Añadir:<input type="text" id="keywords" name="keywords" value=""/>(separadas por comas)</dd>
-		<input type="button" id="new-keyword" value="Nuevo" />
-		<div><?php foreach ($project->keywords as $keyword) : ?>
-			<label>(X)<input type="checkbox" name="remove-keyword<?php echo $keyword->id; ?>" value="<?php echo $keyword->id; ?>" /></label>
-			<span><?php echo $keyword->keyword; ?></span>
-		<?php endforeach; ?></div>
+		<dd>Añadir:<input type="text" id="keywords" name="keywords" value="<?php echo $user->keywords; ?>"/>(separadas por comas)</dd>
 		<span><?php echo Text::get('tooltip user keywords'); ?></span><br />
 
 		<dt><label for="contribution">Qué podrías aportar a Goteo</label></dt>

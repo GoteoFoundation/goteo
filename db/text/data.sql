@@ -55,7 +55,8 @@ INSERT INTO `text` VALUES ('tooltip user email', 'es', 'Consejo para rellenar el
 INSERT INTO `text` VALUES ('tooltip user name', 'es', 'Consejo para rellenar el nombre completo del usuario');
 INSERT INTO `text` VALUES ('tooltip user image', 'es', 'Consejo para rellenar la imagen del usuario');
 INSERT INTO `text` VALUES ('tooltip user about', 'es', 'Consejo para rellenar el cuéntanos algo sobre tí');
-INSERT INTO `text` VALUES ('tooltip user interests', 'es', 'Consejo para rellenar tus intereses');
+INSERT INTO `text` VALUES ('tooltip user interests', 'es', 'Consejo para seleccionar tus intereses');
+INSERT INTO `text` VALUES ('tooltip user keywords', 'es', 'Consejo para rellenar tus palabras clave');
 INSERT INTO `text` VALUES ('tooltip user contribution', 'es', 'Consejo para rellenar el qué podrías aportar en goteo');
 INSERT INTO `text` VALUES ('tooltip user blog', 'es', 'Consejo para rellenar la web');
 INSERT INTO `text` VALUES ('tooltip user twitter', 'es', 'Consejo para rellenar el twitter');
@@ -79,9 +80,9 @@ INSERT INTO `text` VALUES ('tooltip project motivation', 'es', 'Consejo para rel
 INSERT INTO `text` VALUES ('tooltip project about', 'es', 'Consejo para rellenar el campo qué es');
 INSERT INTO `text` VALUES ('tooltip project goal', 'es', 'Consejo para rellenar el campo objetivos');
 INSERT INTO `text` VALUES ('tooltip project related', 'es', 'Consejo para rellenar el campo experiencia relacionada y equipo');
-INSERT INTO `text` VALUES ('tooltip project category', 'es', 'Consejo para rellenar la categoría del proyecto');
-INSERT INTO `text` VALUES ('tooltip project media', 'es', 'Consejo para rellenar el media del proyecto');
+INSERT INTO `text` VALUES ('tooltip project category', 'es', 'Consejo para seleccionar la categoría del proyecto');
 INSERT INTO `text` VALUES ('tooltip project keywords', 'es', 'Consejo para rellenar las palabras clave del proyecto');
+INSERT INTO `text` VALUES ('tooltip project media', 'es', 'Consejo para rellenar el media del proyecto');
 INSERT INTO `text` VALUES ('tooltip project currently', 'es', 'Consejo para rellenar el estado de desarrollo del proyecto');
 INSERT INTO `text` VALUES ('tooltip project project_location', 'es', 'Consejo para rellenar la localización del proyecto');
 
