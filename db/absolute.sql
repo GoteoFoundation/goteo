@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 02-04-2011 a las 12:13:11
+-- Tiempo de generación: 03-04-2011 a las 01:39:38
 -- Versión del servidor: 5.1.49
 -- Versión de PHP: 5.3.3-1ubuntu9.3
 
@@ -59,17 +59,18 @@ CREATE TABLE `cost` (
   `from` date DEFAULT NULL,
   `until` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Desglose de costes de proyectos' AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Desglose de costes de proyectos' AUTO_INCREMENT=14 ;
 
 --
 -- Volcar la base de datos para la tabla `cost`
 --
 
 INSERT INTO `cost` VALUES(7, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'Para comprar madera', 'sdfg sdfg sdfg ', 'task', 1000, 1, '2011-03-31', '2011-03-31');
-INSERT INTO `cost` VALUES(8, '18ba167ab60fabe9e1c31a7e396cd9d5', 'Para comprar madera', 'sadf asdf asdf ', 'structure', 1000, 1, '2011-04-02', '2011-04-02');
-INSERT INTO `cost` VALUES(9, '18ba167ab60fabe9e1c31a7e396cd9d5', 'MÃ¡s madera!', 'MÃ¡s! MÃ¡s! MÃ¡s! MÃ¡s! MÃ¡s! MÃ¡s! MÃ¡s! MÃ¡s! ', 'structure', 2000, NULL, '2011-04-02', '2011-04-02');
-INSERT INTO `cost` VALUES(10, '18ba167ab60fabe9e1c31a7e396cd9d5', 'Para comprar clavos', 'Se comprarÃ¡n clavos del 5, del 10 y del 15', 'structure', 500, 1, '2011-04-02', '2011-04-02');
-INSERT INTO `cost` VALUES(11, '18ba167ab60fabe9e1c31a7e396cd9d5', 'Serrucho', 'Serrucho gordo', 'equip', 50, NULL, '2011-04-02', '2011-04-02');
+INSERT INTO `cost` VALUES(8, 'church-project-eko-one', 'Para comprar madera', 'sadf asdf asdf ', 'structure', 2000, 1, '2011-04-02', '2011-04-02');
+INSERT INTO `cost` VALUES(9, 'church-project-eko-one', 'MÃ¡s madera!', 'MÃ¡s! MÃ¡s! MÃ¡s! MÃ¡s! MÃ¡s! MÃ¡s! MÃ¡s! MÃ¡s! ', 'structure', 1000, NULL, '2011-04-02', '2011-04-02');
+INSERT INTO `cost` VALUES(10, 'church-project-eko-one', 'Para comprar clavos', 'Se comprarÃ¡n clavos del 5, del 10 y del 15', 'structure', 500, 1, '2011-04-02', '2011-04-02');
+INSERT INTO `cost` VALUES(11, 'church-project-eko-one', 'Serrucho', 'Serrucho gordo', 'equip', 50, NULL, '2011-04-01', '2011-04-01');
+INSERT INTO `cost` VALUES(13, 'church-project-eko-one', 'Y cuerda', 'Tambien nos hace falta muuuucha cuerda', 'structure', 1000, 1, '2011-04-03', '2011-04-03');
 
 -- --------------------------------------------------------
 
@@ -191,9 +192,11 @@ CREATE TABLE `project` (
 -- Volcar la base de datos para la tabla `project`
 --
 
-INSERT INTO `project` VALUES('18ba167ab60fabe9e1c31a7e396cd9d5', 'Online project eko one', 1, 31, 'pepa', 'goteo', 0, '2011-04-02', '2011-04-02', NULL, NULL, NULL, 'contract_name', 'contract_surname', 'contractni', 'example@example.com', 'phone', 'address', 'zipcode', 'location', 'country', 'project.jpg', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', NULL, 'asdf, asdf,asdf ,sdaf, asdf', 'fasdfasdfasdfasdfasddf', 2, 'Online', 'Tengo un martillo y una sierra');
+INSERT INTO `project` VALUES('28c0caa840fc9c642160b1e2774667ff', 'Mi proyecto 1', 1, 0, 'pepe', 'goteo', 0, '2011-04-02', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `project` VALUES('6bb61e3b7bce0931da574d19d1d82c88', 'Mi proyecto 1', 1, 0, 'root', 'goteo', 0, '2011-03-30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `project` VALUES('7b0aa2ffa4d04499d7c743fde7acdceb', 'Como lo borrooooo???', 1, 4, 'pepa', 'goteo', 0, '2011-04-02', '2011-04-02', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'project.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL);
 INSERT INTO `project` VALUES('984990664ca1a1a98522b2640b0fc535', 'Mi proyecto 2', 1, 1, 'root', 'goteo', 0, '2011-03-24', '2011-03-24', NULL, NULL, NULL, 'JuliÃ¡n', 'CÃ¡naves Bover', '43108914Z', 'julian.canaves@gmail.com', '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `project` VALUES('church-project-eko-one', 'Church project eko one', 2, 89, 'pepa', 'goteo', 0, '2011-04-02', '2011-04-03', NULL, NULL, NULL, 'Josefa', 'Perez Diez', 'X1234567L', 'example@example.com', '666999666', 'C/ De las piedras,1', '08023', 'Los cantos, SEVILLA', 'EspaÃ±a', 'project.jpg', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id laborum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', NULL, 'asdf, asdf,asdf ,sdaf, asdf', 'http://www.youtube.com/watch?v=6TJbpCC7iPg', 2, 'Online', 'Tengo un martillo y una sierra');
 INSERT INTO `project` VALUES('e4ae82c6a3497c04d2338fe63961c92c', 'Mi proyecto 3', 1, 0, 'root', 'goteo', 0, '2011-03-25', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `project` VALUES('the-ultimate-grat-project-of-the-wolrd-united-nati', 'The ultimate great project of the wolrd united nations congregated to the end of time and space ship', 1, 0, 'root', 'goteo', NULL, NULL, '2011-04-01', NULL, NULL, NULL, 'JuliÃ¡n', 'CÃ¡naves Bover', '43108914Z', 'julian.canaves@gmail.com', '649085539', 'C/ Patata, 1', '07014', 'Palma de Mallorca', 'EspaÃ±a', 'project.jpg', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n\r\n', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'The ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\nThe ultimate grat project of the wolrd united nations congregated to the end of time and space ship\r\n', 'stuff', NULL, 'fasdfasdfasdfasdfasddf', 4, 'Internet', NULL);
 
@@ -214,10 +217,11 @@ CREATE TABLE `project_category` (
 -- Volcar la base de datos para la tabla `project_category`
 --
 
-INSERT INTO `project_category` VALUES('18ba167ab60fabe9e1c31a7e396cd9d5', 1);
-INSERT INTO `project_category` VALUES('18ba167ab60fabe9e1c31a7e396cd9d5', 2);
-INSERT INTO `project_category` VALUES('18ba167ab60fabe9e1c31a7e396cd9d5', 3);
-INSERT INTO `project_category` VALUES('18ba167ab60fabe9e1c31a7e396cd9d5', 4);
+INSERT INTO `project_category` VALUES('church-project-eko-one', 1);
+INSERT INTO `project_category` VALUES('church-project-eko-one', 2);
+INSERT INTO `project_category` VALUES('church-project-eko-one', 3);
+INSERT INTO `project_category` VALUES('church-project-eko-one', 4);
+INSERT INTO `project_category` VALUES('church-project-eko-one', 5);
 
 -- --------------------------------------------------------
 
@@ -243,23 +247,32 @@ INSERT INTO `purpose` VALUES('guide project costs', 'Texto guía en el paso COST
 INSERT INTO `purpose` VALUES('guide project description', 'Texto guía en el paso DESCRIPCIÓN del formulario de proyecto');
 INSERT INTO `purpose` VALUES('guide project overview', 'Texto guía en el paso PREVISUALIZACIÓN del formulario de proyecto');
 INSERT INTO `purpose` VALUES('guide project rewards', 'Texto guía en el paso RETORNO del formulario de proyecto');
+INSERT INTO `purpose` VALUES('guide project success minprogress', 'Texto guide project success minprogress');
+INSERT INTO `purpose` VALUES('guide project success noerrors', 'Texto guide project success noerrors');
+INSERT INTO `purpose` VALUES('guide project success okfinish', 'Texto guide project success okfinish');
 INSERT INTO `purpose` VALUES('guide project support', 'Texto guía en el paso COLABORACIONES del formulario de proyecto');
 INSERT INTO `purpose` VALUES('guide project user information', 'Texto guide project user information');
 INSERT INTO `purpose` VALUES('guide user data', 'Texto guía en la edición de datos sensibles del usuario');
 INSERT INTO `purpose` VALUES('guide user information', 'Texto guía en el paso PERFIL del formulario de proyecto');
 INSERT INTO `purpose` VALUES('guide user register', 'Texto guía en el registro de usuario');
+INSERT INTO `purpose` VALUES('mandatory project field about', 'Texto mandatory project field about');
 INSERT INTO `purpose` VALUES('mandatory project field address', 'Texto mandatory project field address');
 INSERT INTO `purpose` VALUES('mandatory project field category', 'La categoría del proyecto es obligatoria');
 INSERT INTO `purpose` VALUES('mandatory project field contract email', 'El email del responsable del proyecto es obligatorio');
 INSERT INTO `purpose` VALUES('mandatory project field contract name', 'El nombre del responsable del proyecto es obligatorio');
 INSERT INTO `purpose` VALUES('mandatory project field contract nif', 'El nif del responsable del proyecto es obligatorio');
 INSERT INTO `purpose` VALUES('mandatory project field contract surname', 'El apellido del responsable del proyecto es obligatorio');
+INSERT INTO `purpose` VALUES('mandatory project field country', 'Texto mandatory project field country');
 INSERT INTO `purpose` VALUES('mandatory project field description', 'La descripción del proyecto es obligatorio');
+INSERT INTO `purpose` VALUES('mandatory project field goal', 'Texto mandatory project field goal');
 INSERT INTO `purpose` VALUES('mandatory project field image', 'Texto mandatory project field image');
 INSERT INTO `purpose` VALUES('mandatory project field location', 'La localización del proyecto es obligatoria');
+INSERT INTO `purpose` VALUES('mandatory project field motivation', 'Texto mandatory project field motivation');
 INSERT INTO `purpose` VALUES('mandatory project field name', 'El nombre del proyecto es obligatorio');
+INSERT INTO `purpose` VALUES('mandatory project field phone', 'Texto mandatory project field phone');
 INSERT INTO `purpose` VALUES('mandatory project field related', 'Texto mandatory project field related');
 INSERT INTO `purpose` VALUES('mandatory project field residence', 'El lugar de residencia del responsable del proyecto es obligatorio');
+INSERT INTO `purpose` VALUES('mandatory project field zipcode', 'Texto mandatory project field zipcode');
 INSERT INTO `purpose` VALUES('regular mandatory', 'Texto genérico para indicar campo obligatorio');
 INSERT INTO `purpose` VALUES('step 1', 'Paso 1, información del usuario');
 INSERT INTO `purpose` VALUES('step 2', 'Paso 2, información del responsable');
@@ -361,8 +374,8 @@ INSERT INTO `reward` VALUES(15, 'the-ultimate-grat-project-of-the-wolrd-united-n
 INSERT INTO `reward` VALUES(16, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'asdf a', NULL, 'social', NULL, NULL, NULL, NULL);
 INSERT INTO `reward` VALUES(17, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'asdf a', NULL, 'social', NULL, NULL, NULL, NULL);
 INSERT INTO `reward` VALUES(18, 'the-ultimate-grat-project-of-the-wolrd-united-nati', 'sdf asdf as', NULL, 'social', NULL, NULL, NULL, NULL);
-INSERT INTO `reward` VALUES(20, '18ba167ab60fabe9e1c31a7e396cd9d5', 'The masterplan', 'Ofrezco a la gente los planos para que se hagan una igual.', 'social', NULL, NULL, NULL, NULL);
-INSERT INTO `reward` VALUES(21, '18ba167ab60fabe9e1c31a7e396cd9d5', 'Chapas', 'Tezxto: "Lo he clavado"', 'individual', NULL, NULL, 5, 10);
+INSERT INTO `reward` VALUES(20, 'church-project-eko-one', 'The masterplan', 'Ofrezco a la gente los planos para que se hagan una igual.', 'social', NULL, '1', NULL, NULL);
+INSERT INTO `reward` VALUES(21, 'church-project-eko-one', 'Chapas', 'Tezxto: "Lo he clavado"', 'individual', NULL, NULL, 5, 10);
 
 -- --------------------------------------------------------
 
@@ -378,7 +391,7 @@ CREATE TABLE `support` (
   `description` text NOT NULL,
   `type` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Colaboraciones' AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Colaboraciones' AUTO_INCREMENT=4 ;
 
 --
 -- Volcar la base de datos para la tabla `support`
@@ -412,23 +425,32 @@ INSERT INTO `text` VALUES('guide project costs', 'es', 'Texto guía en el paso C
 INSERT INTO `text` VALUES('guide project description', 'es', 'Texto guía en el paso DESCRIPCIÓN del formulario de proyecto.');
 INSERT INTO `text` VALUES('guide project overview', 'es', 'Texto guía en el paso PREVISUALIZACIÓN del formulario de proyecto.');
 INSERT INTO `text` VALUES('guide project rewards', 'es', 'Texto guía en el paso RETORNO del formulario de proyecto.');
+INSERT INTO `text` VALUES('guide project success minprogress', 'es', 'guide project success minprogress');
+INSERT INTO `text` VALUES('guide project success noerrors', 'es', 'guide project success noerrors');
+INSERT INTO `text` VALUES('guide project success okfinish', 'es', 'guide project success okfinish');
 INSERT INTO `text` VALUES('guide project support', 'es', 'Texto guía en el paso COLABORACIONES del formulario de proyecto.');
 INSERT INTO `text` VALUES('guide project user information', 'es', 'guide project user information');
 INSERT INTO `text` VALUES('guide user data', 'es', 'Texto guía en la edición de campos sensibles.');
 INSERT INTO `text` VALUES('guide user information', 'es', 'Texto guía en el paso PERFIL del formulario de proyecto.');
 INSERT INTO `text` VALUES('guide user register', 'es', 'Texto guía en el registro de un nuevo usuario.');
+INSERT INTO `text` VALUES('mandatory project field about', 'es', 'mandatory project field about');
 INSERT INTO `text` VALUES('mandatory project field address', 'es', 'mandatory project field address');
 INSERT INTO `text` VALUES('mandatory project field category', 'es', 'Es obligatorio elegir una CATEGORIA para el proyecto, paso 3: Descripción.');
 INSERT INTO `text` VALUES('mandatory project field contract email', 'es', 'Es obligatorio poner el EMAIL del responsable del proyecto, paso 2: Datos personales.');
 INSERT INTO `text` VALUES('mandatory project field contract name', 'es', 'Es obligatorio poner el NOMBRE del responsable del proyecto, paso 2: Datos personales.');
 INSERT INTO `text` VALUES('mandatory project field contract nif', 'es', 'Es obligatorio poner el NIF del responsable del proyecto, paso 2: Datos personales.');
 INSERT INTO `text` VALUES('mandatory project field contract surname', 'es', 'Es obligatorio poner los APELLIDOS del responsable del proyecto, paso 2: Datos personales.');
+INSERT INTO `text` VALUES('mandatory project field country', 'es', 'mandatory project field country');
 INSERT INTO `text` VALUES('mandatory project field description', 'es', 'Es obligatorio poner una DESCRIPCIÓN al proyecto, paso 3: Descripción.');
+INSERT INTO `text` VALUES('mandatory project field goal', 'es', 'mandatory project field goal');
 INSERT INTO `text` VALUES('mandatory project field image', 'es', 'mandatory project field image');
 INSERT INTO `text` VALUES('mandatory project field location', 'es', 'Es obligatorio poner la LOCALIZACIÓN del proyecto, paso 3: Descripción.');
+INSERT INTO `text` VALUES('mandatory project field motivation', 'es', 'mandatory project field motivation');
 INSERT INTO `text` VALUES('mandatory project field name', 'es', 'Es obligatorio poner un NOMBRE al proyecto, paso 3: Descripción.');
+INSERT INTO `text` VALUES('mandatory project field phone', 'es', 'mandatory project field phone');
 INSERT INTO `text` VALUES('mandatory project field related', 'es', 'mandatory project field related');
 INSERT INTO `text` VALUES('mandatory project field residence', 'es', 'Es obligatorio poner el LUGAR DE RESIDENCIA del responsable del proyecto, paso 2: Datos personales.');
+INSERT INTO `text` VALUES('mandatory project field zipcode', 'es', 'mandatory project field zipcode');
 INSERT INTO `text` VALUES('regular mandatory', 'es', 'campo obligatorio!');
 INSERT INTO `text` VALUES('step 1', 'es', 'PERFIL');
 INSERT INTO `text` VALUES('step 2', 'es', 'DATOS PERSONALES');
@@ -518,7 +540,7 @@ CREATE TABLE `user` (
 -- Volcar la base de datos para la tabla `user`
 --
 
-INSERT INTO `user` VALUES('pepa', 'Pepa PÃ©rez', 'josefa@doukeshi.org', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3', 'Yo soy JOSEFAAAA!!!!!', NULL, '2011-03-19 00:00:00', 1, 'avatar.jpg', 'mucho arte', 'lajosefaisthebest.com', '@josefa', 'feisbuc.com/josefaaaaa', 'ein?', NULL, '2011-03-20 00:00:00');
+INSERT INTO `user` VALUES('pepa', 'Pepa PÃ©rez', 'josefa@doukeshi.org', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3', 'Yo soy JOSEFAAAA!!!!!', 'guapa, simpÃ¡tica, hermosa, bella, pulcra', '2011-03-19 00:00:00', 1, 'avatar.jpg', 'mucho arte', 'lajosefaisthebest.com', '@josefa', 'feisbuc.com/josefaaaaa', 'ein?', NULL, '2011-04-03 00:22:20');
 INSERT INTO `user` VALUES('pepe', 'pepe', 'asdf', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3', NULL, NULL, '2011-03-19 00:00:00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `user` VALUES('root', 'Super administrador', 'goteo@doukeshi.org', '312ff61736020af71dd719bac44da75005c808c9', 'Super administrador de la plataforma Goteo.org', NULL, '2011-03-30 11:10:10', 1, NULL, 'Super administrador de la plataforma Goteo.org', NULL, NULL, NULL, NULL, NULL, '2011-03-30 11:10:10');
 
@@ -544,8 +566,6 @@ INSERT INTO `user_interest` VALUES('pepa', 2);
 INSERT INTO `user_interest` VALUES('pepa', 3);
 INSERT INTO `user_interest` VALUES('pepa', 4);
 INSERT INTO `user_interest` VALUES('pepa', 5);
-INSERT INTO `user_interest` VALUES('pepa', 6);
-INSERT INTO `user_interest` VALUES('pepa', 7);
 INSERT INTO `user_interest` VALUES('root', 1);
 INSERT INTO `user_interest` VALUES('root', 2);
 

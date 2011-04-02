@@ -32,9 +32,11 @@ GUÍA: <?php echo $guideText;  ?><br />
 				<dl>
 					<dt><label for="support<?php echo $support->id; ?>">Colaboración</label></dt>
 					<dd><input type="text" id="support<?php echo $support->id; ?>" name="support<?php echo $support->id; ?>" value="<?php echo $support->support; ?>"/></dd>
+                    <?php if ($project->itsok('support'.$support->id)) echo 'OK'; else echo $project->errors['support'.$support->id]; ?>
 
 					<dt><label for="support-description<?php echo $support->id; ?>">Descripción</label></dt>
 					<dd><textarea id="support-description<?php echo $support->id; ?>" name="support-description<?php echo $support->id; ?>" cols="50" rows="5"><?php echo $support->description; ?></textarea></dd>
+                    <?php if ($project->itsok('support-description'.$support->id)) echo 'OK'; else echo $project->errors['support-description'.$support->id]; ?>
 
 					<dt><label for="support-type<?php echo $support->id; ?>">Tipo</label></dt>
 					<dd><select id="support-type<?php echo $support->id; ?>" name="support-type<?php echo $support->id; ?>">

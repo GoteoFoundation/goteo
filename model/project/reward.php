@@ -115,6 +115,16 @@ namespace Goteo\Model\Project {
             return $icons;
 		}
 
+		public static function licenses() {
+            return array(
+                1=>'Open Hardware',
+                2=>'Creative Commons',
+                3=>'General Public',
+                4=>'Open Database',
+                5=>'Red Abierta',
+                6=>'GNU Affero');
+		}
+
 	}
 
 }

@@ -16,8 +16,11 @@ include 'view/header.html.php'; ?>
 		<p>
 			Mis proyectos:<br />
 		<?php
-		foreach ($projects as $proj) {
-			echo '<a href="/project/manage/' . $proj->id . '">' . ($proj->name != '' ? $proj->name : $proj->id) . '</a><br />';
+		foreach ($projects as $project) {
+			echo '<a href="/project/manage/' . $project->id . '">' . ($project->name != '' ? $project->name : $project->id) . '</a>
+                (' . $status[$project->status] . ')
+                    Progreso: ' . $project->progress . '%
+                        <a href="/project/' . $project->id . '">[Preview]</a><br />';
 		}
 		?>
 		</p>

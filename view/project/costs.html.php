@@ -38,7 +38,7 @@ GUÍA: <?php echo $guideText; ?><br />
 
 		<input type="button" id="new-cost" value="Nuevo coste" />
 
-
+        <?php if (!$project->itsok('ncost')) echo $project->errors['ncost']; ?>
 		<span><?php echo Text::get('tooltip project ncost'); ?></span><br />
 	</fieldset>
 
@@ -49,9 +49,11 @@ GUÍA: <?php echo $guideText; ?><br />
 				<dl>
 					<dt><label for="cost<?php echo $cost->id; ?>">Coste</label></dt>
 					<dd><input type="text" id="cost<?php echo $cost->id; ?>" name="cost<?php echo $cost->id; ?>" value="<?php echo $cost->cost; ?>"/></dd>
+                    <?php if ($project->itsok('cost'.$cost->id)) echo 'OK'; else echo $project->errors['cost'.$cost->id]; ?>
 
 					<dt><label for="cost-description<?php echo $cost->id; ?>">Descripción</label></dt>
 					<dd><textarea id="cost-description<?php echo $cost->id; ?>" name="cost-description<?php echo $cost->id; ?>" cols="20" rows="3"><?php echo $cost->description; ?></textarea></dd>
+                    <?php if ($project->itsok('cost-description'.$cost->id)) echo 'OK'; else echo $project->errors['cost-description'.$cost->id]; ?>
 
 					<dt><label for="cost-type<?php echo $cost->id; ?>">Tipo</label></dt>
 					<dd><select id="cost-type<?php echo $cost->id; ?>" name="cost-type<?php echo $cost->id; ?>">
@@ -72,14 +74,18 @@ GUÍA: <?php echo $guideText; ?><br />
 
 				<dt><label for="cost-until<?php echo $cost->id; ?>">Hasta</label></dt>
 				<dd><input type="text" id="cost-until<?php echo $cost->id; ?>" name="cost-until<?php echo $cost->id; ?>" value="<?php echo $cost->until; ?>" /></dd>
+                <?php if ($project->itsok('cost-dates'.$cost->id)) echo 'OK'; else echo $project->errors['cost-dates'.$cost->id]; ?>
 			</dl>
 
 		 		<span><?php echo Text::get('tooltip project cost'); ?></span><br />
 		 	</fieldset>
 	<?php endforeach; ?>
 
-	<div id="total-costs">Mínimo: <?php echo $project->mincost; ?> &euro; | Óptimo: <?php echo $project->maxcost; ?> &euro;</div>
-	<hr />
+    <fieldset>
+        <legend>Coste total del proyecto</legend>
+        <p>Mínimo: <?php echo $project->mincost; ?> &euro; | Óptimo: <?php echo $project->maxcost; ?> &euro;</p>
+        <?php if ($project->itsok('total-costs')) echo 'OK'; else echo $project->errors['total-costs']; ?>
+    </fieldset>
 
 	<fieldset>
 		<legend>Cuenta con otros recursos?</legend>
@@ -87,6 +93,7 @@ GUÍA: <?php echo $guideText; ?><br />
 			<dt><label for="resource">Otras ayudas económicas o infraestructura</label></dt>
 			<dd><textarea id="resource" name="resource" cols="50" rows="5"><?php echo $project->resource; ?></textarea></dd>
 		</dl>
+        <?php if (!$project->itsok('resource')) echo $project->errors['resource']; ?>
 		<span><?php echo Text::get('tooltip project resource'); ?></span><br />
 	</fieldset>
 
@@ -94,7 +101,7 @@ GUÍA: <?php echo $guideText; ?><br />
 		<legend>AGENDA</legend>
 		Tiempo de producción del proyecto<br />
 		<?php foreach ($project->costs as $cost) : ?>
-			<p><?php echo $cost->cost; ?></p>
+			<p><?php echo "{$cost->cost}. Del {$cost->from} al {$cost->until}"; ?></p>
 		<?php endforeach; ?>
 	</fieldset>
 

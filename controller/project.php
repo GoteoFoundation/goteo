@@ -79,45 +79,62 @@ namespace Goteo\Controller {
 			$id = $_SESSION['current_project'];
 
 			$project = Model\Project::get($id);
-            $project->validate($project->badfields);
 
-			$user = Model\User::get($_SESSION['user']->id);
+			$user = Model\User::get($project->owner);
+
+			$errors = array();
 
 			if (isset($_POST['submit'])) {
-//				echo '<pre>' . print_r($_POST, 1) . '</pre>';
-                /*
-                 * el save solo se encarga de datos sensibles, no de esta información adicional...
-				$user->save($errors);
+                // el save solo se encarga de datos sensibles, no de esta información adicional...
+
+                // tratar la imagen y ponerla en la propiedad avatar
+                // __FILES__
+
+                $user->name = $_POST['name'];
+                $user->avatar = $_POST['avatar'];
+                $user->about = $_POST['about'];
+                $user->keywords = $_POST['keywords'];
+                $user->contribution = $_POST['contribution'];
+                $user->blog = $_POST['blog'];
+                $user->twitter = $_POST['twitter'];
+                $user->facebook = $_POST['facebook'];
+                $user->linkedin = $_POST['linkedin'];
+
+				$user->saveInfo($errors);
 
 				//intereses
-				foreach ($_POST['interests'] as $interest) {
-   					$user->saveInterest($interest);
-				}
-                
-                //tratar keywords
-                if (!empty($_POST['keywords'])) {
-                    $keys = explode(',', $_POST['keywords']);
-                    foreach ($keys as $key) {
-                        if (!in_array($key, $user->keywords)) {
-                            $keyword = new Model\User\Keyword();
+                // añadir los que vienen
+                foreach ($_POST['interests'] as $int) {
+                    if (!in_array($int, $user->interests)) {
+                        $interest = new Model\User\Interest();
 
-                            $keyword->id = '';
-                            $keyword->user = $user->id;
-                            $keyword->keyword = $key;
+                        $interest->id = $int;
+                        $interest->user = $user->id;
 
-                            $keyword->save($errors);
-
-                            $user->keywords[] = $keyword;
-                        }
+                        $interest->save($errors);
                     }
                 }
-                */
+
+                // quitar los que no vienen
+                foreach ($user->interests as $int) {
+                    if (!in_array($int, $_POST['interests'])) {
+                        $interest = new Model\User\Interest();
+
+                        $interest->id = $int;
+                        $interest->user = $user->id;
+
+                        $interest->remove($errors);
+                    }
+                }
+
+                // si no saltamos tenemos que recargar
+//        		  $user = Model\User::get($project->owner);
 
                 header('Location: /project/register/');
                 die;
 			}
 
-			$interests = Model\User::interests();
+			$interests = Model\User\Interest::getAll();
 
 			$guideText = Text::get('guide project user information');
             include 'view/project/user.html.php';
@@ -137,8 +154,9 @@ namespace Goteo\Controller {
 				die;
             } else {
                 $project = Model\Project::get($id);
-                $project->validate($project->badfields);
 
+				$errors = array();
+                
 				if (isset($_POST['submit'])) {
 
 					// campos que guarda este paso
@@ -158,11 +176,12 @@ namespace Goteo\Controller {
 						$project->$field = $_POST[$field];
 					}
 
-					$errors = array();
 					$project->save($errors);
 
-                    header('Location: /project/edit/');
-                    die;
+                    if (empty($errors)) {
+                        header('Location: /project/edit/');
+                        die;
+                    }
 				}
 
 				$guideText = Text::get('guide project contract information');
@@ -183,7 +202,6 @@ namespace Goteo\Controller {
 				die;
             } else {
                 $project = Model\Project::get($id);
-                $project->validate($project->badfields);
 
 				if (isset($_POST['submit'])) {
 
@@ -192,7 +210,6 @@ namespace Goteo\Controller {
 					// campos que guarda este paso
 					$fields = array(
 						'name',
-						'image',
 						'description',
 						'motivation',
 						'about',
@@ -207,6 +224,10 @@ namespace Goteo\Controller {
 					foreach ($fields as $field) {
 						$project->$field = $_POST[$field];
 					}
+
+					//tratar imagen y ponerla en la propiedad image
+					$project->image = $_POST['image'];
+
 
 					$project->save($errors);
 
@@ -236,45 +257,6 @@ namespace Goteo\Controller {
 					}
 
 
-					//tratar imagen
-
-					//tratar keywords
-                    /*
-                     * Las guardamos en texto hasta que se aclare
-					if (!empty($_POST['keywords'])) {
-						$keys = explode(',', $_POST['keywords']);
-						foreach ($keys as $key) {
-                            if (!in_array($key, $project->keywords)) {
-                                $keyword = new Model\Project\Keyword();
-
-                                $keyword->id = '';
-                                $keyword->project = $id;
-                                $keyword->keyword = $key;
-
-                                $keyword->save($errors);
-
-                                $project->keywords[] = $keyword;
-                            }
-						}
-					}
-
-					//remove keywords
-					foreach ($_POST as $key=>$value) {
-						if (substr($key, 0, strlen('remove-keyword')) == 'remove-keyword' && !empty($value)) {
-						echo "$key: $value<br />";
-							$keyword = Model\Project\Keyword::get($value);
-
-							if (!empty($keyword)) {
-								echo 'eliminada clave ' . $value;
-								$keyword->remove($errors);
-								unset($keyword);
-							}
-						}
-					}
-                     *
-                     */
-
-
                     header('Location: /project/costs/');
                     die;
 				}
@@ -302,7 +284,6 @@ namespace Goteo\Controller {
 				die;
             } else {
                 $project = Model\Project::get($id);
-                $project->validate($project->badfields);
 
 				if (isset($_POST['submit'])) {
 
@@ -354,9 +335,9 @@ namespace Goteo\Controller {
 					}
 
                     // si no saltamos tenemos que recargar
-//    				$project = Model\Project::get($id);
-                    header('Location: /project/rewards/');
-                    die;
+    				$project = Model\Project::get($id);
+//                    header('Location: /project/rewards/');
+//                    die;
 				}
 
 			}
@@ -381,7 +362,6 @@ namespace Goteo\Controller {
 				die;
             } else {
                 $project = Model\Project::get($id);
-                $project->validate($project->badfields);
 //                echo '<pre>' . print_r($project->social_rewards, 1) . '</pre>';
 //                echo '<pre>' . print_r($project->individual_rewards, 1) . '</pre>';
 
@@ -397,12 +377,11 @@ namespace Goteo\Controller {
 							continue;
 						}
 
-						if (!empty ($_POST['social_reward' . $reward->id])) {
-							$reward->reward = $_POST['social_reward' . $reward->id];
-							$reward->description = $_POST['social_reward-description' . $reward->id];
-							$reward->icon = $_POST['social_reward-icon' . $reward->id];
-							$reward->license = $_POST['social_reward-license' . $reward->id];
-						}
+                        $reward->reward = $_POST['social_reward' . $reward->id];
+                        $reward->description = $_POST['social_reward-description' . $reward->id];
+                        $reward->icon = $_POST['social_reward-icon' . $reward->id];
+                        $reward->license = $_POST['social_reward-license' . $reward->id];
+						
 						$reward->save($errors);
 					}
 
@@ -414,13 +393,12 @@ namespace Goteo\Controller {
 							continue;
 						}
 
-						if (!empty ($_POST['individual_reward' . $reward->id])) {
-							$reward->reward = $_POST['individual_reward' . $reward->id];
-							$reward->description = $_POST['individual_reward-description' . $reward->id];
-							$reward->icon = $_POST['individual_reward-icon' . $reward->id];
-							$reward->amount = $_POST['individual_reward-amount' . $reward->id];
-							$reward->units = $_POST['individual_reward-units' . $reward->id];
-						}
+                        $reward->reward = $_POST['individual_reward' . $reward->id];
+                        $reward->description = $_POST['individual_reward-description' . $reward->id];
+                        $reward->icon = $_POST['individual_reward-icon' . $reward->id];
+                        $reward->amount = $_POST['individual_reward-amount' . $reward->id];
+                        $reward->units = $_POST['individual_reward-units' . $reward->id];
+                        
 						$reward->save($errors);
 					}
 
@@ -462,13 +440,14 @@ namespace Goteo\Controller {
 
 
                     // si no saltamos tenemos que recargar
-//    				$project = Model\Project::get($id);
-                    header('Location: /project/supports/');
-                    die;
+    				$project = Model\Project::get($id);
+//                    header('Location: /project/supports/');
+//                    die;
 				}
 
-				$stypes = Model\Project\Reward::icons('social');
-				$itypes = Model\Project\Reward::icons('individual');
+				$stypes   = Model\Project\Reward::icons('social');
+				$itypes   = Model\Project\Reward::icons('individual');
+    			$licenses = Model\Project\Reward::licenses();
 
 				$guideText = Text::get('guide project rewards');
 				include 'view/project/rewards.html.php';
@@ -490,7 +469,6 @@ namespace Goteo\Controller {
 				die;
             } else {
                 $project = Model\Project::get($id);
-                $project->validate($project->badfields);
 //                echo '<pre>' . print_r($project, 1) . '</pre>';
 
 				if (isset($_POST['submit'])) {
@@ -531,10 +509,9 @@ namespace Goteo\Controller {
 					
 
                     // si no saltamos tenemos que recargar
-//    				$project = Model\Project::get($id);
-                    
-                    header('Location: /project/overview/');
-                    die;
+    				$project = Model\Project::get($id);
+//                    header('Location: /project/overview/');
+//                    die;
 				}
 
 				$types = Model\Project\Support::types();
@@ -561,16 +538,15 @@ namespace Goteo\Controller {
                 $project = Model\Project::get($id);
 
 				$finish = false;
-				$errors = array();
-				$project->validate($errors);
+				$errors = $project->errors;
 				if (empty($errors)) {
 					$success[] = Text::get('guide project success noerrors');
-					if ($project->progress > 80 && $project->status == 1) {
-						$success[] = Text::get('guide project success minprogress');
-						$success[] = Text::get('guide project success okfinish');
-						$finish = true;
-					}
 				}
+                if ($project->progress > 80 && $project->status == 1) {
+                    $success[] = Text::get('guide project success minprogress');
+                    $success[] = Text::get('guide project success okfinish');
+                    $finish = true;
+                }
 
 				$guideText = Text::get('guide project overview');
 				include 'view/project/overview.html.php';

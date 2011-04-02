@@ -95,9 +95,9 @@ namespace Goteo\Library {
 
 		public static function Words ($value, $number) {
 
-			$words = count(explode(' ', $value));
+			$words = explode(' ', $value);
 
-			if ($words > $number)
+			if (count($words) >= $number)
 				return true;
 			else
 				return false;

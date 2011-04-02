@@ -13,7 +13,7 @@ namespace Goteo\Model {
             $name,  // nombre completo
             $avatar = 'no-avatar.jpg', //imagen
             $about,  // texto: que nos puede contar
-            $interests, // ya aclararemos esto @TODO
+            $interests = array(), // ya aclararemos esto @TODO
             $keywords, // un campo de texto separadas por comas
             $contribution,  // texto: que puede aportar a Goteo
             $blog,
@@ -129,7 +129,13 @@ namespace Goteo\Model {
         public static function get ($id) {
             try {
                 $query = static::query("SELECT * FROM user WHERE id = :id", array(':id' => $id));
-                return $query->fetchObject(__CLASS__);
+                $user = $query->fetchObject(__CLASS__);
+
+				// categorias
+                $user->interests = User\Interest::get($id);
+
+                return $user;
+
             } catch(\PDOException $e) {
                 return false;
             }
@@ -197,6 +203,122 @@ namespace Goteo\Model {
                 6=>'Software',
                 7=>'Hardware');
 		}
+
+        /**
+         * Metodo para puntuar la informacuión del usuario al puntuar un proyecto
+         * @param array $errors por referencia
+         */
+        public function check(&$errors = array()) {
+            $score =  0;
+            $max = 0;
+            
+            if (empty($this->name)) {
+                $errors['user-name'] = 'Pon tu nombre completo para mejorar la puntuación';
+                --$score;
+            } else {
+                ++$score;
+            }
+            ++$max;
+
+            if (empty($this->avatar)) {
+                $errors['user-avatar'] = 'Pon una imagen de perfil para mejorar la puntuación';
+                --$score;
+            } else {
+                ++$score;
+            }
+            ++$max;
+
+            if (empty($this->about)) {
+                $errors['user-about'] = 'Cuenta algo sobre ti para mejorar la puntuación';
+                --$score;
+            } else {
+                ++$score;
+            }
+            ++$max;
+
+            if (empty($this->interests)) {
+                $errors['user-interests'] = 'Selecciona algún interés para mejorar la puntuación';
+                --$score;
+            } else {
+                ++$score;
+            }
+            ++$max;
+
+            $keywords = explode(',', $this->keywords);
+            $score += count($keywords) > 5 ? 5 : count($keywords);
+            if ($keywords < 5) {
+                $errors['user-keywords'] = 'Indica hasta 5 palabras clave que te definan para mejorar la puntuación';
+            }
+            $max += 5;
+
+            if (empty($this->contribution)) {
+                $errors['user-contribution'] = 'Explica que podrias aportar en Goteo para mejorar la puntuación';
+                --$score;
+            } else {
+                ++$score;
+            }
+            ++$max;
+
+            if (empty($this->blog)) {
+                $errors['user-blog'] = 'Pon tu página web para mejorar la puntuación';
+                --$score;
+            } else {
+                ++$score;
+            }
+            ++$max;
+
+            if (empty($this->facebook)) {
+                $errors['user-facebook'] = 'Pon tu cuenta de facebook para mejorar la puntuación';
+                --$score;
+            } else {
+                ++$score;
+            }
+            ++$max;
+
+            return array('score'=>$score,'max'=>$max);
+        }
+
+        /**
+         * Metodo para guardar la información del usuario desde el primer paso del formulario de proyecto
+         * @param array $errors por referencia
+         */
+        public function saveInfo(&$errors = array()) {
+
+            $fields = array(
+                'name',
+                'avatar',
+                'about',
+                'keywords',
+                'contribution',
+                'blog',
+                'twitter',
+                'facebook',
+                'linkedin'
+            );
+
+            $set = '';
+            $values = array();
+
+            foreach ($fields as $field) {
+                if ($set != '') $set .= ', ';
+                $set .= "$field = :$field";
+                $values[":$field"] = $this->$field;
+            }
+
+			try {
+				$values[':id'] = $this->id;
+
+				$sql = "UPDATE user SET " . $set . " WHERE id = :id";
+				self::query($sql, $values);
+
+			} catch(\PDOException $e) {
+                echo "$sql <pre>" . print_r($values, 1) ."</pre><br />";
+                echo $e->getMessage();
+                return false;
+			}
+
+
+        }
 
 	}   
 }

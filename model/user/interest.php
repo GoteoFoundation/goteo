@@ -1,26 +1,26 @@
 <?php
 
-namespace Goteo\Model\Project {
+namespace Goteo\Model\User {
     
-    class Category extends \Goteo\Core\Model {
+    class Interest extends \Goteo\Core\Model {
 
         public
             $id,
-            $project;
+            $user;
 
 
         /**
-         * Get the categories for a project
-         * @param varcahr(50) $id  Project identifier
-         * @return array of categories identifiers
+         * Get the interests for a user
+         * @param varcahr(50) $id  user identifier
+         * @return array of interests identifiers
          */
 	 	public static function get ($id) {
             $array = array ();
             try {
-                $query = static::query("SELECT category FROM project_category WHERE project = ?", array($id));
-                $categories = $query->fetchAll();
-                foreach ($categories as $cat) {
-                    $array[] = $cat[0];
+                $query = static::query("SELECT interest FROM user_interest WHERE user = ?", array($id));
+                $interests = $query->fetchAll();
+                foreach ($interests as $int) {
+                    $array[] = $int[0];
                 }
 
                 return $array;
@@ -54,10 +54,10 @@ namespace Goteo\Model\Project {
 		 */
 		public function save (&$errors = array()) {
 
-            $values = array(':project'=>$this->project, ':category'=>$this->id);
+            $values = array(':user'=>$this->user, ':interest'=>$this->id);
 
 			try {
-	            $sql = "REPLACE INTO project_category (project, category) VALUES(:project, :category)";
+	            $sql = "REPLACE INTO user_interest (user, interest) VALUES(:user, :interest)";
 				if ($res = self::query($sql, $values))  {
 					return true;
 				}
@@ -66,7 +66,7 @@ namespace Goteo\Model\Project {
 				}
 			} catch(\PDOException $e) {
 				$errors[] = $e->getMessage();
-				$errors[] = "La categoria {$category} no se ha asignado correctamente. Por favor, revise los datos.";
+				$errors[] = "El interés {$interest} no se ha asignado correctamente. Por favor, revise los datos.";
 				return false;
 			}
 
@@ -75,22 +75,22 @@ namespace Goteo\Model\Project {
 		/**
 		 * Quitar una palabra clave de un proyecto
 		 *
-		 * @param varchar(50) $project id de un proyecto
+		 * @param varchar(50) $user id de un proyecto
 		 * @param INT(12) $id  identificador de la tabla keyword
 		 * @param array $errors 
 		 * @return boolean
 		 */
 		public function remove (&$errors = array()) {
 			$values = array (
-				':project'=>$this->project,
-				':category'=>$this->id,
+				':user'=>$this->user,
+				':interest'=>$this->id,
 			);
 
-			if (self::query("DELETE FROM project_category WHERE category = :category AND project = :project", $values)) {
+			if (self::query("DELETE FROM user_interest WHERE interest = :interest AND user = :user", $values)) {
 				return true;
 			}
 			else {
-				$errors[] = 'No se ha podido quitar la categoria ' . $this->id . ' del proyecto ' . $this->project;
+				$errors[] = 'No se ha podido quitar el interes ' . $this->id . ' del usuario ' . $this->user;
 				return false;
 			}
 		}

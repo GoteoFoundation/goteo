@@ -23,6 +23,8 @@ namespace Goteo\Controller {
 
             $projects = Model\Project::ofmine($user);
 
+            $status = Model\Project::status();
+
             include 'view/dashboard.html.php';
 
         }
