@@ -11,7 +11,8 @@ INSERT INTO purpose VALUES ('explain project progress', 'Texto bajo el título E
 
 INSERT INTO purpose VALUES ('guide user register', 'Texto guía en el registro de usuario');
 INSERT INTO purpose VALUES ('guide user data', 'Texto guía en la edición de datos sensibles del usuario');
-INSERT INTO purpose VALUES ('guide user information', 'Texto guía en el paso PERFIL del formulario de proyecto');
+INSERT INTO purpose VALUES ('guide user information', 'Texto guía en la edición de información del usuario');
+INSERT INTO purpose VALUES ('guide project user information', 'Texto guía en el paso PERFIL del formulario de proyecto');
 INSERT INTO purpose VALUES ('guide project contract information', 'Texto guía en el paso DATOS PERSONALES del formulario de proyecto');
 INSERT INTO purpose VALUES ('guide project description', 'Texto guía en el paso DESCRIPCIÓN del formulario de proyecto');
 INSERT INTO purpose VALUES ('guide project costs', 'Texto guía en el paso COSTES del formulario de proyecto');

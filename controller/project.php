@@ -79,6 +79,7 @@ namespace Goteo\Controller {
 			$id = $_SESSION['current_project'];
 
 			$project = Model\Project::get($id);
+            $project->validate($project->badfields);
 
 			$user = Model\User::get($_SESSION['user']->id);
 
@@ -136,6 +137,7 @@ namespace Goteo\Controller {
 				die;
             } else {
                 $project = Model\Project::get($id);
+                $project->validate($project->badfields);
 
 				if (isset($_POST['submit'])) {
 
@@ -181,6 +183,7 @@ namespace Goteo\Controller {
 				die;
             } else {
                 $project = Model\Project::get($id);
+                $project->validate($project->badfields);
 
 				if (isset($_POST['submit'])) {
 
@@ -232,9 +235,6 @@ namespace Goteo\Controller {
                         }
 					}
 
-                    //recargar, no importa
-//                    $project->categories = Model\Project\Category::get($project->id);
-                    
 
 					//tratar imagen
 
@@ -302,6 +302,7 @@ namespace Goteo\Controller {
 				die;
             } else {
                 $project = Model\Project::get($id);
+                $project->validate($project->badfields);
 
 				if (isset($_POST['submit'])) {
 
@@ -353,9 +354,9 @@ namespace Goteo\Controller {
 					}
 
                     // si no saltamos tenemos que recargar
-    				$project = Model\Project::get($id);
-//                    header('Location: /project/rewards/');
-//                    die;
+//    				$project = Model\Project::get($id);
+                    header('Location: /project/rewards/');
+                    die;
 				}
 
 			}
@@ -380,6 +381,7 @@ namespace Goteo\Controller {
 				die;
             } else {
                 $project = Model\Project::get($id);
+                $project->validate($project->badfields);
 //                echo '<pre>' . print_r($project->social_rewards, 1) . '</pre>';
 //                echo '<pre>' . print_r($project->individual_rewards, 1) . '</pre>';
 
@@ -460,9 +462,9 @@ namespace Goteo\Controller {
 
 
                     // si no saltamos tenemos que recargar
-    				$project = Model\Project::get($id);
-//                        header('Location: /project/supports/');
-//                        die;
+//    				$project = Model\Project::get($id);
+                    header('Location: /project/supports/');
+                    die;
 				}
 
 				$stypes = Model\Project\Reward::icons('social');
@@ -488,6 +490,7 @@ namespace Goteo\Controller {
 				die;
             } else {
                 $project = Model\Project::get($id);
+                $project->validate($project->badfields);
 //                echo '<pre>' . print_r($project, 1) . '</pre>';
 
 				if (isset($_POST['submit'])) {
@@ -528,10 +531,10 @@ namespace Goteo\Controller {
 					
 
                     // si no saltamos tenemos que recargar
-    				$project = Model\Project::get($id);
+//    				$project = Model\Project::get($id);
                     
-//                    header('Location: /project/overview/');
-//                    die;
+                    header('Location: /project/overview/');
+                    die;
 				}
 
 				$types = Model\Project\Support::types();

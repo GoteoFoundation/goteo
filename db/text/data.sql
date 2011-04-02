@@ -11,7 +11,8 @@ INSERT INTO `text` VALUES ('explain project progress', 'es', 'Texto bajo el tít
 
 INSERT INTO `text` VALUES ('guide user register', 'es', 'Texto guía en el registro de un nuevo usuario.');
 INSERT INTO `text` VALUES ('guide user data', 'es', 'Texto guía en la edición de campos sensibles.');
-INSERT INTO `text` VALUES ('guide user information', 'es', 'Texto guía en el paso PERFIL del formulario de proyecto.');
+INSERT INTO `text` VALUES ('guide user information', 'es', 'Texto guía en la edición de información del usuario.');
+INSERT INTO `text` VALUES ('guide project user information', 'es', 'Texto guía en el paso PERFIL del formulario de proyecto.');
 INSERT INTO `text` VALUES ('guide project contract information', 'es', 'Texto guía en el paso DATOS PERSONALES del formulario de proyecto.');
 INSERT INTO `text` VALUES ('guide project description', 'es', 'Texto guía en el paso DESCRIPCIÓN del formulario de proyecto.');
 INSERT INTO `text` VALUES ('guide project costs', 'es', 'Texto guía en el paso COSTES del formulario de proyecto.');

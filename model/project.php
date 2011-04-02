@@ -55,8 +55,7 @@ namespace Goteo\Model {
             //Operative purpose properties
             $mincost = 0,
             $maxcost = 0,
-            $badfields = array(), // when a project is validated, this contains any incorrect form field
-            $badmessages = array(), // this contains human readable incorrections in the form
+            $badfields = array(), // para guardar los errores del formulario y mostrarlos en elos campos del paso
             $fiuuu = '';
 
         /*
@@ -641,11 +640,30 @@ namespace Goteo\Model {
             return array(
                 1=>'Editándose',
                 2=>'Pendiente valoración',
-                3=>'Público',
-                4=>'Finalizado',
+                3=>'En campaña',
+                4=>'Financiado',
                 5=>'Caducado',
                 6=>'Retorno cumplido');
         }
+
+        /**
+         * Para pintar el checked en el campo
+         * @param string $field
+         * @return boolean
+         */
+        public function check($field)
+        {
+            // si el campo que recibimos está en badfiels, tienen que revisarlo.
+            if (empty($this->badfields[$field])) {
+                return true;
+            } else {
+                echo $this->badfields[$field];
+                return false;
+            }
+        }
+
+
+
     }
 
 }
