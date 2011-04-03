@@ -11,13 +11,19 @@ INSERT INTO purpose VALUES ('explain project progress', 'Texto bajo el título E
 
 INSERT INTO purpose VALUES ('guide user register', 'Texto guía en el registro de usuario');
 INSERT INTO purpose VALUES ('guide user data', 'Texto guía en la edición de datos sensibles del usuario');
-INSERT INTO purpose VALUES ('guide user information', 'Texto guía en el paso PERFIL del formulario de proyecto');
+INSERT INTO purpose VALUES ('guide user information', 'Texto guía en la edición de información del usuario');
+INSERT INTO purpose VALUES ('guide project user information', 'Texto guía en el paso PERFIL del formulario de proyecto');
 INSERT INTO purpose VALUES ('guide project contract information', 'Texto guía en el paso DATOS PERSONALES del formulario de proyecto');
 INSERT INTO purpose VALUES ('guide project description', 'Texto guía en el paso DESCRIPCIÓN del formulario de proyecto');
 INSERT INTO purpose VALUES ('guide project costs', 'Texto guía en el paso COSTES del formulario de proyecto');
 INSERT INTO purpose VALUES ('guide project rewards', 'Texto guía en el paso RETORNO del formulario de proyecto');
 INSERT INTO purpose VALUES ('guide project support', 'Texto guía en el paso COLABORACIONES del formulario de proyecto');
 INSERT INTO purpose VALUES ('guide project overview', 'Texto guía en el paso PREVISUALIZACIÓN del formulario de proyecto');
+
+INSERT INTO purpose VALUES ('guide project success noerrors', 'Todos los campos obligatorios estan rellenados');
+INSERT INTO purpose VALUES ('guide project success minprogress', 'Ha llegado al porcentaje mínimo');
+INSERT INTO purpose VALUES ('guide project success okfinish', 'Puede enviar para valoración');
+INSERT INTO purpose VALUES ('guide project error mandatories', 'Faltan campos obligatorios');
 
 INSERT INTO purpose VALUES ('error sql guardar proyecto', 'La sentencia UPDATE para grabar los datos de un proyecto en la base de datos falla.');
 INSERT INTO purpose VALUES ('mandatory project field contract name', 'El nombre del responsable del proyecto es obligatorio');
@@ -35,13 +41,23 @@ INSERT INTO purpose VALUES ('mandatory project field category', 'La categoría d
 INSERT INTO purpose VALUES ('mandatory project field location', 'La localización del proyecto es obligatoria');
 INSERT INTO purpose VALUES ('validation project min costs', 'Mínimo de costes a desglosar en un proyecto');
 INSERT INTO purpose VALUES ('validation project total costs', 'El coste óptimo no puede exceder demasiado al coste mínimo');
+INSERT INTO purpose VALUES ('mandatory project field phone', 'El teléfono del responsable del proyecto es obligatorio');
+INSERT INTO purpose VALUES ('mandatory project field address', 'La dirección del responsable del proyecto es obligatoria');
+INSERT INTO purpose VALUES ('mandatory project field zipcode', 'El código postal del responsable del proyecto es obligatorio');
+INSERT INTO purpose VALUES ('mandatory project field country', 'El país del responsable del proyecto es obligatorio');
+INSERT INTO purpose VALUES ('mandatory project field image', 'Es obligatorio poner una imagen al proyecto');
+INSERT INTO purpose VALUES ('mandatory project field motivation', 'Es obligatorio explicar la motivación en la descripción del proyecto');
+INSERT INTO purpose VALUES ('mandatory project field about', 'Es obligatorio explicar qué es en la descripción del proyecto');
+INSERT INTO purpose VALUES ('mandatory project field goal', 'Es obligatorio explicar los objetivos en la descripción del proyecto');
+INSERT INTO purpose VALUES ('mandatory project field related', 'Es obligatorio explicar la experiencia relacionada y el equipo en la descripción del proyecto');
 
 INSERT INTO purpose VALUES ('tooltip user user', 'Consejo para rellenar el nombre de usuario para login');
 INSERT INTO purpose VALUES ('tooltip user email', 'Consejo para rellenar el email de registro de usuario');
 INSERT INTO purpose VALUES ('tooltip user name', 'Consejo para rellenar el nombre completo del usuario');
 INSERT INTO purpose VALUES ('tooltip user image', 'Consejo para rellenar la imagen del usuario');
 INSERT INTO purpose VALUES ('tooltip user about', 'Consejo para rellenar el cuéntanos algo sobre tí');
-INSERT INTO purpose VALUES ('tooltip user interests', 'Consejo para rellenar tus intereses');
+INSERT INTO purpose VALUES ('tooltip user interests', 'Consejo para seleccionar tus intereses');
+INSERT INTO purpose VALUES ('tooltip user keywords', 'Consejo para rellenar tus palabras clave');
 INSERT INTO purpose VALUES ('tooltip user contribution', 'Consejo para rellenar el qué podrías aportar en goteo');
 INSERT INTO purpose VALUES ('tooltip user blog', 'Consejo para rellenar la web');
 INSERT INTO purpose VALUES ('tooltip user twitter', 'Consejo para rellenar el twitter');
@@ -65,9 +81,9 @@ INSERT INTO purpose VALUES ('tooltip project motivation', 'Consejo para rellenar
 INSERT INTO purpose VALUES ('tooltip project about', 'Consejo para rellenar el campo qué es');
 INSERT INTO purpose VALUES ('tooltip project goal', 'Consejo para rellenar el campo objetivos');
 INSERT INTO purpose VALUES ('tooltip project related', 'Consejo para rellenar el campo experiencia relacionada y equipo');
-INSERT INTO purpose VALUES ('tooltip project category', 'Consejo para rellenar la categoría del proyecto');
-INSERT INTO purpose VALUES ('tooltip project media', 'Consejo para rellenar el media del proyecto');
+INSERT INTO purpose VALUES ('tooltip project category', 'Consejo para seleccionar la categoría del proyecto');
 INSERT INTO purpose VALUES ('tooltip project keywords', 'Consejo para rellenar las palabras clave del proyecto');
+INSERT INTO purpose VALUES ('tooltip project media', 'Consejo para rellenar el media del proyecto');
 INSERT INTO purpose VALUES ('tooltip project currently', 'Consejo para rellenar el estado de desarrollo del proyecto');
 INSERT INTO purpose VALUES ('tooltip project project_location', 'Consejo para rellenar la localización del proyecto');
 

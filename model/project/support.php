@@ -13,7 +13,7 @@ namespace Goteo\Model\Project {
 
 	 	public static function get ($id) {
             try {
-                $query = static::query("SELECT * FROM cost WHERE id = :id", array(':id' => $id));
+                $query = static::query("SELECT * FROM support WHERE id = :id", array(':id' => $id));
                 return $query->fetchObject(__CLASS__);
             } catch(\PDOException $e) {
                 return false;
@@ -22,7 +22,7 @@ namespace Goteo\Model\Project {
 
 		public static function getAll ($project) {
             try {
-				$query = self::query("SELECT * FROM cost WHERE project = ?", array($project));
+				$query = self::query("SELECT * FROM support WHERE project = ?", array($project));
 				$items = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
 				return $items;
 			} catch (\PDOException $e) {
@@ -53,14 +53,17 @@ namespace Goteo\Model\Project {
 
 			try {
 				$sql = "REPLACE INTO support SET " . $set;
-				$res = self::query($sql, $values);
+				if ($res = self::query($sql, $values))  {
 
-				if (empty($this->id)) {
-					$this->id = \PDO::lastInsertId;
+//					if (empty($this->id)) $this->id = \PDO::lastInsertId;
+
+					return true;
 				}
-
-				return true;
-			} catch (\PDOException $e) {
+				else {
+					echo "$sql<br /><pre>" . print_r($values, 1) . "</pre>";
+				}
+			} catch(\PDOException $e) {
+				$errors[] = $e->getMessage();
 				$errors[] = "La colaboración {$data['support']} no se ha grabado correctamente. Por favor, revise los datos.";
 				return false;
 			}
@@ -128,6 +131,15 @@ namespace Goteo\Model\Project {
 			}
 		}
 
-	}
+		public static function types() {
+			return array(
+				'task'=>'Tarea',
+				'lend'=>'Préstamo'
+			);
+
+		}
+
+
+		}
 
 }

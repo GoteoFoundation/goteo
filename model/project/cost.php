@@ -8,6 +8,7 @@ namespace Goteo\Model\Project {
             $id,
             $project,
             $cost,
+			$description,
             $type,
             $amount,
             $required,
@@ -33,12 +34,15 @@ namespace Goteo\Model\Project {
 			}
 		}
 
+		public function validate(&$errors = array()) {}
+
 		public function save (&$errors = array()) {
 
 			$fields = array(
 				'id',
 				'project',
 				'cost',
+				'description',
 				'type',
 				'amount',
 				'required',
@@ -57,23 +61,28 @@ namespace Goteo\Model\Project {
 
 			try {
 				$sql = "REPLACE INTO cost SET " . $set;
-				$res = self::query($sql, $values);
+				if ($res = self::query($sql, $values))  {
 
-				if (empty($this->id)) {
-					$this->id = \PDO::lastInsertId;
+//					if (empty($this->id)) $this->id = \PDO::lastInsertId;
+
+					return true;
 				}
-
-				return true;
+				else {
+					echo "$sql<br /><pre>" . print_r($values, 1) . "</pre>";
+				}
 			} catch(\PDOException $e) {
+				$errors[] = $e->getMessage();
 				$errors[] = "El coste {$this->cost} no se ha grabado correctamente. Por favor, revise los datos.";
 				return false;
 			}
 		}
 
+		/*
 		public static function create ($project, $data, &$errors) {
 //			echo 'New cost <pre>' . print_r($data, 1) . '</pre>';
 			$fields = array(
 				'cost',
+				'description',
 				'type',
 				'amount',
 				'required',
@@ -106,6 +115,9 @@ namespace Goteo\Model\Project {
 				return true;
 			}
 		}
+		 * 
+		 */
+
 
 		/**
 		 * Quitar un coste de un proyecto
@@ -130,6 +142,13 @@ namespace Goteo\Model\Project {
 			}
 		}
 
+		public static function types() {
+			return array (
+				'task'=>'Tarea',
+				'structure'=>'Infraestructura',
+				'equip'=>'Equipo'
+			);
+		}
 
 	}
 

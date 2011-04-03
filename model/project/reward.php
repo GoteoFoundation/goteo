@@ -8,6 +8,7 @@ namespace Goteo\Model\Project {
             $id,
 			$project,
 			$reward,
+			$description,
 			$type,
 			$icon,
 			$license,
@@ -25,10 +26,11 @@ namespace Goteo\Model\Project {
 
 		public static function getAll ($project, $type) {
             try {
-				$query = self::query("SELECT * FROM reward WHERE project = :project AND type= :type", array($project, $type));
+				$query = self::query("SELECT * FROM reward WHERE project = ? AND type= ?", array($project, $type));
 				$items = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
 				return $items;
 			} catch (\PDOException $e) {
+                echo $e->getMessage();
 				return array();
 			}
 		}
@@ -38,6 +40,7 @@ namespace Goteo\Model\Project {
 				'id',
 				'project',
 				'reward',
+				'description',
 				'type',
 				'icon',
 				'license',
@@ -56,14 +59,17 @@ namespace Goteo\Model\Project {
 
 			try {
 				$sql = "REPLACE INTO reward SET " . $set;
-				$res = self::query($sql, $values);
+				if ($res = self::query($sql, $values))  {
 
-				if (empty($this->id)) {
-					$this->id = \PDO::lastInsertId;
+//					if (empty($this->id)) $this->id = \PDO::lastInsertId;
+
+					return true;
 				}
-
-				return true;
-			} catch (\PDOException $e) {
+				else {
+					echo "$sql<br /><pre>" . print_r($values, 1) . "</pre>";
+				}
+			} catch(\PDOException $e) {
+				$errors[] = $e->getMessage();
 				$errors[] = "El retorno {$this->reward} no se ha grabado correctamente. Por favor, revise los datos.";
 				return false;
 			}
@@ -93,6 +99,31 @@ namespace Goteo\Model\Project {
 		}
 
 		public function validate(&$errors = array()) {}
+
+		public static function icons($type = 'social') {
+            $icons = array(
+                1=>'Archivos digitales',
+                2=>'Dinero',
+                3=>'Código fuente',
+                4=>'Servicios',
+                5=>'Manuales');
+
+			if ($type == 'individual') {
+				$icons[6] = 'Producto';
+			}
+
+            return $icons;
+		}
+
+		public static function licenses() {
+            return array(
+                1=>'Open Hardware',
+                2=>'Creative Commons',
+                3=>'General Public',
+                4=>'Open Database',
+                5=>'Red Abierta',
+                6=>'GNU Affero');
+		}
 
 	}
 
