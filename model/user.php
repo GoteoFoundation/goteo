@@ -136,6 +136,7 @@ namespace Goteo\Model {
                         email,
                         password,
                         about,
+                        keywords,
                         active AS visible,
                         avatar,
                         contribution,
@@ -151,7 +152,7 @@ namespace Goteo\Model {
                     ", array(':id' => $id));
                 $user = $query->fetchObject(__CLASS__);
 
-				// Categorías? (¿No debería ser Category?)
+				// intereses (para proyectos es categoria(s) aunque los contenidos actuales son identicos no es el mismo concepto)
                 $user->interests = User\Interest::get($id);
 
                 return $user;
@@ -230,6 +231,7 @@ namespace Goteo\Model {
 
         /**
          * Metodo para puntuar la informacuión del usuario al puntuar un proyecto
+         * //@TODO cambiar los textos a Text::get cuando el cliente lo verifique
          * @param array $errors por referencia
          */
         public function check(&$errors = array()) {
@@ -307,6 +309,8 @@ namespace Goteo\Model {
          * @param array $errors por referencia
          */
         public function saveInfo(&$errors = array()) {
+
+            //@TODO validate (pero estos campos son de contenido libre excepto quizás las url)
 
             $fields = array(
                 'name',
