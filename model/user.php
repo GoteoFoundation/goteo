@@ -128,10 +128,10 @@ namespace Goteo\Model {
          */
         public static function get ($id) {
             try {
+//                        role_id AS role,
                 $query = static::query("
                     SELECT
                         id,
-                        role_id AS role,
                         name,
                         email,
                         password,
@@ -145,7 +145,7 @@ namespace Goteo\Model {
                         facebook,
                         linkedin,
                         worth,
-                        created,
+                        signup,
                         modified
                     FROM user
                     WHERE id = :id
