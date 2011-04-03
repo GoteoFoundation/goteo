@@ -4,6 +4,7 @@ use Goteo\Core\Error,
     Goteo\Core\Redirection;
 
 require_once 'config.php';
+require_once 'core/common.php';
 
 // Include path
 set_include_path(GOTEO_PATH . PATH_SEPARATOR . '.');

@@ -1,42 +1,42 @@
 <?php
 
 namespace Goteo\Model {
-	
+
 	use Goteo\Core\Redirection;
 
 	class User extends \Goteo\Core\Model {
-		
+
         public
-            // Profile data
             $id = false,
+            $role = null,
             $email,
-            $name,  // nombre completo
-            $avatar = 'no-avatar.jpg', //imagen
-            $about,  // texto: que nos puede contar
-            $interests, // ya aclararemos esto @TODO
-            $contribution,  // texto: que puede aportar a Goteo
+            $name,
+            $avatar,
+            $about,
+            $interests,
+            $contribution,
             $blog,
             $twitter,
             $facebook,
             $linkedin,
             $country,
-            $worth;  // total de contribución
+            $worth;
 
 	    public function __set($name, $value) {
             $this->$name = $value;
         }
-			
+
         /**
          * Guardar usuario.
          * Guarda los valores de la instancia del usuario en la tabla.
-         * 
+         *
          * @TODO: Revisar.
-         * 
+         *
          * Reglas:
          *  - id *
          *  - email *
          *  - password
-         * 
+         *
          * @param array $errors     Errores devueltos pasados por referencia.
          * @return bool true|false
          */
@@ -78,10 +78,10 @@ namespace Goteo\Model {
             }
             return false;
         }
-        
+
         /**
          * Validación de datos de usuario.
-         * 
+         *
          * @param array $errors     Errores devueltos pasados por referencia.
          * @return bool true|false
          */
@@ -96,7 +96,7 @@ namespace Goteo\Model {
             }
             else {
                 $errors['username'] = 'El nombre de usuario usuario es obligatorio.';
-            }                
+            }
             // E-mail
             if(!empty($this->email)) {
                 $query = self::query('SELECT email FROM user WHERE email = ?', array($this->email));
@@ -106,7 +106,7 @@ namespace Goteo\Model {
             }
             else {
                 $errors['email'] = 'La dirección de correo es obligatoria.';
-            }            
+            }
             // Contraseña
             if(!empty($this->password)) {
                 if(strlen($this->password)<8) {
@@ -115,39 +115,59 @@ namespace Goteo\Model {
             }
             else {
                 $errors['password'] = 'La contraseña no puede estar vacía.';
-            }            
+            }
             return empty($errors);
         }
-        
+
         /**
          * Usuario.
-         * 
+         *
          * @param string $id    Nombre de usuario
          * @return obj|false    Objeto de usuario, en caso contrario devolverá 'false'.
          */
         public static function get ($id) {
             try {
-                $query = static::query("SELECT * FROM user WHERE id = :id", array(':id' => $id));
+                $query = static::query("
+                    SELECT
+                        id,
+                        role_id AS role,
+                        name,
+                        email,
+                        password,
+                        about,
+                        active AS visible,
+                        avatar,
+                        contribution,
+                        blog,
+                        twitter,
+                        facebook,
+                        linkedin,
+                        worth,
+                        created,
+                        modified
+                    FROM user
+                    WHERE id = :id
+                    ", array(':id' => $id));
                 return $query->fetchObject(__CLASS__);
             } catch(\PDOException $e) {
                 return false;
             }
         }
-        
+
         /**
          * Lista de usuarios.
-         * 
+         *
          * @param  bool $visible    true|false
          * @return mixed            Array de objetos de usuario activos|todos.
          */
         public static function getAll($visible = true) {
             $query = self::query("SELECT * FROM user WHERE active = ?", array($visible));
-            return $query->fetchAll(__CLASS__);          
+            return $query->fetchAll(__CLASS__);
         }
 
 		/**
 		 * Validación de usuario.
-		 *  
+		 *
 		 * @param string $username Nombre de usuario
 		 * @param string $password Contraseña
 		 * @return obj|false Objeto del usuario, en caso contrario devolverá 'false'.
@@ -164,19 +184,23 @@ namespace Goteo\Model {
 					':password' => sha1($password)
 				)
 			);
-			return $query->fetchObject(__CLASS__);
+			if($row = $query->fetch()) {
+			    return static::get($row['id']);
+			}
 		}
-		
+
 		/**
 		 * Comprueba si el usuario está identificado.
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public static function isLogged() {
 			return !empty($_SESSION['user']);
 		}
-		
+
 		/**
+		 * @deprecated
+		 *
 		 * Restringe el acceso sólo a usuarios identificados.
 		 * En caso de que no esté identificado lo redirecciona al login.
 		 */
@@ -185,5 +209,5 @@ namespace Goteo\Model {
 				throw new Redirection('/user/login');
 			}
 		}
-	}   
+	}
 }

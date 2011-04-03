@@ -2,7 +2,8 @@
 
 namespace Goteo\Controller {
 
-	use Goteo\Core\Redirection,
+	use Goteo\Core\ACL,
+        Goteo\Core\Redirection,
 		Goteo\Model;
 
 	class User extends \Goteo\Core\Controller {
@@ -14,40 +15,6 @@ namespace Goteo\Controller {
 		public function index ($id) {
 		    throw new Redirection('/user/profile/' .  $id, Redirection::PERMANENT);
 		}
-		
-		/**
-		 * Inicio de sesión
-		 * Si no se le pasan parámetros carga el tpl de identificación.
-		 * 
-		 * @param string $username Nombre de usuario
-		 * @param string $password Contraseña
-		 */
-        public function login () {
-        	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        	    $username = $_POST['username'];
-        	    $password = $_POST['password'];
-        		if (false !== ($user = (Model\User::login($username, $password)))) {
-        			$_SESSION['user'] = $user;
-        			throw new Redirection('/dashboard');
-        		}
-        		else {
-        		    $error = true;
-        		}
-        	}
-        	include 'view/user/login.html.php';
-		}
-        
-		/**
-		 * Cerrar sesión.
-		 */
-        public function logout() {
-			if (isset($_COOKIE[session_name()])) {
-			    setcookie(session_name(), '', time()-42000, '/');
-			}
-			session_destroy();
-			throw new Redirection('/');
-            die;
-        }
 
         /**
          * Registro de usuario.
@@ -76,12 +43,12 @@ namespace Goteo\Controller {
             }
             include 'view/user/register.html.php';
         }
-        
+
         /**
          * Modificación perfil de usuario.
          */
         public function edit () {
-            Model\User::restrict();             
+            ACL::check(__CLASS__, __FUNCTION__);
             $user = $_SESSION['user'];
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			    // @TODO: Guardar datos
@@ -92,7 +59,7 @@ namespace Goteo\Controller {
 
         /**
          * Perfil público de usuario.
-         * 
+         *
          * @param string $id    Nombre de usuario
          */
         public function profile ($id) {
@@ -101,5 +68,5 @@ namespace Goteo\Controller {
         }
 
     }
-    
+
 }
