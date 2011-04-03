@@ -1,5 +1,89 @@
-<?php include 'view/project/header.html.php' ?>
-<?php use Goteo\Library\Text; ?>
+<?php 
+
+use Goteo\Library\Text;
+
+$bodyClass = 'project-form';
+
+include 'view/prologue.html.php';
+    
+    include 'view/header.html.php'; ?>
+
+        <div id="sub-header">
+            <div>
+                <h2>Formulario</h2>
+            </div>
+        </div>
+
+        <div id="main" class="costs">
+
+            <form method="post" action="">
+
+                <?php include 'view/project/status.html.php' ?>
+                <?php include 'view/project/steps.html.php' ?>
+
+                <div class="form">
+
+                    <h3>Proyecto/Costes</h3>
+
+                    <?php include 'view/project/guide.html.php' ?>
+
+                    <ol class="fields">
+
+                        <li class="costs"><h4>Desglose de costes</h4>
+                            <ol id="project-form-costs"></ol>
+                            
+                            <div class="addcost">
+                                
+                                <h6>Nuevo coste</h6>
+                                
+                                <div class="type">
+                                    Tipo:
+                                    <label><input type="radio" name="type" value="task" checked="checked" />
+                                    Tarea</label>
+                                    <label><input type="radio" name="type" value="infrastructure" />
+                                    Infraestructura</label>
+                                </div>
+                                
+                                <div class="description">                                    
+                                    <label>Descripción</label>                                    
+                                </div>
+                                
+                                <div class=""
+                                
+                            </div>
+                            
+                            <input name="addcost" type="submit" value="Añadir nuevo coste">
+                        </li>
+
+                        <li class="others"><h4>¿Cuenta con otros recursos?</h4>
+                            <h5>Otras ayudas económicas o infraestructuras</h5>                        
+                            <textarea></textarea>                        
+                        </li>
+
+                        <li class="schedule">
+                            <h4>Agenda</h4>
+                            <h5>Tiempo de producción del proyecto</h5>                                            
+                        </li>
+
+                    </ol>
+
+                    <div class="buttons">
+                        <input type="submit" value="Continuar" />
+                    </div>
+
+                </div>
+
+                <?php include 'view/project/steps.html.php' ?>
+
+            </form>
+
+        </div>
+                
+    <?php include 'view/footer.html.php' ?>
+    
+<?php include 'view/epilogue.html.php' ?>
+
+<!--
 PROYECTO / Costes<br />
 GUÍA: <?php echo $guideText; ?><br />
 <?php include 'view/project/errors.html.php' ?>
@@ -108,3 +192,7 @@ GUÍA: <?php echo $guideText; ?><br />
 	<input type="submit" name="submit" value="CONTINUAR" />
 </form>
 <?php include 'view/project/footer.html.php' ?>
+-->
+
+
+        

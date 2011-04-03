@@ -1,3 +1,67 @@
+<?php 
+
+use Goteo\Library\Text;
+
+$bodyClass = 'project-form';
+
+include 'view/prologue.html.php';
+    
+    include 'view/header.html.php'; ?>
+
+    <div id="sub-header">
+        <div>
+            <h2>Formulario</h2>
+        </div>
+    </div>
+
+    <div id="main" class="overview">
+
+        <form method="post" action="">
+
+            <?php include 'view/project/status.html.php' ?>
+            <?php include 'view/project/steps.html.php' ?>
+
+            <div class="form">
+
+                <h3>Proyecto/Retornos</h3>
+
+                <?php include 'view/project/guide.html.php' ?>
+
+                <ol class="fields">
+
+                    <li class="name"><h4>Retornos colectivos</h4>
+                        <fieldset>
+                            <legend>Añadir retorno colectivo</legend>
+                            <label><input type="radio" name="rewardtype" /> Archivos digitales</label>                            
+                        <input type="text" name="name" />
+                    </li>
+                    
+                    <li class="individual"><h4>Recompensas individuales</h4>
+                        <fieldset>
+                            <legend>Añadir recompensa</legend>
+                            <label><input type="radio" name="rewardtype" /> Archivos digitales</label>                            
+                        <input type="text" name="name" />
+                    </li>                                        
+
+                </ol>
+
+                <div class="buttons">
+                    <input type="submit" value="Continuar" />
+                </div>
+
+            </div>
+
+            <?php include 'view/project/steps.html.php' ?>
+
+        </form>
+
+    </div>
+
+    <?php include 'view/footer.html.php' ?>
+    
+<?php include 'view/epilogue.html.php' ?>
+
+<!--
 <?php include 'view/project/header.html.php' ?>
 <?php use Goteo\Library\Text; ?>
 PROYECTO / Retorno<br />
@@ -118,3 +182,4 @@ GUÍA: <?php echo $guideText; ?><br />
 				<input type="submit" name="submit" value="CONTINUAR" />
 			</form>
 <?php include 'view/project/footer.html.php' ?>
+-->
