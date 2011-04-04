@@ -56,7 +56,7 @@ namespace Goteo\Model {
                 if(!empty($this->password)) {
                     $data[':password'] = sha1($this->password);
                 }
-                $data[':signup'] = 'CURRENT_TIMESTAMP';
+                $data[':created'] = 'CURRENT_TIMESTAMP';
                 $data[':active'] = true;
                 return self::query("
                     REPLACE INTO user (
@@ -64,7 +64,7 @@ namespace Goteo\Model {
                         name,
                         email,
                         password,
-                        signup,
+                        created,
                         active
                      )
                      VALUES (
@@ -72,7 +72,7 @@ namespace Goteo\Model {
                         :name,
                         :email,
                         :password,
-                        :signup,
+                        :created,
                         :active
                      )",
                 $data);
@@ -145,7 +145,7 @@ namespace Goteo\Model {
                         facebook,
                         linkedin,
                         worth,
-                        signup,
+                        created,
                         modified
                     FROM user
                     WHERE id = :id
