@@ -44,25 +44,39 @@ namespace Goteo\Controller {
          */
 
         public function create() {
+            
+            static $views = array(
+                'overview',
+                'costs',
+                'rewards',
+            );
+            
             Model\User::restrict();
-
-            $user = $_SESSION['user']->id;
-
-            if (!$user) {
-                header('Location: /');
-                die;
-            } else {
-                $project = new Model\Project();
-
-                if ($project->create($user)) {
-                    $_SESSION['current_project'] = $project->id;
-                    header('Location: /project/user/');
-                    die;
-                } else {
-                    echo 'ERROR al crear el proyecto';
-                    die;
-                }
+            
+            if (empty($_SESSION['current_project'])) {
+                
+                $project = new Model\Project;
+                
+                if (!$project->create($_SESSION['user']->id)) {
+                    throw new Error;
+                } 
+                
+                $_SESSION['current_project'] = $project->id;
+                                                                                
             }
+            
+            if (isset($_POST['view']) && in_array($view, $views)) {
+                $view = $_POST['view'];
+            } else {                
+                $view = $views[0]; // @todo Default view
+            }
+
+            // Validate here
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            }
+
+            include "view/project/{$view}.html.php";
+            
         }
 
         /*
