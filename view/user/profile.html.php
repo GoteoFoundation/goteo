@@ -1,37 +1,36 @@
 <?php $bodyClass = 'user-profile'; include 'view/prologue.html.php' ?>
 
     <?php include 'view/header.html.php' ?>
+
+        <div id="sub-header">
+            <div>
+                <h2><?php if (1 || isset($user->avatar)): ?><img alt=""><?php endif ?> Perfil de <br /><em><?php echo htmlspecialchars($user->id) ?></em></h2>
+            </div>
+        </div>
         
-        <div id="main">
-                    
-            <h2>Perfil del usuario <strong><?php echo htmlspecialchars($user->id) ?></strong></h2>
-            <dl>
-                
-                <dt><label for="name">Nombre completo</label></dt>
-                <dd><?php echo $user->name ?></dd>
-                
-                <dt><label for="about">Detalles</label></dt>
-                <dd><?php echo $user->about ?></dd>   
-                
-                <dt><label for="interests">Intereses</label></dt>
-                <dd><?php echo $user->interests ?></dd>    
-                
-                <dt><label for="contribution">Manera en que contribuye</label></dt>
-                <dd><?php echo $user->contribution ?></dd>    
-                
-                <dt><label for="blog">Blog</label></dt>
-                <dd>http://<?php echo $user->blog ?></dd>    
-                
-                <dt><label for="twitter">Twitter</label></dt>
-                <dd>http://twitter.com/<?php echo $user->twitter ?></dd>
-                
-                <dt><label for="facebook">Facebook</label></dt>
-                <dd>http://facebook.com/<?php echo $user->facebook ?><dd>
-                
-                <dt><label for="linkedin">Linkedin</label></dt>
-                <dd>http://linkedin.com/<?php echo $user->linkedin ?></dd>
-                
-            </dl>                    
+        <div id="main">                                    
+                                    
+            <?php if (isset($user->about)): ?>
+            <div class="about">
+                <?php echo $user->about ?>
+            </div>
+            <?php endif ?>
+            
+            <?php if (isset($user->facebook) || isset($user->linkedin) || isset($user->twitter)): ?>            
+            <div class="social">
+                <ul>
+                    <?php if (isset($user->facebook)): ?>
+                    <li class="facebook"><a href="<?php echo htmlspecialchars($user->facebook) ?>">Facebook</a></li>
+                    <?php endif ?>
+                    <?php if (isset($user->twitter)): ?>
+                    <li class="twitter"><a href="<?php echo htmlspecialchars($user->twitter) ?>">Twitter</a></li>
+                    <?php endif ?>
+                    <?php if (isset($user->linkedin)): ?>
+                    <li class="linkedin"><a href="<?php echo htmlspecialchars($user->linkedin) ?>">LinkedIn</a></li>
+                    <?php endif ?>
+                </ul>                
+            </div>            
+            <?php endif ?>
         </div>
         
     <?php include 'view/footer.html.php' ?>

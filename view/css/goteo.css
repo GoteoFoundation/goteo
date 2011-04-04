@@ -54,10 +54,10 @@ div#menu {
 
 div#menu > ul {    
     list-style: none;
-    padding: 0;
+    padding: 0 0 0 116px;
     z-index: 999;    
     height: 40px;
-    max-width: 940px;    
+    max-width: 824px; 
     position: relative;
     margin: 0 auto;    
     font-size: 0; /* aka *Ignore whitespace between li's* */
@@ -97,7 +97,8 @@ div#menu > ul > li.home {
     width: 116px;
     height: 47px;
     border: none;
-    float: left;
+    position: absolute;
+    left: 0;
 }
 
 div#menu > ul > li.home a {
@@ -106,13 +107,13 @@ div#menu > ul > li.home a {
     height: 47px;
     line-height: 2000px;
     text-indent: 2000px;
-    background: url('logo-home.png') no-repeat left center;
+    background: url('logo-home.png') no-repeat left bottom;
     overflow: hidden;
     padding: 0;
 }
 
 div#menu > ul > li.home a:hover {
-    background-position: right;
+    background-position: right bottom;
 }
 
 div#menu > ul > li.language > a,
@@ -228,7 +229,7 @@ div#menu > ul > li.dashboard > a > span > em {
     position: absolute;
     right: 14px;
     bottom: 4px;
-    background: url('user.jpg') no-repeat;
+    background: url('user-s.jpg') no-repeat;
     overflow: hidden;
     width: 32px;
     height: 32px;
@@ -294,6 +295,24 @@ div#menu > ul > li.dashboard:hover {
 div#menu > ul > li.login:hover > div,
 div#menu > ul > li.dashboard:hover > div {
     display: block;
+}
+
+/* Sub-header */ 
+div#sub-header {
+    background-color: white;
+    clear: both;
+    padding: 20px 0;
+}
+
+div#sub-header > div {
+    display: block;
+    max-width: 940px;
+    margin: 0 auto;
+}
+
+div#sub-header > div > h2 {
+    margin: 0;
+    padding: 0;
 }
 
 /* Footer */
@@ -412,4 +431,31 @@ div#footer div.goteo a {
 div#main {    
     max-width: 940px;
     margin: 40px auto;
+    clear: both;
+}
+
+/* User profile */
+body.user-profile div#sub-header h2 {
+    padding-left: 72px;
+    min-height: 55px;
+    position: relative;
+    line-height: 1.2em;
+    font-size: 18px;
+    font-weight: normal;
+}
+
+body.user-profile div#sub-header h2 img {
+    position: absolute;    
+    width: 55px;
+    height: 55px;        
+    border: 1px solid #e2e2e2;
+    left: 0;
+}
+
+body.user-profile div#sub-header h2 em {
+    display: block;
+    font-weight: bold;
+    font-size: 24px;
+    text-transform: uppercase;
+    font-style: normal;
 }
