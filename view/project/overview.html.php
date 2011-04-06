@@ -16,81 +16,199 @@ include 'view/prologue.html.php';
 
     <div id="main" class="overview">
 
-        <form method="post" action="">
+        <form method="post" action="" class="project">
 
             <?php include 'view/project/status.html.php' ?>
             <?php include 'view/project/steps.html.php' ?>
 
-            <div class="form">
+            <div class="superform aqua">
 
                 <h3>Proyecto/Descripción</h3>
 
                 <?php include 'view/project/guide.html.php' ?>
 
-                <ol class="fields">
+                <div class="fields">
+                    
+                    <ol class="fields">
 
-                    <li class="name"><h4>Nombre del proyecto</h4>
-                        <input type="text" name="name" />
-                    </li>
+                        <li class="field" id="field-name">
+                            <div class="field">
+                                <h4>Nombre del proyecto</h4>
+                                <div class="tooltip" id="tooltip-name">
+                                    <blockquote><?php echo Text::get('tooltip project name'); ?></blockquote>
+                                </div>
+                                <div class="elements"><input class="main" type="text" name="name" value="<?php if (isset($project->name)) echo htmlspecialchars($project->name) ?>" /></div>
+                                
+                            </dov>
+                        </li>
 
-                    <li class="images"><h4>Imágenes del proyecto</h4></li>
+                        <li class="field" id="field-image">
+                            <div class="field">
+                                <h4>Imágenes del proyecto</h4>
+                                <div class="tooltip" id="tooltip-image">
+                                    <blockquote><?php echo Text::get('tooltip project image'); ?></blockquote>
+                                </div>
+                                <div class="elements">
+                                    <ol></ol>
+                                    <fieldset class="addimage">
+                                        <legend>Añadir imagen</legend>
+                                        <input type="file" name="uploadimage" />
+                                        <input type="submit" value="Subir imagen" />
+                                    </fieldset>
+                                </div>                                
+                            </div>
+                        </li>
 
-                    <li class="summary">
-                        <h4>Descripción</h4>
-                        <textarea></textarea>
-                    </li>
-                    
-                    <li class="category">
-                        <h4>Categorías</h4>                        
-                    </li>
-                    
-                    <li class="keywords">
-                        <h4>Palabras clave</h4>                        
-                        <input type="text" name="keywords" />
-                    </li>
-                    
-                    <li class="video">
-                        <h4>Vídeo</h4>                        
-                        <input type="text" name="video" />
-                    </li>
-                    
-                    <li class="projectstatus">
-                        <h4>Estado actual del proyecto</h4>
-                        
-                        <label><input type="radio" name="projectstatus" value="0" />
-                        Inicial</label>
-                        
-                        <label><input type="radio" name="projectstatus" value="1" />
-                        Medio</label>
-                        
-                        <label><input type="radio" name="projectstatus" value="2" />
-                        Avanzado</label>
-                        
-                        <label><input type="radio" name="projectstatus" value="3" />
-                        Finalizado</label>
-                        
-                    </li>
-                    
-                    <li class="location">
-                        <h4>Localización</h4>
-                        <input type="text" name="location" />
-                        <label><input type="checkbox" name="onlineonly" value="1" />
-                        Solo Internet</label>
-                    </li>
+                        <li class="field" id="field-description">
+                            <div class="field">
+                                <h4>Descripción</h4>
+                                <div class="tooltip" id="tooltip-description">
+                                    <blockquote><?php echo Text::get('tooltip project description'); ?></blockquote>
+                                </div>
+                                <div class="elements">
+                                    <textarea name="description" class="main"><?php if (isset($project->description)) echo htmlspecialchars($project->description) ?></textarea>
+                                </div>                                
+                                <ol class="fields">
+                                    <li class="field" id="field-motivation">
+                                        <div class="field">
+                                            <h4>Motivaciones</h4>
+                                            <div class="tooltip" id="tooltip-motivation">
+                                                <blockquote><?php echo Text::get('tooltip project motivation'); ?></blockquote>
+                                            </div>
+                                            <div class="elements">
+                                                <textarea name="motivation" class="main"><?php if (isset($project->motivation)) echo htmlspecialchars($project->motivation) ?></textarea>
+                                            </div>                                            
+                                        </div>
+                                    </li>
+                                    <li class="field" id="field-about">
+                                        <div class="field">
+                                            <h4>Qué es</h4>
+                                            <div class="tooltip" id="tooltip-about">
+                                                <blockquote><?php echo Text::get('tooltip project about'); ?></blockquote>
+                                            </div>
+                                            <div class="elements">
+                                                <textarea name="about" class="main"><?php if (isset($project->about)) echo htmlspecialchars($project->about) ?></textarea>
+                                            </div>                                            
+                                        </div>
+                                    </li>
+                                    <li class="field" id="field-goal">
+                                        <div class="field">
+                                            <div class="tooltip" id="tooltip-goal">
+                                                <blockquote><?php echo Text::get('tooltip project goal'); ?></blockquote>
+                                            </div>
+                                            <h4>Objetivos</h4>
+                                            <div class="elements">
+                                                <textarea name="goal" class="main"><?php if (isset($project->goal)) echo htmlspecialchars($project->goal) ?></textarea>
+                                            </div>                                            
+                                        </div>
+                                    </li>
+                                    <li class="field" id="field-related">
+                                        <div class="field">
+                                            <div class="tooltip" id="tooltip-related">
+                                                <blockquote><?php echo Text::get('tooltip project related'); ?></blockquote>
+                                            </div>
+                                            <h4>Experiencia relacionada y equipo</h4>
+                                            <div class="elements">
+                                                <textarea name="related" class="main"><?php if (isset($project->related)) echo htmlspecialchars($project->related) ?></textarea>
+                                            </div>                                            
+                                        </div>
+                                    </li>
+                                </ol>
+                            </div>
+                        </li>
 
-                </ol>
+                        <li class="field" id="field-category">                            
+                            <div class="field">
+                                <h4>Categorías</h4>
+                                <div class="elements checkboxes">                                    
+                                    <ul>                                        
+                                        <?php foreach ($categories as $cat_id => $cat_name): ?>                                                                                
+                                        <li><label><input type="checkbox" name="categories[]" value="<?php echo $cat_id ?>"<?php if (in_array($cat_id, $project->categories)) echo ' checked="checked"' ?> />
+                                        <?php echo htmlspecialchars($cat_name) ?></label></li>
+                                        <?php endforeach ?>
+                                    </ul>        
+                                </div>
+                                <div class="tooltip" id="tooltip-category">
+                                    <blockquote><?php echo Text::get('tooltip project category'); ?></blockquote>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="field" id="field-keywords">
+                            <div class="field">
+                                <h4>Palabras clave</h4>                        
+                                <div class="elements">
+                                    <input type="text" name="keywords" />
+                                </div>
+                                <div class="tooltip" id="tooltip-keywords">
+                                    <blockquote><?php echo Text::get('tooltip project keywords'); ?></blockquote>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="field" id="field-media">
+                            <div class="field">
+                                <h4>Vídeo</h4>                        
+                                <div class="elements">
+                                    <textarea name="media"></textarea>
+                                </div>
+                                <div class="tooltip" id="tooltip-media">
+                                    <blockquote><?php echo Text::get('tooltip project media'); ?></blockquote>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="field" id="field-currently">
+                            <div class="field">
+                                <h4>Estado actual del proyecto</h4>
+                                <div class="elements">
+                                    <label><input type="radio" name="currently" value="0" />
+                                    Inicial</label>
+
+                                    <label><input type="radio" name="currently" value="1" />
+                                    Medio</label>
+
+                                    <label><input type="radio" name="currently" value="2" />
+                                    Avanzado</label>
+
+                                    <label><input type="radio" name="currently" value="3" />
+                                    Finalizado</label>
+                                </div>
+                                <div class="tooltip" id="tooltip-currently">
+                                    <blockquote><?php echo Text::get('tooltip project currently'); ?></blockquote>
+                                </div>
+                            </div>                            
+                        </li>
+
+                        <li class="field" id="field-location">
+                            <div class="field">
+                                <h4>Localización</h4>
+                                <div class="elements">
+                                    <input type="text" name="location" />                                                                        
+                                </div>
+                                <div class="tooltip" id="tooltip-location">
+                                    <blockquote><?php echo Text::get('tooltip project location'); ?></blockquote>
+                                </div>
+                            </div>
+                        </li>
+
+                    </ol>
+                    
+                </div>
 
                 <div class="buttons">
-                    <input type="submit" value="Continuar" />
+                    <input class="next" type="submit" name="submit" value="Continuar"  />
                 </div>
 
             </div>
 
             <?php include 'view/project/steps.html.php' ?>
+            
+            <?php include 'view/project/tooltips.js.php' ?>            
 
         </form>
 
-    </div>
+    </div>            
 
     <?php include 'view/footer.html.php' ?>
     

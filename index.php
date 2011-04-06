@@ -37,9 +37,8 @@ spl_autoload_register(
 set_error_handler (
 
     function ($errno, $errstr, $errfile, $errline, $errcontext) {
-
-        // Insert error into buffer
-
+        // @todo Insert error into buffer
+        //throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
     }
 
 );

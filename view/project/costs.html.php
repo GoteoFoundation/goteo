@@ -21,59 +21,103 @@ include 'view/prologue.html.php';
                 <?php include 'view/project/status.html.php' ?>
                 <?php include 'view/project/steps.html.php' ?>
 
-                <div class="form">
+                <div class="superform red">
 
                     <h3>Proyecto/Costes</h3>
 
                     <?php include 'view/project/guide.html.php' ?>
+                    
+                    <div class="fields">
 
-                    <ol class="fields">
+                        <ol class="fields">
 
-                        <li class="costs"><h4>Desglose de costes</h4>
-                            <ol id="project-form-costs"></ol>
-                            
-                            <div class="addcost">
+                            <li class="field" id="field-cost">
                                 
-                                <h6>Nuevo coste</h6>
+                                <div class="field">
                                 
-                                <div class="type">
-                                    Tipo:
-                                    <label><input type="radio" name="type" value="task" checked="checked" />
-                                    Tarea</label>
-                                    <label><input type="radio" name="type" value="infrastructure" />
-                                    Infraestructura</label>
+                                    <h4>Desglose de costes</h4>
+
+                                    <div class="tooltip" id="tooltip-cost">
+                                        <blockquote><?php echo Text::get('tooltip project cost'); ?></blockquote>
+                                    </div>
+
+                                    <div class="elements">
+
+                                        <ol class="costs">    
+
+                                            <?php foreach ($project->costs as $cost): ?>                                        
+                                            <li>
+
+                                                <div class="description">
+                                                    <label>Descripción:
+                                                    <textarea><?php echo htmlspecialchars($cost->description) ?></textarea></label>
+                                                </div>
+
+                                                <div class="value">
+                                                    <label>Valor:
+                                                    <input type="text" /></label>
+                                                </div>
+
+                                                <div class="required">
+                                                    <label><input type="checkbox" value="1" />
+                                                    Imprescindible</label>                                            
+                                                </div>
+
+                                                <div class="since">
+                                                    <label>Desde
+                                                    <input type="text" /></label>                                            
+                                                </div>
+
+                                                <div class="through">
+                                                    <label>Hasta
+                                                    <input type="text" /></label>                                            
+                                                </div>
+
+                                            </li>
+                                            <?php endforeach ?>
+
+                                        </ol>
+
+                                        <div class="addcost">                                                                            
+                                            <input type="submit" value="Añadir" class="add" />                                                                                
+                                        </div>
+                                        
+                                    </div>
+                                    
                                 </div>
-                                
-                                <div class="description">                                    
-                                    <label>Descripción</label>                                    
+                            </li>
+
+                            <li class="field" id="field-resource">      
+                                <div class="field">
+                                    <h4>¿Cuenta con otros recursos?</h4>
+                                    <div class="tooltip" id="tooltip-resource">
+                                        <blockquote><?php echo Text::get('tooltip project resource'); ?></blockquote>
+                                    </div>
+                                    <div class="elements">
+                                        <textarea></textarea>                        
+                                    </div>
                                 </div>
-                                
-                                <div class=""
-                                
-                            </div>
-                            
-                            <input name="addcost" type="submit" value="Añadir nuevo coste">
-                        </li>
+                            </li>
 
-                        <li class="others"><h4>¿Cuenta con otros recursos?</h4>
-                            <h5>Otras ayudas económicas o infraestructuras</h5>                        
-                            <textarea></textarea>                        
-                        </li>
+                            <li class="schedule">
+                                <div class="field">
+                                    <h4>Agenda</h4>    
+                                </div>
+                            </li>
 
-                        <li class="schedule">
-                            <h4>Agenda</h4>
-                            <h5>Tiempo de producción del proyecto</h5>                                            
-                        </li>
-
-                    </ol>
+                        </ol>
+                        
+                    </div>
 
                     <div class="buttons">
-                        <input type="submit" value="Continuar" />
+                        <input type="hidden" name="step" value="rewards" />
+                        <input type="submit" value="Continuar" class="next" />
                     </div>
 
                 </div>
 
                 <?php include 'view/project/steps.html.php' ?>
+                <?php include 'view/project/tooltips.js.php' ?>
 
             </form>
 
