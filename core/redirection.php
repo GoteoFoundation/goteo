@@ -2,27 +2,15 @@
 
 namespace Goteo\Core {
 
-    class Redirection extends Error {
-
+    class Redirection extends Exception {
+        
         const
-            FOUND           = 302,
-            MOVED           = 301,
-            TEMPORARY       = 307,
-            BAD_REQUEST     = 400,
-            UNAUTHORIZED    = 401,
-            PAYMENT_REQUEST = 402,
-            FORBIDDEN       = 403,
-            NOT_FOUND       = 404,
-            NOT_ALLOWED     = 405,
-            NOT_ACCEPTABLE  = 406,
-            PROXY_REQUIRED  = 407,
-            REQUEST_TIMEOUT = 408,
-            CONFLICT        = 409,
-            GONE            = 410;
+            TEMPORARY   = 302,
+            PERMANENT   = 301;                   
 
         private $url;
 
-        public function __construct ($url, $code = self::FOUND) {
+        public function __construct ($url, $code = self::TEMPORARY) {
 
             $this->url = $url;
             parent::__construct($code);
