@@ -8,19 +8,74 @@ namespace Goteo\Controller {
 
     class Project extends \Goteo\Core\Controller {
 
+
+        private function edit ($id) {
+
+            $project = Model\Project::get($id);
+
+            $steps = array(
+                'overview'  => array(
+                    'name'  => 'Descripción'
+                ),
+                'costs'     => array()
+            );
+            
+            $step = 'user-profile';
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+                foreach ($steps as $id => &$data) {
+                    $errors = array();
+                    call_user_func_array(array($this, "process{$id}"), array(&$project, &$errors));
+                    $data['errors'] = $errors;
+                }
+
+                $project->save();
+
+            }
+
+            include "view/project/{$step}.html.php";
+
+        }
+
+        private function create () {
+
+            /*
+            $project = new Model\Project;
+            $project->create($_SESSION['user']->id);
+             */
+
+            $project = new Model\Project(array(
+                'user'  => $_SESSION['user']
+            ));
+
+            if ($project->save()) {
+                throw new Redirection("/project/{$project->id}/?edit");
+            }
+
+            throw new Error;
+        }
+
+        private function view ($id) {
+            $project = Model\Project::get($id);
+            include 'view/project/public.html.php';
+        }
+
         public function index($id = null) {
             
             if ($id !== null) {
-                
-                $project = Model\Project::get($id);
-                
-                if ($project !== false) {
-                    include 'view/project/public.html.php';
+
+                if (isset($_GET['edit'])) {
+                    return $this->edit($id);
+                } else {
+                    return $this->view($id);
                 }
                 
-            }
-            
-            throw new Error(Error::NOT_FOUND);
+            } else if (isset($_GET['create'])) {
+                return $this->create();                
+            } else {
+                throw new Error(Error::NOT_FOUND);
+            }          
             
         }
 
