@@ -1,5 +1,83 @@
-<?php include 'view/project/header.html.php' ?>
-<?php use Goteo\Library\Text; ?>
+<?php 
+
+use Goteo\Library\Text;
+
+$bodyClass = 'project-form';
+
+include 'view/prologue.html.php';
+    
+    include 'view/header.html.php'; ?>
+
+    <div id="sub-header">
+        <div>
+            <h2>Formulario</h2>
+        </div>
+    </div>
+
+    <div id="main" class="overview">
+
+        <form method="post" action="" class="project">
+
+            <?php include 'view/project/status.html.php' ?>
+            <?php include 'view/project/steps.html.php' ?>
+
+            <div class="superform aqua">
+
+                <h3>Proyecto/Retornos</h3>
+
+                <?php include 'view/project/guide.html.php' ?>
+                
+                <div class="fields">
+
+                    <ol class="fields">
+
+                        <li class="field" id="field-social_reward">
+                            <div class="field">
+                                <h4>Retornos colectivos</h4>
+                                <div class="tooltip" id="tooltip-social_reward">
+                                    <blockquote><?php echo Text::get('tooltip project social_reward'); ?></blockquote>
+                                </div>
+                                <div class="elements">                                    
+                                    <input class="add" type="submit" value="Añadir" />                                    
+                                </div>                                
+                            </div>
+                        </li>
+
+                        <li class="field" id="field-nsocial_reward"><h4>Recompensas individuales</h4>
+                            <div class="field">
+                                <h4>Retornos colectivos</h4>
+                                <div class="tooltip" id="tooltip-nsocial_reward">
+                                    <blockquote><?php echo Text::get('tooltip project nsocial_reward'); ?></blockquote>
+                                </div>
+                                <div class="elements">
+                                    <input class="add" type="submit" value="Añadir" />                                    
+                                </div>                                
+                            </div>                            
+                        </li>                                        
+
+                    </ol>
+                    
+                </div>
+
+                <div class="buttons">
+                    <input class="next" type="submit" value="Continuar" />
+                </div>
+
+            </div>
+
+            <?php include 'view/project/steps.html.php' ?>
+            
+            <?php include 'view/project/tooltips.js.php' ?>            
+
+        </form>
+
+    </div>
+
+    <?php include 'view/footer.html.php' ?>
+    
+<?php include 'view/epilogue.html.php' ?>
+
+<!--
 PROYECTO / Retorno<br />
 GUÍA: <?php echo $guideText; ?><br />
 <?php include 'view/project/errors.html.php' ?>
@@ -117,4 +195,4 @@ GUÍA: <?php echo $guideText; ?><br />
 
 				<input type="submit" name="submit" value="CONTINUAR" />
 			</form>
-<?php include 'view/project/footer.html.php' ?>
+-->
