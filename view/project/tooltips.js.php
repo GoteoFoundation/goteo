@@ -30,15 +30,11 @@
                         var p = el.parents('li.field');
                         
                         if (p.length >= 1 && ($(p[0]).attr('id') === 'field-' + id)) {                            
-                            el.bind('focus', handler);
-                            if (i === 0) {
-                                el.trigger('focus');
-                            }
+                            el.bind('focus', handler);                                                        
                         }
                     });
                     
                 });
-
                         
             });                
             </script>
