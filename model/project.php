@@ -59,8 +59,51 @@ namespace Goteo\Model {
             // para guardar los errores en el proyecto
             $errors = array();
 
+        /**
+         * Inserta un proyecto con los datos mínimos
+         *
+         * @param array $data
+         * @return boolean
+         */
+        public function __construct($user, $node = 'goteo') {
+
+            // cojemos el número de proyecto de este usuario
+            $query = self::query("SELECT COUNT(id) as num FROM project WHERE owner = ?", array($user));
+            $now = $query->fetchObject();
+            $num = $now->num + 1;
+
+            $values = array(
+                ':id'   => md5($user.'-'.$num),
+                ':name' => "Mi proyecto $num",
+                ':status'   => 1,
+                ':progress' => 0,
+                ':owner' => $user,
+                ':node' => $node,
+                ':amount' => 0,
+                ':created'  => date('Y-m-d')
+                );
+
+            $sql = "REPLACE INTO project (id, name, status, progress, owner, node, amount, created)
+                 VALUES (:id, :name, :status, :progress, :owner, :node, :amount, :created)";
+            try {
+				self::query($sql, $values);
+
+                $this->id = $values[':id'];
+                $this->owner = $user;
+                $this->node = $node;
+                $this->status = 1;
+                $this->progress = 0;
+
+                // cargar los datos legales del usuario
+
+                return $this->id;
+            } catch (\PDOException $e) {
+                throw new Goteo\Exception("ERROR al crear un nuevo proyecto<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
+            }
+        }
+        
         /*
-         *  Cargamos los datos del usuario al crear la instancia
+         *  Cargamos los datos del proyecto
          */
         public static function get($id) {
             try {
@@ -103,50 +146,6 @@ namespace Goteo\Model {
 				return false;
 			}
 		}
-
-        /**
-         * Inserta un proyecto con los datos mínimos
-         *
-         * @param array $data
-         * @return boolean
-         */
-        public function create($user, $node = 'goteo') {
-
-            // cojemos el número de proyecto de este usuario
-            $query = self::query("SELECT COUNT(id) as num FROM project WHERE owner = ?", array($user));
-            $now = $query->fetchObject();
-            $num = $now->num + 1;
-
-            $values = array(
-                ':id'   => md5($user.'-'.$num),
-                ':name' => "Mi proyecto $num",
-                ':status'   => 1,
-                ':progress' => 0,
-                ':owner' => $user,
-                ':node' => $node,
-                ':amount' => 0,
-                ':created'  => date('Y-m-d')
-                );
-
-            $sql = "REPLACE INTO project (id, name, status, progress, owner, node, amount, created)
-                 VALUES (:id, :name, :status, :progress, :owner, :node, :amount, :created)";
-            try {
-				self::query($sql, $values);
-
-                $this->id = $values[':id'];
-                $this->owner = $user;
-                $this->node = $node;
-                $this->status = 1;
-                $this->progress = 0;
-
-                // cargar los datos legales del usuario
-
-                return $this->id;
-            } catch (\PDOException $e) {
-                echo "ERROR al crear un nuevo proyecto<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>";
-                return false;
-            }
-        }
 
         /*
          * Recupera los datos de contrato del anterior proyecto
