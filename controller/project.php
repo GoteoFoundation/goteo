@@ -14,26 +14,84 @@ namespace Goteo\Controller {
             $project = Model\Project::get($id);
 
             $steps = array(
-                'overview'  => array(
-                    'name'  => 'Descripción'
+                'userProfile' => array(
+                    'name' => 'Perfil',
+                    '' => '',
+                    'errors' => array()
                 ),
-                'costs'     => array()
+                'userPersonal' => array(
+                    'name' => 'Datos personales',
+                    'errors' => array()
+                ),
+                'overview' => array(
+                    'name' => 'Descripción',
+                    'errors' => array()
+                ),
+                'costs'=> array(
+                    'name' => 'Costes',
+                    'errors' => array()
+                ),
+                'rewards' => array(
+                    'name' => 'Retornos',
+                    'errors' => array()
+                ),
+                'supports' => array(
+                    'name' => 'Colaboraciones',
+                    'errors' => array()
+                ),
+                'preview' => array(
+                    'name' => 'Previsualizar',
+                    'errors' => array()
+                )
             );
-            
-            $step = 'user-profile';
+
+            // vista por defecto
+            $view = 'userProfile';
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 foreach ($steps as $id => &$data) {
                     $errors = array();
-                    call_user_func_array(array($this, "process{$id}"), array(&$project, &$errors));
+                    call_user_func_array(array($this, "process_{$id}"), array(&$project, &$errors));
                     $data['errors'] = $errors;
+                    if (!empty($_POST['view-step-'.$id]))
+                        $view = $id;
                 }
 
                 $project->save();
-
             }
 
+            // datos que necesita para pintar, creo que esto lo tendria que cargar cada vista
+            //userProfile
+            $interests = Model\User\Interest::getAll();
+            $guideText = Text::get('guide project user information');
+
+            //userPersonal
+            $guideText = Text::get('guide project contract information');
+
+            //overview
+            $currently = Model\Project::currentStatus();
+            $categories = Model\Project\Category::getAll();
+            $guideText = Text::get('guide project description');
+
+            //costs
+            $types = Model\Project\Cost::types();
+            $guideText = Text::get('guide project costs');
+
+            //rewards
+            $stypes = Model\Project\Reward::icons('social');
+            $itypes = Model\Project\Reward::icons('individual');
+            $licenses = Model\Project\Reward::licenses();
+
+            $guideText = Text::get('guide project rewards');
+
+            //supports
+            $types = Model\Project\Support::types();
+            $guideText = Text::get('guide project support');
+
+            //preview
+
+                
             include "view/project/{$step}.html.php";
 
         }
@@ -46,7 +104,7 @@ namespace Goteo\Controller {
              */
 
             $project = new Model\Project(array(
-                'user'  => $_SESSION['user']
+                'user'  => $_SESSION['user']->id
             ));
 
             if ($project->save()) {
@@ -79,94 +137,39 @@ namespace Goteo\Controller {
             
         }
 
-        public function manage($id = null) {
-            Model\User::restrict();
-
-            if (!$id) {
-                header('Location: /');
-                die;
-            } else {
-                $_SESSION['current_project'] = $id;
-                header('Location: /project/overview');
-                die;
-            }
-        }
-
-        /*
-         * Paso cero de nuevo proyecto
-         * @TODO : de nuevo el usuario no deberia llegar por la url sino por la session
-         * pero aun no tenemos la validación de usuario...
-         */
-
-        public function create() {
-            
-            static $views = array(
-                'overview',
-                'costs',
-                'rewards',
-            );
-            
-            Model\User::restrict();
-            
-            if (empty($_SESSION['current_project'])) {
-                
-                $project = new Model\Project;
-                
-                if (!$project->create($_SESSION['user']->id)) {
-                    throw new Error;
-                } 
-                
-                $_SESSION['current_project'] = $project->id;
-                                                                                
-            }
-            
-            if (isset($_POST['view']) && in_array($view, $views)) {
-                $view = $_POST['view'];
-            } else {                
-                $view = $views[0]; // @todo Default view
-            }
-
-            // Validate here
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            }
-
-            include "view/project/{$view}.html.php";
-            
-        }
-
         /*
          * Paso 1 - PERFIL
          */
 
-        public function user() {
-            Model\User::restrict();
-
-            $id = $_SESSION['current_project'];
-
-            $project = Model\Project::get($id);
+        private function process_userProfile(&$project, &$errors = array()) {
 
             $user = Model\User::get($project->owner);
 
-            $errors = array();
+            // el save solo se encarga de datos sensibles, no de esta información adicional...
+            // tratar la imagen y ponerla en la propiedad avatar
+            // __FILES__
 
-            if (isset($_POST['submit'])) {
-                // el save solo se encarga de datos sensibles, no de esta información adicional...
-                // tratar la imagen y ponerla en la propiedad avatar
-                // __FILES__
+            $fields = array(
+                'name',
+                'avatar',
+                'about',
+                'keywords',
+                'contribution',
+                'blog',
+                'twitter',
+                'facebook',
+                'linkedin'
+            );
 
-                $user->name = $_POST['name'];
-                $user->avatar = $_POST['avatar'];
-                $user->about = $_POST['about'];
-                $user->keywords = $_POST['keywords'];
-                $user->contribution = $_POST['contribution'];
-                $user->blog = $_POST['blog'];
-                $user->twitter = $_POST['twitter'];
-                $user->facebook = $_POST['facebook'];
-                $user->linkedin = $_POST['linkedin'];
+            foreach ($fields as $field) {
+                if (isset($_POST[$field]))
+                    $user->$field;
+            }
 
-                $user->saveInfo($errors);
+            $user->saveInfo($errors);
 
-                //intereses
+            //intereses, si viene en el post
+            if (isset($_POST['interests'])) {
                 // añadir los que vienen
                 foreach ($_POST['interests'] as $int) {
                     if (!in_array($int, $user->interests)) {
@@ -190,354 +193,224 @@ namespace Goteo\Controller {
                         $interest->remove($errors);
                     }
                 }
-
-                // si no saltamos tenemos que recargar
-//        		  $user = Model\User::get($project->owner);
-
-                header('Location: /project/register/');
-                die;
             }
 
-            $interests = Model\User\Interest::getAll();
-
-            $guideText = Text::get('guide project user information');
-            include 'view/project/user.html.php';
         }
 
         /*
          * Paso 2 - DATOS PERSONALES
          */
 
-        public function register() {
-            Model\User::restrict();
+        private function process_userPersonal(&$project, &$errors = array()) {
+            // campos que guarda este paso
+            $fields = array(
+                'contract_name',
+                'contract_surname',
+                'contract_nif',
+                'contract_email',
+                'phone',
+                'address',
+                'zipcode',
+                'location',
+                'country'
+            );
 
-            $id = $_SESSION['current_project'];
-
-            if (!$id) {
-                header('Location: /');
-                die;
-            } else {
-                $project = Model\Project::get($id);
-
-                $errors = array();
-
-                if (isset($_POST['submit'])) {
-
-                    // campos que guarda este paso
-                    $fields = array(
-                        'contract_name',
-                        'contract_surname',
-                        'contract_nif',
-                        'contract_email',
-                        'phone',
-                        'address',
-                        'zipcode',
-                        'location',
-                        'country'
-                    );
-
-                    foreach ($fields as $field) {
-                        $project->$field = $_POST[$field];
-                    }
-
-                    $project->save($errors);
-
-                    if (empty($errors)) {
-                        header('Location: /project/overview/');
-                        die;
-                    }
-                }
-
-                $guideText = Text::get('guide project contract information');
-                include 'view/project/register.html.php';
+            foreach ($fields as $field) {
+                if (isset($_POST[$field]))
+                    $project->$field = $_POST[$field];
             }
+
         }
 
         /*
          * Paso 3 - DESCRIPCIÓN
          */
 
-        public function overview() {
-            Model\User::restrict();
+        private function process_overview(&$project, &$errors = array()) {
+            // campos que guarda este paso
+            $fields = array(
+                'name',
+                'image',
+                'description',
+                'motivation',
+                'about',
+                'goal',
+                'related',
+                'keywords',
+                'media',
+                'currently',
+                'project_location'
+            );
 
-            $id = $_SESSION['current_project'];
+            foreach ($fields as $field) {
+                if (isset($_POST[$field]))
+                    $project->$field = $_POST[$field];
+            }
 
-            if (!$id) {
-                header('Location: /');
-                die;
-            } else {
-                $project = Model\Project::get($id);
+            //categorias, si viene el campo
+            if (isset($_POST['categories'])) {
+                // añadir las que vienen
+                foreach ($_POST['categories'] as $cat) {
+                    if (!in_array($cat, $project->categories)) {
+                        $category = new Model\Project\Category();
 
-                if (isset($_POST['submit'])) {
+                        $category->id = $cat;
+                        $category->project = $project->id;
 
-                    $errors = array();
-
-                    // campos que guarda este paso
-                    $fields = array(
-                        'name',
-                        'description',
-                        'motivation',
-                        'about',
-                        'goal',
-                        'related',
-                        'keywords',
-                        'media',
-                        'currently',
-                        'project_location'
-                    );
-
-                    foreach ($fields as $field) {
-                        $project->$field = $_POST[$field];
+                        $category->save($errors);
                     }
-
-                    //tratar imagen y ponerla en la propiedad image
-                    $project->image = $_POST['image'];
-
-
-                    $project->save($errors);
-
-                    //categorias
-                    // añadir las que vienen
-                    foreach ($_POST['categories'] as $cat) {
-                        if (!in_array($cat, $project->categories)) {
-                            $category = new Model\Project\Category();
-
-                            $category->id = $cat;
-                            $category->project = $project->id;
-
-                            $category->save($errors);
-                        }
-                    }
-
-                    // quitar las que no vienen
-                    foreach ($project->categories as $cat) {
-                        if (!in_array($cat, $_POST['categories'])) {
-                            $category = new Model\Project\Category();
-
-                            $category->id = $cat;
-                            $category->project = $project->id;
-
-                            $category->remove($errors);
-                        }
-                    }
-
-
-                    header('Location: /project/costs/');
-                    die;
                 }
 
-                $currently = Model\Project::currentStatus();
-                $categories = Model\Project\Category::getAll();
+                // quitar las que no vienen
+                foreach ($project->categories as $cat) {
+                    if (!in_array($cat, $_POST['categories'])) {
+                        $category = new Model\Project\Category();
 
-                $guideText = Text::get('guide project description');
-                include 'view/project/overview.html.php';
+                        $category->id = $cat;
+                        $category->project = $project->id;
+
+                        $category->remove($errors);
+                    }
+                }
             }
         }
 
         /*
          * Paso 4 - COSTES
          */
+        private function process_costs(&$project, &$errors = array()) {
+            if (isset($_POST['resource']))
+                $project->resource = $_POST['resource'];
 
-        public function costs() {
-            Model\User::restrict();
+            //tratar costes existentes
+            foreach ($project->costs as $cost) {
+                // primero mirar si lo estan quitando
+                if (isset($_POST['remove-cost' . $cost->id]) && $_POST['remove-cost' . $cost->id] == 1) {
+                    $cost->remove($errors);
 
-            $id = $_SESSION['current_project'];
+                    //@TODO como lo quito??
+                    
+                    continue;
+                }
 
-            if (!$id) {
-                header('Location: /');
-                die;
-            } else {
-                $project = Model\Project::get($id);
+                if (isset($_POST['cost' . $cost->id])) {
+                    $cost->cost = $_POST['cost' . $cost->id];
+                    $cost->description = $_POST['cost-description' . $cost->id];
+                    $cost->amount = $_POST['cost-amount' . $cost->id];
+                    $cost->type = $_POST['cost-type' . $cost->id];
+                    $cost->required = $_POST['cost-required' . $cost->id];
+                    $cost->from = $_POST['cost-from' . $cost->id];
+                    $cost->until = $_POST['cost-until' . $cost->id];
 
-                if (isset($_POST['submit'])) {
-
-                    $errors = array();
-
-                    $project->resource = $_POST['resource'];
-                    $project->save($errors);
-
-                    //tratar costes existentes
-                    foreach ($project->costs as $cost) {
-                        // primero mirar si lo estan quitando
-                        if ($_POST['remove-cost' . $cost->id] == 1) {
-                            $cost->remove($errors);
-                            continue;
-                        }
-
-                        if (!empty($_POST['cost' . $cost->id])) {
-
-                            $cost->cost = $_POST['cost' . $cost->id];
-                            $cost->description = $_POST['cost-description' . $cost->id];
-                            $cost->amount = $_POST['cost-amount' . $cost->id];
-                            $cost->type = $_POST['cost-type' . $cost->id];
-                            $cost->required = $_POST['cost-required' . $cost->id];
-                            $cost->from = $_POST['cost-from' . $cost->id];
-                            $cost->until = $_POST['cost-until' . $cost->id];
-
-                            $cost->save($errors);
-                        }
-                    }
-
-                    //tratar nuevo coste
-                    if (!empty($_POST['ncost'])) {
-
-                        $cost = new Model\Project\Cost();
-
-                        $cost->id = '';
-                        $cost->project = $project->id;
-                        $cost->cost = $_POST['ncost'];
-                        $cost->description = $_POST['ncost-description'];
-                        $cost->amount = $_POST['ncost-amount'];
-                        $cost->type = $_POST['ncost-type'];
-                        $cost->required = $_POST['ncost-required'];
-                        $cost->from = $_POST['ncost-from'];
-                        $cost->until = $_POST['ncost-until'];
-
-                        $cost->save($errors);
-
-                        $project->costs[] = $cost;
-                    }
-
-                    // si no saltamos tenemos que recargar
-                    $project = Model\Project::get($id);
-//                    header('Location: /project/rewards/');
-//                    die;
+                    $cost->save($errors);
                 }
             }
 
-            $types = Model\Project\Cost::types();
+            //tratar nuevo coste
+            if (isset($_POST['ncost']) && !empty($_POST['ncost'])) {
 
-            $guideText = Text::get('guide project costs');
-            include 'view/project/costs.html.php';
+                $cost = new Model\Project\Cost();
+
+                $cost->id = '';
+                $cost->project = $project->id;
+                $cost->cost = $_POST['ncost'];
+                $cost->description = $_POST['ncost-description'];
+                $cost->amount = $_POST['ncost-amount'];
+                $cost->type = $_POST['ncost-type'];
+                $cost->required = $_POST['ncost-required'];
+                $cost->from = $_POST['ncost-from'];
+                $cost->until = $_POST['ncost-until'];
+
+                $cost->save($errors);
+
+                $project->costs[] = $cost;
+            }
+
         }
 
         /*
          * Paso 5 - RETORNO
          */
 
-        public function rewards() {
-            Model\User::restrict();
-
-            $id = $_SESSION['current_project'];
-
-            if (!$id) {
-                header('Location: /');
-                die;
-            } else {
-                $project = Model\Project::get($id);
-//                echo '<pre>' . print_r($project->social_rewards, 1) . '</pre>';
-//                echo '<pre>' . print_r($project->individual_rewards, 1) . '</pre>';
-
-                if (isset($_POST['submit'])) {
-
-                    $errors = array();
-
-                    //tratar retornos sociales
-                    foreach ($project->social_rewards as $reward) {
-                        // primero mirar si lo estan quitando
-                        if ($_POST['remove-social_reward' . $reward->id] == 1) {
-                            $reward->remove($errors);
-                            continue;
-                        }
-
-                        $reward->reward = $_POST['social_reward' . $reward->id];
-                        $reward->description = $_POST['social_reward-description' . $reward->id];
-                        $reward->icon = $_POST['social_reward-icon' . $reward->id];
-                        $reward->license = $_POST['social_reward-license' . $reward->id];
-
-                        $reward->save($errors);
-                    }
-
-                    // retornos individuales
-                    foreach ($project->individual_rewards as $reward) {
-                        // primero mirar si lo estan quitando
-                        if ($_POST['remove-individual_reward' . $reward->id] == 1) {
-                            $reward->remove($errors);
-                            continue;
-                        }
-
-                        $reward->reward = $_POST['individual_reward' . $reward->id];
-                        $reward->description = $_POST['individual_reward-description' . $reward->id];
-                        $reward->icon = $_POST['individual_reward-icon' . $reward->id];
-                        $reward->amount = $_POST['individual_reward-amount' . $reward->id];
-                        $reward->units = $_POST['individual_reward-units' . $reward->id];
-
-                        $reward->save($errors);
-                    }
-
-
-
-                    // tratar nuevos retornos
-                    if (!empty($_POST['nsocial_reward'])) {
-                        $reward = new Model\Project\Reward();
-
-                        $reward->id = '';
-                        $reward->project = $project->id;
-                        $reward->reward = $_POST['nsocial_reward'];
-                        $reward->description = $_POST['nsocial_reward-description'];
-                        $reward->type = 'social';
-                        $reward->icon = $_POST['nsocial_reward-icon'];
-                        $reward->license = $_POST['nsocial_reward-license'];
-
-                        $reward->save($errors);
-
-                        $project->social_rewards[] = $reward;
-                    }
-
-                    if (!empty($_POST['nindividual_reward'])) {
-                        $reward = new Model\Project\Reward();
-
-                        $reward->id = '';
-                        $reward->project = $project->id;
-                        $reward->reward = $_POST['nindividual_reward'];
-                        $reward->description = $_POST['nindividual_reward-description'];
-                        $reward->type = 'individual';
-                        $reward->icon = $_POST['nindividual_reward-icon'];
-                        $reward->amount = $_POST['nindividual_reward-amount'];
-                        $reward->units = $_POST['nindividual_reward-units'];
-
-                        $reward->save($errors);
-
-                        $project->individual_rewards[] = $reward;
-                    }
-
-
-                    // si no saltamos tenemos que recargar
-                    $project = Model\Project::get($id);
-//                    header('Location: /project/supports/');
-//                    die;
+        private function process_rewards(&$project, &$errors = array()) {
+            //tratar retornos sociales
+            foreach ($project->social_rewards as $reward) {
+                // primero mirar si lo estan quitando
+                if (isset($_POST['remove-social_reward' . $reward->id]) && $_POST['remove-social_reward' . $reward->id] == 1) {
+                    $reward->remove($errors);
+                    continue;
                 }
 
-                $stypes = Model\Project\Reward::icons('social');
-                $itypes = Model\Project\Reward::icons('individual');
-                $licenses = Model\Project\Reward::licenses();
+                if (isset($_POST['social_reward' . $reward->id])) {
+                    $reward->reward = $_POST['social_reward' . $reward->id];
+                    $reward->description = $_POST['social_reward-description' . $reward->id];
+                    $reward->icon = $_POST['social_reward-icon' . $reward->id];
+                    $reward->license = $_POST['social_reward-license' . $reward->id];
 
-                $guideText = Text::get('guide project rewards');
-                include 'view/project/rewards.html.php';
+                    $reward->save($errors);
+                }
+            }
+
+            // retornos individuales
+            foreach ($project->individual_rewards as $reward) {
+                // primero mirar si lo estan quitando
+                if (isset($_POST['remove-individual_reward' . $reward->id]) && $_POST['remove-individual_reward' . $reward->id] == 1) {
+                    $reward->remove($errors);
+                    continue;
+                }
+
+                if (isset($_POST['individual_reward' . $reward->id])) {
+                    $reward->reward = $_POST['individual_reward' . $reward->id];
+                    $reward->description = $_POST['individual_reward-description' . $reward->id];
+                    $reward->icon = $_POST['individual_reward-icon' . $reward->id];
+                    $reward->amount = $_POST['individual_reward-amount' . $reward->id];
+                    $reward->units = $_POST['individual_reward-units' . $reward->id];
+
+                    $reward->save($errors);
+                }
+            }
+
+
+
+            // tratar nuevos retornos
+            if (isset($_POST['nsocial_reward']) && !empty($_POST['nsocial_reward'])) {
+                $reward = new Model\Project\Reward();
+
+                $reward->id = '';
+                $reward->project = $project->id;
+                $reward->reward = $_POST['nsocial_reward'];
+                $reward->description = $_POST['nsocial_reward-description'];
+                $reward->type = 'social';
+                $reward->icon = $_POST['nsocial_reward-icon'];
+                $reward->license = $_POST['nsocial_reward-license'];
+
+                $reward->save($errors);
+
+                $project->social_rewards[] = $reward;
+            }
+
+            if (isset($_POST['nindividual_reward']) && !empty($_POST['nindividual_reward'])) {
+                $reward = new Model\Project\Reward();
+
+                $reward->id = '';
+                $reward->project = $project->id;
+                $reward->reward = $_POST['nindividual_reward'];
+                $reward->description = $_POST['nindividual_reward-description'];
+                $reward->type = 'individual';
+                $reward->icon = $_POST['nindividual_reward-icon'];
+                $reward->amount = $_POST['nindividual_reward-amount'];
+                $reward->units = $_POST['nindividual_reward-units'];
+
+                $reward->save($errors);
+
+                $project->individual_rewards[] = $reward;
             }
         }
 
         /*
          * Paso 6 - COLABORACIONES
          */
-
-        public function supports() {
-            Model\User::restrict();
-
-            $id = $_SESSION['current_project'];
-
-            if (!$id) {
-                header('Location: /');
-                die;
-            } else {
-                $project = Model\Project::get($id);
-//                echo '<pre>' . print_r($project, 1) . '</pre>';
-
-                if (isset($_POST['submit'])) {
-
-//                    echo '<pre>' . print_r($_POST, 1) . '</pre>';
-                    $errors = array();
-
+         private function supports(&$project, &$errors = array()) {
                     // tratar colaboraciones existentes
                     foreach ($project->supports as $support) {
                         // primero mirar si lo estan quitando
@@ -569,18 +442,6 @@ namespace Goteo\Controller {
                         $project->supports[] = $support;
                     }
 
-
-                    // si no saltamos tenemos que recargar
-                    $project = Model\Project::get($id);
-//                    header('Location: /project/preview/');
-//                    die;
-                }
-
-                $types = Model\Project\Support::types();
-
-                $guideText = Text::get('guide project support');
-                include 'view/project/supports.html.php';
-            }
         }
 
         /*

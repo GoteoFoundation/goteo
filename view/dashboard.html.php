@@ -17,16 +17,16 @@ include 'view/header.html.php'; ?>
 			Mis proyectos:<br />
 		<?php
 		foreach ($projects as $project) {
-			echo '<a href="/project/manage/' . $project->id . '">' . ($project->name != '' ? $project->name : $project->id) . '</a>
+			echo '<a href="/project/' . $project->id . '/?edit">' . ($project->name != '' ? $project->name : $project->id) . '</a>
                 (' . $status[$project->status] . ')
                     Progreso: ' . $project->progress . '%
-                        <a href="/project/' . $project->id . '">[Preview]</a><br />';
+                        <a href="/project/' . $project->id . '">[View]</a><br />';
 		}
 		?>
 		</p>
 
 		<p>
-			Nuevo proyecto: <a href="/project/create">Crear</a><br />
+			Nuevo proyecto: <a href="/project/?create">Crear</a><br />
 		</p>
                 
         </div>

@@ -55,7 +55,7 @@ namespace Goteo\Model\Project {
 				$sql = "REPLACE INTO support SET " . $set;
 				if ($res = self::query($sql, $values))  {
 
-//					if (empty($this->id)) $this->id = \PDO::lastInsertId;
+					if (empty($this->id)) $this->id = self::insertId();
 
 					return true;
 				}
