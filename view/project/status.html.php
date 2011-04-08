@@ -1,6 +1,8 @@
             <?php 
             use Goteo\Library\Text,
                 Goteo\Model\Project; 
+            
+            $project->progress = round(30 + rand(0, 70), 2); // @todo Remove me
             ?>            
             <div class="status">
                 

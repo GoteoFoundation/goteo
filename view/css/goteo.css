@@ -673,7 +673,7 @@ body.js div.superform div.fields ol li div.tooltip {
     top: 1em;
     width: 250px;
     padding-left: 13px;
-    cdcdisplay: none;
+    display: none;
     position: absolute;
     background: url('form/tooltip/beak/cyan/w.png') no-repeat left 20px;
     padding-top: 0;

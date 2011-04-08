@@ -83,7 +83,7 @@ namespace Goteo\Core {
         public static function insertId() {
             
             try {
-                return static::query("SELECT INSERT_ID();")->fetchColumn();
+                return static::query("SELECT LAST_INSERT_ID();")->fetchColumn();
             } catch (\Exception $e) {
                 return 0;
             }
