@@ -1,6 +1,7 @@
 <?php 
 
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Library\SuperForm;
 
 $bodyClass = 'project-form';
 
@@ -20,6 +21,94 @@ include 'view/prologue.html.php';
 
             <?php include 'view/project/status.html.php' ?>
             <?php include 'view/project/steps.html.php' ?>
+            
+            <?php
+            
+            echo new SuperForm(array(
+                
+                'action'        => '',
+                'method'        => 'post',
+                'title'         => 'Proyecto/Descripción',
+                'class'         => 'aqua',
+                'elements'      => array(
+                    
+                    array(
+                        'type'  => 'textbox',
+                        'title' => 'Nombre del proyecto',                        
+                        'name'  => 'name',
+                        'hint'  => Text::get('tooltip project name'),
+                        'value' => $this['project']->name
+                    ),
+                    
+                    array(    
+                        'name'  => 'images'
+                    ),
+                    
+                    array(
+                        'type'  => 'textarea',
+                        'name'  => 'description',
+                        'hint'  => Text::get('tooltip project description'),
+                        'value' => $this['project']->description
+                    ),
+                    
+                    array(
+                        'type'  => 'textarea',
+                        'name'  => 'motivation',
+                        'hint'  => Text::get('tooltip project motivation'),
+                        'value' => $this['project']->motivation
+                    ),
+                    
+                    array(
+                        'type'  => 'textarea',
+                        'name'  => 'goal',
+                        'hint'  => Text::get('tooltip project goal'),
+                        'value' => $this['project']->goal
+                    ),
+                    
+                    array(
+                        'type'  => 'textarea',
+                        'name'  => 'related',
+                        'hint'  => Text::get('tooltip project related'),
+                        'value' => $this['project']->related
+                    ),
+                    
+                    array(    
+                        'name'  => 'category'
+                    ),
+                    
+                    array(
+                        'type'  => 'textbox',
+                        'title' => 'Palabras clave',                        
+                        'name'  => 'keywords',
+                        'hint'  => Text::get('tooltip project keywords'),
+                        'value' => $this['project']->keywords
+                    ),
+                    
+                    array(
+                        'type'  => 'textarea',
+                        'name'  => 'media',
+                        'hint'  => Text::get('tooltip project media'),
+                        'value' => $this['project']->media
+                    ),
+                    
+                    array(    
+                        'name'  => 'currently'
+                    ),
+                    
+                    array(
+                        'type'  => 'textbox',
+                        'name'  => 'location',
+                        'hint'  => Text::get('tooltip project location'),
+                        'value' => $this['project']->location
+                    )                                        
+                    
+                )
+                
+            ));
+            
+            ?>
+            
+            <!--
 
             <div class="superform aqua">
 
@@ -35,7 +124,7 @@ include 'view/prologue.html.php';
                             <div class="field">
                                 <h4>Nombre del proyecto</h4>
                                 <div class="tooltip" id="tooltip-name">
-                                    <blockquote><?php echo Text::get('tooltip project name'); ?></blockquote>
+                                    <blockquote><?php echo; ?></blockquote>
                                 </div>
                                 <div class="elements"><input class="main" type="text" name="name" value="<?php if (isset($project->name)) echo htmlspecialchars($project->name) ?>" /></div>
                                 
@@ -201,6 +290,8 @@ include 'view/prologue.html.php';
                 </div>
 
             </div>
+            
+            -->
 
             <?php include 'view/project/steps.html.php' ?>
             
