@@ -23,10 +23,10 @@ namespace Goteo\Controller {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             	$errors = array();
                 if (strcmp($_POST['email'], $_POST['remail']) !== 0) {
-                    $errors['email'] = 'La comprobación de email no coincide.';
+                    $errors['email'] = Goteo\Library\Text::get('error register email confirm');
                 }
                 if(strcmp($_POST['password'], $_POST['rpassword']) !== 0) {
-                    $errors['password'] = 'La comprobación de contraseña no coincide.';
+                    $errors['password'] = Goteo\Library\Text::get('error register password confirm');
                 }
                 if(empty($errors)) {
                 	$user = new Model\User();

@@ -280,7 +280,6 @@ if ($debug) {
                 'about',
                 'keywords',
                 'contribution',
-                'blog',
                 'twitter',
                 'facebook',
                 'linkedin'
@@ -305,6 +304,7 @@ if ($debug) {
                         $interest->user = $user->id;
 
                         $interest->save($errors);
+                        $user->interests[] = $interest;
                     }
                 }
 
@@ -320,6 +320,37 @@ if ($debug) {
                             unset($user->interests[$key]);
                     }
                 }
+            }
+
+            //tratar webs existentes
+            foreach ($user->webs as $key=>$web) {
+                // primero mirar si lo estan quitando
+                if (isset($_POST['remove-web' . $web->id]) && $_POST['remove-web' . $web->id] == 1) {
+                    if ($web->remove($errors))
+                        unset($user->webs[$key]);
+                    continue; // no tratar esta
+                }
+
+                if (isset($_POST['web' . $web->id])) {
+                    $web->user = $user->id;
+                    $web->url = $_POST['web' . $web->id];
+
+                    $web->save($errors);
+                }
+            }
+
+            //tratar nueva web
+            if (isset($_POST['nweb']) && !empty($_POST['nweb'])) {
+
+                $web = new Model\User\Web();
+
+                $web->id = '';
+                $web->user = $user->id;
+                $web->url = $_POST['nweb'];
+
+                $web->save($errors);
+
+                $user->webs[] = $web;
             }
 
             $user->check($project->errors['userProfile']); // checkea errores
@@ -387,6 +418,7 @@ if ($debug) {
                         $category->project = $project->id;
 
                         $category->save($errors);
+                        $project->categories[] = $category;
                     }
                 }
 

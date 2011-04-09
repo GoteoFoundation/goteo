@@ -108,7 +108,7 @@ namespace Goteo\Model {
 
                 return $this->id;
             } catch (\PDOException $e) {
-                throw new Goteo\Exception("ERROR al crear un nuevo proyecto<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
+                throw new Goteo\Core\Exception("ERROR al crear un nuevo proyecto<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
             }
         }
         
@@ -417,7 +417,7 @@ namespace Goteo\Model {
                     $errors['overview']['keywords'] = Text::get('validate project value keywords');
 
                 if (empty($this->currently))
-                    $errors['overview']['currently'] = 'Indicar el estado del proyecto para mejorar la puntuación';
+                    $errors['overview']['currently'] = Text::get('validate project field currently');
 
                 if (empty($this->project_location))
                     $errors['overview']['project_location'] = Text::get('mandatory project field location');
@@ -427,59 +427,59 @@ namespace Goteo\Model {
             /***************** Revisión de campos del paso 4, COSTES *****************/
             if ($step == 'costs' || $step == null) {
                 if (count($this->costs) < 2)
-                    $errors['costs']['ncost'] = Text::get('validation project min costs');
+                    $errors['costs']['ncost'] = Text::get('mandatory project costs');
                 elseif (count($this->costs) < 5)
-                    $errors['costs']['ncost'] = 'Desglosar hasta 5 costes para mejorar la puntuación';
+                    $errors['costs']['ncost'] = Text::get('validate project field costs');
 
                 foreach($this->costs as $cost) {
                     if (empty($cost->cost))
-                        $errors['costs']['cost'.$cost->id] = 'Es obligatorio ponerle un nombre al coste';
+                        $errors['costs']['cost'.$cost->id] = Text::get('mandatory cost field name');
 
                     if (empty($cost->description))
-                        $errors['costs']['cost-description'.$cost->id] = 'Es obligatorio poner alguna descripción';
+                        $errors['costs']['cost-description'.$cost->id] = Text::get('mandatory cost field description');
 
                     if (empty($cost->from) || empty($cost->until))
-                        $errors['costs']['cost-dates'.$cost->id] = 'Indicar las fechas de inicio y final de este coste para mejorar la puntuación';
+                        $errors['costs']['cost-dates'.$cost->id] = Text::get('validate cost field dates');
                 }
 
                 $costdif = $this->maxcost - $this->mincost;
                 $maxdif = $this->mincost * 0.40;
                 if ($costdif > $maxdif )
-                    $errors['costs']['total-costs'] = Text::get('validation project total costs');
+                    $errors['costs']['total-costs'] = Text::get('validate project total costs');
 
                 if (empty($this->resource))
-                    $errors['costs']['resource'] = 'Es obligatorio especificar si cuentas con otros recursos';
+                    $errors['costs']['resource'] = Text::get('mandatory project field resource');
             }
             /***************** FIN Revisión del paso 4, COSTES *****************/
 
             /***************** Revisión de campos del paso 5, RETORNOS *****************/
             if ($step == 'rewards' || $step == null) {
                 if (count($this->social_rewards) < 5)
-                    $errors['rewards']['nsocial_reward'] = 'Indicar hasta 5 retornos colectivos para mejorar la puntuación';
+                    $errors['rewards']['nsocial_reward'] = Text::get('validate project social_rewards');
 
                 if (count($this->individual_rewards) < 5)
-                    $errors['rewards']['nindividual_reward'] = 'Indicar hasta 5 recompensas individuales para mejorar la puntuación';
+                    $errors['rewards']['nindividual_reward'] = Text::get('validate project individual_rewards');
 
                 foreach ($this->social_rewards as $social) {
                     if (empty($social->reward))
-                        $errors['rewards']['social_reward'.$social->id] = 'Es obligatorio poner el retorno';
+                        $errors['rewards']['social_reward'.$social->id] = Text::get('mandatory social_reward field name');
 
                     if (empty($social->description))
-                        $errors['rewards']['social_rewards-description'.$social->id] = 'Es obligatorio poner alguna descripción';
+                        $errors['rewards']['social_rewards-description'.$social->id] = Text::get('mandatory social_reward field description');
 
                     if (empty($social->license))
-                        $errors['rewards']['social_reward-license'.$social->id] = 'Indicar una licencia para mejorar la puntuación';
+                        $errors['rewards']['social_reward-license'.$social->id] = Text::get('validate social_reward license');
                 }
 
                 foreach ($this->individual_rewards as $individual) {
                     if (empty($individual->reward))
-                        $errors['rewards']['individual_reward'.$individual->id] = 'Es obligatorio poner la recompensa';
+                        $errors['rewards']['individual_reward'.$individual->id] = Text::get('mandatory individual_reward field name');
 
                     if (empty($individual->description))
-                        $errors['rewards']['individual_reward-description'.$individual->id] = 'Es obligatorio poner alguna descripción';
+                        $errors['rewards']['individual_reward-description'.$individual->id] = Text::get('mandatory individual_reward field description');
 
                     if (empty($individual->reward))
-                        $errors['rewards']['individual_reward-amount'.$individual->id] = 'Es obligatorio indicar el importe que otorga la recompensa';
+                        $errors['rewards']['individual_reward-amount'.$individual->id] = Text::get('mandatory individual_reward field amount');
                 }
             }
             /***************** FIN Revisión del paso 5, RETORNOS *****************/
@@ -489,10 +489,10 @@ namespace Goteo\Model {
             if ($step == 'supports' || $step == null) {
                 foreach ($this->supports as $support) {
                     if (empty($support->support))
-                        $errors['supports']['support'.$support->id] = 'Es obligatorio ponerle un nombre a la colaboración';
+                        $errors['supports']['support'.$support->id] = Text::get('mandatory support field name');
 
                     if (empty($support->description))
-                        $errors['supports']['support-description'.$support->id] = 'Es obligatorio poner alguna descripción';
+                        $errors['supports']['support-description'.$support->id] = Text::get('mandatory support field description');
                 }
             }
             /***************** FIN Revisión del paso 6, COLABORACIONES *****************/

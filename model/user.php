@@ -2,7 +2,8 @@
 
 namespace Goteo\Model {
 
-	use Goteo\Core\Redirection;
+	use Goteo\Core\Redirection,
+        Goteo\Library\Text;
 
 	class User extends \Goteo\Core\Model {
 
@@ -92,30 +93,30 @@ namespace Goteo\Model {
                 $id = self::idealiza($this->id);
                 $query = self::query('SELECT id FROM user WHERE id = ?', array($id));
                 if($query->fetchColumn()) {
-                    $errors['username'] = 'El usuario ya existe.';
+                    $errors['username'] = Text::get('error register user exists');
                 }
             }
             else {
-                $errors['username'] = 'El nombre de usuario usuario es obligatorio.';
+                $errors['username'] = Text::get('error register username');
             }
             // E-mail
             if(!empty($this->email)) {
                 $query = self::query('SELECT email FROM user WHERE email = ?', array($this->email));
                 if($query->fetchObject()) {
-                    $errors['email'] = 'El dirección de correo ya corresponde a un usuario registrado.';
+                    $errors['email'] = Text::get('error register email exists');
                 }
             }
             else {
-                $errors['email'] = 'La dirección de correo es obligatoria.';
+                $errors['email'] = Text::get('error register email');
             }
             // Contraseña
             if(!empty($this->password)) {
                 if(strlen($this->password)<8) {
-                    $errors['password'] = 'La contraseña debe contener un mínimo de 8 caracteres.';
+                    $errors['password'] = Text::get('error register short password');
                 }
             }
             else {
-                $errors['password'] = 'La contraseña no puede estar vacía.';
+                $errors['password'] = Text::get('error register pasword');
             }
             return empty($errors);
         }
@@ -140,7 +141,6 @@ namespace Goteo\Model {
                         active AS visible,
                         avatar,
                         contribution,
-                        blog,
                         twitter,
                         facebook,
                         linkedin,
@@ -154,6 +154,9 @@ namespace Goteo\Model {
 
 				// intereses (para proyectos es categoria(s) aunque los contenidos actuales son identicos no es el mismo concepto)
                 $user->interests = User\Interest::get($id);
+
+                // webs
+                $user->webs = User\Web::get($id);
 
                 return $user;
 
@@ -231,34 +234,33 @@ namespace Goteo\Model {
 
         /**
          * Metodo para puntuar la informacuión del usuario al puntuar un proyecto
-         * //@TODO cambiar los textos a Text::get cuando el cliente lo verifique
          * @param array $errors por referencia
          */
         public function check(&$errors = array()) {
             if (empty($this->name)) 
-                $errors['name'] = 'Pon tu nombre completo para mejorar la puntuación';
+                $errors['name'] = Text::get('validate user field name');
 
             if (empty($this->avatar)) 
-                $errors['avatar'] = 'Pon una imagen de perfil para mejorar la puntuación';
+                $errors['avatar'] = Text::get('validate user field avatar');
 
             if (empty($this->about)) 
-                $errors['about'] = 'Cuenta algo sobre ti para mejorar la puntuación';
+                $errors['about'] = Text::get('validate user field about');
 
             if (empty($this->interests)) 
-                $errors['interests'] = 'Selecciona algún interés para mejorar la puntuación';
+                $errors['interests'] = Text::get('validate user field interests');
 
             $keywords = explode(',', $this->keywords);
             if ($keywords < 5) 
-                $errors['keywords'] = 'Indica hasta 5 palabras clave que te definan para mejorar la puntuación';
+                $errors['keywords'] = Text::get('validate user field keywords');
 
             if (empty($this->contribution)) 
-                $errors['contribution'] = 'Explica que podrias aportar en Goteo para mejorar la puntuación';
+                $errors['contribution'] = Text::get('validate user field contribution');
 
-            if (empty($this->blog)) 
-                $errors['blog'] = 'Pon tu página web para mejorar la puntuación';
+            if (empty($this->webs))
+                $errors['webs'] = Text::get('validate user field webs');
 
             if (empty($this->facebook)) 
-                $errors['facebook'] = 'Pon tu cuenta de facebook para mejorar la puntuación';
+                $errors['facebook'] = Text::get('validate user field facebook');
 
             return true;
         }
@@ -269,15 +271,12 @@ namespace Goteo\Model {
          */
         public function saveInfo(&$errors = array()) {
 
-            //@TODO validate (pero estos campos son de contenido libre excepto quizás las url)
-
             $fields = array(
                 'name',
                 'avatar',
                 'about',
                 'keywords',
                 'contribution',
-                'blog',
                 'twitter',
                 'facebook',
                 'linkedin'
@@ -299,13 +298,12 @@ namespace Goteo\Model {
 				self::query($sql, $values);
 
 			} catch(\PDOException $e) {
-                echo "$sql <pre>" . print_r($values, 1) ."</pre><br />";
-                echo $e->getMessage();
+                $errors[] = "Fallo al actualizar la información del usuario. " . $e->getMessage();
                 return false;
 			}
-
 
         }
 
 	}
+    
 }

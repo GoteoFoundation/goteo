@@ -2,11 +2,12 @@
 
 namespace Goteo\Model\User {
 
-    class Interest extends \Goteo\Core\Model {
+    class Webs extends \Goteo\Core\Model {
 
         public
             $id,
-            $user;
+            $user,
+            $url;
 
 
         /**
@@ -15,52 +16,31 @@ namespace Goteo\Model\User {
          * @return array of interests identifiers
          */
 	 	public static function get ($id) {
-            $array = array ();
             try {
-                $query = static::query("SELECT interest FROM user_interest WHERE user = ?", array($id));
-                $interests = $query->fetchAll();
-                foreach ($interests as $int) {
-                    $array[] = $int[0];
-                }
+                $query = static::query("SELECT id, url FROM user_web WHERE user = ?", array($id));
+                $webs = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
 
-                return $array;
+                return $webs;
             } catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
             }
 		}
 
-        /**
-         * Get all categories available
-         *
-         * @param void
-         * @return array
-         */
-		public static function getAll () {
-            return array(
-                1=>'Educación',
-                2=>'Economía solidaria',
-                3=>'Empresa abierta',
-                4=>'Formación técnica',
-                5=>'Desarrollo',
-                6=>'Software',
-                7=>'Hardware');
-		}
-
 		public function validate(&$errors = array()) {}
 
 		/*
-		 *  save... al ser un solo campo quiza no lo usemos
+		 *  Guarda las webs del usuario
 		 */
 		public function save (&$errors = array()) {
 
-            $values = array(':user'=>$this->user, ':interest'=>$this->id);
+            $values = array(':user'=>$this->user, ':id'=>$this->id, ':url'=>$this->url);
 
 			try {
-	            $sql = "REPLACE INTO user_interest (user, interest) VALUES(:user, :interest)";
+	            $sql = "REPLACE INTO user_web (id, user, url) VALUES(:id, :user, :url)";
 				self::query($sql, $values);
 				return true;
 			} catch(\PDOException $e) {
-				$errors[] = "El interés {$this->id} no se ha asignado correctamente. Por favor, revise los datos." . $e->getMessage();
+				$errors[] = "La web {$this->url} no se ha asignado correctamente. Por favor, revise los datos." . $e->getMessage();
 				return false;
 			}
 

@@ -25,7 +25,14 @@ INSERT INTO purpose VALUES ('guide project success minprogress', 'Ha llegado al 
 INSERT INTO purpose VALUES ('guide project success okfinish', 'Puede enviar para valoración');
 INSERT INTO purpose VALUES ('guide project error mandatories', 'Faltan campos obligatorios');
 
-INSERT INTO purpose VALUES ('error sql guardar proyecto', 'La sentencia UPDATE para grabar los datos de un proyecto en la base de datos falla.');
+INSERT INTO purpose VALUES ('error register user exists', 'El usuario ya existe.');
+INSERT INTO purpose VALUES ('error register username', 'El nombre de usuario usuario es obligatorio.');
+INSERT INTO purpose VALUES ('error register email exists', 'El dirección de correo ya corresponde a un usuario registrado.');
+INSERT INTO purpose VALUES ('error register email', 'La dirección de correo es obligatoria.');
+INSERT INTO purpose VALUES ('error register short password', 'La contraseña debe contener un mínimo de 8 caracteres.');
+INSERT INTO purpose VALUES ('error register pasword', 'La contraseña no puede estar vacía.');
+INSERT INTO purpose VALUES ('error register email confirm', 'La comprobación de email no coincide.');
+INSERT INTO purpose VALUES ('error register password confirm', 'La comprobación de contraseña no coincide.');
 INSERT INTO purpose VALUES ('mandatory project field contract name', 'El nombre del responsable del proyecto es obligatorio');
 INSERT INTO purpose VALUES ('mandatory project field contract surname', 'El apellido del responsable del proyecto es obligatorio');
 INSERT INTO purpose VALUES ('mandatory project field contract nif', 'El nif del responsable del proyecto es obligatorio');
@@ -41,8 +48,8 @@ INSERT INTO purpose VALUES ('mandatory project field category', 'La categoría d
 INSERT INTO purpose VALUES ('mandatory project field media', 'Poner un vídeo para mejorar la puntuación');
 INSERT INTO purpose VALUES ('validate project value keywords', 'Indicar hasta 5 palabras clave del proyecto para mejorar la puntuación');
 INSERT INTO purpose VALUES ('mandatory project field location', 'La localización del proyecto es obligatoria');
-INSERT INTO purpose VALUES ('validation project min costs', 'Mínimo de costes a desglosar en un proyecto');
-INSERT INTO purpose VALUES ('validation project total costs', 'El coste óptimo no puede exceder demasiado al coste mínimo');
+INSERT INTO purpose VALUES ('mandatory project costs', 'Mínimo de costes a desglosar en un proyecto');
+INSERT INTO purpose VALUES ('validate project total costs', 'El coste óptimo no puede exceder demasiado al coste mínimo');
 INSERT INTO purpose VALUES ('mandatory project field phone', 'El teléfono del responsable del proyecto es obligatorio');
 INSERT INTO purpose VALUES ('mandatory project field address', 'La dirección del responsable del proyecto es obligatoria');
 INSERT INTO purpose VALUES ('mandatory project field zipcode', 'El código postal del responsable del proyecto es obligatorio');
@@ -52,6 +59,30 @@ INSERT INTO purpose VALUES ('mandatory project field motivation', 'Es obligatori
 INSERT INTO purpose VALUES ('mandatory project field about', 'Es obligatorio explicar qué es en la descripción del proyecto');
 INSERT INTO purpose VALUES ('mandatory project field goal', 'Es obligatorio explicar los objetivos en la descripción del proyecto');
 INSERT INTO purpose VALUES ('mandatory project field related', 'Es obligatorio explicar la experiencia relacionada y el equipo en la descripción del proyecto');
+INSERT INTO purpose VALUES ('validate user field name', 'Si no ha puesto el nombre completo');
+INSERT INTO purpose VALUES ('validate user field avatar', 'Si no ha puesto una imagen de perfil');
+INSERT INTO purpose VALUES ('validate user field about', 'Si no ha puesto nada sobre el/ella ');
+INSERT INTO purpose VALUES ('validate user field interests', 'Si no ha seleccionado ningún interés');
+INSERT INTO purpose VALUES ('validate user field keywords', 'Si no ha puesto ninguna palabra clave');
+INSERT INTO purpose VALUES ('validate user field contribution', 'Si no ha puesto qué puede aportar a Goteo');
+INSERT INTO purpose VALUES ('validate user field webs', 'Si no ha puesto ninguna web');
+INSERT INTO purpose VALUES ('validate user field facebook', 'Si no ha puesto su cuenta de facebook');
+INSERT INTO purpose VALUES ('validate project field currently', 'Indicar el estado del proyecto para mejorar la puntuación');
+INSERT INTO purpose VALUES ('validate project field costs', 'Desglosar hasta 5 costes para mejorar la puntuación');
+INSERT INTO purpose VALUES ('mandatory cost field name', 'Es obligatorio ponerle un nombre al coste');
+INSERT INTO purpose VALUES ('mandatory cost field description', 'Es obligatorio poner alguna descripción');
+INSERT INTO purpose VALUES ('validate cost field dates', 'Indicar las fechas de inicio y final de este coste para mejorar la puntuación');
+INSERT INTO purpose VALUES ('mandatory project field resource', 'Es obligatorio especificar si cuentas con otros recursos');
+INSERT INTO purpose VALUES ('validate project social_rewards', 'Indicar hasta 5 retornos colectivos para mejorar la puntuación');
+INSERT INTO purpose VALUES ('validate project individual_rewards', 'Indicar hasta 5 recompensas individuales para mejorar la puntuación');
+INSERT INTO purpose VALUES ('mandatory social_reward field name', 'Es obligatorio poner el retorno');
+INSERT INTO purpose VALUES ('mandatory social_reward field description', 'Es obligatorio poner alguna descripción al retorno');
+INSERT INTO purpose VALUES ('validate social_reward license', 'Indicar una licencia para mejorar la puntuación');
+INSERT INTO purpose VALUES ('mandatory individual_reward field name', 'Es obligatorio poner la recompensa');
+INSERT INTO purpose VALUES ('mandatory individual_reward field description', 'Es obligatorio poner alguna descripción');
+INSERT INTO purpose VALUES ('mandatory individual_reward field amount', 'Es obligatorio indicar el importe que otorga la recompensa');
+INSERT INTO purpose VALUES ('mandatory support field name', 'Es obligatorio ponerle un nombre a la colaboración');
+INSERT INTO purpose VALUES ('mandatory support field description', 'Es obligatorio poner alguna descripción');
 
 INSERT INTO purpose VALUES ('tooltip user user', 'Consejo para rellenar el nombre de usuario para login');
 INSERT INTO purpose VALUES ('tooltip user email', 'Consejo para rellenar el email de registro de usuario');

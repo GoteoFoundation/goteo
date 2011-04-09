@@ -25,7 +25,14 @@ INSERT INTO `text` VALUES ('guide project success minprogress', 'es', 'Ha llegad
 INSERT INTO `text` VALUES ('guide project success okfinish', 'es', 'Puede enviar para valoración');
 INSERT INTO `text` VALUES ('guide project error mandatories', 'es', 'Faltan campos obligatorios');
 
-INSERT INTO `text` VALUES ('error sql guardar proyecto', 'es', 'El proyecto no se ha grabado correctamete. Por favor, revise los datos.');
+INSERT INTO `text` VALUES ('error register user exists', 'es', 'El usuario ya existe.');
+INSERT INTO `text` VALUES ('error register username', 'es', 'El nombre de usuario usuario es obligatorio.');
+INSERT INTO `text` VALUES ('error register email exists', 'es', 'El dirección de correo ya corresponde a un usuario registrado.');
+INSERT INTO `text` VALUES ('error register email', 'es', 'La dirección de correo es obligatoria.');
+INSERT INTO `text` VALUES ('error register short password', 'es', 'La contraseña debe contener un mínimo de 8 caracteres.');
+INSERT INTO `text` VALUES ('error register pasword', 'es', 'La contraseña no puede estar vacía.');
+INSERT INTO `text` VALUES ('error register email confirm', 'es', 'La comprobación de email no coincide.');
+INSERT INTO `text` VALUES ('error register password confirm', 'es', 'La comprobación de contraseña no coincide.');
 INSERT INTO `text` VALUES ('mandatory project field contract name', 'es', 'Es obligatorio poner el NOMBRE del responsable del proyecto, paso 2: Datos personales.');
 INSERT INTO `text` VALUES ('mandatory project field contract surname', 'es', 'Es obligatorio poner los APELLIDOS del responsable del proyecto, paso 2: Datos personales.');
 INSERT INTO `text` VALUES ('mandatory project field contract nif', 'es', 'Es obligatorio poner el NIF del responsable del proyecto, paso 2: Datos personales.');
@@ -41,8 +48,8 @@ INSERT INTO `text` VALUES ('mandatory project field category', 'es', 'Es obligat
 INSERT INTO `text` VALUES ('mandatory project field media', 'es', 'Poner un vídeo para mejorar la puntuación');
 INSERT INTO `text` VALUES ('validate project value keywords', 'es', 'Indicar hasta 5 palabras clave del proyecto para mejorar la puntuación');
 INSERT INTO `text` VALUES ('mandatory project field location', 'es', 'Es obligatorio poner la LOCALIZACIÓN del proyecto, paso 3: Descripción.');
-INSERT INTO `text` VALUES ('validation project min costs', 'es', 'Debe desglosar en al menos DOS COSTES, paso 4 costes.');
-INSERT INTO `text` VALUES ('validation project total costs', 'es', 'El coste óptimo no puede superar en más de un 40% al coste mínimo. Revisar el DESGLOSE DE COSTES, paso 4 costes.');
+INSERT INTO `text` VALUES ('mandatory project costs', 'es', 'Debe desglosar en al menos DOS COSTES, paso 4 costes.');
+INSERT INTO `text` VALUES ('validate project total costs', 'es', 'El coste óptimo no puede superar en más de un 40% al coste mínimo. Revisar el DESGLOSE DE COSTES, paso 4 costes.');
 INSERT INTO `text` VALUES ('mandatory project field phone', 'es', 'El teléfono del responsable del proyecto es obligatorio');
 INSERT INTO `text` VALUES ('mandatory project field address', 'es', 'La dirección del responsable del proyecto es obligatoria');
 INSERT INTO `text` VALUES ('mandatory project field zipcode', 'es', 'El código postal del responsable del proyecto es obligatorio');
@@ -52,6 +59,30 @@ INSERT INTO `text` VALUES ('mandatory project field motivation', 'es', 'Es oblig
 INSERT INTO `text` VALUES ('mandatory project field about', 'es', 'Es obligatorio explicar qué es en la descripción del proyecto');
 INSERT INTO `text` VALUES ('mandatory project field goal', 'es', 'Es obligatorio explicar los objetivos en la descripción del proyecto');
 INSERT INTO `text` VALUES ('mandatory project field related', 'es', 'Es obligatorio explicar la experiencia relacionada y el equipo en la descripción del proyecto');
+INSERT INTO `text` VALUES ('validate user field name', 'es', 'Pon tu nombre completo para mejorar la puntuación');
+INSERT INTO `text` VALUES ('validate user field avatar', 'es', 'Pon una imagen de perfil para mejorar la puntuación');
+INSERT INTO `text` VALUES ('validate user field about', 'es', 'Cuenta algo sobre ti para mejorar la puntuación');
+INSERT INTO `text` VALUES ('validate user field interests', 'es', 'Selecciona algún interés para mejorar la puntuación');
+INSERT INTO `text` VALUES ('validate user field keywords', 'es', 'Indica hasta 5 palabras clave que te definan para mejorar la puntuación');
+INSERT INTO `text` VALUES ('validate user field contribution', 'es', 'Explica que podrias aportar en Goteo para mejorar la puntuación');
+INSERT INTO `text` VALUES ('validate user field webs', 'es', 'Pon tu página web para mejorar la puntuación');
+INSERT INTO `text` VALUES ('validate user field facebook', 'es', 'Pon tu cuenta de facebook para mejorar la puntuación');
+INSERT INTO `text` VALUES ('validate project field currently', 'es', 'Indicar el estado del proyecto para mejorar la puntuación');
+INSERT INTO `text` VALUES ('validate project field costs', 'es', 'Desglosar hasta 5 costes para mejorar la puntuación');
+INSERT INTO `text` VALUES ('mandatory cost field name', 'es', 'Es obligatorio ponerle un nombre al coste');
+INSERT INTO `text` VALUES ('mandatory cost field description', 'es', 'Es obligatorio poner alguna descripción');
+INSERT INTO `text` VALUES ('validate cost field dates', 'es', 'Indicar las fechas de inicio y final de este coste para mejorar la puntuación');
+INSERT INTO `text` VALUES ('mandatory project field resource', 'es', 'Es obligatorio especificar si cuentas con otros recursos');
+INSERT INTO `text` VALUES ('validate project social_rewards', 'es', 'Indicar hasta 5 retornos colectivos para mejorar la puntuación');
+INSERT INTO `text` VALUES ('validate project individual_rewards', 'es', 'Indicar hasta 5 recompensas individuales para mejorar la puntuación');
+INSERT INTO `text` VALUES ('mandatory social_reward field name', 'es', 'Es obligatorio poner el retorno');
+INSERT INTO `text` VALUES ('mandatory social_reward field description', 'es', 'Es obligatorio poner alguna descripción al retorno');
+INSERT INTO `text` VALUES ('validate social_reward license', 'es', 'Indicar una licencia para mejorar la puntuación');
+INSERT INTO `text` VALUES ('mandatory individual_reward field name', 'es', 'Es obligatorio poner la recompensa');
+INSERT INTO `text` VALUES ('mandatory individual_reward field description', 'es', 'Es obligatorio poner alguna descripción');
+INSERT INTO `text` VALUES ('mandatory individual_reward field amount', 'es', 'Es obligatorio indicar el importe que otorga la recompensa');
+INSERT INTO `text` VALUES ('mandatory support field name', 'es', 'Es obligatorio ponerle un nombre a la colaboración');
+INSERT INTO `text` VALUES ('mandatory support field description', 'es', 'Es obligatorio poner alguna descripción');
 
 INSERT INTO `text` VALUES ('tooltip user user', 'es', 'Consejo para rellenar el nombre de usuario para login');
 INSERT INTO `text` VALUES ('tooltip user email', 'es', 'Consejo para rellenar el email de registro de usuario');
