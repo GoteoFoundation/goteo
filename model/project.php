@@ -52,6 +52,9 @@ namespace Goteo\Model {
             // Collaborations
             $supports = array(), // instances of project\support
 
+            // Comment
+            $comment, // Comentario para los admin introducido por el usuario 
+
             //Operative purpose properties
             $mincost = 0,
             $maxcost = 0,
@@ -149,8 +152,7 @@ namespace Goteo\Model {
 				return $project;
 
 			} catch(\PDOException $e) {
-				echo $e->getMessage();
-				return false;
+				throw \Goteo\Core\Exception($e->getMessage());
 			}
 		}
 
@@ -163,45 +165,46 @@ namespace Goteo\Model {
          */
         public function save (&$errors = array()) {
             if(!$this->validate($errors)) return false;
-            
-            // nif y telefono sin guinoes, espacios ni puntos
-            $this->contract_nif = str_replace(array('_', '.', ' ', '-', ','), '', $this->contract_nif);
-            $this->phone = str_replace(array('_', '.', ' ', '-', ','), '', $this->phone);
 
-            $fields = array(
-                'contract_name',
-                'contract_surname',
-                'contract_nif',
-                'contract_email',
-                'phone',
-                'address',
-                'zipcode',
-                'location',
-                'country',
-                'name',
-                'image',
-                'description',
-                'motivation',
-                'about',
-                'goal',
-                'related',
-                'keywords',
-                'media',
-                'currently',
-                'project_location',
-                'resource'
-                );
+  			try {
+                // nif y telefono sin guiones, espacios ni puntos
+                $this->contract_nif = str_replace(array('_', '.', ' ', '-', ','), '', $this->contract_nif);
+                $this->phone = str_replace(array('_', '.', ' ', '-', ','), '', $this->phone);
 
-            $set = '';
-            $values = array();
+                $fields = array(
+                    'contract_name',
+                    'contract_surname',
+                    'contract_nif',
+                    'contract_email',
+                    'phone',
+                    'address',
+                    'zipcode',
+                    'location',
+                    'country',
+                    'name',
+                    'image',
+                    'description',
+                    'motivation',
+                    'about',
+                    'goal',
+                    'related',
+                    'keywords',
+                    'media',
+                    'currently',
+                    'project_location',
+                    'resource',
+                    'comment'
+                    );
 
-            foreach ($fields as $field) {
-                if ($set != '') $set .= ', ';
-                $set .= "$field = :$field";
-                $values[":$field"] = $this->$field;
-            }
+                $set = '';
+                $values = array();
 
-			try {
+                foreach ($fields as $field) {
+                    if ($set != '') $set .= ', ';
+                    $set .= "$field = :$field";
+                    $values[":$field"] = $this->$field;
+                }
+
 				$set .= ", updated = :updated";
 				$values[':updated'] = date('Y-m-d');
 				$values[':id'] = $this->id;
@@ -210,11 +213,11 @@ namespace Goteo\Model {
 				$res = self::query($sql, $values);
 
 			} catch(\PDOException $e) {
-                $errors[] = Text::get('error sql guardar proyecto');
+                $errors[] = 'Error sql al grabar el proyecto.' . $e->getMessage();
+                return false;
 			}
 
         }
-
 
         // metodo para calcular el % de progreso
         public function evaluate ()
@@ -313,6 +316,7 @@ namespace Goteo\Model {
             $progress = round($progress, 0);
             if ($progress > 100) $progress = 100;
 
+            // actualizar el progreso
             $sql = "UPDATE project SET progress = :progress WHERE id = :id";
             if (self::query($sql, array(':progress'=>$progress, ':id'=>$this->id))) {
                 $this->progress = $progress;
@@ -497,13 +501,44 @@ namespace Goteo\Model {
         /*
          * Listo para revisión
          */
-        public function ready() {
+        public function ready(&$errors = array()) {
 			try {
 				$sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
 				self::query($sql, array(':status'=>2, ':updated'=>date('Y-m-d'), ':id'=>$this->id));
 				$this->rebase();
                 return true;
             } catch (\PDOException $e) {
+                $errors[] = 'Fallo al habilitar para revisión. ' . $e->getMessage();
+                return false;
+            }
+        }
+
+        /*
+         * Devuelto al estado de edición
+         */
+        public function enable(&$errors = array()) {
+			try {
+				$sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
+				self::query($sql, array(':status'=>1, ':updated'=>date('Y-m-d'), ':id'=>$this->id));
+				$this->rebase();
+                return true;
+            } catch (\PDOException $e) {
+                $errors[] = 'Fallo al habilitar para edición. ' . $e->getMessage();
+                return false;
+            }
+        }
+
+        /*
+         * Cambio a estado de publicación
+         */
+        public function publish(&$errors = array()) {
+			try {
+				$sql = "UPDATE project SET status = :status, published = :published WHERE id = :id";
+				self::query($sql, array(':status'=>3, ':published'=>date('Y-m-d'), ':id'=>$this->id));
+				$this->rebase();
+                return true;
+            } catch (\PDOException $e) {
+                $errors[] = 'Fallo al publicar el proyecto. ' . $e->getMessage();
                 return false;
             }
         }
@@ -513,31 +548,37 @@ namespace Goteo\Model {
          * solo si es md5
          */
         public function rebase() {
-            if (preg_match('/^[A-Fa-f0-9]{32}$/',$this->id)) {
-                // idealizar el nombre
-                $newid = self::checkId(self::idealiza($this->name));
-                if ($newid == false) return false;
-                // actualizar las tablas relacionadas
-                self::query("UPDATE project_category SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                self::query("UPDATE cost SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                self::query("UPDATE reward SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                self::query("UPDATE support SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                // actualizar el registro
-                self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
-				$this->id = $newid;
+            try {
+                if (preg_match('/^[A-Fa-f0-9]{32}$/',$this->id)) {
+                    // idealizar el nombre
+                    $newid = self::checkId(self::idealiza($this->name));
+                    if ($newid == false) return false;
+                    // actualizar las tablas relacionadas
+                    self::query("UPDATE project_category SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                    self::query("UPDATE cost SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                    self::query("UPDATE reward SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                    self::query("UPDATE support SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                    // actualizar el registro
+                    self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                    $this->id = $newid;
+                }
+
+                return true;
+            } catch (\PDOException $e) {
+                throw new Goteo\Core\Exception('Fallo rebase id temporal. ' . $e->getMessage());
             }
 
-            return true;
         }
 
         /*
          *  Para verificar id única
          */
         public static function checkId($id, $num = 1) {
-            if ($query = self::query("SELECT id FROM project WHERE id = :id", array(':id'=>$id))) {
+            try
+            {
+                $query = self::query("SELECT id FROM project WHERE id = :id", array(':id'=>$id));
                 $exist = $query->fetchObject();
                 // si  ya existe, cambiar las últimas letras por un número
-                
                 if (!empty($exist->id)) {
                     $sufix = (string) $num;
                     if ((strlen($id)+strlen($sufix)) > 49) 
@@ -549,12 +590,10 @@ namespace Goteo\Model {
                 }
                 return $id;
             }
-            else {
-                echo "Fallo rebase en $id, $num <br />";
-                return false;
+            catch (\PDOException $e) {
+                throw new Goteo\Core\Exception('Fallo al verificar id única para el proyecto. ' . $e->getMessage());
             }
         }
-
 
         /*
          * Lista de proyectos de un usuario
@@ -565,9 +604,6 @@ namespace Goteo\Model {
             $projects = self::getAll($filters, 'name ASC');
             return $projects;
         }
-
-
-
 
         /**
          * Saca una lista de proyectos
@@ -604,7 +640,7 @@ namespace Goteo\Model {
 				$query = self::query($sql, $vals);
                 return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
             } catch (\PDOException $e) {
-				throw new Goteo\Exception($e->getMessage());
+				throw new Goteo\Core\Exception($e->getMessage());
             }
         }
 
@@ -630,20 +666,6 @@ namespace Goteo\Model {
                 4=>'Financiado',
                 5=>'Caducado',
                 6=>'Retorno cumplido');
-        }
-
-
-        /**
-         * Mira si un campo del proyecto esta bien rellenado
-         * @param string $field
-         * @return boolean
-         */
-        public function itsok ($field)
-        {
-            if (empty($this->errors[$field]))
-                return true;
-            else
-                return false;
         }
 
     }

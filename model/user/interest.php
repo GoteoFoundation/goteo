@@ -1,7 +1,7 @@
 <?php
 
 namespace Goteo\Model\User {
-    
+
     class Interest extends \Goteo\Core\Model {
 
         public
@@ -25,8 +25,7 @@ namespace Goteo\Model\User {
 
                 return $array;
             } catch(\PDOException $e) {
-				echo $e->getMessage();
-                return false;
+				throw new \Goteo\Core\Exception($e->getMessage());
             }
 		}
 
@@ -58,15 +57,10 @@ namespace Goteo\Model\User {
 
 			try {
 	            $sql = "REPLACE INTO user_interest (user, interest) VALUES(:user, :interest)";
-				if ($res = self::query($sql, $values))  {
-					return true;
-				}
-				else {
-					echo "$sql<br /><pre>" . print_r($values, 1) . "</pre>";
-				}
+				self::query($sql, $values);
+				return true;
 			} catch(\PDOException $e) {
-				$errors[] = $e->getMessage();
-				$errors[] = "El interés {$interest} no se ha asignado correctamente. Por favor, revise los datos.";
+				$errors[] = "El interés {$interest} no se ha asignado correctamente. Por favor, revise los datos." . $e->getMessage();
 				return false;
 			}
 
@@ -86,12 +80,12 @@ namespace Goteo\Model\User {
 				':interest'=>$this->id,
 			);
 
-			if (self::query("DELETE FROM user_interest WHERE interest = :interest AND user = :user", $values)) {
+            try {
+                self::query("DELETE FROM user_interest WHERE interest = :interest AND user = :user", $values);
 				return true;
-			}
-			else {
-				$errors[] = 'No se ha podido quitar el interes ' . $this->id . ' del usuario ' . $this->user;
-				return false;
+			} catch(\PDOException $e) {
+                $errors[] = 'No se ha podido quitar el interes ' . $this->id . ' del usuario ' . $this->user . ' ' . $e->getMessage();
+                return false;
 			}
 		}
 
