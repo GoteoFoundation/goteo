@@ -3,6 +3,7 @@
 namespace Goteo\Controller {
 
     use Goteo\Core\Error,
+        Goteo\Core\View,
         Goteo\Library\Text,
         Goteo\Model;
 
@@ -16,96 +17,98 @@ namespace Goteo\Controller {
             $steps = array(
                 'userProfile' => array(
                     'name' => 'Perfil',
-                    '' => '',
-                    'errors' => array()
+                    'guide' => $guideText = Text::get('guide project user information'),
+                    'errors' => $project->errors['userProfile']
                 ),
                 'userPersonal' => array(
                     'name' => 'Datos personales',
-                    'errors' => array()
+                    'guide' => Text::get('guide project contract information'),
+                    'errors' => $project->errors['userPersonal']
                 ),
                 'overview' => array(
                     'name' => 'Descripción',
-                    'errors' => array()
+                    'guide' => Text::get('guide project description'),
+                    'errors' => $project->errors['overview']
                 ),
                 'costs'=> array(
                     'name' => 'Costes',
-                    'errors' => array()
+                    'guide' => Text::get('guide project costs'),
+                    'errors' => $project->errors['costs']
                 ),
                 'rewards' => array(
                     'name' => 'Retornos',
-                    'errors' => array()
+                    'guide' => Text::get('guide project rewards'),
+                    'errors' => $project->errors['rewards']
                 ),
                 'supports' => array(
                     'name' => 'Colaboraciones',
-                    'errors' => array()
+                    'guide' => Text::get('guide project support'),
+                    'errors' => $project->errors['supports']
                 ),
                 'preview' => array(
                     'name' => 'Previsualizar',
-                    'errors' => array()
+                    'guide' => '',
+                    'errors' => $project->errors
                 )
             );
 
             // vista por defecto
-            $view = 'userProfile';
+            if (!empty($project->errors['userProfile']))
+                $view = 'userProfile';
+            elseif (!empty($project->errors['userPersonal']))
+                $view = 'userPersonal';
+            elseif (!empty($project->errors['overview']))
+                $view = 'overview';
+            elseif (!empty($project->errors['costs']))
+                $view = 'costs';
+            elseif (!empty($project->errors['rewards']))
+                $view = 'rewards';
+            elseif (!empty($project->errors['supports']))
+                $view = 'supports';
+            else
+                $view = 'preview';
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 foreach ($steps as $id => &$data) {
-                    $errors = array();
-                    call_user_func_array(array($this, "process_{$id}"), array(&$project, &$errors));
-                    $data['errors'] = $errors;
+                    call_user_func_array(array($this, "process_{$id}"), array($project));
+                    $data['errors'] = $project->errors[$id];
                     if (!empty($_POST['view-step-'.$id]))
                         $view = $id;
                 }
 
                 $project->save();
+                $project->evaluate();
             }
 
             // datos que necesita para pintar, creo que esto lo tendria que cargar cada vista
             //userProfile
             $interests = Model\User\Interest::getAll();
-            $guideText = Text::get('guide project user information');
-
-            //userPersonal
-            $guideText = Text::get('guide project contract information');
 
             //overview
             $currently = Model\Project::currentStatus();
             $categories = Model\Project\Category::getAll();
-            $guideText = Text::get('guide project description');
 
             //costs
             $types = Model\Project\Cost::types();
-            $guideText = Text::get('guide project costs');
 
             //rewards
             $stypes = Model\Project\Reward::icons('social');
             $itypes = Model\Project\Reward::icons('individual');
             $licenses = Model\Project\Reward::licenses();
 
-            $guideText = Text::get('guide project rewards');
-
             //supports
             $types = Model\Project\Support::types();
-            $guideText = Text::get('guide project support');
 
-            //preview
 
-                
-            include "view/project/{$step}.html.php";
+            include "view/project/{$view}.html.php";
 
         }
 
         private function create () {
-
-            /*
+            
             $project = new Model\Project;
             $project->create($_SESSION['user']->id);
-             */
-
-            $project = new Model\Project(array(
-                'user'  => $_SESSION['user']->id
-            ));
 
             if ($project->save()) {
                 throw new Redirection("/project/{$project->id}/?edit");
@@ -125,6 +128,8 @@ namespace Goteo\Controller {
 
                 if (isset($_GET['edit'])) {
                     return $this->edit($id);
+                } elseif (isset($_GET['edit'])) {
+                    return $this->finish($id);
                 } else {
                     return $this->view($id);
                 }
@@ -140,8 +145,7 @@ namespace Goteo\Controller {
         /*
          * Paso 1 - PERFIL
          */
-
-        private function process_userProfile(&$project, &$errors = array()) {
+        private function process_userProfile(&$project) {
 
             $user = Model\User::get($project->owner);
 
@@ -166,7 +170,8 @@ namespace Goteo\Controller {
                     $user->$field;
             }
 
-            $user->saveInfo($errors);
+            $user->saveInfo();
+
 
             //intereses, si viene en el post
             if (isset($_POST['interests'])) {
@@ -178,7 +183,7 @@ namespace Goteo\Controller {
                         $interest->id = $int;
                         $interest->user = $user->id;
 
-                        $interest->save($errors);
+                        $interest->save();
                     }
                 }
 
@@ -190,18 +195,19 @@ namespace Goteo\Controller {
                         $interest->id = $int;
                         $interest->user = $user->id;
 
-                        $interest->remove($errors);
+                        $interest->remove();
                     }
                 }
             }
 
+            $user->check($project->errors['userProfile']);
         }
 
         /*
          * Paso 2 - DATOS PERSONALES
          */
 
-        private function process_userPersonal(&$project, &$errors = array()) {
+        private function process_userPersonal(&$project) {
             // campos que guarda este paso
             $fields = array(
                 'contract_name',
@@ -220,13 +226,14 @@ namespace Goteo\Controller {
                     $project->$field = $_POST[$field];
             }
 
+            $project->check('userPersonal');
         }
 
         /*
          * Paso 3 - DESCRIPCIÓN
          */
 
-        private function process_overview(&$project, &$errors = array()) {
+        private function process_overview(&$project) {
             // campos que guarda este paso
             $fields = array(
                 'name',
@@ -257,7 +264,7 @@ namespace Goteo\Controller {
                         $category->id = $cat;
                         $category->project = $project->id;
 
-                        $category->save($errors);
+                        $category->save();
                     }
                 }
 
@@ -269,16 +276,18 @@ namespace Goteo\Controller {
                         $category->id = $cat;
                         $category->project = $project->id;
 
-                        $category->remove($errors);
+                        $category->remove();
                     }
                 }
             }
+
+            $project->check('overview');
         }
 
         /*
          * Paso 4 - COSTES
          */
-        private function process_costs(&$project, &$errors = array()) {
+        private function process_costs(&$project) {
             if (isset($_POST['resource']))
                 $project->resource = $_POST['resource'];
 
@@ -286,7 +295,7 @@ namespace Goteo\Controller {
             foreach ($project->costs as $cost) {
                 // primero mirar si lo estan quitando
                 if (isset($_POST['remove-cost' . $cost->id]) && $_POST['remove-cost' . $cost->id] == 1) {
-                    $cost->remove($errors);
+                    $cost->remove();
 
                     //@TODO como lo quito??
                     
@@ -302,7 +311,7 @@ namespace Goteo\Controller {
                     $cost->from = $_POST['cost-from' . $cost->id];
                     $cost->until = $_POST['cost-until' . $cost->id];
 
-                    $cost->save($errors);
+                    $cost->save();
                 }
             }
 
@@ -321,23 +330,24 @@ namespace Goteo\Controller {
                 $cost->from = $_POST['ncost-from'];
                 $cost->until = $_POST['ncost-until'];
 
-                $cost->save($errors);
+                $cost->save();
 
                 $project->costs[] = $cost;
             }
 
+            $project->check('costs');
         }
 
         /*
          * Paso 5 - RETORNO
          */
 
-        private function process_rewards(&$project, &$errors = array()) {
+        private function process_rewards(&$project) {
             //tratar retornos sociales
             foreach ($project->social_rewards as $reward) {
                 // primero mirar si lo estan quitando
                 if (isset($_POST['remove-social_reward' . $reward->id]) && $_POST['remove-social_reward' . $reward->id] == 1) {
-                    $reward->remove($errors);
+                    $reward->remove();
                     continue;
                 }
 
@@ -347,7 +357,7 @@ namespace Goteo\Controller {
                     $reward->icon = $_POST['social_reward-icon' . $reward->id];
                     $reward->license = $_POST['social_reward-license' . $reward->id];
 
-                    $reward->save($errors);
+                    $reward->save();
                 }
             }
 
@@ -355,7 +365,7 @@ namespace Goteo\Controller {
             foreach ($project->individual_rewards as $reward) {
                 // primero mirar si lo estan quitando
                 if (isset($_POST['remove-individual_reward' . $reward->id]) && $_POST['remove-individual_reward' . $reward->id] == 1) {
-                    $reward->remove($errors);
+                    $reward->remove();
                     continue;
                 }
 
@@ -366,7 +376,7 @@ namespace Goteo\Controller {
                     $reward->amount = $_POST['individual_reward-amount' . $reward->id];
                     $reward->units = $_POST['individual_reward-units' . $reward->id];
 
-                    $reward->save($errors);
+                    $reward->save();
                 }
             }
 
@@ -384,7 +394,7 @@ namespace Goteo\Controller {
                 $reward->icon = $_POST['nsocial_reward-icon'];
                 $reward->license = $_POST['nsocial_reward-license'];
 
-                $reward->save($errors);
+                $reward->save();
 
                 $project->social_rewards[] = $reward;
             }
@@ -401,78 +411,70 @@ namespace Goteo\Controller {
                 $reward->amount = $_POST['nindividual_reward-amount'];
                 $reward->units = $_POST['nindividual_reward-units'];
 
-                $reward->save($errors);
+                $reward->save();
 
                 $project->individual_rewards[] = $reward;
             }
+        
+            $project->check('rewards');
         }
 
         /*
          * Paso 6 - COLABORACIONES
          */
-         private function supports(&$project, &$errors = array()) {
-                    // tratar colaboraciones existentes
-                    foreach ($project->supports as $support) {
-                        // primero mirar si lo estan quitando
-                        if ($_POST['remove-support' . $support->id] == 1) {
-                            $support->remove($errors);
-                            continue;
-                        }
+         private function process_supports(&$project) {
+            // tratar colaboraciones existentes
+            foreach ($project->supports as $support) {
+                // primero mirar si lo estan quitando
+                if ($_POST['remove-support' . $support->id] == 1) {
+                    $support->remove();
+                    continue;
+                }
 
-                        if (!empty($_POST['support' . $support->id])) {
-                            $support->support = $_POST['support' . $support->id];
-                            $support->description = $_POST['support-description' . $support->id];
-                            $support->type = $_POST['support-type' . $support->id];
-                        }
-                        $support->save($errors);
-                    }
+                if (!empty($_POST['support' . $support->id])) {
+                    $support->support = $_POST['support' . $support->id];
+                    $support->description = $_POST['support-description' . $support->id];
+                    $support->type = $_POST['support-type' . $support->id];
+                }
+                $support->save();
+            }
 
-                    // tratar nueva colaboracion
-                    if (!empty($_POST['nsupport'])) {
-                        $support = new Model\Project\Support();
+            // tratar nueva colaboracion
+            if (!empty($_POST['nsupport'])) {
+                $support = new Model\Project\Support();
 
-                        $support->id = '';
-                        $support->project = $project->id;
-                        $support->support = $_POST['nsupport'];
-                        $support->description = $_POST['nsupport-description'];
-                        $support->type = $_POST['nsupport-type'];
+                $support->id = '';
+                $support->project = $project->id;
+                $support->support = $_POST['nsupport'];
+                $support->description = $_POST['nsupport-description'];
+                $support->type = $_POST['nsupport-type'];
 
-                        $support->save($errors);
+                $support->save();
 
-                        $project->supports[] = $support;
-                    }
+                $project->supports[] = $support;
+            }
 
+            $project->check('supports');
         }
 
         /*
          * Paso 7 - PREVIEW
          */
 
-        public function preview() {
-            Model\User::restrict();
-
-            $id = $_SESSION['current_project'];
-
-            if (!$id) {
-                header('Location: /');
-                die;
-            } else {
-                $project = Model\Project::get($id);
-
-                $finish = false;
-                $errors = $project->errors;
-                if (empty($errors)) {
-                    $success[] = Text::get('guide project success noerrors');
-                }
-                if ($project->progress > 80 && $project->status == 1) {
-                    $success[] = Text::get('guide project success minprogress');
-                    $success[] = Text::get('guide project success okfinish');
-                    $finish = true;
-                }
-
-                $guideText = Text::get('guide project overview');
-                include 'view/project/preview.html.php';
+        public function process_preview() {
+            $finish = false;
+            $errors = $project->errors;
+            if (empty($errors)) {
+                $success[] = Text::get('guide project success noerrors');
             }
+            if ($project->progress > 80 && $project->status == 1) {
+                $success[] = Text::get('guide project success minprogress');
+                $success[] = Text::get('guide project success okfinish');
+                $finish = true;
+            }
+
+            $guideText = Text::get('guide project overview');
+            include 'view/project/preview.html.php';
         }
 
         /*
@@ -484,25 +486,17 @@ namespace Goteo\Controller {
          * 		(ojo en las tablas relacionadas)
          */
 
-        public function close() {
-            Model\User::restrict();
+        public function finish($id) {
 
-            $id = $_SESSION['current_project'];
+            $project = Model\Project::get($id);
 
-            if (!$id) {
-                header('Location: /');
+            if ($project->ready()) {
+                unset($_SESSION['current_project']);
+                header('Location: /dashboard');
                 die;
             } else {
-                $project = Model\Project::get($id);
-
-                if ($project->ready()) {
-                    unset($_SESSION['current_project']);
-                    header('Location: /dashboard');
-                    die;
-                } else {
-                    header('Location: /project/preview');
-                    die;
-                }
+                header('Location: /project/preview');
+                die;
             }
         }
 

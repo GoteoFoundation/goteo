@@ -2,7 +2,9 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Library\Content,
+    use Goteo\Core\Error,
+        Goteo\Core\View,
+        Goteo\Library\Content,
         Goteo\Model;
 
     class Dashboard extends \Goteo\Core\Controller {
@@ -25,9 +27,17 @@ namespace Goteo\Controller {
 
             $status = Model\Project::status();
 
-            include 'view/dashboard.html.php';
+            return new View (
+                'view/dashboard.html.php',
+                array(
+                    'message' => $message,
+                    'projects' => $projects,
+                    'status' => $status
+                )
+            );
 
         }
+
         
     }
     

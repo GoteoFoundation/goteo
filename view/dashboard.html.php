@@ -5,7 +5,7 @@ include 'view/header.html.php'; ?>
         
         <div id="main">
 
-        <p><?php echo $message; ?></p>
+        <p><?php echo $this['message']; ?></p>
 
 		<p>
 			Cambiar usuario/email/contraseña: <a href="/user/edit">Editar datos</a><br />
@@ -16,9 +16,9 @@ include 'view/header.html.php'; ?>
 		<p>
 			Mis proyectos:<br />
 		<?php
-		foreach ($projects as $project) {
-			echo '<a href="/project/manage/' . $project->id . '">' . ($project->name != '' ? $project->name : $project->id) . '</a>
-                (' . $status[$project->status] . ')
+		foreach ($this['projects'] as $project) {
+			echo '<a href="/project/' . $project->id . '/?edit">' . ($project->name != '' ? $project->name : $project->id) . '</a>
+                (' . $this['status'][$project->status] . ')
                     Progreso: ' . $project->progress . '%
                         <a href="/project/' . $project->id . '">[Preview]</a><br />';
 		}

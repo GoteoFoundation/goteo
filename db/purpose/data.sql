@@ -38,6 +38,8 @@ INSERT INTO purpose VALUES ('mandatory project field name', 'El nombre del proye
 INSERT INTO purpose VALUES ('mandatory project field description', 'La descripción del proyecto es obligatorio');
 INSERT INTO purpose VALUES ('validate project value description', 'La descripción del proyecto debe se suficientemente extensa');
 INSERT INTO purpose VALUES ('mandatory project field category', 'La categoría del proyecto es obligatoria');
+INSERT INTO purpose VALUES ('mandatory project field media', 'Poner un vídeo para mejorar la puntuación');
+INSERT INTO purpose VALUES ('validate project value keywords', 'Indicar hasta 5 palabras clave del proyecto para mejorar la puntuación');
 INSERT INTO purpose VALUES ('mandatory project field location', 'La localización del proyecto es obligatoria');
 INSERT INTO purpose VALUES ('validation project min costs', 'Mínimo de costes a desglosar en un proyecto');
 INSERT INTO purpose VALUES ('validation project total costs', 'El coste óptimo no puede exceder demasiado al coste mínimo');

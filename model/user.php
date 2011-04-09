@@ -235,73 +235,32 @@ namespace Goteo\Model {
          * @param array $errors por referencia
          */
         public function check(&$errors = array()) {
-            $score =  0;
-            $max = 0;
+            if (empty($this->name)) 
+                $errors['name'] = 'Pon tu nombre completo para mejorar la puntuación';
 
-            if (empty($this->name)) {
-                $errors['user-name'] = 'Pon tu nombre completo para mejorar la puntuación';
-                --$score;
-            } else {
-                ++$score;
-            }
-            ++$max;
+            if (empty($this->avatar)) 
+                $errors['avatar'] = 'Pon una imagen de perfil para mejorar la puntuación';
 
-            if (empty($this->avatar)) {
-                $errors['user-avatar'] = 'Pon una imagen de perfil para mejorar la puntuación';
-                --$score;
-            } else {
-                ++$score;
-            }
-            ++$max;
+            if (empty($this->about)) 
+                $errors['about'] = 'Cuenta algo sobre ti para mejorar la puntuación';
 
-            if (empty($this->about)) {
-                $errors['user-about'] = 'Cuenta algo sobre ti para mejorar la puntuación';
-                --$score;
-            } else {
-                ++$score;
-            }
-            ++$max;
-
-            if (empty($this->interests)) {
-                $errors['user-interests'] = 'Selecciona algún interés para mejorar la puntuación';
-                --$score;
-            } else {
-                ++$score;
-            }
-            ++$max;
+            if (empty($this->interests)) 
+                $errors['interests'] = 'Selecciona algún interés para mejorar la puntuación';
 
             $keywords = explode(',', $this->keywords);
-            $score += count($keywords) > 5 ? 5 : count($keywords);
-            if ($keywords < 5) {
-                $errors['user-keywords'] = 'Indica hasta 5 palabras clave que te definan para mejorar la puntuación';
-            }
-            $max += 5;
+            if ($keywords < 5) 
+                $errors['keywords'] = 'Indica hasta 5 palabras clave que te definan para mejorar la puntuación';
 
-            if (empty($this->contribution)) {
-                $errors['user-contribution'] = 'Explica que podrias aportar en Goteo para mejorar la puntuación';
-                --$score;
-            } else {
-                ++$score;
-            }
-            ++$max;
+            if (empty($this->contribution)) 
+                $errors['contribution'] = 'Explica que podrias aportar en Goteo para mejorar la puntuación';
 
-            if (empty($this->blog)) {
-                $errors['user-blog'] = 'Pon tu página web para mejorar la puntuación';
-                --$score;
-            } else {
-                ++$score;
-            }
-            ++$max;
+            if (empty($this->blog)) 
+                $errors['blog'] = 'Pon tu página web para mejorar la puntuación';
 
-            if (empty($this->facebook)) {
-                $errors['user-facebook'] = 'Pon tu cuenta de facebook para mejorar la puntuación';
-                --$score;
-            } else {
-                ++$score;
-            }
-            ++$max;
+            if (empty($this->facebook)) 
+                $errors['facebook'] = 'Pon tu cuenta de facebook para mejorar la puntuación';
 
-            return array('score'=>$score,'max'=>$max);
+            return true;
         }
 
         /**

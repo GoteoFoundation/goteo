@@ -38,6 +38,8 @@ INSERT INTO `text` VALUES ('mandatory project field name', 'es', 'Es obligatorio
 INSERT INTO `text` VALUES ('mandatory project field description', 'es', 'Es obligatorio poner una DESCRIPCIÓN al proyecto, paso 3: Descripción.');
 INSERT INTO `text` VALUES ('validate project value description', 'es', 'La DESCRIPCIÓN del proyecto es demasiado corta, paso 3: Descripción.');
 INSERT INTO `text` VALUES ('mandatory project field category', 'es', 'Es obligatorio elegir una CATEGORIA para el proyecto, paso 3: Descripción.');
+INSERT INTO `text` VALUES ('mandatory project field media', 'es', 'Poner un vídeo para mejorar la puntuación');
+INSERT INTO `text` VALUES ('validate project value keywords', 'es', 'Indicar hasta 5 palabras clave del proyecto para mejorar la puntuación');
 INSERT INTO `text` VALUES ('mandatory project field location', 'es', 'Es obligatorio poner la LOCALIZACIÓN del proyecto, paso 3: Descripción.');
 INSERT INTO `text` VALUES ('validation project min costs', 'es', 'Debe desglosar en al menos DOS COSTES, paso 4 costes.');
 INSERT INTO `text` VALUES ('validation project total costs', 'es', 'El coste óptimo no puede superar en más de un 40% al coste mínimo. Revisar el DESGLOSE DE COSTES, paso 4 costes.');
