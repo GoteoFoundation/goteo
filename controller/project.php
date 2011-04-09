@@ -12,17 +12,21 @@ namespace Goteo\Controller {
 
         private function edit ($id) {
 
+            $debug = false;
+
             $project = Model\Project::get($id);
 
             $steps = array(
                 'userProfile' => array(
                     'name' => 'Perfil',
-                    'guide' => $guideText = Text::get('guide project user information'),
+                    'guide' => Text::get('guide project user information'),
+                    'offtopic' => true,
                     'errors' => $project->errors['userProfile']
                 ),
                 'userPersonal' => array(
                     'name' => 'Datos personales',
                     'guide' => Text::get('guide project contract information'),
+                    'offtopic' => true,
                     'errors' => $project->errors['userPersonal']
                 ),
                 'overview' => array(
@@ -48,60 +52,110 @@ namespace Goteo\Controller {
                 'preview' => array(
                     'name' => 'Previsualizar',
                     'guide' => '',
+                    'offtopic' => true,
                     'errors' => $project->errors
                 )
             );
 
-            // vista por defecto
+            $viewData = array(
+                            'project'=>$project,
+                            'steps'=>$steps
+                        );
+
+            // vista por defecto, el primer paso con errores
             if (!empty($project->errors['userProfile']))
-                $view = 'userProfile';
+                $step = 'userProfile';
             elseif (!empty($project->errors['userPersonal']))
-                $view = 'userPersonal';
+                $step = 'userPersonal';
             elseif (!empty($project->errors['overview']))
-                $view = 'overview';
+                $step = 'overview';
             elseif (!empty($project->errors['costs']))
-                $view = 'costs';
+                $step = 'costs';
             elseif (!empty($project->errors['rewards']))
-                $view = 'rewards';
+                $step = 'rewards';
             elseif (!empty($project->errors['supports']))
-                $view = 'supports';
+                $step = 'supports';
             else
-                $view = 'preview';
+                $step = 'preview';
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
+                if ($debug) echo '<pre>' . print_r($_POST, 1) . '</pre><hr />';
                 foreach ($steps as $id => &$data) {
                     call_user_func_array(array($this, "process_{$id}"), array($project));
                     $data['errors'] = $project->errors[$id];
-                    if (!empty($_POST['view-step-'.$id]))
-                        $view = $id;
+                    if (!empty($_POST['view-step-'.$id])) {
+                        $step = $id;
+                        // segun el paso añadimos los datos auxiliares para pintar
+                        switch ($id) {
+                            case 'userProfile':
+                                $viewData['user'] = Model\User::get($project->owner);
+                                $viewData['interests'] = Model\User\Interest::getAll();
+                                break;
+                            case 'overview':
+                                $viewData['currently'] = Model\Project::currentStatus();
+                                $viewData['categories'] = Model\Project\Category::getAll();
+                                break;
+
+                            case 'costs':
+                                $viewData['types'] = Model\Project\Cost::types();
+                                break;
+
+                            case 'rewards':
+                                $viewData['stypes'] = Model\Project\Reward::icons('social');
+                                $viewData['itypes'] = Model\Project\Reward::icons('individual');
+                                $viewData['licenses'] = Model\Project\Reward::licenses();
+                                break;
+
+                            case 'supports':
+                                $viewData['types'] = Model\Project\Support::types();
+                                break;
+                        }
+                    }
                 }
 
                 $project->save();
                 $project->evaluate();
             }
 
-            // datos que necesita para pintar, creo que esto lo tendria que cargar cada vista
-            //userProfile
-            $interests = Model\User\Interest::getAll();
+            $view = new View (
+                "view/project/{$step}.html.php",
+                $viewData
+            );
 
-            //overview
-            $currently = Model\Project::currentStatus();
-            $categories = Model\Project\Category::getAll();
-
-            //costs
-            $types = Model\Project\Cost::types();
-
-            //rewards
-            $stypes = Model\Project\Reward::icons('social');
-            $itypes = Model\Project\Reward::icons('individual');
-            $licenses = Model\Project\Reward::licenses();
-
-            //supports
-            $types = Model\Project\Support::types();
-
-
-            include "view/project/{$view}.html.php";
+if ($debug) {
+            echo '<pre>' . print_r($steps, 1) . '</pre><hr />';
+            echo '<pre>' . print_r($project, 1) . '</pre><hr />';
+            echo '<pre>' . print_r($view, 1) . '</pre><hr />';
+            ?>
+                <form method="post" action="">
+                <ol>
+                    <li>
+                        <input type="submit" name="view-step-userProfile" value="<?php echo Text::get('step 1'); ?>" />
+                    </li>
+                    <li>
+                        <input type="submit" name="view-step-userPersonal" value="<?php echo Text::get('step 2'); ?>" />
+                    </li>
+                    <li>
+                        <input type="submit" name="view-step-overview" value="<?php echo Text::get('step 3'); ?>" />
+                    </li>
+                    <li>
+                        <input type="submit" name="view-step-costs" value="<?php echo Text::get('step 4'); ?>" />
+                    </li>
+                    <li>
+                        <input type="submit" name="view-step-rewards" value="<?php echo Text::get('step 5'); ?>" />
+                    </li>
+                    <li>
+                        <input type="submit" name="view-step-supports" value="<?php echo Text::get('step 6'); ?>" />
+                    </li>
+                    <li>
+                        <input type="submit" name="view-step-preview" value="<?php echo Text::get('step 7'); ?>" />
+                    </li>
+                </ol>
+    </form>
+                        <?php
+            die;
+}
+            return $view;
 
         }
 
