@@ -26,7 +26,7 @@ include 'view/header.html.php'; ?>
 		</p>
 
 		<p>
-			Nuevo proyecto: <a href="/project/create">Crear</a><br />
+			Nuevo proyecto: <a href="/project/?create">Crear</a><br />
 		</p>
                 
         </div>

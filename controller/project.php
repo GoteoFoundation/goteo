@@ -10,6 +10,27 @@ namespace Goteo\Controller {
 
     class Project extends \Goteo\Core\Controller {
 
+        public function index($id = null) {
+            if ($id !== null) {
+
+                if (isset($_GET['edit']))
+                    return $this->edit($id); //editar
+                elseif (isset($_GET['finish']))
+                    return $this->finish($id); //cambiar estado para revision
+                elseif (isset($_GET['enable']))
+                    return $this->enable($id); //cambiar estado a editable
+                elseif (isset($_GET['publish']))
+                    return $this->publish($id); //cambiar estado a publicado
+                else
+                    return $this->view($id);
+
+            } else if (isset($_GET['create'])) {
+                return $this->create();
+            } else {
+                throw new Error(Error::NOT_FOUND);
+            }
+        }
+
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
         private function edit ($id) {
             //@TODO Verificar si tiene permisos para editar (usuario)
@@ -186,10 +207,14 @@ if ($debug) {
         }
 
         private function create () {
+
+            //@TODO Verificar que el usuario está validado
+            // sino, saltar a la página de login|register
+
             //@TODO Verificar si tienen permisos para crear nuevos proyectos
             $project = new Model\Project;
             $project->create($_SESSION['user']->id);
-
+            
             $errors = array();
             if ($project->save($errors))
                 throw new Redirection("/project/{$project->id}/?edit");
@@ -241,26 +266,20 @@ if ($debug) {
             throw new \Goteo\Core\Exception(implode(' ', $errors));
         }
 
-        public function index($id = null) {
-            if ($id !== null) {
+        /*
+         *  Explorar proyectos, por el momento mostrará todos los proyectos publicados
+         */
+         public function explore() {
+            $projects = Model\Project::published();
 
-                if (isset($_GET['edit']))
-                    return $this->edit($id); //editar
-                elseif (isset($_GET['finish']))
-                    return $this->finish($id); //cambiar estado para revision
-                elseif (isset($_GET['enable']))
-                    return $this->enable($id); //cambiar estado a editable
-                elseif (isset($_GET['publish']))
-                    return $this->publish($id); //cambiar estado a publicado
-                else
-                    return $this->view($id);
-                
-            } else if (isset($_GET['create'])) {
-                return $this->create();                
-            } else {
-                throw new Error(Error::NOT_FOUND);
-            }          
-        }
+            return new View (
+                'view/explore.html.php',
+                array(
+                    'message' => 'Estos son los proyectos actualmente activos',
+                    'projects' => $projects
+                )
+            );
+         }
 
         //-----------------------------------------------
         // Métodos privados para el tratamiento de datos

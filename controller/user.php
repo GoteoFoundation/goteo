@@ -4,7 +4,8 @@ namespace Goteo\Controller {
 
 	use Goteo\Core\ACL,
         Goteo\Core\Redirection,
-		Goteo\Model;
+		Goteo\Model,
+        Goteo\Library\Text;
 
 	class User extends \Goteo\Core\Controller {
 
@@ -23,10 +24,10 @@ namespace Goteo\Controller {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             	$errors = array();
                 if (strcmp($_POST['email'], $_POST['remail']) !== 0) {
-                    $errors['email'] = Goteo\Library\Text::get('error register email confirm');
+                    $errors['email'] = Text::get('error register email confirm');
                 }
                 if(strcmp($_POST['password'], $_POST['rpassword']) !== 0) {
-                    $errors['password'] = Goteo\Library\Text::get('error register password confirm');
+                    $errors['password'] = Text::get('error register password confirm');
                 }
                 if(empty($errors)) {
                 	$user = new Model\User();

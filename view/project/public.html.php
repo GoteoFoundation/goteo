@@ -4,7 +4,7 @@
 
         <div id="main">
 			Página pública de un proyecto<br />
-			<pre><?php echo print_r($project, 1) ?></pre>
+			<pre><?php echo print_r($this['project'], 1) ?></pre>
         </div>
 
         <?php include 'view/footer.html.php' ?>

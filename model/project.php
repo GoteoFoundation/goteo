@@ -59,6 +59,12 @@ namespace Goteo\Model {
             $mincost = 0,
             $maxcost = 0,
 
+            //Obtenido, Días, Cofinanciadores
+            $invested = 0, //cantidad de inversión
+            $days = 0, //para 40 desde la publicación o para 80 si no está caducado
+            $investors = array(), // usuarios que han invertido
+
+
             // para guardar los errores en el proyecto
             $errors = array(
                 'userProfile'  => array(),
@@ -79,8 +85,10 @@ namespace Goteo\Model {
 
             // cojemos el número de proyecto de este usuario
             $query = self::query("SELECT COUNT(id) as num FROM project WHERE owner = ?", array($user));
-            $now = $query->fetchObject();
-            $num = $now->num + 1;
+            if ($now = $query->fetchObject())
+                $num = $now->num + 1;
+            else
+                $num = 1;
 
             $values = array(
                 ':id'   => md5($user.'-'.$num),
@@ -148,6 +156,13 @@ namespace Goteo\Model {
                 //checkeamos los campos y actualizamos el progreso
                 $project->check();
                 $project->evaluate();
+
+                if ($project->status > 2) {
+                    // cálculo de evolución
+                    $project->invested = Invest::invested($project->id);
+                    $project->days = self::daysLeft($project->id);
+                    $project->investors = Invest::investors($project->id);
+                }
 
 				return $project;
 
@@ -595,12 +610,28 @@ namespace Goteo\Model {
             }
         }
 
+        public static function daysLeft($id) {
+            // días desde el published
+            // si han pasado más de 40 días y no ha conseguido el mínimo, estado caducado
+            // si ha alcanzado el mínimo, días desde el success
+        }
+
         /*
          * Lista de proyectos de un usuario
          */
         public static function ofmine($owner)
         {
             $filters = array('owner'=>$owner);
+            $projects = self::getAll($filters, 'name ASC');
+            return $projects;
+        }
+
+        /*
+         * Lista de proyectos publicados
+         */
+        public static function published()
+        {
+            $filters = array('status'=>3);
             $projects = self::getAll($filters, 'name ASC');
             return $projects;
         }
@@ -666,6 +697,11 @@ namespace Goteo\Model {
                 4=>'Financiado',
                 5=>'Caducado',
                 6=>'Retorno cumplido');
+        }
+
+
+        public static function daysLfet($project) {
+            return 30;
         }
 
     }

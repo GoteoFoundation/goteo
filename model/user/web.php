@@ -2,7 +2,7 @@
 
 namespace Goteo\Model\User {
 
-    class Webs extends \Goteo\Core\Model {
+    class Web extends \Goteo\Core\Model {
 
         public
             $id,
