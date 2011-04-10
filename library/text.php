@@ -23,16 +23,19 @@ namespace Goteo\Library {
             $id = str_replace(' ', '-', $id); // @FIXME seguro temporal
 
 			// buscamos el texto en cache
+            /*
 			static $_cache = array();
 			if (isset($_cache[$id][$lang]))
 				return $_cache[$id][$lang];
-
+            */
+            
 			// buscamos el texto en la tabla
 			$query = Model::query("SELECT text FROM text WHERE id = :id AND lang = :lang", array(':id' => $id, ':lang' => $lang));
 			$exist = $query->fetchObject();
 			if ($exist->text) {
 				$exist->text = utf8_encode($exist->text);
-				return $_cache[$id][$lang] = $exist->text;
+//				return $_cache[$id][$lang] = $exist->text;
+				return $exist->text;
 			} else {
 				// lo metemos en la tabla pero no en cache
 				Model::query("REPLACE INTO text (id, lang, text) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
