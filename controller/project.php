@@ -14,13 +14,13 @@ namespace Goteo\Controller {
             if ($id !== null) {
 
                 if (isset($_GET['edit']))
-                    return $this->edit($id); //editar
+                    return $this->edit($id); //Editar
                 elseif (isset($_GET['finish']))
-                    return $this->finish($id); //cambiar estado para revision
+                    return $this->finish($id); // Para revision
                 elseif (isset($_GET['enable']))
-                    return $this->enable($id); //cambiar estado a editable
+                    return $this->enable($id); // Re-habilitar la edición
                 elseif (isset($_GET['publish']))
-                    return $this->publish($id); //cambiar estado a publicado
+                    return $this->publish($id); // Publicarlo
                 else
                     return $this->view($id);
 
@@ -33,52 +33,53 @@ namespace Goteo\Controller {
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
         private function edit ($id) {
+            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
             //@TODO Verificar si tiene permisos para editar (usuario)
             $debug = false; // debug para ver que ha hecho
 
             $project = Model\Project::get($id);
 
             //@TODO Verificar si tieme permiso para editar libremente
-            if ($project->status != 1)
+            if ($project->status != 1 && $_SESSION['user']->role_id != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/project/{$project->id}");
 
 
             $steps = array(
                 'userProfile' => array(
                     'name' => 'Perfil',
-                    'guide' => Text::get('guide project user information'),
+                    'guide' => Text::get('guide-project-user-information'),
                     'offtopic' => true,
                     'errors' => $project->errors['userProfile']
                 ),
                 'userPersonal' => array(
                     'name' => 'Datos personales',
-                    'guide' => Text::get('guide project contract information'),
+                    'guide' => Text::get('guide-project-contract-information'),
                     'offtopic' => true,
                     'errors' => $project->errors['userPersonal']
                 ),
                 'overview' => array(
                     'name' => 'Descripción',
-                    'guide' => Text::get('guide project description'),
+                    'guide' => Text::get('guide-project-description'),
                     'errors' => $project->errors['overview']
                 ),
                 'costs'=> array(
                     'name' => 'Costes',
-                    'guide' => Text::get('guide project costs'),
+                    'guide' => Text::get('guide-project-costs'),
                     'errors' => $project->errors['costs']
                 ),
                 'rewards' => array(
                     'name' => 'Retornos',
-                    'guide' => Text::get('guide project rewards'),
+                    'guide' => Text::get('guide-project-rewards'),
                     'errors' => $project->errors['rewards']
                 ),
                 'supports' => array(
                     'name' => 'Colaboraciones',
-                    'guide' => Text::get('guide project support'),
+                    'guide' => Text::get('guide-project-support'),
                     'errors' => $project->errors['supports']
                 ),
                 'preview' => array(
                     'name' => 'Previsualizar',
-                    'guide' => Text::get('guide project overview'),
+                    'guide' => Text::get('guide-project-overview'),
                     'offtopic' => true,
                     'errors' => $project->errors
                 )
@@ -140,11 +141,11 @@ namespace Goteo\Controller {
                             case 'preview':
                                 $success = array();
                                 if (empty($project->errors)) {
-                                    $success[] = Text::get('guide project success noerrors');
+                                    $success[] = Text::get('guide-project-success-noerrors');
                                 }
                                 if ($project->progress > 80 && $project->status == 1) {
-                                    $success[] = Text::get('guide project success minprogress');
-                                    $success[] = Text::get('guide project success okfinish');
+                                    $success[] = Text::get('guide-project-success-minprogress');
+                                    $success[] = Text::get('guide-project-success-okfinish');
                                     $viewData['finishable'] = true;
                                 }
                                 $viewData['success'] = $success;
@@ -176,25 +177,25 @@ if ($debug) {
                 <form method="post" action="">
                 <ol>
                     <li>
-                        <input type="submit" name="view-step-userProfile" value="<?php echo Text::get('step 1'); ?>" />
+                        <input type="submit" name="view-step-userProfile" value="<?php echo Text::get('step-1'); ?>" />
                     </li>
                     <li>
-                        <input type="submit" name="view-step-userPersonal" value="<?php echo Text::get('step 2'); ?>" />
+                        <input type="submit" name="view-step-userPersonal" value="<?php echo Text::get('step-2'); ?>" />
                     </li>
                     <li>
-                        <input type="submit" name="view-step-overview" value="<?php echo Text::get('step 3'); ?>" />
+                        <input type="submit" name="view-step-overview" value="<?php echo Text::get('step-3'); ?>" />
                     </li>
                     <li>
-                        <input type="submit" name="view-step-costs" value="<?php echo Text::get('step 4'); ?>" />
+                        <input type="submit" name="view-step-costs" value="<?php echo Text::get('step-4'); ?>" />
                     </li>
                     <li>
-                        <input type="submit" name="view-step-rewards" value="<?php echo Text::get('step 5'); ?>" />
+                        <input type="submit" name="view-step-rewards" value="<?php echo Text::get('step-5'); ?>" />
                     </li>
                     <li>
-                        <input type="submit" name="view-step-supports" value="<?php echo Text::get('step 6'); ?>" />
+                        <input type="submit" name="view-step-supports" value="<?php echo Text::get('step-6'); ?>" />
                     </li>
                     <li>
-                        <input type="submit" name="view-step-preview" value="<?php echo Text::get('step 7'); ?>" />
+                        <input type="submit" name="view-step-preview" value="<?php echo Text::get('step-7'); ?>" />
                     </li>
                 </ol>
     </form>
@@ -235,8 +236,12 @@ if ($debug) {
 
         // Finalizar para revision, ready le cambia el estado
         public function finish($id) {
+            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
             //@TODO verificar si tienen el mínimo progreso para verificación y si está en estado edición
             $project = Model\Project::get($id);
+
+            if ($project->status != 1)
+                throw new Redirection("/project/{$project->id}");
 
             $errors = array();
             if ($project->ready($errors))
@@ -246,7 +251,11 @@ if ($debug) {
         }
 
         public function enable($id) {
+            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
             //@TODO verificar si tiene permisos para rehabilitar la edición del proyecto (admin)
+            if ($_SESSION['user']->role_id != 1) //@FIXME!! Piñonaco... ACL...
+                throw new Redirection("/project/{$id}");
+
             $project = Model\Project::get($id);
 
             $errors = array();
@@ -257,7 +266,11 @@ if ($debug) {
         }
 
         public function publish($id) {
+            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
             //@TODO verificar si tiene permisos para publicar proyectos
+            if ($_SESSION['user']->role_id != 1) //@FIXME!! Piñonaco... ACL...
+                throw new Redirection("/project/{$id}");
+
             $project = Model\Project::get($id);
 
             $errors = array();

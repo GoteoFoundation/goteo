@@ -153,16 +153,58 @@ namespace Goteo\Model {
 				// colaboraciones
 				$project->supports = Project\Support::getAll($id);
 
-                //checkeamos los campos y actualizamos el progreso
-                $project->check();
-                $project->evaluate();
-
-                if ($project->status > 2) {
-                    // cálculo de evolución
-                    $project->invested = Invest::invested($project->id);
-                    $project->days = $project->daysLeft();
-                    $project->investors = Invest::investors($project->id);
+                //-----------------------------------------------------------------
+                // Diferentes verificaciones segun el estado del proyecto
+                //-----------------------------------------------------------------
+                // para proyectos en edición o revisión
+                if ($project->status <= 2) {
+                    //checkeamos los campos y actualizamos el progreso
+                    $project->check();
+                    $project->evaluate();
                 }
+
+                // para proyectos en publicación
+                if ($project->status == 3) {
+                    // obtenido y cofinanciadores
+                    $project->invested = Invest::invested($project->id);
+                    $project->investors = Invest::investors($project->id);
+                    
+                    $days = $project->daysActive();
+                    // si ha llegado a los 40 días
+                    if ($days >= 40) {
+                        // si no ha alcanzado el mínimo, pasa a estado caducado
+                        if ($project->invested < $project->mincost) {
+                            $project->fail();
+                        } else {
+                            // si ha alcanzado el mínimo tiene hasta 80 días para conseguir el óptimo
+                            if ($days >= 80) {
+                                // ha llegadio a los 80 dias habiendo alcanzado el mínimo
+                                // (si no fuera así estaria en estado caducado y no se verificaría en este punto
+                                $project->succeed();
+                            } else {
+                                // ha conseguido el mínimo y sigue publicado hasta que consiga el óptimo
+                                $project->days = 80 - $past->days;
+                            }
+                        }
+                    } else {
+                        $project->days = 40 - $past->days;
+                    }
+
+                    // si se ha conseguido el optimo, pasa a estado financiado
+                    if ($project->invested >= $project->maxcost) {
+                        $project->succeed();
+                    }
+                }
+
+                // para proyectos financiados
+                if ($project->status == 4) {
+                    // si todas las aportaciones tienen los retornos cumplidos, pasamos el proyecto a "retorno umplido"
+                    $project->invested = Invest::invested($project->id);
+                }
+                //-----------------------------------------------------------------
+                // Fin de verificaciones
+                //-----------------------------------------------------------------
+                
 
 				return $project;
 
@@ -362,139 +404,139 @@ namespace Goteo\Model {
             /***************** Revisión de campos del paso 2,DATOS PERSONALES *****************/
             if ($step == 'userPersonal' || $step == null) {
                 if (empty($this->contract_name))
-                    $errors['userPersonal']['contract_name'] = Text::get('mandatory project field contract name');
+                    $errors['userPersonal']['contract_name'] = Text::get('mandatory-project-field-contract-name');
 
                 if (empty($this->contract_surname))
-                    $errors['userPersonal']['contract_surname'] = Text::get('mandatory project field contract surname');
+                    $errors['userPersonal']['contract_surname'] = Text::get('mandatory-project-field-contract-surname');
 
                 if (empty($this->contract_nif))
-                    $errors['userPersonal']['contract_nif'] = Text::get('mandatory project field contract nif');
+                    $errors['userPersonal']['contract_nif'] = Text::get('mandatory-project-field-contract-nif');
                 elseif (!Check::Nif($this->contract_nif))
-                    $errors['userPersonal']['contract_nif'] = Text::get('validate project value contract nif');
+                    $errors['userPersonal']['contract_nif'] = Text::get('validate-project-value-contract-nif');
 
                 if (empty($this->contract_email))
-                    $errors['userPersonal']['contract_email'] = Text::get('mandatory project field contract email');
+                    $errors['userPersonal']['contract_email'] = Text::get('mandatory-project-field-contract-email');
                 elseif (!Check::Mail($this->contract_email))
-                    $errors['userPersonal']['contract_email'] = Text::get('validate project value contract email');
+                    $errors['userPersonal']['contract_email'] = Text::get('validate-project-value-contract-email');
 
                 if (empty($this->phone))
-                    $errors['userPersonal']['phone'] = Text::get('mandatory project field phone');
+                    $errors['userPersonal']['phone'] = Text::get('mandatory-project-field-phone');
                 elseif (!Check::Phone($this->phone))
-                    $errors['userPersonal']['phone'] = Text::get('validate project value phone');
+                    $errors['userPersonal']['phone'] = Text::get('validate-project-value-phone');
 
                 if (empty($this->address))
-                    $errors['userPersonal']['address'] = Text::get('mandatory project field address');
+                    $errors['userPersonal']['address'] = Text::get('mandatory-project-field-address');
 
                 if (empty($this->zipcode))
-                    $errors['userPersonal']['zipcode'] = Text::get('mandatory project field zipcode');
+                    $errors['userPersonal']['zipcode'] = Text::get('mandatory-project-field-zipcode');
 
                 if (empty($this->location))
-                    $errors['userPersonal']['location'] = Text::get('mandatory project field residence');
+                    $errors['userPersonal']['location'] = Text::get('mandatory-project-field-residence');
 
                 if (empty($this->country))
-                    $errors['userPersonal']['country'] = Text::get('mandatory project field country');
+                    $errors['userPersonal']['country'] = Text::get('mandatory-project-field-country');
             }
             /***************** FIN Revisión del paso 2, DATOS PERSONALES *****************/
 
             /***************** Revisión de campos del paso 3, DESCRIPCION *****************/
             if ($step == 'overview' || $step == null) {
                 if (empty($this->name))
-                    $errors['overview']['name'] = Text::get('mandatory project field name');
+                    $errors['overview']['name'] = Text::get('mandatory-project-field-name');
 
                 if (empty($this->image))
-                    $errors['overview']['image'] = Text::get('mandatory project field image');
+                    $errors['overview']['image'] = Text::get('mandatory-project-field-image');
 
                 if (empty($this->description))
-                    $errors['overview']['description'] = Text::get('mandatory project field description');
+                    $errors['overview']['description'] = Text::get('mandatory-project-field-description');
                 elseif (!Check::Words($this->description, 150))
-                    $errors['overview']['description'] = Text::get('validate project value description');
+                    $errors['overview']['description'] = Text::get('validate-project-value-description');
 
                 if (empty($this->motivation))
-                    $errors['overview']['motivation'] = Text::get('mandatory project field motivation');
+                    $errors['overview']['motivation'] = Text::get('mandatory-project-field-motivation');
 
                  if (empty($this->about))
-                    $errors['overview']['about'] = Text::get('mandatory project field about');
+                    $errors['overview']['about'] = Text::get('mandatory-project-field-about');
 
                 if (empty($this->goal))
-                    $errors['overview']['goal'] = Text::get('mandatory project field goal');
+                    $errors['overview']['goal'] = Text::get('mandatory-project-field-goal');
 
                 if (empty($this->related))
-                    $errors['overview']['related'] = Text::get('mandatory project field related');
+                    $errors['overview']['related'] = Text::get('mandatory-project-field-related');
 
                 if (empty($this->categories))
-                    $errors['overview']['categories'] = Text::get('mandatory project field category');
+                    $errors['overview']['categories'] = Text::get('mandatory-project-field-category');
 
                 if (empty($this->media))
-                    $errors['overview']['media'] = Text::get('mandatory project field media');
+                    $errors['overview']['media'] = Text::get('mandatory-project-field-media');
 
                 $keywords = explode(',', $this->keywords);
                 if ($keywords < 5)
-                    $errors['overview']['keywords'] = Text::get('validate project value keywords');
+                    $errors['overview']['keywords'] = Text::get('validate-project-value-keywords');
 
                 if (empty($this->currently))
-                    $errors['overview']['currently'] = Text::get('validate project field currently');
+                    $errors['overview']['currently'] = Text::get('validate-project-field-currently');
 
                 if (empty($this->project_location))
-                    $errors['overview']['project_location'] = Text::get('mandatory project field location');
+                    $errors['overview']['project_location'] = Text::get('mandatory-project-field-location');
             }
             /***************** FIN Revisión del paso 3, DESCRIPCION *****************/
 
             /***************** Revisión de campos del paso 4, COSTES *****************/
             if ($step == 'costs' || $step == null) {
                 if (count($this->costs) < 2)
-                    $errors['costs']['ncost'] = Text::get('mandatory project costs');
+                    $errors['costs']['ncost'] = Text::get('mandatory-project-costs');
                 elseif (count($this->costs) < 5)
-                    $errors['costs']['ncost'] = Text::get('validate project field costs');
+                    $errors['costs']['ncost'] = Text::get('validate-project-field-costs');
 
                 foreach($this->costs as $cost) {
                     if (empty($cost->cost))
-                        $errors['costs']['cost'.$cost->id] = Text::get('mandatory cost field name');
+                        $errors['costs']['cost'.$cost->id] = Text::get('mandatory-cost-field-name');
 
                     if (empty($cost->description))
-                        $errors['costs']['cost-description'.$cost->id] = Text::get('mandatory cost field description');
+                        $errors['costs']['cost-description'.$cost->id] = Text::get('mandatory-cost-field-description');
 
                     if (empty($cost->from) || empty($cost->until))
-                        $errors['costs']['cost-dates'.$cost->id] = Text::get('validate cost field dates');
+                        $errors['costs']['cost-dates'.$cost->id] = Text::get('validate-cost-field-dates');
                 }
 
                 $costdif = $this->maxcost - $this->mincost;
                 $maxdif = $this->mincost * 0.40;
                 if ($costdif > $maxdif )
-                    $errors['costs']['total-costs'] = Text::get('validate project total costs');
+                    $errors['costs']['total-costs'] = Text::get('validate-project-total-costs');
 
                 if (empty($this->resource))
-                    $errors['costs']['resource'] = Text::get('mandatory project field resource');
+                    $errors['costs']['resource'] = Text::get('mandatory-project-field-resource');
             }
             /***************** FIN Revisión del paso 4, COSTES *****************/
 
             /***************** Revisión de campos del paso 5, RETORNOS *****************/
             if ($step == 'rewards' || $step == null) {
                 if (count($this->social_rewards) < 5)
-                    $errors['rewards']['nsocial_reward'] = Text::get('validate project social_rewards');
+                    $errors['rewards']['nsocial_reward'] = Text::get('validate-project-social_rewards');
 
                 if (count($this->individual_rewards) < 5)
-                    $errors['rewards']['nindividual_reward'] = Text::get('validate project individual_rewards');
+                    $errors['rewards']['nindividual_reward'] = Text::get('validate-project-individual_rewards');
 
                 foreach ($this->social_rewards as $social) {
                     if (empty($social->reward))
-                        $errors['rewards']['social_reward'.$social->id] = Text::get('mandatory social_reward field name');
+                        $errors['rewards']['social_reward'.$social->id] = Text::get('mandatory-social_reward-field-name');
 
                     if (empty($social->description))
-                        $errors['rewards']['social_rewards-description'.$social->id] = Text::get('mandatory social_reward field description');
+                        $errors['rewards']['social_rewards-description'.$social->id] = Text::get('mandatory-social_reward-field-description');
 
                     if (empty($social->license))
-                        $errors['rewards']['social_reward-license'.$social->id] = Text::get('validate social_reward license');
+                        $errors['rewards']['social_reward-license'.$social->id] = Text::get('validate-social_reward-license');
                 }
 
                 foreach ($this->individual_rewards as $individual) {
                     if (empty($individual->reward))
-                        $errors['rewards']['individual_reward'.$individual->id] = Text::get('mandatory individual_reward field name');
+                        $errors['rewards']['individual_reward'.$individual->id] = Text::get('mandatory-individual_reward-field-name');
 
                     if (empty($individual->description))
-                        $errors['rewards']['individual_reward-description'.$individual->id] = Text::get('mandatory individual_reward field description');
+                        $errors['rewards']['individual_reward-description'.$individual->id] = Text::get('mandatory-individual_reward-field-description');
 
                     if (empty($individual->reward))
-                        $errors['rewards']['individual_reward-amount'.$individual->id] = Text::get('mandatory individual_reward field amount');
+                        $errors['rewards']['individual_reward-amount'.$individual->id] = Text::get('mandatory-individual_reward-field-amount');
                 }
             }
             /***************** FIN Revisión del paso 5, RETORNOS *****************/
@@ -504,10 +546,10 @@ namespace Goteo\Model {
             if ($step == 'supports' || $step == null) {
                 foreach ($this->supports as $support) {
                     if (empty($support->support))
-                        $errors['supports']['support'.$support->id] = Text::get('mandatory support field name');
+                        $errors['supports']['support'.$support->id] = Text::get('mandatory-support-field-name');
 
                     if (empty($support->description))
-                        $errors['supports']['support-description'.$support->id] = Text::get('mandatory support field description');
+                        $errors['supports']['support-description'.$support->id] = Text::get('mandatory-support-field-description');
                 }
             }
             /***************** FIN Revisión del paso 6, COLABORACIONES *****************/
@@ -520,7 +562,7 @@ namespace Goteo\Model {
 			try {
 				$sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
 				self::query($sql, array(':status'=>2, ':updated'=>date('Y-m-d'), ':id'=>$this->id));
-				$this->rebase();
+				$this->rebase(); // solo cuando termina la edición
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al habilitar para revisión. ' . $e->getMessage();
@@ -535,7 +577,6 @@ namespace Goteo\Model {
 			try {
 				$sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
 				self::query($sql, array(':status'=>1, ':updated'=>date('Y-m-d'), ':id'=>$this->id));
-				$this->rebase();
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al habilitar para edición. ' . $e->getMessage();
@@ -550,10 +591,51 @@ namespace Goteo\Model {
 			try {
 				$sql = "UPDATE project SET status = :status, published = :published WHERE id = :id";
 				self::query($sql, array(':status'=>3, ':published'=>date('Y-m-d'), ':id'=>$this->id));
-				$this->rebase();
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al publicar el proyecto. ' . $e->getMessage();
+                return false;
+            }
+        }
+
+        /*
+         * Cambio a estado caducado
+         */
+        public function fail(&$errors = array()) {
+			try {
+				$sql = "UPDATE project SET status = :status, closed = :closed WHERE id = :id";
+				self::query($sql, array(':status'=>5, ':closed'=>date('Y-m-d'), ':id'=>$this->id));
+                return true;
+            } catch (\PDOException $e) {
+                $errors[] = 'Fallo al cerrar el proyecto. ' . $e->getMessage();
+                return false;
+            }
+        }
+
+        /*
+         * Cambio a estado Financiado
+         */
+        public function succeed(&$errors = array()) {
+			try {
+				$sql = "UPDATE project SET status = :status, success = :success WHERE id = :id";
+				self::query($sql, array(':status'=>4, ':success'=>date('Y-m-d'), ':id'=>$this->id));
+                return true;
+            } catch (\PDOException $e) {
+                $errors[] = 'Fallo al dar por financiado el proyecto. ' . $e->getMessage();
+                return false;
+            }
+        }
+
+        /*
+         * Cambio a estado Retorno cumplido
+         */
+        public function satisfied(&$errors = array()) {
+			try {
+				$sql = "UPDATE project SET status = :status WHERE id = :id";
+				self::query($sql, array(':status'=>6, ':id'=>$this->id));
+                return true;
+            } catch (\PDOException $e) {
+                $errors[] = 'Fallo al dar el retorno por cunplido para el proyecto. ' . $e->getMessage();
                 return false;
             }
         }
@@ -610,7 +692,7 @@ namespace Goteo\Model {
             }
         }
 
-        public function daysLeft() {
+        public function daysActive() {
             // días desde el published
             $sql = "
                 SELECT DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%e') as days
@@ -619,12 +701,7 @@ namespace Goteo\Model {
             $query = self::query($sql, array($this->id));
             $past = $query->fetchObject();
 
-            if ($past->days > 40)
-                return 80 - $past->days;
-            else
-                return 40 - $past->days;
-            //¿? si han pasado más de 40 días y no ha conseguido el mínimo, esta caducado
-            //¿? si ha alcanzado el mínimo, días desde el success
+            return $past->days;
         }
 
         /*

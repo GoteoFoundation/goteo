@@ -9,7 +9,7 @@ namespace Goteo\Model {
 
         public
             $id = false,
-            $role = null,
+            $role_id = null,
             $email,
             $name,
             $avatar,
@@ -62,6 +62,7 @@ namespace Goteo\Model {
                 return self::query("
                     REPLACE INTO user (
                         id,
+                        role_id,
                         name,
                         email,
                         password,
@@ -70,6 +71,7 @@ namespace Goteo\Model {
                      )
                      VALUES (
                         :id,
+                        3,
                         :name,
                         :email,
                         :password,
@@ -93,30 +95,30 @@ namespace Goteo\Model {
                 $id = self::idealiza($this->id);
                 $query = self::query('SELECT id FROM user WHERE id = ?', array($id));
                 if($query->fetchColumn()) {
-                    $errors['username'] = Text::get('error register user exists');
+                    $errors['username'] = Text::get('error-register-user-exists');
                 }
             }
             else {
-                $errors['username'] = Text::get('error register username');
+                $errors['username'] = Text::get('error-register-username');
             }
             // E-mail
             if(!empty($this->email)) {
                 $query = self::query('SELECT email FROM user WHERE email = ?', array($this->email));
                 if($query->fetchObject()) {
-                    $errors['email'] = Text::get('error register email exists');
+                    $errors['email'] = Text::get('error-register-email-exists');
                 }
             }
             else {
-                $errors['email'] = Text::get('error register email');
+                $errors['email'] = Text::get('error-register-email');
             }
             // Contraseña
             if(!empty($this->password)) {
                 if(strlen($this->password)<8) {
-                    $errors['password'] = Text::get('error register short password');
+                    $errors['password'] = Text::get('error-register-short-password');
                 }
             }
             else {
-                $errors['password'] = Text::get('error register pasword');
+                $errors['password'] = Text::get('error-register-pasword');
             }
             return empty($errors);
         }
@@ -133,6 +135,7 @@ namespace Goteo\Model {
                 $query = static::query("
                     SELECT
                         id,
+                        role_id,
                         name,
                         email,
                         password,
@@ -238,29 +241,29 @@ namespace Goteo\Model {
          */
         public function check(&$errors = array()) {
             if (empty($this->name)) 
-                $errors['name'] = Text::get('validate user field name');
+                $errors['name'] = Text::get('validate-user-field-name');
 
             if (empty($this->avatar)) 
-                $errors['avatar'] = Text::get('validate user field avatar');
+                $errors['avatar'] = Text::get('validate-user-field-avatar');
 
             if (empty($this->about)) 
-                $errors['about'] = Text::get('validate user field about');
+                $errors['about'] = Text::get('validate-user-field-about');
 
             if (empty($this->interests)) 
-                $errors['interests'] = Text::get('validate user field interests');
+                $errors['interests'] = Text::get('validate-user-field-interests');
 
             $keywords = explode(',', $this->keywords);
             if ($keywords < 5) 
-                $errors['keywords'] = Text::get('validate user field keywords');
+                $errors['keywords'] = Text::get('validate-user-field-keywords');
 
             if (empty($this->contribution)) 
-                $errors['contribution'] = Text::get('validate user field contribution');
+                $errors['contribution'] = Text::get('validate-user-field-contribution');
 
             if (empty($this->webs))
-                $errors['webs'] = Text::get('validate user field webs');
+                $errors['webs'] = Text::get('validate-user-field-webs');
 
             if (empty($this->facebook)) 
-                $errors['facebook'] = Text::get('validate user field facebook');
+                $errors['facebook'] = Text::get('validate-user-field-facebook');
 
             return true;
         }
