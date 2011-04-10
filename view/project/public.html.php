@@ -4,7 +4,9 @@
 
         <div id="main">
 			Página pública de un proyecto<br />
-            <a href="/invest/<?php echo $this['project']->id ?>">[Apóyalo]</a>
+            <?php if ($this['project']->status == 3) : ?>
+                <a href="/invest/<?php echo $this['project']->id ?>">[Apóyalo]</a>
+            <?php endif; ?>
 			<pre><?php echo print_r($this['project'], 1) ?></pre>
         </div>
 
