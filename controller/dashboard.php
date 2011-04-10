@@ -18,9 +18,11 @@ namespace Goteo\Controller {
 			
             $message = "Hola {$user}<br />";
 
-            if ($id == 'root') {
-                $message .= '<a href="/texts">Gestión de textos</a>';
+            //@FIXME!! esto también irá con el ACL
+            if ($_SESSION['user']->role_id == 1) {
+                $message .= '<a href="/admin">Ir al panel de administración</a><br />';
             }
+
 
             $projects = Model\Project::ofmine($user);
 
