@@ -4,6 +4,7 @@
 
         <div id="main">
 			Página pública de un proyecto<br />
+            <a href="/invest/<?php echo $this['project']->id ?>">[Apóyalo]</a>
 			<pre><?php echo print_r($this['project'], 1) ?></pre>
         </div>
 

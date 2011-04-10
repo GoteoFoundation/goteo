@@ -32,7 +32,7 @@ namespace Goteo\Model {
          * Guardar usuario.
          * Guarda los valores de la instancia del usuario en la tabla.
          *
-         * @TODO: Revisar.
+         * @TODO: Revisar. Esto solo sirve para registrar un nuevo usuario, no sirve para guardar datos...
          *
          * Reglas:
          *  - id *

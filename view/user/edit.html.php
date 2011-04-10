@@ -1,7 +1,10 @@
 <?php
 $bodyClass = 'user-edit';
 include 'view/prologue.html.php';
-include 'view/header.html.php'; ?>
+include 'view/header.html.php';
+
+$user = $this['user'];
+?>
     <div id="main">
         <h2>Editar</h2>
         <form action="" method="post">
@@ -19,7 +22,6 @@ include 'view/header.html.php'; ?>
                     <?php if(isset($errors['password'])) { ?><li><em><?php echo $errors['password']?></em></li><?php } ?>
                 </ol>
             </fieldset>
-<?php include 'view/user/edit.profile.html.php' ?>
         </form>
     </div>
 <?php include 'view/footer.html.php' ?>

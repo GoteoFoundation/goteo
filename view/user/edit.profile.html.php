@@ -1,3 +1,13 @@
+<?php
+$bodyClass = 'user-edit';
+include 'view/prologue.html.php';
+include 'view/header.html.php';
+
+$user = $this['user'];
+?>
+    <div id="main">
+        <h2>Editar perfil</h2>
+        <form action="" method="post">
             <fieldset>
                 <legend>Perfil público</legend>
                 <ol>
@@ -30,3 +40,6 @@
                 </ol>
                 <p><input type="submit" name="register" value="Guardar" /></p>
             </fieldset>
+        </form>
+    </div>
+<?php include 'view/footer.html.php' ?>

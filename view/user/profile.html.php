@@ -1,10 +1,14 @@
-<?php $bodyClass = 'user-profile'; include 'view/prologue.html.php' ?>
+<?php
+$bodyClass = 'user-profile';
+include 'view/prologue.html.php';
+include 'view/header.html.php';
 
-    <?php include 'view/header.html.php' ?>
+$user = $this['user'];
+?>
 
         <div id="sub-header">
             <div>
-                <h2><?php if (1 || isset($user->avatar)): ?><img alt=""><?php endif ?> Perfil de <br /><em><?php echo htmlspecialchars($user->id) ?></em></h2>
+                <h2><?php if (1 || isset($user->avatar)): ?><img alt=""><?php endif ?> Perfil de <br /><em><?php echo $user->name; ?></em></h2>
             </div>
         </div>
         

@@ -160,7 +160,7 @@ namespace Goteo\Model {
                 if ($project->status > 2) {
                     // cálculo de evolución
                     $project->invested = Invest::invested($project->id);
-                    $project->days = self::daysLeft($project->id);
+                    $project->days = $project->daysLeft();
                     $project->investors = Invest::investors($project->id);
                 }
 
@@ -610,10 +610,21 @@ namespace Goteo\Model {
             }
         }
 
-        public static function daysLeft($id) {
+        public function daysLeft() {
             // días desde el published
-            // si han pasado más de 40 días y no ha conseguido el mínimo, estado caducado
-            // si ha alcanzado el mínimo, días desde el success
+            $sql = "
+                SELECT DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%e') as days
+                FROM project
+                WHERE id = ?";
+            $query = self::query($sql, array($this->id));
+            $past = $query->fetchObject();
+
+            if ($past->days > 40)
+                return 80 - $past->days;
+            else
+                return 40 - $past->days;
+            //¿? si han pasado más de 40 días y no ha conseguido el mínimo, esta caducado
+            //¿? si ha alcanzado el mínimo, días desde el success
         }
 
         /*
@@ -621,9 +632,9 @@ namespace Goteo\Model {
          */
         public static function ofmine($owner)
         {
-            $filters = array('owner'=>$owner);
-            $projects = self::getAll($filters, 'name ASC');
-            return $projects;
+            $sql = "SELECT * FROM project WHERE owner = ? ORDER BY name ASC";
+            $query = self::query($sql, array($owner));
+            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
 
         /*
@@ -631,8 +642,11 @@ namespace Goteo\Model {
          */
         public static function published()
         {
-            $filters = array('status'=>3);
-            $projects = self::getAll($filters, 'name ASC');
+            $projects = array();
+            $query = self::query("SELECT id FROM project WHERE status = 3 ORDER BY name ASC");
+            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
+                $projects[] = self::get($proj['id']);
+            }
             return $projects;
         }
 
@@ -697,11 +711,6 @@ namespace Goteo\Model {
                 4=>'Financiado',
                 5=>'Caducado',
                 6=>'Retorno cumplido');
-        }
-
-
-        public static function daysLfet($project) {
-            return 30;
         }
 
     }

@@ -209,6 +209,7 @@ if ($debug) {
         private function create () {
 
             //@TODO Verificar que el usuario está validado
+            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
             // sino, saltar a la página de login|register
 
             //@TODO Verificar si tienen permisos para crear nuevos proyectos
@@ -645,7 +646,7 @@ if ($debug) {
             $project->save($errors); // guarda este dato del proyecto
         }
         //-------------------------------------------------------------
-        // HAsta aqui los métodos privados para el tratamiento de datos
+        // Hasta aquí los métodos privados para el tratamiento de datos
         //-------------------------------------------------------------
    }
 

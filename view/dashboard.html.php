@@ -5,7 +5,7 @@ include 'view/header.html.php'; ?>
         
         <div id="main">
 
-        <p><?php echo $this['message']; ?></p>
+        <p><?php echo $this['message']; ?> [<a href="/logout">Salir</a>]</p>
 
 		<p>
 			Cambiar usuario/email/contraseña: <a href="/user/edit">Editar datos</a><br />
@@ -30,5 +30,6 @@ include 'view/header.html.php'; ?>
 		</p>
                 
         </div>
-    
-<?php include 'view/footer.html.php' ?>
+<?php
+include 'view/footer.html.php';
+include 'view/epilogue.html.php';

@@ -4,15 +4,14 @@ namespace Goteo\Controller {
 
     use Goteo\Core\Error,
         Goteo\Core\View,
-        Goteo\Library\Content,
         Goteo\Model;
 
     class Dashboard extends \Goteo\Core\Controller {
 
         /*
-         *  La manera de obtener el id del usuario validado cambiará al tener la session
+         *  Muy guarro para poder moverse mientras desarrollamos
          */
-        public function index () {
+        public function index ($section = null) {
             Model\User::restrict(); 
 
 			$user = $_SESSION['user']->id;
