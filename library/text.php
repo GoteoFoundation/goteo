@@ -9,22 +9,33 @@ namespace Goteo\Library {
 	 *
 	 */
     class Text {
-		
-		static public function get ($id = null, $lang = 'es') {
+
+        public
+            $id,
+            $lang,
+            $text,
+            $purpose;
+
+        static public function get ($id = null, $lang = 'es') {
 			if ($id === null)
 				return '';
 
+            $id = str_replace(' ', '-', $id); // @FIXME seguro temporal
+
 			// buscamos el texto en cache
+            /*
 			static $_cache = array();
 			if (isset($_cache[$id][$lang]))
 				return $_cache[$id][$lang];
-
+            */
+            
 			// buscamos el texto en la tabla
 			$query = Model::query("SELECT text FROM text WHERE id = :id AND lang = :lang", array(':id' => $id, ':lang' => $lang));
 			$exist = $query->fetchObject();
 			if ($exist->text) {
 				$exist->text = utf8_encode($exist->text);
-				return $_cache[$id][$lang] = $exist->text;
+//				return $_cache[$id][$lang] = $exist->text;
+				return $exist->text;
 			} else {
 				// lo metemos en la tabla pero no en cache
 				Model::query("REPLACE INTO text (id, lang, text) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
@@ -37,6 +48,8 @@ namespace Goteo\Library {
 		static public function getPurpose ($id = null) {
 			if ($id === null)
 				return '';
+            
+            $id = str_replace(' ', '-', $id); // @FIXME seguro temporal
 
 			// buscamos la explicación del texto en la tabla
 			$query = Model::query("SELECT purpose FROM purpose WHERE text = :id", array(':id' => $id));
@@ -52,12 +65,14 @@ namespace Goteo\Library {
 		/*
 		 *  Metodo para la lista de textos segun idioma
 		 */
-		public static function getAll($lang = null) {
-			if ($lang === null)
-				return false;
-
+		public static function getAll($lang = 'es') {
+            $texts = array();
 			$query = Model::query("SELECT id, text FROM text WHERE lang = ?", array($lang));
-			return $query->fetchAll(\PDO::FETCH_CLASS);
+			foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $text) {
+                $text->purpose = self::getPurpose($text->id);
+                $texts[] = $text;
+            }
+            return $texts;
 		}
 
 		/*

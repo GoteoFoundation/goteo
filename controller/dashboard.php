@@ -2,33 +2,47 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Library\Content,
+    use Goteo\Core\ACL,
+        Goteo\Core\Error,
+        Goteo\Core\View,
         Goteo\Model;
 
     class Dashboard extends \Goteo\Core\Controller {
 
         /*
-         *  La manera de obtener el id del usuario validado cambiará al tener la session
+         *  Muy guarro para poder moverse mientras desarrollamos
          */
-        public function index () {
-            Model\User::restrict(); 
+        public function index ($section = null) {
+            if(!ACL::check(__CLASS__, __FUNCTION__)) {
+                throw new Error(403);
+            }
 
 			$user = $_SESSION['user']->id;
-			
+
             $message = "Hola {$user}<br />";
 
-            if ($id == 'root') {
-                $message .= '<a href="/texts">Gestión de textos</a>';
+            //@FIXME!! esto también irá con el ACL
+            if ($_SESSION['user']->role_id == 1) {
+                $message .= '<a href="/admin">Ir al panel de administración</a><br />';
             }
+
 
             $projects = Model\Project::ofmine($user);
 
             $status = Model\Project::status();
 
-            include 'view/dashboard.html.php';
+            return new View (
+                'view/dashboard.html.php',
+                array(
+                    'message' => $message,
+                    'projects' => $projects,
+                    'status' => $status
+                )
+            );
 
         }
-        
+
+
     }
-    
+
 }

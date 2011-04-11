@@ -15,7 +15,7 @@ namespace Goteo\Core {
                 SELECT
                     acl.allow
                 FROM acl
-                WHERE acl.role_id = :role
+                WHERE (acl.role_id = :role OR acl.role_id IS NULL)
                 AND (acl.resource = :resource OR acl.resource LIKE '*')
                 AND (acl.action = :action OR acl.action LIKE '*')
                 ",

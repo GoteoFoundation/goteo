@@ -1,21 +1,22 @@
 <?php
+
 namespace Goteo\Core {
 
-	class DB extends \PDO {
-	    
-    	public function __construct() {
-			$file = 'config.ini';
-			if (!$settings = parse_ini_file($file, TRUE)) {
-				throw new exception("Unable to open {$file}.");
-			}
-			$dsn = "{$settings['database']['driver']}:host={$settings['database']['host']};dbname={$settings['database']['schema']}";
-			if(!empty($settings['database']['port'])) {
-				$dsn .= ";port={$settings['database']['port']}";
-			}
-			parent::__construct($dsn, $settings['database']['username'], $settings['database']['password']);
-			$this->setAttribute(static::ATTR_ERRMODE, static::ERRMODE_EXCEPTION);
-		}
+    class DB extends \PDO {
 
-	}
+        public function __construct() {
+
+            $dsn = \GOTEO_DB_DRIVER . ':host=' . \GOTEO_DB_HOST . ';dbname=' . \GOTEO_DB_SCHEMA;
+            
+            if (defined('GOTEO_DB_PORT')) {
+                $dsn .= ';port=' . \GOTEO_DB_PORT;
+            }
+                       
+            parent::__construct($dsn, \GOTEO_DB_USERNAME, \GOTEO_DB_PASSWORD);
+            
+            $this->setAttribute(static::ATTR_ERRMODE, static::ERRMODE_EXCEPTION);
+        }
+
+    }
 
 }

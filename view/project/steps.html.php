@@ -5,13 +5,28 @@
                 
                 <h3>Ir a</h3>
                 
+
                 <ol>
-                    <li><a href="/project/user"><?php echo Text::get('step 1'); ?></a></li>
-                    <li><a href="/project/register"><?php echo Text::get('step 2'); ?></a></li>
-                    <li><a href="/project/overview"><?php echo Text::get('step 3'); ?></a></li>
-                    <li><a href="/project/costs"><?php echo Text::get('step 4'); ?></a></li>
-                    <li><a href="/project/rewards"><?php echo Text::get('step 5'); ?></a></li>
-                    <li><a href="/project/supports"><?php echo Text::get('step 6'); ?></a></li>
-                    <li><a href="/project/preview"><?php echo Text::get('step 7'); ?></a></li>
+                    <li>
+                        <input type="submit" name="view-step-userProfile" value="<?php echo Text::get('step 1'); ?>" />
+                    </li>
+                    <li>
+                        <input type="submit" name="view-step-userPersonal" value="<?php echo Text::get('step 2'); ?>" />
+                    </li>
+                    <li>
+                        <input type="submit" name="view-step-overview" value="<?php echo Text::get('step 3'); ?>" />
+                    </li>
+                    <li>
+                        <input type="submit" name="view-step-costs" value="<?php echo Text::get('step 4'); ?>" />
+                    </li>
+                    <li>
+                        <input type="submit" name="view-step-rewards" value="<?php echo Text::get('step 5'); ?>" />
+                    </li>
+                    <li>
+                        <input type="submit" name="view-step-supports" value="<?php echo Text::get('step 6'); ?>" />
+                    </li>
+                    <li>
+                        <input type="submit" name="view-step-preview" value="<?php echo Text::get('step 7'); ?>" />
+                    </li>
                 </ol>
             </div>
