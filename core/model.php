@@ -3,10 +3,10 @@
 namespace Goteo\Core {
 
 	use Goteo\Core\Error;
-    
+
     abstract class Model {
-        
-        protected static 
+
+        protected static
             $__connections = array();
 
         /**
@@ -22,48 +22,47 @@ namespace Goteo\Core {
                 }
             }
         }
-        
+
         /**
          * Obtener.
          * @param   type mixed  $id     Identificador
          * @return  type object         Objeto
          */
         abstract static public function get ($id);
-        
+
         /**
 		 * Guardar.
          * @param   type array  $errors     Errores devueltos pasados por referencia.
          * @return  type bool   true|false
          */
          abstract public function save (&$errors = array());
-        
+
         /**
          * Validar.
          * @param   type array  $errors     Errores devueltos pasados por referencia.
          * @return  type bool   true|false
          */
         abstract public function validate (&$errors = array());
-        
+
         /**
          * Consulta.
          * Devuelve un objeto de la clase PDOStatement
          * http://www.php.net/manual/es/class.pdostatement.php
-         * 
+         *
          * @param   type string $query      Consulta SQL
          * @param   type array  $params     Parámetros
          * $return  type object PDOStatement
          */
         public static function query ($query, $params = null) {
-			$db = new DB;
-			$result = $db->prepare($query);
-			$params = func_num_args() === 2 && is_array($params) ? $params : array_slice(func_get_args(), 1);
-			if ($result->execute($params)) {
-				return $result;
-			}
-            else {
-                die("FAIL!! $query <pre>" . print_r($params, 1) . "</pre>");
+            try {
+                $db = new DB;
+                $result = $db->prepare($query);
+                $params = func_num_args() === 2 && is_array($params) ? $params : array_slice(func_get_args(), 1);
+                $result->execute($params);
+                return $result;
+            } catch (\PDOException $excepction) {
+                throw new Exception;
             }
-			throw new Exception($query);
         }
 
 		/**

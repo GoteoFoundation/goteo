@@ -2,26 +2,27 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Core\Error,
+    use Goteo\Core\ACL,
+        Goteo\Core\Error,
         Goteo\Library\Text,
         Goteo\Model;
 
     class Project extends \Goteo\Core\Controller {
 
         public function index($id = null) {
-            
+
             if ($id !== null) {
-                
+
                 $project = Model\Project::get($id);
-                
+
                 if ($project !== false) {
                     include 'view/project/public.html.php';
                 }
-                
+
             }
-            
+
             throw new Error(Error::NOT_FOUND);
-            
+
         }
 
         public function manage($id = null) {
@@ -44,30 +45,30 @@ namespace Goteo\Controller {
          */
 
         public function create() {
-            
+
             static $views = array(
                 'overview',
                 'costs',
                 'rewards',
             );
-            
+
             Model\User::restrict();
-            
+
             if (empty($_SESSION['current_project'])) {
-                
+
                 $project = new Model\Project;
-                
+
                 if (!$project->create($_SESSION['user']->id)) {
                     throw new Error;
-                } 
-                
+                }
+
                 $_SESSION['current_project'] = $project->id;
-                                                                                
+
             }
-            
+
             if (isset($_POST['view']) && in_array($view, $views)) {
                 $view = $_POST['view'];
-            } else {                
+            } else {
                 $view = $views[0]; // @todo Default view
             }
 
@@ -76,7 +77,7 @@ namespace Goteo\Controller {
             }
 
             include "view/project/{$view}.html.php";
-            
+
         }
 
         /*
@@ -203,7 +204,9 @@ namespace Goteo\Controller {
          */
 
         public function overview() {
-            Model\User::restrict();
+            if(!ACL::check(__CLASS__, __FUNCTION__)) {
+                throw new Error(403);
+            }
 
             $id = $_SESSION['current_project'];
 
