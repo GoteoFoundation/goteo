@@ -17,7 +17,7 @@ namespace Goteo\Model {
             $interests,
             $contribution,
             $keywords,
-            $blog,
+            $webs,
             $twitter,
             $facebook,
             $linkedin,
