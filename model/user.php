@@ -174,9 +174,9 @@ namespace Goteo\Model {
          * @param  bool $visible    true|false
          * @return mixed            Array de objetos de usuario activos|todos.
          */
-        public static function getAll($visible = true) {
-            $query = self::query("SELECT * FROM user WHERE active = ?", array($visible));
-            return $query->fetchAll(__CLASS__);
+        public static function getAll() {
+            $query = self::query("SELECT * FROM user");
+            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
 
 		/**

@@ -99,6 +99,9 @@ namespace Goteo\Controller {
             );
         }
 
+		public function dashboard () {
+		    throw new Redirection('/dashboard', Redirection::PERMANENT);
+		}
 
 
         //-----------------------------------------------

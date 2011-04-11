@@ -25,7 +25,7 @@ include 'view/prologue.html.php';
             <?php if(isset($this['text'])) : ?>
                 <p><a href="/admin/texts">Volver a la lista de textos</a></p>
                 <p>Traduciendo a <?php echo $this['using']->name; ?></p>
-				<form action="/admin/translate/<?php echo $this['text']->id; ?>/<?php $this['using']->lang; ?>" method="post">
+				<form action="/admin/translate/<?php echo $this['text']->id; ?>/<?php $this['using']->lang; ?><?php if (isset($_GET['filter'])) echo '?filter=' . $_GET['filter']; ?>" method="post">
 					<span style="font-style:italic;"><?php echo $this['text']->purpose; ?></span><br />
 					<dl>
 						<dt><label for="newtext"><?php echo $this['text']->text; ?></label></dt>
@@ -37,11 +37,22 @@ include 'view/prologue.html.php';
 
             <?php if(isset($this['texts'])) : ?>
                 <p>Viendo textos en <?php echo $this['using']->name; ?></p>
+
+                <form id="textfilter-form" action="/admin/texts/" method="get">
+                    <label for="textid-filter">Filtrar los textos de:</label>
+                    <select id="textid-filter" name="filter" onchange="document.getElementById('textfilter-form').submit();">
+                        <option value="">Todos los textos</option>
+                    <?php foreach ($this['filters'] as $filterId=>$filterName) : ?>
+                        <option value="<?php echo $filterId; ?>"<?php if ($_GET['filter'] == $filterId) echo ' selected="selected"';?>><?php echo $filterName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </form>
+                
                 <ul>
                 <?php foreach ($this['texts'] as $text) : ?>
                     <li>
                         <label title="<?php echo $text->purpose; ?>"><?php echo $text->id; ?>:</label>
-                        <a title="<?php echo $text->purpose; ?>" href='/admin/translate/<?php echo $text->id; ?>'>[Cambiar]</a>
+                        <a title="<?php echo $text->purpose; ?>" href='/admin/translate/<?php echo $text->id; ?>?filter=<?php echo $_GET['filter']; ?>'>[Cambiar]</a>
                         <p><?php echo $text->text; ?></p>
                     </li>
                 <?php endforeach; ?>

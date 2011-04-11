@@ -728,12 +728,24 @@ namespace Goteo\Model {
         }
 
         /**
-         * Saca una lista de proyectos
+         * Saca una lista completa de proyectos para la revisión
          *
-         * @param array $filters
-         * @param string $order
-         * @return array or false
+         * @param string node id
+         * @return array of project instances
          */
+        public static function getAll($node = 'goteo') {
+            $projects = array();
+            $query = self::query("SELECT id FROM project WHERE node = ? ORDER BY name ASC", array($node));
+            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
+                $projects[] = self::get($proj['id']);
+            }
+            return $projects;
+        }
+
+
+
+        /*
+         *  getAll obsoleta
         public static function getAll($filters = array(), $order = '') {
             $vals = array();
             $filter = "";
@@ -765,6 +777,8 @@ namespace Goteo\Model {
 				throw new Goteo\Core\Exception($e->getMessage());
             }
         }
+         *
+         */
 
         /*
          * Estados de desarrollo del propyecto

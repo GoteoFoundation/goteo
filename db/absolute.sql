@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 10-04-2011 a las 23:58:58
+-- Tiempo de generación: 11-04-2011 a las 12:11:53
 -- Versión del servidor: 5.1.49
 -- Versión de PHP: 5.3.3-1ubuntu9.3
 
@@ -260,7 +260,7 @@ INSERT INTO `project` (`id`, `name`, `status`, `progress`, `owner`, `node`, `amo
 ('28c0caa840fc9c642160b1e2774667ff', 'Mi proyecto 1', 1, 0, 'pepe', 'goteo', 0, '2011-04-02', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 ('36a6596809c6a726131d13309999a2da', '', 1, 14, 'pepo', 'goteo', 0, '2011-04-10', '2011-04-10', NULL, NULL, NULL, NULL, NULL, '', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 ('5a58d7e7fff0ce33dd0212f33f978fc3', '', 1, 0, 'pepo', 'goteo', 0, '2011-04-10', '2011-04-10', NULL, NULL, NULL, NULL, NULL, '', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('6bb61e3b7bce0931da574d19d1d82c88', 'Mi proyecto 1', 1, 0, 'root', 'goteo', 0, '2011-03-30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('6bb61e3b7bce0931da574d19d1d82c88', 'Mi proyecto 1', 1, 26, 'root', 'goteo', 0, '2011-03-30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 ('7b0aa2ffa4d04499d7c743fde7acdceb', 'Como lo borrooooo???', 1, 4, 'pepa', 'goteo', 0, '2011-04-02', '2011-04-02', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'project.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL),
 ('96e23f7431365f3f9c21b4f26f72f624', '', 1, 0, 'pepo', 'goteo', 0, '2011-04-10', '2011-04-10', NULL, NULL, NULL, NULL, NULL, '', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 ('984990664ca1a1a98522b2640b0fc535', 'Mi proyecto 2', 1, 37, 'root', 'goteo', 0, '2011-03-24', '2011-03-24', NULL, NULL, NULL, 'JuliÃ¡n', 'CÃ¡naves Bover', '43108914Z', 'julian.canaves@gmail.com', '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
