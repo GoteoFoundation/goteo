@@ -108,9 +108,10 @@ INSERT INTO `purpose` VALUES('validate-project-field-currently', 'Indicar el est
 INSERT INTO `purpose` VALUES('validate-project-individual_rewards', 'Indicar hasta 5 recompensas individuales para mejorar la puntuación');
 INSERT INTO `purpose` VALUES('validate-project-social_rewards', 'Indicar hasta 5 retornos colectivos para mejorar la puntuación');
 INSERT INTO `purpose` VALUES('validate-project-total-costs', 'El coste óptimo no puede exceder demasiado al coste mínimo');
-INSERT INTO `purpose` VALUES('validate-project-value contract-nif', 'El nif del responsable del proyecto debe ser correcto');
-INSERT INTO `purpose` VALUES('validate-project-value description', 'La descripción del proyecto debe se suficientemente extensa');
-INSERT INTO `purpose` VALUES('validate-project-value phone', 'El teléfono debe ser correcto');
+INSERT INTO `purpose` VALUES('validate-project-value-contract-email', 'El email no es correcto');
+INSERT INTO `purpose` VALUES('validate-project-value-contract-nif', 'El nif del responsable del proyecto debe ser correcto');
+INSERT INTO `purpose` VALUES('validate-project-value-description', 'La descripción del proyecto debe se suficientemente extensa');
+INSERT INTO `purpose` VALUES('validate-project-value-phone', 'El teléfono debe ser correcto');
 INSERT INTO `purpose` VALUES('validate-project-value-keywords', 'Indicar hasta 5 palabras clave del proyecto para mejorar la puntuación');
 INSERT INTO `purpose` VALUES('validate-social_reward-license', 'Indicar una licencia para mejorar la puntuación');
 INSERT INTO `purpose` VALUES('validate-user-field-about', 'Si no ha puesto nada sobre el/ella ');

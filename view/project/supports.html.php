@@ -27,29 +27,18 @@ include 'view/prologue.html.php';
 
                     <?php include 'view/project/guide.html.php' ?>
                                         
-
-                    <div class="buttons">
-                        <input type="hidden" name="step" value="rewards" />
-                        <input type="submit" value="Continuar" />
-                    </div>
-
-                </div>
-
-                <?php include 'view/project/steps.html.php' ?>
-
-            </form>
-
-        </div>
-                
-    <?php include 'view/footer.html.php' ?>
-    
-<?php include 'view/epilogue.html.php' ?>
-<!--
-PROYECTO / Colaboraciones<br />
-GUÍA: <?php echo $guideText;  ?><br />
-<?php include 'view/project/errors.html.php' ?>
-<hr />
-<form action="/project/supports" method="post">
+                    <?php //@INTRUSION JULIAN!!! para usarlo sin maquetación
+                    if ($this['nodesign'] == true) :
+                        $project = $this['project'];
+                        $types = $this['types'];
+                        ?>
+            <?php if (!empty($project->errors['supports'])) :
+                echo '<p>';
+                foreach ($project->errors['supports'] as $campo=>$error) : ?>
+                    <span style="color:red;"><?php echo "$campo: $error"; ?></span><br />
+            <?php endforeach;
+                echo '</p>';
+                endif;?>
 		<fieldset>
 			<legend>Nueva colaboración</legend>
 			<dl>
@@ -58,7 +47,7 @@ GUÍA: <?php echo $guideText;  ?><br />
 
 				<dt><label for="nsupport-description">Descripción</label></dt>
 				<dd><textarea id="nsupport-description" name="nsupport-description" cols="50" rows="5"></textarea></dd>
-				
+
 				<dt><label for="nsupport-type">Tipo</label></dt>
 				<dd><select id="nsupport-type" name="nsupport-type">
 					<?php foreach ($types as $Id => $Val) : ?>
@@ -91,7 +80,22 @@ GUÍA: <?php echo $guideText;  ?><br />
 				<span><?php echo Text::get('tooltip project support'); ?></span><br />
 			</fieldset>
 		<?php endforeach; ?>
+                    <?php else : ?>
+                    <?php endif; ?>
 
-	<input type="submit" name="submit" value="CONTINUAR" />
-</form>
--->
+                    <div class="buttons">
+                        <input type="hidden" name="step" value="supports" />
+                        <input type="submit" name="view-step-preview" value="Continuar" class="next" />
+                    </div>
+
+                </div>
+
+                <?php include 'view/project/steps.html.php' ?>
+
+            </form>
+
+        </div>
+                
+    <?php include 'view/footer.html.php' ?>
+    
+<?php include 'view/epilogue.html.php' ?>

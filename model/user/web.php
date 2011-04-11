@@ -17,7 +17,7 @@ namespace Goteo\Model\User {
          */
 	 	public static function get ($id) {
             try {
-                $query = static::query("SELECT id, url FROM user_web WHERE user = ?", array($id));
+                $query = static::query("SELECT id, user, url FROM user_web WHERE user = ?", array($id));
                 $webs = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
 
                 return $webs;
@@ -57,14 +57,14 @@ namespace Goteo\Model\User {
 		public function remove (&$errors = array()) {
 			$values = array (
 				':user'=>$this->user,
-				':interest'=>$this->id,
+				':id'=>$this->id,
 			);
 
             try {
-                self::query("DELETE FROM user_interest WHERE interest = :interest AND user = :user", $values);
+                self::query("DELETE FROM user_web WHERE id = :id AND user = :user", $values);
 				return true;
 			} catch(\PDOException $e) {
-                $errors[] = 'No se ha podido quitar el interes ' . $this->id . ' del usuario ' . $this->user . ' ' . $e->getMessage();
+                $errors[] = 'No se ha podido quitar la web ' . $this->id . ' del usuario ' . $this->user . ' ' . $e->getMessage();
                 return false;
 			}
 		}

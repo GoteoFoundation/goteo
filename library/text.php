@@ -2,7 +2,8 @@
 
 namespace Goteo\Library {
 
-	use Goteo\Core\Model;
+	use Goteo\Core\Model,
+        Goteo\Core\Exception;
 	/*
 	 * Clase para sacar textos estáticos de la tabla text
 	 *  (por ahora utilizar gettext no nos compensa, quizás más adelante)
@@ -33,7 +34,6 @@ namespace Goteo\Library {
 			$query = Model::query("SELECT text FROM text WHERE id = :id AND lang = :lang", array(':id' => $id, ':lang' => $lang));
 			$exist = $query->fetchObject();
 			if ($exist->text) {
-				$exist->text = utf8_encode($exist->text);
 //				return $_cache[$id][$lang] = $exist->text;
 				return $exist->text;
 			} else {
@@ -65,14 +65,28 @@ namespace Goteo\Library {
 		/*
 		 *  Metodo para la lista de textos segun idioma
 		 */
-		public static function getAll($lang = 'es') {
+		public static function getAll($lang = 'es', $filter = null) {
             $texts = array();
-			$query = Model::query("SELECT id, text FROM text WHERE lang = ?", array($lang));
-			foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $text) {
-                $text->purpose = self::getPurpose($text->id);
-                $texts[] = $text;
+
+            $values = array(':lang'=>$lang);
+
+            $sql = "SELECT id, text FROM text WHERE lang = :lang";
+            if (!empty($filter)) {
+                $sql .= " AND id LIKE :filter";
+                $values[':filter'] = "%$filter%";
             }
-            return $texts;
+            $sql .= " ORDER BY id ASC";
+            
+            try {
+                $query = Model::query($sql, $values);
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $text) {
+                    $text->purpose = self::getPurpose($text->id);
+                    $texts[] = $text;
+                }
+                return $texts;
+            } catch (\PDOException $e) {
+                throw new Exception($e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
+            }
 		}
 
 		/*
@@ -96,6 +110,24 @@ namespace Goteo\Library {
 
 
 		}
+
+        /*
+         * Filtros de textos
+         */
+        static public function filters()
+        {
+            return array(
+                'mandatory'=>'Campos obligatorios',
+                'tooltip'=>'Consejos para rellenar el formulario de proyecto',
+                'error-register'=>'Errores al registrarse',
+                'explain'=>'Explicaciones',
+                'guide-project'=>'Guias del formulario de proyecto',
+                'guide-user'=>'Guias del formulario de usuario',
+                'step'=>'Pasos del formulario',
+                'validate'=>'Validaciones de campos'
+            );
+        }
+
 
 		/*
 		 *   Método para formatear friendly un texto para ponerlo en la url

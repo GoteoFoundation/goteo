@@ -1,9 +1,43 @@
-<?php include 'view/project/header.html.php' ?>
-<?php use Goteo\Library\Text; ?>
-USUARIO / Datos personales<br />
-GUÍA: <?php echo $guideText;  ?><br />
-<hr />
-<form action="/project/register" method="post">
+<?php
+
+use Goteo\Library\Text;
+
+$bodyClass = 'project-form';
+
+include 'view/prologue.html.php';
+
+    include 'view/header.html.php'; ?>
+
+        <div id="sub-header">
+            <div>
+                <h2>Formulario</h2>
+            </div>
+        </div>
+
+        <div id="main" class="costs">
+
+            <form method="post" action="">
+
+                <?php include 'view/project/status.html.php' ?>
+                <?php include 'view/project/steps.html.php' ?>
+
+                <div class="superform red">
+
+                    <h3>Usuario/Datos personales</h3>
+
+                    <?php include 'view/project/guide.html.php' ?>
+
+                    <?php //@INTRUSION JULIAN!!! para usarlo sin maquetación
+                    if ($this['nodesign'] == true) :
+                        $project = $this['project'];
+                        ?>
+            <?php if (!empty($project->errors['userPersonal'])) :
+                echo '<p>';
+                foreach ($project->errors['userPersonal'] as $campo=>$error) : ?>
+                    <span style="color:red;"><?php echo "$campo: $error"; ?></span><br />
+            <?php endforeach;
+                echo '</p>';
+                endif;?>
 	<dl>
 		<dt><label for="contract_name">Nombre</label></dt>
 		<dd><input type="text" id="contract_name" name="contract_name" value="<?php echo $project->contract_name; ?>"/></dd>
@@ -42,6 +76,22 @@ GUÍA: <?php echo $guideText;  ?><br />
 		<span><?php echo Text::get('tooltip project country'); ?></span><br />
 
 	</dl>
-	<input type="submit" name="submit" value="CONTINUAR" />
-</form>
-<?php include 'view/project/footer.html.php' ?>
+                    <?php else : ?>
+                    <?php endif; ?>
+                    <div class="buttons">
+                        <input type="hidden" name="step" value="userPersonal" />
+                        <input type="submit" value="Continuar" name="view-step-overview" class="next" />
+                    </div>
+
+                </div>
+
+                <?php include 'view/project/steps.html.php' ?>
+                <?php include 'view/project/tooltips.js.php' ?>
+
+            </form>
+
+        </div>
+
+    <?php include 'view/footer.html.php' ?>
+
+<?php include 'view/epilogue.html.php' ?>

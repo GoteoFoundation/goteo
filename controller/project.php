@@ -2,8 +2,7 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Core\ACL,
-        Goteo\Core\Error,
+    use Goteo\Core\Error,
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Library\Text,
@@ -28,17 +27,15 @@ namespace Goteo\Controller {
             } else if (isset($_GET['create'])) {
                 return $this->create();
             } else {
-                throw new Error(Error::NOT_FOUND);
+                throw new Redirection('/project/explore');
             }
         }
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
         private function edit ($id) {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
+            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
             //@TODO Verificar si tiene permisos para editar (usuario)
-            $debug = false; // debug para ver que ha hecho
+            $nodesign = false; // para usar el formulario de proyecto en Julian mode
 
             $project = Model\Project::get($id);
 
@@ -91,7 +88,8 @@ namespace Goteo\Controller {
             // variables para la vista
             $viewData = array(
                             'project'=>$project,
-                            'steps'=>$steps
+                            'steps'=>$steps,
+                            'nodesign'=>$nodesign
                         );
 
             // vista por defecto, el primer paso con errores
@@ -111,50 +109,17 @@ namespace Goteo\Controller {
                 $step = 'preview';
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+//                echo '<pre>' . \print_r($_POST, 1) . '</pre>';
                 $errors = array(); // errores de proceso, no de datos del proyecto
                 foreach ($steps as $id => &$data) {
-                    call_user_func_array(array($this, "process_{$id}"), array($project, $errors));
-                    $data['errors'] = $project->errors[$id];
-                    if (!empty($_POST['view-step-'.$id])) {
-                        $step = $id;
-                        // segun el paso añadimos los datos auxiliares para pintar
-                        switch ($id) {
-                            case 'userProfile':
-                                $viewData['user'] = Model\User::get($project->owner);
-                                $viewData['interests'] = Model\User\Interest::getAll();
-                                break;
-                            case 'overview':
-                                $viewData['currently'] = Model\Project::currentStatus();
-                                $viewData['categories'] = Model\Project\Category::getAll();
-                                break;
-
-                            case 'costs':
-                                $viewData['types'] = Model\Project\Cost::types();
-                                break;
-
-                            case 'rewards':
-                                $viewData['stypes'] = Model\Project\Reward::icons('social');
-                                $viewData['itypes'] = Model\Project\Reward::icons('individual');
-                                $viewData['licenses'] = Model\Project\Reward::licenses();
-                                break;
-
-                            case 'supports':
-                                $viewData['types'] = Model\Project\Support::types();
-                                break;
-                            case 'preview':
-                                $success = array();
-                                if (empty($project->errors)) {
-                                    $success[] = Text::get('guide-project-success-noerrors');
-                                }
-                                if ($project->progress > 80 && $project->status == 1) {
-                                    $success[] = Text::get('guide-project-success-minprogress');
-                                    $success[] = Text::get('guide-project-success-okfinish');
-                                    $viewData['finishable'] = true;
-                                }
-                                $viewData['success'] = $success;
-                                break;
-                        }
+                    // necesitamos saber si vienen datos de este paso para no tratar posts vacios
+                    if ($_POST['step'] == $id) {
+                        call_user_func_array(array($this, "process_{$id}"), array(&$project, &$errors));
+                        $data['errors'] = $project->errors[$id];
                     }
+                    // y el paso que vamos a mostrar
+                    if (!empty($_POST['view-step-'.$id]))
+                        $step = $id;
                 }
 
                 if (!empty($errors))
@@ -164,66 +129,68 @@ namespace Goteo\Controller {
                 $project->evaluate();
             }
 
+            // segun el paso añadimos los datos auxiliares para pintar
+            switch ($step) {
+                case 'userProfile':
+                    $viewData['user'] = Model\User::get($project->owner);
+                    $viewData['interests'] = Model\User\Interest::getAll();
+                    break;
+                
+                case 'overview':
+                    $viewData['currently'] = Model\Project::currentStatus();
+                    $viewData['categories'] = Model\Project\Category::getAll();
+                    break;
+
+                case 'costs':
+                    $viewData['types'] = Model\Project\Cost::types();
+                    break;
+
+                case 'rewards':
+                    $viewData['stypes'] = Model\Project\Reward::icons('social');
+                    $viewData['itypes'] = Model\Project\Reward::icons('individual');
+                    $viewData['licenses'] = Model\Project\Reward::licenses();
+                    break;
+
+                case 'supports':
+                    $viewData['types'] = Model\Project\Support::types();
+                    break;
+                
+                case 'preview':
+                    $success = array();
+                    if (empty($project->errors)) {
+                        $success[] = Text::get('guide-project-success-noerrors');
+                    }
+                    if ($project->progress > 80 && $project->status == 1) {
+                        $success[] = Text::get('guide-project-success-minprogress');
+                        $success[] = Text::get('guide-project-success-okfinish');
+                        $viewData['finishable'] = true;
+                    }
+                    $viewData['success'] = $success;
+                    break;
+            }
+
+
             $view = new View (
                 "view/project/{$step}.html.php",
                 $viewData
             );
 
-// -------- DEBUG --------
-if ($debug) {
-            echo 'ERRORES de proceso <pre>' . print_r($errors, 1) . '</pre>   <hr />';
-            echo 'POST:     <pre>' . print_r($_POST, 1) . '</pre>   <hr />';
-            echo 'STEPS:    <pre>' . print_r($steps, 1) . '</pre>   <hr />';
-            echo 'PROJECT:  <pre>' . print_r($project, 1) . '</pre> <hr />';
-            echo 'View:     <pre>' . print_r($view, 1) . '</pre>    <hr />';
-            ?>
-                <form method="post" action="">
-                <ol>
-                    <li>
-                        <input type="submit" name="view-step-userProfile" value="<?php echo Text::get('step-1'); ?>" />
-                    </li>
-                    <li>
-                        <input type="submit" name="view-step-userPersonal" value="<?php echo Text::get('step-2'); ?>" />
-                    </li>
-                    <li>
-                        <input type="submit" name="view-step-overview" value="<?php echo Text::get('step-3'); ?>" />
-                    </li>
-                    <li>
-                        <input type="submit" name="view-step-costs" value="<?php echo Text::get('step-4'); ?>" />
-                    </li>
-                    <li>
-                        <input type="submit" name="view-step-rewards" value="<?php echo Text::get('step-5'); ?>" />
-                    </li>
-                    <li>
-                        <input type="submit" name="view-step-supports" value="<?php echo Text::get('step-6'); ?>" />
-                    </li>
-                    <li>
-                        <input type="submit" name="view-step-preview" value="<?php echo Text::get('step-7'); ?>" />
-                    </li>
-                </ol>
-    </form>
-                        <?php
-            die;
-}
-// -------- FIN DEBUG --------
             return $view;
 
         }
 
         private function create () {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
+
+            //@TODO Verificar que el usuario está validado
+            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
+            // sino, saltar a la página de login|register
 
             //@TODO Verificar si tienen permisos para crear nuevos proyectos
             $project = new Model\Project;
             $project->create($_SESSION['user']->id);
-
-            $errors = array();
-            if ($project->save($errors))
                 throw new Redirection("/project/{$project->id}/?edit");
 
-            throw new \Goteo\Core\Exception(implode(' ', $errors));
+            throw new \Goteo\Core\Exception('Fallo al crear un nuevo proyecto');
         }
 
         private function view ($id) {
@@ -238,9 +205,7 @@ if ($debug) {
 
         // Finalizar para revision, ready le cambia el estado
         public function finish($id) {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
+            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
             //@TODO verificar si tienen el mínimo progreso para verificación y si está en estado edición
             $project = Model\Project::get($id);
 
@@ -250,14 +215,12 @@ if ($debug) {
             $errors = array();
             if ($project->ready($errors))
                 throw new Redirection("/project/{$project->id}");
-
+            
             throw new \Goteo\Core\Exception(implode(' ', $errors));
         }
 
         public function enable($id) {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
+            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
             //@TODO verificar si tiene permisos para rehabilitar la edición del proyecto (admin)
             if ($_SESSION['user']->role_id != 1) //@FIXME!! Piñonaco... ACL...
                 throw new Redirection("/project/{$id}");
@@ -272,9 +235,7 @@ if ($debug) {
         }
 
         public function publish($id) {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
+            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
             //@TODO verificar si tiene permisos para publicar proyectos
             if ($_SESSION['user']->role_id != 1) //@FIXME!! Piñonaco... ACL...
                 throw new Redirection("/project/{$id}");
@@ -311,36 +272,70 @@ if ($debug) {
          */
         private function process_userProfile(&$project, &$errors) {
             $user = Model\User::get($project->owner);
-            $user->name = $_POST['name'];
-            $user->avatar = $_POST['avatar'];
-            $user->about = $_POST['about'];
-            $user->keywords = $_POST['keywords'];
-            $user->contribution = $_POST['contribution'];
-            $user->twitter = $_POST['twitter'];
-            $user->facebook = $_POST['facebook'];
-            $user->linkedin = $_POST['linkedin'];
-            $user->interests = $_POST['interests'];
-            $user->save($errors);
+
+            // tratar la imagen y ponerla en la propiedad avatar
+            // __FILES__
+
+            $fields = array(
+                'user_name'=>'name',
+                'user_avatar'=>'avatar',
+                'user_about'=>'about',
+                'user_keywords'=>'keywords',
+                'user_contribution'=>'contribution',
+                'user_twitter'=>'twitter',
+                'user_facebook'=>'facebook',
+                'user_linkedin'=>'linkedin'
+            );
+
+            foreach ($fields as $fieldPost=>$fieldTable) {
+                $user->$fieldTable = $_POST[$fieldPost];
+            }
+
+            $user->saveInfo($errors);
+
+            //intereses
+//            echo '<pre>' . print_r($_POST['interests'], 1) . '</pre>'; //los que vienen
+//            echo '<pre>' . print_r($user->interests, 1) . '</pre>'; //los que tiene
+            // añadir los que vienen y no tiene
+            foreach (array_diff($_POST['interests'],$user->interests) as $key=>$int) {
+                $interest = new Model\User\Interest();
+
+                $interest->id = $int;
+                $interest->user = $user->id;
+
+                $interest->save($errors);
+                $user->interests[] = $interest;
+            }
+
+            // quitar los que tiene y no vienen
+            foreach (array_diff($user->interests,$_POST['interests']) as $key=>$int) {
+                $interest = new Model\User\Interest();
+
+                $interest->id = $int;
+                $interest->user = $user->id;
+
+                if ($interest->remove($errors))
+                    unset($user->interests[$key]);
+            }
 
             //tratar webs existentes
             foreach ($user->webs as $key=>$web) {
                 // primero mirar si lo estan quitando
-                if (isset($_POST['remove-web' . $web->id]) && $_POST['remove-web' . $web->id] == 1) {
+                if ($_POST['remove-web' . $web->id] == 1) {
                     if ($web->remove($errors))
                         unset($user->webs[$key]);
                     continue; // no tratar esta
                 }
 
-                if (isset($_POST['web' . $web->id])) {
-                    $web->user = $user->id;
-                    $web->url = $_POST['web' . $web->id];
+                // luego aplicar los cambios
+                $web->user = $user->id;
+                $web->url = $_POST['web' . $web->id];
 
-                    $web->save($errors);
-                }
+                $web->save($errors);
             }
 
             //tratar nueva web
-            if (isset($_POST['nweb']) && !empty($_POST['nweb'])) {
+            if (!empty($_POST['nweb'])) {
 
                 $web = new Model\User\Web();
 
@@ -352,7 +347,8 @@ if ($debug) {
 
                 $user->webs[] = $web;
             }
-            $user->validate($project->errors['userProfile']);
+
+            $user->check($project->errors['userProfile']); // checkea errores
         }
 
         /*
@@ -373,8 +369,7 @@ if ($debug) {
             );
 
             foreach ($fields as $field) {
-                if (isset($_POST[$field]))
-                    $project->$field = $_POST[$field];
+                $project->$field = $_POST[$field];
             }
 
             $project->save($errors); // guarda los datos del proyecto
@@ -402,37 +397,32 @@ if ($debug) {
             );
 
             foreach ($fields as $field) {
-                if (isset($_POST[$field]))
-                    $project->$field = $_POST[$field];
+                $project->$field = $_POST[$field];
             }
 
-            //categorias, si viene el campo
-            if (isset($_POST['categories'])) {
-                // añadir las que vienen
-                foreach ($_POST['categories'] as $cat) {
-                    if (!in_array($cat, $project->categories)) {
-                        $category = new Model\Project\Category();
+            //categorias
+//            echo '<pre>' . print_r($_POST['categories'], 1) . '</pre>'; // A
+//            echo '<pre>' . print_r($project->categories, 1) . '</pre>'; // B
+            // añadir las que vienen y no tiene
+            foreach (array_diff($_POST['categories'], $project->categories) as $key=>$cat) {
+                $category = new Model\Project\Category();
 
-                        $category->id = $cat;
-                        $category->project = $project->id;
+                $category->id = $cat;
+                $category->project = $project->id;
 
-                        $category->save($errors);
-                        $project->categories[] = $category;
-                    }
-                }
+                $category->save($errors);
+                $project->categories[] = $category;
+            }
 
-                // quitar las que no vienen
-                foreach ($project->categories as $key=>$cat) {
-                    if (!in_array($cat, $_POST['categories'])) {
-                        $category = new Model\Project\Category();
+            // quitar las que tiene y no vienen
+            foreach (array_diff($project->categories, $_POST['categories']) as $key=>$cat) {
+                $category = new Model\Project\Category();
 
-                        $category->id = $cat;
-                        $category->project = $project->id;
+                $category->id = $cat;
+                $category->project = $project->id;
 
-                        if ($category->remove($errors))
-                            unset($project->categories[$key]);
-                    }
-                }
+                if ($category->remove($errors))
+                    unset($project->categories[$key]);
             }
 
             $project->save($errors); // guarda los datos del proyecto
@@ -443,35 +433,32 @@ if ($debug) {
          * Paso 4 - COSTES
          */
         private function process_costs(&$project, &$errors) {
-            if (isset($_POST['resource']))
-                $project->resource = $_POST['resource'];
+            $project->resource = $_POST['resource'];
 
             $project->save($errors); // guarda este dato del proyecto
-
+            
             //tratar costes existentes
             foreach ($project->costs as $key=>$cost) {
                 // primero mirar si lo estan quitando
-                if (isset($_POST['remove-cost' . $cost->id]) && $_POST['remove-cost' . $cost->id] == 1) {
+                if ($_POST['remove-cost' . $cost->id] == 1) {
                     if ($cost->remove($errors))
                         unset($project->costs[$key]);
                     continue; // no tratar este
                 }
 
-                if (isset($_POST['cost' . $cost->id])) {
-                    $cost->cost = $_POST['cost' . $cost->id];
-                    $cost->description = $_POST['cost-description' . $cost->id];
-                    $cost->amount = $_POST['cost-amount' . $cost->id];
-                    $cost->type = $_POST['cost-type' . $cost->id];
-                    $cost->required = $_POST['cost-required' . $cost->id];
-                    $cost->from = $_POST['cost-from' . $cost->id];
-                    $cost->until = $_POST['cost-until' . $cost->id];
+                $cost->cost = $_POST['cost' . $cost->id];
+                $cost->description = $_POST['cost-description' . $cost->id];
+                $cost->amount = $_POST['cost-amount' . $cost->id];
+                $cost->type = $_POST['cost-type' . $cost->id];
+                $cost->required = $_POST['cost-required' . $cost->id];
+                $cost->from = $_POST['cost-from' . $cost->id];
+                $cost->until = $_POST['cost-until' . $cost->id];
 
-                    $cost->save($errors);
-                }
+                $cost->save($errors);
             }
 
             //tratar nuevo coste
-            if (isset($_POST['ncost']) && !empty($_POST['ncost'])) {
+            if (!empty($_POST['ncost'])) {
 
                 $cost = new Model\Project\Cost();
 
@@ -500,46 +487,42 @@ if ($debug) {
             //tratar retornos sociales
             foreach ($project->social_rewards as $key=>$reward) {
                 // primero mirar si lo estan quitando
-                if (isset($_POST['remove-social_reward' . $reward->id]) && $_POST['remove-social_reward' . $reward->id] == 1) {
+                if ($_POST['remove-social_reward' . $reward->id] == 1) {
                     if ($reward->remove($errors))
                         unset($project->social_rewards[$key]);
                     continue; // no lo trata
                 }
 
-                if (isset($_POST['social_reward' . $reward->id])) {
-                    $reward->reward = $_POST['social_reward' . $reward->id];
-                    $reward->description = $_POST['social_reward-description' . $reward->id];
-                    $reward->icon = $_POST['social_reward-icon' . $reward->id];
-                    $reward->license = $_POST['social_reward-license' . $reward->id];
+                $reward->reward = $_POST['social_reward' . $reward->id];
+                $reward->description = $_POST['social_reward-description' . $reward->id];
+                $reward->icon = $_POST['social_reward-icon' . $reward->id];
+                $reward->license = $_POST['social_reward-license' . $reward->id];
 
-                    $reward->save($errors);
-                }
+                $reward->save($errors);
             }
 
             // retornos individuales
             foreach ($project->individual_rewards as $key=>$reward) {
                 // primero mirar si lo estan quitando
-                if (isset($_POST['remove-individual_reward' . $reward->id]) && $_POST['remove-individual_reward' . $reward->id] == 1) {
+                if ($_POST['remove-individual_reward' . $reward->id] == 1) {
                     if ($reward->remove($errors))
                         unset($project->individual_rewards[$key]);
-                    continue;
+                    continue; // no tratar este
                 }
 
-                if (isset($_POST['individual_reward' . $reward->id])) {
-                    $reward->reward = $_POST['individual_reward' . $reward->id];
-                    $reward->description = $_POST['individual_reward-description' . $reward->id];
-                    $reward->icon = $_POST['individual_reward-icon' . $reward->id];
-                    $reward->amount = $_POST['individual_reward-amount' . $reward->id];
-                    $reward->units = $_POST['individual_reward-units' . $reward->id];
+                $reward->reward = $_POST['individual_reward' . $reward->id];
+                $reward->description = $_POST['individual_reward-description' . $reward->id];
+                $reward->icon = $_POST['individual_reward-icon' . $reward->id];
+                $reward->amount = $_POST['individual_reward-amount' . $reward->id];
+                $reward->units = $_POST['individual_reward-units' . $reward->id];
 
-                    $reward->save($errors);
-                }
+                $reward->save($errors);
             }
 
 
 
             // tratar nuevos retornos
-            if (isset($_POST['nsocial_reward']) && !empty($_POST['nsocial_reward'])) {
+            if (!empty($_POST['nsocial_reward'])) {
                 $reward = new Model\Project\Reward();
 
                 $reward->id = '';
@@ -555,7 +538,7 @@ if ($debug) {
                 $project->social_rewards[] = $reward;
             }
 
-            if (isset($_POST['nindividual_reward']) && !empty($_POST['nindividual_reward'])) {
+            if (!empty($_POST['nindividual_reward'])) {
                 $reward = new Model\Project\Reward();
 
                 $reward->id = '';
@@ -571,7 +554,7 @@ if ($debug) {
 
                 $project->individual_rewards[] = $reward;
             }
-
+        
             $project->check('rewards');
         }
 
@@ -585,14 +568,13 @@ if ($debug) {
                 if ($_POST['remove-support' . $support->id] == 1) {
                     if ($support->remove($errors))
                         unset($project->supports[$key]);
-                    continue;
+                    continue; // no tratar este
                 }
 
-                if (!empty($_POST['support' . $support->id])) {
-                    $support->support = $_POST['support' . $support->id];
-                    $support->description = $_POST['support-description' . $support->id];
-                    $support->type = $_POST['support-type' . $support->id];
-                }
+                $support->support = $_POST['support' . $support->id];
+                $support->description = $_POST['support-description' . $support->id];
+                $support->type = $_POST['support-type' . $support->id];
+                
                 $support->save($errors);
             }
 
@@ -619,8 +601,7 @@ if ($debug) {
          * No hay nada que tratar porque aq este paso no se le envia nada por post
          */
         public function process_preview(&$project, &$errors) {
-            if (isset($_POST['comment']))
-                $project->comment = $_POST['comment'];
+            $project->comment = $_POST['comment'];
 
             $project->save($errors); // guarda este dato del proyecto
         }
