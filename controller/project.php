@@ -35,7 +35,7 @@ namespace Goteo\Controller {
         private function edit ($id) {
             Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
             //@TODO Verificar si tiene permisos para editar (usuario)
-            $nodesign = true; // para usar el formulario de proyecto en Julian mode
+            $nodesign = false; // para usar el formulario de proyecto en Julian mode
 
             $project = Model\Project::get($id);
 
