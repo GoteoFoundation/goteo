@@ -3,11 +3,8 @@
 namespace Goteo\Core {
 
 	use Goteo\Core\Error;
-    
+
     abstract class Model {
-        
-        protected static 
-            $__connections = array();
 
         /**
          * Constructor.
@@ -22,48 +19,74 @@ namespace Goteo\Core {
                 }
             }
         }
-        
+
         /**
          * Obtener.
          * @param   type mixed  $id     Identificador
          * @return  type object         Objeto
          */
         abstract static public function get ($id);
-        
+
         /**
 		 * Guardar.
          * @param   type array  $errors     Errores devueltos pasados por referencia.
          * @return  type bool   true|false
          */
          abstract public function save (&$errors = array());
-        
+
         /**
          * Validar.
          * @param   type array  $errors     Errores devueltos pasados por referencia.
          * @return  type bool   true|false
          */
         abstract public function validate (&$errors = array());
-        
+
         /**
          * Consulta.
          * Devuelve un objeto de la clase PDOStatement
          * http://www.php.net/manual/es/class.pdostatement.php
-         * 
+         *
          * @param   type string $query      Consulta SQL
-         * @param   type array  $params     Parámetros
+         * @param   type array  $params     ParÃ¡metros
          * $return  type object PDOStatement
          */
         public static function query ($query, $params = null) {
-			$db = new DB;
-			$result = $db->prepare($query);
-			$params = func_num_args() === 2 && is_array($params) ? $params : array_slice(func_get_args(), 1);
-			if ($result->execute($params)) {
-				return $result;
-			}
-            else {
-                die("FAIL!! $query <pre>" . print_r($params, 1) . "</pre>");
+
+            static $db = null;
+
+            if ($db === null) {
+                $db = new DB;
             }
-			throw new Exception($query);
+
+                $params = func_num_args() === 2 && is_array($params) ? $params : array_slice(func_get_args(), 1);
+            $result = $db->prepare($query);
+
+            try {
+
+                $result->execute($params);
+
+                return $result;
+
+            } catch (\PDOException $e) {
+                throw new Exception("Error en la consulta: `{$query}`");
+            }
+
+        }
+
+        /**
+         * Devuelve el id autoincremental generado en la Ãºltima consulta, si se
+         * ha generado uno.
+         *
+         * @return  int Id de `AUTO_INCREMENT` o `0`, si la Ãºltima consulta no
+         *          ha generado ninguna valor autoincremental.
+         */
+        public static function insertId() {
+
+            try {
+                return static::query("SELECT LAST_INSERT_ID();")->fetchColumn();
+            } catch (\Exception $e) {
+                return 0;
+            }
         }
 
 		/**
@@ -76,7 +99,7 @@ namespace Goteo\Core {
 		public static function idealiza ($value) {
 			$id = trim(strtolower($value));
 			// Acentos
-			$id = strtr($id, "ÁÀÄÂáàâäÉÈËÊéèêëÍÌÏÎíìîïÓÒÖÔóòôöÚÙÛÜúùûüÇçÑñ", "aaaaaaaaeeeeeeeeiiiiiiiioooooooouuuuuuuuccnn");
+			$id = strtr($id, "ÃÃ€Ã„Ã‚Ã¡Ã Ã¢Ã¤Ã‰ÃˆÃ‹ÃŠÃ©Ã¨ÃªÃ«ÃÃŒÃÃŽÃ­Ã¬Ã®Ã¯Ã“Ã’Ã–Ã”Ã³Ã²Ã´Ã¶ÃšÃ™Ã›ÃœÃºÃ¹Ã»Ã¼Ã‡Ã§Ã‘Ã±", "aaaaaaaaeeeeeeeeiiiiiiiioooooooouuuuuuuuccnn");
 			// Separadores
 			$id = preg_replace("/[\s\,\;\_\/\-]+/i", "-", $id);
 			$id = preg_replace("/[^a-z0-9\.\-\+]/", "", $id);

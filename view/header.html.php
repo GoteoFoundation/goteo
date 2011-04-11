@@ -1,5 +1,5 @@
 <div id="header">
     
-    <?php include 'view/menu.html.php' ?>
+    <?php include 'view/menu.html.php' ?>        
     
 </div>

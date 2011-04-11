@@ -1,5 +1,83 @@
-<?php include 'view/project/header.html.php' ?>
-<?php use Goteo\Library\Text; ?>
+<?php 
+
+use Goteo\Library\Text;
+
+$bodyClass = 'project-form';
+
+include 'view/prologue.html.php';
+    
+    include 'view/header.html.php'; ?>
+
+    <div id="sub-header">
+        <div>
+            <h2>Formulario</h2>
+        </div>
+    </div>
+
+    <div id="main" class="overview">
+
+        <form method="post" action="" class="project">
+
+            <?php include 'view/project/status.html.php' ?>
+            <?php include 'view/project/steps.html.php' ?>
+
+            <div class="superform aqua">
+
+                <h3>Proyecto/Retornos</h3>
+
+                <?php include 'view/project/guide.html.php' ?>
+                
+                <div class="fields">
+
+                    <ol class="fields">
+
+                        <li class="field" id="field-social_reward">
+                            <div class="field">
+                                <h4>Retornos colectivos</h4>
+                                <div class="tooltip" id="tooltip-social_reward">
+                                    <blockquote><?php echo Text::get('tooltip project social_reward'); ?></blockquote>
+                                </div>
+                                <div class="elements">                                    
+                                    <input class="add" type="submit" value="Añadir" />                                    
+                                </div>                                
+                            </div>
+                        </li>
+
+                        <li class="field" id="field-nsocial_reward"><h4>Recompensas individuales</h4>
+                            <div class="field">
+                                <h4>Retornos colectivos</h4>
+                                <div class="tooltip" id="tooltip-nsocial_reward">
+                                    <blockquote><?php echo Text::get('tooltip project nsocial_reward'); ?></blockquote>
+                                </div>
+                                <div class="elements">
+                                    <input class="add" type="submit" value="Añadir" />                                    
+                                </div>                                
+                            </div>                            
+                        </li>                                        
+
+                    </ol>
+                    
+                </div>
+
+                <div class="buttons">
+                    <input class="next" type="submit" value="Continuar" />
+                </div>
+
+            </div>
+
+            <?php include 'view/project/steps.html.php' ?>
+            
+            <?php include 'view/project/tooltips.js.php' ?>            
+
+        </form>
+
+    </div>
+
+    <?php include 'view/footer.html.php' ?>
+    
+<?php include 'view/epilogue.html.php' ?>
+
+<!--
 PROYECTO / Retorno<br />
 GUÍA: <?php echo $guideText; ?><br />
 <?php include 'view/project/errors.html.php' ?>
@@ -31,7 +109,6 @@ GUÍA: <?php echo $guideText; ?><br />
 		</dl>
 		<input type="button" id="new-social_reward" value="Nuevo" />
 
-        <?php if (!$project->itsok('nsocial_reward')) echo $project->errors['nsocial_reward']; ?>
 		<span><?php echo Text::get('tooltip project nsocial_reward'); ?></span>
 	</fieldset>
 
@@ -43,11 +120,9 @@ GUÍA: <?php echo $guideText; ?><br />
 			<dl>
 				<dt><label for="social_reward<?php echo $social->id; ?>">Retorno colectivo</label></dt>
 				<dd><input type="text" id="social_reward<?php echo $social->id; ?>" name="social_reward<?php echo $social->id; ?>" value="<?php echo $social->reward; ?>" /></dd>
-                <?php if ($project->itsok('social_reward'.$social->id)) echo 'OK'; else echo $project->errors['social_reward'.$social->id]; ?>
 
 				<dt><label for="social_reward-description<?php echo $social->id; ?>">Descripción</label></dt>
 				<dd><textarea id="social_reward-description<?php echo $social->id; ?>" name="social_reward-description<?php echo $social->id; ?>" cols="50" rows="5"><?php echo $social->description; ?></textarea></dd>
-                <?php if ($project->itsok('social_reward-description'.$social->id)) echo 'OK'; else echo $project->errors['social_reward-description'.$social->id]; ?>
 
                 <dt><label for="social_reward-license<?php echo $social->id; ?>">Licencia</label></dt>
                 <dd><select id="social_reward-license<?php echo $social->id; ?>" name="social_reward-license<?php echo $social->id; ?>">
@@ -56,7 +131,6 @@ GUÍA: <?php echo $guideText; ?><br />
                     <option value="<?php echo $Id; ?>"<?php if ($social->license == $Id) echo ' selected="selected"'; ?>><?php echo $Val; ?></option>
                 <?php endforeach; ?>
                 </select></dd>
-                <?php if (!$project->itsok('social_reward-license'.$social->id)) echo $project->errors['social_reward-license'.$social->id]; ?>
 			</dl>
 
 			<span><?php echo Text::get('tooltip project social_reward'); ?></span><br />
@@ -87,7 +161,6 @@ GUÍA: <?php echo $guideText; ?><br />
 
 		<input type="button" id="new-individual_reward" value="Nuevo" />
 
-        <?php if (!$project->itsok('nindividual_reward')) echo $project->errors['nindividual_reward']; ?>
 		<span><?php echo Text::get('tooltip project nindividual_reward'); ?></span><br />
 	</fieldset>
 
@@ -99,16 +172,13 @@ GUÍA: <?php echo $guideText; ?><br />
 
 					<label>Cantidad solicitada (&euro;):<input type="text" id="individual_reward-amount<?php echo $individual->id; ?>" name="individual_reward-amount<?php echo $individual->id; ?>" value="<?php echo $individual->amount; ?>" /></label>
 					<label>Unidades disponibles:<input type="text" id="individual_reward-units<?php echo $individual->id; ?>" name="individual_reward-units<?php echo $individual->id; ?>" value="<?php echo $individual->units; ?>" /></label>
-                    <?php if (!$project->itsok('individual_reward-amount'.$individual->id)) echo $project->errors['individual_reward-amount'.$individual->id]; ?>
 
 					<dl>
 						<dt><label for="individual_reward<?php echo $individual->id; ?>">Recompensa</label></dt>
 						<dd><input type="text" id="individual_reward<?php echo $individual->id; ?>" name="individual_reward<?php echo $individual->id; ?>" value="<?php echo $individual->reward; ?>" /></dd>
-                        <?php if ($project->itsok('individual_reward'.$individual->id)) echo 'OK'; else echo $project->errors['individual_reward'.$individual->id]; ?>
 
 						<dt><label for="individual_reward-description<?php echo $individual->id; ?>">Descripción</label></dt>
 						<dd><textarea id="individual_reward-description<?php echo $individual->id; ?>" name="individual_reward-description<?php echo $individual->id; ?>" cols="50" rows="5"><?php echo $individual->description; ?></textarea></dd>
-                        <?php if ($project->itsok('individual_reward-description'.$individual->id)) echo 'OK'; else echo $project->errors['individual_reward-description'.$individual->id]; ?>
 					</dl>
 
 					<span><?php echo Text::get('tooltip project individual_reward'); ?></span><br />
@@ -117,4 +187,4 @@ GUÍA: <?php echo $guideText; ?><br />
 
 				<input type="submit" name="submit" value="CONTINUAR" />
 			</form>
-<?php include 'view/project/footer.html.php' ?>
+-->

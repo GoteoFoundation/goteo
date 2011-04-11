@@ -1,6 +1,7 @@
 <?php
 
-use Goteo\Core\Error,
+use Goteo\Core\Resource,
+    Goteo\Core\Error,
     Goteo\Core\Redirection;
 
 require_once 'config.php';
@@ -37,9 +38,8 @@ spl_autoload_register(
 set_error_handler (
 
     function ($errno, $errstr, $errfile, $errline, $errcontext) {
-
-        // Insert error into buffer
-
+        // @todo Insert error into buffer
+        //throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
     }
 
 );
@@ -97,13 +97,20 @@ try {
             ob_start();
 
             // Invoke method
-            $method->invokeArgs($instance, $segments);
-
-            // Get buffer contents
-            $buffer = \ob_get_clean();
-
-            // Output buffer
-            echo $buffer;
+            $result = $method->invokeArgs($instance, $segments);
+            
+            if ($result === null) {
+                // Get buffer contents
+                $result = ob_get_contents();
+            }
+            
+            ob_end_clean();
+            
+            if ($result instanceof Resource\MIME) {
+                header("Content-type: {$result->getMIME()}");
+            }
+            
+            echo $result;
 
             // Farewell
             die;

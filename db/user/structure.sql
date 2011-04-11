@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 04-04-2011 a las 15:50:02
+-- Tiempo de generación: 11-04-2011 a las 22:50:55
 -- Versión del servidor: 5.1.36
 -- Versión de PHP: 5.3.0
 
@@ -36,7 +36,6 @@ CREATE TABLE IF NOT EXISTS `user` (
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `avatar` tinytext,
   `contribution` text,
-  `blog` varchar(256) DEFAULT NULL,
   `twitter` varchar(256) DEFAULT NULL,
   `facebook` varchar(256) DEFAULT NULL,
   `linkedin` varchar(256) DEFAULT NULL,

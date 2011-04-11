@@ -6,15 +6,18 @@ namespace Goteo\Core {
         protected $resources = array();
 
         public function check($resource, $action) {
+            if(!\Goteo\Model\User::isLogged()) {
+                throw new Redirection('/user/login');
+            }
             $role = $_SESSION['user']->role;
             $resource = get_class_name($resource);
             $query = Model::query("
                 SELECT
-                    *
+                    acl.allow
                 FROM acl
-                WHERE acl.role_id = :role
-                AND acl.resource = :resource
-                AND acl.action = :action
+                WHERE (acl.role_id = :role OR acl.role_id IS NULL)
+                AND (acl.resource = :resource OR acl.resource LIKE '*')
+                AND (acl.action = :action OR acl.action LIKE '*')
                 ",
                 array(
                     ':role'     => $role,
@@ -22,10 +25,7 @@ namespace Goteo\Core {
                     ':action'   => $action
                 )
             );
-            if((bool) $query->rowCount() === false) {
-                throw new Error(405);
-            }
-            return true;
+            return (bool) $query->fetchColumn();
         }
 
         public function allow() {}

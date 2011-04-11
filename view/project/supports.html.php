@@ -1,5 +1,50 @@
-<?php include 'view/project/header.html.php' ?>
-<?php use Goteo\Library\Text; ?>
+<?php 
+
+use Goteo\Library\Text;
+
+$bodyClass = 'project-form';
+
+include 'view/prologue.html.php';
+    
+    include 'view/header.html.php'; ?>
+
+        <div id="sub-header">
+            <div>
+                <h2>Formulario</h2>
+            </div>
+        </div>
+
+        <div id="main" class="supports">
+
+            <form method="post" action="">
+
+                <?php include 'view/project/status.html.php' ?>
+                <?php include 'view/project/steps.html.php' ?>
+
+                <div class="superform green">
+
+                    <h3>Proyecto/Colaboraciones</h3>
+
+                    <?php include 'view/project/guide.html.php' ?>
+                                        
+
+                    <div class="buttons">
+                        <input type="hidden" name="step" value="rewards" />
+                        <input type="submit" value="Continuar" />
+                    </div>
+
+                </div>
+
+                <?php include 'view/project/steps.html.php' ?>
+
+            </form>
+
+        </div>
+                
+    <?php include 'view/footer.html.php' ?>
+    
+<?php include 'view/epilogue.html.php' ?>
+<!--
 PROYECTO / Colaboraciones<br />
 GUÍA: <?php echo $guideText;  ?><br />
 <?php include 'view/project/errors.html.php' ?>
@@ -32,11 +77,9 @@ GUÍA: <?php echo $guideText;  ?><br />
 				<dl>
 					<dt><label for="support<?php echo $support->id; ?>">Colaboración</label></dt>
 					<dd><input type="text" id="support<?php echo $support->id; ?>" name="support<?php echo $support->id; ?>" value="<?php echo $support->support; ?>"/></dd>
-                    <?php if ($project->itsok('support'.$support->id)) echo 'OK'; else echo $project->errors['support'.$support->id]; ?>
 
 					<dt><label for="support-description<?php echo $support->id; ?>">Descripción</label></dt>
 					<dd><textarea id="support-description<?php echo $support->id; ?>" name="support-description<?php echo $support->id; ?>" cols="50" rows="5"><?php echo $support->description; ?></textarea></dd>
-                    <?php if ($project->itsok('support-description'.$support->id)) echo 'OK'; else echo $project->errors['support-description'.$support->id]; ?>
 
 					<dt><label for="support-type<?php echo $support->id; ?>">Tipo</label></dt>
 					<dd><select id="support-type<?php echo $support->id; ?>" name="support-type<?php echo $support->id; ?>">
@@ -51,4 +94,4 @@ GUÍA: <?php echo $guideText;  ?><br />
 
 	<input type="submit" name="submit" value="CONTINUAR" />
 </form>
-<?php include 'view/project/footer.html.php' ?>
+-->

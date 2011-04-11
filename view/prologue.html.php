@@ -11,7 +11,12 @@
     </head>
     
     <body<?php if (isset($bodyClass)) echo ' class="' . htmlspecialchars($bodyClass) . '"' ?>>
-        
+
+        <script type="text/javascript">
+            // Mark DOM as javascript-enabled
+            jQuery(document).bind('ready', function ($) { jQuery('body').addClass('js'); });
+        </script>
         <noscript><!-- Please enable JavaScript --></noscript>
         
         <div id="wrapper">
+                        

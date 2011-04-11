@@ -28,5 +28,4 @@
                         </dl>
                     </li>
                 </ol>
-                <p><input type="submit" name="register" value="Guardar" /></p>
             </fieldset>
