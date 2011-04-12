@@ -82,7 +82,6 @@ PROYECTO / Retorno<br />
 GUÍA: <?php echo $guideText; ?><br />
 <?php include 'view/project/errors.html.php' ?>
 <hr />
-<!-- esto está así muy a lo loco -->
 <form action="/project/rewards" method="post">
 	<fieldset><legend>Nuevo retorno colectivo</legend>
 		<dl>
