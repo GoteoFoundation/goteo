@@ -18,14 +18,31 @@ include 'view/prologue.html.php';
 
             <form method="post" action="">
 
-                <?php include 'view/project/status.html.php' ?>
-                <?php include 'view/project/steps.html.php' ?>
+                <?php echo new View('view/project/status.html.php', array('status' => $this['project']->status, 'progress' => $this['project']->progress)) ?>
+                <?php echo new View('view/project/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'])) ?>
 
                 <div class="superform">
 
                     <h3>Usuario/Perfil</h3>
 
-                    <?php include 'view/project/guide.html.php' ?>
+                    <?php echo new View('view/project/guide.html.php', array('text' => $this['steps'][$this['step']]['guide'])) ?>
+                    
+                    <div class="fields">
+                    
+                    <ol class="fields">
+
+                        <li class="field" id="field-name">
+                            <div class="field">
+                                <h4>Nombre del proyecto</h4>
+                                <div class="tooltip" id="tooltip-name">
+                                    <blockquote><?php echo Text::get('tooltip project name'); ?></blockquote>
+                                </div>
+                                <div class="elements"><input class="main" type="text" name="name" value="<?php if (isset($project->name)) echo htmlspecialchars($project->name) ?>" /></div>
+
+                            </div>
+                        </li>
+                        
+                    </ol>
 
                     <div class="buttons">
                         <input type="submit" value="Continuar" name="view-step-userPersonal" class="next" />
