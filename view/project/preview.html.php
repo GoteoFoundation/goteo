@@ -27,9 +27,23 @@ include 'view/prologue.html.php';
 
                     <?php include 'view/project/guide.html.php' ?>
 
-                    <pre><?php echo print_r($this['project'], 1) ?></pre>
+                    <?php //@INTRUSION JULIAN!!! para usarlo sin maquetación
+                    if ($this['nodesign'] == true) : ?>
+                    Comentario:<br />
+                    <textarea name="comment" rows="20" cols="100"><?php echo $this['project']->comment; ?></textarea>
+                    <?php else : ?>
+            <?php if (!empty($project->errors['costs'])) :
+                echo '<p>';
+                foreach ($project->errors['costs'] as $campo=>$error) : ?>
+                    <span style="color:red;"><?php echo "$campo: $error"; ?></span><br />
+            <?php endforeach;
+                echo '</p>';
+                endif;?>
+                    <pre><?php echo print_r($project, 1) ?></pre>
 
+                    <?php endif; ?>
                     <div class="buttons">
+                        <input type="hidden" name="step" value="preview" />
                         <input type="submit" value="Continuar" name="view-step-preview" class="next" />
                     </div>
 

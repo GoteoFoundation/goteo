@@ -2,27 +2,44 @@
 
 namespace Goteo\Core {
 
+    use Goteo\Model\User;
+
     class ACL {
         protected $resources = array();
 
-        public function check($resource, $action) {
-            if(!\Goteo\Model\User::isLogged()) {
-                throw new Redirection('/user/login');
+        /**
+         * @deprecated
+         * Este deprecated es para que elimines todas las llamadas que encuentres en tu código.
+         * La razón es porque esté método lo llamará únicamente el dispatcher, librándonos de tener que llamarlo cada vez en el código.
+         *
+         * @param type string	$url	Recurso
+         * @param type string	$user	Usuario
+         */
+        public static function check ($url = \GOTEO_REQUEST_URI, User $user = null) {
+            if(is_null($user)) {
+                if(!User::isLogged()) {
+                    return false;
+                }
+                else {
+                    $user = $_SESSION['user'];
+                }
             }
-            $role = $_SESSION['user']->role;
-            $resource = get_class_name($resource);
             $query = Model::query("
                 SELECT
                     acl.allow
                 FROM acl
-                WHERE (acl.role_id = :role OR acl.role_id IS NULL)
-                AND (acl.resource = :resource OR acl.resource LIKE '*')
-                AND (acl.action = :action OR acl.action LIKE '*')
+                WHERE (acl.node_id = :node OR acl.node_id IS NULL)
+                AND (acl.role_id = :role OR acl.role_id IS NULL)
+                AND (acl.user_id = :user OR acl.user_id IS NULL)
+                AND (REPLACE(acl.url, '*', '%') LIKE :url OR acl.url LIKE '*')
+                ORDER BY acl.id DESC
+                LIMIT 1
                 ",
                 array(
-                    ':role'     => $role,
-                    ':resource' => $resource,
-                    ':action'   => $action
+                    ':node'		=> NULL,
+                    ':role'     => $user->role,
+                    ':user'		=> $user->id,
+                    ':url'      => $url
                 )
             );
             return (bool) $query->fetchColumn();

@@ -53,6 +53,8 @@ session_start();
 // Get URI without query string
 $uri = strtok($_SERVER['REQUEST_URI'], '?');
 
+define('GOTEO_REQUEST_URI', $uri);
+
 // Get requested segments
 $segments = preg_split('!\s*/+\s*!', $uri, -1, \PREG_SPLIT_NO_EMPTY);
 
@@ -98,18 +100,18 @@ try {
 
             // Invoke method
             $result = $method->invokeArgs($instance, $segments);
-            
+
             if ($result === null) {
                 // Get buffer contents
                 $result = ob_get_contents();
             }
-            
+
             ob_end_clean();
-            
+
             if ($result instanceof Resource\MIME) {
                 header("Content-type: {$result->getMIME()}");
             }
-            
+
             echo $result;
 
             // Farewell

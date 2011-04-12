@@ -23,7 +23,12 @@ namespace Goteo\Model {
             $country,
             $worth;
 
-	    public function __set($name, $value) {
+        /**
+         * @FIXME: Por concretar.
+         * @param unknown_type $name
+         * @param unknown_type $value
+         */
+	    public function __set ($name, $value) {
             $this->$name = $value;
         }
 
@@ -41,7 +46,7 @@ namespace Goteo\Model {
          * @param array $errors     Errores devueltos pasados por referencia.
          * @return bool true|false
          */
-        public function save(&$errors = array()) {
+        public function save (&$errors = array()) {
             if($this->validate($errors)) {
                 // Nuevo usuario.
                 if(empty($this->id)) {
@@ -127,9 +132,6 @@ namespace Goteo\Model {
                         $query .= $key . ", ";
                     }
                     $query = substr($query, 0, -2) . ")";
-                    trace($query);
-                    return;
-                    die;
                     // Ejecuta SQL.
                     return self::query($query, $data);
             	} catch(\PDOException $e) {
@@ -146,7 +148,7 @@ namespace Goteo\Model {
          * @param array $errors     Errores devueltos pasados por referencia.
          * @return bool true|false
          */
-        public function validate(&$errors = array()) {
+        public function validate (&$errors = array()) {
             // Nuevo usuario.
             if(empty($this->id)) {
                 // Nombre de usuario (id)
@@ -260,7 +262,7 @@ namespace Goteo\Model {
          * @param  bool $visible    true|false
          * @return mixed            Array de objetos de usuario activos|todos.
          */
-        public static function getAll($visible = true) {
+        public static function getAll ($visible = true) {
             $query = self::query("SELECT * FROM user WHERE active = ?", array($visible));
             return $query->fetchAll(__CLASS__);
         }
@@ -272,7 +274,7 @@ namespace Goteo\Model {
 		 * @param string $password ContraseÃ±a
 		 * @return obj|false Objeto del usuario, en caso contrario devolverÃ¡ 'false'.
 		 */
-		public static function login($username, $password) {
+		public static function login ($username, $password) {
 			$query = self::query("
 				SELECT
 					id
@@ -294,7 +296,7 @@ namespace Goteo\Model {
 		 *
 		 * @return boolean
 		 */
-		public static function isLogged() {
+		public static function isLogged () {
 			return !empty($_SESSION['user']);
 		}
 

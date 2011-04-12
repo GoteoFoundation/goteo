@@ -37,7 +37,7 @@
                 </form>
             </li>
             <?php if (!empty($_SESSION['user'])): ?>            
-            <li class="dashboard"><a href="/user/dashboard"><span>Mi Dashboard <em>(Jaume)</em></span></a>
+            <li class="dashboard"><a href="/dashboard"><span>Mi Dashboard <em>(Jaume)</em></span></a>
                 <div>
                     <ul>
                         <li><a href="/dashboard/activity"><span>Mi actividad</span></a></li>
