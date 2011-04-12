@@ -2,7 +2,8 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Core\Error,
+    use Goteo\Core\ACL,
+        Goteo\Core\Error,
         Goteo\Core\View,
         Goteo\Model,
         Goteo\Library\Worth;
@@ -17,7 +18,9 @@ namespace Goteo\Controller {
             if (empty($project))
                 throw new Redirection('/project/explore');
 
-            Model\User::restrict(); 
+            if(!ACL::check(__CLASS__, __FUNCTION__)) {
+                throw new Error(403);
+            }
 
             $projectData = Model\Project::get($project);
 
@@ -82,7 +85,7 @@ namespace Goteo\Controller {
 
 
 
-        
+
     }
-    
+
 }

@@ -1,15 +1,15 @@
-<?php 
+<?php
 $bodyClass = 'dashboard';
 include 'view/prologue.html.php';
 include 'view/header.html.php'; ?>
-        
+
         <div id="main">
 
         <p><?php echo $this['message']; ?> [<a href="/logout">Salir</a>]</p>
 
 		<p>
-			Cambiar usuario/email/contraseña: <a href="/user/edit">Editar datos</a><br />
-			Cambiar imagen/descripción/información: <a href="/user/profile">Gestionar perfil</a><br />
+			Modificar Perfil (usuario/email/contraseña/imagen/descripción/información): <a href="/user/edit">Gestionar perfil</a><br />
+			Perfil público (cómo me veo|cómo me ven): <a href="/user/<?php echo $_SESSION['user']->id ?>">Perfil público</a><br />
 		</p>
 
 
@@ -28,7 +28,7 @@ include 'view/header.html.php'; ?>
 		<p>
 			Nuevo proyecto: <a href="/project/?create">Crear</a><br />
 		</p>
-                
+
         </div>
 <?php
 include 'view/footer.html.php';

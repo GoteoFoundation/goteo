@@ -2,7 +2,8 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Core\Error,
+    use Goteo\Core\ACL,
+        Goteo\Core\Error,
         Goteo\Core\View,
         Goteo\Model;
 
@@ -12,10 +13,12 @@ namespace Goteo\Controller {
          *  Muy guarro para poder moverse mientras desarrollamos
          */
         public function index ($section = null) {
-            Model\User::restrict(); 
+            if(!ACL::check(__CLASS__, __FUNCTION__)) {
+                throw new Error(403);
+            }
 
 			$user = $_SESSION['user']->id;
-			
+
             $message = "Hola {$user}<br />";
 
             //@FIXME!! esto también irá con el ACL
@@ -39,7 +42,7 @@ namespace Goteo\Controller {
 
         }
 
-        
+
     }
-    
+
 }

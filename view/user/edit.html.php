@@ -6,7 +6,7 @@ include 'view/header.html.php';
 $user = $this['user'];
 ?>
     <div id="main">
-        <h2>Editar</h2>
+        <h2>Editar perfil</h2>
         <form action="" method="post">
             <fieldset>
                 <legend>Datos de acceso</legend>
@@ -22,6 +22,8 @@ $user = $this['user'];
                     <?php if(isset($errors['password'])) { ?><li><em><?php echo $errors['password']?></em></li><?php } ?>
                 </ol>
             </fieldset>
+<?php include 'view/user/edit.profile.html.php' ?>
+			<p><input type="submit" name="register" value="Guardar" /></p>
         </form>
     </div>
 <?php include 'view/footer.html.php' ?>

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 04-04-2011 a las 15:52:08
+-- Tiempo de generación: 11-04-2011 a las 22:49:47
 -- Versión del servidor: 5.1.36
 -- Versión de PHP: 5.3.0
 
@@ -25,12 +25,15 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Estructura de tabla para la tabla `acl`
 --
 
+DROP TABLE IF EXISTS `acl`;
 CREATE TABLE IF NOT EXISTS `acl` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `role_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `role_id` int(10) unsigned DEFAULT NULL,
   `resource` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `action` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `privilege` tinyint(2) unsigned DEFAULT NULL,
+  `allow` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `permission_FKIndex1` (`role_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+  KEY `role_FK` (`role_id`),
+  KEY `user_FK` (`user_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;

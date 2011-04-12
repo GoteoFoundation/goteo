@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.7deb5build0.10.10.1
+-- version 3.3.9
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 10-04-2011 a las 23:58:58
--- Versión del servidor: 5.1.49
--- Versión de PHP: 5.3.3-1ubuntu9.3
+-- Tiempo de generación: 11-04-2011 a las 22:51:53
+-- Versión del servidor: 5.1.36
+-- Versión de PHP: 5.3.0
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -26,24 +26,24 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 
 DROP TABLE IF EXISTS `acl`;
-CREATE TABLE `acl` (
+CREATE TABLE IF NOT EXISTS `acl` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `role_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `role_id` int(10) unsigned DEFAULT NULL,
   `resource` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `action` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `privilege` tinyint(2) unsigned DEFAULT NULL,
+  `allow` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `permission_FKIndex1` (`role_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+  KEY `role_FK` (`role_id`),
+  KEY `user_FK` (`user_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
 -- Volcar la base de datos para la tabla `acl`
 --
 
-INSERT INTO `acl` (`id`, `role_id`, `resource`, `action`, `privilege`) VALUES
-(1, 3, 'User', 'edit', 1),
-(2, 1, 'Project', '*', 1),
-(3, 2, 'User', 'delete', 1);
+INSERT INTO `acl` (`id`, `user_id`, `role_id`, `resource`, `action`, `allow`) VALUES
+(1, NULL, NULL, '*', '*', 1);
 
 -- --------------------------------------------------------
 
@@ -52,7 +52,7 @@ INSERT INTO `acl` (`id`, `role_id`, `resource`, `action`, `privilege`) VALUES
 --
 
 DROP TABLE IF EXISTS `charge`;
-CREATE TABLE `charge` (
+CREATE TABLE IF NOT EXISTS `charge` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `invest` int(11) NOT NULL,
   `entity` varchar(50) NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE `charge` (
 --
 
 DROP TABLE IF EXISTS `cost`;
-CREATE TABLE `cost` (
+CREATE TABLE IF NOT EXISTS `cost` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `project` varchar(50) NOT NULL,
   `cost` varchar(256) NOT NULL,
@@ -108,7 +108,7 @@ INSERT INTO `cost` (`id`, `project`, `cost`, `description`, `type`, `amount`, `r
 --
 
 DROP TABLE IF EXISTS `invest`;
-CREATE TABLE `invest` (
+CREATE TABLE IF NOT EXISTS `invest` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user` varchar(50) NOT NULL,
   `project` varchar(50) NOT NULL,
@@ -141,7 +141,7 @@ INSERT INTO `invest` (`id`, `user`, `project`, `amount`, `status`, `anonymous`, 
 --
 
 DROP TABLE IF EXISTS `invest_reward`;
-CREATE TABLE `invest_reward` (
+CREATE TABLE IF NOT EXISTS `invest_reward` (
   `invest` bigint(20) unsigned NOT NULL,
   `reward` bigint(20) unsigned NOT NULL,
   `fulfilled` date DEFAULT NULL,
@@ -163,7 +163,7 @@ INSERT INTO `invest_reward` (`invest`, `reward`, `fulfilled`) VALUES
 --
 
 DROP TABLE IF EXISTS `lang`;
-CREATE TABLE `lang` (
+CREATE TABLE IF NOT EXISTS `lang` (
   `id` varchar(2) NOT NULL COMMENT 'Código ISO-639',
   `name` varchar(20) NOT NULL,
   `active` int(1) NOT NULL DEFAULT '0',
@@ -189,7 +189,7 @@ INSERT INTO `lang` (`id`, `name`, `active`) VALUES
 --
 
 DROP TABLE IF EXISTS `node`;
-CREATE TABLE `node` (
+CREATE TABLE IF NOT EXISTS `node` (
   `id` varchar(50) NOT NULL,
   `name` varchar(256) NOT NULL,
   `active` tinyint(1) NOT NULL,
@@ -210,7 +210,7 @@ INSERT INTO `node` (`id`, `name`, `active`) VALUES
 --
 
 DROP TABLE IF EXISTS `project`;
-CREATE TABLE `project` (
+CREATE TABLE IF NOT EXISTS `project` (
   `id` varchar(50) NOT NULL,
   `name` tinytext NOT NULL,
   `status` int(1) NOT NULL,
@@ -260,7 +260,7 @@ INSERT INTO `project` (`id`, `name`, `status`, `progress`, `owner`, `node`, `amo
 ('28c0caa840fc9c642160b1e2774667ff', 'Mi proyecto 1', 1, 0, 'pepe', 'goteo', 0, '2011-04-02', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 ('36a6596809c6a726131d13309999a2da', '', 1, 14, 'pepo', 'goteo', 0, '2011-04-10', '2011-04-10', NULL, NULL, NULL, NULL, NULL, '', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 ('5a58d7e7fff0ce33dd0212f33f978fc3', '', 1, 0, 'pepo', 'goteo', 0, '2011-04-10', '2011-04-10', NULL, NULL, NULL, NULL, NULL, '', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('6bb61e3b7bce0931da574d19d1d82c88', 'Mi proyecto 1', 1, 0, 'root', 'goteo', 0, '2011-03-30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('6bb61e3b7bce0931da574d19d1d82c88', 'Mi proyecto 1', 1, 26, 'root', 'goteo', 0, '2011-03-30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 ('7b0aa2ffa4d04499d7c743fde7acdceb', 'Como lo borrooooo???', 1, 4, 'pepa', 'goteo', 0, '2011-04-02', '2011-04-02', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'project.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL),
 ('96e23f7431365f3f9c21b4f26f72f624', '', 1, 0, 'pepo', 'goteo', 0, '2011-04-10', '2011-04-10', NULL, NULL, NULL, NULL, NULL, '', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 ('984990664ca1a1a98522b2640b0fc535', 'Mi proyecto 2', 1, 37, 'root', 'goteo', 0, '2011-03-24', '2011-03-24', NULL, NULL, NULL, 'JuliÃ¡n', 'CÃ¡naves Bover', '43108914Z', 'julian.canaves@gmail.com', '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -275,7 +275,7 @@ INSERT INTO `project` (`id`, `name`, `status`, `progress`, `owner`, `node`, `amo
 --
 
 DROP TABLE IF EXISTS `project_category`;
-CREATE TABLE `project_category` (
+CREATE TABLE IF NOT EXISTS `project_category` (
   `project` varchar(50) NOT NULL,
   `category` int(12) NOT NULL,
   UNIQUE KEY `project_category` (`project`,`category`)
@@ -299,7 +299,7 @@ INSERT INTO `project_category` (`project`, `category`) VALUES
 --
 
 DROP TABLE IF EXISTS `purpose`;
-CREATE TABLE `purpose` (
+CREATE TABLE IF NOT EXISTS `purpose` (
   `text` varchar(50) NOT NULL,
   `purpose` tinytext NOT NULL,
   PRIMARY KEY (`text`)
@@ -445,7 +445,7 @@ INSERT INTO `purpose` (`text`, `purpose`) VALUES
 --
 
 DROP TABLE IF EXISTS `reward`;
-CREATE TABLE `reward` (
+CREATE TABLE IF NOT EXISTS `reward` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `project` varchar(50) NOT NULL,
   `reward` varchar(256) NOT NULL,
@@ -492,7 +492,7 @@ INSERT INTO `reward` (`id`, `project`, `reward`, `description`, `type`, `icon`, 
 --
 
 DROP TABLE IF EXISTS `role`;
-CREATE TABLE `role` (
+CREATE TABLE IF NOT EXISTS `role` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
@@ -504,7 +504,7 @@ CREATE TABLE `role` (
 
 INSERT INTO `role` (`id`, `name`) VALUES
 (1, 'Admin'),
-(2, 'Admin de Nodo'),
+(2, 'Admin Nodo'),
 (3, 'Usuario');
 
 -- --------------------------------------------------------
@@ -514,7 +514,7 @@ INSERT INTO `role` (`id`, `name`) VALUES
 --
 
 DROP TABLE IF EXISTS `support`;
-CREATE TABLE `support` (
+CREATE TABLE IF NOT EXISTS `support` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `project` varchar(50) NOT NULL,
   `support` tinytext NOT NULL,
@@ -549,7 +549,7 @@ INSERT INTO `support` (`id`, `project`, `support`, `description`, `type`) VALUES
 --
 
 DROP TABLE IF EXISTS `text`;
-CREATE TABLE `text` (
+CREATE TABLE IF NOT EXISTS `text` (
   `id` varchar(50) NOT NULL,
   `lang` varchar(2) NOT NULL DEFAULT 'es',
   `text` text NOT NULL,
@@ -692,7 +692,7 @@ INSERT INTO `text` (`id`, `lang`, `text`) VALUES
 --
 
 DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user` (
+CREATE TABLE IF NOT EXISTS `user` (
   `id` varchar(50) NOT NULL,
   `role_id` int(11) NOT NULL,
   `name` varchar(256) NOT NULL,
@@ -729,7 +729,7 @@ INSERT INTO `user` (`id`, `role_id`, `name`, `email`, `password`, `about`, `keyw
 --
 
 DROP TABLE IF EXISTS `user_interest`;
-CREATE TABLE `user_interest` (
+CREATE TABLE IF NOT EXISTS `user_interest` (
   `user` varchar(50) NOT NULL,
   `interest` int(12) NOT NULL,
   UNIQUE KEY `user_interest` (`user`,`interest`)
@@ -755,7 +755,7 @@ INSERT INTO `user_interest` (`user`, `interest`) VALUES
 --
 
 DROP TABLE IF EXISTS `user_web`;
-CREATE TABLE `user_web` (
+CREATE TABLE IF NOT EXISTS `user_web` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user` varchar(50) NOT NULL,
   `url` tinytext NOT NULL,
@@ -775,7 +775,7 @@ CREATE TABLE `user_web` (
 --
 
 DROP TABLE IF EXISTS `worthcracy`;
-CREATE TABLE `worthcracy` (
+CREATE TABLE IF NOT EXISTS `worthcracy` (
   `id` int(2) NOT NULL AUTO_INCREMENT,
   `name` tinytext NOT NULL,
   `amount` int(6) NOT NULL,

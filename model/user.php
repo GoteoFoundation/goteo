@@ -9,7 +9,7 @@ namespace Goteo\Model {
 
         public
             $id = false,
-            $role_id = null,
+            $role = null,
             $email,
             $name,
             $avatar,
@@ -17,7 +17,6 @@ namespace Goteo\Model {
             $interests,
             $contribution,
             $keywords,
-            $blog,
             $twitter,
             $facebook,
             $linkedin,
@@ -32,7 +31,7 @@ namespace Goteo\Model {
          * Guardar usuario.
          * Guarda los valores de la instancia del usuario en la tabla.
          *
-         * @TODO: Revisar. Esto solo sirve para registrar un nuevo usuario, no sirve para guardar datos...
+         * @TODO: Revisar.
          *
          * Reglas:
          *  - id *
@@ -44,41 +43,99 @@ namespace Goteo\Model {
          */
         public function save(&$errors = array()) {
             if($this->validate($errors)) {
-                $data[':id'] = self::idealiza($this->id);
+                // Nuevo usuario.
+                if(empty($this->id)) {
+                    $this->id = static::idealiza($this->name);
+                    $data[':role_id'] = 3; // @FIXME: Provisionalmente: 3 = Usuario
+                    $data[':created'] = 'CURRENT_TIMESTAMP';
+                    $data[':active'] = false; // @TODO: Requiere activación.
+                }
+                $data[':id'] = $this->id;
+
                 if(!empty($this->name)) {
                     $data[':name'] = $this->name;
                 }
-                else {
-                    $data[':name'] = $this->id;
-                }
+
                 if(!empty($this->email)) {
                     $data[':email'] = $this->email;
                 }
+
                 if(!empty($this->password)) {
                     $data[':password'] = sha1($this->password);
                 }
-                $data[':created'] = 'CURRENT_TIMESTAMP';
-                $data[':active'] = true;
-                return self::query("
-                    REPLACE INTO user (
-                        id,
-                        role_id,
-                        name,
-                        email,
-                        password,
-                        created,
-                        active
-                     )
-                     VALUES (
-                        :id,
-                        3,
-                        :name,
-                        :email,
-                        :password,
-                        :created,
-                        :active
-                     )",
-                $data);
+
+                // @TODO: tratar la imagen y ponerla en la propiedad avatar (__FILES__?)
+                if(!empty($this->avatar)) {
+                    $data[':avatar'] = $this->avatar;
+                }
+
+                if(!empty($this->about)) {
+                    $data[':about'] = $this->about;
+                }
+
+                if(!empty($this->keywords)) {
+                    $data[':keywords'] = $this->keywords;
+                }
+
+                if(!empty($this->contribution)) {
+                    $data[':contribution'] = $this->contribution;
+                }
+
+                if(!empty($this->twitter)) {
+                    $data[':twitter'] = $this->twitter;
+                }
+
+                if(!empty($this->facebook)) {
+                    $data[':facebook'] = $this->facebook;
+                }
+
+                if(!empty($this->linkedin)) {
+                    $data[':linkedin'] = $this->linkedin;
+                }
+
+                if(!empty($this->interests)) {
+                    $interests = User\Interest::get($this->id);
+                    foreach($this->interests as $interest) {
+                        if(!in_array($interest, $interests)) {
+                            $_interest = new Model\User\Interest();
+                            $_interest->id = $interest;
+                            $_interest->user = $this->id;
+                            $_interest->save($errors);
+                            $interests[] = $_interest;
+                        }
+                    }
+                    foreach($interests as $key => $interest) {
+                        if(!in_array($interest, $this->interests)) {
+                            $_interest = new Model\User\Interest();
+                            $_interest->id = $interest;
+                            $_interest->user = $this->id;
+                            if ($interest->remove($errors)) {
+                                unset($interests[$key]);
+                            }
+                        }
+                    }
+                }
+
+                try {
+                    // Construye SQL.
+                    $query = "REPLACE INTO user (";
+                    foreach($data AS $key => $row) {
+                        $query .= substr($key, 1) . ", ";
+                    }
+                    $query = substr($query, 0, -2) . ") VALUES (";
+                    foreach($data AS $key => $row) {
+                        $query .= $key . ", ";
+                    }
+                    $query = substr($query, 0, -2) . ")";
+                    trace($query);
+                    return;
+                    die;
+                    // Ejecuta SQL.
+                    return self::query($query, $data);
+            	} catch(\PDOException $e) {
+                    $errors[] = "Error al actualizar los datos del usuario: " . $e->getMessage();
+                    return false;
+    			}
             }
             return false;
         }
@@ -90,35 +147,68 @@ namespace Goteo\Model {
          * @return bool true|false
          */
         public function validate(&$errors = array()) {
-            // Nombre de usuario (id)
-            if(!empty($this->id)) {
-                $id = self::idealiza($this->id);
-                $query = self::query('SELECT id FROM user WHERE id = ?', array($id));
-                if($query->fetchColumn()) {
-                    $errors['username'] = Text::get('error-register-user-exists');
+            // Nuevo usuario.
+            if(empty($this->id)) {
+                // Nombre de usuario (id)
+                if(empty($this->name)) {
+                    $errors['username'] = Text::get('error-register-username');
+                }
+                else {
+                    $id = self::idealiza($this->name);
+                    $query = self::query('SELECT id FROM user WHERE id = ?', array($id));
+                    if($query->fetchColumn()) {
+                        $errors['username'] = Text::get('error-register-user-exists');
+                    }
+                }
+
+                // E-mail
+                if(!empty($this->email)) {
+                    $query = self::query('SELECT email FROM user WHERE email = ?', array($this->email));
+                    if($query->fetchObject()) {
+                        $errors['email'] = Text::get('error-register-email-exists');
+                    }
+                }
+                else {
+                    $errors['email'] = Text::get('error-register-email');
+                }
+
+                // Contraseña
+                if(!empty($this->password)) {
+                    if(strlen($this->password)<8) {
+                        $errors['password'] = Text::get('error-register-short-password');
+                    }
+                }
+                else {
+                    $errors['password'] = Text::get('error-register-pasword');
                 }
             }
+            // Modificar usuario.
             else {
-                $errors['username'] = Text::get('error-register-username');
-            }
-            // E-mail
-            if(!empty($this->email)) {
-                $query = self::query('SELECT email FROM user WHERE email = ?', array($this->email));
-                if($query->fetchObject()) {
-                    $errors['email'] = Text::get('error-register-email-exists');
+                if (empty($this->name)) {
+                    $errors['name'] = Text::get('validate-user-field-name');
                 }
-            }
-            else {
-                $errors['email'] = Text::get('error-register-email');
-            }
-            // Contraseña
-            if(!empty($this->password)) {
-                if(strlen($this->password)<8) {
-                    $errors['password'] = Text::get('error-register-short-password');
+                if (empty($this->avatar)) {
+                    $errors['avatar'] = Text::get('validate-user-field-avatar');
                 }
-            }
-            else {
-                $errors['password'] = Text::get('error-register-pasword');
+                if (empty($this->about)) {
+                    $errors['about'] = Text::get('validate-user-field-about');
+                }
+                if (empty($this->interests)) {
+                    $errors['interests'] = Text::get('validate-user-field-interests');
+                }
+                $keywords = explode(',', $this->keywords);
+                if (sizeof($keywords) < 5) {
+                    $errors['keywords'] = Text::get('validate-user-field-keywords');
+                }
+                if (empty($this->contribution)) {
+                    $errors['contribution'] = Text::get('validate-user-field-contribution');
+                }
+                if (empty($this->webs)) {
+                    $errors['webs'] = Text::get('validate-user-field-webs');
+                }
+                if (empty($this->facebook)) {
+                    $errors['facebook'] = Text::get('validate-user-field-facebook');
+                }
             }
             return empty($errors);
         }
@@ -127,15 +217,14 @@ namespace Goteo\Model {
          * Usuario.
          *
          * @param string $id    Nombre de usuario
-         * @return obj|false    Objeto de usuario, en caso contrario devolverá 'false'.
+         * @return obj|false    Objeto de usuario, en caso contrario devolverÃ¡ 'false'.
          */
         public static function get ($id) {
             try {
-//                        role_id AS role,
                 $query = static::query("
                     SELECT
                         id,
-                        role_id,
+                        role_id AS role,
                         name,
                         email,
                         password,
@@ -154,15 +243,12 @@ namespace Goteo\Model {
                     WHERE id = :id
                     ", array(':id' => $id));
                 $user = $query->fetchObject(__CLASS__);
-
-				// intereses (para proyectos es categoria(s) aunque los contenidos actuales son identicos no es el mismo concepto)
                 $user->interests = User\Interest::get($id);
 
                 // webs
                 $user->webs = User\Web::get($id);
 
                 return $user;
-
             } catch(\PDOException $e) {
                 return false;
             }
@@ -183,8 +269,8 @@ namespace Goteo\Model {
 		 * Validación de usuario.
 		 *
 		 * @param string $username Nombre de usuario
-		 * @param string $password Contraseña
-		 * @return obj|false Objeto del usuario, en caso contrario devolverá 'false'.
+		 * @param string $password ContraseÃ±a
+		 * @return obj|false Objeto del usuario, en caso contrario devolverÃ¡ 'false'.
 		 */
 		public static function login($username, $password) {
 			$query = self::query("
@@ -204,7 +290,7 @@ namespace Goteo\Model {
 		}
 
 		/**
-		 * Comprueba si el usuario está identificado.
+		 * Comprueba si el usuario estÃ¡ identificado.
 		 *
 		 * @return boolean
 		 */
@@ -212,101 +298,5 @@ namespace Goteo\Model {
 			return !empty($_SESSION['user']);
 		}
 
-		/**
-		 * @deprecated
-		 *
-		 * Restringe el acceso sólo a usuarios identificados.
-		 * En caso de que no esté identificado lo redirecciona al login.
-		 */
-		public static function restrict() {
-			if(!static::isLogged()) {
-				throw new Redirection('/user/login');
-			}
-		}
-
-		public static function interests() {
-            return array(
-                1=>'Educación',
-                2=>'Economía solidaria',
-                3=>'Empresa abierta',
-                4=>'Formación técnica',
-                5=>'Desarrollo',
-                6=>'Software',
-                7=>'Hardware');
-		}
-
-        /**
-         * Metodo para puntuar la informacuión del usuario al puntuar un proyecto
-         * @param array $errors por referencia
-         */
-        public function check(&$errors = array()) {
-            if (empty($this->name)) 
-                $errors['name'] = Text::get('validate-user-field-name');
-
-            if (empty($this->avatar)) 
-                $errors['avatar'] = Text::get('validate-user-field-avatar');
-
-            if (empty($this->about)) 
-                $errors['about'] = Text::get('validate-user-field-about');
-
-            if (empty($this->interests)) 
-                $errors['interests'] = Text::get('validate-user-field-interests');
-
-            $keywords = explode(',', $this->keywords);
-            if ($keywords < 5) 
-                $errors['keywords'] = Text::get('validate-user-field-keywords');
-
-            if (empty($this->contribution)) 
-                $errors['contribution'] = Text::get('validate-user-field-contribution');
-
-            if (empty($this->webs))
-                $errors['webs'] = Text::get('validate-user-field-webs');
-
-            if (empty($this->facebook)) 
-                $errors['facebook'] = Text::get('validate-user-field-facebook');
-
-            return true;
-        }
-
-        /**
-         * Metodo para guardar la información del usuario desde el primer paso del formulario de proyecto
-         * @param array $errors por referencia
-         */
-        public function saveInfo(&$errors = array()) {
-
-            $fields = array(
-                'name',
-                'avatar',
-                'about',
-                'keywords',
-                'contribution',
-                'twitter',
-                'facebook',
-                'linkedin'
-            );
-
-            $set = '';
-            $values = array();
-
-            foreach ($fields as $field) {
-                if ($set != '') $set .= ', ';
-                $set .= "$field = :$field";
-                $values[":$field"] = $this->$field;
-            }
-
-			try {
-				$values[':id'] = $this->id;
-
-				$sql = "UPDATE user SET " . $set . " WHERE id = :id";
-				self::query($sql, $values);
-
-			} catch(\PDOException $e) {
-                $errors[] = "Fallo al actualizar la información del usuario. " . $e->getMessage();
-                return false;
-			}
-
-        }
-
 	}
-    
 }

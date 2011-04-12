@@ -6,8 +6,8 @@ namespace Goteo\Model {
         Goteo\Library\Text;
 
     class Project extends \Goteo\Core\Model {
-        
-        public        
+
+        public
             $id = null,
             $owner, // User who created it
             $node, // Node this project belongs to
@@ -39,12 +39,12 @@ namespace Goteo\Model {
             $keywords, // por ahora se guarda en texto tal cual
             $currently, // Current development status of the project
             $project_location, // project execution location
-                
+
             // costs
             $costs = array(),  // project\cost instances with type
             $schedule, // picture of the costs schedule
             $resource, // other current resources
-            
+
             // Rewards
             $social_rewards = array(), // instances of project\reward for the public (collective type)
             $individual_rewards = array(), // instances of project\reward for investors  (individual type)
@@ -53,7 +53,7 @@ namespace Goteo\Model {
             $supports = array(), // instances of project\support
 
             // Comment
-            $comment, // Comentario para los admin introducido por el usuario 
+            $comment, // Comentario para los admin introducido por el usuario
 
             //Operative purpose properties
             $mincost = 0,
@@ -119,7 +119,7 @@ namespace Goteo\Model {
                 throw new Goteo\Core\Exception("ERROR al crear un nuevo proyecto<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
             }
         }
-        
+
         /*
          *  Cargamos los datos del proyecto
          */
@@ -168,7 +168,7 @@ namespace Goteo\Model {
                     // obtenido y cofinanciadores
                     $project->invested = Invest::invested($project->id);
                     $project->investors = Invest::investors($project->id);
-                    
+
                     $days = $project->daysActive();
                     // si ha llegado a los 40 días
                     if ($days >= 40) {
@@ -204,7 +204,7 @@ namespace Goteo\Model {
                 //-----------------------------------------------------------------
                 // Fin de verificaciones
                 //-----------------------------------------------------------------
-                
+
 
 				return $project;
 
@@ -397,7 +397,7 @@ namespace Goteo\Model {
             if ($step == 'userProfile' || $step == null) {
                 // el check del modelo usuario
                 $user = User::get($this->owner);
-                $user->check($errors['userProfile']);
+                $user->validate($errors['userProfile']);
             }
             /***************** FIN Revisión del paso 1, PERFIL *****************/
 
@@ -678,9 +678,9 @@ namespace Goteo\Model {
                 // si  ya existe, cambiar las últimas letras por un número
                 if (!empty($exist->id)) {
                     $sufix = (string) $num;
-                    if ((strlen($id)+strlen($sufix)) > 49) 
+                    if ((strlen($id)+strlen($sufix)) > 49)
                         $id = substr($id, 0, (strlen($id) - strlen($sufix))) . $sufix;
-                    else 
+                    else
                         $id = $id . $sufix;
                     $num++;
                     $id = self::checkId($id, $num);

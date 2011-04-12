@@ -2,28 +2,32 @@
 
 namespace Goteo\Controller {
 
-	use Goteo\Library\Text,
-		Goteo\Library\Lang,
-        Goteo\Model,
+	use Goteo\Core\ACL,
         Goteo\Core\View,
-        Goteo\Core\Redirection;
+        Goteo\Core\Redirection,
+        Goteo\Model,
+	    Goteo\Library\Text,
+		Goteo\Library\Lang;
 
 	class Admin extends \Goteo\Core\Controller {
 
         public function index () {
-            //@TODO resctringir acceso con el ACL cuando esté listo
-            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
+            if(!ACL::check(__CLASS__, __FUNCTION__)) {
+                throw new Error(403);
+            }
 			// si tenemos usuario logueado
             if ($_SESSION['user']->role_id != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
-            
+
             return new View('view/admin/index.html.php');
         }
 
 
 		public function texts ($lang = 'es') {
-            //@TODO resctringir acceso con el ACL cuando esté listo
-            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
+		    if(!ACL::check(__CLASS__, __FUNCTION__)) {
+                throw new Error(403);
+            }
+
 			// si tenemos usuario logueado
             if ($_SESSION['user']->role_id != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
@@ -39,12 +43,13 @@ namespace Goteo\Controller {
                     )
                 );
 		}
-		
-		public function translate ($id = null, $lang = 'es') {
-            //@TODO resctringir acceso con el ACL cuando esté listo
-            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
-			// si tenemos usuario logueado
 
+		public function translate ($id = null, $lang = 'es') {
+		    if(!ACL::check(__CLASS__, __FUNCTION__)) {
+                throw new Error(403);
+            }
+
+			// si tenemos usuario logueado
 			$using = Lang::get($lang);
 
             $text = new \stdClass();
@@ -75,7 +80,7 @@ namespace Goteo\Controller {
                     $viewData['errors'] = $errors;
 				}
 			}
-			
+
             return new View(
                 'view/admin/texts.html.php',
                 $viewData
@@ -111,5 +116,5 @@ namespace Goteo\Controller {
 
 
 	}
-	
+
 }

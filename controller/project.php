@@ -2,7 +2,8 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Core\Error,
+    use Goteo\Core\ACL,
+        Goteo\Core\Error,
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Library\Text,
@@ -33,7 +34,9 @@ namespace Goteo\Controller {
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
         private function edit ($id) {
-            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
+            if(!ACL::check(__CLASS__, __FUNCTION__)) {
+                throw new Error(403);
+            }
             //@TODO Verificar si tiene permisos para editar (usuario)
             $debug = false; // debug para ver que ha hecho
 
@@ -85,7 +88,11 @@ namespace Goteo\Controller {
                 )
             );
 
-            
+            // variables para la vista
+            $viewData = array(
+                            'project'=>$project,
+                            'steps'=>$steps
+                        );
 
             // vista por defecto, el primer paso con errores
             if (!empty($project->errors['userProfile']))
@@ -102,12 +109,6 @@ namespace Goteo\Controller {
                 $step = 'supports';
             else
                 $step = 'preview';
-            
-            // variables para la vista
-            $viewData = array(
-                'project' => $project,
-                'steps' => $steps
-            );
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors = array(); // errores de proceso, no de datos del proyecto
@@ -115,9 +116,7 @@ namespace Goteo\Controller {
                     call_user_func_array(array($this, "process_{$id}"), array($project, $errors));
                     $data['errors'] = $project->errors[$id];
                     if (!empty($_POST['view-step-'.$id])) {
-                        
-                        $viewData['step'] = $step = $id;
-                        
+                        $step = $id;
                         // segun el paso añadimos los datos auxiliares para pintar
                         switch ($id) {
                             case 'userProfile':
@@ -212,16 +211,17 @@ if ($debug) {
         }
 
         private function create () {
-
-            //@TODO Verificar que el usuario está validado
-            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
-            // sino, saltar a la página de login|register
+            if(!ACL::check(__CLASS__, __FUNCTION__)) {
+                throw new Error(403);
+            }
 
             //@TODO Verificar si tienen permisos para crear nuevos proyectos
             $project = new Model\Project;
-            if ($project->create($_SESSION['user']->id)) {
-                throw new Redirection("/project/{$project->id}/?edit");   
-            }
+            $project->create($_SESSION['user']->id);
+
+            $errors = array();
+            if ($project->save($errors))
+                throw new Redirection("/project/{$project->id}/?edit");
 
             throw new \Goteo\Core\Exception(implode(' ', $errors));
         }
@@ -238,7 +238,9 @@ if ($debug) {
 
         // Finalizar para revision, ready le cambia el estado
         public function finish($id) {
-            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
+            if(!ACL::check(__CLASS__, __FUNCTION__)) {
+                throw new Error(403);
+            }
             //@TODO verificar si tienen el mínimo progreso para verificación y si está en estado edición
             $project = Model\Project::get($id);
 
@@ -248,12 +250,14 @@ if ($debug) {
             $errors = array();
             if ($project->ready($errors))
                 throw new Redirection("/project/{$project->id}");
-            
+
             throw new \Goteo\Core\Exception(implode(' ', $errors));
         }
 
         public function enable($id) {
-            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
+            if(!ACL::check(__CLASS__, __FUNCTION__)) {
+                throw new Error(403);
+            }
             //@TODO verificar si tiene permisos para rehabilitar la edición del proyecto (admin)
             if ($_SESSION['user']->role_id != 1) //@FIXME!! Piñonaco... ACL...
                 throw new Redirection("/project/{$id}");
@@ -268,7 +272,9 @@ if ($debug) {
         }
 
         public function publish($id) {
-            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
+            if(!ACL::check(__CLASS__, __FUNCTION__)) {
+                throw new Error(403);
+            }
             //@TODO verificar si tiene permisos para publicar proyectos
             if ($_SESSION['user']->role_id != 1) //@FIXME!! Piñonaco... ACL...
                 throw new Redirection("/project/{$id}");
@@ -305,57 +311,16 @@ if ($debug) {
          */
         private function process_userProfile(&$project, &$errors) {
             $user = Model\User::get($project->owner);
-
-            // tratar la imagen y ponerla en la propiedad avatar
-            // __FILES__
-
-            $fields = array(
-                'name',
-                'avatar',
-                'about',
-                'keywords',
-                'contribution',
-                'twitter',
-                'facebook',
-                'linkedin'
-            );
-
-            foreach ($fields as $field) {
-                if (isset($_POST[$field]))
-                    $user->$field;
-            }
-
-            $user->saveInfo($errors);
-
-
-            //intereses, si viene en el post
-            if (isset($_POST['interests'])) {
-                // añadir los que vienen
-                foreach ($_POST['interests'] as $int) {
-                    if (!in_array($int, $user->interests)) {
-                        $interest = new Model\User\Interest();
-
-                        $interest->id = $int;
-                        $interest->user = $user->id;
-
-                        $interest->save($errors);
-                        $user->interests[] = $interest;
-                    }
-                }
-
-                // quitar los que no vienen
-                foreach ($user->interests as $key=>$int) {
-                    if (!in_array($int, $_POST['interests'])) {
-                        $interest = new Model\User\Interest();
-
-                        $interest->id = $int;
-                        $interest->user = $user->id;
-
-                        if ($interest->remove($errors))
-                            unset($user->interests[$key]);
-                    }
-                }
-            }
+            $user->name = $_POST['name'];
+            $user->avatar = $_POST['avatar'];
+            $user->about = $_POST['about'];
+            $user->keywords = $_POST['keywords'];
+            $user->contribution = $_POST['contribution'];
+            $user->twitter = $_POST['twitter'];
+            $user->facebook = $_POST['facebook'];
+            $user->linkedin = $_POST['linkedin'];
+            $user->interests = $_POST['interests'];
+            $user->save($errors);
 
             //tratar webs existentes
             foreach ($user->webs as $key=>$web) {
@@ -387,8 +352,7 @@ if ($debug) {
 
                 $user->webs[] = $web;
             }
-
-            $user->check($project->errors['userProfile']); // checkea errores
+            $user->validate($project->errors['userProfile']);
         }
 
         /*
@@ -483,7 +447,7 @@ if ($debug) {
                 $project->resource = $_POST['resource'];
 
             $project->save($errors); // guarda este dato del proyecto
-            
+
             //tratar costes existentes
             foreach ($project->costs as $key=>$cost) {
                 // primero mirar si lo estan quitando
@@ -607,7 +571,7 @@ if ($debug) {
 
                 $project->individual_rewards[] = $reward;
             }
-        
+
             $project->check('rewards');
         }
 
