@@ -1,8 +1,13 @@
 <?php
 
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Core\View;
 
 $bodyClass = 'project-form';
+
+$project = $this['project'];
+
+$stepsView = new View('view/project/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step']));
 
 include 'view/prologue.html.php';
 
@@ -18,8 +23,8 @@ include 'view/prologue.html.php';
 
             <form method="post" action="">
 
-                <?php echo new View('view/project/status.html.php', array('status' => $this['project']->status, 'progress' => $this['project']->progress)) ?>
-                <?php echo new View('view/project/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'])) ?>
+                <?php echo new View('view/project/status.html.php', array('status' => $project->status, 'progress' => $project->progress)) ?>
+                <?php echo $stepsView ?>
 
                 <div class="superform">
 
@@ -29,20 +34,21 @@ include 'view/prologue.html.php';
                     
                     <div class="fields">
                     
-                    <ol class="fields">
+                        <ol class="fields">
 
-                        <li class="field" id="field-name">
-                            <div class="field">
-                                <h4>Nombre del proyecto</h4>
-                                <div class="tooltip" id="tooltip-name">
-                                    <blockquote><?php echo Text::get('tooltip project name'); ?></blockquote>
+                            <li class="field" id="field-contract_name">
+                                <div class="field">
+                                    <h4></h4>
+                                    <div class="tooltip" id="tooltip-">
+                                        <blockquote><?php echo Text::get('tooltip-project-'); ?></blockquote>
+                                    </div>
+                                    <div class="elements"><input class="main" type="text" name="" value="<?php if (isset($project->foo)) echo htmlspecialchars($project->foo) ?>" /></div>
                                 </div>
-                                <div class="elements"><input class="main" type="text" name="name" value="<?php if (isset($project->name)) echo htmlspecialchars($project->name) ?>" /></div>
+                            </li>                            
 
-                            </div>
-                        </li>
+                        </ol>
                         
-                    </ol>
+                    </div>
 
                     <div class="buttons">
                         <input type="submit" value="Continuar" name="view-step-userPersonal" class="next" />
@@ -50,7 +56,7 @@ include 'view/prologue.html.php';
 
                 </div>
 
-                <?php include 'view/project/steps.html.php' ?>
+                <?php echo $stepsView ?>
                 <?php include 'view/project/tooltips.js.php' ?>
 
             </form>
