@@ -1,6 +1,7 @@
 <?php
 
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Core\View;
 
 $bodyClass = 'project-form';
 
@@ -14,18 +15,18 @@ include 'view/prologue.html.php';
             </div>
         </div>
 
-        <div id="main" class="costs">
+        <div id="main" class="userProfile">
 
             <form method="post" action="">
 
-                <?php include 'view/project/status.html.php' ?>
-                <?php include 'view/project/steps.html.php' ?>
+                <?php echo new View('view/project/status.html.php', array('status' => $this['project']->status, 'progress' => $this['project']->progress)) ?>
+                <?php echo new View('view/project/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'])) ?>
 
-                <div class="superform red">
+                <div class="superform">
 
-                    <h3>Usuario/Perfil</h3>
+                    <h3><?php echo $this['title']; ?></h3>
 
-                    <?php include 'view/project/guide.html.php' ?>
+                    <?php echo new View('view/project/guide.html.php', array('text' => $this['steps'][$this['step']]['guide'])) ?>
 
                     <?php //@INTRUSION JULIAN!!! para usarlo sin maquetación
                     if ($this['nodesign'] == true) :
@@ -93,13 +94,14 @@ include 'view/prologue.html.php';
                     <?php else : ?>
                     <?php endif; ?>
                     <div class="buttons">
-                        <input type="hidden" name="step" value="userProfile" />
+                        <input type="hidden" name="step" value="userProfile" /><!-- por ahora no me escapo de tener que poner esto... -->
                         <input type="submit" value="Continuar" name="view-step-userPersonal" class="next" />
                     </div>
 
                 </div>
 
-                <?php include 'view/project/steps.html.php' ?>
+                <?php echo new View('view/project/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'])) ?>
+
                 <?php include 'view/project/tooltips.js.php' ?>
 
             </form>

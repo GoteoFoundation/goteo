@@ -1,6 +1,7 @@
 <?php 
 
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Core\View;
 
 $bodyClass = 'project-form';
 
@@ -18,14 +19,14 @@ include 'view/prologue.html.php';
 
             <form method="post" action="">
 
-                <?php include 'view/project/status.html.php' ?>
-                <?php include 'view/project/steps.html.php' ?>
+                <?php echo new View('view/project/status.html.php', array('status' => $this['project']->status, 'progress' => $this['project']->progress)) ?>
+                <?php echo new View('view/project/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'])) ?>
 
                 <div class="superform red">
 
-                    <h3>Proyecto/Costes</h3>
+                <h3><?php echo $this['title']; ?></h3>
 
-                    <?php include 'view/project/guide.html.php' ?>
+                <?php echo new View('view/project/guide.html.php', array('text' => $this['steps'][$this['step']]['guide'])) ?>
 
                     <?php //@INTRUSION JULIAN!!! para usarlo sin maquetación
                     if ($this['nodesign'] == true) :
@@ -70,7 +71,7 @@ include 'view/prologue.html.php';
 
                             </dl>
 
-                            <input type="button" id="new-cost" value="Nuevo coste" />
+                            <input type="submit" id="new-cost" name="view-step-costs" value="Nuevo" class="new" />
 
                             <span><?php echo Text::get('tooltip project ncost'); ?></span><br />
                         </fieldset>
@@ -218,13 +219,14 @@ include 'view/prologue.html.php';
                     <?php endif; //@INTRUSION JULIAN FIN ?>
 
                     <div class="buttons">
-                        <input type="hidden" name="step" value="costs" />
+                        <input type="hidden" name="step" value="costs" /><!-- por ahora no me escapo de tener que poner esto... -->
                         <input type="submit" name="view-step-rewards" value="Continuar" class="next" />
                     </div>
 
                 </div>
 
-                <?php include 'view/project/steps.html.php' ?>
+                <?php echo new View('view/project/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'])) ?>
+
                 <?php include 'view/project/tooltips.js.php' ?>
 
             </form>

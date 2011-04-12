@@ -36,7 +36,23 @@ namespace Goteo\Model\Project {
 			}
 		}
 
-		public function validate(&$errors = array()) {}
+		public function validate(&$errors = array()) {
+            // Estos son errores que no permiten continuar
+            if (empty($this->project))
+                $errors[] = 'No hay proyecto al que asignar el coste';
+
+            if (empty($this->cost))
+                $errors[] = 'No hay descripción de coste';
+
+            if (empty($this->type))
+                $errors[] = 'No hay tipo de coste';
+
+            //cualquiera de estos errores hace fallar la validación
+            if (!empty($errors))
+                return false;
+            else
+                return true;
+        }
 
 		public function save (&$errors = array()) {
 

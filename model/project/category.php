@@ -46,17 +46,27 @@ namespace Goteo\Model\Project {
                 7=>'Hardware');
 		}
 
-		public function validate(&$errors = array()) {}
+		public function validate(&$errors = array()) {
+            // Estos son errores que no permiten continuar
+            if (empty($this->id))
+                $errors[] = 'No hay ninguna categoria para guardar';
 
-		/*
-		 *  save... al ser un solo campo quiza no lo usemos
-		 */
+            if (empty($this->project))
+                $errors[] = 'No hay ningun proyecto al que asignar';
+
+            //cualquiera de estos errores hace fallar la validación
+            if (!empty($errors))
+                return false;
+            else
+                return true;
+        }
+
 		public function save (&$errors = array()) {
-
-            $values = array(':project'=>$this->project, ':category'=>$this->id);
+            if (!$this->validate($errors)) return false;
 
 			try {
 	            $sql = "REPLACE INTO project_category (project, category) VALUES(:project, :category)";
+                $values = array(':project'=>$this->project, ':category'=>$this->id);
 				self::query($sql, $values);
 				return true;
 			} catch(\PDOException $e) {

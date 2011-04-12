@@ -1,6 +1,7 @@
 <?php 
 
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Core\View;
 
 $bodyClass = 'project-form';
 
@@ -18,14 +19,14 @@ include 'view/prologue.html.php';
 
         <form method="post" action="" class="project">
 
-            <?php include 'view/project/status.html.php' ?>
-            <?php include 'view/project/steps.html.php' ?>
+            <?php echo new View('view/project/status.html.php', array('status' => $this['project']->status, 'progress' => $this['project']->progress)) ?>
+            <?php echo new View('view/project/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'])) ?>
 
             <div class="superform aqua">
 
-                <h3>Proyecto/Retornos</h3>
+                <h3><?php echo $this['title']; ?></h3>
 
-                <?php include 'view/project/guide.html.php' ?>
+                <?php echo new View('view/project/guide.html.php', array('text' => $this['steps'][$this['step']]['guide'])) ?>
                 
                     <?php //@INTRUSION JULIAN!!! para usarlo sin maquetación
                     if ($this['nodesign'] == true) :
@@ -64,7 +65,8 @@ include 'view/prologue.html.php';
                 <?php endforeach; ?>
 			</select></dd>
 		</dl>
-		<input type="button" id="new-social_reward" value="Nuevo" />
+        
+        <input class="add" type="submit" name="view-step-rewards" value="Añadir" />
 
 		<span><?php echo Text::get('tooltip project nsocial_reward'); ?></span>
 	</fieldset>
@@ -116,7 +118,7 @@ include 'view/prologue.html.php';
 				</select></dd>
 		</dl>
 
-		<input type="button" id="new-individual_reward" value="Nuevo" />
+        <input class="add" type="submit" name="view-step-rewards" value="Añadir" />
 
 		<span><?php echo Text::get('tooltip project nindividual_reward'); ?></span><br />
 	</fieldset>
@@ -165,7 +167,7 @@ include 'view/prologue.html.php';
                                     <blockquote><?php echo Text::get('tooltip project nsocial_reward'); ?></blockquote>
                                 </div>
                                 <div class="elements">
-                                    <input class="add" type="submit" value="Añadir" />                                    
+                                    <input class="add" type="submit" name="view-step-rewards" value="Añadir" />
                                 </div>                                
                             </div>                            
                         </li>                                        
@@ -176,14 +178,14 @@ include 'view/prologue.html.php';
                     <?php endif; ?>
 
                 <div class="buttons">
-                    <input type="hidden" name="step" value="rewards" />
+                    <input type="hidden" name="step" value="rewards" /><!-- por ahora no me escapo de tener que poner esto... -->
                     <input class="next" type="submit" name="view-step-supports" value="Continuar" />
                 </div>
 
             </div>
 
-            <?php include 'view/project/steps.html.php' ?>
-            
+            <?php echo new View('view/project/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'])) ?>
+
             <?php include 'view/project/tooltips.js.php' ?>            
 
         </form>

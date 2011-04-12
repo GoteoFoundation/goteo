@@ -1,6 +1,7 @@
 <?php 
 
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Core\View;
 
 $bodyClass = 'project-form';
 
@@ -18,14 +19,14 @@ include 'view/prologue.html.php';
 
         <form method="post" action="" class="project">
 
-            <?php include 'view/project/status.html.php' ?>
-            <?php include 'view/project/steps.html.php' ?>
+            <?php echo new View('view/project/status.html.php', array('status' => $this['project']->status, 'progress' => $this['project']->progress)) ?>
+            <?php echo new View('view/project/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'])) ?>
 
             <div class="superform aqua">
 
-                <h3>Proyecto/Descripción</h3>
+                <h3><?php echo $this['title']; ?></h3>
 
-                <?php include 'view/project/guide.html.php' ?>
+                <?php echo new View('view/project/guide.html.php', array('text' => $this['steps'][$this['step']]['guide'])) ?>
 
                     <?php //@INTRUSION JULIAN!!! para usarlo sin maquetación
                     if ($this['nodesign'] == true) :
@@ -270,13 +271,13 @@ include 'view/prologue.html.php';
                     <?php endif; ?>
 
                 <div class="buttons">
-                    <input type="hidden" name="step" value="overview" />
+                    <input type="hidden" name="step" value="overview" /><!-- por ahora no me escapo de tener que poner esto... -->
                     <input class="next" type="submit" name="view-step-costs" value="Continuar"  />
                 </div>
 
             </div>
 
-            <?php include 'view/project/steps.html.php' ?>
+            <?php echo new View('view/project/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'])) ?>
             
             <?php include 'view/project/tooltips.js.php' ?>            
 
