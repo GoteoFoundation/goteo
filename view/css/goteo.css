@@ -924,9 +924,19 @@ body.project-form div#main #project-steps li.offtopic input {
     color: #b2b2b2;
 }
 
-
-
 body.project-form div.superform {
     border: solid #0a0a0a;
     border-width: 3px 0;     
+}
+
+/* Personal data */
+body.project-form div#main.userProfile input[name='contract_nif'],
+body.project-form div#main.userProfile input[name='phone'],
+body.project-form div#main.userProfile input[name='zipcode'] {
+    min-width: 12em;
+}
+
+
+body.project-form div#main.userProfile input[name='country'] {    
+    min-width: 25em;
 }
