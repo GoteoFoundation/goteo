@@ -2,7 +2,8 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Core\Error,
+    use Goteo\Core\ACL,
+        Goteo\Core\Error,
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Library\Text,
@@ -33,14 +34,16 @@ namespace Goteo\Controller {
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
         private function edit ($id) {
-            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
+            if(!ACL::check(__CLASS__, __FUNCTION__)) {
+                throw new Error(403);
+            }
             //@TODO Verificar si tiene permisos para editar (usuario)
             $nodesign = false; // para usar el formulario de proyecto en Julian mode
 
             $project = Model\Project::get($id);
 
             //@TODO Verificar si tieme permiso para editar libremente
-            if ($project->status != 1 && $_SESSION['user']->role_id != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
+            if ($project->status != 1 && $_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/project/{$project->id}");
 
 
@@ -180,11 +183,9 @@ namespace Goteo\Controller {
         }
 
         private function create () {
-
-            //@TODO Verificar que el usuario está validado
-            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
-            // sino, saltar a la página de login|register
-
+            if(!ACL::check(__CLASS__, __FUNCTION__)) {
+                throw new Error(403);
+            }
             //@TODO Verificar si tienen permisos para crear nuevos proyectos
             $project = new Model\Project;
             $project->create($_SESSION['user']->id);
@@ -205,7 +206,9 @@ namespace Goteo\Controller {
 
         // Finalizar para revision, ready le cambia el estado
         public function finish($id) {
-            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
+            if(!ACL::check(__CLASS__, __FUNCTION__)) {
+                throw new Error(403);
+            }
             //@TODO verificar si tienen el mínimo progreso para verificación y si está en estado edición
             $project = Model\Project::get($id);
 
@@ -220,9 +223,11 @@ namespace Goteo\Controller {
         }
 
         public function enable($id) {
-            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
+            if(!ACL::check(__CLASS__, __FUNCTION__)) {
+                throw new Error(403);
+            }
             //@TODO verificar si tiene permisos para rehabilitar la edición del proyecto (admin)
-            if ($_SESSION['user']->role_id != 1) //@FIXME!! Piñonaco... ACL...
+            if ($_SESSION['user']->role != 1) //@FIXME!! Piñonaco... ACL...
                 throw new Redirection("/project/{$id}");
 
             $project = Model\Project::get($id);
@@ -235,9 +240,11 @@ namespace Goteo\Controller {
         }
 
         public function publish($id) {
-            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
+            if(!ACL::check(__CLASS__, __FUNCTION__)) {
+                throw new Error(403);
+            }
             //@TODO verificar si tiene permisos para publicar proyectos
-            if ($_SESSION['user']->role_id != 1) //@FIXME!! Piñonaco... ACL...
+            if ($_SESSION['user']->role != 1) //@FIXME!! Piñonaco... ACL...
                 throw new Redirection("/project/{$id}");
 
             $project = Model\Project::get($id);

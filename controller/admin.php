@@ -16,7 +16,7 @@ namespace Goteo\Controller {
                 throw new Error(403);
             }
 			// si tenemos usuario logueado
-            if ($_SESSION['user']->role_id != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
+            if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
 
             return new View('view/admin/index.html.php');
@@ -29,7 +29,7 @@ namespace Goteo\Controller {
             }
 
 			// si tenemos usuario logueado
-            if ($_SESSION['user']->role_id != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
+            if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
 
             // comprobamos el filtro
@@ -105,9 +105,10 @@ namespace Goteo\Controller {
          *  Revisión de proyectos, aqui llega con un nodo y si no es el suyo a la calle (o al suyo)
          */
         public function checking($node = 'goteo') {
-            //@TODO resctringir acceso con el ACL cuando esté listo
-            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
-            if ($_SESSION['user']->role_id != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
+            if(!ACL::check(__CLASS__, __FUNCTION__)) {
+                throw new Error(403);
+            }
+            if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
 
             $projects = Model\Project::getAll($node);
@@ -124,9 +125,10 @@ namespace Goteo\Controller {
          *  administración de nodos y usuarios (segun le permita el ACL al usuario validado)
          */
         public function managing($node = 'goteo') {
-            //@TODO resctringir acceso con el ACL cuando esté listo
-            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
-            if ($_SESSION['user']->role_id != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
+            if(!ACL::check(__CLASS__, __FUNCTION__)) {
+                throw new Error(403);
+            }
+            if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
 
             $users = Model\User::getAll();
@@ -143,9 +145,10 @@ namespace Goteo\Controller {
          *  Revisión de proyectos, aqui llega con un nodo y si no es el suyo a la calle (o al suyo)
          */
         public function accounting($node = 'goteo') {
-            //@TODO resctringir acceso con el ACL cuando esté listo
-            Model\User::restrict();  // esto dice @deprecated pero no dice que hay que usar en su vez
-            if ($_SESSION['user']->role_id != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
+            if(!ACL::check(__CLASS__, __FUNCTION__)) {
+                throw new Error(403);
+            }
+            if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
 
             $content = 'Administración de las transacciones para cobrar las aportaciones';

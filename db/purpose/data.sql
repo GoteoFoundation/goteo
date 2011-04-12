@@ -102,7 +102,6 @@ INSERT INTO `purpose` VALUES('tooltip-user-name', 'Consejo para rellenar el nomb
 INSERT INTO `purpose` VALUES('tooltip-user-twitter', 'Consejo para rellenar el twitter');
 INSERT INTO `purpose` VALUES('tooltip-user-user', 'Consejo para rellenar el nombre de usuario para login');
 INSERT INTO `purpose` VALUES('validate-cost-field-dates', 'Indicar las fechas de inicio y final de este coste para mejorar la puntuación');
-INSERT INTO `purpose` VALUES('validate-project-field-contract-email', 'El email del responsable del proyecto debe ser correcto');
 INSERT INTO `purpose` VALUES('validate-project-field-costs', 'Desglosar hasta 5 costes para mejorar la puntuación');
 INSERT INTO `purpose` VALUES('validate-project-field-currently', 'Indicar el estado del proyecto para mejorar la puntuación');
 INSERT INTO `purpose` VALUES('validate-project-individual_rewards', 'Indicar hasta 5 recompensas individuales para mejorar la puntuación');
