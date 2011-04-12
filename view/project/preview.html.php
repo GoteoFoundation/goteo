@@ -27,7 +27,7 @@ include 'view/prologue.html.php';
 
                     <?php include 'view/project/guide.html.php' ?>
 
-                    <pre><?php echo print_r($project, 1) ?></pre>
+                    <pre><?php echo print_r($this['project'], 1) ?></pre>
 
                     <div class="buttons">
                         <input type="submit" value="Continuar" name="view-step-preview" class="next" />

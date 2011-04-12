@@ -60,7 +60,7 @@ include 'view/prologue.html.php';
                 </div>
 
                 <div class="buttons">
-                    <input class="next" type="submit" value="Continuar" />
+                    <input class="next" type="submit" name="view-step-supports" value="Continuar"  />
                 </div>
 
             </div>

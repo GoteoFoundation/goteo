@@ -29,9 +29,8 @@ include 'view/prologue.html.php';
                                         
 
                     <div class="buttons">
-                        <input type="hidden" name="step" value="rewards" />
-                        <input type="submit" value="Continuar" />
-                    </div>
+                    <input class="next" type="submit" name="view-step-preview" value="Continuar"  />
+                </div>
 
                 </div>
 

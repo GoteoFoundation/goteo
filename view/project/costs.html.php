@@ -110,9 +110,8 @@ include 'view/prologue.html.php';
                     </div>
 
                     <div class="buttons">
-                        <input type="hidden" name="step" value="rewards" />
-                        <input type="submit" value="Continuar" class="next" />
-                    </div>
+                    <input class="next" type="submit" name="view-step-rewards" value="Continuar"  />
+                </div>
 
                 </div>
 

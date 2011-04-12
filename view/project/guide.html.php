@@ -3,7 +3,7 @@
                     <h4>Guía</h4>
                     
                     <blockquote>                    
-                        <?php echo $guideText ?>                        
+                        <?php echo $this['text'] ?>                        
                     </blockquote>
                     
                 </div>

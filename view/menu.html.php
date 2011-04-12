@@ -27,7 +27,7 @@
             <?php endif ?>
             <li class="community"><a href="/community"><span>Comunidad</span></a></li>
             <li class="explore"><a href="/project/explore"><span>Descubre <br />proyectos</span></a></li>
-            <li class="create"><a href="/project/create"><span>Crea un <br />proyecto</span></a></li>
+            <li class="create"><a href="/project/?create"><span>Crea un <br />proyecto</span></a></li>
             <li class="blog"><a href="/blog"><span>Blog</a></li>
             <li class="faq"><a href="/faq"><span>FAQ</a></li>            
             <li class="search">

@@ -14,14 +14,14 @@ include 'view/prologue.html.php';
             </div>
         </div>
 
-        <div id="main" class="costs">
+        <div id="main" class="userProfile">
 
             <form method="post" action="">
 
                 <?php include 'view/project/status.html.php' ?>
                 <?php include 'view/project/steps.html.php' ?>
 
-                <div class="superform red">
+                <div class="superform">
 
                     <h3>Usuario/Perfil</h3>
 

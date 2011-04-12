@@ -85,11 +85,7 @@ namespace Goteo\Controller {
                 )
             );
 
-            // variables para la vista
-            $viewData = array(
-                            'project'=>$project,
-                            'steps'=>$steps
-                        );
+            
 
             // vista por defecto, el primer paso con errores
             if (!empty($project->errors['userProfile']))
@@ -106,6 +102,12 @@ namespace Goteo\Controller {
                 $step = 'supports';
             else
                 $step = 'preview';
+            
+            // variables para la vista
+            $viewData = array(
+                'project' => $project,
+                'steps' => $steps
+            );
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors = array(); // errores de proceso, no de datos del proyecto
@@ -113,7 +115,9 @@ namespace Goteo\Controller {
                     call_user_func_array(array($this, "process_{$id}"), array($project, $errors));
                     $data['errors'] = $project->errors[$id];
                     if (!empty($_POST['view-step-'.$id])) {
-                        $step = $id;
+                        
+                        $viewData['step'] = $step = $id;
+                        
                         // segun el paso añadimos los datos auxiliares para pintar
                         switch ($id) {
                             case 'userProfile':
@@ -215,11 +219,9 @@ if ($debug) {
 
             //@TODO Verificar si tienen permisos para crear nuevos proyectos
             $project = new Model\Project;
-            $project->create($_SESSION['user']->id);
-            
-            $errors = array();
-            if ($project->save($errors))
-                throw new Redirection("/project/{$project->id}/?edit");
+            if ($project->create($_SESSION['user']->id)) {
+                throw new Redirection("/project/{$project->id}/?edit");   
+            }
 
             throw new \Goteo\Core\Exception(implode(' ', $errors));
         }

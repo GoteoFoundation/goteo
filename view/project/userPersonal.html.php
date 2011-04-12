@@ -1,47 +1,144 @@
-<?php include 'view/project/header.html.php' ?>
-<?php use Goteo\Library\Text; ?>
-USUARIO / Datos personales<br />
-GUÍA: <?php echo $guideText;  ?><br />
-<hr />
-<form action="/project/register" method="post">
-	<dl>
-		<dt><label for="contract_name">Nombre</label></dt>
-		<dd><input type="text" id="contract_name" name="contract_name" value="<?php echo $project->contract_name; ?>"/></dd>
-		<span><?php echo Text::get('tooltip project contract_name'); ?></span><br />
+<?php 
 
-		<dt><label for="contract_surname">Apellidos</label></dt>
-		<dd><input type="text" id="contract_surname" name="contract_surname" value="<?php echo $project->contract_surname; ?>"/></dd>
-		<span><?php echo Text::get('tooltip project contract_surname'); ?></span><br />
+use Goteo\Library\Text;
 
-		<dt><label for="contract_nif">NIF</label></dt>
-		<dd><input type="text" id="contract_nif" name="contract_nif" value="<?php echo $project->contract_nif; ?>"/></dd>
-		<span><?php echo Text::get('tooltip project contract_nif'); ?></span><br />
+$bodyClass = 'project-form';
 
-		<dt><label for="contract_email">Email</label></dt>
-		<dd><input type="text" id="contract_email" name="contract_email" value="<?php echo $project->contract_email; ?>"/></dd>
-		<span><?php echo Text::get('tooltip project contract_email'); ?></span><br />
+include 'view/prologue.html.php';
+    
+    include 'view/header.html.php'; ?>
 
-		<dt><label for="phone">Teléfono</label></dt>
-		<dd><input type="text" id="phone" name="phone" value="<?php echo $project->phone; ?>"/></dd>
-		<span><?php echo Text::get('tooltip project phone'); ?></span><br />
+    <div id="sub-header">
+        <div>
+            <h2>Formulario</h2>
+        </div>
+    </div>
 
-		<dt><label for="address">Dirección</label></dt>
-		<dd><input type="text" id="address" name="address" value="<?php echo $project->address; ?>"/></dd>
-		<span><?php echo Text::get('tooltip project address'); ?></span><br />
+    <div id="main" class="userProfile">
 
-		<dt><label for="zipcode">Código postal</label></dt>
-		<dd><input type="text" id="zipcode" name="zipcode" value="<?php echo $project->zipcode; ?>"/></dd>
-		<span><?php echo Text::get('tooltip project zipcode'); ?></span><br />
+        <form method="post" action="" class="project">
 
-		<dt><label for="location">Lugar de residencia</label></dt>
-		<dd><input type="text" id="location" name="location" value="<?php echo $project->location; ?>"/></dd>
-		<span><?php echo Text::get('tooltip project location'); ?></span><br />
+            <?php include 'view/project/status.html.php' ?>
+            <?php include 'view/project/steps.html.php' ?>
 
-		<dt><label for="country">País</label></dt>
-		<dd><input type="text" id="country" name="country" value="<?php echo $project->country; ?>"/></dd>
-		<span><?php echo Text::get('tooltip project country'); ?></span><br />
+            <div class="superform">
 
-	</dl>
-	<input type="submit" name="submit" value="CONTINUAR" />
-</form>
-<?php include 'view/project/footer.html.php' ?>
+                <h3>Usuario/Datos personales</h3>
+
+                <?php include 'view/project/guide.html.php' ?>                                								
+
+                <div class="fields">
+                    
+                    <ol class="fields">
+
+                        <li class="field" id="field-contract_name">
+                            <div class="field">
+                                <h4>Nombre</h4>
+                                <div class="tooltip" id="tooltip-contract_name">
+                                    <blockquote><?php echo Text::get('tooltip-project-contract_name'); ?></blockquote>
+                                </div>
+                                <div class="elements"><input type="text" name="contract_name" value="<?php if (isset($project->contract_name)) echo htmlspecialchars($project->contract_name) ?>" /></div>                                
+                            </div>
+                        </li>
+                        
+                        <li class="field" id="field-contract_surname">
+                            <div class="field">
+                                <h4>Apellidos</h4>
+                                <div class="tooltip" id="tooltip-contract_surname">
+                                    <blockquote><?php echo Text::get('tooltip-project-contract_surname'); ?></blockquote>
+                                </div>
+                                <div class="elements"><input type="text" name="contract_surname" value="<?php if (isset($project->contract_surname)) echo htmlspecialchars($project->contract_surname) ?>" /></div>                                
+                            </div>
+                        </li>
+                        
+                        <li class="field" id="field-contract_nif">
+                            <div class="field">
+                                <h4>NIF</h4>
+                                <div class="tooltip" id="tooltip-contract_nif">
+                                    <blockquote><?php echo Text::get('tooltip-project-contract_nif'); ?></blockquote>
+                                </div>
+                                <div class="elements"><input type="text" name="contract_nif" value="<?php if (isset($project->contract_nif)) echo htmlspecialchars($project->contract_nif) ?>" /></div>                                
+                            </div>
+                        </li>
+                        
+                        <li class="field" id="field-contract_email">
+                            <div class="field">
+                                <h4>E-mail</h4>
+                                <div class="tooltip" id="tooltip-contract_email">
+                                    <blockquote><?php echo Text::get('tooltip-project-contract_email'); ?></blockquote>
+                                </div>
+                                <div class="elements"><input type="text" name="contract_email" value="<?php if (isset($project->contract_email)) echo htmlspecialchars($project->contract_email) ?>" /></div>                                
+                            </div>
+                        </li>
+                        
+                        <li class="field" id="field-phone">
+                            <div class="field">
+                                <h4>E-mail</h4>
+                                <div class="tooltip" id="tooltip-phone">
+                                    <blockquote><?php echo Text::get('tooltip-project-phone'); ?></blockquote>
+                                </div>
+                                <div class="elements"><input type="text" name="phone" value="<?php if (isset($project->phone)) echo htmlspecialchars($project->phone) ?>" /></div>                                
+                            </div>
+                        </li>
+                        
+                        <li class="field" id="field-address">
+                            <div class="field">
+                                <h4>E-mail</h4>
+                                <div class="tooltip" id="tooltip-address">
+                                    <blockquote><?php echo Text::get('tooltip-project-address'); ?></blockquote>
+                                </div>
+                                <div class="elements"><input type="text" name="address" value="<?php if (isset($project->address)) echo htmlspecialchars($project->address) ?>" /></div>                                
+                            </div>
+                        </li>
+                        
+                        <li class="field" id="field-zipcode">
+                            <div class="field">
+                                <h4>E-mail</h4>
+                                <div class="tooltip" id="tooltip-zipcode">
+                                    <blockquote><?php echo Text::get('tooltip-project-zipcode'); ?></blockquote>
+                                </div>
+                                <div class="elements"><input type="text" name="zipcode" value="<?php if (isset($project->zipcode)) echo htmlspecialchars($project->zipcode) ?>" /></div>                                
+                            </div>
+                        </li>
+                        
+                        <li class="field" id="field-location">
+                            <div class="field">
+                                <h4>Lugar de residencia</h4>
+                                <div class="tooltip" id="tooltip-location">
+                                    <blockquote><?php echo Text::get('tooltip-project-location'); ?></blockquote>
+                                </div>
+                                <div class="elements"><input type="text" name="location" value="<?php if (isset($project->location)) echo htmlspecialchars($project->location) ?>" /></div>                                
+                            </div>
+                        </li>
+                        
+                        <li class="field" id="field-country">
+                            <div class="field">
+                                <h4>País</h4>
+                                <div class="tooltip" id="tooltip-country">
+                                    <blockquote><?php echo Text::get('tooltip-project-country'); ?></blockquote>
+                                </div>
+                                <div class="elements"><input type="text" name="country" value="<?php if (isset($project->country)) echo htmlspecialchars($project->country) ?>" /></div>                                
+                            </div>
+                        </li>
+                        
+                    </ol>
+                    
+                </div>
+
+                <div class="buttons">
+                    <input class="next" type="submit" name="view-step-overview" value="Continuar"  />
+                </div>
+
+            </div>
+
+            <?php include 'view/project/steps.html.php' ?>
+            
+            <?php include 'view/project/tooltips.js.php' ?>            
+
+        </form>
+
+    </div>            
+
+    <?php include 'view/footer.html.php' ?>
+    
+<?php include 'view/epilogue.html.php' ?>
