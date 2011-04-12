@@ -3,7 +3,11 @@ $bodyClass = 'user-edit';
 include 'view/prologue.html.php';
 include 'view/header.html.php';
 
+use Goteo\Library\Text,
+    Goteo\Core\View;
+
 $user = $this['user'];
+$errors = $this['errors'];
 ?>
     <div id="main">
         <h2>Editar perfil</h2>
@@ -22,7 +26,8 @@ $user = $this['user'];
                     <?php if(isset($errors['password'])) { ?><li><em><?php echo $errors['password']?></em></li><?php } ?>
                 </ol>
             </fieldset>
-<?php include 'view/user/edit.profile.html.php' ?>
+            <br/>
+<?php echo new View('view/user/edit.profile.html.php', array('user' => $user, 'errors' => $errors)) ?>
 			<p><input type="submit" name="register" value="Guardar" /></p>
         </form>
     </div>

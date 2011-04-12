@@ -22,7 +22,7 @@ namespace Goteo\Controller {
             $message = "Hola {$user}<br />";
 
             //@FIXME!! esto también irá con el ACL
-            if ($_SESSION['user']->role_id == 1) {
+            if ($_SESSION['user']->role == 1) {
                 $message .= '<a href="/admin">Ir al panel de administración</a><br />';
             }
 

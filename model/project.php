@@ -81,7 +81,7 @@ namespace Goteo\Model {
          * @param array $data
          * @return boolean
          */
-        public function create ($user, $node = 'goteo') {
+        public function create ($user, $node = 'goteo', &$errors = array()) {
 
             // cojemos el número de proyecto de este usuario
             $query = self::query("SELECT COUNT(id) as num FROM project WHERE owner = ?", array($user));
@@ -107,6 +107,7 @@ namespace Goteo\Model {
 				self::query($sql, $values);
 
                 $this->id = $values[':id'];
+                $this->name = $values[':name'];
                 $this->owner = $user;
                 $this->node = $node;
                 $this->status = 1;
@@ -116,7 +117,8 @@ namespace Goteo\Model {
 
                 return $this->id;
             } catch (\PDOException $e) {
-                throw new Goteo\Core\Exception("ERROR al crear un nuevo proyecto<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
+                $errors[] = "ERROR al crear un nuevo proyecto<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>";
+                return false;
             }
         }
 
@@ -183,11 +185,11 @@ namespace Goteo\Model {
                                 $project->succeed();
                             } else {
                                 // ha conseguido el mínimo y sigue publicado hasta que consiga el óptimo
-                                $project->days = 80 - $past->days;
+                                $project->days = 80 - $days;
                             }
                         }
                     } else {
-                        $project->days = 40 - $past->days;
+                        $project->days = 40 - $days;
                     }
 
                     // si se ha conseguido el optimo, pasa a estado financiado
@@ -199,7 +201,7 @@ namespace Goteo\Model {
                 // para proyectos financiados
                 if ($project->status == 4) {
                     // si todas las aportaciones tienen los retornos cumplidos, pasamos el proyecto a "retorno umplido"
-                    $project->invested = Invest::invested($project->id);
+//                    $project->invested = Invest::invested($project->id);
                 }
                 //-----------------------------------------------------------------
                 // Fin de verificaciones
@@ -213,7 +215,31 @@ namespace Goteo\Model {
 			}
 		}
 
-        public function validate(&$errors = array()) { return true; }
+        public function validate(&$errors = array()) {
+
+            if (empty($this->id))
+                $errors[] = 'El proyecto no tiene id';
+
+            if (empty($this->name))
+                $errors[] = 'El proyecto no tiene nombre';
+            
+            if (empty($this->status))
+                $this->status = 1;
+            
+            if (empty($this->progress))
+                $this->progress = 0;
+            
+            if (empty($this->owner))
+                $errors[] = 'El proyecto no tiene usuario creador';
+            
+            if (empty($this->node))
+                $this->node = 'goteo';
+            
+            if (empty($errors))
+                return true;
+            else
+                return false;
+        }
 
         /**
          * actualiza en un proyecto pares de campo=>valor
@@ -728,12 +754,24 @@ namespace Goteo\Model {
         }
 
         /**
-         * Saca una lista de proyectos
+         * Saca una lista completa de proyectos para la revisión
          *
-         * @param array $filters
-         * @param string $order
-         * @return array or false
+         * @param string node id
+         * @return array of project instances
          */
+        public static function getAll($node = 'goteo') {
+            $projects = array();
+            $query = self::query("SELECT id FROM project WHERE node = ? ORDER BY name ASC", array($node));
+            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
+                $projects[] = self::get($proj['id']);
+            }
+            return $projects;
+        }
+
+
+
+        /*
+         *  getAll obsoleta
         public static function getAll($filters = array(), $order = '') {
             $vals = array();
             $filter = "";
@@ -765,6 +803,8 @@ namespace Goteo\Model {
 				throw new Goteo\Core\Exception($e->getMessage());
             }
         }
+         *
+         */
 
         /*
          * Estados de desarrollo del propyecto
