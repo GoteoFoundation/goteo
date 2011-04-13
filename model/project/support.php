@@ -16,7 +16,7 @@ namespace Goteo\Model\Project {
                 $query = static::query("SELECT * FROM support WHERE id = :id", array(':id' => $id));
                 return $query->fetchObject(__CLASS__);
             } catch(\PDOException $e) {
-                return false;
+                throw new \Goteo\Core\Exception($e->getMessage());
             }
 		}
 
@@ -25,14 +25,34 @@ namespace Goteo\Model\Project {
 				$query = self::query("SELECT * FROM support WHERE project = ?", array($project));
 				$items = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
 				return $items;
-			} catch (\PDOException $e) {
-				return array();
-			}
+            } catch(\PDOException $e) {
+                throw new \Goteo\Core\Exception($e->getMessage());
+            }
 		}
 
-		public function validate(&$errors = array()) {}
+		public function validate(&$errors = array()) {
+            // Estos son errores que no permiten continuar
+            if (empty($this->project))
+                $errors[] = 'No hay proyecto al que asignar la colaboración';
+
+            if (empty($this->support))
+                $errors[] = 'No hay colaboración';
+
+            if (empty($this->description))
+                $errors[] = 'No hay descripción de la colaboración';
+
+            if (empty($this->type))
+                $errors[] = 'No hay tipo de colaboración';
+
+            //cualquiera de estos errores hace fallar la validación
+            if (!empty($errors))
+                return false;
+            else
+                return true;
+        }
 
 		public function save (&$errors = array()) {
+            if (!$this->validate($errors)) return false;
 
 			$fields = array(
 				'id',
@@ -53,60 +73,14 @@ namespace Goteo\Model\Project {
 
 			try {
 				$sql = "REPLACE INTO support SET " . $set;
-				if ($res = self::query($sql, $values))  {
-
-//					if (empty($this->id)) $this->id = \PDO::lastInsertId;
-
-					return true;
-				}
-				else {
-					echo "$sql<br /><pre>" . print_r($values, 1) . "</pre>";
-				}
-			} catch(\PDOException $e) {
-				$errors[] = $e->getMessage();
-				$errors[] = "La colaboración {$data['support']} no se ha grabado correctamente. Por favor, revise los datos.";
-				return false;
-			}
-		}
-
-		/*
-		public static function create ($project, $data, &$errors) {
-//			echo 'New support <pre>' . print_r($data, 1) . '</pre>';
-			$fields = array(
-				'support',
-				'type',
-				'description'
-				);
-
-			$set = '';
-			$values = array();
-
-			foreach ($fields as $field) {
-				if (!empty($data[$field])) {
-					if ($set != '') $set .= ", ";
-					$set .= "$field = :$field ";
-					$values[":$field"] = $data[$field];
-				}
-			}
-
-			if (!empty($values)) {
-				$set .= ", id='', project = :project";
-				$values[':project'] = $project;
-
-				$sql = "INSERT INTO support SET " . $set;
-				if ($res = self::query($sql, $values)) {
-					return $res->fetchObject();
-				} else {
-					$errors[] = "La colaboración {$data['support']} no se ha grabado correctamente. Por favor, revise los datos.";
-					return false;
-				}
-			}
-			else {
+				self::query($sql, $values);
+    			if (empty($this->id)) $this->id = self::insertId();
 				return true;
+			} catch(\PDOException $e) {
+				$errors[] = "La colaboración {$data['support']} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
+                return false;
 			}
 		}
-		 * 
-		 */
 
 		/**
 		 * Quitar una colaboracion de un proyecto
@@ -122,12 +96,12 @@ namespace Goteo\Model\Project {
 				':id'=>$this->id,
 			);
 
-			if (self::query("DELETE FROM support WHERE id = :id AND project = :project", $values)) {
+            try {
+                self::query("DELETE FROM support WHERE id = :id AND project = :project", $values);
 				return true;
-			}
-			else {
-				$errors[] = 'No se ha podido quitar la colaboracion del proyecto ' . $this->project;
-				return false;
+			} catch (\PDOException $e) {
+                $errors[] = 'No se ha podido quitar la colaboracion del proyecto ' . $this->project . ' ' . $e->getMessage();
+                return false;
 			}
 		}
 
@@ -139,7 +113,6 @@ namespace Goteo\Model\Project {
 
 		}
 
-
-		}
+	}
 
 }

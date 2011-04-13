@@ -2,11 +2,13 @@
 
 namespace Goteo\Library\SuperForm {
     
+    use Goteo\Core\View;
+    
     abstract class Element implements \Goteo\Core\Resource {
         
         public 
-            $label,
             $id,
+            $title,            
             $class,
             $children = array();
                         
@@ -32,8 +34,7 @@ namespace Goteo\Library\SuperForm {
             if (!isset($this->view)) {                
                 $viewPath = strtolower(str_replace('\\', '/', trim(substr(get_called_class(), strlen(__CLASS__)), '\\')));                
                 $this->view = "library/superform/element/{$viewPath}/view.html.php";                
-            }
-            
+            }            
             
         }
         
@@ -77,8 +78,8 @@ namespace Goteo\Library\SuperForm {
 
             $markup = '';
             
-            if (isset($this->label)) {
-                $markup .= PHP_EOL . '<h4>' . htmlspecialchars($this->label) . '</h4>';
+            if (isset($this->title)) {
+                $markup .= PHP_EOL . '<h4>' . htmlspecialchars($this->title) . '</h4>';
             }
             
             if (isset($this->hint)) {
@@ -86,6 +87,8 @@ namespace Goteo\Library\SuperForm {
             }
             
             $markup .= PHP_EOL . '<div class="contents">' . $this->getInnerMarkup() . '</div>';
+            
+            return $markup;
 
             
         }

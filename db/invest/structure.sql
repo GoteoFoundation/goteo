@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS invest (
-  id int(11) NOT NULL AUTO_INCREMENT,
+  id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user` varchar(50) NOT NULL,
   project varchar(50) NOT NULL,
   amount int(6) NOT NULL,
@@ -9,5 +9,10 @@ CREATE TABLE IF NOT EXISTS invest (
   invested date DEFAULT NULL,
   charged date DEFAULT NULL,
   returned date DEFAULT NULL,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  UNIQUE KEY id (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Aportes monetarios a proyectos';
+
+-- Alteraciones de la tabla original por si no se puede pasar el create de arriba
+-- Cambiando ids numéricos a SERIAL
+ALTER TABLE `invest` CHANGE `id` `id` SERIAL NOT NULL AUTO_INCREMENT;

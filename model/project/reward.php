@@ -20,7 +20,7 @@ namespace Goteo\Model\Project {
                 $query = static::query("SELECT * FROM reward WHERE id = :id", array(':id' => $id));
                 return $query->fetchObject(__CLASS__);
             } catch(\PDOException $e) {
-                return false;
+                throw new \Goteo\Core\Exception($e->getMessage());
             }
 		}
 
@@ -30,12 +30,31 @@ namespace Goteo\Model\Project {
 				$items = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
 				return $items;
 			} catch (\PDOException $e) {
-                echo $e->getMessage();
-				return array();
+                throw new \Goteo\Core\Exception($e->getMessage());
 			}
 		}
 
+		public function validate(&$errors = array()) {
+            // Estos son errores que no permiten continuar
+            if (empty($this->project))
+                $errors[] = 'No hay proyecto al que asignar la recompensa/rettorno';
+
+            if (empty($this->reward))
+                $errors[] = 'No hay nombre de recompensa/retorno';
+
+            if (empty($this->type))
+                $errors[] = 'No hay tipo de recompensa/retorno';
+
+            //cualquiera de estos errores hace fallar la validación
+            if (!empty($errors))
+                return false;
+            else
+                return true;
+        }
+
 		public function save (&$errors = array()) {
+            if (!$this->validate($errors)) return false;
+            
 			$fields = array(
 				'id',
 				'project',
@@ -59,19 +78,12 @@ namespace Goteo\Model\Project {
 
 			try {
 				$sql = "REPLACE INTO reward SET " . $set;
-				if ($res = self::query($sql, $values))  {
-
-//					if (empty($this->id)) $this->id = \PDO::lastInsertId;
-
-					return true;
-				}
-				else {
-					echo "$sql<br /><pre>" . print_r($values, 1) . "</pre>";
-				}
+				self::query($sql, $values);
+            	if (empty($this->id)) $this->id = self::insertId();
+        		return true;
 			} catch(\PDOException $e) {
-				$errors[] = $e->getMessage();
-				$errors[] = "El retorno {$this->reward} no se ha grabado correctamente. Por favor, revise los datos.";
-				return false;
+				$errors[] = "El retorno {$this->reward} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
+                return false;
 			}
 		}
 
@@ -89,16 +101,14 @@ namespace Goteo\Model\Project {
 				':id'=>$this->id,
 			);
 
-			if (self::query("DELETE FROM reward WHERE id = :id AND project = :project", $values)) {
+            try {
+                self::query("DELETE FROM reward WHERE id = :id AND project = :project", $values);
 				return true;
-			}
-			else {
-				$errors[] = 'No se ha podido quitar el retorno del proyecto ' . $this->project;
-				return false;
+			} catch(\PDOException $e) {
+				$errors[] = 'No se ha podido quitar el retorno '. $this->id. '. ' . $e->getMessage();
+                return false;
 			}
 		}
-
-		public function validate(&$errors = array()) {}
 
 		public static function icons($type = 'social') {
             $icons = array(

@@ -2,7 +2,8 @@
 
 namespace Goteo\Model {
 
-	use Goteo\Core\Redirection;
+	use Goteo\Core\Redirection,
+        Goteo\Library\Text;
 
 	class User extends \Goteo\Core\Model {
 
@@ -16,7 +17,6 @@ namespace Goteo\Model {
             $interests,
             $contribution,
             $keywords,
-            $blog,
             $twitter,
             $facebook,
             $linkedin,
@@ -43,39 +43,99 @@ namespace Goteo\Model {
          */
         public function save(&$errors = array()) {
             if($this->validate($errors)) {
-                $data[':id'] = self::idealiza($this->id);
+                // Nuevo usuario.
+                if(empty($this->id)) {
+                    $this->id = static::idealiza($this->name);
+                    $data[':role_id'] = 3; // @FIXME: Provisionalmente: 3 = Usuario
+                    $data[':created'] = 'CURRENT_TIMESTAMP';
+                    $data[':active'] = false; // @TODO: Requiere activación.
+                }
+                $data[':id'] = $this->id;
+
                 if(!empty($this->name)) {
                     $data[':name'] = $this->name;
                 }
-                else {
-                    $data[':name'] = $this->id;
-                }
+
                 if(!empty($this->email)) {
                     $data[':email'] = $this->email;
                 }
+
                 if(!empty($this->password)) {
                     $data[':password'] = sha1($this->password);
                 }
-                $data[':created'] = 'CURRENT_TIMESTAMP';
-                $data[':active'] = true;
-                return self::query("
-                    REPLACE INTO user (
-                        id,
-                        name,
-                        email,
-                        password,
-                        created,
-                        active
-                     )
-                     VALUES (
-                        :id,
-                        :name,
-                        :email,
-                        :password,
-                        :created,
-                        :active
-                     )",
-                $data);
+
+                // @TODO: tratar la imagen y ponerla en la propiedad avatar (__FILES__?)
+                if(!empty($this->avatar)) {
+                    $data[':avatar'] = $this->avatar;
+                }
+
+                if(!empty($this->about)) {
+                    $data[':about'] = $this->about;
+                }
+
+                if(!empty($this->keywords)) {
+                    $data[':keywords'] = $this->keywords;
+                }
+
+                if(!empty($this->contribution)) {
+                    $data[':contribution'] = $this->contribution;
+                }
+
+                if(!empty($this->twitter)) {
+                    $data[':twitter'] = $this->twitter;
+                }
+
+                if(!empty($this->facebook)) {
+                    $data[':facebook'] = $this->facebook;
+                }
+
+                if(!empty($this->linkedin)) {
+                    $data[':linkedin'] = $this->linkedin;
+                }
+
+                if(!empty($this->interests)) {
+                    $interests = User\Interest::get($this->id);
+                    foreach($this->interests as $interest) {
+                        if(!in_array($interest, $interests)) {
+                            $_interest = new Model\User\Interest();
+                            $_interest->id = $interest;
+                            $_interest->user = $this->id;
+                            $_interest->save($errors);
+                            $interests[] = $_interest;
+                        }
+                    }
+                    foreach($interests as $key => $interest) {
+                        if(!in_array($interest, $this->interests)) {
+                            $_interest = new Model\User\Interest();
+                            $_interest->id = $interest;
+                            $_interest->user = $this->id;
+                            if ($interest->remove($errors)) {
+                                unset($interests[$key]);
+                            }
+                        }
+                    }
+                }
+
+                try {
+                    // Construye SQL.
+                    $query = "REPLACE INTO user (";
+                    foreach($data AS $key => $row) {
+                        $query .= substr($key, 1) . ", ";
+                    }
+                    $query = substr($query, 0, -2) . ") VALUES (";
+                    foreach($data AS $key => $row) {
+                        $query .= $key . ", ";
+                    }
+                    $query = substr($query, 0, -2) . ")";
+                    trace($query);
+                    return;
+                    die;
+                    // Ejecuta SQL.
+                    return self::query($query, $data);
+            	} catch(\PDOException $e) {
+                    $errors[] = "Error al actualizar los datos del usuario: " . $e->getMessage();
+                    return false;
+    			}
             }
             return false;
         }
@@ -87,35 +147,68 @@ namespace Goteo\Model {
          * @return bool true|false
          */
         public function validate(&$errors = array()) {
-            // Nombre de usuario (id)
-            if(!empty($this->id)) {
-                $id = self::idealiza($this->id);
-                $query = self::query('SELECT id FROM user WHERE id = ?', array($id));
-                if($query->fetchColumn()) {
-                    $errors['username'] = 'El usuario ya existe.';
+            // Nuevo usuario.
+            if(empty($this->id)) {
+                // Nombre de usuario (id)
+                if(empty($this->name)) {
+                    $errors['username'] = Text::get('error-register-username');
+                }
+                else {
+                    $id = self::idealiza($this->name);
+                    $query = self::query('SELECT id FROM user WHERE id = ?', array($id));
+                    if($query->fetchColumn()) {
+                        $errors['username'] = Text::get('error-register-user-exists');
+                    }
+                }
+
+                // E-mail
+                if(!empty($this->email)) {
+                    $query = self::query('SELECT email FROM user WHERE email = ?', array($this->email));
+                    if($query->fetchObject()) {
+                        $errors['email'] = Text::get('error-register-email-exists');
+                    }
+                }
+                else {
+                    $errors['email'] = Text::get('error-register-email');
+                }
+
+                // Contraseña
+                if(!empty($this->password)) {
+                    if(strlen($this->password)<8) {
+                        $errors['password'] = Text::get('error-register-short-password');
+                    }
+                }
+                else {
+                    $errors['password'] = Text::get('error-register-pasword');
                 }
             }
+            // Modificar usuario.
             else {
-                $errors['username'] = 'El nombre de usuario usuario es obligatorio.';
-            }
-            // E-mail
-            if(!empty($this->email)) {
-                $query = self::query('SELECT email FROM user WHERE email = ?', array($this->email));
-                if($query->fetchObject()) {
-                    $errors['email'] = 'El dirección de correo ya corresponde a un usuario registrado.';
+                if (empty($this->name)) {
+                    $errors['name'] = Text::get('validate-user-field-name');
                 }
-            }
-            else {
-                $errors['email'] = 'La dirección de correo es obligatoria.';
-            }
-            // Contraseña
-            if(!empty($this->password)) {
-                if(strlen($this->password)<8) {
-                    $errors['password'] = 'La contraseña debe contener un mínimo de 8 caracteres.';
+                if (empty($this->avatar)) {
+                    $errors['avatar'] = Text::get('validate-user-field-avatar');
                 }
-            }
-            else {
-                $errors['password'] = 'La contraseña no puede estar vacía.';
+                if (empty($this->about)) {
+                    $errors['about'] = Text::get('validate-user-field-about');
+                }
+                if (empty($this->interests)) {
+                    $errors['interests'] = Text::get('validate-user-field-interests');
+                }
+                $keywords = explode(',', $this->keywords);
+                if (sizeof($keywords) < 5) {
+                    $errors['keywords'] = Text::get('validate-user-field-keywords');
+                }
+                if (empty($this->contribution)) {
+                    $errors['contribution'] = Text::get('validate-user-field-contribution');
+                }
+                if (empty($this->webs)) {
+                    $errors['webs'] = Text::get('validate-user-field-webs');
+                }
+                if (empty($this->facebook)) {
+                    $errors['facebook'] = Text::get('validate-user-field-facebook');
+                }
             }
             return empty($errors);
         }
@@ -124,14 +217,14 @@ namespace Goteo\Model {
          * Usuario.
          *
          * @param string $id    Nombre de usuario
-         * @return obj|false    Objeto de usuario, en caso contrario devolverá 'false'.
+         * @return obj|false    Objeto de usuario, en caso contrario devolverÃ¡ 'false'.
          */
         public static function get ($id) {
             try {
-//                        role_id AS role,
                 $query = static::query("
                     SELECT
                         id,
+                        role_id AS role,
                         name,
                         email,
                         password,
@@ -140,7 +233,6 @@ namespace Goteo\Model {
                         active AS visible,
                         avatar,
                         contribution,
-                        blog,
                         twitter,
                         facebook,
                         linkedin,
@@ -151,12 +243,12 @@ namespace Goteo\Model {
                     WHERE id = :id
                     ", array(':id' => $id));
                 $user = $query->fetchObject(__CLASS__);
-
-				// intereses (para proyectos es categoria(s) aunque los contenidos actuales son identicos no es el mismo concepto)
                 $user->interests = User\Interest::get($id);
 
-                return $user;
+                // webs
+                $user->webs = User\Web::get($id);
 
+                return $user;
             } catch(\PDOException $e) {
                 return false;
             }
@@ -177,8 +269,8 @@ namespace Goteo\Model {
 		 * Validación de usuario.
 		 *
 		 * @param string $username Nombre de usuario
-		 * @param string $password Contraseña
-		 * @return obj|false Objeto del usuario, en caso contrario devolverá 'false'.
+		 * @param string $password ContraseÃ±a
+		 * @return obj|false Objeto del usuario, en caso contrario devolverÃ¡ 'false'.
 		 */
 		public static function login($username, $password) {
 			$query = self::query("
@@ -198,155 +290,13 @@ namespace Goteo\Model {
 		}
 
 		/**
-		 * Comprueba si el usuario está identificado.
+		 * Comprueba si el usuario estÃ¡ identificado.
 		 *
 		 * @return boolean
 		 */
 		public static function isLogged() {
 			return !empty($_SESSION['user']);
 		}
-
-		/**
-		 * @deprecated
-		 *
-		 * Restringe el acceso sólo a usuarios identificados.
-		 * En caso de que no esté identificado lo redirecciona al login.
-		 */
-		public static function restrict() {
-			if(!static::isLogged()) {
-				throw new Redirection('/user/login');
-			}
-		}
-
-		public static function interests() {
-            return array(
-                1=>'Educación',
-                2=>'Economía solidaria',
-                3=>'Empresa abierta',
-                4=>'Formación técnica',
-                5=>'Desarrollo',
-                6=>'Software',
-                7=>'Hardware');
-		}
-
-        /**
-         * Metodo para puntuar la informacuión del usuario al puntuar un proyecto
-         * //@TODO cambiar los textos a Text::get cuando el cliente lo verifique
-         * @param array $errors por referencia
-         */
-        public function check(&$errors = array()) {
-            $score =  0;
-            $max = 0;
-
-            if (empty($this->name)) {
-                $errors['user-name'] = 'Pon tu nombre completo para mejorar la puntuación';
-                --$score;
-            } else {
-                ++$score;
-            }
-            ++$max;
-
-            if (empty($this->avatar)) {
-                $errors['user-avatar'] = 'Pon una imagen de perfil para mejorar la puntuación';
-                --$score;
-            } else {
-                ++$score;
-            }
-            ++$max;
-
-            if (empty($this->about)) {
-                $errors['user-about'] = 'Cuenta algo sobre ti para mejorar la puntuación';
-                --$score;
-            } else {
-                ++$score;
-            }
-            ++$max;
-
-            if (empty($this->interests)) {
-                $errors['user-interests'] = 'Selecciona algún interés para mejorar la puntuación';
-                --$score;
-            } else {
-                ++$score;
-            }
-            ++$max;
-
-            $keywords = explode(',', $this->keywords);
-            $score += count($keywords) > 5 ? 5 : count($keywords);
-            if ($keywords < 5) {
-                $errors['user-keywords'] = 'Indica hasta 5 palabras clave que te definan para mejorar la puntuación';
-            }
-            $max += 5;
-
-            if (empty($this->contribution)) {
-                $errors['user-contribution'] = 'Explica que podrias aportar en Goteo para mejorar la puntuación';
-                --$score;
-            } else {
-                ++$score;
-            }
-            ++$max;
-
-            if (empty($this->blog)) {
-                $errors['user-blog'] = 'Pon tu página web para mejorar la puntuación';
-                --$score;
-            } else {
-                ++$score;
-            }
-            ++$max;
-
-            if (empty($this->facebook)) {
-                $errors['user-facebook'] = 'Pon tu cuenta de facebook para mejorar la puntuación';
-                --$score;
-            } else {
-                ++$score;
-            }
-            ++$max;
-
-            return array('score'=>$score,'max'=>$max);
-        }
-
-        /**
-         * Metodo para guardar la información del usuario desde el primer paso del formulario de proyecto
-         * @param array $errors por referencia
-         */
-        public function saveInfo(&$errors = array()) {
-
-            //@TODO validate (pero estos campos son de contenido libre excepto quizás las url)
-
-            $fields = array(
-                'name',
-                'avatar',
-                'about',
-                'keywords',
-                'contribution',
-                'blog',
-                'twitter',
-                'facebook',
-                'linkedin'
-            );
-
-            $set = '';
-            $values = array();
-
-            foreach ($fields as $field) {
-                if ($set != '') $set .= ', ';
-                $set .= "$field = :$field";
-                $values[":$field"] = $this->$field;
-            }
-
-			try {
-				$values[':id'] = $this->id;
-
-				$sql = "UPDATE user SET " . $set . " WHERE id = :id";
-				self::query($sql, $values);
-
-			} catch(\PDOException $e) {
-                echo "$sql <pre>" . print_r($values, 1) ."</pre><br />";
-                echo $e->getMessage();
-                return false;
-			}
-
-
-        }
 
 	}
 }

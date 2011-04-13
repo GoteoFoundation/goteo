@@ -1,7 +1,6 @@
 <?php
 
 define('GOTEO_PATH', __DIR__ . DIRECTORY_SEPARATOR);
-
 // Database
 define('GOTEO_DB_DRIVER', 'mysql');
 define('GOTEO_DB_HOST', 'localhost');
