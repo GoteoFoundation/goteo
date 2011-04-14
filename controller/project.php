@@ -110,6 +110,8 @@ namespace Goteo\Controller {
                 $step = 'supports';
             else
                 $step = 'preview';
+            
+            $viewData['step'] =& $step;
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 //                die ('<pre>' . \print_r($_POST, 1) . '</pre>');
@@ -123,7 +125,7 @@ namespace Goteo\Controller {
                     }
                     // y el paso que vamos a mostrar
                     if (!empty($_POST['view-step-'.$id]))
-                        $viewData['step'] = $step = $id;
+                        $step = $id;
                 }
 
                 // guardamos los datos que hemos tratado y los errores de los datos
