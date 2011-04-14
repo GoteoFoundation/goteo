@@ -1,3 +1,5 @@
+<?php include 'view/project/show.html.php'; return; ?>
+
 <?php $bodyClass = 'home'; include 'view/prologue.html.php' ?>
 
         <?php include 'view/header.html.php' ?>

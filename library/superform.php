@@ -13,7 +13,53 @@ namespace Goteo\Library {
             $method = 'post',
             $class,
             $id,
-            $elements = array();            
+            $elements = array(),
+            $footer = array(),
+            $level = 1;
+        
+        public static function uniqId ($prefix) {
+            return $prefix . substr(md5(uniqid($prefix, true)), 0, 5);
+        }                   
+        
+        public static function getChildren ($children, $level) {
+            
+            $elements = array();
+            
+            if (is_array($children)) {
+
+                foreach ($children as $k => $element) {
+
+                    if (!($element instanceof SuperForm\Element)) {
+
+                        if (!is_array($element)) {
+                            throw new SuperForm\Exception;
+                        }
+                        
+                         if (empty($element['type'])) {
+                             $element['type'] = '';
+                         }
+
+                        $cls = __NAMESPACE__ . rtrim("\\SuperForm\\Element\\{$element['type']}", '\\');
+
+                        if (!class_exists($cls)) {
+                            throw new SuperForm\Exception;
+                        }
+                        
+                        $element = new $cls($element + array(
+                            'id'    => $k,
+                            'level' => $level
+                        ));
+                    }
+
+                    $elements[] = $element;
+                }
+            } else {
+                throw new SuperForm\Exception;
+            }
+            
+            return $elements;
+            
+        }                
         
         public function __construct ($data = array()) {
             
@@ -24,34 +70,11 @@ namespace Goteo\Library {
                     switch ($k) {
                         
                         case 'elements':
-                            if (is_array($v)) {
-                                
-                                foreach ($v as $k => $element) {
-                                    
-                                    if (!($element instanceof SuperForm\Element)) {
-                                        
-                                        if (!is_array($element) || empty($element['type'])) {
-                                            throw new SuperForm\Exception;
-                                        }                                        
-                                                                                
-                                        $cls = __NAMESPACE__ . "\\SuperForm\\Element\\{$element['type']}";
-                                        
-                                        if (!class_exists($cls)) {
-                                            throw new SuperForm\Exception;
-                                        }                                                                                
-                                        
-                                        $element = new $cls($element);                                        
-                                    }
-                                    
-                                    if (!isset($element->id)) $element->id = $k;                                    
-                                                                                                            
-                                    $this->elements[] = $element;
-                                    
-                                }
-                                
-                            } else {
-                                throw new SuperForm\Exception;
-                            }
+                            $this->elements = $v;
+                            break;
+                        
+                        case 'footer':                            
+                            $this->footer = $v;
                             break;
                         
                         default:
@@ -65,17 +88,20 @@ namespace Goteo\Library {
                     
                 }
                 
+                $this->elements = static::getChildren($this->elements, $this->level + 1);
+                $this->footer = static::getChildren($this->footer, $this->level + 1);                
+                
             }
             
             if (!isset($this->id)) {
-                $this->id = 'superform-' . substr(md5(uniqid('superform', true)), 0, 5);
+                $this->id = static::uniqId('superform-');                
             }
             
         }
         
         public function __toString () {
             
-            return (string) (new View('library/superform/view.html.php', $this));
+            return (string) (new View('library/superform/view/superform.html.php', $this));
             
         }        
         
