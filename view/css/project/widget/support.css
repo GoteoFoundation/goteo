@@ -1,0 +1,166 @@
+div.widget.project-support dl {
+    margin: 0;
+    padding: 0 0 0 20px;
+}
+
+body.js div.widget.project-support dl {
+    padding-left: 54px;
+}
+
+div.widget.project-support dl {
+    font-size: 16px;
+}
+
+div.widget.project-support dl dt {
+    margin-top: 1em;
+}
+
+div.widget.project-support dl dt,
+div.widget.project-support dl dd {
+    margin-left: 6em;
+    text-transform: uppercase;
+    font-size: 12px;
+    display: block;
+    min-height: 1.5em;
+    line-height: 1.5em;
+}
+
+div.widget.project-support dl dd * {   
+    font-weight: bold;
+    font-size: 16px;
+}
+
+div.widget.project-support dl dt.optimum,
+div.widget.project-support dl dt.minimum {
+    width: 6em;
+    float: left;
+    margin-left: 0;
+    line-height: 45px;
+    height: 45px;
+    margin-top: 0;
+    text-indent: 10px;
+    background: no-repeat left center;    
+}
+
+
+
+div.widget.project-support dl dt.optimum {
+    background-image: url('support/here-optimum.png');
+}
+
+div.widget.project-support dl dt.minimum {
+    background-image: url('support/here-minimum.png');
+    clear: left;
+}
+
+div.widget.project-support dl dd.optimum,
+div.widget.project-support dl dd.minimum {
+    float: left;
+    margin-left: 0;
+    line-height: 45px;    
+    height: 45px;
+    margin-top: 0;
+    padding-right: 35px;
+    background: url('../../euro/l.png') no-repeat right center;
+    display: inline-block;
+}
+
+div.widget.project-support dl dd.optimum strong,
+div.widget.project-support dl dd.minimum strong {
+    font-size: 30px;
+}
+
+div.widget.project-support dl dd.optimum span.euro,
+div.widget.project-support dl dd.minimum span.euro {
+    display: none;
+}
+
+div.widget.project-support dl dt.minimum,
+div.widget.project-support dl dd.minimum {
+    color: #ee4843;
+}
+
+div.widget.project-support dl dt.reached {
+    clear: both;
+    padding-top: 10px;
+}
+
+div.widget.project-support dl dd.reached {        
+    padding-right: 20px;
+    background: url('../../euro/s.png') no-repeat right top;
+    display: inline-block;
+}
+
+div.widget.project-support dl dd.reached span.euro {
+    display: none;
+}
+
+div.widget.project-support dl dt.supporters,
+div.widget.project-support dl dd.supporters {
+    color: #313b96;
+}
+
+div.widget.project-support a.button.supportit {
+    display: block;
+    margin: 1.5em 1em 0;
+}
+
+/* Animated/static meter */
+div.widget.project-support > div.data {
+    position: relative;
+}
+
+div.widget.project-support div.meter {
+    width: 28px;
+    overflow: visible;
+    position: absolute;
+    left: 20px;
+    top: 22px;
+    bottom: 0;
+    width: 26px;
+    border-bottom: 2px solid #ee4843;
+    font-size: 0;
+}
+
+div.widget.project-support div.meter > div.optimum,
+div.widget.project-support div.meter > div.minimum {
+    float: right;
+    width: 26px;
+}
+
+div.widget.project-support div.meter > div.optimum {
+    background: url('support/optimum.png') no-repeat center top;
+    height: 45px;
+}
+
+div.widget.project-support div.meter > div.minimum {    
+    background: url('support/minimum.png') no-repeat center top;    
+    position: absolute;
+    right: 0;
+    top: 45px;
+    bottom: 0;
+}
+
+div.widget.project-support div.meter > div.minimum > div.done {
+    background: url('support/done.png') no-repeat -9px bottom;    
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding-top: 9px;
+    overflow: visible;
+}
+
+div.widget.project-support div.meter > div.minimum > div.done strong {
+    background: url('support/marker.png') no-repeat center center;
+    display: block;
+    width: 29px;  
+    padding: 0 8px 0 0;
+    height: 20px;    
+    margin-top: -9px;    
+    color: white;    
+    font-size: 10px;
+    font-weight: normal;    
+    line-height: 20px;
+    margin-left: -12px;    
+    text-align: center;
+}

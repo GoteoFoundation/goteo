@@ -1,7 +1,14 @@
 <?php
 
-use Goteo\Library\Text,
+use Goteo\Core\View,
+    Goteo\Library\Text,
     Goteo\Library\SuperForm;
+
+echo new View('view/project/widget/support.html.php'),
+     new View('view/user/widget/user.html.php'),
+     new View('view/project/widget/media.html.php', array('project' => $project)),
+     new View('view/project/widget/share.html.php', array('project' => $project)),
+     new View('view/project/widget/summary.html.php', array('project' => $project));
             
 $project = $this['project'];
 
@@ -29,6 +36,7 @@ echo new SuperForm(array(
         
         'preview' => array(
             'type'      => 'group'
+                  
         )
         
     )
