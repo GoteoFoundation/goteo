@@ -1,0 +1,63 @@
+div.widget.user h3 {
+    font-size: 13px;
+    font-weight: normal;
+    margin: 0;
+    padding: 0 2px;
+}
+
+div.widget.user h4 {
+    font-size: 18px;
+    font-weight: bold;    
+    border-top: 1px solid #21b0b0;
+    padding: .8em 2px 0;
+    margin: .3em 0 .5em;
+}
+
+div.widget.user h4 img {
+    width: 80px;
+    height: 80px;
+    background: url('/view/css/avatar/m.png');
+    margin-bottom: .5em;
+    display: block;
+}
+
+div.widget.user blockquote.about {
+    padding: 0 2px;
+    margin: 0 0 1em;
+}
+
+div.widget.user dl,
+div.widget.user dt,
+div.widget.user dd {
+    padding: 0;
+    margin: 0;
+}
+
+div.widget.user dl dt {
+    display: none;
+}
+
+div.widget.user dl dd {
+    border-top: 1px solid #a5a7a9;
+    padding: 1em 0;
+}
+
+div.widget.user dl dd.location {
+    padding-left: 15px;
+    background: url('user/location.png') no-repeat left center;
+    text-indent: .5em;
+    text-decoration: none;
+}
+
+div.widget.user dl dd.links ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    line-height: 2em;
+}
+
+div.widget.user dl dd.links ul a {
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 14px;
+}

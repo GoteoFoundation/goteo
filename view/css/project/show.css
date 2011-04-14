@@ -1,0 +1,13 @@
+
+@import url('widget/summary.css');
+@import url('../user/widget/user.css');
+
+div.widget.user {
+    width: 260px;
+    float: right;        
+}
+
+div.widget.project-summary {
+    width: 580px;
+    float: left;
+}

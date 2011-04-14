@@ -1,0 +1,140 @@
+
+/**
+ * Project edit form
+ */
+
+body.project-edit div#main div.status {
+    color: #bcbdbd;
+    padding-bottom: 30px;
+    border-bottom: 3px solid #cfd0d2; 
+}
+
+body.project-edit div#main .status #project-status,
+body.project-edit div#main .status #project-score{
+    display: table-cell;
+    width: 50%;     
+    padding: 0 30px;
+}
+
+body.project-edit div#main .status #project-status {
+    padding-right: 50px;     
+}
+
+body.project-edit div#main .status #project-score {
+    border-left: 1px dashed #bcbdbf;
+    padding-left: 50px;
+}
+
+body.project-edit div#main .status h3 {
+    font-size: 26px;
+    font-weight: normal;
+    color: #bcbdbd;
+    text-transform: uppercase;
+    margin: 0 0 .6em;
+}
+
+body.project-edit div#main .status #project-status ul {
+    padding: 0 0 0 16px;
+    margin: 0 0  0 6px;
+    list-style: none;
+    font-size: 16px;     
+    line-height: 1.5em;
+    border-left: 1px solid #bcbcbd;
+}
+
+body.project-edit div#main .status #project-status ul li strong {
+    font-size: 22px;
+    color: #58595b;
+    font-weight: bold;
+    line-height: 1.6em;
+    padding-left: 20px;
+    display: block;
+    background: url('statusmarker.png') no-repeat left center;
+    margin-left: -22px;
+    text-shadow: 1px 1px 0 rgba(0,0,0,.25);
+    
+}
+
+body.project-edit div#main .status #project-score p {
+    margin-top: 0;
+    width: 80%;
+    font-size: 12px;
+}
+
+body.project-edit div#main .status #project-score .meter {
+    height: 117px;
+    width: 369px;    
+    margin-top: -2em;
+    position: relative;
+}
+
+body.project-edit div#main .status #project-score .meter .done {
+    background: url('scoremeter.png') no-repeat left top;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+}
+
+body.project-edit div#main .status #project-score .meter .left {
+    background: url('scoremeter.png') no-repeat right bottom;
+    position: absolute;
+    right: 0;        
+    top: 0;
+    bottom: 0;
+}
+
+/* Form navigator (*steps*) */
+
+body.project-edit div#main #project-steps {
+    padding: 30px 0;
+    text-align: center;
+}
+
+body.project-edit div#main #project-steps h3 {
+    display: none;     
+}
+
+body.project-edit div#main #project-steps ol {
+    margin: -10px 0 0;
+    padding: 0;
+    list-style: none;  
+    border-bottom: 2px solid #b2b2b2;
+    display: inline-block;
+    height: 3.5em;
+}
+
+body.project-edit div#main #project-steps li {
+    display: inline-block;
+    padding: 0 1em 10px;
+    height: 100%;    
+    background: url('edit/step-on.png') no-repeat bottom center;    
+}
+
+body.project-edit div#main #project-steps li input {
+    font-size: 12px;    
+    font-weight: normal;
+    height: 100%;
+    margin: 0;    
+    padding: 0;
+    border: none;
+    background: none;
+    color: #20b2b1;
+    
+}
+
+body.project-edit div#main #project-steps li.current {
+}
+
+body.project-edit div#main #project-steps li.offtopic {
+    background-image: url('edit/step-off.png');    
+}
+
+body.project-edit div#main #project-steps li.offtopic input {
+    color: #b2b2b2;
+}
+
+body.project-edit div.superform {
+    border: solid #0a0a0a;
+    border-width: 3px 0;     
+}
