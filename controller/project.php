@@ -135,6 +135,18 @@ namespace Goteo\Controller {
 
                 //re-evaluar el proyecto
                 $project->evaluate();
+
+                //si nos estan pidiendo el error de un campo, se lo damos
+                if (!empty($_GET['errors'])) {
+                    foreach ($project->errors as $paso) {
+                        if (!empty($paso[$_GET['errors']])) {
+                            return new View(
+                                'view/project/errors.json.php',
+                                array('errors'=>array($paso[$_GET['errors']]))
+                            );
+                        }
+                    }
+                }
             }
 
             // segun el paso añadimos los datos auxiliares para pintar
