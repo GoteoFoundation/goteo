@@ -2,11 +2,12 @@
 
 namespace Goteo\Library\SuperForm\Element {
     
-    class TextBox extends Named {
-        
+    class CheckBox extends Named  {
+                
         public
+            $label,
             $value,
-            $size;        
+            $checked = false;        
         
     }
     

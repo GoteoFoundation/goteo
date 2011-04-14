@@ -2,12 +2,13 @@
 
 namespace Goteo\Library\SuperForm\Element {
     
-    class TextArea extends \Goteo\Library\SuperForm\Element {
+    class TextArea extends Named {
         
         public
-            $name,
+            $rows,
+            $cols,
             $value;
-        
-    }
+         
+    }    
     
 }

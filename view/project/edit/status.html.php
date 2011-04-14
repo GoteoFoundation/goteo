@@ -13,21 +13,21 @@
                     </ul>                
                 </div>
             
-                <div id="information-status">
+                <div id="project-score">
                     <h3>Estado global de la información: <code><?php echo number_format($this['progress'], 0) ?>%</code></h3>
-                    <p><?php echo Text::get('explain project progress') ?></p>
+                    <p><?php echo Text::get('explain-project-progress') ?></p>
                     
                     <script type="text/javascript">
-                    // Animated information-meter 
+                    // Animated scoremeter
                     $(document).ready(function () {
                         
                         var progress = <?php echo number_format($this['progress'], 2) ?>,
-                            code = $('#information-status code'),
+                            code = $('#project-score code'),
                             meter = $('<div class="meter">'),
                             done = $('<div>').addClass('done').css('width', '0');
                             left = $('<div>').addClass('left').css('width', '100%');
                             
-                        $('#information-status').append(meter);
+                        $('#project-score').append(meter);
                         meter.append(done, left);                        
                         
                         $(window).load(function() {
@@ -45,7 +45,7 @@
                     </script>                    
                     
                     <noscript>
-                    <!-- Static information meter -->
+                    <!-- Static scoremeter -->
                     <div class="meter">
                         <div class="done" style="width: <?php echo number_format($this['progress'], 2) ?>%"></div>
                         <div class="left" style="width: <?php echo number_format(100 - $this['progress'], 2) ?>%"></div>                        

@@ -1,12 +1,11 @@
 <?php
 
 namespace Goteo\Library\SuperForm\Element {
-    
-    class TextBox extends Named {
+            
+    class Slider extends Radios {
         
         public
-            $value,
-            $size;        
+            $class = 'radios';
         
     }
     
