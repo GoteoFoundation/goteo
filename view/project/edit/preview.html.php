@@ -4,11 +4,11 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-echo new View('view/project/widget/support.html.php'),
-     new View('view/user/widget/user.html.php'),
-     new View('view/project/widget/media.html.php', array('project' => $project)),
-     new View('view/project/widget/share.html.php', array('project' => $project)),
-     new View('view/project/widget/summary.html.php', array('project' => $project));
+?>
+
+
+
+<?php
             
 $project = $this['project'];
 
@@ -35,10 +35,26 @@ echo new SuperForm(array(
     'elements'      => array(
         
         'preview' => array(
-            'type'      => 'group'
-                  
+            'type'      => 'group',
+            'class'     => 'fullwidth',
+            'extraHTML' =>   '<div class="project-preview" style="position: relative"><div>'    
+                           . '<div class="overlay" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 999"></div>'    
+                           . '<div style="z-index: 0">'                            
+                           . new View('view/project/widget/support.html.php')
+                           . new View('view/user/widget/user.html.php')
+                           . new View('view/project/widget/media.html.php', array('project' => $project))
+                           . new View('view/project/widget/share.html.php', array('project' => $project))
+                           . new View('view/project/widget/summary.html.php', array('project' => $project))
+                           . '</div>'
+                           . '</div></div>'
+        ),
+        'comment' => array(
+            'type'  =>'textarea',
+            'title' => 'Notas adicionales',
+            'rows'  => 8,
+            'cols'  => 100,
+            'hint'  => Text::get('guide-project-comment')
         )
-        
     )
 
 ));

@@ -3,6 +3,7 @@
  */
  
 @import url('edit/steps.css');
+@import url('edit/preview.css');
 
 body.project-edit div#main div.status {
     color: #bcbdbd;

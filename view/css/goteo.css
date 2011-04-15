@@ -510,7 +510,7 @@ div#main {
     margin: 40px auto;
     clear: both;
     overflow-y: auto;
-    overflow-x: visibe;
+    overflow-x: hidden;
 }
 
 /**

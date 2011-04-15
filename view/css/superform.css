@@ -3,7 +3,6 @@
  * Superform!
  */
 
-
 div.superform fieldset {
     border: 1px solid #99a2a5;    
 }
@@ -115,6 +114,21 @@ div.superform div.elements > ol > li div.element {
 
 div.superform div.elements > ol > li > div.children > div.elements {
     margin-top: 1em;
+}
+
+/* Full-width elements */
+div.superform li.element.fullwidth {    
+    border-right: none !important;
+    background-color: #e7e7e7 !important;
+    margin-right: -2px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    border-bottom: 1px dashed #b7c2c5 !important;
+    margin-bottom: -1px !important;
+}
+
+div.superform li.element.fullwidth + li.element {
+    border-top: none;
 }
 
 /* Element badges */
