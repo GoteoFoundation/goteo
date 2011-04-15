@@ -8,6 +8,7 @@ namespace Goteo\Library {
 	 * Clase para sacar textos estáticos de la tabla text
 	 *  (por ahora utilizar gettext no nos compensa, quizás más adelante)
 	 *
+     *  @TODO, definir donde se define y se cambia la constante LANG y utilizarla en los _::get_
 	 */
     class Text {
 
@@ -15,7 +16,32 @@ namespace Goteo\Library {
             $id,
             $lang,
             $text,
-            $purpose;
+            $purpose,
+            $html;
+
+        /*
+         * Devuelve un texto en HTML
+         */
+        static public function html ($id) {
+            // sacamos el contenido del texto
+            $text = self::get($id);
+            if (self::isHtml($id))
+                return $text; // el texto ES html, lo devuelve tal cual
+            else
+                return \htmlspecialchars ($text); // el texto NO es html, lo pasa por html especial chars
+        }
+
+        /*
+         * Devuelve un testo sin HTML
+         */
+        static public function plain ($id) {
+            // sacamos el contenido del texto
+            $text = self::get($id);
+            if (self::isHtml($id))
+                return \strip_tags($text) ; // ES html, le quitamos los tags
+            else
+                return $text;
+        }
 
         static public function get ($id = null, $lang = 'es') {
 			if ($id === null)
@@ -61,6 +87,31 @@ namespace Goteo\Library {
 				return "Texto $id";
 			}
 		}
+
+        /*
+         * Si un texto esta marcado como html devuelve true, si no está marcado así, false
+         * Se marca en la tabla de propósitos ya que en la tabla texts habría que marcarlo en cada idioma
+         */
+		static public function isHtml ($id = null) {
+			if ($id === null)
+				return false;
+
+            $id = str_replace(' ', '-', $id); // @FIXME seguro temporal
+
+            try
+            {
+                // lo miramos en la tabla de propósitos
+                $query = Model::query("SELECT html FROM purpose WHERE text = :id", array(':id' => $id));
+                $purpose = $query->fetchObject();
+                if ($purpose->html == 1)
+                    return true;
+                else
+                    return false;
+            } catch (\PDOException $e) {
+                return false; // La tabla purpose no tiene el campo html
+            }
+		}
+
 
 		/*
 		 *  Metodo para la lista de textos segun idioma
