@@ -147,6 +147,8 @@ div.superform li.element.textbox > div.contents > input[type="text"],
 div.superform li.element.textarea > div.contents > textarea {
     display: block;
     width: 100%;
+    min-width: 100%;
+    max-width: 100%;
     margin: 0;
     padding: .3em;    
 }
