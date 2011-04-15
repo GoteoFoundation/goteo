@@ -1,7 +1,8 @@
-
 /**
  * Project edit form
  */
+ 
+@import url('edit/steps.css');
 
 body.project-edit div#main div.status {
     color: #bcbdbd;
@@ -82,55 +83,6 @@ body.project-edit div#main .status #project-score .meter .left {
     right: 0;        
     top: 0;
     bottom: 0;
-}
-
-/* Form navigator (*steps*) */
-
-body.project-edit div#main #project-steps {
-    padding: 30px 0;
-    text-align: center;
-}
-
-body.project-edit div#main #project-steps h3 {
-    display: none;     
-}
-
-body.project-edit div#main #project-steps ol {
-    margin: -10px 0 0;
-    padding: 0;
-    list-style: none;  
-    border-bottom: 2px solid #b2b2b2;
-    display: inline-block;
-    height: 3.5em;
-}
-
-body.project-edit div#main #project-steps li {
-    display: inline-block;
-    padding: 0 1em 10px;
-    height: 100%;    
-    background: url('edit/step-on.png') no-repeat bottom center;    
-}
-
-body.project-edit div#main #project-steps li button {
-    font-size: 12px;    
-    font-weight: normal;
-    height: 100%;
-    margin: 0;    
-    padding: 0;
-    border: none;
-    background: none;
-    color: #20b2b1;    
-}
-
-body.project-edit div#main #project-steps li.current {
-}
-
-body.project-edit div#main #project-steps li.offtopic {
-    background-image: url('edit/step-off.png');    
-}
-
-body.project-edit div#main #project-steps li.offtopic button {
-    color: #b2b2b2;
 }
 
 body.project-edit div.superform {
