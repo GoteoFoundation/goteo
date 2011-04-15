@@ -198,10 +198,11 @@ div.superform div.elements > ol > li.element.radios > div.contents ul li input[t
 
 /* Feedback */
 div.superform li.element > div.feedback {
+    margin-top: 1em;
     font-size: 14px;
     z-index: 999;    
-    padding-top: 1.5em;    
-    background: url('superform/tooltip/beak/cyan/n.png') no-repeat 1em 7px;
+    padding-top: 13px;    
+    background: url('superform/tooltip/beak/cyan/n.png') no-repeat 1em 0;
     display: inline-block;
 }
 
@@ -229,6 +230,8 @@ div.superform li.element > div.feedback > div {
     background-color: #def1f1;
     color: #7f8183;    
     box-shadow: 2px 3px 0 rgba(0,0,0,.2);    
+    -moz-box-shadow: 2px 3px 0 rgba(0,0,0,.2);    
+    -webkit-box-shadow: 2px 3px 0 rgba(0,0,0,.2);
     position: relative;
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
@@ -279,7 +282,10 @@ div.superform div.footer button {
     background-color: #ee4843 !important;
     padding-left: 4em;
     padding-right: 4em;
-}
+    box-shadow: 2px 2px 0 rgba(0,0,0,.2);    
+    -moz-box-shadow: 2px 2px 0 rgba(0,0,0,.2);    
+    -webkit-box-shadow: 2px 2px 0 rgba(0,0,0,.2);
+}s
 
 div.superform div.footer input:hover,
 div.superform div.footer button:hover,
@@ -305,7 +311,7 @@ div.superform.aqua li.element > div.feedback > div {
     color: white;
 }
 
-div.superform.aqua li.element > div.feedback {    
+div.superform.aqua li.element > div.feedback {
     background-image: url('superform/tooltip/beak/aqua/n.png');    
 }
 
@@ -343,6 +349,7 @@ div.superform.red li.element > div.feedback > div {
 div.superform.red li.element > div.feedback {    
     background-image: url('superform/tooltip/beak/red/n.png');    
 }
+
 
 body.js div.superform.red li.element > div.feedback  {    
     background-image: url('superform/tooltip/beak/red/w.png');
