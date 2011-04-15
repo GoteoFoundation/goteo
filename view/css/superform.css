@@ -32,12 +32,13 @@ div.superform > div.elements {
 
 div.superform > div.hint {
     color: #7f8183;    
+    overflow: hidden;
 }
 
-body.js div#main div.superform > div.hint {
-    background: url('superform/wizard.png') no-repeat right top;
-    padding-right: 250px;    
-    border-right: 1px dashed #b7c2c5;    
+body.js div.superform > div.hint {
+    background: url('superform/wizard.png') no-repeat right top;     
+    border-right: 1px dashed #b7c2c5;      
+    padding-right: 250px;
 }
 
 div.superform > div.elements {
@@ -45,23 +46,24 @@ div.superform > div.elements {
 }
 
 div.superform > div.hint h4,
-div.superform > div.hint blockquote {
-    display: table-cell;
+div.superform > div.hint blockquote {    
     background-color: #ddf0f1;
     padding: 20px;    
     vertical-align: top;
     border: dashed #b7c2c5;
     border-width: 1px 0 0;
+    margin: 0;    
 }
 
 div.superform > div.hint h4 {
-    font-size: 30px;        
+    font-size: 30px;
+    float: left;
 }
 
 div.superform > div.hint blockquote {
     font-size: 12px;
     border-right-width: 1px;
-    width: 100%;
+    min-height: 3em;
 }
 
 div.superform > div.hint blockquote p {
