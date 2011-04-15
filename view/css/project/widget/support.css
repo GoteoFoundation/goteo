@@ -65,6 +65,10 @@ div.widget.project-support dl dd.minimum {
     display: inline-block;
 }
 
+div.widget.project-support dl dd.minimum {
+    background-image: url('../../euro/red/l.png');
+}
+
 div.widget.project-support dl dd.optimum strong,
 div.widget.project-support dl dd.minimum strong {
     font-size: 30px;
