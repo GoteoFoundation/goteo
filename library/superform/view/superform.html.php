@@ -50,13 +50,13 @@
                     
                     if (frm.__chint !== null) {
                         setTimeout(function() {
-                            frm.find('div.feedback#superform-feedback-for-' + frm.__chint).fadeOut(speed);
+                            frm.find('div.feedback#superform-feedback-for-' + frm.__chint + ':visible').fadeOut(speed);
                             frm.__chint = null;
                         }, 0);
                     }
                     
                     setTimeout(function() {
-                            frm.find('div.feedback#superform-feedback-for-' + id).fadeIn(speed);
+                            frm.find('div.feedback#superform-feedback-for-' + id).not(':visible').fadeIn(speed);
                             frm.__chint = id;
                     }, 0);
                     
