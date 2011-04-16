@@ -34,9 +34,6 @@ namespace Goteo\Controller {
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
         private function edit ($id) {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
             //@TODO Verificar si tiene permisos para editar (usuario)
             $nodesign = true; // para usar el formulario de proyecto en Julian mode
 
@@ -202,9 +199,6 @@ namespace Goteo\Controller {
         }
 
         private function create () {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
             //@TODO Verificar si tienen permisos para crear nuevos proyectos
             $project = new Model\Project;
             $project->create($_SESSION['user']->id);
@@ -225,9 +219,6 @@ namespace Goteo\Controller {
 
         // Finalizar para revision, ready le cambia el estado
         public function finish($id) {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
             //@TODO verificar si tienen el mínimo progreso para verificación y si está en estado edición
             $project = Model\Project::get($id);
 
@@ -242,9 +233,6 @@ namespace Goteo\Controller {
         }
 
         public function enable($id) {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
             //@TODO verificar si tiene permisos para rehabilitar la edición del proyecto (admin)
             if ($_SESSION['user']->role != 1) //@FIXME!! Piñonaco... ACL...
                 throw new Redirection("/project/{$id}");
@@ -259,9 +247,6 @@ namespace Goteo\Controller {
         }
 
         public function publish($id) {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
             //@TODO verificar si tiene permisos para publicar proyectos
             if ($_SESSION['user']->role != 1) //@FIXME!! Piñonaco... ACL...
                 throw new Redirection("/project/{$id}");

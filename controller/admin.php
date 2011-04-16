@@ -12,9 +12,6 @@ namespace Goteo\Controller {
 	class Admin extends \Goteo\Core\Controller {
 
         public function index () {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
 			// si tenemos usuario logueado
             if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
@@ -24,10 +21,6 @@ namespace Goteo\Controller {
 
 
 		public function texts ($lang = 'es') {
-		    if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
-
 			// si tenemos usuario logueado
             if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
@@ -54,10 +47,6 @@ namespace Goteo\Controller {
 		}
 
 		public function translate ($id = null, $lang = 'es') {
-		    if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
-
 			// si tenemos usuario logueado
 			$using = Lang::get($lang);
 
@@ -105,9 +94,6 @@ namespace Goteo\Controller {
          *  Revisión de proyectos, aqui llega con un nodo y si no es el suyo a la calle (o al suyo)
          */
         public function checking($node = 'goteo') {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
             if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
 
@@ -125,9 +111,6 @@ namespace Goteo\Controller {
          *  administración de nodos y usuarios (segun le permita el ACL al usuario validado)
          */
         public function managing($node = 'goteo') {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
             if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
 
@@ -145,9 +128,6 @@ namespace Goteo\Controller {
          *  Revisión de proyectos, aqui llega con un nodo y si no es el suyo a la calle (o al suyo)
          */
         public function accounting($node = 'goteo') {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
             if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
 
