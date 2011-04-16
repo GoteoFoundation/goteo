@@ -1,0 +1,86 @@
+
+@import url('widget/summary.css');
+@import url('widget/support.css');
+@import url('widget/share.css');
+@import url('../user/widget/user.css');
+
+
+body.project-show div#main {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/**
+ * Menu
+*/
+
+body.project-show div.project-menu {
+    max-width: 940px;
+    margin: 0 auto;
+}
+
+body.project-show div.project-menu ul {
+    padding: 0 0 20px;
+    margin: 0;
+    list-style: none;
+    font-size: 0;
+}
+
+body.project-show  div.project-menu ul li {
+    display: inline-block;
+    margin-right: 1px;    
+    background-color: #c8babc;
+
+}
+
+body.project-show div.project-menu ul li a {
+    display: inline-block;
+    padding: .6em 2em .2em .6em;
+    color: white;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+body.project-show div.project-menu ul li.messages {
+    background-color: #00b05b;
+}
+
+body.project-show div.project-menu ul li.home {
+    background-color: #1fb0b0;
+} 
+
+body.project-show div.project-menu ul li.needs {
+    background-color: #e13028;
+} 
+
+body.project-show div.project-menu ul li.supporters {
+    background-color: #313b96;
+}
+
+body.project-show div#main div.widget {
+    margin-bottom: 20px;
+}
+
+body.project-show div#main div.widget.project-support {
+    min-height: 340px;
+}
+
+body.project-show div#main div.widget.project-support,
+body.project-show div#main div.widget.user {
+    width: 260px;
+    float: right;
+    clear: right;    
+}
+
+body.project-show div#main div.widget.project-summary,
+body.project-show div#main div.widget.project-share {
+    max-width: 580px;
+    margin-right: 20px;
+}
+
+body.project-show div#main div.widget.project-media {
+    padding: 0;
+    max-width: 620px;
+    height: 380px;
+    margin-right: 20px;
+}

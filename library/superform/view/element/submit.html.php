@@ -1,0 +1,1 @@
+<input type="submit" name="<?php echo htmlspecialchars($this['name']) ?>" value="<?php echo htmlspecialchars($this['label']) ?>" class="<?php echo htmlspecialchars($this['class']) ?>" />

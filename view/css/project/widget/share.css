@@ -1,0 +1,58 @@
+div.widget.project-share .title {
+    border: none;
+}
+
+div.widget.project-share ul {
+    list-style: none;
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+}
+
+div.widget.project-share li {
+    display: block;
+    padding-left: 30px;
+    float: left;    
+    min-height: 20px;
+    line-height: 20px;
+    background: no-repeat left center;
+    min-width: 20%;
+}
+
+div.widget.project-share li a {
+    text-decoration: none;
+}
+
+div.widget.project-share li.facebook {
+    background-image: url('share/facebook.png');
+}
+
+div.widget.project-share li.twitter {
+    background-image: url('share/twitter.png');    
+}
+
+div.widget.project-share li.email {
+    background-image: url('share/email.png');
+    clear: left;
+    margin-top: 15px;
+}
+
+div.widget.project-share li.url {
+    background-image: url('share/url.png');
+    margin-top: 15px;
+}
+
+div.widget.project-share li.url span {
+    display: none;
+}
+
+div.widget.project-share li.url input,
+div.widget.project-share li.url input:focus {
+    border: none;
+    font-size: inherit;
+    background-color: #e6e6e6 !important;
+    padding: .3em .4em;
+    border-radius: .25em;
+    -moz-border-radius: .2em;
+    font-weight: normal;
+}

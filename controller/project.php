@@ -190,7 +190,7 @@ namespace Goteo\Controller {
 
 
             $view = new View (
-                "view/project/{$step}.html.php",
+                "view/project/edit.html.php",
                 $viewData
             );
 
