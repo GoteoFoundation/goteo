@@ -117,8 +117,8 @@ namespace Goteo\Controller {
                 foreach ($steps as $id => &$data) {
                     if (call_user_func_array(array($this, "process_{$id}"), array(&$project, &$errors))) {
                         // si un process devuelve true es que han enviado datos de este paso, lo añadimos a los pasados
-                        if (!in_array($id, $_SESSION['steped']))
-                            $_SESSION['steped'][] = $id;
+                        if (!in_array($id, $_SESSION['stepped']))
+                            $_SESSION['stepped'][] = $id;
                     }
 
                     // y el paso que vamos a mostrar
