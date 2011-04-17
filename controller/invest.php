@@ -6,7 +6,8 @@ namespace Goteo\Controller {
         Goteo\Core\Error,
         Goteo\Core\View,
         Goteo\Model,
-        Goteo\Library\Worth;
+        Goteo\Library\Worth,
+        Goteo\Library\Paypal;
 
     class Invest extends \Goteo\Core\Controller {
 
@@ -14,6 +15,8 @@ namespace Goteo\Controller {
          *  La manera de obtener el id del usuario validado cambiará al tener la session
          */
         public function index ($project = null) {
+
+            $message = '';
 
             if (empty($project))
                 throw new Redirection('/project/explore');
@@ -23,10 +26,19 @@ namespace Goteo\Controller {
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $errors = array();
 
+                if (empty($_POST['email'])) {
+                    $errors[] = 'Indicar la cuenta de paypal';
+                }
+
                 if (empty($_POST['amount'])) {
                     $errors[] = 'Indicar la cantidad del aporte';
                 }
-                else {
+
+                if (empty($errors)) {
+                    $transaction = Paypal::pay($_POST['email'], $_POST['amount']);
+
+                    $message .= $transaction;
+
                     $invest = new Model\Invest(
                         array(
                             'amount' => $_POST['amount'],
@@ -52,7 +64,7 @@ namespace Goteo\Controller {
                             }
                         }
 
-                        $message = 'Gracias. Se ha realizado el aporte ' . $invest->id . '<br />';
+                        $message .= 'Gracias. Se ha realizado el aporte ' . $invest->id . '<br />';
 
                         // la vista es la página de difundir el proyecto
                         $message .= '<pre>' . print_r($invest, 1) . '</pre>';
@@ -63,7 +75,7 @@ namespace Goteo\Controller {
                     $message .= 'Errores: ' . implode('.', $errors);
 			}
 
-            $worthcracy         = Worth::getAll();
+            $worthcracy = Worth::getAll();
 
             $viewData = array(
                     'message' => $message,
