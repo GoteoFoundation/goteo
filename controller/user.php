@@ -52,10 +52,6 @@ namespace Goteo\Controller {
          * Modificación perfil de usuario.
          */
         public function edit () {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
-
             $user = $_SESSION['user'];
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {

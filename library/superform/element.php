@@ -5,7 +5,7 @@ namespace Goteo\Library\SuperForm {
     use Goteo\Library\SuperForm,
         Goteo\Core\View;
     
-    class Element implements \Goteo\Core\Resource {
+    class Element extends \ArrayObject implements \Goteo\Core\Resource {
                 
         
         public            
@@ -13,16 +13,21 @@ namespace Goteo\Library\SuperForm {
             $type,
             $title,            
             $class = '',
+            $inline = false,
             $hint,
             $required = false,
             $errors = array(),
             $children = array(),
             $extraHTML = '',
-            $level = 2;
+            $level = 2,
+            $view,
+            $data = array();
                         
         public function __construct ($data = array()) {
             
             foreach ($data as $k => $v) {
+                
+                $this[$k] = $v; // Copio todo para que pueda leerlo la vista
                 
                 switch ($k) {
                     
@@ -33,7 +38,7 @@ namespace Goteo\Library\SuperForm {
                     default:
                         if (property_exists($this, $k)) {
                             $this->$k = $v;
-                        }                                            
+                        }                              
                 }                                
                 
             }
@@ -59,14 +64,14 @@ namespace Goteo\Library\SuperForm {
         
         public function getInnerHTML () {
             
-            if ($this->view !== false) {
-                return (string) (new View($this->view, $this));
+            if ($this->view !== false) {                                
+                return (string) (new View($this->view, $this));                
             }
             
             return '';
         }
         
-        public function __toString () {                       
+        public function __toString () {                                               
             return (string) (new View('library/superform/view/element.html.php', array('element' =>$this)));
             
         }

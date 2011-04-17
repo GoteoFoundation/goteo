@@ -23,7 +23,7 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
             <div class="side">
             <?php             
             echo
-                new View('view/project/widget/support.html.php'),                 
+                new View('view/project/widget/support.html.php', array('project' => $project)),                 
                 new View('view/user/widget/user.html.php', array('user' => $user));
             
             ?>                

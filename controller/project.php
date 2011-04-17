@@ -34,9 +34,6 @@ namespace Goteo\Controller {
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
         private function edit ($id) {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
             //@TODO Verificar si tiene permisos para editar (usuario)
             $nodesign = true; // para usar el formulario de proyecto en Julian mode
 
@@ -46,6 +43,8 @@ namespace Goteo\Controller {
             if ($project->status != 1 && $_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/project/{$project->id}");
 
+            if (!isset($_SESSION['stepped']))
+                $_SESSION['stepped'] = array();
 
             $steps = array(
                 'userProfile' => array(
@@ -110,20 +109,21 @@ namespace Goteo\Controller {
                 $step = 'supports';
             else
                 $step = 'preview';
+            
+            $viewData['step'] =& $step;
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//                die ('<pre>' . \print_r($_POST, 1) . '</pre>');
                 $errors = array(); // errores al procesar, no son errores en los datos del proyecto
-                $procesar = $_POST['step'];
                 foreach ($steps as $id => &$data) {
-                    // tengo que poner este hidden porque sino el objeto se RE-llena con datos vacios que no le llegan por post
-                    // solo quiero substituir en los datos lo que llegue por post, lo demás que quede tal cual al hacer save
-                    if ($procesar == $id) {
-                        call_user_func_array(array($this, "process_{$id}"), array(&$project, &$errors));
+                    if (call_user_func_array(array($this, "process_{$id}"), array(&$project, &$errors))) {
+                        // si un process devuelve true es que han enviado datos de este paso, lo añadimos a los pasados
+                        if (!in_array($id, $_SESSION['stepped']))
+                            $_SESSION['stepped'][] = $id;
                     }
+
                     // y el paso que vamos a mostrar
                     if (!empty($_POST['view-step-'.$id]))
-                        $viewData['step'] = $step = $id;
+                        $step = $id;
                 }
 
                 // guardamos los datos que hemos tratado y los errores de los datos
@@ -135,6 +135,18 @@ namespace Goteo\Controller {
 
                 //re-evaluar el proyecto
                 $project->evaluate();
+
+                //si nos estan pidiendo el error de un campo, se lo damos
+                if (!empty($_GET['errors'])) {
+                    foreach ($project->errors as $paso) {
+                        if (!empty($paso[$_GET['errors']])) {
+                            return new View(
+                                'view/project/errors.json.php',
+                                array('errors'=>array($paso[$_GET['errors']]))
+                            );
+                        }
+                    }
+                }
             }
 
             // segun el paso añadimos los datos auxiliares para pintar
@@ -188,12 +200,10 @@ namespace Goteo\Controller {
         }
 
         private function create () {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
             //@TODO Verificar si tienen permisos para crear nuevos proyectos
             $project = new Model\Project;
             $project->create($_SESSION['user']->id);
+            $_SESSION['stepped'] = array();
                 throw new Redirection("/project/{$project->id}/?edit");
 
             throw new \Goteo\Core\Exception('Fallo al crear un nuevo proyecto');
@@ -211,9 +221,6 @@ namespace Goteo\Controller {
 
         // Finalizar para revision, ready le cambia el estado
         public function finish($id) {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
             //@TODO verificar si tienen el mínimo progreso para verificación y si está en estado edición
             $project = Model\Project::get($id);
 
@@ -228,9 +235,6 @@ namespace Goteo\Controller {
         }
 
         public function enable($id) {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
             //@TODO verificar si tiene permisos para rehabilitar la edición del proyecto (admin)
             if ($_SESSION['user']->role != 1) //@FIXME!! Piñonaco... ACL...
                 throw new Redirection("/project/{$id}");
@@ -245,9 +249,6 @@ namespace Goteo\Controller {
         }
 
         public function publish($id) {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
             //@TODO verificar si tiene permisos para publicar proyectos
             if ($_SESSION['user']->role != 1) //@FIXME!! Piñonaco... ACL...
                 throw new Redirection("/project/{$id}");
@@ -280,12 +281,15 @@ namespace Goteo\Controller {
         // Métodos privados para el tratamiento de datos
         // del save y remove de las tablas relacionadas se enmcarga el model/project
         // primero añadir y luego quitar para que no se pisen los indices
+        // En vez del hidden step, va a comprobar que esté definido en el post el primer campo del proceso
         //-----------------------------------------------
         /*
          * Paso 1 - PERFIL
          */
         private function process_userProfile(&$project, &$errors) {
-            return true;
+            if (!isset($_POST['user_name']))
+                return false;
+
             $user = Model\User::get($project->owner);
 
             // tratar la imagen y ponerla en la propiedad avatar
@@ -333,13 +337,17 @@ namespace Goteo\Controller {
             }
 
             /// este es el único save que se lanza desde un metodo process_
-            $user->save($project->errors['userProfile']); 
+            $user->save($project->errors['userProfile']);
+            return true;
         }
 
         /*
          * Paso 2 - DATOS PERSONALES
          */
         private function process_userPersonal(&$project, &$errors) {
+            if (!isset($_POST['contract_name']))
+                return false;
+
             // campos que guarda este paso
             $fields = array(
                 'contract_name',
@@ -356,6 +364,8 @@ namespace Goteo\Controller {
             foreach ($fields as $field) {
                 $project->$field = $_POST[$field];
             }
+
+            return true;
         }
 
         /*
@@ -363,6 +373,9 @@ namespace Goteo\Controller {
          */
 
         private function process_overview(&$project, &$errors) {
+            if (!isset($_POST['name']))
+                return false;
+
             // campos que guarda este paso
             $fields = array(
                 'name',
@@ -402,13 +415,18 @@ namespace Goteo\Controller {
                 unset($project->categories[$key]);
             }
 
-            $quedan = $project->categories;
+            $quedan = $project->categories; // truki para xdebug
+
+            return true;
         }
 
         /*
          * Paso 4 - COSTES
          */
         private function process_costs(&$project, &$errors) {
+            if (!isset($_POST['resource']))
+                return false;
+
             $project->resource = $_POST['resource'];
             
             //tratar costes existentes
@@ -446,13 +464,17 @@ namespace Goteo\Controller {
                 if (!empty($este))
                     unset($project->costs[$key]);
             }
-            $costes = $project->costs;
+            $costes = $project->costs; //para xdebug
+
+            return true;
         }
 
         /*
          * Paso 5 - RETORNO
          */
         private function process_rewards(&$project, &$errors) {
+            if (!isset($_POST['nsocial_reward']))
+                return false;
 
             //tratar retornos sociales
             foreach ($project->social_rewards as $key=>$reward) {
@@ -515,12 +537,15 @@ namespace Goteo\Controller {
                     unset($project->individual_rewards[$key]);
             }
 
+            return true;
         }
 
         /*
          * Paso 6 - COLABORACIONES
          */
          private function process_supports(&$project, &$errors) {
+            if (!isset($_POST['nsupport']))
+                return false;
 
             // tratar colaboraciones existentes
             foreach ($project->supports as $key=>$support) {
@@ -548,6 +573,7 @@ namespace Goteo\Controller {
                     unset($project->supports[$key]);
             }
 
+            return true;
         }
 
         /*
@@ -555,7 +581,12 @@ namespace Goteo\Controller {
          * No hay nada que tratar porque aq este paso no se le envia nada por post
          */
         private function process_preview(&$project) {
+            if (!isset($_POST['comment']))
+                return false;
+
             $project->comment = $_POST['comment'];
+
+            return true;
         }
         //-------------------------------------------------------------
         // Hasta aquí los métodos privados para el tratamiento de datos

@@ -17,6 +17,8 @@ namespace Goteo\Library\SuperForm\Element {
                 throw new Exception;
             }
             
+            $options = array();
+            
             foreach ($this->options as $value => &$option) { 
                 
                 if (is_string($option)) {
@@ -31,9 +33,15 @@ namespace Goteo\Library\SuperForm\Element {
                     
                     $option = new Radio($option + array('name' => $this->name));
                     
-                }                
+                } else {
+                    continue;
+                }
+                
+                $options[] = $option;
                 
             }
+            
+            $this['options'] = $this->options = $options;
             
             
         }

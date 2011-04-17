@@ -1,9 +1,61 @@
 <?php
 
 use Goteo\Library\Text,
-    Goteo\Library\SuperForm;
+    Goteo\Library\SuperForm,
+    Goteo\Library\View;
             
 $project = $this['project'];
+
+$costs = null;
+
+if (!empty($project->costs)) {
+    $costs = array();
+    foreach ($project->costs as $cost) {     
+        $costs["cost-{$cost->id}"] = array(
+            'type'      => 'group',            
+            'children'  => array(                         
+                'summary' => array(
+                    'title'     => 'Coste',
+                    'type'      => 'textbox',
+                    'size'      => 100,
+                    'inline'    => true,
+                    'value'     => ''
+                ),
+                'description' => array(
+                    'type'      => 'textarea',
+                    'title'     => 'Descripción',
+                    'cols'      => 100,
+                    'rows'      => 4,
+                    'inline'    => true,
+                    'value'     => ''
+                ),
+                'amount' => array(
+                    'type'      => 'textbox',
+                    'title'     => 'Valor',
+                    'size'      => 8,
+                    'inline'    => true,
+                    'value'     => ''
+                ),
+                'from'  => array(
+                    'inline'    => true,
+                    // 'type'      => 'date',
+                    'title'     => 'Desde',
+                ),
+                'to'  => array(
+                    'inline'    => true,
+                    'title'     => 'Hasta',
+                ),
+                'required'  => array(
+                    'type'      => 'checkbox',
+                    // 'type'      => 'date',
+                    'inline'    => true,
+                    'title'     => 'Imprescindible',
+                )
+            )
+        );
+    }    
+}
+
 
 echo new SuperForm(array(
 
@@ -26,6 +78,7 @@ echo new SuperForm(array(
             'type'      => 'group',
             'title'     => 'Desglose de costes',
             'hint'      => Text::get('tooltip-project-costs'),
+            'children'  => $costs
         ),
         
         'resource' => array(
@@ -39,6 +92,7 @@ echo new SuperForm(array(
         
         'schedule' => array(                        
             'title'     => 'Agenda',            
+            'class'     => 'fullwidth'
         ),          
     )
 
