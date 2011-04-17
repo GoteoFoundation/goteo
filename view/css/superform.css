@@ -225,19 +225,19 @@ div.superform li.element > div.feedback {
 body.js div.superform li.element > div.feedback  {
     /* Javascript-enabled */
     right: -250px;
-    top: 10px;
+    top: -.5em;
     width: 250px;
     padding-left: 13px;
     display: none;
     position: absolute;
-    background: url('superform/tooltip/beak/cyan/w.png') no-repeat left 1em ;
+    background: transparent url('superform/tooltip/beak/cyan/w.png') no-repeat 0 1em;
     padding-top: 0;
 }
 
 body.js div.superform div.children > div.elements > ol > li.element > div.feedback {
     left: 100%;
     margin-left: 1em;
-    margin-top: -1em;
+    margin-top: 0;
 }
 
 div.superform li.element > div.feedback > div {
