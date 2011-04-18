@@ -14,14 +14,18 @@ namespace Goteo\Model {
             $name,
             $avatar,
             $about,
-            $interests,
             $contribution,
             $keywords,
-            $twitter,
+            $active,
             $facebook,
+            $twitter,
             $linkedin,
             $country,
-            $worth;
+            $worth,
+            $created,
+            $modified,
+            $interests,
+            $webs;
 
 	    public function __set($name, $value) {
             $this->$name = $value;
@@ -81,12 +85,12 @@ namespace Goteo\Model {
                     $data[':contribution'] = $this->contribution;
                 }
 
-                if(!empty($this->twitter)) {
-                    $data[':twitter'] = $this->twitter;
-                }
-
                 if(!empty($this->facebook)) {
                     $data[':facebook'] = $this->facebook;
+                }
+
+                if(!empty($this->twitter)) {
+                    $data[':twitter'] = $this->twitter;
                 }
 
                 if(!empty($this->linkedin)) {
@@ -127,9 +131,6 @@ namespace Goteo\Model {
                         $query .= $key . ", ";
                     }
                     $query = substr($query, 0, -2) . ")";
-                    trace($query);
-                    return;
-                    die;
                     // Ejecuta SQL.
                     return self::query($query, $data);
             	} catch(\PDOException $e) {
@@ -147,8 +148,14 @@ namespace Goteo\Model {
          * @return bool true|false
          */
         public function validate(&$errors = array()) {
+            $required = array(
+                'email' => true
+            );
+
             // Nuevo usuario.
             if(empty($this->id)) {
+                $required['password'] = true;
+
                 // Nombre de usuario (id)
                 if(empty($this->name)) {
                     $errors['username'] = Text::get('error-register-username');
@@ -209,8 +216,20 @@ namespace Goteo\Model {
                 if (empty($this->facebook)) {
                     $errors['facebook'] = Text::get('validate-user-field-facebook');
                 }
+                if (empty($this->twitter)) {
+                    $errors['twitter'] = Text::get('validate-user-field-twitter');
+                }
+                if (empty($this->linkedin)) {
+                    $errors['linkedin'] = Text::get('validate-user-field-linkedin');
+                }
             }
-            return empty($errors);
+            // @TODO: Revisar $required (Ajuste temporal)
+            foreach($required AS $item => $value) {
+                if(in_array($item, $errors)) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         /**
@@ -225,17 +244,16 @@ namespace Goteo\Model {
                     SELECT
                         id,
                         role_id AS role,
-                        name,
                         email,
-                        password,
-                        about,
-                        keywords,
-                        active AS visible,
+                        name,
                         avatar,
+                        about,
                         contribution,
-                        twitter,
+                        keywords,
                         facebook,
+                        twitter,
                         linkedin,
+                        active,
                         worth,
                         created,
                         modified

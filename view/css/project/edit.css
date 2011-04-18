@@ -90,3 +90,17 @@ body.project-edit div.superform {
     border: solid #0a0a0a;
     border-width: 3px 0;     
 }
+
+/* Costs */
+body.project-edit div#main.costs div.superform li.element#costs > div.children > div.elements > ol > li > div.children > div.elements > ol > li > .title {
+    padding: .3em 0;
+    position: absolute;
+    left: 0;
+    top: 1em;
+}
+
+body.project-edit div#main.costs div.superform li.element#costs > div.children > div.elements > ol > li > div.children > div.elements > ol > li > .contents {
+    margin-left: 25%;
+    position: relative;
+    margin-top: 0;
+}

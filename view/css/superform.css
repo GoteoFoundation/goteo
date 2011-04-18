@@ -24,6 +24,13 @@ div.superform li.element > h8 {
     font-size: 14px;
 }
 
+div.superform li.element > label {
+    font-weight: bold;        
+    text-transform: uppercase;
+    margin: 1em 0;
+    display: block;
+}
+
 div.superform > div.hint,
 div.superform > div.elements {    
     overflow: visible;
@@ -84,6 +91,7 @@ div.superform li.element {
     position: relative;
     padding: 1em 0;
     border-top: 1px dashed #B7C2C5;
+    clear: both;
 }
 
 div.superform li.element:last-child {
@@ -98,7 +106,7 @@ div.superform li.element > * + div.contents {
     margin-top: 1em;
 }
 
-body.js div.superform > div.elements > ol > li {
+body.js div.superform > div.elements > ol > li.element {
     margin-right: 250px;
     border-right: 1px dashed #b7c2c5;
 }
@@ -106,6 +114,10 @@ body.js div.superform > div.elements > ol > li {
 body.js div.superform > div.elements > ol > li.element li.element {
     margin-right: 0;
     border-right: none;
+}
+
+body div.superform > div.elements li.element li.element.inline {
+    border-top: none;
 }
 
 div.superform div.elements > ol > li div.element {
@@ -134,19 +146,19 @@ div.superform li.element.fullwidth + li.element {
 /* Element badges */
 
 div.superform div.elements > ol > li.busy > .title {
-    background: url('superform/badge/busy/cyan.gif') no-repeat right top;
+    background: url('superform/badge/busy/cyan.gif') no-repeat right center;
 }
 
 div.superform div.elements > ol > li.ok > .title {
-    background: url('superform/badge/ok.png') no-repeat right top;
+    background: url('superform/badge/ok.png') no-repeat right center;
 }
 
 div.superform div.elements > ol > li.required > .title {
-    background: url('superform/badge/required.png') no-repeat right top;
+    background: url('superform/badge/required.png') no-repeat right center;
 }
 
 div.superform div.elements > ol > li.error > .title  {
-    background: url('superform/badge/error.png') no-repeat right top !important;
+    background: url('superform/badge/error.png') no-repeat right center !important;
 }
 
 
@@ -158,6 +170,7 @@ div.superform li.element.textarea > div.contents {
 }
 
 div.superform li.element.textbox > div.contents > input[type="text"],
+div.superform li.element.textbox > div.contents > input[type="password"],
 div.superform li.element.textarea > div.contents > textarea {
     display: block;
     width: 100%;

@@ -6,10 +6,9 @@ use Goteo\Library\Text,
             
 $project = $this['project'];
 
-$costs = null;
+$costs = array();
 
 if (!empty($project->costs)) {
-    $costs = array();
     foreach ($project->costs as $cost) {     
         $costs["cost-{$cost->id}"] = array(
             'type'      => 'group',            
@@ -19,7 +18,7 @@ if (!empty($project->costs)) {
                     'type'      => 'textbox',
                     'size'      => 100,
                     'inline'    => true,
-                    'value'     => ''
+                    'value'     => $cost->cost
                 ),
                 'description' => array(
                     'type'      => 'textarea',
@@ -27,35 +26,54 @@ if (!empty($project->costs)) {
                     'cols'      => 100,
                     'rows'      => 4,
                     'inline'    => true,
-                    'value'     => ''
+                    'value'     => $cost->description
                 ),
                 'amount' => array(
                     'type'      => 'textbox',
                     'title'     => 'Valor',
                     'size'      => 8,
                     'inline'    => true,
-                    'value'     => ''
+                    'value'     => $cost->amount
                 ),
                 'from'  => array(
                     'inline'    => true,
                     // 'type'      => 'date',
+                    'type'      => 'textbox',
+                    'size'      => 8,
                     'title'     => 'Desde',
+                    'value'     => $cost->from
                 ),
                 'to'  => array(
                     'inline'    => true,
                     'title'     => 'Hasta',
+                    'type'      => 'textbox',
+                    'size'      => 8,
+                    'value'     => $cost->until
                 ),
                 'required'  => array(
                     'type'      => 'checkbox',
                     // 'type'      => 'date',
                     'inline'    => true,
-                    'title'     => 'Imprescindible',
+                    'title'     => 'Imprescindible',                    
+                    'value'     => 1,
+                    'checked'   => $cost->required
+                ),
+                'remove'    => array(
+                    'type'  => 'submit',
+                    'label' => 'Eliminar',
+                    'inline' => true,
+                    'class' => 'remove'
                 )
             )
         );
     }    
 }
 
+$costs[] = array(
+    'type'  => 'submit',
+    'label' => 'Añadir',
+    'class' => 'add'
+);
 
 echo new SuperForm(array(
 
