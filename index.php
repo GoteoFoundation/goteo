@@ -2,7 +2,8 @@
 
 use Goteo\Core\Resource,
     Goteo\Core\Error,
-    Goteo\Core\Redirection;
+    Goteo\Core\Redirection,
+    Goteo\Core\ACL;
 
 require_once 'config.php';
 require_once 'core/common.php';
@@ -56,7 +57,15 @@ $uri = strtok($_SERVER['REQUEST_URI'], '?');
 // Get requested segments
 $segments = preg_split('!\s*/+\s*!', $uri, -1, \PREG_SPLIT_NO_EMPTY);
 
+// Normalize URI
+$uri = '/' . implode('/', $segments);
+
 try {
+    
+    // Check permissions on requested URI
+    if (!ACL::check($uri)) {
+        throw new Error(Error::FORBIDDEN);
+    }
 
     // Get controller name
     if (!empty($segments) && class_exists("Goteo\\Controller\\{$segments[0]}")) {
