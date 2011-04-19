@@ -126,6 +126,16 @@ $costs['ncost'] = array(
             'value'     => $cost->amount,
             'hint'      => Text::get('tooltip-project-cost-amount')
         ),
+        'ncost-required'  => array(
+            'type'      => 'checkbox',
+            // 'type'      => 'date',
+            'class'     => 'inline',
+            //'title'     => 'Imprescindible',                    
+            'value'     => 1,
+            'label'     => 'Imprescindible',
+            'checked'   => $cost->required,
+            'hint'      => Text::get('tooltip-project-cost-required')
+        ),
         'ncost-from'  => array(
             'class'     => 'inline',
             // 'type'      => 'date',
@@ -142,16 +152,6 @@ $costs['ncost'] = array(
             'size'      => 8,
             'value'     => $cost->until,
             'hint'      => Text::get('tooltip-project-cost-until')
-        ),
-        'ncost-required'  => array(
-            'type'      => 'checkbox',
-            // 'type'      => 'date',
-            'class'     => 'inline',
-            //'title'     => 'Imprescindible',                    
-            'value'     => 1,
-            'label'     => 'Imprescindible',
-            'checked'   => $cost->required,
-            'hint'      => Text::get('tooltip-project-cost-required')
         ),
         'ncost-add' => array(
             'type'  => 'submit',
