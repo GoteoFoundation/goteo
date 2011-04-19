@@ -6,12 +6,24 @@ use Goteo\Library\Text,
             
 $project = $this['project'];
 
+$costsTypes = array();
+
+foreach ($this['types'] as $id => $type) {
+    $costTypes[] = array(
+        'value'     => $id,
+        'label'     => $type,
+        'summary'   => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque luctus ligula vel leo hendrerit sed consequat nulla.',
+        'class'     => $id
+    );
+}
+
 $costs = array();
 
 if (!empty($project->costs)) {
     foreach ($project->costs as $cost) {     
         $costs["cost-{$cost->id}"] = array(
-            'type'      => 'group',            
+            'type'      => 'group',      
+            'class'     => 'cost',
             'children'  => array(                         
                 'summary' => array(
                     'title'     => 'Coste',
@@ -19,6 +31,13 @@ if (!empty($project->costs)) {
                     'size'      => 100,
                     'class'     => 'inline',
                     'value'     => $cost->cost
+                ),
+                'type'    => array(
+                    'title'     => 'Tipo',
+                    'class'     => 'inline cost-type',
+                    'type'      => 'radios',
+                    'options'   => $costTypes,
+                    'value'     => $cost->type
                 ),
                 'description' => array(
                     'type'      => 'textarea',
@@ -69,10 +88,78 @@ if (!empty($project->costs)) {
     }    
 }
 
-$costs[] = array(
-    'type'  => 'submit',
-    'label' => 'Añadir',
-    'class' => 'add'
+$costs['ncost'] = array(
+    
+    'type'      => 'group',
+    'title'     => 'Nuevo coste',
+    'class'     => 'cost cost-new',
+    'children'  => array(
+        'ncost' => array(
+            'title'     => 'Coste',
+            'type'      => 'textbox',
+            'size'      => 100,
+            'class'     => 'inline',
+            'value'     => $cost->cost,
+            'hint'      => Text::get('tooltip-project-cost-cost')
+        ),
+        'ncost-type'    => array(
+            'title'     => 'Tipo',
+            'class'     => 'inline cost-type',
+            'type'      => 'radios',
+            'options'   => $costTypes,
+            'hint'      => Text::get('tooltip-project-cost-type')
+        ),
+        'ncost-description' => array(
+            'type'      => 'textarea',
+            'title'     => 'Descripción',
+            'cols'      => 100,
+            'rows'      => 4,
+            'class'     => 'inline',
+            'value'     => $cost->description,
+            'hint'      => Text::get('tooltip-project-cost-description')
+        ),
+        'ncost-amount' => array(
+            'type'      => 'textbox',
+            'title'     => 'Valor',
+            'size'      => 8,
+            'class'     => 'inline',
+            'value'     => $cost->amount,
+            'hint'      => Text::get('tooltip-project-cost-amount')
+        ),
+        'ncost-from'  => array(
+            'class'     => 'inline',
+            // 'type'      => 'date',
+            'type'      => 'textbox',
+            'size'      => 8,
+            'title'     => 'Desde',
+            'value'     => $cost->from,
+            'hint'      => Text::get('tooltip-project-cost-from')
+        ),
+        'ncost-to'  => array(
+            'class'     => 'inline',
+            'title'     => 'Hasta',
+            'type'      => 'textbox',
+            'size'      => 8,
+            'value'     => $cost->until,
+            'hint'      => Text::get('tooltip-project-cost-until')
+        ),
+        'ncost-required'  => array(
+            'type'      => 'checkbox',
+            // 'type'      => 'date',
+            'class'     => 'inline',
+            //'title'     => 'Imprescindible',                    
+            'value'     => 1,
+            'label'     => 'Imprescindible',
+            'checked'   => $cost->required,
+            'hint'      => Text::get('tooltip-project-cost-required')
+        ),
+        'ncost-add' => array(
+            'type'  => 'submit',
+            'label' => 'Añadir',
+            'class' => 'add inline',
+        )
+    )    
+    
 );
 
 echo new SuperForm(array(
