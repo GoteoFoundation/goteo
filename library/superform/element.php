@@ -7,13 +7,11 @@ namespace Goteo\Library\SuperForm {
     
     class Element extends \ArrayObject implements \Goteo\Core\Resource {
                 
-        
         public            
             $id,
             $type,
             $title,            
             $class = '',
-            $inline = false,
             $hint,
             $required = false,
             $errors = array(),

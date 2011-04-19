@@ -17,7 +17,7 @@ if (!empty($project->costs)) {
                     'title'     => 'Coste',
                     'type'      => 'textbox',
                     'size'      => 100,
-                    'inline'    => true,
+                    'class'     => 'inline',
                     'value'     => $cost->cost
                 ),
                 'description' => array(
@@ -25,18 +25,18 @@ if (!empty($project->costs)) {
                     'title'     => 'Descripción',
                     'cols'      => 100,
                     'rows'      => 4,
-                    'inline'    => true,
+                    'class'     => 'inline',
                     'value'     => $cost->description
                 ),
                 'amount' => array(
                     'type'      => 'textbox',
                     'title'     => 'Valor',
                     'size'      => 8,
-                    'inline'    => true,
+                    'class'     => 'inline',
                     'value'     => $cost->amount
                 ),
                 'from'  => array(
-                    'inline'    => true,
+                    'class'     => 'inline',
                     // 'type'      => 'date',
                     'type'      => 'textbox',
                     'size'      => 8,
@@ -44,7 +44,7 @@ if (!empty($project->costs)) {
                     'value'     => $cost->from
                 ),
                 'to'  => array(
-                    'inline'    => true,
+                    'class'     => 'inline',
                     'title'     => 'Hasta',
                     'type'      => 'textbox',
                     'size'      => 8,
@@ -53,7 +53,7 @@ if (!empty($project->costs)) {
                 'required'  => array(
                     'type'      => 'checkbox',
                     // 'type'      => 'date',
-                    'inline'    => true,
+                    'class'     => 'inline',
                     'title'     => 'Imprescindible',                    
                     'value'     => 1,
                     'checked'   => $cost->required
@@ -61,7 +61,7 @@ if (!empty($project->costs)) {
                 'remove'    => array(
                     'type'  => 'submit',
                     'label' => 'Eliminar',
-                    'inline' => true,
+                    'class'     => 'inline',
                     'class' => 'remove'
                 )
             )
