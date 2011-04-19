@@ -34,7 +34,27 @@ namespace Goteo\Model\Project {
 			}
 		}
 
+		public function validate(&$errors = array()) {
+            // Estos son errores que no permiten continuar
+            if (empty($this->project))
+                $errors[] = 'No hay proyecto al que asignar la recompensa/rettorno';
+
+            if (empty($this->reward))
+                $errors[] = 'No hay nombre de recompensa/retorno';
+
+            if (empty($this->type))
+                $errors[] = 'No hay tipo de recompensa/retorno';
+
+            //cualquiera de estos errores hace fallar la validación
+            if (!empty($errors))
+                return false;
+            else
+                return true;
+        }
+
 		public function save (&$errors = array()) {
+            if (!$this->validate($errors)) return false;
+            
 			$fields = array(
 				'id',
 				'project',
@@ -85,12 +105,10 @@ namespace Goteo\Model\Project {
                 self::query("DELETE FROM reward WHERE id = :id AND project = :project", $values);
 				return true;
 			} catch(\PDOException $e) {
-				$errors[] = 'No se ha podido quitar el retorno ' . $e->getMessage();
+				$errors[] = 'No se ha podido quitar el retorno '. $this->id. '. ' . $e->getMessage();
                 return false;
 			}
 		}
-
-		public function validate(&$errors = array()) {}
 
 		public static function icons($type = 'social') {
             $icons = array(

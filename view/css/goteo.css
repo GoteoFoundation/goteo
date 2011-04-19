@@ -3,6 +3,9 @@
  * Common elements & layout
 */
 
+@import url('superform.css');
+@import url('project.css');
+
 * {
     font-family: Helvetica, Arial, Geneva, sans-serif;
 }
@@ -19,6 +22,11 @@ html, body {
 }
 
 body, td, th, a, a:link, a:visited, a:active, a:hover, input, textarea, button {    
+    font-size: 13px;
+    color: #58595b;
+}
+
+input, textarea, button {
     font-size: 14px;
 }
 
@@ -27,6 +35,10 @@ body {
     margin: 0 auto;
     top: 0;
     position: relative;
+}
+
+h1 {
+    display: none;
 }
 
 input[type="text"],
@@ -55,19 +67,45 @@ textarea:focus {
 
 input[type="submit"],
 input[type="reset"],
-button {
+button,
+a.button {
     background-color: #58595B;
-    padding: .4em 1.5em;
+    padding: .6em 1.5em;
     text-transform: uppercase;
     border: none;    
     cursor: pointer;
-    font-size: 12px;
     font-weight: normal;
     margin: 0;
     color: white;
-    line-height: 12px;
     margin: .5em 0;
+    display: inline-block;
+    text-decoration: none;    
+    text-align: center;
 }
+
+input.red[type="submit"],
+input.red[type="reset"],
+button.red,
+a.button.red {
+    background-color: #ed1a37;
+    color: white;
+} 
+
+input.aqua[type="submit"],
+input.aqua[type="reset"],
+button.aqua,
+a.button.aqua {
+    background-color: #35b8b8;
+    color: white;
+} 
+
+input.green[type="submit"],
+input.green[type="reset"],
+button.green,
+a.button.green {
+    background-color: #00b05b;
+    color: white;
+} 
 
 input.add[type="submit"],
 input.add[type="reset"],
@@ -365,6 +403,7 @@ div#footer {
     overflow: hidden;
     border-bottom: 25px solid white;
     padding-top: 35px;
+    clear: both;
 }
 
 div#footer hr {
@@ -470,6 +509,8 @@ div#main {
     max-width: 940px;
     margin: 40px auto;
     clear: both;
+    overflow-y: auto;
+    overflow-x: visibe;
 }
 
 /**
@@ -501,442 +542,36 @@ body.user-profile div#sub-header h2 em {
 }
 
 /**
- * Superforms
- */
-div.superform input[type="text"],
-div.superform input[type="password"],
-div.superform textarea,
-div.superform fieldset {
-    min-width: 95%;
-    max-width: 95%;
-}
-
-div.superform fieldset {
-    border: 1px solid #99a2a5;    
-}
-
-div.superform fieldset legend {
-    color: #6d7375;
-}
-
-div.superform h3 {
-    font-size: 30px;    
-}
-
-div.superform div.guide,
-div.superform div.fields {    
-    overflow: visible;
-}
-
-div.superform div.guide {
-    color: #7f8183;    
-}
-
-body.project-form.js div#main div.superform div.guide {
-    background: url('form/wizard.png') no-repeat right top;
-    padding-right: 250px;    
-    border-right: 1px dashed #b7c2c5;    
-}
-
-div.superform div.fields {
-    border-right: 1px dashed #b7c2c5
-}
-
-div.superform div.guide h4,
-div.superform div.guide blockquote {
-    display: table-cell;
-    background-color: #ddf0f1;
-    padding: 20px;    
-    vertical-align: top;
-    border: dashed #b7c2c5;
-    border-width: 1px 0 0;
-}
-
-div.superform div.guide h4 {
-    font-size: 30px;        
-}
-
-div.superform div.guide blockquote {
-    font-size: 12px;
-    border-right-width: 1px;
-    width: 100%;
-}
-
-div.superform div.guide blockquote p {
-    margin: 0;
-}
-
-div.superform div.fields ol {
-    padding: 0;    
-    margin: 0;
-    list-style-position: inside;
-}
-
-div.superform div.fields ol ol {
-    padding-left: 2em;
-    margin-top: 2em;
-}
-
-div.superform div.fields ol li {    
-    border-top: 1px dashed #B7C2C5;
-    padding: 2em 0;
-    position: relative;    
-}
-
-body.js div.superform div.fields ol li {
-    margin-right: 250px;
-    border-right: 1px dashed #b7c2c5;
-}
-
-body.js div.superform div.fields ol li li {
-    margin-right: 0;
-    border-right: none;
-}
-
-div.superform div.fields ol li div.field {
-    display: inline;    
-}
-
-div.superform div.fields ol li h4 {    
-    display: inline;
-}
-
-div.superform div.fields ol li div.elements {
-    margin-top: 1em;
-}
-
-div.superform div.buttons {
-    border: solid #0a0a0a; 
-    border-width: 3px 0 0;
-    padding: 20px;
-    text-align: right;
-    position: relative;
-    z-index: 900;
-}
-
-div.superform div.buttons input,
-div.superform div.buttons button {
-    background-color: #ee4843 !important;
-    padding-left: 4em;
-    padding-right: 4em;
-}
-
-div.superform div.buttons input:hover,
-div.superform div.buttons button:hover,
-div.superform div.buttons input:focus,
-div.superform div.buttons button:focus{
-    background-color: #ed1a37 !important;
-    padding-left: 4em;
-    padding-right: 4em;
-}
-
-div.superform div.buttons input.next:hover,
-div.superform div.buttons button.next:hover,
-div.superform div.buttons input.next:focus,
-div.superform div.buttons button.next:focus {
-    background-image: url('form/button/next.png');
-    background-position: 95% center;
-    background-repeat: no-repeat;
-}
-
-/* Checkbox sets */
-div.superform div.elements.checkboxes ul {
-    padding: 0;
-    margin: -1em 0 0;    
-    list-style: none;
-    overflow: hidden;
-}
-
-div.superform div.elements.checkboxes ul li {
-    border: none;
-    padding: 1em 0 0;
-    width: 33%;
-    float: left;   
-}
-
-div.superform div.elements.checkboxes input[type="checkbox"] {
-    margin-left: 0;
-}
-
-
-/* Tooltips */
-div.superform div.fields ol li div.tooltip {
-    z-index: 999;    
-    padding-top: 20px;    
-    background: url('form/tooltip/beak/cyan/n.png') no-repeat 20px 7px;
-    display: inline-block;
-}
-
-body.js div.superform div.fields ol li div.tooltip {
-    /* Javascript-enabled */
-    right: -251px;
-    top: 1em;
-    width: 250px;
-    padding-left: 13px;
-    display: none;
-    position: absolute;
-    background: url('form/tooltip/beak/cyan/w.png') no-repeat left 20px;
-    padding-top: 0;
-}
-
-div.superform div.fields ol li div.tooltip blockquote {
-    padding: 20px;
-    margin: 0;
-    background-color: #def1f1;
-    color: #7f8183;
-    border-radius: 7px;
-    box-shadow: 2px 3px 0 rgba(0,0,0,.2);
-    font-size: 13px;
-    position: relative;
-}
-
-div.superform div.fields ol li div.tooltip.visible {
-    display: block;
-}
-
-/* Other colors */
-div.superform.aqua div.fields ol li div.tooltip blockquote {
-    background-color: #35b8b8;
-    color: white;
-}
-
-div.superform.aqua div.fields ol li div.tooltip {    
-    background-image: url('form/tooltip/beak/aqua/n.png');    
-}
-
-body.js div.superform.aqua div.fields ol li div.tooltip {    
-    background-image: url('form/tooltip/beak/aqua/w.png');
-}
-
-div.superform.aqua input[type="text"],
-div.superform.aqua input[type="password"],
-div.superform.aqua textarea {
-    background-color: #dff2f3;
-    border-color: #1fb0b0;
-}
-
-div.superform.aqua input[type="submit"],
-div.superform.aqua input[type="reset"],
-div.superform.aqua button {
-    background-color: #1fb0b0;
-    color: white;
-}
-
-div.superform.red div.fields ol li div.tooltip blockquote {
-    background-color: #e13028;
-    color: white;
-}
-
-div.superform.red div.fields ol li div.tooltip {    
-    background-image: url('form/tooltip/beak/red/n.png');    
-}
-
-body.js div.superform.red div.fields ol li div.tooltip {    
-    background-image: url('form/tooltip/beak/red/w.png');
-}
-
-div.superform.red input[type="text"],
-div.superform.red input[type="password"],
-div.superform.red textarea {
-    background-color: #fdedec;
-    border-color: #ee4843;
-}
-
-div.superform.red input[type="submit"],
-div.superform.red input[type="reset"],
-div.superform.red button {
-    background-color: #ee4843;
-    color: white;
-} 
-
-div.superform.red div.guide h4,
-div.superform.red div.guide blockquote {    
-    background-color: #fdedec;    
-    color: #ee4843;
-}
-
-div.superform.green div.fields ol li div.tooltip blockquote {
-    background-color: #00b05b;
-    color: white;
-}
-
-div.superform.green div.fields ol li div.tooltip {    
-    background-image: url('form/tooltip/beak/green/n.png');    
-}
-
-body.js div.superform.green div.fields ol li div.tooltip {    
-    background-image: url('form/tooltip/beak/green/w.png');
-}
-
-div.superform.green input[type="text"],
-div.superform.green input[type="password"],
-div.superform.green textarea {
-    background-color: #e7f3e8;
-    border-color: #00b05b;
-}
-
-div.superform.green input[type="submit"],
-div.superform.green input[type="reset"],
-div.superform.green button {
-    background-color: #00b05b;
-    color: white;
-} 
-
-div.superform.green div.guide h4,
-div.superform.green div.guide blockquote {    
-    background-color: #e7f3e8;    
-    color: #00b05b;
-}
-
-
-/**
- * Project form
+ * Widgets
  */
  
-body.project-form div#main div.status {
-    color: #bcbdbd;
-    padding-bottom: 30px;
-    border-bottom: 3px solid #cfd0d2; 
+div.widget {
+    background-color: white;
+    padding: 20px;
+    overflow: hidden;    
 }
 
-body.project-form div#main .status #project-status,
-body.project-form div#main .status #information-status {
-    display: table-cell;
-    width: 50%;     
-    padding: 0 30px;
-}
-
-body.project-form div#main .status #project-status {
-    padding-right: 50px;     
-}
-
-body.project-form div#main .status #information-status {
-    border-left: 1px dashed #bcbdbf;
-    padding-left: 50px;
-}
-
-body.project-form div#main .status h3 {
-    font-size: 26px;
+ 
+ div.widget .title {
+    font-size: 13px;
     font-weight: normal;
-    color: #bcbdbd;
-    text-transform: uppercase;
-    margin: 0 0 .6em;
+    margin: 0;
+    padding: 0 2px .2em;
+    border-bottom: 1px solid #21b0b0;
+    margin-bottom: 1em;
 }
 
-body.project-form div#main .status #project-status ul {
-    padding: 0 0 0 16px;
-    margin: 0 0  0 6px;
-    list-style: none;
-    font-size: 16px;     
-    line-height: 1.5em;
-    border-left: 1px solid #bcbcbd;
+div.widget .subtitle {
+    font-size: 18px;
+    font-weight: bold;    
+    padding: 0 2px 0;
+    margin: 0 0 .5em;
 }
 
-body.project-form div#main .status #project-status ul li strong {
-    font-size: 22px;
-    color: #58595b;
-    font-weight: bold;
-    line-height: 1.6em;
-    padding-left: 20px;
-    display: block;
-    background: url('form/statusmarker.png') no-repeat left center;
-    margin-left: -22px;
-    text-shadow: 1px 1px 0 rgba(0,0,0,.25);
-    
-}
-
-body.project-form div#main .status #information-status p {
-    margin-top: 0;
-    width: 80%;
-    font-size: 12px;
-}
-
-body.project-form div#main .status #information-status .meter {
-    height: 117px;
-    width: 369px;    
-    margin-top: -2em;
-    position: relative;
-}
-
-body.project-form div#main .status #information-status .meter .done {
-    background: url('project/progressmeter.png') no-repeat left top;
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-}
-
-body.project-form div#main .status #information-status .meter .left {
-    background: url('project/progressmeter.png') no-repeat right bottom;
-    position: absolute;
-    right: 0;        
-    top: 0;
-    bottom: 0;
-}
-
-/* Form navigator (*steps*) */
-
-body.project-form div#main #project-steps {
-    padding: 30px 0;
-    text-align: center;
-}
-
-body.project-form div#main #project-steps h3 {
-    display: none;     
-}
-
-body.project-form div#main #project-steps ol {
-    margin: -10px 0 0;
-    padding: 0;
-    list-style: none;  
-    border-bottom: 2px solid #b2b2b2;
-    display: inline-block;
-    height: 3.5em;
-}
-
-body.project-form div#main #project-steps li {
-    display: inline-block;
-    padding: 0 1em 10px;
-    height: 100%;    
-    background: url('form/step-on.png') no-repeat bottom center;    
-}
-
-body.project-form div#main #project-steps li input {
-    font-size: 12px;    
-    font-weight: normal;
-    height: 100%;
-    margin: 0;    
-    padding: 0;
-    border: none;
-    background: none;
-    color: #20b2b1;
-    
-}
-
-body.project-form div#main #project-steps li.current {
-}
-
-body.project-form div#main #project-steps li.offtopic {
-    background-image: url('form/step-off.png');    
-}
-
-body.project-form div#main #project-steps li.offtopic input {
-    color: #b2b2b2;
-}
-
-body.project-form div.superform {
-    border: solid #0a0a0a;
-    border-width: 3px 0;     
-}
-
-/* Personal data */
-body.project-form div#main.userProfile input[name='contract_nif'],
-body.project-form div#main.userProfile input[name='phone'],
-body.project-form div#main.userProfile input[name='zipcode'] {
-    min-width: 12em;
-}
-
-
-body.project-form div#main.userProfile input[name='country'] {    
-    min-width: 25em;
+div.widget input[type="submit"],
+div.widget input[type="reset"],
+div.widget button,
+div.widget a.button {
+    box-shadow: 2px 2px 0 rgba(0,0,0,.2);
+    -moz-box-shadow: 2px 2px 0 rgba(0,0,0,.2);
 }

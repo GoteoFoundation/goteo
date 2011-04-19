@@ -18,10 +18,6 @@ namespace Goteo\Controller {
             if (empty($project))
                 throw new Redirection('/project/explore');
 
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
-
             $projectData = Model\Project::get($project);
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {

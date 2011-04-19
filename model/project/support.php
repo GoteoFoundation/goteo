@@ -30,9 +30,29 @@ namespace Goteo\Model\Project {
             }
 		}
 
-		public function validate(&$errors = array()) {}
+		public function validate(&$errors = array()) {
+            // Estos son errores que no permiten continuar
+            if (empty($this->project))
+                $errors[] = 'No hay proyecto al que asignar la colaboración';
+
+            if (empty($this->support))
+                $errors[] = 'No hay colaboración';
+
+            if (empty($this->description))
+                $errors[] = 'No hay descripción de la colaboración';
+
+            if (empty($this->type))
+                $errors[] = 'No hay tipo de colaboración';
+
+            //cualquiera de estos errores hace fallar la validación
+            if (!empty($errors))
+                return false;
+            else
+                return true;
+        }
 
 		public function save (&$errors = array()) {
+            if (!$this->validate($errors)) return false;
 
 			$fields = array(
 				'id',

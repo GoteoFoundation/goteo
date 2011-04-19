@@ -14,21 +14,20 @@ namespace Goteo\Model {
             $name,
             $avatar,
             $about,
-            $interests,
             $contribution,
             $keywords,
-            $twitter,
+            $active,
             $facebook,
+            $twitter,
             $linkedin,
             $country,
-            $worth;
+            $worth,
+            $created,
+            $modified,
+            $interests,
+            $webs;
 
-        /**
-         * @FIXME: Por concretar.
-         * @param unknown_type $name
-         * @param unknown_type $value
-         */
-	    public function __set ($name, $value) {
+	    public function __set($name, $value) {
             $this->$name = $value;
         }
 
@@ -46,7 +45,7 @@ namespace Goteo\Model {
          * @param array $errors     Errores devueltos pasados por referencia.
          * @return bool true|false
          */
-        public function save (&$errors = array()) {
+        public function save(&$errors = array()) {
             if($this->validate($errors)) {
                 // Nuevo usuario.
                 if(empty($this->id)) {
@@ -86,12 +85,12 @@ namespace Goteo\Model {
                     $data[':contribution'] = $this->contribution;
                 }
 
-                if(!empty($this->twitter)) {
-                    $data[':twitter'] = $this->twitter;
-                }
-
                 if(!empty($this->facebook)) {
                     $data[':facebook'] = $this->facebook;
+                }
+
+                if(!empty($this->twitter)) {
+                    $data[':twitter'] = $this->twitter;
                 }
 
                 if(!empty($this->linkedin)) {
@@ -148,9 +147,15 @@ namespace Goteo\Model {
          * @param array $errors     Errores devueltos pasados por referencia.
          * @return bool true|false
          */
-        public function validate (&$errors = array()) {
+        public function validate(&$errors = array()) {
+            $required = array(
+                'email' => true
+            );
+
             // Nuevo usuario.
             if(empty($this->id)) {
+                $required['password'] = true;
+
                 // Nombre de usuario (id)
                 if(empty($this->name)) {
                     $errors['username'] = Text::get('error-register-username');
@@ -211,8 +216,20 @@ namespace Goteo\Model {
                 if (empty($this->facebook)) {
                     $errors['facebook'] = Text::get('validate-user-field-facebook');
                 }
+                if (empty($this->twitter)) {
+                    $errors['twitter'] = Text::get('validate-user-field-twitter');
+                }
+                if (empty($this->linkedin)) {
+                    $errors['linkedin'] = Text::get('validate-user-field-linkedin');
+                }
             }
-            return empty($errors);
+            // @TODO: Revisar $required (Ajuste temporal)
+            foreach($required AS $item => $value) {
+                if(in_array($item, $errors)) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         /**
@@ -227,17 +244,16 @@ namespace Goteo\Model {
                     SELECT
                         id,
                         role_id AS role,
-                        name,
                         email,
-                        password,
-                        about,
-                        keywords,
-                        active AS visible,
+                        name,
                         avatar,
+                        about,
                         contribution,
-                        twitter,
+                        keywords,
                         facebook,
+                        twitter,
                         linkedin,
+                        active,
                         worth,
                         created,
                         modified
@@ -262,7 +278,7 @@ namespace Goteo\Model {
          * @param  bool $visible    true|false
          * @return mixed            Array de objetos de usuario activos|todos.
          */
-        public static function getAll ($visible = true) {
+        public static function getAll($visible = true) {
             $query = self::query("SELECT * FROM user WHERE active = ?", array($visible));
             return $query->fetchAll(__CLASS__);
         }
@@ -274,7 +290,7 @@ namespace Goteo\Model {
 		 * @param string $password ContraseÃ±a
 		 * @return obj|false Objeto del usuario, en caso contrario devolverÃ¡ 'false'.
 		 */
-		public static function login ($username, $password) {
+		public static function login($username, $password) {
 			$query = self::query("
 				SELECT
 					id
@@ -296,7 +312,7 @@ namespace Goteo\Model {
 		 *
 		 * @return boolean
 		 */
-		public static function isLogged () {
+		public static function isLogged() {
 			return !empty($_SESSION['user']);
 		}
 

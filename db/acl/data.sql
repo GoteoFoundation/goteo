@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 12-04-2011 a las 22:22:19
+-- Tiempo de generación: 11-04-2011 a las 22:49:58
 -- Versión del servidor: 5.1.36
 -- Versión de PHP: 5.3.0
 
@@ -19,9 +19,28 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Base de datos: `goteo`
 --
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `acl`
+--
+
+DROP TABLE IF EXISTS `acl`;
+CREATE TABLE IF NOT EXISTS `acl` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `role_id` int(10) unsigned DEFAULT NULL,
+  `resource` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `action` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `allow` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `role_FK` (`role_id`),
+  KEY `user_FK` (`user_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+
 --
 -- Volcar la base de datos para la tabla `acl`
 --
 
-INSERT INTO `acl` (`id`, `node_id`, `user_id`, `role_id`, `url`, `allow`) VALUES
-(1, NULL, NULL, NULL, '*', 1);
+INSERT INTO `acl` (`id`, `user_id`, `role_id`, `resource`, `action`, `allow`) VALUES
+(1, NULL, NULL, '*', '*', 1);

@@ -1,0 +1,62 @@
+div.widget.user .subtitle {
+    padding-top: 90px !important;
+    background: url('/view/css/avatar/m.png') no-repeat top left;        
+    margin-bottom: .5em;
+    position: relative;
+}
+
+div.widget.user .subtitle img {
+    width: 80px;
+    height: 80px;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+div.widget.user blockquote.about {
+    padding: 0 2px;
+    margin: 0 0 1em;
+}
+
+div.widget.user dl,
+div.widget.user dt,
+div.widget.user dd {
+    padding: 0;
+    margin: 0;
+}
+
+div.widget.user dl dt {
+    display: none;
+}
+
+div.widget.user dl dd {
+    border-top: 1px solid #a5a7a9;
+    padding: 1em 0;
+}
+
+div.widget.user dl dd.location {
+    padding-left: 15px;
+    background: url('user/location.png') no-repeat left center;
+    text-indent: .5em;
+    text-decoration: none;
+}
+
+div.widget.user dl dd.links ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    line-height: 2em;
+}
+
+div.widget.user dl dd.links ul a {
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+
+div.widget.user a.button {
+    display: block;
+    margin: 1em 1em 0;
+}

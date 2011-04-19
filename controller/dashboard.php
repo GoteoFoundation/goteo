@@ -13,10 +13,6 @@ namespace Goteo\Controller {
          *  Muy guarro para poder moverse mientras desarrollamos
          */
         public function index ($section = null) {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
-
 			$user = $_SESSION['user']->id;
 
             $message = "Hola {$user}<br />";

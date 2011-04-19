@@ -28,63 +28,62 @@ namespace Goteo\Controller {
             } else if (isset($_GET['create'])) {
                 return $this->create();
             } else {
-                throw new Redirection('/project/explore');
+                throw new Error(Error::NOT_FOUND);
             }
         }
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
         private function edit ($id) {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
             //@TODO Verificar si tiene permisos para editar (usuario)
-            $nodesign = false; // para usar el formulario de proyecto en Julian mode
+            $nodesign = true; // para usar el formulario de proyecto en Julian mode
 
             $project = Model\Project::get($id);
-
+//            die ('<pre>' . print_r($project, 1) . '</pre>');
             //@TODO Verificar si tieme permiso para editar libremente
             if ($project->status != 1 && $_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/project/{$project->id}");
 
+            if (!isset($_SESSION['stepped']))
+                $_SESSION['stepped'] = array();
 
             $steps = array(
                 'userProfile' => array(
-                    'name' => 'Perfil',
+                    'name' => Text::get('step-1'),
+                    'title' => Text::get('step-userProfile'),
                     'guide' => Text::get('guide-project-user-information'),
-                    'offtopic' => true,
-                    'errors' => $project->errors['userProfile']
+                    'offtopic' => true
                 ),
                 'userPersonal' => array(
-                    'name' => 'Datos personales',
+                    'name' => Text::get('step-2'),
+                    'title' => Text::get('step-userPersonal'),
                     'guide' => Text::get('guide-project-contract-information'),
-                    'offtopic' => true,
-                    'errors' => $project->errors['userPersonal']
+                    'offtopic' => true
                 ),
                 'overview' => array(
-                    'name' => 'Descripción',
-                    'guide' => Text::get('guide-project-description'),
-                    'errors' => $project->errors['overview']
+                    'name' => Text::get('step-3'),
+                    'title' => Text::get('step-overview'),
+                    'guide' => Text::get('guide-project-description')
                 ),
                 'costs'=> array(
-                    'name' => 'Costes',
-                    'guide' => Text::get('guide-project-costs'),
-                    'errors' => $project->errors['costs']
+                    'name' => Text::get('step-4'),
+                    'title' => Text::get('step-costs'),
+                    'guide' => Text::get('guide-project-costs')
                 ),
                 'rewards' => array(
-                    'name' => 'Retornos',
-                    'guide' => Text::get('guide-project-rewards'),
-                    'errors' => $project->errors['rewards']
+                    'name' => Text::get('step-5'),
+                    'title' => Text::get('step-rewards'),
+                    'guide' => Text::get('guide-project-rewards')
                 ),
                 'supports' => array(
-                    'name' => 'Colaboraciones',
-                    'guide' => Text::get('guide-project-support'),
-                    'errors' => $project->errors['supports']
+                    'name' => Text::get('step-6'),
+                    'title' => Text::get('step-supports'),
+                    'guide' => Text::get('guide-project-support')
                 ),
                 'preview' => array(
-                    'name' => 'Previsualizar',
+                    'name' => Text::get('step-7'),
+                    'title' => Text::get('step-preview'),
                     'guide' => Text::get('guide-project-overview'),
-                    'offtopic' => true,
-                    'errors' => $project->errors
+                    'offtopic' => true
                 )
             );
 
@@ -110,26 +109,44 @@ namespace Goteo\Controller {
                 $step = 'supports';
             else
                 $step = 'preview';
+            
+            $viewData['step'] =& $step;
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//                echo '<pre>' . \print_r($_POST, 1) . '</pre>';
-                $errors = array(); // errores de proceso, no de datos del proyecto
+                $errors = array(); // errores al procesar, no son errores en los datos del proyecto
                 foreach ($steps as $id => &$data) {
-                    // necesitamos saber si vienen datos de este paso para no tratar posts vacios
-                    if ($_POST['step'] == $id) {
-                        call_user_func_array(array($this, "process_{$id}"), array(&$project, &$errors));
-                        $data['errors'] = $project->errors[$id];
+                    if (call_user_func_array(array($this, "process_{$id}"), array(&$project, &$errors))) {
+                        // si un process devuelve true es que han enviado datos de este paso, lo añadimos a los pasados
+                        if (!in_array($id, $_SESSION['stepped']))
+                            $_SESSION['stepped'][] = $id;
                     }
+
                     // y el paso que vamos a mostrar
                     if (!empty($_POST['view-step-'.$id]))
                         $step = $id;
                 }
 
+                // guardamos los datos que hemos tratado y los errores de los datos
+                $project->save($errors);
+
+                // si ha ocurrido algun error de proces (como p.ej. "no se ha podido guardar loqueseaa")
                 if (!empty($errors))
                     throw new \Goteo\Core\Exception(implode('. ', $errors));
 
-                // recalcular el progreso (los errores los ha puesto el process_ )
+                //re-evaluar el proyecto
                 $project->evaluate();
+
+                //si nos estan pidiendo el error de un campo, se lo damos
+                if (!empty($_GET['errors'])) {
+                    foreach ($project->errors as $paso) {
+                        if (!empty($paso[$_GET['errors']])) {
+                            return new View(
+                                'view/project/errors.json.php',
+                                array('errors'=>array($paso[$_GET['errors']]))
+                            );
+                        }
+                    }
+                }
             }
 
             // segun el paso añadimos los datos auxiliares para pintar
@@ -174,7 +191,7 @@ namespace Goteo\Controller {
 
 
             $view = new View (
-                "view/project/{$step}.html.php",
+                "view/project/edit.html.php",
                 $viewData
             );
 
@@ -183,12 +200,10 @@ namespace Goteo\Controller {
         }
 
         private function create () {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
             //@TODO Verificar si tienen permisos para crear nuevos proyectos
             $project = new Model\Project;
             $project->create($_SESSION['user']->id);
+            $_SESSION['stepped'] = array();
                 throw new Redirection("/project/{$project->id}/?edit");
 
             throw new \Goteo\Core\Exception('Fallo al crear un nuevo proyecto');
@@ -206,9 +221,6 @@ namespace Goteo\Controller {
 
         // Finalizar para revision, ready le cambia el estado
         public function finish($id) {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
             //@TODO verificar si tienen el mínimo progreso para verificación y si está en estado edición
             $project = Model\Project::get($id);
 
@@ -223,9 +235,6 @@ namespace Goteo\Controller {
         }
 
         public function enable($id) {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
             //@TODO verificar si tiene permisos para rehabilitar la edición del proyecto (admin)
             if ($_SESSION['user']->role != 1) //@FIXME!! Piñonaco... ACL...
                 throw new Redirection("/project/{$id}");
@@ -240,9 +249,6 @@ namespace Goteo\Controller {
         }
 
         public function publish($id) {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
             //@TODO verificar si tiene permisos para publicar proyectos
             if ($_SESSION['user']->role != 1) //@FIXME!! Piñonaco... ACL...
                 throw new Redirection("/project/{$id}");
@@ -273,11 +279,17 @@ namespace Goteo\Controller {
 
         //-----------------------------------------------
         // Métodos privados para el tratamiento de datos
+        // del save y remove de las tablas relacionadas se enmcarga el model/project
+        // primero añadir y luego quitar para que no se pisen los indices
+        // En vez del hidden step, va a comprobar que esté definido en el post el primer campo del proceso
         //-----------------------------------------------
         /*
          * Paso 1 - PERFIL
          */
         private function process_userProfile(&$project, &$errors) {
+            if (!isset($_POST['user_name']))
+                return false;
+
             $user = Model\User::get($project->owner);
 
             // tratar la imagen y ponerla en la propiedad avatar
@@ -298,70 +310,44 @@ namespace Goteo\Controller {
                 $user->$fieldTable = $_POST[$fieldPost];
             }
 
-            $user->saveInfo($errors);
-
-            //intereses
-//            echo '<pre>' . print_r($_POST['interests'], 1) . '</pre>'; //los que vienen
-//            echo '<pre>' . print_r($user->interests, 1) . '</pre>'; //los que tiene
-            // añadir los que vienen y no tiene
-            foreach (array_diff($_POST['interests'],$user->interests) as $key=>$int) {
-                $interest = new Model\User\Interest();
-
-                $interest->id = $int;
-                $interest->user = $user->id;
-
-                $interest->save($errors);
-                $user->interests[] = $interest;
-            }
-
-            // quitar los que tiene y no vienen
-            foreach (array_diff($user->interests,$_POST['interests']) as $key=>$int) {
-                $interest = new Model\User\Interest();
-
-                $interest->id = $int;
-                $interest->user = $user->id;
-
-                if ($interest->remove($errors))
-                    unset($user->interests[$key]);
-            }
+            $user->interests = $_POST['interests'];
 
             //tratar webs existentes
-            foreach ($user->webs as $key=>$web) {
-                // primero mirar si lo estan quitando
-                if ($_POST['remove-web' . $web->id] == 1) {
-                    if ($web->remove($errors))
-                        unset($user->webs[$key]);
-                    continue; // no tratar esta
-                }
-
+            foreach ($user->webs as $key=>&$web) {
                 // luego aplicar los cambios
-                $web->user = $user->id;
                 $web->url = $_POST['web' . $web->id];
-
-                $web->save($errors);
             }
 
             //tratar nueva web
             if (!empty($_POST['nweb'])) {
-
                 $web = new Model\User\Web();
 
                 $web->id = '';
                 $web->user = $user->id;
                 $web->url = $_POST['nweb'];
 
-                $web->save($errors);
-
                 $user->webs[] = $web;
             }
 
-            $user->check($project->errors['userProfile']); // checkea errores
+            //quitar las que quiten
+            foreach ($user->webs as $key=>$web) {
+                // primero mirar si lo estan quitando
+                if ($_POST['remove-web' . $web->id] == 1)
+                    unset($user->webs[$key]);
+            }
+
+            /// este es el único save que se lanza desde un metodo process_
+            $user->save($project->errors['userProfile']);
+            return true;
         }
 
         /*
          * Paso 2 - DATOS PERSONALES
          */
         private function process_userPersonal(&$project, &$errors) {
+            if (!isset($_POST['contract_name']))
+                return false;
+
             // campos que guarda este paso
             $fields = array(
                 'contract_name',
@@ -379,8 +365,7 @@ namespace Goteo\Controller {
                 $project->$field = $_POST[$field];
             }
 
-            $project->save($errors); // guarda los datos del proyecto
-            $project->check('userPersonal'); // checkea errores
+            return true;
         }
 
         /*
@@ -388,6 +373,9 @@ namespace Goteo\Controller {
          */
 
         private function process_overview(&$project, &$errors) {
+            if (!isset($_POST['name']))
+                return false;
+
             // campos que guarda este paso
             $fields = array(
                 'name',
@@ -408,51 +396,41 @@ namespace Goteo\Controller {
             }
 
             //categorias
-//            echo '<pre>' . print_r($_POST['categories'], 1) . '</pre>'; // A
-//            echo '<pre>' . print_r($project->categories, 1) . '</pre>'; // B
             // añadir las que vienen y no tiene
-            foreach (array_diff($_POST['categories'], $project->categories) as $key=>$cat) {
-                $category = new Model\Project\Category();
-
-                $category->id = $cat;
-                $category->project = $project->id;
-
-                $category->save($errors);
+            $tiene = $project->categories;
+            if (!empty($_POST['categories'])) {
+                $viene = $_POST['categories'];
+                $quita = array_diff($tiene, $viene);
+            } else {
+                $quita = $tiene;
+            }
+            $guarda = array_diff($viene, $tiene);
+            foreach ($guarda as $key=>$cat) {
+                $category = new Model\Project\Category(array('id'=>$cat,'project'=>$project->id));
                 $project->categories[] = $category;
             }
 
             // quitar las que tiene y no vienen
-            foreach (array_diff($project->categories, $_POST['categories']) as $key=>$cat) {
-                $category = new Model\Project\Category();
-
-                $category->id = $cat;
-                $category->project = $project->id;
-
-                if ($category->remove($errors))
-                    unset($project->categories[$key]);
+            foreach ($quita as $key=>$cat) {
+                unset($project->categories[$key]);
             }
 
-            $project->save($errors); // guarda los datos del proyecto
-            $project->check('overview'); // checkea errores
+            $quedan = $project->categories; // truki para xdebug
+
+            return true;
         }
 
         /*
          * Paso 4 - COSTES
          */
         private function process_costs(&$project, &$errors) {
-            $project->resource = $_POST['resource'];
+            if (!isset($_POST['resource']))
+                return false;
 
-            $project->save($errors); // guarda este dato del proyecto
+            $project->resource = $_POST['resource'];
             
             //tratar costes existentes
             foreach ($project->costs as $key=>$cost) {
-                // primero mirar si lo estan quitando
-                if ($_POST['remove-cost' . $cost->id] == 1) {
-                    if ($cost->remove($errors))
-                        unset($project->costs[$key]);
-                    continue; // no tratar este
-                }
-
                 $cost->cost = $_POST['cost' . $cost->id];
                 $cost->description = $_POST['cost-description' . $cost->id];
                 $cost->amount = $_POST['cost-amount' . $cost->id];
@@ -460,13 +438,10 @@ namespace Goteo\Controller {
                 $cost->required = $_POST['cost-required' . $cost->id];
                 $cost->from = $_POST['cost-from' . $cost->id];
                 $cost->until = $_POST['cost-until' . $cost->id];
-
-                $cost->save($errors);
             }
 
-            //tratar nuevo coste
+            //añadir nuevo coste
             if (!empty($_POST['ncost'])) {
-
                 $cost = new Model\Project\Cost();
 
                 $cost->id = '';
@@ -479,54 +454,44 @@ namespace Goteo\Controller {
                 $cost->from = $_POST['ncost-from'];
                 $cost->until = $_POST['ncost-until'];
 
-                $cost->save($errors);
-
                 $project->costs[] = $cost;
             }
 
-            $project->check('costs'); // checkea errores
+            // quitar los que quiten
+            $costes = $project->costs;
+            foreach ($project->costs as $key=>$cost) {
+                $este = $_POST['remove-cost' . $cost->id];
+                if (!empty($este))
+                    unset($project->costs[$key]);
+            }
+            $costes = $project->costs; //para xdebug
+
+            return true;
         }
 
         /*
          * Paso 5 - RETORNO
          */
         private function process_rewards(&$project, &$errors) {
+            if (!isset($_POST['nsocial_reward']))
+                return false;
+
             //tratar retornos sociales
             foreach ($project->social_rewards as $key=>$reward) {
-                // primero mirar si lo estan quitando
-                if ($_POST['remove-social_reward' . $reward->id] == 1) {
-                    if ($reward->remove($errors))
-                        unset($project->social_rewards[$key]);
-                    continue; // no lo trata
-                }
-
                 $reward->reward = $_POST['social_reward' . $reward->id];
                 $reward->description = $_POST['social_reward-description' . $reward->id];
                 $reward->icon = $_POST['social_reward-icon' . $reward->id];
                 $reward->license = $_POST['social_reward-license' . $reward->id];
-
-                $reward->save($errors);
             }
 
             // retornos individuales
             foreach ($project->individual_rewards as $key=>$reward) {
-                // primero mirar si lo estan quitando
-                if ($_POST['remove-individual_reward' . $reward->id] == 1) {
-                    if ($reward->remove($errors))
-                        unset($project->individual_rewards[$key]);
-                    continue; // no tratar este
-                }
-
                 $reward->reward = $_POST['individual_reward' . $reward->id];
                 $reward->description = $_POST['individual_reward-description' . $reward->id];
                 $reward->icon = $_POST['individual_reward-icon' . $reward->id];
                 $reward->amount = $_POST['individual_reward-amount' . $reward->id];
                 $reward->units = $_POST['individual_reward-units' . $reward->id];
-
-                $reward->save($errors);
             }
-
-
 
             // tratar nuevos retornos
             if (!empty($_POST['nsocial_reward'])) {
@@ -539,8 +504,6 @@ namespace Goteo\Controller {
                 $reward->type = 'social';
                 $reward->icon = $_POST['nsocial_reward-icon'];
                 $reward->license = $_POST['nsocial_reward-license'];
-
-                $reward->save($errors);
 
                 $project->social_rewards[] = $reward;
             }
@@ -557,35 +520,41 @@ namespace Goteo\Controller {
                 $reward->amount = $_POST['nindividual_reward-amount'];
                 $reward->units = $_POST['nindividual_reward-units'];
 
-                $reward->save($errors);
-
                 $project->individual_rewards[] = $reward;
             }
-        
-            $project->check('rewards');
+
+            // quitar los retornos colectivos
+            foreach ($project->social_rewards as $key=>$reward) {
+                $este = $_POST['remove-social_reward' . $reward->id];
+                if (!empty($este))
+                    unset($project->social_rewards[$key]);
+            }
+
+            // quitar las recompensas individuales
+            foreach ($project->individual_rewards as $key=>$reward) {
+                $este = $_POST['remove-individual_reward' . $reward->id];
+                if (!empty($este))
+                    unset($project->individual_rewards[$key]);
+            }
+
+            return true;
         }
 
         /*
          * Paso 6 - COLABORACIONES
          */
          private function process_supports(&$project, &$errors) {
+            if (!isset($_POST['nsupport']))
+                return false;
+
             // tratar colaboraciones existentes
             foreach ($project->supports as $key=>$support) {
-                // primero mirar si lo estan quitando
-                if ($_POST['remove-support' . $support->id] == 1) {
-                    if ($support->remove($errors))
-                        unset($project->supports[$key]);
-                    continue; // no tratar este
-                }
-
                 $support->support = $_POST['support' . $support->id];
                 $support->description = $_POST['support-description' . $support->id];
                 $support->type = $_POST['support-type' . $support->id];
-                
-                $support->save($errors);
             }
 
-            // tratar nueva colaboracion
+            // añadir nueva colaboracion
             if (!empty($_POST['nsupport'])) {
                 $support = new Model\Project\Support();
 
@@ -595,22 +564,29 @@ namespace Goteo\Controller {
                 $support->description = $_POST['nsupport-description'];
                 $support->type = $_POST['nsupport-type'];
 
-                $support->save($errors);
-
                 $project->supports[] = $support;
             }
 
-            $project->check('supports');
+            // quitar las colaboraciones marcadas para quitar
+            foreach ($project->supports as $key=>$support) {
+                if ($_POST['remove-support' . $support->id] == 1) 
+                    unset($project->supports[$key]);
+            }
+
+            return true;
         }
 
         /*
          * Paso 7 - PREVIEW
          * No hay nada que tratar porque aq este paso no se le envia nada por post
          */
-        public function process_preview(&$project, &$errors) {
+        private function process_preview(&$project) {
+            if (!isset($_POST['comment']))
+                return false;
+
             $project->comment = $_POST['comment'];
 
-            $project->save($errors); // guarda este dato del proyecto
+            return true;
         }
         //-------------------------------------------------------------
         // Hasta aquí los métodos privados para el tratamiento de datos

@@ -52,24 +52,20 @@ namespace Goteo\Controller {
          * Modificación perfil de usuario.
          */
         public function edit () {
-            if(!ACL::check(__CLASS__, __FUNCTION__)) {
-                throw new Error(403);
-            }
-
             $user = $_SESSION['user'];
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $errors = array();
 
-                $user->name = $_POST['name'];
-                $user->avatar = $_POST['avatar'];
-                $user->about = $_POST['about'];
-                $user->keywords = $_POST['keywords'];
-                $user->contribution = $_POST['contribution'];
-                $user->twitter = $_POST['twitter'];
-                $user->facebook = $_POST['facebook'];
-                $user->linkedin = $_POST['linkedin'];
-                $user->interests = $_POST['interests'];
+                $user->name = $_POST['user_name'];
+                $user->avatar = $_POST['user_image'];
+                $user->about = $_POST['user_about'];
+                $user->keywords = $_POST['user_keywords'];
+                $user->contribution = $_POST['user_contribution'];
+                $user->twitter = $_POST['user_twitter'];
+                $user->facebook = $_POST['user_facebook'];
+                $user->linkedin = $_POST['user_linkedin'];
+                $user->interests = $_POST['user_interests'];
                 $user->save($errors);
 
                 //tratar webs existentes

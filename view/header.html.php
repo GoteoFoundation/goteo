@@ -1,5 +1,7 @@
 <div id="header">
     
-    <?php include 'view/menu.html.php' ?>        
+    <h1>Goteo.org</h1>
+    
+    <?php include 'view/menu.html.php' ?>
     
 </div>
