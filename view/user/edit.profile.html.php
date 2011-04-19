@@ -1,31 +1,138 @@
-            <fieldset>
-                <legend>Perfil público</legend>
-                <ol>
-                    <li><label for="EditName">Nombre completo</label> <input type="text" id="EditName" name="name" value="<?php echo $user->name ?>"/></li>
-                    <li><label for="EditAvatar">Tu imagen</label> <input type="file" id="EditAvatar" name="avatar" /></li>
-                    <li>
-                        <label for="EditAbout">Cuéntanos algo sobre tí</label>
-                        <textarea id="EditAbout" name="about"><?php echo $user->about ?></textarea>
-                    </li>
-                    <li>
-                        <label for="EditInterests">Intereses</label>
-                        <textarea id="EditInterests" name="interests"><?php echo $user->interests ?></textarea>
-                    </li>
-                    <li>
-                        <label for="EditContribution">¿Qué podrías aportar a Goteo?</label>
-                        <textarea id="EditContribution" name="contribution"><?php echo $user->contribution ?></textarea>
-                    </li>
-                    <li>
-                        <dl>
-                            <dt><label for="EditBlog">Blog</label></dt>
-                            <dd>http://<input type="text" id="EditBlog" name="blog" value="<?php echo $user->blog ?>" /></dd>
-                            <dt><label for="EditTwitter">Twitter</label></dt>
-                            <dd>http://twitter.com/<input type="text" id="EditTwitter" name="twitter" value="<?php echo $user->twitter ?>" /></dd>
-                            <dt><label for="EditFacebook">Facebook</label></dt>
-                            <dd>http://facebook.com/<input type="text" id="EditFacebook" name="facebook" value="<?php echo $user->facebook ?>" /></dd>
-                            <dt><label for="EditLinkedin">Linkedin</label></dt>
-                            <dd>http://linkedin.com/<input type="text" id="EditLinkedin" name="linkedin" value="<?php echo $user->linkedin ?>" /></dd>
-                        </dl>
-                    </li>
-                </ol>
-            </fieldset>
+                   <h3>Usuario/Perfil</h3>
+                   <ol>
+            			<li class="element textbox required" id="user_name">
+            				<label class="title" for="UserName">Nombre completo</label>
+            				<div class="contents">
+            					<input type="text" name="user_name" id="UserName" value="<?php echo $user->name ?>" size="20" />
+            				</div>
+<?php if(isset($errors['name'])) { ?>
+                            <div class="feedback" id="superform-feedback-for-user_name">
+                                <div class="hint">
+                                    <blockquote><?php echo $errors['name']?></blockquote>
+                                </div>
+                            </div>
+<?php } ?>
+            			</li>
+            			<li class="element" id="user_avatar">
+            				<label class="title" for="UserAvatar">Tu imagen</label>
+            				<div class="contents">
+            					<input type="file" name="user_avatar" id="UserAvatar" />
+            				</div>
+<?php if(isset($errors['avatar'])) { ?>
+                            <div class="feedback" id="superform-feedback-for-user_avatar">
+                                <div class="hint">
+                                    <blockquote><?php echo $errors['avatar']?></blockquote>
+                                </div>
+                            </div>
+<?php } ?>
+            			</li>
+            			<li class="element textarea" id="user_about">
+            				<label class="title" for="UserAbout">Cuéntanos algo sobre ti</label>
+                            <div class="contents">
+                                <textarea name="user_about" id="UserAbout" cols="40" rows="4"><?php echo $user->about ?></textarea>
+                            </div>
+<?php if(isset($errors['about'])) { ?>
+                            <div class="feedback" id="superform-feedback-for-user_about">
+                                <div class="hint">
+                                    <blockquote><?php echo $errors['about']?></blockquote>
+                                </div>
+                            </div>
+<?php } ?>
+                        </li>
+            			<li class="element checkboxes" id="interests">
+            				<h4 class="title">Tus intereses</h4>
+            				<div class="contents">
+            					<ul>
+            					<?php echo $user->interests ?>
+            					</ul>
+            				</div>
+            			</li>
+            			<li class="element textbox" id="user_keywords">
+            				<label class="title" for="UserKeywords">Palabras clave</label>
+            				<div class="contents">
+            					<input type="text" name="user_keywords" id="UserKeywords" value="<?php echo $user->keywords ?>" size="20" />
+            				</div>
+<?php if(isset($errors['keywords'])) { ?>
+                            <div class="feedback" id="superform-feedback-for-user_keywords">
+                                <div class="hint">
+                                    <blockquote><?php echo $errors['keywords']?></blockquote>
+                                </div>
+                            </div>
+<?php } ?>
+            			</li>
+            			<li class="element textarea" id="user_contribution">
+            				<label class="title" for="UserContribution">Qué podrías aportar a Goteo</label>
+            				<div class="contents">
+            					<textarea name="user_contribution" id="UserContribution" cols="40" rows="4"><?php echo $user->contribution ?></textarea>
+            				</div>
+<?php if(isset($errors['contribution'])) { ?>
+                            <div class="feedback" id="superform-feedback-for-user_contribution">
+                                <div class="hint">
+                                    <blockquote><?php echo $errors['contribution']?></blockquote>
+                                </div>
+                            </div>
+<?php } ?>
+            			</li>
+            			<li class="element" id="user_webs">
+            				<h4 class="title">Mis webs</h4>
+            				<div class="children">
+            					<div class="elements">
+                					<ol>
+                						<li class="element submit add" id="nweb">
+                							<div class="contents">
+                								<input type="submit" name="add-user_web" value="Nueva web" class="add" />
+                							</div>
+                						</li>
+                					</ol>
+                				</div>
+                			</div>
+            			</li>
+            			<li class="element group" id="user_social">
+            				<h4 class="title">Perfiles sociales</h4>
+            				<div class="children">
+            					<div class="elements">
+            						<ol>
+            							<li class="element textbox facebook" id="user_facebook">
+            								<label class="title" for="UserFacebook">Facebook</label>
+            								<div class="contents">
+            									<input type="text" name="user_facebook" id="UserFacebook" class="facebook" value="<?php echo $user->facebook ?>" size="40" />
+            								</div>
+<?php if(isset($errors['facebook'])) { ?>
+                                            <div class="feedback" id="superform-feedback-for-user_facebook">
+                                                <div class="hint">
+                                                    <blockquote><?php echo $errors['facebook']?></blockquote>
+                                                </div>
+                                            </div>
+<?php } ?>
+            							</li>
+            							<li class="element textbox twitter" id="user_twitter">
+            								<label class="title" for="UserTwitter">Twitter</label>
+            								<div class="contents">
+            									<input type="text" name="user_twitter" id="UserTwitter" class="twitter" value="<?php echo $user->twitter ?>" size="40" />
+            								</div>
+<?php if(isset($errors['twitter'])) { ?>
+                                            <div class="feedback" id="superform-feedback-for-user_twitter">
+                                                <div class="hint">
+                                                    <blockquote><?php echo $errors['twitter']?></blockquote>
+                                                </div>
+                                            </div>
+<?php } ?>
+            							</li>
+            							<li class="element textbox linkedin" id="user_linkedin">
+            								<label class="title" for="UserLinkedin">LinkedIn</label>
+                                            <div class="contents">
+                                            	<input type="text" name="user_linkedin" id="UserLinkedin" class="linkedin" value="<?php echo $user->linkedin ?>" size="40" />
+                                            </div>
+<?php if(isset($errors['linkedin'])) { ?>
+                                            <div class="feedback" id="superform-feedback-for-user_linkedin">
+                                                <div class="hint">
+                                                    <blockquote><?php echo $errors['linkedin']?></blockquote>
+                                                </div>
+                                            </div>
+<?php } ?>
+                                        </li>
+            						</ol>
+            					</div>
+            				</div>
+            			</li>
+            		</ol>

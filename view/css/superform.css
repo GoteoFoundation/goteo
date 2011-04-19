@@ -25,6 +25,13 @@ div.superform li.element > h8 {
     font-size: 14px;
 }
 
+div.superform li.element > label {
+    font-weight: bold;        
+    text-transform: uppercase;
+    margin: 1em 0;
+    display: block;
+}
+
 div.superform > div.hint,
 div.superform > div.elements {    
     overflow: visible;
@@ -144,6 +151,7 @@ div.superform li.element.textarea > div.contents {
 }
 
 div.superform li.element.textbox > div.contents > input[type="text"],
+div.superform li.element.textbox > div.contents > input[type="password"],
 div.superform li.element.textarea > div.contents > textarea {
     display: block;
     width: 100%;
