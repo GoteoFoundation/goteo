@@ -169,7 +169,7 @@ echo new SuperForm(array(
     'method'        => 'post',
     'title'         => 'Proyecto/Costes',
     'hint'          => Text::get('guide-project-costs'),    
-    'class'         => 'red',
+    'class'         => 'aqua',
     'footer'        => array(
         'view-step-rewards' => array(
             'type'  => 'submit',

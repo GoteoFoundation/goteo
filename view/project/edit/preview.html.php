@@ -19,7 +19,6 @@ echo new SuperForm(array(
     'method'        => 'post',
     'title'         => 'Proyecto/Previsualización',
     'hint'          => Text::get('guide-project-preview'),    
-    'class'         => 'aqua',
     'footer'        => array(
         array(
             'type'  => 'submit',

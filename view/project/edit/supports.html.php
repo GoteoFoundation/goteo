@@ -12,7 +12,7 @@ echo new SuperForm(array(
     'method'        => 'post',
     'title'         => 'Proyecto/Colaboraciones',
     'hint'          => Text::get('guide-project-rewards'),    
-    'class'         => 'green',
+    'class'         => 'aqua',
     'footer'        => array(                        
         'view-step-preview' => array(
             'type'  => 'submit',
