@@ -866,9 +866,9 @@ namespace Goteo\Model {
          * @param string node id
          * @return array of project instances
          */
-        public static function getAll($node = 'goteo') {
+        public static function getList($node = 'goteo') {
             $projects = array();
-            $query = self::query("SELECT id FROM project WHERE node = ? ORDER BY name ASC", array($node));
+            $query = self::query("SELECT id FROM project WHERE node = ? ORDER BY progress DESC", array($node));
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
                 $projects[] = self::get($proj['id']);
             }

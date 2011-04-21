@@ -21,15 +21,39 @@ include 'view/prologue.html.php';
                 echo '</p>';
                 endif;?>
 
-            <ul>
-            <?php foreach ($this['projects'] as $project) : ?>
-                <li>
-                    <label><?php echo $project->name; ?>:</label>
-                    <a href="/project/<?php echo $project->id; ?>" target="_blank">[Ver]</a>
-                </li>
-            <?php endforeach; ?>
-            </ul>
 
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Proyecto</td>
+                                <td>Creador</td>
+                                <td>Estado</td>
+                                <td>Progreso</td> <!-- segun estado -->
+                                <td><!-- editar --></td>
+                                <td><!-- Preview --></td>
+                                <td><!-- Publicar --></td>
+                                <td><!-- Cancelar --></td>
+                                <td><!-- Rehabilitar --></td> <!-- si no edición -->
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <?php foreach ($this['projects'] as $project) : ?>
+                            <tr>
+                                <td><?php echo $project->name; ?></td>
+                                <td><?php echo $project->owner; ?></td>
+                                <td><?php echo $this['status'][$project->status]; ?></td>
+                                <td><?php echo $project->progress; ?></td>
+                                <td><a href="/project/<?php echo $project->id; ?>/?edit" target="_blank">[Editar]</a></td>
+                                <td><a href="/project/<?php echo $project->id; ?>" target="_blank">[Preview]</a></td>
+                                <td><a href="/project/<?php echo $project->id; ?>/?publish" target="_blank">[Publicar]</a></td>
+                                <td><a href="/project/<?php echo $project->id; ?>/?edit" target="_blank">[Cancelar]</a></td>
+                                <td><a href="/project/<?php echo $project->id; ?>/?enable" target="_blank">[Reabrir]</a></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+
+                    </table>
         </div>
 
 <?php

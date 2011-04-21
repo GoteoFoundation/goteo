@@ -20,7 +20,9 @@ include 'view/header.html.php'; ?>
 			echo '<a href="/project/' . $project->id . '/?edit">' . ($project->name != '' ? $project->name : $project->id) . '</a>
                 (' . $this['status'][$project->status] . ')
                     Progreso: ' . $project->progress . '%
-                        <a href="/project/' . $project->id . '">[Preview]</a><br />';
+                        <a href="/project/' . $project->id . '">[Preview]</a>
+                            <a href="/project/' . $project->id . '/?finish">[Finalizar]</a>
+                                <br />';
 		}
 		?>
 		</p>

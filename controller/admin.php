@@ -97,12 +97,17 @@ namespace Goteo\Controller {
             if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
 
-            $projects = Model\Project::getAll($node);
+            $projects = Model\Project::getList($node);
+
+            $status = Model\Project::status();
+
+            
 
             return new View(
                 'view/admin/checking.html.php',
                 array(
-                    'projects'=>$projects
+                    'projects'=>$projects,
+                    'status'=>$status
                 )
             );
         }

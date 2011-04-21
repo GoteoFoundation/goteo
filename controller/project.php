@@ -22,6 +22,12 @@ namespace Goteo\Controller {
                     return $this->enable($id); // Re-habilitar la edición
                 elseif (isset($_GET['publish']))
                     return $this->publish($id); // Publicarlo
+                elseif (isset($_GET['disable']))
+                    return $this->disable($id); // Cancelar
+                elseif (isset($_GET['raw'])) {
+                    $project = Model\Project::get($id);
+                    die('<pre>' . print_r($project, 1) . '</pre>');
+                }
                 else
                     return $this->view($id);
 
@@ -219,7 +225,9 @@ namespace Goteo\Controller {
             );
         }
 
-        // Finalizar para revision, ready le cambia el estado
+        /*
+         * Finalizar para revision, ready le cambia el estado
+         */
         public function finish($id) {
             //@TODO verificar si tienen el mínimo progreso para verificación y si está en estado edición
             $project = Model\Project::get($id);
@@ -234,6 +242,9 @@ namespace Goteo\Controller {
             throw new \Goteo\Core\Exception(implode(' ', $errors));
         }
 
+        /*
+         * Rehabilitarlo para edición
+         */
         public function enable($id) {
             //@TODO verificar si tiene permisos para rehabilitar la edición del proyecto (admin)
             if ($_SESSION['user']->role != 1) //@FIXME!! Piñonaco... ACL...
@@ -244,6 +255,23 @@ namespace Goteo\Controller {
             $errors = array();
             if ($project->enable($errors))
                 throw new Redirection("/project/{$project->id}/?edit");
+
+            throw new \Goteo\Core\Exception(implode(' ', $errors));
+        }
+
+        /*
+         * Para cancelarlo
+         */
+        public function disable($id) {
+            //@TODO verificar si tiene permisos para cancelar el proyecto (admin)
+            if ($_SESSION['user']->role != 1) //@FIXME!! Piñonaco... ACL...
+                throw new Redirection("/project/{$id}");
+
+            $project = Model\Project::get($id);
+
+            $errors = array();
+            if ($project->fail($errors))
+                throw new Redirection("/admin/checking");
 
             throw new \Goteo\Core\Exception(implode(' ', $errors));
         }
