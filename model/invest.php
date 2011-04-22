@@ -17,6 +17,9 @@ namespace Goteo\Model {
             $returned, //fecha en la que se ha devuelto el importe al usurio por cancelación bancaria
             $rewards; //recompensas que le corresponden
 
+        // añadir los datos del cargo
+
+
         /*
          *  Devuelve datos de una inversión
          */
@@ -24,7 +27,8 @@ namespace Goteo\Model {
                 $query = static::query("
                     SELECT  *
                     FROM    invest
-                    WHERE   id = :id
+                    LEFT JOIN charge ON charge.invest = invest.id
+                    WHERE   invest.id = :id
                     ", array(':id' => $id));
                 $invest = $query->fetchObject(__CLASS__);
 
@@ -110,7 +114,7 @@ namespace Goteo\Model {
                 return 0;
         }
 
-        public static function investors ($project) {
+        public static function investors ($project, $showAll = false) {
             //@TODO añadir los datos que sean necesarios
             $investors = array();
 
@@ -120,9 +124,12 @@ namespace Goteo\Model {
                         invest.amount as amount
                 FROM    invest
                 INNER JOIN user ON invest.user = user.id
-                WHERE   invest.project = ?
-                AND     (invest.anonymous IS NULL OR invest.anonymous = 0)
-                ";
+                WHERE   invest.project = ?";
+
+            if (!$showAll) {
+                $sql .= " AND (invest.anonymous IS NULL OR invest.anonymous = 0)";
+            }
+
             $query = self::query($sql, array($project));
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $investor) {
                 $investors[] = $investor;

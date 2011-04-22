@@ -125,15 +125,42 @@ namespace Goteo\Controller {
         }
 
         /*
-         *  Revisión de proyectos, aqui llega con un nodo y si no es el suyo a la calle (o al suyo)
+         *  Revisión de aportes
+         *
+         * dummy para ejecutar cargos
          */
         public function accounting($node = 'goteo') {
             if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
 
             $content = 'Administración de las transacciones para cobrar las aportaciones';
-//            include 'view/admin/accounting.html.php';
-            return new View('view/admin/accounting.html.php', array('content'=>$content));
+
+            /*
+             *  Lista de proyectos en campaña
+             *  indicando cuanto han conseguido, cuantos dias y los cofinanciadores
+             *  Para cada cofinanciador sus aportes
+             *  enlace para ejecutar cargo
+             */
+            $projects = Model\Project::published();
+/*
+            $investors = array();
+
+            foreach ($projects as $proj) {
+
+                // para cada uno sacar todos los datos de su aporte
+                foreach ($proj->investors as $key=>&$investor) {
+                    $investor = Model\Invest::get($investor['invest']);
+                }
+
+            }
+*/
+            return new View(
+                'view/admin/accounting.html.php',
+                array(
+                    'projects'=>$projects,
+                    'investors'=>$investors
+                )
+            );
         }
 
 
