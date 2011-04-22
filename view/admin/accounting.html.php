@@ -15,12 +15,12 @@ include 'view/prologue.html.php';
 
             <p><?php echo $this['content']; ?></p>
 
-            <?php if (!empty($this['errors'])) :
-                echo '<p>';
-                foreach ($this['errors'] as $error) : ?>
-                    <span style="color:red;"><?php echo $error; ?></span><br />
+            <?php if (!empty($this['projects'])) :
+                foreach ($this['projects'] as $project) : ?>
+                    <p><?php echo $project->name; ?></p>
+                    <p><pre><?php echo print_r($project->investors, 1); ?></pre></p>
+                    <hr />
             <?php endforeach;
-                echo '</p>';
                 endif;?>
 
         </div>

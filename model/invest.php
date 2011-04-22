@@ -17,6 +17,9 @@ namespace Goteo\Model {
             $returned, //fecha en la que se ha devuelto el importe al usurio por cancelación bancaria
             $rewards; //recompensas que le corresponden
 
+        // añadir los datos del cargo
+
+
         /*
          *  Devuelve datos de una inversión
          */
@@ -24,7 +27,8 @@ namespace Goteo\Model {
                 $query = static::query("
                     SELECT  *
                     FROM    invest
-                    WHERE   id = :id
+                    LEFT JOIN charge ON charge.invest = invest.id
+                    WHERE   invest.id = :id
                     ", array(':id' => $id));
                 $invest = $query->fetchObject(__CLASS__);
 
@@ -110,7 +114,7 @@ namespace Goteo\Model {
                 return 0;
         }
 
-        public static function investors ($project) {
+        public static function investors ($project, $showAll = false) {
             //@TODO añadir los datos que sean necesarios
             $investors = array();
 
@@ -120,9 +124,12 @@ namespace Goteo\Model {
                         invest.amount as amount
                 FROM    invest
                 INNER JOIN user ON invest.user = user.id
-                WHERE   invest.project = ?
-                AND     (invest.anonymous IS NULL OR invest.anonymous = 0)
-                ";
+                WHERE   invest.project = ?";
+
+            if (!$showAll) {
+                $sql .= " AND (invest.anonymous IS NULL OR invest.anonymous = 0)";
+            }
+
             $query = self::query($sql, array($project));
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $investor) {
                 $investors[] = $investor;
@@ -133,21 +140,56 @@ namespace Goteo\Model {
         /*
          * Asignar a la aportación las recompensass a las que opta
          */
-        public function setReward ($reward, $fulfill = null) {
+        public function setReward ($reward) {
 
             $values = array(
                 ':invest' => $this->id,
-                ':reward' => $reward,
-                ':fulfill' => $fulfill
+                ':reward' => $reward
             );
 
-            $sql = "REPLACE INTO invest_reward (invest, reward, fulfilled) VALUES (:invest, :reward, :fulfill)";
+            $sql = "REPLACE INTO invest_reward (invest, reward) VALUES (:invest, :reward)";
             if (self::query($sql, $values)) {
                 return true;
             }
         }
 
         //@TODO metodos para aplicar cargo y para devolver
+
+        public static function setPreapproval ($id, $key) {
+
+            $values = array(
+                ':id' => $id,
+                ':code' => $key
+            );
+
+            $sql = "UPDATE invest SET code = :code WHERE id = :id";
+            if (self::query($sql, $values)) {
+                return true;
+            } else {
+                return false;
+            }
+            
+        }
+
+        public static function cancelPreapproval ($id, $project) {
+            
+            $values = array(
+                ':id' => $id,
+                ':project' => $project
+            );
+
+            $sql = "DELETE FROM invest WHERE id = :id AND project = :project";
+            if (self::query($sql, $values)) {
+                $sql = "DELETE FROM invest_reward WHERE invest = ?";
+                if (self::query($sql, array($id)))
+                    return true;
+                else
+                    return false;
+            } else {
+                return false;
+            }
+
+        }
 
     }
     

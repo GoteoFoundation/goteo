@@ -12,3 +12,6 @@ CREATE TABLE IF NOT EXISTS charge (
 -- Alteraciones de la tabla original por si no se puede pasar el create de arriba
 -- Cambiando ids numéricos por SERIAL
 ALTER TABLE `charge` CHANGE `id` `id` SERIAL NOT NULL AUTO_INCREMENT ;
+
+-- Campo para el PayKey quedará vacio si falla
+ALTER TABLE `charge` CHANGE `code` `code` VARCHAR( 256 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'PayKey';

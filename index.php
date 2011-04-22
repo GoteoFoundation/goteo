@@ -9,7 +9,8 @@ require_once 'config.php';
 require_once 'core/common.php';
 
 // Include path
-set_include_path(GOTEO_PATH . PATH_SEPARATOR . '.');
+$path = get_include_path ();
+set_include_path(GOTEO_PATH . PATH_SEPARATOR . $path);
 
 // Autoloader
 spl_autoload_register(
