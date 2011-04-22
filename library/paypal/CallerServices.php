@@ -1,6 +1,6 @@
 <?php
 /****************************************************
-CallerServices.php
+callerservices.php
 
 This file uses the constants.php to get parameters including the PayPal Webservice Host URL needed
 to make an API call and calls the server.
@@ -8,10 +8,8 @@ to make an API call and calls the server.
 Called by PayReceipt.php, PaymentDetails, etc.,
 
 ****************************************************/
-require_once 'Config/paypal_sdk_clientproperties.php' ;
-require_once 'SOAPEncoder/SOAPEncoder.php';
-require_once 'Exceptions/FatalException.php'  ;
-require_once 'Log.php';
+require_once 'paypal_config.php' ;
+require_once 'log.php';
 
 class CallerServices {
 	
@@ -89,7 +87,7 @@ class CallerServices {
 	        }
 		}
 		catch(Exception $ex) {
-			throw new FatalException('Error occurred in call method');
+			die('Error occurred in call method');
 		}
 	   return $response;
 	}
@@ -108,7 +106,7 @@ class CallerServices {
 		    $response = call($request, $endpoint, $this->sandBoxEmailAddress,$simpleXML);
 		}
 		catch(Exception $ex) {
-			throw new FatalException('Error occurred in call method');
+			die('Error occurred in callWebService method');
 		}
 	   return $response;
 	}
@@ -221,22 +219,10 @@ function call($MsgStr, $endpoint, $sandboxEmailAddress = '')
     //setting the MsgStr as POST FIELD to curl
     $conf = array('mode' => 0600, 'timeFormat' => '%X %x');
     $logger = &Log::singleton('file', LOGFILENAME, 'caller', $conf);
-    
-if (X_PAYPAL_REQUEST_DATA_FORMAT == 'JSON'){
-    	
-    	$log_data='#####JSON#####';
-    	$logger->log($log_data);	
-    }
-if (X_PAYPAL_REQUEST_DATA_FORMAT == 'SOAP11'){
-    	
-    	$log_data='#####SOAP#####';
-    	$logger->log($log_data);	
-    }   
-if (X_PAYPAL_REQUEST_DATA_FORMAT == 'XML'){
-    	
-    	$log_data='#####XML#####';
-    	$logger->log($log_data);	
-    }   
+
+    // JSON
+    $log_data='#####TRANSACTION#####';
+    $logger->log($log_data);
     
     
     if (TRUST_ALL_CONNECTION == true){
@@ -292,22 +278,10 @@ function setupHeaders($auth_mode) {
 	$headers_arr[]="X-PAYPAL-APPLICATION-ID: ".X_PAYPAL_APPLICATION_ID;
 	$headers_arr[]="X-PAYPAL-REQUEST-SOURCE: ".SDK_VERSION;
     $headers_arr[]="X-PAYPAL-DEVICE-IPADDRESS: ".X_PAYPAL_DEVICE_IPADDRESS; 
-    if(strtoupper(X_PAYPAL_REQUEST_DATA_FORMAT) == "SOAP11" || strtoupper(X_PAYPAL_RESPONSE_DATA_FORMAT) == "SOAP11") {
-		$headers_arr[]="X-PAYPAL-MESSAGE-PROTOCOL: SOAP11" ;
-	}
-	else{
-    $headers_arr[] = "X-PAYPAL-REQUEST-DATA-FORMAT: " . X_PAYPAL_REQUEST_DATA_FORMAT;
-    $headers_arr[] = "X-PAYPAL-RESPONSE-DATA-FORMAT: " . X_PAYPAL_RESPONSE_DATA_FORMAT;
-	}
+    $headers_arr[] = "X-PAYPAL-REQUEST-DATA-FORMAT: JSON";
+    $headers_arr[] = "X-PAYPAL-RESPONSE-DATA-FORMAT: JSON";
 	
-	if(!defined('X_PAYPAL_REQUEST_SOURCE'))
-	{
-		$headers_arr[]="X-PAYPAL-REQUEST-SOURCE: ".SDK_VERSION;
-	}
-	else 
-	$headers_arr[]="X-PAYPAL-REQUEST-SOURCE: ".SDK_VERSION.":".X_PAYPAL_REQUEST_SOURCE;
 	return $headers_arr;
-
 }
 
 ?>

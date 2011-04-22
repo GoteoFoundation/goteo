@@ -1,5 +1,5 @@
 <?php
-require_once "JSON.php";
+require_once "json.php";
 
 /*
  * JSON Encoder encodes/decodes the object into/from JSON string
@@ -25,7 +25,7 @@ class JSONEncoder
 		}	
 		catch(Exception $ex)
 		{
-			throw new Exception("Error occurred while JSON encoding");
+			die("Error occurred while JSON encoding");
 		}
 		return $JSON;
 	}
@@ -40,7 +40,7 @@ class JSONEncoder
 		try
 		{
 			if(empty($JSONResponse))
-				throw new Exception("Given Response is not a valid JSON response.");
+				die("Given Response is not a valid JSON response.");
 				
 			if(strlen($JSONResponse) != strlen(str_replace('"error":','',$JSONResponse))) {
 				$isFault = true;
@@ -56,7 +56,7 @@ class JSONEncoder
 		}
 		catch(Exception $ex)
 		{
-			throw new Exception("Error occurred while JSON decoding. " . $ex->getMessage());
+			die("Error occurred while JSON decoding. " . $ex->getMessage());
 		}
 		
 		return $responseJSONObject;

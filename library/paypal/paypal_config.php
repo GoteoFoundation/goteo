@@ -8,7 +8,7 @@
 #############################################################################################
 
 /****************************************************
-paypal_sdk_clientproperties.php
+paypal_config.php
 
 This is the configuration file for the samples.This file
 defines the parameters needed to make an API call.
@@ -39,7 +39,7 @@ define('PROXY_PORT', '808');
 
 /**
 # API user: The user that is identified as making the call. you can
-# also use your own API username that you created on PayPal’s sandbox
+# also use your own API username that you created on PayPalï¿½s sandbox
 # or the PayPal live site
 */
 
@@ -82,7 +82,10 @@ define('TRUST_ALL_CONNECTION',false);
  */
 define('SDK_VERSION','PHP_SOAP_SDK_V1.4');
 define('X_PAYPAL_APPLICATION_ID','APP-80W284485P519543T');
-//Binding options -> SOAP11,XML,JSON
+
+/**
+ * Solamente JSON
+ */
 define('X_PAYPAL_REQUEST_DATA_FORMAT','JSON');
 define('X_PAYPAL_RESPONSE_DATA_FORMAT','JSON');
 
@@ -90,4 +93,3 @@ define('X_PAYPAL_RESPONSE_DATA_FORMAT','JSON');
  * IP Address of the device
  */
 define('X_PAYPAL_DEVICE_IPADDRESS','127.0.0.1');
-?>

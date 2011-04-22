@@ -1,18 +1,15 @@
 <?php
 /****************************************************
-AdaptivePayments.php
+adaptivepayments.php
 
 This file contains client business methods to call
 PayPals AdaptivePayments Webservice APIs.
 
 ****************************************************/
-require_once 'Config/paypal_sdk_clientproperties.php' ;
-require_once 'CallerServices.php'  ;
-require_once 'Stub/AP/AdaptivePaymentsProxy.php'  ;
-require_once 'SOAPEncoder/SOAPEncoder.php'  ;
-require_once 'XMLEncoder/XMLEncoder.php'  ;
-require_once 'JSONEncoder/JSONEncoder.php'  ;
-require_once 'Exceptions/FatalException.php'  ;
+require_once 'paypal_config.php' ;
+require_once 'callerservices.php'  ;
+require_once 'stub.php'  ;
+require_once 'json_encoder.php'  ;
 
 class AdaptivePayments extends CallerServices {
    
@@ -28,7 +25,7 @@ class AdaptivePayments extends CallerServices {
    		}
    		catch(Exception $ex) {
 				  			
-   			throw new FatalException('Error occurred in Pay method');
+   			die('Error occurred in Pay method');
    		}
    		
    }
@@ -47,7 +44,7 @@ class AdaptivePayments extends CallerServices {
    		}
    		catch(Exception $ex) {
 				  			
-   			throw new FatalException('Error occurred in Pay method');
+   			die('Error occurred in Pay method');
    		}
    		
    }
@@ -63,7 +60,7 @@ class AdaptivePayments extends CallerServices {
    		}
    		catch(Exception $ex) {
 				  			
-   			throw new FatalException('Error occurred in PaymentDetails method');
+   			die('Error occurred in PaymentDetails method');
    		}
    }	
    function ExecutePayment($executePaymentRequest, $isRequestString = false) {
@@ -77,7 +74,7 @@ class AdaptivePayments extends CallerServices {
    		}
    		catch(Exception $ex) {
 				  			
-   			throw new FatalException('Error occurred in PaymentDetails method');
+   			die('Error occurred in PaymentDetails method');
    		}
    		
    		
@@ -93,7 +90,7 @@ class AdaptivePayments extends CallerServices {
    		}
    		catch(Exception $ex) {
 				  			
-   			throw new FatalException('Error occurred in PaymentDetails method');
+   			die('Error occurred in PaymentDetails method');
    		}
    		
    		
@@ -112,7 +109,7 @@ class AdaptivePayments extends CallerServices {
    		}
    		catch(Exception $ex) {
 				  			
-   			throw new FatalException('Error occurred in Preapproval method');
+   			die('Error occurred in Preapproval method');
    		}      
       	   
    }
@@ -128,7 +125,7 @@ class AdaptivePayments extends CallerServices {
    		}
    		catch(Exception $ex) {
 				  			
-   			throw new FatalException('Error occurred in PreapprovalDetails method');
+   			die('Error occurred in PreapprovalDetails method');
    		}
    		
    }
@@ -144,7 +141,7 @@ class AdaptivePayments extends CallerServices {
    		}
    		catch(Exception $ex) {
 				  			
-   			throw new FatalException('Error occurred in CancelPreapproval method');
+   			die('Error occurred in CancelPreapproval method');
    		}
  	  	
    }
@@ -160,7 +157,7 @@ class AdaptivePayments extends CallerServices {
    		}
    		catch(Exception $ex) {
 				  			
-   			throw new FatalException('Error occurred in Refund method');
+   			die('Error occurred in Refund method');
    		}
    		   		     
    }
@@ -178,7 +175,7 @@ class AdaptivePayments extends CallerServices {
    		}
    		catch(Exception $ex) {
 				  			
-   			throw new FatalException('Error occurred in ConvertCurrency method');
+   			die('Error occurred in ConvertCurrency method');
    		}
    		
    		
@@ -193,55 +190,32 @@ class AdaptivePayments extends CallerServices {
 		$isError = false;
 		$reqObject = $request;
    		try {
-			
-   		
-   			switch(X_PAYPAL_REQUEST_DATA_FORMAT) {
-   				case "JSON" :
-   						$request = JSONEncoder::Encode($request);
-   						$response = parent::callWebService($request, $URL, '');
-   					break;
-   				case "SOAP11" :
-   						$request = SoapEncoder::Encode($request,$SerializeOption);
-   						$response = parent::call($request, $URL);
-   					break;
-   				case "XML" :
-   						$request = XMLEncoder::Encode($request,$SerializeOption);
-   						$response = parent::callWebService($request, $URL);
-   						
-   					break;
-   				
-   			}
-   			if((X_PAYPAL_RESPONSE_DATA_FORMAT == 'XML')||(X_PAYPAL_RESPONSE_DATA_FORMAT == 'JSON'))
-   			{
-   				switch(X_PAYPAL_RESPONSE_DATA_FORMAT) {
-   				case "JSON" :
-   						$strObjName = get_class($reqObject);
-        				$strObjName = str_replace('Request', 'Response', $strObjName);
-        				$response = JSONEncoder::Decode($response,$isError, $strObjName); 
-   					break;
-   				case "XML" :
-   						$response = XMLEncoder::Decode($response, $isError);
-   					break;
-   				
-   				}  			
-			
-   			
-	      	 if($isError)
-	     	  {
-	        	$this->isSuccess = 'Failure' ;
-	     		$this->setLastError($response) ;
-	        	$response = null ;
-	     	  }
-	      	  else
-	      	  {
-	   			$this->isSuccess = 'Success' ;
-	      	  }
-	      	  
-   			}  
+
+            // REQUEST_DATA_FORMAT: JSON
+            $request = JSONEncoder::Encode($request);
+            $response = parent::callWebService($request, $URL, '');
+
+            // RESPONSE_DATA_FORMAT: JSON
+            $strObjName = get_class($reqObject);
+            $strObjName = str_replace('Request', 'Response', $strObjName);
+            $response = JSONEncoder::Decode($response,$isError, $strObjName);
+
+            // Si hay algun error con el encoder
+             if($isError)
+              {
+                $this->isSuccess = 'Failure' ;
+                $this->setLastError($response) ;
+                $response = null ;
+              }
+              else
+              {
+                $this->isSuccess = 'Success' ;
+              }
+
    		} 
    		catch(Exception $ex) {
 				  			
-   			throw new FatalException('Error occurred in callAPI method');
+   			die('Error occurred in callAPI method');
    		}
    		
    		return $response;

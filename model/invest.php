@@ -133,21 +133,56 @@ namespace Goteo\Model {
         /*
          * Asignar a la aportación las recompensass a las que opta
          */
-        public function setReward ($reward, $fulfill = null) {
+        public function setReward ($reward) {
 
             $values = array(
                 ':invest' => $this->id,
-                ':reward' => $reward,
-                ':fulfill' => $fulfill
+                ':reward' => $reward
             );
 
-            $sql = "REPLACE INTO invest_reward (invest, reward, fulfilled) VALUES (:invest, :reward, :fulfill)";
+            $sql = "REPLACE INTO invest_reward (invest, reward) VALUES (:invest, :reward)";
             if (self::query($sql, $values)) {
                 return true;
             }
         }
 
         //@TODO metodos para aplicar cargo y para devolver
+
+        public static function setPreapproval ($id, $key) {
+
+            $values = array(
+                ':id' => $id,
+                ':code' => $key
+            );
+
+            $sql = "UPDATE invest SET code = :code WHERE id = :id";
+            if (self::query($sql, $values)) {
+                return true;
+            } else {
+                return false;
+            }
+            
+        }
+
+        public static function cancelPreapproval ($id, $project) {
+            
+            $values = array(
+                ':id' => $id,
+                ':project' => $project
+            );
+
+            $sql = "DELETE FROM invest WHERE id = :id AND project = :project";
+            if (self::query($sql, $values)) {
+                $sql = "DELETE FROM invest_reward WHERE invest = ?";
+                if (self::query($sql, array($id)))
+                    return true;
+                else
+                    return false;
+            } else {
+                return false;
+            }
+
+        }
 
     }
     
