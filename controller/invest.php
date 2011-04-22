@@ -105,7 +105,7 @@ namespace Goteo\Controller {
                 );
 
             return new View (
-                'view/invest.html.php',
+                'view/spread.html.php',
                 $viewData
             );
 
