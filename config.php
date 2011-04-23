@@ -25,6 +25,9 @@ Define constants used by web pages in this file
    https://www.paypal.com/webscr&cmd=_ap-payment&paykey=
    */
 define('PAYPAL_REDIRECT_URL', 'https://www.sandbox.paypal.com/webscr&cmd=');
-define('DEVELOPER_PORTAL', 'https://developer.paypal.com');
-define('DEVICE_ID', 'goteo.org');
-define('APPLICATION_ID', 'APP-80W284485P519543T');
+define('PAYPAL_DEVELOPER_PORTAL', 'https://developer.paypal.com');
+define('PAYPAL_DEVICE_ID', 'goteo.org');
+define('PAYPAL_APPLICATION_ID', 'APP-80W284485P519543T');
+define('PAYPAL_BUSINESS_ACCOUNT', 'goteo_1302553021_biz@gmail.com');
+define('PAYPAL_SITE_URL', 'http://devgoteo.org');
+define('PAYPAL_IP_ADDRESS', '127.0.0.1');
