@@ -147,18 +147,16 @@ namespace Goteo\Controller {
              *  enlace para ejecutar cargo
              */
             $projects = Model\Project::published();
-/*
-            $investors = array();
 
             foreach ($projects as $proj) {
 
                 // para cada uno sacar todos los datos de su aporte
                 foreach ($proj->investors as $key=>&$investor) {
-                    $investor = Model\Invest::get($investor['invest']);
+                    $investor['invest'] = Model\Invest::get($investor['invest']);
                 }
 
             }
-*/
+
             return new View(
                 'view/admin/accounting.html.php',
                 array(

@@ -51,12 +51,13 @@ class CallerServices {
    	function call($request,$serviceName) {
 		
 		$response = null;
-		
+		$errors = array();
+        
 		try {
 			
 		    $endpoint=API_BASE_ENDPOINT.$serviceName;
 		 
-		    $response = call($request, $endpoint, $this->sandBoxEmailAddress);
+		    $response = call($request, $endpoint, $this->sandBoxEmailAddress, $errors);
 		    $isFault = false;
 			if(empty($response) || trim($response) == '')
 	   		{
@@ -64,7 +65,7 @@ class CallerServices {
 				$fault = new FaultMessage();
 				$errorData = new ErrorData();
 				$errorData->errorId = 'API Error' ;
-		  		$errorData->message = 'response is empty.' ;
+		  		$errorData->message = 'call failed or response is empty. ' . implode(', ', $errors) ;
 		  		$fault->error = $errorData;
 				
 		  		$this->isSuccess = 'Failure' ;
@@ -78,8 +79,7 @@ class CallerServices {
 		   	
 		   		$this->isSuccess = 'Success' ;
 		        $response = SoapEncoder::Decode($response, $isFault);
-				if($isFault)
-		        {
+				if($isFault) {
 		        	$this->isSuccess = 'Failure' ;
 		        	$this->LastError = $response ;
 		        	$response = null ;
@@ -87,7 +87,8 @@ class CallerServices {
 	        }
 		}
 		catch(Exception $ex) {
-			die('Error occurred in call method');
+            $errors[] = 'Fatal Error Exception occurred in call method';
+            return false;
 		}
 	   return $response;
 	}
@@ -96,17 +97,18 @@ class CallerServices {
 	/*
    	 * Calls the actual WEB Service and returns the response.
    	 */
-	function callWebService($request,$serviceName,$simpleXML)
+	function callWebService($request,$serviceName,$simpleXML, &$errors = array())
 	{
 		$response = null;
-		
+        
 		try {
 			
 		    $endpoint=API_BASE_ENDPOINT.$serviceName;
-		    $response = call($request, $endpoint, $this->sandBoxEmailAddress,$simpleXML);
+		    $response = call($request, $endpoint, $this->sandBoxEmailAddress, $errors);
 		}
 		catch(Exception $ex) {
-			die('Error occurred in callWebService method');
+            $errors[] = 'Fatal Error Exception occurred in callWebService method';
+            return false;
 		}
 	   return $response;
 	}
@@ -176,7 +178,7 @@ class CallerServices {
   * returns an associtive array containing the response from the server.
 */
 
-function call($MsgStr, $endpoint, $sandboxEmailAddress = '')
+function call($MsgStr, $endpoint, $sandboxEmailAddress = '', &$errors = array())
 {
 
     //setting the curl parameters.
@@ -236,14 +238,6 @@ function call($MsgStr, $endpoint, $sandboxEmailAddress = '')
 
     curl_setopt($ch,CURLOPT_POSTFIELDS,$MsgStr);
     
-    if(isset($_SESSION['curl_error_no'])) {
-	    unset($_SESSION['curl_error_no']);
-    }
-    if(isset($_SESSION['curl_error_msg'])) {
-	    unset($_SESSION['curl_error_msg']);
-    }
-    
-   
     //getting response from server
     $response = curl_exec($ch);
     $logger->log("response: $response");
@@ -251,16 +245,14 @@ function call($MsgStr, $endpoint, $sandboxEmailAddress = '')
     
     if (curl_errno($ch)) {
         // moving to display page to display curl errors
-          $_SESSION['curl_error_no']=curl_errno($ch) ;
-          $_SESSION['curl_error_msg']=curl_error($ch);
-          $location = "APIError.php";
-          header("Location: $location");
+        $errors[] = 'curl_error: ' . curl_errno($ch) . '<br />' . curl_error($ch);
+        return false;
      } else {
          //closing the curl
             curl_close($ch);
       }
 
-      return $response;
+    return $response;
 }
 
 function setupHeaders($auth_mode) {

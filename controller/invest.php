@@ -39,39 +39,41 @@ namespace Goteo\Controller {
                 }
 
                 if (empty($errors)) {
+                    // añadir recompensas que ha elegido
+                    $rewards = array();
+                    if (!empty($invest->id) && $invest->resign != 1) {
+                        foreach ($_POST as $key=>$value) {
+                            if (substr($key, 0, strlen('reward_')) == 'reward_')
+                                $rewards[] = $value;
+                        }
+                    }
+
+                    // @TODO, cuenta paypal del usuario o su email
                     $invest = new Model\Invest(
                         array(
                             'amount' => $_POST['amount'],
                             'user' => $_SESSION['user']->id,
                             'project' => $project,
+                            'account' => 'julian_1302552287_per@gmail.com',
                             'status' => 0,
                             'invested' => date('Y-m-d'),
                             'anonymous' => $_POST['anonymous'],
-                            'resign' => $_POST['resign']
+                            'resign' => $_POST['resign'],
+                            'rewards' => $rewards
                         )
                     );
 
                     if ($invest->save($errors)) {
-
-                        // añadir recompensas que ha elegido
-                        if (!empty($invest->id) && $invest->resign != 1) {
-                            foreach ($_POST as $key=>$value) {
-                                if (substr($key, 0, strlen('reward_')) == 'reward_') {
-                                    //@TODO solo si el importe de la aportación es mayor o igual al importe mínimo para la recompensa
-                                    if ($invest->setReward($value))
-                                        $invest->rewards[] = $value;
-                                }
-                            }
-                        }
-
-                    // Petición de preapproval y a paypal
-                    Paypal::preapproval($invest->id, $_SESSION['user']->id, $project, $_POST['email'], $_POST['amount']);
-
+                        // Petición de preapproval y redirección a paypal
+                        Paypal::preapproval($invest, $errors);
+                        // si no salta, vamos a tener los errores
                     }
-                } else {
-                    $message .= 'Errores: ' . implode('.', $errors);
                 }
 			}
+
+            if (!empty($errors)) {
+                $message .= 'Errores: ' . implode('.', $errors);
+            }
 
             $viewData = array(
                     'message' => $message,
@@ -111,18 +113,23 @@ namespace Goteo\Controller {
 
         }
 
-        public function fail ($project = null, $invest = null) {
+        /*
+         * @params project id del proyecto
+         * @params is id del aporte
+         */
+        public function fail ($project = null, $id = null) {
             if (empty($_SESSION['user']))
                 throw new Redirection ('/login', Redirection::TEMPORARY);
 
             if (empty($project))
                 throw new Redirection('/project/explore', Redirection::TEMPORARY);
 
-            if (empty($invest))
+            if (empty($id))
                 throw new Redirection('/invest/' . $project, Redirection::TEMPORARY);
 
             // quitar el preapproval y cancelar el aporte, mandarlo a la pagina de aportar para que lo intente de nuevo
-            Model\Invest::cancelPreapproval($invest, $project);
+            $invest = Model\Invest::get($id);
+            $invest->cancelPreapproval();
 
             $message = 'Aporte cancelado';
 

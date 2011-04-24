@@ -2,59 +2,23 @@
 namespace Goteo\Library {
 
     use Goteo\Model\Invest;
+
+    require_once 'library/paypal/adaptivepayments.php';  // SDK paypal para operaciones API (minimizado)
+
 	/*
 	 * Clase para usar los adaptive payments de paypal
 	 */
-    require_once 'library/paypal/adaptivepayments.php';  // SDK paypal para operaciones API
-
     class Paypal {
 
         /*
-        public
-            $client, // array de datos del usuario (Id,
-            $account, // cuenta de paypal, sender
-            $returnUrl, // retorno desde paypal a esta cuando confirman
-            $cancelUrl, // si cancelan la transacción en paypal cuelve a esta
-            $preapprovalKey, // si estamos ejecutando
-            $errors; // los errores van aqui
-        */
-
-       /*
-        *  Al constructor le decimos si es una operación con intervencion de usuario (aporte a proyecto)
-        * o si es una operación de sistema (ejecución pre approval)
-        *
-
-        public function __construct($type, $data) {
-            switch ($type) {
-                case 'user':
-                    // el dato es el id del proyecto para redireccionarlo
-                    break;
-                case 'system':
-                    // el dato es el codigo de preapproval
-                    break;
-            }
-        }
-
-        *
-        */
-
-
-        /*
-         * @param invest numeric id del registro de aporte
-         * @param user string id del usaurio
-         * @param project string id del proyecto
-         *
+         * @param invest instancia del aporte: id, usuario, proyecto, cuenta, cantidad
          *
          * Método para crear un preapproval para un aporte
          * va a mandar al usuario a paypal para que confirme
          *
-         * Necesita la cantidad del aporte
-         * un solo pago
-         *
-         * desde hoy a 100 dias,
          * @TODO limite a los dias que le quede al proyecto segun los primeros 40 o los segundos 40 (hsta 80)
          */
-        public static function preapproval($invest, $user, $project, $account, $amount) {
+        public static function preapproval($invest, &$errors = array()) {
             
 			try {
 
@@ -68,8 +32,8 @@ namespace Goteo\Library {
 		            payment has been succesfully authorized.
 		            The cancelURL is the location buyers are sent to when they hit the
 		            cancel button during authorization of payment during the PayPal flow                 */
-		           $returnURL = "http://devgoteo.org/invest/confirmed/" . $project; // a difundirlo @TODO mensaje gracias si llega desde un preapproval
-		           $cancelURL = "http://devgoteo.org/invest/fail/" . $project . "/" . $invest; // a la página de aportar para intentarlo de nuevo
+		           $returnURL = PAYPAL_SITE_URL."/invest/confirmed/" . $invest->project; // a difundirlo @TODO mensaje gracias si llega desde un preapproval
+		           $cancelURL = PAYPAL_SITE_URL."/invest/fail/" . $invest->project . "/" . $invest->id; // a la página de aportar para intentarlo de nuevo
 
                     // desde hoy hasta 40 dias
                     $currDate = getdate();
@@ -90,37 +54,39 @@ namespace Goteo\Library {
 		           $preapprovalRequest->cancelUrl = $cancelURL;
 		           $preapprovalRequest->returnUrl = $returnURL;
 		           $preapprovalRequest->clientDetails = new \ClientDetailsType();
-		           $preapprovalRequest->clientDetails->customerId = $user;
-		           $preapprovalRequest->clientDetails->applicationId = APPLICATION_ID;
-		           $preapprovalRequest->clientDetails->deviceId = DEVICE_ID;
-		           $preapprovalRequest->clientDetails->ipAddress = "127.0.0.1";
+		           $preapprovalRequest->clientDetails->customerId = $invest->user;
+		           $preapprovalRequest->clientDetails->applicationId = PAYPAL_APPLICATION_ID;
+		           $preapprovalRequest->clientDetails->deviceId = PAYPAL_DEVICE_ID;
+		           $preapprovalRequest->clientDetails->ipAddress = PAYPAL_IP_ADDRESS;
 		           $preapprovalRequest->currencyCode = "EUR";
 		           $preapprovalRequest->startingDate = $startDate;
 		           $preapprovalRequest->endingDate = $endDate;
 		           $preapprovalRequest->maxNumberOfPayments = 1;
-		           $preapprovalRequest->maxTotalAmountOfAllPayments = $amount;
+		           $preapprovalRequest->maxTotalAmountOfAllPayments = $invest->amount;
 		           $preapprovalRequest->requestEnvelope = new \RequestEnvelope();
 		           $preapprovalRequest->requestEnvelope->errorLanguage = "es_ES";
-		           $preapprovalRequest->senderEmail = 'julian_1302552287_per@gmail.com'; // @TODO, cuenta de paypal del usuario
+		           $preapprovalRequest->senderEmail = $invest->account;
                    $preapprovalRequest->feesPayer = "SENDER";
 
 		           $ap = new \AdaptivePayments();
 		           $response=$ap->Preapproval($preapprovalRequest);
 
 		           if(strtoupper($ap->isSuccess) == 'FAILURE') {
-                       die('ERROR: ' . $ap->getLastError()); //@FIXME obviusly
-					} else {
-
-                        // Guardar el codigo de preaproval en el registro de aporte y mandarlo a paypal
-						$token = $response->preapprovalKey;
-                        if (!empty($token)) {
-                            Invest::setPreapproval($invest, $token);
-                            $payPalURL = PAYPAL_REDIRECT_URL.'_ap-preapproval&preapprovalkey='.$token;
-                            header("Location: ".$payPalURL);
-                        } else {
-                            die('No preapproval key obtained. <pre>' . print_r($response, 1) . '</pre>');
-                        }
+                       $errors[] = 'No se ha podido iniciar la comunicación con paypal para procesar la preaprovación del cargo. ' . $ap->getLastError();
+                       return false;
 					}
+
+                    // Guardar el codigo de preaproval en el registro de aporte y mandarlo a paypal
+                    $token = $response->preapprovalKey;
+                    if (!empty($token)) {
+                        $invest->setPreapproval($token);
+                        $payPalURL = PAYPAL_REDIRECT_URL.'_ap-preapproval&preapprovalkey='.$token;
+                        throw new \Goteo\Core\Redirection($payPalURL, Redirection::TEMPORARY);
+                    } else {
+                        $errors[] = 'No preapproval key obtained. <pre>' . print_r($response, 1) . '</pre>';
+                        return false;
+                    }
+
 			}
 			catch(Exception $ex) {
 
@@ -130,65 +96,200 @@ namespace Goteo\Library {
   				$errorData->message = $ex->getMessage();
 		  		$fault->error = $errorData;
 
-                die('ERROR: <pre>' . print_r($fault, 1) . '</pre>'); //@FIXME obviusly
+                $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
+                @\mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, 1) . '</pre>');
+                return false;
 			}
             
         }
 
 
-        public static function pay($account, $amount) {
+        /*
+         *  Metodo para ejecutar pago (desde cron)
+         * Recibe parametro del aporte (id, cuenta, cantidad)
+         */
+        public static function pay($invest, &$errors = array()) {
 
-            return false;
+            try {
+                // Create request object
+                $payRequest = new \PayRequest();
+                $payRequest->actionType = "PAY";
+                $payRequest->memo = "Ejecución del aporte de {$invest->amount} EUR al proyecto {$invest->project} en la plataforma Goteo";
+                $payRequest->cancelUrl = PAYPAL_SITE_URL.'/cron/charge_fail/' . $invest->id;
+                $payRequest->returnUrl = PAYPAL_SITE_URL.'/cron/charge_success/' . $invest->id;
+                $payRequest->clientDetails = new \ClientDetailsType();
+		        $payRequest->clientDetails->customerId = $invest->user;
+                $payRequest->clientDetails->applicationId = PAYPAL_APPLICATION_ID;
+                $payRequest->clientDetails->deviceId = PAYPAL_DEVICE_ID;
+                $payRequest->clientDetails->ipAddress = PAYPAL_IP_ADDRESS;
+                $payRequest->currencyCode = 'EUR';
+                $payRequest->senderEmail = $invest->account;
+                $payRequest->requestEnvelope = new \RequestEnvelope();
+                $payRequest->requestEnvelope->errorLanguage = 'es_ES';
 
-            $msg = '';
+                $receiver = new \receiver();
+                $receiver->email = PAYPAL_BUSINESS_ACCOUNT;
+                $receiver->amount = $invest->amount;
 
-            // Create request object
-            $payRequest = new \PayRequest();
-            $payRequest->actionType = "PAY";
-            $returnURL = 'http://devgoteo.org';
-            $cancelURL = 'http://devgoteo.org';
-            $payRequest->cancelUrl = $cancelURL ;
-            $payRequest->returnUrl = $returnURL;
-            $payRequest->clientDetails = new \ClientDetailsType();
-            $payRequest->clientDetails->applicationId ='APP-80W284485P519543T';
-            $payRequest->clientDetails->deviceId = '127001';
-            $payRequest->clientDetails->ipAddress = '127.0.0.1';
-            $payRequest->currencyCode = 'EUR';
-            $payRequest->senderEmail = $_POST['email'];
-            $payRequest->requestEnvelope = new \RequestEnvelope();
-            $payRequest->requestEnvelope->errorLanguage = 'es_ES';
+                $payRequest->receiverList = array($receiver);
 
-            $receiver1 = new \receiver();
-            $receiver1->email = 'goteo_1302553021_biz@gmail.com';
-            $receiver1->amount = $_POST['amount'];
+                // Create service wrapper object
+                $ap = new \AdaptivePayments();
 
-            $payRequest->receiverList = array($receiver1);
+                // invoke business method on service wrapper passing in appropriate request params
+                $response = $ap->Pay($payRequest);
 
-
-            // Create service wrapper object
-            $ap = new \AdaptivePayments();
-
-            // invoke business method on service wrapper passing in appropriate request params
-            $response = $ap->Pay($payRequest);
-
-            // Check response
-            if(strtoupper($ap->isSuccess) == 'FAILURE')
-            {
-                $soapFault = $ap->getLastError();
-                $msg .= "Transaction Pay Failed: error Id: ";
-                if(is_array($soapFault->error)) {
-                    $msg .= $soapFault->error[0]->errorId . ", error message: " . $soapFault->error[0]->message ;
-                } else {
-                    $msg .= $soapFault->error->errorId . ", error message: " . $soapFault->error->message ;
+                // Check response
+                if(strtoupper($ap->isSuccess) == 'FAILURE') {
+                    $soapFault = $ap->getLastError();
+                    if(is_array($soapFault->error)) {
+                        $msg = $soapFault->error[0]->errorId . ", error message: " . $soapFault->error[0]->message ;
+                    } else {
+                        $msg = $soapFault->error->errorId . ", error message: " . $soapFault->error->message ;
+                    }
+                    $errors[] = 'No se ha podido inicializar la comunicación con Paypal para la ejecución del cargo.';
+                    $errors[] = $msg;
+                    return false;
                 }
-            } else {
+
                 $token = $response->payKey;
-                $msg .= "Transaction Successful! PayKey is $token \n";
+                if (!empty($token)) {
+                    if ($invest->setPayment($token)) {
+                        return true;
+                    } else {
+                        $errors[] = "Obtenido codigo de pago $token pero no se ha grabado correctamente en el registro de aporte id {$invest->id}.";
+                        return false;
+                    }
+                } else {
+                    $errors[] = 'No payment key obtained. <pre>' . print_r($response, 1) . '</pre>';
+                    return false;
+                }
+    
+            }
+            catch (Exception $e) {
+                $fault = new \FaultMessage();
+                $errorData = new \ErrorData();
+                $errorData->errorId = $ex->getFile() ;
+                $errorData->message = $ex->getMessage();
+                $fault->error = $errorData;
+
+                $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
+                @\mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, 1) . '</pre>');
+                return false;
             }
 
-            return $msg;
-
         }
+
+
+        /*
+         * Llamada a paypal para obtener los detalles de un preapproval
+         */
+        public static function preapprovalDetails ($key, &$errors = array()) {
+            try {
+                $PDRequest = new \PreapprovalDetailsRequest();
+
+                $PDRequest->requestEnvelope = new \RequestEnvelope();
+                $PDRequest->requestEnvelope->errorLanguage = "es_ES";
+                $PDRequest->preapprovalKey = $key;
+
+                $ap = new \AdaptivePayments();
+                $response = $ap->PreapprovalDetails($PDRequest);
+
+                if(strtoupper($ap->isSuccess) == 'FAILURE') {
+                    $errors[] = 'No preapproval details obtained. <pre>' . print_r($ap->getLastError(), 1) . '</pre>';
+                    return false;
+                } else {
+                    return $response;
+                }
+            }
+            catch(Exception $ex) {
+
+                $fault = new \FaultMessage();
+                $errorData = new \ErrorData();
+                $errorData->errorId = $ex->getFile() ;
+                $errorData->message = $ex->getMessage();
+                $fault->error = $errorData;
+
+                $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
+                @\mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, 1) . '</pre>');
+                return false;
+            }
+        }
+
+        /*
+         * Llamada a paypal para obtener los detalles de un cargo
+         */
+        public static function paymentDetails ($key, &$errors = array()) {
+            try {
+                $pdRequest = new \PaymentDetailsRequest();
+                $pdRequest->payKey = $key;
+                $rEnvelope = new \RequestEnvelope();
+                $rEnvelope->errorLanguage = "es_ES";
+                $pdRequest->requestEnvelope = $rEnvelope;
+
+                $ap = new \AdaptivePayments();
+                $response=$ap->PaymentDetails($pdRequest);
+
+                if(strtoupper($ap->isSuccess) == 'FAILURE') {
+                    $errors[] = 'No payment details obtained. <pre>' . print_r($ap->getLastError(), 1) . '</pre>';
+                    return false;
+                } else {
+                    return $response;
+                }
+            }
+            catch(Exception $ex) {
+
+                $fault = new FaultMessage();
+                $errorData = new ErrorData();
+                $errorData->errorId = $ex->getFile() ;
+                $errorData->message = $ex->getMessage();
+                $fault->error = $errorData;
+
+                $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
+                @\mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, 1) . '</pre>');
+                return false;
+            }
+        }
+
+
+        /*
+         * Llamada para cancelar un preapproval (si llega a los 40 sin conseguir el mínimo)
+         * recibe la instancia del aporte
+         */
+        public static function cancelPreapproval ($invest, &$errors = array()) {
+            try {
+                $CPRequest = new \CancelPreapprovalRequest();
+
+                $CPRequest->requestEnvelope = new \RequestEnvelope();
+                $CPRequest->requestEnvelope->errorLanguage = "es_ES";
+                $CPRequest->preapprovalKey = $invest->code;
+
+                $ap = new \AdaptivePayments();
+                $response = $ap->CancelPreapproval($CPRequest);
+
+
+                if(strtoupper($ap->isSuccess) == 'FAILURE') {
+                    $errors[] = 'Preapproval cancel faild. <pre>' . print_r($ap->getLastError(), 1) . '</pre>';
+                    return false;
+                } else {
+                    $invest->cancelPreapproval();
+                    return true;
+                }
+            }
+            catch(Exception $ex) {
+
+                $fault = new \FaultMessage();
+                $errorData = new \ErrorData();
+                $errorData->errorId = $ex->getFile() ;
+                $errorData->message = $ex->getMessage();
+                $fault->error = $errorData;
+
+                $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
+                @\mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, 1) . '</pre>');
+                return false;
+            }
+        }
+
 	}
 	
 }
