@@ -70,7 +70,7 @@ namespace Goteo\Model {
                     $data[':password'] = sha1($this->password);
                 }
 
-                if (!empty($this->avatar['name'])) {
+                if (is_array($this->avatar) && !empty($this->avatar['name'])) {
                     $image = new Image($this->avatar);
                     $image->save();
                     $data[':avatar'] = $image->id;
@@ -218,7 +218,7 @@ namespace Goteo\Model {
                 if (empty($this->name)) {
                     $errors['name'] = Text::get('validate-user-field-name');
                 }
-                if (!empty($this->avatar['name'])) {
+                if (is_array($this->avatar) && !empty($this->avatar['name'])) {
                     $image = new Image($this->avatar);
                     $_err = array();
                     $image->validate($_err);
