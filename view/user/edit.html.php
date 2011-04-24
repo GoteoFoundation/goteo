@@ -9,7 +9,7 @@ $errors = $this['errors'];
 
     <div id="main">
         <h2>Editar perfil</h2>
-        <form action="" method="post">
+        <form action="" method="post" enctype="multipart/form-data">
             <div class="superform">
                 <div class="elements">
                     <h3>Usuario/Acceso</h3>
