@@ -64,14 +64,16 @@ namespace Goteo\Controller {
                     );
 
                     if ($invest->save($errors)) {
-                        // Petición de preapproval y a paypal
-                        Paypal::preapproval($invest);
-                        die; // listo porque eso va a saltar a paypal o a un error
+                        // Petición de preapproval y redirección a paypal
+                        Paypal::preapproval($invest, $errors);
+                        // si no salta, vamos a tener los errores
                     }
-                } else {
-                    $message .= 'Errores: ' . implode('.', $errors);
                 }
 			}
+
+            if (!empty($errors)) {
+                $message .= 'Errores: ' . implode('.', $errors);
+            }
 
             $viewData = array(
                     'message' => $message,

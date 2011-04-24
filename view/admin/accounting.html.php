@@ -19,7 +19,7 @@ include 'view/prologue.html.php';
             <?php if (!empty($this['projects'])) :
                 foreach ($this['projects'] as $project) : ?>
                     <h3><?php echo $project->name; ?></h3>
-                    <?php foreach ($project->investors as $key=>$investor) : ?>
+                    <?php foreach ($project->investors as $key=>$investor) : $errors = array();?>
                         <p><?php echo $investor['name']; ?>: <?php echo $investor['amount']; ?> &euro;</p>
                         <div>
                             <?php
@@ -32,18 +32,18 @@ include 'view/prologue.html.php';
                                 if (empty($invest->payment)) {
                                     //si tiene preaprval y no tiene pago, cargar
                                     echo 'Detalles del preapproval comentados.<br />';
-                                    $preapproval = Paypal::preapprovalDetails($invest->preapproval);
+                                    $preapproval = Paypal::preapprovalDetails($invest->preapproval, $errors);
                                     echo '
                                     <!-- <fieldset><legend>Preapproval</legend>
                                         <pre>' . print_r($preapproval, 1) . '</pre>
                                     </fieldset> -->
                                     ';
                                     echo 'Ejecutamos el cargo.<br />';
-                                    Paypal::pay($invest);
+                                    Paypal::pay($invest, $errors);
                                 } else {
                                     //si tiene preaproval y tiene pago, ok
                                     echo 'Detalles del pago comentados<br />';
-                                    $payment = Paypal::paymentDetails($invest->payment);
+                                    $payment = Paypal::paymentDetails($invest->payment, $errors);
                                     echo '
                                     <!-- <fieldset><legend>Payment</legend>
                                         <pre>' . print_r($payment, 1) . '</pre>
@@ -52,6 +52,9 @@ include 'view/prologue.html.php';
                                     echo 'Todo ok.<br />';
                                 }
                             }
+
+                            if (!empty($errors))
+                                echo 'ERROR: ' . implode('. ', $errors);
                             ?>
                         </div>
                     <?php endforeach; ?>
