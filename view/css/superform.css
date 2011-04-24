@@ -3,7 +3,6 @@
  * Superform!
  */
 
-
 div.superform fieldset {
     border: 1px solid #99a2a5;    
 }
@@ -92,6 +91,7 @@ div.superform li.element {
     position: relative;
     padding: 1em 0;
     border-top: 1px dashed #B7C2C5;
+    clear: both;
 }
 
 div.superform li.element:last-child {
@@ -106,7 +106,7 @@ div.superform li.element > * + div.contents {
     margin-top: 1em;
 }
 
-body.js div.superform > div.elements > ol > li {
+body.js div.superform > div.elements > ol > li.element {
     margin-right: 250px;
     border-right: 1px dashed #b7c2c5;
 }
@@ -114,6 +114,10 @@ body.js div.superform > div.elements > ol > li {
 body.js div.superform > div.elements > ol > li.element li.element {
     margin-right: 0;
     border-right: none;
+}
+
+body div.superform > div.elements li.element li.element.inline {
+    border-top: none;
 }
 
 div.superform div.elements > ol > li div.element {
@@ -124,22 +128,37 @@ div.superform div.elements > ol > li > div.children > div.elements {
     margin-top: 1em;
 }
 
+/* Full-width elements */
+div.superform li.element.fullwidth {    
+    border-right: none !important;
+    background-color: #e7e7e7 !important;
+    margin-right: -2px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    border-bottom: 1px dashed #b7c2c5 !important;
+    margin-bottom: -1px !important;
+}
+
+div.superform li.element.fullwidth + li.element {
+    border-top: none;
+}
+
 /* Element badges */
 
 div.superform div.elements > ol > li.busy > .title {
-    background: url('superform/badge/busy/cyan.gif') no-repeat right top;
+    background: url('superform/badge/busy/cyan.gif') no-repeat right center;
 }
 
 div.superform div.elements > ol > li.ok > .title {
-    background: url('superform/badge/ok.png') no-repeat right top;
+    background: url('superform/badge/ok.png') no-repeat right center;
 }
 
 div.superform div.elements > ol > li.required > .title {
-    background: url('superform/badge/required.png') no-repeat right top;
+    background: url('superform/badge/required.png') no-repeat right center;
 }
 
 div.superform div.elements > ol > li.error > .title  {
-    background: url('superform/badge/error.png') no-repeat right top !important;
+    background: url('superform/badge/error.png') no-repeat right center !important;
 }
 
 
@@ -155,6 +174,8 @@ div.superform li.element.textbox > div.contents > input[type="password"],
 div.superform li.element.textarea > div.contents > textarea {
     display: block;
     width: 100%;
+    min-width: 100%;
+    max-width: 100%;
     margin: 0;
     padding: .3em;    
 }
@@ -217,19 +238,19 @@ div.superform li.element > div.feedback {
 body.js div.superform li.element > div.feedback  {
     /* Javascript-enabled */
     right: -250px;
-    top: 10px;
+    top: -.5em;
     width: 250px;
     padding-left: 13px;
     display: none;
     position: absolute;
-    background: url('superform/tooltip/beak/cyan/w.png') no-repeat left 1em ;
+    background: transparent url('superform/tooltip/beak/cyan/w.png') no-repeat 0 1em;
     padding-top: 0;
 }
 
 body.js div.superform div.children > div.elements > ol > li.element > div.feedback {
     left: 100%;
     margin-left: 1em;
-    margin-top: -1em;
+    margin-top: 0;
 }
 
 div.superform li.element > div.feedback > div {

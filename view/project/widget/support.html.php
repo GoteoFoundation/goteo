@@ -2,13 +2,16 @@
 
 $level = (int) $this['level'] ?: 3;
 
-$minimum = 2000;
-$optimum = 3000;
-$reached = 1237;
+$project = $this['project'];
+
+$minimum    = $project->mincost;
+$optimum    = $project->maxcost;
+$reached    = $project->invested;
+$supporters = count($project->investors);
+$days       = $project->days;
 
 
 // PHP la pifia (y mucho) con los cálculos en coma flotante
-
 if ($reached >= $minimum) {
     
     $minimum_done = 100;
@@ -46,9 +49,6 @@ if ($over > 0) {
 
 $optimum_left = 100 - $optimum_done;
 
-$days = 14;
-$supporters = 7;
-
 ?>
 <div class="widget project-support collapsable" id="project-support">
     
@@ -85,36 +85,7 @@ $supporters = 7;
 
         </dl>
         
-    </div>        
-    
-    <script type="text/javascript">
-    // Animated support meter
-    
-    
-     var progress = 23.00,
-                            code = $('#project-score code'),
-                            meter = $('<div class="meter">'),
-                            done = $('<div>').addClass('done').css('width', '0');
-                            left = $('<div>').addClass('left').css('width', '100%');
-                            
-                        $('#project-score').append(meter);
-                        meter.append(done, left);                        
-                        
-                        $(window).load(function() {
-                            done.animate({
-                                width: progress + '%'
-                            }, {
-                                step: function (p) {
-                                    left.css('width', (100 - p)  + '%');
-                                    code.text(Math.round(p) + '%');
-                                }
-                            }, 2500);
-    $(document).ready(function () {                        
-        var meter = $('#project-support div.meter'));        
-        meter.
-    });
-    
-    </script>
+    </div>   
     
     <a class="button red supportit" href="">Apóyalo</a>
     

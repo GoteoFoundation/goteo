@@ -22,7 +22,7 @@ include 'view/prologue.html.php';
     <div id="main" class="<?php echo htmlspecialchars($this['step']) ?>">
         
         <form method="post" action="" class="project">
-                        
+                                                
             <?php echo $status ?>
             <?php echo $steps ?>            
             
@@ -31,6 +31,8 @@ include 'view/prologue.html.php';
             echo new View("view/project/edit/{$this['step']}.html.php", $this->getArrayCopy() + array('level' => 3)) ?>
 
             <?php echo $steps ?>            
+            
+            <!-- <input type="hidden" name="view-step-<?php echo $this['step'] ?>" value="1" />-->
 
         </form>
 

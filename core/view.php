@@ -6,8 +6,7 @@ namespace Goteo\Core {
         
         private 
             $file;
-                
-        
+                        
         public function __construct ($file, $vars = null) {
             
             if (!is_file($file)) {                
