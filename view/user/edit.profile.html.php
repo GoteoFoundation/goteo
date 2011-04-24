@@ -15,6 +15,9 @@
             			</li>
             			<li class="element" id="user_avatar">
             				<label class="title" for="UserAvatar">Tu imagen</label>
+<?php if(!empty($user->avatar)) { ?>
+                            <img src="<?php echo $user->avatar->getLink(200, 200) ?>" alt="<?php $user->name ?>" />
+<?php } ?>
             				<div class="contents">
             					<input type="file" name="user_avatar" id="UserAvatar" />
             				</div>

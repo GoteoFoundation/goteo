@@ -2,8 +2,7 @@
 
 namespace Goteo\Controller {
 
-	use Goteo\Core\ACL,
-        Goteo\Core\Redirection,
+	use Goteo\Core\Redirection,
         Goteo\Core\Error,
 		Goteo\Model,
         Goteo\Library\Text,
@@ -58,7 +57,7 @@ namespace Goteo\Controller {
                 $errors = array();
 
                 $user->name = $_POST['user_name'];
-                $user->avatar = $_POST['user_image'];
+                $user->avatar = $_FILES['user_avatar'];
                 $user->about = $_POST['user_about'];
                 $user->keywords = $_POST['user_keywords'];
                 $user->contribution = $_POST['user_contribution'];
@@ -97,6 +96,9 @@ namespace Goteo\Controller {
 
                     $user->webs[] = $web;
                 }
+
+                // Refresca la sesión.
+                $user = Model\User::flush();
 			}
 
             return new View (

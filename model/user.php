@@ -74,6 +74,11 @@ namespace Goteo\Model {
                     $image = new Image($this->avatar);
                     $image->save();
                     $data[':avatar'] = $image->id;
+
+                    /**
+                     * @FIXME Relación NM user_image
+                     */
+                    self::query("REPLACE user_image (user_id, image_id) VALUES (:user, :image)", array(':user' => $this->id, ':image' => $image->id));
                 }
 
                 if(!empty($this->about)) {
