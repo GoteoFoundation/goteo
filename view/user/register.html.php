@@ -1,8 +1,13 @@
-<?php $bodyClass = 'user-register'; include 'view/prologue.html.php' ?>
+<?php
+$bodyClass = 'user-register';
+include 'view/prologue.html.php';
+include 'view/header.html.php';
 
-    <?php include 'view/header.html.php' ?>
+$errors = $this['errors'];
+extract($_POST);
+?>
 
-    <div id="main">        
+    <div id="main">
         <form action="" method="post">
             <fieldset>
                 <legend>Registro de usuario</legend>
@@ -20,14 +25,5 @@
             </fieldset>
         </form>
     </div>
-        
 
-<?php
-if (!empty($errors)) {
-    foreach ($errors as $error) {
-        echo '<span style="color:red;">' . $error . '</span><br />';
-    }
-    echo '<pre>' . print_r($_POST, 1) . '</pre>';
-}
-?>
 <?php include 'view/footer.html.php' ?>

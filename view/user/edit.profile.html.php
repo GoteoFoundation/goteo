@@ -46,7 +46,7 @@
             				<h4 class="title">Tus intereses</h4>
             				<div class="contents">
             					<ul>
-            					<?php echo $user->interests ?>
+            					<?php $user->interests ?>
             					</ul>
             				</div>
             			</li>

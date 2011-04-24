@@ -5,6 +5,7 @@ include 'view/header.html.php';
 
 $user = $this['user'];
 $errors = $this['errors'];
+extract($_POST);
 ?>
 
     <div id="main">
@@ -28,32 +29,53 @@ $errors = $this['errors'];
                             <br/>
             				<label class="title" for="UserNEmail">Nuevo E-mail</label>
             				<div class="contents">
-            					<input type="text" name="user_nemail" id="UserNEmail" value="<?php echo $user->nemail ?>" size="20" />
+            					<input type="text" name="user_nemail" id="UserNEmail" value="<?php echo $user_nemail ?>" size="20" />
             				</div>
                             <br/>
             				<label class="title" for="UserREmail">Confirmar nuevo E-mail</label>
             				<div class="contents">
-            					<input type="text" name="user_remail" id="UserREmail" value="<?php echo $user->remail ?>" size="20" />
+            					<input type="text" name="user_remail" id="UserREmail" value="<?php echo $user_remail ?>" size="20" />
             				</div>
+<?php if(isset($errors['email'])) { ?>
+                            <div class="feedback" id="superform-feedback-for-user_email">
+                                <div class="hint">
+                                    <blockquote><?php echo $errors['email']?></blockquote>
+                                </div>
+                            </div>
+<?php } ?>
+                            <div class="element">
+                                <input type="submit" name="change_email" value="Cambiar E-mail" class="save" />
+                            </div>
             			</li>
-                        <?php if(isset($errors['email'])) { ?><li><em><?php echo $errors['email']?></em></li><?php } ?>
             			<li class="element textbox required" id="user_password">
             				<label class="title" for="UserPassword">Contraseña actual</label>
             				<div class="contents">
-            					<input type="password" name="user_password" id="UserPassword" value="<?php echo $user->password ?>" size="20" />
+            					<input type="password" name="user_password" id="UserPassword" value="<?php echo $user_password ?>" size="20" />
             				</div>
                             <br/>
             				<label class="title" for="UserNPassword">Nueva Contraseña</label>
             				<div class="contents">
-            					<input type="password" name="user_npassword" id="UserNPassword" value="<?php echo $user->npassword ?>" size="20" />
+            					<input type="password" name="user_npassword" id="UserNPassword" value="<?php echo $user_npassword ?>" size="20" />
             				</div>
                             <br/>
             				<label class="title" for="UserRPassword">Confirmar nueva Contraseña</label>
             				<div class="contents">
-            					<input type="password" name="user_rpassword" id="UserRPassword" value="<?php echo $user->rpassword ?>" size="20" />
+            					<input type="password" name="user_rpassword" id="UserRPassword" value="<?php echo $user_rpassword ?>" size="20" />
             				</div>
+<?php if(isset($errors['password'])) { ?>
+                            <div class="feedback" id="superform-feedback-for-user_password">
+                                <div class="hint">
+                                    <blockquote><?php echo $errors['password']?></blockquote>
+                                </div>
+                            </div>
+<?php } ?>
+
+                            <div class="element">
+                                <input type="submit" name="change_password" value="Cambiar contraseña" class="save" />
+                            </div>
+
+
             			</li>
-                        <?php if(isset($errors['password'])) { ?><li><em><?php echo $errors['password']?></em></li><?php } ?>
                     </ol>
 <?php include 'view/user/edit.profile.html.php' ?>
 				</div>
