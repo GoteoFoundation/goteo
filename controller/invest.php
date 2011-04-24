@@ -31,7 +31,7 @@ namespace Goteo\Controller {
                 $errors = array();
 
                 if (empty($_POST['email'])) {
-                    $errors[] = 'Indicar la cuenta de paypal';
+                    $errors[] = 'Indicar la cuenta de paypal (o email)';
                 }
 
                 if (empty($_POST['amount'])) {
@@ -54,7 +54,7 @@ namespace Goteo\Controller {
                             'amount' => $_POST['amount'],
                             'user' => $_SESSION['user']->id,
                             'project' => $project,
-                            'account' => 'julian_1302552287_per@gmail.com',
+                            'account' => $_POST['email'],
                             'status' => 0,
                             'invested' => date('Y-m-d'),
                             'anonymous' => $_POST['anonymous'],
