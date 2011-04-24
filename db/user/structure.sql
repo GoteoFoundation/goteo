@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 11-04-2011 a las 22:50:55
+-- Tiempo de generación: 24-04-2011 a las 23:16:20
 -- Versión del servidor: 5.1.36
 -- Versión de PHP: 5.3.0
 
@@ -25,22 +25,24 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Estructura de tabla para la tabla `user`
 --
 
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
-  `id` varchar(50) NOT NULL,
-  `role_id` int(11) NOT NULL,
-  `name` varchar(256) NOT NULL,
-  `email` varchar(256) NOT NULL,
-  `password` varchar(40) NOT NULL,
-  `about` text,
-  `keywords` tinytext,
-  `active` tinyint(1) NOT NULL DEFAULT '1',
-  `avatar` tinytext,
-  `contribution` text,
-  `twitter` varchar(256) DEFAULT NULL,
-  `facebook` varchar(256) DEFAULT NULL,
-  `linkedin` varchar(256) DEFAULT NULL,
+  `id` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `role_id` int(10) unsigned NOT NULL,
+  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
+  `about` text COLLATE utf8_unicode_ci,
+  `keywords` tinytext COLLATE utf8_unicode_ci,
+  `active` tinyint(1) NOT NULL,
+  `avatar` int(11) DEFAULT NULL,
+  `contribution` text COLLATE utf8_unicode_ci,
+  `twitter` tinytext COLLATE utf8_unicode_ci,
+  `facebook` tinytext COLLATE utf8_unicode_ci,
+  `linkedin` tinytext COLLATE utf8_unicode_ci,
   `worth` int(7) DEFAULT NULL,
   `created` timestamp NULL DEFAULT NULL,
   `modified` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Usuarios';
+  PRIMARY KEY (`id`),
+  KEY `user_FK` (`role_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

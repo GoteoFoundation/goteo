@@ -43,7 +43,9 @@ namespace Goteo\Controller {
             }
             return new View (
                 'view/user/register.html.php',
-                $_POST
+                array(
+                    'errors' => $errors
+                )
             );
         }
 
@@ -55,6 +57,31 @@ namespace Goteo\Controller {
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $errors = array();
+                if($_POST['change_email']) {
+                    if(empty($_POST['user_nemail'])) {
+                        $errors['email'] = Text::get('error-user-email');
+                    }
+                    if (strcmp($_POST['user_nemail'], $_POST['user_remail']) !== 0) {
+                        $errors['email'] = Text::get('error-user-email-confirm');
+                    }
+                    else {
+                        $user->email = $_POST['user_nemail'];
+                    }
+                }
+                if($_POST['change_password']) {
+                    if(!Model\User::login($user->id, $_POST['user_password'])) {
+                        $errors['password'] = Text::get('error-user-password-wrong');
+                    }
+                    elseif(empty($_POST['user_npassword'])) {
+                        $errors['password'] = Text::get('error-user-password');
+                    }
+                    if(strcmp($_POST['user_npassword'], $_POST['user_rpassword']) !== 0) {
+                        $errors['password'] = Text::get('error-user-password-confirm');
+                    }
+                    else {
+                        $user->password = $_POST['user_npassword'];
+                    }
+                }
 
                 $user->name = $_POST['user_name'];
                 $user->avatar = $_FILES['user_avatar'];

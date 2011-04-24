@@ -69,11 +69,11 @@ namespace Goteo\Library {
 
 		public function validate(&$errors = array()) {
 		    if($this->error !== UPLOAD_ERR_OK) {
-		        $errors['error'] = $this->error;
+		        $errors['image'] = $this->error;
 		    }
 
             if(empty($this->name)) {
-                $errors['name'] = Text::get('error-image-name');
+                $errors['image'] = Text::get('error-image-name');
             }
 
             if(!empty($this->type)) {
@@ -83,25 +83,25 @@ namespace Goteo\Library {
     				'image/png',
                 );
                 if(!in_array($this->type, $allowed_types)) {
-                    $errors['type'] = Text::get('error-image-type-not-allowed');
+                    $errors['image'] = Text::get('error-image-type-not-allowed');
                 }
             }
             else {
-                $errors['type'] = Text::get('error-image-type');
+                $errors['image'] = Text::get('error-image-type');
             }
 
             if(empty($this->tmp) || $this->tmp == "none") {
-                $errors['tmp'] = Text::get('error-image-tmp');
+                $errors['image'] = Text::get('error-image-tmp');
             }
 
             if(!empty($this->size)) {
                 $max_upload_size = 2 * 1024 * 1024; // = 2097152 (2 megabytes)
                 if($this->size > $max_upload_size) {
-                    $errors['size'] = Text::get('error-image-size-too-large');
+                    $errors['image'] = Text::get('error-image-size-too-large');
                 }
             }
             else {
-                $errors['size'] = Text::get('error-image-size');
+                $errors['image'] = Text::get('error-image-size');
             }
 
             return empty($errors);

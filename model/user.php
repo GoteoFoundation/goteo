@@ -70,7 +70,7 @@ namespace Goteo\Model {
                     $data[':password'] = sha1($this->password);
                 }
 
-                if(!empty($this->avatar)) {
+                if (!empty($this->avatar['name'])) {
                     $image = new Image($this->avatar);
                     $image->save();
                     $data[':avatar'] = $image->id;
@@ -78,7 +78,9 @@ namespace Goteo\Model {
                     /**
                      * @FIXME Relación NM user_image
                      */
-                    self::query("REPLACE user_image (user_id, image_id) VALUES (:user, :image)", array(':user' => $this->id, ':image' => $image->id));
+                    if(!empty($image->id)) {
+                        self::query("REPLACE user_image (user_id, image_id) VALUES (:user, :image)", array(':user' => $this->id, ':image' => $image->id));
+                    }
                 }
 
                 if(!empty($this->about)) {
@@ -150,6 +152,7 @@ namespace Goteo\Model {
                         }
                         $query = substr($query, 0, -2) . " WHERE id = :id";
                     }
+                    $_POST = array();
                     // Ejecuta SQL.
                     return self::query($query, $data);
             	} catch(\PDOException $e) {
@@ -167,14 +170,8 @@ namespace Goteo\Model {
          * @return bool true|false
          */
         public function validate(&$errors = array()) {
-            $required = array(
-                'email' => true
-            );
-
             // Nuevo usuario.
             if(empty($this->id)) {
-                $required['password'] = true;
-
                 // Nombre de usuario (id)
                 if(empty($this->name)) {
                     $errors['username'] = Text::get('error-register-username');
@@ -207,15 +204,25 @@ namespace Goteo\Model {
                 else {
                     $errors['password'] = Text::get('error-register-pasword');
                 }
+                return empty($errors);
             }
             // Modificar usuario.
             else {
+                // Contraseña
+                if(!empty($this->password)) {
+                    if(strlen($this->password)<8) {
+                        $errors['password'] = Text::get('error-register-short-password');
+                    }
+                }
+
                 if (empty($this->name)) {
                     $errors['name'] = Text::get('validate-user-field-name');
                 }
-                if (!empty($this->avatar)) {
+                if (!empty($this->avatar['name'])) {
                     $image = new Image($this->avatar);
-                    $image->validate($errors);
+                    $_err = array();
+                    $image->validate($_err);
+                    $errors['avatar'] = $_err['image'];
                 }
                 else {
                     $errors['avatar'] = Text::get('validate-user-field-avatar');
@@ -246,13 +253,8 @@ namespace Goteo\Model {
                     $errors['linkedin'] = Text::get('validate-user-field-linkedin');
                 }
             }
-            // @TODO: Revisar $required (Ajuste temporal)
-            foreach($required AS $item => $value) {
-                if(in_array($item, $errors)) {
-                    return false;
-                }
-            }
-            return true;
+
+            return (empty($errors['email']) && empty($errors['password']));
         }
 
         /**
