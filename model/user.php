@@ -3,7 +3,8 @@
 namespace Goteo\Model {
 
 	use Goteo\Core\Redirection,
-        Goteo\Library\Text;
+        Goteo\Library\Text,
+        Goteo\Library\Image;
 
 	class User extends \Goteo\Core\Model {
 
@@ -49,6 +50,7 @@ namespace Goteo\Model {
             if($this->validate($errors)) {
                 // Nuevo usuario.
                 if(empty($this->id)) {
+                    $insert = true;
                     $this->id = static::idealiza($this->name);
                     $data[':role_id'] = 3; // @FIXME: Provisionalmente: 3 = Usuario
                     $data[':created'] = 'CURRENT_TIMESTAMP';
@@ -68,9 +70,10 @@ namespace Goteo\Model {
                     $data[':password'] = sha1($this->password);
                 }
 
-                // @TODO: tratar la imagen y ponerla en la propiedad avatar (__FILES__?)
                 if(!empty($this->avatar)) {
-                    $data[':avatar'] = $this->avatar;
+                    $image = new Image($this->avatar);
+                    $image->save();
+                    $data[':avatar'] = $image->id;
                 }
 
                 if(!empty($this->about)) {
@@ -122,15 +125,26 @@ namespace Goteo\Model {
 
                 try {
                     // Construye SQL.
-                    $query = "REPLACE INTO user (";
-                    foreach($data AS $key => $row) {
-                        $query .= substr($key, 1) . ", ";
+                    if(isset($insert) && $insert == true) {
+                        $query = "INSERT INTO user (";
+                        foreach($data AS $key => $row) {
+                            $query .= substr($key, 1) . ", ";
+                        }
+                        $query = substr($query, 0, -2) . ") VALUES (";
+                        foreach($data AS $key => $row) {
+                            $query .= $key . ", ";
+                        }
+                        $query = substr($query, 0, -2) . ")";
                     }
-                    $query = substr($query, 0, -2) . ") VALUES (";
-                    foreach($data AS $key => $row) {
-                        $query .= $key . ", ";
+                    else {
+                        $query = "UPDATE user SET ";
+                        foreach($data AS $key => $row) {
+                            if($key != ":id") {
+                                $query .= substr($key, 1) . " = " . $key . ", ";
+                            }
+                        }
+                        $query = substr($query, 0, -2) . " WHERE id = :id";
                     }
-                    $query = substr($query, 0, -2) . ")";
                     // Ejecuta SQL.
                     return self::query($query, $data);
             	} catch(\PDOException $e) {
@@ -194,7 +208,11 @@ namespace Goteo\Model {
                 if (empty($this->name)) {
                     $errors['name'] = Text::get('validate-user-field-name');
                 }
-                if (empty($this->avatar)) {
+                if (!empty($this->avatar)) {
+                    $image = new Image($this->avatar);
+                    $image->validate($errors);
+                }
+                else {
                     $errors['avatar'] = Text::get('validate-user-field-avatar');
                 }
                 if (empty($this->about)) {
@@ -261,6 +279,7 @@ namespace Goteo\Model {
                     WHERE id = :id
                     ", array(':id' => $id));
                 $user = $query->fetchObject(__CLASS__);
+                $user->avatar = Image::get($user->avatar);
                 $user->interests = User\Interest::get($id);
 
                 // webs
@@ -308,13 +327,23 @@ namespace Goteo\Model {
 		}
 
 		/**
-		 * Comprueba si el usuario estÃ¡ identificado.
+		 * Comprueba si el usuario está identificado.
 		 *
 		 * @return boolean
 		 */
 		public static function isLogged() {
 			return !empty($_SESSION['user']);
 		}
+
+		/**
+		 * Refresca la sesión.
+		 * (Utilizar después de un save)
+		 */
+		public static function flush() {
+    		if(static::isLogged()) {
+    			return $_SESSION['user'] = self::get($_SESSION['user']->id);
+    		}
+    	}
 
 	}
 }
