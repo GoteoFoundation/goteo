@@ -215,7 +215,9 @@ class AdaptivePayments extends CallerServices {
    		} 
    		catch(Exception $ex) {
 				  			
-   			die('Error occurred in callAPI method');
+            $this->isSuccess = 'Failure' ;
+            $this->setLastError('Exception Error occurred in callAPI method') ;
+            $response = null ;
    		}
    		
    		return $response;

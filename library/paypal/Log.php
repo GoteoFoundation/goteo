@@ -4,7 +4,7 @@
  * $Horde: horde/lib/Log.php,v 1.15 2000/06/29 23:39:45 jon Exp $
  *
  * @version $Revision: 1.1 $
- * @package Log
+ * @package Log PEAR
  */
 
 define('PEAR_LOG_EMERG',    0);     /** System is unusable */
