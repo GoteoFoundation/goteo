@@ -7,7 +7,8 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Model,
 	    Goteo\Library\Text,
-		Goteo\Library\Lang;
+		Goteo\Library\Lang,
+        Goteo\Library\Paypal;
 
 	class Admin extends \Goteo\Core\Controller {
 
@@ -138,7 +139,9 @@ namespace Goteo\Controller {
             if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
 
-            $content = 'Administración de las transacciones para cobrar las aportaciones';
+            // estados del proyecto
+            $status = Model\Project::status();
+
 
             /*
              *  Lista de proyectos en campaña
@@ -146,13 +149,48 @@ namespace Goteo\Controller {
              *  Para cada cofinanciador sus aportes
              *  enlace para ejecutar cargo
              */
-            $projects = Model\Project::published();
+            $projects = Model\Project::invested();
 
-            foreach ($projects as $proj) {
+            foreach ($projects as &$proj) {
 
                 // para cada uno sacar todos los datos de su aporte
                 foreach ($proj->investors as $key=>&$investor) {
-                    $investor['invest'] = Model\Invest::get($investor['invest']);
+
+                    $invest = Model\Invest::get($investor['invest']);
+
+                    $investStatus = '';
+                    $details = array('preapproval'=>'', 'payment'=>'');
+                    $investor['invest'] = $invest;
+                    
+                    //estado del aporte
+                    if (empty($invest->preapproval)) {
+                        //si no tiene preaproval, cancelar
+                        $investStatus = 'Cancelado porque no ha hecho bien el preapproval.';
+                        $invest->cancel();
+                    } else {
+                        if (empty($invest->payment)) {
+                            //si tiene preaprval y no tiene pago, cargar
+                            $investStatus = 'Preaproval listo, esperando a los 40/80 dias para ejecutar el cargo. ';
+                            $details['preapproval'] = Paypal::preapprovalDetails($invest->preapproval, $errors);
+                            if (isset($_GET['execute'])) {
+                                if (Paypal::pay($invest, $errors))
+                                    $investStatus .= 'Cargo ejecutado. ';
+                                else
+                                    $investStatus .= 'Fallo al ejecutar el cargo. ';
+                            }
+                        } else {
+                            $investStatus = 'Transacción finalizada.';
+                            $details['payment'] = Paypal::paymentDetails($invest->payment, $errors);
+                        }
+                    }
+
+                    if (!empty($errors)) {
+                        $investStatus .= 'ERRORES: ' . implode('; ', $errors);
+                    }
+
+                    $investor['status'] = $investStatus;
+                    $investor['details'] = $details;
+
                 }
 
             }
@@ -161,7 +199,7 @@ namespace Goteo\Controller {
                 'view/admin/accounting.html.php',
                 array(
                     'projects'=>$projects,
-                    'investors'=>$investors
+                    'status'=>$status
                 )
             );
         }

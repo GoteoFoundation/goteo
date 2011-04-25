@@ -860,6 +860,24 @@ namespace Goteo\Model {
             return $projects;
         }
 
+        /*
+         * Lista de proyectos cofinanciados
+         */
+        public static function invested()
+        {
+            $projects = array();
+            $query = self::query("SELECT project.id as id
+                                  FROM  project
+                                  INNER JOIN invest ON invest.project = project.id
+                                  WHERE project.status = 3 OR project.status = 4
+                                  GROUP BY project.id
+                                  ORDER BY name ASC");
+            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
+                $projects[] = self::get($proj['id']);
+            }
+            return $projects;
+        }
+
         /**
          * Saca una lista completa de proyectos para la revisión
          *
