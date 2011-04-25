@@ -1,0 +1,70 @@
+
+/**
+ * Costs 
+ */
+ 
+ body.project-edit div#main.costs div.superform li.element.cost-new > .title {
+     display: none;
+ }
+
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element .title {
+    padding: .3em 0;
+    position: absolute;
+    left: 0;
+    top: 1em;
+}
+
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element .contents {    
+    margin-left: 25%;
+    position: relative;
+    margin-top: 0;
+}
+
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.add input,
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.remove input {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li > label {
+    position: relative;
+    padding-bottom: 1em;
+    padding-left: 55px;    
+    padding-right: 2em;
+    display: block;
+    min-width: 41px;
+    text-align: left;
+    background: none no-repeat left top;
+}
+
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li > label strong {
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li > label p {
+    margin: 0;
+    font-size: 11px;
+}
+
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li {
+    width: auto;    
+    border-bottom: 1px dashed #bcbdbf;
+}
+
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li > label > input {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -1em;
+    height: 1em;
+}
+
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li.task > label {
+    background-image: url('../cost/task.png');
+}
+
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li.structure > label {
+    background-image: url('../cost/structure.png');
+}
