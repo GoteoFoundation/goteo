@@ -13,15 +13,25 @@ include 'view/prologue.html.php';
 
             <p><a href="/admin">Volver al Menú de administración</a></p>
 
-            <p><?php echo $this['content']; ?></p>
+            <?php if (!empty($this['projects'])) : ?>
+            
+                <p>Por ahora manualmente <a href="?execute">ejecutar los cargos</a></p>
 
-            <?php if (!empty($this['errors'])) :
-                echo '<p>';
-                foreach ($this['errors'] as $error) : ?>
-                    <span style="color:red;"><?php echo $error; ?></span><br />
-            <?php endforeach;
-                echo '</p>';
-                endif;?>
+                <?php foreach ($this['projects'] as $project) : ?>
+                    <h3><?php echo $project->name . ' ' . $this['status'][$project->status]; ?></h3>
+                    <?php foreach ($project->investors as $key=>$investor) : $errors = array();?>
+                        <p><?php echo $investor['name']; ?>: <?php echo $investor['amount']; ?> &euro;</p>
+                        <p>Payment status: <?php echo $investor['status']; ?></p>
+                        <div style="display:none;"><?php foreach ($investor['details'] as $point=>$data) {
+                            echo "$point<br />";
+                            echo "<pre>" . print_r($data, 1) . "</pre>";
+                        } ?></div>
+                    <?php endforeach; ?>
+                    <br />
+            <?php endforeach; ?>
+            <?php else : ?>
+                <p>No hay aportes en los proyectos publicados o financiados.</p>
+            <?php endif;?>
 
         </div>
 

@@ -8,14 +8,21 @@ namespace Goteo\Model {
             $id,
             $user,
             $project,
+            $account, // cuenta paypal
             $amount, //cantidad monetaria del aporte
+            $preapproval, //clave del preapproval
+            $payment, //clave del cargo
+            $transaction, // id paypal de la transacción
             $status, //estado en el que se encuentra esta aportación: 0 pendiente, 1 cobrado (charged), 2 devuelto (returned)
             $anonymous, //no quiere aparecer en la lista de aportadores
             $resign, //renuncia a cualquier recompensa
             $invested, //fecha en la que se ha iniciado el aporte
             $charged, //fecha en la que se ha cargado el importe del aporte a la cuenta del usuario
             $returned, //fecha en la que se ha devuelto el importe al usurio por cancelación bancaria
-            $rewards; //recompensas que le corresponden
+            $rewards = array(); //datos de las recompensas que le corresponden
+
+        // añadir los datos del cargo
+
 
         /*
          *  Devuelve datos de una inversión
@@ -28,9 +35,9 @@ namespace Goteo\Model {
                     ", array(':id' => $id));
                 $invest = $query->fetchObject(__CLASS__);
 
-				$query = self::query("
+				$query = static::query("
                     SELECT  *
-                    FROM    reward
+                    FROM  invest_reward
                     INNER JOIN reward
                         ON invest_reward.reward = reward.id
                     WHERE   invest_reward.invest = ?
@@ -50,6 +57,9 @@ namespace Goteo\Model {
             if (empty($this->project))
                 $errors[] = 'Falta proyecto';
 
+            if (empty($this->account))
+                $errors[] = 'Falta cuenta paypal o email';
+
             if (empty($errors))
                 return true;
             else
@@ -63,7 +73,11 @@ namespace Goteo\Model {
                 'id',
                 'user',
                 'project',
+                'account',
                 'amount',
+                'preapproval',
+                'payment',
+                'transaction',
                 'status',
                 'anonymous',
                 'resign',
@@ -87,6 +101,13 @@ namespace Goteo\Model {
                 $sql = "REPLACE INTO invest SET " . $set;
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
+
+                // y las recompensas
+                foreach ($this->rewards as $reward) {
+                    $sql = "REPLACE INTO invest_reward (invest, reward) VALUES (:invest, :reward)";
+                    self::query($sql, array(':invest'=>$this->id, ':reward'=>$reward));
+                }
+
                 return true;
             } catch(\PDOException $e) {
                 $errors[] = "El aporte no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
@@ -110,7 +131,7 @@ namespace Goteo\Model {
                 return 0;
         }
 
-        public static function investors ($project) {
+        public static function investors ($project, $showAll = false) {
             //@TODO añadir los datos que sean necesarios
             $investors = array();
 
@@ -120,9 +141,12 @@ namespace Goteo\Model {
                         invest.amount as amount
                 FROM    invest
                 INNER JOIN user ON invest.user = user.id
-                WHERE   invest.project = ?
-                AND     (invest.anonymous IS NULL OR invest.anonymous = 0)
-                ";
+                WHERE   invest.project = ?";
+
+            if (!$showAll) {
+                $sql .= " AND (invest.anonymous IS NULL OR invest.anonymous = 0)";
+            }
+
             $query = self::query($sql, array($project));
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $investor) {
                 $investors[] = $investor;
@@ -133,21 +157,107 @@ namespace Goteo\Model {
         /*
          * Asignar a la aportación las recompensass a las que opta
          */
-        public function setReward ($reward, $fulfill = null) {
+        public function setReward ($reward) {
 
             $values = array(
                 ':invest' => $this->id,
-                ':reward' => $reward,
-                ':fulfill' => $fulfill
+                ':reward' => $reward
             );
 
-            $sql = "REPLACE INTO invest_reward (invest, reward, fulfilled) VALUES (:invest, :reward, :fulfill)";
+            $sql = "REPLACE INTO invest_reward (invest, reward) VALUES (:invest, :reward)";
             if (self::query($sql, $values)) {
                 return true;
             }
         }
 
-        //@TODO metodos para aplicar cargo y para devolver
+        /*
+         *  Pone el preapproval key al registro del aporte
+         */
+        public function setPreapproval ($key) {
+
+            $values = array(
+                ':id' => $this->id,
+                ':preapproval' => $key
+            );
+
+            $sql = "UPDATE invest SET preapproval = :preapproval WHERE id = :id";
+            if (self::query($sql, $values)) {
+                return true;
+            } else {
+                return false;
+            }
+            
+        }
+
+        /*
+         *  Pone el pay key al registro del aporte y la fecha de cargo
+         */
+        public function setPayment ($key) {
+
+            $values = array(
+                ':id' => $this->id,
+                ':payment' => $key,
+                ':charged' => date('Y-m-d')
+            );
+
+            $sql = "UPDATE  invest
+                    SET
+                        payment = :payment,
+                        charged = :charged, 
+                        status = 1
+                    WHERE id = :id";
+            if (self::query($sql, $values)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+        /*
+         *  marca un aporte como devuelto (devuelto el dinero despues de haber sido cargado)
+         * si hay que cancelar el preapproval se elimina el registro completamente
+         */
+        public function returnPayment () {
+
+            $values = array(
+                ':id' => $this->id,
+                ':returned' => date('Y-m-d')
+            );
+
+            $sql = "UPDATE  invest
+                    SET
+                        returned = :returned,
+                        status = 2
+                    WHERE id = :id";
+            if (self::query($sql, $values)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+        /*
+         * Eliminar esta aportacion y sus recompensas
+         */
+        public function cancel () {
+            
+            $values = array(
+                ':id' => $this->id
+            );
+
+            $sql = "DELETE FROM invest WHERE id = :id";
+            if (self::query($sql, $values)) {
+                $sql = "DELETE FROM invest_reward WHERE invest = :id";
+                self::query($sql, $values);
+
+                return true;
+            } else {
+                return false;
+            }
+
+        }
 
     }
     

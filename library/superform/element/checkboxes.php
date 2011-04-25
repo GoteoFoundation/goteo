@@ -12,27 +12,38 @@ namespace Goteo\Library\SuperForm\Element {
             parent::__construct($data);                        
             
             if (!is_array($this->options)) {
-                throw new Exception;
+                $this->options = array();
             }
             
-            foreach ($this->options as $value => &$option) { 
-                
-                if (is_string($option)) {
-                    
-                    $option = new CheckBox(array(
-                        'value' => $value,
-                        'label' => (string) $option,
-                        'name'  => $this->name,                        
-                    ));
-                    
-                } else if (is_array($option)) {
-                    
-                    $option = new CheckBox($option + array('name' => $this->name));
-                    
-                }                
-                
-            }
+            $options = array();
             
+            foreach ($this->options as $value => $option) { 
+                
+                if (!($option instanceof CheckBox)) {
+                    
+                    if (is_string($option)) {
+                    
+                        $option = new CheckBox(array(
+                            'value' => $value,
+                            'label' => (string) $option,
+                            'name'  => $this->name,                        
+                        ));
+
+                    } else if (is_array($option)) {
+
+                        $option = new CheckBox($option + array('name' => $this->name));
+
+                    } else {
+                        continue;
+                    }
+                    
+                }
+                
+                $options[] = $option;
+                                                
+            }                   
+            
+            $this['options'] = $this->options = $options;
             
         }
         

@@ -3,6 +3,8 @@
  */
  
 @import url('edit/steps.css');
+@import url('edit/costs.css');
+@import url('edit/preview.css');
 
 body.project-edit div#main div.status {
     color: #bcbdbd;
@@ -89,3 +91,4 @@ body.project-edit div.superform {
     border: solid #0a0a0a;
     border-width: 3px 0;     
 }
+
