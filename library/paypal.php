@@ -1,7 +1,8 @@
 <?php
 namespace Goteo\Library {
 
-    use Goteo\Model\Invest;
+    use Goteo\Model\Invest,
+        Goteo\Core\Redirection;
 
     require_once 'library/paypal/adaptivepayments.php';  // SDK paypal para operaciones API (minimizado)
 
