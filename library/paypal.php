@@ -124,6 +124,8 @@ namespace Goteo\Library {
                 $payRequest->clientDetails->deviceId = PAYPAL_DEVICE_ID;
                 $payRequest->clientDetails->ipAddress = PAYPAL_IP_ADDRESS;
                 $payRequest->currencyCode = 'EUR';
+           		$payRequest->preapprovalKey = $invest->preapproval;
+                $payRequest->feesPayer = 'SENDER';
                 $payRequest->senderEmail = $invest->account;
                 $payRequest->requestEnvelope = new \RequestEnvelope();
                 $payRequest->requestEnvelope->errorLanguage = 'es_ES';
