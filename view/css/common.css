@@ -1,0 +1,115 @@
+* {
+    font-family: Helvetica, Arial, Geneva, sans-serif;
+}
+
+html {
+    height: 100%;
+    margin: 0;
+    overflow: auto;
+}
+
+html, body {        
+    padding: 0;    
+    background-color: #e7e7e7;    
+}
+
+body, td, th, a, a:link, a:visited, a:active, a:hover, input, textarea, button {    
+    font-size: 13px;
+    color: #58595b;
+}
+
+input, textarea, button {
+    font-size: 14px;
+}
+
+body {
+    min-height: 100%;    
+    margin: 0 auto;
+    top: 0;
+    position: relative;
+}
+
+h1 {
+    display: none;
+}
+
+input[type="text"],
+input[type="password"],
+textarea,
+fieldset {
+    border: 1px solid #58595b;
+    background-color: #d7d9da;
+    padding: .3em;    
+}
+
+fieldset {
+    display: inline-block;
+    background: transparent;    
+}
+
+textarea {
+    min-height: 8em;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+textarea:focus {    
+    background-color: white !important;
+}
+
+input[type="submit"],
+input[type="reset"],
+button,
+a.button {
+    background-color: #58595B;
+    padding: .6em 1.5em;
+    text-transform: uppercase;
+    border: none;    
+    cursor: pointer;
+    font-weight: normal;
+    margin: 0;
+    color: white;
+    margin: .5em 0;
+    display: inline-block;
+    text-decoration: none;    
+    text-align: center;
+}
+
+input.red[type="submit"],
+input.red[type="reset"],
+button.red,
+a.button.red {
+    background-color: #ed1a37;
+    color: white;
+} 
+
+input.aqua[type="submit"],
+input.aqua[type="reset"],
+button.aqua,
+a.button.aqua {
+    background-color: #35b8b8;
+    color: white;
+} 
+
+input.green[type="submit"],
+input.green[type="reset"],
+button.green,
+a.button.green {
+    background-color: #00b05b;
+    color: white;
+} 
+
+input.add[type="submit"],
+input.add[type="reset"],
+button.add {
+    background-image: url('form/button/add.png');
+    background-repeat: no-repeat;
+    background-position: .6em center;
+    padding-left: 2em;
+}
+
+h1, h2, h3, h4, h5, h6, h7, h8 {
+    font-weight: bold;        
+    text-transform: uppercase;
+    margin: 1em 0;
+}
