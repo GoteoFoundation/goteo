@@ -36,13 +36,14 @@ namespace Goteo\Library {
 		           $returnURL = PAYPAL_SITE_URL."/invest/confirmed/" . $invest->project; // a difundirlo @TODO mensaje gracias si llega desde un preapproval
 		           $cancelURL = PAYPAL_SITE_URL."/invest/fail/" . $invest->project . "/" . $invest->id; // a la página de aportar para intentarlo de nuevo
 
-                    // desde hoy hasta 40 dias
+                    // desde hoy hasta 40 dias (100 por ahora)
+                    date_default_timezone_set('UTC');
                     $currDate = getdate();
                     $hoy = $currDate['year'].'-'.$currDate['mon'].'-'.$currDate['mday'];
                     $startDate = strtotime($hoy);
-                    $startDate = date('Y-m-d', mktime(0,0,0,date('m',$startDate),date('d',$startDate),date('Y',$startDate)));
+                    $startDate = date('Y-m-d', mktime(date('h',$startDate),date('i',$startDate),0,date('m',$startDate),date('d',$startDate),date('Y',$startDate)));
                     $endDate = strtotime($hoy);
-                    $endDate = date('Y-m-d', mktime(0,0,0,date('m',$endDate),date('d',$endDate)+40,date('Y',$endDate)));
+                    $endDate = date('Y-m-d', mktime(0,0,0,date('m',$endDate),date('d',$endDate)+100,date('Y',$endDate)));
 
 
 
@@ -52,6 +53,7 @@ namespace Goteo\Library {
 		            resulting errors
 		            */
 		           $preapprovalRequest = new \PreapprovalRequest();
+                   $preapprovalRequest->memo = "Aporte de {$invest->amount} EUR al proyecto {$invest->project} en la plataforma Goteo";
 		           $preapprovalRequest->cancelUrl = $cancelURL;
 		           $preapprovalRequest->returnUrl = $returnURL;
 		           $preapprovalRequest->clientDetails = new \ClientDetailsType();
@@ -63,6 +65,7 @@ namespace Goteo\Library {
 		           $preapprovalRequest->startingDate = $startDate;
 		           $preapprovalRequest->endingDate = $endDate;
 		           $preapprovalRequest->maxNumberOfPayments = 1;
+		           $preapprovalRequest->displayMaxTotalAmount = true;
 		           $preapprovalRequest->maxTotalAmountOfAllPayments = $invest->amount;
 		           $preapprovalRequest->requestEnvelope = new \RequestEnvelope();
 		           $preapprovalRequest->requestEnvelope->errorLanguage = "es_ES";

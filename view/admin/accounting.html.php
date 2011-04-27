@@ -20,12 +20,7 @@ include 'view/prologue.html.php';
                 <?php foreach ($this['projects'] as $project) : ?>
                     <h3><?php echo $project->name . ' ' . $this['status'][$project->status]; ?></h3>
                     <?php foreach ($project->investors as $key=>$investor) : $errors = array();?>
-                        <p><?php echo $investor['name']; ?>: <?php echo $investor['amount']; ?> &euro;</p>
-                        <p>Payment status: <?php echo $investor['status']; ?></p>
-                        <div style="display:none;"><?php foreach ($investor['details'] as $point=>$data) {
-                            echo "$point<br />";
-                            echo "<pre>" . print_r($data, 1) . "</pre>";
-                        } ?></div>
+                        <p><?php echo $investor['name']; ?>: <?php echo $investor['amount']; ?> &euro; Payment: <?php echo $investor['status']; ?> <a href="?details=<?php echo $investor['invest']->id; ?>">[Detalles]</a></p>
                     <?php endforeach; ?>
                     <br />
             <?php endforeach; ?>

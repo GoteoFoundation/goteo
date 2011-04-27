@@ -21,6 +21,45 @@ namespace Goteo\Controller {
         }
 
 
+        /*
+         * Gestión de páginas institucionales
+         */
+		public function pages ($node = 'goteo', $lang = 'es') {
+			// si tenemos usuario logueado
+            if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
+                throw new Redirection("/dashboard");
+
+			$using = Lang::get($lang);
+
+            // si estamos editando una página
+            if (isset($_GET['page'])) {
+                $id = $_GET['page'];
+
+                // si llega post, vamos a guardar los cambios
+
+                // sino, mostramos para editar
+                $page = Page::get($id, $lang);
+                return new View(
+                    'view/admin/pageEdit.html.php',
+                    array(
+                        'using' => $using,
+                        'page' => $page
+                    )
+                 );
+            }
+
+            // si estamos en la lista de páginas
+			$pages = Page::getAll($node, $lang);
+
+            return new View(
+                'view/admin/pages.html.php',
+                array(
+                    'using' => $using,
+                    'pages' => $pages
+                )
+            );
+		}
+
 		public function texts ($lang = 'es') {
 			// si tenemos usuario logueado
             if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
@@ -143,6 +182,28 @@ namespace Goteo\Controller {
             $status = Model\Project::status();
 
 
+            /// si piden unos detalles,
+            if (isset($_GET['details'])) {
+                $invest = Model\Invest::get($_GET['details']);
+                $project = Model\Project::get($invest->project);
+                $details = array();
+                if (!empty($invest->preapproval)) {
+                    $details['preapproval'] = Paypal::preapprovalDetails($invest->preapproval, $errors);
+                }
+                if (!empty($invest->payment)) {
+                    $details['payment'] = Paypal::paymentDetails($invest->payment, $errors);
+                }
+                return new View(
+                    'view/admin/investDetails.html.php',
+                    array(
+                        'invest'=>$invest,
+                        'project'=>$project,
+                        'details'=>$details,
+                        'status'=>$status
+                    )
+                );
+            }
+
             /*
              *  Lista de proyectos en campaña
              *  indicando cuanto han conseguido, cuantos dias y los cofinanciadores
@@ -159,7 +220,6 @@ namespace Goteo\Controller {
                     $invest = Model\Invest::get($investor['invest']);
 
                     $investStatus = '';
-                    $details = array('preapproval'=>'', 'payment'=>'');
                     $investor['invest'] = $invest;
                     
                     //estado del aporte
@@ -171,26 +231,23 @@ namespace Goteo\Controller {
                         if (empty($invest->payment)) {
                             //si tiene preaprval y no tiene pago, cargar
                             $investStatus = 'Preaproval listo, esperando a los 40/80 dias para ejecutar el cargo. ';
-                            $details['preapproval'] = Paypal::preapprovalDetails($invest->preapproval, $errors);
                             if (isset($_GET['execute'])) {
+                                $errors = array();
+
                                 if (Paypal::pay($invest, $errors))
                                     $investStatus .= 'Cargo ejecutado. ';
                                 else
                                     $investStatus .= 'Fallo al ejecutar el cargo. ';
+
+                                if (!empty($errors))
+                                    $investStatus .= implode('<br />', $errors);
                             }
                         } else {
                             $investStatus = 'Transacción finalizada.';
-                            $details['payment'] = Paypal::paymentDetails($invest->payment, $errors);
                         }
                     }
 
-                    if (!empty($errors)) {
-                        $investStatus .= 'ERRORES: ' . implode('; ', $errors);
-                    }
-
                     $investor['status'] = $investStatus;
-                    $investor['details'] = $details;
-
                 }
 
             }

@@ -129,7 +129,7 @@ namespace Goteo\Controller {
 
             // quitar el preapproval y cancelar el aporte, mandarlo a la pagina de aportar para que lo intente de nuevo
             $invest = Model\Invest::get($id);
-            $invest->cancelPreapproval();
+            $invest->cancel();
 
             $message = 'Aporte cancelado';
 
