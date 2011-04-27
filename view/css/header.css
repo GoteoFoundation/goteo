@@ -127,7 +127,7 @@ div#header div#highlights > ul > li > a:hover {
 
 div#header div#menu {
     background: #b5dadc url('header/background.png') repeat-x top;
-    clear: both;
+    overflow: visible;
 }
 
 div#header div#menu > ul {
@@ -137,7 +137,7 @@ div#header div#menu > ul {
     position: relative;
     list-style: none;
     text-align: right;
-    overflow: hidden;
+    overflow: visible;
 }
 
 div#header div#menu > ul > li {
@@ -259,6 +259,9 @@ div#header div#menu > ul > li.community ,
 div#header div#menu > ul > li.login ,
 div#header div#menu > ul > li.dashboard {
     height: 3.5em;    
+    font-size: 13px;    
+    position: relative;
+    background: transparent url('header/down-black.png') no-repeat right center;
 } 
 
 div#header div#menu > ul > li.login fieldset > * {
@@ -277,11 +280,11 @@ div#header div#menu > ul > li.login fieldset > legend {
 div#header div#menu > ul > li.community > a,
 div#header div#menu > ul > li.login > a,
 div#header div#menu > ul > li.dashboard > a {
-    padding: .5em 2em .5em 1.6em;
+    padding: .5em 2.5em .5em 1.6em;
+    font-size: 13px;
     height: 2.5em;
-    line-height: 2em;
-    display: inline-block;
-    background: transparent url('header/down-black.png') no-repeat right center;
+    line-height: 2.5em;
+    display: inline-block;    
     color: #59595c;
 }
 
@@ -290,11 +293,57 @@ div#header div#lang {
     display: none;
 }
 
-div#header div#menu > ul > li.community > a:hover,
-div#header div#menu > ul > li.login > a:hover,
-div#header div#menu > ul > li.dashboard > a:hover {
+div#header div#menu > ul > li.community:hover,
+div#header div#menu > ul > li.login:hover,
+div#header div#menu > ul > li.dashboard:hover {
     background-color: #1db3b2;
-    background-image: url('header/down-white.png');
+    background-image: url('header/down-white.png');    
+}
+
+div#header div#menu > ul > li.community:hover *,
+div#header div#menu > ul > li.login:hover *,
+div#header div#menu > ul > li.dashboard:hover * {
     color: white;
+} 
+
+div#header div#menu > ul > li.dashboard > a > span > em {
+    display: none;
+}
+
+div#header div#menu > ul > li.dashboard > div {
+    display: none;
+}
+
+div#header div#menu > ul > li.dashboard:hover > div {
+    display: block;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 100%;
+}
+
+div#header div#menu > ul > li.dashboard > div > ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: #1db3b2;
+}
+
+div#header div#menu > ul > li.dashboard > div > ul > li {
+    border-top: 1px solid #a5e1e0;    
+}
+
+div#header div#menu > ul > li.dashboard > div > ul > li * {
+    color: white;
+    text-transform: none;
+}
+
+div#header div#menu > ul > li.dashboard > div > ul > li > a {
+    display: block;    
+    padding: .6em 1em;
+}
+
+div#header div#menu > ul > li.dashboard > div > ul > li > a:hover {
+    background-color: #78d1d1;
 }
 
