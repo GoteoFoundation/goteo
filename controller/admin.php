@@ -8,7 +8,8 @@ namespace Goteo\Controller {
         Goteo\Model,
 	    Goteo\Library\Text,
 		Goteo\Library\Lang,
-        Goteo\Library\Paypal;
+        Goteo\Library\Paypal,
+        Goteo\Library\Page;
 
 	class Admin extends \Goteo\Core\Controller {
 
@@ -38,7 +39,7 @@ namespace Goteo\Controller {
                 // si llega post, vamos a guardar los cambios
 
                 // sino, mostramos para editar
-                $page = Page::get($id, $lang);
+                $page = Page::get($id, $node, $lang);
                 return new View(
                     'view/admin/pageEdit.html.php',
                     array(
@@ -49,7 +50,7 @@ namespace Goteo\Controller {
             }
 
             // si estamos en la lista de páginas
-			$pages = Page::getAll($node, $lang);
+			$pages = Page::getAll();
 
             return new View(
                 'view/admin/pages.html.php',
