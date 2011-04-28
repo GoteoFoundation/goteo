@@ -15,7 +15,7 @@ include 'view/prologue.html.php';
 
             <ul>
             <?php foreach ($this['pages'] as $page) : ?>
-                <li><?php echo $page->name; ?>
+                <li><?php echo $page->name; ?>: <?php echo $page->description; ?> 
                     <a href="/admin/pages?page=<?php echo $page->id; ?>">[Editar]</a>
                     <a href="<?php echo $page->url; ?>" target="_blank">[Previsualizar]</a>
                 </li>

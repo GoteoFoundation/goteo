@@ -1,5 +1,5 @@
-CREATE TABLE `goteo`.`page_node` (
-`page` TINYINT UNSIGNED NOT NULL ,
+CREATE TABLE IF NOT EXISTS `page_node` (
+`page` varchar(50) NOT NULL,
 `node` VARCHAR( 50 ) NOT NULL ,
 `lang` VARCHAR( 2 ) NOT NULL ,
 `content` LONGTEXT NULL,

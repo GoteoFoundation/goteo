@@ -15,83 +15,106 @@ namespace Goteo\Library {
             $node,
             $name,
             $description,
-            $url;
+            $url,
+            $content;
 
-        static public function get ($id = null, $lang = 'es') {
-			if ($id === null)
-				return '';
+        static public function get ($id, $node = 'goteo', $lang = 'es') {
 
-            return array();
+            // buscamos la página para este nodo en este idioma
+			$sql = "SELECT  page.id as id,
+                            page.name as name,
+                            page.description as description,
+                            page.url as url,
+                            IFNULL(page_node.lang, '$lang') as lang,
+                            IFNULL(page_node.node, '$node') as node,
+                            IFNULL(page_node.content, '') as content
+                     FROM page
+                     LEFT JOIN page_node
+                        ON page_node.page = page.id
+                        AND page_node.lang = :lang
+                        AND page_node.node = :node
+                     WHERE page.id = :id
+                ";
 
-            // buscamos la página y la versión para este nodo en este idioma
-            /*
-
-			// buscamos el texto en la tabla
-			$query = Model::query("SELECT text FROM text WHERE id = :id AND lang = :lang", array(':id' => $id, ':lang' => $lang));
-			$exist = $query->fetchObject();
-			if ($exist->text) {
-//				return $_cache[$id][$lang] = $exist->text;
-				return $exist->text;
-			} else {
-				// lo metemos en la tabla pero no en cache
-				Model::query("REPLACE INTO text (id, lang, text) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
-				Model::query("REPLACE INTO purpose (text, purpose) VALUES (:text, :purpose)", array(':text' => $id, ':purpose' => "Texto $id"));
-
-				return $id;
-			}
-             * *
-             */
+			$query = Model::query($sql, array(
+                                            ':id' => $id,
+                                            ':lang' => $lang,
+                                            ':node' => $node
+                                        )
+                                    );
+			$page = $query->fetchObject(__CLASS__);
+            return $page;
 		}
 
 		/*
 		 *  Metodo para la lista de páginas
 		 */
-		public static function getAll($lang = 'es', $filter = null) {
-            $texts = array();
-
-            $values = array(':lang'=>$lang);
-
-            $sql = "SELECT id, text FROM text WHERE lang = :lang";
-            if (!empty($filter)) {
-                $sql .= " AND id LIKE :filter";
-                $values[':filter'] = "%$filter%";
-            }
-            $sql .= " ORDER BY id ASC";
+		public static function getAll() {
+            $pages = array();
 
             try {
-                $query = Model::query($sql, $values);
-                foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $text) {
-                    $text->purpose = self::getPurpose($text->id);
-                    $texts[] = $text;
+                $query = Model::query("SELECT id, name, description, url FROM page ORDER BY name ASC");
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $page) {
+                    $pages[] = $page;
                 }
-                return $texts;
+                return $pages;
             } catch (\PDOException $e) {
-                throw new Exception($e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
+                throw new Exception('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
             }
 		}
+
+        public function validate(&$errors = array()) {
+
+            $allok = true;
+
+            if (empty($this->id)) {
+                $errors[] = 'Registro sin id';
+                $allok = false;
+            }
+
+            if (empty($this->lang)) {
+                $errors[] = 'Registro sin lang';
+                $allok = false;
+            }
+
+            if (empty($this->node)) {
+                $errors[] = 'Registro sin node';
+                $allok = false;
+            }
+
+            return $allok;
+        }
 
 		/*
 		 *  Esto se usara para la gestión de contenido
 		 */
-		public function save($data, &$errors = array()) {
-            return false;
+		public function save(&$errors = array()) {
+            if(!$this->validate($errors)) { return false; }
 
-/*
-			if (!is_array($data) ||
-				empty($data['id']) ||
-				empty($data['text']) ||
-				empty($data['lang'])) {
-					return false;
-			}
+  			try {
+                $values = array(
+                    ':page' => $this->id,
+                    ':lang' => $this->lang,
+                    ':node' => $this->node,
+                    'content' => $this->content
+                );
 
-			if (Model::query("UPDATE text SET text = :text WHERE id = :id AND lang = :lang", array(':text' => $data['text'], ':id' => $data['id'], ':lang' => $data['lang']))) {
-				return true;
+				$sql = "REPLACE INTO page_node
+                            (page, node, lang, content)
+                        VALUES
+                            (:page, :node, :lang, :content)
+                        ";
+				if (Model::query($sql, $values)) {
+                    return true;
+                } else {
+                    $errors[] = "Ha fallado $sql con <pre>" . print_r($values, 1) . "</pre>";
+                    return false;
+                }
+                
+			} catch(\PDOException $e) {
+                $errors[] = 'Error sql al grabar el contenido de la pagina. ' . $e->getMessage();
+                return false;
 			}
-			else {
-				$errors[] = 'Error al insertar los datos <pre>' . print_r($data, 1) . '</pre>';
-				return false;
-			}
-*/
 
 		}
 

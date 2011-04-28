@@ -32,19 +32,29 @@ namespace Goteo\Controller {
 
 			$using = Lang::get($lang);
 
+            $errors = array();
+            
             // si estamos editando una página
             if (isset($_GET['page'])) {
                 $id = $_GET['page'];
 
+                $page = Page::get($id, $node, $lang);
+
                 // si llega post, vamos a guardar los cambios
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    $page->content = $_POST['content'];
+                    if ($page->save($errors))
+                        throw new Redirection("/admin/pages");
+                }
+
 
                 // sino, mostramos para editar
-                $page = Page::get($id, $node, $lang);
                 return new View(
                     'view/admin/pageEdit.html.php',
                     array(
                         'using' => $using,
-                        'page' => $page
+                        'page' => $page,
+                        'errors'=>$errors
                     )
                  );
             }
