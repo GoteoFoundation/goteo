@@ -18,12 +18,6 @@ namespace Goteo\Controller {
                     return $this->edit($id); //Editar
                 elseif (isset($_GET['finish']))
                     return $this->finish($id); // Para revision
-                elseif (isset($_GET['enable']))
-                    return $this->enable($id); // Re-habilitar la edición
-                elseif (isset($_GET['publish']))
-                    return $this->publish($id); // Publicarlo
-                elseif (isset($_GET['disable']))
-                    return $this->disable($id); // Cancelar
                 elseif (isset($_GET['raw'])) {
                     $project = Model\Project::get($id);
                     die('<pre>' . print_r($project, 1) . '</pre>');
@@ -239,54 +233,6 @@ namespace Goteo\Controller {
             if ($project->ready($errors))
                 throw new Redirection("/project/{$project->id}");
             
-            throw new \Goteo\Core\Exception(implode(' ', $errors));
-        }
-
-        /*
-         * Rehabilitarlo para edición
-         */
-        public function enable($id) {
-            //@TODO verificar si tiene permisos para rehabilitar la edición del proyecto (admin)
-            if ($_SESSION['user']->role != 1) //@FIXME!! Piñonaco... ACL...
-                throw new Redirection("/project/{$id}");
-
-            $project = Model\Project::get($id);
-
-            $errors = array();
-            if ($project->enable($errors))
-                throw new Redirection("/project/{$project->id}/?edit");
-
-            throw new \Goteo\Core\Exception(implode(' ', $errors));
-        }
-
-        /*
-         * Para cancelarlo
-         */
-        public function disable($id) {
-            //@TODO verificar si tiene permisos para cancelar el proyecto (admin)
-            if ($_SESSION['user']->role != 1) //@FIXME!! Piñonaco... ACL...
-                throw new Redirection("/project/{$id}");
-
-            $project = Model\Project::get($id);
-
-            $errors = array();
-            if ($project->fail($errors))
-                throw new Redirection("/admin/checking");
-
-            throw new \Goteo\Core\Exception(implode(' ', $errors));
-        }
-
-        public function publish($id) {
-            //@TODO verificar si tiene permisos para publicar proyectos
-            if ($_SESSION['user']->role != 1) //@FIXME!! Piñonaco... ACL...
-                throw new Redirection("/project/{$id}");
-
-            $project = Model\Project::get($id);
-
-            $errors = array();
-            if ($project->publish($errors))
-                throw new Redirection("/project/{$project->id}");
-
             throw new \Goteo\Core\Exception(implode(' ', $errors));
         }
 

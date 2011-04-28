@@ -15,6 +15,8 @@ namespace Goteo\Model {
             $progress, // puntuation %
             $amount, // Current donated amount
 
+            $user, // owner's user information
+
             // Register contract data
             $contract_name,
             $contract_surname,
@@ -127,6 +129,9 @@ namespace Goteo\Model {
 				$query = self::query("SELECT * FROM project WHERE id = ?", array($id));
 				$project = $query->fetchObject(__CLASS__);
 
+                // owner
+                $project->user = User::get($project->owner);
+
 				// categorias
                 $project->categories = Project\Category::get($id);
 
@@ -154,39 +159,39 @@ namespace Goteo\Model {
                 //-----------------------------------------------------------------
                 // Diferentes verificaciones segun el estado del proyecto
                 //-----------------------------------------------------------------
-                //para proyectos en edición
-                if ($project->status == 1) {
+                //para proyectos en edición/revision
+                if ($project->status < 3) {
                     //checkeamos los campos y actualizamos el progreso
                     $project->evaluate();
                     // si el progreso llega al mínimo, marcamos el finishable
                     if ($project->progress > 60)
                         $project->finishable = true;
-                }
-
-                // para proyectos en revisión
-                if ($project->status == 2) {
-                    //checkeamos los campos y actualizamos el progreso
-                    $project->evaluate();
-                }
-
-                // para proyectos en publicación
-                if ($project->status == 3) {
-                    // obtenido y cofinanciadores
+                } else {
+                    //para resto de estados
                     $project->invested = Invest::invested($project->id);
                     $project->investors = Invest::investors($project->id);
 
-                    $days = $project->daysActive();
+                    // tiempo de campaña
+                    if ($project->status == 3) {
+                        $days = $project->daysActive();
+                        $project->days = 40 - $days;
+                    }
+                }
+
+
+                    //@FIXME!! OJO, esto es trabajo del cron
+                    /***
                     // si ha llegado a los 40 días
                     if ($days >= 40) {
                         // si no ha alcanzado el mínimo, pasa a estado caducado
                         if ($project->invested < $project->mincost) {
-                            $project->fail();
+  //                          $project->fail();
                         } else {
                             // si ha alcanzado el mínimo tiene hasta 80 días para conseguir el óptimo
                             if ($days >= 80) {
                                 // ha llegadio a los 80 dias habiendo alcanzado el mínimo
                                 // (si no fuera así estaria en estado caducado y no se verificaría en este punto
-                                $project->succeed();
+//                                $project->succeed();
                             } else {
                                 // ha conseguido el mínimo y sigue publicado hasta que consiga el óptimo
                                 $project->days = 80 - $days;
@@ -198,22 +203,10 @@ namespace Goteo\Model {
 
                     // si se ha conseguido el optimo, pasa a estado financiado
                     if ($project->invested >= $project->maxcost) {
-                        $project->succeed();
+//                        $project->succeed();
                     }
-                }
-
-                // para proyectos financiados
-                if ($project->status == 4) {
-                    // si todas las aportaciones tienen los retornos cumplidos, pasamos el proyecto a "retorno umplido"
-//                    $project->invested = Invest::invested($project->id);
-                }
-
-                // para proyectos caducados
-                if ($project->status == 5) {
-                    //si el proyecto es recuperable, marcamos el enableable
-
-                }
-
+                    ****/
+                
                 //-----------------------------------------------------------------
                 // Fin de verificaciones
                 //-----------------------------------------------------------------
@@ -834,7 +827,7 @@ namespace Goteo\Model {
             $query = self::query($sql, array($this->id));
             $past = $query->fetchObject();
 
-            return $past->days;
+            return $past->days - 1;
         }
 
         /*

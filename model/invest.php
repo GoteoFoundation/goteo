@@ -155,6 +155,33 @@ namespace Goteo\Model {
         }
 
         /*
+         *  Aportaciones realizadas por un usaurio
+         */
+        public static function supported ($user) {
+            //@TODO añadir los datos que sean necesarios
+            $supports = array();
+
+            $sql = "
+                SELECT  *
+                FROM    invest
+                WHERE   invest.user = ?";
+
+            $query = self::query($sql, array($user));
+            foreach ($query->fetchAll(\PDO::FETCH_OBJECT, __CLASS__) as $invest) {
+				$query2 = static::query("
+                    SELECT  *
+                    FROM  invest_reward
+                    INNER JOIN reward
+                        ON invest_reward.reward = reward.id
+                    WHERE   invest_reward.invest = ?
+                    ", array($invest->id));
+				$invest->rewards = $query2->fetchAll(\PDO::FETCH_ASSOC);
+                $supports[] = $invest;
+            }
+            return $supports;
+        }
+
+        /*
          * Asignar a la aportación las recompensass a las que opta
          */
         public function setReward ($reward) {

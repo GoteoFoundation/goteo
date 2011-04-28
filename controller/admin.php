@@ -145,20 +145,45 @@ namespace Goteo\Controller {
          *  Revisión de proyectos, aqui llega con un nodo y si no es el suyo a la calle (o al suyo)
          */
         public function checking($node = 'goteo') {
-            if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
+            if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
                 throw new Redirection("/dashboard");
 
+            $errors = array();
+
+            // poner un proyecto en campaña
+            if (isset($_GET['publish'])) {
+                $project = Model\Project::get($_GET['publish']);
+                $project->publish($errors);
+            }
+
+            // dar un proyecto por fallido / cerrado  manualmente
+            if (isset($_GET['cancel'])) {
+                $project = Model\Project::get($_GET['cancel']);
+                $project->fail($errors);
+            }
+
+            // si no está en edición, recuperarlo
+            if (isset($_GET['enable'])) {
+                $project = Model\Project::get($_GET['enable']);
+                $project->enable($errors);
+            }
+
+            // dar un proyecto por financiado manualmente
+            if (isset($_GET['complete'])) {
+                $project = Model\Project::get($_GET['complete']);
+                $project->succeed($errors);
+            }
+
+
             $projects = Model\Project::getList($node);
-
             $status = Model\Project::status();
-
-            
 
             return new View(
                 'view/admin/checking.html.php',
                 array(
-                    'projects'=>$projects,
-                    'status'=>$status
+                    'projects' => $projects,
+                    'status' => $status,
+                    'errors' => $errors
                 )
             );
         }
