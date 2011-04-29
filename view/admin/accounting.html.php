@@ -20,7 +20,7 @@ include 'view/prologue.html.php';
                 <?php foreach ($this['projects'] as $project) : ?>
                     <h3><?php echo $project->name . ' ' . $this['status'][$project->status]; ?></h3>
                     <?php foreach ($project->investors as $key=>$investor) : $errors = array();?>
-                        <p><?php echo $investor['name']; ?>: <?php echo $investor['amount']; ?> &euro; Payment: <?php echo $investor['status']; ?> <a href="?details=<?php echo $investor['invest']->id; ?>">[Detalles]</a></p>
+                        <p><?php echo $investor['name']; ?><?php if ($investor['anonymous']) echo ' (A)'; ?>: <?php echo $investor['amount']; ?> &euro; Payment: <?php echo $investor['status']; ?> <a href="?details=<?php echo $investor['invest']->id; ?>">[Detalles]</a></p>
                     <?php endforeach; ?>
                     <br />
             <?php endforeach; ?>

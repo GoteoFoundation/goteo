@@ -131,21 +131,18 @@ namespace Goteo\Model {
                 return 0;
         }
 
-        public static function investors ($project, $showAll = false) {
+        public static function investors ($project) {
             //@TODO añadir los datos que sean necesarios
             $investors = array();
 
             $sql = "
                 SELECT  invest.id as invest,
                         user.name as name,
-                        invest.amount as amount
+                        invest.amount as amount,
+                        invest.anonymous as anonymous
                 FROM    invest
                 INNER JOIN user ON invest.user = user.id
                 WHERE   invest.project = ?";
-
-            if (!$showAll) {
-                $sql .= " AND (invest.anonymous IS NULL OR invest.anonymous = 0)";
-            }
 
             $query = self::query($sql, array($project));
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $investor) {
