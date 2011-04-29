@@ -13,7 +13,7 @@ namespace Goteo\Model {
             $role = null,
             $email,
             $name,
-            $avatar,
+            $avatar = false,
             $about,
             $contribution,
             $keywords,
@@ -25,7 +25,7 @@ namespace Goteo\Model {
             $worth,
             $created,
             $modified,
-            $interests,
+            $interests = array(),
             $webs = array();
 
 	    public function __set($name, $value) {
@@ -110,26 +110,24 @@ namespace Goteo\Model {
                 }
 
                 // Intereses
+                $interests = User\Interest::get($this->id);
                 if(!empty($this->interests)) {
-                    $interests = User\Interest::get($this->id);
                     foreach($this->interests as $interest) {
                         if(!in_array($interest, $interests)) {
-                            $_interest = new Model\User\Interest();
+                            $_interest = new User\Interest();
                             $_interest->id = $interest;
                             $_interest->user = $this->id;
                             $_interest->save($errors);
                             $interests[] = $_interest;
                         }
                     }
-                    foreach($interests as $key => $interest) {
-                        if(!in_array($interest, $this->interests)) {
-                            $_interest = new Model\User\Interest();
-                            $_interest->id = $interest;
-                            $_interest->user = $this->id;
-                            if ($interest->remove($errors)) {
-                                unset($interests[$key]);
-                            }
-                        }
+                }
+                foreach($interests as $key => $interest) {
+                    if(!in_array($interest, $this->interests)) {
+                        $_interest = new User\Interest();
+                        $_interest->id = $interest;
+                        $_interest->user = $this->id;
+                        $_interest->remove($errors);
                     }
                 }
 
