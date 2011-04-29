@@ -107,7 +107,7 @@ div.superform li.element > * + div.contents {
 }
 
 body.js div.superform > div.elements > ol > li.element {
-    margin-right: 250px;
+    margin-right: 251px;
     border-right: 1px dashed #b7c2c5;
 }
 

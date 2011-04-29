@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `worth` int(7) DEFAULT NULL,
   `created` timestamp NULL DEFAULT NULL,
   `modified` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `token` tinytext COLLATE utf8_general_ci,
   PRIMARY KEY (`id`),
   KEY `user_FK` (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

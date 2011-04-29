@@ -7,7 +7,7 @@ namespace {
      *
     * @param    type mixed  $resource   Recurso
      */
-    function trace($resource = null) {
+    function trace ($resource = null) {
         echo '<pre>' . print_r($resource, 1) . '</pre>';
     }
 
@@ -16,24 +16,20 @@ namespace {
      *
      * @param   type mixed  $resource   Recurso
      */
-    function dump($resource = null) {
+    function dump ($resource = null) {
         echo '<pre>' . var_dump($resource) . '</pre>';
     }
 
     /**
-     * Devuelve el nombre de una clase mediante get_class cortando los espacios de nombre.
-     * @FIXME: Esto no funcionará dentro de un ámbito de clase debido a get_class ()
-     * Workaround: Una solución para es utilizar get_class_name(get_class());
-     *
-     * @param   type object|string  $object Objeto o nombre de clase a recuperar
-     * @return  type string|false           Nombre de la clase sin espacios de nombre.
+     * Genera un mktime (UNIX_TIMESTAMP) a partir de una fecha (DATE/DATETIME/TIMESTAMP)
+     * @param $str
      */
-    function get_class_name($object = null) {
-        if (!is_object($object) && !is_string($object)) {
-            return false;
-        }
-        $class = explode('\\', (is_string($object) ? $object : get_class($object)));
-        return $class[count($class) - 1];
+    function date2time ($str) {
+    	list($date, $time) = explode(' ', $str);
+    	list($year, $month, $day) = explode('-', $date);
+    	list($hour, $minute, $second) = explode(':', $time);
+        $timestamp = mktime($hour, $minute, $second, $month, $day, $year);
+        return $timestamp;
     }
 
 }
