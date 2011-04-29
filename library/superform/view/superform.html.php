@@ -30,57 +30,46 @@
     <script type="text/javascript">
 
     jQuery(document).ready(function($) {
-
-        var frm = $('#<?php echo $this['id'] ?>');        
-        frm.__chint= null;
         
-        var els = frm.children('div.elements');
-        
+        var frm = $('#<?php echo $this['id'] ?>');
+        var cFb = null;
         var speed = 200;
         
-        frm.find('li.element').each(function (i, li) {
+        var handler = function (event) {
+            
+           var id = $(this).attr('id');
+           
+           if (cFb !== null && cFb !== id) {
+               
+               setTimeout(function () {                      
+                    frm.find('div.feedback#superform-feedback-for-' + cFb).fadeOut(speed);
+               });
+               
+           }
+                   
+           setTimeout(function () {               
+               frm.find('div.feedback#superform-feedback-for-' + id).fadeIn(speed);
+               cFb = id;
+           });
+               
+           event.stopPropagation();
 
-            li = $(li);
-                        
-            var id = li.attr('id');
-
-            var handler = function (event) {
-                                
-                if (frm.__chint !== id) {                    
-                    
-                    if (frm.__chint !== null) {
-                        setTimeout(function() {
-                            frm.find('div.feedback#superform-feedback-for-' + frm.__chint ).fadeOut(speed);
-                            frm.__chint = null;
-                        }, 0);
-                    }
-                    
-                    setTimeout(function() {
-                            frm.find('div.feedback#superform-feedback-for-' + id).fadeIn(speed);
-                            frm.__chint = id;
-                    }, 0);
-                    
-                    
-                }
+        };
+        
+        frm.find('li.element').bind('click', handler);
                 
-                event.stopPropagation();
-                
-            };
+        frm.find(':input').bind('focus', function (event) {
+           
+           console.log(this);
+           
+           var p = $(this).parents('li.element');
 
-            li.bind('click', handler);
-
-            li.find(':input').each(function (j, el) {                
-                
-                el = $(el);
-                
-                var p = el.parents('li.element');
-
-                if (p.length >= 1 && ($(p[0]).attr('id') === id)) {
-                    el.bind('focus', handler);
-                }
-                
-            });
-
+           if (p.length >= 1) {
+                handler.apply(p[0], [event]);
+           }
+           
+           return false;          
+           
         });
 
     });                
