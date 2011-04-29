@@ -4,9 +4,10 @@ namespace Goteo\Controller {
 
 	use Goteo\Core\Redirection,
         Goteo\Core\Error,
+        Goteo\Core\View,
 		Goteo\Model,
         Goteo\Library\Text,
-        Goteo\Core\View;
+        Goteo\Library\Message;
 
 	class User extends \Goteo\Core\Controller {
 
@@ -136,6 +137,77 @@ namespace Goteo\Controller {
                     'user' => $user
                 )
             );
+        }
+
+        /**
+         * Activación usuario.
+         * @param type string	$token
+         */
+        public function activate($token) {
+            $clave = base64_decode($token);
+            $_year = substr($clave, 0, 4);
+            $_month = substr($clave, 4, 2);
+            $_day = substr($clave, 6, 2);
+            $_hour = substr($clave, 8, 2);
+            $_min = substr($clave, 10, 2);
+            $_sec = substr($clave, 12, 2);
+            $created = "{$_year}-{$_month}-{$_day} {$_hour}:{$_min}:{$_sec}";
+            $id = substr($clave, 14);
+            $user = Model\User::get($id);
+            if($user->created === $created) {
+                if(!$user->active) {
+                    $user->active = true;
+                    $user->save();
+                    Message::Info(Text::get('user-activate-success'));
+
+                    // Refresca la sesión.
+                    Model\User::flush();
+                }
+                else {
+                    Message::Info(Text::get('user-activate-already-active'));
+                }
+            }
+            else {
+                Message::Error(Text::get('user-activate-fail'));
+            }
+            throw new Redirection('/dashboard', Redirection::TEMPORARY);
+        }
+
+        /**
+         * Cambiar de dirección de correo.
+         * @param type string	$token
+         */
+        public function changeemail($token) {
+            $token = base64_decode($token);
+            $hash = substr($token, 0, 32);
+            $email = substr($token, 32);
+
+            $query = Model\User::query('SELECT id FROM user WHERE token = ?', array($token));
+            $id = $query->fetchColumn(0);
+            if(!is_null($id)) {
+                $user = Model\User::get($id);
+                if($user->token === $token) {
+                    $user->email = $email;
+                    $user->token = $token;
+                    $errors = array();
+                    if($user->save($errors)) {
+                        Message::Info(Text::get('user-changeemail-success'));
+
+                        // Refresca la sesión.
+                        Model\User::flush();
+                    }
+                    else {
+                        Message::Error($errors);
+                    }
+                }
+                else {
+                    Message::Error(Text::get('user-changeemail-fail'));
+                }
+            }
+            else {
+                Message::Error(Text::get('user-changeemail-fail'));
+            }
+            throw new Redirection('/dashboard', Redirection::TEMPORARY);
         }
 
     }

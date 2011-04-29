@@ -13,6 +13,26 @@ if (function_exists('ini_set')) {
     throw new \Goteo\Core\Exception("No puedo añadir las librerías PEAR al include_path.");
 }
 
+if (!defined('PHPMAILER_CLASS')) {
+    define ('PHPMAILER_CLASS', GOTEO_PATH . 'library' . DIRECTORY_SEPARATOR . 'phpmailer' . DIRECTORY_SEPARATOR . 'class.phpmailer.php');
+}
+if (!defined('PHPMAILER_LANGS')) {
+    define ('PHPMAILER_LANGS', GOTEO_PATH . 'library' . DIRECTORY_SEPARATOR . 'phpmailer' . DIRECTORY_SEPARATOR . 'language' . DIRECTORY_SEPARATOR);
+}
+if (!defined('PHPMAILER_SMTP')) {
+    define ('PHPMAILER_SMTP', GOTEO_PATH . 'library' . DIRECTORY_SEPARATOR . 'phpmailer' . DIRECTORY_SEPARATOR . 'class.smtp.php');
+}
+if (!defined('PHPMAILER_POP3')) {
+    define ('PHPMAILER_POP3', GOTEO_PATH . 'library' . DIRECTORY_SEPARATOR . 'phpmailer' . DIRECTORY_SEPARATOR . 'class.pop3.php');
+}
+
+// Metadata
+define('GOTEO_META_TITLE', 'Goteo.org');
+define('GOTEO_META_DESCRIPTION', 'Lorem ipsum dolor sit amet');
+define('GOTEO_META_KEYWORDS', 'palabras, clave, separadas, por, coma');
+define('GOTEO_META_AUTHOR', 'Onliners');
+define('GOTEO_META_COPYRIGHT', 'Platoniq');
+
 // Database
 define('GOTEO_DB_DRIVER', 'mysql');
 define('GOTEO_DB_HOST', 'localhost');
@@ -21,6 +41,16 @@ define('GOTEO_DB_SCHEMA', 'goteo');
 define('GOTEO_DB_USERNAME', 'goteo');
 define('GOTEO_DB_PASSWORD', 'goteo1234');
 
+// Mail
+define('GOTEO_MAIL_FROM', 'noreply@goteo.org');
+define('GOTEO_MAIL_NAME', 'Goteo.org');
+define('GOTEO_MAIL_TYPE', 'mail');
+define('GOTEO_MAIL_SMTP_AUTH', true);
+define('GOTEO_MAIL_SMTP_SECURE', 'ssl');
+define('GOTEO_MAIL_SMTP_HOST', 'mail.goteo.org');
+define('GOTEO_MAIL_SMTP_PORT', 465);
+define('GOTEO_MAIL_SMTP_USERNAME', 'hola@goteo.org');
+define('GOTEO_MAIL_SMTP_PASSWORD', 'goteo1234');
 
 /****************************************************
 Paypal web_constants.php
