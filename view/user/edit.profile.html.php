@@ -1,3 +1,6 @@
+<?php
+$interests = Goteo\Model\User\Interest::getAll();
+?>
                    <h3>Usuario/Perfil</h3>
                    <ol>
             			<li class="element textbox required" id="user_name">
@@ -42,13 +45,22 @@
                             </div>
 <?php } ?>
                         </li>
-            			<li class="element checkboxes" id="interests">
+            			<li class="element checkboxes" id="user_interests">
             				<h4 class="title">Tus intereses</h4>
-            				<div class="contents">
-            					<ul>
-            					<?php $user->interests ?>
-            					</ul>
-            				</div>
+                            <div class="contents">
+                                <ul>
+<?php foreach ($interests as $id => $value) : ?>
+                                    <li><label><input type="checkbox" name="user_interests[]" value="<?php echo $id; ?>"<?php if (in_array($id, $user->interests)) echo ' checked="checked"'; ?>/> <?php echo $value; ?></label></li>
+<?php endforeach; ?>
+                                </ul>
+                            </div>
+<?php if(isset($errors['interests'])) { ?>
+                            <div class="feedback" id="superform-feedback-for-user_interests">
+                                <div class="hint">
+                                    <blockquote><?php echo $errors['interests']?></blockquote>
+                                </div>
+                            </div>
+<?php } ?>
             			</li>
             			<li class="element textbox" id="user_keywords">
             				<label class="title" for="UserKeywords">Palabras clave</label>
