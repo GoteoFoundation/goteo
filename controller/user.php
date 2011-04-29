@@ -56,7 +56,9 @@ namespace Goteo\Controller {
             $user = $_SESSION['user'];
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $errors = array();
+
+			    $errors = array();
+                // Modificar E-mail
                 if($_POST['change_email']) {
                     if(empty($_POST['user_nemail'])) {
                         $errors['email'] = Text::get('error-user-email');
@@ -68,6 +70,7 @@ namespace Goteo\Controller {
                         $user->email = $_POST['user_nemail'];
                     }
                 }
+                // Modificar Contraseña
                 if($_POST['change_password']) {
                     if(!Model\User::login($user->id, $_POST['user_password'])) {
                         $errors['password'] = Text::get('error-user-password-wrong');
@@ -82,48 +85,31 @@ namespace Goteo\Controller {
                         $user->password = $_POST['user_npassword'];
                     }
                 }
-
+                // Avatar
+                if(!empty($_FILES['user_avatar']['name'])) {
+                    $user->avatar = $_FILES['user_avatar'];
+                }
+                // Perfil público
                 $user->name = $_POST['user_name'];
-                $user->avatar = $_FILES['user_avatar'];
                 $user->about = $_POST['user_about'];
                 $user->keywords = $_POST['user_keywords'];
                 $user->contribution = $_POST['user_contribution'];
                 $user->twitter = $_POST['user_twitter'];
                 $user->facebook = $_POST['user_facebook'];
                 $user->linkedin = $_POST['user_linkedin'];
+                // Intereses
                 $user->interests = $_POST['user_interests'];
+                // Páginas Web
+                if(!empty($_POST['user_webs']['remove'])) {
+                    $user->webs = array('remove' => $_POST['user_webs']['remove']);
+                }
+                elseif(!empty($_POST['user_webs']['add']) && !empty($_POST['user_webs']['add'][0]) ) {
+                    $user->webs = array('add' => $_POST['user_webs']['add']);
+                }
+                else {
+                    $user->webs = array('edit', $_POST['user_webs']['edit']);
+                }
                 $user->save($errors);
-
-                //tratar webs existentes
-                foreach ($user->webs as $key=>$web) {
-                    // primero mirar si lo estan quitando
-                    if (isset($_POST['remove-web' . $web->id]) && $_POST['remove-web' . $web->id] == 1) {
-                        if ($web->remove($errors))
-                            unset($user->webs[$key]);
-                        continue; // no tratar esta
-                    }
-
-                    if (isset($_POST['web' . $web->id])) {
-                        $web->user = $user->id;
-                        $web->url = $_POST['web' . $web->id];
-
-                        $web->save($errors);
-                    }
-                }
-                //tratar nueva web
-                if (isset($_POST['nweb']) && !empty($_POST['nweb'])) {
-
-                    $web = new Model\User\Web();
-
-                    $web->id = '';
-                    $web->user = $user->id;
-                    $web->url = $_POST['nweb'];
-
-                    $web->save($errors);
-
-                    $user->webs[] = $web;
-                }
-
                 // Refresca la sesión.
                 $user = Model\User::flush();
 			}

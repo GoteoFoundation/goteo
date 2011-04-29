@@ -26,7 +26,7 @@ namespace Goteo\Model {
             $created,
             $modified,
             $interests,
-            $webs;
+            $webs = array();
 
 	    public function __set($name, $value) {
             $this->$name = $value;
@@ -58,10 +58,6 @@ namespace Goteo\Model {
                 }
                 $data[':id'] = $this->id;
 
-                if(!empty($this->name)) {
-                    $data[':name'] = $this->name;
-                }
-
                 if(!empty($this->email)) {
                     $data[':email'] = $this->email;
                 }
@@ -70,6 +66,7 @@ namespace Goteo\Model {
                     $data[':password'] = sha1($this->password);
                 }
 
+                // Avatar
                 if (is_array($this->avatar) && !empty($this->avatar['name'])) {
                     $image = new Image($this->avatar);
                     $image->save();
@@ -81,6 +78,11 @@ namespace Goteo\Model {
                     if(!empty($image->id)) {
                         self::query("REPLACE user_image (user_id, image_id) VALUES (:user, :image)", array(':user' => $this->id, ':image' => $image->id));
                     }
+                }
+
+                // Perfil público
+                if(!empty($this->name)) {
+                    $data[':name'] = $this->name;
                 }
 
                 if(!empty($this->about)) {
@@ -107,6 +109,7 @@ namespace Goteo\Model {
                     $data[':linkedin'] = $this->linkedin;
                 }
 
+                // Intereses
                 if(!empty($this->interests)) {
                     $interests = User\Interest::get($this->id);
                     foreach($this->interests as $interest) {
@@ -127,6 +130,33 @@ namespace Goteo\Model {
                                 unset($interests[$key]);
                             }
                         }
+                    }
+                }
+
+                // Webs
+                if(!empty($this->webs)) {
+                    // Eliminar
+                    $webs = User\Web::get($this->id);
+                    foreach($webs as $web) {
+                        if(array_key_exists($web->id, $this->webs['remove'])) {
+                            $web->remove($errors);
+                        }
+                    }
+                    // Modificar
+                    $webs = User\Web::get($this->id);
+                    foreach($webs as $web) {
+                        if(array_key_exists($web->id, $_POST['user_webs']['edit'])) {
+                            $web->user = $this->id;
+                            $web->url = $_POST['user_webs']['edit'][$web->id];
+                            $web->save($errors);
+                        }
+                    }
+                    // Añadir
+                    foreach($this->webs['add'] as $web) {
+                        $_web = new User\Web();
+                        $_web->user = $this->id;
+                        $_web->url = $web;
+                        $_web->save($errors);
                     }
                 }
 
@@ -224,14 +254,11 @@ namespace Goteo\Model {
                     $image->validate($_err);
                     $errors['avatar'] = $_err['image'];
                 }
-                else {
+                elseif(!is_object($this->avatar)) {
                     $errors['avatar'] = Text::get('validate-user-field-avatar');
                 }
                 if (empty($this->about)) {
                     $errors['about'] = Text::get('validate-user-field-about');
-                }
-                if (empty($this->interests)) {
-                    $errors['interests'] = Text::get('validate-user-field-interests');
                 }
                 $keywords = explode(',', $this->keywords);
                 if (sizeof($keywords) < 5) {
@@ -240,8 +267,20 @@ namespace Goteo\Model {
                 if (empty($this->contribution)) {
                     $errors['contribution'] = Text::get('validate-user-field-contribution');
                 }
+                if (empty($this->interests)) {
+                    $errors['interests'] = Text::get('validate-user-field-interests');
+                }
                 if (empty($this->webs)) {
                     $errors['webs'] = Text::get('validate-user-field-webs');
+                }
+                else {
+                    if(isset($this->webs['add'])) {
+                        foreach($this->webs['add'] as $index => $web) {
+                            if(empty($web)) {
+                                unset($this->webs['add'][$index]);
+                            }
+                        }
+                    }
                 }
                 if (empty($this->facebook)) {
                     $errors['facebook'] = Text::get('validate-user-field-facebook');
@@ -288,10 +327,7 @@ namespace Goteo\Model {
                 $user = $query->fetchObject(__CLASS__);
                 $user->avatar = Image::get($user->avatar);
                 $user->interests = User\Interest::get($id);
-
-                // webs
                 $user->webs = User\Web::get($id);
-
                 return $user;
             } catch(\PDOException $e) {
                 return false;

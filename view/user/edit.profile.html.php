@@ -15,7 +15,7 @@
             			</li>
             			<li class="element" id="user_avatar">
             				<label class="title" for="UserAvatar">Tu imagen</label>
-<?php if(!empty($user->avatar)) { ?>
+<?php if(is_object($user->avatar)) { ?>
                             <img src="<?php echo $user->avatar->getLink(200, 200) ?>" alt="<?php $user->name ?>" />
 <?php } ?>
             				<div class="contents">
@@ -81,9 +81,18 @@
             				<div class="children">
             					<div class="elements">
                 					<ol>
+<?php foreach ($user->webs as $web) : ?>
+                                        <li>
+                                            <label for="UserWebs_<?php echo $web->id; ?>"><input type="text" name="user_webs[edit][<?php echo $web->id; ?>]" value="<?php echo $web->url; ?>" /> <input type="submit" name="user_webs[remove][<?php echo $web->id; ?>]" value="Elimninar" class="red" /></label>
+                                        </li>
+<?php endforeach; ?>
                 						<li class="element submit add" id="nweb">
                 							<div class="contents">
-                								<input type="submit" name="add-user_web" value="Nueva web" class="add" />
+                                                <p>
+                                                    <label for="UserWebs_Add">http://</label>
+                                                    <input type="text" name="user_webs[add][]" id="UserWebs_Add" value="" />
+                                                </p>
+                								<input type="submit" name="add-user_webs" value="Nueva web" class="add" />
                 							</div>
                 						</li>
                 					</ol>

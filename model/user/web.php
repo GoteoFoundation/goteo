@@ -51,7 +51,7 @@ namespace Goteo\Model\User {
 		 *
 		 * @param varchar(50) $user id de un proyecto
 		 * @param INT(12) $id  identificador de la tabla keyword
-		 * @param array $errors 
+		 * @param array $errors
 		 * @return boolean
 		 */
 		public function remove (&$errors = array()) {
@@ -70,5 +70,5 @@ namespace Goteo\Model\User {
 		}
 
 	}
-    
+
 }
