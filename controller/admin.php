@@ -9,7 +9,8 @@ namespace Goteo\Controller {
 	    Goteo\Library\Text,
 		Goteo\Library\Lang,
         Goteo\Library\Paypal,
-        Goteo\Library\Page;
+        Goteo\Library\Page,
+        Goteo\Library\Worth;
 
 	class Admin extends \Goteo\Core\Controller {
 
@@ -216,6 +217,8 @@ namespace Goteo\Controller {
 
             // estados del proyecto
             $status = Model\Project::status();
+            // niveles meritocraticos
+            $worthcracy = Worth::getAll();
 
 
             /// si piden unos detalles,
@@ -248,10 +251,13 @@ namespace Goteo\Controller {
              */
             $projects = Model\Project::invested();
 
+                    /*
             foreach ($projects as &$proj) {
 
-                // para cada uno sacar todos los datos de su aporte
+                // para cada uno sacar todos sus aportes
                 foreach ($proj->investors as $key=>&$investor) {
+
+                    //
 
                     $invest = Model\Invest::get($investor['invest']);
 
@@ -287,12 +293,15 @@ namespace Goteo\Controller {
                 }
 
             }
+                     *
+                     */
 
             return new View(
                 'view/admin/accounting.html.php',
                 array(
-                    'projects'=>$projects,
-                    'status'=>$status
+                    'projects' => $projects,
+                    'status' => $status,
+                    'worthcracy' => $worthcracy
                 )
             );
         }

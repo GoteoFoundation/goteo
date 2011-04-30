@@ -3,7 +3,8 @@
 namespace Goteo\Model {
 
     use Goteo\Library\Check,
-        Goteo\Library\Text;
+        Goteo\Library\Text,
+        Goteo\Model\User;
 
     class Project extends \Goteo\Core\Model {
 
@@ -169,12 +170,18 @@ namespace Goteo\Model {
                 } else {
                     //para resto de estados
                     $project->invested = Invest::invested($project->id);
+                    //@FIXME!! esto tambien lo hará el cron
+                    self::query("UPDATE project SET amount = '{$project->invested}' WHERE id = ?", array($project->id));
+
                     $project->investors = Invest::investors($project->id);
 
                     // tiempo de campaña
                     if ($project->status == 3) {
                         $days = $project->daysActive();
-                        $project->days = 40 - $days;
+                        if ($days > 40) 
+                            $project->days = 80 - $days;
+                        else
+                            $project->days = 40 - $days;
                     }
                 }
 

@@ -132,50 +132,59 @@ namespace Goteo\Model {
         }
 
         public static function investors ($project) {
-            //@TODO añadir los datos que sean necesarios
+            //@FIXME, cada inversor muestra el aporte toal a este proyecto y la fecha del último aporte (cuando me lo confirme olivier)
             $investors = array();
 
             $sql = "
-                SELECT  invest.id as invest,
-                        user.name as name,
-                        invest.amount as amount,
-                        invest.anonymous as anonymous
+                SELECT  DISTINCT(user) as id
                 FROM    invest
-                INNER JOIN user ON invest.user = user.id
-                WHERE   invest.project = ?";
+                WHERE   project = ?";
 
             $query = self::query($sql, array($project));
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $investor) {
-                $investors[] = $investor;
+
+                // para cada uno sacar: cantidad total aportada a este proyecto y fecha de último aporte
+                $support = self::supported($investor['id'], $project);
+                /* Aqui segun lo que nos haga Philipp */
+                //$user = User::get($investor);
+                $user = (object) array(
+                    'name' => 'Platoniq',
+                    'support' => array(1,2,3,4,5,6,7,8,9,11,12,13),
+                    'avatar' => 'url',
+                    'worth' => rand(1, 5),
+
+                );
+
+                $investors[] = (object) array(
+                    'user' => $investor['id'],
+                    'name' => $user->name,
+                    'projects' => count($user->support),
+                    'avatar' => $user->avatar,
+                    'worth' => $user->worth,
+                    'amount' => $support->total,
+                    'date' => $support->date
+                );
             }
+            
             return $investors;
         }
 
         /*
          *  Aportaciones realizadas por un usaurio
+         *  devuelve total y fecha de la última
          */
-        public static function supported ($user) {
-            //@TODO añadir los datos que sean necesarios
-            $supports = array();
+        public static function supported ($user, $project) {
 
             $sql = "
-                SELECT  *
+                SELECT  SUM(amount) as total, DATE_FORMAT(invested, '%d/%m/%Y') as date
                 FROM    invest
-                WHERE   invest.user = ?";
+                WHERE   user = :user
+                AND     project = :project
+                AND     status != 2
+                ORDER BY invested DESC";
 
-            $query = self::query($sql, array($user));
-            foreach ($query->fetchAll(\PDO::FETCH_OBJECT, __CLASS__) as $invest) {
-				$query2 = static::query("
-                    SELECT  *
-                    FROM  invest_reward
-                    INNER JOIN reward
-                        ON invest_reward.reward = reward.id
-                    WHERE   invest_reward.invest = ?
-                    ", array($invest->id));
-				$invest->rewards = $query2->fetchAll(\PDO::FETCH_ASSOC);
-                $supports[] = $invest;
-            }
-            return $supports;
+            $query = self::query($sql, array(':user' => $user, ':project' => $project));
+            return $query->fetchObject();
         }
 
         /*
