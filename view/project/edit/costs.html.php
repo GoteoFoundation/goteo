@@ -181,6 +181,7 @@ echo new SuperForm(array(
     'class'         => 'aqua',
     'footer'        => array(
         'view-step-rewards' => array(
+            'name'  => 'view-step-rewards',
             'type'  => 'submit',
             'label' => 'Siguiente',
             'class' => 'next'

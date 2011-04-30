@@ -70,8 +70,7 @@ namespace Goteo\Library\SuperForm {
         }
         
         public function __toString () {                                               
-            return (string) (new View('library/superform/view/element.html.php', array('element' =>$this)));
-            
+            return (string) (new View('library/superform/view/element.html.php', array('element' =>$this)));            
         }
         
     }

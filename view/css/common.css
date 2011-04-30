@@ -99,15 +99,6 @@ a.button.green {
     color: white;
 } 
 
-input.add[type="submit"],
-input.add[type="reset"],
-button.add {
-    background-image: url('form/button/add.png');
-    background-repeat: no-repeat;
-    background-position: .6em center;
-    padding-left: 2em;
-}
-
 h1, h2, h3, h4, h5, h6, h7, h8 {
     font-weight: bold;        
     text-transform: uppercase;

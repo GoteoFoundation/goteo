@@ -21,12 +21,25 @@ foreach ($this['interests'] as $value => $label) {
 $user_webs = array();
 
 foreach ($user->webs as $web) {
-    
+        
     $user_webs['web' . $web->id] = array(
-        'type'      => 'textbox',
-        'value'     => $web->url,
-        'errors'    => array(),
-        'required'  => true
+        'type'      => 'group',
+        'class'     => 'web',
+        'children'  => array(            
+            'web-' . $web->id . '-url' => array(
+                'type'      => 'textbox',
+                'value'     => $web->url,
+                'errors'    => array(),
+                'required'  => true,
+                'class'     => 'web-url inline'
+            ),
+            'web-' . $web->id . '-remove' => array(
+                'type'      => 'submit',
+                'name'      => 'web-' . $web->id . '-remove',
+                'label'     => 'Quitar',
+                'class'     => 'web-remove inline remove'
+            )
+        )
     );
     
 }
@@ -42,6 +55,7 @@ echo new SuperForm(array(
         'view-step-userPersonal' => array(
             'type'  => 'submit',
             'label' => 'Siguiente',
+            'name'  => 'view-step-userPersonal',
             'class' => 'next'
         )        
     ),    
@@ -57,10 +71,30 @@ echo new SuperForm(array(
             'value'     => $user->name,
         ),        
         
-        'user_image' => array(      
+        'user_avatar' => array(                  
             'title'     => 'Tu imagen',
+            'type'      => 'group',
             'hint'      => Text::get('tooltip-user-image'),
-            'errors'    => !empty($errors['avatar']) ? array($errors['avatar']) : array()
+            'errors'    => !empty($errors['avatar']) ? array($errors['avatar']) : array(),
+            'class'     => 'user_avatar',
+            'children'  => array(                
+                'avatar_upload'    => array(
+                    'type'  => 'file',
+                    'class' => 'inline avatar_upload',
+                    'title' => 'Subir una imagen',
+                    'hint'  => Text::get('tooltip-user-avatar_upload'),
+                ),
+                'avatar' => array(
+                    'type'  => 'hidden',
+                    'value' => $user->avatar->id,
+                    'class' => 'inline avatar',
+                    'title' => 'Tu imagen actual',
+                    'extraHTML' => is_object($user->avatar) ? 
+                        '<img src="' . htmlspecialchars($user->avatar->getLink(110, 110)) . '" alt="Avatar" />' : 
+                        ''
+                )
+                
+            )
             
         ),        
         
@@ -105,12 +139,13 @@ echo new SuperForm(array(
         'user_webs' => array(
             'title'     => 'Mis webs',            
             'hint'      => Text::get('tooltip-user-webs'),
+            'class'     => 'webs',
             'children'  => $user_webs + array(
                 'nweb' => array(
                     'type'  => 'submit',
-                    'label' => 'Nueva web',
+                    'label' => 'Añadir',
                     'class' => 'add',
-                    'name'  => 'add-user_web',
+                    'name'  => 'web-add',
                 )
             )
         ),

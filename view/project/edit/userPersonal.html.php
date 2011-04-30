@@ -16,7 +16,8 @@ echo new SuperForm(array(
         'view-step-overview' => array(
             'type'  => 'submit',
             'label' => 'Siguiente',
-            'class' => 'next'
+            'class' => 'next',
+            'name'  => 'view-step-overview'
         )        
     ),
     'elements'      => array(

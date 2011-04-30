@@ -37,6 +37,7 @@ $superform = array(
     'footer'        => array(
         'view-step-costs' => array(
             'type'  => 'submit',
+            'name'  => 'view-step-costs',
             'label' => 'Siguiente',
             'class' => 'next'
         )        
