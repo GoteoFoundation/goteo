@@ -169,23 +169,33 @@ namespace Goteo\Model {
                         $project->finishable = true;
                 } else {
                     //para resto de estados
-                    $project->invested = Invest::invested($project->id);
-                    //@FIXME!! esto tambien lo hará el cron
-                    self::query("UPDATE project SET amount = '{$project->invested}' WHERE id = ?", array($project->id));
-
                     $project->investors = Invest::investors($project->id);
+
+                    ////@FIXME!! estos procesos de calculo de inversión y dias lo hará el cron
+                    //--------------------------------------------------------------------------------------------
+                    $amount = Invest::invested($project->id);
+                    if ($project->invested != $amount) {
+                        self::query("UPDATE project SET amount = '{$amount}' WHERE id = ?", array($project->id));
+                        $project->invested = $amount; // por ahora
+                    }
 
                     // tiempo de campaña
                     if ($project->status == 3) {
                         $days = $project->daysActive();
-                        if ($days > 40) 
-                            $project->days = 80 - $days;
+                        if ($days > 40)
+                            $days = 80 - $days;
                         else
-                            $project->days = 40 - $days;
+                            $days = 40 - $days;
+
+                        if ($days < 0)
+                            $days = 0;
+
+                        if ($project->days != $days) {
+                            self::query("UPDATE project SET days = '{$days}' WHERE id = ?", array($project->id));
+                        }
+                        $project->days = $days; // por ahora
                     }
-                }
-
-
+                    //--------------------------------------------------------------------------------------------
                     //@FIXME!! OJO, esto es trabajo del cron
                     /***
                     // si ha llegado a los 40 días
@@ -213,7 +223,9 @@ namespace Goteo\Model {
 //                        $project->succeed();
                     }
                     ****/
-                
+                    //--------------------------------------------------------------------------------------------
+
+                }
                 //-----------------------------------------------------------------
                 // Fin de verificaciones
                 //-----------------------------------------------------------------
@@ -866,14 +878,13 @@ namespace Goteo\Model {
         public static function invested()
         {
             $projects = array();
-            $query = self::query("SELECT project.id as id
+            $query = self::query("SELECT *
                                   FROM  project
-                                  INNER JOIN invest ON invest.project = project.id
                                   WHERE project.status = 3 OR project.status = 4
-                                  GROUP BY project.id
+                                  AND project.id IN (SELECT DISTINCT(project) FROM invest)
                                   ORDER BY name ASC");
-            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
-                $projects[] = self::get($proj['id']);
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
+                $projects[] = $proj;
             }
             return $projects;
         }

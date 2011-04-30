@@ -15,18 +15,12 @@ include 'view/prologue.html.php';
 
             <?php if (!empty($this['projects'])) : ?>
             
-<!--                <p>Por ahora manualmente <a href="?execute">ejecutar los cargos</a></p>   -->
+                <p>Por ahora manualmente <a href="?execute">ejecutar los cargos</a></p>   
 
-                <?php foreach ($this['projects'] as $project) :
-
-                    echo $project->name . '<br />';
-                    echo '<pre>' . print_r($project->investors, 1) . '</pre>';
-                    echo '<hr />';
-                continue;
-                    ?>
-                    <h3><?php echo $project->name . ' ' . $this['status'][$project->status]; ?></h3>
-                    <?php foreach ($project->investors as $key=>$investor) : $errors = array();?>
-                        <p><?php echo $investor['name']; ?><?php if ($investor['anonymous']) echo ' (A)'; ?>: <?php echo $investor['amount']; ?> &euro; Payment: <?php echo $investor['status']; ?> <a href="?details=<?php echo $investor['invest']->id; ?>">[Detalles]</a></p>
+                <?php foreach ($this['projects'] as $project) : ?>
+                    <h3><?php echo $project->name . ' / ' . $this['status'][$project->status]; ?></h3>
+                    <?php foreach ($project->invests as $key=>$invest) : $errors = array();?>
+                    <p><strong><?php echo $invest->user->name; ?></strong><?php if ($invest->anonymous) echo ' (A)'; ?> <?php echo $invest->amount; ?> &euro; (<?php echo $this['investStatus'][$invest->status]; ?>)  (<?php echo $invest->paypalStatus; ?>) <a href="?details=<?php echo $invest->id; ?>">[Detalles]</a></p>
                     <?php endforeach; ?>
                     <br />
             <?php endforeach; ?>

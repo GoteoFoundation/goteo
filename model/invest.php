@@ -47,6 +47,38 @@ namespace Goteo\Model {
                 return $invest;
         }
 
+        /*
+         * Lista de inversiones (individuales) de un proyecto
+         */
+        public static function getAll ($project) {
+
+            $invests = array();
+
+            $query = static::query("
+                SELECT  *
+                FROM  invest
+                WHERE   invest.project = ?
+                ", array($project));
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $invest) {
+                // datos del usuario
+                $invest->user = User::get($invest->user);
+
+				$query = static::query("
+                    SELECT  *
+                    FROM  invest_reward
+                    INNER JOIN reward
+                        ON invest_reward.reward = reward.id
+                    WHERE   invest_reward.invest = ?
+                    ", array($invest->id));
+				$invest->rewards = $query->fetchAll(\PDO::FETCH_ASSOC);
+
+                $invests[] = $invest;
+            }
+
+            return $invests;
+        }
+
+
         public function validate (&$errors = array()) { 
             if (!is_numeric($this->amount))
                 $errors[] = 'La cantidad no es correcta';
@@ -131,6 +163,9 @@ namespace Goteo\Model {
                 return 0;
         }
 
+        /*
+         * Usuarios que han aportado aun proyecto
+         */
         public static function investors ($project) {
             //@FIXME, cada inversor muestra el aporte toal a este proyecto y la fecha del último aporte (cuando me lo confirme olivier)
             $investors = array();
@@ -272,22 +307,30 @@ namespace Goteo\Model {
         }
 
         /*
-         * Eliminar esta aportacion y sus recompensas
+         * Marcar esta aportación como devuelta (si no se habia ejecutado el preapproval es igual que cancelada)
          */
         public function cancel () {
             
-            $values = array(
-                ':id' => $this->id
-            );
-
-            $sql = "DELETE FROM invest WHERE id = :id";
-            if (self::query($sql, $values)) {
-                $sql = "DELETE FROM invest_reward WHERE invest = :id";
-                self::query($sql, $values);
-
+            $sql = "UPDATE invest SET status = 2 WHERE id = ?";
+            if (self::query($sql, array($this->id))) {
                 return true;
             } else {
                 return false;
+            }
+
+        }
+
+        public static function status ($id = null) {
+            $array = array (
+                0=>'Pendiente de cargo',
+                1=>'Cargo ejecutado',
+                2=>'Devuelto o cancelado'
+            );
+
+            if (!empty($id)) {
+                return $array[$id];
+            } else {
+                return $array;
             }
 
         }

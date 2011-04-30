@@ -217,6 +217,8 @@ namespace Goteo\Controller {
 
             // estados del proyecto
             $status = Model\Project::status();
+            // estados de aporte
+            $investStatus = Model\Invest::status();
             // niveles meritocraticos
             $worthcracy = Worth::getAll();
 
@@ -250,57 +252,54 @@ namespace Goteo\Controller {
              *  enlace para ejecutar cargo
              */
             $projects = Model\Project::invested();
+//die('<pre>' . print_r($projects, 1) . '</pre>');
+            foreach ($projects as &$project) {
 
-                    /*
-            foreach ($projects as &$proj) {
+                $project->invests = Model\Invest::getAll($project->id);
 
                 // para cada uno sacar todos sus aportes
-                foreach ($proj->investors as $key=>&$investor) {
+                foreach ($project->invests as $key=>&$invest) {
 
-                    //
-
-                    $invest = Model\Invest::get($investor['invest']);
-
-                    $investStatus = '';
-                    $investor['invest'] = $invest;
+                    if ($invest->status == 2)
+                        continue;
+                    
+                    $invest->paypalStatus = '';
                     
                     //estado del aporte
                     if (empty($invest->preapproval)) {
                         //si no tiene preaproval, cancelar
-                        $investStatus = 'Cancelado porque no ha hecho bien el preapproval.';
+                        $invest->paypalStatus = 'Cancelado porque no ha hecho bien el preapproval.';
                         $invest->cancel();
                     } else {
                         if (empty($invest->payment)) {
                             //si tiene preaprval y no tiene pago, cargar
-                            $investStatus = 'Preaproval listo, esperando a los 40/80 dias para ejecutar el cargo. ';
+                            $invest->paypalStatus = 'Preaproval listo, esperando a los 40/80 dias para ejecutar el cargo. ';
                             if (isset($_GET['execute'])) {
                                 $errors = array();
 
                                 if (Paypal::pay($invest, $errors))
-                                    $investStatus .= 'Cargo ejecutado. ';
+                                    $invest->paypalStatus .= 'Cargo ejecutado. ';
                                 else
-                                    $investStatus .= 'Fallo al ejecutar el cargo. ';
+                                    $invest->paypalStatus .= 'Fallo al ejecutar el cargo. ';
 
                                 if (!empty($errors))
-                                    $investStatus .= implode('<br />', $errors);
+                                    $invest->paypalStatus .= implode('<br />', $errors);
                             }
                         } else {
-                            $investStatus = 'Transacción finalizada.';
+                            $invest->paypalStatus = 'Transacción finalizada.';
                         }
                     }
 
-                    $investor['status'] = $investStatus;
                 }
 
             }
-                     *
-                     */
 
             return new View(
                 'view/admin/accounting.html.php',
                 array(
                     'projects' => $projects,
                     'status' => $status,
+                    'investStatus' => $investStatus,
                     'worthcracy' => $worthcracy
                 )
             );
