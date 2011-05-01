@@ -236,7 +236,8 @@ div.superform div.elements li.element.textbox.linkedin > div.contents {
 
 /* Checkboxes & radios */
 div.superform div.elements > ol > li.element.checkboxes > div.contents ul,
-div.superform div.elements > ol > li.element.radios > div.contents ul {
+div.superform div.elements > ol > li.element.radios > div.contents ul,
+div.superform div.elements > ol > li.element.slider > div.contents ul {
     padding: 0;
     margin: -1em 0 0;    
     list-style: none;
@@ -244,7 +245,8 @@ div.superform div.elements > ol > li.element.radios > div.contents ul {
 }
 
 div.superform div.elements > ol > li.element.checkboxes > div.contents ul li,
-div.superform div.elements > ol > li.element.radios > div.contents ul li {
+div.superform div.elements > ol > li.element.radios > div.contents ul li,
+div.superform div.elements > ol > li.element.slider > div.contents ul li{
     border: none;
     padding: 1em 0 0;
     width: 33%;
@@ -252,7 +254,8 @@ div.superform div.elements > ol > li.element.radios > div.contents ul li {
 }
 
 div.superform div.elements > ol > li.element.checkboxes > div.contents ul li input[type="checkbox"],
-div.superform div.elements > ol > li.element.radios > div.contents ul li input[type="radio"]{
+div.superform div.elements > ol > li.element.radios > div.contents ul li input[type="radio"],
+div.superform div.elements > ol > li.element.slider > div.contents ul li input[type="radio"] {
     margin-left: 0;
 }
 

@@ -1,0 +1,24 @@
+body.project-edit div#main.overview li.element.currently ul {
+    margin: 2em 0;
+    border: 1px dashed #B7C2C5;
+    padding: 1em 0;
+}
+
+body.project-edit div#main.overview li.element.currently li {
+    width: 20% !important;
+    text-align: center;
+    padding: 2em 1em 0;    
+    position: relative;
+}
+
+body.project-edit div#main.overview li.element.currently li input {
+    position: absolute;
+    width: 2em;
+    margin: 0 0 0 -1em;
+    top: .5em;
+    left: 50%;
+}
+
+body.project-edit div#main.overview li.element.currently li strong {
+    font-weight: normal;
+}
