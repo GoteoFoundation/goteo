@@ -8,7 +8,9 @@ namespace Goteo\Controller {
         Goteo\Model,
 	    Goteo\Library\Text,
 		Goteo\Library\Lang,
-        Goteo\Library\Paypal;
+        Goteo\Library\Paypal,
+        Goteo\Library\Page,
+        Goteo\Library\Worth;
 
 	class Admin extends \Goteo\Core\Controller {
 
@@ -20,6 +22,55 @@ namespace Goteo\Controller {
             return new View('view/admin/index.html.php');
         }
 
+
+        /*
+         * Gestión de páginas institucionales
+         */
+		public function pages ($node = 'goteo', $lang = 'es') {
+			// si tenemos usuario logueado
+            if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
+                throw new Redirection("/dashboard");
+
+			$using = Lang::get($lang);
+
+            $errors = array();
+            
+            // si estamos editando una página
+            if (isset($_GET['page'])) {
+                $id = $_GET['page'];
+
+                $page = Page::get($id, $node, $lang);
+
+                // si llega post, vamos a guardar los cambios
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    $page->content = $_POST['content'];
+                    if ($page->save($errors))
+                        throw new Redirection("/admin/pages");
+                }
+
+
+                // sino, mostramos para editar
+                return new View(
+                    'view/admin/pageEdit.html.php',
+                    array(
+                        'using' => $using,
+                        'page' => $page,
+                        'errors'=>$errors
+                    )
+                 );
+            }
+
+            // si estamos en la lista de páginas
+			$pages = Page::getAll();
+
+            return new View(
+                'view/admin/pages.html.php',
+                array(
+                    'using' => $using,
+                    'pages' => $pages
+                )
+            );
+		}
 
 		public function texts ($lang = 'es') {
 			// si tenemos usuario logueado
@@ -95,20 +146,45 @@ namespace Goteo\Controller {
          *  Revisión de proyectos, aqui llega con un nodo y si no es el suyo a la calle (o al suyo)
          */
         public function checking($node = 'goteo') {
-            if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
+            if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
                 throw new Redirection("/dashboard");
 
+            $errors = array();
+
+            // poner un proyecto en campaña
+            if (isset($_GET['publish'])) {
+                $project = Model\Project::get($_GET['publish']);
+                $project->publish($errors);
+            }
+
+            // dar un proyecto por fallido / cerrado  manualmente
+            if (isset($_GET['cancel'])) {
+                $project = Model\Project::get($_GET['cancel']);
+                $project->fail($errors);
+            }
+
+            // si no está en edición, recuperarlo
+            if (isset($_GET['enable'])) {
+                $project = Model\Project::get($_GET['enable']);
+                $project->enable($errors);
+            }
+
+            // dar un proyecto por financiado manualmente
+            if (isset($_GET['complete'])) {
+                $project = Model\Project::get($_GET['complete']);
+                $project->succeed($errors);
+            }
+
+
             $projects = Model\Project::getList($node);
-
             $status = Model\Project::status();
-
-            
 
             return new View(
                 'view/admin/checking.html.php',
                 array(
-                    'projects'=>$projects,
-                    'status'=>$status
+                    'projects' => $projects,
+                    'status' => $status,
+                    'errors' => $errors
                 )
             );
         }
@@ -141,7 +217,33 @@ namespace Goteo\Controller {
 
             // estados del proyecto
             $status = Model\Project::status();
+            // estados de aporte
+            $investStatus = Model\Invest::status();
+            // niveles meritocraticos
+            $worthcracy = Worth::getAll();
 
+
+            /// si piden unos detalles,
+            if (isset($_GET['details'])) {
+                $invest = Model\Invest::get($_GET['details']);
+                $project = Model\Project::get($invest->project);
+                $details = array();
+                if (!empty($invest->preapproval)) {
+                    $details['preapproval'] = Paypal::preapprovalDetails($invest->preapproval, $errors);
+                }
+                if (!empty($invest->payment)) {
+                    $details['payment'] = Paypal::paymentDetails($invest->payment, $errors);
+                }
+                return new View(
+                    'view/admin/investDetails.html.php',
+                    array(
+                        'invest'=>$invest,
+                        'project'=>$project,
+                        'details'=>$details,
+                        'status'=>$status
+                    )
+                );
+            }
 
             /*
              *  Lista de proyectos en campaña
@@ -150,46 +252,43 @@ namespace Goteo\Controller {
              *  enlace para ejecutar cargo
              */
             $projects = Model\Project::invested();
+//die('<pre>' . print_r($projects, 1) . '</pre>');
+            foreach ($projects as &$project) {
 
-            foreach ($projects as &$proj) {
+                $project->invests = Model\Invest::getAll($project->id);
 
-                // para cada uno sacar todos los datos de su aporte
-                foreach ($proj->investors as $key=>&$investor) {
+                // para cada uno sacar todos sus aportes
+                foreach ($project->invests as $key=>&$invest) {
 
-                    $invest = Model\Invest::get($investor['invest']);
-
-                    $investStatus = '';
-                    $details = array('preapproval'=>'', 'payment'=>'');
-                    $investor['invest'] = $invest;
+                    if ($invest->status == 2)
+                        continue;
+                    
+                    $invest->paypalStatus = '';
                     
                     //estado del aporte
                     if (empty($invest->preapproval)) {
                         //si no tiene preaproval, cancelar
-                        $investStatus = 'Cancelado porque no ha hecho bien el preapproval.';
+                        $invest->paypalStatus = 'Cancelado porque no ha hecho bien el preapproval.';
                         $invest->cancel();
                     } else {
                         if (empty($invest->payment)) {
                             //si tiene preaprval y no tiene pago, cargar
-                            $investStatus = 'Preaproval listo, esperando a los 40/80 dias para ejecutar el cargo. ';
-                            $details['preapproval'] = Paypal::preapprovalDetails($invest->preapproval, $errors);
+                            $invest->paypalStatus = 'Preaproval listo, esperando a los 40/80 dias para ejecutar el cargo. ';
                             if (isset($_GET['execute'])) {
+                                $errors = array();
+
                                 if (Paypal::pay($invest, $errors))
-                                    $investStatus .= 'Cargo ejecutado. ';
+                                    $invest->paypalStatus .= 'Cargo ejecutado. ';
                                 else
-                                    $investStatus .= 'Fallo al ejecutar el cargo. ';
+                                    $invest->paypalStatus .= 'Fallo al ejecutar el cargo. ';
+
+                                if (!empty($errors))
+                                    $invest->paypalStatus .= implode('<br />', $errors);
                             }
                         } else {
-                            $investStatus = 'Transacción finalizada.';
-                            $details['payment'] = Paypal::paymentDetails($invest->payment, $errors);
+                            $invest->paypalStatus = 'Transacción finalizada.';
                         }
                     }
-
-                    if (!empty($errors)) {
-                        $investStatus .= 'ERRORES: ' . implode('; ', $errors);
-                    }
-
-                    $investor['status'] = $investStatus;
-                    $investor['details'] = $details;
 
                 }
 
@@ -198,8 +297,10 @@ namespace Goteo\Controller {
             return new View(
                 'view/admin/accounting.html.php',
                 array(
-                    'projects'=>$projects,
-                    'status'=>$status
+                    'projects' => $projects,
+                    'status' => $status,
+                    'investStatus' => $investStatus,
+                    'worthcracy' => $worthcracy
                 )
             );
         }

@@ -89,6 +89,31 @@ namespace Goteo\Model\User {
 			}
 		}
 
+        /*
+         * Lista de usuarios que comparten intereses con el usuario
+         */
+        public static function share ($user) {
+             $array = array ();
+            try {
+               $sql = "SELECT DISTINCT(user_interest.user) as id
+                        FROM user_interest
+                        INNER JOIN user_interest as mine
+                            ON user_interest.interest = mine.interest
+                            AND mine.user = :me
+                        WHERE user_interest.user != :me
+                        ";
+                $query = static::query($sql, array('me'=>$user));
+                $shares = $query->fetchAll(\PDO::FETCH_ASSOC);
+                foreach ($shares as $he) {
+                    $array[] = \Goteo\Model\User::get($he['id']);
+                }
+
+                return $array;
+            } catch(\PDOException $e) {
+				throw new \Goteo\Core\Exception($e->getMessage());
+            }
+        }
+
 	}
     
 }

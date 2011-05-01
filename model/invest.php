@@ -47,6 +47,38 @@ namespace Goteo\Model {
                 return $invest;
         }
 
+        /*
+         * Lista de inversiones (individuales) de un proyecto
+         */
+        public static function getAll ($project) {
+
+            $invests = array();
+
+            $query = static::query("
+                SELECT  *
+                FROM  invest
+                WHERE   invest.project = ?
+                ", array($project));
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $invest) {
+                // datos del usuario
+                $invest->user = User::get($invest->user);
+
+				$query = static::query("
+                    SELECT  *
+                    FROM  invest_reward
+                    INNER JOIN reward
+                        ON invest_reward.reward = reward.id
+                    WHERE   invest_reward.invest = ?
+                    ", array($invest->id));
+				$invest->rewards = $query->fetchAll(\PDO::FETCH_ASSOC);
+
+                $invests[] = $invest;
+            }
+
+            return $invests;
+        }
+
+
         public function validate (&$errors = array()) { 
             if (!is_numeric($this->amount))
                 $errors[] = 'La cantidad no es correcta';
@@ -131,27 +163,63 @@ namespace Goteo\Model {
                 return 0;
         }
 
-        public static function investors ($project, $showAll = false) {
-            //@TODO añadir los datos que sean necesarios
+        /*
+         * Usuarios que han aportado aun proyecto
+         */
+        public static function investors ($project) {
+            //@FIXME, cada inversor muestra el aporte toal a este proyecto y la fecha del último aporte (cuando me lo confirme olivier)
             $investors = array();
 
             $sql = "
-                SELECT  invest.id as invest,
-                        user.name as name,
-                        invest.amount as amount
+                SELECT  DISTINCT(user) as id
                 FROM    invest
-                INNER JOIN user ON invest.user = user.id
-                WHERE   invest.project = ?";
-
-            if (!$showAll) {
-                $sql .= " AND (invest.anonymous IS NULL OR invest.anonymous = 0)";
-            }
+                WHERE   project = ?";
 
             $query = self::query($sql, array($project));
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $investor) {
-                $investors[] = $investor;
+
+                // para cada uno sacar: cantidad total aportada a este proyecto y fecha de último aporte
+                $support = self::supported($investor['id'], $project);
+                /* Aqui segun lo que nos haga Philipp */
+                //$user = User::get($investor);
+                $user = (object) array(
+                    'name' => 'Platoniq',
+                    'support' => array(1,2,3,4,5,6,7,8,9,11,12,13),
+                    'avatar' => 'url',
+                    'worth' => rand(1, 5),
+
+                );
+
+                $investors[] = (object) array(
+                    'user' => $investor['id'],
+                    'name' => $user->name,
+                    'projects' => count($user->support),
+                    'avatar' => $user->avatar,
+                    'worth' => $user->worth,
+                    'amount' => $support->total,
+                    'date' => $support->date
+                );
             }
+            
             return $investors;
+        }
+
+        /*
+         *  Aportaciones realizadas por un usaurio
+         *  devuelve total y fecha de la última
+         */
+        public static function supported ($user, $project) {
+
+            $sql = "
+                SELECT  SUM(amount) as total, DATE_FORMAT(invested, '%d/%m/%Y') as date
+                FROM    invest
+                WHERE   user = :user
+                AND     project = :project
+                AND     status != 2
+                ORDER BY invested DESC";
+
+            $query = self::query($sql, array(':user' => $user, ':project' => $project));
+            return $query->fetchObject();
         }
 
         /*
@@ -239,22 +307,30 @@ namespace Goteo\Model {
         }
 
         /*
-         * Eliminar esta aportacion y sus recompensas
+         * Marcar esta aportación como devuelta (si no se habia ejecutado el preapproval es igual que cancelada)
          */
         public function cancel () {
             
-            $values = array(
-                ':id' => $this->id
-            );
-
-            $sql = "DELETE FROM invest WHERE id = :id";
-            if (self::query($sql, $values)) {
-                $sql = "DELETE FROM invest_reward WHERE invest = :id";
-                self::query($sql, $values);
-
+            $sql = "UPDATE invest SET status = 2 WHERE id = ?";
+            if (self::query($sql, array($this->id))) {
                 return true;
             } else {
                 return false;
+            }
+
+        }
+
+        public static function status ($id = null) {
+            $array = array (
+                0=>'Pendiente de cargo',
+                1=>'Cargo ejecutado',
+                2=>'Devuelto o cancelado'
+            );
+
+            if (!empty($id)) {
+                return $array[$id];
+            } else {
+                return $array;
             }
 
         }
