@@ -20,11 +20,9 @@ body.project-edit div#main.costs div.superform li.element.cost div.children li.e
     margin-top: 0;
 }
 
-body.project-edit div#main.costs div.superform li.element.cost div.children li.element.add input,
-body.project-edit div#main.costs div.superform li.element.cost div.children li.element.remove input {
-    position: absolute;
-    right: 0;
-    bottom: 0;
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.add,
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.remove {
+    text-align: right;
 }
 
 body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li > label {
@@ -67,4 +65,68 @@ body.project-edit div#main.costs div.superform li.element.cost div.children li.e
 
 body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li.structure > label {
     background-image: url('../cost/structure.png');
+}
+
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-amount {
+    overflow: hidden;
+}
+
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-amount > div.contents > input {
+    width: 3em;
+    max-width: 3em;
+    min-width: 3em;
+    float: left;
+    padding-right: 2em;
+    background-image: url('/view/css/euro/m.png');    
+    background-repeat: no-repeat;
+    background-position: 3.7em center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-amount > div.children,
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-amount > div.children > div.elements,
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-amount > div.children > div.elements > ol,
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-amount > div.children > div.elements > ol > li  {
+    margin: 0;
+    padding: 0;
+}
+
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-amount > div.children {
+    float: left;
+}
+
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-amount > div.children li.element.cost-required > div.contents {
+    margin-left: 1em;
+    padding: .3em 0;
+}
+
+
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-dates > div.children > div.elements > ol {
+    padding: 0 0 0 25%;
+    margin: -1em 0 0;
+}
+
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-dates > div.children > div.elements > ol > li {
+    margin-top: -1em;
+}
+
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-dates > div.children > div.elements > ol > li.cost-from,
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-dates > div.children > div.elements > ol > li.cost-to {
+    float: left;
+    clear: none;
+    margin-right: 1em;
+}
+
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-dates > div.children > div.elements > ol > li.cost-from > div.contents,
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-dates > div.children > div.elements > ol > li.cost-to > div.contents {
+    margin-top: 2em;
+    margin-left: 0;
+}
+
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-dates > div.children > div.elements > ol > li.cost-from input,
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-dates > div.children > div.elements > ol > li.cost-to input {
+    width: 8em;
+    max-width: 8em;
+    min-width: 8em;
 }

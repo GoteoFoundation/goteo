@@ -117,46 +117,54 @@ $costs['ncost'] = array(
             'class'     => 'inline',
             'value'     => $cost->description,
             'hint'      => Text::get('tooltip-project-cost-description')
+        ),        
+        'ncost-dates' => array(
+            'type'      => 'group',
+            'title'     => 'Fechas',
+            'class'     => 'inline cost-dates',
+            'hint'      => Text::get('tooltip-project-cost-dates'),
+            'children'  => array(
+                'ncost-from'  => array(
+                    'class'     => 'cost-from inline',
+                    // 'type'      => 'date',
+                    'type'      => 'textbox',
+                    'size'      => 8,
+                    'title'     => 'Desde',
+                    'value'     => $cost->from                    
+                ),
+                'ncost-to'  => array(
+                    'class'     => 'cost-to inline',
+                    'title'     => 'Hasta',
+                    'type'      => 'textbox',
+                    'size'      => 8,
+                    'value'     => $cost->until
+                )
+            )
         ),
         'ncost-amount' => array(
             'type'      => 'textbox',
             'title'     => 'Valor',
             'size'      => 8,
-            'class'     => 'inline',
+            'class'     => 'inline cost-amount',
             'value'     => $cost->amount,
-            'hint'      => Text::get('tooltip-project-cost-amount')
-        ),
-        'ncost-required'  => array(
-            'type'      => 'checkbox',
-            // 'type'      => 'date',
-            'class'     => 'inline',
-            //'title'     => 'Imprescindible',                    
-            'value'     => 1,
-            'label'     => 'Imprescindible',
-            'checked'   => $cost->required,
-            'hint'      => Text::get('tooltip-project-cost-required')
-        ),
-        'ncost-from'  => array(
-            'class'     => 'inline',
-            // 'type'      => 'date',
-            'type'      => 'textbox',
-            'size'      => 8,
-            'title'     => 'Desde',
-            'value'     => $cost->from,
-            'hint'      => Text::get('tooltip-project-cost-from')
-        ),
-        'ncost-to'  => array(
-            'class'     => 'inline',
-            'title'     => 'Hasta',
-            'type'      => 'textbox',
-            'size'      => 8,
-            'value'     => $cost->until,
-            'hint'      => Text::get('tooltip-project-cost-until')
+            'hint'      => Text::get('tooltip-project-cost-amount'),
+            'children'  => array(
+                'ncost-required'  => array(
+                    'type'      => 'checkbox',
+                    // 'type'      => 'date',
+                    'class'     => 'inline cost-required',
+                    //'title'     => 'Imprescindible',                    
+                    'value'     => 1,
+                    'label'     => 'Imprescindible',
+                    'checked'   => $cost->required,
+                    'hint'      => Text::get('tooltip-project-cost-required')
+                )
+            )
         ),
         'ncost-add' => array(
             'type'  => 'submit',
             'label' => 'Añadir',
-            'class' => 'add inline',
+            'class' => 'add',
         )
     )    
     
@@ -172,6 +180,7 @@ echo new SuperForm(array(
     'class'         => 'aqua',
     'footer'        => array(
         'view-step-rewards' => array(
+            'name'  => 'view-step-rewards',
             'type'  => 'submit',
             'label' => 'Siguiente',
             'class' => 'next'
@@ -193,12 +202,12 @@ echo new SuperForm(array(
             'title'     => 'Otros recursos',
             'hint'      => Text::get('tooltip-project-resource'),
             'value'     => $project->resource
-        ),          
+        )/*,          
         
         'schedule' => array(                        
             'title'     => 'Agenda',            
             'class'     => 'fullwidth'
-        ),          
+        ), */         
     )
 
 ));

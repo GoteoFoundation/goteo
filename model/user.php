@@ -239,7 +239,7 @@ namespace Goteo\Model {
                         }
                         $query = substr($query, 0, -2) . " WHERE id = :id";
                     }
-                    $_POST = array();
+                    //$_POST = array();
                     // Ejecuta SQL.
                     return self::query($query, $data);
             	} catch(\PDOException $e) {

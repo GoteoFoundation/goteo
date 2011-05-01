@@ -16,6 +16,7 @@ echo new SuperForm(array(
     'footer'        => array(
         'view-step-supports' => array(
             'type'  => 'submit',
+            'name'  => 'view-step-supports',
             'label' => 'Siguiente',
             'class' => 'next'
         )        

@@ -45,10 +45,13 @@ namespace Goteo\Library {
                             throw new SuperForm\Exception;
                         }
                         
-                        $element = new $cls($element + array(
-                            'id'    => $k,
-                            'level' => $level
-                        ));
+                        if (!isset($element['id'])) {
+                            $element['id'] = $k;
+                        }
+                        
+                        $element['level'] = $level;
+                        
+                        $element = new $cls($element);
                     }
 
                     $elements[] = $element;

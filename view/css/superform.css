@@ -20,7 +20,7 @@ div.superform li.element > h5,
 div.superform li.element > h6,
 div.superform li.element > h7,
 div.superform li.element > h8 {    
-    margin: 0;    
+    margin: 0 0 .5em;    
     font-size: 14px;
 }
 
@@ -83,7 +83,10 @@ div.superform div.elements > ol {
 }
 
 div.superform > div.elements div.elements > ol {
-    padding-left: 2em;
+    padding-left: 2em;    
+}
+
+div.superform div.contents + div.children > div.elements > ol {
     margin-top: 1em;
 }
 
@@ -124,8 +127,38 @@ div.superform div.elements > ol > li div.element {
     display: inline;    
 }
 
-div.superform div.elements > ol > li > div.children > div.elements {
+div.superform div.elements > ol > li > div.contents + div.children > div.elements {
     margin-top: 1em;
+}
+
+div.superform input[type='text'],
+div.superform input[type='password'],
+div.superform textarea {
+    padding: .4em;    
+    background-color: #d7d9da;
+    border: 1px solid #58595;
+}
+
+div.superform input[type='submit'],
+div.superform input[type='reset']
+div.superform button {
+    background-color: #58595b;
+    border: 1px solid #58595b;        
+    cursor: pointer;    
+    font-weight: normal;
+    margin: 0.5em 0;
+    padding: 0.4em 1.5em;
+    text-align: center;
+    text-decoration: none;    
+}
+
+div.superform input.add[type="submit"],
+div.superform input.add[type="reset"],
+div.superform button.add {
+    background-image: url('superform/button/add.png');
+    background-repeat: no-repeat;
+    background-position: .6em center;
+    padding-left: 2em;
 }
 
 /* Full-width elements */
@@ -176,8 +209,7 @@ div.superform li.element.textarea > div.contents > textarea {
     width: 100%;
     min-width: 100%;
     max-width: 100%;
-    margin: 0;
-    padding: .3em;    
+    margin: 0;    
 }
 
 /* Custom textboxes */
@@ -309,6 +341,7 @@ div.superform > div.footer > div.elements > div.element {
 div.superform div.footer input,
 div.superform div.footer button {
     background-color: #ee4843 !important;
+    border-color: #ee4843 !important;
     padding-left: 4em;
     padding-right: 4em;
     box-shadow: 2px 2px 0 rgba(0,0,0,.2);    
@@ -321,6 +354,7 @@ div.superform div.footer button:hover,
 div.superform div.footer input:focus,
 div.superform div.footer button:focus{
     background-color: #ed1a37 !important;
+    border-color: #ed1a37 !important;
     padding-left: 4em;
     padding-right: 4em;
 }
@@ -359,6 +393,7 @@ div.superform.aqua input[type="submit"],
 div.superform.aqua input[type="reset"],
 div.superform.aqua button {
     background-color: #1fb0b0;
+    border-color: #1fb0b0;
     color: white;
 }
 
@@ -395,6 +430,7 @@ div.superform.red input[type="submit"],
 div.superform.red input[type="reset"],
 div.superform.red button {
     background-color: #ee4843;
+    border-color: #ee4843;
     color: white;
 } 
 
@@ -436,6 +472,7 @@ div.superform.green input[type="submit"],
 div.superform.green input[type="reset"],
 div.superform.green button {
     background-color: #00b05b;
+    border-color: #00b05b;
     color: white;
 } 
 

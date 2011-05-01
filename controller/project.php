@@ -92,38 +92,27 @@ namespace Goteo\Controller {
                             'project'=>$project,
                             'steps'=>$steps,
                             'nodesign'=>$nodesign
-                        );
-
-            // vista por defecto, el primer paso con errores
-            if (!empty($project->errors['userProfile']))
-                $step = 'userProfile';
-            elseif (!empty($project->errors['userPersonal']))
-                $step = 'userPersonal';
-            elseif (!empty($project->errors['overview']))
-                $step = 'overview';
-            elseif (!empty($project->errors['costs']))
-                $step = 'costs';
-            elseif (!empty($project->errors['rewards']))
-                $step = 'rewards';
-            elseif (!empty($project->errors['supports']))
-                $step = 'supports';
-            else
-                $step = 'preview';
+                        );            
             
-            $viewData['step'] =& $step;
+            $step = null;                        
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                
                 $errors = array(); // errores al procesar, no son errores en los datos del proyecto
                 foreach ($steps as $id => &$data) {
+                    
                     if (call_user_func_array(array($this, "process_{$id}"), array(&$project, &$errors))) {
                         // si un process devuelve true es que han enviado datos de este paso, lo añadimos a los pasados
                         if (!in_array($id, $_SESSION['stepped']))
                             $_SESSION['stepped'][] = $id;
                     }
-
+                    
+                    
+                    //print_r($_POST);Die;
                     // y el paso que vamos a mostrar
-                    if (!empty($_POST['view-step-'.$id]))
-                        $step = $id;
+                    if (!empty($_POST['view-step-' . $id])) {
+                        $step = $id;                        
+                    }
                 }
 
                 // guardamos los datos que hemos tratado y los errores de los datos
@@ -148,6 +137,28 @@ namespace Goteo\Controller {
                     }
                 }
             }
+            
+            if (empty($step)) {
+            
+                // vista por defecto, el primer paso con errores
+                if (!empty($project->errors['userProfile']))
+                    $step = 'userProfile';
+                elseif (!empty($project->errors['userPersonal']))
+                    $step = 'userPersonal';
+                elseif (!empty($project->errors['overview']))
+                    $step = 'overview';
+                elseif (!empty($project->errors['costs']))
+                    $step = 'costs';
+                elseif (!empty($project->errors['rewards']))
+                    $step = 'rewards';
+                elseif (!empty($project->errors['supports']))
+                    $step = 'supports';
+                else
+                    $step = 'preview';
+                
+            }
+            
+            $viewData['step'] = $step;
 
             // segun el paso añadimos los datos auxiliares para pintar
             switch ($step) {
@@ -279,9 +290,14 @@ namespace Goteo\Controller {
                 'user_facebook'=>'facebook',
                 'user_linkedin'=>'linkedin'
             );
-
+                        
             foreach ($fields as $fieldPost=>$fieldTable) {
                 $user->$fieldTable = $_POST[$fieldPost];
+            }
+            
+            // Avatar
+            if(!empty($_FILES['avatar_upload']['name'])) {
+                $user->avatar = $_FILES['avatar_upload'];
             }
 
             $user->interests = $_POST['interests'];
@@ -289,25 +305,34 @@ namespace Goteo\Controller {
             //tratar webs existentes
             foreach ($user->webs as $key=>&$web) {
                 // luego aplicar los cambios
-                $web->url = $_POST['web' . $web->id];
+                
+                if (isset($_POST['web-'. $web->id . '-url'])) {
+                    $web->url = $_POST['web-'. $web->id . '-url'];
+                }
+                
             }
 
             //tratar nueva web
-            if (!empty($_POST['nweb'])) {
+            if (!empty($_POST['web-add'])) {
+                
                 $web = new Model\User\Web();
 
                 $web->id = '';
                 $web->user = $user->id;
-                $web->url = $_POST['nweb'];
-
+                $web->url = '';
                 $user->webs[] = $web;
             }
 
             //quitar las que quiten
             foreach ($user->webs as $key=>$web) {
                 // primero mirar si lo estan quitando
-                if ($_POST['remove-web' . $web->id] == 1)
+                // if ($_POST['remove-web' . $web->id] == 1)
+                
+                
+                if (!empty($_POST['web-' . $web->id . '-remove'])) {
                     unset($user->webs[$key]);
+                }
+                    
             }
 
             /// este es el único save que se lanza desde un metodo process_
