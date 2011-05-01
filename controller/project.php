@@ -20,7 +20,8 @@ namespace Goteo\Controller {
                     return $this->finish($id); // Para revision
                 elseif (isset($_GET['raw'])) {
                     $project = Model\Project::get($id);
-                    die('<pre>' . print_r($project, 1) . '</pre>');
+                    \trace($project);
+                    die;
                 }
                 else
                     return $this->view($id);
