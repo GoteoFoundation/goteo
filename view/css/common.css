@@ -13,6 +13,10 @@ html, body {
     background-color: #e7e7e7;    
 }
 
+body {
+    min-width: 780px;
+}
+
 body, td, th, a, a:link, a:visited, a:active, a:hover, input, textarea, button {    
     font-size: 13px;
     color: #58595b;
