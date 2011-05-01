@@ -300,39 +300,17 @@ namespace Goteo\Controller {
                 $user->avatar = $_FILES['avatar_upload'];
             }
 
-            $user->interests = $_POST['interests'];
-
-            //tratar webs existentes
-            foreach ($user->webs as $key=>&$web) {
-                // luego aplicar los cambios
-                
-                if (isset($_POST['web-'. $web->id . '-url'])) {
-                    $web->url = $_POST['web-'. $web->id . '-url'];
-                }
-                
+            // Intereses
+            $user->interests = $_POST['user_interests'];
+            // Páginas Web
+            if(!empty($_POST['user_webs']['remove'])) {
+                $user->webs = array('remove' => $_POST['user_webs']['remove']);
             }
-
-            //tratar nueva web
-            if (!empty($_POST['web-add'])) {
-                
-                $web = new Model\User\Web();
-
-                $web->id = '';
-                $web->user = $user->id;
-                $web->url = '';
-                $user->webs[] = $web;
+            elseif(!empty($_POST['user_webs']['add']) && !empty($_POST['user_webs']['add'][0]) ) {
+                $user->webs = array('add' => $_POST['user_webs']['add']);
             }
-
-            //quitar las que quiten
-            foreach ($user->webs as $key=>$web) {
-                // primero mirar si lo estan quitando
-                // if ($_POST['remove-web' . $web->id] == 1)
-                
-                
-                if (!empty($_POST['web-' . $web->id . '-remove'])) {
-                    unset($user->webs[$key]);
-                }
-                    
+            else {
+                $user->webs = array('edit', $_POST['user_webs']['edit']);
             }
 
             /// este es el único save que se lanza desde un metodo process_
