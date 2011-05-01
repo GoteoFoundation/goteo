@@ -34,6 +34,15 @@ div#super-header + * {
     margin-top: -2.2em;
 }
 
+div#super-header a {
+    color: #e9e3dc;
+    font-size: 12px;    
+}
+
+div#super-header a:hover {
+    color: #8ed9d8 !important;
+}
+
 
 /* Sub-header */ 
 div#sub-header {
