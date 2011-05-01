@@ -210,6 +210,7 @@ div#header div#menu > ul > li.search fieldset {
     border: 1px solid #808184;    
     padding-right: 1.6em;
     position: relative;
+    font-size: 14px;
 }
 
 div#header div#menu > ul > li.search fieldset legend {
@@ -221,6 +222,7 @@ div#header div#menu > ul > li.search fieldset input[type="text"] {
     height: 1.2em;
     padding: .2em;
     background-color: transparent;
+    font-size: 14px;
 }
 
 div#header div#menu > ul > li.search fieldset input[type="text"]:focus {
