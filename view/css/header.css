@@ -9,16 +9,6 @@ div#header strong {
     text-decoration: none;
 }
 
-div#header a {
-    color: #e9e3dc;
-    font-size: 12px;    
-}
-
-div#header a:hover {
-    color: #8ed9d8 !important;
-}
-
-
 /* Super-header */
 div#super-header {
     max-width: 940px;
