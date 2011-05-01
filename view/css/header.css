@@ -98,27 +98,18 @@ div#header div#highlights > ul {
     padding: 0;
     margin: 0;
     display: inline-block;
-    max-width: 100%;
 }
 
 div#header div#highlights > ul > li {    
-    position: relative;
-    display: block;
     white-space: nowrap;
     float: left;
-    max-width: 100%;
     padding-right: 8em;
     overflow: hidden;
 }
 
 div#header div#highlights > ul > li > a {
-    position: absolute;
-    left: 100%;
-    background: url('header/super-header-overlay.png') repeat-y left;
-    margin-left: -8em;
+    margin-left: 1em;
     white-space: nowrap;
-    text-indent: 3.5em;
-    width: 8em;
 }
 
 div#header div#highlights > ul > li > a:hover {

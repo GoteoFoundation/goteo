@@ -19,7 +19,7 @@
 
         <script type="text/javascript">
             // Mark DOM as javascript-enabled
-            jQuery(document).bind('ready', function ($) { jQuery('body').addClass('js'); });
+            jQuery(document).ready(function ($) { $('body').addClass('js'); });
         </script>
         <noscript><!-- Please enable JavaScript --></noscript>
 
