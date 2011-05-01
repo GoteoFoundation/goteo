@@ -117,27 +117,7 @@ $costs['ncost'] = array(
             'class'     => 'inline',
             'value'     => $cost->description,
             'hint'      => Text::get('tooltip-project-cost-description')
-        ),
-        'ncost-amount' => array(
-            'type'      => 'textbox',
-            'title'     => 'Valor',
-            'size'      => 8,
-            'class'     => 'inline cost-amount',
-            'value'     => $cost->amount,
-            'hint'      => Text::get('tooltip-project-cost-amount'),
-            'children'  => array(
-                'ncost-required'  => array(
-                    'type'      => 'checkbox',
-                    // 'type'      => 'date',
-                    'class'     => 'inline cost-required',
-                    //'title'     => 'Imprescindible',                    
-                    'value'     => 1,
-                    'label'     => 'Imprescindible',
-                    'checked'   => $cost->required,
-                    'hint'      => Text::get('tooltip-project-cost-required')
-                )
-            )
-        ),
+        ),        
         'ncost-dates' => array(
             'type'      => 'group',
             'title'     => 'Fechas',
@@ -161,7 +141,26 @@ $costs['ncost'] = array(
                 )
             )
         ),
-        
+        'ncost-amount' => array(
+            'type'      => 'textbox',
+            'title'     => 'Valor',
+            'size'      => 8,
+            'class'     => 'inline cost-amount',
+            'value'     => $cost->amount,
+            'hint'      => Text::get('tooltip-project-cost-amount'),
+            'children'  => array(
+                'ncost-required'  => array(
+                    'type'      => 'checkbox',
+                    // 'type'      => 'date',
+                    'class'     => 'inline cost-required',
+                    //'title'     => 'Imprescindible',                    
+                    'value'     => 1,
+                    'label'     => 'Imprescindible',
+                    'checked'   => $cost->required,
+                    'hint'      => Text::get('tooltip-project-cost-required')
+                )
+            )
+        ),
         'ncost-add' => array(
             'type'  => 'submit',
             'label' => 'Añadir',
