@@ -97,11 +97,12 @@ $superform = array(
        
         'category' => array(    
             'type'      => 'checkboxes',
+            'name'      => 'categories[]',
             'title'     => 'Categorías',
             'required'  => true,
             'options'   => $categories,
             'hint'      => Text::get('tooltip-project-category'),
-            'errors'    => !empty($errors['category']) ? array($errors['category']) : array(),
+            'errors'    => !empty($errors['categories']) ? array($errors['categories']) : array(),
         ),       
 
         'keywords' => array(
