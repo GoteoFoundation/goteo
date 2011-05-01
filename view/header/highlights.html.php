@@ -15,7 +15,7 @@ END;
 ?>
 <div id="highlights">
     
-    <h2>Noticias</h2>
+    <h2><a href="">Noticias</a></h2>
     
     <ul>
         <?php foreach (preg_split("/\n\s*/", $highlights) as $i => $hl): ?>
