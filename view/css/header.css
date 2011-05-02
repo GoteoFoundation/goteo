@@ -2,6 +2,12 @@
  * Header
  */
   
+div#header,
+div#super-header {
+    position: relative;
+    z-index: 9999;
+}
+ 
 div#header a,
 div#header span,
 div#header strong {

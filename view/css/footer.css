@@ -11,6 +11,7 @@ div#footer {
     border-bottom: 25px solid white;
     padding-top: 35px;
     clear: both;
+    z-index: 0;
 }
 
 div#footer hr {
