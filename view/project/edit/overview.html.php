@@ -128,6 +128,7 @@ $superform = array(
             'type'      => 'slider',
             'options'   => $currently,
             'required'  => true,
+            'class'     => 'currently',
             'hint'      => Text::get('tooltip-project-currently'),
             'errors'    => !empty($errors['currently']) ? array($errors['currently']) : array(),
         ),
