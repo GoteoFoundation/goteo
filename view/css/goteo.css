@@ -24,6 +24,8 @@ div#main {
     clear: both;
     overflow-y: auto;
     overflow-x: hidden;
+    position: relative;
+    z-index: 0;
 }
 
 /**
