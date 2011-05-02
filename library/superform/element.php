@@ -5,7 +5,7 @@ namespace Goteo\Library\SuperForm {
     use Goteo\Library\SuperForm,
         Goteo\Core\View;
     
-    class Element extends \ArrayObject implements \Goteo\Core\Resource {
+    class Element implements \ArrayAccess, \Goteo\Core\Resource {
                 
         public            
             $id,
@@ -20,13 +20,26 @@ namespace Goteo\Library\SuperForm {
             $level = 2,
             $view,
             $data = array();
+        
+        public function offsetGet ($name) {
+            return isset($this->$name) ? $this->name : null;
+        }
+        
+        public function offsetSet ($name, $value) {
+            $this->$name = $value;
+        }
+        
+        public function offsetExists ($name) {
+            return property_exists($this, $name);
+        }
+        
+        public function offsetUnset ($name) {
+            unset($this->$name);
+        }
                         
         public function __construct ($data = array()) {
             
             foreach ($data as $k => $v) {
-                
-                $this[$k] = $v; // Copio todo para que pueda leerlo la vista
-                
                 switch ($k) {
                     
                     case 'children':

@@ -60,8 +60,6 @@
                 
         frm.find(':input').bind('focus', function (event) {
            
-           console.log(this);
-           
            var p = $(this).parents('li.element');
 
            if (p.length >= 1) {

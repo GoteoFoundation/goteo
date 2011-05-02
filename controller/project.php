@@ -301,17 +301,36 @@ namespace Goteo\Controller {
                 $user->avatar = $_FILES['avatar_upload'];
             }
 
-            // Intereses
-            $user->interests = $_POST['user_interests'];
-            // Páginas Web
-            if(!empty($_POST['user_webs']['remove'])) {
-                $user->webs = array('remove' => $_POST['user_webs']['remove']);
+            $user->interests = $_POST['interests'];
+
+            //tratar webs existentes
+            foreach ($user->webs as $key=>&$web) {
+                // luego aplicar los cambios
+                
+                if (isset($_POST['web-'. $web->id . '-url'])) {
+                    $web->url = $_POST['web-'. $web->id . '-url'];
+                }
+                
             }
-            elseif(!empty($_POST['user_webs']['add']) && !empty($_POST['user_webs']['add'][0]) ) {
-                $user->webs = array('add' => $_POST['user_webs']['add']);
+
+            //tratar nueva web
+            if (!empty($_POST['web-add'])) {
+                
+                $web = new Model\User\Web();
+
+                $web->id = '';
+                $web->user = $user->id;
+                $web->url = '';
+                $user->webs[] = $web;
             }
-            else {
-                $user->webs = array('edit', $_POST['user_webs']['edit']);
+
+            //quitar las que quiten
+            foreach ($user->webs as $key=>$web) {
+                // primero mirar si lo estan quitando
+                if (!empty($_POST['web-' . $web->id . '-remove'])) {
+                    unset($user->webs[$key]);
+                }
+                    
             }
 
             /// este es el único save que se lanza desde un metodo process_
@@ -408,41 +427,37 @@ namespace Goteo\Controller {
             $project->resource = $_POST['resource'];
             
             //tratar costes existentes
-            foreach ($project->costs as $key=>$cost) {
-                $cost->cost = $_POST['cost' . $cost->id];
-                $cost->description = $_POST['cost-description' . $cost->id];
-                $cost->amount = $_POST['cost-amount' . $cost->id];
-                $cost->type = $_POST['cost-type' . $cost->id];
-                $cost->required = $_POST['cost-required' . $cost->id];
-                $cost->from = $_POST['cost-from' . $cost->id];
-                $cost->until = $_POST['cost-until' . $cost->id];
+            foreach ($project->costs as $key => $cost) {
+                
+                $cost->cost = $_POST['cost' . $cost->id . 'cost'];
+                $cost->description = $_POST['cost-' . $cost->id .'-description'];
+                $cost->amount = $_POST['cost-' . $cost->id . '-amount'];
+                $cost->type = $_POST['cost-' . $cost->id . '-type'];
+                $cost->required = $_POST['cost-' . $cost->id . '-required'];
+                $cost->from = $_POST['cost-' . $cost->id . '-from'];
+                $cost->until = $_POST['cost-' . $cost->id . '-until'];
+                
             }
 
             //añadir nuevo coste
-            if (!empty($_POST['ncost'])) {
+            if (!empty($_POST['cost-add'])) {
+                
                 $cost = new Model\Project\Cost();
 
                 $cost->id = '';
                 $cost->project = $project->id;
-                $cost->cost = $_POST['ncost'];
-                $cost->description = $_POST['ncost-description'];
-                $cost->amount = $_POST['ncost-amount'];
-                $cost->type = $_POST['ncost-type'];
-                $cost->required = $_POST['ncost-required'];
-                $cost->from = $_POST['ncost-from'];
-                $cost->until = $_POST['ncost-until'];
-
+                $cost->cost = '';
+                $cost->type = 'task';
                 $project->costs[] = $cost;
+                
             }
 
             // quitar los que quiten
-            $costes = $project->costs;
             foreach ($project->costs as $key=>$cost) {
-                $este = $_POST['remove-cost' . $cost->id];
+                $este = $_POST['cost-' . $cost->id . '-remove'];
                 if (!empty($este))
                     unset($project->costs[$key]);
-            }
-            $costes = $project->costs; //para xdebug
+            }            
 
             return true;
         }
