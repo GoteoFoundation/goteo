@@ -240,28 +240,59 @@ div.superform div.elements li.element.textbox.linkedin > div.contents {
 }
 
 /* Checkboxes & radios */
-div.superform div.elements > ol > li.element.checkboxes > div.contents ul,
-div.superform div.elements > ol > li.element.radios > div.contents ul,
-div.superform div.elements > ol > li.element.slider > div.contents ul {
+
+div.superform div.elements > ol > li.element.checkboxes,
+div.superform div.elements > ol > li.element.radios,
+div.superform div.elements > ol > li.element.slider {
+    padding-bottom: 0;
+}
+
+div.superform div.elements > ol > li.element.checkboxes > div.contents > ul,
+div.superform div.elements > ol > li.element.radios > div.contents > ul,
+div.superform div.elements > ol > li.element.slider > div.contents > ul {
     padding: 0;
-    margin: -1em 0 0;    
+    margin: 0;    
     list-style: none;
     overflow: hidden;
+    border-top: 1px dashed #bcbdbf;
 }
 
-div.superform div.elements > ol > li.element.checkboxes > div.contents ul li,
-div.superform div.elements > ol > li.element.radios > div.contents ul li,
-div.superform div.elements > ol > li.element.slider > div.contents ul li{
-    border: none;
-    padding: 1em 0 0;
-    width: 33%;
-    float: left;   
+div.superform div.elements > ol > li.element.checkboxes > div.contents > ul > li,
+div.superform div.elements > ol > li.element.radios > div.contents > ul > li,
+div.superform div.elements > ol > li.element.slider > div.contents > ul > li {
+    float: left;        
+    width: 50%;    
+    border-bottom: 1px dashed #bcbdbf;
+    border-right: 1px dashed #bcbdbf;
+    margin-left: -1px;
+    margin-bottom: -1px;
+    padding: 0;
 }
 
-div.superform div.elements > ol > li.element.checkboxes > div.contents ul li input[type="checkbox"],
-div.superform div.elements > ol > li.element.radios > div.contents ul li input[type="radio"],
-div.superform div.elements > ol > li.element.slider > div.contents ul li input[type="radio"] {
-    margin-left: 0;
+div.superform div.elements > ol > li.element.checkboxes.inline > div.contents > ul > li,
+div.superform div.elements > ol > li.element.radios.inline > div.contents > ul > li,
+div.superform div.elements > ol > li.element.slider.inline > div.contents > ul > li {
+    margin-bottom: 0;
+}
+
+div.superform div.elements > ol > li.element.checkboxes > div.contents > ul > li > label,
+div.superform div.elements > ol > li.element.radios > div.contents > ul > li > label,
+div.superform div.elements > ol > li.element.slider > div.contents > ul > li > label {
+    position: relative;
+    padding: 1em;
+    display: block;    
+    cursor: pointer;
+}
+
+div.superform div.elements > ol > li.element.checkboxes > div.contents > ul > li > label > input[type="checkbox"],
+div.superform div.elements > ol > li.element.radios > div.contents > ul > li > label > input[type="radio"],
+div.superform div.elements > ol > li.element.slider > div.contents > ul > li > label > input[type="radio"] {
+    position: absolute;
+    right: .5em;
+    top: 50%;
+    margin-top: -.5em;
+    height: 1em;
+    cursor: pointer;
 }
 
 

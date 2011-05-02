@@ -7,7 +7,6 @@ namespace Goteo\Library\SuperForm\Element {
         public
             $label,
             $value,
-            $summary,
             $checked = false;        
         
     }

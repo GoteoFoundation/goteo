@@ -1,0 +1,53 @@
+
+/**
+ * Costs 
+ */
+ 
+body.project-edit div#main.rewards div.superform li.element.rewards div.children li.element .title {
+    padding: .3em 0;
+    position: absolute;
+    left: 0;
+    top: 1em;
+}
+
+body.project-edit div#main.rewards div.superform li.element.rewards div.children li.element .contents {    
+    margin-left: 25%;
+    position: relative;
+    margin-top: 0;
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward li.element.reward-remove .contents {
+    text-align: right;
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward li.element.reward-remove .contents input {
+    margin: 0;
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li > label {
+    padding-left: 44px;        
+    background: none no-repeat 10px center;
+    min-height: 21px;
+    line-height: 21px;
+}
+
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.social_1 > label {
+    background-image: url('../../icon/s/file.png');
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.social_2 > label {
+    background-image: url('../../icon/s/money.png');
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.social_3 > label {
+    background-image: url('../../icon/s/code.png');
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.social_4 > label {
+    background-image: url('../../icon/s/service.png');
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.social_5 > label {
+    background-image: url('../../icon/s/product.png');
+}
