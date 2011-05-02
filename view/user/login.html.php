@@ -1,35 +1,79 @@
 <?php 
-$bodyClass = 'home';
+$bodyClass = 'user-login';
 include 'view/prologue.html.php';
 include 'view/header.html.php'; ?>
 
     <div id="main">
 
-        <div id="login">
+        <div class="login">
+            
+            <div>
 
-            <h2>Login</h2>
+                <h2>Usuario registrado</h2>
 
-            <form action="" method="post">
+                <?php if (isset($error)): ?>
+                <p class="error">Login failed</p>
+                <?php endif ?>
 
-                <fieldset>
+                <form action="" method="post">
 
-                    <legend>Identificación de usuario</legend>
+                    <div class="username">
+                        <label>Nombre de usuario 
+                        <input type="text" name="username" value="<?php echo $username?>" /></label>
+                    </div>
 
-                    <ul>
-                        <li><label for="LoginUsername">Usuario</label> <input type="text" id="LoginUser" name="username" value="<?php echo $username?>" /></li>
-                        <li><label for="LoginPassword">Contraseña</label> <input type="password" id="LoginPassword" name="password" /></dd>
-                        <?php if (isset($error)): ?>
-                            <li><em>Login failed</em></li>
-                        <?php endif ?>
-                    </ul>
-                    <input type="submit" value="Enviar" />
-                </fieldset>
-            </form>
+                    <div class="password">
+                        <label>Contraseña 
+                        <input type="password" name="password" value="<?php echo $username?>" /></label>
+                    </div>
+
+                    <input type="submit" value="Entrar" />                
+
+                </form>
+                
+            </div>
+        </div>
+        
+        <div class="external-login">
+            <div>
+            <h2>Accede con un solo click</h2>
+            </div>
         </div>
 
-        <div id="registro">
-            <h2>Registro</h2>
-            <a href="/user/register">Regístrate gratis</a>
+        <div class="register">
+            <div>
+                <h2>Nuevo usuario</h2>
+                <form action="" method="post">                            
+                    
+                    <div class="username">
+                        <label>Nombre de usuario
+                        <input type="text" id="RegisterUsername" name="username" value="<?php echo htmlspecialchars($username) ?>"/></label>
+                    </div>
+                    
+                    <div class="email">
+                        <label>E-mail
+                        <input type="text" name="email" value="<?php echo htmlspecialchars($email) ?>"/></label>
+                    </div>
+                                                            
+                    <div class="remail">
+                        <label>Confirmar e-mail
+                        <input type="text" name="remail" value="<?php echo htmlspecialchars($remail) ?>"/></label>
+                    </div>
+                    
+                    <div class="password">
+                        <label>Contraseña
+                        <input type="password" name="password" value="<?php echo htmlspecialchars($password) ?>"/></label>
+                    </div>
+                    
+                     <div class="rpassword">
+                        <label>Confirmar contraseña
+                        <input type="password" name="rpassword" value="<?php echo htmlspecialchars($rpassword) ?>"/></label>
+                    </div>
+                    
+                    <input type="submit" name="register" value="Registrar" />                                        
+                
+            </form>
+            </div>
         </div>
         
     </div>

@@ -12,6 +12,7 @@
 body.project-edit div#main div.status {
     color: #bcbdbd;
     padding-bottom: 30px;
+    padding-top: 20px;
     border-bottom: 3px solid #cfd0d2; 
 }
 
