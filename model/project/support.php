@@ -22,9 +22,12 @@ namespace Goteo\Model\Project {
 
 		public static function getAll ($project) {
             try {
+                $array = array();
 				$query = self::query("SELECT * FROM support WHERE project = ?", array($project));
-				$items = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
-				return $items;
+				foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item ) {
+                    $array[$item->id] = $item;
+                }
+				return $array;
             } catch(\PDOException $e) {
                 throw new \Goteo\Core\Exception($e->getMessage());
             }
