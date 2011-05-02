@@ -5,8 +5,18 @@ use Goteo\Library\Text,
             
 
 $project = $this['project'];
+/*
+[licenses] => Array
+                (
+                    [1] => Open Hardware
+                    [2] => Creative Commons
+                    [3] => General Public
+                    [4] => Open Database
+                    [5] => Red Abierta
+                    [6] => GNU Affero
+                )
 
-
+*/
 $social_rewards_types = array();
 $social_rewards_licenses = array();
 $social_rewards = array();
@@ -30,6 +40,13 @@ foreach ($this['itypes'] as $id => $type) {
     );
 }
 
+foreach ($this['licenses'] as $id => $license) {
+    $social_rewards_licenses[] = array(
+        'value' => $id,
+        'class' => "license_{$id}",
+        'label' => $license
+    );
+}
 
 foreach ($project->social_rewards as $social_reward) {
     
@@ -61,7 +78,15 @@ foreach ($project->social_rewards as $social_reward) {
                     'class'     => 'inline',
                     'hint'      => Text::get('tooltip-project-social_reward-description'),
                     'value'     => $social_reward->description
-                ),                                                       
+                ),    
+                "social_reward-{$social_reward->id}-license" => array(
+                    'type'      => 'radios',
+                    'title'     => 'Licencia',
+                    'options'   => $social_rewards_licenses,                    
+                    'value'     => $social_reward->license,
+                    'class'     => 'inline reward-license',
+                    'hint'      => Text::get('tooltip-project-social_reward-license')                    
+                ), 
                 "social_reward-{$social_reward->id}-remove" => array(
                     'type'  => 'submit',
                     'label' => 'Quitar',

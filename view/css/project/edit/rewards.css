@@ -16,14 +16,14 @@ body.project-edit div#main.rewards div.superform li.element.rewards div.children
     margin-top: 0;
 }
 
-body.project-edit div#main.rewards div.superform li.element.reward li.element.reward-remove {
-    float: right;
-    padding: 0 0 1em;
-}
-
 body.project-edit div#main.rewards div.superform li.element.individual_reward li.element.reward-remove {
+    float: right;
     margin-top: -4.5em !important;    
     padding: 0;
+}
+
+body.project-edit div#main.rewards div.superform li.element.social_reward li.element.reward-remove > * {
+    text-align: right;
 }
 
 body.project-edit div#main.rewards div.superform li.element.reward-add .contents {
@@ -31,37 +31,63 @@ body.project-edit div#main.rewards div.superform li.element.reward-add .contents
 }
 
 body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li > label {
-    padding-left: 44px;        
+    padding-left: 55px;        
     background: none no-repeat 10px center;
-    min-height: 21px;
-    line-height: 21px;
+    min-height: 32px;
+    line-height: 32px;
 }
 
-
 body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_1 > label {
-    background-image: url('../../icon/s/file.png');
+    background-image: url('../../icon/m/file.png');
 }
 
 body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_2 > label {
-    background-image: url('../../icon/s/money.png');
+    background-image: url('../../icon/m/money.png');
 }
 
 body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_3 > label {
-    background-image: url('../../icon/s/code.png');
+    background-image: url('../../icon/m/code.png');
 }
 
 body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_4 > label {
-    background-image: url('../../icon/s/service.png');
+    background-image: url('../../icon/m/service.png');
 }
 
 body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_5 > label {
-    background-image: url('../../icon/s/manual.png');
+    background-image: url('../../icon/m/manual.png');
 }
 
 body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_6 > label {
-    background-image: url('../../icon/s/product.png');
+    background-image: url('../../icon/m/product.png');
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li > label {
+    padding-left: 55px;        
+    background: none no-repeat 10px center;
+    min-height: 32px;
+    line-height: 32px;
+}
+     
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_1 > label {
+    background-image: url('../../icon/m/license/ohl.png');
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_2 > label {
+    background-image: url('../../icon/m/license/cc.png');
+}
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_3 > label {
+    background-image: url('../../icon/m/license/gpl.png');
+}
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_4 > label {
+    background-image: url('../../icon/m/license/odbl.png');
+}
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_5 > label {
+    background-image: url('../../icon/m/license/xoln.png');
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_6 > label {
+    background-image: url('../../icon/m/license/agpl.png');
+}
 
 body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-amount > div.contents > input {
     width: 3em;
