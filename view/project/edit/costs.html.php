@@ -32,14 +32,16 @@ if (!empty($project->costs)) {
                     'type'      => 'textbox',
                     'size'      => 100,
                     'class'     => 'inline',
-                    'value'     => $cost->cost
+                    'value'     => $cost->cost,
+                    'hint'      => Text::get('tooltip-project-cost-cost'),
                 ),
                 "cost-{$cost->id}-type" => array(
                     'title'     => 'Tipo',
                     'class'     => 'inline cost-type',
                     'type'      => 'radios',
                     'options'   => $costTypes,
-                    'value'     => $cost->type
+                    'value'     => $cost->type,
+                    'hint'      => Text::get('tooltip-project-cost-type'),
                 ),
                 "cost-{$cost->id}-description" => array(
                     'type'      => 'textarea',
@@ -47,6 +49,7 @@ if (!empty($project->costs)) {
                     'cols'      => 100,
                     'rows'      => 4,
                     'class'     => 'inline',
+                    'hint'      => Text::get('tooltip-project-cost-description'),
                     'value'     => $cost->description
                 ),                                       
                 "cost-{$cost->id}-dates" => array(
@@ -77,6 +80,7 @@ if (!empty($project->costs)) {
                     'size'      => 8,
                     'class'     => 'inline cost-amount',
                     'value'     => $cost->amount,
+                    'hint'      => Text::get('tooltip-project-cost-amount'),
                     'children'  => array(
                         "cost-{$cost->id}-required"  => array(
                             'type'      => 'checkbox',
@@ -84,7 +88,6 @@ if (!empty($project->costs)) {
                             'value'     => 1,
                             'label'     => 'Imprescindible',
                             'checked'   => $cost->required,
-                            'hint'      => Text::get('tooltip-project-cost-required')
                         )
                     )
                 ),
