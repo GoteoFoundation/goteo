@@ -303,33 +303,25 @@ namespace Goteo\Controller {
             $user->interests = $_POST['interests'];
 
             //tratar webs existentes
-            foreach ($user->webs as $key=>&$web) {
+            foreach ($user->webs as $i => &$web) {
                 // luego aplicar los cambios
                 
                 if (isset($_POST['web-'. $web->id . '-url'])) {
                     $web->url = $_POST['web-'. $web->id . '-url'];
                 }
                 
+                //quitar las que quiten
+                if (!empty($_POST['web-' . $web->id .  '-remove'])) {
+                    unset($user->webs[$i]);
+                }                                                    
+                
             }
 
             //tratar nueva web
-            if (!empty($_POST['web-add'])) {
-                
-                $web = new Model\User\Web();
-
-                $web->id = '';
-                $web->user = $user->id;
-                $web->url = '';
-                $user->webs[] = $web;
-            }
-
-            //quitar las que quiten
-            foreach ($user->webs as $key=>$web) {
-                // primero mirar si lo estan quitando
-                if (!empty($_POST['web-' . $web->id . '-remove'])) {
-                    unset($user->webs[$key]);
-                }
-                    
+            if (!empty($_POST['web-add'])) {                
+                $user->webs[] = new Model\User\Web(array(
+                    'url'   => 'http://'
+                ));
             }
 
             /// este es el único save que se lanza desde un metodo process_

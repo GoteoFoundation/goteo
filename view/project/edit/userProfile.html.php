@@ -28,15 +28,13 @@ foreach ($user->webs as $web) {
         'children'  => array(            
             'web-' . $web->id . '-url' => array(
                 'type'      => 'textbox',
-                'name'      => 'user_webs[edit][' . $web->id . ']',
                 'value'     => $web->url,
                 'errors'    => array(),
                 'required'  => true,
                 'class'     => 'web-url inline'
             ),
             'web-' . $web->id . '-remove' => array(
-                'type'      => 'submit',
-                'name'      => 'user_webs[remove][' . $web->id . ']',
+                'type'      => 'submit',                
                 'label'     => 'Quitar',
                 'class'     => 'web-remove inline remove'
             )
@@ -141,19 +139,11 @@ echo new SuperForm(array(
             'title'     => 'Mis webs',            
             'hint'      => Text::get('tooltip-user-webs'),
             'class'     => 'webs',
-            'children'  => $user_webs + array(
-                'user_web' => array(
-                    'type'      => 'textbox',
-                    'name'      => 'user_webs[add][]',
-                    'value'     => '',
-                    'errors'    => !empty($errors['webs']) ? array($errors['webs']) : array(),
-                    'class'     => 'web-url inline'
-                ),
-                'nweb' => array(
+            'children'  => $user_webs + array(                
+                'web-add' => array(
                     'type'  => 'submit',
                     'label' => 'Añadir',
-                    'class' => 'add',
-                    'name'  => 'view-step-userProfile',
+                    'class' => 'add'                    
                 )
             )
         ),

@@ -95,7 +95,7 @@ $interests = Goteo\Model\User\Interest::getAll();
                 					<ol>
 <?php foreach ($user->webs as $web) : ?>
                                         <li>
-                                            <label for="UserWebs_<?php echo $web->id; ?>"><input type="text" name="user_webs[edit][<?php echo $web->id; ?>]" value="<?php echo $web->url; ?>" /> <input type="submit" name="user_webs[remove][<?php echo $web->id; ?>]" value="Elimninar" class="red" /></label>
+                                            <label for="UserWebs_<?php echo $web->id; ?>"><input type="text" name="user_webs[edit][<?php echo $web->id; ?>]" value="<?php echo $web->url; ?>" /> <input type="submit" name="user_webs[remove][<?php echo $web->id; ?>]" value="Quitar" class="red" /></label>
                                         </li>
 <?php endforeach; ?>
                 						<li class="element submit add" id="nweb">
