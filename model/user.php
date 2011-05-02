@@ -190,6 +190,25 @@ namespace Goteo\Model {
                     }
 
                     // Webs
+                    // Primero elimino TODAS las webs y luego las volveré a
+                    // añadir.
+                    static::query('DELETE FROM user_web WHERE user= ?', $this->id);
+                    
+                    if (!empty($this->webs)) {                        
+                        foreach ($this->webs as $web) {                            
+                            if ($web instanceof User\Web) {
+                                $web->user = $this->id;
+                                $web->save($errors);
+                            }
+                        }                                                
+                    }
+                    
+                    /*
+                    
+                     $query = static::query("SELECT id, user, url FROM user_web WHERE user = ?", array($id));
+                    $webs = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+                    
+                    
                     if(!empty($this->webs)) {
                         // Eliminar
                         $webs = User\Web::get($this->id);
@@ -215,6 +234,8 @@ namespace Goteo\Model {
                             $_web->save($errors);
                         }
                     }
+                     * 
+                     */
                 }
 
                 try {

@@ -30,50 +30,27 @@ body.project-edit div#main.costs div.superform li.element.cost div.children li.e
     margin-top: -4em;
 }
 
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-description textarea {
+    height: 4em;
+    min-height: 4em;
+}
+
 body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li > label {
-    position: relative;
-    padding-bottom: 1em;
-    padding-left: 55px;    
-    padding-right: 2em;
-    display: block;
-    min-width: 41px;
-    text-align: left;
-    background: none no-repeat left top;
+    padding-left: 55px;        
+    background: none no-repeat 10px center;
+    min-height: 32px;
+    line-height: 32px;
 }
-
-body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li > label strong {
-    font-size: 12px;
-    text-transform: uppercase;
-}
-
-body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li > label p {
-    margin: 0;
-    font-size: 11px;
-}
-
-body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li {
-    width: auto;    
-    border-bottom: 1px dashed #bcbdbf;
-}
-
-body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li > label > input {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    margin-top: -1em;
-    height: 1em;
-}
-
 body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li.task > label {
-    background-image: url('../cost/task.png');
+    background-image: url('../../icon/m/task.png');
 }
 
 body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li.structure > label {
-    background-image: url('../cost/structure.png');
+    background-image: url('../../icon/m/structure.png');
 }
 
 body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li.equip > label {
-    background-image: url('../cost/equipment.png');
+    background-image: url('../../icon/m/equipment.png');
 }
 
 body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-amount {

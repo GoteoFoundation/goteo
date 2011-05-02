@@ -1,0 +1,108 @@
+
+/**
+ * Costs 
+ */
+ 
+body.project-edit div#main.rewards div.superform li.element.rewards div.children li.element .title {
+    padding: .3em 0;
+    position: absolute;
+    left: 0;
+    top: 1em;
+}
+
+body.project-edit div#main.rewards div.superform li.element.rewards div.children li.element .contents {    
+    margin-left: 25%;
+    position: relative;
+    margin-top: 0;
+}
+
+body.project-edit div#main.rewards div.superform li.element.individual_reward li.element.reward-remove {
+    float: right;
+    margin-top: -4.5em !important;    
+    padding: 0;
+}
+
+body.project-edit div#main.rewards div.superform li.element.social_reward li.element.reward-remove > * {
+    text-align: right;
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward-add .contents {
+    margin-left: 0 !important;
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li > label {
+    padding-left: 55px;        
+    background: none no-repeat 10px center;
+    min-height: 32px;
+    line-height: 32px;
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_1 > label {
+    background-image: url('../../icon/m/file.png');
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_2 > label {
+    background-image: url('../../icon/m/money.png');
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_3 > label {
+    background-image: url('../../icon/m/code.png');
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_4 > label {
+    background-image: url('../../icon/m/service.png');
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_5 > label {
+    background-image: url('../../icon/m/manual.png');
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_6 > label {
+    background-image: url('../../icon/m/product.png');
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li > label {
+    padding-left: 55px;        
+    background: none no-repeat 10px center;
+    min-height: 32px;
+    line-height: 32px;
+}
+     
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_1 > label {
+    background-image: url('../../icon/m/license/ohl.png');
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_2 > label {
+    background-image: url('../../icon/m/license/cc.png');
+}
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_3 > label {
+    background-image: url('../../icon/m/license/gpl.png');
+}
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_4 > label {
+    background-image: url('../../icon/m/license/odbl.png');
+}
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_5 > label {
+    background-image: url('../../icon/m/license/xoln.png');
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_6 > label {
+    background-image: url('../../icon/m/license/agpl.png');
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-amount > div.contents > input {
+    width: 3em;
+    max-width: 3em;
+    min-width: 3em;
+    float: left;
+    padding-right: 2em;
+    background-image: url('/view/css/euro/s.png');    
+    background-repeat: no-repeat;
+    background-position: 3.7em center;
+    font-weight: bold;
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-units > div.contents > input {
+    width: 4.6em;
+    max-width: 4.6em;
+    min-width: 4.6em;
+}
