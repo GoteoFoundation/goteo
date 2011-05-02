@@ -1,8 +1,11 @@
 <?php 
+
+use Goteo\Core\View;
+
 $bodyClass = 'user-login';
 include 'view/prologue.html.php';
-include 'view/header.html.php'; ?>
-
+include 'view/header.html.php'; 
+?>
     <div id="main">
 
         <div class="login">
@@ -15,7 +18,7 @@ include 'view/header.html.php'; ?>
                 <p class="error">Login failed</p>
                 <?php endif ?>
 
-                <form action="" method="post">
+                <form action="/user/login" method="post">
 
                     <div class="username">
                         <label>Nombre de usuario 
@@ -27,7 +30,7 @@ include 'view/header.html.php'; ?>
                         <input type="password" name="password" value="<?php echo $username?>" /></label>
                     </div>
 
-                    <input type="submit" value="Entrar" />                
+                    <input type="submit" name="login" value="Entrar" />                
 
                 </form>
                 
@@ -39,11 +42,11 @@ include 'view/header.html.php'; ?>
             <h2>Accede con un solo click</h2>
             </div>
         </div>
-
-        <div class="register">
+        
+                <div class="register">
             <div>
                 <h2>Nuevo usuario</h2>
-                <form action="" method="post">                            
+                <form action="/user/register" method="post">                            
                     
                     <div class="username">
                         <label>Nombre de usuario

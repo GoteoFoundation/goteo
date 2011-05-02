@@ -439,7 +439,8 @@ namespace Goteo\Model {
 		 * @return obj|false Objeto del usuario, en caso contrario devolverÃ¡ 'false'.
 		 */
 		public static function login ($username, $password) {
-			$query = self::query("
+			
+                        $query = self::query("
 				SELECT
 					id
 				FROM user
@@ -453,6 +454,8 @@ namespace Goteo\Model {
 			if($row = $query->fetch()) {
 			    return static::get($row['id']);
 			}
+                        
+                        return false;
 		}
 
 		/**
