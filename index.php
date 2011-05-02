@@ -9,7 +9,7 @@ require_once 'config.php';
 require_once 'core/common.php';
 
 // Include path
-set_include_path(GOTEO_PATH . PATH_SEPARATOR . '.');
+//set_include_path(GOTEO_PATH . PATH_SEPARATOR . '.');
 
 // Autoloader
 spl_autoload_register(
@@ -67,6 +67,11 @@ try {
         throw new Error(Error::FORBIDDEN);
     }
 
+    // Check permissions on requested URI
+    if (!ACL::check($uri)) {
+        throw new Error(Error::FORBIDDEN);
+    }
+
     // Get controller name
     if (!empty($segments) && class_exists("Goteo\\Controller\\{$segments[0]}")) {
         // Take first segment as controller
@@ -107,18 +112,18 @@ try {
 
             // Invoke method
             $result = $method->invokeArgs($instance, $segments);
-            
+
             if ($result === null) {
                 // Get buffer contents
                 $result = ob_get_contents();
             }
-            
+
             ob_end_clean();
-            
+
             if ($result instanceof Resource\MIME) {
                 header("Content-type: {$result->getMIME()}");
-            }            
-            
+            }
+
             echo $result;
 
             // Farewell

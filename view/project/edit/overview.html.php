@@ -37,6 +37,7 @@ $superform = array(
     'footer'        => array(
         'view-step-costs' => array(
             'type'  => 'submit',
+            'name'  => 'view-step-costs',
             'label' => 'Siguiente',
             'class' => 'next'
         )        
@@ -96,11 +97,12 @@ $superform = array(
        
         'category' => array(    
             'type'      => 'checkboxes',
+            'name'      => 'categories[]',
             'title'     => 'Categorías',
             'required'  => true,
             'options'   => $categories,
             'hint'      => Text::get('tooltip-project-category'),
-            'errors'    => !empty($errors['category']) ? array($errors['category']) : array(),
+            'errors'    => !empty($errors['categories']) ? array($errors['categories']) : array(),
         ),       
 
         'keywords' => array(
@@ -126,6 +128,7 @@ $superform = array(
             'type'      => 'slider',
             'options'   => $currently,
             'required'  => true,
+            'class'     => 'currently',
             'hint'      => Text::get('tooltip-project-currently'),
             'errors'    => !empty($errors['currently']) ? array($errors['currently']) : array(),
         ),

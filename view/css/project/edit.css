@@ -3,7 +3,10 @@
  */
  
 @import url('edit/steps.css');
+@import url('edit/profile.css');
+@import url('edit/overview.css');
 @import url('edit/costs.css');
+@import url('edit/rewards.css');
 @import url('edit/preview.css');
 
 body.project-edit div#main div.status {

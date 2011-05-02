@@ -14,8 +14,9 @@ include 'view/prologue.html.php';
             <ul>
                 <li><a href="/admin/checking">Revisión de proyectos</a></li>
                 <li><a href="/admin/texts">Administración de textos</a></li>
-                <li><a href="/admin/managing">Administración de usuarios y nodos</a></li>
+                <li><a href="/admin/pages">Administración de páginas institucionales</a></li>
                 <li><a href="/admin/accounting">Administración de transacciones</a></li>
+                <!-- <li><a href="/admin/managing">Administración de usuarios y nodos</a></li> -->
             </ul>
         </div>        
 

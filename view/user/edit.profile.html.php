@@ -1,3 +1,6 @@
+<?php
+$interests = Goteo\Model\User\Interest::getAll();
+?>
                    <h3>Usuario/Perfil</h3>
                    <ol>
             			<li class="element textbox required" id="user_name">
@@ -15,6 +18,9 @@
             			</li>
             			<li class="element" id="user_avatar">
             				<label class="title" for="UserAvatar">Tu imagen</label>
+<?php if(is_object($user->avatar)) { ?>
+                            <img src="<?php echo $user->avatar->getLink(200, 200) ?>" alt="<?php $user->name ?>" />
+<?php } ?>
             				<div class="contents">
             					<input type="file" name="user_avatar" id="UserAvatar" />
             				</div>
@@ -39,13 +45,22 @@
                             </div>
 <?php } ?>
                         </li>
-            			<li class="element checkboxes" id="interests">
+            			<li class="element checkboxes" id="user_interests">
             				<h4 class="title">Tus intereses</h4>
-            				<div class="contents">
-            					<ul>
-            					<?php echo $user->interests ?>
-            					</ul>
-            				</div>
+                            <div class="contents">
+                                <ul>
+<?php foreach ($interests as $id => $value) : ?>
+                                    <li><label><input type="checkbox" name="user_interests[]" value="<?php echo $id; ?>"<?php if (in_array($id, $user->interests)) echo ' checked="checked"'; ?>/> <?php echo $value; ?></label></li>
+<?php endforeach; ?>
+                                </ul>
+                            </div>
+<?php if(isset($errors['interests'])) { ?>
+                            <div class="feedback" id="superform-feedback-for-user_interests">
+                                <div class="hint">
+                                    <blockquote><?php echo $errors['interests']?></blockquote>
+                                </div>
+                            </div>
+<?php } ?>
             			</li>
             			<li class="element textbox" id="user_keywords">
             				<label class="title" for="UserKeywords">Palabras clave</label>
@@ -78,9 +93,18 @@
             				<div class="children">
             					<div class="elements">
                 					<ol>
+<?php foreach ($user->webs as $web) : ?>
+                                        <li>
+                                            <label for="UserWebs_<?php echo $web->id; ?>"><input type="text" name="user_webs[edit][<?php echo $web->id; ?>]" value="<?php echo $web->url; ?>" /> <input type="submit" name="user_webs[remove][<?php echo $web->id; ?>]" value="Quitar" class="red" /></label>
+                                        </li>
+<?php endforeach; ?>
                 						<li class="element submit add" id="nweb">
                 							<div class="contents">
-                								<input type="submit" name="add-user_web" value="Nueva web" class="add" />
+                                                <p>
+                                                    <label for="UserWebs_Add">http://</label>
+                                                    <input type="text" name="user_webs[add][]" id="UserWebs_Add" value="" />
+                                                </p>
+                								<input type="submit" name="add-user_webs" value="Nueva web" class="add" />
                 							</div>
                 						</li>
                 					</ol>

@@ -165,7 +165,7 @@ div.superform button.add {
 
 div.superform input.remove[type="submit"],
 div.superform input.remove[type="reset"],
-div.superform input.remove {
+div.superform button.remove {
     background-image: url('superform/button/remove.png');
     background-repeat: no-repeat;
     background-position: .6em center;
