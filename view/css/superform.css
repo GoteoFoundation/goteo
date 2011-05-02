@@ -138,7 +138,11 @@ div.superform input[type='password'],
 div.superform textarea {
     padding: .4em;    
     background-color: #d7d9da;
-    border: 1px solid #58595;
+    border: 1px solid #58595;    
+}
+
+div.superform textarea {
+    min-height: 6em;
 }
 
 div.superform input[type='submit'],
@@ -264,6 +268,7 @@ div.superform div.elements > ol > li.element.slider > div.contents > ul {
     list-style: none;
     overflow: hidden;
     border-top: 1px dashed #bcbdbf;
+    border-left: 1px dashed #bcbdbf;
 }
 
 div.superform div.elements > ol > li.element.checkboxes > div.contents > ul > li,
@@ -288,7 +293,7 @@ div.superform div.elements > ol > li.element.checkboxes > div.contents > ul > li
 div.superform div.elements > ol > li.element.radios > div.contents > ul > li > label,
 div.superform div.elements > ol > li.element.slider > div.contents > ul > li > label {
     position: relative;
-    padding: 1em;
+    padding: .8em 1em;
     display: block;    
     cursor: pointer;
 }
@@ -356,8 +361,7 @@ div.superform li.element > div.feedback > div + div {
 div.superform li.element > div.feedback > div  blockquote {
     padding: 0;
     margin: 0;
-    font-size: 13px;
-    min-height: 1em;
+    font-size: 13px;    
 }
 
 div.superform li.element > div.feedback > div.error + div.hint > blockquote {

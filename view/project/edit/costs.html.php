@@ -47,7 +47,7 @@ if (!empty($project->costs)) {
                     'title'     => 'Descripción',
                     'cols'      => 100,
                     'rows'      => 4,
-                    'class'     => 'inline',
+                    'class'     => 'inline cost-description',
                     'hint'      => Text::get('tooltip-project-cost-description'),
                     'value'     => $cost->description
                 ),                                       

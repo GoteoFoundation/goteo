@@ -30,22 +30,27 @@ body.project-edit div#main.costs div.superform li.element.cost div.children li.e
     margin-top: -4em;
 }
 
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-description textarea {
+    height: 4em;
+    min-height: 4em;
+}
+
 body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li > label {
-    padding-left: 44px;        
+    padding-left: 55px;        
     background: none no-repeat 10px center;
-    min-height: 21px;
-    line-height: 21px;
+    min-height: 32px;
+    line-height: 32px;
 }
 body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li.task > label {
-    background-image: url('../../icon/s/task.png');
+    background-image: url('../../icon/m/task.png');
 }
 
 body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li.structure > label {
-    background-image: url('../../icon/s/structure.png');
+    background-image: url('../../icon/m/structure.png');
 }
 
 body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li.equip > label {
-    background-image: url('../../icon/s//equipment.png');
+    background-image: url('../../icon/m/equipment.png');
 }
 
 body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-amount {

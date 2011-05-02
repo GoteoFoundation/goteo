@@ -422,36 +422,33 @@ namespace Goteo\Controller {
             //tratar costes existentes
             foreach ($project->costs as $key => $cost) {
                 
-                $cost->cost = $_POST['cost' . $cost->id . 'cost'];
+                if (!empty($_POST["cost-{$cost->id}-remove"])) {
+                    unset($project->costs[$key]);
+                    continue;
+                }
+                
+                $cost->cost = $_POST['cost' . $cost->id . '-cost'];
                 $cost->description = $_POST['cost-' . $cost->id .'-description'];
                 $cost->amount = $_POST['cost-' . $cost->id . '-amount'];
                 $cost->type = $_POST['cost-' . $cost->id . '-type'];
                 $cost->required = $_POST['cost-' . $cost->id . '-required'];
                 $cost->from = $_POST['cost-' . $cost->id . '-from'];
-                $cost->until = $_POST['cost-' . $cost->id . '-until'];
+                $cost->until = $_POST['cost-' . $cost->id . '-until'];                
                 
             }
 
             //añadir nuevo coste
             if (!empty($_POST['cost-add'])) {
                 
-                $cost = new Model\Project\Cost();
-
-                $cost->id = '';
-                $cost->project = $project->id;
-                $cost->cost = '';
-                $cost->type = 'task';
-                $project->costs[] = $cost;
+                $project->costs[] = new Model\Project\Cost(array(
+                    'project' => $project->id,
+                    'cost'  => 'Nuevo coste',
+                    'type'  => 'task',
+                    
+                ));
                 
             }
-
-            // quitar los que quiten
-            foreach ($project->costs as $key=>$cost) {
-                $este = $_POST['cost-' . $cost->id . '-remove'];
-                if (!empty($este))
-                    unset($project->costs[$key]);
-            }            
-
+           
             return true;
         }
 
