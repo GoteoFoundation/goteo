@@ -101,7 +101,7 @@ echo new SuperForm(array(
         
         'country' => array(
             'type'  => 'textbox',
-            'title' => 'Lugar de residencia',            
+            'title' => 'País',
             'size'  => 25,
             'hint'  => Text::get('tooltip-project-country'),
             'errors'    => !empty($errors['country']) ? array($errors['country']) : array(),
