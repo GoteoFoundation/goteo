@@ -68,6 +68,7 @@ namespace Goteo\Core {
                 return $result;
 
             } catch (\PDOException $e) {
+                die($e->getMessage());
                 throw new Exception("Error en la consulta: `{$query}`");
             }
 

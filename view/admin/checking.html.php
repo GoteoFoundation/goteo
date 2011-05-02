@@ -21,15 +21,41 @@ include 'view/prologue.html.php';
                 echo '</p>';
                 endif;?>
 
-            <ul>
-            <?php foreach ($this['projects'] as $project) : ?>
-                <li>
-                    <label><?php echo $project->name; ?>:</label>
-                    <a href="/project/<?php echo $project->id; ?>" target="_blank">[Ver]</a>
-                </li>
-            <?php endforeach; ?>
-            </ul>
 
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Proyecto</td> <!-- edit -->
+                                <td>Creador</td> <!-- mailto -->
+                                <td>Estado</td>
+                                <td>Progreso</td> <!-- segun estado -->
+                                <td>Días</td> <!-- segun estado -->
+                                <td><!-- Preview --></td>
+                                <td><!-- Publicar --></td> <!-- si revisado -->
+                                <td><!-- Cancelar --></td> <!-- si no cancelado -->
+                                <td><!-- Rehabilitar --></td> <!-- si no edición -->
+                                <td><!-- Financiado --></td> <!-- si está en campaña -->
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <?php foreach ($this['projects'] as $project) : ?>
+                            <tr>
+                                <td><a href="/project/<?php echo $project->id; ?>/?edit" target="_blank"><?php echo $project->name; ?></a></td>
+                                <td><a href="mailto:<?php echo $project->user->email; ?>"><?php echo $project->user->name; ?></a></td>
+                                <td><?php echo $this['status'][$project->status]; ?></td>
+                                <td><?php if ($project->status < 3)  echo $project->progress; ?></td>
+                                <td><?php if ($project->status == 3) echo $project->days; ?></td>
+                                <td><a href="/project/<?php echo $project->id; ?>" target="_blank">[Preview]</a></td>
+                                <td><?php if ($project->status < 3) : ?><a href="?publish=<?php echo $project->id; ?>">[Publicar]</a><?php endif; ?></td>
+                                <td><?php if ($project->status != 5) : ?><a href="?cancel=<?php echo $project->id; ?>">[Cancelar]</a><?php endif; ?></td>
+                                <td><?php if ($project->status == 5) : ?><a href="?enable=<?php echo $project->id; ?>">[Reabrir]</a><?php endif; ?></td>
+                                <td><?php if ($project->status == 3) : ?><a href="?complete=<?php echo $project->id; ?>">[Financiado]</a><?php endif; ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+
+                    </table>
         </div>
 
 <?php

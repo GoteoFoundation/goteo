@@ -18,10 +18,10 @@ namespace Goteo\Controller {
                     return $this->edit($id); //Editar
                 elseif (isset($_GET['finish']))
                     return $this->finish($id); // Para revision
-                elseif (isset($_GET['enable']))
-                    return $this->enable($id); // Re-habilitar la edición
-                elseif (isset($_GET['publish']))
-                    return $this->publish($id); // Publicarlo
+                elseif (isset($_GET['raw'])) {
+                    $project = Model\Project::get($id);
+                    die('<pre>' . print_r($project, 1) . '</pre>');
+                }
                 else
                     return $this->view($id);
 
@@ -92,38 +92,27 @@ namespace Goteo\Controller {
                             'project'=>$project,
                             'steps'=>$steps,
                             'nodesign'=>$nodesign
-                        );
-
-            // vista por defecto, el primer paso con errores
-            if (!empty($project->errors['userProfile']))
-                $step = 'userProfile';
-            elseif (!empty($project->errors['userPersonal']))
-                $step = 'userPersonal';
-            elseif (!empty($project->errors['overview']))
-                $step = 'overview';
-            elseif (!empty($project->errors['costs']))
-                $step = 'costs';
-            elseif (!empty($project->errors['rewards']))
-                $step = 'rewards';
-            elseif (!empty($project->errors['supports']))
-                $step = 'supports';
-            else
-                $step = 'preview';
+                        );            
             
-            $viewData['step'] =& $step;
+            $step = null;                        
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                
                 $errors = array(); // errores al procesar, no son errores en los datos del proyecto
                 foreach ($steps as $id => &$data) {
+                    
                     if (call_user_func_array(array($this, "process_{$id}"), array(&$project, &$errors))) {
                         // si un process devuelve true es que han enviado datos de este paso, lo añadimos a los pasados
                         if (!in_array($id, $_SESSION['stepped']))
                             $_SESSION['stepped'][] = $id;
                     }
-
+                    
+                    
+                    //print_r($_POST);Die;
                     // y el paso que vamos a mostrar
-                    if (!empty($_POST['view-step-'.$id]))
-                        $step = $id;
+                    if (!empty($_POST['view-step-' . $id])) {
+                        $step = $id;                        
+                    }
                 }
 
                 // guardamos los datos que hemos tratado y los errores de los datos
@@ -148,6 +137,28 @@ namespace Goteo\Controller {
                     }
                 }
             }
+            
+            if (empty($step)) {
+            
+                // vista por defecto, el primer paso con errores
+                if (!empty($project->errors['userProfile']))
+                    $step = 'userProfile';
+                elseif (!empty($project->errors['userPersonal']))
+                    $step = 'userPersonal';
+                elseif (!empty($project->errors['overview']))
+                    $step = 'overview';
+                elseif (!empty($project->errors['costs']))
+                    $step = 'costs';
+                elseif (!empty($project->errors['rewards']))
+                    $step = 'rewards';
+                elseif (!empty($project->errors['supports']))
+                    $step = 'supports';
+                else
+                    $step = 'preview';
+                
+            }
+            
+            $viewData['step'] = $step;
 
             // segun el paso añadimos los datos auxiliares para pintar
             switch ($step) {
@@ -219,7 +230,9 @@ namespace Goteo\Controller {
             );
         }
 
-        // Finalizar para revision, ready le cambia el estado
+        /*
+         * Finalizar para revision, ready le cambia el estado
+         */
         public function finish($id) {
             //@TODO verificar si tienen el mínimo progreso para verificación y si está en estado edición
             $project = Model\Project::get($id);
@@ -231,34 +244,6 @@ namespace Goteo\Controller {
             if ($project->ready($errors))
                 throw new Redirection("/project/{$project->id}");
             
-            throw new \Goteo\Core\Exception(implode(' ', $errors));
-        }
-
-        public function enable($id) {
-            //@TODO verificar si tiene permisos para rehabilitar la edición del proyecto (admin)
-            if ($_SESSION['user']->role != 1) //@FIXME!! Piñonaco... ACL...
-                throw new Redirection("/project/{$id}");
-
-            $project = Model\Project::get($id);
-
-            $errors = array();
-            if ($project->enable($errors))
-                throw new Redirection("/project/{$project->id}/?edit");
-
-            throw new \Goteo\Core\Exception(implode(' ', $errors));
-        }
-
-        public function publish($id) {
-            //@TODO verificar si tiene permisos para publicar proyectos
-            if ($_SESSION['user']->role != 1) //@FIXME!! Piñonaco... ACL...
-                throw new Redirection("/project/{$id}");
-
-            $project = Model\Project::get($id);
-
-            $errors = array();
-            if ($project->publish($errors))
-                throw new Redirection("/project/{$project->id}");
-
             throw new \Goteo\Core\Exception(implode(' ', $errors));
         }
 
@@ -305,35 +290,38 @@ namespace Goteo\Controller {
                 'user_facebook'=>'facebook',
                 'user_linkedin'=>'linkedin'
             );
-
+                        
             foreach ($fields as $fieldPost=>$fieldTable) {
                 $user->$fieldTable = $_POST[$fieldPost];
+            }
+            
+            // Avatar
+            if(!empty($_FILES['avatar_upload']['name'])) {
+                $user->avatar = $_FILES['avatar_upload'];
             }
 
             $user->interests = $_POST['interests'];
 
             //tratar webs existentes
-            foreach ($user->webs as $key=>&$web) {
+            foreach ($user->webs as $i => &$web) {
                 // luego aplicar los cambios
-                $web->url = $_POST['web' . $web->id];
+                
+                if (isset($_POST['web-'. $web->id . '-url'])) {
+                    $web->url = $_POST['web-'. $web->id . '-url'];
+                }
+                
+                //quitar las que quiten
+                if (!empty($_POST['web-' . $web->id .  '-remove'])) {
+                    unset($user->webs[$i]);
+                }                                                    
+                
             }
 
             //tratar nueva web
-            if (!empty($_POST['nweb'])) {
-                $web = new Model\User\Web();
-
-                $web->id = '';
-                $web->user = $user->id;
-                $web->url = $_POST['nweb'];
-
-                $user->webs[] = $web;
-            }
-
-            //quitar las que quiten
-            foreach ($user->webs as $key=>$web) {
-                // primero mirar si lo estan quitando
-                if ($_POST['remove-web' . $web->id] == 1)
-                    unset($user->webs[$key]);
+            if (!empty($_POST['web-add'])) {                
+                $user->webs[] = new Model\User\Web(array(
+                    'url'   => 'http://'
+                ));
             }
 
             /// este es el único save que se lanza desde un metodo process_
@@ -430,41 +418,37 @@ namespace Goteo\Controller {
             $project->resource = $_POST['resource'];
             
             //tratar costes existentes
-            foreach ($project->costs as $key=>$cost) {
-                $cost->cost = $_POST['cost' . $cost->id];
-                $cost->description = $_POST['cost-description' . $cost->id];
-                $cost->amount = $_POST['cost-amount' . $cost->id];
-                $cost->type = $_POST['cost-type' . $cost->id];
-                $cost->required = $_POST['cost-required' . $cost->id];
-                $cost->from = $_POST['cost-from' . $cost->id];
-                $cost->until = $_POST['cost-until' . $cost->id];
+            foreach ($project->costs as $key => $cost) {
+                
+                $cost->cost = $_POST['cost' . $cost->id . 'cost'];
+                $cost->description = $_POST['cost-' . $cost->id .'-description'];
+                $cost->amount = $_POST['cost-' . $cost->id . '-amount'];
+                $cost->type = $_POST['cost-' . $cost->id . '-type'];
+                $cost->required = $_POST['cost-' . $cost->id . '-required'];
+                $cost->from = $_POST['cost-' . $cost->id . '-from'];
+                $cost->until = $_POST['cost-' . $cost->id . '-until'];
+                
             }
 
             //añadir nuevo coste
-            if (!empty($_POST['ncost'])) {
+            if (!empty($_POST['cost-add'])) {
+                
                 $cost = new Model\Project\Cost();
 
                 $cost->id = '';
                 $cost->project = $project->id;
-                $cost->cost = $_POST['ncost'];
-                $cost->description = $_POST['ncost-description'];
-                $cost->amount = $_POST['ncost-amount'];
-                $cost->type = $_POST['ncost-type'];
-                $cost->required = $_POST['ncost-required'];
-                $cost->from = $_POST['ncost-from'];
-                $cost->until = $_POST['ncost-until'];
-
+                $cost->cost = '';
+                $cost->type = 'task';
                 $project->costs[] = $cost;
+                
             }
 
             // quitar los que quiten
-            $costes = $project->costs;
             foreach ($project->costs as $key=>$cost) {
-                $este = $_POST['remove-cost' . $cost->id];
+                $este = $_POST['cost-' . $cost->id . '-remove'];
                 if (!empty($este))
                     unset($project->costs[$key]);
-            }
-            $costes = $project->costs; //para xdebug
+            }            
 
             return true;
         }

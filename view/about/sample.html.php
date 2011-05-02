@@ -5,9 +5,10 @@ include 'view/header.html.php'; ?>
 
     <div id="main">
 
-        <?php if (isset($title)): ?>
-        <h2><?php echo htmlspecialchars($title) ?></h2>
-        <?php endif ?>
+        <h2><?php echo $this['name']; ?></h2>
+        <p><?php echo $this['title']; ?></p>
+
+        <div id="content"><?php echo $this['content']; ?></div>
 
     </div>
     

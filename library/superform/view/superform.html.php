@@ -66,6 +66,7 @@
                var id = $(e).attr('id');
                if (frm.find('div.feedback#superform-feedback-for-' + id).length > 0) {
                     handler.apply(e, [event]);   
+                    return false;
                }               
            });
            return false;          

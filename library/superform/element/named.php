@@ -13,8 +13,16 @@ namespace Goteo\Library\SuperForm\Element {
             
             if (!isset($this->name)) {
                 $this->name = $this->id;
+                $this['name'] = $this->name;
             }
             
+        }
+        
+        public function __toString () {                                               
+            if (!isset($this->name)) {
+                $this->name = $this->id;
+            }
+            return parent::__toString();
         }
         
     }

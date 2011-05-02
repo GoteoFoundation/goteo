@@ -1,0 +1,364 @@
+/**
+ * Header
+ */
+  
+div#header,
+div#super-header {
+    position: relative;
+    z-index: 9999;
+}
+ 
+div#header a,
+div#header span,
+div#header strong {
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+/* Super-header */
+div#super-header {
+    max-width: 940px;
+    margin: 0 auto;
+    height: 2.2em;
+    font-size: 12px;
+    overflow: hidden;
+    padding: 0 1em;
+}
+
+div#super-header + * {
+    font-size: 12px;
+    border-top: 2.2em solid #59595c;
+    margin-top: -2.2em;
+}
+
+div#super-header a {
+    color: #e9e3dc;
+    font-size: 12px;    
+}
+
+div#super-header a:hover {
+    color: #8ed9d8 !important;
+}
+
+
+/* Sub-header */ 
+div#sub-header {
+    background-color: white;
+    clear: both;
+    padding: 20px 0;
+}
+
+div#header div#about {    
+    font-size: 12px;
+    height: 2.2em;
+    float: right;
+    overflow: hidden;
+    position: relative;
+    z-index: 9;
+}
+
+div#header div#about ul {
+    margin: 0 auto;
+    max-width: 940px;
+    padding: 0;
+    list-style: none;
+    text-align: right;
+}
+
+div#header div#about ul li {
+    display: inline-block;
+    padding: 0 .5em 0 2em;
+    line-height: 2.2em;
+    height: 2.2em;
+    font-size: 12px;
+}
+
+div#header div#about ul li > *:hover {
+    color: #8ed9d8;
+}
+
+div#header div#highlights {    
+    font-size: 12px;
+    height: 2.2em;
+    max-width: 400px;
+    float: left;
+    position: relative;
+    white-space: nowrap;
+    z-index: 1;
+}
+
+div#header div#highlights > h2,
+div#header div#highlights > ul > li,
+div#header div#highlights > ul > li > a {
+    font-weight: normal;
+    text-transform: none;
+    font-size: 12px;
+    line-height: 2.2em;
+    height: 2.2em;
+}
+
+div#header div#highlights > ul > li {
+    color: white;
+}
+
+div#header div#highlights > h2 {
+    color: #e7e1d9;
+    margin: 0 1em 0 0;
+    float: left;
+}
+
+div#header div#highlights > ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+}
+
+div#header div#highlights > ul > li {    
+    white-space: nowrap;
+    float: left;
+    padding-right: 8em;
+    overflow: hidden;
+}
+
+div#header div#highlights > ul > li > a {
+    margin-left: 1em;
+    white-space: nowrap;
+}
+
+div#header div#menu {
+    background: #b5dadc url('header/background.png') repeat-x top;
+    overflow: visible;
+}
+
+div#header div#menu > ul {
+    max-width: 940px;
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+    list-style: none;
+    text-align: right;
+    overflow: visible;
+}
+
+div#header div#menu > ul > li {
+    display: inline-block;
+    text-align: left;
+}
+
+div#header div#menu > ul > li.home {
+    width: 133px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+div#header div#menu > ul > li.home > a {    
+    overflow: hidden;
+    text-indent: 2000px;
+    display: block;
+    line-height: 2000px;
+    width: 93px;
+    height: 36px;  
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -48px;
+    margin-top: -19px;
+    background: url('header/goteo.png') no-repeat left;        
+}
+
+div#header div#menu > ul > li.home > a:hover {
+    background-position: right;
+}
+
+div#header div#menu > ul > li.explore,
+div#header div#menu > ul > li.create {
+    float: left;       
+}
+
+div#header div#menu > ul > li.explore > a,
+div#header div#menu > ul > li.create > a {
+    padding: .4em 1.8em .4em .8em;
+    font-size: 12px;
+    line-height: 1em;
+    color: white;
+    border-radius: 3px;
+    display: inline-block;
+    margin: .6em .2em .6em 0;
+    max-width: 7.5em;
+}
+
+div#header div#menu > ul > li.explore > a {
+    background: #b5161e url('header/explore.png') repeat-x top;
+    margin-left: 132px;
+}
+
+div#header div#menu > ul > li.create > a {
+    background: #149290 url('header/create.png') repeat-x top;
+}
+
+div#header div#menu > ul > li.explore > a:hover {
+    background: #e44133 url('header/explore-hover.png') repeat-x top;    
+}
+
+div#header div#menu > ul > li.create > a:hover {
+    background: #60c1bf url('header/create-hover.png') repeat-x top;
+}
+
+div#header div#menu > ul > li.search {
+    margin-top: 1em;
+    margin-right: .5em;    
+}
+
+div#header div#menu > ul > li.search fieldset {
+    margin: 0;
+    padding: 0;
+    border: 1px solid #808184;    
+    padding-right: 1.6em;
+    position: relative;
+    font-size: 14px;
+}
+
+div#header div#menu > ul > li.search fieldset legend {
+    display: none;
+}
+
+div#header div#menu > ul > li.search fieldset input[type="text"] {
+    border: none;
+    height: 1.2em;
+    padding: .2em;
+    background-color: transparent;
+    font-size: 14px;
+    width: 10em;
+}
+
+div#header div#menu > ul > li.search fieldset input[type="text"]:focus {
+    background-color: #E3F0F0 !important;
+}
+
+div#header div#menu > ul > li.search fieldset input[type="submit"] {
+    border: none;
+    background: transparent url('header/search.png') no-repeat center center;
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 1.6em;
+    height: 1.6em;    
+    padding: 0;
+    overflow: hidden;
+    line-height: 2000px;
+    text-indent: 2000px;
+    margin: 0;
+    border-left: 1px solid #808184;        
+}
+
+div#header div#menu > ul > li.search fieldset input[type="submit"]:hover {
+    background-color: #8ed9d8;
+}
+
+div#header div#menu > ul > li.community ,
+div#header div#menu > ul > li.login ,
+div#header div#menu > ul > li.dashboard {
+    height: 3.2em;    
+    font-size: 13px;    
+    position: relative;
+    margin-top: .5em;
+} 
+
+div#header div#menu > ul > li.dashboard {
+    background: transparent url('header/down-black.png') no-repeat right center;
+}
+
+div#header div#menu > ul > li.login fieldset > * {
+    display: none;        
+}
+
+div#header div#menu > ul > li.login form,
+div#header div#menu > ul > li.login fieldset,
+div#header div#menu > ul > li.login fieldset > legend {
+    margin: 0;
+    padding: 0;
+    border: none;        
+    display: inline-block;
+}
+
+div#header div#menu > ul > li.community > a,
+div#header div#menu > ul > li.login > a,
+div#header div#menu > ul > li.dashboard > a {
+    padding: .5em .8em;
+    font-size: 13px;
+    height: 2.2em;
+    line-height: 2.2em;
+    display: inline-block;    
+    color: #59595c;
+}
+
+div#header div#menu > ul > li.dashboard > a {
+    padding-right: 1.9em;
+}
+
+div#header div#menu > h2,
+div#header div#lang {
+    display: none;
+}
+
+div#header div#menu > ul > li.community:hover,
+div#header div#menu > ul > li.login:hover,
+div#header div#menu > ul > li.dashboard:hover {
+    background-color: #1db3b2;    
+}
+
+div#header div#menu > ul > li.dashboard:hover {
+    background-image: url('header/down-white.png');
+}
+
+div#header div#menu > ul > li.community:hover *,
+div#header div#menu > ul > li.login:hover *,
+div#header div#menu > ul > li.dashboard:hover * {
+    color: white;
+} 
+
+div#header div#menu > ul > li.dashboard > a > span > em {
+    display: none;
+}
+
+div#header div#menu > ul > li.dashboard > div {
+    display: none;
+}
+
+div#header div#menu > ul > li.dashboard:hover > div {
+    display: block;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 100%;
+}
+
+div#header div#menu > ul > li.dashboard > div > ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: #1db3b2;
+}
+
+div#header div#menu > ul > li.dashboard > div > ul > li {
+    border-top: 1px solid #a5e1e0;    
+}
+
+div#header div#menu > ul > li.dashboard > div > ul > li * {
+    color: white;
+    text-transform: none;
+}
+
+div#header div#menu > ul > li.dashboard > div > ul > li > a {
+    display: block;    
+    padding: .6em 1em;
+}
+
+div#header div#menu > ul > li.dashboard > div > ul > li > a:hover {
+    background-color: #78d1d1;
+}
+

@@ -1,0 +1,38 @@
+
+/**
+ * User profile 
+ */
+ 
+body.project-edit div#main.userProfile div.superform li.element.webs li.element.web li.element,
+body.project-edit div#main.userProfile div.superform li.element.user_avatar li.element {
+    display: table-cell;
+    vertical-align: top;
+}
+
+body.project-edit div#main.userProfile div.superform li.element.webs li.element.web-url {
+    width: 100%;
+    padding-right: 1em;
+}
+
+body.project-edit div#main.userProfile div.superform li.element.webs li.element.web-remove input {
+    margin: 0;
+}
+
+body.project-edit div#main.userProfile div.superform li.element.webs > div.children > div.elements > ol ol {
+    padding: 0;
+    margin: 0;
+}
+
+body.project-edit div#main.userProfile div.superform li.element.user_avatar li.element.avatar {
+    padding: 0 2em;
+}
+
+body.project-edit div#main.userProfile div.superform li.element.user_avatar li.element.avatar img {
+    max-width: 110px;
+    max-height: 110px;
+    border: 1px solid #58595b;
+}
+
+body.project-edit div#main.userProfile div.superform li.element.user_avatar li.element .title {
+    display: none;
+}

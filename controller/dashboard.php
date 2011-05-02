@@ -27,12 +27,44 @@ namespace Goteo\Controller {
 
             $status = Model\Project::status();
 
+            //mis cofinanciadores
+            // array de usuarios con:
+            //  foto, nombre, nivel, cantidad a mis proyectos, fecha ultimo aporte, nº proyectos que cofinancia
+            $investors = array();
+            foreach ($projects as $project) {
+                foreach (Model\Invest::investors($project->id) as $key=>$investor) {
+                    if (\array_key_exists($investor->user, $investors)) {
+                        // ya está en el array, quiere decir que cofinancia este otro proyecto
+                        // , añadir uno, sumar su aporte, actualizar la fecha
+                        ++$investors[$investor->user]->projects;
+                        $investors[$investor->user]->amount += $investor->amount;
+                        $investors[$investor->user]->date = $investor->date;  // <-- @TODO la fecha mas actual
+                    } else {
+                        $investors[$investor->user] = (object) array(
+                            'user' => $investor->user,
+                            'name' => $investor->name,
+                            'projects' => 1,
+                            'avatar' => 'url',
+                            'worth' => $investor->worth,
+                            'amount' => $investor->amount,
+                            'date' => $investor->date
+                        );
+                    }
+                }
+            }
+
+
+            // comparten intereses
+            $shares = Model\User\Interest::share($user);
+
             return new View (
                 'view/dashboard.html.php',
                 array(
                     'message' => $message,
                     'projects' => $projects,
-                    'status' => $status
+                    'status' => $status,
+                    'investors' => $investors,
+                    'shares' => $shares
                 )
             );
 

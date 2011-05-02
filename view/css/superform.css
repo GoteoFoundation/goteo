@@ -163,15 +163,6 @@ div.superform button.add {
     padding-left: 2em;
 }
 
-div.superform input.remove[type="submit"],
-div.superform input.remove[type="reset"],
-div.superform input.remove {
-    background-image: url('superform/button/remove.png');
-    background-repeat: no-repeat;
-    background-position: .6em center;
-    padding-left: 2em;
-}
-
 /* Full-width elements */
 div.superform li.element.fullwidth {    
     border-right: none !important;

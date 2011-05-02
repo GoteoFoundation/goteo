@@ -20,13 +20,34 @@ include 'view/header.html.php'; ?>
 			echo '<a href="/project/' . $project->id . '/?edit">' . ($project->name != '' ? $project->name : $project->id) . '</a>
                 (' . $this['status'][$project->status] . ')
                     Progreso: ' . $project->progress . '%
-                        <a href="/project/' . $project->id . '">[Preview]</a><br />';
+                        <a href="/project/' . $project->id . '">[Preview]</a>
+                            <a href="/project/' . $project->id . '/?finish">[Finalizar]</a>
+                                <br />';
 		}
 		?>
 		</p>
 
 		<p>
 			Nuevo proyecto: <a href="/project/?create">Crear</a><br />
+		</p>
+
+		<p>
+			Mis cofinanciadores:<br />
+		<?php
+		foreach ($this['investors'] as $user=>$investor) {
+//			echo '<pre>' . print_r($investor, 1) . '</pre>';
+			echo "[{$investor->avatar}] {$investor->name} De nivel {$investor->worth}  Cofinancia {$investor->projects} proyectos  Me aporta: {$investor->amount} € <br />";
+		}
+		?>
+		</p>
+
+		<p>
+			Compartiendo intereses:<br />
+		<?php
+		foreach ($this['shares'] as $share) {
+			echo "{$share->name} - Tiene " . count($share->projects) ." proyectos - Ha hecho " . count($share->invests) ." aportes<br />";
+		}
+		?>
 		</p>
 
         </div>
