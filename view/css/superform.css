@@ -196,6 +196,9 @@ div.superform div.elements > ol > li.error > .title  {
     background: url('superform/badge/error.png') no-repeat right center !important;
 }
 
+div.superform li.element.hidden {
+    display: none;
+}
 
 /* Textboxes & Textarea */
 
