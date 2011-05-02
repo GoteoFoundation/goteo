@@ -19,6 +19,48 @@ namespace Goteo\Controller {
 		    throw new Redirection('/user/profile/' .  $id, Redirection::PERMANENT);
 		}
 
+                /**
+         * Inicio de sesión.
+         * Si no se le pasan parámetros carga el tpl de identificación.
+         *
+         * @param string $username Nombre de usuario
+         * @param string $password Contraseña
+         */
+        public function login () {
+            
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['login'])) {
+                
+                $username = $_POST['username'];
+                $password = $_POST['password'];
+                if (false !== ($user = (\Goteo\Model\User::login($username, $password)))) {
+                    $_SESSION['user'] = $user;
+                    throw new Redirection('/dashboard');
+                }
+                else {
+                    $error = true;
+                }
+            }
+            
+            return new View (
+                'view/user/login.html.php',
+                array(
+                    'login_error' => !empty($error) 
+                )
+            );
+            
+        }
+
+        /**
+         * Cerrar sesión.
+         */
+        public function logout() {
+            if (isset($_COOKIE[session_name()])) {
+                setcookie(session_name(), '', time()-42000, '/');
+            }
+            session_destroy();
+            throw new Redirection('/');
+            die;
+        }
         /**
          * Registro de usuario.
          */
@@ -43,9 +85,9 @@ namespace Goteo\Controller {
                 }
             }
             return new View (
-                'view/user/register.html.php',
+                'view/user/login.html.php',
                 array(
-                    'errors' => $errors
+                    'register_error' => $errors
                 )
             );
         }
