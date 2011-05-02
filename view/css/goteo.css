@@ -5,6 +5,7 @@
 @import url('footer.css');
 @import url('superform.css');
 @import url('project.css');
+@import url('user.css');
 
 div#sub-header > div {
     display: block;
@@ -20,7 +21,7 @@ div#sub-header > div > h2 {
 /* Main container */
 div#main {    
     max-width: 940px;
-    margin: 40px auto;
+    margin: 20px auto;
     clear: both;
     overflow-y: auto;
     overflow-x: hidden;
