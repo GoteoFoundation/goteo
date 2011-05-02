@@ -2,6 +2,8 @@
 /**
  * Superform!
  */
+ 
+@import url('superform/datepicker.css');
 
 div.superform fieldset {
     border: 1px solid #99a2a5;    

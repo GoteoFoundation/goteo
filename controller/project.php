@@ -326,9 +326,6 @@ namespace Goteo\Controller {
             //quitar las que quiten
             foreach ($user->webs as $key=>$web) {
                 // primero mirar si lo estan quitando
-                // if ($_POST['remove-web' . $web->id] == 1)
-                
-                
                 if (!empty($_POST['web-' . $web->id . '-remove'])) {
                     unset($user->webs[$key]);
                 }
@@ -429,41 +426,37 @@ namespace Goteo\Controller {
             $project->resource = $_POST['resource'];
             
             //tratar costes existentes
-            foreach ($project->costs as $key=>$cost) {
-                $cost->cost = $_POST['cost' . $cost->id];
-                $cost->description = $_POST['cost-description' . $cost->id];
-                $cost->amount = $_POST['cost-amount' . $cost->id];
-                $cost->type = $_POST['cost-type' . $cost->id];
-                $cost->required = $_POST['cost-required' . $cost->id];
-                $cost->from = $_POST['cost-from' . $cost->id];
-                $cost->until = $_POST['cost-until' . $cost->id];
+            foreach ($project->costs as $key => $cost) {
+                
+                $cost->cost = $_POST['cost' . $cost->id . 'cost'];
+                $cost->description = $_POST['cost-' . $cost->id .'-description'];
+                $cost->amount = $_POST['cost-' . $cost->id . '-amount'];
+                $cost->type = $_POST['cost-' . $cost->id . '-type'];
+                $cost->required = $_POST['cost-' . $cost->id . '-required'];
+                $cost->from = $_POST['cost-' . $cost->id . '-from'];
+                $cost->until = $_POST['cost-' . $cost->id . '-until'];
+                
             }
 
             //añadir nuevo coste
-            if (!empty($_POST['ncost'])) {
+            if (!empty($_POST['cost-add'])) {
+                
                 $cost = new Model\Project\Cost();
 
                 $cost->id = '';
                 $cost->project = $project->id;
-                $cost->cost = $_POST['ncost'];
-                $cost->description = $_POST['ncost-description'];
-                $cost->amount = $_POST['ncost-amount'];
-                $cost->type = $_POST['ncost-type'];
-                $cost->required = $_POST['ncost-required'];
-                $cost->from = $_POST['ncost-from'];
-                $cost->until = $_POST['ncost-until'];
-
+                $cost->cost = '';
+                $cost->type = 'task';
                 $project->costs[] = $cost;
+                
             }
 
             // quitar los que quiten
-            $costes = $project->costs;
             foreach ($project->costs as $key=>$cost) {
-                $este = $_POST['remove-cost' . $cost->id];
+                $este = $_POST['cost-' . $cost->id . '-remove'];
                 if (!empty($este))
                     unset($project->costs[$key]);
-            }
-            $costes = $project->costs; //para xdebug
+            }            
 
             return true;
         }
