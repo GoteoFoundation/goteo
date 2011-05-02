@@ -116,11 +116,7 @@ echo new SuperForm(array(
             'class' => 'next'
         )        
     ),    
-    'elements'      => array(
-        'view-step-costs' => array(
-            'type'  => 'hidden',
-            'value' => '1'
-        ),
+    'elements'      => array(        
         'costs' => array(
             'type'      => 'group',
             'title'     => 'Desglose de costes',

@@ -55,6 +55,10 @@ body.project-edit div#main.rewards div.superform li.element.reward div.children 
 }
 
 body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_5 > label {
+    background-image: url('../../icon/s/manual.png');
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_6 > label {
     background-image: url('../../icon/s/product.png');
 }
 
