@@ -60,14 +60,14 @@
                 
         frm.find(':input').bind('focus', function (event) {
            
-           console.log(this);
+           var p = $(this).parents('li.element');  
            
-           var p = $(this).parents('li.element');
-
-           if (p.length >= 1) {
-                handler.apply(p[0], [event]);
-           }
-           
+           p.each(function (i, e) {
+               var id = $(e).attr('id');
+               if (frm.find('div.feedback#superform-feedback-for-' + id).length > 0) {
+                    handler.apply(e, [event]);   
+               }               
+           });
            return false;          
            
         });
