@@ -1,0 +1,9 @@
+CREATE TABLE `goteo`.`message` (
+`id` SERIAL NOT NULL ,
+`user` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`project` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`thread` BIGINT UNSIGNED NULL ,
+`date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+`message` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+PRIMARY KEY ( `id` )
+) ENGINE = InnoDB COMMENT = 'Mensajes de usuarios en proyecto';
