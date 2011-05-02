@@ -16,12 +16,18 @@ body.project-edit div#main.rewards div.superform li.element.rewards div.children
     margin-top: 0;
 }
 
-body.project-edit div#main.rewards div.superform li.element.reward li.element.reward-remove .contents {
-    text-align: right;
+body.project-edit div#main.rewards div.superform li.element.reward li.element.reward-remove {
+    float: right;
+    padding: 0 0 1em;
 }
 
-body.project-edit div#main.rewards div.superform li.element.reward li.element.reward-remove .contents input {
-    margin: 0;
+body.project-edit div#main.rewards div.superform li.element.individual_reward li.element.reward-remove {
+    margin-top: -4.5em !important;    
+    padding: 0;
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward-add .contents {
+    margin-left: 0 !important;
 }
 
 body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li > label {
@@ -32,22 +38,41 @@ body.project-edit div#main.rewards div.superform li.element.reward div.children 
 }
 
 
-body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.social_1 > label {
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_1 > label {
     background-image: url('../../icon/s/file.png');
 }
 
-body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.social_2 > label {
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_2 > label {
     background-image: url('../../icon/s/money.png');
 }
 
-body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.social_3 > label {
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_3 > label {
     background-image: url('../../icon/s/code.png');
 }
 
-body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.social_4 > label {
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_4 > label {
     background-image: url('../../icon/s/service.png');
 }
 
-body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.social_5 > label {
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_5 > label {
     background-image: url('../../icon/s/product.png');
+}
+
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-amount > div.contents > input {
+    width: 3em;
+    max-width: 3em;
+    min-width: 3em;
+    float: left;
+    padding-right: 2em;
+    background-image: url('/view/css/euro/s.png');    
+    background-repeat: no-repeat;
+    background-position: 3.7em center;
+    font-weight: bold;
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-units > div.contents > input {
+    width: 4.6em;
+    max-width: 4.6em;
+    min-width: 4.6em;
 }
