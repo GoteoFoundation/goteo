@@ -28,6 +28,7 @@ foreach ($user->webs as $web) {
         'children'  => array(            
             'web-' . $web->id . '-url' => array(
                 'type'      => 'textbox',
+                'name'      => 'user_webs[edit][' . $web->id . ']',
                 'value'     => $web->url,
                 'errors'    => array(),
                 'required'  => true,
@@ -35,7 +36,7 @@ foreach ($user->webs as $web) {
             ),
             'web-' . $web->id . '-remove' => array(
                 'type'      => 'submit',
-                'name'      => 'web-' . $web->id . '-remove',
+                'name'      => 'user_webs[remove][' . $web->id . ']',
                 'label'     => 'Quitar',
                 'class'     => 'web-remove inline remove'
             )
@@ -110,7 +111,7 @@ echo new SuperForm(array(
 
         'interests' => array(
             'type'      => 'checkboxes',
-            'name'      => 'interests[]',
+            'name'      => 'user_interests[]',
             'title'     => 'Tus intereses',
             'hint'      => Text::get('tooltip-user-interests'),            
             'errors'    => !empty($errors['interests']) ? array($errors['interests']) : array(),
@@ -141,11 +142,18 @@ echo new SuperForm(array(
             'hint'      => Text::get('tooltip-user-webs'),
             'class'     => 'webs',
             'children'  => $user_webs + array(
+                'user_web' => array(
+                    'type'      => 'textbox',
+                    'name'      => 'user_webs[add][]',
+                    'value'     => '',
+                    'errors'    => !empty($errors['webs']) ? array($errors['webs']) : array(),
+                    'class'     => 'web-url inline'
+                ),
                 'nweb' => array(
                     'type'  => 'submit',
                     'label' => 'Añadir',
                     'class' => 'add',
-                    'name'  => 'web-add',
+                    'name'  => 'view-step-userProfile',
                 )
             )
         ),

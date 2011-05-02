@@ -13,6 +13,16 @@ extract($_POST);
         <form action="" method="post" enctype="multipart/form-data">
             <div class="superform">
                 <div class="elements">
+<?php include 'view/user/edit.profile.html.php' ?>
+				</div>
+                <div class="footer">
+                    <div class="elements">
+                        <div class="element">
+                            <input type="submit" name="save" value="Guardar" class="save" />
+                        </div>
+                    </div>
+                </div>
+                <div class="elements">
                     <h3>Usuario/Acceso</h3>
                     <ol>
             			<li class="element textbox" id="user_id">
@@ -77,14 +87,6 @@ extract($_POST);
 
             			</li>
                     </ol>
-<?php include 'view/user/edit.profile.html.php' ?>
-				</div>
-                <div class="footer">
-                    <div class="elements">
-                        <div class="element">
-                            <input type="submit" name="save" value="Guardar" class="save" />
-                        </div>
-                    </div>
                 </div>
     		</div>
     	</form>
