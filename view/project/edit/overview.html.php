@@ -11,7 +11,7 @@ foreach ($this['categories'] as $value => $label) {
     $categories[] =  array(
         'value'     => $value,
         'label'     => $label,
-        'checked'   => in_array($value, $project->interests)
+        'checked'   => in_array($value, $project->categories)
         );            
 }
 
