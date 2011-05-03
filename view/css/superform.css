@@ -107,6 +107,11 @@ div.superform > div.elements > ol > li.element {
     padding: 2em 2em 2em 0;
 }
 
+div.superform > div.elements > ol > li.element.inline {
+    border-top: none;
+    padding: 0 2em 2em 0;
+}
+
 div.superform li.element > * + div.contents {
     margin-top: 1em;
 }

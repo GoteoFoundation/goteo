@@ -59,28 +59,43 @@ namespace Goteo\Controller {
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 			    $errors = array();
-                // Modificar E-mail
+                // E-mail
                 if($_POST['change_email']) {
                     if(empty($_POST['user_nemail'])) {
-                        $errors['email'] = Text::get('error-user-email');
+                        $errors['email'] = Text::get('error-user-email-empty');
                     }
-                    if (strcmp($_POST['user_nemail'], $_POST['user_remail']) !== 0) {
-                        $errors['email'] = Text::get('error-user-email-confirm');
+                    elseif(!\Goteo\Library\Check::Mail($_POST['user_nemail'])) {
+                        $errors['email'] = Text::get('error-user-email-invalid');
+                    }
+                    elseif(empty($_POST['user_remail'])) {
+                        $errors['email']['retry'] = Text::get('error-user-email-empty');
+                    }
+                    elseif (strcmp($_POST['user_nemail'], $_POST['user_remail']) !== 0) {
+                        $errors['email']['retry'] = Text::get('error-user-email-confirm');
                     }
                     else {
                         $user->email = $_POST['user_nemail'];
                     }
                 }
-                // Modificar Contraseña
+                // Contraseña
                 if($_POST['change_password']) {
-                    if(!Model\User::login($user->id, $_POST['user_password'])) {
-                        $errors['password'] = Text::get('error-user-password-wrong');
+                    if(empty($_POST['user_password'])) {
+                        $errors['password'] = Text::get('error-user-password-empty');
+                    }
+                    elseif(!Model\User::login($user->id, $_POST['user_password'])) {
+                        $errors['password'] = Text::get('error-user-wrong-password');
                     }
                     elseif(empty($_POST['user_npassword'])) {
-                        $errors['password'] = Text::get('error-user-password');
+                        $errors['password']['new'] = Text::get('error-user-password-empty');
                     }
-                    if(strcmp($_POST['user_npassword'], $_POST['user_rpassword']) !== 0) {
-                        $errors['password'] = Text::get('error-user-password-confirm');
+                    elseif(!\Goteo\Library\Check::Password($_POST['user_npassword'])) {
+                        $errors['password']['new'] = Text::get('error-user-password-invalid');
+                    }
+                    elseif(empty($_POST['user_rpassword'])) {
+                        $errors['password']['retry'] = Text::get('error-user-password-empty');
+                    }
+                    elseif(strcmp($_POST['user_npassword'], $_POST['user_rpassword']) !== 0) {
+                        $errors['password']['retry'] = Text::get('error-user-password-confirm');
                     }
                     else {
                         $user->password = $_POST['user_npassword'];
@@ -110,9 +125,11 @@ namespace Goteo\Controller {
                 else {
                     $user->webs = array('edit', $_POST['user_webs']['edit']);
                 }
-                $user->save($errors);
-                // Refresca la sesión.
-                $user = Model\User::flush();
+                if($user->save($errors)) {
+                    // Refresca la sesión.
+                    $user = Model\User::flush();
+                    throw new Redirection('/user/edit/');
+                }
 			}
 
             return new View (
@@ -141,6 +158,7 @@ namespace Goteo\Controller {
 
         /**
          * Activación usuario.
+         *
          * @param type string	$token
          */
         public function activate($token) {
@@ -157,11 +175,15 @@ namespace Goteo\Controller {
             if($user->created === $created) {
                 if(!$user->active) {
                     $user->active = true;
-                    $user->save();
-                    Message::Info(Text::get('user-activate-success'));
+                    if($user->save($errors)) {
+                        Message::Info(Text::get('user-activate-success'));
 
-                    // Refresca la sesión.
-                    Model\User::flush();
+                        // Refresca la sesión.
+                        Model\User::flush();
+                    }
+                    else {
+                        Message::Error($errors);
+                    }
                 }
                 else {
                     Message::Info(Text::get('user-activate-already-active'));
@@ -170,25 +192,21 @@ namespace Goteo\Controller {
             else {
                 Message::Error(Text::get('user-activate-fail'));
             }
-            throw new Redirection('/dashboard', Redirection::TEMPORARY);
+            throw new Redirection('/dashboard');
         }
 
         /**
-         * Cambiar de dirección de correo.
+         * Cambiar dirección de correo.
+         *
          * @param type string	$token
          */
         public function changeemail($token) {
             $token = base64_decode($token);
-            $hash = substr($token, 0, 32);
-            $email = substr($token, 32);
-
-            $query = Model\User::query('SELECT id FROM user WHERE token = ?', array($token));
-            $id = $query->fetchColumn(0);
-            if(!is_null($id)) {
-                $user = Model\User::get($id);
-                if($user->token === $token) {
-                    $user->email = $email;
-                    $user->token = $token;
+            if(count(explode('¬', $token)) > 1) {
+                $query = Model\User::query('SELECT id FROM user WHERE token = ?', array($token));
+                if($id = $query->fetchColumn()) {
+                    $user = Model\User::get($id);
+                    $user->email = $token;
                     $errors = array();
                     if($user->save($errors)) {
                         Message::Info(Text::get('user-changeemail-success'));
@@ -207,7 +225,7 @@ namespace Goteo\Controller {
             else {
                 Message::Error(Text::get('user-changeemail-fail'));
             }
-            throw new Redirection('/dashboard', Redirection::TEMPORARY);
+            throw new Redirection('/dashboard');
         }
 
     }
