@@ -5,18 +5,7 @@ use Goteo\Library\Text,
             
 
 $project = $this['project'];
-/*
-[licenses] => Array
-                (
-                    [1] => Open Hardware
-                    [2] => Creative Commons
-                    [3] => General Public
-                    [4] => Open Database
-                    [5] => Red Abierta
-                    [6] => GNU Affero
-                )
 
-*/
 $social_rewards_types = array();
 $social_rewards_licenses = array();
 $social_rewards = array();

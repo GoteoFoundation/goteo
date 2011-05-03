@@ -2,18 +2,13 @@
 
 namespace Goteo\Controller {
 
-	use Goteo\Library\Content;
+    use Goteo\Core\View;
 
     class Index extends \Goteo\Core\Controller {
         
         public function index ($node = null) {
-
-			$content = new Content('home', $node);
-            $title = $content->title;
-            $message = $content->message;
-            $modules = $content->modules; // los modulos de la home ordenados segun la prioridad gestionada, instancias de model/content/module.php
             
-            include 'view/index.html.php';
+            return new View('view/index.html.php');
             
         }
         

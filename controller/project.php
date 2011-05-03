@@ -515,34 +515,31 @@ namespace Goteo\Controller {
         /*
          * Paso 6 - COLABORACIONES
          */
-         private function process_supports(&$project, &$errors) {
-            if (!isset($_POST['nsupport']))
-                return false;
+         private function process_supports(&$project, &$errors) {            
 
             // tratar colaboraciones existentes
-            foreach ($project->supports as $key=>$support) {
-                $support->support = $_POST['support' . $support->id];
-                $support->description = $_POST['support-description' . $support->id];
-                $support->type = $_POST['support-type' . $support->id];
-            }
-
-            // añadir nueva colaboracion
-            if (!empty($_POST['nsupport'])) {
-                $support = new Model\Project\Support();
-
-                $support->id = '';
-                $support->project = $project->id;
-                $support->support = $_POST['nsupport'];
-                $support->description = $_POST['nsupport-description'];
-                $support->type = $_POST['nsupport-type'];
-
-                $project->supports[] = $support;
-            }
-
-            // quitar las colaboraciones marcadas para quitar
-            foreach ($project->supports as $key=>$support) {
-                if ($_POST['remove-support' . $support->id] == 1) 
+            foreach ($project->supports as $key => $support) {
+                
+                // quitar las colaboraciones marcadas para quitar
+                if (!empty($_POST["support-{$support->id}-remove"])) {
                     unset($project->supports[$key]);
+                    continue;
+                }
+                
+                $support->support = $_POST['support-' . $support->id . '-support'];
+                $support->description = $_POST['support-' . $support->id . '-description'];
+                $support->type = $_POST['support-' . $support->id . '-type'];
+                
+            }
+            
+            // añadir nueva colaboracion
+            if (!empty($_POST['support-add'])) {
+                $project->supports[] = new Model\Project\Support(array(
+                    'project'       => $project->id,
+                    'support'       => 'Nueva colaboración',
+                    'type'          => 'task',
+                    'description'   => ''
+                ));
             }
 
             return true;
