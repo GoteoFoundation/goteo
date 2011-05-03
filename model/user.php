@@ -540,8 +540,8 @@ namespace Goteo\Model {
          * @return type array
          */
     	private function getSupport () {
-            $query = self::query('SELECT DISTINCT(project) FROM invest WHERE user = ? AND status <> 2 AND anonymous <> 1', array($this->id));
-            $projects = $query->fetchAll();
+            $query = self::query('SELECT DISTINCT(project) FROM invest WHERE user = ? AND status <> 2 AND (anonymous = 0 OR anonymous IS NULL)', array($this->id));
+            $projects = $query->fetchAll(\PDO::FETCH_ASSOC);
             $query = self::query('SELECT SUM(amount), COUNT(id) FROM invest WHERE user = ? AND status <> 2', array($this->id));
             $invest = $query->fetch();
             return array('projects' => $projects, 'amount' => $invest[0], 'count' => $invest[1]);

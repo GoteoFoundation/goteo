@@ -11,7 +11,8 @@
                 echo '<p>
                     <a href="/project/' . $project->id . '">' . $project->name . '</a>
                     <a href="/invest/' . $project->id . '">[Apóyalo]</a>
-                    <a href="/message/' . $project->id . '">[Mensajes]</a><br />
+                    <a href="/message/' . $project->id . '">[Mensajes]</a>
+                    <a href="/support/' . $project->id . '">[Cofinanciadores]</a><br />
                     Obtenido: ' . $project->invested . ' &euro;<br />
                     Mínimo: ' . $project->mincost . ' &euro;<br />
                     Óptimo: ' . $project->maxcost . ' &euro;<br />

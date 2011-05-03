@@ -19,7 +19,12 @@ namespace Goteo\Model {
             $invested, //fecha en la que se ha iniciado el aporte
             $charged, //fecha en la que se ha cargado el importe del aporte a la cuenta del usuario
             $returned, //fecha en la que se ha devuelto el importe al usurio por cancelación bancaria
-            $rewards = array(); //datos de las recompensas que le corresponden
+            $rewards = array(), //datos de las recompensas que le corresponden
+            $address = array(
+                'address' => '',
+                'zipcode' => '',
+                'location' => '',
+                'country' => '');  // dirección de envio del retorno
 
         // añadir los datos del cargo
 
@@ -44,6 +49,13 @@ namespace Goteo\Model {
                     ", array($id));
 				$invest->rewards = $query->fetchAll(\PDO::FETCH_ASSOC);
 
+				$query = static::query("
+                    SELECT  address, zipcode, location, country
+                    FROM  invest_address
+                    WHERE   invest_address.invest = ?
+                    ", array($id));
+				$invest->address = $query->fetchObject();
+
                 return $invest;
         }
 
@@ -58,6 +70,7 @@ namespace Goteo\Model {
                 SELECT  *
                 FROM  invest
                 WHERE   invest.project = ?
+                AND invest.status <> 2
                 ", array($project));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $invest) {
                 // datos del usuario
@@ -72,6 +85,13 @@ namespace Goteo\Model {
                     ", array($invest->id));
 				$invest->rewards = $query->fetchAll(\PDO::FETCH_ASSOC);
 
+				$query = static::query("
+                    SELECT  address, zipcode, location, country
+                    FROM  invest_address
+                    WHERE   invest_address.invest = ?
+                    ", array($invest->id));
+				$invest->address = $query->fetchObject();
+                
                 $invests[] = $invest;
             }
 
@@ -140,6 +160,20 @@ namespace Goteo\Model {
                     self::query($sql, array(':invest'=>$this->id, ':reward'=>$reward));
                 }
 
+                // dirección
+                if (!empty($this->address)) {
+                    $sql = "REPLACE INTO invest_address (invest, address, zipcode, location, country)
+                        VALUES (:invest, :address, :zipcode, :location, :country)";
+                    self::query($sql, array(
+                        ':invest'=>$this->id,
+                        ':address'=>$this->address->address,
+                        ':zipcode'=>$this->address->zipcode, 
+                        ':location'=>$this->address->location, 
+                        ':country'=>$this->address->country
+                        )
+                    );
+                }
+
                 return true;
             } catch(\PDOException $e) {
                 $errors[] = "El aporte no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
@@ -173,7 +207,8 @@ namespace Goteo\Model {
             $sql = "
                 SELECT  DISTINCT(user) as id
                 FROM    invest
-                WHERE   project = ?";
+                WHERE   project = ?
+                AND status <> 2";
 
             $query = self::query($sql, array($project));
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $investor) {
@@ -181,19 +216,13 @@ namespace Goteo\Model {
                 // para cada uno sacar: cantidad total aportada a este proyecto y fecha de último aporte
                 $support = self::supported($investor['id'], $project);
                 /* Aqui segun lo que nos haga Philipp */
-                //$user = User::get($investor);
-                $user = (object) array(
-                    'name' => 'Platoniq',
-                    'support' => array(1,2,3,4,5,6,7,8,9,11,12,13),
-                    'avatar' => 'url',
-                    'worth' => rand(1, 5),
-
-                );
+                $user = User::get($investor['id']);
 
                 $investors[] = (object) array(
                     'user' => $investor['id'],
                     'name' => $user->name,
-                    'projects' => count($user->support),
+                    'support' => $user->support,
+                    'projects' => count($user->support['projects']),
                     'avatar' => $user->avatar,
                     'worth' => $user->worth,
                     'amount' => $support->total,
@@ -223,7 +252,7 @@ namespace Goteo\Model {
         }
 
         /*
-         * Asignar a la aportación las recompensass a las que opta
+         * Asignar a la aportación una recompensas
          */
         public function setReward ($reward) {
 

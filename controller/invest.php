@@ -48,6 +48,14 @@ namespace Goteo\Controller {
                         }
                     }
 
+                    // dirección de envio para las recompensas
+                    $address = (object) array(
+                        'address' => $_POST['address'],
+                        'zipcode' => $_POST['zipcode'],
+                        'location' => $_POST['location'],
+                        'country' => $_POST['country']
+                    );
+
                     // @TODO, cuenta paypal del usuario o su email
                     $invest = new Model\Invest(
                         array(
@@ -58,10 +66,11 @@ namespace Goteo\Controller {
                             'status' => 0,
                             'invested' => date('Y-m-d'),
                             'anonymous' => $_POST['anonymous'],
-                            'resign' => $_POST['resign'],
-                            'rewards' => $rewards
+                            'resign' => $_POST['resign']
                         )
                     );
+                    $invest->rewards = $rewards;
+                    $invest->address = $address;
 
                     if ($invest->save($errors)) {
                         // Petición de preapproval y redirección a paypal

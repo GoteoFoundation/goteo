@@ -23,8 +23,12 @@ namespace Goteo\Library {
          * Devuelve los niveles de meritocracia
          */
 		public static function getAll () {
+            $array = array();
 			$query = Model::query("SELECT id, name, amount FROM worthcracy ORDER BY amount ASC");
-            return $query->fetchAll(\PDO::FETCH_ASSOC);
+            foreach ( $query->fetchAll(\PDO::FETCH_ASSOC) as $worth) {
+                $array[$worth['id']] = $worth;
+            }
+            return $array;
 		}
 
         /*
