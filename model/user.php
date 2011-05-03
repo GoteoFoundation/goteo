@@ -5,7 +5,8 @@ namespace Goteo\Model {
 	use Goteo\Core\Redirection,
         Goteo\Library\Text,
         Goteo\Library\Image,
-        Goteo\Library\Mail;
+        Goteo\Library\Mail,
+        Goteo\Library\Check;
 
 	class User extends \Goteo\Core\Model {
 
@@ -23,29 +24,49 @@ namespace Goteo\Model {
             $twitter,
             $linkedin,
             $country,
-            $worth,
             $created,
             $modified,
             $interests = array(),
             $webs = array();
 
-	    public function __set ($name, $value) {
+        /**
+         * Sobrecarga de métodos 'setter'.
+         *
+         * @param type string	$name
+         * @param type string	$value
+         */
+        public function __set ($name, $value) {
+	        if($name == "token") {
+	            $this->$name = $this->setToken($value);
+	        }
             $this->$name = $value;
+        }
+
+        /**
+         * Sobrecarga de métodos 'getter'.
+         *
+         * @param type string $name
+         * @return type mixed
+         */
+        public function __get ($name) {
+            if($name == "token") {
+	            return $this->getToken();
+	        }
+	        if($name == "support") {
+	            return $this->getSupport();
+	        }
+	        if($name == "worth") {
+	            return $this->getWorth();
+	        }
+            return $this->$name;
         }
 
         /**
          * Guardar usuario.
          * Guarda los valores de la instancia del usuario en la tabla.
          *
-         * @TODO: Revisar.
-         *
-         * Reglas:
-         *  - id *
-         *  - email *
-         *  - password
-         *
-         * @param array $errors     Errores devueltos pasados por referencia.
-         * @return bool true|false
+         * @param type array	$errors     Errores devueltos pasados por referencia.
+         * @return type bool	true|false
          */
         public function save (&$errors = array()) {
             if($this->validate($errors)) {
@@ -86,36 +107,21 @@ namespace Goteo\Model {
                 else {
                     $data[':id'] = $this->id;
 
+                    // E-mail
                     if(!empty($this->email)) {
-                        if(!empty($this->token)) {
-                            if($this->token == $this->getToken()) {
-                                $data[':email'] = $this->email;
-                                $data[':token'] = null;
-                            }
+                        if(count($tmp = explode('¬', $this->email)) > 1) {
+                            $data[':email'] = $tmp[1];
+                            $data[':token'] = null;
                         }
                         else {
-                            $mail = new Mail();
-                            $mail->to = $this->email;
-                            $mail->toName = $this->name;
-                            $mail->subject = Text::get('subject-change-email');
-                            $token = md5(uniqid()) . $this->email;
-                            $url = 'http://goteo.org/user/changeemail/' . base64_encode($token);
-                            $mail->content = sprintf('
-                                Estimado(a) <strong>%1$s</strong>:<br/>
-                                <br/>
-                                Para confirmar la propiedad de su nueva dirección de correo electrónico, haga clic en el siguiente vínculo (o copie y pégue el enlace en la barra de dirección de su navegador):<br/>
-                                <br/>
-                                <a href="%2$s">%2$s</a><br/>
-                                <br/>
-                                Esta proceso es necesario para confirmar la propiedad de su dirección de correo electrónico - no podrá operar con esta dirección hasta que la haya confirmado.
-                            ', $this->name, $url);
-                            $mail->html = true;
-                            $mail->send();
-
-                            $data[':token'] = $token;
+                            $query = self::query('SELECT email FROM user WHERE id = ?', array($this->id));
+                            if($this->email !== $query->fetchColumn()) {
+                                $this->token = md5(uniqid()) . '¬' . $this->email;
+                            }
                         }
                     }
 
+                    // Contraseña
                     if(!empty($this->password)) {
                         $data[':password'] = sha1($this->password);
                     }
@@ -131,7 +137,7 @@ namespace Goteo\Model {
                         $data[':avatar'] = $image->id;
 
                         /**
-                         * @FIXME Relación NM user_image
+                         * Guarda la relación NM en la tabla 'user_image'.
                          */
                         if(!empty($image->id)) {
                             self::query("REPLACE user_image (user_id, image_id) VALUES (:user, :image)", array(':user' => $this->id, ':image' => $image->id));
@@ -220,9 +226,9 @@ namespace Goteo\Model {
                         // Modificar
                         $webs = User\Web::get($this->id);
                         foreach($webs as $web) {
-                            if(array_key_exists($web->id, $_POST['user_webs']['edit'])) {
+                            if(array_key_exists($web->id, $this->webs['edit'])) {
                                 $web->user = $this->id;
-                                $web->url = $_POST['user_webs']['edit'][$web->id];
+                                $web->url = $this->webs['edit'][$web->id];
                                 $web->save($errors);
                             }
                         }
@@ -260,7 +266,6 @@ namespace Goteo\Model {
                         }
                         $query = substr($query, 0, -2) . " WHERE id = :id";
                     }
-                    //$_POST = array();
                     // Ejecuta SQL.
                     return self::query($query, $data);
             	} catch(\PDOException $e) {
@@ -300,36 +305,45 @@ namespace Goteo\Model {
                     }
                 }
                 else {
-                    $errors['email'] = Text::get('error-register-email');
+                    $errors['email'] = Text::get('error-register-email-empty');
                 }
 
                 // Contraseña
                 if(!empty($this->password)) {
-                    if(strlen($this->password)<8) {
-                        $errors['password'] = Text::get('error-register-short-password');
+                    if(!Check::Password($this->password)) {
+                        $errors['password'] = Text::get('error-register-invalid-password');
                     }
                 }
                 else {
-                    $errors['password'] = Text::get('error-register-pasword');
+                    $errors['password'] = Text::get('error-register-pasword-empty');
                 }
                 return empty($errors);
             }
             // Modificar usuario.
             else {
-                // E-mail
-                if(!empty($this->password)) {
-                    if(false) { // @FIXME: Validar formato dirección de correo.
-                        $errors['email'] = Text::get('error-register-email-invalid');
+                if(!empty($this->email)) {
+                    if(count($tmp = explode('¬', $this->email)) > 1) {
+                        if($this->email !== $this->token) {
+                            $errors['email'] = Text::get('error-user-email-token-invalid');
+                        }
+                    }
+                    elseif(!Check::Mail($this->email)) {
+                        $errors['email'] = Text::get('error-user-email-invalid');
+                    }
+                    else {
+                        $query = self::query('SELECT id FROM user WHERE email = ?', array($this->email));
+                        if($found = $query->fetchColumn()) {
+                            if($this->id !== $found) {
+                                $errors['email'] = Text::get('error-user-email-exists');
+                            }
+                        }
                     }
                 }
-
-                // Contraseña
                 if(!empty($this->password)) {
-                    if(strlen($this->password)<8) {
-                        $errors['password'] = Text::get('error-register-short-password');
+                    if(!Check::Password($this->password)) {
+                        $errors['password'] = Text::get('error-user-password-invalid');
                     }
                 }
-
                 if (empty($this->name)) {
                     $errors['name'] = Text::get('validate-user-field-name');
                 }
@@ -403,10 +417,8 @@ namespace Goteo\Model {
                         twitter,
                         linkedin,
                         active,
-                        worth,
                         created,
-                        modified,
-                        token
+                        modified
                     FROM user
                     WHERE id = :id
                     ", array(':id' => $id));
@@ -427,7 +439,7 @@ namespace Goteo\Model {
          * @return mixed            Array de objetos de usuario activos|todos.
          */
         public static function getAll ($visible = true) {
-            $query = self::query("SELECT * FROM user WHERE active = ?", array($visible));
+            $query = self::query('SELECT * FROM user WHERE active = ?', array($visible));
             return $query->fetchAll(__CLASS__);
         }
 
@@ -470,6 +482,8 @@ namespace Goteo\Model {
 		/**
 		 * Refresca la sesión.
 		 * (Utilizar después de un save)
+		 *
+		 * @return type object	User
 		 */
 		public static function flush () {
     		if(static::isLogged()) {
@@ -478,13 +492,76 @@ namespace Goteo\Model {
     	}
 
     	/**
-    	 * Token de verificación.
+    	 * Guarda el Token y envía un correo de confirmación.
+    	 *
+    	 * Usa el separador: ¬
+    	 *
+    	 * @param type string	$token	Formato: '<md5>¬<email>'
+    	 * @return type bool
+    	 */
+    	private function setToken ($token) {
+            if(count($tmp = explode('¬', $token)) > 1) {
+                $email = $tmp[1];
+                if(Check::Mail($email)) {
+                    $mail = new Mail();
+                    $mail->to = $email;
+                    $mail->toName = $this->name;
+                    $mail->subject = Text::get('subject-change-email');
+                    $url = 'http://goteo.org/user/changeemail/' . base64_encode($token);
+                    $mail->content = sprintf('
+                        Estimado(a) <strong>%1$s</strong>:<br/>
+                        <br/>
+                        Para confirmar la propiedad de su nueva dirección de correo electrónico, haga clic en el siguiente vínculo (o copie y pégue el enlace en la barra de dirección de su navegador):<br/>
+                        <br/>
+                        <a href="%2$s">%2$s</a><br/>
+                        <br/>
+                        Esta proceso es necesario para confirmar la propiedad de su dirección de correo electrónico - no podrá operar con esta dirección hasta que la haya confirmado.
+                    ', $this->name, $url);
+                    $mail->html = true;
+                    $mail->send();
+                    return self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $this->id, ':token' => $token));
+                }
+            }
+    	}
+
+    	/**
+    	 * Token de confirmación.
+    	 *
     	 * @return type string
     	 */
     	private function getToken () {
             $query = self::query('SELECT token FROM user WHERE id = ?', array($this->id));
             return $query->fetchColumn(0);
     	}
+
+        /**
+         * Cofinanciación.
+         *
+         * @return type array
+         */
+    	private function getSupport () {
+            $query = self::query('SELECT DISTINCT(project) FROM invest WHERE user = ? AND status <> 2 AND anonymous <> 1', array($this->id));
+            $projects = $query->fetchAll();
+            $query = self::query('SELECT SUM(amount), COUNT(id) FROM invest WHERE user = ? AND status <> 2', array($this->id));
+            $invest = $query->fetch();
+            return array('projects' => $projects, 'amount' => $invest[0], 'count' => $invest[1]);
+        }
+
+	    /**
+    	 * Nivel actual de meritocracia. (1-5)
+    	 * [Recalcula y actualiza el registro en db]
+    	 *
+    	 * @return type int	Worth::id
+    	 */
+    	private function getWorth () {
+            $query = self::query('SELECT id FROM worthcracy WHERE amount <= ? ORDER BY amount DESC LIMIT 1', array($this->support['amount']));
+            $worth = $query->fetchColumn();
+    	    $query = self::query('SELECT worth FROM user WHERE id = ?', array($this->id));
+            if($worth !== $query->fetchColumn()) {
+                self::query('UPDATE user SET worth = :worth WHERE id = :id', array(':id' => $this->id, ':worth' => $worth));
+            }
+            return $worth;
+        }
 
 	}
 }
