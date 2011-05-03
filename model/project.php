@@ -4,7 +4,8 @@ namespace Goteo\Model {
 
     use Goteo\Library\Check,
         Goteo\Library\Text,
-        Goteo\Model\User;
+        Goteo\Model\User,
+        Goteo\Model\Message;
 
     class Project extends \Goteo\Core\Model {
 
@@ -71,7 +72,11 @@ namespace Goteo\Model {
             $finishable = false, // si puede mandarlo a revisar
             $enableable = false, // si puede recuperar estando caducado
 
-            $errors = array(); // para los fallos en los datos
+            $errors = array(), // para los fallos en los datos
+
+            $messages = array(); // mensajes de los usuarios hilos con hijos
+
+
 
         /**
          * Inserta un proyecto con los datos mínimos
@@ -178,6 +183,9 @@ namespace Goteo\Model {
                         self::query("UPDATE project SET amount = '{$amount}' WHERE id = ?", array($project->id));
                         $project->invested = $amount; // por ahora
                     }
+
+                    //mensajes
+                    $project->messages = Message::getAll($project->id);
 
                     // tiempo de campaña
                     if ($project->status == 3) {

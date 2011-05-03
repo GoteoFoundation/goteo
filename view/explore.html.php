@@ -10,12 +10,13 @@
             if ($project->status == 3) {
                 echo '<p>
                     <a href="/project/' . $project->id . '">' . $project->name . '</a>
-                    <a href="/invest/' . $project->id . '">[Apóyalo]</a><br />
+                    <a href="/invest/' . $project->id . '">[Apóyalo]</a>
+                    <a href="/message/' . $project->id . '">[Mensajes]</a><br />
                     Obtenido: ' . $project->invested . ' &euro;<br />
                     Mínimo: ' . $project->mincost . ' &euro;<br />
                     Óptimo: ' . $project->maxcost . ' &euro;<br />
                     Quedan: ' . $project->days . ' días<br />
-                    Cofinanciadores: ' . count($project->investors) . '
+                    Cofinanciadores: ' . count($project->investors) . '<br />
                </p>';
             }
 		}
