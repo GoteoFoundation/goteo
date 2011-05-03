@@ -41,7 +41,7 @@ namespace Goteo\Model\Project {
             if (empty($this->support))
                 $errors[] = 'No hay colaboración';
 
-            if (empty($this->description))
+            if (!isset($this->description))
                 $errors[] = 'No hay descripción de la colaboración';
 
             if (empty($this->type))
