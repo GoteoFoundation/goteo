@@ -11,7 +11,7 @@ foreach ($this['categories'] as $value => $label) {
     $categories[] =  array(
         'value'     => $value,
         'label'     => $label,
-        'checked'   => in_array($value, $project->interests)
+        'checked'   => in_array($value, $project->categories)
         );            
 }
 
@@ -135,6 +135,7 @@ $superform = array(
 
         'location' => array(
             'type'      => 'textbox',
+            'name'      => 'project_location',
             'title'     => 'Localización',
             'required'  => true,
             'hint'      => Text::get('tooltip-project-location'),

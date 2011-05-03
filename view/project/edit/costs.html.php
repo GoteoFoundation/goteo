@@ -12,7 +12,6 @@ foreach ($this['types'] as $id => $type) {
     $costTypes[] = array(
         'value'     => $id,
         'label'     => $type,
-        'summary'   => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque luctus ligula vel leo hendrerit sed consequat nulla.',
         'class'     => $id
     );
 }
@@ -32,21 +31,24 @@ if (!empty($project->costs)) {
                     'type'      => 'textbox',
                     'size'      => 100,
                     'class'     => 'inline',
-                    'value'     => $cost->cost
+                    'value'     => $cost->cost,
+                    'hint'      => Text::get('tooltip-project-cost-cost'),
                 ),
                 "cost-{$cost->id}-type" => array(
                     'title'     => 'Tipo',
                     'class'     => 'inline cost-type',
                     'type'      => 'radios',
                     'options'   => $costTypes,
-                    'value'     => $cost->type
+                    'value'     => $cost->type,
+                    'hint'      => Text::get('tooltip-project-cost-type'),
                 ),
                 "cost-{$cost->id}-description" => array(
                     'type'      => 'textarea',
                     'title'     => 'Descripción',
                     'cols'      => 100,
                     'rows'      => 4,
-                    'class'     => 'inline',
+                    'class'     => 'inline cost-description',
+                    'hint'      => Text::get('tooltip-project-cost-description'),
                     'value'     => $cost->description
                 ),                                       
                 "cost-{$cost->id}-dates" => array(
@@ -77,6 +79,7 @@ if (!empty($project->costs)) {
                     'size'      => 8,
                     'class'     => 'inline cost-amount',
                     'value'     => $cost->amount,
+                    'hint'      => Text::get('tooltip-project-cost-amount'),
                     'children'  => array(
                         "cost-{$cost->id}-required"  => array(
                             'type'      => 'checkbox',
@@ -84,102 +87,19 @@ if (!empty($project->costs)) {
                             'value'     => 1,
                             'label'     => 'Imprescindible',
                             'checked'   => $cost->required,
-                            'hint'      => Text::get('tooltip-project-cost-required')
                         )
                     )
                 ),
                 "cost-{$cost->id}-remove" => array(
                     'type'  => 'submit',
-                    'label' => 'Eliminar',
+                    'label' => 'Quitar',
                     'class' => 'inline remove'
                 )
             )
         );
     }    
 }
-/*
-$costs['ncost'] = array(
-    
-    'type'      => 'group',
-    'title'     => 'Nuevo coste',
-    'class'     => 'cost cost-new',
-    'children'  => array(
-        'ncost' => array(
-            'title'     => 'Coste',
-            'type'      => 'textbox',
-            'size'      => 100,
-            'class'     => 'inline',
-            'value'     => $cost->cost,
-            'hint'      => Text::get('tooltip-project-cost-cost')
-        ),
-        'ncost-type'    => array(
-            'title'     => 'Tipo',
-            'class'     => 'inline cost-type',
-            'type'      => 'radios',
-            'options'   => $costTypes,
-            'hint'      => Text::get('tooltip-project-cost-type')
-        ),
-        'ncost-description' => array(
-            'type'      => 'textarea',
-            'title'     => 'Descripción',
-            'cols'      => 100,
-            'rows'      => 4,
-            'class'     => 'inline',
-            'value'     => $cost->description,
-            'hint'      => Text::get('tooltip-project-cost-description')
-        ),        
-        'ncost-dates' => array(
-            'type'      => 'group',
-            'title'     => 'Fechas',
-            'class'     => 'inline cost-dates',
-            'hint'      => Text::get('tooltip-project-cost-dates'),
-            'children'  => array(
-                'ncost-from'  => array(
-                    'class'     => 'cost-from inline',
-                    // 'type'      => 'date',
-                    'type'      => 'textbox',
-                    'size'      => 8,
-                    'title'     => 'Desde',
-                    'value'     => $cost->from                    
-                ),
-                'ncost-to'  => array(
-                    'class'     => 'cost-to inline',
-                    'title'     => 'Hasta',
-                    'type'      => 'textbox',
-                    'size'      => 8,
-                    'value'     => $cost->until
-                )
-            )
-        ),
-        'ncost-amount' => array(
-            'type'      => 'textbox',
-            'title'     => 'Valor',
-            'size'      => 8,
-            'class'     => 'inline cost-amount',
-            'value'     => $cost->amount,
-            'hint'      => Text::get('tooltip-project-cost-amount'),
-            'children'  => array(
-                'ncost-required'  => array(
-                    'type'      => 'checkbox',
-                    // 'type'      => 'date',
-                    'class'     => 'inline cost-required',
-                    //'title'     => 'Imprescindible',                    
-                    'value'     => 1,
-                    'label'     => 'Imprescindible',
-                    'checked'   => $cost->required,
-                    'hint'      => Text::get('tooltip-project-cost-required')
-                )
-            )
-        ),
-        'ncost-add' => array(
-            'type'  => 'submit',
-            'label' => 'Añadir',
-            'class' => 'add',
-        )
-    )    
-    
-);
-*/
+
 echo new SuperForm(array(
 
     'action'        => '',
@@ -196,11 +116,7 @@ echo new SuperForm(array(
             'class' => 'next'
         )        
     ),    
-    'elements'      => array(
-        'view-step-costs' => array(
-            'type'  => 'hidden',
-            'value' => '1'
-        ),
+    'elements'      => array(        
         'costs' => array(
             'type'      => 'group',
             'title'     => 'Desglose de costes',

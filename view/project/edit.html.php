@@ -23,7 +23,8 @@ include 'view/prologue.html.php';
         
         <form method="post" action="" class="project" enctype="multipart/form-data">
                         
-                                                
+            <input type="hidden" name="view-step-<?php echo $this['step'] ?>" value="please" />
+            
             <?php echo $status ?>
             <?php echo $steps ?>            
             

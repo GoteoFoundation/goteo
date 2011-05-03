@@ -328,8 +328,8 @@ namespace Goteo\Model {
             if (empty($this->motivation))
                 $errors['overview']['motivation'] = Text::get('mandatory-project-field-motivation');
 
-             if (empty($this->about))
-                $errors['overview']['about'] = Text::get('mandatory-project-field-about');
+//             if (empty($this->about))
+//                $errors['overview']['about'] = Text::get('mandatory-project-field-about');
 
             if (empty($this->goal))
                 $errors['overview']['goal'] = Text::get('mandatory-project-field-goal');

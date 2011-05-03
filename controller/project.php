@@ -20,7 +20,8 @@ namespace Goteo\Controller {
                     return $this->finish($id); // Para revision
                 elseif (isset($_GET['raw'])) {
                     $project = Model\Project::get($id);
-                    die('<pre>' . print_r($project, 1) . '</pre>');
+                    \trace($project);
+                    die;
                 }
                 else
                     return $this->view($id);
@@ -86,15 +87,43 @@ namespace Goteo\Controller {
                     'offtopic' => true
                 )
             );
-
+            
+            $step = null;      
+                        
+            
+            foreach ($_REQUEST as $k => $v) {                
+                if (strncmp($k, 'view-step-', 10) === 0 && !empty($v) && !empty($steps[substr($k, 10)])) {
+                    $step = substr($k, 10);
+                }                
+            }
+            
+            if (empty($step)) {
+            
+                // vista por defecto, el primer paso con errores
+                if (!empty($project->errors['userProfile']))
+                    $step = 'userProfile';
+                elseif (!empty($project->errors['userPersonal']))
+                    $step = 'userPersonal';
+                elseif (!empty($project->errors['overview']))
+                    $step = 'overview';
+                elseif (!empty($project->errors['costs']))
+                    $step = 'costs';
+                elseif (!empty($project->errors['rewards']))
+                    $step = 'rewards';
+                elseif (!empty($project->errors['supports']))
+                    $step = 'supports';
+                else
+                    $step = 'preview';
+                
+            }
+            
             // variables para la vista
             $viewData = array(
-                            'project'=>$project,
-                            'steps'=>$steps,
-                            'nodesign'=>$nodesign
-                        );            
-            
-            $step = null;                        
+                'project' => $project,
+                'steps' => $steps,
+                'nodesign' => $nodesign,
+                'step' => $step
+            );
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
@@ -107,12 +136,6 @@ namespace Goteo\Controller {
                             $_SESSION['stepped'][] = $id;
                     }
                     
-                    
-                    //print_r($_POST);Die;
-                    // y el paso que vamos a mostrar
-                    if (!empty($_POST['view-step-' . $id])) {
-                        $step = $id;                        
-                    }
                 }
 
                 // guardamos los datos que hemos tratado y los errores de los datos
@@ -138,27 +161,7 @@ namespace Goteo\Controller {
                 }
             }
             
-            if (empty($step)) {
             
-                // vista por defecto, el primer paso con errores
-                if (!empty($project->errors['userProfile']))
-                    $step = 'userProfile';
-                elseif (!empty($project->errors['userPersonal']))
-                    $step = 'userPersonal';
-                elseif (!empty($project->errors['overview']))
-                    $step = 'overview';
-                elseif (!empty($project->errors['costs']))
-                    $step = 'costs';
-                elseif (!empty($project->errors['rewards']))
-                    $step = 'rewards';
-                elseif (!empty($project->errors['supports']))
-                    $step = 'supports';
-                else
-                    $step = 'preview';
-                
-            }
-            
-            $viewData['step'] = $step;
 
             // segun el paso añadimos los datos auxiliares para pintar
             switch ($step) {
@@ -300,36 +303,28 @@ namespace Goteo\Controller {
                 $user->avatar = $_FILES['avatar_upload'];
             }
 
-            $user->interests = $_POST['interests'];
+            $user->interests = $_POST['user_interests'];
 
             //tratar webs existentes
-            foreach ($user->webs as $key=>&$web) {
+            foreach ($user->webs as $i => &$web) {
                 // luego aplicar los cambios
                 
                 if (isset($_POST['web-'. $web->id . '-url'])) {
                     $web->url = $_POST['web-'. $web->id . '-url'];
                 }
                 
+                //quitar las que quiten
+                if (!empty($_POST['web-' . $web->id .  '-remove'])) {
+                    unset($user->webs[$i]);
+                }                                                    
+                
             }
 
             //tratar nueva web
-            if (!empty($_POST['web-add'])) {
-                
-                $web = new Model\User\Web();
-
-                $web->id = '';
-                $web->user = $user->id;
-                $web->url = '';
-                $user->webs[] = $web;
-            }
-
-            //quitar las que quiten
-            foreach ($user->webs as $key=>$web) {
-                // primero mirar si lo estan quitando
-                if (!empty($_POST['web-' . $web->id . '-remove'])) {
-                    unset($user->webs[$key]);
-                }
-                    
+            if (!empty($_POST['web-add'])) {                
+                $user->webs[] = new Model\User\Web(array(
+                    'url'   => 'http://'
+                ));
             }
 
             /// este es el único save que se lanza desde un metodo process_
@@ -428,36 +423,33 @@ namespace Goteo\Controller {
             //tratar costes existentes
             foreach ($project->costs as $key => $cost) {
                 
-                $cost->cost = $_POST['cost' . $cost->id . 'cost'];
+                if (!empty($_POST["cost-{$cost->id}-remove"])) {
+                    unset($project->costs[$key]);
+                    continue;
+                }
+                
+                $cost->cost = $_POST['cost-' . $cost->id . '-cost'];
                 $cost->description = $_POST['cost-' . $cost->id .'-description'];
                 $cost->amount = $_POST['cost-' . $cost->id . '-amount'];
                 $cost->type = $_POST['cost-' . $cost->id . '-type'];
                 $cost->required = $_POST['cost-' . $cost->id . '-required'];
                 $cost->from = $_POST['cost-' . $cost->id . '-from'];
-                $cost->until = $_POST['cost-' . $cost->id . '-until'];
+                $cost->until = $_POST['cost-' . $cost->id . '-until'];                
                 
             }
 
             //añadir nuevo coste
             if (!empty($_POST['cost-add'])) {
                 
-                $cost = new Model\Project\Cost();
-
-                $cost->id = '';
-                $cost->project = $project->id;
-                $cost->cost = '';
-                $cost->type = 'task';
-                $project->costs[] = $cost;
+                $project->costs[] = new Model\Project\Cost(array(
+                    'project' => $project->id,
+                    'cost'  => 'Nuevo coste',
+                    'type'  => 'task',
+                    
+                ));
                 
             }
-
-            // quitar los que quiten
-            foreach ($project->costs as $key=>$cost) {
-                $este = $_POST['cost-' . $cost->id . '-remove'];
-                if (!empty($este))
-                    unset($project->costs[$key]);
-            }            
-
+           
             return true;
         }
 
@@ -465,71 +457,59 @@ namespace Goteo\Controller {
          * Paso 5 - RETORNO
          */
         private function process_rewards(&$project, &$errors) {
-            if (!isset($_POST['nsocial_reward']))
-                return false;
+                        
 
             //tratar retornos sociales
-            foreach ($project->social_rewards as $key=>$reward) {
-                $reward->reward = $_POST['social_reward' . $reward->id];
-                $reward->description = $_POST['social_reward-description' . $reward->id];
-                $reward->icon = $_POST['social_reward-icon' . $reward->id];
-                $reward->license = $_POST['social_reward-license' . $reward->id];
+            foreach ($project->social_rewards as $k => $reward) {
+                
+                if (!empty($_POST["social_reward-{$reward->id}-remove"])) {
+                    unset($project->social_rewards[$k]);
+                    continue;
+                }
+                
+                $reward->reward = $_POST['social_reward-' . $reward->id . '-reward'];
+                $reward->description = $_POST['social_reward-' . $reward->id . '-description'];
+                $reward->icon = $_POST['social_reward-' . $reward->id . '-icon'];
+                $reward->license = $_POST['social_reward-' . $reward->id . '-license'];
+                
+                
             }
 
             // retornos individuales
-            foreach ($project->individual_rewards as $key=>$reward) {
-                $reward->reward = $_POST['individual_reward' . $reward->id];
-                $reward->description = $_POST['individual_reward-description' . $reward->id];
-                $reward->icon = $_POST['individual_reward-icon' . $reward->id];
-                $reward->amount = $_POST['individual_reward-amount' . $reward->id];
-                $reward->units = $_POST['individual_reward-units' . $reward->id];
+            foreach ($project->individual_rewards as $k => $reward) {
+                
+                if (!empty($_POST["individual_reward-{$reward->id}-remove"])) {
+                    unset($project->individual_rewards[$k]);
+                    continue;
+                }
+                
+                $reward->reward = $_POST['individual_reward-' . $reward->id .'-reward'];
+                $reward->description = $_POST['individual_reward-' . $reward->id . '-description'];
+                $reward->icon = $_POST['individual_reward-' . $reward->id . '-icon'];
+                $reward->amount = $_POST['individual_reward-' . $reward->id . '-amount'];
+                $reward->units = $_POST['individual_reward-' . $reward->id . '-units'];
+                
             }
 
             // tratar nuevos retornos
-            if (!empty($_POST['nsocial_reward'])) {
-                $reward = new Model\Project\Reward();
-
-                $reward->id = '';
-                $reward->project = $project->id;
-                $reward->reward = $_POST['nsocial_reward'];
-                $reward->description = $_POST['nsocial_reward-description'];
-                $reward->type = 'social';
-                $reward->icon = $_POST['nsocial_reward-icon'];
-                $reward->license = $_POST['nsocial_reward-license'];
-
-                $project->social_rewards[] = $reward;
+            if (!empty($_POST['social_reward-add'])) {                
+                $project->social_rewards[] = new Model\Project\Reward(array(
+                    'type'      => 'social',
+                    'project'   => $project->id,
+                    'reward'    => 'Nuevo retorno colectivo'                    
+                ));
             }
-
-            if (!empty($_POST['nindividual_reward'])) {
-                $reward = new Model\Project\Reward();
-
-                $reward->id = '';
-                $reward->project = $project->id;
-                $reward->reward = $_POST['nindividual_reward'];
-                $reward->description = $_POST['nindividual_reward-description'];
-                $reward->type = 'individual';
-                $reward->icon = $_POST['nindividual_reward-icon'];
-                $reward->amount = $_POST['nindividual_reward-amount'];
-                $reward->units = $_POST['nindividual_reward-units'];
-
-                $project->individual_rewards[] = $reward;
-            }
-
-            // quitar los retornos colectivos
-            foreach ($project->social_rewards as $key=>$reward) {
-                $este = $_POST['remove-social_reward' . $reward->id];
-                if (!empty($este))
-                    unset($project->social_rewards[$key]);
-            }
-
-            // quitar las recompensas individuales
-            foreach ($project->individual_rewards as $key=>$reward) {
-                $este = $_POST['remove-individual_reward' . $reward->id];
-                if (!empty($este))
-                    unset($project->individual_rewards[$key]);
+            
+            if (!empty($_POST['individual_reward-add'])) {                
+                $project->individual_rewards[] = new Model\Project\Reward(array(
+                    'type'      => 'individual',
+                    'project'   => $project->id,
+                    'reward'    => 'Nueva recompensa individual'                    
+                ));
             }
 
             return true;
+            
         }
 
         /*

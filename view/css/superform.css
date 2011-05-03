@@ -143,7 +143,11 @@ div.superform input[type='password'],
 div.superform textarea {
     padding: .4em;    
     background-color: #d7d9da;
-    border: 1px solid #58595;
+    border: 1px solid #58595;    
+}
+
+div.superform textarea {
+    min-height: 6em;
 }
 
 div.superform input[type='submit'],
@@ -163,6 +167,15 @@ div.superform input.add[type="submit"],
 div.superform input.add[type="reset"],
 div.superform button.add {
     background-image: url('superform/button/add.png');
+    background-repeat: no-repeat;
+    background-position: .6em center;
+    padding-left: 2em;
+}
+
+div.superform input.remove[type="submit"],
+div.superform input.remove[type="reset"],
+div.superform button.remove {
+    background-image: url('superform/button/remove.png');
     background-repeat: no-repeat;
     background-position: .6em center;
     padding-left: 2em;
@@ -201,6 +214,9 @@ div.superform div.elements > ol > li.error > .title  {
     background: url('superform/badge/error.png') no-repeat right center !important;
 }
 
+div.superform li.element.hidden {
+    display: none;
+}
 
 /* Textboxes & Textarea */
 
@@ -242,28 +258,59 @@ div.superform div.elements li.element.textbox.linkedin > div.contents {
 }
 
 /* Checkboxes & radios */
-div.superform div.elements > ol > li.element.checkboxes > div.contents ul,
-div.superform div.elements > ol > li.element.radios > div.contents ul,
-div.superform div.elements > ol > li.element.slider > div.contents ul {
+
+div.superform div.elements > ol > li.element.checkboxes,
+div.superform div.elements > ol > li.element.radios,
+div.superform div.elements > ol > li.element.slider {
+    padding-bottom: 0;
+}
+
+div.superform div.elements > ol > li.element.checkboxes > div.contents > ul,
+div.superform div.elements > ol > li.element.radios > div.contents > ul,
+div.superform div.elements > ol > li.element.slider > div.contents > ul {
     padding: 0;
-    margin: -1em 0 0;    
+    margin: 0;    
     list-style: none;
     overflow: hidden;
+    border-top: 1px dashed #bcbdbf;
 }
 
-div.superform div.elements > ol > li.element.checkboxes > div.contents ul li,
-div.superform div.elements > ol > li.element.radios > div.contents ul li,
-div.superform div.elements > ol > li.element.slider > div.contents ul li{
-    border: none;
-    padding: 1em 0 0;
-    width: 33%;
-    float: left;   
+div.superform div.elements > ol > li.element.checkboxes > div.contents > ul > li,
+div.superform div.elements > ol > li.element.radios > div.contents > ul > li,
+div.superform div.elements > ol > li.element.slider > div.contents > ul > li {
+    float: left;        
+    width: 50%;    
+    border-bottom: 1px dashed #bcbdbf;
+    border-right: 1px dashed #bcbdbf;
+    margin-left: -1px;
+    margin-bottom: -1px;
+    padding: 0;
 }
 
-div.superform div.elements > ol > li.element.checkboxes > div.contents ul li input[type="checkbox"],
-div.superform div.elements > ol > li.element.radios > div.contents ul li input[type="radio"],
-div.superform div.elements > ol > li.element.slider > div.contents ul li input[type="radio"] {
-    margin-left: 0;
+div.superform div.elements > ol > li.element.checkboxes.inline > div.contents > ul > li,
+div.superform div.elements > ol > li.element.radios.inline > div.contents > ul > li,
+div.superform div.elements > ol > li.element.slider.inline > div.contents > ul > li {
+    margin-bottom: 0;
+}
+
+div.superform div.elements > ol > li.element.checkboxes > div.contents > ul > li > label,
+div.superform div.elements > ol > li.element.radios > div.contents > ul > li > label,
+div.superform div.elements > ol > li.element.slider > div.contents > ul > li > label {
+    position: relative;
+    padding: .8em 1em;
+    display: block;    
+    cursor: pointer;
+}
+
+div.superform div.elements > ol > li.element.checkboxes > div.contents > ul > li > label > input[type="checkbox"],
+div.superform div.elements > ol > li.element.radios > div.contents > ul > li > label > input[type="radio"],
+div.superform div.elements > ol > li.element.slider > div.contents > ul > li > label > input[type="radio"] {
+    position: absolute;
+    right: .5em;
+    top: 50%;
+    margin-top: -.5em;
+    height: 1em;
+    cursor: pointer;
 }
 
 
@@ -318,8 +365,7 @@ div.superform li.element > div.feedback > div + div {
 div.superform li.element > div.feedback > div  blockquote {
     padding: 0;
     margin: 0;
-    font-size: 13px;
-    min-height: 1em;
+    font-size: 13px;    
 }
 
 div.superform li.element > div.feedback > div.error + div.hint > blockquote {

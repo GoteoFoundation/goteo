@@ -20,7 +20,7 @@ namespace Goteo\Model\Project {
                 $query = static::query("SELECT category FROM project_category WHERE project = ?", array($id));
                 $categories = $query->fetchAll();
                 foreach ($categories as $cat) {
-                    $array[] = $cat[0];
+                    $array[$cat[0]] = $cat[0];
                 }
 
                 return $array;
