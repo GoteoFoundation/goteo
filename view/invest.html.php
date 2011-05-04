@@ -17,6 +17,13 @@ include 'view/header.html.php'; ?>
                 <?php foreach ($this['project']->individual_rewards as $reward) : ?>
                     <input type="checkbox" name="reward_<?php echo $reward->id; ?>" value="<?php echo $reward->id; ?>" /> <?php echo $reward->amount; ?>&euro; <?php echo $reward->reward; ?>: <?php echo $reward->description; ?><br />
                 <?php endforeach; ?>
+                    <fieldset>
+                        <legend>Donde quieres recibir la recompensa</legend>
+                        <label for="address">Dirección:</label><input type="text" id="address" name="address" value="<?php echo $this['personal']['address']; ?>" /><br />
+                        <label for="zipcode">Código postal:</label><input type="text" id="zipcode" name="zipcode" value="<?php echo $this['personal']['zipcode']; ?>" /><br />
+                        <label for="location">Ciudad:</label><input type="text" id="location" name="location" value="<?php echo $this['personal']['location']; ?>" /><br />
+                        <label for="country">País:</label><input type="text" id="country" name="country" value="<?php echo $this['personal']['country']; ?>" /><br />
+                    </fieldset>
                 <input type="checkbox" name="anonymous" value="1" /> Aporte anónimo<br />
                 <br />
                 <input type="submit" value="Paso siguiente" />

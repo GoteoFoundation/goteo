@@ -194,10 +194,9 @@ namespace Goteo\Controller {
                     if (empty($project->errors)) {
                         $success[] = Text::get('guide-project-success-noerrors');
                     }
-                    if ($project->progress > 80 && $project->status == 1) {
+                    if ($project->finishable) {
                         $success[] = Text::get('guide-project-success-minprogress');
                         $success[] = Text::get('guide-project-success-okfinish');
-                        $viewData['finishable'] = true;
                     }
                     $viewData['success'] = $success;
                     break;
@@ -217,6 +216,15 @@ namespace Goteo\Controller {
             //@TODO Verificar si tienen permisos para crear nuevos proyectos
             $project = new Model\Project;
             $project->create($_SESSION['user']->id);
+
+            // cargar los datos pesronales del usuario
+            $personalData = Model\User::getPersonal($_SESSION['user']->id);
+            foreach ($personalData as $key=>$value) {
+                $project->$key = $value;
+            }
+            $project->save();
+
+
             $_SESSION['stepped'] = array();
                 throw new Redirection("/project/{$project->id}/?edit");
 
@@ -244,8 +252,10 @@ namespace Goteo\Controller {
                 throw new Redirection("/project/{$project->id}");
 
             $errors = array();
-            if ($project->ready($errors))
-                throw new Redirection("/project/{$project->id}");
+            if ($project->ready($errors)) {
+                // enviarlo a preview con mensaje guay
+                throw new Redirection("/project/{$project->id}/?edit");
+            }
             
             throw new \Goteo\Core\Exception(implode(' ', $errors));
         }
@@ -275,8 +285,9 @@ namespace Goteo\Controller {
          * Paso 1 - PERFIL
          */
         private function process_userProfile(&$project, &$errors) {
-            if (!isset($_POST['user_name']))
+            if (!isset($_POST['user_name'])) {
                 return false;
+            }
 
             $user = Model\User::get($project->owner);
 
@@ -295,7 +306,9 @@ namespace Goteo\Controller {
             );
                         
             foreach ($fields as $fieldPost=>$fieldTable) {
-                $user->$fieldTable = $_POST[$fieldPost];
+                if (isset($_POST[$fieldPost])) {
+                    $user->$fieldTable = $_POST[$fieldPost];
+                }
             }
             
             // Avatar
@@ -321,7 +334,7 @@ namespace Goteo\Controller {
             }
 
             //tratar nueva web
-            if (!empty($_POST['web-add'])) {                
+            if (!empty($_POST['web-add'])) {
                 $user->webs[] = new Model\User\Web(array(
                     'url'   => 'http://'
                 ));
@@ -336,9 +349,6 @@ namespace Goteo\Controller {
          * Paso 2 - DATOS PERSONALES
          */
         private function process_userPersonal(&$project, &$errors) {
-            if (!isset($_POST['contract_name']))
-                return false;
-
             // campos que guarda este paso
             $fields = array(
                 'contract_name',
@@ -352,8 +362,18 @@ namespace Goteo\Controller {
                 'country'
             );
 
+            $personalData = array();
+
             foreach ($fields as $field) {
-                $project->$field = $_POST[$field];
+                if (isset($_POST[$field])) {
+                    $project->$field = $_POST[$field];
+                    $personalData[$field] = $_POST[$field];
+                }
+            }
+
+            // actualizamos estos datos en los personales del usuario
+            if (!empty ($personalData)) {
+                Model\User::setPersonal($project->owner, $personalData, true);
             }
 
             return true;
@@ -383,13 +403,15 @@ namespace Goteo\Controller {
             );
 
             foreach ($fields as $field) {
-                $project->$field = $_POST[$field];
+                if (isset($_POST[$field])) {
+                    $project->$field = $_POST[$field];
+                }
             }
 
             //categorias
             // añadir las que vienen y no tiene
             $tiene = $project->categories;
-            if (!empty($_POST['categories'])) {
+            if (isset($_POST['categories'])) {
                 $viene = $_POST['categories'];
                 $quita = array_diff($tiene, $viene);
             } else {
@@ -415,10 +437,8 @@ namespace Goteo\Controller {
          * Paso 4 - COSTES
          */
         private function process_costs(&$project, &$errors) {
-            if (!isset($_POST['resource']))
-                return false;
-
-            $project->resource = $_POST['resource'];
+            if (isset($_POST['resource']))
+                $project->resource = $_POST['resource'];
             
             //tratar costes existentes
             foreach ($project->costs as $key => $cost) {
@@ -427,15 +447,16 @@ namespace Goteo\Controller {
                     unset($project->costs[$key]);
                     continue;
                 }
-                
-                $cost->cost = $_POST['cost-' . $cost->id . '-cost'];
-                $cost->description = $_POST['cost-' . $cost->id .'-description'];
-                $cost->amount = $_POST['cost-' . $cost->id . '-amount'];
-                $cost->type = $_POST['cost-' . $cost->id . '-type'];
-                $cost->required = $_POST['cost-' . $cost->id . '-required'];
-                $cost->from = $_POST['cost-' . $cost->id . '-from'];
-                $cost->until = $_POST['cost-' . $cost->id . '-until'];                
-                
+
+                if (isset($_POST['cost-' . $cost->id . '-cost'])) {
+                    $cost->cost = $_POST['cost-' . $cost->id . '-cost'];
+                    $cost->description = $_POST['cost-' . $cost->id .'-description'];
+                    $cost->amount = $_POST['cost-' . $cost->id . '-amount'];
+                    $cost->type = $_POST['cost-' . $cost->id . '-type'];
+                    $cost->required = $_POST['cost-' . $cost->id . '-required'];
+                    $cost->from = $_POST['cost-' . $cost->id . '-from'];
+                    $cost->until = $_POST['cost-' . $cost->id . '-until'];
+                }
             }
 
             //añadir nuevo coste
@@ -466,12 +487,13 @@ namespace Goteo\Controller {
                     unset($project->social_rewards[$k]);
                     continue;
                 }
-                
-                $reward->reward = $_POST['social_reward-' . $reward->id . '-reward'];
-                $reward->description = $_POST['social_reward-' . $reward->id . '-description'];
-                $reward->icon = $_POST['social_reward-' . $reward->id . '-icon'];
-                $reward->license = $_POST['social_reward-' . $reward->id . '-license'];
-                
+
+                if (isset($_POST['social_reward-' . $reward->id . '-reward'])) {
+                    $reward->reward = $_POST['social_reward-' . $reward->id . '-reward'];
+                    $reward->description = $_POST['social_reward-' . $reward->id . '-description'];
+                    $reward->icon = $_POST['social_reward-' . $reward->id . '-icon'];
+                    $reward->license = $_POST['social_reward-' . $reward->id . '-license'];
+                }
                 
             }
 
@@ -482,17 +504,19 @@ namespace Goteo\Controller {
                     unset($project->individual_rewards[$k]);
                     continue;
                 }
-                
-                $reward->reward = $_POST['individual_reward-' . $reward->id .'-reward'];
-                $reward->description = $_POST['individual_reward-' . $reward->id . '-description'];
-                $reward->icon = $_POST['individual_reward-' . $reward->id . '-icon'];
-                $reward->amount = $_POST['individual_reward-' . $reward->id . '-amount'];
-                $reward->units = $_POST['individual_reward-' . $reward->id . '-units'];
+
+                if (isset($_POST['individual_reward-' . $reward->id .'-reward'])) {
+                    $reward->reward = $_POST['individual_reward-' . $reward->id .'-reward'];
+                    $reward->description = $_POST['individual_reward-' . $reward->id . '-description'];
+                    $reward->icon = $_POST['individual_reward-' . $reward->id . '-icon'];
+                    $reward->amount = $_POST['individual_reward-' . $reward->id . '-amount'];
+                    $reward->units = $_POST['individual_reward-' . $reward->id . '-units'];
+                }
                 
             }
 
             // tratar nuevos retornos
-            if (!empty($_POST['social_reward-add'])) {                
+            if (!empty($_POST['social_reward-add'])) {
                 $project->social_rewards[] = new Model\Project\Reward(array(
                     'type'      => 'social',
                     'project'   => $project->id,
@@ -500,7 +524,7 @@ namespace Goteo\Controller {
                 ));
             }
             
-            if (!empty($_POST['individual_reward-add'])) {                
+            if (!empty($_POST['individual_reward-add'])) {
                 $project->individual_rewards[] = new Model\Project\Reward(array(
                     'type'      => 'individual',
                     'project'   => $project->id,
@@ -525,10 +549,12 @@ namespace Goteo\Controller {
                     unset($project->supports[$key]);
                     continue;
                 }
-                
-                $support->support = $_POST['support-' . $support->id . '-support'];
-                $support->description = $_POST['support-' . $support->id . '-description'];
-                $support->type = $_POST['support-' . $support->id . '-type'];
+
+                if (isset($_POST['support-' . $support->id . '-support'])) {
+                    $support->support = $_POST['support-' . $support->id . '-support'];
+                    $support->description = $_POST['support-' . $support->id . '-description'];
+                    $support->type = $_POST['support-' . $support->id . '-type'];
+                }
                 
             }
             
@@ -550,10 +576,8 @@ namespace Goteo\Controller {
          * No hay nada que tratar porque aq este paso no se le envia nada por post
          */
         private function process_preview(&$project) {
-            if (!isset($_POST['comment']))
-                return false;
-
-            $project->comment = $_POST['comment'];
+            if (isset($_POST['comment']))
+                $project->comment = $_POST['comment'];
 
             return true;
         }

@@ -68,10 +68,6 @@ namespace Goteo\Model {
             $days = 0, //para 40 desde la publicación o para 80 si no está caducado
             $investors = array(), // usuarios que han invertido
 
-            //operaciones habilitadas para el owner
-            $finishable = false, // si puede mandarlo a revisar
-            $enableable = false, // si puede recuperar estando caducado
-
             $errors = array(), // para los fallos en los datos
 
             $messages = array(); // mensajes de los usuarios hilos con hijos
@@ -115,8 +111,6 @@ namespace Goteo\Model {
                 $this->node = $node;
                 $this->status = 1;
                 $this->progress = 0;
-
-                // cargar los datos legales del usuario
 
                 return $this->id;
             } catch (\PDOException $e) {
@@ -364,19 +358,19 @@ namespace Goteo\Model {
 
             /***************** Revisión de campos del paso 4, COSTES *****************/
             if (count($this->costs) < 2)
-                $errors['costs']['ncost'] = Text::get('mandatory-project-costs');
+                $errors['costs']['costs'] = Text::get('mandatory-project-costs');
             elseif (count($this->costs) < 5)
-                $errors['costs']['ncost'] = Text::get('validate-project-field-costs');
+                $errors['costs']['costs'] = Text::get('validate-project-field-costs');
 
             foreach($this->costs as $cost) {
                 if (empty($cost->cost))
-                    $errors['costs']['cost'.$cost->id] = Text::get('mandatory-cost-field-name');
+                    $errors['costs']['cost-'.$cost->id.'-cost'] = Text::get('mandatory-cost-field-name');
 
                 if (empty($cost->description))
-                    $errors['costs']['cost-description'.$cost->id] = Text::get('mandatory-cost-field-description');
+                    $errors['costs']['cost-'.$cost->id.'-description'] = Text::get('mandatory-cost-field-description');
 
                 if (empty($cost->from) || empty($cost->until))
-                    $errors['costs']['cost-dates'.$cost->id] = Text::get('validate-cost-field-dates');
+                    $errors['costs']['cost-'.$cost->id.'-dates'] = Text::get('validate-cost-field-dates');
             }
 
             $costdif = $this->maxcost - $this->mincost;
@@ -390,31 +384,31 @@ namespace Goteo\Model {
 
             /***************** Revisión de campos del paso 5, RETORNOS *****************/
             if (count($this->social_rewards) < 5)
-                $errors['rewards']['nsocial_reward'] = Text::get('validate-project-social_rewards');
+                $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards');
 
             if (count($this->individual_rewards) < 5)
-                $errors['rewards']['nindividual_reward'] = Text::get('validate-project-individual_rewards');
+                $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards');
 
             foreach ($this->social_rewards as $social) {
                 if (empty($social->reward))
-                    $errors['rewards']['social_reward'.$social->id] = Text::get('mandatory-social_reward-field-name');
+                    $errors['rewards']['social_reward-'.$social->id.'reward'] = Text::get('mandatory-social_reward-field-name');
 
                 if (empty($social->description))
-                    $errors['rewards']['social_rewards-description'.$social->id] = Text::get('mandatory-social_reward-field-description');
+                    $errors['rewards']['social_rewards-'.$social->id.'-description'] = Text::get('mandatory-social_reward-field-description');
 
                 if (empty($social->license))
-                    $errors['rewards']['social_reward-license'.$social->id] = Text::get('validate-social_reward-license');
+                    $errors['rewards']['social_reward-'.$social->id.'-license'] = Text::get('validate-social_reward-license');
             }
 
             foreach ($this->individual_rewards as $individual) {
                 if (empty($individual->reward))
-                    $errors['rewards']['individual_reward'.$individual->id] = Text::get('mandatory-individual_reward-field-name');
+                    $errors['rewards']['individual_reward-'.$individual->id.'-reward'] = Text::get('mandatory-individual_reward-field-name');
 
                 if (empty($individual->description))
-                    $errors['rewards']['individual_reward-description'.$individual->id] = Text::get('mandatory-individual_reward-field-description');
+                    $errors['rewards']['individual_reward-'.$individual->id.'-description'] = Text::get('mandatory-individual_reward-field-description');
 
                 if (empty($individual->reward))
-                    $errors['rewards']['individual_reward-amount'.$individual->id] = Text::get('mandatory-individual_reward-field-amount');
+                    $errors['rewards']['individual_reward-'.$individual->id.'-amount'] = Text::get('mandatory-individual_reward-field-amount');
             }
             /***************** FIN Revisión del paso 5, RETORNOS *****************/
 
@@ -422,10 +416,10 @@ namespace Goteo\Model {
             /***************** Revisión de campos del paso 6, COLABORACIONES *****************/
             foreach ($this->supports as $support) {
                 if (empty($support->support))
-                    $errors['supports']['support'.$support->id] = Text::get('mandatory-support-field-name');
+                    $errors['supports']['support-'.$support->id.'-support'] = Text::get('mandatory-support-field-name');
 
                 if (empty($support->description))
-                    $errors['supports']['support-description'.$support->id] = Text::get('mandatory-support-field-description');
+                    $errors['supports']['support-'.$support->id.'-description'] = Text::get('mandatory-support-field-description');
             }
             /***************** FIN Revisión del paso 6, COLABORACIONES *****************/
 
@@ -444,8 +438,8 @@ namespace Goteo\Model {
                 $fail = false;
 
                 // nif y telefono sin guiones, espacios ni puntos
-                $this->contract_nif = str_replace(array('_', '.', ' ', '-', ','), '', $this->contract_nif);
-                $this->phone = str_replace(array('_', '.', ' ', '-', ','), '', $this->phone);
+                $this->contract_nif = str_replace(array('_', '.', ' ', '-', ',', ')', '('), '', $this->contract_nif);
+                $this->phone = str_replace(array('_', '.', ' ', '-', ',', ')', '('), '', $this->phone);
 
                 $fields = array(
                     'contract_name',
@@ -522,64 +516,112 @@ namespace Goteo\Model {
                 //costes
                 $tiene = Project\Cost::getAll($this->id);
                 $viene = $this->costs;
-                $quita = array_diff_assoc($tiene, $viene);
-                $guarda = array_diff_assoc($viene, $tiene);
+                $quita = array_diff_key($tiene, $viene);
+                $guarda = array_diff_key($viene, $tiene);
                 foreach ($quita as $key=>$item) {
-                    if (!$item->remove($errors))
+                    if (!$item->remove($errors)) {
                         $fail = true;
+                    } else {
+                        unset($tiene[$key]);
+                    }
                 }
                 foreach ($guarda as $key=>$item) {
                     if (!$item->save($errors))
                         $fail = true;
                 }
+                /* Ahora, los que tiene y vienen. Si el contenido es diferente, hay que guardarlo*/
+                foreach ($tiene as $key => $row) {
+                    // a ver la diferencia con el que viene
+                    if ($row != $viene[$key]) {
+                        if (!$viene[$key]->save($errors))
+                            $fail = true;
+                    }
+                }
+
                 if (!empty($quita) || !empty($guarda))
                     $this->costs = Project\Cost::getAll($this->id);
 
                 //retornos colectivos
 				$tiene = Project\Reward::getAll($this->id, 'social');
                 $viene = $this->social_rewards;
-                $quita = array_diff_assoc($tiene, $viene);
-                $guarda = array_diff_assoc($viene, $tiene);
+                $quita = array_diff_key($tiene, $viene);
+                $guarda = array_diff_key($viene, $tiene);
                 foreach ($quita as $key=>$item) {
-                    if (!$item->remove($errors))
+                    if (!$item->remove($errors)) {
                         $fail = true;
+                    } else {
+                        unset($tiene[$key]);
+                    }
                 }
                 foreach ($guarda as $key=>$item) {
                     if (!$item->save($errors))
                         $fail = true;
                 }
+                /* Ahora, los que tiene y vienen. Si el contenido es diferente, hay que guardarlo*/
+                foreach ($tiene as $key => $row) {
+                    // a ver la diferencia con el que viene
+                    if ($row != $viene[$key]) {
+                        if (!$viene[$key]->save($errors))
+                            $fail = true;
+                    }
+                }
+
                 if (!empty($quita) || !empty($guarda))
     				$this->social_rewards = Project\Reward::getAll($this->id, 'social');
 
                 //recompenssas individuales
 				$tiene = Project\Reward::getAll($this->id, 'individual');
                 $viene = $this->individual_rewards;
-                $quita = array_diff_assoc($tiene, $viene);
-                $guarda = array_diff_assoc($viene, $tiene);
+                $quita = array_diff_key($tiene, $viene);
+                $guarda = array_diff_key($viene, $tiene);
                 foreach ($quita as $key=>$item) {
-                    if (!$item->remove($errors))
+                    if (!$item->remove($errors)) {
                         $fail = true;
+                    } else {
+                        unset($tiene[$key]);
+                    }
                 }
                 foreach ($guarda as $key=>$item) {
                     if (!$item->save($errors))
                         $fail = true;
                 }
+                /* Ahora, los que tiene y vienen. Si el contenido es diferente, hay que guardarlo*/
+                foreach ($tiene as $key => $row) {
+                    // a ver la diferencia con el que viene
+                    if ($row != $viene[$key]) {
+                        if (!$viene[$key]->save($errors))
+                            $fail = true;
+                    }
+                }
+
                 if (!empty($quita) || !empty($guarda))
     				$this->individual_rewards = Project\Reward::getAll($this->id, 'individual');
 
 				// colaboraciones
 				$tiene = Project\Support::getAll($this->id);
                 $viene = $this->supports;
-                $quita = array_diff_assoc($tiene, $viene);
-                $guarda = array_diff_assoc($viene, $tiene);
+                $quita = array_diff_key($tiene, $viene); // quitar los que tiene y no viene
+                $guarda = array_diff_key($viene, $tiene); // añadir los que viene y no tiene
                 foreach ($quita as $key=>$item) {
-                    if (!$item->remove($errors))
+                    if (!$item->remove($errors)) {
                         $fail = true;
+                    } else {
+                        unset($tiene[$key]);
+                    }
                 }
                 foreach ($guarda as $key=>$item) {
                     if (!$item->save($errors))
                         $fail = true;
                 }
+                /* Ahora, los que tiene y vienen. Si el contenido es diferente, hay que guardarlo*/
+                foreach ($tiene as $key => $row) {
+                    // a ver la diferencia con el que viene
+                    if ($row != $viene[$key]) {
+                        if (!$viene[$key]->save($errors))
+                            $fail = true;
+                    }
+                }
+
                 if (!empty($quita) || !empty($guarda))
     				$this->supports = Project\Support::getAll($this->id);
 
@@ -688,6 +730,9 @@ namespace Goteo\Model {
                 $max++;
             }
             /***************** FIN Revisión del paso 6, COLABORACIONES *****************/
+
+            // Para que no lleguen al 100 le añadimos 20 al maximo
+            $max += 20;
 
             // Cálculo del % de progreso
             $progress = 100 * $score / $max;

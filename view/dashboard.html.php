@@ -36,7 +36,7 @@ include 'view/header.html.php'; ?>
 		<?php
 		foreach ($this['investors'] as $user=>$investor) {
 //			echo '<pre>' . print_r($investor, 1) . '</pre>';
-			echo "[{$investor->avatar}] {$investor->name} De nivel {$investor->worth}  Cofinancia {$investor->projects} proyectos  Me aporta: {$investor->amount} € <br />";
+			echo "{$investor->avatar} {$investor->name} De nivel {$investor->worth}  Cofinancia {$investor->projects} proyectos  Me aporta: {$investor->amount} € <br />";
 		}
 		?>
 		</p>

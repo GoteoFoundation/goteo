@@ -44,7 +44,7 @@ namespace Goteo\Controller {
                             'user' => $investor->user,
                             'name' => $investor->name,
                             'projects' => 1,
-                            'avatar' => 'url',
+                            'avatar' => $investor->avatar,
                             'worth' => $investor->worth,
                             'amount' => $investor->amount,
                             'date' => $investor->date
