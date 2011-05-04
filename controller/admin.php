@@ -175,6 +175,12 @@ namespace Goteo\Controller {
                 $project->succeed($errors);
             }
 
+            // marcar todos los retornos cunmplidos
+            if (isset($_GET['fulfill'])) {
+                $project = Model\Project::get($_GET['fulfill']);
+                $project->satisfied($errors);
+            }
+
 
             $projects = Model\Project::getList($node);
             $status = Model\Project::status();
@@ -303,6 +309,69 @@ namespace Goteo\Controller {
                     'worthcracy' => $worthcracy
                 )
             );
+        }
+
+
+        /*
+         * Gestión de retornos, por ahora en el admin pero es una gestión para los responsables de proyectos
+         * Proyectos financiados, puede marcar un retorno cumplido
+         */
+        public function rewards() {
+            if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
+                throw new Redirection("/dashboard");
+
+            $errors = array();
+
+            // si no está en edición, recuperarlo
+            if (isset($_GET['fulfill'])) {
+                $parts = explode(',', $_GET['fulfill']); // invest , reward
+                $investId = $parts[0];
+                $rewardId = $parts[1];
+                if (empty($investId) || empty($rewardId)
+                    || !is_numeric($investId) || !is_numeric($rewardId)) {
+                    break;
+                }
+                Model\Invest::setFulfilled($investId, $rewardId);
+            }
+
+
+            $projects = Model\Project::invested();
+
+            foreach ($projects as $kay=>&$project) {
+
+                // solo los financiados, despues
+                /*
+                if ($project->status != 4) {
+                    unset($projects[$kay]);
+                    continue;
+                }
+                 * 
+                 */
+
+                echo \trace($project);
+
+                $project->invests = Model\Invest::getAll($project->id);
+
+                // para cada uno sacar todos sus aportes
+                foreach ($project->invests as $key=>&$invest) {
+
+                    echo \trace($invest);
+                    if ($invest->status != 1) {
+                        unset($project->invests[$key]);
+                        continue;
+                    }
+                }
+            }
+
+
+            return new View(
+                'view/admin/rewards.html.php',
+                array(
+                    'projects' => $projects
+                )
+            );
+
+
         }
 
 

@@ -162,10 +162,11 @@ namespace Goteo\Model {
 
                 // dirección
                 if (!empty($this->address)) {
-                    $sql = "REPLACE INTO invest_address (invest, address, zipcode, location, country)
-                        VALUES (:invest, :address, :zipcode, :location, :country)";
+                    $sql = "REPLACE INTO invest_address (invest, user, address, zipcode, location, country)
+                        VALUES (:invest, :user, :address, :zipcode, :location, :country)";
                     self::query($sql, array(
                         ':invest'=>$this->id,
+                        ':user'=>$this->user,
                         ':address'=>$this->address->address,
                         ':zipcode'=>$this->address->zipcode, 
                         ':location'=>$this->address->location, 
@@ -264,6 +265,26 @@ namespace Goteo\Model {
             $sql = "REPLACE INTO invest_reward (invest, reward) VALUES (:invest, :reward)";
             if (self::query($sql, $values)) {
                 return true;
+            } else {
+                return false;
+            }
+        }
+
+        /*
+         * Marcar una recompensa como cumplida
+         */
+        public static function setFulfilled ($invest, $reward) {
+
+            $values = array(
+                ':invest' => $invest,
+                ':reward' => $reward
+            );
+
+            $sql = "UPDATE invest_reward SET fulfilled = 1 WHERE invest=:invest AND reward=:reward";
+            if (self::query($sql, $values)) {
+                return true;
+            } else {
+                return false;
             }
         }
 

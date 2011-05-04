@@ -27,9 +27,12 @@ namespace Goteo\Controller {
 
             $projectData = Model\Project::get($project);
 
+            if ($projectData->owner == $_SESSION['user']->id)
+                throw new Redirection('/dashboard', Redirection::TEMPORARY);
+
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $errors = array();
-
+                $los_datos = $_POST;
                 if (empty($_POST['email'])) {
                     $errors[] = 'Indicar la cuenta de paypal (o email)';
                 }
@@ -41,7 +44,9 @@ namespace Goteo\Controller {
                 if (empty($errors)) {
                     // añadir recompensas que ha elegido
                     $rewards = array();
-                    if (!empty($invest->id) && $invest->resign != 1) {
+                    if (isset($_POST['resign']) && $_POST['resign'] == 1) {
+                        // renuncia a las recompensas, bien por el/ella
+                    } else {
                         foreach ($_POST as $key=>$value) {
                             if (substr($key, 0, strlen('reward_')) == 'reward_')
                                 $rewards[] = $value;
