@@ -93,7 +93,9 @@ echo new SuperForm(array(
                         'avatar-image' => array(
                             'type'  => 'html',
                             'class' => 'inline',
-                            'html'  => '<img src="' . htmlspecialchars($user->avatar->getLink(110, 110)) . '" alt="Avatar" />'
+                            'html'  => is_object($user->avatar) ? 
+                                       $user->avatar . '<img src="' . htmlspecialchars($user->avatar->getLink(110, 110)) . '" alt="Avatar" />' :
+                                       ''
                         )                        
                     )               
                 )
