@@ -49,12 +49,14 @@ namespace Goteo\Controller {
                     }
 
                     // dirección de envio para las recompensas
-                    $address = (object) array(
+                    $address = array(
                         'address' => $_POST['address'],
                         'zipcode' => $_POST['zipcode'],
                         'location' => $_POST['location'],
                         'country' => $_POST['country']
                     );
+                    // insertamos los datos personales del usuario si no tiene registro aun
+                    Model\User::setPersonal($_SESSION['user']->id, $address, false);
 
                     // @TODO, cuenta paypal del usuario o su email
                     $invest = new Model\Invest(
@@ -70,7 +72,7 @@ namespace Goteo\Controller {
                         )
                     );
                     $invest->rewards = $rewards;
-                    $invest->address = $address;
+                    $invest->address = (object) $address;
 
                     if ($invest->save($errors)) {
                         // Petición de preapproval y redirección a paypal
@@ -86,7 +88,8 @@ namespace Goteo\Controller {
 
             $viewData = array(
                     'message' => $message,
-                    'project' => $projectData
+                    'project' => $projectData,
+                    'personal' => Model\User::getPersonal($_SESSION['user']->id)
                 );
 
             return new View (

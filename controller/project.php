@@ -216,6 +216,15 @@ namespace Goteo\Controller {
             //@TODO Verificar si tienen permisos para crear nuevos proyectos
             $project = new Model\Project;
             $project->create($_SESSION['user']->id);
+
+            // cargar los datos pesronales del usuario
+            $personalData = Model\User::getPersonal($_SESSION['user']->id);
+            foreach ($personalData as $key=>$value) {
+                $project->$key = $value;
+            }
+            $project->save();
+
+
             $_SESSION['stepped'] = array();
                 throw new Redirection("/project/{$project->id}/?edit");
 
@@ -353,10 +362,18 @@ namespace Goteo\Controller {
                 'country'
             );
 
+            $personalData = array();
+
             foreach ($fields as $field) {
                 if (isset($_POST[$field])) {
                     $project->$field = $_POST[$field];
+                    $personalData[$field] = $_POST[$field];
                 }
+            }
+
+            // actualizamos estos datos en los personales del usuario
+            if (!empty ($personalData)) {
+                Model\User::setPersonal($project->owner, $personalData, true);
             }
 
             return true;

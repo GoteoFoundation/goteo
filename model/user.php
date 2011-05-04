@@ -563,5 +563,84 @@ namespace Goteo\Model {
             return $worth;
         }
 
+        /**
+         * Valores por defecto actuales para datos personales
+         *
+         * @return type array
+         */
+        public static function getPersonal ($id) {
+            $query = self::query('SELECT  
+                                      contract_name,
+                                      contract_surname,
+                                      contract_nif,
+                                      contract_email,
+                                      phone,
+                                      address,
+                                      zipcode,
+                                      location,
+                                      country
+                                  FROM user_personal
+                                  WHERE user = ?'
+                , array($id));
+            
+            $data = $query->fetch(\PDO::FETCH_ASSOC);
+            return $data;
+        }
+
+        /**
+         * Actualizar los valores personales
+         *
+         * @params force boolean  (REPLACE data when true, only if empty when false)
+         * @return type booblean
+         */
+        public static function setPersonal ($user, $data = array(), $force = false, &$errors = array()) {
+
+            $fields = array(
+                  'contract_name',
+                  'contract_surname',
+                  'contract_nif',
+                  'contract_email',
+                  'phone',
+                  'address',
+                  'zipcode',
+                  'location',
+                  'country'
+            );
+
+            $values = array();
+            $set = '';
+
+            foreach ($data as $key=>$value) {
+                if (in_array($key, $fields)) {
+                    $values[":$key"] = $value;
+                    if ($set != '') $set .= ', ';
+                    $set .= "$key = :$key";
+                }
+            }
+
+            if (!empty($values) && $set != '') {
+                if ($force) {
+                    // actualizamos los datos
+                    $values[':user'] = $user;
+                    $sql = "UPDATE user_personal SET " . $set . " WHERE user = :user";
+                } else {
+                    // solo si no existe el registro
+                    $values[':user'] = $user;
+                    $sql = "INSERT INTO user_personal SET user = :user, ";
+                }
+
+                try {
+                    self::query($sql, $values);
+                    return true;
+
+                } catch (\PDOException $e) {
+                    $errors[] = "FALLO al gestionar el registro de fdatos personales " . $e->getMessage();
+                    return false;
+                }
+            }
+
+
+        }
+
 	}
 }

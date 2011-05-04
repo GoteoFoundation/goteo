@@ -112,8 +112,6 @@ namespace Goteo\Model {
                 $this->status = 1;
                 $this->progress = 0;
 
-                // cargar los datos legales del usuario
-
                 return $this->id;
             } catch (\PDOException $e) {
                 $errors[] = "ERROR al crear un nuevo proyecto<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>";
