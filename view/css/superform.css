@@ -302,6 +302,37 @@ div.superform div.elements > ol > li.element.slider > div.contents > ul > li > l
     cursor: pointer;
 }
 
+div.superform div.elements > ol > li.element.checkboxes.cols_1 > div.contents > ul > li,
+div.superform div.elements > ol > li.element.radios.cols_1 > div.contents > ul > li,
+div.superform div.elements > ol > li.element.slider.cols_1 > div.contents > ul > li {
+    width: 100%;
+}
+
+div.superform div.elements > ol > li.element.checkboxes.cols_3 > div.contents > ul > li,
+div.superform div.elements > ol > li.element.radios.cols_3 > div.contents > ul > li,
+div.superform div.elements > ol > li.element.slider.cols_3 > div.contents > ul > li {
+    width: 33.33%;
+}
+
+div.superform div.elements > ol > li.element.checkboxes.cols_4 > div.contents > ul > li,
+div.superform div.elements > ol > li.element.radios.cols_4 > div.contents > ul > li,
+div.superform div.elements > ol > li.element.slider.cols_4 > div.contents > ul > li {
+    width: 25%;
+}
+
+div.superform div.elements > ol > li.element.checkboxes.cols_5 > div.contents > ul > li,
+div.superform div.elements > ol > li.element.radios.cols_5 > div.contents > ul > li,
+div.superform div.elements > ol > li.element.slider.cols_5 > div.contents > ul > li {
+    width: 20%;
+}
+
+div.superform div.elements > ol > li.element.checkboxes.cols_6 > div.contents > ul > li,
+div.superform div.elements > ol > li.element.radios.cols_6 > div.contents > ul > li,
+div.superform div.elements > ol > li.element.slider.cols_6 > div.contents > ul > li {
+    width: 16.66%;
+}
+
+
 div.superform div.elements > ol > li.element.checkboxes > div.contents > ul > li > label > input[type="checkbox"],
 div.superform div.elements > ol > li.element.radios > div.contents > ul > li > label > input[type="radio"],
 div.superform div.elements > ol > li.element.slider > div.contents > ul > li > label > input[type="radio"] {
@@ -312,7 +343,6 @@ div.superform div.elements > ol > li.element.slider > div.contents > ul > li > l
     height: 1em;
     cursor: pointer;
 }
-
 
 /* Feedback */
 div.superform li.element > div.feedback {
