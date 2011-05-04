@@ -622,11 +622,11 @@ namespace Goteo\Model {
                 if ($force) {
                     // actualizamos los datos
                     $values[':user'] = $user;
-                    $sql = "UPDATE user_personal SET " . $set . " WHERE user = :user";
+                    $sql = "REPLACE INTO user_personal SET user = :user, " . $set;
                 } else {
                     // solo si no existe el registro
                     $values[':user'] = $user;
-                    $sql = "INSERT INTO user_personal SET user = :user, ";
+                    $sql = "INSERT INTO user_personal SET user = :user, " . $set;
                 }
 
                 try {
