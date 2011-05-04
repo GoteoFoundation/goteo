@@ -595,6 +595,19 @@ namespace Goteo\Model {
          */
         public static function setPersonal ($user, $data = array(), $force = false, &$errors = array()) {
 
+            if ($force) {
+                // actualizamos los datos
+                $ins = 'REPLACE';
+            } else {
+                // solo si no existe el registro
+                $ins = 'INSERT';
+                $query = self::query('SELECT user FROM user_personal WHERE user = ?', array($user));
+                if ($query->fetchColumn(0) == $user) {
+                    return false;
+                }
+            }
+
+
             $fields = array(
                   'contract_name',
                   'contract_surname',
@@ -619,15 +632,8 @@ namespace Goteo\Model {
             }
 
             if (!empty($values) && $set != '') {
-                if ($force) {
-                    // actualizamos los datos
                     $values[':user'] = $user;
-                    $sql = "UPDATE user_personal SET " . $set . " WHERE user = :user";
-                } else {
-                    // solo si no existe el registro
-                    $values[':user'] = $user;
-                    $sql = "INSERT INTO user_personal SET user = :user, ";
-                }
+                    $sql = "$ins INTO user_personal SET user = :user, " . $set;
 
                 try {
                     self::query($sql, $values);
