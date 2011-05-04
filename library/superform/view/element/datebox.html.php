@@ -14,15 +14,12 @@
             position: 'bottom',      
             eventName: 'click',
             onBeforeShow: function(){
-                dp.DatePickerSetDate(dp.val(), true);
-                dp.bind('blur', function () {
-                    //dp.DatePickerHide();
-                });
+                dp.DatePickerSetDate(dp.val(), true);                
             },
-            onChange: function(formatted, dates){
-                console.log(dates, formatted);
+            onChange: function(formatted, dates){                    
                     dp.val(formatted);
-                    //dp.DatePickerHide();                    
+                    dp.DatePickerHide();
+                    dp.focus();
             },
             locale: {
                 days: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábad', 'Domingo'],
@@ -32,7 +29,7 @@
                 monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
                 week: []
             }
-        });
+        });                
                
     })();
 </script>
