@@ -34,9 +34,9 @@ echo new SuperForm(array(
     'elements'      => array(
         
         'preview' => array(
-            'type'      => 'group',
+            'type'      => 'html',
             'class'     => 'fullwidth',
-            'extraHTML' =>   '<div class="project-preview" style="position: relative"><div>'    
+            'html'      =>   '<div class="project-preview" style="position: relative"><div>'    
                            . '<div class="overlay" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 999"></div>'    
                            . '<div style="z-index: 0">'                            
                            . new View('view/project/widget/support.html.php')
