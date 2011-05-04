@@ -17,11 +17,10 @@ include 'view/header.html.php'; ?>
 			Mis proyectos:<br />
 		<?php
 		foreach ($this['projects'] as $project) {
-			echo '<a href="/project/' . $project->id . '/?edit">' . ($project->name != '' ? $project->name : $project->id) . '</a>
+			echo '<a href="/project/' . $project->id . '">' . ($project->name != '' ? $project->name : $project->id) . '</a>
                 (' . $this['status'][$project->status] . ')
                     Progreso: ' . $project->progress . '%
-                        <a href="/project/' . $project->id . '">[Preview]</a>
-                            <a href="/project/' . $project->id . '/?finish">[Finalizar]</a>
+                        <a href="/project/' . $project->id . '/?edit">[Editar]</a>
                                 <br />';
 		}
 		?>
@@ -35,7 +34,6 @@ include 'view/header.html.php'; ?>
 			Mis cofinanciadores:<br />
 		<?php
 		foreach ($this['investors'] as $user=>$investor) {
-//			echo '<pre>' . print_r($investor, 1) . '</pre>';
 			echo "{$investor->avatar} {$investor->name} De nivel {$investor->worth}  Cofinancia {$investor->projects} proyectos  Me aporta: {$investor->amount} € <br />";
 		}
 		?>
@@ -45,7 +43,7 @@ include 'view/header.html.php'; ?>
 			Compartiendo intereses:<br />
 		<?php
 		foreach ($this['shares'] as $share) {
-			echo "{$share->name} - Tiene " . count($share->projects) ." proyectos - Ha hecho " . count($share->invests) ." aportes<br />";
+			echo "{$share->name} - Tiene " . $share->projects ." proyectos - Ha hecho " . $share->invests ." aportes<br />";
 		}
 		?>
 		</p>

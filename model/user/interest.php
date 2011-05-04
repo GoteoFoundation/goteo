@@ -104,8 +104,23 @@ namespace Goteo\Model\User {
                         ";
                 $query = static::query($sql, array('me'=>$user));
                 $shares = $query->fetchAll(\PDO::FETCH_ASSOC);
-                foreach ($shares as $he) {
-                    $array[] = \Goteo\Model\User::get($he['id']);
+                foreach ($shares as $share) {
+
+                    // nombre i avatar
+                    $user = \Goteo\Model\User::get($share['id']);
+                    // meritocracia
+                    $support = (object) $user->support;
+                    // proyectos publicados
+                    $query = self::query('SELECT COUNT(id) FROM project WHERE owner = ? AND status = 3', array($share['id']));
+                    $projects = $query->fetchColumn(0);
+
+                    $array[] = (object) array(
+                        'user' => $share['id'],
+                        'avatar' => $user->avatar,
+                        'name' => $user->name,
+                        'projects' => $projects,
+                        'invests' => $support->invests
+                    );
                 }
 
                 return $array;
