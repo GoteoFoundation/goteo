@@ -276,7 +276,7 @@ namespace Goteo\Controller {
          * Paso 1 - PERFIL
          */
         private function process_userProfile(&$project, &$errors) {
-            if (!isset($_POST['user_name']))
+            if (!isset($_POST['user_name'])) {
                 return false;
             }
 
