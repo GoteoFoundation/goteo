@@ -544,7 +544,7 @@ namespace Goteo\Model {
             $projects = $query->fetchAll(\PDO::FETCH_ASSOC);
             $query = self::query('SELECT SUM(amount), COUNT(id) FROM invest WHERE user = ? AND status <> 2', array($this->id));
             $invest = $query->fetch();
-            return array('projects' => $projects, 'amount' => $invest[0], 'count' => $invest[1]);
+            return array('projects' => $projects, 'amount' => $invest[0], 'invests' => $invest[1]);
         }
 
 	    /**
