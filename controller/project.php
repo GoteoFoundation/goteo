@@ -276,7 +276,7 @@ namespace Goteo\Controller {
          * Paso 1 - PERFIL
          */
         private function process_userProfile(&$project, &$errors) {
-            if (!isset($_POST['user_interests'])) {
+            if (!isset($_POST['user_name']))
                 return false;
             }
 
@@ -367,6 +367,9 @@ namespace Goteo\Controller {
          */
 
         private function process_overview(&$project, &$errors) {
+            if (!isset($_POST['name']))
+                return false;
+
             // campos que guarda este paso
             $fields = array(
                 'name',
@@ -521,7 +524,6 @@ namespace Goteo\Controller {
          */
          private function process_supports(&$project, &$errors) {            
 
-             $losdatos = $_POST;
             // tratar colaboraciones existentes
             foreach ($project->supports as $key => $support) {
                 
