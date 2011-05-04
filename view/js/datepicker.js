@@ -466,8 +466,8 @@
 					var tblEl = parentEl.parent().parent().parent();
 					var tblIndex = $('table', this).index(tblEl.get(0)) - 1;
 					var tmp = new Date(options.current);
-					var changed = false;
 					var fillIt = false;
+                                        var changed = false;
 					if (parentEl.is('th')) {
 						if (parentEl.hasClass('datepickerWeek') && options.mode == 'range' && !parentEl.next().hasClass('datepickerDisabled')) {
 							var val = parseInt(parentEl.next().text(), 10);
@@ -526,6 +526,7 @@
 								tblEl.get(0).className = 'datepickerViewMonths';
 								break;
 							default:
+                                                                changed = true;
 								var val = parseInt(el.text(), 10);
 								tmp.addMonths(tblIndex - Math.floor(options.calendars/2));
 								if (parentEl.hasClass('datepickerNotInMonth')) {
@@ -565,8 +566,7 @@
 								}
 								break;
 						}
-						fillIt = true;
-						changed = true;
+						fillIt = true;						
 					}
 					if (fillIt) {
 						fill(this);
@@ -775,36 +775,46 @@
 				});
 			},
 			setDate: function(date, shiftTo){
+                            
 				return this.each(function(){
 					if ($(this).data('datepickerId')) {
 						var cal = $('#' + $(this).data('datepickerId'));
 						var options = cal.data('datepicker');
-						options.date = date;
-						if (options.date.constructor == String) {
-							options.date = parseDate(options.date, options.format);
-							options.date.setHours(0,0,0,0);
-						}
+                                                
+						if (date.constructor == String) {
+							date = parseDate(date, options.format);
+							date.setHours(0,0,0,0);
+						}                                                                                                
+                                                
 						if (options.mode != 'single') {
-							if (options.date.constructor != Array) {
-								options.date = [options.date.valueOf()];
+							if (date.constructor != Array) {
+								date = [date.valueOf()];
 								if (options.mode == 'range') {
-									options.date.push(((new Date(options.date[0])).setHours(23,59,59,0)).valueOf());
+									date.push(((new Date(date[0])).setHours(23,59,59,0)).valueOf());
 								}
 							} else {
-								for (var i = 0; i < options.date.length; i++) {
-									options.date[i] = (parseDate(options.date[i], options.format).setHours(0,0,0,0)).valueOf();
+								for (var i = 0; i < date.length; i++) {
+									date[i] = (parseDate(date[i], options.format).setHours(0,0,0,0)).valueOf();
 								}
 								if (options.mode == 'range') {
-									options.date[1] = ((new Date(options.date[1])).setHours(23,59,59,0)).valueOf();
+									date[1] = ((new Date(date[1])).setHours(23,59,59,0)).valueOf();
 								}
 							}
 						} else {
-							options.date = options.date.valueOf();
+							date = date.valueOf();
 						}
-						if (shiftTo) {
+                                                
+                                                if (date) {
+                                                    options.date = date;
+                                                
+                                                    if (shiftTo) {
 							options.current = new Date (options.mode != 'single' ? options.date[0] : options.date);
-						}
-						fill(cal.get(0));
+                                                    }
+                                                    fill(cal.get(0));
+                                                    return true;
+                                                }               
+                                                
+                                                return false;
 					}
 				});
 			},

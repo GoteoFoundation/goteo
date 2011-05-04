@@ -4,9 +4,13 @@
  */
  
 body.project-edit div#main.userProfile div.superform li.element.webs li.element.web li.element,
-body.project-edit div#main.userProfile div.superform li.element.user_avatar li.element {
+body.project-edit div#main.userProfile div.superform li.element.user_avatar > div.children > div.elements > ol > li.element {
     display: table-cell;
     vertical-align: top;
+}
+
+body.project-edit div#main.userProfile div.superform li.element.user_avatar ol {
+    padding: 0;
 }
 
 body.project-edit div#main.userProfile div.superform li.element.webs li.element.web-url {

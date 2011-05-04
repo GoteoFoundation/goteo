@@ -16,7 +16,6 @@ namespace Goteo\Library\SuperForm {
             $required = false,
             $errors = array(),
             $children = array(),
-            $extraHTML = '',
             $level = 2,
             $view,
             $data = array();
@@ -74,6 +73,8 @@ namespace Goteo\Library\SuperForm {
         }        
         
         public function getInnerHTML () {
+            
+            
             
             if ($this->view !== false) {                                
                 return (string) (new View($this->view, $this));                
