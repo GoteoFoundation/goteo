@@ -194,10 +194,9 @@ namespace Goteo\Controller {
                     if (empty($project->errors)) {
                         $success[] = Text::get('guide-project-success-noerrors');
                     }
-                    if ($project->progress > 80 && $project->status == 1) {
+                    if ($project->finishable) {
                         $success[] = Text::get('guide-project-success-minprogress');
                         $success[] = Text::get('guide-project-success-okfinish');
-                        $viewData['finishable'] = true;
                     }
                     $viewData['success'] = $success;
                     break;
@@ -244,8 +243,10 @@ namespace Goteo\Controller {
                 throw new Redirection("/project/{$project->id}");
 
             $errors = array();
-            if ($project->ready($errors))
-                throw new Redirection("/project/{$project->id}");
+            if ($project->ready($errors)) {
+                // enviarlo a preview con mensaje guay
+                throw new Redirection("/project/{$project->id}/?edit");
+            }
             
             throw new \Goteo\Core\Exception(implode(' ', $errors));
         }

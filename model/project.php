@@ -68,10 +68,6 @@ namespace Goteo\Model {
             $days = 0, //para 40 desde la publicación o para 80 si no está caducado
             $investors = array(), // usuarios que han invertido
 
-            //operaciones habilitadas para el owner
-            $finishable = false, // si puede mandarlo a revisar
-            $enableable = false, // si puede recuperar estando caducado
-
             $errors = array(), // para los fallos en los datos
 
             $messages = array(); // mensajes de los usuarios hilos con hijos
@@ -522,8 +518,8 @@ namespace Goteo\Model {
                 //costes
                 $tiene = Project\Cost::getAll($this->id);
                 $viene = $this->costs;
-                $quita = array_diff_assoc($tiene, $viene);
-                $guarda = array_diff_assoc($viene, $tiene);
+                $quita = array_diff_key($tiene, $viene);
+                $guarda = array_diff_key($viene, $tiene);
                 foreach ($quita as $key=>$item) {
                     if (!$item->remove($errors)) {
                         $fail = true;
@@ -550,8 +546,8 @@ namespace Goteo\Model {
                 //retornos colectivos
 				$tiene = Project\Reward::getAll($this->id, 'social');
                 $viene = $this->social_rewards;
-                $quita = array_diff_assoc($tiene, $viene);
-                $guarda = array_diff_assoc($viene, $tiene);
+                $quita = array_diff_key($tiene, $viene);
+                $guarda = array_diff_key($viene, $tiene);
                 foreach ($quita as $key=>$item) {
                     if (!$item->remove($errors)) {
                         $fail = true;
@@ -578,8 +574,8 @@ namespace Goteo\Model {
                 //recompenssas individuales
 				$tiene = Project\Reward::getAll($this->id, 'individual');
                 $viene = $this->individual_rewards;
-                $quita = array_diff_assoc($tiene, $viene);
-                $guarda = array_diff_assoc($viene, $tiene);
+                $quita = array_diff_key($tiene, $viene);
+                $guarda = array_diff_key($viene, $tiene);
                 foreach ($quita as $key=>$item) {
                     if (!$item->remove($errors)) {
                         $fail = true;
