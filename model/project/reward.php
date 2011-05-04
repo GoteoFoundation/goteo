@@ -27,7 +27,7 @@ namespace Goteo\Model\Project {
 		public static function getAll ($project, $type) {
             try {
                 $array = array();
-				$query = self::query("SELECT * FROM reward WHERE project = ? AND type= ?", array($project, $type));
+				$query = self::query("SELECT * FROM reward WHERE project = ? AND type= ? ORDER BY id DESC", array($project, $type));
 				foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item ) {
                     $array[$item->id] = $item;
                 }
