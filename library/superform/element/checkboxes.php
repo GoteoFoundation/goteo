@@ -17,7 +17,7 @@ namespace Goteo\Library\SuperForm\Element {
             
             $options = array();
             
-            foreach ($this->options as $value => $option) { 
+            foreach ($this->options as $value => &$option) { 
                 
                 if (!($option instanceof CheckBox)) {
                     
@@ -39,11 +39,11 @@ namespace Goteo\Library\SuperForm\Element {
                     
                 }
                 
-                $options[] = $option;
-                                                
+                if (isset($this->value)) {
+                    $option->checked = ($option->value == $this->value); 
+                }
+                
             }                   
-            
-            $this['options'] = $this->options = $options;
             
         }
         

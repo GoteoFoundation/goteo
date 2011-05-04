@@ -20,8 +20,7 @@ $currently = array();
 foreach ($this['currently'] as $value => $label) {
     $currently[] =  array(
         'value'     => $value,
-        'label'     => $label,
-        'checked'   => $project->currently == $value
+        'label'     => $label        
         );            
 }
 
@@ -131,6 +130,7 @@ $superform = array(
             'class'     => 'currently',
             'hint'      => Text::get('tooltip-project-currently'),
             'errors'    => !empty($errors['currently']) ? array($errors['currently']) : array(),
+            'value'     => $project->currently
         ),
 
         'location' => array(

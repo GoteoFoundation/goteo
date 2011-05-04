@@ -14,24 +14,32 @@ namespace Goteo\Library\SuperForm\Element {
             parent::__construct($data);
             
             if (!is_array($this->options)) {
-                throw new Exception;
+                $this->options = array();
             }
             
             foreach ($this->options as $value => &$option) { 
                 
-                if (is_string($option)) {                    
+                if (is_string($option)) {
+                    
                     $option = new Radio(array(
                         'value' => $value,
                         'label' => (string) $option,
                         'name'  => $this->name
-                    ));                    
+                    ));
+                    
                 } else if (is_array($option)) {
-                    $option = new Radio($option + array('name' => $this->name));                    
-                } else if ($option instanceof Radio) {
-                    throw new Exception;
+                    
+                    $option = new Radio($option + array('name' => $this->name));
+                    
+                } else {
+                    
+                    continue;
+                    
                 }
                 
-                $option->checked = ($option->value == $this->value); 
+                if (isset($this->value)) {
+                    $option->checked = ($option->value == $this->value); 
+                }
                 
             }            
             
