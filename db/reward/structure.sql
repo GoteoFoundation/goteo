@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS reward (
   id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   project varchar(50) NOT NULL,
-  reward varchar(256) NOT NULL,
+  reward varchar(256),
   description tinytext,
-  `type` varchar(50) NOT NULL,
+  `type` varchar(50) DEFAULT NULL,
   icon varchar(50) DEFAULT NULL,
   license varchar(50) DEFAULT NULL,
   amount int(5) DEFAULT NULL,

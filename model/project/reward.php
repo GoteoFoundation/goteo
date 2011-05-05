@@ -9,7 +9,7 @@ namespace Goteo\Model\Project {
 			$project,
 			$reward,
 			$description,
-			$type,
+			$type = 'social',
 			$icon,
 			$license,
 			$amount,
@@ -24,7 +24,7 @@ namespace Goteo\Model\Project {
             }
 		}
 
-		public static function getAll ($project, $type) {
+		public static function getAll ($project, $type = 'social') {
             try {
                 $array = array();
 				$query = self::query("SELECT * FROM reward WHERE project = ? AND type= ? ORDER BY id ASC", array($project, $type));
@@ -122,7 +122,7 @@ namespace Goteo\Model\Project {
                 'manual' => 'Manuales');
 
 			if ($type == 'individual') {
-				$icons['6'] = 'Producto';
+				$icons['product'] = 'Producto';
 			}
 
             return $icons;

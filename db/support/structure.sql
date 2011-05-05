@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS support (
   id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   project varchar(50) NOT NULL,
-  support tinytext NOT NULL,
-  description text NOT NULL,
-  `type` varchar(50) NOT NULL,
+  support tinytext,
+  description text,
+  `type` varchar(50) DEFAULT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY id (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Colaboraciones';

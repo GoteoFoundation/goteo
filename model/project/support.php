@@ -9,7 +9,7 @@ namespace Goteo\Model\Project {
 			$project,
 			$support,
 			$description,
-			$type;
+			$type = 'task';
 
 	 	public static function get ($id) {
             try {
