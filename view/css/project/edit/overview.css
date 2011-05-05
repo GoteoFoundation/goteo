@@ -1,0 +1,38 @@
+body.project-edit div#main.overview div.superform li.element.media {
+    position: relative;
+}
+
+body.project-edit div#main.overview div.superform li.element.media > div.contents {
+    margin-right: 256.6px;
+}
+
+body.project-edit div#main.overview div.superform li.element.media textarea {    
+    min-height: 170px;
+    z-index: 458;
+}
+
+body.project-edit div#main.overview div.superform li.element.media > div.children * {
+    margin: 0;
+    padding: 0;
+}
+
+body.project-edit div#main.overview div.superform li.element.media > div.children {
+    position: absolute;
+    right: 16px; /* 1em + 2px */
+    bottom: 26px; /* 2em of 13px */
+    width: 250px;
+    height: 170px;
+    padding: .4em;
+    font-size: 14px;
+    background-color: white;
+    border: 1px solid #1fb0b0;
+    z-index: 45;
+}
+
+body.project-edit div#main.overview div.superform li.element.media-preview > div {
+    background-color: white;
+}
+
+body.project-edit div#main.overview div.superform li.element.media-preview .title {
+    display: none;
+}
