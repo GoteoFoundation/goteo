@@ -116,10 +116,19 @@ $superform = array(
         'media' => array(
             'type'      => 'textarea',
             'title'     => 'Vídeo',
+            'class'     => 'media',
             'required'  => true,
             'hint'      => Text::get('tooltip-project-media'),
             'errors'    => !empty($errors['media']) ? array($errors['media']) : array(),
-            'value'     => $project->media
+            'value'     => $project->media,
+            'children'  => array(
+                'media-preview' => array(
+                    'title' => 'Vista previa',
+                    'class' => 'media-preview inline',
+                    'type'  => 'html',
+                    'html'  => '<div></div>'
+                )
+            )
         ),
                 
         'currently' => array(    
