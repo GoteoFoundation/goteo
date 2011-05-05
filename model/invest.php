@@ -47,7 +47,7 @@ namespace Goteo\Model {
                         ON invest_reward.reward = reward.id
                     WHERE   invest_reward.invest = ?
                     ", array($id));
-				$invest->rewards = $query->fetchAll(\PDO::FETCH_ASSOC);
+				$invest->rewards = $query->fetchAll(\PDO::FETCH_CLASS);
 
 				$query = static::query("
                     SELECT  address, zipcode, location, country
@@ -83,7 +83,7 @@ namespace Goteo\Model {
                         ON invest_reward.reward = reward.id
                     WHERE   invest_reward.invest = ?
                     ", array($invest->id));
-				$invest->rewards = $query->fetchAll(\PDO::FETCH_ASSOC);
+				$invest->rewards = $query->fetchAll(\PDO::FETCH_CLASS);
 
 				$query = static::query("
                     SELECT  address, zipcode, location, country
