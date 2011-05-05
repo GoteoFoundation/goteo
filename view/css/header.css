@@ -102,7 +102,6 @@ div#header div#highlights > h2 {
     color: #e7e1d9;
     margin: 0 1em 0 0;
     float: left;
-    display: table;
 }
 
 div#header div#highlights > ul {
@@ -110,11 +109,12 @@ div#header div#highlights > ul {
     padding: 0;
     margin: 0;
     overflow: hidden;        
+    display: inline-block;    
 }
 
 div#header div#highlights > ul > li {    
     white-space: nowrap;
-    float: left;
+    display: block;
     padding-right: 8em;
     overflow: hidden;
     color: white;
