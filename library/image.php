@@ -79,7 +79,7 @@ namespace Goteo\Library {
                     // Ejecuta SQL.
                     $result = self::query($query, $data);
                     if(empty($this->id)) $this->id = self::insertId();
-                    return $result;
+                    return true;
             	} catch(\PDOException $e) {
                     $errors[] = "No se ha podido guardar el archivo en la base de datos: " . $e->getMessage();
                     return false;
