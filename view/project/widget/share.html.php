@@ -14,8 +14,7 @@ $twitter_url = 'http://twitter.com/home?status=' . rawurlencode($share_title . '
     <h<?php echo $level ?> class="title">Comparte este proyecto</h<?php echo $level ?>>        
     <ul>
         <li class="twitter"><a target="_blank" href="<?php echo htmlspecialchars($twitter_url) ?>">Twitter</a></li>
-        <li class="facebook"><a target="_blank" href="<?php echo htmlspecialchars($facebook_url) ?>">Facebook</a></li>
-        <li class="email"><a target="_blank" href="">E-mail</a></li>
+        <li class="facebook"><a target="_blank" href="<?php echo htmlspecialchars($facebook_url) ?>">Facebook</a></li>        
         <li onclick="$(this).children('input').focus(); return false;" class="url"><span>URL: </span> <input type="text" onfocus="this.select();" readonly="readonly" size="35" value="<?php echo htmlspecialchars($share_url) ?>" /></li>
     </ul>
 </div>
