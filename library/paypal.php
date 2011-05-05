@@ -46,7 +46,6 @@ namespace Goteo\Library {
                     $endDate = date('Y-m-d', mktime(0,0,0,date('m',$endDate),date('d',$endDate)+100,date('Y',$endDate)));
 
 
-
 		           /* Make the call to PayPal to get the preapproval token
 		            If the API call succeded, then redirect the buyer to PayPal
 		            to begin to authorize payment.  If an error occured, show the
@@ -57,10 +56,10 @@ namespace Goteo\Library {
 		           $preapprovalRequest->cancelUrl = $cancelURL;
 		           $preapprovalRequest->returnUrl = $returnURL;
 		           $preapprovalRequest->clientDetails = new \ClientDetailsType();
-		           $preapprovalRequest->clientDetails->customerId = $invest->user;
+		           $preapprovalRequest->clientDetails->customerId = $invest->user->id;
 		           $preapprovalRequest->clientDetails->applicationId = PAYPAL_APPLICATION_ID;
 		           $preapprovalRequest->clientDetails->deviceId = PAYPAL_DEVICE_ID;
-		           $preapprovalRequest->clientDetails->ipAddress = PAYPAL_IP_ADDRESS;
+		           $preapprovalRequest->clientDetails->ipAddress = $_SERVER['REMOTE_ADDR'];
 		           $preapprovalRequest->currencyCode = "EUR";
 		           $preapprovalRequest->startingDate = $startDate;
 		           $preapprovalRequest->endingDate = $endDate;
@@ -118,11 +117,11 @@ namespace Goteo\Library {
                 // Create request object
                 $payRequest = new \PayRequest();
                 $payRequest->actionType = "PAY";
-                $payRequest->memo = "Ejecución del aporte de {$invest->amount} EUR al proyecto {$invest->project} en la plataforma Goteo";
+                $payRequest->memo = "Cargo del aporte de {$invest->amount} EUR al proyecto {$invest->project} en la plataforma Goteo";
                 $payRequest->cancelUrl = PAYPAL_SITE_URL.'/cron/charge_fail/' . $invest->id;
                 $payRequest->returnUrl = PAYPAL_SITE_URL.'/cron/charge_success/' . $invest->id;
                 $payRequest->clientDetails = new \ClientDetailsType();
-		        $payRequest->clientDetails->customerId = $invest->user;
+		        $payRequest->clientDetails->customerId = $invest->user->id;
                 $payRequest->clientDetails->applicationId = PAYPAL_APPLICATION_ID;
                 $payRequest->clientDetails->deviceId = PAYPAL_DEVICE_ID;
                 $payRequest->clientDetails->ipAddress = PAYPAL_IP_ADDRESS;
@@ -149,12 +148,24 @@ namespace Goteo\Library {
                 if(strtoupper($ap->isSuccess) == 'FAILURE') {
                     $soapFault = $ap->getLastError();
                     if(is_array($soapFault->error)) {
-                        $msg = $soapFault->error[0]->errorId . ", error message: " . $soapFault->error[0]->message ;
+                        $errorId = $soapFault->error[0]->errorId;
+                        $errorMsg = $soapFault->error[0]->message;
                     } else {
-                        $msg = $soapFault->error->errorId . ", error message: " . $soapFault->error->message ;
+                        $errorId = $soapFault->error->errorId;
+                        $errorMsg = $soapFault->error->message;
                     }
+
+                    // tratamiento de errores
+                    switch ($errorId) {
+                        case '539012':
+                            if ($invest->cancel()) {
+                                $action = 'Aporte cancelado';
+                            }
+                            break;
+                    }
+
                     $errors[] = 'No se ha podido inicializar la comunicación con Paypal para la ejecución del cargo.';
-                    $errors[] = $msg;
+                    $errors[] = "$action $errorMsg [$errorId]";
                     return false;
                 }
 
