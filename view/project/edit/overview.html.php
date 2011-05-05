@@ -67,6 +67,14 @@ $superform = array(
             'value'     => $project->description,            
             'errors'    => !empty($errors['description']) ? array($errors['description']) : array(),
             'children'  => array(                
+                'about' => array(
+                    'type'      => 'textarea',       
+                    'title'     => 'Qué es',
+                    'required'  => true,
+                    'hint'      => Text::get('tooltip-project-about'),
+                    'errors'    => !empty($errors['about']) ? array($errors['about']) : array(),
+                    'value'     => $project->about
+                ),
                 'motivation' => array(
                     'type'      => 'textarea',       
                     'title'     => 'Motivación',
