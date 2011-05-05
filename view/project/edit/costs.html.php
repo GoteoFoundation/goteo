@@ -126,16 +126,17 @@ echo new SuperForm(array(
                     'type'  => 'submit',
                     'label' => 'Añadir',
                     'class' => 'add',
-                ),
-                'cost-meter' => array(
-                    'title'     => 'Totales',
-                    'class'     => 'cost-meter',
-                    'view'      => new View('view/project/edit/costs/meter.html.php', array(
-                        'project'   => $project
-                    )),
-                    'hint'      => Text::get('tooltip-project-totals')
-                )
+                )                
             )
+        ),
+        
+        'cost-meter' => array(
+            'title'     => 'Totales',
+            'class'     => 'cost-meter',
+            'view'      => new View('view/project/edit/costs/meter.html.php', array(
+                'project'   => $project
+            )),
+            'hint'      => Text::get('tooltip-project-totals')
         ),
         
         'resource' => array(
