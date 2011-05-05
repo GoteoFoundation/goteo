@@ -27,7 +27,7 @@ namespace Goteo\Model\Project {
 		public static function getAll ($project, $type) {
             try {
                 $array = array();
-				$query = self::query("SELECT * FROM reward WHERE project = ? AND type= ? ORDER BY id DESC", array($project, $type));
+				$query = self::query("SELECT * FROM reward WHERE project = ? AND type= ? ORDER BY id ASC", array($project, $type));
 				foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item ) {
                     $array[$item->id] = $item;
                 }
@@ -115,14 +115,14 @@ namespace Goteo\Model\Project {
 
 		public static function icons($type = 'social') {
             $icons = array(
-                1=>'Archivos digitales',
-                2=>'Dinero',
-                3=>'Código fuente',
-                4=>'Servicios',
-                5=>'Manuales');
+                'file' => 'Archivos digitales',
+                'money' => 'Dinero',
+                'code' => 'Código fuente',
+                'service' => 'Servicios',
+                'manual' => 'Manuales');
 
 			if ($type == 'individual') {
-				$icons[6] = 'Producto';
+				$icons['6'] = 'Producto';
 			}
 
             return $icons;
@@ -130,12 +130,12 @@ namespace Goteo\Model\Project {
 
 		public static function licenses() {
             return array(
-                1=>'Open Hardware',
-                2=>'Creative Commons',
-                3=>'General Public',
-                4=>'Open Database',
-                5=>'Red Abierta',
-                6=>'GNU Affero');
+                'ohl' => 'Open Hardware',
+                'cc' => 'Creative Commons',
+                'gpl' => 'General Public',
+                'odbl' => 'Open Database',
+                'xoln' => 'Red Abierta',
+                'agpl' => 'GNU Affero');
 		}
 
 	}
