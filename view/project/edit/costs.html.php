@@ -2,7 +2,7 @@
 
 use Goteo\Library\Text,
     Goteo\Library\SuperForm,
-    Goteo\Library\View;
+    Goteo\Core\View;
             
 $project = $this['project'];
 
@@ -126,6 +126,14 @@ echo new SuperForm(array(
                     'type'  => 'submit',
                     'label' => 'Añadir',
                     'class' => 'add',
+                ),
+                'cost-meter' => array(
+                    'title'     => 'Totales',
+                    'class'     => 'cost-meter',
+                    'view'      => new View('view/project/edit/costs/meter.html.php', array(
+                        'project'   => $project
+                    )),
+                    'hint'      => Text::get('tooltip-project-totals')
                 )
             )
         ),
@@ -137,7 +145,7 @@ echo new SuperForm(array(
             'title'     => 'Otros recursos',
             'hint'      => Text::get('tooltip-project-resource'),
             'value'     => $project->resource
-        )/*,          
+        )/*
         
         'schedule' => array(                        
             'title'     => 'Agenda',            
