@@ -80,11 +80,12 @@ div#header div#about ul li > *:hover {
 div#header div#highlights {    
     font-size: 12px;
     height: 2.2em;
-    max-width: 400px;
+    max-width: 60%;
     float: left;
     position: relative;
     white-space: nowrap;
     z-index: 1;
+    overflow: hidden;
 }
 
 div#header div#highlights > h2,
@@ -97,21 +98,18 @@ div#header div#highlights > ul > li > a {
     height: 2.2em;
 }
 
-div#header div#highlights > ul > li {
-    color: white;
-}
-
 div#header div#highlights > h2 {
     color: #e7e1d9;
     margin: 0 1em 0 0;
     float: left;
+    display: table;
 }
 
 div#header div#highlights > ul {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: inline-block;
+    overflow: hidden;        
 }
 
 div#header div#highlights > ul > li {    
@@ -119,6 +117,7 @@ div#header div#highlights > ul > li {
     float: left;
     padding-right: 8em;
     overflow: hidden;
+    color: white;
 }
 
 div#header div#highlights > ul > li > a {
