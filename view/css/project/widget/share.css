@@ -13,8 +13,8 @@ div.widget.project-share li {
     display: block;
     padding-left: 30px;
     float: left;    
-    min-height: 20px;
-    line-height: 20px;
+    min-height: 2em;
+    line-height: 2em;
     background: no-repeat left center;
     min-width: 20%;
 }
@@ -31,15 +31,8 @@ div.widget.project-share li.twitter {
     background-image: url('share/twitter.png');    
 }
 
-div.widget.project-share li.email {
-    background-image: url('share/email.png');
-    clear: left;
-    margin-top: 15px;
-}
-
 div.widget.project-share li.url {
-    background-image: url('share/url.png');
-    margin-top: 15px;
+    background-image: url('share/url.png'); 
 }
 
 div.widget.project-share li.url span {
