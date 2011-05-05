@@ -1,0 +1,16 @@
+div.widget.project-media {
+    padding: 0;
+    width: 620px;
+    height: 380px;
+    margin-right: 20px;
+}
+
+div.widget.project-media > iframe,
+div.widget.project-media > object,
+div.widget.project-media > embed {
+    min-width: 620px !important;
+    min-height: 380px !important;
+    width: 620px !important;
+    height: 380px !important;
+}
+}
