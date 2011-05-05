@@ -88,7 +88,8 @@ div.superform > div.elements div.elements > ol {
     padding-left: 2em;    
 }
 
-div.superform div.contents + div.children > div.elements > ol {
+div.superform li.element > div.contents + div.children > div.elements > ol,
+div.superform li.element > div.contents + div.feedback + div.children > div.elements > ol{
     margin-top: 1em;
 }
 
