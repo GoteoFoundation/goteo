@@ -4,7 +4,7 @@ namespace Goteo\Model {
 
 	use Goteo\Core\Redirection,
         Goteo\Library\Text,
-        Goteo\Library\Image,
+        Goteo\Model\Image,
         Goteo\Library\Mail,
         Goteo\Library\Check;
 

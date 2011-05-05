@@ -1,6 +1,6 @@
 <?php
 
-namespace Goteo\Library {
+namespace Goteo\Model {
 
     class Image extends \Goteo\Core\Model {
 
@@ -213,7 +213,7 @@ namespace Goteo\Library {
 		 * @param type int	$height
 		 */
         public function display ($width, $height) {
-		    require_once PEAR . 'Image/Transform.php';
+            require_once PEAR . 'Image/Transform.php';
             $it =& \Image_Transform::factory('GD');
             if (\PEAR::isError($it)) {
                 die($it->getMessage() . '<br />' . $it->getDebugInfo());
