@@ -74,17 +74,19 @@ namespace Goteo\Library\SuperForm {
         
         public function getInnerHTML () {
             
-            
-            
-            if ($this->view !== false) {                                
-                return (string) (new View($this->view, $this));                
+            if ($this->view !== false) {
+                if ($this->view instanceof View) {
+                    return (string) $this->view;
+                } else {
+                    return (string) (new View($this->view, $this));
+                }                
             }
             
             return '';
         }
         
         public function __toString () {                                               
-            return (string) (new View('library/superform/view/element.html.php', array('element' =>$this)));            
+            return (string) (new View('library/superform/view/element.html.php', array('element' => $this)));            
         }
         
     }
