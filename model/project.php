@@ -138,15 +138,7 @@ namespace Goteo\Model {
 				// costes y los sumammos
 				$project->costs = Project\Cost::getAll($id);
 
-				foreach ($project->costs as $item) {
-					if ($item->required == 1) {
-						$project->mincost += $item->amount;
-						$project->maxcost += $item->amount;
-					}
-					else {
-						$project->maxcost += $item->amount;
-					}
-				}
+                $project->minmax();
 
 				// retornos colectivos
 				$project->social_rewards = Project\Reward::getAll($id, 'social');
@@ -541,6 +533,9 @@ namespace Goteo\Model {
                 if (!empty($quita) || !empty($guarda))
                     $this->costs = Project\Cost::getAll($this->id);
 
+                // recalculo de minmax
+                $this->minmax();
+
                 //retornos colectivos
 				$tiene = Project\Reward::getAll($this->id, 'social');
                 $viene = $this->social_rewards;
@@ -889,6 +884,26 @@ namespace Goteo\Model {
                 throw new Goteo\Core\Exception('Fallo al verificar id única para el proyecto. ' . $e->getMessage());
             }
         }
+
+        /*
+         *  Para actualizar el minimo/optimo de costes
+         */
+        private function minmax() {
+            $this->mincost = 0;
+            $this->maxcost = 0;
+            
+            foreach ($this->costs as $item) {
+                if ($item->required == 1) {
+                    $this->mincost += $item->amount;
+                    $this->maxcost += $item->amount;
+                }
+                else {
+                    $this->maxcost += $item->amount;
+                }
+            }
+        }
+
+
 
         public function daysActive() {
             // días desde el published
