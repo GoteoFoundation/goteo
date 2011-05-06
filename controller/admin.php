@@ -86,7 +86,7 @@ namespace Goteo\Controller {
             }
 
 			$using = Lang::get($lang);
-			$texts = Text::getAll($lang, $filter);
+			$texts = Text::getAll($lang, $filter, true);
 
             return new View(
                 'view/admin/texts.html.php',
