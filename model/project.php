@@ -993,44 +993,6 @@ namespace Goteo\Model {
             return $projects;
         }
 
-
-
-        /*
-         *  getAll obsoleta
-        public static function getAll($filters = array(), $order = '') {
-            $vals = array();
-            $filter = "";
-            foreach ($filters as $field=>$value) {
-                $filter .= $filter == "" ? " WHERE" : " AND";
-                if (strtolower(substr($value, 0, 2)) == 'is') {
-                    $filter .= " $field " . $value;
-                }
-                elseif (substr($value, 0, 1) == '!') {
-                    $filter .= " $field != :$field";
-                    $vals[":$field"] = substr($value, 1);
-                }
-                else {
-                    $filter .= " $field = :$field";
-                    $vals[":$field"] = $value;
-                }
-
-            }
-
-            if (!empty ($order)) {
-                $order = " ORDER BY $order";
-            }
-
-			try {
-                $sql = "SELECT * FROM project" . $filter . $order;
-				$query = self::query($sql, $vals);
-                return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
-            } catch (\PDOException $e) {
-				throw new Goteo\Core\Exception($e->getMessage());
-            }
-        }
-         *
-         */
-
         /*
          * Estados de desarrollo del propyecto
          */

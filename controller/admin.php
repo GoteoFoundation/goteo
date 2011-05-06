@@ -26,10 +26,16 @@ namespace Goteo\Controller {
         /*
          * Gestión de páginas institucionales
          */
-		public function pages ($node = 'goteo', $lang = 'es') {
+		public function pages () {
 			// si tenemos usuario logueado
             if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
+
+            // nodo del usuario
+            $node = 'goteo';
+
+            // idioma que estamos gestionando
+            $lang = GOTEO_DEFAULT_LANG;
 
 			$using = Lang::get($lang);
 
@@ -39,7 +45,7 @@ namespace Goteo\Controller {
             if (isset($_GET['page'])) {
                 $id = $_GET['page'];
 
-                $page = Page::get($id, $node, $lang);
+                $page = Page::get($id);
 
                 // si llega post, vamos a guardar los cambios
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -72,7 +78,7 @@ namespace Goteo\Controller {
             );
 		}
 
-		public function texts ($lang = 'es') {
+		public function texts () {
 			// si tenemos usuario logueado
             if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
@@ -85,8 +91,8 @@ namespace Goteo\Controller {
                 $filter = null;
             }
 
-			$using = Lang::get($lang);
-			$texts = Text::getAll($lang, $filter, true);
+			$using = Lang::get();
+			$texts = Text::getAll($filter);
 
             return new View(
                 'view/admin/texts.html.php',
@@ -98,14 +104,19 @@ namespace Goteo\Controller {
                 );
 		}
 
-		public function translate ($id = null, $lang = 'es') {
+		public function translate ($id) {
+
+            $lang = \GOTEO_DEFAULT_LANG;
+
+            // no cache para textos
+            define('GOTEO_ADMIN_NOCACHE', true);
+
 			// si tenemos usuario logueado
-			$using = Lang::get($lang);
+			$using = Lang::get();
 
             $text = new \stdClass();
             $text->id = $id;
-			$text->text = Text::get($id, 'es');
-			$text->translation = Text::get($id, $lang);
+			$text->text = Text::get($id);
 			$text->purpose = Text::getPurpose($id);
 
             $viewData = array(
@@ -145,9 +156,12 @@ namespace Goteo\Controller {
         /*
          *  Revisión de proyectos, aqui llega con un nodo y si no es el suyo a la calle (o al suyo)
          */
-        public function checking($node = 'goteo') {
+        public function checking() {
             if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
                 throw new Redirection("/dashboard");
+
+            // nodo del usuario
+            $node = 'goteo';
 
             $errors = array();
 
@@ -198,9 +212,12 @@ namespace Goteo\Controller {
         /*
          *  administración de nodos y usuarios (segun le permita el ACL al usuario validado)
          */
-        public function managing($node = 'goteo') {
+        public function managing() {
             if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
+
+            // nodo del usuario
+            $node = 'goteo';
 
             $users = Model\User::getAll();
 
@@ -217,9 +234,12 @@ namespace Goteo\Controller {
          *
          * dummy para ejecutar cargos
          */
-        public function accounting($node = 'goteo') {
+        public function accounting() {
             if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
+
+            // nodo del usuario
+            $node = 'goteo';
 
             // estados del proyecto
             $status = Model\Project::status();
@@ -258,7 +278,7 @@ namespace Goteo\Controller {
              *  enlace para ejecutar cargo
              */
             $projects = Model\Project::invested();
-//die('<pre>' . print_r($projects, 1) . '</pre>');
+
             foreach ($projects as &$project) {
 
                 $project->invests = Model\Invest::getAll($project->id);
@@ -338,15 +358,6 @@ namespace Goteo\Controller {
             $projects = Model\Project::invested();
 
             foreach ($projects as $kay=>&$project) {
-
-                // solo los financiados, despues
-                /*
-                if ($project->status != 4) {
-                    unset($projects[$kay]);
-                    continue;
-                }
-                 * 
-                 */
 
                 $project->invests = Model\Invest::getAll($project->id);
 
