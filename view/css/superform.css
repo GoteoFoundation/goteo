@@ -199,10 +199,6 @@ div.superform li.element.fullwidth + li.element {
 
 /* Element badges */
 
-div.superform div.elements > ol > li.busy > .title {
-    background: url('superform/badge/busy/cyan.gif') no-repeat right center;
-}
-
 div.superform div.elements > ol > li.ok > .title {
     background: url('superform/badge/ok.png') no-repeat right center;
 }
@@ -213,6 +209,10 @@ div.superform div.elements > ol > li.required > .title {
 
 div.superform div.elements > ol > li.error > .title  {
     background: url('superform/badge/error.png') no-repeat right center !important;
+}
+
+div.superform div.elements > ol > li.busy > .title {
+    background: url('superform/badge/busy/cyan.gif') no-repeat right center;
 }
 
 div.superform li.element.hidden {
