@@ -11,7 +11,7 @@ namespace Goteo\Model\Project {
             $project,
             $cost,
 			$description,
-            $type,
+            $type = 'task',
             $amount,
             $required,
             $from,

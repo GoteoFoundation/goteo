@@ -68,8 +68,7 @@ namespace Goteo\Core {
                 return $result;
 
             } catch (\PDOException $e) {
-                die(\trace($e));
-                throw new Exception("Error en la consulta: `{$query}`");
+                throw new Exception("Error PDO: " . \trace($e));
             }
 
         }

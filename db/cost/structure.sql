@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS cost (
   id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   project varchar(50) NOT NULL,
-  cost varchar(256) NOT NULL,
+  cost varchar(256),
   description tinytext,
-  `type` varchar(50) NOT NULL DEFAULT 'task',
+  `type` varchar(50) DEFAULT NULL,
   amount int(5) DEFAULT '0',
   required tinyint(1) DEFAULT '0',
   `from` date DEFAULT NULL,
@@ -21,3 +21,6 @@ ALTER TABLE `cost` CHANGE `amount` `amount` INT( 5 ) NULL DEFAULT '0';
 
 -- Cambiando ids numéricos por SERIAL
 ALTER TABLE `cost` CHANGE `id` `id` SERIAL NOT NULL AUTO_INCREMENT;
+
+-- Costes sin tipo
+ALTER TABLE `cost` CHANGE `type` `type` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL ;

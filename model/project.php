@@ -70,7 +70,9 @@ namespace Goteo\Model {
 
             $errors = array(), // para los fallos en los datos
 
-            $messages = array(); // mensajes de los usuarios hilos con hijos
+            $messages = array(), // mensajes de los usuarios hilos con hijos
+
+            $finishable = false;
 
 
 
@@ -156,8 +158,9 @@ namespace Goteo\Model {
                     //checkeamos los campos y actualizamos el progreso
                     $project->evaluate();
                     // si el progreso llega al mínimo, marcamos el finishable
-                    if ($project->progress > 60)
+                    if ($project->progress > 60) {
                         $project->finishable = true;
+                    }
                 } else {
                     //para resto de estados
                     $project->investors = Invest::investors($project->id);
@@ -753,10 +756,13 @@ namespace Goteo\Model {
          */
         public function ready(&$errors = array()) {
 			try {
-				$sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
-				self::query($sql, array(':status'=>2, ':updated'=>date('Y-m-d'), ':id'=>$this->id));
-				$this->rebase(); // solo cuando termina la edición
-                return true;
+				if ($this->rebase()) {
+                    $sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
+                    self::query($sql, array(':status'=>2, ':updated'=>date('Y-m-d'), ':id'=>$this->id));
+                    return true;
+                } else {
+                    return false;
+                }
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al habilitar para revisión. ' . $e->getMessage();
                 return false;
@@ -843,19 +849,34 @@ namespace Goteo\Model {
                     // idealizar el nombre
                     $newid = self::checkId(self::idealiza($this->name));
                     if ($newid == false) return false;
-                    // actualizar las tablas relacionadas
-                    self::query("UPDATE project_category SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                    self::query("UPDATE cost SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                    self::query("UPDATE reward SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                    self::query("UPDATE support SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                    // actualizar el registro
-                    self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                    $this->id = $newid;
+                    
+                    // actualizar las tablas relacionadas en una transacción
+                    $fail = false;
+                    if (self::query("START TRANSACTION")) {
+                        try {
+                            self::query("UPDATE project_category SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE cost SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE reward SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE support SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
+
+                            // si todo va bien, commit y cambio el id de la instancia
+                            self::query("COMMIT");
+                            $this->id = $newid;
+                            return true;
+
+                        } catch (\PDOException $e) {
+                            self::query("ROLLBACK");
+                            return false;
+                        }
+                    } else {
+                        throw new Goteo\Core\Exception('Fallo al iniciar transaccion rebase. ' . \trace($e));
+                    }
                 }
 
                 return true;
             } catch (\PDOException $e) {
-                throw new Goteo\Core\Exception('Fallo rebase id temporal. ' . $e->getMessage());
+                throw new Goteo\Core\Exception('Fallo rebase id temporal. ' . \trace($e));
             }
 
         }

@@ -20,19 +20,23 @@ include 'view/prologue.html.php';
                     <?php foreach ($project->invests as $key=>$invest) : ?>
                     <?php echo '<p>
                            <img src="' . $invest->user->avatar . '" class="avatar" />
-                           ' . $invest->user->name . '<br />
+                           <strong>' . $invest->user->name . '</strong><br />
                            Aporta: ' . $invest->amount . ' €  el ' . $invest->invested . '<br />';
 
                            if ($invest->resign == 1)  {
                                echo 'Renuncia a recompensa por este aporte<br />';
                            } else {
                                echo 'Dirección de entrega: '.$invest->address->address.', '.$invest->address->location.', '.$invest->address->zipcode.'  '.$invest->address->country.'<br />';
-
                                 if (!empty($invest->rewards)) {
-                                    echo '<span>Recompensas esperadas</span><br />';
+                                    echo '<strong>Recompensas esperadas:</strong><br />';
                                     foreach ($invest->rewards as $reward) {
-                                        echo \trace($reward);
-
+                                        echo $reward->reward;
+                                        if ($reward->fulfilled) {
+                                            echo ' CUMPLIDA';
+                                        } else {
+                                            echo ' <a href="?fulfill='.$invest->id.','.$reward->id.'">[Cumplir]</a>';
+                                        }
+                                        echo '<br />';
                                     }
                                 }
                            }
