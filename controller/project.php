@@ -248,16 +248,16 @@ namespace Goteo\Controller {
             //@TODO verificar si tienen el mínimo progreso para verificación y si está en estado edición
             $project = Model\Project::get($id);
 
-            if ($project->status != 1)
-                throw new Redirection("/project/{$project->id}");
+            if ($project->status != 1 || !$project->finishable)
+                throw new Redirection("/project/{$project->id}/?edit");
 
             $errors = array();
             if ($project->ready($errors)) {
                 // enviarlo a preview con mensaje guay
-                throw new Redirection("/project/{$project->id}/?edit");
+                throw new Redirection("/project/{$project->id}/?en_revision");
+            } else {
+                throw new Redirection("/project/{$project->id}/?edit&unfinished");
             }
-            
-            throw new \Goteo\Core\Exception(implode(' ', $errors));
         }
 
         /*
@@ -576,6 +576,7 @@ namespace Goteo\Controller {
          * No hay nada que tratar porque aq este paso no se le envia nada por post
          */
         private function process_preview(&$project) {
+            $comes = $_POST;
             if (isset($_POST['comment']))
                 $project->comment = $_POST['comment'];
 
