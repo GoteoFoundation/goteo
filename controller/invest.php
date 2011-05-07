@@ -91,6 +91,22 @@ namespace Goteo\Controller {
                 $message .= 'Errores: ' . implode('.', $errors);
             }
 
+
+            foreach ($projectData->individual_rewards as &$reward) {
+                // si controla unidades de esta recompensa, mirar si quedan
+                if ($reward->units > 0) {
+                    $reward->taken = $reward->getTaken();
+                    if ($reward->taken >= $reward->units) {
+                        $reward->none = true;
+                    } else {
+                        $reward->none = false;
+                    }
+                } else {
+                    $reward->none = false;
+                }
+            }
+
+
             $viewData = array(
                     'message' => $message,
                     'project' => $projectData,
