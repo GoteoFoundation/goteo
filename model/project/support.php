@@ -9,7 +9,7 @@ namespace Goteo\Model\Project {
 			$project,
 			$support,
 			$description,
-			$type;
+			$type = 'task';
 
 	 	public static function get ($id) {
             try {
@@ -23,7 +23,7 @@ namespace Goteo\Model\Project {
 		public static function getAll ($project) {
             try {
                 $array = array();
-				$query = self::query("SELECT * FROM support WHERE project = ? ORDER BY id DESC", array($project));
+				$query = self::query("SELECT * FROM support WHERE project = ? ORDER BY id ASC", array($project));
 				foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item ) {
                     $array[$item->id] = $item;
                 }

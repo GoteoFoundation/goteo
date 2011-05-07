@@ -37,27 +37,27 @@ body.project-edit div#main.rewards div.superform li.element.reward div.children 
     line-height: 32px;
 }
 
-body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_1 > label {
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_file > label {
     background-image: url('../../icon/m/file.png');
 }
 
-body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_2 > label {
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_money > label {
     background-image: url('../../icon/m/money.png');
 }
 
-body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_3 > label {
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_code > label {
     background-image: url('../../icon/m/code.png');
 }
 
-body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_4 > label {
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_service > label {
     background-image: url('../../icon/m/service.png');
 }
 
-body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_5 > label {
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_manual > label {
     background-image: url('../../icon/m/manual.png');
 }
 
-body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_6 > label {
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_product > label {
     background-image: url('../../icon/m/product.png');
 }
 
@@ -68,24 +68,24 @@ body.project-edit div#main.rewards div.superform li.element.reward div.children 
     line-height: 32px;
 }
      
-body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_1 > label {
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_ohl > label {
     background-image: url('../../icon/m/license/ohl.png');
 }
 
-body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_2 > label {
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_cc > label {
     background-image: url('../../icon/m/license/cc.png');
 }
-body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_3 > label {
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_gpl > label {
     background-image: url('../../icon/m/license/gpl.png');
 }
-body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_4 > label {
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_odbl > label {
     background-image: url('../../icon/m/license/odbl.png');
 }
-body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_5 > label {
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_xoln > label {
     background-image: url('../../icon/m/license/xoln.png');
 }
 
-body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_6 > label {
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li.license_agpl > label {
     background-image: url('../../icon/m/license/agpl.png');
 }
 

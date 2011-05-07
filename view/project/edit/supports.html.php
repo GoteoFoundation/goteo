@@ -5,7 +5,15 @@ use Goteo\Library\Text,
             
 $project = $this['project'];
 
-$support_types = $this['types'];
+$support_types = array();
+
+foreach ($this['types'] as $id => $type) {
+    $support_types[] = array(
+        'value' => $id,
+        'class' => "support_{$id}",
+        'label' => $type
+    );
+}
 
 $supports = array();
 

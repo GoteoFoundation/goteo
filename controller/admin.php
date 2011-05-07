@@ -348,14 +348,10 @@ namespace Goteo\Controller {
                  * 
                  */
 
-                echo \trace($project);
-
                 $project->invests = Model\Invest::getAll($project->id);
 
                 // para cada uno sacar todos sus aportes
                 foreach ($project->invests as $key=>&$invest) {
-
-                    echo \trace($invest);
                     if ($invest->status != 1) {
                         unset($project->invests[$key]);
                         continue;
