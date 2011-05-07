@@ -22,9 +22,9 @@ namespace Goteo\Library {
         /*
          * Devuelve un texto en HTML
          */
-        static public function html ($id) {
+        static public function html ($id, $lang = 'es', $nocache = false) {
             // sacamos el contenido del texto
-            $text = self::get($id);
+            $text = self::get($id, $lang, $nocache);
             if (self::isHtml($id))
                 return $text; // el texto ES html, lo devuelve tal cual
             else
@@ -34,24 +34,22 @@ namespace Goteo\Library {
         /*
          * Devuelve un testo sin HTML
          */
-        static public function plain ($id) {
+        static public function plain ($id, $lang = 'es', $nocache = false) {
             // sacamos el contenido del texto
-            $text = self::get($id);
+            $text = self::get($id, $lang, $nocache);
             if (self::isHtml($id))
                 return \strip_tags($text) ; // ES html, le quitamos los tags
             else
                 return $text;
         }
 
-        static public function get ($id = null, $lang = 'es') {
-			if ($id === null)
-				return '';
+        static public function get ($id, $lang = 'es', $nocache = false) {
 
             $id = str_replace(' ', '-', $id); // @FIXME seguro temporal
 
 			// buscamos el texto en cache
 			static $_cache = array();
-			if (isset($_cache[$id][$lang]))
+			if (!$nocache && isset($_cache[$id][$lang]))
 				return $_cache[$id][$lang];
             
 			// buscamos el texto en la tabla
@@ -59,7 +57,6 @@ namespace Goteo\Library {
 			$exist = $query->fetchObject();
 			if ($exist->text) {
 				return $_cache[$id][$lang] = $exist->text;
-				return $exist->text;
 			} else {
 				// lo metemos en la tabla pero no en cache
 				Model::query("REPLACE INTO text (id, lang, text) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));

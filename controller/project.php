@@ -466,6 +466,8 @@ namespace Goteo\Controller {
                     'project' => $project->id,
                     'cost'  => 'Nuevo coste',
                     'type'  => 'task',
+                    'from' => date('Y-m-d'),
+                    'until' => date('Y-m-d')
                     
                 ));
                 
