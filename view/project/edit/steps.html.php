@@ -13,7 +13,7 @@
                         <?php if (!empty($errors['userProfile'])) echo ' <strong class="errors">', number_format(count($errors['userProfile'])), '</strong>' ?></button>                        
                     </span>
                     
-                    <span class="step off-off off<?php if ($this['step'] === 'userPersonal') echo ' active' ?><?php if (!empty($errors['userProfile'])) echo ' error' ?>">
+                    <span class="step off-off off<?php if ($this['step'] === 'userPersonal') echo ' active' ?><?php if (!empty($errors['userPersonal'])) echo ' error' ?>">
                         <button type="submit" name="view-step-userPersonal" value="Datos personales">Datos personales
                         <?php if (!empty($errors['userPersonal'])) echo ' <strong class="errors">', number_format(count($errors['userPersonal'])), '</strong>' ?></button>
                     </span>
