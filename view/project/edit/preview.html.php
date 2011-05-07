@@ -40,7 +40,7 @@ echo new SuperForm(array(
                            . '<div class="overlay" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 999"></div>'    
                            . '<div style="z-index: 0">'                            
                            . new View('view/project/widget/support.html.php')
-                           . new View('view/user/widget/user.html.php')
+                           . new View('view/user/widget/user.html.php', array('user' => $project->user))
                            . new View('view/project/widget/media.html.php', array('project' => $project))
                            . new View('view/project/widget/share.html.php', array('project' => $project))
                            . new View('view/project/widget/summary.html.php', array('project' => $project))
