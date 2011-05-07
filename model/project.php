@@ -165,13 +165,11 @@ namespace Goteo\Model {
                     //para resto de estados
                     $project->investors = Invest::investors($project->id);
 
-                    ////@FIXME!! estos procesos de calculo de inversión y dias lo hará el cron
-                    //--------------------------------------------------------------------------------------------
                     $amount = Invest::invested($project->id);
                     if ($project->invested != $amount) {
                         self::query("UPDATE project SET amount = '{$amount}' WHERE id = ?", array($project->id));
-                        $project->invested = $amount; // por ahora
                     }
+                    $project->invested = $amount;
 
                     //mensajes
                     $project->messages = Message::getAll($project->id);
@@ -190,38 +188,8 @@ namespace Goteo\Model {
                         if ($project->days != $days) {
                             self::query("UPDATE project SET days = '{$days}' WHERE id = ?", array($project->id));
                         }
-                        $project->days = $days; // por ahora
+                        $project->days = $days;
                     }
-                    //--------------------------------------------------------------------------------------------
-                    //@FIXME!! OJO, esto es trabajo del cron
-                    /***
-                    // si ha llegado a los 40 días
-                    if ($days >= 40) {
-                        // si no ha alcanzado el mínimo, pasa a estado caducado
-                        if ($project->invested < $project->mincost) {
-  //                          $project->fail();
-                        } else {
-                            // si ha alcanzado el mínimo tiene hasta 80 días para conseguir el óptimo
-                            if ($days >= 80) {
-                                // ha llegadio a los 80 dias habiendo alcanzado el mínimo
-                                // (si no fuera así estaria en estado caducado y no se verificaría en este punto
-//                                $project->succeed();
-                            } else {
-                                // ha conseguido el mínimo y sigue publicado hasta que consiga el óptimo
-                                $project->days = 80 - $days;
-                            }
-                        }
-                    } else {
-                        $project->days = 40 - $days;
-                    }
-
-                    // si se ha conseguido el optimo, pasa a estado financiado
-                    if ($project->invested >= $project->maxcost) {
-//                        $project->succeed();
-                    }
-                    ****/
-                    //--------------------------------------------------------------------------------------------
-
                 }
                 //-----------------------------------------------------------------
                 // Fin de verificaciones
@@ -909,7 +877,7 @@ namespace Goteo\Model {
         /*
          *  Para actualizar el minimo/optimo de costes
          */
-        private function minmax() {
+        public function minmax() {
             $this->mincost = 0;
             $this->maxcost = 0;
             

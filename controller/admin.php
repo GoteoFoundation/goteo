@@ -299,7 +299,7 @@ namespace Goteo\Controller {
                     } else {
                         if (empty($invest->payment)) {
                             //si tiene preaprval y no tiene pago, cargar
-                            $invest->paypalStatus = 'Preaproval listo, esperando a los 40/80 dias para ejecutar el cargo. ';
+                            $invest->paypalStatus = 'Preaproval listo para ejecutar a los 40/80 dias. ';
                             if (isset($_GET['execute'])) {
                                 $errors = array();
 

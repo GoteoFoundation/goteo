@@ -139,7 +139,11 @@ namespace Goteo\Model\Project {
             );
 
             $query = self::query($sql, $values);
-            return $query->fetchColumn();
+            if ($taken = $query->fetchColumn()) {
+                return $taken;
+            } else {
+                return 0;
+            }
         }
 
 		public static function icons($type = 'social') {

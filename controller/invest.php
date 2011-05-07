@@ -170,7 +170,8 @@ namespace Goteo\Controller {
 
             $viewData = array(
                     'message' => $message,
-                    'project' => $projectData
+                    'project' => $projectData,
+                    'personal' => Model\User::getPersonal($_SESSION['user']->id)
                 );
 
             return new View (
