@@ -1,0 +1,34 @@
+<?php $bodyClass = 'home'; include 'view/prologue.html.php' ?>
+
+        <?php include 'view/header.html.php' ?>
+
+        <div id="main">
+            <h2>Buscador de proyectos</h2>
+
+            <p><?php echo $this['message']; ?></p>
+
+            <?php if (isset($this['results'])) : ?>
+                <?php if (isset($this['results'])) : ?>
+                    <?php foreach ($this['results'] as $result) : ?>
+                        <?php echo '<p>
+                            <a href="/project/' . $result->id . '" target="_blank">' . $result->name . '</a>
+                            <a href="/invest/' . $result->id . '" target="_blank">[Apóyalo]</a>
+                            <a href="/message/' . $result->id . '" target="_blank">[Mensajes]</a>
+                            <a href="/support/' . $result->id . '" target="_blank">[Cofinanciadores]</a><br />
+                            Obtenido: ' . $result->invested . ' &euro;<br />
+                            Mínimo: ' . $result->mincost . ' &euro;<br />
+                            Óptimo: ' . $result->maxcost . ' &euro;<br />
+                            Quedan: ' . $result->days . ' días<br />
+                            Cofinanciadores: ' . count($result->project->investors) . '<br />
+                       </p>'; ?>
+                    <?php endforeach; ?>
+                <?php else : ?>
+                    <p>No se encontraron resultados para <?php echo $_GET['query']; ?></p>
+                <?php endif; ?>
+            <?php endif; ?>
+        
+        </div>        
+
+        <?php include 'view/footer.html.php' ?>
+    
+<?php include 'view/epilogue.html.php' ?>
