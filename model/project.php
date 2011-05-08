@@ -252,17 +252,17 @@ namespace Goteo\Model {
 
             if (empty($this->contract_nif))
                 $errors['userPersonal']['contract_nif'] = Text::get('mandatory-project-field-contract-nif');
-            elseif (!Check::Nif($this->contract_nif))
+            elseif (!Check::nif($this->contract_nif))
                 $errors['userPersonal']['contract_nif'] = Text::get('validate-project-value-contract-nif');
 
             if (empty($this->contract_email))
                 $errors['userPersonal']['contract_email'] = Text::get('mandatory-project-field-contract-email');
-            elseif (!Check::Mail($this->contract_email))
+            elseif (!Check::mail($this->contract_email))
                 $errors['userPersonal']['contract_email'] = Text::get('validate-project-value-contract-email');
 
             if (empty($this->phone))
                 $errors['userPersonal']['phone'] = Text::get('mandatory-project-field-phone');
-            elseif (!Check::Phone($this->phone))
+            elseif (!Check::phone($this->phone))
                 $errors['userPersonal']['phone'] = Text::get('validate-project-value-phone');
 
             if (empty($this->address))
@@ -287,7 +287,7 @@ namespace Goteo\Model {
 
             if (empty($this->description))
                 $errors['overview']['description'] = Text::get('mandatory-project-field-description');
-            elseif (!Check::Words($this->description, 150))
+            elseif (!Check::words($this->description, 150))
                 $errors['overview']['description'] = Text::get('validate-project-value-description');
 
             if (empty($this->motivation))
