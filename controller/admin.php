@@ -210,6 +210,124 @@ namespace Goteo\Controller {
         }
 
         /*
+         * proyectos destacados
+         */
+        public function promote() {
+            if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
+                throw new Redirection("/dashboard");
+
+            // nodo del usuario
+            $node = 'goteo';
+
+            $errors = array();
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                // objeto
+                $promo = new Model\Promote(array(
+                    'node' => $node,
+                    'project' => $_POST['project'],
+                    'title' => $_POST['title'],
+                    'description' => $_POST['description'],
+                    'order' => $_POST['order']
+                ));
+
+				if ($promo->save($errors)) {
+                    switch ($_POST['action']) {
+                        case 'add':
+                            $success = 'Proyecto destacado correctamente';
+                            break;
+                        case 'edit':
+                            $success = 'Destacado editado correctamente';
+                            break;
+                    }
+				}
+				else {
+                    switch ($_POST['action']) {
+                        case 'add':
+                            // proyectos publicados para promocionar
+                            $projects = Model\Project::published();
+
+                            return new View(
+                                'view/admin/promoEdit.html.php',
+                                array(
+                                    'action' => 'add',
+                                    'promo' => $promo,
+                                    'projects' => $projects,
+                                    'errors' => $errors
+                                )
+                            );
+                            break;
+                        case 'edit':
+                            return new View(
+                                'view/admin/promoEdit.html.php',
+                                array(
+                                    'action' => 'edit',
+                                    'promo' => $promo,
+                                    'errors' => $errors
+                                )
+                            );
+                            break;
+                    }
+				}
+			}
+
+
+            if (isset($_GET['up'])) {
+                Model\Promote::up($_GET['up']);
+            }
+
+            if (isset($_GET['down'])) {
+                Model\Promote::down($_GET['down']);
+            }
+
+            if (isset($_GET['add'])) {
+                // proyectos publicados para promocionar
+                $projects = Model\Promote::available($node);
+
+                // siguiente orden
+                $next = Model\Promote::next($node);
+
+                return new View(
+                    'view/admin/promoEdit.html.php',
+                    array(
+                        'action' => 'add',
+                        'promo' => (object) array('order' => $next),
+                        'projects' => $projects
+                    )
+                );
+            }
+
+            if (isset($_GET['edit'])) {
+                $promo = Model\Promote::get($_GET['edit']);
+
+                return new View(
+                    'view/admin/promoEdit.html.php',
+                    array(
+                        'action' => 'edit',
+                        'promo' => $promo
+                    )
+                );
+            }
+
+            if (isset($_GET['remove'])) {
+                Model\Promote::delete($_GET['remove']);
+            }
+
+
+            $promoted = Model\Promote::getAll($node);
+
+            return new View(
+                'view/admin/promote.html.php',
+                array(
+                    'promoted' => $promoted,
+                    'errors' => $errors,
+                    'success' => $success
+                )
+            );
+        }
+
+        /*
          *  administración de nodos y usuarios (segun le permita el ACL al usuario validado)
          */
         public function managing() {
