@@ -17,7 +17,7 @@ namespace Goteo\Library {
          * Método para crear un preapproval para un aporte
          * va a mandar al usuario a paypal para que confirme
          *
-         * @TODO limite a los dias que le quede al proyecto segun los primeros 40 o los segundos 40 (hsta 80)
+         * @TODO poner límite máximo de dias para permitir mover el a porte a otro proyecto
          */
         public static function preapproval($invest, &$errors = array()) {
             
@@ -33,17 +33,17 @@ namespace Goteo\Library {
 		            payment has been succesfully authorized.
 		            The cancelURL is the location buyers are sent to when they hit the
 		            cancel button during authorization of payment during the PayPal flow                 */
-		           $returnURL = PAYPAL_SITE_URL."/invest/confirmed/" . $invest->project; // a difundirlo @TODO mensaje gracias si llega desde un preapproval
-		           $cancelURL = PAYPAL_SITE_URL."/invest/fail/" . $invest->project . "/" . $invest->id; // a la página de aportar para intentarlo de nuevo
+		           $returnURL = SITE_URL."/invest/confirmed/" . $invest->project; // a difundirlo @TODO mensaje gracias si llega desde un preapproval
+		           $cancelURL = SITE_URL."/invest/fail/" . $invest->project . "/" . $invest->id; // a la página de aportar para intentarlo de nuevo
 
-                    // desde hoy hasta 40 dias (100 por ahora)
+                    // desde hoy hasta 11 meses
                     date_default_timezone_set('UTC');
                     $currDate = getdate();
                     $hoy = $currDate['year'].'-'.$currDate['mon'].'-'.$currDate['mday'];
                     $startDate = strtotime($hoy);
                     $startDate = date('Y-m-d', mktime(date('h',$startDate),date('i',$startDate),0,date('m',$startDate),date('d',$startDate),date('Y',$startDate)));
                     $endDate = strtotime($hoy);
-                    $endDate = date('Y-m-d', mktime(0,0,0,date('m',$endDate),date('d',$endDate)+100,date('Y',$endDate)));
+                    $endDate = date('Y-m-d', mktime(0,0,0,date('m',$endDate)+11,date('d',$endDate),date('Y',$endDate)));
 
 
 		           /* Make the call to PayPal to get the preapproval token
@@ -118,8 +118,8 @@ namespace Goteo\Library {
                 $payRequest = new \PayRequest();
                 $payRequest->actionType = "PAY";
                 $payRequest->memo = "Cargo del aporte de {$invest->amount} EUR al proyecto {$invest->project} en la plataforma Goteo";
-                $payRequest->cancelUrl = PAYPAL_SITE_URL.'/cron/charge_fail/' . $invest->id;
-                $payRequest->returnUrl = PAYPAL_SITE_URL.'/cron/charge_success/' . $invest->id;
+                $payRequest->cancelUrl = SITE_URL.'/cron/charge_fail/' . $invest->id;
+                $payRequest->returnUrl = SITE_URL.'/cron/charge_success/' . $invest->id;
                 $payRequest->clientDetails = new \ClientDetailsType();
 		        $payRequest->clientDetails->customerId = $invest->user->id;
                 $payRequest->clientDetails->applicationId = PAYPAL_APPLICATION_ID;
