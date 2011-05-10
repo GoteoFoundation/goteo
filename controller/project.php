@@ -260,21 +260,6 @@ namespace Goteo\Controller {
             }
         }
 
-        /*
-         *  Explorar proyectos, por el momento mostrará todos los proyectos publicados
-         */
-         public function explore() {
-            $projects = Model\Project::published();
-
-            return new View (
-                'view/explore.html.php',
-                array(
-                    'message' => 'Estos son los proyectos actualmente activos',
-                    'projects' => $projects
-                )
-            );
-         }
-
         //-----------------------------------------------
         // Métodos privados para el tratamiento de datos
         // del save y remove de las tablas relacionadas se enmcarga el model/project

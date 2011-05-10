@@ -25,7 +25,7 @@ namespace Goteo\Controller {
                 $results = \Goteo\Library\Search::text($_GET['query']);
 
 			} else {
-                throw new Redirection('/project/explore', Redirection::PERMANENT);
+                throw new Redirection('/discover', Redirection::PERMANENT);
             }
 
             if (!empty($errors)) {

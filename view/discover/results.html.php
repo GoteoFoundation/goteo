@@ -3,7 +3,7 @@
         <?php include 'view/header.html.php' ?>
 
         <div id="main">
-            <h2>Buscador de proyectos</h2>
+            <h2>Proyectos encontrados</h2>
 
             <p><?php echo $this['message']; ?></p>
 

@@ -919,10 +919,59 @@ namespace Goteo\Model {
         /*
          * Lista de proyectos publicados
          */
-        public static function published()
+        public static function published($type = 'all')
         {
+            // segun el tipo (ver controller/discover.php)
+            switch ($type) {
+                case 'popular':
+                    // de los que estan en campaña,
+                    // los que tienen más usuarios (unicos) cofinanciadores y mensajeros
+                    $sql = "SELECT COUNT(DISTINCT(user.id)) as people, project.id as id
+                            FROM project
+                            LEFT JOIN invest
+                                ON invest.project = project.id
+                                AND invest.status <> 2
+                            LEFT JOIN message
+                                ON message.project = project.id
+                            LEFT JOIN user 
+                                ON user.id = invest.user OR user.id = message.user
+                            WHERE project.status= 3 
+                            AND (project.id = invest.project
+                                OR project.id = message.project)
+                            GROUP BY project.id
+                            ORDER BY people DESC";
+                    break;
+                case 'outdate':
+                    // los que les quedan 15 dias o menos
+                    $sql = "SELECT  id
+                            FROM    project
+                            WHERE   days <= 15
+                            AND     days > 0
+                            AND     status = 3
+                            ORDER BY days ASC";
+                    break;
+                case 'recent':
+                    // los que llevan menos tiempo desde el published, hasta 15 dias
+                    $sql = "SELECT 
+                                project.id as id,
+                                DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%e') as day
+                            FROM project
+                            WHERE project.status = 3
+                            HAVING day <= 15 AND day IS NOT NULL
+                            ORDER BY day DESC";
+                    break;
+                case 'success':
+                    // los que estan 'financiado' o 'retorno cumplido'
+                    $sql = "SELECT id FROM project WHERE status = 4 OR status = 6 ORDER BY name ASC";
+                    break;
+                default: 
+                    // todos los que estan 'en campaña'
+                    $sql = "SELECT id FROM project WHERE status = 3 ORDER BY name ASC";
+            }
+            
+
             $projects = array();
-            $query = self::query("SELECT id FROM project WHERE status = 3 ORDER BY name ASC");
+            $query = self::query($sql);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
                 $projects[] = self::get($proj['id']);
             }
