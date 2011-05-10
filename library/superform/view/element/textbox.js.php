@@ -1,10 +1,12 @@
 <script type="text/javascript">
+    
 $(function () {
     
    var input = $('#<?php echo $this['id'] ?> > div.contents > input');
    
    input.focus(function () {       
        
+       /*
        var keyup = function () {
            
            var cancel = false;
@@ -22,6 +24,7 @@ $(function () {
       };
       
       input.keyup(keyup);
+      */
       
       input.blur(function () {
            
@@ -29,10 +32,10 @@ $(function () {
                Superform.update(input);
            }
            
-           Superform.update(input);
+           //Superform.update(input);
            
            input.unbind('blur', arguments.callee);
-           input.unbind('keyup', keyup);
+           //input.unbind('keyup', keyup);
            
       });
       

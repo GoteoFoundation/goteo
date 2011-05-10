@@ -123,7 +123,7 @@ try {
             if ($result instanceof Resource\MIME) {
                 header("Content-type: {$result->getMIME()}");
             }
-
+            
             echo $result;
 
             // Farewell
