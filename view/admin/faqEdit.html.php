@@ -19,7 +19,7 @@ include 'view/prologue.html.php';
             } ?>
 
             <p><a href="/admin">Volver al Menú de administración</a></p>
-            <p><a href="/admin/promote">Volver a la lista de proyectos destacados</a></p>
+            <p><a href="/admin/faq?section=<?php echo $this['faq']->section; ?>">Volver a la lista de preguntas frecuentes</a></p>
 
             <?php if (!empty($this['errors'])) :
                 echo '<p>';
