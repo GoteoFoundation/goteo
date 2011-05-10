@@ -142,7 +142,7 @@ namespace Goteo\Model {
         /*
          * Para que un proyecto salga despues  (aumentar el order)
          */
-        public static function down ($section, $node = 'goteo') {
+        public static function down ($id, $node = 'goteo') {
 
             $query = self::query('SELECT `order` FROM faq WHERE id = :id AND node = :node'
                 , array(':id'=>$id, ':node'=>$node));
