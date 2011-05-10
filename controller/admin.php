@@ -328,6 +328,116 @@ namespace Goteo\Controller {
         }
 
         /*
+         * preguntas frecuentes
+         */
+        public function faq() {
+            if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
+                throw new Redirection("/dashboard");
+
+            // nodo del usuario
+            $node = 'goteo';
+
+            // secciones
+            $sections = Model\Faq::sections();
+            if (isset($_GET['section']) && array_key_exists($_GET['section'], $sections)) {
+                $section = $_GET['section'];
+            } else {
+                $section = 'node';
+            }
+
+            $errors = array();
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                // objeto
+                $faq = new Model\Faq(array(
+                    'id' => $_POST['id'],
+                    'node' => $node,
+                    'section' => $_POST['section'],
+                    'title' => $_POST['title'],
+                    'description' => $_POST['description'],
+                    'order' => $_POST['order']
+                ));
+
+				if ($faq->save($errors)) {
+                    switch ($_POST['action']) {
+                        case 'add':
+                            $success = 'Pregunta añadida correctamente';
+                            break;
+                        case 'edit':
+                            $success = 'Pregunta editado correctamente';
+                            break;
+                    }
+				}
+				else {
+                    return new View(
+                        'view/admin/faqEdit.html.php',
+                        array(
+                            'action' => $_POST['action'],
+                            'faq' => $faq,
+                            'sections' => $sections,
+                            'errors' => $errors
+                        )
+                    );
+				}
+			}
+
+
+            if (isset($_GET['up'])) {
+                Model\Faq::up($_GET['up']);
+            }
+
+            if (isset($_GET['down'])) {
+                Model\Faq::down($_GET['down']);
+            }
+
+            if (isset($_GET['add'])) {
+
+                $next = Model\Faq::next($section, $node);
+
+                return new View(
+                    'view/admin/faqEdit.html.php',
+                    array(
+                        'action' => 'add',
+                        'faq' => (object) array('section' => $section, 'order' => $next),
+                        'sections' => $sections
+                    )
+                );
+            }
+
+            if (isset($_GET['edit'])) {
+                $faq = Model\Faq::get($_GET['edit']);
+
+                return new View(
+                    'view/admin/faqEdit.html.php',
+                    array(
+                        'action' => 'edit',
+                        'faq' => $faq,
+                        'sections' => $sections
+                    )
+                );
+            }
+
+            if (isset($_GET['remove'])) {
+                Model\Faq::delete($_GET['remove']);
+            }
+
+
+            $faqs = Model\Faq::getAll($section, $node);
+
+            return new View(
+                'view/admin/faq.html.php',
+                array(
+                    'faqs' => $faqs,
+                    'sections' => $sections,
+                    'section' => $section,
+                    'errors' => $errors,
+                    'success' => $success
+                )
+            );
+        }
+
+        /*
          *  administración de nodos y usuarios (segun le permita el ACL al usuario validado)
          */
         public function managing() {

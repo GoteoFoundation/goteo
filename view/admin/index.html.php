@@ -18,6 +18,7 @@ include 'view/prologue.html.php';
                 <li><a href="/admin/accounting">Administración de transacciones</a></li>
                 <li><a href="/admin/rewards">Gestion de retornos</a></li>
                 <li><a href="/admin/promote">Proyectos destacados</a></li>
+                <li><a href="/admin/faq">Preguntas frecuentes</a></li>
                 <!-- <li><a href="/admin/managing">Administración de usuarios y nodos</a></li> -->
             </ul>
         </div>        
