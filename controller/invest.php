@@ -18,7 +18,7 @@ namespace Goteo\Controller {
         public function index ($project = null) {
 
             if (empty($_SESSION['user']))
-                throw new Redirection ('/login', Redirection::TEMPORARY);
+                throw new Redirection ('/user/login?from=' . \rawurlencode('/invest/' . $project), Redirection::TEMPORARY);
 
             if (empty($project))
                 throw new Redirection('/project/explore', Redirection::TEMPORARY);
@@ -91,6 +91,22 @@ namespace Goteo\Controller {
                 $message .= 'Errores: ' . implode('.', $errors);
             }
 
+
+            foreach ($projectData->individual_rewards as &$reward) {
+                // si controla unidades de esta recompensa, mirar si quedan
+                if ($reward->units > 0) {
+                    $reward->taken = $reward->getTaken();
+                    if ($reward->taken >= $reward->units) {
+                        $reward->none = true;
+                    } else {
+                        $reward->none = false;
+                    }
+                } else {
+                    $reward->none = false;
+                }
+            }
+
+
             $viewData = array(
                     'message' => $message,
                     'project' => $projectData,
@@ -107,7 +123,7 @@ namespace Goteo\Controller {
 
         public function confirmed ($project = null) {
             if (empty($_SESSION['user']))
-                throw new Redirection ('/login', Redirection::TEMPORARY);
+                throw new Redirection ('/user/login?from=' . \rawurlencode('/invest/confirmed/' . $project), Redirection::TEMPORARY);
 
             if (empty($project))
                 throw new Redirection('/project/explore', Redirection::TEMPORARY);
@@ -136,7 +152,7 @@ namespace Goteo\Controller {
          */
         public function fail ($project = null, $id = null) {
             if (empty($_SESSION['user']))
-                throw new Redirection ('/login', Redirection::TEMPORARY);
+                throw new Redirection ('/user/login?from=' . \rawurlencode('/invest/fail/' . $project. '/' . $id), Redirection::TEMPORARY);
 
             if (empty($project))
                 throw new Redirection('/project/explore', Redirection::TEMPORARY);
@@ -154,7 +170,8 @@ namespace Goteo\Controller {
 
             $viewData = array(
                     'message' => $message,
-                    'project' => $projectData
+                    'project' => $projectData,
+                    'personal' => Model\User::getPersonal($_SESSION['user']->id)
                 );
 
             return new View (

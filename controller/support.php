@@ -17,7 +17,7 @@ namespace Goteo\Controller {
         public function index ($project = null) {
 
             if (empty($_SESSION['user']))
-                throw new Redirection ('/login', Redirection::TEMPORARY);
+                throw new Redirection ('/user/login?from=' . \rawurlencode('/support/' . $project), Redirection::TEMPORARY);
 
             if (empty($project))
                 throw new Redirection('/project/explore', Redirection::TEMPORARY);

@@ -10,16 +10,14 @@ namespace Goteo\Library {
 	 */
     class Lang {
 		
-		static public function get ($id = null) {
-			if ($id === null)
-				return false;
-
+		static public function get ($id = \GOTEO_DEFAULT_LANG) {
 			$query = Model::query("SELECT * FROM lang WHERE id = :id", array(':id' => $id));
 			return $query->fetchObject();
 		}
 
 		/*
 		 *  Esto se usara para la gestión de idiomas
+         * aunque quizas no haya gestión de idiomas
 		 */
 		public function save($data, &$errors = array()) {
 			if (!is_array($data) ||
@@ -33,7 +31,7 @@ namespace Goteo\Library {
 				return true;
 			}
 			else {
-				$errors[] = 'Error al insertar los datos <pre>' . print_r($data, 1) . '</pre>';
+				$errors[] = 'Error al insertar los datos ' . \trace($data);
 				return false;
 			}
 		}

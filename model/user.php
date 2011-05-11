@@ -310,7 +310,7 @@ namespace Goteo\Model {
 
                 // Contraseña
                 if(!empty($this->password)) {
-                    if(!Check::Password($this->password)) {
+                    if(!Check::password($this->password)) {
                         $errors['password'] = Text::get('error-register-invalid-password');
                     }
                 }
@@ -327,7 +327,7 @@ namespace Goteo\Model {
                             $errors['email'] = Text::get('error-user-email-token-invalid');
                         }
                     }
-                    elseif(!Check::Mail($this->email)) {
+                    elseif(!Check::mail($this->email)) {
                         $errors['email'] = Text::get('error-user-email-invalid');
                     }
                     else {
@@ -340,7 +340,7 @@ namespace Goteo\Model {
                     }
                 }
                 if(!empty($this->password)) {
-                    if(!Check::Password($this->password)) {
+                    if(!Check::password($this->password)) {
                         $errors['password'] = Text::get('error-user-password-invalid');
                     }
                 }
@@ -502,7 +502,7 @@ namespace Goteo\Model {
     	private function setToken ($token) {
             if(count($tmp = explode('¬', $token)) > 1) {
                 $email = $tmp[1];
-                if(Check::Mail($email)) {
+                if(Check::mail($email)) {
                     $mail = new Mail();
                     $mail->to = $email;
                     $mail->toName = $this->name;

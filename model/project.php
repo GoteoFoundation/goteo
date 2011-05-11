@@ -165,13 +165,11 @@ namespace Goteo\Model {
                     //para resto de estados
                     $project->investors = Invest::investors($project->id);
 
-                    ////@FIXME!! estos procesos de calculo de inversión y dias lo hará el cron
-                    //--------------------------------------------------------------------------------------------
                     $amount = Invest::invested($project->id);
                     if ($project->invested != $amount) {
                         self::query("UPDATE project SET amount = '{$amount}' WHERE id = ?", array($project->id));
-                        $project->invested = $amount; // por ahora
                     }
+                    $project->invested = $amount;
 
                     //mensajes
                     $project->messages = Message::getAll($project->id);
@@ -190,38 +188,8 @@ namespace Goteo\Model {
                         if ($project->days != $days) {
                             self::query("UPDATE project SET days = '{$days}' WHERE id = ?", array($project->id));
                         }
-                        $project->days = $days; // por ahora
+                        $project->days = $days;
                     }
-                    //--------------------------------------------------------------------------------------------
-                    //@FIXME!! OJO, esto es trabajo del cron
-                    /***
-                    // si ha llegado a los 40 días
-                    if ($days >= 40) {
-                        // si no ha alcanzado el mínimo, pasa a estado caducado
-                        if ($project->invested < $project->mincost) {
-  //                          $project->fail();
-                        } else {
-                            // si ha alcanzado el mínimo tiene hasta 80 días para conseguir el óptimo
-                            if ($days >= 80) {
-                                // ha llegadio a los 80 dias habiendo alcanzado el mínimo
-                                // (si no fuera así estaria en estado caducado y no se verificaría en este punto
-//                                $project->succeed();
-                            } else {
-                                // ha conseguido el mínimo y sigue publicado hasta que consiga el óptimo
-                                $project->days = 80 - $days;
-                            }
-                        }
-                    } else {
-                        $project->days = 40 - $days;
-                    }
-
-                    // si se ha conseguido el optimo, pasa a estado financiado
-                    if ($project->invested >= $project->maxcost) {
-//                        $project->succeed();
-                    }
-                    ****/
-                    //--------------------------------------------------------------------------------------------
-
                 }
                 //-----------------------------------------------------------------
                 // Fin de verificaciones
@@ -284,17 +252,17 @@ namespace Goteo\Model {
 
             if (empty($this->contract_nif))
                 $errors['userPersonal']['contract_nif'] = Text::get('mandatory-project-field-contract-nif');
-            elseif (!Check::Nif($this->contract_nif))
+            elseif (!Check::nif($this->contract_nif))
                 $errors['userPersonal']['contract_nif'] = Text::get('validate-project-value-contract-nif');
 
             if (empty($this->contract_email))
                 $errors['userPersonal']['contract_email'] = Text::get('mandatory-project-field-contract-email');
-            elseif (!Check::Mail($this->contract_email))
+            elseif (!Check::mail($this->contract_email))
                 $errors['userPersonal']['contract_email'] = Text::get('validate-project-value-contract-email');
 
             if (empty($this->phone))
                 $errors['userPersonal']['phone'] = Text::get('mandatory-project-field-phone');
-            elseif (!Check::Phone($this->phone))
+            elseif (!Check::phone($this->phone))
                 $errors['userPersonal']['phone'] = Text::get('validate-project-value-phone');
 
             if (empty($this->address))
@@ -319,7 +287,7 @@ namespace Goteo\Model {
 
             if (empty($this->description))
                 $errors['overview']['description'] = Text::get('mandatory-project-field-description');
-            elseif (!Check::Words($this->description, 150))
+            elseif (!Check::words($this->description, 150))
                 $errors['overview']['description'] = Text::get('validate-project-value-description');
 
             if (empty($this->motivation))
@@ -909,7 +877,7 @@ namespace Goteo\Model {
         /*
          *  Para actualizar el minimo/optimo de costes
          */
-        private function minmax() {
+        public function minmax() {
             $this->mincost = 0;
             $this->maxcost = 0;
             
@@ -951,10 +919,59 @@ namespace Goteo\Model {
         /*
          * Lista de proyectos publicados
          */
-        public static function published()
+        public static function published($type = 'all')
         {
+            // segun el tipo (ver controller/discover.php)
+            switch ($type) {
+                case 'popular':
+                    // de los que estan en campaña,
+                    // los que tienen más usuarios (unicos) cofinanciadores y mensajeros
+                    $sql = "SELECT COUNT(DISTINCT(user.id)) as people, project.id as id
+                            FROM project
+                            LEFT JOIN invest
+                                ON invest.project = project.id
+                                AND invest.status <> 2
+                            LEFT JOIN message
+                                ON message.project = project.id
+                            LEFT JOIN user 
+                                ON user.id = invest.user OR user.id = message.user
+                            WHERE project.status= 3 
+                            AND (project.id = invest.project
+                                OR project.id = message.project)
+                            GROUP BY project.id
+                            ORDER BY people DESC";
+                    break;
+                case 'outdate':
+                    // los que les quedan 15 dias o menos
+                    $sql = "SELECT  id
+                            FROM    project
+                            WHERE   days <= 15
+                            AND     days > 0
+                            AND     status = 3
+                            ORDER BY days ASC";
+                    break;
+                case 'recent':
+                    // los que llevan menos tiempo desde el published, hasta 15 dias
+                    $sql = "SELECT 
+                                project.id as id,
+                                DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%e') as day
+                            FROM project
+                            WHERE project.status = 3
+                            HAVING day <= 15 AND day IS NOT NULL
+                            ORDER BY day DESC";
+                    break;
+                case 'success':
+                    // los que estan 'financiado' o 'retorno cumplido'
+                    $sql = "SELECT id FROM project WHERE status = 4 OR status = 6 ORDER BY name ASC";
+                    break;
+                default: 
+                    // todos los que estan 'en campaña'
+                    $sql = "SELECT id FROM project WHERE status = 3 ORDER BY name ASC";
+            }
+            
+
             $projects = array();
-            $query = self::query("SELECT id FROM project WHERE status = 3 ORDER BY name ASC");
+            $query = self::query($sql);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
                 $projects[] = self::get($proj['id']);
             }
@@ -992,44 +1009,6 @@ namespace Goteo\Model {
             }
             return $projects;
         }
-
-
-
-        /*
-         *  getAll obsoleta
-        public static function getAll($filters = array(), $order = '') {
-            $vals = array();
-            $filter = "";
-            foreach ($filters as $field=>$value) {
-                $filter .= $filter == "" ? " WHERE" : " AND";
-                if (strtolower(substr($value, 0, 2)) == 'is') {
-                    $filter .= " $field " . $value;
-                }
-                elseif (substr($value, 0, 1) == '!') {
-                    $filter .= " $field != :$field";
-                    $vals[":$field"] = substr($value, 1);
-                }
-                else {
-                    $filter .= " $field = :$field";
-                    $vals[":$field"] = $value;
-                }
-
-            }
-
-            if (!empty ($order)) {
-                $order = " ORDER BY $order";
-            }
-
-			try {
-                $sql = "SELECT * FROM project" . $filter . $order;
-				$query = self::query($sql, $vals);
-                return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
-            } catch (\PDOException $e) {
-				throw new Goteo\Core\Exception($e->getMessage());
-            }
-        }
-         *
-         */
 
         /*
          * Estados de desarrollo del propyecto

@@ -52,6 +52,9 @@ define('GOTEO_MAIL_SMTP_PORT', 465);
 define('GOTEO_MAIL_SMTP_USERNAME', 'hola@goteo.org');
 define('GOTEO_MAIL_SMTP_PASSWORD', 'goteo1234');
 
+// Language
+define('GOTEO_DEFAULT_LANG', 'es');
+
 /****************************************************
 Paypal web_constants.php
 
