@@ -131,6 +131,11 @@ namespace Goteo\Model {
 				// metemos los datos del proyecto en la instancia
 				$query = self::query("SELECT * FROM project WHERE id = ?", array($id));
 				$project = $query->fetchObject(__CLASS__);
+                                
+                                if (isset($project->media)) {
+                                    $project->media = new Project\Media($project->media);
+                                }
+                                
 
                 // owner
                 $project->user = User::get($project->owner);
@@ -362,6 +367,7 @@ namespace Goteo\Model {
             }
 
             $keywords = explode(',', $this->keywords);
+            
             if ($keywords < 5) {
                 $errors['overview']['keywords'] = Text::get('validate-project-value-keywords');
             } else {

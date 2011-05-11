@@ -132,13 +132,13 @@ $superform = array(
             'required'  => true,
             'hint'      => Text::get('tooltip-project-media'),
             'errors'    => !empty($errors['media']) ? array($errors['media']) : array(),
-            'value'     => $project->media,
+            'value'     => (string) $project->media,
             'children'  => array(
                 'media-preview' => array(
                     'title' => 'Vista previa',
                     'class' => 'media-preview inline',
                     'type'  => 'html',
-                    'html'  => '<div></div>'
+                    'html'  => '<div>' . (!empty($project->media) ? $project->media->getEmbedCode() : '') .'</div>'
                 )
             )
         ),
