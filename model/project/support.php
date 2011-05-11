@@ -37,7 +37,7 @@ namespace Goteo\Model\Project {
             // Estos son errores que no permiten continuar
             if (empty($this->project))
                 $errors[] = 'No hay proyecto al que asignar la colaboración';
-
+/*
             if (empty($this->support))
                 $errors[] = 'No hay colaboración';
 
@@ -46,7 +46,7 @@ namespace Goteo\Model\Project {
 
             if (empty($this->type))
                 $errors[] = 'No hay tipo de colaboración';
-
+*/
             //cualquiera de estos errores hace fallar la validación
             if (!empty($errors))
                 return false;

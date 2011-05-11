@@ -69,6 +69,7 @@ namespace Goteo\Model {
             $investors = array(), // usuarios que han invertido
 
             $errors = array(), // para los fallos en los datos
+            $okeys  = array(), // para los campos que estan ok
 
             $messages = array(), // mensajes de los usuarios hilos con hijos
 
@@ -130,6 +131,11 @@ namespace Goteo\Model {
 				// metemos los datos del proyecto en la instancia
 				$query = self::query("SELECT * FROM project WHERE id = ?", array($id));
 				$project = $query->fetchObject(__CLASS__);
+                                
+                                if (isset($project->media)) {
+                                    $project->media = new Project\Media($project->media);
+                                }
+                                
 
                 // owner
                 $project->user = User::get($project->owner);
@@ -165,13 +171,11 @@ namespace Goteo\Model {
                     //para resto de estados
                     $project->investors = Invest::investors($project->id);
 
-                    ////@FIXME!! estos procesos de calculo de inversión y dias lo hará el cron
-                    //--------------------------------------------------------------------------------------------
                     $amount = Invest::invested($project->id);
                     if ($project->invested != $amount) {
                         self::query("UPDATE project SET amount = '{$amount}' WHERE id = ?", array($project->id));
-                        $project->invested = $amount; // por ahora
                     }
+                    $project->invested = $amount;
 
                     //mensajes
                     $project->messages = Message::getAll($project->id);
@@ -190,38 +194,8 @@ namespace Goteo\Model {
                         if ($project->days != $days) {
                             self::query("UPDATE project SET days = '{$days}' WHERE id = ?", array($project->id));
                         }
-                        $project->days = $days; // por ahora
+                        $project->days = $days;
                     }
-                    //--------------------------------------------------------------------------------------------
-                    //@FIXME!! OJO, esto es trabajo del cron
-                    /***
-                    // si ha llegado a los 40 días
-                    if ($days >= 40) {
-                        // si no ha alcanzado el mínimo, pasa a estado caducado
-                        if ($project->invested < $project->mincost) {
-  //                          $project->fail();
-                        } else {
-                            // si ha alcanzado el mínimo tiene hasta 80 días para conseguir el óptimo
-                            if ($days >= 80) {
-                                // ha llegadio a los 80 dias habiendo alcanzado el mínimo
-                                // (si no fuera así estaria en estado caducado y no se verificaría en este punto
-//                                $project->succeed();
-                            } else {
-                                // ha conseguido el mínimo y sigue publicado hasta que consiga el óptimo
-                                $project->days = 80 - $days;
-                            }
-                        }
-                    } else {
-                        $project->days = 40 - $days;
-                    }
-
-                    // si se ha conseguido el optimo, pasa a estado financiado
-                    if ($project->invested >= $project->maxcost) {
-//                        $project->succeed();
-                    }
-                    ****/
-                    //--------------------------------------------------------------------------------------------
-
                 }
                 //-----------------------------------------------------------------
                 // Fin de verificaciones
@@ -243,9 +217,6 @@ namespace Goteo\Model {
             if (empty($this->id))
                 $errors[] = 'El proyecto no tiene id';
 
-            if (empty($this->name))
-                $errors[] = 'El proyecto no tiene nombre';
-            
             if (empty($this->status))
                 $this->status = 1;
             
@@ -269,152 +240,259 @@ namespace Goteo\Model {
         // check solo comprueba errores de datos que no evita que grabe
         public function check() {
             $errors = &$this->errors;
+            $okeys  = &$this->okeys ;
             //los siguientes permiten guardar
             /***************** Revisión de campos del paso 1, PERFIL *****************/
             $user = User::get($this->owner);
-            $user->validate($errors['userProfile']);
+            $user->validate($errors['userProfile'], $okeys['userProfile']);
             /***************** FIN Revisión del paso 1, PERFIL *****************/
 
             /***************** Revisión de campos del paso 2,DATOS PERSONALES *****************/
-            if (empty($this->contract_name))
+            if (empty($this->contract_name)) {
                 $errors['userPersonal']['contract_name'] = Text::get('mandatory-project-field-contract-name');
+            } else {
+                 $okeys['userPersonal']['contract_name'] = 'ok';
+            }
 
-            if (empty($this->contract_surname))
+            if (empty($this->contract_surname)) {
                 $errors['userPersonal']['contract_surname'] = Text::get('mandatory-project-field-contract-surname');
+            } else {
+                 $okeys['userPersonal']['contract_surname'] = 'ok';
+            }
 
-            if (empty($this->contract_nif))
+            if (empty($this->contract_nif)) {
                 $errors['userPersonal']['contract_nif'] = Text::get('mandatory-project-field-contract-nif');
-            elseif (!Check::Nif($this->contract_nif))
+            } elseif (!Check::nif($this->contract_nif)) {
                 $errors['userPersonal']['contract_nif'] = Text::get('validate-project-value-contract-nif');
+            } else {
+                 $okeys['userPersonal']['contract_nif'] = 'ok';
+            }
 
-            if (empty($this->contract_email))
+            if (empty($this->contract_email)) {
                 $errors['userPersonal']['contract_email'] = Text::get('mandatory-project-field-contract-email');
-            elseif (!Check::Mail($this->contract_email))
+            } elseif (!Check::mail($this->contract_email)) {
                 $errors['userPersonal']['contract_email'] = Text::get('validate-project-value-contract-email');
+            } else {
+                 $okeys['userPersonal']['contract_email'] = 'ok';
+            }
 
-            if (empty($this->phone))
+            if (empty($this->phone)) {
                 $errors['userPersonal']['phone'] = Text::get('mandatory-project-field-phone');
-            elseif (!Check::Phone($this->phone))
+            } elseif (!Check::phone($this->phone)) {
                 $errors['userPersonal']['phone'] = Text::get('validate-project-value-phone');
+            } else {
+                 $okeys['userPersonal']['phone'] = 'ok';
+            }
 
-            if (empty($this->address))
+            if (empty($this->address)) {
                 $errors['userPersonal']['address'] = Text::get('mandatory-project-field-address');
+            } else {
+                 $okeys['userPersonal']['address'] = 'ok';
+            }
 
-            if (empty($this->zipcode))
+            if (empty($this->zipcode)) {
                 $errors['userPersonal']['zipcode'] = Text::get('mandatory-project-field-zipcode');
+            } else {
+                 $okeys['userPersonal']['zipcode'] = 'ok';
+            }
 
-            if (empty($this->location))
+            if (empty($this->location)) {
                 $errors['userPersonal']['location'] = Text::get('mandatory-project-field-residence');
+            } else {
+                 $okeys['userPersonal']['location'] = 'ok';
+            }
 
-            if (empty($this->country))
+            if (empty($this->country)) {
                 $errors['userPersonal']['country'] = Text::get('mandatory-project-field-country');
+            } else {
+                 $okeys['userPersonal']['country'] = 'ok';
+            }
             /***************** FIN Revisión del paso 2, DATOS PERSONALES *****************/
 
             /***************** Revisión de campos del paso 3, DESCRIPCION *****************/
-            if (empty($this->name))
+            if (empty($this->name)) {
                 $errors['overview']['name'] = Text::get('mandatory-project-field-name');
+            } else {
+                 $okeys['overview']['name'] = 'ok';
+            }
 
-            if (empty($this->image))
+            if (empty($this->image)) {
                 $errors['overview']['image'] = Text::get('mandatory-project-field-image');
+            } else {
+                 $okeys['overview']['image'] = 'ok';
+            }
 
-            if (empty($this->description))
+            if (empty($this->description)) {
                 $errors['overview']['description'] = Text::get('mandatory-project-field-description');
-            elseif (!Check::Words($this->description, 150))
+            } elseif (!Check::words($this->description, 150)) {
                 $errors['overview']['description'] = Text::get('validate-project-value-description');
+            } else {
+                 $okeys['overview']['description'] = 'ok';
+            }
 
-            if (empty($this->motivation))
+            if (empty($this->motivation)) {
                 $errors['overview']['motivation'] = Text::get('mandatory-project-field-motivation');
+            } else {
+                 $okeys['overview']['motivation'] = 'ok';
+            }
 
-//             if (empty($this->about))
-//                $errors['overview']['about'] = Text::get('mandatory-project-field-about');
+             if (empty($this->about)) {
+                $errors['overview']['about'] = Text::get('mandatory-project-field-about');
+             } else {
+                 $okeys['overview']['about'] = 'ok';
+            }
 
-            if (empty($this->goal))
+            if (empty($this->goal)) {
                 $errors['overview']['goal'] = Text::get('mandatory-project-field-goal');
+            } else {
+                 $okeys['overview']['goal'] = 'ok';
+            }
 
-            if (empty($this->related))
+            if (empty($this->related)) {
                 $errors['overview']['related'] = Text::get('mandatory-project-field-related');
+            } else {
+                 $okeys['overview']['related'] = 'ok';
+            }
 
-            if (empty($this->categories))
+            if (empty($this->categories)) {
                 $errors['overview']['categories'] = Text::get('mandatory-project-field-category');
+            } else {
+                 $okeys['overview']['categories'] = 'ok';
+            }
 
-            if (empty($this->media))
+            if (empty($this->media)) {
                 $errors['overview']['media'] = Text::get('mandatory-project-field-media');
+            } else {
+                 $okeys['overview']['media'] = 'ok';
+            }
 
             $keywords = explode(',', $this->keywords);
-            if ($keywords < 5)
+            
+            if ($keywords < 5) {
                 $errors['overview']['keywords'] = Text::get('validate-project-value-keywords');
+            } else {
+                 $okeys['overview']['keywords'] = 'ok';
+            }
 
-            if (empty($this->currently))
+            if (empty($this->currently)) {
                 $errors['overview']['currently'] = Text::get('validate-project-field-currently');
+            } else {
+                 $okeys['overview']['currently'] = 'ok';
+            }
 
-            if (empty($this->project_location))
+            if (empty($this->project_location)) {
                 $errors['overview']['project_location'] = Text::get('mandatory-project-field-location');
+            } else {
+                 $okeys['overview']['project_location'] = 'ok';
+            }
             /***************** FIN Revisión del paso 3, DESCRIPCION *****************/
 
             /***************** Revisión de campos del paso 4, COSTES *****************/
-            if (count($this->costs) < 2)
+            if (count($this->costs) < 2) {
                 $errors['costs']['costs'] = Text::get('mandatory-project-costs');
-            elseif (count($this->costs) < 5)
+            } elseif (count($this->costs) < 5) {
                 $errors['costs']['costs'] = Text::get('validate-project-field-costs');
+            } else {
+                 $okeys['costs']['costs'] = 'ok';
+            }
 
             foreach($this->costs as $cost) {
-                if (empty($cost->cost))
+                if (empty($cost->cost)) {
                     $errors['costs']['cost-'.$cost->id.'-cost'] = Text::get('mandatory-cost-field-name');
+                } else {
+                     $okeys['costs']['cost-'.$cost->id.'-cost'] = 'ok';
+                }
 
-                if (empty($cost->description))
+                if (empty($cost->description)) {
                     $errors['costs']['cost-'.$cost->id.'-description'] = Text::get('mandatory-cost-field-description');
+                } else {
+                     $okeys['costs']['cost-'.$cost->id.'-description'] = 'ok';
+                }
 
-                if (empty($cost->from) || empty($cost->until))
+                if (empty($cost->from) || empty($cost->until)) {
                     $errors['costs']['cost-'.$cost->id.'-dates'] = Text::get('validate-cost-field-dates');
+                }
             }
 
             $costdif = $this->maxcost - $this->mincost;
             $maxdif = $this->mincost * 0.40;
-            if ($costdif > $maxdif )
+            if ($costdif > $maxdif ) {
                 $errors['costs']['total-costs'] = Text::get('validate-project-total-costs');
+            }
 
-            if (empty($this->resource))
+            if (empty($this->resource)) {
                 $errors['costs']['resource'] = Text::get('mandatory-project-field-resource');
+            } else {
+                 $okeys['costs']['resource'] = 'ok';
+            }
             /***************** FIN Revisión del paso 4, COSTES *****************/
 
             /***************** Revisión de campos del paso 5, RETORNOS *****************/
-            if (count($this->social_rewards) < 5)
+            if (count($this->social_rewards) < 5) {
                 $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards');
+            } else {
+                 $okeys['rewards']['social_rewards'] = 'ok';
+            }
 
-            if (count($this->individual_rewards) < 5)
+            if (count($this->individual_rewards) < 5) {
                 $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards');
+            } else {
+                 $okeys['rewards']['individual_rewards'] = 'ok';
+            }
 
             foreach ($this->social_rewards as $social) {
-                if (empty($social->reward))
+                if (empty($social->reward)) {
                     $errors['rewards']['social_reward-'.$social->id.'reward'] = Text::get('mandatory-social_reward-field-name');
+                } else {
+                     $okeys['rewards']['social_reward-'.$social->id.'reward'] = 'ok';
+                }
 
-                if (empty($social->description))
+                if (empty($social->description)) {
                     $errors['rewards']['social_rewards-'.$social->id.'-description'] = Text::get('mandatory-social_reward-field-description');
+                } else {
+                     $okeys['rewards']['social_rewards-'.$social->id.'-description'] = 'ok';
+                }
 
-                if (empty($social->license))
+                if (empty($social->license)) {
                     $errors['rewards']['social_reward-'.$social->id.'-license'] = Text::get('validate-social_reward-license');
+                }
             }
 
             foreach ($this->individual_rewards as $individual) {
-                if (empty($individual->reward))
+                if (empty($individual->reward)) {
                     $errors['rewards']['individual_reward-'.$individual->id.'-reward'] = Text::get('mandatory-individual_reward-field-name');
+                } else {
+                     $okeys['rewards']['individual_reward-'.$individual->id.'-reward'] = 'ok';
+                }
 
-                if (empty($individual->description))
+                if (empty($individual->description)) {
                     $errors['rewards']['individual_reward-'.$individual->id.'-description'] = Text::get('mandatory-individual_reward-field-description');
+                } else {
+                     $okeys['rewards']['individual_reward-'.$individual->id.'-description'] = 'ok';
+                }
 
-                if (empty($individual->reward))
+                if (empty($individual->amount)) {
                     $errors['rewards']['individual_reward-'.$individual->id.'-amount'] = Text::get('mandatory-individual_reward-field-amount');
+                } else {
+                     $okeys['rewards']['individual_reward-'.$individual->id.'-amount'] = 'ok';
+                }
             }
             /***************** FIN Revisión del paso 5, RETORNOS *****************/
 
 
             /***************** Revisión de campos del paso 6, COLABORACIONES *****************/
             foreach ($this->supports as $support) {
-                if (empty($support->support))
+                if (empty($support->support)) {
                     $errors['supports']['support-'.$support->id.'-support'] = Text::get('mandatory-support-field-name');
+                } else {
+                     $okeys['supports']['support-'.$support->id.'-support'] = 'ok';
+                }
 
-                if (empty($support->description))
+                if (empty($support->description)) {
                     $errors['supports']['support-'.$support->id.'-description'] = Text::get('mandatory-support-field-description');
+                } else {
+                     $okeys['supports']['support-'.$support->id.'-description'] = 'ok';
+                }
             }
             /***************** FIN Revisión del paso 6, COLABORACIONES *****************/
 
@@ -635,8 +713,9 @@ namespace Goteo\Model {
         // metodo para calcular el % de progreso
         public function evaluate ()
         {
-            //primero resetea los errores
+            //primero resetea los errores y los okeys
             $this->errors = self::blankErrors();
+            $this->okeys  = self::blankErrors();
             // y los checkea de nuevo
             $this->check();
 
@@ -909,7 +988,7 @@ namespace Goteo\Model {
         /*
          *  Para actualizar el minimo/optimo de costes
          */
-        private function minmax() {
+        public function minmax() {
             $this->mincost = 0;
             $this->maxcost = 0;
             
@@ -951,10 +1030,59 @@ namespace Goteo\Model {
         /*
          * Lista de proyectos publicados
          */
-        public static function published()
+        public static function published($type = 'all')
         {
+            // segun el tipo (ver controller/discover.php)
+            switch ($type) {
+                case 'popular':
+                    // de los que estan en campaña,
+                    // los que tienen más usuarios (unicos) cofinanciadores y mensajeros
+                    $sql = "SELECT COUNT(DISTINCT(user.id)) as people, project.id as id
+                            FROM project
+                            LEFT JOIN invest
+                                ON invest.project = project.id
+                                AND invest.status <> 2
+                            LEFT JOIN message
+                                ON message.project = project.id
+                            LEFT JOIN user 
+                                ON user.id = invest.user OR user.id = message.user
+                            WHERE project.status= 3 
+                            AND (project.id = invest.project
+                                OR project.id = message.project)
+                            GROUP BY project.id
+                            ORDER BY people DESC";
+                    break;
+                case 'outdate':
+                    // los que les quedan 15 dias o menos
+                    $sql = "SELECT  id
+                            FROM    project
+                            WHERE   days <= 15
+                            AND     days > 0
+                            AND     status = 3
+                            ORDER BY days ASC";
+                    break;
+                case 'recent':
+                    // los que llevan menos tiempo desde el published, hasta 15 dias
+                    $sql = "SELECT 
+                                project.id as id,
+                                DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%e') as day
+                            FROM project
+                            WHERE project.status = 3
+                            HAVING day <= 15 AND day IS NOT NULL
+                            ORDER BY day DESC";
+                    break;
+                case 'success':
+                    // los que estan 'financiado' o 'retorno cumplido'
+                    $sql = "SELECT id FROM project WHERE status = 4 OR status = 6 ORDER BY name ASC";
+                    break;
+                default: 
+                    // todos los que estan 'en campaña'
+                    $sql = "SELECT id FROM project WHERE status = 3 ORDER BY name ASC";
+            }
+            
+
             $projects = array();
-            $query = self::query("SELECT id FROM project WHERE status = 3 ORDER BY name ASC");
+            $query = self::query($sql);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
                 $projects[] = self::get($proj['id']);
             }
@@ -992,44 +1120,6 @@ namespace Goteo\Model {
             }
             return $projects;
         }
-
-
-
-        /*
-         *  getAll obsoleta
-        public static function getAll($filters = array(), $order = '') {
-            $vals = array();
-            $filter = "";
-            foreach ($filters as $field=>$value) {
-                $filter .= $filter == "" ? " WHERE" : " AND";
-                if (strtolower(substr($value, 0, 2)) == 'is') {
-                    $filter .= " $field " . $value;
-                }
-                elseif (substr($value, 0, 1) == '!') {
-                    $filter .= " $field != :$field";
-                    $vals[":$field"] = substr($value, 1);
-                }
-                else {
-                    $filter .= " $field = :$field";
-                    $vals[":$field"] = $value;
-                }
-
-            }
-
-            if (!empty ($order)) {
-                $order = " ORDER BY $order";
-            }
-
-			try {
-                $sql = "SELECT * FROM project" . $filter . $order;
-				$query = self::query($sql, $vals);
-                return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
-            } catch (\PDOException $e) {
-				throw new Goteo\Core\Exception($e->getMessage());
-            }
-        }
-         *
-         */
 
         /*
          * Estados de desarrollo del propyecto

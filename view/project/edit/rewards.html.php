@@ -158,6 +158,10 @@ echo new SuperForm(array(
         )        
     ),    
     'elements'      => array(
+        'process_rewards' => array (
+            'type' => 'hidden',
+            'value' => 'rewards'
+        ),
         
         'social_rewards' => array(
             'type'      => 'group',

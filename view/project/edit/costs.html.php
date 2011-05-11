@@ -117,6 +117,11 @@ echo new SuperForm(array(
         )        
     ),    
     'elements'      => array(        
+        'process_costs' => array (
+            'type' => 'hidden',
+            'value' => 'costs'
+        ),
+
         'costs' => array(
             'type'      => 'group',
             'title'     => 'Desglose de costes',

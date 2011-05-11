@@ -74,6 +74,10 @@ echo new SuperForm(array(
         )        
     ),    
     'elements'      => array(        
+        'process_supports' => array (
+            'type' => 'hidden',
+            'value' => 'supports'
+        ),
         'suppports' => array(
             'type'      => 'group',
             'title'     => 'Colaboraciones',

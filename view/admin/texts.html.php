@@ -26,10 +26,9 @@ include 'view/prologue.html.php';
                 <p><a href="/admin/texts">Volver a la lista de textos</a></p>
                 <p>Traduciendo a <?php echo $this['using']->name; ?></p>
 				<form action="/admin/translate/<?php echo $this['text']->id; ?>/<?php $this['using']->lang; ?><?php if (isset($_GET['filter'])) echo '?filter=' . $_GET['filter']; ?>" method="post">
-					<span style="font-style:italic;"><?php echo $this['text']->purpose; ?></span><br />
 					<dl>
-						<dt><label for="newtext"><?php echo $this['text']->text; ?></label></dt>
-						<dd><textarea id="newtext" name="newtext" cols="100" rows="6"><?php echo $this['text']->translation; ?></textarea></dd>
+						<dt><label for="newtext"><?php echo $this['text']->purpose; ?></label></dt>
+						<dd><textarea id="newtext" name="newtext" cols="100" rows="6"><?php echo $this['text']->text; ?></textarea></dd>
 					</dl>
 					<input type="submit" name="translate" value="Aplicar" />
 				</form>

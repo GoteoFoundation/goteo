@@ -106,7 +106,7 @@ namespace Goteo\Controller {
                     if(empty($_POST['user_nemail'])) {
                         $errors['email'] = Text::get('error-user-email-empty');
                     }
-                    elseif(!\Goteo\Library\Check::Mail($_POST['user_nemail'])) {
+                    elseif(!\Goteo\Library\Check::mail($_POST['user_nemail'])) {
                         $errors['email'] = Text::get('error-user-email-invalid');
                     }
                     elseif(empty($_POST['user_remail'])) {
@@ -130,7 +130,7 @@ namespace Goteo\Controller {
                     elseif(empty($_POST['user_npassword'])) {
                         $errors['password']['new'] = Text::get('error-user-password-empty');
                     }
-                    elseif(!\Goteo\Library\Check::Password($_POST['user_npassword'])) {
+                    elseif(!\Goteo\Library\Check::password($_POST['user_npassword'])) {
                         $errors['password']['new'] = Text::get('error-user-password-invalid');
                     }
                     elseif(empty($_POST['user_rpassword'])) {

@@ -14,7 +14,7 @@ namespace Goteo\Library {
 		/*
 		 * Debe validar nif, nie, pasaporte
 		 */
-		public static function Nif ($value) {
+		public static function nif ($value) {
 
 			// quitamos puntos y guiones
 			$value = str_replace(array('_', '.', ' ', '-', ','), '', $value);
@@ -94,7 +94,7 @@ namespace Goteo\Library {
 		 * @param type string	$value	E-mail
 		 * @return type bool
 		 */
-		public static function Mail ($value) {
+		public static function mail ($value) {
 			// First, we check that there's one @ symbol,
 			// and that the lengths are right.
 			if (!ereg("^[^@]{1,64}@[^@]{1,255}$", $value)) {
@@ -133,14 +133,14 @@ namespace Goteo\Library {
 		 * @param type string	$value	Contraseña
 		 * @return type bool
 		 */
-		public static function Password ($value) {
+		public static function password ($value) {
 		    if(strlen($value)<8) {
 		        return false;
 		    }
 		    return true;
 		}
 
-		public static function Words ($value, $number) {
+		public static function words ($value, $number) {
 
 			$words = explode(' ', $value);
 
@@ -150,7 +150,7 @@ namespace Goteo\Library {
 				return false;
 		}
 
-		public static function Phone ($value) {
+		public static function phone ($value) {
 
 			$value = str_replace(array('_', '.', ' ', '-', ','), '', $value);
 

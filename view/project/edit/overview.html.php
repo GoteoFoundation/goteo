@@ -42,6 +42,10 @@ $superform = array(
         )        
     ),
     'elements'      => array(
+        'process_overview' => array (
+            'type' => 'hidden',
+            'value' => 'overview'
+        ),
         
         'name' => array(
             'type'      => 'textbox',
@@ -128,13 +132,13 @@ $superform = array(
             'required'  => true,
             'hint'      => Text::get('tooltip-project-media'),
             'errors'    => !empty($errors['media']) ? array($errors['media']) : array(),
-            'value'     => $project->media,
+            'value'     => (string) $project->media,
             'children'  => array(
                 'media-preview' => array(
                     'title' => 'Vista previa',
                     'class' => 'media-preview inline',
                     'type'  => 'html',
-                    'html'  => '<div></div>'
+                    'html'  => '<div>' . (!empty($project->media) ? $project->media->getEmbedCode() : '') .'</div>'
                 )
             )
         ),
@@ -156,8 +160,8 @@ $superform = array(
             'title'     => 'Localización',
             'required'  => true,
             'hint'      => Text::get('tooltip-project-location'),
-            'errors'    => !empty($errors['location']) ? array($errors['location']) : array(),
-            'value'     => $project->location
+            'errors'    => !empty($errors['project_location']) ? array($errors['project_location']) : array(),
+            'value'     => $project->project_location
         )                                        
 
     )

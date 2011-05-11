@@ -22,9 +22,9 @@ namespace Goteo\Library {
         /*
          * Devuelve un texto en HTML
          */
-        static public function html ($id, $lang = 'es', $nocache = false) {
+        static public function html ($id) {
             // sacamos el contenido del texto
-            $text = self::get($id, $lang, $nocache);
+            $text = call_user_func_array ( 'Text::get' , \func_get_args() );
             if (self::isHtml($id))
                 return $text; // el texto ES html, lo devuelve tal cual
             else
@@ -34,44 +34,68 @@ namespace Goteo\Library {
         /*
          * Devuelve un testo sin HTML
          */
-        static public function plain ($id, $lang = 'es', $nocache = false) {
+        static public function plain ($id) {
             // sacamos el contenido del texto
-            $text = self::get($id, $lang, $nocache);
+            $text = call_user_func_array ( 'Text::get' , \func_get_args() );
             if (self::isHtml($id))
                 return \strip_tags($text) ; // ES html, le quitamos los tags
             else
                 return $text;
         }
 
-        static public function get ($id, $lang = 'es', $nocache = false) {
+        static public function get ($id) {
+            $lang = \GOTEO_DEFAULT_LANG; // @TODO idiomas
 
-            $id = str_replace(' ', '-', $id); // @FIXME seguro temporal
+            if (\defined('GOTEO_ADMIN_NOCACHE')) {
+                $nocache = true;
+            } else {
+                $nocache = false;
+            }
+
+            // si hay mas de un argumento, hay que meter el resto con
+            $args = \func_get_args();
+            if (count($args) > 1) {
+                array_shift($args);
+            } else {
+                $args = array();
+            }
 
 			// buscamos el texto en cache
 			static $_cache = array();
-			if (!$nocache && isset($_cache[$id][$lang]))
+			if (!$nocache && isset($_cache[$id][$lang]) && empty($args)) {
 				return $_cache[$id][$lang];
+            }
             
 			// buscamos el texto en la tabla
 			$query = Model::query("SELECT text FROM text WHERE id = :id AND lang = :lang", array(':id' => $id, ':lang' => $lang));
 			$exist = $query->fetchObject();
 			if ($exist->text) {
-				return $_cache[$id][$lang] = $exist->text;
-			} else {
-				// lo metemos en la tabla pero no en cache
-				Model::query("REPLACE INTO text (id, lang, text) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
-				Model::query("REPLACE INTO purpose (text, purpose) VALUES (:text, :purpose)", array(':text' => $id, ':purpose' => "Texto $id"));
+                $tmptxt = $_cache[$id][$lang] = $exist->text;
 
-				return $id;
+                //contamos cuantos argumentos necesita el texto
+                $req_args = \substr_count($exist->text, '%');
+
+                if (!empty($args) && $req_args > 0 && count($args) >= $req_args) {
+                    $texto = $nocache ? vsprintf($exist->text, $args) : vsprintf($tmptxt, $args);
+                } else {
+                    $texto = $nocache ? $exist->text : $tmptxt;
+                }
+
+			} else {
+                // si tenemos purpose, devolvemos eso
+                $texto = self::getPurpose($id);
+
+                if (strcmp($texto, $id) === 0) {
+                // sino, lo metemos en la tabla y en purpose
+                    Model::query("REPLACE INTO text (id, lang, text) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
+                    Model::query("REPLACE INTO purpose (text, purpose) VALUES (:text, :purpose)", array(':text' => $id, ':purpose' => "Texto $id"));
+                }
 			}
+
+            return $texto;
 		}
 
-		static public function getPurpose ($id = null) {
-			if ($id === null)
-				return '';
-            
-            $id = str_replace(' ', '-', $id); // @FIXME seguro temporal
-
+		static public function getPurpose ($id) {
 			// buscamos la explicación del texto en la tabla
 			$query = Model::query("SELECT purpose FROM purpose WHERE text = :id", array(':id' => $id));
 			$exist = $query->fetchObject();
@@ -79,7 +103,7 @@ namespace Goteo\Library {
 				return $exist->purpose;
 			} else {
 				Model::query("REPLACE INTO purpose (text, purpose) VALUES (:text, :purpose)", array(':text' => $id, ':purpose' => "Texto $id"));
-				return "Texto $id";
+				return $id;
 			}
 		}
 
@@ -87,12 +111,7 @@ namespace Goteo\Library {
          * Si un texto esta marcado como html devuelve true, si no está marcado así, false
          * Se marca en la tabla de propósitos ya que en la tabla texts habría que marcarlo en cada idioma
          */
-		static public function isHtml ($id = null) {
-			if ($id === null)
-				return false;
-
-            $id = str_replace(' ', '-', $id); // @FIXME seguro temporal
-
+		static public function isHtml ($id) {
             try
             {
                 // lo miramos en la tabla de propósitos
@@ -103,7 +122,7 @@ namespace Goteo\Library {
                 else
                     return false;
             } catch (\PDOException $e) {
-                return false; // La tabla purpose no tiene el campo html
+                return false; // Si la tabla purpose no tiene el campo html
             }
 		}
 
@@ -111,10 +130,10 @@ namespace Goteo\Library {
 		/*
 		 *  Metodo para la lista de textos segun idioma
 		 */
-		public static function getAll($lang = 'es', $filter = null) {
+		public static function getAll($filter = null) {
             $texts = array();
 
-            $values = array(':lang'=>$lang);
+            $values = array(':lang'=>\GOTEO_DEFAULT_LANG);
 
             $sql = "SELECT id, text FROM text WHERE lang = :lang";
             if (!empty($filter)) {
@@ -138,7 +157,7 @@ namespace Goteo\Library {
 		/*
 		 *  Esto se usara para la gestión de traducciones
 		 */
-		public function save($data, &$errors = array()) {
+		public static function save($data, &$errors = array()) {
 			if (!is_array($data) ||
 				empty($data['id']) ||
 				empty($data['text']) ||

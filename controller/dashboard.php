@@ -15,6 +15,11 @@ namespace Goteo\Controller {
         public function index ($section = null) {
 			$user = $_SESSION['user']->id;
 
+            // quitamos el stepped para que no nos lo coja para el siguiente proyecto que editemos
+            if (isset($_SESSION['stepped'])) {
+                unset($_SESSION['stepped']);
+            }
+
             $message = "Hola {$user}<br />";
 
             //@FIXME!! esto también irá con el ACL

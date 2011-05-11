@@ -8,7 +8,8 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Model,
         Goteo\Library\Worth,
-        Goteo\Library\Paypal;
+        Goteo\Library\Paypal,
+        Goteo\Library\Tpv;
 
     class Invest extends \Goteo\Core\Controller {
 
@@ -18,7 +19,7 @@ namespace Goteo\Controller {
         public function index ($project = null) {
 
             if (empty($_SESSION['user']))
-                throw new Redirection ('/login', Redirection::TEMPORARY);
+                throw new Redirection ('/user/login?from=' . \rawurlencode('/invest/' . $project), Redirection::TEMPORARY);
 
             if (empty($project))
                 throw new Redirection('/project/explore', Redirection::TEMPORARY);
@@ -26,6 +27,7 @@ namespace Goteo\Controller {
             $message = '';
 
             $projectData = Model\Project::get($project);
+            $methods = Model\Invest::methods();
 
             if ($projectData->owner == $_SESSION['user']->id)
                 throw new Redirection('/dashboard', Redirection::TEMPORARY);
@@ -33,8 +35,13 @@ namespace Goteo\Controller {
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $errors = array();
                 $los_datos = $_POST;
+
+                if (empty($_POST['method']) || !in_array($_POST['method'], array_keys($methods))) {
+                    $errors[] = 'Elegir el método de pago';
+                }
+
                 if (empty($_POST['email'])) {
-                    $errors[] = 'Indicar la cuenta de paypal (o email)';
+                    $errors[] = 'Indicar la cuenta de paypal o email';
                 }
 
                 if (empty($_POST['amount'])) {
@@ -70,6 +77,7 @@ namespace Goteo\Controller {
                             'user' => $_SESSION['user']->id,
                             'project' => $project,
                             'account' => $_POST['email'],
+                            'method' => $_POST['method'],
                             'status' => 0,
                             'invested' => date('Y-m-d'),
                             'anonymous' => $_POST['anonymous'],
@@ -80,9 +88,17 @@ namespace Goteo\Controller {
                     $invest->address = (object) $address;
 
                     if ($invest->save($errors)) {
-                        // Petición de preapproval y redirección a paypal
-                        Paypal::preapproval($invest, $errors);
-                        // si no salta, vamos a tener los errores
+
+                        switch($_POST['method']) {
+                            case 'tpv':
+                                Tpv::preapproval($invest, $errors);
+                                break;
+                            case 'paypal':
+                                // Petición de preapproval y redirección a paypal
+                                Paypal::preapproval($invest, $errors);
+                                // si no salta, vamos a tener los errores
+                                break;
+                        }
                     }
                 }
 			}
@@ -91,9 +107,26 @@ namespace Goteo\Controller {
                 $message .= 'Errores: ' . implode('.', $errors);
             }
 
+
+            foreach ($projectData->individual_rewards as &$reward) {
+                // si controla unidades de esta recompensa, mirar si quedan
+                if ($reward->units > 0) {
+                    $reward->taken = $reward->getTaken();
+                    if ($reward->taken >= $reward->units) {
+                        $reward->none = true;
+                    } else {
+                        $reward->none = false;
+                    }
+                } else {
+                    $reward->none = false;
+                }
+            }
+
+
             $viewData = array(
                     'message' => $message,
                     'project' => $projectData,
+                    'methods' => $methods,
                     'personal' => Model\User::getPersonal($_SESSION['user']->id)
                 );
 
@@ -107,7 +140,7 @@ namespace Goteo\Controller {
 
         public function confirmed ($project = null) {
             if (empty($_SESSION['user']))
-                throw new Redirection ('/login', Redirection::TEMPORARY);
+                throw new Redirection ('/user/login?from=' . \rawurlencode('/invest/confirmed/' . $project), Redirection::TEMPORARY);
 
             if (empty($project))
                 throw new Redirection('/project/explore', Redirection::TEMPORARY);
@@ -136,7 +169,7 @@ namespace Goteo\Controller {
          */
         public function fail ($project = null, $id = null) {
             if (empty($_SESSION['user']))
-                throw new Redirection ('/login', Redirection::TEMPORARY);
+                throw new Redirection ('/user/login?from=' . \rawurlencode('/invest/fail/' . $project. '/' . $id), Redirection::TEMPORARY);
 
             if (empty($project))
                 throw new Redirection('/project/explore', Redirection::TEMPORARY);
@@ -154,7 +187,8 @@ namespace Goteo\Controller {
 
             $viewData = array(
                     'message' => $message,
-                    'project' => $projectData
+                    'project' => $projectData,
+                    'personal' => Model\User::getPersonal($_SESSION['user']->id)
                 );
 
             return new View (

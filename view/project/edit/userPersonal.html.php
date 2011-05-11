@@ -21,6 +21,10 @@ echo new SuperForm(array(
         )        
     ),
     'elements'      => array(
+        'process_userPersonal' => array (
+            'type' => 'hidden',
+            'value' => 'userPersonal'
+        ),
         
         'contract_name' => array(
             'type'      => 'textbox',

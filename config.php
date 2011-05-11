@@ -52,6 +52,12 @@ define('GOTEO_MAIL_SMTP_PORT', 465);
 define('GOTEO_MAIL_SMTP_USERNAME', 'hola@goteo.org');
 define('GOTEO_MAIL_SMTP_PASSWORD', 'goteo1234');
 
+// Language
+define('GOTEO_DEFAULT_LANG', 'es');
+
+// url
+define('SITE_URL', 'http://devgoteo.org');
+
 /****************************************************
 Paypal web_constants.php
 
@@ -71,5 +77,9 @@ define('PAYPAL_DEVELOPER_PORTAL', 'https://developer.paypal.com');
 define('PAYPAL_DEVICE_ID', 'goteo.org');
 define('PAYPAL_APPLICATION_ID', 'APP-80W284485P519543T');
 define('PAYPAL_BUSINESS_ACCOUNT', 'goteo_1302553021_biz@gmail.com');
-define('PAYPAL_SITE_URL', 'http://devgoteo.org');
 define('PAYPAL_IP_ADDRESS', '127.0.0.1');
+
+/****************************************************
+TPV constants
+****************************************************/
+define('TPV_REDIRECT_URL', 'sermepa');
