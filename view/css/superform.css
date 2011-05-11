@@ -197,14 +197,13 @@ div.superform li.element.fullwidth + li.element {
     border-top: none;
 }
 
-/* Element badges */
+/* Element badges. Order is imporant */
+div.superform div.elements > ol > li.required > .title {
+    background: url('superform/badge/required.png') no-repeat right center;
+}
 
 div.superform div.elements > ol > li.ok > .title {
     background: url('superform/badge/ok.png') no-repeat right center;
-}
-
-div.superform div.elements > ol > li.required > .title {
-    background: url('superform/badge/required.png') no-repeat right center;
 }
 
 div.superform div.elements > ol > li.error > .title  {

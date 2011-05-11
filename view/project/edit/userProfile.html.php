@@ -9,6 +9,7 @@ $user = $this['user'];
 $interests = array();
 
 $errors = $project->errors[$this['step']] ?: array();
+$okays = $project->okeys[$this['step']] ?: array();
 
 foreach ($this['interests'] as $value => $label) {
     $interests[] =  array(
@@ -29,6 +30,7 @@ foreach ($user->webs as $web) {
             'web-' . $web->id . '-url' => array(
                 'type'      => 'textbox',
                 'value'     => $web->url,
+                'ok'        => !empty($okays['web-' . $web->id . '-url']),
                 'errors'    => array(),
                 'required'  => true,
                 'class'     => 'web-url inline'
@@ -65,7 +67,8 @@ echo new SuperForm(array(
             'size'      => 20,
             'title'     => 'Nombre completo',
             'hint'      => Text::get('tooltip-user-name'),
-            'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
+            'errors'    => !empty($errors['user_name']) ? array($errors['user_name']) : array(),
+            'ok'        => !empty($okays['user_name']),
             'value'     => $user->name,
         ),                
         'user_avatar' => array(                  
@@ -74,6 +77,7 @@ echo new SuperForm(array(
             'hint'      => Text::get('tooltip-user-image'),
             'errors'    => !empty($errors['avatar']) ? array($errors['avatar']) : array(),
             'class'     => 'user_avatar',
+            'ok'        => !empty($okays['user_avatar']),
             'children'  => array(                
                 'avatar_upload'    => array(
                     'type'  => 'file',

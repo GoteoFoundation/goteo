@@ -14,6 +14,7 @@ namespace Goteo\Library\SuperForm {
             $class = '',
             $hint,
             $required = false,
+            $ok = false,
             $errors = array(),
             $children = array(),
             $level = 2,
