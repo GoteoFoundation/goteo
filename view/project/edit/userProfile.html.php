@@ -11,6 +11,7 @@ $interests = array();
 $errors = $project->errors[$this['step']] ?: array();
 $okays = $project->okeys[$this['step']] ?: array();
 
+
 foreach ($this['interests'] as $value => $label) {
     $interests[] =  array(
         'value'     => $value,
@@ -71,8 +72,8 @@ echo new SuperForm(array(
             'size'      => 20,
             'title'     => 'Nombre completo',
             'hint'      => Text::get('tooltip-user-name'),
-            'errors'    => !empty($errors['user_name']) ? array($errors['user_name']) : array(),
-            'ok'        => !empty($okays['user_name']),
+            'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
+            'ok'        => !empty($okays['name']),
             'value'     => $user->name,
         ),                
         'user_avatar' => array(                  
