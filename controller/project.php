@@ -413,6 +413,11 @@ namespace Goteo\Controller {
                     $project->$field = $_POST[$field];
                 }
             }
+            
+            // Media
+            if (!empty($project->media)) {
+                $project->media = new Model\Project\Media($project->media);
+            }
 
             //categorias
             // añadir las que vienen y no tiene
