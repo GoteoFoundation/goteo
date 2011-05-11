@@ -6,11 +6,11 @@ $(function () {
 
     if (input.length) {
 
-       var lastVal = input.val();
+       var lastVal = input.val();      
        
        var updating = null;
 
-       var update = function (val) {              
+       var update = function (val) {                          
        
            clearTimeout(updating);
 
@@ -32,28 +32,31 @@ $(function () {
            
        };
        
-       input.one('focus', function () {
-                  
-           input.keypress(function () {
-           
-               li.addClass('busy');
-           
+       input.keydown(function () {
+       
+           var val = input.val();
+
+           if (!updating) {   
+               li.addClass('busy');                       
+           } else {               
                clearTimeout(updating);
+           }
 
-               updating = setTimeout(function () {
-                   update(input.val());                    
-               }, 700);
-
-           });
-
-          input.one('blur', function () { 
-              update(input.val());
-          });
+           updating = setTimeout(function () {
+               update(val);
+           }, 700);
+       });
+      
+      input.bind('paste', function () {             
+          update(input.val());          
+      });
+       
+       input.focus(function () {
+       
+          updating = null;
           
-          input.bind('paste', function () {             
-              updating = setTimeout(function () {
-                  update(input.val());
-              }, 100);              
+          input.one('blur', function () {               
+              updating = update(input.val());
           });
           
 

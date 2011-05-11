@@ -16,16 +16,12 @@ if (!('Superform' in window)) {
                     if (frm) {
                                         
                         if (frm.__sf_fb && frm.__sf_fb !== id) {
-                            setTimeout(function () {                      
-                                frm.find('div.feedback#superform-feedback-for-' + frm.__sf_fb).fadeOut(frm.__sf_as);
-                            });
+                            frm.find('div.feedback#superform-feedback-for-' + frm.__sf_fb).fadeOut(frm.__sf_as);                            
                         }
-
-                        setTimeout(function () {               
-                            frm.find('div.feedback#superform-feedback-for-' + id).fadeIn(frm.__sf_as);
-                            frm.__sf_fb = id;
-                        });
-
+                        
+                        frm.find('div.feedback#superform-feedback-for-' + frm.__sf_fb).fadeOut(frm.__sf_as);
+                        frm.__sf_fb = id;
+                        
                     }
 
                     event.stopPropagation();
@@ -55,8 +51,6 @@ if (!('Superform' in window)) {
                     if (frm) {
                     
                         // Thank you, jQuery. All [0] on you.
-                        el[0].className += ' busy';
-                        
                         var id = el.attr('id');
                         
                         el.__updating = $.ajax({
@@ -78,66 +72,62 @@ if (!('Superform' in window)) {
 
                                                         var nel = $('<div></div>');                                                        
                                                         nel[0].innerHTML = html;
-
-                                                        var nli = nel.find('li');
+                                                        
+                                                        delete data;
+                                                        
 
                                                         $(function () {       
+                                                        
+                                                            setTimeout(function () {    
+                                                        
+                                                                var nli = nel.find('li');
 
-                                                            nli.addClass('busy');                                                            
-                                                            el.attr('class', nli.attr('class'));
+                                                                el.attr('class', nli.attr('class'));
 
-                                                            // Get focused element
-                                                            var focused = $(':focus');
+                                                                // Get focused element
+                                                                var focused = $(':focus');
 
-                                                            var children = el.children('div.children').eq(0);
-                                                            var contents = el.children('div.contents').eq(0);
-                                                            var feedback = el.children('div.feedback').eq(0);
+                                                                var children = el.children('div.children').eq(0);
+                                                                var contents = el.children('div.contents').eq(0);
+                                                                var feedback = el.children('div.feedback').eq(0);
 
-                                                            var nchildren = nli.children('div.children').eq(0);
-                                                            var ncontents = nli.children('div.contents').eq(0);
-                                                            var nfeedback = nli.children('div.feedback').eq(0);
+                                                                var nchildren = nli.children('div.children').eq(0);
+                                                                var ncontents = nli.children('div.contents').eq(0);
+                                                                var nfeedback = nli.children('div.feedback').eq(0);
 
-                                                            //feedback.replaceWith(nfeedback);
+                                                                //feedback.replaceWith(nfeedback);
 
-                                                            // Copy new class
+                                                                // Copy new class
+
+                                                                setTimeout(function () {
+
+                                                                    if (!focused.is(':input') || !$.contains(contents[0], focused[0])) {
+                                                                        contents.replaceWith(ncontents);
+                                                                    }             
+
+                                                                    if (nfeedback.length) {
+                                                                        feedback.html(nfeedback.html());
+                                                                    }
+
+                                                                    if (success) {
+                                                                        success.call();
+                                                                    }
+
+                                                                });
+                                                                
+                                                            }, 50); // setTimeout
                                                             
-                                                            setTimeout(function () {
-
-                                                                if (!focused.is(':input') || !$.contains(contents[0], focused[0])) {
-                                                                    contents.replaceWith(ncontents);
-                                                                }             
-
-                                                                if (nfeedback.length) {
-                                                                    feedback.html(nfeedback.html());
-                                                                }
-
-                                                                //el.replaceWith(nli);
-
-                                                                if (success) {
-                                                                    success.call();
-                                                                }
-
-                                                                el.removeClass('busy');
-                                                            });
-                                                            
-
-                                                        });
+                                                        }); // $
 
                                                     }
                                                 }
 
-                                            } catch (e) {
-                                                // Error handling
-                                                el.removeClass('busy');
-                                            }
+                                            } catch (e) {}
 
 
 
-                                        },
-                            error:      function (xhr) {
-                                            el.removeClass('busy');
-                                        }                    
-                        });
+                                        }
+                        }); // el.__updating = $.ajax();
                     }
 
                 }
