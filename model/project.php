@@ -211,9 +211,6 @@ namespace Goteo\Model {
             if (empty($this->id))
                 $errors[] = 'El proyecto no tiene id';
 
-            if (empty($this->name))
-                $errors[] = 'El proyecto no tiene nombre';
-            
             if (empty($this->status))
                 $this->status = 1;
             
