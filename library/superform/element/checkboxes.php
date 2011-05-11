@@ -15,9 +15,11 @@ namespace Goteo\Library\SuperForm\Element {
                 $this->options = array();
             }
             
-            $options = array();
+            $i = 0;
             
             foreach ($this->options as $value => &$option) { 
+                
+                $i++;
                 
                 if (!($option instanceof CheckBox)) {
                     
@@ -26,21 +28,26 @@ namespace Goteo\Library\SuperForm\Element {
                         $option = new CheckBox(array(
                             'value' => $value,
                             'label' => (string) $option,
-                            'name'  => $this->name,                        
                         ));
 
                     } else if (is_array($option)) {
 
-                        $option = new CheckBox($option + array('name' => $this->name));
+                        $option = new CheckBox($option);
 
                     } else {
                         continue;
                     }
                     
-                }
+                }                                 
                 
                 if (isset($this->value)) {
                     $option->checked = ($option->value == $this->value); 
+                }
+                
+                $option->name = $this->name;
+                
+                if (!isset($option->id)) {
+                    $option->id = $this->id . "-{$i}";
                 }
                 
             }                   
