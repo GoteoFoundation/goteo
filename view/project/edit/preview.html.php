@@ -32,6 +32,10 @@ echo new SuperForm(array(
         )
     ),    
     'elements'      => array(
+        'process_preview' => array (
+            'type' => 'hidden',
+            'value' => 'preview'
+        ),
         
         'preview' => array(
             'type'      => 'html',

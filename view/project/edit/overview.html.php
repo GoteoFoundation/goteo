@@ -42,6 +42,10 @@ $superform = array(
         )        
     ),
     'elements'      => array(
+        'process_overview' => array (
+            'type' => 'hidden',
+            'value' => 'overview'
+        ),
         
         'name' => array(
             'type'      => 'textbox',

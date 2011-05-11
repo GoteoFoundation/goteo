@@ -44,8 +44,16 @@ namespace Goteo\Controller {
             if ($project->status != 1 && $_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/project/{$project->id}");
 
+            // si no tenemos SESSION stepped es porque no venimos del create
             if (!isset($_SESSION['stepped']))
-                $_SESSION['stepped'] = array();
+                $_SESSION['stepped'] = array(
+                    'userProfile' => 'userProfile',
+                     'userPersonal' => 'userPersonal',
+                     'overview' => 'overview',
+                     'costs' => 'costs',
+                     'rewards' => 'rewards',
+                     'supports' => 'supports'
+                );
 
             $steps = array(
                 'userProfile' => array(
@@ -97,24 +105,16 @@ namespace Goteo\Controller {
                 }                
             }
             
-            if (empty($step)) {
-            
-                // vista por defecto, el primer paso con errores
-                if (!empty($project->errors['userProfile']))
-                    $step = 'userProfile';
-                elseif (!empty($project->errors['userPersonal']))
-                    $step = 'userPersonal';
-                elseif (!empty($project->errors['overview']))
-                    $step = 'overview';
-                elseif (!empty($project->errors['costs']))
-                    $step = 'costs';
-                elseif (!empty($project->errors['rewards']))
-                    $step = 'rewards';
-                elseif (!empty($project->errors['supports']))
-                    $step = 'supports';
-                else
-                    $step = 'preview';
-                
+            // vista por defecto, el primer paso por el que no ha pasado
+            foreach ($steps as $id => $data) {
+                if (empty($step) && !empty($project->errors[$id])) {
+                    $step = $id;
+                    break;
+                }
+            }
+
+            if (empty($step) && empty($project->errors)) {
+                $step = 'preview';
             }
             
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -124,8 +124,9 @@ namespace Goteo\Controller {
                     
                     if (call_user_func_array(array($this, "process_{$id}"), array(&$project, &$errors))) {
                         // si un process devuelve true es que han enviado datos de este paso, lo añadimos a los pasados
-                        if (!in_array($id, $_SESSION['stepped']))
-                            $_SESSION['stepped'][] = $id;
+                        if (!in_array($id, $_SESSION['stepped'])) {
+                            $_SESSION['stepped'][$id] = $id;
+                        }
                     }
                     
                 }
@@ -156,6 +157,17 @@ namespace Goteo\Controller {
                     }
                 }
             }
+
+            // si
+            // para cada paso, si no han pasado por el, quitamos errores y okleys de ese paso
+            foreach ($steps as $id => $data) {
+                if (!in_array($id, $_SESSION['stepped'])) {
+                    unset($project->errors[$id]);
+                    unset($project->okeys[$id]);
+                }
+            }
+
+
             
             // variables para la vista
             $viewData = array(
@@ -273,7 +285,7 @@ namespace Goteo\Controller {
          * Paso 1 - PERFIL
          */
         private function process_userProfile(&$project, &$errors) {
-            if (!isset($_POST['user_name'])) {
+            if (!isset($_POST['process_userProfile'])) {
                 return false;
             }
 
@@ -330,6 +342,7 @@ namespace Goteo\Controller {
 
             /// este es el único save que se lanza desde un metodo process_
             $user->save($project->errors['userProfile']);
+            $user = Model\User::flush();
             return true;
         }
 
@@ -337,6 +350,10 @@ namespace Goteo\Controller {
          * Paso 2 - DATOS PERSONALES
          */
         private function process_userPersonal(&$project, &$errors) {
+            if (!isset($_POST['process_userPersonal'])) {
+                return false;
+            }
+
             // campos que guarda este paso
             $fields = array(
                 'contract_name',
@@ -372,8 +389,9 @@ namespace Goteo\Controller {
          */
 
         private function process_overview(&$project, &$errors) {
-            if (!isset($_POST['name']))
+            if (!isset($_POST['process_overview'])) {
                 return false;
+            }
 
             // campos que guarda este paso
             $fields = array(
@@ -425,8 +443,13 @@ namespace Goteo\Controller {
          * Paso 4 - COSTES
          */
         private function process_costs(&$project, &$errors) {
-            if (isset($_POST['resource']))
+            if (!isset($_POST['process_costs'])) {
+                return false;
+            }
+
+            if (isset($_POST['resource'])) {
                 $project->resource = $_POST['resource'];
+            }
             
             //tratar costes existentes
             foreach ($project->costs as $key => $cost) {
@@ -468,7 +491,9 @@ namespace Goteo\Controller {
          * Paso 5 - RETORNO
          */
         private function process_rewards(&$project, &$errors) {
-                        
+            if (!isset($_POST['process_rewards'])) {
+                return false;
+            }
 
             //tratar retornos sociales
             foreach ($project->social_rewards as $k => $reward) {
@@ -530,6 +555,9 @@ namespace Goteo\Controller {
          * Paso 6 - COLABORACIONES
          */
          private function process_supports(&$project, &$errors) {            
+            if (!isset($_POST['process_supports'])) {
+                return false;
+            }
 
             // tratar colaboraciones existentes
             foreach ($project->supports as $key => $support) {
@@ -566,7 +594,10 @@ namespace Goteo\Controller {
          * No hay nada que tratar porque aq este paso no se le envia nada por post
          */
         private function process_preview(&$project) {
-            $comes = $_POST;
+            if (!isset($_POST['process_preview'])) {
+                return false;
+            }
+            
             if (isset($_POST['comment']))
                 $project->comment = $_POST['comment'];
 
