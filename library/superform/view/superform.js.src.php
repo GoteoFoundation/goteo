@@ -95,26 +95,32 @@ if (!('Superform' in window)) {
                                                                 var ncontents = nli.children('div.contents').eq(0);
                                                                 var nfeedback = nli.children('div.feedback').eq(0);
 
-                                                                //feedback.replaceWith(nfeedback);
-
                                                                 // Copy new class
-
-                                                                setTimeout(function () {
-
-                                                                    if (!focused.is(':input') || !$.contains(contents[0], focused[0])) {
-                                                                        contents.replaceWith(ncontents);
-                                                                    }             
-
-                                                                    if (nfeedback.length) {
-                                                                        feedback.html(nfeedback.html());
-                                                                    }
-
-                                                                    if (success) {
-                                                                        success.call();
-                                                                    }
-
-                                                                });
+                                                                if (!focused.is(':input') || !$.contains(contents[0], focused[0])) {
+                                                                    contents.replaceWith(ncontents);
+                                                                    delete contents;
+                                                                }
+                                                                                                                                
+                                                                if (nfeedback.length) {
+                                                                    feedback.html(nfeedback.html());
+                                                                    nfeedback.remove();
+                                                                }
                                                                 
+                                                                if (children.length) {    
+                                                                    children.find('li.element').each (function (i, child) {                                                                        
+                                                                        // Thanks, jQuery                                                                                                                                                
+                                                                        if (!($.contains(child, focused[0]))) {
+                                                                            var newChild = nchildren.find('li.element#' + $(child).attr('id'));
+                                                                            if (newChild.length) {
+                                                                                $(child).replaceWith(newChild);
+                                                                                $(child).remove;
+                                                                                delete child;
+                                                                            }
+                                                                        }                                                                    
+                                                                        
+                                                                    });
+                                                                }                                                                                                                                                                                                                                                                
+
                                                             }, 50); // setTimeout
                                                             
                                                         }); // $

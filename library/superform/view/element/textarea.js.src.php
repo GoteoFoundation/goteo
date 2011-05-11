@@ -41,6 +41,7 @@ $(function () {
                clearTimeout(updating);
 
                updating = setTimeout(function () {
+                   console.log('update');
                    update(input.val());                    
                }, 700);
 
