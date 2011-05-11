@@ -42,6 +42,10 @@ $superform = array(
         )        
     ),
     'elements'      => array(
+        'process_overview' => array (
+            'type' => 'hidden',
+            'value' => 'overview'
+        ),
         
         'name' => array(
             'type'      => 'textbox',
@@ -156,8 +160,8 @@ $superform = array(
             'title'     => 'Localización',
             'required'  => true,
             'hint'      => Text::get('tooltip-project-location'),
-            'errors'    => !empty($errors['location']) ? array($errors['location']) : array(),
-            'value'     => $project->location
+            'errors'    => !empty($errors['project_location']) ? array($errors['project_location']) : array(),
+            'value'     => $project->project_location
         )                                        
 
     )

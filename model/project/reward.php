@@ -43,13 +43,13 @@ namespace Goteo\Model\Project {
             // Estos son errores que no permiten continuar
             if (empty($this->project))
                 $errors[] = 'No hay proyecto al que asignar la recompensa/rettorno';
-
+/*
             if (empty($this->reward))
                 $errors[] = 'No hay nombre de recompensa/retorno';
 
             if (empty($this->type))
                 $errors[] = 'No hay tipo de recompensa/retorno';
-
+*/
             //cualquiera de estos errores hace fallar la validación
             if (!empty($errors))
                 return false;

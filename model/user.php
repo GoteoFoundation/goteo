@@ -145,31 +145,31 @@ namespace Goteo\Model {
                     }
 
                     // Perfil público
-                    if(!empty($this->name)) {
+                    if(isset($this->name)) {
                         $data[':name'] = $this->name;
                     }
 
-                    if(!empty($this->about)) {
+                    if(isset($this->about)) {
                         $data[':about'] = $this->about;
                     }
 
-                    if(!empty($this->keywords)) {
+                    if(isset($this->keywords)) {
                         $data[':keywords'] = $this->keywords;
                     }
 
-                    if(!empty($this->contribution)) {
+                    if(isset($this->contribution)) {
                         $data[':contribution'] = $this->contribution;
                     }
 
-                    if(!empty($this->facebook)) {
+                    if(isset($this->facebook)) {
                         $data[':facebook'] = $this->facebook;
                     }
 
-                    if(!empty($this->twitter)) {
+                    if(isset($this->twitter)) {
                         $data[':twitter'] = $this->twitter;
                     }
 
-                    if(!empty($this->linkedin)) {
+                    if(isset($this->linkedin)) {
                         $data[':linkedin'] = $this->linkedin;
                     }
 
@@ -282,7 +282,7 @@ namespace Goteo\Model {
          * @param array $errors     Errores devueltos pasados por referencia.
          * @return bool true|false
          */
-        public function validate (&$errors = array()) {
+        public function validate (&$errors = array(), &$okeys = array()) {
             // Nuevo usuario.
             if(empty($this->id)) {
                 // Nombre de usuario (id)
@@ -346,6 +346,8 @@ namespace Goteo\Model {
                 }
                 if (empty($this->name)) {
                     $errors['name'] = Text::get('validate-user-field-name');
+                } else {
+                    $okeys['name'] = 'ok';
                 }
                 if (is_array($this->avatar) && !empty($this->avatar['name'])) {
                     $image = new Image($this->avatar);
@@ -355,23 +357,37 @@ namespace Goteo\Model {
                 }
                 elseif(!is_object($this->avatar)) {
                     $errors['avatar'] = Text::get('validate-user-field-avatar');
+                } else {
+                    $okeys['avatar'] = 'ok';
                 }
                 if (empty($this->about)) {
                     $errors['about'] = Text::get('validate-user-field-about');
+                } else {
+                    $okeys['about'] = 'ok';
                 }
                 $keywords = explode(',', $this->keywords);
                 if (sizeof($keywords) < 5) {
                     $errors['keywords'] = Text::get('validate-user-field-keywords');
+                } else {
+                    $okeys['keywords'] = 'ok';
                 }
                 if (empty($this->contribution)) {
                     $errors['contribution'] = Text::get('validate-user-field-contribution');
+                } else {
+                    $okeys['contribution'] = 'ok';
                 }
                 if (empty($this->interests)) {
                     $errors['interests'] = Text::get('validate-user-field-interests');
+                } else {
+                    $okeys['interests'] = 'ok';
                 }
                 if (empty($this->webs)) {
                     $errors['webs'] = Text::get('validate-user-field-webs');
+                } else {
+                    $okeys['webs'] = 'ok';
                 }
+                /*
+                 *  Esto ya no es necesario
                 else {
                     if(isset($this->webs['add'])) {
                         foreach($this->webs['add'] as $index => $web) {
@@ -381,15 +397,25 @@ namespace Goteo\Model {
                         }
                     }
                 }
+                 */
                 if (empty($this->facebook)) {
                     $errors['facebook'] = Text::get('validate-user-field-facebook');
+                } else {
+                    $okeys['facebook'] = 'ok';
                 }
+                /*
                 if (empty($this->twitter)) {
                     $errors['twitter'] = Text::get('validate-user-field-twitter');
+                } else {
+                    $okeys['twitter'] = 'ok';
                 }
                 if (empty($this->linkedin)) {
                     $errors['linkedin'] = Text::get('validate-user-field-linkedin');
+                } else {
+                    $okeys['linkedin'] = 'ok';
                 }
+                 * 
+                 */
             }
 
             return (empty($errors['email']) && empty($errors['password']));

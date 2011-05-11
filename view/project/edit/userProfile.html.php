@@ -59,6 +59,10 @@ echo new SuperForm(array(
         )        
     ),    
     'elements'      => array(
+        'process_userProfile' => array (
+            'type' => 'hidden',
+            'value' => 'userProfile'
+        ),
         'user_name' => array(
             'type'      => 'textbox',
             'required'  => true,
