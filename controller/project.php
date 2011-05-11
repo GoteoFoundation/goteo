@@ -134,8 +134,12 @@ namespace Goteo\Controller {
                 $project->save($errors);
 
                 // si ha ocurrido algun error de proces (como p.ej. "no se ha podido guardar loqueseaa")
+                /*
+                 * Me follo la exception de si falla el save, ya veremos como mostrar esos errors
                 if (!empty($errors))
                     throw new \Goteo\Core\Exception(implode('. ', $errors));
+                 *
+                 */
 
                 //re-evaluar el proyecto
                 $project->evaluate();
