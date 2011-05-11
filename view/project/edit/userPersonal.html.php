@@ -6,6 +6,9 @@ use Goteo\Library\Text,
 $project = $this['project'];
 $errors = $project->errors[$this['step']] ?: array();         
 
+
+echo "Texto: ", Text::html('tooltip-project-country');
+
 echo new SuperForm(array(
 
     'level'         => $this['level'],
