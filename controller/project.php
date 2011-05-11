@@ -117,14 +117,6 @@ namespace Goteo\Controller {
                 
             }
             
-            // variables para la vista
-            $viewData = array(
-                'project' => $project,
-                'steps' => $steps,
-                'nodesign' => $nodesign,
-                'step' => $step
-            );
-
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 $errors = array(); // errores al procesar, no son errores en los datos del proyecto
@@ -161,7 +153,14 @@ namespace Goteo\Controller {
                 }
             }
             
-            
+            // variables para la vista
+            $viewData = array(
+                'project' => $project,
+                'steps' => $steps,
+                'nodesign' => $nodesign,
+                'step' => $step
+            );
+
 
             // segun el paso añadimos los datos auxiliares para pintar
             switch ($step) {
