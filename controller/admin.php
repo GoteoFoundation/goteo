@@ -26,10 +26,16 @@ namespace Goteo\Controller {
         /*
          * Gestión de páginas institucionales
          */
-		public function pages ($node = 'goteo', $lang = 'es') {
+		public function pages () {
 			// si tenemos usuario logueado
             if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
+
+            // nodo del usuario
+            $node = 'goteo';
+
+            // idioma que estamos gestionando
+            $lang = GOTEO_DEFAULT_LANG;
 
 			$using = Lang::get($lang);
 
@@ -39,7 +45,7 @@ namespace Goteo\Controller {
             if (isset($_GET['page'])) {
                 $id = $_GET['page'];
 
-                $page = Page::get($id, $node, $lang);
+                $page = Page::get($id);
 
                 // si llega post, vamos a guardar los cambios
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -72,7 +78,7 @@ namespace Goteo\Controller {
             );
 		}
 
-		public function texts ($lang = 'es') {
+		public function texts () {
 			// si tenemos usuario logueado
             if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
@@ -85,8 +91,8 @@ namespace Goteo\Controller {
                 $filter = null;
             }
 
-			$using = Lang::get($lang);
-			$texts = Text::getAll($lang, $filter);
+			$using = Lang::get();
+			$texts = Text::getAll($filter);
 
             return new View(
                 'view/admin/texts.html.php',
@@ -98,14 +104,19 @@ namespace Goteo\Controller {
                 );
 		}
 
-		public function translate ($id = null, $lang = 'es') {
+		public function translate ($id) {
+
+            $lang = \GOTEO_DEFAULT_LANG;
+
+            // no cache para textos
+            define('GOTEO_ADMIN_NOCACHE', true);
+
 			// si tenemos usuario logueado
-			$using = Lang::get($lang);
+			$using = Lang::get();
 
             $text = new \stdClass();
             $text->id = $id;
-			$text->text = Text::get($id, 'es');
-			$text->translation = Text::get($id, $lang);
+			$text->text = Text::get($id);
 			$text->purpose = Text::getPurpose($id);
 
             $viewData = array(
@@ -145,9 +156,12 @@ namespace Goteo\Controller {
         /*
          *  Revisión de proyectos, aqui llega con un nodo y si no es el suyo a la calle (o al suyo)
          */
-        public function checking($node = 'goteo') {
+        public function checking() {
             if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
                 throw new Redirection("/dashboard");
+
+            // nodo del usuario
+            $node = 'goteo';
 
             $errors = array();
 
@@ -196,11 +210,242 @@ namespace Goteo\Controller {
         }
 
         /*
+         * proyectos destacados
+         */
+        public function promote() {
+            if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
+                throw new Redirection("/dashboard");
+
+            // nodo del usuario
+            $node = 'goteo';
+
+            $errors = array();
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                // objeto
+                $promo = new Model\Promote(array(
+                    'node' => $node,
+                    'project' => $_POST['project'],
+                    'title' => $_POST['title'],
+                    'description' => $_POST['description'],
+                    'order' => $_POST['order']
+                ));
+
+				if ($promo->save($errors)) {
+                    switch ($_POST['action']) {
+                        case 'add':
+                            $success = 'Proyecto destacado correctamente';
+                            break;
+                        case 'edit':
+                            $success = 'Destacado editado correctamente';
+                            break;
+                    }
+				}
+				else {
+                    switch ($_POST['action']) {
+                        case 'add':
+                            // proyectos publicados para promocionar
+                            $projects = Model\Project::published();
+
+                            return new View(
+                                'view/admin/promoEdit.html.php',
+                                array(
+                                    'action' => 'add',
+                                    'promo' => $promo,
+                                    'projects' => $projects,
+                                    'errors' => $errors
+                                )
+                            );
+                            break;
+                        case 'edit':
+                            return new View(
+                                'view/admin/promoEdit.html.php',
+                                array(
+                                    'action' => 'edit',
+                                    'promo' => $promo,
+                                    'errors' => $errors
+                                )
+                            );
+                            break;
+                    }
+				}
+			}
+
+
+            if (isset($_GET['up'])) {
+                Model\Promote::up($_GET['up']);
+            }
+
+            if (isset($_GET['down'])) {
+                Model\Promote::down($_GET['down']);
+            }
+
+            if (isset($_GET['add'])) {
+                // proyectos publicados para promocionar
+                $projects = Model\Promote::available($node);
+
+                // siguiente orden
+                $next = Model\Promote::next($node);
+
+                return new View(
+                    'view/admin/promoEdit.html.php',
+                    array(
+                        'action' => 'add',
+                        'promo' => (object) array('order' => $next),
+                        'projects' => $projects
+                    )
+                );
+            }
+
+            if (isset($_GET['edit'])) {
+                $promo = Model\Promote::get($_GET['edit']);
+
+                return new View(
+                    'view/admin/promoEdit.html.php',
+                    array(
+                        'action' => 'edit',
+                        'promo' => $promo
+                    )
+                );
+            }
+
+            if (isset($_GET['remove'])) {
+                Model\Promote::delete($_GET['remove']);
+            }
+
+
+            $promoted = Model\Promote::getAll($node);
+
+            return new View(
+                'view/admin/promote.html.php',
+                array(
+                    'promoted' => $promoted,
+                    'errors' => $errors,
+                    'success' => $success
+                )
+            );
+        }
+
+        /*
+         * preguntas frecuentes
+         */
+        public function faq() {
+            if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
+                throw new Redirection("/dashboard");
+
+            // nodo del usuario
+            $node = 'goteo';
+
+            // secciones
+            $sections = Model\Faq::sections();
+            if (isset($_GET['section']) && array_key_exists($_GET['section'], $sections)) {
+                $section = $_GET['section'];
+            } else {
+                $section = 'node';
+            }
+
+            $errors = array();
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                // objeto
+                $faq = new Model\Faq(array(
+                    'id' => $_POST['id'],
+                    'node' => $node,
+                    'section' => $_POST['section'],
+                    'title' => $_POST['title'],
+                    'description' => $_POST['description'],
+                    'order' => $_POST['order']
+                ));
+
+				if ($faq->save($errors)) {
+                    switch ($_POST['action']) {
+                        case 'add':
+                            $success = 'Pregunta añadida correctamente';
+                            break;
+                        case 'edit':
+                            $success = 'Pregunta editado correctamente';
+                            break;
+                    }
+				}
+				else {
+                    return new View(
+                        'view/admin/faqEdit.html.php',
+                        array(
+                            'action' => $_POST['action'],
+                            'faq' => $faq,
+                            'sections' => $sections,
+                            'errors' => $errors
+                        )
+                    );
+				}
+			}
+
+
+            if (isset($_GET['up'])) {
+                Model\Faq::up($_GET['up']);
+            }
+
+            if (isset($_GET['down'])) {
+                Model\Faq::down($_GET['down']);
+            }
+
+            if (isset($_GET['add'])) {
+
+                $next = Model\Faq::next($section, $node);
+
+                return new View(
+                    'view/admin/faqEdit.html.php',
+                    array(
+                        'action' => 'add',
+                        'faq' => (object) array('section' => $section, 'order' => $next),
+                        'sections' => $sections
+                    )
+                );
+            }
+
+            if (isset($_GET['edit'])) {
+                $faq = Model\Faq::get($_GET['edit']);
+
+                return new View(
+                    'view/admin/faqEdit.html.php',
+                    array(
+                        'action' => 'edit',
+                        'faq' => $faq,
+                        'sections' => $sections
+                    )
+                );
+            }
+
+            if (isset($_GET['remove'])) {
+                Model\Faq::delete($_GET['remove']);
+            }
+
+
+            $faqs = Model\Faq::getAll($section, $node);
+
+            return new View(
+                'view/admin/faq.html.php',
+                array(
+                    'faqs' => $faqs,
+                    'sections' => $sections,
+                    'section' => $section,
+                    'errors' => $errors,
+                    'success' => $success
+                )
+            );
+        }
+
+        /*
          *  administración de nodos y usuarios (segun le permita el ACL al usuario validado)
          */
-        public function managing($node = 'goteo') {
+        public function managing() {
             if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
+
+            // nodo del usuario
+            $node = 'goteo';
 
             $users = Model\User::getAll();
 
@@ -217,9 +462,12 @@ namespace Goteo\Controller {
          *
          * dummy para ejecutar cargos
          */
-        public function accounting($node = 'goteo') {
+        public function accounting() {
             if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
                 throw new Redirection("/dashboard");
+
+            // nodo del usuario
+            $node = 'goteo';
 
             // estados del proyecto
             $status = Model\Project::status();
@@ -258,7 +506,7 @@ namespace Goteo\Controller {
              *  enlace para ejecutar cargo
              */
             $projects = Model\Project::invested();
-//die('<pre>' . print_r($projects, 1) . '</pre>');
+
             foreach ($projects as &$project) {
 
                 $project->invests = Model\Invest::getAll($project->id);
@@ -279,7 +527,7 @@ namespace Goteo\Controller {
                     } else {
                         if (empty($invest->payment)) {
                             //si tiene preaprval y no tiene pago, cargar
-                            $invest->paypalStatus = 'Preaproval listo, esperando a los 40/80 dias para ejecutar el cargo. ';
+                            $invest->paypalStatus = 'Preaproval listo para ejecutar a los 40/80 dias. ';
                             if (isset($_GET['execute'])) {
                                 $errors = array();
 
@@ -338,15 +586,6 @@ namespace Goteo\Controller {
             $projects = Model\Project::invested();
 
             foreach ($projects as $kay=>&$project) {
-
-                // solo los financiados, despues
-                /*
-                if ($project->status != 4) {
-                    unset($projects[$kay]);
-                    continue;
-                }
-                 * 
-                 */
 
                 $project->invests = Model\Invest::getAll($project->id);
 

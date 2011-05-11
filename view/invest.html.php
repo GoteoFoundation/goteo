@@ -15,7 +15,7 @@ include 'view/header.html.php'; ?>
                 Amount: <input type="text" name="amount" value="10" /> &euro;<br />
                 <input type="checkbox" name="resign" value="1" /> Renuncia a recompensa<br />
                 <?php foreach ($this['project']->individual_rewards as $reward) : ?>
-                    <input type="checkbox" name="reward_<?php echo $reward->id; ?>" value="<?php echo $reward->id; ?>" /> <?php echo $reward->amount; ?>&euro; <?php echo $reward->reward; ?>: <?php echo $reward->description; ?><br />
+                    <input type="checkbox"<?php if ($reward->none) echo ' disabled="disabled"';?> name="reward_<?php echo $reward->id; ?>" value="<?php echo $reward->id; ?>" /> <?php echo $reward->amount; ?>&euro; <?php echo $reward->reward; ?>: <?php echo $reward->description; ?> <?php if ($reward->units > 0) echo "[{$reward->taken}/{$reward->units}]"; else echo "[{$reward->taken}]"; ?><br />
                 <?php endforeach; ?>
                     <fieldset>
                         <legend>Donde quieres recibir la recompensa</legend>

@@ -190,6 +190,7 @@ namespace Goteo\Model {
                 SELECT  SUM(amount) as much
                 FROM    invest
                 WHERE   project = :project
+                AND     status <> 2
                 ", array(':project' => $project));
             $got = $query->fetchObject();
             if (!empty($got->much))

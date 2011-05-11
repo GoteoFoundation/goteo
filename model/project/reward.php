@@ -13,7 +13,9 @@ namespace Goteo\Model\Project {
 			$icon,
 			$license,
 			$amount,
-			$units;
+			$units,
+            $taken, // recompensas comprometidas por aporte
+            $none; // si no quedan unidades de esta recompensa
 
 	 	public static function get ($id) {
             try {
@@ -112,6 +114,37 @@ namespace Goteo\Model\Project {
                 return false;
 			}
 		}
+
+        /**
+         * Calcula y actualiza las unidades de recompensa comprometidas por aporte
+         * @param void
+         * @return numeric
+         */
+        public function getTaken () {
+
+            // cuantas de esta recompensa en aportes no cancelados
+            $sql = "SELECT
+                        COUNT(invest_reward.reward) as taken
+                    FROM invest_reward
+                    INNER JOIN invest
+                        ON invest.id = invest_reward.invest
+                        AND invest.status <> 2
+                        AND invest.project = :project
+                    WHERE invest_reward.reward = :reward
+                ";
+
+            $values = array(
+                ':project' => $this->project,
+                ':reward' => $this->id
+            );
+
+            $query = self::query($sql, $values);
+            if ($taken = $query->fetchColumn()) {
+                return $taken;
+            } else {
+                return 0;
+            }
+        }
 
 		public static function icons($type = 'social') {
             $icons = array(

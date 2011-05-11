@@ -18,7 +18,7 @@ namespace Goteo\Library {
             $url,
             $content;
 
-        static public function get ($id, $node = 'goteo', $lang = 'es') {
+        static public function get ($id, $node = 'goteo', $lang = \GOTEO_DEFAULT_LANG) {
 
             // buscamos la página para este nodo en este idioma
 			$sql = "SELECT  page.id as id,
