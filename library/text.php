@@ -72,7 +72,7 @@ namespace Goteo\Library {
 			$query = Model::query("SELECT text FROM text WHERE id = :id AND lang = :lang", array(':id' => $id, ':lang' => $lang));
 			$exist = $query->fetchObject();
 			if ($exist->text) {
-                $_cache[$id][$lang] = $exist->text;
+                $tmptxt = $_cache[$id][$lang] = $exist->text;
 
                 //contamos cuantos argumentos necesita el texto
                 $req_args = \substr_count($exist->text, '%');

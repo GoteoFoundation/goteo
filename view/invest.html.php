@@ -10,8 +10,14 @@ include 'view/header.html.php'; ?>
             <h2><?php echo $this['project']->name; ?></h2>
 
             <form method="post" action="/invest/<?php echo $this['project']->id; ?>">
-                Email: <input type="text" name="email" value="<?php echo $_SESSION['user']->email; ?>" /><br />
-                Si tienes una cuenta Paypal, indícala aquí.<br />
+                <fieldset>
+                    <legend>Método de pago</legend>
+                    <?php foreach ($this['methods'] as $id=>$name) : ?>
+                        <label><?php echo $name; ?><input type="radio" name="method" value="<?php echo $id; ?>" /></label>
+                    <?php endforeach; ?>
+                </fieldset>
+                <br /><br />
+                Email / Cuenta paypal: <input type="text" name="email" value="<?php echo $_SESSION['user']->email; ?>" /><br />
                 Amount: <input type="text" name="amount" value="10" /> &euro;<br />
                 <input type="checkbox" name="resign" value="1" /> Renuncia a recompensa<br />
                 <?php foreach ($this['project']->individual_rewards as $reward) : ?>
@@ -24,6 +30,7 @@ include 'view/header.html.php'; ?>
                         <label for="location">Ciudad:</label><input type="text" id="location" name="location" value="<?php echo $this['personal']['location']; ?>" /><br />
                         <label for="country">País:</label><input type="text" id="country" name="country" value="<?php echo $this['personal']['country']; ?>" /><br />
                     </fieldset>
+                <br /><br />
                 <input type="checkbox" name="anonymous" value="1" /> Aporte anónimo<br />
                 <br />
                 <input type="submit" value="Paso siguiente" />

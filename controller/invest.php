@@ -8,7 +8,8 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Model,
         Goteo\Library\Worth,
-        Goteo\Library\Paypal;
+        Goteo\Library\Paypal,
+        Goteo\Library\Tpv;
 
     class Invest extends \Goteo\Core\Controller {
 
@@ -26,6 +27,7 @@ namespace Goteo\Controller {
             $message = '';
 
             $projectData = Model\Project::get($project);
+            $methods = Model\Invest::methods();
 
             if ($projectData->owner == $_SESSION['user']->id)
                 throw new Redirection('/dashboard', Redirection::TEMPORARY);
@@ -33,8 +35,13 @@ namespace Goteo\Controller {
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $errors = array();
                 $los_datos = $_POST;
+
+                if (empty($_POST['method']) || !in_array($_POST['method'], array_keys($methods))) {
+                    $errors[] = 'Elegir el método de pago';
+                }
+
                 if (empty($_POST['email'])) {
-                    $errors[] = 'Indicar la cuenta de paypal (o email)';
+                    $errors[] = 'Indicar la cuenta de paypal o email';
                 }
 
                 if (empty($_POST['amount'])) {
@@ -70,6 +77,7 @@ namespace Goteo\Controller {
                             'user' => $_SESSION['user']->id,
                             'project' => $project,
                             'account' => $_POST['email'],
+                            'method' => $_POST['method'],
                             'status' => 0,
                             'invested' => date('Y-m-d'),
                             'anonymous' => $_POST['anonymous'],
@@ -80,9 +88,17 @@ namespace Goteo\Controller {
                     $invest->address = (object) $address;
 
                     if ($invest->save($errors)) {
-                        // Petición de preapproval y redirección a paypal
-                        Paypal::preapproval($invest, $errors);
-                        // si no salta, vamos a tener los errores
+
+                        switch($_POST['method']) {
+                            case 'tpv':
+                                Tpv::preapproval($invest, $errors);
+                                break;
+                            case 'paypal':
+                                // Petición de preapproval y redirección a paypal
+                                Paypal::preapproval($invest, $errors);
+                                // si no salta, vamos a tener los errores
+                                break;
+                        }
                     }
                 }
 			}
@@ -110,6 +126,7 @@ namespace Goteo\Controller {
             $viewData = array(
                     'message' => $message,
                     'project' => $projectData,
+                    'methods' => $methods,
                     'personal' => Model\User::getPersonal($_SESSION['user']->id)
                 );
 
