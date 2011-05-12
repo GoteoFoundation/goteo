@@ -9,6 +9,7 @@ include 'view/header.html.php'; ?>
 
             <h2><?php echo $this['project']->name; ?></h2>
 
+            <?php if ($this['allowed']) : ?>
             <form method="post" action="/invest/<?php echo $this['project']->id; ?>">
                 <fieldset>
                     <legend>Método de pago</legend>
@@ -35,7 +36,8 @@ include 'view/header.html.php'; ?>
                 <br />
                 <input type="submit" value="Paso siguiente" />
             </form>
-
+            <?php endif; ?>
+            
         </div>
     
 <?php

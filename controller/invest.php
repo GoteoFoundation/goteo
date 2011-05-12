@@ -22,17 +22,20 @@ namespace Goteo\Controller {
                 throw new Redirection ('/user/login?from=' . \rawurlencode('/invest/' . $project), Redirection::TEMPORARY);
 
             if (empty($project))
-                throw new Redirection('/project/explore', Redirection::TEMPORARY);
+                throw new Redirection('/discover', Redirection::TEMPORARY);
 
             $message = '';
+            $allowed = true;
 
             $projectData = Model\Project::get($project);
             $methods = Model\Invest::methods();
 
-            if ($projectData->owner == $_SESSION['user']->id)
-                throw new Redirection('/dashboard', Redirection::TEMPORARY);
+            if ($projectData->owner == $_SESSION['user']->id) {
+                $message .= '<strong>No puedes aportar a tu propio proyecto!</strong>';
+                $allowed = false;
+            }
 
-			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			if ($_SERVER['REQUEST_METHOD'] == 'POST' && $allowed) {
                 $errors = array();
                 $los_datos = $_POST;
 
@@ -127,7 +130,8 @@ namespace Goteo\Controller {
                     'message' => $message,
                     'project' => $projectData,
                     'methods' => $methods,
-                    'personal' => Model\User::getPersonal($_SESSION['user']->id)
+                    'personal' => Model\User::getPersonal($_SESSION['user']->id),
+                    'allowed' => $allowed
                 );
 
             return new View (
@@ -143,7 +147,7 @@ namespace Goteo\Controller {
                 throw new Redirection ('/user/login?from=' . \rawurlencode('/invest/confirmed/' . $project), Redirection::TEMPORARY);
 
             if (empty($project))
-                throw new Redirection('/project/explore', Redirection::TEMPORARY);
+                throw new Redirection('/discover', Redirection::TEMPORARY);
 
             // no hay que hacer nada mas, aporte listo para cargar cuando sea
 
@@ -169,32 +173,20 @@ namespace Goteo\Controller {
          */
         public function fail ($project = null, $id = null) {
             if (empty($_SESSION['user']))
-                throw new Redirection ('/user/login?from=' . \rawurlencode('/invest/fail/' . $project. '/' . $id), Redirection::TEMPORARY);
+                throw new Redirection ('/user/login?from=' . \rawurlencode('/invest/' . $project), Redirection::TEMPORARY);
 
             if (empty($project))
-                throw new Redirection('/project/explore', Redirection::TEMPORARY);
+                throw new Redirection('/discover', Redirection::TEMPORARY);
 
             if (empty($id))
                 throw new Redirection('/invest/' . $project, Redirection::TEMPORARY);
 
-            // quitar el preapproval y cancelar el aporte, mandarlo a la pagina de aportar para que lo intente de nuevo
+            // quitar el preapproval y cancelar el aporte
             $invest = Model\Invest::get($id);
             $invest->cancel();
 
-            $message = 'Aporte cancelado';
-
-            $projectData = Model\Project::get($project);
-
-            $viewData = array(
-                    'message' => $message,
-                    'project' => $projectData,
-                    'personal' => Model\User::getPersonal($_SESSION['user']->id)
-                );
-
-            return new View (
-                'view/invest.html.php',
-                $viewData
-            );
+            // mandarlo a la pagina de aportar para que lo intente de nuevo
+            throw new Redirection('/invest/' . $project, Redirection::TEMPORARY);
 
         }
 

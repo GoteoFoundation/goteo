@@ -14,17 +14,19 @@ namespace Goteo\Controller {
         public function index($id = null) {
             if ($id !== null) {
 
-                if (isset($_GET['edit']))
+                if (isset($_GET['edit'])) {
                     return $this->edit($id); //Editar
-                elseif (isset($_GET['finish']))
-                    return $this->finish($id); // Para revision
-                elseif (isset($_GET['raw'])) {
+                } elseif (isset($_GET['trash'])) {
+                    $project = Model\Project::get($id);
+                    $project->trash();
+                    throw new Redirection("/dashboard");
+                } elseif (isset($_GET['raw'])) {
                     $project = Model\Project::get($id);
                     \trace($project);
                     die;
-                }
-                else
+                } else {
                     return $this->view($id);
+                }
 
             } else if (isset($_GET['create'])) {
                 return $this->create();
@@ -142,6 +144,15 @@ namespace Goteo\Controller {
                  *
                  */
 
+                // si estan enviando el proyecto a revisión
+                if (isset($_POST['confirm']) && $project->finishable) {
+                    $errors = array();
+                    if ($project->ready($errors)) {
+                        throw new Redirection("/dashboard?ok");
+                    }
+                }
+
+
                 //re-evaluar el proyecto
                 $project->evaluate();
 
@@ -254,25 +265,6 @@ namespace Goteo\Controller {
                     'project' => $project
                 )
             );
-        }
-
-        /*
-         * Finalizar para revision, ready le cambia el estado
-         */
-        public function finish($id) {
-            //@TODO verificar si tienen el mínimo progreso para verificación y si está en estado edición
-            $project = Model\Project::get($id);
-
-            if ($project->status != 1 || !$project->finishable)
-                throw new Redirection("/project/{$project->id}/?edit");
-
-            $errors = array();
-            if ($project->ready($errors)) {
-                // enviarlo a preview con mensaje guay
-                throw new Redirection("/project/{$project->id}/?en_revision");
-            } else {
-                throw new Redirection("/project/{$project->id}/?edit&unfinished");
-            }
         }
 
         //-----------------------------------------------

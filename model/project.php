@@ -526,6 +526,7 @@ namespace Goteo\Model {
                 if (is_array($this->image) && !empty($this->image['name'])) {
                     $image = new Image($this->image);
                     $image->save();
+                    $this->gallery[] = $image;
                     $this->image = $image->id;
 
                     /**
@@ -941,6 +942,20 @@ namespace Goteo\Model {
         }
 
         /*
+         * Estado cero para marcar que se puede borrar
+         */
+        public function trash(&$errors = array()) {
+			try {
+				$sql = "UPDATE project SET status = :status WHERE id = :id";
+				self::query($sql, array(':status'=>0, ':id'=>$this->id));
+                return true;
+            } catch (\PDOException $e) {
+                $errors[] = 'Fallo al mandar el proyecto a la papelera. ' . $e->getMessage();
+                return false;
+            }
+        }
+
+        /*
          * Para cambiar el id temporal a idealiza
          * solo si es md5
          */
@@ -1045,7 +1060,7 @@ namespace Goteo\Model {
          */
         public static function ofmine($owner)
         {
-            $sql = "SELECT * FROM project WHERE owner = ? ORDER BY name ASC";
+            $sql = "SELECT * FROM project WHERE status > 0 AND owner = ? ORDER BY name ASC";
             $query = self::query($sql, array($owner));
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
@@ -1137,7 +1152,7 @@ namespace Goteo\Model {
          */
         public static function getList($node = 'goteo') {
             $projects = array();
-            $query = self::query("SELECT id FROM project WHERE node = ? ORDER BY progress DESC", array($node));
+            $query = self::query("SELECT id FROM project WHERE status > 0 AND node = ? ORDER BY progress DESC", array($node));
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
                 $projects[] = self::get($proj['id']);
             }

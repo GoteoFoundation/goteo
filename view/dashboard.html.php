@@ -21,6 +21,7 @@ include 'view/header.html.php'; ?>
                 (' . $this['status'][$project->status] . ')
                     Progreso: ' . $project->progress . '%
                         <a href="/project/' . $project->id . '/?edit">[Editar]</a>
+                        <a href="/project/' . $project->id . '/?trash" onclick="return confirm(\'Seguro que desea eliminar este proyecto?\')">[Borrar]</a>
                                 <br />';
 		}
 		?>

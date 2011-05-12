@@ -98,7 +98,7 @@ namespace Goteo\Controller {
                     FROM  invest
                     WHERE   invest.project = ?
                     ", array($project->id));
-                $project->invests = $query->fetchAll(\PDO::FETCH_CLASS);
+                $project->invests = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
 
                 // para cada uno sacar todos sus aportes
                 foreach ($project->invests as $key=>&$invest) {
@@ -120,8 +120,14 @@ namespace Goteo\Controller {
                         
                         // si tiene preapproval pero no se ha confirmado y no son de hoy, cancelado
                         if ($preapproval->approved != 'true' || $preapproval->approved != true) {
-                            echo 'No confirmado. ';
-                            $cancelIt = true;
+                            echo 'No confirmado';
+                            $parts = explode('T', $preapproval->startingDate);
+                            if ($parts[0] != date('Y-m-d')) {
+                                echo ' y no es de hoy.';
+                                $cancelIt = true;
+                            } else {
+                                echo ' pero es de hoy.';
+                            }
                         } else {
                             echo 'Confirmado. ';
                         }

@@ -19,7 +19,7 @@ namespace Goteo\Controller {
                 throw new Redirection ('/user/login?from=' . \rawurlencode('/message/' . $project), Redirection::TEMPORARY);
 
             if (empty($project))
-                throw new Redirection('/project/explore', Redirection::TEMPORARY);
+                throw new Redirection('/discover', Redirection::TEMPORARY);
 
             $content = '';
 
