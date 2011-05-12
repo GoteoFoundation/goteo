@@ -316,6 +316,12 @@ namespace Goteo\Controller {
                 $user->avatar = $_FILES['avatar_upload'];
             }
 
+            // tratar si quitan la imagen
+            if (!empty($_POST['avatar-' . $user->avatar->id .  '-remove'])) {
+                $user->avatar->remove('user');
+                $user->avatar = '';
+            }
+
             $user->interests = $_POST['user_interests'];
 
             //tratar webs existentes
@@ -413,9 +419,16 @@ namespace Goteo\Controller {
                 }
             }
             
-            // image
+            // tratar la imagen que suben
             if(!empty($_FILES['image_upload']['name'])) {
                 $project->image = $_FILES['image_upload'];
+            }
+
+            // tratar las imagenes que quitan
+            foreach ($project->gallery as $key=>$image) {
+                if (!empty($_POST["gallery-{$image->id}-remove"])) {
+                    $image->remove('project');
+                }
             }
 
             // Media

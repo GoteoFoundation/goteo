@@ -11,14 +11,12 @@ foreach ($project->gallery as $image) {
         'gallery-image' => array(
             'type'  => 'html',
             'class' => 'inline',
-            'html'  => is_object($image) ?
-                       '<img src="' . htmlspecialchars($image->getLink(110, 110)) . '" alt="Imagen" />' :
-                       ''
+            'html'  => $image .'<img src="' . htmlspecialchars($image->getLink(110, 110)) . '" alt="Imagen" />'
             ),
         "gallery-{$image->id}-remove" => array(
             'type'  => 'submit',
             'label' => 'Quitar',
-            'class' => 'inline remove support-remove'
+            'class' => 'inline remove image-remove'
         )
     );
 
@@ -90,7 +88,7 @@ $superform = array(
                     'title' => 'Subir una imagen',
                     'hint'  => Text::get('tooltip-project-image_upload'),
                 ),
-                'images-gallery' => array(
+                'gallery' => array(
                     'type'  => 'group',
                     'title' => 'Imágenes actuales',
                     'class' => 'inline gallery',

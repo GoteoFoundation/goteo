@@ -147,6 +147,13 @@ namespace Goteo\Controller {
                 if(!empty($_FILES['user_avatar']['name'])) {
                     $user->avatar = $_FILES['user_avatar'];
                 }
+
+                // tratar si quitan la imagen
+                if (!empty($_POST['avatar-' . $user->avatar->id .  '-remove'])) {
+                    $user->avatar->remove('user');
+                    $user->avatar = '';
+                }
+
                 // Perfil público
                 $user->name = $_POST['user_name'];
                 $user->about = $_POST['user_about'];
@@ -170,7 +177,11 @@ namespace Goteo\Controller {
                 if($user->save($errors)) {
                     // Refresca la sesión.
                     $user = Model\User::flush();
-                    throw new Redirection('/user/edit/');
+                    if (isset($_POST['save'])) {
+                        throw new Redirection('/dashboard');
+                    } else {
+                        throw new Redirection('/user/edit');
+                    }
                 }
 			}
 

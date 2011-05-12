@@ -6,6 +6,29 @@ use Goteo\Library\Text,
 $project = $this['project'];
 $user = $this['user'];
 
+$image = array(
+    'avatar' => array(
+        'type'  => 'hidden',
+        'value' => $user->avatar->id,
+    ),
+    'avatar-image' => array(
+        'type'  => 'html',
+        'class' => 'inline',
+        'html'  => is_object($user->avatar) ?
+                   $user->avatar . '<img src="' . htmlspecialchars($user->avatar->getLink(110, 110)) . '" alt="Avatar" />' :
+                   ''
+    )
+);
+
+if (!empty($user->avatar) && is_object($user->avatar))
+    $image ["avatar-{$user->avatar->id}-remove"] = array(
+        'type'  => 'submit',
+        'label' => 'Quitar',
+        'class' => 'inline remove image-remove'
+    );
+
+
+
 $interests = array();
 
 $errors = $project->errors[$this['step']] ?: array();
@@ -89,24 +112,7 @@ echo new SuperForm(array(
                     'type'  => 'group',
                     'title' => 'Tu imagen actual',                    
                     'class' => 'inline avatar',
-                    'children'  => array(                        
-                        'avatar' => array(
-                            'type'  => 'hidden',
-                            'value' => $user->avatar->id,                    
-                        ),
-                        'avatar-image' => array(
-                            'type'  => 'html',
-                            'class' => 'inline',
-                            'html'  => is_object($user->avatar) ? 
-                                       $user->avatar . '<img src="' . htmlspecialchars($user->avatar->getLink(110, 110)) . '" alt="Avatar" />' :
-                                       ''
-                        ),
-                        "avatar-{$user->avatar->id}-remove" => array(
-                            'type'  => 'submit',
-                            'label' => 'Quitar',
-                            'class' => 'inline remove support-remove'
-                        )
-                    )               
+                    'children'  => $image
                 )
                 
             )            

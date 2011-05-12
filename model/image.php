@@ -161,7 +161,7 @@ namespace Goteo\Model {
          *
          * @param  varchar(50)  $id    user id |project id
          * @param  string       $which    'user'|'project'
-         * @return mixed            Array de objetos de usuario activos|todos.
+         * @return mixed        false|array de instancias de Image
          */
         public static function getAll ($id, $which) {
 
@@ -183,6 +183,32 @@ namespace Goteo\Model {
                 return false;
             }
 
+        }
+
+        /**
+         * Quita una imagen de la tabla de relaciones y de la tabla de imagenes
+         *
+         * @param  string       $which    'user'|'project'
+         * @return bool        true|false
+         *
+         */
+        public function remove($which) {
+            if (!\is_string($which) || !\in_array($which, array('user','project'))) {
+                return false;
+            }
+            
+            try {
+                self::query("START TRANSACTION");
+                $sql = "DELETE FROM image WHERE id = ?";
+                $query = self::query($sql, array($this->id));
+                $sql = "DELETE FROM {$which}_image WHERE image = ?";
+                $query = self::query($sql, array($this->id));
+                self::query("COMMIT");
+                
+                return true;
+            } catch(\PDOException $e) {
+                return false;
+            }
         }
 
 
