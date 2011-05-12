@@ -58,9 +58,38 @@ $superform = array(
         
         'images' => array(        
             'title'     => 'Imágenes del proyecto',
+            'type'      => 'group',
             'required'  => true,
             'hint'      => Text::get('tooltip-project-image'),
             'errors'    => !empty($errors['image']) ? array($errors['image']) : array(),
+            'class'     => 'images',
+            'children'  => array(
+                'image_upload'    => array(
+                    'type'  => 'file',
+                    'class' => 'inline image_upload',
+                    'title' => 'Subir una imagen',
+                    'hint'  => Text::get('tooltip-project-image_upload'),
+                ),
+                'image-current' => array(
+                    'type'  => 'group',
+                    'title' => 'Imágenes actuales',
+                    'class' => 'inline image',
+                    'children'  => array(
+                        'image' => array(
+                            'type'  => 'hidden',
+                            'value' => $project->image->id,
+                        ),
+                        'image-image' => array(
+                            'type'  => 'html',
+                            'class' => 'inline',
+                            'html'  => is_object($project->image) ?
+                                       $project->image . '<img src="' . htmlspecialchars($project->image->getLink(110, 110)) . '" alt="Imagen" />' :
+                                       ''
+                        )
+                    )
+                )
+
+            )
         ),        
 
         'description' => array(            

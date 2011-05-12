@@ -394,16 +394,15 @@ namespace Goteo\Controller {
             }
 
             // campos que guarda este paso
+            // image, media y category  van aparte
             $fields = array(
                 'name',
-                'image',
                 'description',
                 'motivation',
                 'about',
                 'goal',
                 'related',
                 'keywords',
-                'media',
                 'currently',
                 'project_location'
             );
@@ -414,6 +413,11 @@ namespace Goteo\Controller {
                 }
             }
             
+            // image
+            if(!empty($_FILES['image_upload']['name'])) {
+                $project->image = $_FILES['image_upload'];
+            }
+
             // Media
             if (!empty($project->media)) {
                 $project->media = new Model\Project\Media($project->media);

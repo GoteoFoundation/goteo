@@ -5,6 +5,7 @@ namespace Goteo\Model {
     use Goteo\Library\Check,
         Goteo\Library\Text,
         Goteo\Model\User,
+        Goteo\Model\Image,
         Goteo\Model\Message;
 
     class Project extends \Goteo\Core\Model {
@@ -139,6 +140,9 @@ namespace Goteo\Model {
 
                 // owner
                 $project->user = User::get($project->owner);
+
+                // imagen
+                $project->image = Image::get($project->image);
 
 				// categorias
                 $project->categories = Project\Category::get($id);
@@ -513,6 +517,20 @@ namespace Goteo\Model {
                 // nif y telefono sin guiones, espacios ni puntos
                 $this->contract_nif = str_replace(array('_', '.', ' ', '-', ',', ')', '('), '', $this->contract_nif);
                 $this->phone = str_replace(array('_', '.', ' ', '-', ',', ')', '('), '', $this->phone);
+
+                // Image
+                if (is_array($this->image) && !empty($this->image['name'])) {
+                    $image = new Image($this->image);
+                    $image->save();
+                    $this->image = $image->id;
+
+                    /**
+                     * Guarda la relación NM en la tabla 'project_image'.
+                     */
+                    if(!empty($image->id)) {
+                        self::query("REPLACE project_image (project, image) VALUES (:project, :image)", array(':project' => $this->id, ':image' => $image->id));
+                    }
+                }
 
                 $fields = array(
                     'contract_name',
@@ -937,6 +955,7 @@ namespace Goteo\Model {
                             self::query("UPDATE cost SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE reward SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE support SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE project_image SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
 
                             // si todo va bien, commit y cambio el id de la instancia
