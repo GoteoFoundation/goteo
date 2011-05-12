@@ -8,15 +8,22 @@ $project = $this['project'];
 $images = array();
 foreach ($project->gallery as $image) {
     $images[] = array(
-        'gallery-image' => array(
-            'type'  => 'html',
-            'class' => 'inline',
-            'html'  => $image .'<img src="' . htmlspecialchars($image->getLink(110, 110)) . '" alt="Imagen" />'
-            ),
-        "gallery-{$image->id}-remove" => array(
-            'type'  => 'submit',
-            'label' => 'Quitar',
-            'class' => 'inline remove image-remove'
+        'type'  => 'group',
+        'class' => 'inline image',
+        'children'  => array(
+            'gallery-image' => array(
+                'type'  => 'html',
+                'class' => 'inline image',
+                'html'  => is_object($image) ?
+                           $image . '<img src="' . htmlspecialchars($image->getLink(110, 110)) . '" alt="Imagen" />' :
+                           ''
+                ),
+             'remove' => array(
+                'name' => "gallery-{$image->id}-remove",
+                'type'  => 'submit',
+                'label' => 'Quitar',
+                'class' => 'inline remove image-remove'
+            )
         )
     );
 

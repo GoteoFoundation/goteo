@@ -428,6 +428,7 @@ namespace Goteo\Controller {
             foreach ($project->gallery as $key=>$image) {
                 if (!empty($_POST["gallery-{$image->id}-remove"])) {
                     $image->remove('project');
+                    unset($project->gallery[$key]);
                 }
             }
 
