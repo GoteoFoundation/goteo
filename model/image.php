@@ -156,6 +156,36 @@ namespace Goteo\Model {
             }
 		}
 
+        /**
+         * Galeria de imágenes de un usuario / proyecto
+         *
+         * @param  varchar(50)  $id    user id |project id
+         * @param  string       $which    'user'|'project'
+         * @return mixed            Array de objetos de usuario activos|todos.
+         */
+        public static function getAll ($id, $which) {
+
+            if (!\is_string($which) || !\in_array($which, array('user','project'))) {
+                return false;
+            }
+
+            $gallery = array();
+
+            try {
+                $sql = "SELECT image FROM {$which}_image WHERE {$which} = ?";
+                $query = self::query($sql, array($id));
+                foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $image) {
+                    $gallery[] = self::get($image['image']);
+                }
+
+                return $gallery;
+            } catch(\PDOException $e) {
+                return false;
+            }
+
+        }
+
+
 		/**
 		 * Enlace público.
 		 *

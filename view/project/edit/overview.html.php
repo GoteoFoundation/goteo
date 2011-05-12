@@ -5,6 +5,21 @@ use Goteo\Library\Text,
 
 $project = $this['project'];
 
+$images = array();
+foreach ($project->gallery as $image) {
+    $images[] = array(
+        'image-image' => array(
+            'type'  => 'html',
+            'class' => 'inline image',
+            'html'  => is_object($image) ?
+                       '<img src="' . htmlspecialchars($image->getLink(110, 110)) . '" alt="Imagen" />' :
+                       ''
+            )
+    );
+
+}
+
+
 $categories = array();
 
 foreach ($this['categories'] as $value => $label) {
@@ -70,23 +85,11 @@ $superform = array(
                     'title' => 'Subir una imagen',
                     'hint'  => Text::get('tooltip-project-image_upload'),
                 ),
-                'image-current' => array(
+                'image-gallery' => array(
                     'type'  => 'group',
                     'title' => 'Imágenes actuales',
-                    'class' => 'inline image',
-                    'children'  => array(
-                        'image' => array(
-                            'type'  => 'hidden',
-                            'value' => $project->image->id,
-                        ),
-                        'image-image' => array(
-                            'type'  => 'html',
-                            'class' => 'inline',
-                            'html'  => is_object($project->image) ?
-                                       $project->image . '<img src="' . htmlspecialchars($project->image->getLink(110, 110)) . '" alt="Imagen" />' :
-                                       ''
-                        )
-                    )
+                    'class' => 'inline gallery',
+                    'children'  => $images
                 )
 
             )

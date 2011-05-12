@@ -34,6 +34,7 @@ namespace Goteo\Model {
             // Edit project description
             $name,
             $image,
+            $gallery = array(), // array de instancias image de project_image
             $description,
              $motivation,
              $about,
@@ -143,6 +144,9 @@ namespace Goteo\Model {
 
                 // imagen
                 $project->image = Image::get($project->image);
+
+                // galeria
+                $project->gallery = Image::getAll($project->id, 'project');
 
 				// categorias
                 $project->categories = Project\Category::get($id);
