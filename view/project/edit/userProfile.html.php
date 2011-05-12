@@ -100,7 +100,12 @@ echo new SuperForm(array(
                             'html'  => is_object($user->avatar) ? 
                                        $user->avatar . '<img src="' . htmlspecialchars($user->avatar->getLink(110, 110)) . '" alt="Avatar" />' :
                                        ''
-                        )                        
+                        ),
+                        "avatar-{$user->avatar->id}-remove" => array(
+                            'type'  => 'submit',
+                            'label' => 'Quitar',
+                            'class' => 'inline remove support-remove'
+                        )
                     )               
                 )
                 
