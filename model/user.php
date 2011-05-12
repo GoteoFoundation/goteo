@@ -140,7 +140,7 @@ namespace Goteo\Model {
                          * Guarda la relación NM en la tabla 'user_image'.
                          */
                         if(!empty($image->id)) {
-                            self::query("REPLACE user_image (user_id, image_id) VALUES (:user, :image)", array(':user' => $this->id, ':image' => $image->id));
+                            self::query("REPLACE user_image (user, image) VALUES (:user, :image)", array(':user' => $this->id, ':image' => $image->id));
                         }
                     }
 
