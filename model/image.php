@@ -2,6 +2,8 @@
 
 namespace Goteo\Model {
 
+    use Goteo\Library\Text;
+
     class Image extends \Goteo\Core\Model {
 
         public
