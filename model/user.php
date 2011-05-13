@@ -602,7 +602,7 @@ namespace Goteo\Model {
                                   WHERE user = ?'
                 , array($id));
             
-            $data = $query->fetch(\PDO::FETCH_ASSOC);
+            $data = $query->fetchObject();
             return $data;
         }
 

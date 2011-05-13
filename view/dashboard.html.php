@@ -5,11 +5,11 @@ include 'view/header.html.php'; ?>
 
         <div id="main">
 
-        <p><?php echo $this['message']; ?> [<a href="/logout">Salir</a>]</p>
+        <p><?php echo $this['message']; ?> <a href="/user/logout">[Cerrar sesión]</a></p>
 
 		<p>
-			Modificar Perfil (usuario/email/contraseña/imagen/descripción/información): <a href="/user/edit">Gestionar perfil</a><br />
-			Perfil público (cómo me veo|cómo me ven): <a href="/user/<?php echo $_SESSION['user']->id ?>">Perfil público</a><br />
+			<a href="/user/edit">[Gestionar perfil]</a><br />
+			<a href="/user/<?php echo $_SESSION['user']->id ?>" target="_blank">[Ver perfil]</a><br />
 		</p>
 
 
@@ -17,18 +17,20 @@ include 'view/header.html.php'; ?>
 			Mis proyectos:<br />
 		<?php
 		foreach ($this['projects'] as $project) {
-			echo '<a href="/project/' . $project->id . '">' . ($project->name != '' ? $project->name : $project->id) . '</a>
-                (' . $this['status'][$project->status] . ')
-                    Progreso: ' . $project->progress . '%
-                        <a href="/project/' . $project->id . '/?edit">[Editar]</a>
-                        <a href="/project/' . $project->id . '/?trash" onclick="return confirm(\'Seguro que desea eliminar este proyecto?\')">[Borrar]</a>
-                                <br />';
+			echo '<a href="/project/' . $project->id . '" target="_blank">' . ($project->name != '' ? $project->name : $project->id) . '</a>
+                (' . $this['status'][$project->status] . ')';
+            if ($project->status == 1) {
+                echo ' Progreso: ' . $project->progress . '%
+                <a href="/project/' . $project->id . '/?edit">[Editar]</a>
+                <a href="/project/' . $project->id . '/?trash" onclick="return confirm(\'Seguro que desea eliminar este proyecto?\')">[Borrar]</a>';
+            }
+            echo '<br />';
 		}
 		?>
 		</p>
 
 		<p>
-			Nuevo proyecto: <a href="/project/?create">Crear</a><br />
+			<a href="/project/?create">Crear nuevo proyecto</a><br />
 		</p>
 
 		<p>

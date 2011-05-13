@@ -41,10 +41,10 @@ namespace Goteo\Controller {
             $nodesign = true; // para usar el formulario de proyecto en Julian mode
 
             $project = Model\Project::get($id);
-//            die ('<pre>' . print_r($project, 1) . '</pre>');
-            //@TODO Verificar si tieme permiso para editar libremente
-            if ($project->status != 1 && $_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
+            
+            if ($project->status != 1 && $_SESSION['user']->role != 1) {
                 throw new Redirection("/project/{$project->id}");
+            }
 
             // si no tenemos SESSION stepped es porque no venimos del create
             if (!isset($_SESSION['stepped']))
@@ -154,7 +154,7 @@ namespace Goteo\Controller {
 
 
                 //re-evaluar el proyecto
-                $project->evaluate();
+                $project->check();
 
                 //si nos estan pidiendo el error de un campo, se lo damos
                 if (!empty($_GET['errors'])) {
@@ -242,14 +242,6 @@ namespace Goteo\Controller {
             //@TODO Verificar si tienen permisos para crear nuevos proyectos
             $project = new Model\Project;
             $project->create($_SESSION['user']->id);
-
-            // cargar los datos pesronales del usuario
-            $personalData = Model\User::getPersonal($_SESSION['user']->id);
-            foreach ($personalData as $key=>$value) {
-                $project->$key = $value;
-            }
-            $project->save();
-
 
             $_SESSION['stepped'] = array();
                 throw new Redirection("/project/{$project->id}/?edit");
