@@ -48,6 +48,7 @@ echo new SuperForm(array(
         
         'phone' => array(
             'type'  => 'textbox',
+            'required'  => true,
             'title' => 'Teléfono',            
             'dize'  => 15,
             'hint'  => Text::get('tooltip-project-phone'),
@@ -57,6 +58,7 @@ echo new SuperForm(array(
         
         'address' => array(
             'type'  => 'textarea',
+            'required'  => true,
             'title' => 'Dirección',  
             'rows'  => 6,
             'cols'  => 40,
@@ -67,6 +69,7 @@ echo new SuperForm(array(
         
         'zipcode' => array(
             'type'  => 'textbox',
+            'required'  => true,
             'title' => 'Código postal',            
             'size'  => 7,
             'hint'  => Text::get('tooltip-project-zipcode'),
@@ -76,6 +79,7 @@ echo new SuperForm(array(
         
         'location' => array(
             'type'  => 'textbox',
+            'required'  => true,
             'title' => 'Localidad',
             'size'  => 25,
             'hint'  => Text::get('tooltip-project-location'),
@@ -85,6 +89,7 @@ echo new SuperForm(array(
         
         'country' => array(
             'type'  => 'textbox',
+            'required'  => true,
             'title' => 'País',
             'size'  => 25,
             'hint'  => Text::get('tooltip-project-country'),

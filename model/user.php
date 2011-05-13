@@ -352,63 +352,11 @@ namespace Goteo\Model {
                     }
                 }
 
-                if (empty($this->name)) {
-                    $errors['name'] = Text::get('validate-user-field-name');
-                } else {
-                    $okeys['name'] = 'ok';
-                }
-
                 if (is_array($this->avatar) && !empty($this->avatar['name'])) {
                     $image = new Image($this->avatar);
                     $_err = array();
                     $image->validate($_err);
                     $errors['avatar'] = $_err['image'];
-                } elseif(!is_object($this->avatar)) {
-                    $errors['avatar'] = Text::get('validate-user-field-avatar');
-                } else {
-                    $okeys['avatar'] = 'ok';
-                }
-
-                if (empty($this->about)) {
-                    $errors['about'] = Text::get('validate-user-field-about');
-                } else {
-                    $okeys['about'] = 'ok';
-                }
-
-                $keywords = explode(',', $this->keywords);
-                if (sizeof($keywords) < 5) {
-                    $errors['keywords'] = Text::get('validate-user-field-keywords');
-                } else {
-                    $okeys['keywords'] = 'ok';
-                }
-
-                if (empty($this->contribution)) {
-                    $errors['contribution'] = Text::get('validate-user-field-contribution');
-                } else {
-                    $okeys['contribution'] = 'ok';
-                }
-
-                if (empty($this->interests)) {
-                    $errors['interests'] = Text::get('validate-user-field-interests');
-                } else {
-                    $okeys['interests'] = 'ok';
-                }
-
-                if (empty($this->webs)) {
-                    $errors['webs'] = Text::get('validate-user-field-webs');
-                } else {
-                    $okeys['webs'] = 'ok';
-                }
-                
-                if (!empty($this->facebook)) {
-                    $okeys['facebook'] = 'ok';
-                }
-                
-                if (!empty($this->twitter)) {
-                    $okeys['twitter'] = 'ok';
-                }
-                if (!empty($this->linkedin)) {
-                    $okeys['linkedin'] = 'ok';
                 }
             }
 

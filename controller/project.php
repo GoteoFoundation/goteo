@@ -392,6 +392,7 @@ namespace Goteo\Controller {
                 'goal',
                 'related',
                 'keywords',
+                'media',
                 'currently',
                 'project_location'
             );
@@ -481,7 +482,7 @@ namespace Goteo\Controller {
                 
                 $project->costs[] = new Model\Project\Cost(array(
                     'project' => $project->id,
-                    'cost'  => 'Nuevo coste',
+                    'cost'  => 'Nueva tarea',
                     'type'  => 'task',
                     'from' => date('Y-m-d'),
                     'until' => date('Y-m-d')
