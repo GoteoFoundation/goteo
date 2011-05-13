@@ -14,7 +14,8 @@ namespace Goteo\Model {
             $id = false,
             $role = null,
             $email,
-            $name,
+            $name, // nombre de perfil público
+            $location, // dónde está
             $avatar = false,
             $about,
             $contribution,
@@ -23,7 +24,6 @@ namespace Goteo\Model {
             $facebook,
             $twitter,
             $linkedin,
-            $country,
             $created,
             $modified,
             $interests = array(),
@@ -77,6 +77,7 @@ namespace Goteo\Model {
                     $data[':id'] = $this->id;
                     $data[':role_id'] = 3; // @FIXME: Provisionalmente: 3 = Usuario
                     $data[':name'] = $this->name;
+                    $data[':location'] = $this->location;
                     $data[':email'] = $this->email;
                     $data[':password'] = sha1($this->password);
                     $data[':created'] = date('Y-m-d H:i:s');
@@ -147,6 +148,11 @@ namespace Goteo\Model {
                     // Perfil público
                     if(isset($this->name)) {
                         $data[':name'] = $this->name;
+                    }
+
+                    // Dónde está
+                    if(isset($this->location)) {
+                        $data[':location'] = $this->location;
                     }
 
                     if(isset($this->about)) {
@@ -298,14 +304,15 @@ namespace Goteo\Model {
                 }
 
                 // E-mail
-                if(!empty($this->email)) {
+                if (empty($this->email)) {
+                    $errors['email'] = Text::get('mandatory-register-field-email');
+                } elseif (!Check::mail($this->contract_email)) {
+                    $errors['email'] = Text::get('validate-register-value-email');
+                } else {
                     $query = self::query('SELECT email FROM user WHERE email = ?', array($this->email));
                     if($query->fetchObject()) {
                         $errors['email'] = Text::get('error-register-email-exists');
                     }
-                }
-                else {
-                    $errors['email'] = Text::get('error-register-email-empty');
                 }
 
                 // Contraseña
@@ -344,78 +351,65 @@ namespace Goteo\Model {
                         $errors['password'] = Text::get('error-user-password-invalid');
                     }
                 }
+
                 if (empty($this->name)) {
                     $errors['name'] = Text::get('validate-user-field-name');
                 } else {
                     $okeys['name'] = 'ok';
                 }
+
                 if (is_array($this->avatar) && !empty($this->avatar['name'])) {
                     $image = new Image($this->avatar);
                     $_err = array();
                     $image->validate($_err);
                     $errors['avatar'] = $_err['image'];
-                }
-                elseif(!is_object($this->avatar)) {
+                } elseif(!is_object($this->avatar)) {
                     $errors['avatar'] = Text::get('validate-user-field-avatar');
                 } else {
                     $okeys['avatar'] = 'ok';
                 }
+
                 if (empty($this->about)) {
                     $errors['about'] = Text::get('validate-user-field-about');
                 } else {
                     $okeys['about'] = 'ok';
                 }
+
                 $keywords = explode(',', $this->keywords);
                 if (sizeof($keywords) < 5) {
                     $errors['keywords'] = Text::get('validate-user-field-keywords');
                 } else {
                     $okeys['keywords'] = 'ok';
                 }
+
                 if (empty($this->contribution)) {
                     $errors['contribution'] = Text::get('validate-user-field-contribution');
                 } else {
                     $okeys['contribution'] = 'ok';
                 }
+
                 if (empty($this->interests)) {
                     $errors['interests'] = Text::get('validate-user-field-interests');
                 } else {
                     $okeys['interests'] = 'ok';
                 }
+
                 if (empty($this->webs)) {
                     $errors['webs'] = Text::get('validate-user-field-webs');
                 } else {
                     $okeys['webs'] = 'ok';
                 }
-                /*
-                 *  Esto ya no es necesario
-                else {
-                    if(isset($this->webs['add'])) {
-                        foreach($this->webs['add'] as $index => $web) {
-                            if(empty($web)) {
-                                unset($this->webs['add'][$index]);
-                            }
-                        }
-                    }
-                }
-                 */
-                if (empty($this->facebook)) {
-                    $errors['facebook'] = Text::get('validate-user-field-facebook');
-                } else {
+                
+                if (!empty($this->facebook)) {
                     $okeys['facebook'] = 'ok';
                 }
-                /*
-                if (empty($this->twitter)) {
-                    $errors['twitter'] = Text::get('validate-user-field-twitter');
-                } else {
+                
+                if (!empty($this->twitter)) {
                     $okeys['twitter'] = 'ok';
                 }
-                if (empty($this->linkedin)) {
-                    $errors['linkedin'] = Text::get('validate-user-field-linkedin');
-                } else {
+                if (!empty($this->linkedin)) {
                     $okeys['linkedin'] = 'ok';
                 }
-                 * 
-                 */
             }
 
             return (empty($errors['email']) && empty($errors['password']));
@@ -435,6 +429,7 @@ namespace Goteo\Model {
                         role_id AS role,
                         email,
                         name,
+                        location,
                         avatar,
                         about,
                         contribution,
@@ -478,12 +473,12 @@ namespace Goteo\Model {
 		 */
 		public static function login ($username, $password) {
 			
-                        $query = self::query("
-				SELECT
-					id
-				FROM user
-				WHERE BINARY id = :username
-				AND BINARY password = :password",
+            $query = self::query("
+                    SELECT
+                        id
+                    FROM user
+                    WHERE BINARY id = :username
+                    AND BINARY password = :password",
 				array(
 					':username' => trim($username),
 					':password' => sha1($password)
@@ -597,9 +592,7 @@ namespace Goteo\Model {
         public static function getPersonal ($id) {
             $query = self::query('SELECT  
                                       contract_name,
-                                      contract_surname,
                                       contract_nif,
-                                      contract_email,
                                       phone,
                                       address,
                                       zipcode,
@@ -636,9 +629,7 @@ namespace Goteo\Model {
 
             $fields = array(
                   'contract_name',
-                  'contract_surname',
                   'contract_nif',
-                  'contract_email',
                   'phone',
                   'address',
                   'zipcode',

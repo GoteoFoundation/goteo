@@ -21,10 +21,8 @@ namespace Goteo\Model {
             $user, // owner's user information
 
             // Register contract data
-            $contract_name,
-            $contract_surname,
+            $contract_name, // Nombre y apellidos
             $contract_nif, // Guardar sin espacios ni puntos ni guiones
-            $contract_email,
             $phone, // guardar sin espacios ni puntos
             $address,
             $zipcode,
@@ -75,7 +73,7 @@ namespace Goteo\Model {
 
             $messages = array(), // mensajes de los usuarios hilos con hijos
 
-            $finishable = false;
+            $finishable = false; // llega al progresso mínimo para enviar a revision
 
 
 
@@ -94,6 +92,11 @@ namespace Goteo\Model {
             else
                 $num = 1;
 
+            // datos del usuario que van por defecto: name->contract_name,  location->location
+            $userProfile = User::get($user);
+            // datos del userpersonal por defecto a los cammpos del paso 2
+            $userPersonal = (object) User::getPersonal($user);
+
             $values = array(
                 ':id'   => md5($user.'-'.$num),
                 ':name' => "Mi proyecto $num",
@@ -102,24 +105,38 @@ namespace Goteo\Model {
                 ':owner' => $user,
                 ':node' => $node,
                 ':amount' => 0,
-                ':created'  => date('Y-m-d')
+                ':days' => 0,
+                ':created'  => date('Y-m-d'),
+                ':contract_name' => ($userPersonal->contract_name) ?
+                                    $userPersonal->contract_name :
+                                    $userProfile->name,
+                ':contract_nif' => $userPersonal->contract_nif,
+                ':phone' => $userPersonal->phone,
+                ':address' => $userPersonal->address,
+                ':zipcode' => $userPersonal->zipcode,
+                ':location' => $userPersonal->location,
+                ':country' => $userPersonal->country
                 );
 
-            $sql = "REPLACE INTO project (id, name, status, progress, owner, node, amount, created)
-                 VALUES (:id, :name, :status, :progress, :owner, :node, :amount, :created)";
+            $campos = array();
+            foreach (\array_keys($values) as $campo) {
+                $campos[] = \str_replace(':', '', $campo);
+            }
+
+            $sql = "REPLACE INTO project (" . implode(',', $campos) . ")
+                 VALUES (" . implode(',', \array_keys($values)) . ")";
             try {
 				self::query($sql, $values);
 
-                $this->id = $values[':id'];
-                $this->name = $values[':name'];
-                $this->owner = $user;
-                $this->node = $node;
-                $this->status = 1;
-                $this->progress = 0;
+                foreach ($campos as $campo) {
+                    $this->$campo = $values[":$campo"];
+                }
 
                 return $this->id;
             } catch (\PDOException $e) {
                 $errors[] = "ERROR al crear un nuevo proyecto<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>";
+                \trace($this);
+                die($errors[0]);
                 return false;
             }
         }
@@ -133,11 +150,10 @@ namespace Goteo\Model {
 				// metemos los datos del proyecto en la instancia
 				$query = self::query("SELECT * FROM project WHERE id = ?", array($id));
 				$project = $query->fetchObject(__CLASS__);
-                                
-                                if (isset($project->media)) {
-                                    $project->media = new Project\Media($project->media);
-                                }
-                                
+
+                if (isset($project->media)) {
+                    $project->media = new Project\Media($project->media);
+                }
 
                 // owner
                 $project->user = User::get($project->owner);
@@ -262,26 +278,12 @@ namespace Goteo\Model {
                  $okeys['userPersonal']['contract_name'] = 'ok';
             }
 
-            if (empty($this->contract_surname)) {
-                $errors['userPersonal']['contract_surname'] = Text::get('mandatory-project-field-contract-surname');
-            } else {
-                 $okeys['userPersonal']['contract_surname'] = 'ok';
-            }
-
             if (empty($this->contract_nif)) {
                 $errors['userPersonal']['contract_nif'] = Text::get('mandatory-project-field-contract-nif');
             } elseif (!Check::nif($this->contract_nif)) {
                 $errors['userPersonal']['contract_nif'] = Text::get('validate-project-value-contract-nif');
             } else {
                  $okeys['userPersonal']['contract_nif'] = 'ok';
-            }
-
-            if (empty($this->contract_email)) {
-                $errors['userPersonal']['contract_email'] = Text::get('mandatory-project-field-contract-email');
-            } elseif (!Check::mail($this->contract_email)) {
-                $errors['userPersonal']['contract_email'] = Text::get('validate-project-value-contract-email');
-            } else {
-                 $okeys['userPersonal']['contract_email'] = 'ok';
             }
 
             if (empty($this->phone)) {
@@ -350,15 +352,11 @@ namespace Goteo\Model {
                  $okeys['overview']['about'] = 'ok';
             }
 
-            if (empty($this->goal)) {
-                $errors['overview']['goal'] = Text::get('mandatory-project-field-goal');
-            } else {
+            if (!empty($this->goal))  {
                  $okeys['overview']['goal'] = 'ok';
             }
 
-            if (empty($this->related)) {
-                $errors['overview']['related'] = Text::get('mandatory-project-field-related');
-            } else {
+            if (!empty($this->related)) {
                  $okeys['overview']['related'] = 'ok';
             }
 
@@ -374,6 +372,10 @@ namespace Goteo\Model {
                  $okeys['overview']['media'] = 'ok';
             }
 
+            if (!empty($this->keywords)) {
+                 $okeys['overview']['keywords'] = 'ok';
+            }
+            /*
             $keywords = explode(',', $this->keywords);
             
             if ($keywords < 5) {
@@ -381,10 +383,10 @@ namespace Goteo\Model {
             } else {
                  $okeys['overview']['keywords'] = 'ok';
             }
+             *
+             */
 
-            if (empty($this->currently)) {
-                $errors['overview']['currently'] = Text::get('validate-project-field-currently');
-            } else {
+            if (!empty($this->currently)) {
                  $okeys['overview']['currently'] = 'ok';
             }
 
@@ -436,13 +438,13 @@ namespace Goteo\Model {
             /***************** FIN Revisión del paso 4, COSTES *****************/
 
             /***************** Revisión de campos del paso 5, RETORNOS *****************/
-            if (count($this->social_rewards) < 5) {
+            if (empty($this->social_rewards)) {
                 $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards');
             } else {
                  $okeys['rewards']['social_rewards'] = 'ok';
             }
 
-            if (count($this->individual_rewards) < 5) {
+            if (empty($this->individual_rewards)) {
                 $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards');
             } else {
                  $okeys['rewards']['individual_rewards'] = 'ok';
@@ -539,9 +541,7 @@ namespace Goteo\Model {
 
                 $fields = array(
                     'contract_name',
-                    'contract_surname',
                     'contract_nif',
-                    'contract_email',
                     'phone',
                     'address',
                     'zipcode',
@@ -762,9 +762,7 @@ namespace Goteo\Model {
             $max += 9;
             $errors = $this->errors['userPersonal'];
             if (empty($errors['contract_name'])) $score++;
-            if (empty($errors['contract_surname'])) $score++;
             if (empty($errors['contract_nif'])) $score++;
-            if (empty($errors['contract_email'])) $score++;
             if (empty($errors['phone'])) $score++;
             if (empty($errors['address'])) $score++;
             if (empty($errors['zipcode'])) $score++;

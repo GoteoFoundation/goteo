@@ -288,6 +288,7 @@ namespace Goteo\Controller {
 
             $fields = array(
                 'user_name'=>'name',
+                'user_location'=>'location',
                 'user_avatar'=>'avatar',
                 'user_about'=>'about',
                 'user_keywords'=>'keywords',
@@ -355,9 +356,7 @@ namespace Goteo\Controller {
             // campos que guarda este paso
             $fields = array(
                 'contract_name',
-                'contract_surname',
                 'contract_nif',
-                'contract_email',
                 'phone',
                 'address',
                 'zipcode',

@@ -30,20 +30,10 @@ echo new SuperForm(array(
             'type'      => 'textbox',
             'required'  => true,
             'size'      => 20,
-            'title'     => 'Nombre',
+            'title'     => 'Nombre y apellidos',
             'hint'      => Text::get('tooltip-project-contract_name'),
             'errors'    => !empty($errors['contract_name']) ? array($errors['contract_name']) : array(),
             'value'     => $project->contract_name
-        ),
-        
-        'contract_surname' => array(
-            'type'      => 'textbox',
-            'title'     => 'Apellidos',
-            'size'      => 30,
-            'required'  => true,
-            'hint'       => Text::get('tooltip-project-contract_surname'),
-            'errors'    => !empty($errors['contract_surname']) ? array($errors['contract_surname']) : array(),
-            'value'     => $project->contract_surname
         ),
         
         'contract_nif' => array(
@@ -54,16 +44,6 @@ echo new SuperForm(array(
             'hint'      => Text::get('tooltip-project-contract_nif'),
             'errors'    => !empty($errors['contract_nif']) ? array($errors['contract_nif']) : array(),
             'value'     => $project->contract_nif
-        ),
-        
-        'contract_email' => array(
-            'type'      => 'textbox',
-            'title'     => 'E-mail',
-            'required'  => true,
-            'size'      => 40,
-            'hint'      => Text::get('tooltip-project-contract_email'),
-            'errors'    => !empty($errors['contract_email']) ? array($errors['contract_email']) : array(),
-            'value'     => $project->contract_email
         ),
         
         'phone' => array(
@@ -96,7 +76,7 @@ echo new SuperForm(array(
         
         'location' => array(
             'type'  => 'textbox',
-            'title' => 'Lugar de residencia',            
+            'title' => 'Localidad',
             'size'  => 25,
             'hint'  => Text::get('tooltip-project-location'),
             'errors'    => !empty($errors['location']) ? array($errors['location']) : array(),
