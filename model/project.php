@@ -194,16 +194,8 @@ namespace Goteo\Model {
                 //-----------------------------------------------------------------
                 // Diferentes verificaciones segun el estado del proyecto
                 //-----------------------------------------------------------------
-                //para proyectos en edición/revision
-                if ($project->status < 3) {
-                    //checkeamos los campos y actualizamos el progreso
-                    $project->check();
-                    // si el progreso llega al mínimo, marcamos el finishable
-                    if ($project->progress > 60) {
-                        $project->finishable = true;
-                    }
-                } else {
-                    //para resto de estados
+                //para proyectos en campaña o posterior
+                if ($project->status > 2) {
                     $project->investors = Invest::investors($project->id);
 
                     $amount = Invest::invested($project->id);
@@ -674,9 +666,12 @@ namespace Goteo\Model {
             } else {
                  $okeys['overview']['description'] = 'ok';
                  ++$score;
+                 /*
                  if (\strlen($this->about) > 250) {
                      $errors['overview']['description'] = Text::get('validate-project-field-description');
                  }
+                  * 
+                  */
             }
 
             if (empty($this->about)) {
@@ -898,8 +893,6 @@ namespace Goteo\Model {
             /***************** FIN Revisión del paso 6, COLABORACIONES *****************/
 
             //-------------- Calculo progreso ---------------------//
-            // Para que no lleguen al 100 le añadimos 20 al maximo
-            $this->setScore(0, 20);
             $this->setProgress();
             //-------------- Fin calculo progreso ---------------------//
 
@@ -929,11 +922,13 @@ namespace Goteo\Model {
             if ($progress > 100) $progress = 100;
             if ($progress < 0)   $progress = 0;
 
-            // actualizar el progreso
-            $sql = "UPDATE project SET progress = :progress WHERE id = :id";
-            if (self::query($sql, array(':progress'=>$progress, ':id'=>$this->id))) {
-                $this->progress = $progress;
+            if ($progress > 60) {
+                $this->finishable = true;
             }
+            $this->progress = $progress;
+            // actualizar el registro
+            self::query("UPDATE project SET progress = :progress WHERE id = :id",
+                array(':progress'=>$this->progress, ':id'=>$this->id));
         }
 
 
@@ -943,13 +938,13 @@ namespace Goteo\Model {
          */
         public function ready(&$errors = array()) {
 			try {
-				if ($this->rebase()) {
-                    $sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
-                    self::query($sql, array(':status'=>2, ':updated'=>date('Y-m-d'), ':id'=>$this->id));
-                    return true;
-                } else {
-                    return false;
-                }
+				$this->rebase();
+
+                $sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
+                self::query($sql, array(':status'=>2, ':updated'=>date('Y-m-d'), ':id'=>$this->id));
+                
+                return true;
+                
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al habilitar para revisión. ' . $e->getMessage();
                 return false;

@@ -22,6 +22,7 @@ namespace Goteo\Controller {
                     throw new Redirection("/dashboard");
                 } elseif (isset($_GET['raw'])) {
                     $project = Model\Project::get($id);
+                    $project->check();
                     \trace($project);
                     die;
                 } else {
@@ -145,7 +146,7 @@ namespace Goteo\Controller {
                  */
 
                 // si estan enviando el proyecto a revisión
-                if (isset($_POST['confirm']) && $project->finishable) {
+                if (isset($_POST['process_preview']) && isset($_POST['finish'])) {
                     $errors = array();
                     if ($project->ready($errors)) {
                         throw new Redirection("/dashboard?ok");
@@ -153,18 +154,19 @@ namespace Goteo\Controller {
                 }
 
 
-                //re-evaluar el proyecto
-                $project->check();
+            }
 
-                //si nos estan pidiendo el error de un campo, se lo damos
-                if (!empty($_GET['errors'])) {
-                    foreach ($project->errors as $paso) {
-                        if (!empty($paso[$_GET['errors']])) {
-                            return new View(
-                                'view/project/errors.json.php',
-                                array('errors'=>array($paso[$_GET['errors']]))
-                            );
-                        }
+            //re-evaluar el proyecto
+            $project->check();
+
+            //si nos estan pidiendo el error de un campo, se lo damos
+            if (!empty($_GET['errors'])) {
+                foreach ($project->errors as $paso) {
+                    if (!empty($paso[$_GET['errors']])) {
+                        return new View(
+                            'view/project/errors.json.php',
+                            array('errors'=>array($paso[$_GET['errors']]))
+                        );
                     }
                 }
             }
@@ -604,9 +606,10 @@ namespace Goteo\Controller {
             if (!isset($_POST['process_preview'])) {
                 return false;
             }
-            
-            if (isset($_POST['comment']))
+
+            if (!empty($_POST['comment'])) {
                 $project->comment = $_POST['comment'];
+            }
 
             return true;
         }

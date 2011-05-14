@@ -14,8 +14,9 @@ $project = $this['project'];
 
 // boton de revisar que no sirve para mucho
 $buttons = array(
-    array(
+    'review' => array(
         'type'  => 'submit',
+        'name'  => 'review',
         'label' => 'Revisar',
         'class' => 'retry'
     )
@@ -23,8 +24,9 @@ $buttons = array(
 
 // si es enviable ponemos el boton
 if ($project->finishable) {
-    $buttons[] = array(
+    $buttons['finish'] = array(
         'type'  => 'submit',
+        'name'  => 'finish',
         'label' => 'Enviar',
         'class' => 'confirm'
     );
@@ -60,7 +62,8 @@ if ($project->finishable) {
             'title' => 'Notas adicionales para el administrador',
             'rows'  => 8,
             'cols'  => 100,
-            'hint'  => Text::get('guide-project-comment')
+            'hint'  => Text::get('guide-project-comment'),
+            'value' => $project->comment
         );
 }
 
