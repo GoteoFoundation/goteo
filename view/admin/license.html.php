@@ -30,7 +30,7 @@ include 'view/prologue.html.php';
             <?php endif;?>
 
             <form id="groupfilter-form" action="/admin/licenses" method="get">
-                <label for="group-filter">Mostrar las licencias por agrupación:</label>
+                <label for="group-filter">Mostrar las licencias por grupo:</label>
                 <select id="group-filter" name="filter" onchange="document.getElementById('groupfilter-form').submit();">
                     <option value="">Todas</option>
                 <?php foreach ($this['groups'] as $groupId=>$groupName) : ?>

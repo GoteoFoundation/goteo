@@ -36,7 +36,7 @@ include 'view/prologue.html.php';
                 <input type="hidden" name="id" value="<?php echo $this['license']->id; ?>" />
                 <input type="hidden" name="order" value="<?php echo $this['license']->order; ?>" />
 
-                <label for="license-group">Agrupación:</label><br />
+                <label for="license-group">Grupo:</label><br />
                 <select id="license-group" name="group">
                     <option value="">Ninguna</option>
                     <?php foreach ($this['groups'] as $id=>$name) : ?>

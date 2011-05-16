@@ -189,8 +189,8 @@ namespace Goteo\Model {
 
         public static function groups () {
             return array(
-                '1' => 'Más abierta',
-                '2' => 'Menos abierta'
+                'regular' => 'Normal',
+                'open' => 'Abierto'
             );
         }
 
