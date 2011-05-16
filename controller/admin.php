@@ -657,6 +657,118 @@ namespace Goteo\Controller {
         }
 
         /*
+         * posts para portada
+         * Es una idea de blog porque luego lo que salga en la portada
+         *  seran los posts de cierta categoria, o algo así
+         */
+        public function posts() {
+            if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
+                throw new Redirection("/dashboard");
+
+            $errors = array();
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                // objeto
+                $post = new Model\Post(array(
+                    'title' => $_POST['title'],
+                    'description' => $_POST['description'],
+                    'media' => $_POST['media'],
+                    'order' => $_POST['order']
+                ));
+
+                if (!empty($post->media)) {
+                    $post->media = new Model\Project\Media($post->media);
+                }
+
+				if ($post->save($errors)) {
+                    switch ($_POST['action']) {
+                        case 'add':
+                            $success = 'Entrada creada correctamente';
+                            break;
+                        case 'edit':
+                            $success = 'Entrada editada correctamente';
+                            break;
+                    }
+				}
+				else {
+                    switch ($_POST['action']) {
+                        case 'add':
+                            return new View(
+                                'view/admin/postEdit.html.php',
+                                array(
+                                    'action' => 'add',
+                                    'post' => $post,
+                                    'errors' => $errors
+                                )
+                            );
+                            break;
+                        case 'edit':
+                            return new View(
+                                'view/admin/postEdit.html.php',
+                                array(
+                                    'action' => 'edit',
+                                    'post' => $post,
+                                    'errors' => $errors
+                                )
+                            );
+                            break;
+                    }
+				}
+			}
+
+
+            if (isset($_GET['up'])) {
+                Model\Post::up($_GET['up']);
+            }
+
+            if (isset($_GET['down'])) {
+                Model\Post::down($_GET['down']);
+            }
+
+            if (isset($_GET['add'])) {
+                // siguiente orden
+                $next = Model\Post::next();
+
+                return new View(
+                    'view/admin/postEdit.html.php',
+                    array(
+                        'action' => 'add',
+                        'post' => (object) array('order' => $next)
+                    )
+                );
+            }
+
+            if (isset($_GET['edit'])) {
+                $post = Model\Post::get($_GET['edit']);
+
+                return new View(
+                    'view/admin/postEdit.html.php',
+                    array(
+                        'action' => 'edit',
+                        'post' => $post
+                    )
+                );
+            }
+
+            if (isset($_GET['remove'])) {
+                Model\Post::delete($_GET['remove']);
+            }
+
+
+            $posts = Model\Post::getAll();
+
+            return new View(
+                'view/admin/post.html.php',
+                array(
+                    'posts' => $posts,
+                    'errors' => $errors,
+                    'success' => $success
+                )
+            );
+        }
+
+        /*
          *  administración de nodos y usuarios (segun le permita el ACL al usuario validado)
          */
         public function managing() {

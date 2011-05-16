@@ -68,6 +68,10 @@ namespace Goteo\Model {
         public function save (&$errors = array()) {
             if (!$this->validate($errors)) return false;
 
+            if (empty($this->group)) {
+                $this->group = null;
+            }
+
             $fields = array(
                 'id',
                 'name',
