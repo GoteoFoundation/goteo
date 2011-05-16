@@ -39,7 +39,7 @@ include 'view/prologue.html.php';
                 </select>
             </form>
 
-            <p><a href="?filter=<?php echo $this['filter']; ?>&add">Añadir tipo</a></p>
+            <!-- <p><a href="?filter=<?php echo $this['filter']; ?>&add">Añadir tipo</a></p> -->
 
                     <table>
                         <thead>
@@ -47,7 +47,7 @@ include 'view/prologue.html.php';
                                 <td>Nombre</td> <!-- name -->
                                 <td>Agrupación</td> <!-- group -->
                                 <td><!-- Edit --></td>
-                                <td><!-- Remove --></td>
+<!--                                <td> Remove </td>  -->
                             </tr>
                         </thead>
 
@@ -57,7 +57,7 @@ include 'view/prologue.html.php';
                                 <td><?php echo $icon->name; ?></td>
                                 <td><?php echo !empty($icon->group) ? $this['groups'][$icon->group] : 'Ambas'; ?></td>
                                 <td><a href="?filter=<?php echo $this['filter']; ?>&edit=<?php echo $icon->id; ?>">[Editar]</a></td>
-                                <td><a href="?filter=<?php echo $this['filter']; ?>&remove=<?php echo $icon->id; ?>">[Quitar]</a></td>
+                                <!-- <td><a href="?filter=<?php echo $this['filter']; ?>&remove=<?php echo $icon->id; ?>">[Quitar]</a></td> -->
                             </tr>
                             <?php endforeach; ?>
                         </tbody>

@@ -487,7 +487,7 @@ namespace Goteo\Controller {
 				}
 			}
 
-
+/*
             if (isset($_GET['add'])) {
 
                 return new View(
@@ -499,6 +499,8 @@ namespace Goteo\Controller {
                     )
                 );
             }
+ * 
+ */
 
             if (isset($_GET['edit'])) {
                 $icon = Model\Icon::get($_GET['edit']);
@@ -513,9 +515,12 @@ namespace Goteo\Controller {
                 );
             }
 
+            /*
             if (isset($_GET['remove'])) {
                 Model\Icon::delete($_GET['remove']);
             }
+             *
+             */
 
 
             $icons = Model\Icon::getAll($filter);
@@ -598,6 +603,7 @@ namespace Goteo\Controller {
                 Model\License::down($_GET['down']);
             }
 
+            /*
             if (isset($_GET['add'])) {
                 $next = Model\License::next();
 
@@ -611,6 +617,8 @@ namespace Goteo\Controller {
                     )
                 );
             }
+             *
+             */
 
             if (isset($_GET['edit'])) {
                 $license = Model\License::get($_GET['edit']);
@@ -626,9 +634,12 @@ namespace Goteo\Controller {
                 );
             }
 
+            /*
             if (isset($_GET['remove'])) {
                 Model\License::delete($_GET['remove']);
             }
+             * 
+             */
 
 
             $licenses = Model\License::getAll($filter);

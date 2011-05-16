@@ -50,7 +50,7 @@ include 'view/prologue.html.php';
                                 <td><!-- Move up --></td>
                                 <td><!-- Move down --></td>
                                 <td><!-- Edit --></td>
-                                <td><!-- Remove --></td>
+<!--                                <td> Remove </td> -->
                             </tr>
                         </thead>
 
@@ -63,7 +63,7 @@ include 'view/prologue.html.php';
                                 <td><a href="?filter=<?php echo $this['filter']; ?>&up=<?php echo $license->id; ?>">[&uarr;]</a></td>
                                 <td><a href="?filter=<?php echo $this['filter']; ?>&down=<?php echo $license->id; ?>">[&darr;]</a></td>
                                 <td><a href="?filter=<?php echo $this['filter']; ?>&edit=<?php echo $license->id; ?>">[Editar]</a></td>
-                                <td><a href="?filter=<?php echo $this['filter']; ?>&remove=<?php echo $license->id; ?>">[Quitar]</a></td>
+<!--                                <td><a href="?filter=<?php echo $this['filter']; ?>&remove=<?php echo $license->id; ?>">[Quitar]</a></td>  -->
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
