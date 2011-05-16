@@ -25,18 +25,20 @@ include 'view/prologue.html.php';
                 <p><span style="color:green;"><?php echo $this['success']; ?></span><br /></p>
             <?php endif;?>
 
-            <p>Viendo las preguntas de la sección '<?php echo $this['sections'][$this['section']]; ?>'</p>
+            <?php if (!empty($this['filter'])) : ?>
+                <p>Viendo las preguntas de la sección '<?php echo $this['sections'][$this['filter']]; ?>'</p>
+            <?php endif;?>
 
             <form id="sectionfilter-form" action="/admin/faq" method="get">
                 <label for="section-filter">Mostrar las preguntas de:</label>
-                <select id="section-filter" name="section" onchange="document.getElementById('sectionfilter-form').submit();">
+                <select id="section-filter" name="filter" onchange="document.getElementById('sectionfilter-form').submit();">
                 <?php foreach ($this['sections'] as $sectionId=>$sectionName) : ?>
-                    <option value="<?php echo $sectionId; ?>"<?php if ($this['section'] == $sectionId) echo ' selected="selected"';?>><?php echo $sectionName; ?></option>
+                    <option value="<?php echo $sectionId; ?>"<?php if ($this['filter'] == $sectionId) echo ' selected="selected"';?>><?php echo $sectionName; ?></option>
                 <?php endforeach; ?>
                 </select>
             </form>
 
-            <p><a href="?section=<?php echo $this['section']; ?>&add">Añadir pregunta</a></p>
+            <p><a href="?filter=<?php echo $this['filter']; ?>&add">Añadir pregunta</a></p>
 
                     <table>
                         <thead>
@@ -55,10 +57,10 @@ include 'view/prologue.html.php';
                             <tr>
                                 <td><?php echo $faq->title; ?></td>
                                 <td><?php echo $faq->order; ?></td>
-                                <td><a href="?section=<?php echo $this['section']; ?>&up=<?php echo $faq->id; ?>">[&uarr;]</a></td>
-                                <td><a href="?section=<?php echo $this['section']; ?>&down=<?php echo $faq->id; ?>">[&darr;]</a></td>
-                                <td><a href="?section=<?php echo $this['section']; ?>&edit=<?php echo $faq->id; ?>">[Editar]</a></td>
-                                <td><a href="?section=<?php echo $this['section']; ?>&remove=<?php echo $faq->id; ?>">[Quitar]</a></td>
+                                <td><a href="?filter=<?php echo $this['filter']; ?>&up=<?php echo $faq->id; ?>">[&uarr;]</a></td>
+                                <td><a href="?filter=<?php echo $this['filter']; ?>&down=<?php echo $faq->id; ?>">[&darr;]</a></td>
+                                <td><a href="?filter=<?php echo $this['filter']; ?>&edit=<?php echo $faq->id; ?>">[Editar]</a></td>
+                                <td><a href="?filter=<?php echo $this['filter']; ?>&remove=<?php echo $faq->id; ?>">[Quitar]</a></td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>

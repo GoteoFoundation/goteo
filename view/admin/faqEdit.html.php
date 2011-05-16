@@ -19,7 +19,7 @@ include 'view/prologue.html.php';
             } ?>
 
             <p><a href="/admin">Volver al Menú de administración</a></p>
-            <p><a href="/admin/faq?section=<?php echo $this['faq']->section; ?>">Volver a la lista de preguntas frecuentes</a></p>
+            <p><a href="/admin/faq?filter=<?php echo $this['filter']; ?>">Volver a la lista de preguntas frecuentes</a></p>
 
             <?php if (!empty($this['errors'])) :
                 echo '<p>';
@@ -30,7 +30,7 @@ include 'view/prologue.html.php';
                 endif;
             ?>
 
-            <form method="post" action="/admin/faq?section=<?php echo $this['faq']->section; ?>">
+            <form method="post" action="/admin/faq?filter=<?php echo $this['filter']; ?>">
 
                 <input type="hidden" name="action" value="<?php echo $this['action']; ?>" />
                 <input type="hidden" name="id" value="<?php echo $this['faq']->id; ?>" />
