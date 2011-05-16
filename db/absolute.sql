@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 16-05-2011 a las 14:03:48
+-- Tiempo de generación: 16-05-2011 a las 17:30:53
 -- Versión del servidor: 5.1.49
 -- Versión de PHP: 5.3.3-1ubuntu9.3
 
@@ -162,7 +162,7 @@ INSERT INTO `icon` VALUES('code', 'CÃ³digo fuente', '', 'social');
 INSERT INTO `icon` VALUES('file', 'Archivos digitales', '', NULL);
 INSERT INTO `icon` VALUES('manual', 'Manuales', '', 'social');
 INSERT INTO `icon` VALUES('money', 'Dinero', '', 'individual');
-INSERT INTO `icon` VALUES('other', 'Otro', '', '');
+INSERT INTO `icon` VALUES('other', 'Otro', '', NULL);
 INSERT INTO `icon` VALUES('product', 'Producto', '', 'individual');
 INSERT INTO `icon` VALUES('service', 'Servicios', '', NULL);
 
@@ -534,6 +534,30 @@ INSERT INTO `page_node` VALUES('faq', 'goteo', 'es', 'Preguntas frecuentes Pregu
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `post`
+--
+
+DROP TABLE IF EXISTS `post`;
+CREATE TABLE `post` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `title` tinytext,
+  `description` text,
+  `media` tinytext,
+  `order` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Entradas para la portada' AUTO_INCREMENT=3 ;
+
+--
+-- Volcar la base de datos para la tabla `post`
+--
+
+INSERT INTO `post` VALUES(1, 'Aenean porta blandit enim, et cursus dui aliquet ornare.', 'Aenean porta blandit enim, et cursus dui aliquet ornare. Aenean porta blandit enim, et cursus dui aliquet ornare. Aenean porta blandit enim, et cursus dui aliquet ornare. Aenean porta blandit enim, et cursus dui aliquet ornare. Aenean porta blandit enim, et cursus dui aliquet ornare. Aenean porta blandit enim, et cursus dui aliquet ornare. Aenean porta blandit enim, et cursus dui aliquet ornare. Aenean porta blandit enim, et cursus dui aliquet ornare.', 'http://vimeo.com/20597320', 2);
+INSERT INTO `post` VALUES(2, 'Aliquam auctor nisi eget arcu laoreet blandit.', 'Aliquam auctor nisi eget arcu laoreet blandit. Aliquam auctor nisi eget arcu laoreet blandit. Aliquam auctor nisi eget arcu laoreet blandit. Aliquam auctor nisi eget arcu laoreet blandit. Aliquam auctor nisi eget arcu laoreet blandit. Aliquam auctor nisi eget arcu laoreet blandit. Aliquam auctor nisi eget arcu laoreet blandit. Aliquam auctor nisi eget arcu laoreet blandit. Aliquam auctor nisi eget arcu laoreet blandit. Aliquam auctor nisi eget arcu laoreet blandit. Aliquam auctor nisi eget arcu laoreet blandit. ', 'http://vimeo.com/16202419', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `project`
 --
 
@@ -580,7 +604,7 @@ CREATE TABLE `project` (
 -- Volcar la base de datos para la tabla `project`
 --
 
-INSERT INTO `project` VALUES('20eee46bbcf72e3c5a8576f95e331ad4', 'Mi proyecto 8', 1, 23, 'root', 'goteo', 0, 0, '2011-05-12', '2011-05-12', NULL, NULL, NULL, 'JuliÃ¡n', '43108914Z', '649085539', 'Calle de la Patata s/n', '82415', 'Los cantos, SEVILLA', 'EspaÃ±a', '', '', '', '', '', '', NULL, '', NULL, NULL, '', '', '');
+INSERT INTO `project` VALUES('20eee46bbcf72e3c5a8576f95e331ad4', 'Mi proyecto 8', 1, 42, 'root', 'goteo', 0, 0, '2011-05-12', '2011-05-16', NULL, NULL, NULL, 'JuliÃ¡n', '43108914Z', '649085539', 'Calle de la Patata s/n', '82415', 'Los cantos, SEVILLA', 'EspaÃ±a', '', '', '', '', '', '', NULL, '', NULL, NULL, '', '', '');
 INSERT INTO `project` VALUES('28c0caa840fc9c642160b1e2774667ff', 'Mi proyecto 1', 1, 15, 'pepe', 'goteo', 0, 0, '2011-04-29', '2011-04-29', NULL, NULL, NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `project` VALUES('2b3bd74edaa1a732d8c73b93c192e43e', 'Mi proyecto 9', 0, 44, 'goteo', 'goteo', 0, 0, '2011-05-13', '2011-05-13', NULL, NULL, NULL, 'Susana Noguero', 'G63306914', '654321987', 'C/ Montealegre, 5', '08001', 'Barcelona', 'EspaÃ±a', '', '', '', '', '', '', NULL, '', NULL, NULL, '', NULL, NULL);
 INSERT INTO `project` VALUES('43b8c28144ad2a9687374e95ae9ac4d6', 'Mi proyecto 4', 0, 27, 'goteo', 'goteo', 0, 0, '2011-05-11', '2011-05-11', NULL, NULL, NULL, 'Johny', '', '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
@@ -899,7 +923,7 @@ CREATE TABLE `reward` (
   `units` int(5) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Retornos colectivos e individuales' AUTO_INCREMENT=70 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Retornos colectivos e individuales' AUTO_INCREMENT=72 ;
 
 --
 -- Volcar la base de datos para la tabla `reward`
@@ -937,6 +961,8 @@ INSERT INTO `reward` VALUES(66, '585e2df96b057aacfb482ed6bb7493e1', 'Nuevo retor
 INSERT INTO `reward` VALUES(67, 'a92dfc731bbf777c80eefe08d2798396', 'Nuevo retorno colectivo', NULL, 'social', NULL, NULL, NULL, NULL);
 INSERT INTO `reward` VALUES(68, 'a92dfc731bbf777c80eefe08d2798396', 'Nueva recompensa individual', NULL, 'individual', NULL, NULL, NULL, NULL);
 INSERT INTO `reward` VALUES(69, 'a92dfc731bbf777c80eefe08d2798396', 'Nueva recompensa individual', NULL, 'individual', NULL, NULL, NULL, NULL);
+INSERT INTO `reward` VALUES(70, '20eee46bbcf72e3c5a8576f95e331ad4', 'Nuevo retorno colectivo', NULL, 'social', NULL, NULL, NULL, NULL);
+INSERT INTO `reward` VALUES(71, '20eee46bbcf72e3c5a8576f95e331ad4', 'Nueva recompensa individual', NULL, 'individual', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
