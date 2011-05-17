@@ -205,22 +205,22 @@ namespace Goteo\Model {
                     // Primero elimino TODAS las webs y luego las volveré a
                     // añadir.
                     static::query('DELETE FROM user_web WHERE user= ?', $this->id);
-                    
-                    if (!empty($this->webs)) {                        
-                        foreach ($this->webs as $web) {                            
+
+                    if (!empty($this->webs)) {
+                        foreach ($this->webs as $web) {
                             if ($web instanceof User\Web) {
                                 $web->user = $this->id;
                                 $web->save($errors);
                             }
-                        }                                                
+                        }
                     }
-                    
+
                     /*
-                    
+
                      $query = static::query("SELECT id, user, url FROM user_web WHERE user = ?", array($id));
                     $webs = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
-                    
-                    
+
+
                     if(!empty($this->webs)) {
                         // Eliminar
                         $webs = User\Web::get($this->id);
@@ -246,7 +246,7 @@ namespace Goteo\Model {
                             $_web->save($errors);
                         }
                     }
-                     * 
+                     *
                      */
                 }
 
@@ -374,7 +374,6 @@ namespace Goteo\Model {
                 $query = static::query("
                     SELECT
                         id,
-                        role_id AS role,
                         email,
                         name,
                         location,
@@ -395,6 +394,7 @@ namespace Goteo\Model {
                 if (empty($user->avatar)) {
                     $user->avatar = 1;
                 }
+                $user->roles = $user->getRoles();
                 $user->avatar = Image::get($user->avatar);
                 $user->interests = User\Interest::get($id);
                 $user->webs = User\Web::get($id);
@@ -423,7 +423,6 @@ namespace Goteo\Model {
 		 * @return obj|false Objeto del usuario, en caso contrario devolverÃ¡ 'false'.
 		 */
 		public static function login ($username, $password) {
-			
             $query = self::query("
                     SELECT
                         id
@@ -438,8 +437,7 @@ namespace Goteo\Model {
 			if($row = $query->fetch()) {
 			    return static::get($row['id']);
 			}
-                        
-                        return false;
+			return false;
 		}
 
 		/**
@@ -541,7 +539,7 @@ namespace Goteo\Model {
          * @return type array
          */
         public static function getPersonal ($id) {
-            $query = self::query('SELECT  
+            $query = self::query('SELECT
                                       contract_name,
                                       contract_nif,
                                       phone,
@@ -552,7 +550,7 @@ namespace Goteo\Model {
                                   FROM user_personal
                                   WHERE user = ?'
                 , array($id));
-            
+
             $data = $query->fetchObject();
             return $data;
         }
@@ -615,6 +613,18 @@ namespace Goteo\Model {
 
 
         }
+
+		private function getRoles () {
+		    $query = self::query('
+		    	SELECT
+		    		role.id,
+		    		role.name
+		    	FROM role
+		    	JOIN user_role ON role.id = user_role.role_id
+		    	WHERE user_id = ?
+		    ', array($this->id));
+		    return $query->fetchAll(\PDO::FETCH_OBJ);
+		}
 
 	}
 }

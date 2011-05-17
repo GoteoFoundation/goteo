@@ -15,10 +15,6 @@ namespace Goteo\Controller {
 	class Admin extends \Goteo\Core\Controller {
 
         public function index () {
-			// si tenemos usuario logueado
-            if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
-                throw new Redirection("/dashboard");
-
             return new View('view/admin/index.html.php');
         }
 
@@ -27,10 +23,6 @@ namespace Goteo\Controller {
          * Gestión de páginas institucionales
          */
 		public function pages () {
-			// si tenemos usuario logueado
-            if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
-                throw new Redirection("/dashboard");
-
             // nodo del usuario
             $node = 'goteo';
 
@@ -40,7 +32,7 @@ namespace Goteo\Controller {
 			$using = Lang::get($lang);
 
             $errors = array();
-            
+
             // si estamos editando una página
             if (isset($_GET['page'])) {
                 $id = $_GET['page'];
@@ -79,10 +71,6 @@ namespace Goteo\Controller {
 		}
 
 		public function texts () {
-			// si tenemos usuario logueado
-            if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
-                throw new Redirection("/dashboard");
-
             // comprobamos el filtro
             $filters = Text::filters();
             if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $filters)) {
@@ -157,9 +145,6 @@ namespace Goteo\Controller {
          *  Revisión de proyectos, aqui llega con un nodo y si no es el suyo a la calle (o al suyo)
          */
         public function checking() {
-            if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
-                throw new Redirection("/dashboard");
-
             // nodo del usuario
             $node = 'goteo';
 
@@ -213,9 +198,6 @@ namespace Goteo\Controller {
          * proyectos destacados
          */
         public function promote() {
-            if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
-                throw new Redirection("/dashboard");
-
             // nodo del usuario
             $node = 'goteo';
 
@@ -331,9 +313,6 @@ namespace Goteo\Controller {
          * preguntas frecuentes
          */
         public function faq() {
-            if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
-                throw new Redirection("/dashboard");
-
             // nodo del usuario
             $node = 'goteo';
 
@@ -441,8 +420,6 @@ namespace Goteo\Controller {
          * Tipos de Retorno/Recompensa (iconos)
          */
         public function icons() {
-            if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
-                throw new Redirection("/dashboard");
 
             // grupos
             $groups = Model\Icon::groups();
@@ -499,7 +476,7 @@ namespace Goteo\Controller {
                     )
                 );
             }
- * 
+ *
  */
 
             if (isset($_GET['edit'])) {
@@ -541,8 +518,6 @@ namespace Goteo\Controller {
          * Licencias
          */
         public function licenses() {
-            if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
-                throw new Redirection("/dashboard");
 
             // agrupaciones de mas a menos abertas
             $groups = Model\License::groups();
@@ -638,7 +613,7 @@ namespace Goteo\Controller {
             if (isset($_GET['remove'])) {
                 Model\License::delete($_GET['remove']);
             }
-             * 
+             *
              */
 
 
@@ -662,8 +637,6 @@ namespace Goteo\Controller {
          *  seran los posts de cierta categoria, o algo así
          */
         public function posts() {
-            if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
-                throw new Redirection("/dashboard");
 
             $errors = array();
 
@@ -772,8 +745,6 @@ namespace Goteo\Controller {
          *  administración de nodos y usuarios (segun le permita el ACL al usuario validado)
          */
         public function managing() {
-            if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
-                throw new Redirection("/dashboard");
 
             // nodo del usuario
             $node = 'goteo';
@@ -794,8 +765,6 @@ namespace Goteo\Controller {
          * dummy para ejecutar cargos
          */
         public function accounting() {
-            if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
-                throw new Redirection("/dashboard");
 
             // nodo del usuario
             $node = 'goteo';
@@ -845,9 +814,9 @@ namespace Goteo\Controller {
 
                     if ($invest->status == 2)
                         continue;
-                    
+
                     $invest->paypalStatus = '';
-                    
+
                     //estado del aporte
                     if (empty($invest->preapproval)) {
                         //si no tiene preaproval, cancelar
@@ -893,8 +862,6 @@ namespace Goteo\Controller {
          * Proyectos financiados, puede marcar un retorno cumplido
          */
         public function rewards() {
-            if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
-                throw new Redirection("/dashboard");
 
             $errors = array();
 

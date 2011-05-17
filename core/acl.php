@@ -7,49 +7,88 @@ namespace Goteo\Core {
     class ACL {
         protected $resources = array();
 
-        /**
-         * @deprecated
-         * Este deprecated es para que elimines todas las llamadas que encuentres en tu código.
-         * La razón es porque esté método lo llamará únicamente el dispatcher, librándonos de tener que llamarlo cada vez en el código.
-         *
-         * @param type string	$url	Recurso
-         * @param type string	$user	Usuario
-         */
-        public static function check ($url = \GOTEO_REQUEST_URI, User $user = null) {
-            
-            return true;
+        public static function check ($url = \GOTEO_REQUEST_URI, $user = null) {
+
+            $url = static::fixURL($url);
+
             if(is_null($user)) {
                 if(!User::isLogged()) {
                     return false;
-                }
-                else {
+                } else {
                     $user = $_SESSION['user'];
+                    $id = $user->id;
                 }
+            } elseif($user instanceof User) {
+                $id = $user->id;
+            } else if($user = Model\User::get($user)) {
+                $id = $user->id;
             }
+            User::flush();
+            $roles = $user->roles;
+            array_walk($roles, function (&$role) { $role = $role->id; });
             $query = Model::query("
                 SELECT
                     acl.allow
                 FROM acl
-                WHERE (acl.node_id = :node OR acl.node_id IS NULL)
-                AND (acl.role_id = :role OR acl.role_id IS NULL)
-                AND (acl.user_id = :user OR acl.user_id IS NULL)
-                AND (REPLACE(acl.url, '*', '%') LIKE :url OR acl.url LIKE '*')
+                WHERE (:node LIKE REPLACE(acl.node_id, '*', '%'))
+                AND (:roles REGEXP REPLACE(acl.role_id, '*', '.'))
+                AND (:user LIKE REPLACE(acl.user_id, '*', '%'))
+                AND (:url LIKE REPLACE(acl.url, '*', '%'))
                 ORDER BY acl.id DESC
                 LIMIT 1
                 ",
                 array(
-                    ':node'		=> NULL,
-                    ':role'     => $user->role,
-                    ':user'		=> $user->id,
-                    ':url'      => $url
+                    ':node'   => \GOTEO_NODE,
+                    ':roles'  => implode(', ', $roles),
+                    ':user'   => $id,
+                    ':url'    => $url
                 )
             );
+
+
             return (bool) $query->fetchColumn();
         }
 
-        public function allow() {}
+        static protected function fixURL ($url) {
 
-        public function deny() {}
+            return '/' . trim($url, "/\\ \t\n\r\0\x0B"). '/';
+
+        }
+
+        protected function addperms ($url, $node = \GOTEO_NODE, $role = '*', $user = '*', $allow = true) {
+
+            $url = static::fixURL($url);
+
+            if($user instanceof User) {
+                $user = $user->id;
+            }
+
+            $sql = "
+            INSERT INTO			acl
+            					(node_id, role_id, user_id, url, allow)
+            VALUES				(:role, :user, :url, :allow)
+            ";
+
+            $query = Model::query($sql, array(
+                ':node'  => $node,
+            	':role'  => $role,
+                ':user'	 => $user,
+                ':allow' => $allow
+
+            ));
+
+            return (bool) $query->rowCount();
+
+        }
+
+        public function allow($url, $node = \GOTEO_NODE, $role = '*', $user = '*') {
+            return static::addperms($url, $node, $role, $user, true);
+
+        }
+
+        public function deny($url, $node = \GOTEO_NODE, $role = '*', $user = '*') {
+            return static::addperms($url, $node, $role, $user, false);
+        }
 
     }
 }

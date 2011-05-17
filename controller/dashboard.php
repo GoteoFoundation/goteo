@@ -14,11 +14,7 @@ namespace Goteo\Controller {
          *  Muy guarro para poder moverse mientras desarrollamos
          */
         public function index ($section = null) {
-            if (empty($_SESSION['user'])) {
-                throw new Redirection("/user/login");
-            }
-
-			$user = $_SESSION['user']->id;
+            $user = $_SESSION['user']->id;
 
             // quitamos el stepped para que no nos lo coja para el siguiente proyecto que editemos
             if (isset($_SESSION['stepped'])) {
@@ -28,9 +24,7 @@ namespace Goteo\Controller {
             $message = "Hola {$user}<br />";
 
             //@FIXME!! esto también irá con el ACL
-            if ($_SESSION['user']->role == 1) {
-                $message .= '<a href="/admin">Ir al panel de administración</a><br />';
-            }
+            $message .= '<a href="/admin">Ir al panel de administración</a><br />';
 
 
             $projects = Model\Project::ofmine($user);
