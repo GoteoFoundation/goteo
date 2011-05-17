@@ -21,48 +21,18 @@ namespace Goteo\Controller {
             if (empty($project))
                 throw new Redirection('/discover', Redirection::TEMPORARY);
 
-            $content = '';
-
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $errors = array();
+                $message = new Model\Message(array(
+                    'user' => $_SESSION['user']->id,
+                    'project' => $project,
+                    'thread' => $_POST['thread'],
+                    'message' => $_POST['message']
+                ));
 
-                if (empty($_POST['message'])) {
-                    $errors[] = 'Falta el texto';
-                }
-
-                if (empty($errors)) {
-
-                    $message = new Model\Message(array(
-                        'user' => $_SESSION['user']->id,
-                        'project' => $project,
-                        'thread' => $_POST['thread'],
-                        'message' => $_POST['message']
-                    ));
-
-                    if ($message->save($errors)) {
-                        $content .= 'Mensaje enviado';
-                    }
-                }
-
-                if (!empty($errors)) {
-                    $content .= 'Errores: ' . implode('.', $errors);
-                }
-
-
+                $message->save($errors);
 			}
 
-            $projectData = Model\Project::get($project);
-
-            $viewData = array(
-                    'content' => $content,
-                    'project' => $projectData
-                );
-
-            return new View (
-                'view/messages.html.php',
-                $viewData
-            );
-
+            throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
         }
 
     }

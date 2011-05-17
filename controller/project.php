@@ -11,7 +11,7 @@ namespace Goteo\Controller {
 
     class Project extends \Goteo\Core\Controller {
 
-        public function index($id = null) {
+        public function index($id = null, $show = 'home') {
             if ($id !== null) {
 
                 if (isset($_GET['edit'])) {
@@ -26,7 +26,7 @@ namespace Goteo\Controller {
                     \trace($project);
                     die;
                 } else {
-                    return $this->view($id);
+                    return $this->view($id, $show);
                 }
 
             } else if (isset($_GET['create'])) {
@@ -251,12 +251,13 @@ namespace Goteo\Controller {
             throw new \Goteo\Core\Exception('Fallo al crear un nuevo proyecto');
         }
 
-        private function view ($id) {
+        private function view ($id, $show) {
             $project = Model\Project::get($id);
             return new View(
                 'view/project/public.html.php',
                 array(
-                    'project' => $project
+                    'project' => $project,
+                    'show' => $show
                 )
             );
         }

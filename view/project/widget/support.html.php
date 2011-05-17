@@ -87,6 +87,6 @@ $optimum_left = 100 - $optimum_done;
         
     </div>   
     
-    <a class="button red supportit" href="">Apóyalo</a>
+    <a class="button red supportit" href="/invest/<?php echo $project->id; ?>">Apóyalo</a>
     
 </div>

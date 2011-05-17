@@ -392,6 +392,9 @@ namespace Goteo\Model {
                     WHERE id = :id
                     ", array(':id' => $id));
                 $user = $query->fetchObject(__CLASS__);
+                if (empty($user->avatar)) {
+                    $user->avatar = 1;
+                }
                 $user->avatar = Image::get($user->avatar);
                 $user->interests = User\Interest::get($id);
                 $user->webs = User\Web::get($id);

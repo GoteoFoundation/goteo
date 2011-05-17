@@ -14,7 +14,7 @@
                 echo '<p>
                    <img src="' . $investor->avatar . '" class="avatar" />
                    ' . $investor->name . '<br />
-                   ' . $this['worthcracy'][$investor->worth]['name'] . '<br />
+                   ' . $this['worthcracy'][$investor->worth]->name . '<br />
                    Cofinancia: ' . $investor->projects . ' proyectos<br />
                    Aporta: ' . $investor->amount . ' €<br />
                    ' . $investor->date . '<br />

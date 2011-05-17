@@ -804,8 +804,6 @@ namespace Goteo\Controller {
             $status = Model\Project::status();
             // estados de aporte
             $investStatus = Model\Invest::status();
-            // niveles meritocraticos
-            $worthcracy = Worth::getAll();
 
 
             /// si piden unos detalles,
@@ -884,8 +882,7 @@ namespace Goteo\Controller {
                 array(
                     'projects' => $projects,
                     'status' => $status,
-                    'investStatus' => $investStatus,
-                    'worthcracy' => $worthcracy
+                    'investStatus' => $investStatus
                 )
             );
         }

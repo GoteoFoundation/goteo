@@ -23,6 +23,9 @@ namespace Goteo\Model {
                     WHERE   id = :id
                     ", array(':id' => $id));
                 $message = $query->fetchObject(__CLASS__);
+                
+                // datos del usuario
+                $message->user = User::get($message->user);
 
                 if (empty($message->thread)) {
                     $query = static::query("
@@ -55,11 +58,17 @@ namespace Goteo\Model {
                 $message->user = User::get($message->user);
 
                 $query = static::query("
-                    SELECT  *
+                    SELECT  id
                     FROM  message
                     WHERE thread = ?
                     ", array($message->id));
-                $message->responses = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $response) {
+                    $message->responses[] = self::get($response->id);
+                }
+                
+
+
 
                 $messages[] = $message;
             }
