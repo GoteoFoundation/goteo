@@ -4,6 +4,7 @@ namespace Goteo\Controller {
 
     use Goteo\Core\ACL,
         Goteo\Core\Error,
+        Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model;
 
@@ -13,6 +14,10 @@ namespace Goteo\Controller {
          *  Muy guarro para poder moverse mientras desarrollamos
          */
         public function index ($section = null) {
+            if (empty($_SESSION['user'])) {
+                throw new Redirection("/user/login");
+            }
+
 			$user = $_SESSION['user']->id;
 
             // quitamos el stepped para que no nos lo coja para el siguiente proyecto que editemos

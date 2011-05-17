@@ -38,7 +38,10 @@ namespace Goteo\Controller {
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
         private function edit ($id) {
-            //@TODO Verificar si tiene permisos para editar (usuario)
+            if (empty($_SESSION['user'])) {
+                throw new Redirection("/user/login");
+            }
+            
             $nodesign = true; // para usar el formulario de proyecto en Julian mode
 
             $project = Model\Project::get($id);
@@ -261,6 +264,12 @@ namespace Goteo\Controller {
 
             //tenemos que tocar esto un poquito para gestionar los pasos al aportar
             if ($show == 'invest') {
+
+                // si no está validado no puede aportar
+                if (empty($_SESSION['user'])) {
+                    throw new Redirection("/user/login");
+                }
+
                 $viewData['show'] = 'supporters';
                 if (isset($_GET['confirm'])) {
                     if (\in_array($_GET['confirm'], array('ok', 'fail'))) {
