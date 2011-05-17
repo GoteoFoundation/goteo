@@ -253,13 +253,28 @@ namespace Goteo\Controller {
 
         private function view ($id, $show) {
             $project = Model\Project::get($id);
-            return new View(
-                'view/project/public.html.php',
-                array(
+
+            $viewData = array(
                     'project' => $project,
                     'show' => $show
-                )
-            );
+                );
+
+            //tenemos que tocar esto un poquito para gestionar los pasos al aportar
+            if ($show == 'invest') {
+                $viewData['show'] = 'supporters';
+                if (isset($_GET['confirm'])) {
+                    if (\in_array($_GET['confirm'], array('ok', 'fail'))) {
+                        $invest = $_GET['confirm'];
+                    } else {
+                        $invest = 'start';
+                    }
+                } else {
+                    $invest = 'start';
+                }
+                $viewData['invest'] = $invest;
+            }
+
+            return new View('view/project/public.html.php', $viewData);
         }
 
         //-----------------------------------------------

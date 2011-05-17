@@ -10,9 +10,6 @@ namespace Goteo\Controller {
 
     class Message extends \Goteo\Core\Controller {
 
-        /*
-         *  La manera de obtener el id del usuario validado cambiará al tener la session
-         */
         public function index ($project = null) {
 
             if (empty($_SESSION['user']))
@@ -31,6 +28,10 @@ namespace Goteo\Controller {
 
                 $message->save($errors);
 			}
+
+            if ($_SESSION['user']->role == 1 && isset($_GET['delete'])) {
+                Model\Message::get($_GET['delete'])->delete();
+            }
 
             throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
         }

@@ -2,6 +2,7 @@
 
 $project = $this['project'];
 $worthcracy = $this['worthcracy'];
+
 $level = (int) $this['level'] ?: 3;
 
 $reached    = $project->invested;
@@ -33,6 +34,7 @@ $supporters = count($project->investors);
                 <span><?php echo $worth->name; ?></span>
             </div>
         <?php endforeach; ?>
+        <div style="width:100px;float:left;">&euro;</div>
     </div>    
     
 </div>

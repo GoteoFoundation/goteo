@@ -196,6 +196,19 @@ namespace Goteo\Model {
                 //-----------------------------------------------------------------
                 //para proyectos en campaña o posterior
                 if ($project->status > 2) {
+
+                    // recompensas
+                    foreach ($project->individual_rewards as &$reward) {
+                        $reward->none = false;
+                        // si controla unidades de esta recompensa, mirar si quedan
+                        if ($reward->units > 0) {
+                            $reward->taken = $reward->getTaken();
+                            if ($reward->taken >= $reward->units) {
+                                $reward->none = true;
+                            }
+                        }
+                    }
+
                     $project->investors = Invest::investors($project->id);
 
                     $amount = Invest::invested($project->id);

@@ -30,6 +30,9 @@ $level = (int) $this['level'] ?: 3;
                    <span class="user"><?php echo $message->user->name; ?></span>
                    <span class="when"><?php echo $message->date; ?></span>
                    <a href="#" onclick="answer('<?php echo $message->id; ?>')">[Responder]</a>
+                   <?php if ($_SESSION['user']->role == 1) : ?>
+                        <a href="/message/<?php echo $project->id; ?>/?delete=<?php echo $message->id; ?>">[Borrar]</a>
+                   <?php endif; ?>
                    <br />
                    <blockquote><?php echo $message->message; ?></blockquote>
                </div>
@@ -39,7 +42,11 @@ $level = (int) $this['level'] ?: 3;
                        <div class="child" style="margin-left:50px;">
                            <img src="/image/<?php echo $child->user->avatar->id; ?>/40/40" />
                            <span class="user"><?php echo $child->user->name; ?></span>
-                           <span class="when"><?php echo $child->date; ?></span><br />
+                           <span class="when"><?php echo $child->date; ?></span>
+                           <?php if ($_SESSION['user']->role == 1) : ?>
+                                <a href="/message/<?php echo $project->id; ?>/?delete=<?php echo $child->id; ?>">[Borrar]</a>
+                           <?php endif; ?>
+                           <br />
                            <blockquote><?php echo $child->message; ?></blockquote>
                        </div>
                 <?php endforeach;
