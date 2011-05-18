@@ -13,31 +13,29 @@ namespace Goteo\Controller {
 
         public function index($id = null, $show = 'home') {
             if ($id !== null) {
-
-                if (isset($_GET['edit'])) {
-                    return $this->edit($id); //Editar
-                } elseif (isset($_GET['trash'])) {
-                    $project = Model\Project::get($id);
-                    $project->trash();
-                    throw new Redirection("/dashboard");
-                } elseif (isset($_GET['raw'])) {
-                    $project = Model\Project::get($id);
-                    $project->check();
-                    \trace($project);
-                    die;
-                } else {
-                    return $this->view($id, $show);
-                }
-
+                return $this->view($id, $show);
             } else if (isset($_GET['create'])) {
-                return $this->create();
+                throw new Redirection("/project/create");
             } else {
-                throw new Error(Error::NOT_FOUND);
+                throw new Redirection("/discover");
             }
         }
 
+        public function raw ($id) {
+            $project = Model\Project::get($id);
+            $project->check();
+            \trace($project);
+            die;
+        }
+
+        public function trash ($id) {
+            $project = Model\Project::get($id);
+            $project->trash();
+            throw new Redirection("/dashboard");
+        }
+
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
-        private function edit ($id) {
+        public function edit ($id) {
             $project = Model\Project::get($id);
             
             // si no tenemos SESSION stepped es porque no venimos del create
@@ -244,13 +242,12 @@ namespace Goteo\Controller {
 
         }
 
-        private function create () {
-            //@TODO Verificar si tienen permisos para crear nuevos proyectos
+        public function create () {
             $project = new Model\Project;
             $project->create($_SESSION['user']->id);
 
             $_SESSION['stepped'] = array();
-                throw new Redirection("/project/{$project->id}/?edit");
+                throw new Redirection("/project/edit/{$project->id}");
 
             throw new \Goteo\Core\Exception('Fallo al crear un nuevo proyecto');
         }

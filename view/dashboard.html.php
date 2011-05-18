@@ -21,8 +21,8 @@ include 'view/header.html.php'; ?>
                 (' . $this['status'][$project->status] . ')';
             if ($project->status == 1) {
                 echo ' Progreso: ' . $project->progress . '%
-                <a href="/project/' . $project->id . '/?edit">[Editar]</a>
-                <a href="/project/' . $project->id . '/?trash" onclick="return confirm(\'Seguro que desea eliminar este proyecto?\')">[Borrar]</a>';
+                <a href="/project/edit/' . $project->id . '">[Editar]</a>
+                <a href="/project/trash/' . $project->id . '" onclick="return confirm(\'Seguro que desea eliminar este proyecto?\')">[Borrar]</a>';
             }
             echo '<br />';
 		}
