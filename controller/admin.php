@@ -23,9 +23,6 @@ namespace Goteo\Controller {
          * Gestión de páginas institucionales
          */
 		public function pages () {
-            // nodo del usuario
-            $node = 'goteo';
-
             // idioma que estamos gestionando
             $lang = GOTEO_DEFAULT_LANG;
 
@@ -145,9 +142,6 @@ namespace Goteo\Controller {
          *  Revisión de proyectos, aqui llega con un nodo y si no es el suyo a la calle (o al suyo)
          */
         public function checking() {
-            // nodo del usuario
-            $node = 'goteo';
-
             $errors = array();
 
             // poner un proyecto en campaña
@@ -198,9 +192,6 @@ namespace Goteo\Controller {
          * proyectos destacados
          */
         public function promote() {
-            // nodo del usuario
-            $node = 'goteo';
-
             $errors = array();
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -313,9 +304,6 @@ namespace Goteo\Controller {
          * preguntas frecuentes
          */
         public function faq() {
-            // nodo del usuario
-            $node = 'goteo';
-
             // secciones
             $sections = Model\Faq::sections();
             if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $sections)) {
@@ -745,10 +733,6 @@ namespace Goteo\Controller {
          *  administración de nodos y usuarios (segun le permita el ACL al usuario validado)
          */
         public function managing() {
-
-            // nodo del usuario
-            $node = 'goteo';
-
             $users = Model\User::getAll();
 
             return new View(
@@ -765,10 +749,6 @@ namespace Goteo\Controller {
          * dummy para ejecutar cargos
          */
         public function accounting() {
-
-            // nodo del usuario
-            $node = 'goteo';
-
             // estados del proyecto
             $status = Model\Project::status();
             // estados de aporte

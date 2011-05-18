@@ -61,6 +61,7 @@ namespace Goteo\Model {
                     SELECT  id
                     FROM  message
                     WHERE thread = ?
+                    ORDER BY id DESC
                     ", array($message->id));
 
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $response) {
@@ -134,6 +135,13 @@ namespace Goteo\Model {
             
             $sql = "DELETE FROM message WHERE id = ?";
             if (self::query($sql, array($this->id))) {
+                if (empty($this->thread) && is_array($this->responses)) {
+                    foreach ($this->responses as $response) {
+                        if ($response instanceof Message) {
+                            $response->delete();
+                        }
+                    }
+                }
                 return true;
             } else {
                 return false;

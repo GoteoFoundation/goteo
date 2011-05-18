@@ -87,7 +87,7 @@ namespace Goteo\Model {
          * @param array $data
          * @return boolean
          */
-        public function create ($user, $node = 'goteo', &$errors = array()) {
+        public function create ($user, $node = \GOTEO_NODE, &$errors = array()) {
 
             // cojemos el número de proyecto de este usuario
             $query = self::query("SELECT COUNT(id) as num FROM project WHERE owner = ?", array($user));
@@ -1259,7 +1259,7 @@ namespace Goteo\Model {
          * @param string node id
          * @return array of project instances
          */
-        public static function getList($node = 'goteo') {
+        public static function getList($node = \GOTEO_NODE) {
             $projects = array();
             $query = self::query("SELECT id FROM project WHERE status > 0 AND node = ? ORDER BY progress DESC", array($node));
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {

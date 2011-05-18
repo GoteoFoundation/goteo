@@ -38,18 +38,8 @@ namespace Goteo\Controller {
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
         private function edit ($id) {
-            if (empty($_SESSION['user'])) {
-                throw new Redirection("/user/login");
-            }
-            
-            $nodesign = true; // para usar el formulario de proyecto en Julian mode
-
             $project = Model\Project::get($id);
             
-            if ($project->status != 1 && $_SESSION['user']->role != 1) {
-                throw new Redirection("/project/{$project->id}");
-            }
-
             // si no tenemos SESSION stepped es porque no venimos del create
             if (!isset($_SESSION['stepped']))
                 $_SESSION['stepped'] = array(
@@ -60,6 +50,17 @@ namespace Goteo\Controller {
                      'rewards' => 'rewards',
                      'supports' => 'supports'
                 );
+
+            if ($project->status != 1 && $_SESSION['user']->id == $project->owner) {
+                $steps = array(
+                    'preview' => array(
+                        'name' => Text::get('step-7'),
+                        'title' => Text::get('step-preview'),
+                        'guide' => Text::get('guide-project-overview'),
+                        'offtopic' => true
+                    )
+                );
+            }
 
             $steps = array(
                 'userProfile' => array(
@@ -118,11 +119,11 @@ namespace Goteo\Controller {
                     break;
                 }
             }
-
+/*
             if (empty($step) && empty($project->errors)) {
                 $step = 'preview';
             }
-            
+  */
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 $errors = array(); // errores al procesar, no son errores en los datos del proyecto
