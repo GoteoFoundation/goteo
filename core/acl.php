@@ -8,12 +8,16 @@ namespace Goteo\Core {
         protected $resources = array();
 
         public static function check ($url = \GOTEO_REQUEST_URI, $user = null) {
-return true;
             $url = static::fixURL($url);
 
             if(is_null($user)) {
                 if(!User::isLogged()) {
-                    return false;
+                    // @FIXME: Ajuste para permitir un perfil público sin usuario registrado.
+                    // (Es provisional hasta que se decida lo contrario)
+                    $user = new User();
+                    $user->id = '*';
+                    $user->roles = array((object) array('id' => 'public', 'name' => 'Perfil público'));
+                    $id = $user->id;
                 } else {
                     $user = $_SESSION['user'];
                     $id = $user->id;
@@ -23,7 +27,6 @@ return true;
             } else if($user = Model\User::get($user)) {
                 $id = $user->id;
             }
-            User::flush();
             $roles = $user->roles;
             array_walk($roles, function (&$role) { $role = $role->id; });
             $query = Model::query("
@@ -44,8 +47,6 @@ return true;
                     ':url'    => $url
                 )
             );
-
-
             return (bool) $query->fetchColumn();
         }
 
