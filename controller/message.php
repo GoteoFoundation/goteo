@@ -29,8 +29,24 @@ namespace Goteo\Controller {
                 $message->save($errors);
 			}
 
-            if ($_SESSION['user']->role == 1 && isset($_GET['delete'])) {
-                Model\Message::get($_GET['delete'])->delete();
+            throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
+        }
+
+        public function delete ($id, $project) {
+
+            Model\Message::get($id)->delete();
+
+            throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
+        }
+
+        public function edit ($id, $project) {
+
+            if (isset($_POST['message'])) {
+                $message = Model\Message::get($id);
+                $message->user = $message->user->id;
+                $message->message = ($_POST['message']);
+
+                $message->save();
             }
 
             throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
