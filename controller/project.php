@@ -37,7 +37,7 @@ namespace Goteo\Controller {
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
         public function edit ($id) {
             $project = Model\Project::get($id);
-            
+
             // si no tenemos SESSION stepped es porque no venimos del create
             if (!isset($_SESSION['stepped']))
                 $_SESSION['stepped'] = array(
@@ -50,6 +50,9 @@ namespace Goteo\Controller {
                 );
 
             if ($project->status != 1 && $_SESSION['user']->id == $project->owner) {
+                // solo seguimiento estado, progreso
+                // pasos preview, conseguido, recompensas
+                
                 $steps = array(
                     'preview' => array(
                         'name' => Text::get('step-7'),
@@ -58,48 +61,51 @@ namespace Goteo\Controller {
                         'offtopic' => true
                     )
                 );
+                 
+                 
+            } else {
+                // todos los pasos
+                $steps = array(
+                    'userProfile' => array(
+                        'name' => Text::get('step-1'),
+                        'title' => Text::get('step-userProfile'),
+                        'guide' => Text::get('guide-project-user-information'),
+                        'offtopic' => true
+                    ),
+                    'userPersonal' => array(
+                        'name' => Text::get('step-2'),
+                        'title' => Text::get('step-userPersonal'),
+                        'guide' => Text::get('guide-project-contract-information'),
+                        'offtopic' => true
+                    ),
+                    'overview' => array(
+                        'name' => Text::get('step-3'),
+                        'title' => Text::get('step-overview'),
+                        'guide' => Text::get('guide-project-description')
+                    ),
+                    'costs'=> array(
+                        'name' => Text::get('step-4'),
+                        'title' => Text::get('step-costs'),
+                        'guide' => Text::get('guide-project-costs')
+                    ),
+                    'rewards' => array(
+                        'name' => Text::get('step-5'),
+                        'title' => Text::get('step-rewards'),
+                        'guide' => Text::get('guide-project-rewards')
+                    ),
+                    'supports' => array(
+                        'name' => Text::get('step-6'),
+                        'title' => Text::get('step-supports'),
+                        'guide' => Text::get('guide-project-support')
+                    ),
+                    'preview' => array(
+                        'name' => Text::get('step-7'),
+                        'title' => Text::get('step-preview'),
+                        'guide' => Text::get('guide-project-overview'),
+                        'offtopic' => true
+                    )
+                );
             }
-
-            $steps = array(
-                'userProfile' => array(
-                    'name' => Text::get('step-1'),
-                    'title' => Text::get('step-userProfile'),
-                    'guide' => Text::get('guide-project-user-information'),
-                    'offtopic' => true
-                ),
-                'userPersonal' => array(
-                    'name' => Text::get('step-2'),
-                    'title' => Text::get('step-userPersonal'),
-                    'guide' => Text::get('guide-project-contract-information'),
-                    'offtopic' => true
-                ),
-                'overview' => array(
-                    'name' => Text::get('step-3'),
-                    'title' => Text::get('step-overview'),
-                    'guide' => Text::get('guide-project-description')
-                ),
-                'costs'=> array(
-                    'name' => Text::get('step-4'),
-                    'title' => Text::get('step-costs'),
-                    'guide' => Text::get('guide-project-costs')
-                ),
-                'rewards' => array(
-                    'name' => Text::get('step-5'),
-                    'title' => Text::get('step-rewards'),
-                    'guide' => Text::get('guide-project-rewards')
-                ),
-                'supports' => array(
-                    'name' => Text::get('step-6'),
-                    'title' => Text::get('step-supports'),
-                    'guide' => Text::get('guide-project-support')
-                ),
-                'preview' => array(
-                    'name' => Text::get('step-7'),
-                    'title' => Text::get('step-preview'),
-                    'guide' => Text::get('guide-project-overview'),
-                    'offtopic' => true
-                )
-            );
             
             $step = null;      
                         
@@ -110,18 +116,6 @@ namespace Goteo\Controller {
                 }                
             }
             
-            // vista por defecto, el primer paso por el que no ha pasado
-            foreach ($steps as $id => $data) {
-                if (empty($step) && !empty($project->errors[$id])) {
-                    $step = $id;
-                    break;
-                }
-            }
-/*
-            if (empty($step) && empty($project->errors)) {
-                $step = 'preview';
-            }
-  */
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 $errors = array(); // errores al procesar, no son errores en los datos del proyecto
@@ -161,6 +155,19 @@ namespace Goteo\Controller {
             //re-evaluar el proyecto
             $project->check();
 
+            // vista por defecto, el primer paso por el que no ha pasado
+            foreach ($steps as $id => $data) {
+
+                if (empty($step) && !empty($project->errors[$id])) {
+                    $step = $id;
+                    break;
+                }
+            }
+
+            if (empty($step)) {
+                $step = 'preview';
+            }
+
             //si nos estan pidiendo el error de un campo, se lo damos
             if (!empty($_GET['errors'])) {
                 foreach ($project->errors as $paso) {
@@ -188,7 +195,6 @@ namespace Goteo\Controller {
             $viewData = array(
                 'project' => $project,
                 'steps' => $steps,
-                'nodesign' => $nodesign,
                 'step' => $step
             );
 
