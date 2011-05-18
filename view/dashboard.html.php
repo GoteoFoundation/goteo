@@ -30,7 +30,7 @@ include 'view/header.html.php'; ?>
 		</p>
 
 		<p>
-			<a href="/project/?create">Crear nuevo proyecto</a><br />
+			<a href="/project/create">Crear nuevo proyecto</a><br />
 		</p>
 
 		<p>
