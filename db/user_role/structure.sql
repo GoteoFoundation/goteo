@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS `user_role` (
   KEY `user_FK` (`user_id`),
   KEY `role_FK` (`role_id`),
   KEY `node_FK` (`node_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
