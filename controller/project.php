@@ -28,9 +28,9 @@ namespace Goteo\Controller {
             die;
         }
 
-        public function trash ($id) {
+        public function delete ($id) {
             $project = Model\Project::get($id);
-            $project->trash();
+            $project->delete();
             throw new Redirection("/dashboard");
         }
 
@@ -252,6 +252,11 @@ namespace Goteo\Controller {
             $project = new Model\Project;
             if ($project->create()) {
                 $_SESSION['stepped'] = array();
+                
+                // permisos para editarlo y borrarlo
+                ACL::allow('/project/edit/'.$project->id, '*', 'user', $_SESSION['user']->id);
+                ACL::allow('/project/delete/'.$project->id, '*', 'user', $_SESSION['user']->id);
+
                 throw new Redirection("/project/edit/{$project->id}");
             }
 

@@ -37,6 +37,17 @@ namespace Goteo\Controller {
             //  foto, nombre, nivel, cantidad a mis proyectos, fecha ultimo aporte, nº proyectos que cofinancia
             $investors = array();
             foreach ($projects as $project) {
+
+                // compruebo que puedo editar mis proyectos
+                if (!ACL::check('/project/edit/'.$project->id)) {
+                    ACL::allow('/project/edit/'.$project->id, '*', 'user', $user);
+                }
+
+                // y borrarlos
+                if (!ACL::check('/project/delete/'.$project->id)) {
+                    ACL::allow('/project/delete/'.$project->id, '*', 'user', $user);
+                }
+
                 foreach (Model\Invest::investors($project->id) as $key=>$investor) {
                     if (\array_key_exists($investor->user, $investors)) {
                         // ya está en el array, quiere decir que cofinancia este otro proyecto

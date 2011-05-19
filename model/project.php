@@ -2,7 +2,8 @@
 
 namespace Goteo\Model {
 
-    use Goteo\Library\Check,
+    use Goteo\Core\ACL,
+        Goteo\Library\Check,
         Goteo\Library\Text,
         Goteo\Model\User,
         Goteo\Model\Image,
@@ -992,15 +993,22 @@ namespace Goteo\Model {
 				$sql = "UPDATE project SET status = :status, published = :published WHERE id = :id";
 				self::query($sql, array(':status'=>3, ':published'=>date('Y-m-d'), ':id'=>$this->id));
 
+                // borramos mensajes anteriores
+                self::query("DELETE FROM message WHERE project = ?", array($this->id));
+
                 // creamos los hilos de colaboración en los mensajes
                 foreach ($this->supports as $id => $support) {
                     $msg = new Message(array(
                         'user'    => $this->owner,
                         'project' => $this->id,
                         'date'    => date('Y-m-d'),
-                        'message' => "Se busca {$support->support} para {$support->description}"
+                        'message' => "{$support->support}: {$support->description}"
                         ));
-                    $msg->save();
+                    if ($msg->save()) {
+                        // permiso para editarlo y borrarlo
+                        ACL::allow("/message/edit/{$msg->id}/{$this->id}", '*', 'user', $this->owner);
+                        ACL::allow("/message/delete/{$msg->id}/{$this->id}", '*', 'user', $this->owner);
+                    }
                     unset($msg);
                 }
 
@@ -1056,9 +1064,9 @@ namespace Goteo\Model {
         /*
          * Si no se pueden borrar todos los registros, estado cero para que lo borre el cron
          */
-        public function trash(&$errors = array()) {
+        public function delete(&$errors = array()) {
 
-            if ($project->status != 1 && $this->owner != $_SESSION['user']->id) {
+            if ($project->status != 1) {
                 return false;
             }
 
@@ -1071,7 +1079,10 @@ namespace Goteo\Model {
                 self::query("DELETE FROM support WHERE project = ?", array($this->id));
                 self::query("DELETE FROM image WHERE id IN (SELECT image FROM project_image WHERE project = ?)", array($this->id));
                 self::query("DELETE FROM project_image WHERE project = ?", array($this->id));
+                self::query("DELETE FROM message WHERE project = ?", array($this->id));
                 self::query("DELETE FROM project WHERE id = ?", array($this->id));
+                // y los permisos
+                self::query("DELETE FROM acl WHERE url like ?", array('%'.$this->id.'%'));
                 // si todo va bien, commit y cambio el id de la instancia
                 self::query("COMMIT");
                 return true;
@@ -1104,6 +1115,8 @@ namespace Goteo\Model {
                             self::query("UPDATE support SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project_image SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            // borro los permisos, el dashboard los creará de nuevo
+                            self::query("DELETE FROM acl WHERE url like ?", array('%'.$this->id.'%'));
 
                             // si todo va bien, commit y cambio el id de la instancia
                             self::query("COMMIT");

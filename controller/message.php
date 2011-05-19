@@ -22,15 +22,12 @@ namespace Goteo\Controller {
                     'message' => $_POST['message']
                 ));
 
-                $message->save($errors);
+                if ($message->save($errors)) {
+                    // permiso para editarlo y borrarlo
+                    ACL::allow("/message/edit/{$message->id}/{$project}", '*', 'user', $_SESSION['user']->id);
+                    ACL::allow("/message/delete/{$message->id}/{$project}", '*', 'user', $_SESSION['user']->id);
+                }
 			}
-
-            throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
-        }
-
-        public function delete ($id, $project) {
-
-            Model\Message::get($id)->delete();
 
             throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
         }
@@ -44,6 +41,13 @@ namespace Goteo\Controller {
 
                 $message->save();
             }
+
+            throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
+        }
+
+        public function delete ($id, $project) {
+
+            Model\Message::get($id)->delete();
 
             throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
         }
