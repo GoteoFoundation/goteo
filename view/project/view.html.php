@@ -9,7 +9,8 @@ $project = $this['project'];
 $show    = $this['show'];
 $invest  = $this['invest'];
 
-$user    = User::get($project->owner);
+$owner   = User::get($project->owner);
+$user    = $_SESSION['user'];
 
 if (!empty($project->investors)) {
     $supporters = ' (' . count($project->investors) . ')';
@@ -59,7 +60,7 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
             echo
                 new View('view/project/widget/collaborations.html.php', array('project' => $project)),
                 new View('view/project/widget/rewards.html.php', array('project' => $project)),
-                new View('view/user/widget/user.html.php', array('user' => $user));
+                new View('view/user/widget/user.html.php', array('user' => $owner));
             
             ?>                
             </div>
@@ -81,13 +82,13 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                             switch ($invest) {
                                 case 'start':
                                     echo 
-                                        new View('view/project/widget/investMsg.html.php', array('message' => $invest, 'user' => User::get($_SESSION['user']->id))),
+                                        new View('view/project/widget/investMsg.html.php', array('message' => $invest, 'user' => $user)),
                                         new View('view/project/widget/invest.html.php',
-                                            array('project' => $project, 'worthcracy' => Worth::getAll(), 'personal' => User::getPersonal($_SESSION['user']->id)));
+                                            array('project' => $project, 'worthcracy' => Worth::getAll(), 'personal' => User::getPersonal($user->id)));
                                     break;
                                 case 'ok':
                                     echo
-                                        new View('view/project/widget/investMsg.html.php', array('message' => $invest, 'user' => User::get($_SESSION['user']->id))),
+                                        new View('view/project/widget/investMsg.html.php', array('message' => $invest, 'user' => $user)),
                                         new View('view/project/widget/spread.html.php',array('project' => $project)),
                                         new View('view/project/widget/sendMsg.html.php',array('project' => $project));
                                     break;

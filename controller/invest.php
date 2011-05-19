@@ -15,10 +15,6 @@ namespace Goteo\Controller {
          *  La manera de obtener el id del usuario validado cambiará al tener la session
          */
         public function index ($project = null) {
-
-            if (empty($_SESSION['user']))
-                throw new Redirection ('/user/login?from=' . \rawurlencode('/invest/' . $project), Redirection::TEMPORARY);
-
             if (empty($project))
                 throw new Redirection('/discover', Redirection::TEMPORARY);
 
@@ -106,9 +102,6 @@ namespace Goteo\Controller {
 
 
         public function confirmed ($project = null) {
-            if (empty($_SESSION['user']))
-                throw new Redirection ('/user/login?from=' . \rawurlencode('/invest/confirmed/' . $project), Redirection::TEMPORARY);
-
             if (empty($project))
                 throw new Redirection('/discover', Redirection::TEMPORARY);
 
@@ -122,9 +115,6 @@ namespace Goteo\Controller {
          * @params is id del aporte
          */
         public function fail ($project = null, $id = null) {
-            if (empty($_SESSION['user']))
-                throw new Redirection ('/user/login', Redirection::TEMPORARY);
-
             if (empty($project))
                 throw new Redirection('/discover', Redirection::TEMPORARY);
 

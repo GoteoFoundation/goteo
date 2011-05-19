@@ -11,10 +11,6 @@ namespace Goteo\Controller {
     class Message extends \Goteo\Core\Controller {
 
         public function index ($project = null) {
-
-            if (empty($_SESSION['user']))
-                throw new Redirection ('/user/login?from=' . \rawurlencode('/message/' . $project), Redirection::TEMPORARY);
-
             if (empty($project))
                 throw new Redirection('/discover', Redirection::TEMPORARY);
 

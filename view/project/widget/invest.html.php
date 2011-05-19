@@ -16,7 +16,7 @@ $methods = \Goteo\Model\Invest::methods();
         <fieldset>
             <legend>Método de pago</legend>
             <?php foreach ($methods as $id=>$name) : ?>
-                <label><?php echo $name; ?><input type="radio" name="method" value="<?php echo $id; ?>" /></label>
+                <label><?php echo $name; ?><input type="radio" name="method" value="<?php echo $id; ?>" checked="checked"/></label>
             <?php endforeach; ?>
         </fieldset>
         <br /><br />

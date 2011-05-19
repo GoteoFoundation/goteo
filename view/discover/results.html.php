@@ -12,10 +12,10 @@
                     <?php echo '<p>
                         <a href="/project/' . $result->id . '" target="_blank">' . $result->name . '</a>';
                         if ($result->owner != $_SESSION['user']->id) {
-                            echo '<a href="/invest/' . $result->id . '" target="_blank">[Apóyalo]</a>';
+                            echo '<a href="/project/' . $result->id . '/invest" target="_blank">[Apóyalo]</a>';
                         }
-                        echo '<a href="/message/' . $result->id . '" target="_blank">[Mensajes]</a>
-                        <a href="/support/' . $result->id . '" target="_blank">[Cofinanciadores]</a><br />
+                        echo '<a href="/project/' . $result->id . '/messages" target="_blank">[Mensajes]</a>
+                        <a href="/project/' . $result->id . '/supporters" target="_blank">[Cofinanciadores]</a><br />
                         Obtenido: ' . $result->invested . ' &euro;<br />
                         Mínimo: ' . $result->mincost . ' &euro;<br />
                         Óptimo: ' . $result->maxcost . ' &euro;<br />

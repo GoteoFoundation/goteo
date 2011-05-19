@@ -87,8 +87,14 @@ namespace Goteo\Model {
          * @param array $data
          * @return boolean
          */
-        public function create ($user, $node = \GOTEO_NODE, &$errors = array()) {
+        public function create ($node = \GOTEO_NODE, &$errors = array()) {
 
+            $user = $_SESSION['user']->id;
+
+            if (empty($user)) {
+                return false;
+            }
+            
             // cojemos el número de proyecto de este usuario
             $query = self::query("SELECT COUNT(id) as num FROM project WHERE owner = ?", array($user));
             if ($now = $query->fetchObject())
@@ -985,6 +991,19 @@ namespace Goteo\Model {
 			try {
 				$sql = "UPDATE project SET status = :status, published = :published WHERE id = :id";
 				self::query($sql, array(':status'=>3, ':published'=>date('Y-m-d'), ':id'=>$this->id));
+
+                // creamos los hilos de colaboración en los mensajes
+                foreach ($this->supports as $id => $support) {
+                    $msg = new Message(array(
+                        'user'    => $this->owner,
+                        'project' => $this->id,
+                        'date'    => date('Y-m-d'),
+                        'message' => "Se busca {$support->support} para {$support->description}"
+                        ));
+                    $msg->save();
+                    unset($msg);
+                }
+
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al publicar el proyecto. ' . $e->getMessage();

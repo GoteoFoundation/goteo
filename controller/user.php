@@ -80,7 +80,7 @@ namespace Goteo\Controller {
                 	$user->password = $_POST['password'];
                 	$user->save($errors);
                 	if(empty($errors)) {
-                	  throw new Redirection('/user/profile/' .  $user->id);
+                	  throw new Redirection('/dashboard');
                 	}
                 }
             }

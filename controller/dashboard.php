@@ -23,8 +23,9 @@ namespace Goteo\Controller {
 
             $message = "Hola {$user}<br />";
 
-            //@FIXME!! esto también irá con el ACL
-            $message .= '<a href="/admin">Ir al panel de administración</a><br />';
+            if (ACL::check('/admin')) {
+                $message .= '<a href="/admin">Ir al panel de administración</a><br />';
+            }
 
 
             $projects = Model\Project::ofmine($user);

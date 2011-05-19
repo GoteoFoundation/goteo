@@ -250,16 +250,21 @@ namespace Goteo\Controller {
 
         public function create () {
             $project = new Model\Project;
-            $project->create($_SESSION['user']->id);
-
-            $_SESSION['stepped'] = array();
+            if ($project->create()) {
+                $_SESSION['stepped'] = array();
                 throw new Redirection("/project/edit/{$project->id}");
+            }
 
             throw new \Goteo\Core\Exception('Fallo al crear un nuevo proyecto');
         }
 
         private function view ($id, $show) {
             $project = Model\Project::get($id);
+
+            // solo si está en campaña o no caducado
+            if ( $project->status < 3 || $project->status > 5) {
+                throw new Redirection("/");
+            }
 
             $viewData = array(
                     'project' => $project,
@@ -268,12 +273,6 @@ namespace Goteo\Controller {
 
             //tenemos que tocar esto un poquito para gestionar los pasos al aportar
             if ($show == 'invest') {
-
-                // si no está validado no puede aportar
-                if (empty($_SESSION['user'])) {
-                    throw new Redirection("/user/login");
-                }
-
                 $viewData['show'] = 'supporters';
                 if (isset($_GET['confirm'])) {
                     if (\in_array($_GET['confirm'], array('ok', 'fail'))) {

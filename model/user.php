@@ -12,7 +12,6 @@ namespace Goteo\Model {
 
         public
             $id = false,
-            $role = null,
             $email,
             $name, // nombre de perfil público
             $location, // dónde está
@@ -27,7 +26,8 @@ namespace Goteo\Model {
             $created,
             $modified,
             $interests = array(),
-            $webs = array();
+            $webs = array(),
+            $roles = array();
 
         /**
          * Sobrecarga de métodos 'setter'.
@@ -391,9 +391,14 @@ namespace Goteo\Model {
                     WHERE id = :id
                     ", array(':id' => $id));
                 $user = $query->fetchObject(__CLASS__);
-                if (empty($user->avatar)) {
-                    $user->avatar = 1;
+                /*
+                 * Comprobaciones acl
+                if (!$user instanceof  \Goteo\Model\User) {
+                    var_dump($id);
+                    die(\trace($user));
                 }
+                 * 
+                 */
                 $user->roles = $user->getRoles();
                 $user->avatar = Image::get($user->avatar);
                 $user->interests = User\Interest::get($id);

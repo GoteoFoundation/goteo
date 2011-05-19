@@ -175,7 +175,7 @@ namespace Goteo\Controller {
             }
 
 
-            $projects = Model\Project::getList($node);
+            $projects = Model\Project::getList();
             $status = Model\Project::status();
 
             return new View(

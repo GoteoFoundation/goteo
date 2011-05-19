@@ -2,18 +2,19 @@
 // aviso para el usuario, puede ser start->hola , ok->gracias o fail->lo sentimos
 
 $user = $this['user'];
+$name = $user->name ? $user->name : 'Invitado (no olvides registrarte)';
 
 switch ($this['message']) {
     case 'start':
-        $title   = 'Hola ' . $user->name;
+        $title   = "Hola $name";
         $message = 'Estás a un paso de ser cofinanciador de este proyecto';
         break;
     case 'ok':
-        $title   = 'Gracias ' . $user->name . '!';
+        $title   = "Gracias {$name}!";
         $message = 'Ya eres cofinanciador de este proyecto';
         break;
     case 'fail':
-        $title   = 'Lo sentimos';
+        $title   = "Lo sentimos {$name}";
         $message = 'Algo ha fallado, por favor inténtalo de nuevo.';
         break;
 }
