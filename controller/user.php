@@ -27,9 +27,8 @@ namespace Goteo\Controller {
          * @param string $password Contraseña
          */
         public function login () {
-            
+
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['login'])) {
-                
                 $username = $_POST['username'];
                 $password = $_POST['password'];
                 if (false !== ($user = (\Goteo\Model\User::login($username, $password)))) {
@@ -40,14 +39,14 @@ namespace Goteo\Controller {
                     $error = true;
                 }
             }
-            
+
             return new View (
                 'view/user/login.html.php',
                 array(
-                    'login_error' => !empty($error) 
+                    'login_error' => !empty($error)
                 )
             );
-            
+
         }
 
         /**
@@ -80,14 +79,15 @@ namespace Goteo\Controller {
                 	$user->password = $_POST['password'];
                 	$user->save($errors);
                 	if(empty($errors)) {
-                	  throw new Redirection('/dashboard');
+                	  Message::Info(Text::get('user-register-success'));
+                	  throw new Redirection('/user/login');
                 	}
                 }
             }
             return new View (
                 'view/user/login.html.php',
                 array(
-                    'register_error' => $errors
+                    'errors' => $errors
                 )
             );
         }
@@ -215,24 +215,14 @@ namespace Goteo\Controller {
          * @param type string	$token
          */
         public function activate($token) {
-            $clave = base64_decode($token);
-            $_year = substr($clave, 0, 4);
-            $_month = substr($clave, 4, 2);
-            $_day = substr($clave, 6, 2);
-            $_hour = substr($clave, 8, 2);
-            $_min = substr($clave, 10, 2);
-            $_sec = substr($clave, 12, 2);
-            $created = "{$_year}-{$_month}-{$_day} {$_hour}:{$_min}:{$_sec}";
-            $id = substr($clave, 14);
-            $user = Model\User::get($id);
-            if($user->created === $created) {
+            $query = Model\User::query('SELECT id FROM user WHERE token = ?', array($token));
+            if($id = $query->fetchColumn()) {
+                $user = Model\User::get($id);
                 if(!$user->active) {
                     $user->active = true;
                     if($user->save($errors)) {
                         Message::Info(Text::get('user-activate-success'));
-
-                        // Refresca la sesión.
-                        Model\User::flush();
+                        $_SESSION['user'] = $user;
                     }
                     else {
                         Message::Error($errors);

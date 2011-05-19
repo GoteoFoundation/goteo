@@ -6,15 +6,16 @@ namespace Goteo\Model {
         Goteo\Library\Text,
         Goteo\Model\Image,
         Goteo\Library\Mail,
-        Goteo\Library\Check;
+        Goteo\Library\Check,
+        Goteo\Library\Message;
 
 	class User extends \Goteo\Core\Model {
 
         public
             $id = false,
             $email,
-            $name, // nombre de perfil público
-            $location, // dónde está
+            $name,
+            $location,
             $avatar = false,
             $about,
             $contribution,
@@ -73,23 +74,28 @@ namespace Goteo\Model {
                 // Nuevo usuario.
                 if(empty($this->id)) {
                     $insert = true;
-                    $this->id = static::idealiza($this->name);
-                    $data[':id'] = $this->id;
-                    $data[':role_id'] = 3; // @FIXME: Provisionalmente: 3 = Usuario
+                    $data[':id'] = $this->id = static::idealiza($this->name);
                     $data[':name'] = $this->name;
                     $data[':location'] = $this->location;
                     $data[':email'] = $this->email;
+                    $data[':token'] = $token = md5(uniqid());
                     $data[':password'] = sha1($this->password);
                     $data[':created'] = date('Y-m-d H:i:s');
                     $data[':active'] = false;
+
+                    // Rol por defecto.
+                    static::query('INSERT INTO user_role (user_id, role_id, node_id) VALUES (:user, :role, :node);', array(
+                        ':user' => $this->id,
+                    	':role' => 'user',
+                    	':node' => '*',
+                    ));
 
                     // Activación
                     $mail = new Mail();
                     $mail->to = $this->email;
                     $mail->toName = $this->name;
                     $mail->subject = Text::get('subject-register');
-                    $token = date("YmdHis", \date2time($data[':created'])) . $this->id;
-                    $url = 'http://goteo.org/user/activate/' . base64_encode($token);
+                    $url = 'http://goteo.org/user/activate/' . $token;
                     $mail->content = sprintf('
                         Estimado(a) <strong>%1$s</strong>:<br/>
                         <br/>
@@ -202,10 +208,7 @@ namespace Goteo\Model {
                     }
 
                     // Webs
-                    // Primero elimino TODAS las webs y luego las volveré a
-                    // añadir.
                     static::query('DELETE FROM user_web WHERE user= ?', $this->id);
-
                     if (!empty($this->webs)) {
                         foreach ($this->webs as $web) {
                             if ($web instanceof User\Web) {
@@ -214,40 +217,6 @@ namespace Goteo\Model {
                             }
                         }
                     }
-
-                    /*
-
-                     $query = static::query("SELECT id, user, url FROM user_web WHERE user = ?", array($id));
-                    $webs = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
-
-
-                    if(!empty($this->webs)) {
-                        // Eliminar
-                        $webs = User\Web::get($this->id);
-                        foreach($webs as $web) {
-                            if(array_key_exists($web->id, $this->webs['remove'])) {
-                                $web->remove($errors);
-                            }
-                        }
-                        // Modificar
-                        $webs = User\Web::get($this->id);
-                        foreach($webs as $web) {
-                            if(array_key_exists($web->id, $this->webs['edit'])) {
-                                $web->user = $this->id;
-                                $web->url = $this->webs['edit'][$web->id];
-                                $web->save($errors);
-                            }
-                        }
-                        // Añadir
-                        foreach($this->webs['add'] as $web) {
-                            $_web = new User\Web();
-                            $_web->user = $this->id;
-                            $_web->url = $web;
-                            $_web->save($errors);
-                        }
-                    }
-                     *
-                     */
                 }
 
                 try {
@@ -306,7 +275,7 @@ namespace Goteo\Model {
                 // E-mail
                 if (empty($this->email)) {
                     $errors['email'] = Text::get('mandatory-register-field-email');
-                } elseif (!Check::mail($this->contract_email)) {
+                } elseif (!Check::mail($this->email)) {
                     $errors['email'] = Text::get('validate-register-value-email');
                 } else {
                     $query = self::query('SELECT email FROM user WHERE email = ?', array($this->email));
@@ -397,7 +366,7 @@ namespace Goteo\Model {
                     var_dump($id);
                     die(\trace($user));
                 }
-                 * 
+                 *
                  */
                 $user->roles = $user->getRoles();
                 $user->avatar = Image::get($user->avatar);
@@ -440,7 +409,14 @@ namespace Goteo\Model {
 				)
 			);
 			if($row = $query->fetch()) {
-			    return static::get($row['id']);
+			    $user = static::get($row['id']);
+			    if($user->active) {
+			        return $user;
+
+			    }
+			    else {
+			        Message::Error(Text::get('user-account-inactive'));
+			    }
 			}
 			return false;
 		}
