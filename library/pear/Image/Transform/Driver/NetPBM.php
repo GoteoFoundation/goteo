@@ -19,7 +19,7 @@
  * @author     Philippe Jausions <Philippe.Jausions@11abacus.com>
  * @copyright  2002-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: NetPBM.php,v 1.21 2007/04/19 16:36:09 dufuz Exp $
+ * @version    CVS: $Id: NetPBM.php 236527 2007-05-28 16:36:09Z dufuz $
  * @link       http://pear.php.net/package/Image_Transform
  */
 
@@ -553,7 +553,7 @@ class Image_Transform_Driver_NetPBM extends Image_Transform
         $nullDevice = (OS_WINDOWS) ? 'nul' : '/dev/null';
 
         $cmd = $this->_postProcess($type, $quality) . '> "' . $filename . '"';
-        exec($cmd . '2> ' . $nullDevice, $res, $exit);
+        exec($cmd . ' 2>  ' . $nullDevice, $res, $exit);
         if (!$this->keep_settings_on_save) {
             $this->free();
         }
@@ -597,6 +597,4 @@ class Image_Transform_Driver_NetPBM extends Image_Transform
     {
         $this->command = array();
     }
-
-
 } // End class ImageIM

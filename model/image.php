@@ -198,7 +198,7 @@ namespace Goteo\Model {
             if (!\is_string($which) || !\in_array($which, array('user','project'))) {
                 return false;
             }
-            
+
             try {
                 self::query("START TRANSACTION");
                 $sql = "DELETE FROM image WHERE id = ?";
@@ -206,7 +206,7 @@ namespace Goteo\Model {
                 $sql = "DELETE FROM {$which}_image WHERE image = ?";
                 $query = self::query($sql, array($this->id));
                 self::query("COMMIT");
-                
+
                 return true;
             } catch(\PDOException $e) {
                 return false;
