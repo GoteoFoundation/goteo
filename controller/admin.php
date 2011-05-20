@@ -605,7 +605,7 @@ namespace Goteo\Controller {
              */
 
 
-            $licenses = Model\License::getAll($filter);
+            $licenses = Model\License::getAll();
 
             return new View(
                 'view/admin/license.html.php',

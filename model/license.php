@@ -43,7 +43,7 @@ namespace Goteo\Model {
         /*
          * Lista de licencias
          */
-        public static function getAll ($group = '') {
+        public static function getAll ($icon = '', $group = '') {
 
             $sql = "
                 SELECT
@@ -52,18 +52,27 @@ namespace Goteo\Model {
                     description,
                     `group`,
                     `order`
-                FROM    license";
+                FROM    license
+                ";
+
+            if ($icon != '') {
+                // de un grupo o de todos
+                $sql .= "INNER JOIN icon_license
+                    ON icon_license.license = license.id
+                    AND icon_license.icon = :icon
+                    ";
+            }
 
             if ($group != '') {
                 // de un grupo o de todos
-                $sql .= " WHERE `group` = :group";
+                $sql .= "WHERE `group` = :group
+                    ";
             }
 
-            $sql .= "
-                ORDER BY `order` ASC, name ASC
+            $sql .= "ORDER BY `order` ASC, name ASC
                 ";
             
-            $query = static::query($sql, array('group'=>$group));
+            $query = static::query($sql, array(':group' => $group, ':icon' => $icon));
             
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
