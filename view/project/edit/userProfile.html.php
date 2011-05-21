@@ -9,6 +9,8 @@ $user = $this['user'];
 $interests = array();
 
 $errors = $project->errors[$this['step']] ?: array();
+$okays = $project->okeys[$this['step']] ?: array();
+
 
 foreach ($this['interests'] as $value => $label) {
     $interests[] =  array(
@@ -29,6 +31,7 @@ foreach ($user->webs as $web) {
             'web-' . $web->id . '-url' => array(
                 'type'      => 'textbox',
                 'value'     => $web->url,
+                'ok'        => !empty($okays['web-' . $web->id . '-url']),
                 'errors'    => array(),
                 'required'  => true,
                 'class'     => 'web-url inline'
@@ -70,6 +73,7 @@ echo new SuperForm(array(
             'title'     => 'Nombre completo',
             'hint'      => Text::get('tooltip-user-name'),
             'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
+            'ok'        => !empty($okays['name']),
             'value'     => $user->name,
         ),                
         'user_avatar' => array(                  
@@ -78,6 +82,7 @@ echo new SuperForm(array(
             'hint'      => Text::get('tooltip-user-image'),
             'errors'    => !empty($errors['avatar']) ? array($errors['avatar']) : array(),
             'class'     => 'user_avatar',
+            'ok'        => !empty($okays['avatar']),
             'children'  => array(                
                 'avatar_upload'    => array(
                     'type'  => 'file',
@@ -114,6 +119,7 @@ echo new SuperForm(array(
             'title'     => 'Cuéntanos algo sobre ti',
             'hint'      => Text::get('tooltip-user-about'),
             'errors'    => !empty($errors['about']) ? array($errors['about']) : array(),
+            'ok'        => !empty($okays['about']),
             'value'     => $user->about
         ),          
         'interests' => array(
@@ -122,6 +128,7 @@ echo new SuperForm(array(
             'title'     => 'Tus intereses',
             'hint'      => Text::get('tooltip-user-interests'),            
             'errors'    => !empty($errors['interests']) ? array($errors['interests']) : array(),
+            'ok'        => !empty($okays['interests']),
             'options'   => $interests
         ),  
         'user_keywords' => array(
@@ -130,6 +137,7 @@ echo new SuperForm(array(
             'title'     => 'Palabras clave',
             'hint'      => Text::get('tooltip-user-keywords'),
             'errors'    => !empty($errors['keywords']) ? array($errors['keywords']) : array(),
+            'ok'        => !empty($okays['keywords']),
             'value'     => $user->keywords
         ), 
         'user_contribution' => array(
@@ -139,6 +147,7 @@ echo new SuperForm(array(
             'title'     => 'Qué podrías aportar a Goteo',
             'hint'      => Text::get('tooltip-user-contribution'),
             'errors'    => !empty($errors['contribution']) ? array($errors['contribution']) : array(),
+            'ok'        => !empty($okays['contribution']),
             'value'     => $user->contribution
         ),
         'user_webs' => array(
@@ -164,6 +173,7 @@ echo new SuperForm(array(
                     'title'     => 'Facebook',
                     'hint'      => Text::get('tooltip-user-facebook'),
                     'errors'    => !empty($errors['facebook']) ? array($errors['facebook']) : array(),
+                    'ok'        => !empty($okays['facebook']),
                     'value'     => $user->facebook
                 ), 
                 'user_twitter' => array(
@@ -173,6 +183,7 @@ echo new SuperForm(array(
                     'title'     => 'Twitter',
                     'hint'      => Text::get('tooltip-user-twitter'),
                     'errors'    => !empty($errors['twitter']) ? array($errors['twitter']) : array(),
+                    'ok'        => !empty($okays['facebook']),
                     'value'     => $user->twitter
                 ), 
                 'user_linkedin' => array(
@@ -182,6 +193,7 @@ echo new SuperForm(array(
                     'title'     => 'LinkedIn',
                     'hint'      => Text::get('tooltip-user-linkedin'),
                     'errors'    => !empty($errors['linkedin']) ? array($errors['linkedin']) : array(),
+                    'ok'        => !empty($okays['facebook']),
                     'value'     => $user->linkedin
                 )
             )            
