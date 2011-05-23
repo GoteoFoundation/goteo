@@ -9,7 +9,7 @@ $project = $this['project'];
     
     <h<?php echo $level ?> class="title">Aportaciones no económicas</h<?php echo $level ?>>
 
-    <!-- <h<?php echo $level+1 ?>>Se busca</h<?php echo $level+1 ?>>-->
+    <h<?php echo $level + 1 ?> class="subtitle">Se busca</h<?php echo $level + 1 ?>>
     
     <ul>
         <?php foreach ($project->supports as $support) : ?>
