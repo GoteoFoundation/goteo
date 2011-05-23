@@ -267,7 +267,8 @@ namespace Goteo\Controller {
             $project = Model\Project::get($id);
 
             // solo si está en campaña o no caducado
-            if ( $project->status < 3 || $project->status > 5) {
+            // o si es root ;)
+            if ( $project->status < 3 || $project->status > 5 || $_SESSION['user']->id == 'root') {
                 throw new Redirection("/");
             }
 
