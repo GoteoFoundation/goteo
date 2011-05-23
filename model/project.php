@@ -1271,13 +1271,20 @@ namespace Goteo\Model {
         /*
          * Lista de proyectos cofinanciados
          */
-        public static function invested()
+        public static function invested($user = null)
         {
+            // si recibimos un usuario, sacamos los que haya invertido ese usuario
+            if (!empty($user)) {
+                $he = " WHERE user='$user'";
+            } else {
+                $he = '';
+            }
+
             $projects = array();
             $query = self::query("SELECT *
                                   FROM  project
                                   WHERE project.status = 3 OR project.status = 4
-                                  AND project.id IN (SELECT DISTINCT(project) FROM invest)
+                                  AND project.id IN (SELECT DISTINCT(project) FROM invest$he)
                                   ORDER BY name ASC");
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
                 $projects[] = $proj;
