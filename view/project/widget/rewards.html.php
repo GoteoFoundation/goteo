@@ -5,37 +5,45 @@ $level = (int) $this['level'] ?: 3;
 $project = $this['project'];
 
 ?>
-<div class="widget project-support collapsable" id="project-rewards">
+<div class="widget project-rewards collapsable" id="project-rewards">
     
     <h<?php echo $level ?> class="title">Que ofrezco a cambio?</h<?php echo $level ?>>
-    
-    <h<?php echo $level+1 ?>>Retorno colectivo</h<?php echo $level+1 ?>>
-
-    <div id="rewards-social">
+       
+    <div class="social">
+        <h<?php echo $level+1 ?> class="subtitle">Retorno colectivo</h<?php echo $level+1 ?>>
+        <ul>
         <?php foreach ($project->social_rewards as $social) : ?>
-            <div class="<?php echo $social->icon; ?>">
-                <blockquote><strong><?php echo $social->reward; ?></strong><br />
-                <?php echo $social->description; ?></blockquote>
-            </div>
+            <li class="<?php echo $social->icon ?>">                
+                <strong><?php echo htmlspecialchars($social->reward) ?></strong>
+                <p><?php echo htmlspecialchars($social->description)?></p>
+            </li>
         <?php endforeach; ?>
+        </ul>
     </div>
-
-    <h<?php echo $level+1 ?>>Recompensas individuales</h<?php echo $level+1 ?>>
-    
-    <div id="rewards-individual">
+        
+    <div class="individual">
+        <h<?php echo $level+1 ?> class="subtitle">Recompensas individuales</h<?php echo $level+1 ?>>
+        <ul>
         <?php foreach ($project->individual_rewards as $individual) : ?>
-        <div class="<?php echo $individual->icon; ?>">
-                <div>Aportando: <span><?php echo $individual->amount; ?></span></div>
-                <blockquote><strong><?php echo $individual->reward; ?></strong><br />
-                <?php echo $individual->description; ?></blockquote>
-                <?php if (!empty($individual->units)) : ?>
+        <li class="<?php echo $individual->icon ?>">
+            
+            <!--  <div>Aportando: <span><?php echo $individual->amount; ?></span></div> -->
+            <strong><?php echo htmlspecialchars($individual->reward) ?></strong>
+            <p><?php echo htmlspecialchars($individual->description) ?></p>
+                
+            <!--
+                    <?php if (!empty($individual->units)) : ?>
                     <strong>Recompensa limitada:</strong><br />
                     Quedan <span><?php echo ($individual->units - $individual->taken); ?></span> unidades
                 <?php endif; ?>
                 <div><span><?php echo $individual->taken; ?></span>Cofinanciadores</div>
-            </div>
-        <?php endforeach; ?>
+            
+            -->
+        </li>
+        <?php endforeach ?>
     </div>
+    
+    <!--<a class="more" href="/project/<?php echo $project->id; ?>/messages">Ver más</a>-->
 
     
 </div>

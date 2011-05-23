@@ -33,13 +33,19 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
             <div>
                 <h2><?php echo htmlspecialchars($this['project']->name) ?></h2>
             </div>
+            
+            <div class="sub-menu">
+                <?php echo new View('view/project/view/menu.html.php', array(
+                                        'project' => $project,
+                                        'show' => $show,
+                                        'supporters' => $supporters, 
+                                        'messages' => $messages)); 
+                ?>
+            </div>
+                        
         </div>
 
-        <?php echo new View('view/project/view/menu.html.php', array(
-                        'project' => $project,
-                        'show' => $show,
-                        'supporters' => $supporters, 
-                        'messages' => $messages)); ?>
+        
 
         <div id="main" class="threecols">
             
@@ -56,9 +62,12 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                 echo new View('view/project/widget/investors.html.php',
                     array('project' => $project, 'worthcracy' => Worth::getAll()));
             }
+            
+            if (!empty($project->supports)) {
+                echo new View('view/project/widget/collaborations.html.php', array('project' => $project));
+            }
 
             echo
-                new View('view/project/widget/collaborations.html.php', array('project' => $project)),
                 new View('view/project/widget/rewards.html.php', array('project' => $project)),
                 new View('view/user/widget/user.html.php', array('user' => $owner));
             
