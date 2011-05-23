@@ -7,8 +7,7 @@ namespace Goteo\Controller {
         Goteo\Core\View,
 		Goteo\Model,
         Goteo\Library\Text,
-        Goteo\Library\Message,
-        Goteo\Library\Worth;
+        Goteo\Library\Message;
 
 	class User extends \Goteo\Core\Controller {
 
@@ -202,12 +201,58 @@ namespace Goteo\Controller {
          */
         public function profile ($id) {
             $user = Model\User::get($id);
-            $worthcracy = Worth::getAll();
+
+
+            $projects = Model\Project::ofmine($id);
+
+            //mis cofinanciadores
+            // array de usuarios con:
+            //  foto, nombre, nivel, cantidad a mis proyectos, fecha ultimo aporte, nº proyectos que cofinancia
+            $investors = array();
+            foreach ($projects as $kay=>$project) {
+                // quitamos los no publicados o caducados
+                if ($project->status < 3 || $project->status > 5) {
+                    unset ($projects[$kay]);
+                    continue;
+                }
+
+                foreach (Model\Invest::investors($project->id) as $key=>$investor) {
+                    if (\array_key_exists($investor->user, $investors)) {
+                        // ya está en el array, quiere decir que cofinancia este otro proyecto
+                        // , añadir uno, sumar su aporte, actualizar la fecha
+                        ++$investors[$investor->user]->projects;
+                        $investors[$investor->user]->amount += $investor->amount;
+                        $investors[$investor->user]->date = $investor->date;
+                    } else {
+                        $investors[$investor->user] = (object) array(
+                            'user' => $investor->user,
+                            'name' => $investor->name,
+                            'projects' => 1,
+                            'avatar' => $investor->avatar,
+                            'worth' => $investor->worth,
+                            'amount' => $investor->amount,
+                            'date' => $investor->date
+                        );
+                    }
+                }
+            }
+
+
+            // comparten intereses
+            $shares = Model\User\Interest::share($id);
+
+            // proyectos que cofinancio
+            $invested = Model\Project::invested($id);
+
+
             return new View (
                 'view/user/profile.html.php',
                 array(
                     'user' => $user,
-                    'worthcracy' => $worthcracy
+                    'projects' => $projects,
+                    'invested' => $invested,
+                    'investors' => $investors,
+                    'shares' => $shares
                 )
             );
         }
