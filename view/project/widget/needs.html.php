@@ -22,31 +22,52 @@ foreach ($project->costs as $cost) {
 
 
 ?>
-<div class="widget project-summary">
-    
-    <h<?php echo $level ?>>Financiación</h<?php echo $level ?>>
-
+<div class="widget project-needs">
+        
+    <!--
     <div id="project-costs-header">
         <span class="minimum" style="color:red;">Mínimo</span>
         <span class="optimum" style="color:black;">Óptimo</span>
     </div>
-
-    <?php foreach ($costs as $type=>$list) : ?>
-    <div class="<?php echo $type; ?>">
-        <h<?php echo $level + 1?>><?php echo $types[$type]; ?></h<?php echo $level + 1?>>
-        <?php foreach ($list as $cost) : ?>
-            <strong><?php echo $cost->name; ?></strong>
-            <span class="minimum" style="color:red;"><?php echo $cost->min; ?></span>
-            <span class="optimum" style="color:black;"><?php echo $cost->opt; ?></span>
-            <blockquote><?php echo $cost->description; ?></blockquote>
-        <?php endforeach; ?>
-    </div>
-    <?php endforeach; ?>
+    -->
+        
     
-    <div id="project-costs-footer">
-        <span class="total">Total:</span>
-        <span class="minimum" style="color:red;"><?php echo $minimum; ?></span>
-        <span class="optimum" style="color:black;"><?php echo $optimum; ?></span>
-    </div>
+    <!--<h<?php echo $level ?>>Necesidades</h<?php echo $level ?>>-->
+           
+    <table>
+        
+        <?php foreach ($costs as $type => $list): ?>
+        
+        <thead class="<?php echo htmlspecialchars($type)?>">
+            <tr>
+                <th class="summary"><?php echo htmlspecialchars($types[$type]) ?></th>
+                <th class="min">Mínimo</th>
+                <th class="max">Óptimo</th>
+            </tr>            
+        </thead>
+        
+        <tbody>            
+            <?php foreach ($list as $cost): ?>
+            <tr>
+                <th class="summary"><strong><?php echo htmlspecialchars($cost->name) ?></strong>
+                <blockquote><?php echo $cost->description ?></blockquote>
+                </th>
+                <td class="min"><?php echo $cost->min ?></td>
+                <td class="max"><?php echo $cost->opt ?></td>
+            </tr>            
+            <?php endforeach ?>
+        </tbody>
+        
+        <?php endforeach ?>
+                                        
+        <tfoot>
+            <tr>
+                <th class="total">Total</th>
+                <th class="min"><?php echo $minimum ?></th>
+                <th class="max"><?php echo $optimum ?></th>
+            </tr>
+        </tfoot>
+        
+    </table>
     
 </div>

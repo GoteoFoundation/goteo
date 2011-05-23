@@ -3,6 +3,7 @@
 @import url('widget/media.css');
 @import url('widget/share.css');
 @import url('widget/support.css');
+@import url('widget/needs.css');
 @import url('widget/collaborations.css');
 @import url('widget/rewards.css');
 @import url('../user/widget/user.css');
@@ -82,7 +83,8 @@ body.project-show div#main div.widget.user {
 }
 
 body.project-show div#main div.widget.project-summary,
-body.project-show div#main div.widget.project-share {
+body.project-show div#main div.widget.project-share,
+body.project-show div#main div.widget.project-needs {
     max-width: 580px;
     margin-right: 20px;
 }

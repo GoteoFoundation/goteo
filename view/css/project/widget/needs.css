@@ -1,0 +1,80 @@
+div.widget.project-needs table {
+    border-collapse: collapse;
+}
+
+div.widget.project-needs table td,
+div.widget.project-needs table th {
+    padding: .5em;
+    border-bottom: 1px solid #aaaaab;
+}
+
+div.widget.project-needs table blockquote {
+    padding: 0;
+    margin: 0;
+    font-weight: normal;
+}
+
+
+div.widget.project-needs table thead th {
+    text-transform: uppercase;
+}
+
+div.widget.project-needs table th.summary {
+    text-align: left;
+    width:  100%;
+}
+
+div.widget.project-needs table *.min,
+div.widget.project-needs table *.max {
+    text-align: center;
+    padding: .5em 1.5em;
+}
+
+div.widget.project-needs table *.min {
+    color: red;
+}
+
+div.widget.project-needs table thead th.summary {
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+div.widget.project-needs table thead + tbody + thead th.min,
+div.widget.project-needs table thead + tbody + thead th.max {
+    font-size: 0;
+}
+
+
+div.widget.project-needs table thead th.summary,
+div.widget.project-needs table thead th.summary {
+    padding-left: 50px;        
+    background: none no-repeat .5em .5em;
+    min-height: 32px;        
+    line-height: 32px;
+}
+
+div.widget.project-needs table thead + tbody + thead th.summary {
+    padding-top: 1em;
+    background-position: .5em 1em;
+}
+
+div.widget.project-needs table thead.task th.summary {
+    background-image: url('/view/css/icon/m/task.png');
+}
+
+div.widget.project-needs table thead.structure th.summary {
+    background-image: url('/view/css/icon/m/structure.png');
+}
+
+div.widget.project-needs table thead.equip th.summary {
+    background-image: url('/view/css/icon/m/equipment.png');
+}
+
+div.widget.project-needs table tfoot th.total {
+    text-align: right;
+}
+
+div.widget.project-needs table tfoot tr > * {
+    border: none;   
+}
