@@ -19,6 +19,8 @@ body.project-edit div#main div.project-preview div.widget.project-support {
 }
 
 body.project-edit div#main div.project-preview div.widget.project-support,
+body.project-edit div#main div.project-preview div.widget.project-collaborations,
+body.project-edit div#main div.project-preview div.widget.project-rewards, 
 body.project-edit div#main div.project-preview div.widget.user {
     width: 260px;
     float: right;
