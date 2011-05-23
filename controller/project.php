@@ -268,9 +268,12 @@ namespace Goteo\Controller {
 
             // solo si está en campaña o no caducado
             // o si es root ;)
+            /*
             if ( $project->status < 3 || $project->status > 5 || $_SESSION['user']->id == 'root') {
                 throw new Redirection("/");
             }
+             * 
+             */
 
             $viewData = array(
                     'project' => $project,

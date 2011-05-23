@@ -45,6 +45,7 @@ namespace Goteo\Model {
                     promote.project as project,
                     project.name as name,
                     promote.title as title,
+                    promote.description as description,
                     promote.order as `order`
                 FROM    promote
                 INNER JOIN project
