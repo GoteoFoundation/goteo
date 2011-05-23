@@ -53,6 +53,7 @@ $optimum_left = 100 - $optimum_done;
 <div class="widget project-support collapsable" id="project-support">
     
     <h<?php echo $level ?> class="title">Aportaciones económicas</h<?php echo $level ?>>
+    <!--<h<?php echo $level + 1 ?> class="subtitle">Financiación</h<?php echo $level ?>>-->
     
     <div class="data">
     
@@ -87,6 +88,6 @@ $optimum_left = 100 - $optimum_done;
         
     </div>   
     
-    <a class="button red supportit" href="">Apóyalo</a>
+    <a class="button red supportit" href="/project/<?php echo $project->id; ?>/invest">Apóyalo</a>
     
 </div>

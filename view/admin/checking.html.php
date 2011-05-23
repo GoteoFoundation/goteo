@@ -51,7 +51,7 @@ include 'view/prologue.html.php';
                                 <td><?php if ($project->status == 3) echo $project->days; ?></td>
                                 <td><?php if ($project->status > 2) echo $project->invested; ?></td>
                                 <td><?php if ($project->status > 2) echo $project->mincost; ?></td>
-                                <td><a href="/project/<?php echo $project->id; ?>/?edit" target="_blank">[Editar]</a></td>
+                                <td><a href="/project/edit/<?php echo $project->id; ?>" target="_blank">[Editar]</a></td>
                                 <td><?php if ($project->status < 3) : ?><a href="?publish=<?php echo $project->id; ?>">[Publicar]</a><?php endif; ?></td>
                                 <td><?php if ($project->status != 5) : ?><a href="?cancel=<?php echo $project->id; ?>">[Cancelar]</a><?php endif; ?></td>
                                 <td><?php if ($project->status == 5 || $project->status == 2) : ?><a href="?enable=<?php echo $project->id; ?>">[Reabrir]</a><?php endif; ?></td>

@@ -8,12 +8,17 @@
             <p><?php echo $this['message']; ?></p>
 
             <?php if (isset($this['results'])) : ?>
-                <?php foreach ($this['results'] as $result) : ?>
+                <?php foreach ($this['results'] as $result) :
+                    // la instancia del proyecto es $result
+                    // se pintan con el mismo widget que en portada
+                    ?>
                     <?php echo '<p>
-                        <a href="/project/' . $result->id . '" target="_blank">' . $result->name . '</a>
-                        <a href="/invest/' . $result->id . '" target="_blank">[Apóyalo]</a>
-                        <a href="/message/' . $result->id . '" target="_blank">[Mensajes]</a>
-                        <a href="/support/' . $result->id . '" target="_blank">[Cofinanciadores]</a><br />
+                        <a href="/project/' . $result->id . '" target="_blank">' . $result->name . '</a>';
+                        if ($result->owner != $_SESSION['user']->id) {
+                            echo '<a href="/project/' . $result->id . '/invest" target="_blank">[Apóyalo]</a>';
+                        }
+                        echo '<a href="/project/' . $result->id . '/messages" target="_blank">[Mensajes]</a>
+                        <a href="/project/' . $result->id . '/supporters" target="_blank">[Cofinanciadores]</a><br />
                         Obtenido: ' . $result->invested . ' &euro;<br />
                         Mínimo: ' . $result->mincost . ' &euro;<br />
                         Óptimo: ' . $result->maxcost . ' &euro;<br />

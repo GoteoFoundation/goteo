@@ -6,6 +6,9 @@ if (function_exists('ini_set')) {
     throw new \Goteo\Core\Exception("No puedo añadir la API GOTEO al include_path.");
 }
 
+// Nodo actual
+define('GOTEO_NODE', 'goteo');
+
 define('PEAR', GOTEO_PATH . 'library' . '/' . 'pear' . '/');
 if (function_exists('ini_set')) {
     ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . PEAR);

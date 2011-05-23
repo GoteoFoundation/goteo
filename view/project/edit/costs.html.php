@@ -28,6 +28,7 @@ if (!empty($project->costs)) {
             'children'  => array(                         
                 "cost-{$cost->id}-cost" => array(
                     'title'     => 'Coste',
+//                    'required'  => true,
                     'type'      => 'textbox',
                     'size'      => 100,
                     'class'     => 'inline',
@@ -36,6 +37,7 @@ if (!empty($project->costs)) {
                 ),
                 "cost-{$cost->id}-type" => array(
                     'title'     => 'Tipo',
+//                    'required'  => true,
                     'class'     => 'inline cost-type',
                     'type'      => 'radios',
                     'options'   => $costTypes,
@@ -75,20 +77,21 @@ if (!empty($project->costs)) {
                 ),        
                 "cost-{$cost->id}-amount" => array(
                     'type'      => 'textbox',
+//                    'required'  => true,
                     'title'     => 'Valor',
                     'size'      => 8,
                     'class'     => 'inline cost-amount',
                     'value'     => $cost->amount,
                     'hint'      => Text::get('tooltip-project-cost-amount'),
-                    'children'  => array(
-                        "cost-{$cost->id}-required"  => array(
-                            'type'      => 'checkbox',
-                            'class'     => 'inline cost-required',
-                            'value'     => 1,
-                            'label'     => 'Imprescindible',
-                            'checked'   => $cost->required,
-                        )
-                    )
+                ),
+                "cost-{$cost->id}-required"  => array(
+                    'type'      => 'checkbox',
+//                    'required'  => true,
+                    'class'     => 'inline cost-required',
+                    'value'     => 1,
+                    'label'     => 'Imprescindible',
+                    'checked'   => $cost->required,
+                    'hint'      => Text::get('tooltip-project-cost-required'),
                 ),
                 "cost-{$cost->id}-remove" => array(
                     'type'  => 'submit',

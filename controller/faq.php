@@ -1,0 +1,37 @@
+<?php
+
+namespace Goteo\Controller {
+
+    use Goteo\Library\Page,
+        Goteo\Core\View,
+        Goteo\Model;
+
+    class Faq extends \Goteo\Core\Controller {
+
+        public function index () {
+
+            $page = Page::get('faq');
+            $faqs = array();
+
+            $sections = Model\Faq::sections();
+
+            foreach ($sections as $id=>$name) {
+                $faqs[$id] = Model\Faq::getAll($id);
+            }
+
+            return new View(
+                'view/faq.html.php',
+                array(
+                    'name' => $page->name,
+                    'title' => $page->description,
+                    'content' => $page->content,
+                    'faqs' => $faqs,
+                    'sections' => $sections
+                )
+             );
+
+        }
+
+    }
+
+}

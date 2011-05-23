@@ -23,6 +23,9 @@ namespace Goteo\Model {
                     WHERE   id = :id
                     ", array(':id' => $id));
                 $message = $query->fetchObject(__CLASS__);
+                
+                // datos del usuario
+                $message->user = User::get($message->user);
 
                 if (empty($message->thread)) {
                     $query = static::query("
@@ -55,11 +58,18 @@ namespace Goteo\Model {
                 $message->user = User::get($message->user);
 
                 $query = static::query("
-                    SELECT  *
+                    SELECT  id
                     FROM  message
                     WHERE thread = ?
+                    ORDER BY id DESC
                     ", array($message->id));
-                $message->responses = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $response) {
+                    $message->responses[] = self::get($response->id);
+                }
+                
+
+
 
                 $messages[] = $message;
             }
@@ -125,6 +135,13 @@ namespace Goteo\Model {
             
             $sql = "DELETE FROM message WHERE id = ?";
             if (self::query($sql, array($this->id))) {
+                if (empty($this->thread) && is_array($this->responses)) {
+                    foreach ($this->responses as $response) {
+                        if ($response instanceof Message) {
+                            $response->delete();
+                        }
+                    }
+                }
                 return true;
             } else {
                 return false;

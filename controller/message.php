@@ -10,59 +10,46 @@ namespace Goteo\Controller {
 
     class Message extends \Goteo\Core\Controller {
 
-        /*
-         *  La manera de obtener el id del usuario validado cambiará al tener la session
-         */
         public function index ($project = null) {
-
-            if (empty($_SESSION['user']))
-                throw new Redirection ('/user/login?from=' . \rawurlencode('/message/' . $project), Redirection::TEMPORARY);
-
             if (empty($project))
-                throw new Redirection('/project/explore', Redirection::TEMPORARY);
-
-            $content = '';
+                throw new Redirection('/discover', Redirection::TEMPORARY);
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $errors = array();
+                $message = new Model\Message(array(
+                    'user' => $_SESSION['user']->id,
+                    'project' => $project,
+                    'thread' => $_POST['thread'],
+                    'message' => $_POST['message']
+                ));
 
-                if (empty($_POST['message'])) {
-                    $errors[] = 'Falta el texto';
+                if ($message->save($errors)) {
+                    // permiso para editarlo y borrarlo
+                    ACL::allow("/message/edit/{$message->id}/{$project}", '*', 'user', $_SESSION['user']->id);
+                    ACL::allow("/message/delete/{$message->id}/{$project}", '*', 'user', $_SESSION['user']->id);
                 }
-
-                if (empty($errors)) {
-
-                    $message = new Model\Message(array(
-                        'user' => $_SESSION['user']->id,
-                        'project' => $project,
-                        'thread' => $_POST['thread'],
-                        'message' => $_POST['message']
-                    ));
-
-                    if ($message->save($errors)) {
-                        $content .= 'Mensaje enviado';
-                    }
-                }
-
-                if (!empty($errors)) {
-                    $content .= 'Errores: ' . implode('.', $errors);
-                }
-
-
 			}
 
-            $projectData = Model\Project::get($project);
+            throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
+        }
 
-            $viewData = array(
-                    'content' => $content,
-                    'project' => $projectData
-                );
+        public function edit ($id, $project) {
 
-            return new View (
-                'view/messages.html.php',
-                $viewData
-            );
+            if (isset($_POST['message'])) {
+                $message = Model\Message::get($id);
+                $message->user = $message->user->id;
+                $message->message = ($_POST['message']);
 
+                $message->save();
+            }
+
+            throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
+        }
+
+        public function delete ($id, $project) {
+
+            Model\Message::get($id)->delete();
+
+            throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
         }
 
     }

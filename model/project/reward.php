@@ -2,6 +2,9 @@
 
 namespace Goteo\Model\Project {
 
+    use \Goteo\Model\Icon,
+        \Goteo\Model\License;
+
     class Reward extends \Goteo\Core\Model {
 
         public
@@ -147,28 +150,27 @@ namespace Goteo\Model\Project {
         }
 
 		public static function icons($type = 'social') {
-            $icons = array(
-                'file' => 'Archivos digitales',
-                'money' => 'Dinero',
-                'code' => 'Código fuente',
-                'service' => 'Servicios',
-                'manual' => 'Manuales');
+            $list  = array();
+            
+            $icons = Icon::getAll($type);
 
-			if ($type == 'individual') {
-				$icons['product'] = 'Producto';
-			}
+            foreach ($icons as $icon) {
+                $list[$icon->id] = $icon;
+            }
 
-            return $icons;
+            return $list;
 		}
 
 		public static function licenses() {
-            return array(
-                'ohl' => 'Open Hardware',
-                'cc' => 'Creative Commons',
-                'gpl' => 'General Public',
-                'odbl' => 'Open Database',
-                'xoln' => 'Red Abierta',
-                'agpl' => 'GNU Affero');
+            $list  = array();
+
+            $licenses = License::getAll();
+
+            foreach ($licenses as $license) {
+                $list[$license->id] = $license->name;
+            }
+
+            return $list;
 		}
 
 	}

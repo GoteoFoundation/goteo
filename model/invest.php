@@ -208,7 +208,6 @@ namespace Goteo\Model {
          * Usuarios que han aportado aun proyecto
          */
         public static function investors ($project) {
-            //@FIXME, cada inversor muestra el aporte toal a este proyecto y la fecha del último aporte (cuando me lo confirme olivier)
             $investors = array();
 
             $sql = "

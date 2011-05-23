@@ -19,7 +19,8 @@ $interests = Goteo\Model\User\Interest::getAll();
             			<li class="element" id="user_avatar">
             				<label class="title" for="UserAvatar">Tu imagen</label>
 <?php if(is_object($user->avatar)) { ?>
-                            <img src="<?php echo $user->avatar->getLink(200, 200) ?>" alt="<?php $user->name ?>" />
+                            <img src="<?php echo $user->avatar->getLink(200, 200) ?>" alt="<?php echo $user->name ?>" />
+                            <input type="submit" name="avatar-<?php echo $user->avatar->id; ?>-remove" value="Quitar" id="UserAvatarRemove" />
 <?php } ?>
             				<div class="contents">
             					<input type="file" name="user_avatar" id="UserAvatar" />

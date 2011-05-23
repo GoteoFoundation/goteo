@@ -19,7 +19,7 @@
  * @author     Philippe Jausions <Philippe.Jausions@11abacus.com>
  * @copyright  2002-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: IM.php,v 1.25 2007/04/19 16:36:09 dufuz Exp $
+ * @version    CVS: $Id: IM.php 266859 2008-09-30 22:28:47Z dufuz $
  * @link       http://pear.php.net/package/Image_Transform
  */
 
@@ -56,7 +56,6 @@ class Image_Transform_Driver_IM extends Image_Transform
     {
         $this->__construct();
     } // End Image_IM
-
 
     /**
      * Class constructor
@@ -131,15 +130,15 @@ class Image_Transform_Driver_IM extends Image_Transform
                 '-format %w:%h:%m ' . escapeshellarg($image));
             exec($cmd, $res, $exit);
 
-            if ($exit == 0) {
-                $data  = explode(':', $res[0]);
-                $this->img_x = $data[0];
-                $this->img_y = $data[1];
-                $this->type  = strtolower($data[2]);
-                $retval = true;
-            } else {
+            if ($exit != 0) {
                 return PEAR::raiseError("Cannot fetch image or images details.", true);
             }
+
+            $data  = explode(':', $res[0]);
+            $this->img_x = $data[0];
+            $this->img_y = $data[1];
+            $this->type  = strtolower($data[2]);
+            $retval = true;
 
         }
 
@@ -207,7 +206,7 @@ class Image_Transform_Driver_IM extends Image_Transform
         // raise a warning? [and obviously same for $height+$y]
         $this->command['crop'] = '-crop '
             . ((int) $width)  . 'x' . ((int) $height)
-            . '+' . ((int) $x) . '+' . ((int) $y);
+            . '+' . ((int) $x) . '+' . ((int) $y) . '!';
 
         // I think that setting img_x/y is wrong, but scaleByLength() & friends
         // mess up the aspect after a crop otherwise.
@@ -237,8 +236,10 @@ class Image_Transform_Driver_IM extends Image_Transform
      */
     function addText($params)
     {
+        $this->old_image = $this->imageHandle;
          $params = array_merge($this->_get_default_text_params(), $params);
          extract($params);
+
          if (true === $resize_first) {
              // Set the key so that this will be the last item in the array
             $key = 'ztext';
@@ -344,6 +345,10 @@ class Image_Transform_Driver_IM extends Image_Transform
                . escapeshellarg($this->image) . ' ' . $type . ':'
                . escapeshellarg($filename) . ' 2>&1');
         exec($cmd, $res, $exit);
+
+        if (!$this->keep_settings_on_save) {
+            $this->free();
+        }
 
         return ($exit == 0) ? true : PEAR::raiseError(implode('. ', $res),
             IMAGE_TRANSFORM_ERROR_IO);

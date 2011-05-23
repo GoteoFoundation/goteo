@@ -5,7 +5,9 @@
         <ul>
             <li class="home"><a href="/">Inicio</a></li>                        
             <li class="explore"><a href="/discover">Descubre proyectos</a></li>
-            <li class="create"><a href="/project/?create">Crea un proyecto</a></li>                                    
+            <?php if (!empty($_SESSION['user'])): ?>
+            <li class="create"><a href="/project/create">Crea un proyecto</a></li>
+            <?php endif; ?>
             <li class="search">
                 <form method="get" action="/discover/results">
                     <fieldset>

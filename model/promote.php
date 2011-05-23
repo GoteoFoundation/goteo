@@ -15,7 +15,7 @@ namespace Goteo\Model {
         /*
          *  Devuelve datos de un destacado
          */
-        public static function get ($project, $node = 'goteo') {
+        public static function get ($project, $node = \GOTEO_NODE) {
                 $query = static::query("
                     SELECT  
                         promote.node as node,
@@ -38,13 +38,14 @@ namespace Goteo\Model {
         /*
          * Lista de proyectos destacados
          */
-        public static function getAll ($node = 'goteo') {
+        public static function getAll ($node = \GOTEO_NODE) {
 
             $query = static::query("
                 SELECT
                     promote.project as project,
                     project.name as name,
                     promote.title as title,
+                    promote.description as description,
                     promote.order as `order`
                 FROM    promote
                 INNER JOIN project
@@ -59,7 +60,7 @@ namespace Goteo\Model {
         /*
          * Lista de proyectos disponibles para destacar
          */
-        public static function available ($node = 'goteo') {
+        public static function available ($node = \GOTEO_NODE) {
 
             $query = static::query("
                 SELECT
@@ -126,7 +127,7 @@ namespace Goteo\Model {
         /*
          * Para quitar un proyecto destacado
          */
-        public static function delete ($project, $node = 'goteo') {
+        public static function delete ($project, $node = \GOTEO_NODE) {
             
             $sql = "DELETE FROM promote WHERE project = :project AND node = :node";
             if (self::query($sql, array(':project'=>$project, ':node'=>$node))) {
@@ -140,7 +141,7 @@ namespace Goteo\Model {
         /*
          * Para que un proyecto salga antes  (disminuir el order)
          */
-        public static function up ($project, $node = 'goteo') {
+        public static function up ($project, $node = \GOTEO_NODE) {
 
             $query = self::query('SELECT `order` FROM promote WHERE project = :project AND node = :node'
                 , array(':project'=>$project, ':node'=>$node));
@@ -162,7 +163,7 @@ namespace Goteo\Model {
         /*
          * Para que un proyecto salga despues  (aumentar el order)
          */
-        public static function down ($project, $node = 'goteo') {
+        public static function down ($project, $node = \GOTEO_NODE) {
 
             $query = self::query('SELECT `order` FROM promote WHERE project = :project AND node = :node'
                 , array(':project'=>$project, ':node'=>$node));
@@ -182,7 +183,7 @@ namespace Goteo\Model {
         /*
          *
          */
-        public static function next ($node = 'goteo') {
+        public static function next ($node = \GOTEO_NODE) {
             $query = self::query('SELECT MAX(`order`) FROM promote WHERE node = :node'
                 , array(':node'=>$node));
             $order = $query->fetchColumn(0);

@@ -40,6 +40,7 @@ set_error_handler (
 
     function ($errno, $errstr, $errfile, $errline, $errcontext) {
         // @todo Insert error into buffer
+//        echo "Error:  {$errno}, {$errstr}, {$errfile}, {$errline}, {$errcontext}<br />";
         //throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
     }
 
@@ -61,12 +62,6 @@ $segments = preg_split('!\s*/+\s*!', $uri, -1, \PREG_SPLIT_NO_EMPTY);
 $uri = '/' . implode('/', $segments);
 
 try {
-    
-    // Check permissions on requested URI
-    if (!ACL::check($uri)) {
-        throw new Error(Error::FORBIDDEN);
-    }
-
     // Check permissions on requested URI
     if (!ACL::check($uri)) {
         throw new Error(Error::FORBIDDEN);
@@ -123,7 +118,7 @@ try {
             if ($result instanceof Resource\MIME) {
                 header("Content-type: {$result->getMIME()}");
             }
-            
+
             echo $result;
 
             // Farewell

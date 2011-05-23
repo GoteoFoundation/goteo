@@ -3,6 +3,7 @@
 namespace Goteo\Controller {
 
     use Goteo\Library\Page,
+        Goteo\Core\Redirection,
         Goteo\Core\View;
 
     class About extends \Goteo\Core\Controller {
@@ -11,6 +12,10 @@ namespace Goteo\Controller {
 
             if (empty($id)) {
                 $id = 'about';
+            }
+
+            if ($id == 'faq') {
+                throw new Redirection('/faq', Redirection::TEMPORARY);
             }
 
             $page = Page::get($id);

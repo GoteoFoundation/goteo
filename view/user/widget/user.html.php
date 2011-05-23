@@ -14,7 +14,7 @@ if (!isset($user->webs)) {
     <h<?php echo $level ?> class="title">Usuario</h<?php echo $level ?>>
     
     <h<?php echo $level + 1 ?> class="subtitle"><img />
-    <?php echo htmlspecialchars($user->id) ?></h<?php echo $level + 1 ?>>
+    <?php echo htmlspecialchars($user->name) ?></h<?php echo $level + 1 ?>>
     
     <?php if (isset($user->about)): ?>
     <blockquote class="about">
@@ -42,7 +42,7 @@ if (!isset($user->webs)) {
         
     </dl>
     
-    <a class="button aqua profile" href="">Ver perfil</a>
+    <a class="button aqua profile" href="/user/<?php echo $user->id; ?>">Ver perfil</a>
         
 </div>
 
