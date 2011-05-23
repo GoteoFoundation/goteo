@@ -1,4 +1,5 @@
 INSERT INTO `role` (`id`, `name`) VALUES
-(1, 'Admin'),
-(2, 'Admin de Nodo'),
-(3, 'Usuario');
+('admin', 'Administrador de Nodo'),
+('root', 'Super administrador'),
+('superadmin', 'Super administrador de Goteo'),
+('user', 'Usuario mediocre');

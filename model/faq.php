@@ -35,7 +35,7 @@ namespace Goteo\Model {
         /*
          * Lista de proyectos destacados
          */
-        public static function getAll ($section = 'node', $node = 'goteo') {
+        public static function getAll ($section = 'node', $node = \GOTEO_NODE) {
 
             $query = static::query("
                 SELECT
@@ -106,7 +106,7 @@ namespace Goteo\Model {
         /*
          * Para quitar una pregunta
          */
-        public static function delete ($id, $node = 'goteo') {
+        public static function delete ($id, $node = \GOTEO_NODE) {
             
             $sql = "DELETE FROM faq WHERE id = :id AND node = :node";
             if (self::query($sql, array(':id'=>$id, ':node'=>$node))) {
@@ -120,7 +120,7 @@ namespace Goteo\Model {
         /*
          * Para que una pregunta salga antes  (disminuir el order)
          */
-        public static function up ($id, $node = 'goteo') {
+        public static function up ($id, $node = \GOTEO_NODE) {
 
             $query = self::query('SELECT `order` FROM faq WHERE id = :id AND node = :node'
                 , array(':id'=>$id, ':node'=>$node));
@@ -142,7 +142,7 @@ namespace Goteo\Model {
         /*
          * Para que un proyecto salga despues  (aumentar el order)
          */
-        public static function down ($id, $node = 'goteo') {
+        public static function down ($id, $node = \GOTEO_NODE) {
 
             $query = self::query('SELECT `order` FROM faq WHERE id = :id AND node = :node'
                 , array(':id'=>$id, ':node'=>$node));
@@ -162,7 +162,7 @@ namespace Goteo\Model {
         /*
          * Orden para añadirlo al final
          */
-        public static function next ($section = 'node', $node = 'goteo') {
+        public static function next ($section = 'node', $node = \GOTEO_NODE) {
             $query = self::query('SELECT MAX(`order`) FROM faq WHERE section = :section AND node = :node'
                 , array(':section'=>$section, ':node'=>$node));
             $order = $query->fetchColumn(0);

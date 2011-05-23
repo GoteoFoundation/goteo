@@ -21,7 +21,7 @@
                 <a href="/discover/view/' . $type . '">Ver todos</a>';
             foreach ($list as $project) {
                 echo '<p>' . $project->name. '<br />';
-                if ($project->status == 3)
+                if ($project->status == 3 && $project->owner != $_SESSION['user']->id)
                     echo '<a href="/invest/' . $project->id . '">[Apóyalo]</a>';
                 
                 echo '<a href="/project/' . $project->id . '">[Ver proyecto]</a><br />

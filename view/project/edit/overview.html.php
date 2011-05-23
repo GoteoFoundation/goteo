@@ -5,6 +5,31 @@ use Goteo\Library\Text,
 
 $project = $this['project'];
 
+$images = array();
+foreach ($project->gallery as $image) {
+    $images[] = array(
+        'type'  => 'group',
+        'class' => 'inline image',
+        'children'  => array(
+            'gallery-image' => array(
+                'type'  => 'html',
+                'class' => 'inline image',
+                'html'  => is_object($image) ?
+                           $image . '<img src="' . htmlspecialchars($image->getLink(110, 110)) . '" alt="Imagen" />' :
+                           ''
+                ),
+             'remove' => array(
+                'name' => "gallery-{$image->id}-remove",
+                'type'  => 'submit',
+                'label' => 'Quitar',
+                'class' => 'inline remove image-remove'
+            )
+        )
+    );
+
+}
+
+
 $categories = array();
 
 foreach ($this['categories'] as $value => $label) {
@@ -42,6 +67,10 @@ $superform = array(
         )        
     ),
     'elements'      => array(
+        'process_overview' => array (
+            'type' => 'hidden',
+            'value' => 'overview'
+        ),
         
         'name' => array(
             'type'      => 'textbox',
@@ -54,14 +83,31 @@ $superform = array(
         
         'images' => array(        
             'title'     => 'Imágenes del proyecto',
+            'type'      => 'group',
             'required'  => true,
             'hint'      => Text::get('tooltip-project-image'),
             'errors'    => !empty($errors['image']) ? array($errors['image']) : array(),
+            'class'     => 'images',
+            'children'  => array(
+                'image_upload'    => array(
+                    'type'  => 'file',
+                    'class' => 'inline image_upload',
+                    'title' => 'Subir una imagen',
+                    'hint'  => Text::get('tooltip-project-image_upload'),
+                ),
+                'gallery' => array(
+                    'type'  => 'group',
+                    'title' => 'Imágenes actuales',
+                    'class' => 'inline gallery',
+                    'children'  => $images
+                )
+
+            )
         ),        
 
         'description' => array(            
             'type'      => 'textarea',
-            'title'     => 'Descripción',
+            'title'     => 'Resumen breve',
             'required'  => true,
             'hint'      => Text::get('tooltip-project-description'),
             'value'     => $project->description,            
@@ -86,14 +132,12 @@ $superform = array(
                 'goal' => array(
                     'type'      => 'textarea',
                     'title'     => 'Objetivos',
-                    'required'  => true,
                     'hint'      => Text::get('tooltip-project-goal'),
                     'errors'    => !empty($errors['goal']) ? array($errors['goal']) : array(),
                     'value'     => $project->goal
                 ),
                 'related' => array(
                     'type'      => 'textarea',
-                    'required'  => true,
                     'title'     => 'Experiencia relacionada y equipo',
                     'hint'      => Text::get('tooltip-project-related'),
                     'errors'    => !empty($errors['related']) ? array($errors['related']) : array(),
@@ -115,7 +159,6 @@ $superform = array(
         'keywords' => array(
             'type'      => 'textbox',
             'title'     => 'Palabras clave',   
-            'required'  => true,
             'hint'      => Text::get('tooltip-project-keywords'),
             'errors'    => !empty($errors['keywords']) ? array($errors['keywords']) : array(),
             'value'     => $project->keywords
@@ -128,13 +171,13 @@ $superform = array(
             'required'  => true,
             'hint'      => Text::get('tooltip-project-media'),
             'errors'    => !empty($errors['media']) ? array($errors['media']) : array(),
-            'value'     => $project->media,
+            'value'     => (string) $project->media,
             'children'  => array(
                 'media-preview' => array(
                     'title' => 'Vista previa',
                     'class' => 'media-preview inline',
                     'type'  => 'html',
-                    'html'  => '<div></div>'
+                    'html'  => '<div>' . (!empty($project->media) ? $project->media->getEmbedCode() : '') .'</div>'
                 )
             )
         ),
@@ -143,7 +186,6 @@ $superform = array(
             'title'     => 'Estado actual',
             'type'      => 'slider',
             'options'   => $currently,
-            'required'  => true,
             'class'     => 'currently cols_' . count($currently),
             'hint'      => Text::get('tooltip-project-currently'),
             'errors'    => !empty($errors['currently']) ? array($errors['currently']) : array(),
@@ -156,8 +198,8 @@ $superform = array(
             'title'     => 'Localización',
             'required'  => true,
             'hint'      => Text::get('tooltip-project-location'),
-            'errors'    => !empty($errors['location']) ? array($errors['location']) : array(),
-            'value'     => $project->location
+            'errors'    => !empty($errors['project_location']) ? array($errors['project_location']) : array(),
+            'value'     => $project->project_location
         )                                        
 
     )

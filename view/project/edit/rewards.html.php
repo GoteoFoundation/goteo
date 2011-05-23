@@ -46,6 +46,7 @@ foreach ($project->social_rewards as $social_reward) {
                 "social_reward-{$social_reward->id}-reward" => array(
                     'title'     => 'Resumen',
                     'type'      => 'textbox',
+                    'required'  => true,
                     'size'      => 100,
                     'class'     => 'inline',
                     'value'     => $social_reward->reward,
@@ -55,12 +56,14 @@ foreach ($project->social_rewards as $social_reward) {
                     'title'     => 'Tipo',
                     'class'     => 'inline social_reward-type reward-type',
                     'type'      => 'radios',
+                    'required'  => true,
                     'options'   => $social_rewards_types,
                     'value'     => $social_reward->icon,
                     'hint'      => Text::get('tooltip-project-social_reward-icon'),
                 ),
                 "social_reward-{$social_reward->id}-description" => array(
                     'type'      => 'textarea',
+                    'required'  => true,
                     'title'     => 'Descripción',
                     'cols'      => 100,
                     'rows'      => 4,
@@ -158,6 +161,10 @@ echo new SuperForm(array(
         )        
     ),    
     'elements'      => array(
+        'process_rewards' => array (
+            'type' => 'hidden',
+            'value' => 'rewards'
+        ),
         
         'social_rewards' => array(
             'type'      => 'group',

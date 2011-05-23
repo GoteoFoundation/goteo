@@ -12,7 +12,8 @@ CREATE TABLE IF NOT EXISTS invest (
   returned date DEFAULT NULL,
   preapproval varchar(256) DEFAULT NULL COMMENT 'PreapprovalKey',
   payment varchar(256) DEFAULT NULL COMMENT 'PayKey',
-  `transaction` varchar(256) DEFAULT NULL COMMENT 'PaypalId',
+  `transaction` varchar(256) DEFAULT NULL COMMENT 'TransactionId',
+  `method` varchar(20) NOT NULL COMMENT 'Metodo de pago',
   PRIMARY KEY (id),
   UNIQUE KEY id (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Aportes monetarios a proyectos';
@@ -28,3 +29,5 @@ ALTER TABLE `invest` ADD `payment` VARCHAR( 256 ) NULL COMMENT 'PayKey';
 ALTER TABLE `invest` ADD `transaction` VARCHAR( 256 ) NULL COMMENT 'PaypalId';
 
 ALTER TABLE `invest` ADD `account` VARCHAR( 256 ) NOT NULL AFTER `project` ;
+
+ALTER TABLE `invest` ADD `method` VARCHAR( 20 ) NOT NULL COMMENT 'Metodo de pago';

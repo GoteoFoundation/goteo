@@ -1,12 +1,13 @@
-DROP TABLE IF EXISTS `acl`;
 CREATE TABLE IF NOT EXISTS `acl` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned DEFAULT NULL,
-  `role_id` int(10) unsigned DEFAULT NULL,
-  `resource` varchar(50) COLLATE utf8_general_ci DEFAULT NULL,
-  `action` varchar(50) COLLATE utf8_general_ci DEFAULT NULL,
+  `node_id` varchar(50) NOT NULL,
+  `role_id` varchar(50) DEFAULT NULL,
+  `user_id` varchar(50) DEFAULT NULL,
+  `url` varchar(255) DEFAULT NULL,
   `allow` tinyint(1) DEFAULT NULL,
+  `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `role_FK` (`role_id`),
-  KEY `user_FK` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=3 ;
+  KEY `user_FK` (`user_id`),
+  KEY `node_FK` (`node_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;

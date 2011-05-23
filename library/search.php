@@ -22,7 +22,7 @@ namespace Goteo\Library {
 
             $values = array(':text'=>"%$value%");
 
-            $sql = "SELECT id 
+            $sql = "SELECT id
                     FROM project
                     WHERE name LIKE :text
                     OR description LIKE :text

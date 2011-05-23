@@ -12,7 +12,8 @@ namespace Goteo\Model {
             $amount, //cantidad monetaria del aporte
             $preapproval, //clave del preapproval
             $payment, //clave del cargo
-            $transaction, // id paypal de la transacción
+            $transaction, // id de la transacción
+            $method, // metodo de pago paypal/tpv
             $status, //estado en el que se encuentra esta aportación: 0 pendiente, 1 cobrado (charged), 2 devuelto (returned)
             $anonymous, //no quiere aparecer en la lista de aportadores
             $resign, //renuncia a cualquier recompensa
@@ -103,6 +104,9 @@ namespace Goteo\Model {
             if (!is_numeric($this->amount))
                 $errors[] = 'La cantidad no es correcta';
 
+            if (empty($this->method))
+                $errors[] = 'Falta metodo de pago';
+
             if (empty($this->user))
                 $errors[] = 'Falta usuario';
 
@@ -130,6 +134,7 @@ namespace Goteo\Model {
                 'preapproval',
                 'payment',
                 'transaction',
+                'method',
                 'status',
                 'anonymous',
                 'resign',
@@ -203,7 +208,6 @@ namespace Goteo\Model {
          * Usuarios que han aportado aun proyecto
          */
         public static function investors ($project) {
-            //@FIXME, cada inversor muestra el aporte toal a este proyecto y la fecha del último aporte (cuando me lo confirme olivier)
             $investors = array();
 
             $sql = "
@@ -334,8 +338,26 @@ namespace Goteo\Model {
         }
 
         /*
+         *  Pone el codigo de la transaccion al registro del aporte
+         */
+        public function setTransaction ($code) {
+
+            $values = array(
+                ':id' => $this->id,
+                ':transaction' => $code
+            );
+
+            $sql = "UPDATE invest SET transaction = :transaction WHERE id = :id";
+            if (self::query($sql, $values)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+        /*
          *  marca un aporte como devuelto (devuelto el dinero despues de haber sido cargado)
-         * si hay que cancelar el preapproval se elimina el registro completamente
          */
         public function returnPayment () {
 
@@ -358,7 +380,9 @@ namespace Goteo\Model {
         }
 
         /*
-         * Marcar esta aportación como devuelta (si no se habia ejecutado el preapproval es igual que cancelada)
+         * Marcar esta aportación como devuelta
+         *  si no se habia ejecutado el preapproval o no se habia confirmado
+         *  es igual que cancelada
          */
         public function cancel () {
             
@@ -371,6 +395,9 @@ namespace Goteo\Model {
 
         }
 
+        /*
+         * Estados del aporte
+         */
         public static function status ($id = null) {
             $array = array (
                 0=>'Pendiente de cargo',
@@ -384,6 +411,16 @@ namespace Goteo\Model {
                 return $array;
             }
 
+        }
+
+        /*
+         * Métodos de pago
+         */
+        public static function methods () {
+            return array (
+                'paypal' => 'Paypal',
+                'tpv' => 'Tarjeta'
+            );
         }
 
     }

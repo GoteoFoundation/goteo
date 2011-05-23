@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS `post` (
+`id` SERIAL NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`title` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL ,
+`description` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL ,
+`media` TINYTEXT NULL ,
+`order` TINYINT UNSIGNED NOT NULL DEFAULT '1'
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Entradas para la portada';

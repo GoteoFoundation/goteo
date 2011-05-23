@@ -15,10 +15,6 @@ namespace Goteo\Controller {
 	class Admin extends \Goteo\Core\Controller {
 
         public function index () {
-			// si tenemos usuario logueado
-            if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
-                throw new Redirection("/dashboard");
-
             return new View('view/admin/index.html.php');
         }
 
@@ -27,20 +23,13 @@ namespace Goteo\Controller {
          * Gestión de páginas institucionales
          */
 		public function pages () {
-			// si tenemos usuario logueado
-            if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
-                throw new Redirection("/dashboard");
-
-            // nodo del usuario
-            $node = 'goteo';
-
             // idioma que estamos gestionando
             $lang = GOTEO_DEFAULT_LANG;
 
 			$using = Lang::get($lang);
 
             $errors = array();
-            
+
             // si estamos editando una página
             if (isset($_GET['page'])) {
                 $id = $_GET['page'];
@@ -79,10 +68,6 @@ namespace Goteo\Controller {
 		}
 
 		public function texts () {
-			// si tenemos usuario logueado
-            if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
-                throw new Redirection("/dashboard");
-
             // comprobamos el filtro
             $filters = Text::filters();
             if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $filters)) {
@@ -157,12 +142,6 @@ namespace Goteo\Controller {
          *  Revisión de proyectos, aqui llega con un nodo y si no es el suyo a la calle (o al suyo)
          */
         public function checking() {
-            if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
-                throw new Redirection("/dashboard");
-
-            // nodo del usuario
-            $node = 'goteo';
-
             $errors = array();
 
             // poner un proyecto en campaña
@@ -196,7 +175,7 @@ namespace Goteo\Controller {
             }
 
 
-            $projects = Model\Project::getList($node);
+            $projects = Model\Project::getList();
             $status = Model\Project::status();
 
             return new View(
@@ -213,12 +192,6 @@ namespace Goteo\Controller {
          * proyectos destacados
          */
         public function promote() {
-            if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
-                throw new Redirection("/dashboard");
-
-            // nodo del usuario
-            $node = 'goteo';
-
             $errors = array();
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -331,18 +304,12 @@ namespace Goteo\Controller {
          * preguntas frecuentes
          */
         public function faq() {
-            if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
-                throw new Redirection("/dashboard");
-
-            // nodo del usuario
-            $node = 'goteo';
-
             // secciones
             $sections = Model\Faq::sections();
-            if (isset($_GET['section']) && array_key_exists($_GET['section'], $sections)) {
-                $section = $_GET['section'];
+            if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $sections)) {
+                $filter = $_GET['filter'];
             } else {
-                $section = 'node';
+                $filter = 'node';
             }
 
             $errors = array();
@@ -423,14 +390,339 @@ namespace Goteo\Controller {
             }
 
 
-            $faqs = Model\Faq::getAll($section, $node);
+            $faqs = Model\Faq::getAll($filter, $node);
 
             return new View(
                 'view/admin/faq.html.php',
                 array(
                     'faqs' => $faqs,
                     'sections' => $sections,
-                    'section' => $section,
+                    'filter' => $filter,
+                    'errors' => $errors,
+                    'success' => $success
+                )
+            );
+        }
+
+        /*
+         * Tipos de Retorno/Recompensa (iconos)
+         */
+        public function icons() {
+
+            // grupos
+            $groups = Model\Icon::groups();
+            if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $groups)) {
+                $filter = $_GET['filter'];
+            } else {
+                $filter = '';
+            }
+
+            $errors = array();
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                // objeto
+                $icon = new Model\Icon(array(
+                    'id' => $_POST['id'],
+                    'name' => $_POST['name'],
+                    'description' => $_POST['description'],
+                    'group' => $_POST['group']
+                ));
+
+				if ($icon->save($errors)) {
+                    switch ($_POST['action']) {
+                        case 'add':
+                            $success = 'Nuevo tipo añadido correctamente';
+                            break;
+                        case 'edit':
+                            $success = 'Tipo editado correctamente';
+                            break;
+                    }
+				}
+				else {
+                    return new View(
+                        'view/admin/iconEdit.html.php',
+                        array(
+                            'action' => $_POST['action'],
+                            'icon' => $icon,
+                            'groups' => $groups,
+                            'errors' => $errors
+                        )
+                    );
+				}
+			}
+
+/*
+            if (isset($_GET['add'])) {
+
+                return new View(
+                    'view/admin/iconEdit.html.php',
+                    array(
+                        'action' => 'add',
+                        'icon' => (object) array('group' => ''),
+                        'groups' => $groups
+                    )
+                );
+            }
+ *
+ */
+
+            if (isset($_GET['edit'])) {
+                $icon = Model\Icon::get($_GET['edit']);
+
+                return new View(
+                    'view/admin/iconEdit.html.php',
+                    array(
+                        'action' => 'edit',
+                        'icon' => $icon,
+                        'groups' => $groups
+                    )
+                );
+            }
+
+            /*
+            if (isset($_GET['remove'])) {
+                Model\Icon::delete($_GET['remove']);
+            }
+             *
+             */
+
+
+            $icons = Model\Icon::getAll($filter);
+
+            return new View(
+                'view/admin/icon.html.php',
+                array(
+                    'icons' => $icons,
+                    'groups' => $groups,
+                    'filter' => $filter,
+                    'errors' => $errors,
+                    'success' => $success
+                )
+            );
+        }
+
+        /*
+         * Licencias
+         */
+        public function licenses() {
+
+            // agrupaciones de mas a menos abertas
+            $groups = Model\License::groups();
+            if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $groups)) {
+                $filter = $_GET['filter'];
+            } else {
+                $filter = '';
+            }
+
+            // tipos de retorno para asociar
+            $icons = Model\Icon::getAll('social');
+
+
+            $errors = array();
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                // objeto
+                $license = new Model\License(array(
+                    'id' => $_POST['id'],
+                    'name' => $_POST['name'],
+                    'description' => $_POST['description'],
+                    'group' => $_POST['group'],
+                    'order' => $_POST['order'],
+                    'icons' => $_POST['icons']
+                ));
+
+				if ($license->save($errors)) {
+                    switch ($_POST['action']) {
+                        case 'add':
+                            $success = 'Licencia añadida correctamente';
+                            break;
+                        case 'edit':
+                            $success = 'Licencia editada correctamente';
+                            break;
+                    }
+				}
+				else {
+                    return new View(
+                        'view/admin/licenseEdit.html.php',
+                        array(
+                            'action'  => $_POST['action'],
+                            'license' => $license,
+                            'icons'   => $icons,
+                            'groups'  => $groups,
+                            'errors'  => $errors
+                        )
+                    );
+				}
+			}
+
+
+            if (isset($_GET['up'])) {
+                Model\License::up($_GET['up']);
+            }
+
+            if (isset($_GET['down'])) {
+                Model\License::down($_GET['down']);
+            }
+
+            /*
+            if (isset($_GET['add'])) {
+                $next = Model\License::next();
+
+                return new View(
+                    'view/admin/licenseEdit.html.php',
+                    array(
+                        'action' => 'add',
+                        'license' => (object) array('order' => $next, 'icons' => array()),
+                        'icons' => $icons,
+                        'groups' => $groups
+                    )
+                );
+            }
+             *
+             */
+
+            if (isset($_GET['edit'])) {
+                $license = Model\License::get($_GET['edit']);
+
+                return new View(
+                    'view/admin/licenseEdit.html.php',
+                    array(
+                        'action' => 'edit',
+                        'license' => $license,
+                        'icons' => $icons,
+                        'groups' => $groups
+                    )
+                );
+            }
+
+            /*
+            if (isset($_GET['remove'])) {
+                Model\License::delete($_GET['remove']);
+            }
+             *
+             */
+
+
+            $licenses = Model\License::getAll($filter);
+
+            return new View(
+                'view/admin/license.html.php',
+                array(
+                    'licenses' => $licenses,
+                    'groups' => $groups,
+                    'filter' => $filter,
+                    'errors' => $errors,
+                    'success' => $success
+                )
+            );
+        }
+
+        /*
+         * posts para portada
+         * Es una idea de blog porque luego lo que salga en la portada
+         *  seran los posts de cierta categoria, o algo así
+         */
+        public function posts() {
+
+            $errors = array();
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                // objeto
+                $post = new Model\Post(array(
+                    'title' => $_POST['title'],
+                    'description' => $_POST['description'],
+                    'media' => $_POST['media'],
+                    'order' => $_POST['order']
+                ));
+
+                if (!empty($post->media)) {
+                    $post->media = new Model\Project\Media($post->media);
+                }
+
+				if ($post->save($errors)) {
+                    switch ($_POST['action']) {
+                        case 'add':
+                            $success = 'Entrada creada correctamente';
+                            break;
+                        case 'edit':
+                            $success = 'Entrada editada correctamente';
+                            break;
+                    }
+				}
+				else {
+                    switch ($_POST['action']) {
+                        case 'add':
+                            return new View(
+                                'view/admin/postEdit.html.php',
+                                array(
+                                    'action' => 'add',
+                                    'post' => $post,
+                                    'errors' => $errors
+                                )
+                            );
+                            break;
+                        case 'edit':
+                            return new View(
+                                'view/admin/postEdit.html.php',
+                                array(
+                                    'action' => 'edit',
+                                    'post' => $post,
+                                    'errors' => $errors
+                                )
+                            );
+                            break;
+                    }
+				}
+			}
+
+
+            if (isset($_GET['up'])) {
+                Model\Post::up($_GET['up']);
+            }
+
+            if (isset($_GET['down'])) {
+                Model\Post::down($_GET['down']);
+            }
+
+            if (isset($_GET['add'])) {
+                // siguiente orden
+                $next = Model\Post::next();
+
+                return new View(
+                    'view/admin/postEdit.html.php',
+                    array(
+                        'action' => 'add',
+                        'post' => (object) array('order' => $next)
+                    )
+                );
+            }
+
+            if (isset($_GET['edit'])) {
+                $post = Model\Post::get($_GET['edit']);
+
+                return new View(
+                    'view/admin/postEdit.html.php',
+                    array(
+                        'action' => 'edit',
+                        'post' => $post
+                    )
+                );
+            }
+
+            if (isset($_GET['remove'])) {
+                Model\Post::delete($_GET['remove']);
+            }
+
+
+            $posts = Model\Post::getAll();
+
+            return new View(
+                'view/admin/post.html.php',
+                array(
+                    'posts' => $posts,
                     'errors' => $errors,
                     'success' => $success
                 )
@@ -441,12 +733,6 @@ namespace Goteo\Controller {
          *  administración de nodos y usuarios (segun le permita el ACL al usuario validado)
          */
         public function managing() {
-            if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
-                throw new Redirection("/dashboard");
-
-            // nodo del usuario
-            $node = 'goteo';
-
             $users = Model\User::getAll();
 
             return new View(
@@ -463,18 +749,10 @@ namespace Goteo\Controller {
          * dummy para ejecutar cargos
          */
         public function accounting() {
-            if ($_SESSION['user']->role != 1) // @FIXME!!! este piñonaco porque aun no tenemos el jodido ACL listo :(
-                throw new Redirection("/dashboard");
-
-            // nodo del usuario
-            $node = 'goteo';
-
             // estados del proyecto
             $status = Model\Project::status();
             // estados de aporte
             $investStatus = Model\Invest::status();
-            // niveles meritocraticos
-            $worthcracy = Worth::getAll();
 
 
             /// si piden unos detalles,
@@ -516,9 +794,9 @@ namespace Goteo\Controller {
 
                     if ($invest->status == 2)
                         continue;
-                    
+
                     $invest->paypalStatus = '';
-                    
+
                     //estado del aporte
                     if (empty($invest->preapproval)) {
                         //si no tiene preaproval, cancelar
@@ -553,8 +831,7 @@ namespace Goteo\Controller {
                 array(
                     'projects' => $projects,
                     'status' => $status,
-                    'investStatus' => $investStatus,
-                    'worthcracy' => $worthcracy
+                    'investStatus' => $investStatus
                 )
             );
         }
@@ -565,8 +842,6 @@ namespace Goteo\Controller {
          * Proyectos financiados, puede marcar un retorno cumplido
          */
         public function rewards() {
-            if ($_SESSION['user']->role != 1) // @FIXME!!! a ver como se encarga de esto el ACL
-                throw new Redirection("/dashboard");
 
             $errors = array();
 

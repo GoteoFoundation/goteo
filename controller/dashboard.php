@@ -4,6 +4,7 @@ namespace Goteo\Controller {
 
     use Goteo\Core\ACL,
         Goteo\Core\Error,
+        Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model;
 
@@ -13,12 +14,16 @@ namespace Goteo\Controller {
          *  Muy guarro para poder moverse mientras desarrollamos
          */
         public function index ($section = null) {
-			$user = $_SESSION['user']->id;
+            $user = $_SESSION['user']->id;
+
+            // quitamos el stepped para que no nos lo coja para el siguiente proyecto que editemos
+            if (isset($_SESSION['stepped'])) {
+                unset($_SESSION['stepped']);
+            }
 
             $message = "Hola {$user}<br />";
 
-            //@FIXME!! esto también irá con el ACL
-            if ($_SESSION['user']->role == 1) {
+            if (ACL::check('/admin')) {
                 $message .= '<a href="/admin">Ir al panel de administración</a><br />';
             }
 
@@ -32,6 +37,17 @@ namespace Goteo\Controller {
             //  foto, nombre, nivel, cantidad a mis proyectos, fecha ultimo aporte, nº proyectos que cofinancia
             $investors = array();
             foreach ($projects as $project) {
+
+                // compruebo que puedo editar mis proyectos
+                if (!ACL::check('/project/edit/'.$project->id)) {
+                    ACL::allow('/project/edit/'.$project->id, '*', 'user', $user);
+                }
+
+                // y borrarlos
+                if (!ACL::check('/project/delete/'.$project->id)) {
+                    ACL::allow('/project/delete/'.$project->id, '*', 'user', $user);
+                }
+
                 foreach (Model\Invest::investors($project->id) as $key=>$investor) {
                     if (\array_key_exists($investor->user, $investors)) {
                         // ya está en el array, quiere decir que cofinancia este otro proyecto
