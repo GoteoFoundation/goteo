@@ -2,6 +2,7 @@
 @import url('widget/summary.css');
 @import url('widget/media.css');
 @import url('widget/support.css');
+@import url('widget/collaborations.css');
 @import url('widget/share.css');
 @import url('../user/widget/user.css');
 
@@ -15,13 +16,17 @@ body.project-show div#main {
  * Menu
 */
 
+body.project-show div#sub-header {
+    padding-bottom: 0;
+}
+
 body.project-show div.project-menu {
     max-width: 940px;
-    margin: 0 auto;
+    margin: 20px auto 0;
 }
 
 body.project-show div.project-menu ul {
-    padding: 0 0 20px;
+    padding: 0;
     margin: 0;
     list-style: none;
     font-size: 0;
@@ -67,6 +72,7 @@ body.project-show div#main div.widget.project-support {
 }
 
 body.project-show div#main div.widget.project-support,
+body.project-show div#main div.widget.project-collaborations,
 body.project-show div#main div.widget.user {
     width: 260px;
     float: right;
@@ -78,3 +84,6 @@ body.project-show div#main div.widget.project-share {
     max-width: 580px;
     margin-right: 20px;
 }
+
+
+body.project-show div#main div.widget.project-support
