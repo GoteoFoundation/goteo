@@ -14,10 +14,22 @@ $individual_rewards = array();
 $individual_rewards_types = array();
 
 foreach ($this['stypes'] as $id => $type) {
+
+    $licenses = array();
+    foreach ($type->licenses as $lid => $license) {
+        $licenses[$license->id] = array(
+            'value' => $license->id,
+            'class' => "license_{$license->id}",
+            'label' => $license
+        );
+    }
+
+
     $social_rewards_types[] = array(
         'value' => $id,
         'class' => "reward_{$id} social_{$id}",
-        'label' => $type->name
+        'label' => $type->name,
+        'children' => $licenses
     );
 }
 

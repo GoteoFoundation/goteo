@@ -1,11 +1,17 @@
 <?php
 
+use Goteo\Core\View,
+    Goteo\Library\Worth,
+    Goteo\Model\Invest;
+
 $project = $this['project'];
 $personal = $this['personal'];
 
 $level = (int) $this['level'] ?: 3;
 
-$methods = \Goteo\Model\Invest::methods();
+$methods = Invest::methods();
+
+$worthcracy = Worth::getAll();
 
 ?>
 <div class="widget project-summary">
@@ -39,5 +45,6 @@ $methods = \Goteo\Model\Invest::methods();
         <input type="submit" value="Paso siguiente" />
     </form>
     
-    
 </div>
+
+    <?php echo new View('view/worth/base.html.php', array('worthcracy' => $worthcracy, 'type' => 'main', 'level' => $_SESSION['user']->worth)); ?>
