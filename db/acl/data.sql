@@ -43,8 +43,8 @@ INSERT INTO `acl` (`id`, `node_id`, `role_id`, `user_id`, `url`, `allow`, `times
 INSERT INTO `acl` (`id`, `node_id`, `role_id`, `user_id`, `url`, `allow`, `timestamp`) VALUES(19, '*', '*', '*', '/project/raw/*', 0, '2011-05-18 22:39:37');
 INSERT INTO `acl` (`id`, `node_id`, `role_id`, `user_id`, `url`, `allow`, `timestamp`) VALUES(20, '*', 'root', '*', '/project/raw/*', 1, '2011-05-18 22:39:37');
 INSERT INTO `acl` (`id`, `node_id`, `role_id`, `user_id`, `url`, `allow`, `timestamp`) VALUES(21, '*', 'superadmin', '*', '/project/edit/*', 1, '2011-05-18 22:43:08');
-INSERT INTO `acl` (`id`, `node_id`, `role_id`, `user_id`, `url`, `allow`, `timestamp`) VALUES(22, '*', '*', '*', '/project/trash/*', 0, '2011-05-18 22:43:51');
-INSERT INTO `acl` (`id`, `node_id`, `role_id`, `user_id`, `url`, `allow`, `timestamp`) VALUES(23, '*', 'superadmin', '*', '/project/trash/*', 1, '2011-05-18 22:44:37');
+INSERT INTO `acl` (`id`, `node_id`, `role_id`, `user_id`, `url`, `allow`, `timestamp`) VALUES(22, '*', '*', '*', '/project/delete/*', 0, '2011-05-18 22:43:51');
+INSERT INTO `acl` (`id`, `node_id`, `role_id`, `user_id`, `url`, `allow`, `timestamp`) VALUES(23, '*', 'superadmin', '*', '/project/delete/*', 1, '2011-05-18 22:44:37');
 INSERT INTO `acl` (`id`, `node_id`, `role_id`, `user_id`, `url`, `allow`, `timestamp`) VALUES(24, '*', '*', '*', '/blog/*', 1, '2011-05-18 22:45:14');
 INSERT INTO `acl` (`id`, `node_id`, `role_id`, `user_id`, `url`, `allow`, `timestamp`) VALUES(25, '*', '*', '*', '/faq/*', 1, '2011-05-18 22:49:01');
 INSERT INTO `acl` (`id`, `node_id`, `role_id`, `user_id`, `url`, `allow`, `timestamp`) VALUES(26, '*', '*', '*', '/about/*', 1, '2011-05-18 22:49:01');

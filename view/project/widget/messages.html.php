@@ -31,12 +31,12 @@ $level = (int) $this['level'] ?: 3;
                    <span class="when"><?php echo $message->date; ?></span>
                    <a href="#" onclick="answer('<?php echo $message->id; ?>')">[Responder]</a>
                    <?php // si puede borrar este mensaje
-                   if (\Goteo\Core\ACL::check("/message/delete/{$message->id}")) : ?>
+                   if (\Goteo\Core\ACL::check("/message/delete/{$message->id}/{$project->id}")) : ?>
                         <a href="/message/delete/<?php echo $message->id; ?>/<?php echo $project->id; ?>">[Borrar]</a>
                    <?php endif; ?>
                    <br />
                    <?php // si puede editar este mensaje
-                   if (\Goteo\Core\ACL::check("/message/edit/{$message->id}")) : ?>
+                   if (\Goteo\Core\ACL::check("/message/edit/{$message->id}/{$project->id}")) : ?>
                    <form method="post" action="/message/edit/<?php echo $message->id; ?>/<?php echo $project->id; ?>">
                         <textarea name="message" cols="50" rows="5"><?php echo $message->message; ?></textarea>
                         <br />
@@ -54,12 +54,12 @@ $level = (int) $this['level'] ?: 3;
                            <span class="user"><?php echo $child->user->name; ?></span>
                            <span class="when"><?php echo $child->date; ?></span>
                            <?php // si puede borrar este mensaje
-                           if (\Goteo\Core\ACL::check("/message/delete/{$child->id}")) : ?>
+                           if (\Goteo\Core\ACL::check("/message/delete/{$child->id}/{$project->id}")) : ?>
                                 <a href="/message/delete/<?php echo $child->id; ?>/<?php echo $project->id; ?>">[Borrar]</a>
                            <?php endif; ?>
                            <br />
                        <?php // si puede editar este mensaje
-                       if (\Goteo\Core\ACL::check("/message/edit/{$child->id}")) : ?>
+                       if (\Goteo\Core\ACL::check("/message/edit/{$child->id}/{$project->id}")) : ?>
                        <form method="post" action="/message/edit/<?php echo $child->id; ?>/<?php echo $project->id; ?>">
                             <textarea name="message" cols="50" rows="5"><?php echo $child->message; ?></textarea>
                             <br />
