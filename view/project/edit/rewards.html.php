@@ -14,10 +14,22 @@ $individual_rewards = array();
 $individual_rewards_types = array();
 
 foreach ($this['stypes'] as $id => $type) {
+
+    $licenses = array();
+    foreach ($type->licenses as $lid => $license) {
+        $licenses[$license->id] = array(
+            'value' => $license->id,
+            'class' => "license_{$license->id}",
+            'label' => $license
+        );
+    }
+
+
     $social_rewards_types[] = array(
         'value' => $id,
         'class' => "reward_{$id} social_{$id}",
-        'label' => $type
+        'label' => $type->name,
+        'children' => $licenses
     );
 }
 
@@ -25,7 +37,7 @@ foreach ($this['itypes'] as $id => $type) {
     $individual_rewards_types[] = array(
         'value' => $id,
         'class' => "reward_{$id} individual_{$id}",
-        'label' => $type
+        'label' => $type->name
     );
 }
 
@@ -46,7 +58,7 @@ foreach ($project->social_rewards as $social_reward) {
                 "social_reward-{$social_reward->id}-reward" => array(
                     'title'     => 'Resumen',
                     'type'      => 'textbox',
-                    'required'  => true,
+//                    'required'  => true,
                     'size'      => 100,
                     'class'     => 'inline',
                     'value'     => $social_reward->reward,
@@ -56,14 +68,14 @@ foreach ($project->social_rewards as $social_reward) {
                     'title'     => 'Tipo',
                     'class'     => 'inline social_reward-type reward-type',
                     'type'      => 'radios',
-                    'required'  => true,
+//                    'required'  => true,
                     'options'   => $social_rewards_types,
                     'value'     => $social_reward->icon,
                     'hint'      => Text::get('tooltip-project-social_reward-icon'),
                 ),
                 "social_reward-{$social_reward->id}-description" => array(
                     'type'      => 'textarea',
-                    'required'  => true,
+//                    'required'  => true,
                     'title'     => 'Descripción',
                     'cols'      => 100,
                     'rows'      => 4,

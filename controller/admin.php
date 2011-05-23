@@ -198,7 +198,7 @@ namespace Goteo\Controller {
 
                 // objeto
                 $promo = new Model\Promote(array(
-                    'node' => $node,
+                    'node' => \GOTEO_NODE,
                     'project' => $_POST['project'],
                     'title' => $_POST['title'],
                     'description' => $_POST['description'],
@@ -256,10 +256,10 @@ namespace Goteo\Controller {
 
             if (isset($_GET['add'])) {
                 // proyectos publicados para promocionar
-                $projects = Model\Promote::available($node);
+                $projects = Model\Promote::available();
 
                 // siguiente orden
-                $next = Model\Promote::next($node);
+                $next = Model\Promote::next();
 
                 return new View(
                     'view/admin/promoEdit.html.php',
@@ -288,7 +288,7 @@ namespace Goteo\Controller {
             }
 
 
-            $promoted = Model\Promote::getAll($node);
+            $promoted = Model\Promote::getAll();
 
             return new View(
                 'view/admin/promote.html.php',
@@ -319,7 +319,7 @@ namespace Goteo\Controller {
                 // objeto
                 $faq = new Model\Faq(array(
                     'id' => $_POST['id'],
-                    'node' => $node,
+                    'node' => \GOTEO_NODE,
                     'section' => $_POST['section'],
                     'title' => $_POST['title'],
                     'description' => $_POST['description'],
@@ -360,7 +360,7 @@ namespace Goteo\Controller {
 
             if (isset($_GET['add'])) {
 
-                $next = Model\Faq::next($section, $node);
+                $next = Model\Faq::next($section);
 
                 return new View(
                     'view/admin/faqEdit.html.php',
@@ -390,7 +390,7 @@ namespace Goteo\Controller {
             }
 
 
-            $faqs = Model\Faq::getAll($filter, $node);
+            $faqs = Model\Faq::getAll($filter);
 
             return new View(
                 'view/admin/faq.html.php',
@@ -506,14 +506,23 @@ namespace Goteo\Controller {
          * Licencias
          */
         public function licenses() {
+            if (isset($_GET['filters'])) {
+                foreach (\unserialize($_GET['filters']) as $field=>$value) {
+                    $filters[$field] = $value;
+                }
+            } else {
+                $filters = array();
+            }
+
+            $fields = array('group', 'icon');
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    $filters[$field] = $_GET[$field];
+                }
+            }
 
             // agrupaciones de mas a menos abertas
             $groups = Model\License::groups();
-            if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $groups)) {
-                $filter = $_GET['filter'];
-            } else {
-                $filter = '';
-            }
 
             // tipos de retorno para asociar
             $icons = Model\Icon::getAll('social');
@@ -549,6 +558,7 @@ namespace Goteo\Controller {
                         array(
                             'action'  => $_POST['action'],
                             'license' => $license,
+                            'filters' => $filters,
                             'icons'   => $icons,
                             'groups'  => $groups,
                             'errors'  => $errors
@@ -591,6 +601,7 @@ namespace Goteo\Controller {
                     array(
                         'action' => 'edit',
                         'license' => $license,
+                        'filters' => $filters,
                         'icons' => $icons,
                         'groups' => $groups
                     )
@@ -605,14 +616,15 @@ namespace Goteo\Controller {
              */
 
 
-            $licenses = Model\License::getAll($filter);
+            $licenses = Model\License::getAll($filters['icon'], $filters['group']);
 
             return new View(
                 'view/admin/license.html.php',
                 array(
                     'licenses' => $licenses,
+                    'filters'  => $filters,
                     'groups' => $groups,
-                    'filter' => $filter,
+                    'icons'    => $icons,
                     'errors' => $errors,
                     'success' => $success
                 )

@@ -8,7 +8,10 @@
             <p><?php echo $this['message']; ?></p>
 
             <?php if (isset($this['results'])) : ?>
-                <?php foreach ($this['results'] as $result) : ?>
+                <?php foreach ($this['results'] as $result) :
+                    // la instancia del proyecto es $result
+                    // se pintan con el mismo widget que en portada
+                    ?>
                     <?php echo '<p>
                         <a href="/project/' . $result->id . '" target="_blank">' . $result->name . '</a>';
                         if ($result->owner != $_SESSION['user']->id) {

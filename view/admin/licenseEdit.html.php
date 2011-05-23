@@ -19,7 +19,7 @@ include 'view/prologue.html.php';
             } ?>
 
             <p><a href="/admin">Volver al Menú de administración</a></p>
-            <p><a href="/admin/licenses?filter=<?php echo $this['filter']; ?>">Volver a la lista de licencias</a></p>
+            <p><a href="/admin/licenses?filter=<?php echo serialize($filters); ?>">Volver a la lista de licencias</a></p>
 
             <?php if (!empty($this['errors'])) :
                 echo '<p>';
@@ -30,7 +30,7 @@ include 'view/prologue.html.php';
                 endif;
             ?>
 
-            <form method="post" action="/admin/licenses?filter=<?php echo $this['filter']; ?>">
+            <form method="post" action="/admin/licenses?filter=<?php echo serialize($filters); ?>">
 
                 <input type="hidden" name="action" value="<?php echo $this['action']; ?>" />
                 <input type="hidden" name="id" value="<?php echo $this['license']->id; ?>" />

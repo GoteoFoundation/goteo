@@ -28,7 +28,7 @@ if (!empty($project->costs)) {
             'children'  => array(                         
                 "cost-{$cost->id}-cost" => array(
                     'title'     => 'Coste',
-                    'required'  => true,
+//                    'required'  => true,
                     'type'      => 'textbox',
                     'size'      => 100,
                     'class'     => 'inline',
@@ -37,7 +37,7 @@ if (!empty($project->costs)) {
                 ),
                 "cost-{$cost->id}-type" => array(
                     'title'     => 'Tipo',
-                    'required'  => true,
+//                    'required'  => true,
                     'class'     => 'inline cost-type',
                     'type'      => 'radios',
                     'options'   => $costTypes,
@@ -77,7 +77,7 @@ if (!empty($project->costs)) {
                 ),        
                 "cost-{$cost->id}-amount" => array(
                     'type'      => 'textbox',
-                    'required'  => true,
+//                    'required'  => true,
                     'title'     => 'Valor',
                     'size'      => 8,
                     'class'     => 'inline cost-amount',
@@ -86,7 +86,7 @@ if (!empty($project->costs)) {
                 ),
                 "cost-{$cost->id}-required"  => array(
                     'type'      => 'checkbox',
-                    'required'  => true,
+//                    'required'  => true,
                     'class'     => 'inline cost-required',
                     'value'     => 1,
                     'label'     => 'Imprescindible',

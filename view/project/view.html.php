@@ -2,8 +2,7 @@
 
 use Goteo\Core\View,
     Goteo\Model\User,
-    Goteo\Model\Project\Cost,
-    Goteo\Library\Worth;
+    Goteo\Model\Project\Cost;
 
 $project = $this['project'];
 $show    = $this['show'];
@@ -57,10 +56,9 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
 
             if (!empty($project->investors) && 
                 !empty($invest) &&
-                in_array($invest, array('start', 'ok', 'fail'))) {
+                in_array($invest, array('start', 'ok', 'fail')) ) {
 
-                echo new View('view/project/widget/investors.html.php',
-                    array('project' => $project, 'worthcracy' => Worth::getAll()));
+                echo new View('view/project/widget/investors.html.php', array('project' => $project));
             }
             
             if (!empty($project->supports)) {
@@ -92,8 +90,7 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                                 case 'start':
                                     echo 
                                         new View('view/project/widget/investMsg.html.php', array('message' => $invest, 'user' => $user)),
-                                        new View('view/project/widget/invest.html.php',
-                                            array('project' => $project, 'worthcracy' => Worth::getAll(), 'personal' => User::getPersonal($user->id)));
+                                        new View('view/project/widget/invest.html.php', array('project' => $project, 'personal' => User::getPersonal($user->id)));
                                     break;
                                 case 'ok':
                                     echo
@@ -104,14 +101,12 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                                 case 'fail':
                                     echo
                                         new View('view/project/widget/investMsg.html.php', array('message' => $invest, 'user' => User::get($_SESSION['user']->id))),
-                                        new View('view/project/widget/invest.html.php',
-                                            array('project' => $project, 'worthcracy' => Worth::getAll(), 'personal' => User::getPersonal($_SESSION['user']->id)));
+                                        new View('view/project/widget/invest.html.php', array('project' => $project, 'personal' => User::getPersonal($_SESSION['user']->id)));
                                     break;
                             }
                         } else {
                             echo
-                                new View('view/project/widget/supporters.html.php',
-                                    array('project' => $project, 'worthcracy' => Worth::getAll()));
+                                new View('view/project/widget/supporters.html.php', array('project' => $project));
                         }
                         break;
                     case 'messages':

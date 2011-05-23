@@ -18,7 +18,7 @@ extract($_POST);
 
                 <h2>Usuario registrado</h2>
 
-                <?php if (isset($error)): ?>
+                <?php if (!empty($error)): ?>
                 <p class="error">Login failed</p>
                 <?php endif ?>
 

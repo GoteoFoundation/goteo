@@ -1,12 +1,16 @@
 <?php
 
+use Goteo\Core\View,
+    Goteo\Library\Worth;
+
 $project = $this['project'];
-$worthcracy = $this['worthcracy'];
 
 $level = (int) $this['level'] ?: 3;
 
 $reached    = $project->invested;
 $supporters = count($project->investors);
+
+$worthcracy = Worth::getAll();
 
 ?>
 <div class="widget project-summary">
@@ -15,26 +19,11 @@ $supporters = count($project->investors);
     Total de aportaciones <span><?php echo number_format($reached); ?> &euro;</span>
         
     <div id="project-supporters">
-        <?php foreach ($project->investors as $investor) : ?>
-            <div style="display:block;margin: 20px;">
-                <img src="/image/<?php echo $investor->avatar->id; ?>/50/50" />
-                <?php echo $investor->name; ?><br />
-                    Cofinancia: <?php echo $investor->projects; ?> proyectos<br />
-                    <?php echo $worthcracy[$investor->worth]->name; ?><br />
-                    Aporta: <span class="amount"><?php echo number_format($investor->amount); ?> &euro;</span><br />
-                    <span class="date"><?php echo $investor->date; ?></span>
-            </div>
-        <?php endforeach; ?>
+        <?php foreach ($project->investors as $investor) :
+            echo new View('view/user/widget/supporter.html.php', array('user' => $investor, 'worthcracy' => $worthcracy));
+        endforeach; ?>
     </div>    
-    
-    <div id="worthcracy">
-        <?php foreach ($worthcracy as $level=>$worth) : ?>
-            <div class="level worth-<?php $level; ?>" style="width:100px;float:left;">
-                <?php echo '+ de ' . $worth->amount; ?><br />
-                <span><?php echo $worth->name; ?></span>
-            </div>
-        <?php endforeach; ?>
-        <div style="width:100px;float:left;">&euro;</div>
-    </div>    
+
+    <?php echo new View('view/worth/base.html.php', array('worthcracy' => $worthcracy, 'type' => 'main')); ?>
     
 </div>

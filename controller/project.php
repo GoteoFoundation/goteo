@@ -267,9 +267,13 @@ namespace Goteo\Controller {
             $project = Model\Project::get($id);
 
             // solo si está en campaña o no caducado
-            if ( $project->status < 3 || $project->status > 5) {
+            // o si es root ;)
+            /*
+            if ( $project->status < 3 || $project->status > 5 || $_SESSION['user']->id == 'root') {
                 throw new Redirection("/");
             }
+             * 
+             */
 
             $viewData = array(
                     'project' => $project,
@@ -577,7 +581,10 @@ namespace Goteo\Controller {
                 $project->social_rewards[] = new Model\Project\Reward(array(
                     'type'      => 'social',
                     'project'   => $project->id,
-                    'reward'    => 'Nuevo retorno colectivo'                    
+                    'reward'    => 'Nuevo retorno colectivo',
+                    'icon'      => 'file',
+                    'license'   => 'cc0'
+
                 ));
             }
             
@@ -585,7 +592,10 @@ namespace Goteo\Controller {
                 $project->individual_rewards[] = new Model\Project\Reward(array(
                     'type'      => 'individual',
                     'project'   => $project->id,
-                    'reward'    => 'Nueva recompensa individual'                    
+                    'reward'    => 'Nueva recompensa individual',
+                    'icon'      => 'product',
+                    'amount'    => 10,
+                    'units'     => 0
                 ));
             }
 

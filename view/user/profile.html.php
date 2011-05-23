@@ -1,9 +1,13 @@
 <?php
+
+use Goteo\Core\View;
+
 $bodyClass = 'user-profile';
 include 'view/prologue.html.php';
 include 'view/header.html.php';
 
 $user = $this['user'];
+$worthcracy = $this['worthcracy'];
 ?>
 
         <div id="sub-header">
@@ -35,6 +39,9 @@ $user = $this['user'];
                 </ul>                
             </div>            
             <?php endif ?>
+
+            <?php echo new View('view/worth/base.html.php', array('worthcracy' => $worthcracy, 'type' => 'main', 'level' => $user->worth)); ?>
+
         </div>
         
     <?php include 'view/footer.html.php' ?>

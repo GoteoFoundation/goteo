@@ -10,7 +10,8 @@ namespace Goteo\Model {
             $id,
             $name,
             $description,
-            $group;
+            $group,  // agrupación de iconos 'social' = Retornos colectivos    'individual' = Recompensas individuales
+            $licenses; // licencias relacionadas con este tipo de retorno (solo para retornos colectivos)
 
         /*
          *  Devuelve datos de un icono
@@ -35,6 +36,8 @@ namespace Goteo\Model {
          */
         public static function getAll ($group = '') {
 
+            $icons = array();
+
             $sql = "
                 SELECT
                     id,
@@ -51,8 +54,15 @@ namespace Goteo\Model {
             $sql .= " ORDER BY name ASC";
 
             $query = static::query($sql, array(':group' => $group));
-            
-            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $icon) {
+                if ($group == 'social') {
+                    $icon->licenses = License::getAll($icon->id);
+                }
+                $icons[$icon->id] = $icon;
+            }
+
+            return $icons;
         }
 
         public function validate (&$errors = array()) { 

@@ -7,7 +7,8 @@ namespace Goteo\Controller {
         Goteo\Core\View,
 		Goteo\Model,
         Goteo\Library\Text,
-        Goteo\Library\Message;
+        Goteo\Library\Message,
+        Goteo\Library\Worth;
 
 	class User extends \Goteo\Core\Controller {
 
@@ -201,10 +202,12 @@ namespace Goteo\Controller {
          */
         public function profile ($id) {
             $user = Model\User::get($id);
+            $worthcracy = Worth::getAll();
             return new View (
                 'view/user/profile.html.php',
                 array(
-                    'user' => $user
+                    'user' => $user,
+                    'worthcracy' => $worthcracy
                 )
             );
         }
