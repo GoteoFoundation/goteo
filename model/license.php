@@ -43,7 +43,11 @@ namespace Goteo\Model {
         /*
          * Lista de licencias
          */
-        public static function getAll ($icon = '', $group = '') {
+        public static function getAll ($icon = null, $group = null) {
+
+            // por ahora el grupo es 'open' o no.
+
+            // icon es si esta en relacion en icon_license
 
             $sql = "
                 SELECT
@@ -55,24 +59,26 @@ namespace Goteo\Model {
                 FROM    license
                 ";
 
-            if ($icon != '') {
+            if (!empty($icon)) {
                 // de un grupo o de todos
                 $sql .= "INNER JOIN icon_license
                     ON icon_license.license = license.id
                     AND icon_license.icon = :icon
                     ";
+                $values[':icon'] = $icon;
             }
 
-            if ($group != '') {
+            if (!empty($group)) {
                 // de un grupo o de todos
                 $sql .= "WHERE `group` = :group
                     ";
+                $values[':group'] = $group;
             }
 
             $sql .= "ORDER BY `order` ASC, name ASC
                 ";
             
-            $query = static::query($sql, array(':group' => $group, ':icon' => $icon));
+            $query = static::query($sql, $values);
             
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }

@@ -59,7 +59,7 @@ namespace Goteo\Model {
                 if ($group == 'social') {
                     $icon->licenses = License::getAll($icon->id);
                 }
-                $icons[] = $icon;
+                $icons[$icon->id] = $icon;
             }
 
             return $icons;

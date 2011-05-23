@@ -17,7 +17,7 @@ foreach ($this['stypes'] as $id => $type) {
     $social_rewards_types[] = array(
         'value' => $id,
         'class' => "reward_{$id} social_{$id}",
-        'label' => $type
+        'label' => $type->name
     );
 }
 
@@ -25,7 +25,7 @@ foreach ($this['itypes'] as $id => $type) {
     $individual_rewards_types[] = array(
         'value' => $id,
         'class' => "reward_{$id} individual_{$id}",
-        'label' => $type
+        'label' => $type->name
     );
 }
 

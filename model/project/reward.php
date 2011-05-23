@@ -155,7 +155,7 @@ namespace Goteo\Model\Project {
             $icons = Icon::getAll($type);
 
             foreach ($icons as $icon) {
-                $list[$icon->id] = $icon->name;
+                $list[$icon->id] = $icon;
             }
 
             return $list;

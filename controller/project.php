@@ -577,7 +577,10 @@ namespace Goteo\Controller {
                 $project->social_rewards[] = new Model\Project\Reward(array(
                     'type'      => 'social',
                     'project'   => $project->id,
-                    'reward'    => 'Nuevo retorno colectivo'                    
+                    'reward'    => 'Nuevo retorno colectivo',
+                    'icon'      => 'file',
+                    'license'   => 'cc0'
+
                 ));
             }
             
@@ -585,7 +588,10 @@ namespace Goteo\Controller {
                 $project->individual_rewards[] = new Model\Project\Reward(array(
                     'type'      => 'individual',
                     'project'   => $project->id,
-                    'reward'    => 'Nueva recompensa individual'                    
+                    'reward'    => 'Nueva recompensa individual',
+                    'icon'      => 'product',
+                    'amount'    => 10,
+                    'units'     => 0
                 ));
             }
 
