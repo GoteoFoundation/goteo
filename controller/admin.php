@@ -67,7 +67,11 @@ namespace Goteo\Controller {
             );
 		}
 
-		public function texts () {
+		public function texts ($action = 'list', $id = null) {
+
+            // no cache para textos
+            define('GOTEO_ADMIN_NOCACHE', true);
+
             // comprobamos el filtro
             $filters = Text::filters();
             if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $filters)) {
@@ -76,73 +80,159 @@ namespace Goteo\Controller {
                 $filter = null;
             }
 
-			$using = Lang::get();
-			$texts = Text::getAll($filter);
+            // metemos el todos
+            \array_unshift($filters, 'Todos los textos');
 
-            return new View(
-                'view/admin/texts.html.php',
-                array(
-                    'using' => $using,
-                    'texts' => $texts,
-                    'filters' => $filters
-                    )
-                );
-		}
+            switch ($action) {
+                case 'list':
+                    return new View(
+                        'view/admin/list.html.php',
+                        array(
+                            'title' => 'Gestión de textos',
+                            'menu' => array(
+                                array(
+                                    'url'=>'/admin',
+                                    'label'=>'Volver al Menú de administración'
+                                )
+                            ),
+                            'data' => Text::getAll($filter),
+                            'row' => array(
+                                'id' => 'id',
+                                'value' => 'text'
+                            ),
+                            'urlEdit' => '/admin/texts/edit/',
+                            'filters' => array(
+                                'action' => '/admin/texts',
+                                'label'  => 'Filtrar los textos de:',
+                                'values' => $filters
+                            ),
+                            'filter' => $filter,
+                            'errors' => $errors
+                        )
+                    );
 
-		public function translate ($id) {
+                    break;
+                case 'add':
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Añadiendo un nuevo texto",
+                            'menu' => array(
+                                array(
+                                    'url'=>'/admin',
+                                    'label'=>'Volver al Menú de administración'
+                                ),
+                                array(
+                                    'url'=>'/admin/texts?filter='.$filter,
+                                    'label'=>'Volver a la lista de textos'
+                                )
+                            ),
+                            'data' => (object) array(),
+                            'form' => array(
+                                'action' => '/admin/texts/edit/?filter='.$filter,
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'Aplicar'
+                                ),
+                                'fields' => array (
+                                    'newtext' => array(
+                                        'label' => 'Texto',
+                                        'name' => 'text',
+                                        'type' => 'textarea',
+                                        'properties' => 'cols="100" rows="6"',
+                                        
+                                    )
+                                )
 
-            $lang = \GOTEO_DEFAULT_LANG;
+                            )
+                        )
+                    );
 
-            // no cache para textos
-            define('GOTEO_ADMIN_NOCACHE', true);
+                    break;
+                case 'edit':
 
-			// si tenemos usuario logueado
-			$using = Lang::get();
+                    // gestionar post
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
 
-            $text = new \stdClass();
-            $text->id = $id;
-			$text->text = Text::get($id);
-			$text->purpose = Text::getPurpose($id);
+                        $errors = array();
 
-            $viewData = array(
-                'using' => $using,
-                'text' => $text
-            );
+                        $id = $_POST['id'];
 
-            if (isset($_GET['filter']))
-                $filter = "?filter=" . $_GET['filter'];
-            else
-                $filter = '';
+                        $data = array(
+                            'id' => $id,
+                            'text' => $_POST['text'],
+                            'lang' => \GOTEO_DEFAULT_LANG
+                        );
 
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        if (Text::save($data, $errors)) {
+                            throw new Redirection("/admin/texts?filter=$filter");
+                        }
+                    }
 
-				$errors = array();
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Editando el texto '$id'",
+                            'menu' => array(
+                                array(
+                                    'url'=>'/admin',
+                                    'label'=>'Volver al Menú de administración'
+                                ),
+                                array(
+                                    'url'=>'/admin/texts?filter='.$filter,
+                                    'label'=>'Volver a la lista de textos'
+                                )
+                            ),
+                            'data' => (object) array(
+                                'id' => $id,
+                                'text' => Text::get($id)
+                            ),
+                            'form' => array(
+                                'action' => '/admin/texts/edit/'.$id.'?filter='.$filter,
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'Aplicar'
+                                ),
+                                'fields' => array (
+                                    'idtext' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden',
+                                        'properties' => '',
 
-				$data = array(
-					'id' => $id,
-					'text' => $_POST['newtext'],
-					'lang' => $lang
-				);
+                                    ),
+                                    'newtext' => array(
+                                        'label' => 'Texto',
+                                        'name' => 'text',
+                                        'type' => 'textarea',
+                                        'properties' => 'cols="100" rows="6"',
 
-				if (Text::save($data, $errors)) {
-                    throw new Redirection("/admin/texts/".$filter);
-				}
-				else {
-                    $viewData['errors'] = $errors;
-				}
-			}
+                                    )
+                                )
 
-            return new View(
-                'view/admin/texts.html.php',
-                $viewData
-                );
+                            ),
+                            'errors' => $errors
+                        )
+                    );
+
+                    break;
+                default:
+                    throw new Redirection("/admin");
+            }
 		}
 
         /*
          *  Revisión de proyectos, aqui llega con un nodo y si no es el suyo a la calle (o al suyo)
          */
-        public function checking() {
+        public function checking($action = 'list', $id = null) {
             $errors = array();
+
+            /*
+             * switch action,
+             * proceso que sea,
+             * redirect
+             *
+             */
 
             // poner un proyecto en campaña
             if (isset($_GET['publish'])) {
