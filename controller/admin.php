@@ -22,7 +22,7 @@ namespace Goteo\Controller {
         /*
          * Gestión de páginas institucionales
          */
-		public function pages () {
+		public function pages ($action = 'list', $id = null) {
             // idioma que estamos gestionando
             $lang = GOTEO_DEFAULT_LANG;
 
@@ -30,41 +30,43 @@ namespace Goteo\Controller {
 
             $errors = array();
 
-            // si estamos editando una página
-            if (isset($_GET['page'])) {
-                $id = $_GET['page'];
+            switch ($action) {
+                case 'edit':
+                    // si estamos editando una página
+                    $page = Page::get($id);
 
-                $page = Page::get($id);
-
-                // si llega post, vamos a guardar los cambios
-                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                    $page->content = $_POST['content'];
-                    if ($page->save($errors))
-                        throw new Redirection("/admin/pages");
-                }
+                    // si llega post, vamos a guardar los cambios
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        $page->content = $_POST['content'];
+                        if ($page->save($errors))
+                            throw new Redirection("/admin/pages");
+                    }
 
 
-                // sino, mostramos para editar
-                return new View(
-                    'view/admin/pageEdit.html.php',
-                    array(
-                        'using' => $using,
-                        'page' => $page,
-                        'errors'=>$errors
-                    )
-                 );
+                    // sino, mostramos para editar
+                    return new View(
+                        'view/admin/pageEdit.html.php',
+                        array(
+                            'using' => $using,
+                            'page' => $page,
+                            'errors'=>$errors
+                        )
+                     );
+                    break;
+                case 'list':
+                    // si estamos en la lista de páginas
+                    $pages = Page::getAll();
+
+                    return new View(
+                        'view/admin/pages.html.php',
+                        array(
+                            'using' => $using,
+                            'pages' => $pages
+                        )
+                    );
+                    break;
             }
 
-            // si estamos en la lista de páginas
-			$pages = Page::getAll();
-
-            return new View(
-                'view/admin/pages.html.php',
-                array(
-                    'using' => $using,
-                    'pages' => $pages
-                )
-            );
 		}
 
 		public function texts ($action = 'list', $id = null) {
@@ -89,12 +91,7 @@ namespace Goteo\Controller {
                         'view/admin/list.html.php',
                         array(
                             'title' => 'Gestión de textos',
-                            'menu' => array(
-                                array(
-                                    'url'=>'/admin',
-                                    'label'=>'Volver al Menú de administración'
-                                )
-                            ),
+                            'menu' => array(),
                             'data' => Text::getAll($filter),
                             'row' => array(
                                 'id' => 'id',
@@ -119,12 +116,8 @@ namespace Goteo\Controller {
                             'title' => "Añadiendo un nuevo texto",
                             'menu' => array(
                                 array(
-                                    'url'=>'/admin',
-                                    'label'=>'Volver al Menú de administración'
-                                ),
-                                array(
                                     'url'=>'/admin/texts?filter='.$filter,
-                                    'label'=>'Volver a la lista de textos'
+                                    'label'=>'Textos'
                                 )
                             ),
                             'data' => (object) array(),
@@ -175,12 +168,8 @@ namespace Goteo\Controller {
                             'title' => "Editando el texto '$id'",
                             'menu' => array(
                                 array(
-                                    'url'=>'/admin',
-                                    'label'=>'Volver al Menú de administración'
-                                ),
-                                array(
                                     'url'=>'/admin/texts?filter='.$filter,
-                                    'label'=>'Volver a la lista de textos'
+                                    'label'=>'Textos'
                                 )
                             ),
                             'data' => (object) array(
@@ -233,37 +222,33 @@ namespace Goteo\Controller {
              * redirect
              *
              */
-
-            // poner un proyecto en campaña
-            if (isset($_GET['publish'])) {
-                $project = Model\Project::get($_GET['publish']);
-                $project->publish($errors);
+            switch ($action) {
+                case 'publish':
+                    // poner un proyecto en campaña
+                    $project = Model\Project::get($id);
+                    $project->publish($errors);
+                    break;
+                case 'cancel':
+                    // dar un proyecto por fallido / cerrado  manualmente
+                    $project = Model\Project::get($id);
+                    $project->fail($errors);
+                    break;
+                case 'enable':
+                    // si no está en edición, recuperarlo
+                    $project = Model\Project::get($id);
+                    $project->enable($errors);
+                    break;
+                case 'complete':
+                    // dar un proyecto por financiado manualmente
+                    $project = Model\Project::get($id);
+                    $project->succeed($errors);
+                    break;
+                case 'fulfill':
+                    // marcar todos los retornos cunmplidos
+                    $project = Model\Project::get($id);
+                    $project->satisfied($errors);
+                    break;
             }
-
-            // dar un proyecto por fallido / cerrado  manualmente
-            if (isset($_GET['cancel'])) {
-                $project = Model\Project::get($_GET['cancel']);
-                $project->fail($errors);
-            }
-
-            // si no está en edición, recuperarlo
-            if (isset($_GET['enable'])) {
-                $project = Model\Project::get($_GET['enable']);
-                $project->enable($errors);
-            }
-
-            // dar un proyecto por financiado manualmente
-            if (isset($_GET['complete'])) {
-                $project = Model\Project::get($_GET['complete']);
-                $project->succeed($errors);
-            }
-
-            // marcar todos los retornos cunmplidos
-            if (isset($_GET['fulfill'])) {
-                $project = Model\Project::get($_GET['fulfill']);
-                $project->satisfied($errors);
-            }
-
 
             $projects = Model\Project::getList();
             $status = Model\Project::status();
@@ -281,7 +266,7 @@ namespace Goteo\Controller {
         /*
          * proyectos destacados
          */
-        public function promote() {
+        public function promote($action = 'list', $id = null) {
             $errors = array();
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -335,46 +320,43 @@ namespace Goteo\Controller {
 				}
 			}
 
+            switch ($action) {
+                case 'up':
+                    Model\Promote::up($id);
+                    break;
+                case 'down':
+                    Model\Promote::down($id);
+                    break;
+                case 'remove':
+                    Model\Promote::delete($id);
+                    break;
+                case 'add':
+                    // proyectos publicados para promocionar
+                    $projects = Model\Promote::available();
 
-            if (isset($_GET['up'])) {
-                Model\Promote::up($_GET['up']);
-            }
+                    // siguiente orden
+                    $next = Model\Promote::next();
 
-            if (isset($_GET['down'])) {
-                Model\Promote::down($_GET['down']);
-            }
+                    return new View(
+                        'view/admin/promoEdit.html.php',
+                        array(
+                            'action' => 'add',
+                            'promo' => (object) array('order' => $next),
+                            'projects' => $projects
+                        )
+                    );
+                    break;
+                case 'edit':
+                    $promo = Model\Promote::get($id);
 
-            if (isset($_GET['add'])) {
-                // proyectos publicados para promocionar
-                $projects = Model\Promote::available();
-
-                // siguiente orden
-                $next = Model\Promote::next();
-
-                return new View(
-                    'view/admin/promoEdit.html.php',
-                    array(
-                        'action' => 'add',
-                        'promo' => (object) array('order' => $next),
-                        'projects' => $projects
-                    )
-                );
-            }
-
-            if (isset($_GET['edit'])) {
-                $promo = Model\Promote::get($_GET['edit']);
-
-                return new View(
-                    'view/admin/promoEdit.html.php',
-                    array(
-                        'action' => 'edit',
-                        'promo' => $promo
-                    )
-                );
-            }
-
-            if (isset($_GET['remove'])) {
-                Model\Promote::delete($_GET['remove']);
+                    return new View(
+                        'view/admin/promoEdit.html.php',
+                        array(
+                            'action' => 'edit',
+                            'promo' => $promo
+                        )
+                    );
+                    break;
             }
 
 

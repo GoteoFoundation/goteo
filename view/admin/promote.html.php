@@ -2,59 +2,68 @@
 
 use Goteo\Library\Text;
 
-$bodyClass = 'admin';
+$bodyClass = 'project-show';
 
 include 'view/prologue.html.php';
 
     include 'view/header.html.php'; ?>
 
+        <div id="sub-header">
+            <div>
+                <h2>Proyectos destacados</h2>
+            </div>
+
+            <div class="sub-menu">
+                <div class="project-menu">
+                    <ul>
+                        <li class="home"><a href="/admin">Mainboard</a></li>
+                        <li class="needs"><a href="/admin/checking">Revisión de proyectos</a></li>
+                        <li><a href="/add">Nuevo destacado</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
         <div id="main">
-            <h2>Proyectos destacados</h2>
+            <?php if (!empty($this['errors'])) {
+                echo '<pre>' . print_r($this['errors'], 1) . '</pre>';
+            } ?>
 
-            <p><a href="/admin">Volver al Menú de administración</a></p>
+            <?php if (!empty($this['success'])) {
+                echo '<pre>' . print_r($this['success'], 1) . '</pre>';
+            } ?>
 
-            <?php if (!empty($this['errors'])) :
-                echo '<p>';
-                foreach ($this['errors'] as $error) : ?>
-                    <span style="color:red;"><?php echo $error; ?></span><br />
-            <?php endforeach;
-                echo '</p>';
-                endif;?>
+            <div class="widget">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Proyecto</th> <!-- preview -->
+                            <th>Título</th> <!-- title -->
+                            <th>Posición</th> <!-- order -->
+                            <th>Subir</th>
+                            <th>Bajar</th>
+                            <th>Editar</th>
+                            <th>Quitar</th>
+                        </tr>
+                    </thead>
 
-            <?php if (!empty($this['success'])) : ?>
-                <p><span style="color:green;"><?php echo $this['success']; ?></span><br /></p>
-            <?php endif;?>
+                    <tbody>
+                        <?php foreach ($this['promoted'] as $promo) : ?>
+                        <tr>
+                            <td><a href="/project/<?php echo $promo->project; ?>" target="_blank" title="Preview"><?php echo $promo->name; ?></a></td>
+                            <td><?php echo $promo->title; ?></td>
+                            <td><?php echo $promo->order; ?></td>
+                            <td><a href="/admin/promote/up/<?php echo $promo->project; ?>">[&uarr;]</a></td>
+                            <td><a href="/admin/promote/down/<?php echo $promo->project; ?>">[&darr;]</a></td>
+                            <td><a href="/admin/promote/edit/<?php echo $promo->project; ?>">[Editar]</a></td>
+                            <td><a href="/admin/promote/remove/<?php echo $promo->project; ?>">[Quitar]</a></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
 
-            <p><a href="?add">Añadir</a></p>
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <td>Proyecto</td> <!-- preview -->
-                                <td>Título</td> <!-- title -->
-                                <td>Posición</td> <!-- order -->
-                                <td><!-- Move up --></td>
-                                <td><!-- Move down --></td>
-                                <td><!-- Edit --></td>
-                                <td><!-- Remove --></td>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <?php foreach ($this['promoted'] as $promo) : ?>
-                            <tr>
-                                <td><a href="/project/<?php echo $promo->project; ?>" target="_blank" title="Preview"><?php echo $promo->name; ?></a></td>
-                                <td><?php echo $promo->title; ?></td>
-                                <td><?php echo $promo->order; ?></td>
-                                <td><a href="?up=<?php echo $promo->project; ?>">[&uarr;]</a></td>
-                                <td><a href="?down=<?php echo $promo->project; ?>">[&darr;]</a></td>
-                                <td><a href="?edit=<?php echo $promo->project; ?>">[Editar]</a></td>
-                                <td><a href="?remove=<?php echo $promo->project; ?>">[Quitar]</a></td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-
-                    </table>
+                </table>
+            </div>
         </div>
 
 <?php

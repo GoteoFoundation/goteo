@@ -2,70 +2,82 @@
 
 use Goteo\Library\Text;
 
-$bodyClass = 'admin';
+$bodyClass = 'project-show';
 
 include 'view/prologue.html.php';
 
     include 'view/header.html.php'; ?>
 
+        <div id="sub-header">
+            <div>
+                <h2>Preguntas frecuentes</h2>
+            </div>
+
+            <div class="sub-menu">
+                <div class="project-menu">
+                    <ul>
+                        <li class="home"><a href="/admin">Mainboard</a></li>
+                        <li class="needs"><a href="/admin/checking">Revisión de proyectos</a></li>
+                        <li><a href="?filter=<?php echo $this['filter']; ?>&add">Añadir pregunta</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
         <div id="main">
-            <h2>Preguntas frecuentes</h2>
-
-            <p><a href="/admin">Volver al Menú de administración</a></p>
-
-            <?php if (!empty($this['errors'])) :
-                echo '<p>';
-                foreach ($this['errors'] as $error) : ?>
-                    <span style="color:red;"><?php echo $error; ?></span><br />
-            <?php endforeach;
-                echo '</p>';
-                endif;?>
-
-            <?php if (!empty($this['success'])) : ?>
-                <p><span style="color:green;"><?php echo $this['success']; ?></span><br /></p>
-            <?php endif;?>
-
             <?php if (!empty($this['filter'])) : ?>
-                <p>Viendo las preguntas de la sección '<?php echo $this['sections'][$this['filter']]; ?>'</p>
+                <h3>Viendo las preguntas de la sección '<?php echo $this['sections'][$this['filter']]; ?>'</h3>
             <?php endif;?>
+                
+            <?php if (!empty($this['errors'])) {
+                echo '<pre>' . print_r($this['errors'], 1) . '</pre>';
+            } ?>
 
-            <form id="sectionfilter-form" action="/admin/faq" method="get">
-                <label for="section-filter">Mostrar las preguntas de:</label>
-                <select id="section-filter" name="filter" onchange="document.getElementById('sectionfilter-form').submit();">
-                <?php foreach ($this['sections'] as $sectionId=>$sectionName) : ?>
-                    <option value="<?php echo $sectionId; ?>"<?php if ($this['filter'] == $sectionId) echo ' selected="selected"';?>><?php echo $sectionName; ?></option>
-                <?php endforeach; ?>
-                </select>
-            </form>
+            <?php if (!empty($this['success'])) {
+                echo '<pre>' . print_r($this['success'], 1) . '</pre>';
+            } ?>
 
-            <p><a href="?filter=<?php echo $this['filter']; ?>&add">Añadir pregunta</a></p>
+            <div class="widget">
+                <form id="sectionfilter-form" action="/admin/faq" method="get">
+                    <label for="section-filter">Mostrar las preguntas de:</label>
+                    <select id="section-filter" name="filter" onchange="document.getElementById('sectionfilter-form').submit();">
+                    <?php foreach ($this['sections'] as $sectionId=>$sectionName) : ?>
+                        <option value="<?php echo $sectionId; ?>"<?php if ($this['filter'] == $sectionId) echo ' selected="selected"';?>><?php echo $sectionName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </form>
+            </div>
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <td>Título</td> <!-- title -->
-                                <td>Posición</td> <!-- order -->
-                                <td><!-- Move up --></td>
-                                <td><!-- Move down --></td>
-                                <td><!-- Edit --></td>
-                                <td><!-- Remove --></td>
-                            </tr>
-                        </thead>
+            <div class="widget">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Título</th> <!-- title -->
+                            <th>Posición</th> <!-- order -->
+                            <td><!-- Move up --></td>
+                            <td><!-- Move down --></td>
+                            <td><!-- Edit --></td>
+                            <td><!-- Remove --></td>
+                        </tr>
+                    </thead>
 
-                        <tbody>
-                            <?php foreach ($this['faqs'] as $faq) : ?>
-                            <tr>
-                                <td><?php echo $faq->title; ?></td>
-                                <td><?php echo $faq->order; ?></td>
-                                <td><a href="?filter=<?php echo $this['filter']; ?>&up=<?php echo $faq->id; ?>">[&uarr;]</a></td>
-                                <td><a href="?filter=<?php echo $this['filter']; ?>&down=<?php echo $faq->id; ?>">[&darr;]</a></td>
-                                <td><a href="?filter=<?php echo $this['filter']; ?>&edit=<?php echo $faq->id; ?>">[Editar]</a></td>
-                                <td><a href="?filter=<?php echo $this['filter']; ?>&remove=<?php echo $faq->id; ?>">[Quitar]</a></td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
+                    <tbody>
+                        <?php foreach ($this['faqs'] as $faq) : ?>
+                        <tr>
+                            <td><?php echo $faq->title; ?></td>
+                            <td><?php echo $faq->order; ?></td>
+                            <td><a href="?filter=<?php echo $this['filter']; ?>&up=<?php echo $faq->id; ?>">[&uarr;]</a></td>
+                            <td><a href="?filter=<?php echo $this['filter']; ?>&down=<?php echo $faq->id; ?>">[&darr;]</a></td>
+                            <td><a href="?filter=<?php echo $this['filter']; ?>&edit=<?php echo $faq->id; ?>">[Editar]</a></td>
+                            <td><a href="?filter=<?php echo $this['filter']; ?>&remove=<?php echo $faq->id; ?>">[Quitar]</a></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
 
-                    </table>
+                </table>
+            </div>
+                
         </div>
 
 <?php

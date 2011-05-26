@@ -2,38 +2,37 @@
 
 use Goteo\Library\Text;
 
-$bodyClass = 'admin';
+$bodyClass = 'project-show';
 
 include 'view/prologue.html.php';
 
     include 'view/header.html.php'; ?>
 
+        <div id="sub-header">
+            <div>
+                <h2>Administración de usuarios y nodos</h2>
+            </div>
+
+            <div class="sub-menu">
+                <div class="project-menu">
+                    <ul>
+                        <li class="home"><a href="/admin">Mainboard</a></li>
+                        <li class="needs"><a href="/admin/checking">Revisión de proyectos</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
         <div id="main">
-            <h2>Administración de usuarios y nodos</h2>
-
-            <p><a href="/admin">Volver al Menú de administración</a></p>
-
+            <h3>Gestión de usuarios del nodo, administradores de nodos, usuarios normales y gestión de nodos</h3>
+            <p>Pendiente de planificación</p>
+            <?php echo \trace($this['users']); ?>
             <p>
-                Gestión de usuarios del nodo, administradores de nodos, usuarios normales y gestión de nodos
+                <?php foreach ($this['users'] as $user) : ?>
+                    <a href="/user/<?php echo $user->id; ?>" target="_blank"><?php echo $user->name; ?></a><br />
+                <?php endforeach; ?>
             </p>
-
-            <?php if (!empty($this['errors'])) :
-                echo '<p>';
-                foreach ($this['errors'] as $error) : ?>
-                    <span style="color:red;"><?php echo $error; ?></span><br />
-            <?php endforeach;
-                echo '</p>';
-                endif;?>
-
-            <ul>
-            <?php foreach ($this['users'] as $user) : ?>
-                <li>
-                    <label><?php echo $user->name; ?>:</label>
-                    <a href="/user/<?php echo $user->id; ?>" target="_blank">[Ver]</a>
-                </li>
-            <?php endforeach; ?>
-            </ul>
-
 
         </div>
 
