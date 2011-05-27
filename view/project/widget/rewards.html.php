@@ -7,10 +7,10 @@ $project = $this['project'];
 ?>
 <div class="widget project-rewards collapsable" id="project-rewards">
     
-    <h<?php echo $level ?> class="title">Que ofrezco a cambio?</h<?php echo $level ?>>
+    <h<?php echo $level + 1 ?> class="supertitle">Que ofrezco a cambio?</h<?php echo $level + 1?>>
        
     <div class="social">
-        <h<?php echo $level+1 ?> class="subtitle">Retorno colectivo</h<?php echo $level+1 ?>>
+        <h<?php echo $level ?> class="title">Retorno colectivo</h<?php echo $level ?>>
         <ul>
         <?php foreach ($project->social_rewards as $social) : ?>
             <li class="<?php echo $social->icon ?>">                
@@ -22,7 +22,7 @@ $project = $this['project'];
     </div>
         
     <div class="individual">
-        <h<?php echo $level+1 ?> class="subtitle">Recompensas individuales</h<?php echo $level+1 ?>>
+        <h<?php echo $level+1 ?> class="title">Recompensas individuales</h<?php echo $level+1 ?>>
         <ul>
         <?php foreach ($project->individual_rewards as $individual) : ?>
         <li class="<?php echo $individual->icon ?>">
