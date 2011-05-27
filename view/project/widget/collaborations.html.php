@@ -7,9 +7,9 @@ $project = $this['project'];
 ?>
 <div class="widget project-collaborations collapsable" id="project-collaborations">
     
-    <h<?php echo $level ?> class="title">Aportaciones no económicas</h<?php echo $level ?>>
+    <h<?php echo $level + 1?> class="supertitle">Aportaciones no económicas</h<?php echo $level ?>>
 
-    <h<?php echo $level + 1 ?> class="subtitle">Se busca</h<?php echo $level + 1 ?>>
+    <h<?php echo $level ?> class="title">Se busca</h<?php echo $level ?>>
     
     <ul>
         <?php foreach ($project->supports as $support) : ?>

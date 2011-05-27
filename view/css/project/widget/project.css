@@ -1,0 +1,226 @@
+div.widget.project {
+    overflow: visible;
+}
+
+div.widget.project > *  {
+    margin: 0;
+    padding: 12px !important;    
+}
+
+div.widget.project div.image {
+    height: 143px;
+    text-align: center;
+    background-color: #deddde;
+    margin: 12px;
+    padding: 0 !important;
+}
+
+div.widget.project div.image img {
+    width: 100%;
+    height: 100%;
+}
+
+div.widget.project > .title {    
+    height: 2em;
+}
+
+div.widget.project > .author {
+    margin-top: -12px;
+}
+
+div.widget.project > .author,
+div.widget.project > .author a {
+    font-weight: bold;
+    font-size: 12px;
+    text-decoration: none;
+    text-transform: none;
+}
+
+div.widget.project div.meter {
+    border-top: 1px solid #d1d3d4;    
+    padding: 12px 0 80px !important;
+    position: relative;
+    margin: 0 12px !important;
+}
+
+div.widget.project div.meter h2,
+div.widget.project div.meter h3,
+div.widget.project div.meter h4,
+div.widget.project div.meter h5,
+div.widget.project div.meter h6,
+div.widget.project div.meter h7,
+div.widget.project div.meter h8 {
+    margin: 0 .2em;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+
+div.widget.project div.meter div.graph {
+    background-color: #58595b;
+    height: 8px;
+    border-right: 40px solid #58595b;
+    margin: 55px 0 80px;    
+    position: relative;   
+}
+
+div.widget.project div.meter div.graph  * strong,
+div.widget.project div.meter div.graph  * span {
+    display: none;
+}
+
+div.widget.project div.meter div.graph .minimum {
+    background-color: #a7abad;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+div.widget.project div.meter div.graph .minimum .done {
+    background-color: #eb2227;
+    height: 10px;
+    position: absolute;
+    left: 0;
+    top: -2px;
+}
+
+div.widget.project div.meter div.graph .minimum .done strong {
+    background: url("project/marker.png") no-repeat;
+    display: block;
+    height: 16px;
+    line-height: 2000px;
+    margin-right: -8px;
+    margin-top: -11px;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    text-indent: 2000px;
+    width: 17px;
+}
+
+div.widget.project div.meter div.graph .minimum .left {
+    float: right;
+    height: 14px;
+    border-right: 4px solid #eb2227;
+    margin-right: -2px;
+    margin-top: -6px;
+}
+
+div.widget.project div.meter div.graph .optimum {
+    border-right: 4px solid #58595B;
+    height: 14px;
+    margin-right: -2px;
+}
+
+div.widget.project div.meter dl {
+    margin: -78px 40px 0 0;
+    position: relative;        
+}
+
+div.widget.project div.meter dl * {
+    margin: 0;
+}
+
+div.widget.project div.meter dl .optimum,
+div.widget.project div.meter dl .minimum {
+    line-height: 14px;
+    display: block;       
+    white-space: nowrap;
+}
+
+div.widget.project div.meter dl dt.optimum,
+div.widget.project div.meter dl dt.minimum {
+    font-size: 10px;
+    text-transform: uppercase;
+}
+
+div.widget.project div.meter dl dd.optimum,
+div.widget.project div.meter dl dd.minimum {
+    font-size: 18px;
+    font-weight: normal;
+}
+
+div.widget.project div.meter dl dt.optimum {
+    margin-top: 10px;
+}
+
+div.widget.project div.meter dl .optimum {
+    width: 70px;
+    right: 12px;
+    top: 45px;  
+    float: right;    
+    clear: right;    
+    margin-right: -40px;
+}
+
+div.widget.project div.meter dl .minimum {
+    color: #eb2227;
+    width: 80px;        
+    position: relative;
+}
+
+div.widget.project div.meter dl .minimum > * {
+    display: block;    
+    width: 60px;
+    position: absolute;
+    right: 0;
+    width: 60px;
+    margin-right: -30px;
+}
+
+div.widget.project div.meter dl dt.minimum {
+    position: absolute;
+    top: -60px;
+}
+
+div.widget.project div.meter dl dd.minimum > * {
+    position: absolute;
+    top: -46px;
+}
+
+div.widget.project div.meter dl .reached,
+div.widget.project div.meter dl .supporters {
+    display:  none;    
+}
+
+div.widget.project div.meter dl span.euro {
+    width: 16px;
+    height: 16px;
+    line-height: 2000px;
+    overflow: hidden;
+    display: inline-block;
+    background:  url('/view/css/euro/s.png') no-repeat center;
+    margin-bottom: -1px;
+}
+
+div.widget.project div.meter dl .minimum span.euro {
+    background-image: url('/view/css/euro/red/s.png');
+}
+
+div.widget.project div.meter dl .days {
+    position: absolute;
+    border-top: 1px solid #d1d3d4;
+    top: 55px;
+    padding: .8em .2em;    
+    font-size: 12px;
+    line-height: 1.5em;
+    font-weight: bold;
+}
+
+div.widget.project div.meter dl dt.days {    
+    width: 30%;
+    text-transform: uppercase;
+}
+
+div.widget.project div.meter dl dd.days {
+    left: 30%;
+    right: -40px;
+    color: #eb2227;
+    font-weight: bold;
+}
+
+
+div.widget.project div.buttons .button + .button {
+    float: right;
+}
