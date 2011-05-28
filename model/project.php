@@ -1298,9 +1298,24 @@ namespace Goteo\Model {
          * @param string node id
          * @return array of project instances
          */
-        public static function getList($node = \GOTEO_NODE) {
+        public static function getList($filters = array(), $node = \GOTEO_NODE) {
             $projects = array();
-            $query = self::query("SELECT id FROM project WHERE status > 0 AND node = ? ORDER BY progress DESC", array($node));
+
+            $sqlFilter = "";
+            if (!empty($filters['status'])) {
+                $sqlFilter .= " AND status = " . $filters['status'];
+            }
+
+            $sql = "SELECT 
+                        id
+                    FROM project
+                    WHERE status > 0
+                        AND node = ?
+                        $sqlFilter
+                    ORDER BY progress DESC
+                    ";
+
+            $query = self::query($sql, array($node));
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
                 $projects[] = self::get($proj['id']);
             }
