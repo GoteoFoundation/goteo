@@ -104,9 +104,8 @@ div.widget.project-support dl dd.supporters {
     color: #313b96;
 }
 
-div.widget.project-support a.button.supportit {
-    display: block;
-    margin: 1.5em 1em 0;
+div.widget.project-support a.button.supportit {    
+    margin: 1.5em 0 0;
 }
 
 /* Animated/static meter */
@@ -116,12 +115,12 @@ div.widget.project-support > div.meter {
 
 div.widget.project-support div.graph {
     width: 28px;
-    overflow: visible;
+    overflow: hidden;
     position: absolute;
-    left: 20px;
-    top: 22px;
+    left: 8px;
+    top: 57px;
     bottom: 0;
-    width: 26px;
+    width: 38px;
     border-bottom: 2px solid #ee4843;
     font-size: 0;
 }
@@ -130,11 +129,12 @@ div.widget.project-support div.graph > div.optimum,
 div.widget.project-support div.graph > div.minimum {
     float: right;
     width: 26px;
+    overflow: visible;
 }
 
 div.widget.project-support div.graph > div.optimum {
     background: url('support/optimum.png') no-repeat center top;
-    height: 45px;
+    height: 45px;    
 }
 
 div.widget.project-support div.graph > div.minimum {    
@@ -142,7 +142,9 @@ div.widget.project-support div.graph > div.minimum {
     position: absolute;
     right: 0;
     top: 45px;
-    bottom: 0;
+    bottom: 0;   
+    height: 174px !important;
+    min-height: 174px !important;
 }
 
 div.widget.project-support div.graph > div.minimum > div.done {

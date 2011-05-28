@@ -11,9 +11,8 @@ $project = $this['project'];
 
     
     <h<?php echo $level + 1 ?> class="supertitle">Aportaciones económicas</h<?php echo $level + 1 ?>>
-    <h<?php echo $level ?> class="title">Financiación</h<?php echo $level ?>>
     
-    <?php echo new View('view/project/meter.html.php', array('project' => $project) ) ?>          
+    <?php echo new View('view/project/meter.html.php', array('project' => $project, 'level' => $level) ) ?>
     
     <a class="button red supportit" href="/project/<?php echo $project->id; ?>/invest">Apóyalo</a>
     
