@@ -13,15 +13,15 @@ $level = $this['level'] ?: 3;
     <div class="balloon"><?php echo $this['balloon'] ?></div>
     <?php endif ?>
     
-    <h<?php echo $level ?> class="title"><?php echo htmlspecialchars($project->name) ?></h<?php echo $level ?>>
-    
-    <h<?php echo $level + 1 ?> class="author">Por: <a href="/user/profile/<?php echo htmlspecialchars($project->user->id) ?>"><?php echo htmlspecialchars($project->user->name) ?></a></h<?php echo $level + 1?>>
-    
     <div class="image">
         <?php if (!empty($project->gallery)): ?>
         <img alt="" src="<?php echo htmlspecialchars(current($project->gallery)->getLink(255, 143)) ?>" />
         <?php endif ?>
     </div>
+
+    <h<?php echo $level ?> class="title"><?php echo htmlspecialchars($project->name) ?></h<?php echo $level ?>>
+    
+    <h<?php echo $level + 1 ?> class="author">Por: <a href="/user/profile/<?php echo htmlspecialchars($project->user->id) ?>"><?php echo htmlspecialchars($project->user->name) ?></a></h<?php echo $level + 1?>>
     
     <div class="description"><?php echo $project->description ?></div>
 
