@@ -12,7 +12,7 @@ div.widget.project-support dl {
 }
 
 div.widget.project-support dl dt {
-    margin-top: .5em;
+    margin-top: .8em;
 }
 
 div.widget.project-support dl dt,
@@ -117,7 +117,7 @@ div.widget.project-support div.graph {
     overflow: hidden;
     position: absolute;
     left: 8px;
-    top: 57px;
+    top: 50px;
     bottom: 0;
     width: 38px;
     border-bottom: 2px solid #ee4843;
