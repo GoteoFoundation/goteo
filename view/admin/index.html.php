@@ -48,7 +48,7 @@ include 'view/prologue.html.php';
                         <li><a href="/admin/licenses">Licencias</a></li>
                     </ul>
                 </div>
-
+<!--
                 <div class="widget board collapse">
                     <h3 class="title">Plataforma Goteo</h3>
                     <ul>
@@ -59,7 +59,7 @@ include 'view/prologue.html.php';
                     </ul>
                     <p>Estos están pendientes de planificación o en desarrollo</p>
                 </div>
-
+-->
             </div>
 
         </div>
