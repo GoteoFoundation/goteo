@@ -33,28 +33,35 @@ $(document).ready(function(){
 	});
 });
 </script>
+
+        <div id="sub-header">
+            <div>
+                <h2>Gestión de páginas institucionales</h2>
+            </div>
+
+            <div class="sub-menu">
+                <div class="admin-menu">
+                    <ul>
+                        <li class="home"><a href="/admin">Mainboard</a></li>
+                        <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
+                        <li><a href="/admin/pages">Páginas</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
         <div id="main">
-            <h2>Editando la pagina '<?php echo $this['page']->name; ?>'</h2>
-            <?php echo $this['page']->description; ?><br />
+            <h3>Editando la pagina '<?php echo $this['page']->name; ?>'</h3>
+            
+            <p><?php echo $this['page']->description; ?></p>
 
-            <p><a href="/admin">Volver al Menú de administración</a></p>
-            <p><a href="/admin/pages">Volver a la lista de páginas</a></p>
-
-            <?php if (!empty($this['errors'])) :
-                echo '<p>';
-                foreach ($this['errors'] as $error) : ?>
-                    <span style="color:red;"><?php echo $error; ?></span><br />
-            <?php endforeach;
-                echo '</p>';
-                endif;
-            ?>
-
-            <form method="post" action="">
-                <textarea id="richtext_content" name="content" cols="120" rows="20"><?php echo $this['page']->content; ?></textarea>
-                <input type="submit" name="save" value="Guardar" />
-            </form>
-
-            <p><a href="<?php echo $this['page']->url; ?>" target="_blank">Previsualizar</a></p>
+            <div class="widget board">
+                <form method="post" action="/admin/pages/edit/<?php echo $this['page']->id; ?>">
+                    <textarea id="richtext_content" name="content" cols="120" rows="20"><?php echo $this['page']->content; ?></textarea>
+                    <input type="submit" name="save" value="Guardar" />
+                </form>
+            </div>
 
         </div>
 

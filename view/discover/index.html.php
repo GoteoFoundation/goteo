@@ -1,6 +1,12 @@
-<?php $bodyClass = 'home'; include 'view/prologue.html.php' ?>
+<?php
 
-        <?php include 'view/header.html.php' ?>
+use Goteo\Core\View;
+
+$bodyClass = 'home';
+
+include 'view/prologue.html.php';
+
+include 'view/header.html.php' ?>
 
         <div id="main">
             
@@ -12,30 +18,28 @@
             </fieldset>
         </form>
 
-		<?php
-		foreach ($this['types'] as $type=>$list) {
+		<?php foreach ($this['types'] as $type=>$list) :
             if (empty($list))
                 continue;
+            ?>
+            <div class="widget projects promos">
+                <h2 class="title"><?php echo $this['title'][$type]; ?></h2>
+                <?php foreach ($list as $project) : ?>
+                    <div>
+                        <?php
+                        // la instancia del proyecto es $project
+                        // se pintan con el mismo widget que en la portada, sin balloon
+                        echo new View('view/project/widget/project.html.php', array(
+                            'project' => $project
+                        )); ?>
+                    </div>
+                <?php endforeach; ?>
+                <p>
+                    <a href="/discover/view/<?php echo $type; ?>">Ver todos</a>
+                </p>
+            </div>
 
-            echo '<h3>' . $this['title'][$type] . '</h3>
-                <a href="/discover/view/' . $type . '">Ver todos</a>';
-            foreach ($list as $project) {
-                // la instancia del proyecto es $project
-                // se pintan con el mismo widget que en result
-                echo '<p>' . $project->name. '<br />';
-                if ($project->status == 3 && $project->owner != $_SESSION['user']->id)
-                    echo '<a href="/invest/' . $project->id . '">[Apóyalo]</a>';
-                
-                echo '<a href="/project/' . $project->id . '">[Ver proyecto]</a><br />
-                    Obtenido: ' . $project->invested . ' &euro;<br />
-                    Mínimo: ' . $project->mincost . ' &euro;<br />
-                    Óptimo: ' . $project->maxcost . ' &euro;<br />
-                    Quedan: ' . $project->days . ' días<br />
-                    Cofinanciadores: ' . count($project->investors) . '<br />
-               </p>';
-            }
-		}
-		?>
+        <?php endforeach; ?>
         
         </div>        
 

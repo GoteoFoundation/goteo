@@ -24,14 +24,16 @@ namespace Goteo\Library {
 
             $sql = "SELECT id
                     FROM project
-                    WHERE name LIKE :text
-                    OR description LIKE :text
-                    OR motivation LIKE :text
-                    OR about LIKE :text
-                    OR goal LIKE :text
-                    OR related LIKE :text
-                    OR keywords LIKE :text
-                    OR location LIKE :text
+                    WHERE status = 3 
+                    AND (name LIKE :text
+                        OR description LIKE :text
+                        OR motivation LIKE :text
+                        OR about LIKE :text
+                        OR goal LIKE :text
+                        OR related LIKE :text
+                        OR keywords LIKE :text
+                        OR location LIKE :text
+                        )
                     ORDER BY name ASC";
 
             try {

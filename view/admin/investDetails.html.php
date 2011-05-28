@@ -8,18 +8,31 @@ include 'view/prologue.html.php';
 
     include 'view/header.html.php'; ?>
 
-        <div id="main">
-            <h2>Detalle de la transacción <?php echo $this['invest']->id; ?> </h2>
+        <div id="sub-header">
+            <div>
+                <h2>Administración de transacciones</h2>
+            </div>
 
-            <p><a href="/admin">Volver al Menú de administración</a></p>
-            <p><a href="/admin/accounting">Volver a las transacciones</a></p>
+            <div class="sub-menu">
+                <div class="admin-menu">
+                    <ul>
+                        <li class="home"><a href="/admin">Mainboard</a></li>
+                        <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
+                        <li><a href="/admin/accounting">Transacciones</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="main">
+            <h3>Detalle de la transacción <?php echo $this['invest']->id; ?> </h3>
 
             <?php if (!empty($this['project'])) : ?>
-                <h3><?php echo $this['project']->name . ' ' . $this['status'][$this['project']->status]; ?></h3>
+                <h4><?php echo $this['project']->name . ' ' . $this['status'][$this['project']->status]; ?></h4>
                 <p><?php echo '<pre>' . print_r($this['invest'], 1) . '</pre>'; ?></p>
                 <?php foreach ($this['details'] as $point=>$data) {
-                    echo "<p><h4>$point</h4>";
-                    echo "<pre>" . print_r($data, 1) . "</pre></p>";
+                    echo "<p>$point<pre>" . print_r($data, 1) . "</pre></p>";
                 } ?>
             <?php endif;?>
         </div>
