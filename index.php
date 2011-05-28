@@ -64,7 +64,8 @@ $uri = '/' . implode('/', $segments);
 try {
     // Check permissions on requested URI
     if (!ACL::check($uri)) {
-        throw new Error(Error::FORBIDDEN);
+        throw new Redirection("/user/login");
+        // throw new Error(Error::FORBIDDEN);
     }
 
     // Get controller name
