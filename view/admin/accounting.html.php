@@ -35,7 +35,8 @@ include 'view/prologue.html.php';
                     <div class="widget board">
                         <h3><?php echo $project->name . ' / ' . $this['status'][$project->status]; ?></h3>
                         <?php foreach ($project->invests as $key=>$invest) : $errors = array();?>
-                        <p><strong><?php echo $invest->user->name; ?></strong><?php if ($invest->anonymous) echo ' (A)'; ?> <?php echo $invest->amount; ?> &euro; (<?php echo $this['investStatus'][$invest->status]; ?>)  (<?php echo $invest->paypalStatus; ?>) <a href="?details=<?php echo $invest->id; ?>">[Detalles]</a></p>
+                        <p><strong><?php echo $invest->user->name; ?></strong><?php if ($invest->anonymous) echo ' (A)'; ?> <?php echo $invest->amount; ?> &euro; (<?php echo $this['investStatus'][$invest->status]; ?>)  (<?php echo $invest->paypalStatus; ?>) 
+                            <a href="/admin/accounting/details/<?php echo $invest->id; ?>">[Detalles]</a></p>
                         <?php endforeach; ?>
                     </div>
                 <?php endforeach; ?>

@@ -18,7 +18,7 @@ include 'view/prologue.html.php';
                     <ul>
                         <li class="home"><a href="/admin">Mainboard</a></li>
                         <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
-                        <li><a href="/admin/icons?filter=<?php echo $this['filter']; ?>">Volver a la lista de tipos de Retorno/Recompensa</a></li>
+                        <li><a href="/admin/icons?filter=<?php echo $this['filter']; ?>">Tipos de Retorno/Recompensa</a></li>
                     </ul>
                 </div>
             </div>

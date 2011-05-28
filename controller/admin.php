@@ -384,7 +384,7 @@ namespace Goteo\Controller {
         /*
          * preguntas frecuentes
          */
-        public function faq() {
+        public function faq($action = 'list', $id = null) {
             // secciones
             $sections = Model\Faq::sections();
             if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $sections)) {
@@ -423,6 +423,7 @@ namespace Goteo\Controller {
                         array(
                             'action' => $_POST['action'],
                             'faq' => $faq,
+                            'filter' => $filter,
                             'sections' => $sections,
                             'errors' => $errors
                         )
@@ -431,45 +432,43 @@ namespace Goteo\Controller {
 			}
 
 
-            if (isset($_GET['up'])) {
-                Model\Faq::up($_GET['up']);
+            switch ($action) {
+                case 'up':
+                    Model\Faq::up($id);
+                    break;
+                case 'down':
+                    Model\Faq::down($id);
+                    break;
+                case 'add':
+                    $next = Model\Faq::next($section);
+
+                    return new View(
+                        'view/admin/faqEdit.html.php',
+                        array(
+                            'action' => 'add',
+                            'faq' => (object) array('section' => $section, 'order' => $next),
+                            'filter' => $filter,
+                            'sections' => $sections
+                        )
+                    );
+                    break;
+                case 'edit':
+                    $faq = Model\Faq::get($id);
+
+                    return new View(
+                        'view/admin/faqEdit.html.php',
+                        array(
+                            'action' => 'edit',
+                            'faq' => $faq,
+                            'filter' => $filter,
+                            'sections' => $sections
+                        )
+                    );
+                    break;
+                case 'remove':
+                    Model\Faq::delete($id);
+                    break;
             }
-
-            if (isset($_GET['down'])) {
-                Model\Faq::down($_GET['down']);
-            }
-
-            if (isset($_GET['add'])) {
-
-                $next = Model\Faq::next($section);
-
-                return new View(
-                    'view/admin/faqEdit.html.php',
-                    array(
-                        'action' => 'add',
-                        'faq' => (object) array('section' => $section, 'order' => $next),
-                        'sections' => $sections
-                    )
-                );
-            }
-
-            if (isset($_GET['edit'])) {
-                $faq = Model\Faq::get($_GET['edit']);
-
-                return new View(
-                    'view/admin/faqEdit.html.php',
-                    array(
-                        'action' => 'edit',
-                        'faq' => $faq,
-                        'sections' => $sections
-                    )
-                );
-            }
-
-            if (isset($_GET['remove'])) {
-                Model\Faq::delete($_GET['remove']);
-            }
-
 
             $faqs = Model\Faq::getAll($filter);
 
@@ -488,7 +487,7 @@ namespace Goteo\Controller {
         /*
          * Tipos de Retorno/Recompensa (iconos)
          */
-        public function icons() {
+        public function icons($action = 'list', $id = null) {
 
             // grupos
             $groups = Model\Icon::groups();
@@ -526,6 +525,7 @@ namespace Goteo\Controller {
                         array(
                             'action' => $_POST['action'],
                             'icon' => $icon,
+                            'filter' => $filter,
                             'groups' => $groups,
                             'errors' => $errors
                         )
@@ -533,41 +533,37 @@ namespace Goteo\Controller {
 				}
 			}
 
+            switch ($action) {
+                case 'add':
 /*
-            if (isset($_GET['add'])) {
-
-                return new View(
-                    'view/admin/iconEdit.html.php',
-                    array(
-                        'action' => 'add',
-                        'icon' => (object) array('group' => ''),
-                        'groups' => $groups
-                    )
-                );
-            }
+                    return new View(
+                        'view/admin/iconEdit.html.php',
+                        array(
+                            'action' => 'add',
+                            'icon' => (object) array('group' => ''),
+                            'groups' => $groups
+                        )
+                    );
  *
  */
+                    break;
+                case 'edit':
+                    $icon = Model\Icon::get($id);
 
-            if (isset($_GET['edit'])) {
-                $icon = Model\Icon::get($_GET['edit']);
-
-                return new View(
-                    'view/admin/iconEdit.html.php',
-                    array(
-                        'action' => 'edit',
-                        'icon' => $icon,
-                        'groups' => $groups
-                    )
-                );
+                    return new View(
+                        'view/admin/iconEdit.html.php',
+                        array(
+                            'action' => 'edit',
+                            'icon' => $icon,
+                            'filter' => $filter,
+                            'groups' => $groups
+                        )
+                    );
+                    break;
+                case 'remove':
+    //                Model\Icon::delete($id);
+                    break;
             }
-
-            /*
-            if (isset($_GET['remove'])) {
-                Model\Icon::delete($_GET['remove']);
-            }
-             *
-             */
-
 
             $icons = Model\Icon::getAll($filter);
 
@@ -586,7 +582,7 @@ namespace Goteo\Controller {
         /*
          * Licencias
          */
-        public function licenses() {
+        public function licenses($action = 'list', $id = null) {
             if (isset($_GET['filters'])) {
                 foreach (\unserialize($_GET['filters']) as $field=>$value) {
                     $filters[$field] = $value;
@@ -648,54 +644,44 @@ namespace Goteo\Controller {
 				}
 			}
 
+            switch ($action) {
+                case 'up':
+                    Model\License::up($id);
+                    break;
+                case 'down':
+                    Model\License::down($id);
+                    break;
+                case 'add':
+                    $next = Model\License::next();
 
-            if (isset($_GET['up'])) {
-                Model\License::up($_GET['up']);
+                    return new View(
+                        'view/admin/licenseEdit.html.php',
+                        array(
+                            'action' => 'add',
+                            'license' => (object) array('order' => $next, 'icons' => array()),
+                            'icons' => $icons,
+                            'groups' => $groups
+                        )
+                    );
+                    break;
+                case 'edit':
+                    $license = Model\License::get($id);
+
+                    return new View(
+                        'view/admin/licenseEdit.html.php',
+                        array(
+                            'action' => 'edit',
+                            'license' => $license,
+                            'filters' => $filters,
+                            'icons' => $icons,
+                            'groups' => $groups
+                        )
+                    );
+                    break;
+                case 'remove':
+    //                Model\License::delete($id);
+                    break;
             }
-
-            if (isset($_GET['down'])) {
-                Model\License::down($_GET['down']);
-            }
-
-            /*
-            if (isset($_GET['add'])) {
-                $next = Model\License::next();
-
-                return new View(
-                    'view/admin/licenseEdit.html.php',
-                    array(
-                        'action' => 'add',
-                        'license' => (object) array('order' => $next, 'icons' => array()),
-                        'icons' => $icons,
-                        'groups' => $groups
-                    )
-                );
-            }
-             *
-             */
-
-            if (isset($_GET['edit'])) {
-                $license = Model\License::get($_GET['edit']);
-
-                return new View(
-                    'view/admin/licenseEdit.html.php',
-                    array(
-                        'action' => 'edit',
-                        'license' => $license,
-                        'filters' => $filters,
-                        'icons' => $icons,
-                        'groups' => $groups
-                    )
-                );
-            }
-
-            /*
-            if (isset($_GET['remove'])) {
-                Model\License::delete($_GET['remove']);
-            }
-             *
-             */
-
 
             $licenses = Model\License::getAll($filters['icon'], $filters['group']);
 
@@ -717,7 +703,7 @@ namespace Goteo\Controller {
          * Es una idea de blog porque luego lo que salga en la portada
          *  seran los posts de cierta categoria, o algo así
          */
-        public function posts() {
+        public function posts($action = 'list', $id = null) {
 
             $errors = array();
 
@@ -725,6 +711,7 @@ namespace Goteo\Controller {
 
                 // objeto
                 $post = new Model\Post(array(
+                    'id' => $_POST['id'],
                     'title' => $_POST['title'],
                     'description' => $_POST['description'],
                     'media' => $_POST['media'],
@@ -772,43 +759,40 @@ namespace Goteo\Controller {
 			}
 
 
-            if (isset($_GET['up'])) {
-                Model\Post::up($_GET['up']);
+            switch ($action) {
+                case 'up':
+                    Model\Post::up($id);
+                    break;
+                case 'down':
+                    Model\Post::down($id);
+                    break;
+                case 'add':
+                    // siguiente orden
+                    $next = Model\Post::next();
+
+                    return new View(
+                        'view/admin/postEdit.html.php',
+                        array(
+                            'action' => 'add',
+                            'post' => (object) array('order' => $next)
+                        )
+                    );
+                    break;
+                case 'edit':
+                    $post = Model\Post::get($id);
+
+                    return new View(
+                        'view/admin/postEdit.html.php',
+                        array(
+                            'action' => 'edit',
+                            'post' => $post
+                        )
+                    );
+                    break;
+                case 'remove':
+                    Model\Post::delete($id);
+                    break;
             }
-
-            if (isset($_GET['down'])) {
-                Model\Post::down($_GET['down']);
-            }
-
-            if (isset($_GET['add'])) {
-                // siguiente orden
-                $next = Model\Post::next();
-
-                return new View(
-                    'view/admin/postEdit.html.php',
-                    array(
-                        'action' => 'add',
-                        'post' => (object) array('order' => $next)
-                    )
-                );
-            }
-
-            if (isset($_GET['edit'])) {
-                $post = Model\Post::get($_GET['edit']);
-
-                return new View(
-                    'view/admin/postEdit.html.php',
-                    array(
-                        'action' => 'edit',
-                        'post' => $post
-                    )
-                );
-            }
-
-            if (isset($_GET['remove'])) {
-                Model\Post::delete($_GET['remove']);
-            }
-
 
             $posts = Model\Post::getAll();
 
@@ -825,7 +809,7 @@ namespace Goteo\Controller {
         /*
          *  administración de nodos y usuarios (segun le permita el ACL al usuario validado)
          */
-        public function managing() {
+        public function managing($action = 'list', $id = null) {
             $users = Model\User::getAll();
 
             return new View(
@@ -841,7 +825,7 @@ namespace Goteo\Controller {
          *
          * dummy para ejecutar cargos
          */
-        public function accounting() {
+        public function accounting($action = 'list', $id = null) {
             // estados del proyecto
             $status = Model\Project::status();
             // estados de aporte
@@ -849,8 +833,8 @@ namespace Goteo\Controller {
 
 
             /// si piden unos detalles,
-            if (isset($_GET['details'])) {
-                $invest = Model\Invest::get($_GET['details']);
+            if ($action == 'details') {
+                $invest = Model\Invest::get($id);
                 $project = Model\Project::get($invest->project);
                 $details = array();
                 if (!empty($invest->preapproval)) {
@@ -934,13 +918,13 @@ namespace Goteo\Controller {
          * Gestión de retornos, por ahora en el admin pero es una gestión para los responsables de proyectos
          * Proyectos financiados, puede marcar un retorno cumplido
          */
-        public function rewards() {
+        public function rewards($action = 'list', $id = null) {
 
             $errors = array();
 
             // si no está en edición, recuperarlo
-            if (isset($_GET['fulfill'])) {
-                $parts = explode(',', $_GET['fulfill']); // invest , reward
+            if ($action == 'fulfill') {
+                $parts = explode(',', $id); // invest , reward
                 $investId = $parts[0];
                 $rewardId = $parts[1];
                 if (empty($investId) || empty($rewardId)

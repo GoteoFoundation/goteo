@@ -18,7 +18,7 @@ include 'view/prologue.html.php';
                     <ul>
                         <li class="home"><a href="/admin">Mainboard</a></li>
                         <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
-                        <li><a href="?add">Nueva entrada</a></li>
+                        <li><a href="/admin/posts/add">Nueva entrada</a></li>
                     </ul>
                 </div>
             </div>
@@ -52,10 +52,10 @@ include 'view/prologue.html.php';
                         <tr>
                             <td><?php echo $post->title; ?></td>
                             <td><?php echo $post->order; ?></td>
-                            <td><a href="?up=<?php echo $post->id; ?>">[&uarr;]</a></td>
-                            <td><a href="?down=<?php echo $post->id; ?>">[&darr;]</a></td>
-                            <td><a href="?edit=<?php echo $post->id; ?>">[Editar]</a></td>
-                            <td><a href="?remove=<?php echo $post->id; ?>">[Quitar]</a></td>
+                            <td><a href="/admin/posts/up/<?php echo $post->id; ?>">[&uarr;]</a></td>
+                            <td><a href="/admin/posts/down/<?php echo $post->id; ?>">[&darr;]</a></td>
+                            <td><a href="/admin/posts/edit/<?php echo $post->id; ?>">[Editar]</a></td>
+                            <td><a href="/admin/posts/remove/<?php echo $post->id; ?>">[Quitar]</a></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

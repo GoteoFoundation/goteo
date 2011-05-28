@@ -18,7 +18,7 @@ include 'view/prologue.html.php';
                     <ul>
                         <li class="home"><a href="/admin">Mainboard</a></li>
                         <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
-                        <li><a href="/add">Nuevo destacado</a></li>
+                        <li><a href="/admin/promote/add">Nuevo destacado</a></li>
                     </ul>
                 </div>
             </div>

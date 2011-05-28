@@ -45,7 +45,7 @@ include 'view/prologue.html.php';
                                             if ($reward->fulfilled) {
                                                 echo ' CUMPLIDA';
                                             } else {
-                                                echo ' <a href="?fulfill='.$invest->id.','.$reward->id.'">[Cumplir]</a>';
+                                                echo ' <a href="/admin/rewards/fulfill/'.$invest->id.','.$reward->id.'">[Cumplir]</a>';
                                             }
                                             echo '<br />';
                                         }

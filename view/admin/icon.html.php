@@ -23,7 +23,7 @@ include 'view/prologue.html.php';
             </div>
 
         </div>
-            <!-- <p><a href="?filter=<?php echo $this['filter']; ?>&add">Añadir tipo</a></p> -->
+            <!-- <p><a href="/admin/icons/add/?filter=<?php echo $this['filter']; ?>">Añadir tipo</a></p> -->
 
         <div id="main">
             <?php if (!empty($this['errors'])) {
@@ -62,8 +62,8 @@ include 'view/prologue.html.php';
                         <tr>
                             <td><?php echo $icon->name; ?></td>
                             <td><?php echo !empty($icon->group) ? $this['groups'][$icon->group] : 'Ambas'; ?></td>
-                            <td><a href="?filter=<?php echo $this['filter']; ?>&edit=<?php echo $icon->id; ?>">[Edit]</a></td>
-                            <!-- <td><a href="?filter=<?php echo $this['filter']; ?>&remove=<?php echo $icon->id; ?>">[Quitar]</a></td> -->
+                            <td><a href="/admin/icons/edit/<?php echo $icon->id; ?>/?filter=<?php echo $this['filter']; ?>">[Edit]</a></td>
+                            <!-- <td><a href="/admin/icons/remove/<?php echo $icon->id; ?>/?filter=<?php echo $this['filter']; ?>">[Quitar]</a></td> -->
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

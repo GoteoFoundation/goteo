@@ -43,6 +43,7 @@ $(document).ready(function(){
                 <div class="admin-menu">
                     <ul>
                         <li class="home"><a href="/admin">Mainboard</a></li>
+                        <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
                         <li><a href="/admin/pages">Páginas</a></li>
                     </ul>
                 </div>

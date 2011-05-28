@@ -40,7 +40,7 @@ include 'view/prologue.html.php';
             } ?>
 
             <div class="widget board">
-                <form method="post" action="/admin/faq?filter=<?php echo $this['filter']; ?>">
+                <form method="post" action="/admin/faq/?filter=<?php echo $this['filter']; ?>">
 
                     <input type="hidden" name="action" value="<?php echo $this['action']; ?>" />
                     <input type="hidden" name="id" value="<?php echo $this['faq']->id; ?>" />
