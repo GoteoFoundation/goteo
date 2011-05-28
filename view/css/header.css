@@ -184,27 +184,14 @@ div#header div#menu > ul > li.create > a {
     font-size: 12px;
     line-height: 1em;
     color: white;
-    border-radius: 3px;
     display: inline-block;
     margin: .6em .2em .6em 0;
     max-width: 7.5em;
+    text-align: left;
 }
 
-div#header div#menu > ul > li.explore > a {
-    background: #b5161e url('header/explore.png') repeat-x top;
+div#header div#menu > ul > li.explore > a {    
     margin-left: 132px;
-}
-
-div#header div#menu > ul > li.create > a {
-    background: #149290 url('header/create.png') repeat-x top;
-}
-
-div#header div#menu > ul > li.explore > a:hover {
-    background: #e44133 url('header/explore-hover.png') repeat-x top;    
-}
-
-div#header div#menu > ul > li.create > a:hover {
-    background: #60c1bf url('header/create-hover.png') repeat-x top;
 }
 
 div#header div#menu > ul > li.search {

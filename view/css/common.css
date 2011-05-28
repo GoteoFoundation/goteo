@@ -105,20 +105,11 @@ a.button.red:active {
     background: #e44133 url('button/red-active.png') repeat-x top;    
 } 
 
-input.aqua[type="submit"],
-input.aqua[type="reset"],
-button.aqua,
-a.button.aqua {
-    background-color: #35b8b8;
-    color: white;
-} 
-
 input.green[type="submit"],
 input.green[type="reset"],
 button.green,
 a.button.green {
     background-color: #00b05b;
-    color: white;
 } 
 
 h1, h2, h3, h4, h5, h6, h7, h8 {
