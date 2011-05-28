@@ -57,7 +57,7 @@ $minimum_ratio =  min(100, round(($minimum / $optimum) * 100));
     
     <div class="meter <?php echo $horizontal ? 'hor' : 'ver' ?>">
         
-        <h<?php echo $level ?>>Financiación</h<?php echo $level ?>>
+        <h<?php echo $level ?> class="title">Financiación</h<?php echo $level ?>>
     
         <div class="graph">            
             <div class="optimum">
