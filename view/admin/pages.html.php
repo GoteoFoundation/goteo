@@ -2,7 +2,7 @@
 
 use Goteo\Library\Text;
 
-$bodyClass = 'project-show';
+$bodyClass = 'admin';
 
 include 'view/prologue.html.php';
 
@@ -14,10 +14,10 @@ include 'view/prologue.html.php';
             </div>
 
             <div class="sub-menu">
-                <div class="project-menu">
+                <div class="admin-menu">
                     <ul>
                         <li class="home"><a href="/admin">Mainboard</a></li>
-                        <li class="needs"><a href="/admin/checking">Revisión de proyectos</a></li>
+                        <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
                     </ul>
                 </div>
             </div>
@@ -26,14 +26,14 @@ include 'view/prologue.html.php';
 
         <div id="main">
 
-            <div class="widget">
+            <div class="widget board">
                 <table>
                     <thead>
                         <tr>
                             <th>Página</th>
                             <th>Descripción</th>
-                            <th>Editar</th>
-                            <th>Previsualizar</th>
+                            <th><!-- Editar --></th>
+                            <th><!-- Previsualizar --></th>
                         </tr>
                     </thead>
                     <tbody>

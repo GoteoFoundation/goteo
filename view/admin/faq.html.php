@@ -2,7 +2,7 @@
 
 use Goteo\Library\Text;
 
-$bodyClass = 'project-show';
+$bodyClass = 'admin';
 
 include 'view/prologue.html.php';
 
@@ -14,10 +14,10 @@ include 'view/prologue.html.php';
             </div>
 
             <div class="sub-menu">
-                <div class="project-menu">
+                <div class="admin-menu">
                     <ul>
                         <li class="home"><a href="/admin">Mainboard</a></li>
-                        <li class="needs"><a href="/admin/checking">Revisión de proyectos</a></li>
+                        <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
                         <li><a href="?filter=<?php echo $this['filter']; ?>&add">Añadir pregunta</a></li>
                     </ul>
                 </div>
@@ -38,7 +38,7 @@ include 'view/prologue.html.php';
                 echo '<pre>' . print_r($this['success'], 1) . '</pre>';
             } ?>
 
-            <div class="widget">
+            <div class="widget board">
                 <form id="sectionfilter-form" action="/admin/faq" method="get">
                     <label for="section-filter">Mostrar las preguntas de:</label>
                     <select id="section-filter" name="filter" onchange="document.getElementById('sectionfilter-form').submit();">
@@ -49,7 +49,7 @@ include 'view/prologue.html.php';
                 </form>
             </div>
 
-            <div class="widget">
+            <div class="widget board">
                 <table>
                     <thead>
                         <tr>

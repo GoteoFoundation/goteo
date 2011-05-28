@@ -2,7 +2,7 @@
 
 use Goteo\Library\Text;
 
-$bodyClass = 'project-show';
+$bodyClass = 'admin';
 
 include 'view/prologue.html.php';
 
@@ -14,10 +14,10 @@ include 'view/prologue.html.php';
             </div>
 
             <div class="sub-menu">
-                <div class="project-menu">
+                <div class="admin-menu">
                     <ul>
                         <li class="home"><a href="/admin">Mainboard</a></li>
-                        <li class="needs"><a href="/admin/checking">Revisión de proyectos</a></li>
+                        <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
                     <?php foreach ($this['menu'] as $menu) : ?>
                         <li><a href="<?php echo $menu['url']; ?>"><?php echo $menu['label']; ?></a></li>
                     <?php endforeach; ?>
@@ -32,7 +32,7 @@ include 'view/prologue.html.php';
                 echo '<pre>' . print_r($this['errors'], 1) . '</pre>';
             } ?>
 
-            <div class="widget">
+            <div class="widget board">
                 <!-- superform -->
                 <form action="<?php echo $this['form']['action']; ?>" method="post">
                     <dl>

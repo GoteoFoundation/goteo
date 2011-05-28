@@ -2,7 +2,7 @@
 
 use Goteo\Library\Text;
 
-$bodyClass = 'project-show';
+$bodyClass = 'admin';
 
 include 'view/prologue.html.php';
 
@@ -14,10 +14,10 @@ include 'view/prologue.html.php';
             </div>
 
             <div class="sub-menu">
-                <div class="project-menu">
+                <div class="admin-menu">
                     <ul>
                         <li class="home"><a href="/admin">Mainboard</a></li>
-                        <li class="needs"><a href="/admin/checking">Revisión de proyectos</a></li>
+                        <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
                     </ul>
                 </div>
             </div>
@@ -26,10 +26,6 @@ include 'view/prologue.html.php';
             <!-- <p><a href="?filter=<?php echo $this['filter']; ?>&add">Añadir tipo</a></p> -->
 
         <div id="main">
-            <?php if (!empty($this['filter'])) : ?>
-                <h3>Viendo los tipos para el grupo '<?php echo $this['groups'][$this['filter']]; ?>'</h3>
-            <?php endif;?>
-
             <?php if (!empty($this['errors'])) {
                 echo '<pre>' . print_r($this['errors'], 1) . '</pre>';
             } ?>
@@ -38,7 +34,7 @@ include 'view/prologue.html.php';
                 echo '<pre>' . print_r($this['success'], 1) . '</pre>';
             } ?>
 
-            <div class="widget">
+            <div class="widget board">
                 <form id="groupfilter-form" action="/admin/icons" method="get">
                     <label for="group-filter">Mostrar los tipos para:</label>
                     <select id="group-filter" name="filter" onchange="document.getElementById('groupfilter-form').submit();">
@@ -50,13 +46,13 @@ include 'view/prologue.html.php';
                 </form>
             </div>
 
-            <div class="widget">
+            <div class="widget board">
                 <table>
                     <thead>
                         <tr>
                             <th>Nombre</th> <!-- name -->
                             <th>Agrupación</th> <!-- group -->
-                            <th>Editar</th>
+                            <th><!-- Editar --></th>
 <!--                        <th> Remove </th>  -->
                         </tr>
                     </thead>

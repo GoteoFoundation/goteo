@@ -214,6 +214,14 @@ namespace Goteo\Controller {
          *  Revisión de proyectos, aqui llega con un nodo y si no es el suyo a la calle (o al suyo)
          */
         public function checking($action = 'list', $id = null) {
+            $filters = array();
+            $fields = array('status');
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    $filters[$field] = $_GET[$field];
+                }
+            }
+
             $errors = array();
 
             /*
@@ -250,13 +258,14 @@ namespace Goteo\Controller {
                     break;
             }
 
-            $projects = Model\Project::getList();
+            $projects = Model\Project::getList($filters);
             $status = Model\Project::status();
 
             return new View(
                 'view/admin/checking.html.php',
                 array(
                     'projects' => $projects,
+                    'filters' => $filters,
                     'status' => $status,
                     'errors' => $errors
                 )

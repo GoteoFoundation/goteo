@@ -2,7 +2,7 @@
 
 use Goteo\Library\Text;
 
-$bodyClass = 'project-show';
+$bodyClass = 'admin';
 
 include 'view/prologue.html.php';
 
@@ -40,7 +40,7 @@ $(document).ready(function(){
             </div>
 
             <div class="sub-menu">
-                <div class="project-menu">
+                <div class="admin-menu">
                     <ul>
                         <li class="home"><a href="/admin">Mainboard</a></li>
                         <li><a href="/admin/pages">Páginas</a></li>
@@ -55,7 +55,7 @@ $(document).ready(function(){
             
             <p><?php echo $this['page']->description; ?></p>
 
-            <div class="widget">
+            <div class="widget board">
                 <form method="post" action="/admin/pages/edit/<?php echo $this['page']->id; ?>">
                     <textarea id="richtext_content" name="content" cols="120" rows="20"><?php echo $this['page']->content; ?></textarea>
                     <input type="submit" name="save" value="Guardar" />
