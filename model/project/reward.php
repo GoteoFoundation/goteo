@@ -29,10 +29,30 @@ namespace Goteo\Model\Project {
             }
 		}
 
-		public static function getAll ($project, $type = 'social') {
+		public static function getAll ($project, $type = 'social', $fulfilled = null) {
             try {
                 $array = array();
-				$query = self::query("SELECT * FROM reward WHERE project = ? AND type= ? ORDER BY id ASC", array($project, $type));
+
+                $values = array(
+                    ':project' => $project,
+                    ':type' => $type
+                );
+
+                $sqlFilter = "";
+                if (isset($fulfilled)) {
+                    $sqlFilter .= "    AND fulfilled = :fulfilled";
+                    $values[':fulfilled'] = $fulfilled;
+                }
+
+
+                $sql = "SELECT  *
+                        FROM    reward
+                        WHERE   project = :project
+                            AND type= :type
+                        $sqlFilter
+                        ORDER BY id ASC";
+
+				$query = self::query($sql, $values);
 				foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item ) {
                     $array[$item->id] = $item;
                 }

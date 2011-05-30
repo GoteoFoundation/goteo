@@ -1128,7 +1128,7 @@ namespace Goteo\Controller {
          */
         public function managing($action = 'list', $id = null) {
             $filters = array();
-            $fields = array('status', 'category');
+            $fields = array('status', 'interest');
             foreach ($fields as $field) {
                 if (isset($_GET[$field])) {
                     $filters[$field] = $_GET[$field];
@@ -1267,42 +1267,51 @@ namespace Goteo\Controller {
          * Proyectos financiados, puede marcar un retorno cumplido
          */
         public function rewards($action = 'list', $id = null) {
+            $filters = array();
+            $fields = array('status', 'icon');
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    $filters[$field] = $_GET[$field];
+                }
+            }
 
             $errors = array();
 
-            // si no está en edición, recuperarlo
-            if ($action == 'fulfill') {
-                $parts = explode(',', $id); // invest , reward
-                $investId = $parts[0];
-                $rewardId = $parts[1];
-                if (empty($investId) || empty($rewardId)
-                    || !is_numeric($investId) || !is_numeric($rewardId)) {
+            switch ($action)  {
+                case 'fulfill':
+                    $sql = "UPDATE reward SET fulfilled = 1 WHERE id = ?";
+                    Model\Project\Reward::query($sql, array($id));
                     break;
-                }
-                Model\Invest::setFulfilled($investId, $rewardId);
+                /*
+                case 'unfill':
+                    $sql = "UPDATE reward SET fulfilled = 0 WHERE id = ?";
+                    Model\Project\Reward::query($sql, array($id));
+                    break;
+                 * 
+                 */
             }
 
-
-            $projects = Model\Project::invested();
+            $projects = Model\Project::published('success');
 
             foreach ($projects as $kay=>&$project) {
-
-                $project->invests = Model\Invest::getAll($project->id);
-
-                // para cada uno sacar todos sus aportes
-                foreach ($project->invests as $key=>&$invest) {
-                    if ($invest->status != 1) {
-                        unset($project->invests[$key]);
-                        continue;
-                    }
-                }
+                $project->social_reward = Model\Project\Reward::getAll($project->id, 'social', ($filters['status'] == 'ok') ? true : false);
             }
 
+            $status = array(
+                        'nok' => 'Pendiente',
+                        'ok'  => 'Cumplido'
+                        
+                    );
+            $icons = Model\Icon::getAll('social');
 
             return new View(
                 'view/admin/rewards.html.php',
                 array(
-                    'projects' => $projects
+                    'projects'=>$projects,
+                    'filters' => $filters,
+                    'status' => $status,
+                    'icon' => $icons,
+                    'errors' => $errors
                 )
             );
 

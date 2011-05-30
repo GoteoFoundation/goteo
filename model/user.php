@@ -389,14 +389,15 @@ namespace Goteo\Model {
 
             $sqlFilter = "";
             if (!empty($filters['status'])) {
-                $sqlFilter .= " AND active = " . $filters['status'] == 'active' ? '1' : '0';
+                $active = $filters['status'] == 'active' ? '1' : '0';
+                $sqlFilter .= " AND active = '$active'";
             }
             if (!empty($filters['interest'])) {
                 $sqlFilter .= " AND id IN (
                     SELECT user
                     FROM user_interest
                     WHERE interest = {$filters['interest']}
-                    )";
+                    ) ";
             }
 
             $sql = "SELECT

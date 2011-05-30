@@ -12,7 +12,7 @@ include 'view/prologue.html.php';
 
         <div id="sub-header">
             <div>
-                <h2>Administración de usuarios y nodos</h2>
+                <h2>Administración de usuarios</h2>
             </div>
 
             <div class="sub-menu">
@@ -32,7 +32,7 @@ include 'view/prologue.html.php';
             } ?>
 
             <div class="widget board">
-                <form id="filter-form" action="/admin/checking" method="get">
+                <form id="filter-form" action="/admin/managing" method="get">
                     <label for="status-filter">Mostrar por estado:</label>
                     <select id="status-filter" name="status" onchange="document.getElementById('filter-form').submit();">
                         <option value="">Todos los estados</option>
@@ -41,7 +41,7 @@ include 'view/prologue.html.php';
                     <?php endforeach; ?>
                     </select>
 
-                    <label for="interest-filter">Con el interés:</label>
+                    <label for="interest-filter">Mostrar usuarios interesados en:</label>
                     <select id="interest-filter" name="interest" onchange="document.getElementById('filter-form').submit();">
                         <option value="">Cualquier interés</option>
                     <?php foreach ($this['interests'] as $interestId=>$interestName) : ?>
@@ -74,7 +74,7 @@ include 'view/prologue.html.php';
                             <?php if ($user->active) : ?>
                             <td><a href="<?php echo "/admin/managing/ban/{$user->id}{$filter}"; ?>">[Desactivar]</a></td>
                             <?php else : ?>
-                            <td><a href="<?php echo "/admin/managing/unban/{$user->id}{$filter}"; ?>">[Reactivar]</a></td>
+                            <td><a href="<?php echo "/admin/managing/unban/{$user->id}{$filter}"; ?>">[Activar]</a></td>
                             <?php endif; ?>
                         </tr>
                         <?php endforeach; ?>

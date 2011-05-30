@@ -4,13 +4,15 @@ use Goteo\Library\Text;
 
 $bodyClass = 'admin';
 
+$filters = $this['filters'];
+
 include 'view/prologue.html.php';
 
     include 'view/header.html.php'; ?>
 
         <div id="sub-header">
             <div>
-                <h2>Gestión de retornos y recompensas</h2>
+                <h2>Gestión de retornos colectivos</h2>
             </div>
 
             <div class="sub-menu">
@@ -25,43 +27,64 @@ include 'view/prologue.html.php';
         </div>
 
         <div id="main">
-            <?php if (!empty($this['projects'])) : ?>
-                <?php foreach ($this['projects'] as $project) : ?>
+            <?php if (!empty($this['errors'])) {
+                echo '<pre>' . print_r($this['errors'], 1) . '</pre>';
+            } ?>
+
+            <div class="widget board">
+                <form id="filter-form" action="/admin/managing" method="get">
+                    <label for="status-filter">Mostrar por estado:</label>
+                    <select id="status-filter" name="status" onchange="document.getElementById('filter-form').submit();">
+                        <option value="">Todos los estados</option>
+                    <?php foreach ($this['status'] as $statusId=>$statusName) : ?>
+                        <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+
+                    <label for="icon-filter">Mostrar del tipo:</label>
+                    <select id="icon-filter" name="icon" onchange="document.getElementById('filter-form').submit();">
+                        <option value="">Todos los tipos</option>
+                    <?php foreach ($this['icons'] as $iconId=>$iconName) : ?>
+                        <option value="<?php echo $iconId; ?>"<?php if ($filters['icon'] == $iconId) echo ' selected="selected"';?>><?php echo $iconName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </form>
+            </div>
+
+            <div class="widget board">
+                <?php if (!empty($this['projects'])) : ?>
+                <?php foreach ($this['projects'] as $project) :
+                    if ($project->status == 6) continue; ?>
                     <h3><?php echo $project->name; ?></h3>
-                    <?php foreach ($project->invests as $key=>$invest) : ?>
-                        <?php echo '<p>
-                               <img src="' . $invest->user->avatar . '" class="avatar" />
-                               <strong>' . $invest->user->name . '</strong><br />
-                               Aporta: ' . $invest->amount . ' €  el ' . $invest->invested . '<br />';
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Retorno</th>
+                                <th>Tipo</th>
+                                <th>Estado</th>
+                                <th></th>
+                            </tr>
+                        </thead>
 
-                               if ($invest->resign == 1)  {
-                                   echo 'Renuncia a recompensa por este aporte<br />';
-                               } else {
-                                   echo 'Dirección de entrega: '.$invest->address->address.', '.$invest->address->location.', '.$invest->address->zipcode.'  '.$invest->address->country.'<br />';
-                                    if (!empty($invest->rewards)) {
-                                        echo '<strong>Recompensas esperadas:</strong><br />';
-                                        foreach ($invest->rewards as $reward) {
-                                            echo $reward->reward;
-                                            if ($reward->fulfilled) {
-                                                echo ' CUMPLIDA';
-                                            } else {
-                                                echo ' <a href="/admin/rewards/fulfill/'.$invest->id.','.$reward->id.'">[Cumplir]</a>';
-                                            }
-                                            echo '<br />';
-                                        }
-                                    }
-                               }
+                        <tbody>
+                            <?php foreach ($project->social_reward as $reward) : ?>
+                            <tr>
+                                <td><?php echo $reward->name; ?></td>
+                                <td><?php echo $icons[$reward->icon]; ?></td>
+                                <td><?php echo $reward->fulfilled ? 'Cumplido' : 'Pendiente'; ?></td>
+                                <?php if ($reward->fulfilled) : ?>
+                                <td><a href="<?php echo "/admin/rewards/fulfill/{$reward->id}{$filter}"; ?>">[Dar por cunmplido]</a></td>
+                                <?php endif; ?>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
 
-                               echo '</p>';
-
-                        ?>
-                        <?php endforeach; ?>
-                        <br />
-                <?php endforeach; ?>
-            <?php else : ?>
-                <p>No hay aportes en los proyectos financiados.</p>
-            <?php endif;?>
-
+                    </table>
+                    <?php endforeach; ?>
+                <?php else : ?>
+                <p>No se han encontrado registros</p>
+                <?php endif; ?>
+            </div>
         </div>
 
 <?php
