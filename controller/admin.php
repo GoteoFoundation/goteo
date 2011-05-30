@@ -93,11 +93,11 @@ namespace Goteo\Controller {
                             'title' => 'Gestión de textos',
                             'menu' => array(),
                             'data' => Text::getAll($filter),
-                            'row' => array(
-                                'id' => 'id',
-                                'value' => 'text'
+                            'columns' => array(
+                                'edit' => '',
+                                'text' => 'Texto'
                             ),
-                            'urlEdit' => '/admin/texts/edit/',
+                            'url' => '/admin/texts',
                             'filters' => array(
                                 'action' => '/admin/texts',
                                 'label'  => 'Filtrar los textos de:',
@@ -150,6 +150,7 @@ namespace Goteo\Controller {
                         $errors = array();
 
                         $id = $_POST['id'];
+                        $text = $_POST['text'];
 
                         $data = array(
                             'id' => $id,
@@ -160,6 +161,8 @@ namespace Goteo\Controller {
                         if (Text::save($data, $errors)) {
                             throw new Redirection("/admin/texts?filter=$filter");
                         }
+                    } else {
+                        $text = Text::get($id);
                     }
 
                     return new View(
@@ -172,9 +175,9 @@ namespace Goteo\Controller {
                                     'label'=>'Textos'
                                 )
                             ),
-                            'data' => (object) array(
+                            'data' => (object) array (
                                 'id' => $id,
-                                'text' => Text::get($id)
+                                'text' => $text
                             ),
                             'form' => array(
                                 'action' => '/admin/texts/edit/'.$id.'?filter='.$filter,
@@ -823,14 +826,20 @@ namespace Goteo\Controller {
                         'view/admin/list.html.php',
                         array(
                             'title' => 'Gestión de categorías de proyectos',
-                            'menu' => array(),
-                            'data' => $model::getAll(),
-                            'row' => array(
-                                'id' => 'id',
-                                'value' => 'name',
-                                'extra' => 'used'
+                            'menu' => array(
+                                array(
+                                    'url' => "$url/add",
+                                    'label' => 'Nueva categoría'
+                                )
                             ),
-                            'urlEdit' => "$url/edit/",
+                            'data' => $model::getAll(),
+                            'columns' => array(
+                                'edit' => '',
+                                'name' => 'Categoría',
+                                'used' => 'Veces usada',
+                                'remove' => ''
+                            ),
+                            'url' => "$url",
                             'errors' => $errors
                         )
                     );
@@ -864,7 +873,14 @@ namespace Goteo\Controller {
                                     'name' => array(
                                         'label' => 'Categoría',
                                         'name' => 'name',
-                                        'type' => 'input'
+                                        'type' => 'text'
+                                    ),
+                                    'description' => array(
+                                        'label' => 'Descripción',
+                                        'name' => 'description',
+                                        'type' => 'textarea',
+                                        'properties' => 'cols="100" rows="2"',
+
                                     )
                                 )
 
@@ -883,12 +899,15 @@ namespace Goteo\Controller {
                         // instancia
                         $item = new $model(array(
                             'id' => $_POST['id'],
-                            'name' => $_POST['name']
+                            'name' => $_POST['name'],
+                            'description' => $_POST['description']
                         ));
 
                         if ($item->save($errors)) {
                             throw new Redirection($url);
                         }
+                    } else {
+                        $item = $model::get($id);
                     }
 
                     return new View(
@@ -901,10 +920,7 @@ namespace Goteo\Controller {
                                     'label' => 'Categorias'
                                 )
                             ),
-                            'data' => (object) array(
-                                'id' => $id,
-                                'item' => $model::get($id)
-                            ),
+                            'data' => $item,
                             'form' => array(
                                 'action' => "$url/edit/$id",
                                 'submit' => array(
@@ -921,7 +937,14 @@ namespace Goteo\Controller {
                                     'name' => array(
                                         'label' => 'Categoría',
                                         'name' => 'name',
-                                        'type' => 'input'
+                                        'type' => 'text'
+                                    ),
+                                    'description' => array(
+                                        'label' => 'Descripción',
+                                        'name' => 'description',
+                                        'type' => 'textarea',
+                                        'properties' => 'cols="100" rows="2"',
+
                                     )
                                 )
 
@@ -959,14 +982,20 @@ namespace Goteo\Controller {
                         'view/admin/list.html.php',
                         array(
                             'title' => 'Gestión de intereses de usuarios',
-                            'menu' => array(),
-                            'data' => $model::getAll(),
-                            'row' => array(
-                                'id' => 'id',
-                                'value' => 'name',
-                                'extra' => 'used'
+                            'menu' => array(
+                                array(
+                                    'url' => "$url/add",
+                                    'label' => 'Nuevo interés'
+                                )
                             ),
-                            'urlEdit' => "$url/edit/",
+                            'data' => $model::getAll(),
+                            'columns' => array(
+                                'edit' => '',
+                                'name' => 'Interes',
+                                'used' => 'Veces usado',
+                                'remove' => ''
+                            ),
+                            'url' => "$url",
                             'errors' => $errors
                         )
                     );
@@ -1000,7 +1029,14 @@ namespace Goteo\Controller {
                                     'name' => array(
                                         'label' => 'Interés',
                                         'name' => 'name',
-                                        'type' => 'input'
+                                        'type' => 'text'
+                                    ),
+                                    'description' => array(
+                                        'label' => 'Descripción',
+                                        'name' => 'description',
+                                        'type' => 'textarea',
+                                        'properties' => 'cols="100" rows="2"',
+
                                     )
                                 )
 
@@ -1019,12 +1055,15 @@ namespace Goteo\Controller {
                         // instancia
                         $item = new $model(array(
                             'id' => $_POST['id'],
-                            'name' => $_POST['name']
+                            'name' => $_POST['name'],
+                            'description' => $_POST['description']
                         ));
 
                         if ($item->save($errors)) {
                             throw new Redirection($url);
                         }
+                    } else {
+                        $item = $model::get($id);
                     }
 
                     return new View(
@@ -1037,10 +1076,7 @@ namespace Goteo\Controller {
                                     'label' => 'Intereses'
                                 )
                             ),
-                            'data' => (object) array(
-                                'id' => $id,
-                                'item' => $model::get($id)
-                            ),
+                            'data' => $item,
                             'form' => array(
                                 'action' => "$url/edit/$id",
                                 'submit' => array(
@@ -1057,7 +1093,14 @@ namespace Goteo\Controller {
                                     'name' => array(
                                         'label' => 'Interés',
                                         'name' => 'name',
-                                        'type' => 'input'
+                                        'type' => 'text'
+                                    ),
+                                    'description' => array(
+                                        'label' => 'Descripción',
+                                        'name' => 'description',
+                                        'type' => 'textarea',
+                                        'properties' => 'cols="100" rows="2"',
+
                                     )
                                 )
 

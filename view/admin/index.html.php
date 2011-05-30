@@ -46,6 +46,8 @@ include 'view/prologue.html.php';
                     <ul>
                         <li><a href="/admin/icons">Tipos de Retorno/Recompensa</a></li>
                         <li><a href="/admin/licenses">Licencias</a></li>
+                        <li><a href="/admin/categories">Categorias</a></li>
+                        <li><a href="/admin/interests">Intereses</a></li>
                     </ul>
                 </div>
 <!--
@@ -54,8 +56,6 @@ include 'view/prologue.html.php';
                     <ul>
                         <li><a href="/admin/managing">Usuarios y nodos</a></li>
                         <li><a href="/admin/rewards">Retornos y recompensas</a></li>
-                        <li><a href="/admin/categories">Categorias</a></li>
-                        <li><a href="/admin/interests">Intereses</a></li>
                     </ul>
                     <p>Estos están pendientes de planificación o en desarrollo</p>
                 </div>
