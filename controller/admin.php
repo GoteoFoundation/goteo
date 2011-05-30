@@ -812,7 +812,7 @@ namespace Goteo\Controller {
          */
         public function categories($action = 'list', $id = null) {
 
-            $model = 'Model\Project\Category';
+            $model = 'Goteo\Model\Category';
             $url = '/admin/categories';
 
             $errors = array();
@@ -948,7 +948,7 @@ namespace Goteo\Controller {
          */
         public function interests($action = 'list', $id = null) {
 
-            $model = 'Model\User\Interest';
+            $model = 'Goteo\Model\Interest';
             $url = '/admin/interests';
 
             $errors = array();
