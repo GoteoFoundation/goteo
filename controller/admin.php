@@ -836,7 +836,7 @@ namespace Goteo\Controller {
                             'columns' => array(
                                 'edit' => '',
                                 'name' => 'Categoría',
-                                'used' => 'Veces usada',
+                                'used' => 'Proyectos',
                                 'remove' => ''
                             ),
                             'url' => "$url",
@@ -992,7 +992,7 @@ namespace Goteo\Controller {
                             'columns' => array(
                                 'edit' => '',
                                 'name' => 'Interes',
-                                'used' => 'Veces usado',
+                                'used' => 'Usuarios',
                                 'remove' => ''
                             ),
                             'url' => "$url",

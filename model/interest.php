@@ -40,10 +40,13 @@ namespace Goteo\Model {
                     id,
                     name,
                     description,
-                    '1' as used
-                FROM    interest";
-
-            $sql .= " ORDER BY name ASC";
+                    (   SELECT
+                            COUNT(user_interest.user)
+                        FROM user_interest
+                        WHERE user_interest.interest = interest.id
+                    ) as used
+                FROM    interest
+                ORDER BY name ASC";
 
             $query = static::query($sql);
 

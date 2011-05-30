@@ -37,13 +37,17 @@ namespace Goteo\Model {
 
             $sql = "
                 SELECT
-                    id,
-                    name,
-                    description,
-                    '1' as used
-                FROM    category";
-
-            $sql .= " ORDER BY name ASC";
+                    category.id,
+                    category.name,
+                    category.description,
+                    (   SELECT 
+                            COUNT(project_category.project)
+                        FROM project_category
+                        WHERE project_category.category = category.id
+                    ) as used
+                FROM    category
+                ORDER BY name ASC
+                ";
 
             $query = static::query($sql);
 
