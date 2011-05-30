@@ -397,7 +397,7 @@ namespace Goteo\Controller {
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-                // objeto
+                // instancia
                 $faq = new Model\Faq(array(
                     'id' => $_POST['id'],
                     'node' => \GOTEO_NODE,
@@ -501,7 +501,7 @@ namespace Goteo\Controller {
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-                // objeto
+                // instancia
                 $icon = new Model\Icon(array(
                     'id' => $_POST['id'],
                     'name' => $_POST['name'],
@@ -804,6 +804,278 @@ namespace Goteo\Controller {
                     'success' => $success
                 )
             );
+        }
+
+        /*
+         *  Gestión de categorias de proyectos
+         *  Si no la usa nadie se puede borrar
+         */
+        public function categories($action = 'list', $id = null) {
+
+            $model = 'Model\Project\Category';
+            $url = '/admin/categories';
+
+            $errors = array();
+
+            switch ($action) {
+                case 'list':
+                    return new View(
+                        'view/admin/list.html.php',
+                        array(
+                            'title' => 'Gestión de categorías de proyectos',
+                            'menu' => array(),
+                            'data' => $model::getAll(),
+                            'row' => array(
+                                'id' => 'id',
+                                'value' => 'name',
+                                'extra' => 'used'
+                            ),
+                            'urlEdit' => "$url/edit/",
+                            'errors' => $errors
+                        )
+                    );
+
+                    break;
+                case 'add':
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Añadiendo una nueva categoría de proyectos",
+                            'menu' => array(
+                                array(
+                                    'url' => $url,
+                                    'label' => 'Categorías'
+                                )
+                            ),
+                            'data' => (object) array(),
+                            'form' => array(
+                                'action' => "$url/edit/",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'Añadir'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Categoría',
+                                        'name' => 'name',
+                                        'type' => 'input'
+                                    )
+                                )
+
+                            )
+                        )
+                    );
+
+                    break;
+                case 'edit':
+
+                    // gestionar post
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
+
+                        $errors = array();
+
+                        // instancia
+                        $item = new $model(array(
+                            'id' => $_POST['id'],
+                            'name' => $_POST['name']
+                        ));
+
+                        if ($item->save($errors)) {
+                            throw new Redirection($url);
+                        }
+                    }
+
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Editando una categoría de proyectos",
+                            'menu' => array(
+                                array(
+                                    'url' => $url,
+                                    'label' => 'Categorias'
+                                )
+                            ),
+                            'data' => (object) array(
+                                'id' => $id,
+                                'item' => $model::get($id)
+                            ),
+                            'form' => array(
+                                'action' => "$url/edit/$id",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'guardar'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Categoría',
+                                        'name' => 'name',
+                                        'type' => 'input'
+                                    )
+                                )
+
+                            ),
+                            'errors' => $errors
+                        )
+                    );
+
+                    break;
+                case 'remove':
+                    if ($model::delete($id)) {
+                        throw new Redirection($url);
+                    }
+                    break;
+                default:
+                    throw new Redirection("/admin");
+            }
+
+        }
+
+        /*
+         *  Gestión de intereses de usuarios
+         *  Si no la usa nadie se puede borrar
+         */
+        public function interests($action = 'list', $id = null) {
+
+            $model = 'Model\User\Interest';
+            $url = '/admin/interests';
+
+            $errors = array();
+
+            switch ($action) {
+                case 'list':
+                    return new View(
+                        'view/admin/list.html.php',
+                        array(
+                            'title' => 'Gestión de intereses de usuarios',
+                            'menu' => array(),
+                            'data' => $model::getAll(),
+                            'row' => array(
+                                'id' => 'id',
+                                'value' => 'name',
+                                'extra' => 'used'
+                            ),
+                            'urlEdit' => "$url/edit/",
+                            'errors' => $errors
+                        )
+                    );
+
+                    break;
+                case 'add':
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Añadiendo un nuevo interés de usuarios",
+                            'menu' => array(
+                                array(
+                                    'url'   => $url,
+                                    'label' => 'Intereses'
+                                )
+                            ),
+                            'data' => (object) array(),
+                            'form' => array(
+                                'action' => "$url/edit/",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'Añadir'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Interés',
+                                        'name' => 'name',
+                                        'type' => 'input'
+                                    )
+                                )
+
+                            )
+                        )
+                    );
+
+                    break;
+                case 'edit':
+
+                    // gestionar post
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
+
+                        $errors = array();
+
+                        // instancia
+                        $item = new $model(array(
+                            'id' => $_POST['id'],
+                            'name' => $_POST['name']
+                        ));
+
+                        if ($item->save($errors)) {
+                            throw new Redirection($url);
+                        }
+                    }
+
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Editando un interés de usuario",
+                            'menu' => array(
+                                array(
+                                    'url'   => $url,
+                                    'label' => 'Intereses'
+                                )
+                            ),
+                            'data' => (object) array(
+                                'id' => $id,
+                                'item' => $model::get($id)
+                            ),
+                            'form' => array(
+                                'action' => "$url/edit/$id",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'guardar'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Interés',
+                                        'name' => 'name',
+                                        'type' => 'input'
+                                    )
+                                )
+
+                            ),
+                            'errors' => $errors
+                        )
+                    );
+
+                    break;
+                case 'remove':
+                    if ($model::delete($id)) {
+                        throw new Redirection($url);
+                    }
+                    break;
+                default:
+                    throw new Redirection("/admin");
+            }
+
         }
 
         /*
