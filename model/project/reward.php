@@ -29,7 +29,7 @@ namespace Goteo\Model\Project {
             }
 		}
 
-		public static function getAll ($project, $type = 'social', $fulfilled = null) {
+		public static function getAll ($project, $type = 'social', $fulfilled = null, $icon = null) {
             try {
                 $array = array();
 
@@ -39,9 +39,13 @@ namespace Goteo\Model\Project {
                 );
 
                 $sqlFilter = "";
-                if (isset($fulfilled)) {
+                if (!empty($fulfilled)) {
                     $sqlFilter .= "    AND fulfilled = :fulfilled";
-                    $values[':fulfilled'] = $fulfilled;
+                    $values[':fulfilled'] = $fulfilled == 'ok' ? 1 : 0;
+                }
+                if (!empty($icon)) {
+                    $sqlFilter .= "    AND icon = :icon";
+                    $values[':icon'] = $icon;
                 }
 
 

@@ -1291,10 +1291,10 @@ namespace Goteo\Controller {
                  */
             }
 
-            $projects = Model\Project::published('success');
+            $projects = Model\Project::published();
 
             foreach ($projects as $kay=>&$project) {
-                $project->social_reward = Model\Project\Reward::getAll($project->id, 'social', ($filters['status'] == 'ok') ? true : false);
+                $project->social_rewards = Model\Project\Reward::getAll($project->id, 'social', $filters['status'], $filters['icon']);
             }
 
             $status = array(
@@ -1303,6 +1303,9 @@ namespace Goteo\Controller {
                         
                     );
             $icons = Model\Icon::getAll('social');
+            foreach ($icons as $key => $icon) {
+                $icons[$key] = $icon->name;
+            }
 
             return new View(
                 'view/admin/rewards.html.php',
@@ -1310,7 +1313,7 @@ namespace Goteo\Controller {
                     'projects'=>$projects,
                     'filters' => $filters,
                     'status' => $status,
-                    'icon' => $icons,
+                    'icons' => $icons,
                     'errors' => $errors
                 )
             );

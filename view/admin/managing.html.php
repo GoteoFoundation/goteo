@@ -6,6 +6,9 @@ $bodyClass = 'admin';
 
 $filters = $this['filters'];
 
+//arrastramos los filtros
+$filter = "?status={$filters['status']}&interest={$filters['interest']}";
+
 include 'view/prologue.html.php';
 
     include 'view/header.html.php'; ?>
