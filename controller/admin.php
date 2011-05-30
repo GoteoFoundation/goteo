@@ -218,7 +218,7 @@ namespace Goteo\Controller {
          */
         public function checking($action = 'list', $id = null) {
             $filters = array();
-            $fields = array('status');
+            $fields = array('status', 'category');
             foreach ($fields as $field) {
                 if (isset($_GET[$field])) {
                     $filters[$field] = $_GET[$field];
@@ -263,6 +263,7 @@ namespace Goteo\Controller {
 
             $projects = Model\Project::getList($filters);
             $status = Model\Project::status();
+            $categories = Model\Project\Category::getAll();
 
             return new View(
                 'view/admin/checking.html.php',
@@ -270,6 +271,7 @@ namespace Goteo\Controller {
                     'projects' => $projects,
                     'filters' => $filters,
                     'status' => $status,
+                    'categories' => $categories,
                     'errors' => $errors
                 )
             );

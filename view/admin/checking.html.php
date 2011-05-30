@@ -39,6 +39,14 @@ include 'view/prologue.html.php';
                         <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
                     <?php endforeach; ?>
                     </select>
+
+                    <label for="category-filter">De la categoría:</label>
+                    <select id="category-filter" name="category" onchange="document.getElementById('filter-form').submit();">
+                        <option value="">Cualquier categoría</option>
+                    <?php foreach ($this['categories'] as $categoryId=>$categoryName) : ?>
+                        <option value="<?php echo $categoryId; ?>"<?php if ($filters['category'] == $categoryId) echo ' selected="selected"';?>><?php echo $categoryName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
                 </form>
             </div>
 

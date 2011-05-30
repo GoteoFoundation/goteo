@@ -1305,6 +1305,13 @@ namespace Goteo\Model {
             if (!empty($filters['status'])) {
                 $sqlFilter .= " AND status = " . $filters['status'];
             }
+            if (!empty($filters['category'])) {
+                $sqlFilter .= " AND id IN (
+                    SELECT project
+                    FROM project_category
+                    WHERE category = {$filters['category']}
+                    )";
+            }
 
             $sql = "SELECT 
                         id
