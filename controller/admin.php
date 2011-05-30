@@ -1127,14 +1127,45 @@ namespace Goteo\Controller {
          *  administración de nodos y usuarios (segun le permita el ACL al usuario validado)
          */
         public function managing($action = 'list', $id = null) {
-            $users = Model\User::getAll();
+            $filters = array();
+            $fields = array('status', 'category');
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    $filters[$field] = $_GET[$field];
+                }
+            }
+
+            $errors = array();
+
+            switch ($action)  {
+                case 'ban':
+                    $sql = "UPDATE user SET active = 0 WHERE id = ?";
+                    Model\User::query($sql, array($id));
+                    break;
+                case 'unban':
+                    $sql = "UPDATE user SET active = 1 WHERE id = ?";
+                    Model\User::query($sql, array($id));
+                    break;
+            }
+
+            $users = Model\User::getAll($filters);
+            $status = array(
+                        'active' => 'Activo',
+                        'inactive' => 'Inactive'
+                    );
+            $interests = Model\User\Interest::getAll();
 
             return new View(
                 'view/admin/managing.html.php',
                 array(
-                    'users'=>$users
+                    'users'=>$users,
+                    'filters' => $filters,
+                    'status' => $status,
+                    'interests' => $interests,
+                    'errors' => $errors
                 )
             );
+
         }
 
         /*

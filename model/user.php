@@ -384,9 +384,37 @@ namespace Goteo\Model {
          * @param  bool $visible    true|false
          * @return mixed            Array de objetos de usuario activos|todos.
          */
-        public static function getAll ($visible = true) {
-            $query = self::query('SELECT * FROM user WHERE active = ?', array($visible));
-            return $query->fetchAll(__CLASS__);
+        public static function getAll ($filters = array()) {
+            $users = array();
+
+            $sqlFilter = "";
+            if (!empty($filters['status'])) {
+                $sqlFilter .= " AND active = " . $filters['status'] == 'active' ? '1' : '0';
+            }
+            if (!empty($filters['interest'])) {
+                $sqlFilter .= " AND id IN (
+                    SELECT user
+                    FROM user_interest
+                    WHERE interest = {$filters['interest']}
+                    )";
+            }
+
+            $sql = "SELECT
+                        id,
+                        name,
+                        email,
+                        active
+                    FROM user
+                    WHERE id != ''
+                        $sqlFilter
+                    ORDER BY name ASC
+                    ";
+
+            $query = self::query($sql, array($node));
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $user) {
+                $users[] = $user;
+            }
+            return $users;
         }
 
 		/**
