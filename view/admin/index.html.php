@@ -55,7 +55,7 @@ include 'view/prologue.html.php';
                     <h3 class="title">Plataforma Goteo</h3>
                     <ul>
                         <li><a href="/admin/managing">Usuarios</a></li>
-                        <li><a href="/admin/rewards">Retornos</a></li>
+                        <li><a href="/admin/rewards">Retornos colectivos</a></li>
                     </ul>
                 </div>
 
