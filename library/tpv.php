@@ -18,35 +18,66 @@ namespace Goteo\Library {
          * para sermepa el máximo de pre-apprioval son 45 días
          */
         public static function preapproval($invest, &$errors = array()) {
+
+            /*
+            Castellano-001,
+            Inglés-002,
+            Catalán-003,
+            Francés-004,
+            Alemán-005
+            Holandés-006,
+            Italiano-007
+            Portugués-009,
+            Valenciano-010
+            Gallego-012
+            Euskera-013
+            */
             
 			try {
-		           $returnURL = SITE_URL."/invest/confirmed/" . $invest->project; // a difundirlo @TODO mensaje gracias si llega desde un preapproval
-		           $cancelURL = SITE_URL."/invest/fail/" . $invest->project . "/" . $invest->id; // a la página de aportar para intentarlo de nuevo
+                // preparo codigo y cantidad
+                $token  = $invest->id . rand(0,9) . rand(0,9) . rand(0,9) . rand(0,9);
+                $amount = $invest->amount * 100;
 
-                    // desde hoy hasta 45 dias
-                   /*
-                    date_default_timezone_set('UTC');
-                    $currDate = getdate();
-                    $hoy = $currDate['year'].'-'.$currDate['mon'].'-'.$currDate['mday'];
-                    $startDate = strtotime($hoy);
-                    $startDate = date('Y-m-d', mktime(date('h',$startDate),date('i',$startDate),0,date('m',$startDate),date('d',$startDate),date('Y',$startDate)));
-                    $endDate = strtotime($hoy);
-                    $endDate = date('Y-m-d', mktime(0,0,0,date('m',$endDate),date('d',$endDate)+45,date('Y',$endDate)));
-                    */
+                $MerchantID = TPV_MERCHANT_CODE;
+                $currency = '978';
+                $transactionType = 0;
+//                $urlMerchant = SITE_URL."/tpv/comunication";
+                $urlMerchant = "http://facturaweb.onliners-web.com/goteo/tpv.php";
+                $clave = TPV_ENCRYPT_KEY;
 
+                // y la firma
+                $Firma = sha1($amount.$token.$MerchantID.$currency.$transactionType.$urlMerchant.$clave);
 
-                    // Guardar el codigo de preaproval en el registro de aporte y mandarlo al tpv
-                    $token = 'tpvCODE';
-                    if (!empty($token)) {
-                        $invest->setPreapproval($token);
-                        $tpvURL = TPV_REDIRECT_URL;
-                        // escribir el formulario sermepa y enviar
-                        die('Hola tpv');
-                    } else {
-                        $errors[] = 'No tpv code obtained. <pre>' . print_r($response, 1) . '</pre>';
-                        return false;
-                    }
+                // comenzamos una transacción de tipo 'pre-autenticación', 40 dias para confirmar la operacion
+                // pero primero transaction 0 para desarrollo
 
+                $datos = array(
+                    'Ds_Merchant_MerchantCode'		=> $MerchantID,
+                    'Ds_Merchant_Terminal'			=> '1',
+                    'Ds_Merchant_TransactionType'	=> $transactionType,
+                    'Ds_Merchant_MerchantSignature'	=> $Firma,
+                    'Ds_Merchant_MerchantUrl'		=> $urlMerchant,
+                    'Ds_Merchant_UrlOK'             => SITE_URL."/invest/confirmed/" . $invest->project,
+                    'Ds_Merchant_UrlKO'             => SITE_URL."/invest/fail/" . $invest->project . "/" . $invest->id,
+                    'Ds_Merchant_Currency'			=> $currency,
+                    'Ds_Merchant_Order' 			=> $token,
+                    'Ds_Merchant_ProductDescription'=> "Aporte de {$invest->amount} euros al proyecto {$invest->project}",
+                    'Ds_Merchant_Amount'			=> $amount,
+                    'Ds_Merchant_ConsumerLanguage'  => '001',
+                     'Ds_Merchant_MerchantData'     => 'InvestId='.$invest->id
+                );
+
+                // Guardar el codigo de preaproval en el registro de aporte y mandarlo al tpv
+                $invest->setPreapproval($token);
+                $urlTPV = TPV_REDIRECT_URL;
+                $data = '';
+                foreach ($datos as $n => $v) {
+                    $data .= '<input name="'.$n.'" type="hidden" value="'.$v.'" />';
+                }
+
+                echo '<html><head><title>Goteo.org</title></head><body><form action="'.$urlTPV.'" method="post" id="form_tpv">'.$data.'</form><script type="text/javascript">document.getElementById("form_tpv").submit();</script></body></html>';
+
+                die;
 			}
 			catch(Exception $ex) {
 
