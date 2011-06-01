@@ -130,15 +130,19 @@ namespace Goteo\Library {
 		/*
 		 *  Metodo para la lista de textos segun idioma
 		 */
-		public static function getAll($filter = null) {
+		public static function getAll($filters = array()) {
             $texts = array();
 
             $values = array(':lang'=>\GOTEO_DEFAULT_LANG);
 
             $sql = "SELECT id, text FROM text WHERE lang = :lang";
-            if (!empty($filter)) {
+            if (!empty($filters['idfilter'])) {
                 $sql .= " AND id LIKE :filter";
-                $values[':filter'] = "%$filter%";
+                $values[':filter'] = "%{$filters['idfilter']}%";
+            }
+            if (!empty($filters['group'])) {
+                $sql .= " AND group = :group";
+                $values[':group'] = "{$filters['group']}";
             }
             $sql .= " ORDER BY id ASC";
             
@@ -182,14 +186,35 @@ namespace Goteo\Library {
         static public function filters()
         {
             return array(
-                'mandatory'=>'Campos obligatorios',
-                'tooltip'=>'Consejos para rellenar el formulario de proyecto',
-                'error-register'=>'Errores al registrarse',
-                'explain'=>'Explicaciones',
-                'guide-project'=>'Guias del formulario de proyecto',
-                'guide-user'=>'Guias del formulario de usuario',
-                'step'=>'Pasos del formulario',
-                'validate'=>'Validaciones de campos'
+                'mandatory'     => 'Campos obligatorios',
+                'tooltip'       => 'Consejos para rellenar el formulario de proyecto',
+                'error-register'=> 'Errores al registrarse',
+                'explain'       => 'Explicaciones',
+                'guide-project' => 'Guias del formulario de proyecto',
+                'guide-user'    => 'Guias del formulario de usuario',
+                'step'          => 'Pasos del formulario',
+                'validate'      => 'Validaciones de campos'
+            );
+        }
+
+        /*
+         * Grupos de textos
+         */
+        static public function groups()
+        {
+            return array(
+                'login'    => 'Acceso de usuarios',
+                'register' => 'Registro de usuarios',
+                'public'   => 'Paginas públicas de Goteo',
+                'dashboard'=> 'Dashboard del usuario',
+                'form'     => 'Formulario de proyecto en general',
+                'profile'  => 'Perfil del usuario',
+                'personal' => 'Datos personales del usuario',
+                'overview' => 'Descripción del proyecto',
+                'costs'    => 'Costes del proyecto',
+                'rewards'  => 'Retornos y recompensas del proyecto',
+                'supports' => 'Colaboraciones del proyecto',
+                'preview'  => 'Previsualización del proyecto'
             );
         }
 

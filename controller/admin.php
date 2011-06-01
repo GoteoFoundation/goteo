@@ -74,16 +74,22 @@ namespace Goteo\Controller {
             // no cache para textos
             define('GOTEO_ADMIN_NOCACHE', true);
 
-            // comprobamos el filtro
-            $filters = Text::filters();
-            if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $filters)) {
-                $filter = $_GET['filter'];
-            } else {
-                $filter = null;
+            // comprobamos los filtros
+            $filters = array();
+            $fields = array('idfilter', 'group');
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    $filters[$field] = $_GET[$field];
+                }
             }
 
+            // valores de filtro
+            $idfilters = Text::filters();
+            $groups    = Text::groups();
+
             // metemos el todos
-            \array_unshift($filters, 'Todos los textos');
+            \array_unshift($idfilters, 'Todos los textos');
+            \array_unshift($groups, 'Todas las agrupaciones');
 
             switch ($action) {
                 case 'list':
@@ -92,18 +98,24 @@ namespace Goteo\Controller {
                         array(
                             'title' => 'Gestión de textos',
                             'menu' => array(),
-                            'data' => Text::getAll($filter),
+                            'data' => Text::getAll($filters),
                             'columns' => array(
                                 'edit' => '',
                                 'text' => 'Texto'
                             ),
                             'url' => '/admin/texts',
                             'filters' => array(
-                                'action' => '/admin/texts',
-                                'label'  => 'Filtrar los textos de:',
-                                'values' => $filters
+                                'idfilter' => array(
+                                        'label'  => 'Filtrar por tipo:',
+                                        'options' => $idfilters,
+                                        'value' => $filters['idfilter']
+                                    ),
+                                'group' => array(
+                                        'label'  => 'Filtrar por agrupación:',
+                                        'options' => $groups,
+                                        'value' => $filters['group']
+                                    )
                             ),
-                            'filter' => $filter,
                             'errors' => $errors
                         )
                     );

@@ -54,13 +54,15 @@ include 'view/prologue.html.php';
             <!-- Filtro -->
             <?php if (!empty($this['filters'])) : ?>
             <div class="widget board">
-                <form id="filter-form" action="<?php echo $this['filters']['action']; ?>" method="get">
-                    <label for="id-filter"><?php echo $this['filters']['label']; ?></label>
-                    <select id="id-filter" name="filter" onchange="document.getElementById('filter-form').submit();">
-                    <?php foreach ($this['filters']['values'] as $val=>$opt) : ?>
-                        <option value="<?php echo $val; ?>"<?php if ($this['filter'] == $val) echo ' selected="selected"';?>><?php echo $opt; ?></option>
+                <form id="filter-form" action="<?php echo $this['url']; ?>" method="get">
+                    <?php foreach ($this['filters'] as $id=>$filter) : ?>
+                        <label for="filter-<?php echo $id; ?>"><?php echo $filter['label']; ?></label>
+                        <select id="filter-<?php echo $id; ?>" name="<?php echo $id; ?>" onchange="document.getElementById('filter-form').submit();">
+                        <?php foreach ($filter['options'] as $val=>$opt) : ?>
+                            <option value="<?php echo $val; ?>"<?php if ($filter['value'] == $val) echo ' selected="selected"';?>><?php echo $opt; ?></option>
+                        <?php endforeach; ?>
+                        </select>
                     <?php endforeach; ?>
-                    </select>
                 </form>
             </div>
             <?php endif; ?>
