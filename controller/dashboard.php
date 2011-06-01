@@ -86,6 +86,70 @@ namespace Goteo\Controller {
 
         }
 
+        /*
+         * Sección, Mi actividad
+         * Opciones:
+         *      'projects' los proyectos del usuario y a los que ha aportado,
+         *      'comunity' relacion con la comunidad
+         * 
+         */
+        public function activity ($option = 'projects', $action = '') {
+            return new View (
+                'view/dashboard/index.html.php',
+                array(
+                    'message' => "Estas en tu actividad: $option",
+                    'section' => __FUNCTION__,
+                    'option'  => $option,
+                    'action'  => $action
+                )
+            );
+
+        }
+
+        /*
+         * Seccion, Mi perfil
+         * Opciones:
+         *      'public' perfil público (paso 1), 
+         *      'personal' datos personales (paso 2),
+         *      'config' configuracion (cambio de email y contraseña)
+         *
+         */
+        public function profile ($option = 'public', $action = '') {
+            return new View (
+                'view/dashboard/index.html.php',
+                array(
+                    'message' => "Estas en tu perfil: $option",
+                    'section' => __FUNCTION__,
+                    'option'  => $option,
+                    'action'  => $action
+                )
+            );
+        }
+
+
+        /*
+         * Seccion, Mi proyecto (actualmente en campaña o financiado, solo uno)
+         * Opciones:
+         *      'actualizaciones' blog del proyecto (ahora son como mensajes),
+         *      'editar colaboraciones' para modificar los mensajes de colaboraciones (no puede editar el proyecto y ya estan publicados)
+         *      'widgets' ofrece el código para poner su proyecto en otras páginas (vertical y horizontal)
+         *      'licencia' el acuerdo entre goteo y el usuario, licencia cc-by-nc-nd, enlace al pdf
+         *      'gestionar retornos' resumen recompensas/cofinanciadores/conseguido  y lista de cofinanciadores y recompensas esperadas
+         *      'pagina publica' enlace a la página pública del proyecto
+         *
+         */
+        public function project ($option = 'updates', $action = '') {
+            return new View (
+                'view/dashboard/index.html.php',
+                array(
+                    'message' => "Estas en tu proyecto: $option",
+                    'section' => __FUNCTION__,
+                    'option'  => $option,
+                    'action'  => $action
+                )
+            );
+        }
+
 
     }
 
