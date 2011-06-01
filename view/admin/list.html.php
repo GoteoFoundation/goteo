@@ -4,9 +4,11 @@ use Goteo\Library\Text;
 
 $bodyClass = 'admin';
 
+$filters = $this['filters'];
+
 // si hay filtro lo arrastramos
-if (!empty($this['filter'])) {
-    $filter = "?filter={$this['filter']}";
+if (!empty($filters)) {
+    $filter = "?idfilter={$filters['idfilter']}&group={$filters['group']}";
 } else {
     $filter = '';
 }
@@ -18,6 +20,9 @@ $botones = array(
     'down' => '[Bajar]'
 );
 
+// ancho de los tds depende del numero de columnas
+$cols = count($this['columns']);
+$per = 100 / $cols;
 
 include 'view/prologue.html.php';
 
@@ -52,10 +57,10 @@ include 'view/prologue.html.php';
             } ?>
 
             <!-- Filtro -->
-            <?php if (!empty($this['filters'])) : ?>
+            <?php if (!empty($filters)) : ?>
             <div class="widget board">
                 <form id="filter-form" action="<?php echo $this['url']; ?>" method="get">
-                    <?php foreach ($this['filters'] as $id=>$filter) : ?>
+                    <?php foreach ($filters as $id=>$filter) : ?>
                         <label for="filter-<?php echo $id; ?>"><?php echo $filter['label']; ?></label>
                         <select id="filter-<?php echo $id; ?>" name="<?php echo $id; ?>" onchange="document.getElementById('filter-form').submit();">
                         <?php foreach ($filter['options'] as $val=>$opt) : ?>
@@ -84,9 +89,9 @@ include 'view/prologue.html.php';
                         <tr>
                         <?php foreach ($this['columns'] as $key=>$label) : ?>
                             <?php if (in_array($key, array('edit', 'remove', 'up', 'down'))) : ?>
-                                <td><a title="Registro <?php echo (is_object($item)) ? $item->id : $item['id']; ?>" href='<?php $id = (is_object($item)) ? $item->id : $item['id']; echo "{$this['url']}/{$key}/{$id}{$filter}"; ?>'><?php echo $botones[$key]; ?></a></td>
+                                <td width="5%"><a title="Registro <?php echo (is_object($item)) ? $item->id : $item['id']; ?>" href='<?php $id = (is_object($item)) ? $item->id : $item['id']; echo "{$this['url']}/{$key}/{$id}{$filter}"; ?>'><?php echo $botones[$key]; ?></a></td>
                             <?php else : ?>
-                                <td><?php echo (is_object($item)) ? $item->$key : $item[$key]; ?></td>
+                                <td width="<?php echo round($per)-5; ?>%"><?php echo (is_object($item)) ? $item->$key : $item[$key]; ?></td>
                             <?php endif; ?>
                         <?php endforeach; ?>
                         </tr>

@@ -135,21 +135,28 @@ namespace Goteo\Library {
 
             $values = array(':lang'=>\GOTEO_DEFAULT_LANG);
 
-            $sql = "SELECT id, text FROM text WHERE lang = :lang";
+            $sql = "SELECT
+                        purpose.text as id,
+                        IFNULL(text.text,purpose.purpose) as text,
+                        purpose.`group` as `group`
+                    FROM purpose
+                    LEFT JOIN text
+                        ON text.id = purpose.text
+                    WHERE text.lang = :lang
+                    ";
             if (!empty($filters['idfilter'])) {
-                $sql .= " AND id LIKE :filter";
-                $values[':filter'] = "%{$filters['idfilter']}%";
+                $sql .= " AND purpose.text LIKE :idfilter";
+                $values[':idfilter'] = "%{$filters['idfilter']}%";
             }
             if (!empty($filters['group'])) {
-                $sql .= " AND group = :group";
+                $sql .= " AND purpose.`group` = :group";
                 $values[':group'] = "{$filters['group']}";
             }
-            $sql .= " ORDER BY id ASC";
+            $sql .= " ORDER BY purpose.`group` ASC";
             
             try {
                 $query = Model::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $text) {
-                    $text->purpose = self::getPurpose($text->id);
                     $texts[] = $text;
                 }
                 return $texts;
@@ -203,18 +210,16 @@ namespace Goteo\Library {
         static public function groups()
         {
             return array(
-                'login'    => 'Acceso de usuarios',
-                'register' => 'Registro de usuarios',
-                'public'   => 'Paginas públicas de Goteo',
-                'dashboard'=> 'Dashboard del usuario',
-                'form'     => 'Formulario de proyecto en general',
                 'profile'  => 'Perfil del usuario',
                 'personal' => 'Datos personales del usuario',
                 'overview' => 'Descripción del proyecto',
                 'costs'    => 'Costes del proyecto',
                 'rewards'  => 'Retornos y recompensas del proyecto',
                 'supports' => 'Colaboraciones del proyecto',
-                'preview'  => 'Previsualización del proyecto'
+                'preview'  => 'Previsualización del proyecto',
+                'dashboard'=> 'Dashboard del usuario',
+                'register' => 'Registro de usuarios',
+                'general'  => 'Propósito general'
             );
         }
 

@@ -83,6 +83,8 @@ namespace Goteo\Controller {
                 }
             }
 
+            $filter = "?idfilter={$filters['idfilter']}&group={$filters['group']}";
+            
             // valores de filtro
             $idfilters = Text::filters();
             $groups    = Text::groups();
@@ -91,6 +93,12 @@ namespace Goteo\Controller {
             \array_unshift($idfilters, 'Todos los textos');
             \array_unshift($groups, 'Todas las agrupaciones');
 
+ //@fixme temporal hasta pasar las agrupaciones a tabal o arreglar en el list.html.php
+            $data = Text::getAll($filters);
+            foreach ($data as $key=>$item) {
+                $data[$key]->group = $groups[$item->group];
+            }
+
             switch ($action) {
                 case 'list':
                     return new View(
@@ -98,10 +106,11 @@ namespace Goteo\Controller {
                         array(
                             'title' => 'Gestión de textos',
                             'menu' => array(),
-                            'data' => Text::getAll($filters),
+                            'data' => $data,
                             'columns' => array(
                                 'edit' => '',
-                                'text' => 'Texto'
+                                'text' => 'Texto',
+                                'group' => 'Agrupación'
                             ),
                             'url' => '/admin/texts',
                             'filters' => array(
@@ -128,13 +137,13 @@ namespace Goteo\Controller {
                             'title' => "Añadiendo un nuevo texto",
                             'menu' => array(
                                 array(
-                                    'url'=>'/admin/texts?filter='.$filter,
+                                    'url'=>'/admin/texts/'.$filter,
                                     'label'=>'Textos'
                                 )
                             ),
                             'data' => (object) array(),
                             'form' => array(
-                                'action' => '/admin/texts/edit/?filter='.$filter,
+                                'action' => '/admin/texts/edit/'.$filter,
                                 'submit' => array(
                                     'name' => 'update',
                                     'label' => 'Aplicar'
@@ -171,7 +180,7 @@ namespace Goteo\Controller {
                         );
 
                         if (Text::save($data, $errors)) {
-                            throw new Redirection("/admin/texts?filter=$filter");
+                            throw new Redirection("/admin/texts/$filter");
                         }
                     } else {
                         $text = Text::get($id);
@@ -183,7 +192,7 @@ namespace Goteo\Controller {
                             'title' => "Editando el texto '$id'",
                             'menu' => array(
                                 array(
-                                    'url'=>'/admin/texts?filter='.$filter,
+                                    'url'=>'/admin/texts/'.$filter,
                                     'label'=>'Textos'
                                 )
                             ),
@@ -192,7 +201,7 @@ namespace Goteo\Controller {
                                 'text' => $text
                             ),
                             'form' => array(
-                                'action' => '/admin/texts/edit/'.$id.'?filter='.$filter,
+                                'action' => '/admin/texts/edit/'.$id.'/'.$filter,
                                 'submit' => array(
                                     'name' => 'update',
                                     'label' => 'Aplicar'
