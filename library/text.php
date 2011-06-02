@@ -133,7 +133,7 @@ namespace Goteo\Library {
 		public static function getAll($filters = array()) {
             $texts = array();
 
-            $values = array(':lang'=>\GOTEO_DEFAULT_LANG);
+            $values = array();
 
             $sql = "SELECT
                         purpose.text as id,
@@ -142,7 +142,7 @@ namespace Goteo\Library {
                     FROM purpose
                     LEFT JOIN text
                         ON text.id = purpose.text
-                    WHERE text.lang = :lang
+                    WHERE purpose.text != ''
                     ";
             if (!empty($filters['idfilter'])) {
                 $sql .= " AND purpose.text LIKE :idfilter";

@@ -8,7 +8,7 @@ $filters = $this['filters'];
 
 // si hay filtro lo arrastramos
 if (!empty($filters)) {
-    $filter = "?idfilter={$filters['idfilter']}&group={$filters['group']}";
+    $filter = "?idfilter={$filters['idfilter']['value']}&group={$filters['group']['value']}";
 } else {
     $filter = '';
 }
@@ -60,11 +60,11 @@ include 'view/prologue.html.php';
             <?php if (!empty($filters)) : ?>
             <div class="widget board">
                 <form id="filter-form" action="<?php echo $this['url']; ?>" method="get">
-                    <?php foreach ($filters as $id=>$filter) : ?>
-                        <label for="filter-<?php echo $id; ?>"><?php echo $filter['label']; ?></label>
+                    <?php foreach ($filters as $id=>$fil) : ?>
+                        <label for="filter-<?php echo $id; ?>"><?php echo $fil['label']; ?></label>
                         <select id="filter-<?php echo $id; ?>" name="<?php echo $id; ?>" onchange="document.getElementById('filter-form').submit();">
-                        <?php foreach ($filter['options'] as $val=>$opt) : ?>
-                            <option value="<?php echo $val; ?>"<?php if ($filter['value'] == $val) echo ' selected="selected"';?>><?php echo $opt; ?></option>
+                        <?php foreach ($fil['options'] as $val=>$opt) : ?>
+                            <option value="<?php echo $val; ?>"<?php if ($fil['value'] == $val) echo ' selected="selected"';?>><?php echo $opt; ?></option>
                         <?php endforeach; ?>
                         </select>
                     <?php endforeach; ?>
