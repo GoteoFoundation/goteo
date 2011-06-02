@@ -93,10 +93,11 @@ namespace Goteo\Controller {
          *      'comunity' relacion con la comunidad
          * 
          */
-        public function activity ($option = 'projects', $action = '') {
+        public function activity ($option = 'summary', $action = 'view') {
             return new View (
                 'view/dashboard/index.html.php',
                 array(
+                    'menu'    => self::menu(),
                     'message' => "Estas en tu actividad: $option",
                     'section' => __FUNCTION__,
                     'option'  => $option,
@@ -114,10 +115,11 @@ namespace Goteo\Controller {
          *      'config' configuracion (cambio de email y contraseña)
          *
          */
-        public function profile ($option = 'public', $action = '') {
+        public function profile ($option = 'profile', $action = 'edit') {
             return new View (
                 'view/dashboard/index.html.php',
                 array(
+                    'menu'    => self::menu(),
                     'message' => "Estas en tu perfil: $option",
                     'section' => __FUNCTION__,
                     'option'  => $option,
@@ -138,11 +140,12 @@ namespace Goteo\Controller {
          *      'pagina publica' enlace a la página pública del proyecto
          *
          */
-        public function project ($option = 'updates', $action = '') {
+        public function projects ($option = 'summary', $action = 'view') {
             return new View (
                 'view/dashboard/index.html.php',
                 array(
-                    'message' => "Estas en tu proyecto: $option",
+                    'menu'    => self::menu(),
+                    'message' => "Estas en tus proyectos: $option",
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action
@@ -150,7 +153,64 @@ namespace Goteo\Controller {
             );
         }
 
+        /*
+         * Salto al admin
+         *
+         */
+        public function admin ($option = 'board') {
+            if (ACL::check('/admin')) {
+                throw new Redirection('/admin', Redirection::TEMPORARY);
+            } else {
+                throw new Redirection('/dashboard', Redirection::TEMPORARY);
+            }
+        }
 
-    }
+        private static function menu() {
+            $menu = array(
+                'activity' => array(
+                    'label'   => 'Mi actividad',
+                    'options' => array (
+                        'summary' => 'Resumen',
+                        'wall'    => 'Mi muro'
+                    )
+                ),
+                'profile' => array(
+                    'label'   => 'Mi perfil',
+                    'options' => array (
+                        'profile'  => 'Editar perfil',
+                        'personal' => 'Datos personales',
+                        'access'   => 'Datos de acceso',
+                    )
+                ),
+                'projects' => array(
+                    'label' => 'Mis proyectos',
+                    'options' => array (
+                        'summary'  => 'Resumen',
+                        'updates'  => 'Actualizaciones',
+                        'widgets'  => 'Widgets',
+                        'contract' => 'Contrato',
+                        'rewards'  => 'Gestionar retornos',
+                        'supports' => 'Editar colaboraciones',
+                        'preview'  => 'Página pública',
+                    )
+                )
+            );
+
+            if (ACL::check('/admin')) {
+                $menu['admin'] = array(
+                    'label'   => 'Administración',
+                    'options' => array(
+                        'board' => 'Ir al panel'
+                    )
+                );
+            }
+
+            return $menu;
+
+        }
+
+
+
+        }
 
 }
