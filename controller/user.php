@@ -33,7 +33,7 @@ namespace Goteo\Controller {
                 $password = $_POST['password'];
                 if (false !== ($user = (\Goteo\Model\User::login($username, $password)))) {
                     $_SESSION['user'] = $user;
-                    if (isset($_POST['return'])) {
+                    if (!empty($_POST['return'])) {
                         throw new Redirection($_POST['return']);
                     } else {
                         throw new Redirection('/dashboard');
