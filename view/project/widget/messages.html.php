@@ -35,16 +35,7 @@ $level = (int) $this['level'] ?: 3;
                         <a href="/message/delete/<?php echo $message->id; ?>/<?php echo $project->id; ?>">[Borrar]</a>
                    <?php endif; ?>
                    <br />
-                   <?php // si puede editar este mensaje
-                   if (\Goteo\Core\ACL::check("/message/edit/{$message->id}/{$project->id}")) : ?>
-                   <form method="post" action="/message/edit/<?php echo $message->id; ?>/<?php echo $project->id; ?>">
-                        <textarea name="message" cols="50" rows="5"><?php echo $message->message; ?></textarea>
-                        <br />
-                        <input type="submit" value="Guardar" />
-                   </form>
-                   <?php else : ?>
-                       <blockquote><?php echo $message->message; ?></blockquote>
-                   <?php endif; ?>
+                   <blockquote><?php echo $message->message; ?></blockquote>
                </div>
 
                <?php if (!empty($message->responses)) : 
@@ -58,16 +49,7 @@ $level = (int) $this['level'] ?: 3;
                                 <a href="/message/delete/<?php echo $child->id; ?>/<?php echo $project->id; ?>">[Borrar]</a>
                            <?php endif; ?>
                            <br />
-                       <?php // si puede editar este mensaje
-                       if (\Goteo\Core\ACL::check("/message/edit/{$child->id}/{$project->id}")) : ?>
-                       <form method="post" action="/message/edit/<?php echo $child->id; ?>/<?php echo $project->id; ?>">
-                            <textarea name="message" cols="50" rows="5"><?php echo $child->message; ?></textarea>
-                            <br />
-                            <input type="submit" value="Guardar" />
-                       </form>
-                       <?php else : ?>
                            <blockquote><?php echo $child->message; ?></blockquote>
-                       <?php endif; ?>
                        </div>
                 <?php endforeach;
                 endif; ?>
