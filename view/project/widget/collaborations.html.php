@@ -21,7 +21,7 @@ $project = $this['project'];
         <?php endforeach ?>
     </ul>
     
-    <a class="more" href="/project/<?php echo $project->id; ?>/messages">Ver más</a>
+    <a class="more" href="/project/<?php echo $project->id; ?>/needs-non">Ver más</a>
     <a class="button green" href="/project/<?php echo $project->id; ?>/messages">Colabora</a>
     
 </div>

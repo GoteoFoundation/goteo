@@ -285,6 +285,12 @@ namespace Goteo\Controller {
                     'show' => $show
                 );
 
+            // tenemos que tocar esto un poquito para motrar las necesitades no economicas
+            if ($show == 'needs-non') {
+                $viewData['show'] = 'needs';
+                $viewData['non-economic'] = true;
+            }
+
             //tenemos que tocar esto un poquito para gestionar los pasos al aportar
             if ($show == 'invest') {
                 $viewData['show'] = 'supporters';
