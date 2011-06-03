@@ -22,11 +22,7 @@ namespace Goteo\Controller {
                     'message' => $_POST['message']
                 ));
 
-                if ($message->save($errors)) {
-                    // permiso para editarlo y borrarlo
-                    ACL::allow("/message/edit/{$message->id}/{$project}", '*', 'user', $_SESSION['user']->id);
-                    ACL::allow("/message/delete/{$message->id}/{$project}", '*', 'user', $_SESSION['user']->id);
-                }
+                $message->save($errors);
 			}
 
             throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);

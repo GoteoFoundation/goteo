@@ -23,7 +23,7 @@ extract($_POST);
                 <?php endif ?>
 
                 <form action="/user/login" method="post">
-
+                    <input type="hidden" name="return" value="<?php echo $_GET['return']; ?>" />
                     <div class="username">
                         <label>Nombre de usuario
                         <input type="text" name="username" value="<?php echo $username?>" /></label>

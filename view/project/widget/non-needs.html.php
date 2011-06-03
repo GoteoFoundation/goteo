@@ -8,15 +8,13 @@ $minimum    = $project->mincost;
 $optimum    = $project->maxcost;
 
 // separar los costes por tipo
-$costs = array();
+$items = array();
 
-foreach ($project->costs as $cost) {
+foreach ($project->supports as $item) {
     
-    $costs[$cost->type][] = (object) array(
-        'name' => $cost->cost,
-        'description' => $cost->description,
-        'min' => $cost->required == 1 ? $cost->amount : '',
-        'opt' => $cost->amount
+    $items[$item->type][] = (object) array(
+        'name' => $item->support,
+        'description' => $item->description
     );
 }
 
@@ -36,38 +34,27 @@ foreach ($project->costs as $cost) {
            
     <table>
         
-        <?php foreach ($costs as $type => $list): ?>
+        <?php foreach ($items as $type => $list): ?>
         
         <thead class="<?php echo htmlspecialchars($type)?>">
             <tr>
                 <th class="summary"><?php echo htmlspecialchars($types[$type]) ?></th>
-                <th class="min">Mínimo</th>
-                <th class="max">Óptimo</th>
             </tr>            
         </thead>
         
         <tbody>            
-            <?php foreach ($list as $cost): ?>
+            <?php foreach ($list as $item): ?>
             <tr>
-                <th class="summary"><strong><?php echo htmlspecialchars($cost->name) ?></strong>
-                <blockquote><?php echo $cost->description ?></blockquote>
+                <th class="summary"><strong><?php echo htmlspecialchars($item->name) ?></strong>
+                <blockquote><?php echo $item->description ?></blockquote>
                 </th>
-                <td class="min"><?php echo $cost->min ?></td>
-                <td class="max"><?php echo $cost->opt ?></td>
             </tr>            
             <?php endforeach ?>
         </tbody>
         
         <?php endforeach ?>
                                         
-        <tfoot>
-            <tr>
-                <th class="total">Total</th>
-                <th class="min"><?php echo $minimum ?></th>
-                <th class="max"><?php echo $optimum ?></th>
-            </tr>
-        </tfoot>
-        
     </table>
     
+    <a class="button green" href="/project/<?php echo $project->id; ?>/messages">Colabora</a>
 </div>

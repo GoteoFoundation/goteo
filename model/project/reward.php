@@ -48,13 +48,12 @@ namespace Goteo\Model\Project {
                     $values[':icon'] = $icon;
                 }
 
-
                 $sql = "SELECT  *
                         FROM    reward
                         WHERE   project = :project
                             AND type= :type
                         $sqlFilter
-                        ORDER BY id ASC";
+                        ORDER BY amount ASC, id ASC";
 
 				$query = self::query($sql, $values);
 				foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item ) {

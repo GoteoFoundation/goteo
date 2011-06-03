@@ -31,9 +31,14 @@ namespace Goteo\Model {
          * Lista de categorias para proyectos
          * @TODO añadir el numero de usos
          */
-        public static function getAll () {
+        public static function getAll ($project = null) {
 
             $list = array();
+
+            $sqlFilter = "";
+            if (!empty($project)) {
+                
+            }
 
             $sql = "
                 SELECT
