@@ -52,6 +52,7 @@ $elements      = array(
                        . new View('view/project/widget/media.html.php', array('project' => $project))
                        . new View('view/project/widget/share.html.php', array('project' => $project))
                        . new View('view/project/widget/summary.html.php', array('project' => $project))
+                       . new View('view/project/widget/needs.html.php', array('project' => $project))
                        . '</div>'
                        . '</div></div>'
     )
