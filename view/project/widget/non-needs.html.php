@@ -56,4 +56,5 @@ foreach ($project->supports as $item) {
                                         
     </table>
     
+    <a class="button green" href="/project/<?php echo $project->id; ?>/messages">Colabora</a>
 </div>
