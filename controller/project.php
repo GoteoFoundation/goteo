@@ -249,6 +249,11 @@ namespace Goteo\Controller {
         }
 
         public function create () {
+
+            if (empty($_SESSION['user'])) {
+                throw new Redirection("/about/howto");
+            }
+
             $project = new Model\Project;
             if ($project->create()) {
                 $_SESSION['stepped'] = array();
@@ -523,8 +528,8 @@ namespace Goteo\Controller {
                     'project' => $project->id,
                     'cost'  => 'Nueva tarea',
                     'type'  => 'task',
-                    'from' => date('Y-m-d'),
-                    'until' => date('Y-m-d')
+                    'from' => null,
+                    'until' => null
                     
                 ));
                 
