@@ -3,7 +3,8 @@
 use Goteo\Core\View,
     Goteo\Model\User,
     Goteo\Model\Project\Cost,
-    Goteo\Model\Project\Support;
+    Goteo\Model\Project\Support,
+    Goteo\Model\Project\Category;
 
 $project = $this['project'];
 $show    = $this['show'];
@@ -11,6 +12,8 @@ $invest  = $this['invest'];
 
 $owner   = User::get($project->owner);
 $user    = $_SESSION['user'];
+
+$categories = Category::getNames($project->id);
 
 if (!empty($project->investors)) {
     $supporters = ' (' . count($project->investors) . ')';
@@ -31,7 +34,8 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
 
         <div id="sub-header">
             <div>
-                <h2><?php echo htmlspecialchars($this['project']->name) ?></h2>
+                <h2><?php echo htmlspecialchars($project->name) ?></h2>
+                Categorias: <?php echo implode(', ', $categories); ?>
             </div>
             
             <div class="sub-menu">
