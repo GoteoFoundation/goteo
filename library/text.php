@@ -92,6 +92,10 @@ namespace Goteo\Library {
                 }
 			}
 
+            $text = nl2br($text);
+            // apaño temporal para los magic quotes
+            $text = \str_replace('\\', '', $text);
+
             return $texto;
 		}
 
