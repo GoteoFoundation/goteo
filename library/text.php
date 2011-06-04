@@ -134,22 +134,33 @@ namespace Goteo\Library {
 		/*
 		 *  Metodo para la lista de textos segun idioma
 		 */
-		public static function getAll($filter = null) {
+		public static function getAll($filters = array()) {
             $texts = array();
 
-            $values = array(':lang'=>\GOTEO_DEFAULT_LANG);
+            $values = array();
 
-            $sql = "SELECT id, text FROM text WHERE lang = :lang";
-            if (!empty($filter)) {
-                $sql .= " AND id LIKE :filter";
-                $values[':filter'] = "%$filter%";
+            $sql = "SELECT
+                        purpose.text as id,
+                        IFNULL(text.text,purpose.purpose) as text,
+                        purpose.`group` as `group`
+                    FROM purpose
+                    LEFT JOIN text
+                        ON text.id = purpose.text
+                    WHERE purpose.text != ''
+                    ";
+            if (!empty($filters['idfilter'])) {
+                $sql .= " AND purpose.text LIKE :idfilter";
+                $values[':idfilter'] = "%{$filters['idfilter']}%";
             }
-            $sql .= " ORDER BY id ASC";
+            if (!empty($filters['group'])) {
+                $sql .= " AND purpose.`group` = :group";
+                $values[':group'] = "{$filters['group']}";
+            }
+            $sql .= " ORDER BY purpose.`group` ASC";
             
             try {
                 $query = Model::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $text) {
-                    $text->purpose = self::getPurpose($text->id);
                     $texts[] = $text;
                 }
                 return $texts;
@@ -186,14 +197,33 @@ namespace Goteo\Library {
         static public function filters()
         {
             return array(
-                'mandatory'=>'Campos obligatorios',
-                'tooltip'=>'Consejos para rellenar el formulario de proyecto',
-                'error-register'=>'Errores al registrarse',
-                'explain'=>'Explicaciones',
-                'guide-project'=>'Guias del formulario de proyecto',
-                'guide-user'=>'Guias del formulario de usuario',
-                'step'=>'Pasos del formulario',
-                'validate'=>'Validaciones de campos'
+                'mandatory'     => 'Campos obligatorios',
+                'tooltip'       => 'Consejos para rellenar el formulario de proyecto',
+                'error-register'=> 'Errores al registrarse',
+                'explain'       => 'Explicaciones',
+                'guide-project' => 'Guias del formulario de proyecto',
+                'guide-user'    => 'Guias del formulario de usuario',
+                'step'          => 'Pasos del formulario',
+                'validate'      => 'Validaciones de campos'
+            );
+        }
+
+        /*
+         * Grupos de textos
+         */
+        static public function groups()
+        {
+            return array(
+                'profile'  => 'Perfil del usuario',
+                'personal' => 'Datos personales del usuario',
+                'overview' => 'Descripción del proyecto',
+                'costs'    => 'Costes del proyecto',
+                'rewards'  => 'Retornos y recompensas del proyecto',
+                'supports' => 'Colaboraciones del proyecto',
+                'preview'  => 'Previsualización del proyecto',
+                'dashboard'=> 'Dashboard del usuario',
+                'register' => 'Registro de usuarios',
+                'general'  => 'Propósito general'
             );
         }
 

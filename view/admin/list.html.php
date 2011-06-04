@@ -4,9 +4,11 @@ use Goteo\Library\Text;
 
 $bodyClass = 'admin';
 
+$filters = $this['filters'];
+
 // si hay filtro lo arrastramos
-if (!empty($this['filter'])) {
-    $filter = "?filter={$this['filter']}";
+if (!empty($filters)) {
+    $filter = "?idfilter={$filters['idfilter']['value']}&group={$filters['group']['value']}";
 } else {
     $filter = '';
 }
@@ -14,10 +16,13 @@ if (!empty($this['filter'])) {
 $botones = array(
     'edit' => '[Editar]',
     'remove' => '[Quitar]',
-    'up' => '[Subir]',
-    'down' => '[Bajar]'
+    'up' => '[&uarr;]',
+    'down' => '[&darr;]'
 );
 
+// ancho de los tds depende del numero de columnas
+$cols = count($this['columns']);
+$per = 100 / $cols;
 
 include 'view/prologue.html.php';
 
@@ -52,15 +57,17 @@ include 'view/prologue.html.php';
             } ?>
 
             <!-- Filtro -->
-            <?php if (!empty($this['filters'])) : ?>
+            <?php if (!empty($filters)) : ?>
             <div class="widget board">
-                <form id="filter-form" action="<?php echo $this['filters']['action']; ?>" method="get">
-                    <label for="id-filter"><?php echo $this['filters']['label']; ?></label>
-                    <select id="id-filter" name="filter" onchange="document.getElementById('filter-form').submit();">
-                    <?php foreach ($this['filters']['values'] as $val=>$opt) : ?>
-                        <option value="<?php echo $val; ?>"<?php if ($this['filter'] == $val) echo ' selected="selected"';?>><?php echo $opt; ?></option>
+                <form id="filter-form" action="<?php echo $this['url']; ?>" method="get">
+                    <?php foreach ($filters as $id=>$fil) : ?>
+                        <label for="filter-<?php echo $id; ?>"><?php echo $fil['label']; ?></label>
+                        <select id="filter-<?php echo $id; ?>" name="<?php echo $id; ?>" onchange="document.getElementById('filter-form').submit();">
+                        <?php foreach ($fil['options'] as $val=>$opt) : ?>
+                            <option value="<?php echo $val; ?>"<?php if ($fil['value'] == $val) echo ' selected="selected"';?>><?php echo $opt; ?></option>
+                        <?php endforeach; ?>
+                        </select>
                     <?php endforeach; ?>
-                    </select>
                 </form>
             </div>
             <?php endif; ?>
@@ -82,9 +89,9 @@ include 'view/prologue.html.php';
                         <tr>
                         <?php foreach ($this['columns'] as $key=>$label) : ?>
                             <?php if (in_array($key, array('edit', 'remove', 'up', 'down'))) : ?>
-                                <td><a title="Registro <?php echo (is_object($item)) ? $item->id : $item['id']; ?>" href='<?php $id = (is_object($item)) ? $item->id : $item['id']; echo "{$this['url']}/{$key}/{$id}{$filter}"; ?>'><?php echo $botones[$key]; ?></a></td>
+                                <td width="5%"><a title="Registro <?php echo (is_object($item)) ? $item->id : $item['id']; ?>" href='<?php $id = (is_object($item)) ? $item->id : $item['id']; echo "{$this['url']}/{$key}/{$id}{$filter}"; ?>'><?php echo $botones[$key]; ?></a></td>
                             <?php else : ?>
-                                <td><?php echo (is_object($item)) ? $item->$key : $item[$key]; ?></td>
+                                <td width="<?php echo round($per)-5; ?>%"><?php echo (is_object($item)) ? $item->$key : $item[$key]; ?></td>
                             <?php endif; ?>
                         <?php endforeach; ?>
                         </tr>

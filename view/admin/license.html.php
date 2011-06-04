@@ -20,7 +20,7 @@ include 'view/prologue.html.php';
                     <ul>
                         <li class="home"><a href="/admin">Mainboard</a></li>
                         <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
-<!--            <li><a href="?filter=<?php echo serialize($filters); ?>&add">Añadir licencia</a></li> -->
+<!--            <li><a href="/add/?filter=<?php echo $filter; ?>">Añadir licencia</a></li> -->
                     </ul>
                 </div>
             </div>
@@ -78,10 +78,10 @@ include 'view/prologue.html.php';
                             <td><?php echo $license->name; ?></td>
                             <td><?php echo !empty($license->group) ? $this['groups'][$license->group] : ''; ?></td>
                             <td><?php echo $license->order; ?></td>
-                            <td><a href="?filter=<?php echo $filters['group']; ?>&up=<?php echo $license->id; ?>">[&uarr;]</a></td>
-                            <td><a href="?filter=<?php echo $filters['group']; ?>&down=<?php echo $license->id; ?>">[&darr;]</a></td>
-                            <td><a href="?filter=<?php echo $filters['group']; ?>&edit=<?php echo $license->id; ?>">[Editar]</a></td>
-<!--                                <td><a href="?filter=<?php echo $filters['group']; ?>&remove=<?php echo $license->id; ?>">[Quitar]</a></td>  -->
+                            <td><a href="/admin/licenses/up/<?php echo $license->id; ?>/?filter=<?php echo $filters['group']; ?>">[&uarr;]</a></td>
+                            <td><a href="/admin/licenses/down/<?php echo $license->id; ?>/?filter=<?php echo $filters['group']; ?>">[&darr;]</a></td>
+                            <td><a href="/admin/licenses/edit/<?php echo $license->id; ?>/?filter=<?php echo $filters['group']; ?>">[Editar]</a></td>
+<!--                                <td><a href="/admin/licenses/remove=<?php echo $license->id; ?>/?filter=<?php echo $filters['group']; ?>">[Quitar]</a></td>  -->
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

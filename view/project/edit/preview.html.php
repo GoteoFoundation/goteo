@@ -65,7 +65,7 @@ if ($project->finishable) {
             'title' => 'Notas adicionales para el administrador',
             'rows'  => 8,
             'cols'  => 100,
-            'hint'  => Text::get('guide-project-comment'),
+            'hint'  => Text::get('tooltip-project-comment'),
             'value' => $project->comment
         );
 }
