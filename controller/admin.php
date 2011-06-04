@@ -640,6 +640,7 @@ namespace Goteo\Controller {
                     'id' => $_POST['id'],
                     'name' => $_POST['name'],
                     'description' => $_POST['description'],
+                    'url' => $_POST['url'],
                     'group' => $_POST['group'],
                     'order' => $_POST['order'],
                     'icons' => $_POST['icons']

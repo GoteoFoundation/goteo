@@ -60,6 +60,9 @@ include 'view/prologue.html.php';
                     <label for="license-description">Descripción:</label><br />
                     <textarea name="description" id="license-description" cols="60" rows="10"><?php echo $this['license']->description; ?></textarea>
     <br />
+                    <label for="license-url">Url:</label><br />
+                    <input type="text" name="url" id="license-url" value="<?php echo $this['license']->url; ?>" />
+    <br />
                     <label for="license-icons">Tipos:</label><br />
                     <select id="license-icons" name="icons[]" multiple size="6">
                         <?php foreach ($this['icons'] as $icon) : ?>
