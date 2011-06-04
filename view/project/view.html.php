@@ -124,6 +124,10 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                         echo
                             new View('view/project/widget/messages.html.php', array('project' => $project));
                         break;
+                    case 'rewards':
+                        echo
+                            new View('view/project/widget/rewards-summary.html.php', array('project' => $project));
+                        break;
                     case 'home':
                     default:
                         echo
