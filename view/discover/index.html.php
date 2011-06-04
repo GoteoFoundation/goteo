@@ -15,6 +15,14 @@ include 'view/prologue.html.php';
 
 include 'view/header.html.php' ?>
 
+        <div id="sub-header">
+            <div>
+                <h2>Por categoria, lugar o retorno,</h2>
+                <span type="color:red;">encuentra el proyecto</span> con el que más te identificas
+            </div>
+
+        </div>
+
         <div id="main">
             
         <form method="get" action="/discover/results">

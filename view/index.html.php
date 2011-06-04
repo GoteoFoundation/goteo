@@ -8,6 +8,14 @@ $bodyClass = 'home'; include 'view/prologue.html.php' ?>
 
         <?php include 'view/header.html.php' ?>
 
+        <div id="sub-header">
+            <div>
+                <h2>Accede a la comunidad goteo</h2>
+                <strong>100% Abierto</strong>
+            </div>
+
+        </div>
+
         <div id="main">
             
             <?php if (!empty($this['posts'])): ?>
