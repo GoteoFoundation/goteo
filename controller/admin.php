@@ -844,30 +844,6 @@ namespace Goteo\Controller {
             $errors = array();
 
             switch ($action) {
-                case 'list':
-                    return new View(
-                        'view/admin/list.html.php',
-                        array(
-                            'title' => 'Gestión de categorías de proyectos',
-                            'menu' => array(
-                                array(
-                                    'url' => "$url/add",
-                                    'label' => 'Nueva categoría'
-                                )
-                            ),
-                            'data' => $model::getAll(),
-                            'columns' => array(
-                                'edit' => '',
-                                'name' => 'Categoría',
-                                'used' => 'Proyectos',
-                                'remove' => ''
-                            ),
-                            'url' => "$url",
-                            'errors' => $errors
-                        )
-                    );
-
-                    break;
                 case 'add':
                     return new View(
                         'view/admin/edit.html.php',
@@ -977,15 +953,43 @@ namespace Goteo\Controller {
                     );
 
                     break;
+                case 'up':
+                    $model::up($id);
+                    break;
+                case 'down':
+                    $model::down($id);
+                    break;
                 case 'remove':
                     if ($model::delete($id)) {
                         throw new Redirection($url);
                     }
                     break;
-                default:
-                    throw new Redirection("/admin");
             }
 
+            return new View(
+                'view/admin/list.html.php',
+                array(
+                    'title' => 'Gestión de categorías de proyectos',
+                    'menu' => array(
+                        array(
+                            'url' => "$url/add",
+                            'label' => 'Nueva categoría'
+                        )
+                    ),
+                    'data' => $model::getAll(),
+                    'columns' => array(
+                        'name' => 'Categoría',
+                        'used' => 'Proyectos',
+                        'order' => 'Prioridad',
+                        'up' => '',
+                        'down' => '',
+                        'edit' => '',
+                        'remove' => ''
+                    ),
+                    'url' => "$url",
+                    'errors' => $errors
+                )
+            );
         }
 
         /*
@@ -1000,30 +1004,6 @@ namespace Goteo\Controller {
             $errors = array();
 
             switch ($action) {
-                case 'list':
-                    return new View(
-                        'view/admin/list.html.php',
-                        array(
-                            'title' => 'Gestión de intereses de usuarios',
-                            'menu' => array(
-                                array(
-                                    'url' => "$url/add",
-                                    'label' => 'Nuevo interés'
-                                )
-                            ),
-                            'data' => $model::getAll(),
-                            'columns' => array(
-                                'edit' => '',
-                                'name' => 'Interes',
-                                'used' => 'Usuarios',
-                                'remove' => ''
-                            ),
-                            'url' => "$url",
-                            'errors' => $errors
-                        )
-                    );
-
-                    break;
                 case 'add':
                     return new View(
                         'view/admin/edit.html.php',
@@ -1133,15 +1113,43 @@ namespace Goteo\Controller {
                     );
 
                     break;
+                case 'up':
+                    $model::up($id);
+                    break;
+                case 'down':
+                    $model::down($id);
+                    break;
                 case 'remove':
                     if ($model::delete($id)) {
                         throw new Redirection($url);
                     }
                     break;
-                default:
-                    throw new Redirection("/admin");
             }
 
+            return new View(
+                'view/admin/list.html.php',
+                array(
+                    'title' => 'Gestión de intereses de usuarios',
+                    'menu' => array(
+                        array(
+                            'url' => "$url/add",
+                            'label' => 'Nuevo interés'
+                        )
+                    ),
+                    'data' => $model::getAll(),
+                    'columns' => array(
+                        'name' => 'Interes',
+                        'used' => 'Usuarios',
+                        'order' => 'Prioridad',
+                        'up' => '',
+                        'down' => '',
+                        'edit' => '',
+                        'remove' => ''
+                    ),
+                    'url' => "$url",
+                    'errors' => $errors
+                )
+            );
         }
 
         /*

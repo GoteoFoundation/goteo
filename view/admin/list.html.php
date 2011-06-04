@@ -16,8 +16,8 @@ if (!empty($filters)) {
 $botones = array(
     'edit' => '[Editar]',
     'remove' => '[Quitar]',
-    'up' => '[Subir]',
-    'down' => '[Bajar]'
+    'up' => '[&uarr;]',
+    'down' => '[&darr;]'
 );
 
 // ancho de los tds depende del numero de columnas
