@@ -21,10 +21,10 @@ namespace Goteo\Controller {
                 'success' => 'Proyectos exitosos'
             );
             $viewData['types'] = array(
-                'popular' => Model\Project::published('popular'),
-                'outdate' => Model\Project::published('outdate'),
-                'recent' => Model\Project::published('recent'),
-                'success' => Model\Project::published('success')
+                'popular' => Model\Project::published('popular', 3),
+                'outdate' => Model\Project::published('outdate', 3),
+                'recent' => Model\Project::published('recent', 3),
+                'success' => Model\Project::published('success', 3)
             );
 
             return new View(
