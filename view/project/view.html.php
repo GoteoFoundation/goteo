@@ -80,6 +80,7 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                         echo
                             new View('view/project/widget/needs.html.php', 
                                 array('project' => $project, 'types' => Cost::types())),
+                            new View('view/project/widget/schedule.html.php', array('project' => $project)),
                             new View('view/project/widget/sendMsg.html.php', array('project' => $project));
                         break;
                     case 'supporters':

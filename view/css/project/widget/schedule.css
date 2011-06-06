@@ -1,0 +1,49 @@
+div.widget.project-schedule table {
+    border-collapse: collapse;
+    width: 100%;
+    border-right: 1px solid #b2b2b2;    
+}
+
+div.widget.project-schedule table td,
+div.widget.project-schedule table th {
+    border: 1px solid #b2b2b2;    
+    border-width: 1px 1px 0 0;
+    text-align: center;
+    padding: .5em;
+    font-size: 11px;
+}
+
+div.widget.project-schedule thead tr > * {
+    border-top: none;        
+}
+
+div.widget.project-schedule table tbody th {
+    text-align: left;
+    border-left: none;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+div.widget.project-schedule table tbody td.on {
+    border-right-width:  0;
+}
+
+div.widget.project-schedule table tbody tr:nth-child(4n+1) td.on {
+    background-color: #f9d3d4;
+}
+
+div.widget.project-schedule table tbody tr:nth-child(4n+2) td.on {
+    background-color: #d1edf1;
+}
+
+div.widget.project-schedule table tbody tr:nth-child(4n+3) td.on {
+    background-color: #d2f0f0;
+}
+
+div.widget.project-schedule table tbody tr:nth-child(4n+4) td.on {
+    background-color: #c7c7e4;
+}
+
+div.widget.project-schedule table tbody td span {
+    display: none;
+}
