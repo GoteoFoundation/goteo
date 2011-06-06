@@ -26,12 +26,19 @@ $level = $this['level'] ?: 3;
     <div class="description"><?php echo $project->description ?></div>
 
     <?php echo new View('view/project/meter_hor.html.php', array('project' => $project)) ?>
-
-    <div class="rewards-mini">
-        <strong>Retorno</strong>
-        <?php foreach ($project->individual_rewards as $individual) : ?>
-            <a href="/project/<?php echo $project->id; ?>/rewards" title="<?php echo "{$individual->reward} aportando {$individual->amount} &euro; "; ?>"><?php echo $individual->icon ?></a>
-        <?php endforeach; ?>
+    
+    <div class="rewards">
+        <h<?php echo $level + 1 ?>>Retornos</h<?php echo $level + 1?>>        
+        
+        <ul>
+           <?php foreach ($project->individual_rewards as $individual): ?>
+            <li class="<?php echo $individual->icon ?>">
+                <a href="/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$individual->reward} aportando {$individual->amount}") ?> &euro;"><?php echo htmlspecialchars($individual->reward) ?></a>
+            </li>
+           <?php endforeach ?>
+        </ul>
+        
+        
     </div>
 
     <div class="buttons">
