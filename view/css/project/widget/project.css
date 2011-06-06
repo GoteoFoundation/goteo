@@ -220,6 +220,79 @@ div.widget.project div.meter dl dd.days {
     font-weight: bold;
 }
 
+div.widget.project div.rewards {
+    border-top: 1px solid #d1d3d4;    
+    padding: 12px 0 !important;
+    position: relative;
+    margin: 12px 12px 0 !important;
+}
+
+div.widget.project div.rewards h2,
+div.widget.project div.rewards h3,
+div.widget.project div.rewards h4,
+div.widget.project div.rewards h5,
+div.widget.project div.rewards h6,
+div.widget.project div.rewards h7,
+div.widget.project div.rewards h8 {
+    margin: 0;
+    float: left;
+    height: 32px;
+    line-height: 32px;
+}
+
+div.widget.project div.rewards ul {
+    margin: 0 0 0 12px;
+    padding: 0;
+    list-style: none;
+    float: left;
+}
+
+div.widget.project div.rewards ul li {
+    display: inline-block;
+    margin-right: 5px;
+    width: 32px;
+    height: 32px;
+    line-height: 2000px;
+    text-indent: 2000px;
+    overflow: hidden;
+    background-image: url('../../icon/m/blank.png');
+}
+
+div.widget.project div.rewards ul li a {
+    display: block;
+    width: 32px;
+    height: 32px;
+    line-height: 2000px;
+    text-indent: 2000px;
+}
+
+div.widget.project div.rewards ul li.file  {
+    background-image: url('../../icon/m/file.png');
+}
+
+div.widget.project div.rewards ul li.money {
+    background-image: url('../../icon/m/money.png');
+}
+
+div.widget.project div.rewards ul li.code {
+    background-image: url('../../icon/m/code.png');
+}
+
+div.widget.project div.rewards ul li.service {
+    background-image: url('../../icon/m/service.png');
+}
+
+div.widget.project div.rewards ul li.manual  {
+    background-image: url('../../icon/m/manual.png');
+}
+
+div.widget.project div.rewards ul li.product {
+    background-image: url('../../icon/m/product.png');
+}
+
+div.widget.project div.buttons {
+    clear: both;
+}
 
 div.widget.project div.buttons .button + .button {
     float: right;
