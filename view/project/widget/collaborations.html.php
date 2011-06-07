@@ -7,7 +7,7 @@ $project = $this['project'];
 ?>
 <div class="widget project-collaborations collapsable" id="project-collaborations">
     
-    <h<?php echo $level + 1?> class="supertitle">Aportaciones no económicas</h<?php echo $level ?>>
+    <h<?php echo $level + 1?> class="supertitle">Necesidades no económicas</h<?php echo $level ?>>
 
     <h<?php echo $level ?> class="title">Se busca</h<?php echo $level ?>>
     
@@ -21,7 +21,7 @@ $project = $this['project'];
         <?php endforeach ?>
     </ul>
     
-    <a class="more" href="/project/<?php echo $project->id; ?>/messages">Ver más</a>
+    <a class="more" href="/project/<?php echo $project->id; ?>/needs-non">Ver más</a>
     <a class="button green" href="/project/<?php echo $project->id; ?>/messages">Colabora</a>
     
 </div>

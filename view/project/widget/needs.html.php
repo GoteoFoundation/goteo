@@ -16,7 +16,7 @@ foreach ($project->costs as $cost) {
         'name' => $cost->cost,
         'description' => $cost->description,
         'min' => $cost->required == 1 ? $cost->amount : '',
-        'opt' => $cost->required == 1 ? '' : $cost->amount
+        'opt' => $cost->amount
     );
 }
 

@@ -8,13 +8,18 @@ include 'view/prologue.html.php';
 
 include 'view/header.html.php' ?>
 
+        <div id="sub-header">
+            <div>
+                <h2 class="title">Resultado de búsqueda</h2>
+            </div>
+
+        </div>
+
         <div id="main">
 
             <p><?php echo $this['message']; ?></p>
 
             <div class="widget projects promos">
-                <h2 class="title">Resultado de búsqueda</h2>
-
                 <?php if (isset($this['results'])) : ?>
                     <?php foreach ($this['results'] as $result) : ?>
                     <div>

@@ -20,6 +20,7 @@ namespace Goteo\Model {
                         id,
                         name,
                         description,
+                        url,
                         `group`,
                         `order`
                     FROM    license
@@ -54,6 +55,7 @@ namespace Goteo\Model {
                     id,
                     name,
                     description,
+                    url,
                     `group`,
                     `order`
                 FROM    license

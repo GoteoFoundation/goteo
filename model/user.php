@@ -95,7 +95,7 @@ namespace Goteo\Model {
                     $mail->to = $this->email;
                     $mail->toName = $this->name;
                     $mail->subject = Text::get('subject-register');
-                    $url = 'http://goteo.org/user/activate/' . $token;
+                    $url = SITE_URL . '/user/activate/' . $token;
                     $mail->content = sprintf('
                         Estimado(a) <strong>%1$s</strong>:<br/>
                         <br/>
@@ -487,7 +487,7 @@ namespace Goteo\Model {
                     $mail->to = $email;
                     $mail->toName = $this->name;
                     $mail->subject = Text::get('subject-change-email');
-                    $url = 'http://goteo.org/user/changeemail/' . base64_encode($token);
+                    $url = SITE_URL . '/user/changeemail/' . base64_encode($token);
                     $mail->content = sprintf('
                         Estimado(a) <strong>%1$s</strong>:<br/>
                         <br/>

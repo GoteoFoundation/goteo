@@ -74,16 +74,30 @@ namespace Goteo\Controller {
             // no cache para textos
             define('GOTEO_ADMIN_NOCACHE', true);
 
-            // comprobamos el filtro
-            $filters = Text::filters();
-            if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $filters)) {
-                $filter = $_GET['filter'];
-            } else {
-                $filter = null;
+            // comprobamos los filtros
+            $filters = array();
+            $fields = array('idfilter', 'group');
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    $filters[$field] = $_GET[$field];
+                }
             }
 
+            $filter = "?idfilter={$filters['idfilter']}&group={$filters['group']}";
+            
+            // valores de filtro
+            $idfilters = Text::filters();
+            $groups    = Text::groups();
+
             // metemos el todos
-            \array_unshift($filters, 'Todos los textos');
+            \array_unshift($idfilters, 'Todos los textos');
+            \array_unshift($groups, 'Todas las agrupaciones');
+
+ //@fixme temporal hasta pasar las agrupaciones a tabal o arreglar en el list.html.php
+            $data = Text::getAll($filters);
+            foreach ($data as $key=>$item) {
+                $data[$key]->group = $groups[$item->group];
+            }
 
             switch ($action) {
                 case 'list':
@@ -92,18 +106,25 @@ namespace Goteo\Controller {
                         array(
                             'title' => 'Gestión de textos',
                             'menu' => array(),
-                            'data' => Text::getAll($filter),
+                            'data' => $data,
                             'columns' => array(
                                 'edit' => '',
-                                'text' => 'Texto'
+                                'text' => 'Texto',
+                                'group' => 'Agrupación'
                             ),
                             'url' => '/admin/texts',
                             'filters' => array(
-                                'action' => '/admin/texts',
-                                'label'  => 'Filtrar los textos de:',
-                                'values' => $filters
+                                'idfilter' => array(
+                                        'label'  => 'Filtrar por tipo:',
+                                        'options' => $idfilters,
+                                        'value' => $filters['idfilter']
+                                    ),
+                                'group' => array(
+                                        'label'  => 'Filtrar por agrupación:',
+                                        'options' => $groups,
+                                        'value' => $filters['group']
+                                    )
                             ),
-                            'filter' => $filter,
                             'errors' => $errors
                         )
                     );
@@ -116,13 +137,13 @@ namespace Goteo\Controller {
                             'title' => "Añadiendo un nuevo texto",
                             'menu' => array(
                                 array(
-                                    'url'=>'/admin/texts?filter='.$filter,
+                                    'url'=>'/admin/texts/'.$filter,
                                     'label'=>'Textos'
                                 )
                             ),
                             'data' => (object) array(),
                             'form' => array(
-                                'action' => '/admin/texts/edit/?filter='.$filter,
+                                'action' => '/admin/texts/edit/'.$filter,
                                 'submit' => array(
                                     'name' => 'update',
                                     'label' => 'Aplicar'
@@ -159,7 +180,7 @@ namespace Goteo\Controller {
                         );
 
                         if (Text::save($data, $errors)) {
-                            throw new Redirection("/admin/texts?filter=$filter");
+                            throw new Redirection("/admin/texts/$filter");
                         }
                     } else {
                         $text = Text::get($id);
@@ -171,7 +192,7 @@ namespace Goteo\Controller {
                             'title' => "Editando el texto '$id'",
                             'menu' => array(
                                 array(
-                                    'url'=>'/admin/texts?filter='.$filter,
+                                    'url'=>'/admin/texts/'.$filter,
                                     'label'=>'Textos'
                                 )
                             ),
@@ -180,7 +201,7 @@ namespace Goteo\Controller {
                                 'text' => $text
                             ),
                             'form' => array(
-                                'action' => '/admin/texts/edit/'.$id.'?filter='.$filter,
+                                'action' => '/admin/texts/edit/'.$id.'/'.$filter,
                                 'submit' => array(
                                     'name' => 'update',
                                     'label' => 'Aplicar'
@@ -619,6 +640,7 @@ namespace Goteo\Controller {
                     'id' => $_POST['id'],
                     'name' => $_POST['name'],
                     'description' => $_POST['description'],
+                    'url' => $_POST['url'],
                     'group' => $_POST['group'],
                     'order' => $_POST['order'],
                     'icons' => $_POST['icons']
@@ -823,30 +845,6 @@ namespace Goteo\Controller {
             $errors = array();
 
             switch ($action) {
-                case 'list':
-                    return new View(
-                        'view/admin/list.html.php',
-                        array(
-                            'title' => 'Gestión de categorías de proyectos',
-                            'menu' => array(
-                                array(
-                                    'url' => "$url/add",
-                                    'label' => 'Nueva categoría'
-                                )
-                            ),
-                            'data' => $model::getAll(),
-                            'columns' => array(
-                                'edit' => '',
-                                'name' => 'Categoría',
-                                'used' => 'Proyectos',
-                                'remove' => ''
-                            ),
-                            'url' => "$url",
-                            'errors' => $errors
-                        )
-                    );
-
-                    break;
                 case 'add':
                     return new View(
                         'view/admin/edit.html.php',
@@ -956,15 +954,43 @@ namespace Goteo\Controller {
                     );
 
                     break;
+                case 'up':
+                    $model::up($id);
+                    break;
+                case 'down':
+                    $model::down($id);
+                    break;
                 case 'remove':
                     if ($model::delete($id)) {
                         throw new Redirection($url);
                     }
                     break;
-                default:
-                    throw new Redirection("/admin");
             }
 
+            return new View(
+                'view/admin/list.html.php',
+                array(
+                    'title' => 'Gestión de categorías de proyectos',
+                    'menu' => array(
+                        array(
+                            'url' => "$url/add",
+                            'label' => 'Nueva categoría'
+                        )
+                    ),
+                    'data' => $model::getAll(),
+                    'columns' => array(
+                        'name' => 'Categoría',
+                        'used' => 'Proyectos',
+                        'order' => 'Prioridad',
+                        'up' => '',
+                        'down' => '',
+                        'edit' => '',
+                        'remove' => ''
+                    ),
+                    'url' => "$url",
+                    'errors' => $errors
+                )
+            );
         }
 
         /*
@@ -979,30 +1005,6 @@ namespace Goteo\Controller {
             $errors = array();
 
             switch ($action) {
-                case 'list':
-                    return new View(
-                        'view/admin/list.html.php',
-                        array(
-                            'title' => 'Gestión de intereses de usuarios',
-                            'menu' => array(
-                                array(
-                                    'url' => "$url/add",
-                                    'label' => 'Nuevo interés'
-                                )
-                            ),
-                            'data' => $model::getAll(),
-                            'columns' => array(
-                                'edit' => '',
-                                'name' => 'Interes',
-                                'used' => 'Usuarios',
-                                'remove' => ''
-                            ),
-                            'url' => "$url",
-                            'errors' => $errors
-                        )
-                    );
-
-                    break;
                 case 'add':
                     return new View(
                         'view/admin/edit.html.php',
@@ -1112,15 +1114,43 @@ namespace Goteo\Controller {
                     );
 
                     break;
+                case 'up':
+                    $model::up($id);
+                    break;
+                case 'down':
+                    $model::down($id);
+                    break;
                 case 'remove':
                     if ($model::delete($id)) {
                         throw new Redirection($url);
                     }
                     break;
-                default:
-                    throw new Redirection("/admin");
             }
 
+            return new View(
+                'view/admin/list.html.php',
+                array(
+                    'title' => 'Gestión de intereses de usuarios',
+                    'menu' => array(
+                        array(
+                            'url' => "$url/add",
+                            'label' => 'Nuevo interés'
+                        )
+                    ),
+                    'data' => $model::getAll(),
+                    'columns' => array(
+                        'name' => 'Interes',
+                        'used' => 'Usuarios',
+                        'order' => 'Prioridad',
+                        'up' => '',
+                        'down' => '',
+                        'edit' => '',
+                        'remove' => ''
+                    ),
+                    'url' => "$url",
+                    'errors' => $errors
+                )
+            );
         }
 
         /*

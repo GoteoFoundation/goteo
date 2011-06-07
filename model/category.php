@@ -44,7 +44,8 @@ namespace Goteo\Model {
                             COUNT(project_category.project)
                         FROM project_category
                         WHERE project_category.category = category.id
-                    ) as used
+                    ) as used,
+                    `order`
                 FROM    category
                 ORDER BY name ASC
                 ";
@@ -112,6 +113,57 @@ namespace Goteo\Model {
 
         }
 
+        /*
+         * Para que salga antes  (disminuir el order)
+         */
+        public static function up ($id) {
+
+            $query = self::query('SELECT `order` FROM category WHERE id = :id'
+                , array(':id'=>$id));
+            $order = $query->fetchColumn(0);
+
+            $order--;
+            if ($order < 1)
+                $order = 1;
+
+            $sql = "UPDATE category SET `order`=:order WHERE id = :id";
+            if (self::query($sql, array(':order'=>$order, ':id'=>$id))) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+        /*
+         * Para que salga despues  (aumentar el order)
+         */
+        public static function down ($id) {
+
+            $query = self::query('SELECT `order` FROM category WHERE id = :id'
+                , array(':id'=>$id));
+            $order = $query->fetchColumn(0);
+
+            $order++;
+
+            $sql = "UPDATE category SET `order`=:order WHERE id = :id";
+            if (self::query($sql, array(':order'=>$order, ':id'=>$id))) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+        /*
+         * Orden para añadirlo al final
+         */
+        public static function next () {
+            $query = self::query('SELECT MAX(`order`) FROM category');
+            $order = $query->fetchColumn(0);
+            return ++$order;
+
+        }
     }
     
 }

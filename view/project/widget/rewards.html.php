@@ -43,7 +43,7 @@ $project = $this['project'];
         <?php endforeach ?>
     </div>
     
-    <!--<a class="more" href="/project/<?php echo $project->id; ?>/messages">Ver más</a>-->
+    <a class="more" href="/project/<?php echo $project->id; ?>/rewards">Ver más</a>
 
     
 </div>

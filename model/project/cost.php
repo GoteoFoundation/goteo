@@ -118,7 +118,7 @@ namespace Goteo\Model\Project {
 			return array (
 				'task'=>'Tarea',
 				'structure'=>'Infraestructura',
-				'equip'=>'Equipo'
+				'material'=>'Material'
 			);
 		}
 
