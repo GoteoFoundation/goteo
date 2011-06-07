@@ -2,7 +2,9 @@
 
 use Goteo\Core\View,
     Goteo\Model\User,
-    Goteo\Model\Project\Cost;
+    Goteo\Model\Project\Cost,
+    Goteo\Model\Project\Support,
+    Goteo\Model\Project\Category;
 
 $project = $this['project'];
 $show    = $this['show'];
@@ -10,6 +12,8 @@ $invest  = $this['invest'];
 
 $owner   = User::get($project->owner);
 $user    = $_SESSION['user'];
+
+$categories = Category::getNames($project->id);
 
 if (!empty($project->investors)) {
     $supporters = ' (' . count($project->investors) . ')';
@@ -30,7 +34,8 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
 
         <div id="sub-header">
             <div>
-                <h2><?php echo htmlspecialchars($this['project']->name) ?></h2>
+                <h2><?php echo htmlspecialchars($project->name) ?></h2>
+                Categorias: <?php echo implode(', ', $categories); ?>
             </div>
             
             <div class="sub-menu">
@@ -77,11 +82,16 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                 // los modulos centrales son diferentes segun el show
                 switch ($show) {
                     case 'needs':
+                        if ($this['non-economic']) {
+                            echo
+                                new View('view/project/widget/non-needs.html.php',
+                                    array('project' => $project, 'types' => Support::types()));
+                        } else {
                         echo
-                            new View('view/project/widget/needs.html.php', 
-                                array('project' => $project, 'types' => Cost::types())),
+                            new View('view/project/widget/needs.html.php', array('project' => $project, 'types' => Cost::types())),
                             new View('view/project/widget/schedule.html.php', array('project' => $project)),
                             new View('view/project/widget/sendMsg.html.php', array('project' => $project));
+                        }
                         break;
                     case 'supporters':
                         // segun el paso de aporte
@@ -113,6 +123,10 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                     case 'messages':
                         echo
                             new View('view/project/widget/messages.html.php', array('project' => $project));
+                        break;
+                    case 'rewards':
+                        echo
+                            new View('view/project/widget/rewards-summary.html.php', array('project' => $project));
                         break;
                     case 'home':
                     default:

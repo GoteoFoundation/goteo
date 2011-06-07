@@ -4,13 +4,13 @@
 
         <div id="main">
 
-            <h2><?php echo $this['name']; ?></h2>
-            <p><?php echo $this['title']; ?></p>
+            <h2><?php echo htmlspecialchars($this['name']) ?></h2>
+            <!--<h2><?php echo htmlspecialchars($this['title']) ?></h2>
 
-            <div id="content"><?php echo $this['content']; ?></div>
+            <div id="content"><?php echo $this['content']; ?></div>-->
 
             <?php foreach ($this['sections'] as $sectionId=>$sectionName) : ?>
-                <div>
+                <div class="section">
                     <h3><?php echo $sectionName; ?></h3>
                     <ol>
                         <?php foreach ($this['faqs'][$sectionId] as $question)  : ?>

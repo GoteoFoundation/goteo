@@ -52,6 +52,7 @@ $elements      = array(
                        . new View('view/project/widget/media.html.php', array('project' => $project))
                        . new View('view/project/widget/share.html.php', array('project' => $project))
                        . new View('view/project/widget/summary.html.php', array('project' => $project))
+                       . new View('view/project/widget/needs.html.php', array('project' => $project))
                        . '</div>'
                        . '</div></div>'
     )
@@ -64,7 +65,7 @@ if ($project->finishable) {
             'title' => 'Notas adicionales para el administrador',
             'rows'  => 8,
             'cols'  => 100,
-            'hint'  => Text::get('guide-project-comment'),
+            'hint'  => Text::get('tooltip-project-comment'),
             'value' => $project->comment
         );
 }

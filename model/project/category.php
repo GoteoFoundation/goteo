@@ -36,14 +36,48 @@ namespace Goteo\Model\Project {
          * @return array
          */
 		public static function getAll () {
-            return array(
-                1=>'Educación',
-                2=>'Economía solidaria',
-                3=>'Empresa abierta',
-                4=>'Formación técnica',
-                5=>'Desarrollo',
-                6=>'Software',
-                7=>'Hardware');
+            $array = array ();
+            try {
+                $query = static::query("SELECT id, name FROM category ORDER BY name ASC");
+                $categories = $query->fetchAll();
+                foreach ($categories as $cat) {
+                    $array[$cat[0]] = $cat[1];
+                }
+
+                return $array;
+            } catch(\PDOException $e) {
+				throw new \Goteo\Core\Exception($e->getMessage());
+            }
+		}
+
+        /**
+         * Get all categories for this project by name
+         *
+         * @param void
+         * @return array
+         */
+		public static function getNames ($project = null) {
+            $array = array ();
+            try {
+                $sqlFilter = "";
+                if (!empty($project)) {
+                    $sqlFilter = " WHERE id IN (SELECT category FROM project_category WHERE project = '$project')";
+                }
+
+                $sql = "SELECT id, name
+                        FROM category
+                        $sqlFilter
+                        ORDER BY name ASC";
+                $query = static::query($sql);
+                $categories = $query->fetchAll();
+                foreach ($categories as $cat) {
+                    $array[$cat[0]] = $cat[1];
+                }
+
+                return $array;
+            } catch(\PDOException $e) {
+				throw new \Goteo\Core\Exception($e->getMessage());
+            }
 		}
 
 		public function validate(&$errors = array()) {

@@ -6,6 +6,9 @@ $bodyClass = 'admin';
 
 $filters = $this['filters'];
 
+//arrastramos los filtros
+$filter = "?status={$filters['status']}&category={$filters['category']}";
+
 include 'view/prologue.html.php';
 
     include 'view/header.html.php'; ?>
@@ -37,6 +40,14 @@ include 'view/prologue.html.php';
                         <option value="">Todos los estados</option>
                     <?php foreach ($this['status'] as $statusId=>$statusName) : ?>
                         <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+
+                    <label for="category-filter">De la categoría:</label>
+                    <select id="category-filter" name="category" onchange="document.getElementById('filter-form').submit();">
+                        <option value="">Cualquier categoría</option>
+                    <?php foreach ($this['categories'] as $categoryId=>$categoryName) : ?>
+                        <option value="<?php echo $categoryId; ?>"<?php if ($filters['category'] == $categoryId) echo ' selected="selected"';?>><?php echo $categoryName; ?></option>
                     <?php endforeach; ?>
                     </select>
                 </form>
@@ -74,11 +85,11 @@ include 'view/prologue.html.php';
                             <td><?php if ($project->status > 2) echo $project->invested; ?></td>
                             <td><?php if ($project->status > 2) echo $project->mincost; ?></td>
                             <td><a href="/project/edit/<?php echo $project->id; ?>" target="_blank">[Editar]</a></td>
-                            <td><?php if ($project->status < 3) : ?><a href="/admin/checking/publish/<?php echo $project->id; ?>?status=<?php echo $filters['status']; ?>">[Publicar]</a><?php endif; ?></td>
-                            <td><?php if ($project->status != 5) : ?><a href="/admin/checking/cancel/<?php echo $project->id; ?>?status=<?php echo $filters['status']; ?>">[Cancelar]</a><?php endif; ?></td>
-                            <td><?php if ($project->status == 5 || $project->status == 2) : ?><a href="/admin/checking/enable/<?php echo $project->id; ?>?status=<?php echo $filters['status']; ?>">[Reabrir]</a><?php endif; ?></td>
-<!--                                <td><?php if ($project->status == 3) : ?><a href="/admin/checking/complete/<?php echo $project->id; ?>?status=<?php echo $filters['status']; ?>">[Financiado]</a><?php endif; ?></td> -->
-<!--                                <td><?php if ($project->status == 4) : ?><a href="/admin/checking/fulfill/<?php echo $project->id; ?>?status=<?php echo $filters['status']; ?>">[Cumplido]</a><?php endif; ?></td> -->
+                            <td><?php if ($project->status < 3) : ?><a href="<?php echo "/admin/checking/publish/{$project->id}{$filter}"; ?>">[Publicar]</a><?php endif; ?></td>
+                            <td><?php if ($project->status != 5) : ?><a href="<?php echo "/admin/checking/cancel/{$project->id}{$filter}"; ?>">[Cancelar]</a><?php endif; ?></td>
+                            <td><?php if ($project->status == 5 || $project->status == 2) : ?><a href="<?php echo "/admin/checking/enable/{$project->id}{$filter}"; ?>">[Reabrir]</a><?php endif; ?></td>
+<!--                                <td><?php if ($project->status == 3) : ?><a href="<?php echo "/admin/checking/complete/{$project->id}{$filter}"; ?>">[Financiado]</a><?php endif; ?></td> -->
+<!--                                <td><?php if ($project->status == 4) : ?><a href="<?php echo "/admin/checking/fulfill/{$project->id}{$filter}"; ?>">[Cumplido]</a><?php endif; ?></td> -->
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

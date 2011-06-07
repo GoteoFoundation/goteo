@@ -95,7 +95,7 @@ namespace Goteo\Model {
                     $mail->to = $this->email;
                     $mail->toName = $this->name;
                     $mail->subject = Text::get('subject-register');
-                    $url = 'http://goteo.org/user/activate/' . $token;
+                    $url = SITE_URL . '/user/activate/' . $token;
                     $mail->content = sprintf('
                         Estimado(a) <strong>%1$s</strong>:<br/>
                         <br/>
@@ -384,9 +384,38 @@ namespace Goteo\Model {
          * @param  bool $visible    true|false
          * @return mixed            Array de objetos de usuario activos|todos.
          */
-        public static function getAll ($visible = true) {
-            $query = self::query('SELECT * FROM user WHERE active = ?', array($visible));
-            return $query->fetchAll(__CLASS__);
+        public static function getAll ($filters = array()) {
+            $users = array();
+
+            $sqlFilter = "";
+            if (!empty($filters['status'])) {
+                $active = $filters['status'] == 'active' ? '1' : '0';
+                $sqlFilter .= " AND active = '$active'";
+            }
+            if (!empty($filters['interest'])) {
+                $sqlFilter .= " AND id IN (
+                    SELECT user
+                    FROM user_interest
+                    WHERE interest = {$filters['interest']}
+                    ) ";
+            }
+
+            $sql = "SELECT
+                        id,
+                        name,
+                        email,
+                        active
+                    FROM user
+                    WHERE id != ''
+                        $sqlFilter
+                    ORDER BY name ASC
+                    ";
+
+            $query = self::query($sql, array($node));
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $user) {
+                $users[] = $user;
+            }
+            return $users;
         }
 
 		/**
@@ -458,7 +487,7 @@ namespace Goteo\Model {
                     $mail->to = $email;
                     $mail->toName = $this->name;
                     $mail->subject = Text::get('subject-change-email');
-                    $url = 'http://goteo.org/user/changeemail/' . base64_encode($token);
+                    $url = SITE_URL . '/user/changeemail/' . base64_encode($token);
                     $mail->content = sprintf('
                         Estimado(a) <strong>%1$s</strong>:<br/>
                         <br/>

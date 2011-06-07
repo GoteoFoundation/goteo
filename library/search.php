@@ -12,6 +12,29 @@ namespace Goteo\Library {
     class Search {
 
         /**
+         * Multibuscador basico
+         */
+        public static function perform ($text = '', $category = '', $location = '', $reward = '') {
+            
+            $results = array();
+
+            $sql = "SELECT id
+                    FROM project
+                    WHERE status = 3
+                    ORDER BY name ASC";
+
+            try {
+                $query = Model::query($sql, $values);
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $match) {
+                    $results[] = Project::get($match->id);
+                }
+                return $results;
+            } catch (\PDOException $e) {
+                throw new Exception('Fallo la sentencia de busqueda');
+            }
+        }
+
+        /**
          * Metodo para buscar un textxto entre todos los contenidos de texto de un proyecto
          * @param string $value
          * @return array results

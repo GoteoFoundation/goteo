@@ -46,20 +46,19 @@ include 'view/prologue.html.php';
                     <ul>
                         <li><a href="/admin/icons">Tipos de Retorno/Recompensa</a></li>
                         <li><a href="/admin/licenses">Licencias</a></li>
-                    </ul>
-                </div>
-<!--
-                <div class="widget board collapse">
-                    <h3 class="title">Plataforma Goteo</h3>
-                    <ul>
-                        <li><a href="/admin/managing">Usuarios y nodos</a></li>
-                        <li><a href="/admin/rewards">Retornos y recompensas</a></li>
                         <li><a href="/admin/categories">Categorias</a></li>
                         <li><a href="/admin/interests">Intereses</a></li>
                     </ul>
-                    <p>Estos están pendientes de planificación o en desarrollo</p>
                 </div>
--->
+
+                <div class="widget board collapse">
+                    <h3 class="title">Plataforma Goteo</h3>
+                    <ul>
+                        <li><a href="/admin/managing">Usuarios</a></li>
+                        <li><a href="/admin/rewards">Retornos colectivos</a></li>
+                    </ul>
+                </div>
+
             </div>
 
         </div>

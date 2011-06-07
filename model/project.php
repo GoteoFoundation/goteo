@@ -1209,7 +1209,7 @@ namespace Goteo\Model {
         /*
          * Lista de proyectos publicados
          */
-        public static function published($type = 'all')
+        public static function published($type = 'all', $limit = null)
         {
             // segun el tipo (ver controller/discover.php)
             switch ($type) {
@@ -1258,7 +1258,11 @@ namespace Goteo\Model {
                     // todos los que estan 'en campaña'
                     $sql = "SELECT id FROM project WHERE status = 3 ORDER BY name ASC";
             }
-            
+
+            // Limite
+            if (!empty($limit) && \is_numeric($limit)) {
+                $sql .= " LIMIT $limit";
+            }
 
             $projects = array();
             $query = self::query($sql);
@@ -1304,6 +1308,13 @@ namespace Goteo\Model {
             $sqlFilter = "";
             if (!empty($filters['status'])) {
                 $sqlFilter .= " AND status = " . $filters['status'];
+            }
+            if (!empty($filters['category'])) {
+                $sqlFilter .= " AND id IN (
+                    SELECT project
+                    FROM project_category
+                    WHERE category = {$filters['category']}
+                    )";
             }
 
             $sql = "SELECT 

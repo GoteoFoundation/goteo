@@ -249,6 +249,11 @@ namespace Goteo\Controller {
         }
 
         public function create () {
+
+            if (empty($_SESSION['user'])) {
+                throw new Redirection("/about/howto");
+            }
+
             $project = new Model\Project;
             if ($project->create()) {
                 $_SESSION['stepped'] = array();
@@ -279,6 +284,12 @@ namespace Goteo\Controller {
                     'project' => $project,
                     'show' => $show
                 );
+
+            // tenemos que tocar esto un poquito para motrar las necesitades no economicas
+            if ($show == 'needs-non') {
+                $viewData['show'] = 'needs';
+                $viewData['non-economic'] = true;
+            }
 
             //tenemos que tocar esto un poquito para gestionar los pasos al aportar
             if ($show == 'invest') {
@@ -523,8 +534,8 @@ namespace Goteo\Controller {
                     'project' => $project->id,
                     'cost'  => 'Nueva tarea',
                     'type'  => 'task',
-                    'from' => date('Y-m-d'),
-                    'until' => date('Y-m-d')
+                    'from' => null,
+                    'until' => null
                     
                 ));
                 

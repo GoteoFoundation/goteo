@@ -64,7 +64,7 @@ $uri = '/' . implode('/', $segments);
 try {
     // Check permissions on requested URI
     if (!ACL::check($uri)) {
-        throw new Redirection("/user/login");
+        throw new Redirection("/user/login/?return=".rawurlencode($uri));
         // throw new Error(Error::FORBIDDEN);
     }
 

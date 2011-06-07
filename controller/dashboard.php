@@ -86,7 +86,131 @@ namespace Goteo\Controller {
 
         }
 
+        /*
+         * Sección, Mi actividad
+         * Opciones:
+         *      'projects' los proyectos del usuario y a los que ha aportado,
+         *      'comunity' relacion con la comunidad
+         * 
+         */
+        public function activity ($option = 'summary', $action = 'view') {
+            return new View (
+                'view/dashboard/index.html.php',
+                array(
+                    'menu'    => self::menu(),
+                    'message' => "Estas en tu actividad: $option",
+                    'section' => __FUNCTION__,
+                    'option'  => $option,
+                    'action'  => $action
+                )
+            );
 
-    }
+        }
+
+        /*
+         * Seccion, Mi perfil
+         * Opciones:
+         *      'public' perfil público (paso 1), 
+         *      'personal' datos personales (paso 2),
+         *      'config' configuracion (cambio de email y contraseña)
+         *
+         */
+        public function profile ($option = 'profile', $action = 'edit') {
+            return new View (
+                'view/dashboard/index.html.php',
+                array(
+                    'menu'    => self::menu(),
+                    'message' => "Estas en tu perfil: $option",
+                    'section' => __FUNCTION__,
+                    'option'  => $option,
+                    'action'  => $action
+                )
+            );
+        }
+
+
+        /*
+         * Seccion, Mi proyecto (actualmente en campaña o financiado, solo uno)
+         * Opciones:
+         *      'actualizaciones' blog del proyecto (ahora son como mensajes),
+         *      'editar colaboraciones' para modificar los mensajes de colaboraciones (no puede editar el proyecto y ya estan publicados)
+         *      'widgets' ofrece el código para poner su proyecto en otras páginas (vertical y horizontal)
+         *      'licencia' el acuerdo entre goteo y el usuario, licencia cc-by-nc-nd, enlace al pdf
+         *      'gestionar retornos' resumen recompensas/cofinanciadores/conseguido  y lista de cofinanciadores y recompensas esperadas
+         *      'pagina publica' enlace a la página pública del proyecto
+         *
+         */
+        public function projects ($option = 'summary', $action = 'view') {
+            return new View (
+                'view/dashboard/index.html.php',
+                array(
+                    'menu'    => self::menu(),
+                    'message' => "Estas en tus proyectos: $option",
+                    'section' => __FUNCTION__,
+                    'option'  => $option,
+                    'action'  => $action
+                )
+            );
+        }
+
+        /*
+         * Salto al admin
+         *
+         */
+        public function admin ($option = 'board') {
+            if (ACL::check('/admin')) {
+                throw new Redirection('/admin', Redirection::TEMPORARY);
+            } else {
+                throw new Redirection('/dashboard', Redirection::TEMPORARY);
+            }
+        }
+
+        private static function menu() {
+            $menu = array(
+                'activity' => array(
+                    'label'   => 'Mi actividad',
+                    'options' => array (
+                        'summary' => 'Resumen',
+                        'wall'    => 'Mi muro'
+                    )
+                ),
+                'profile' => array(
+                    'label'   => 'Mi perfil',
+                    'options' => array (
+                        'profile'  => 'Editar perfil',
+                        'personal' => 'Datos personales',
+                        'access'   => 'Datos de acceso',
+                    )
+                ),
+                'projects' => array(
+                    'label' => 'Mis proyectos',
+                    'options' => array (
+                        'summary'  => 'Resumen',
+                        'updates'  => 'Actualizaciones',
+                        'widgets'  => 'Widgets',
+                        'contract' => 'Contrato',
+                        'rewards'  => 'Gestionar retornos',
+                        'supports' => 'Editar colaboraciones',
+                        'preview'  => 'Página pública',
+                    )
+                )
+            );
+
+            if (ACL::check('/admin')) {
+                $menu['admin'] = array(
+                    'label'   => 'Administración',
+                    'options' => array(
+                        'board' => 'Ir al panel'
+                    )
+                );
+            }
+
+            return $menu;
+
+        }
+
+
+
+        }
 
 }
