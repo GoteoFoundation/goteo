@@ -14,7 +14,9 @@ $project = $this['project'];
     
     <?php echo new View('view/project/meter.html.php', array('project' => $project, 'level' => $level) ) ?>
     
-    <a class="button red supportit" href="/project/<?php echo $project->id; ?>/invest">Apóyalo</a>
-    <a class="more" href="/project/<?php echo $project->id; ?>/needs">Ver más</a>
+    <div class="buttons">
+        <a class="button red supportit" href="/project/<?php echo $project->id; ?>/invest">Apóyalo</a>
+        <a class="more" href="/project/<?php echo $project->id; ?>/needs">Ver más</a>
+    </div>
     
 </div>

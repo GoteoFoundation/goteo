@@ -12,7 +12,7 @@ div.widget.project-support dl {
 }
 
 div.widget.project-support dl dt {
-    margin-top: .8em;
+    margin-top: .4em;
 }
 
 div.widget.project-support dl dt,
@@ -103,13 +103,9 @@ div.widget.project-support dl dd.supporters {
     color: #313b96;
 }
 
-div.widget.project-support a.button.supportit {    
-    margin: 1.5em 0 0;
-}
-
 /* Animated/static meter */
 div.widget.project-support > div.meter {
-    position: relative;
+    position: relative;    
 }
 
 div.widget.project-support div.graph {
@@ -169,3 +165,19 @@ div.widget.project-support div.graph > div.minimum > div.done strong {
     margin-left: -12px;    
     text-align: center;
 }
+
+div.widget.project-support div.buttons {
+    border-top: 1px solid #ee4843;
+    padding: 1em 0 0;
+    margin: 1em 0 0;
+}
+
+div.widget.project-support a.button.supportit {    
+    margin: 0;
+}
+
+div.widget.project-support a.more {
+    float: right;
+    text-decoration: none;
+}
+
