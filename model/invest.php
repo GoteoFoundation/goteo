@@ -8,7 +8,7 @@ namespace Goteo\Model {
             $id,
             $user,
             $project,
-            $account, // cuenta paypal
+            $account, // cuenta paypal o email del usuario
             $amount, //cantidad monetaria del aporte
             $preapproval, //clave del preapproval
             $payment, //clave del cargo
@@ -384,9 +384,14 @@ namespace Goteo\Model {
          *  si no se habia ejecutado el preapproval o no se habia confirmado
          *  es igual que cancelada
          */
-        public function cancel () {
+        public function cancel ($code = null) {
+
+            $sql = "UPDATE invest SET status = 2";
+            if (!empty($code)) {
+                $sql .= ", transaction = '$code'";
+            }
+            $sql .= " WHERE id = ?";
             
-            $sql = "UPDATE invest SET status = 2 WHERE id = ?";
             if (self::query($sql, array($this->id))) {
                 return true;
             } else {

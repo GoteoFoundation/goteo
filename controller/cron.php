@@ -113,26 +113,9 @@ namespace Goteo\Controller {
 
                     $cancelIt = false;
 
-                    if (!empty($invest->preapproval)) {
-                        echo 'Preapproval: ';
-                        $preapproval = Paypal::preapprovalDetails($invest->preapproval, $errors);
-                        echo \trace($preapproval);
-                        
-                        // si tiene preapproval pero no se ha confirmado y no son de hoy, cancelado
-                        if ($preapproval->approved != 'true' || $preapproval->approved != true) {
-                            echo 'No confirmado';
-                            $parts = explode('T', $preapproval->startingDate);
-                            if ($parts[0] != date('Y-m-d')) {
-                                echo ' y no es de hoy.';
-                                $cancelIt = true;
-                            } else {
-                                echo ' pero es de hoy.';
-                            }
-                        } else {
-                            echo 'Confirmado. ';
-                        }
-                        echo '<br />';
-                    } else {
+                    if ($invest->method == 'paypal' && $invest->invested == date('Y-m-d')) {
+                            echo 'Es de hoy.';
+                    } elseif (empty($invest->preapproval)) {
                         //si no tiene preaproval, cancelar
                         echo 'Sin preapproval. ';
                         $cancelIt = true;
@@ -149,11 +132,21 @@ namespace Goteo\Controller {
                         echo 'Ejecutando: ';
                         $errors = array();
 
-                        if (Paypal::pay($invest, $errors)) {
-                            echo 'Correctamente';
-                            // quiero ver los detalles?
-                        } else {
-                            echo 'Fallo al ejecutar: ' . implode('; ', $errors);
+                        switch ($invest->method) {
+                            case 'paypal':
+                                if (Paypal::pay($invest, $errors)) {
+                                    echo 'Cargo paypal correcto';
+                                } else {
+                                    echo 'Fallo al ejecutar cargo paypal: ' . implode('; ', $errors);
+                                }
+                                break;
+                            case 'tpv':
+                                if (Tpv::pay($invest, $errors)) {
+                                    echo 'Cargo sermepa correcto';
+                                } else {
+                                    echo 'Fallo al ejecutar cargo sermepal: ' . implode('; ', $errors);
+                                }
+                                break;
                         }
 
                         echo '<br />';

@@ -88,12 +88,17 @@ namespace Goteo\Controller {
                         case 'tpv':
                             // redireccion al tpv
                             Tpv::preapproval($invest, $errors);
+                            die;
                             break;
                         case 'paypal':
                             // Petición de preapproval y redirección a paypal
                             Paypal::preapproval($invest, $errors);
+                            die;
                             break;
                     }
+
+                    // si seguimos aqui es que algo ha fallado
+                    $errors[] = 'Algo ha fallado';
                 }
 			}
 

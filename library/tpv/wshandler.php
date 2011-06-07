@@ -1,17 +1,16 @@
 <?php
 /****************************************************
-callerservices.php
+wshandler.php
 
-This file uses the constants.php to get parameters including the PayPal Webservice Host URL needed
-to make an API call and calls the server.
+This file contains methods to make calls to Sermepa webservice
 
-Called by PayReceipt.php, PaymentDetails, etc.,
+Called by /library/tpv.php
 
 ****************************************************/
-require_once 'paypal_config.php' ;
-require_once 'log.php';
+require_once 'library/paypal/stub.php'; // sí, uso el stub de paypal
+require_once 'library/paypal/log.php'; // sí, uso el log de paypal
 
-class CallerServices {
+class WSHandler {
 	
 	/*
 	 * public variables
@@ -35,11 +34,6 @@ class CallerServices {
     public $isSuccess;
 
     /*
-     * Sandbox Email Address
-     */
-    public $sandBoxEmailAddress;
-    
-    /*
      * Last Error
      */
     private $LastError;
@@ -48,15 +42,13 @@ class CallerServices {
    	/*
    	 * Calls the actual WEB Service and returns the response.
    	 */
-   	function call($request,$serviceName) {
+   	function callWebService($request) {
 		
 		$response = null;
 		
 		try {
 			
-		    $endpoint=API_BASE_ENDPOINT.$serviceName;
-		 
-		    $response = call($request, $endpoint, $this->sandBoxEmailAddress);
+		    $response = call($request, TPV_WEBSERVICE_URL);
 		    $isFault = false;
 			if(empty($response) || trim($response) == '')
 	   		{
@@ -77,7 +69,8 @@ class CallerServices {
 		   		$isFault = false;
 		   	
 		   		$this->isSuccess = 'Success' ;
-		        $response = SoapEncoder::Decode($response, $isFault);
+//   no tendria que dar un fault soap
+//              $response = SoapEncoder::Decode($response, $isFault);
 				if($isFault)
 		        {
 		        	$this->isSuccess = 'Failure' ;
@@ -92,26 +85,6 @@ class CallerServices {
 	   return $response;
 	}
 	
-	
-	/*
-   	 * Calls the actual WEB Service and returns the response.
-   	 */
-	function callWebService($request,$serviceName,$simpleXML)
-	{
-		$response = null;
-		
-		try {
-			
-		    $endpoint=API_BASE_ENDPOINT.$serviceName;
-		    $response = call($request, $endpoint, $this->sandBoxEmailAddress,$simpleXML);
-		}
-		catch(Exception $ex) {
-			die('Error occurred in callWebService method');
-		}
-	   return $response;
-	}
-	
-
     /*
      * Returns Error ID
      */
@@ -169,70 +142,34 @@ class CallerServices {
 }
 
 /**
-  * call: Function to perform the API call to PayPal using API signature
+  * call: Function to perform the a call to sermepa webservice
   * @methodName is name of API  method.
   * @a is  String
   * $serviceName is String
   * returns an associtive array containing the response from the server.
 */
 
-function call($MsgStr, $endpoint, $sandboxEmailAddress = '')
+function call($MsgStr, $endpoint)
 {
 
     //setting the curl parameters.
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL,$endpoint);
-    curl_setopt($ch, CURLOPT_VERBOSE, 0);
-
-    //turning off the server and peer verification(TrustManager Concept)
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, !TRUST_ALL_CONNECTION);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, !TRUST_ALL_CONNECTION);
-    if(!TRUST_ALL_CONNECTION) {
-		
-    	curl_setopt($ch, CURLOPT_CAINFO, dirname(__FILE__) . '/Certs/api_cert_chain.crt'); 
-    }
-    
-
-
-
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
     curl_setopt($ch, CURLOPT_POST, 1);
-
-    $headers_array = setupHeaders(API_AUTHENTICATION_MODE);
-    if(!empty($sandboxEmailAddress)) {
-    	$headers_array[] = "X-PAYPAL-SANDBOX-EMAIL-ADDRESS: ".$sandboxEmailAddress;
-    }
-    	    
-    if (API_AUTHENTICATION_MODE == 'ssl') {
-    	curl_setopt($ch, CURLOPT_SSLCERT, realpath(SSL_CERTIFICATE_PATH));
-
-    }
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers_array);
-    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //no se exactamente para que es, está en los ejemplos
+    /// pasamos el xml como 'entrada' con urlencoded
+    curl_setopt($ch,CURLOPT_POSTFIELDS, 'entrada='. rawurlencode($MsgStr));
     
-
-    //if USE_PROXY constant set to TRUE in Constants.php, then only proxy will be enabled.
-   //Set proxy name to PROXY_HOST and port number to PROXY_PORT in constants.php
-    if(USE_PROXY)
-    curl_setopt ($ch, CURLOPT_PROXY, PROXY_HOST.":".PROXY_PORT);
 
     //setting the MsgStr as POST FIELD to curl
     $conf = array('mode' => 0600, 'timeFormat' => '%X %x');
     $logger = &Log::singleton('file', 'logs/'.date('Ymd').'_invest.log', 'caller', $conf);
 
-    $logger->log('##### PAYPAL '.date('d/m/Y').' User:'.$_SESSION['user']->id.'#####');
+    $logger->log('##### TPV '.date('d/m/Y').' #####');
     
-    
-    if (TRUST_ALL_CONNECTION == true){
-    	
-    	$log_data='TRUST_ALL_CONNECTION is set to true, Server and peer certificate verification are turned off';
-    	$logger->warning($log_data);
-    	
-    }
-    
+    $logger->log("endpoint: $endpoint");
     $logger->log("request: $MsgStr");
 
-    curl_setopt($ch,CURLOPT_POSTFIELDS,$MsgStr);
     
     if(isset($_SESSION['curl_error_no'])) {
 	    unset($_SESSION['curl_error_no']);
@@ -244,8 +181,8 @@ function call($MsgStr, $endpoint, $sandboxEmailAddress = '')
    
     //getting response from server
     $response = curl_exec($ch);
-    $logger->log("response: $response");
-    $logger->log('##### END PAYPAL '.date('d/m/Y').' User:'.$_SESSION['user']->id.'#####');
+    $logger->log("response: ".trim($response));
+    $logger->log('##### END TPV '.date('d/m/Y').' #####');
     $logger->close();
     
     if (curl_errno($ch)) {
@@ -258,26 +195,4 @@ function call($MsgStr, $endpoint, $sandboxEmailAddress = '')
 
     return $response;
 }
-
-function setupHeaders($auth_mode) {
-    $headers_arr = array();
-
-	if ($auth_mode == 'ssl' ) {
-	   $headers_arr[]="CLIENT_AUTH:  ".'Valid cert';
-	} else {
-	    $headers_arr[]="X-PAYPAL-SECURITY-SIGNATURE: ".API_SIGNATURE;
-
-	}
-	
-	$headers_arr[]="X-PAYPAL-SECURITY-USERID:  ".API_USERNAME;
-	$headers_arr[]="X-PAYPAL-SECURITY-PASSWORD: ".API_PASSWORD;
-	$headers_arr[]="X-PAYPAL-APPLICATION-ID: ".X_PAYPAL_APPLICATION_ID;
-	$headers_arr[]="X-PAYPAL-REQUEST-SOURCE: ".SDK_VERSION;
-    $headers_arr[]="X-PAYPAL-DEVICE-IPADDRESS: ".X_PAYPAL_DEVICE_IPADDRESS; 
-    $headers_arr[] = "X-PAYPAL-REQUEST-DATA-FORMAT: JSON";
-    $headers_arr[] = "X-PAYPAL-RESPONSE-DATA-FORMAT: JSON";
-	
-	return $headers_arr;
-}
-
 ?>
