@@ -2,7 +2,7 @@
 @import url('widget/summary.css');
 @import url('widget/media.css');
 @import url('widget/share.css');
-@import url('widget/messages.css');
+@import url('widget/message.css');
 @import url('widget/support.css');
 @import url('widget/needs.css');
 @import url('widget/collaborations.css');
@@ -86,7 +86,8 @@ body.project-show div#main div.widget.user {
 body.project-show div#main div.widget.project-summary,
 body.project-show div#main div.widget.project-share,
 body.project-show div#main div.widget.project-needs,
-body.project-show div#main div.widget.project-messages {
+body.project-show div#main div.widget.project-messages,
+body.project-show div#main div.widget.project-message {
     max-width: 580px;
     margin-right: 20px;
 }

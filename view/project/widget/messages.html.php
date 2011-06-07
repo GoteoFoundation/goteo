@@ -6,12 +6,12 @@ $level = (int) $this['level'] ?: 3;
 ?>
 <script type="text/javascript">
     function answer(id) {
-        document.getElementById('thread').value = id;
-        document.getElementById('message-text').value = 'Escribe tu respuesta aquí';
+        $('#thread').val(id);
+        $('#message-text').val('Escribe tu respuesta aquí').focus().select();
     }
 </script>
-<div class="widget project-messages">
-    
+
+<div class="widget project-message">
     <h<?php echo $level ?> class="title">Escribe tu mensaje</h<?php echo $level ?>>
 
     <div>
@@ -21,7 +21,11 @@ $level = (int) $this['level'] ?: 3;
             <input class="button" type="submit" value="Enviar" />
         </form>
     </div>
+</div>
 
+<div class="widget project-messages">
+    
+    
     <div id="project-messages">
 		<?php foreach ($project->messages as $message) : ?>
                 <div class="thread">
