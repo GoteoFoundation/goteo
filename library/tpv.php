@@ -4,6 +4,8 @@ namespace Goteo\Library {
     use Goteo\Model\Invest,
         Goteo\Core\Redirection;
 
+    require_once 'library/tpv/wshandler.php';  // Libreria para comunicaciones con el webservice TPV y log
+
 	/*
 	 * Clase para usar el tpv de Caja Laboral mediante Sermepa
 	 */
@@ -38,11 +40,15 @@ namespace Goteo\Library {
                 $token  = $invest->id . rand(0,9) . rand(0,9) . rand(0,9) . rand(0,9);
                 $amount = $invest->amount * 100;
 
+                // Guardar el codigo de preaproval en el registro de aporte (para confirmar o cancelar)
+                $invest->setPreapproval($token);
+
                 $MerchantID = TPV_MERCHANT_CODE;
                 $currency = '978';
-                $transactionType = 0;
+//                $transactionType = 0; // cero para un pago normal
+                $transactionType = 7; //siete para iniciar un pre-autenticacion
 //                $urlMerchant = SITE_URL."/tpv/comunication";
-                $urlMerchant = "http://facturaweb.onliners-web.com/goteo/tpv.php";
+                $urlMerchant = "http://facturaweb.onliners-web.com/goteo/tpv.php"; // hasta pasarlo a produccion
                 $clave = TPV_ENCRYPT_KEY;
 
                 // y la firma
@@ -64,16 +70,25 @@ namespace Goteo\Library {
                     'Ds_Merchant_ProductDescription'=> "Aporte de {$invest->amount} euros al proyecto {$invest->project}",
                     'Ds_Merchant_Amount'			=> $amount,
                     'Ds_Merchant_ConsumerLanguage'  => '001',
-                     'Ds_Merchant_MerchantData'     => 'InvestId='.$invest->id
+                    'Ds_Merchant_MerchantData'     => 'InvestId='.$invest->id.'&User='.$_SESSION['user']->id
                 );
 
-                // Guardar el codigo de preaproval en el registro de aporte y mandarlo al tpv
-                $invest->setPreapproval($token);
+                // mandarlo al tpv
                 $urlTPV = TPV_REDIRECT_URL;
                 $data = '';
+                $MsgStr = '';
                 foreach ($datos as $n => $v) {
                     $data .= '<input name="'.$n.'" type="hidden" value="'.$v.'" />';
+                    $MsgStr .= "{$n}:'{$v}'; ";
                 }
+
+                $conf = array('mode' => 0600, 'timeFormat' => '%X %x');
+                $logger = &\Log::singleton('file', 'logs/'.date('Ymd').'_invest.log', 'caller', $conf);
+
+                $logger->log('##### TPV '.date('d/m/Y').' User:'.$_SESSION['user']->id.'#####');
+
+                $logger->log("request: $MsgStr");
+                $logger->close();
 
                 echo '<html><head><title>Goteo.org</title></head><body><form action="'.$urlTPV.'" method="post" id="form_tpv">'.$data.'</form><script type="text/javascript">document.getElementById("form_tpv").submit();</script></body></html>';
 
@@ -95,10 +110,56 @@ namespace Goteo\Library {
          */
         public static function pay($invest, &$errors = array()) {
 
-            return true;
-
             try {
-                // obtener transaccion y grabarla en el registro de aporte
+                // el codigo de pedido id+4xrand
+                $token = $invest->preapproval;
+
+                $amount = $invest->amount * 100;
+
+                $MerchantID = TPV_MERCHANT_CODE;
+                $currency = '978';
+                $transactionType = 8; //ocho para confirmar una pre-autenticacion
+                //no es necesario la url del comercio, no hay comunicación online
+//                $urlMerchant = SITE_URL."/tpv/comunication";
+//                $urlMerchant = "http://facturaweb.onliners-web.com/goteo/tpv.php"; // hasta pasarlo a produccion
+                $clave = TPV_ENCRYPT_KEY;
+
+                // y la firma
+                $Firma = sha1($amount.$token.$MerchantID.$currency.$transactionType.$clave);
+
+                // con el codigo Preapproval de id+4xrand confirmamos al autenticacion
+                $xml  = '<DATOSENTRADA>';
+                $xml .= '<DS_Version>1.0</DS_Version>';
+                $xml .= '<DS_MERCHANT_AMOUNT>'.$amount.'</DS_MERCHANT_AMOUNT>';
+                $xml .= '<DS_MERCHANT_CURRENCY>'.$currency.'</DS_MERCHANT_CURRENCY>';
+                $xml .= '<DS_MERCHANT_TRANSACTIONTYPE>'.$transactionType.'</DS_MERCHANT_TRANSACTIONTYPE>';
+                $xml .= '<DS_MERCHANT_MERCHANTSIGNATURE>'.$Firma.'</DS_MERCHANT_MERCHANTSIGNATURE>';
+                $xml .= '<DS_MERCHANT_TERMINAL>1</DS_MERCHANT_TERMINAL>';
+                $xml .= '<DS_MERCHANT_MERCHANTCODE>'.TPV_MERCHANT_CODE.'</DS_MERCHANT_MERCHANTCODE>';
+                $xml .= '<DS_MERCHANT_ORDER>'.$token.'</DS_MERCHANT_ORDER>';
+                $xml .= '</DATOSENTRADA>';
+
+                // curl para comunicarnos con el webservice
+                // usamos el mismo log de paypal para guardar el xml enviado y el xml de respuesta
+                $handler = new \WSHandler();
+                $response = $handler->callWebService($xml);
+
+               if(strtoupper($handler->isSuccess) == 'FAILURE') {
+                   $errors[] = 'No se ha podido iniciar la comunicación con paypal para procesar la preaprovación del cargo. ' . $ap->getLastError();
+                   return false;
+                }
+
+                // parsea el xml de respuesta
+                $data = \simplexml_load_string($response);
+                // si devuelve un codigo de error
+                if (\substr($data->CODIGO, 0, 3) == 'SIS') {
+                    return false;
+                } else {
+                    // marcar el aporte como cargado
+                    $invest->setPayment($data->OPERACION->Ds_AuthorisationCode);
+                    return true;
+                }
+                    
             }
             catch (Exception $e) {
                 $errors[] = 'Error fatal en la comunicación con tpv, se ha reportado la incidencia. Disculpe las molestias.';
@@ -110,10 +171,12 @@ namespace Goteo\Library {
 
 
         /*
-         * Llamada a tpv para obtener los detalles de un preapproval
-         */
+         * El tpv no tiene detalles de preapproval,
+         * solamente los que recibimos en la notificacion online al iniciar la transaccion
+         *
         public static function preapprovalDetails ($key, &$errors = array()) {
             try {
+                // en todo caso un resumen escrito del estado del aporte
                 return 'tpvCODE';
             }
             catch(Exception $ex) {
@@ -122,12 +185,16 @@ namespace Goteo\Library {
                 return false;
             }
         }
+         *
+         */
 
         /*
          * Llamada a tpv para obtener los detalles de un cargo
-         */
+         * solamente los que recibimos como respuesta del webservice al confirmar
+         *
         public static function paymentDetails ($key, &$errors = array()) {
             try {
+                // en todo caso podemos mostrar los xml de petición y respuesta bien parseados
                 return 'tpcTRANSACTIONid';
             }
             catch(Exception $ex) {
@@ -136,14 +203,18 @@ namespace Goteo\Library {
                 return false;
             }
         }
+         *
+         */
 
 
         /*
          * Llamada para cancelar un preapproval (si llega a los 40 sin conseguir el mínimo)
-         * recibe la instancia del aporte
+         * tambien usando el webservice y con el preaproval code id+4xrand que le generamos en su dia
          */
         public static function cancelPreapproval ($invest, &$errors = array()) {
             try {
+                // la transaccion se cancela sola, no hay movimiento contable y no genera costes
+                // cancelar el aporte
                 $invest->cancelPreapproval();
                 return true;
             }

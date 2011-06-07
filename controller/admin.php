@@ -9,6 +9,7 @@ namespace Goteo\Controller {
 	    Goteo\Library\Text,
 		Goteo\Library\Lang,
         Goteo\Library\Paypal,
+        Goteo\Library\Tpv,
         Goteo\Library\Page,
         Goteo\Library\Worth;
 
@@ -1232,6 +1233,28 @@ namespace Goteo\Controller {
                 );
             }
 
+            if ($action == 'execute') {
+                $invest = Model\Invest::get($id);
+                
+                switch ($invest->method) {
+                    case 'paypal':
+                        if (Paypal::pay($invest, $errors)) {
+                            $errors[] = 'Cargo paypal correcto';
+                        } else {
+                            $errors[] = 'Fallo al ejecutar cargo paypal: ' . implode('; ', $errors);
+                        }
+                        break;
+                    case 'tpv':
+                        if (Tpv::pay($invest, $errors)) {
+                            $errors[] = 'Cargo sermepa correcto';
+                        } else {
+                            $errors[] = 'Fallo al ejecutar cargo sermepal: ' . implode('; ', $errors);
+                        }
+                        break;
+                }
+
+            }
+
             /*
              *  Lista de proyectos en campaña
              *  indicando cuanto han conseguido, cuantos dias y los cofinanciadores
@@ -1286,7 +1309,8 @@ namespace Goteo\Controller {
                 array(
                     'projects' => $projects,
                     'status' => $status,
-                    'investStatus' => $investStatus
+                    'investStatus' => $investStatus,
+                    'errors' => $errors
                 )
             );
         }

@@ -8,7 +8,7 @@ namespace Goteo\Model {
             $id,
             $user,
             $project,
-            $account, // cuenta paypal
+            $account, // cuenta paypal o email del usuario
             $amount, //cantidad monetaria del aporte
             $preapproval, //clave del preapproval
             $payment, //clave del cargo
