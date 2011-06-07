@@ -1,0 +1,12 @@
+div.widget.project-messages textarea {
+    display: block;
+    background-color: #dceedf;
+    width: 100%;
+    margin: -1px;
+    padding: .3em 0;
+}
+
+div.widget.project-messages .button {
+    float: right;
+    margin: 1em 0 0;
+}

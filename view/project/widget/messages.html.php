@@ -10,16 +10,15 @@ $level = (int) $this['level'] ?: 3;
         document.getElementById('message-text').value = 'Escribe tu respuesta aquí';
     }
 </script>
-<div class="widget project-summary">
+<div class="widget project-messages">
     
-    <h<?php echo $level ?>>Escribe tu mensaje</h<?php echo $level ?>>
+    <h<?php echo $level ?> class="title">Escribe tu mensaje</h<?php echo $level ?>>
 
     <div>
         <form method="post" action="/message/<?php echo $project->id; ?>">
             <input type="hidden" id="thread" name="thread" value="" />
             <textarea id="message-text" name="message" cols="50" rows="5"></textarea>
-            <br />
-            <input type="submit" value="Enviar" />
+            <input class="button" type="submit" value="Enviar" />
         </form>
     </div>
 
@@ -34,7 +33,6 @@ $level = (int) $this['level'] ?: 3;
                    if (\Goteo\Core\ACL::check("/message/delete/{$message->id}/{$project->id}")) : ?>
                         <a href="/message/delete/<?php echo $message->id; ?>/<?php echo $project->id; ?>">[Borrar]</a>
                    <?php endif; ?>
-                   <br />
                    <blockquote><?php echo $message->message; ?></blockquote>
                </div>
 
