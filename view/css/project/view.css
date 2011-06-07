@@ -6,6 +6,7 @@
 @import url('widget/support.css');
 @import url('widget/needs.css');
 @import url('widget/collaborations.css');
+@import url('widget/supporters.css');
 @import url('widget/rewards.css');
 @import url('../user/widget/user.css');
 
@@ -35,7 +36,7 @@ body.project-show div.project-menu ul {
     font-size: 0;
 }
 
-body.project-show  div.project-menu ul li {
+body.project-show div.project-menu ul li {
     display: inline-block;
     margin-right: 1px;    
     background-color: #c8babc;
@@ -87,7 +88,10 @@ body.project-show div#main div.widget.project-summary,
 body.project-show div#main div.widget.project-share,
 body.project-show div#main div.widget.project-needs,
 body.project-show div#main div.widget.project-messages,
-body.project-show div#main div.widget.project-message {
+body.project-show div#main div.widget.project-message,
+body.project-show div#main div.widget.project-supporters,
+body.project-show div#main div.widget.project-worthcracy{
     max-width: 580px;
     margin-right: 20px;
+    clear: left;
 }
