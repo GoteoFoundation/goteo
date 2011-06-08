@@ -1,6 +1,10 @@
 <?php
 
-$worthcracy = $this['worthcracy'];
+use Goteo\Library\Worth;
+
+$worthcracy = isset($this['worthcracy']) ? $this['worthcracy'] : Worth::getAll();
+
+if (!isset($this['level'])) $this['level'] = 9999;
 
 // level: nivel que hay que resaltar con el "soy"
 // , en este caso el resto de niveles por encima del destacado son grises
