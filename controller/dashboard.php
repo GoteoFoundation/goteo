@@ -338,6 +338,7 @@ namespace Goteo\Controller {
         }
 
         private static function menu() {
+
             $menu = array(
                 'activity' => array(
                     'label'   => 'Mi actividad',
@@ -353,8 +354,14 @@ namespace Goteo\Controller {
                         'personal' => 'Datos personales',
                         'access'   => 'Datos de acceso',
                     )
-                ),
-                'projects' => array(
+                )
+            );
+
+            // si tiene proyectos
+            $projects = Model\Project::ofmine($_SESSION['user']->id);
+
+            if (!empty($project)) {
+                $menu['projects'] = array(
                     'label' => 'Mis proyectos',
                     'options' => array (
                         'summary'  => 'Resumen',
@@ -365,9 +372,11 @@ namespace Goteo\Controller {
                         'supports' => 'Editar colaboraciones',
                         'preview'  => 'Página pública',
                     )
-                )
-            );
+                );
 
+            }
+
+            // si tiene permiso para ir al admin
             if (ACL::check('/admin')) {
                 $menu['admin'] = array(
                     'label'   => 'Administración',
