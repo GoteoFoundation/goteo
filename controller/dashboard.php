@@ -101,7 +101,9 @@ namespace Goteo\Controller {
                     'message' => "Estas en tu actividad: $option",
                     'section' => __FUNCTION__,
                     'option'  => $option,
-                    'action'  => $action
+                    'action'  => $action,
+                    'errors'  => $errors,
+                    'success' => $success
                 )
             );
 
@@ -112,10 +114,167 @@ namespace Goteo\Controller {
          * Opciones:
          *      'public' perfil público (paso 1), 
          *      'personal' datos personales (paso 2),
-         *      'config' configuracion (cambio de email y contraseña)
+         *      'access' configuracion (cambio de email y contraseña)
          *
          */
         public function profile ($option = 'profile', $action = 'edit') {
+
+            // tratamos el post segun la opcion y la acion
+            $user = $_SESSION['user'];
+
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+			    $errors = array();
+                switch ($option) {
+                    // perfil publico
+                    case 'profile':
+                        // tratar la imagen y ponerla en la propiedad avatar
+                        // __FILES__
+
+                        $fields = array(
+                            'user_name'=>'name',
+                            'user_location'=>'location',
+                            'user_avatar'=>'avatar',
+                            'user_about'=>'about',
+                            'user_keywords'=>'keywords',
+                            'user_contribution'=>'contribution',
+                            'user_twitter'=>'twitter',
+                            'user_facebook'=>'facebook',
+                            'user_linkedin'=>'linkedin'
+                        );
+
+                        foreach ($fields as $fieldPost=>$fieldTable) {
+                            if (isset($_POST[$fieldPost])) {
+                                $user->$fieldTable = $_POST[$fieldPost];
+                            }
+                        }
+
+                        // Avatar
+                        if(!empty($_FILES['avatar_upload']['name'])) {
+                            $user->avatar = $_FILES['avatar_upload'];
+                        }
+
+                        // tratar si quitan la imagen
+                        if (!empty($_POST['avatar-' . $user->avatar->id .  '-remove'])) {
+                            $user->avatar->remove('user');
+                            $user->avatar = '';
+                        }
+
+                        $user->interests = $_POST['user_interests'];
+
+                        //tratar webs existentes
+                        foreach ($user->webs as $i => &$web) {
+                            // luego aplicar los cambios
+
+                            if (isset($_POST['web-'. $web->id . '-url'])) {
+                                $web->url = $_POST['web-'. $web->id . '-url'];
+                            }
+
+                            //quitar las que quiten
+                            if (!empty($_POST['web-' . $web->id .  '-remove'])) {
+                                unset($user->webs[$i]);
+                            }
+
+                        }
+
+                        //tratar nueva web
+                        if (!empty($_POST['web-add'])) {
+                            $user->webs[] = new Model\User\Web(array(
+                                'url'   => 'http://'
+                            ));
+                        }
+
+                        /// este es el único save que se lanza desde un metodo process_
+                        $user->save($errors);
+                        $user = Model\User::flush();
+                    break;
+                    
+                    // datos personales
+                    case 'personal':
+                        // campos que guarda este paso
+                        $fields = array(
+                            'contract_name',
+                            'contract_nif',
+                            'phone',
+                            'address',
+                            'zipcode',
+                            'location',
+                            'country'
+                        );
+
+                        $personalData = array();
+
+                        foreach ($fields as $field) {
+                            if (isset($_POST[$field])) {
+                                $personalData[$field] = $_POST[$field];
+                            }
+                        }
+
+                        // actualizamos estos datos en los personales del usuario
+                        if (!empty ($personalData)) {
+                            Model\User::setPersonal($user->id, $personalData, true, $errors);
+                        }
+                    break;
+
+                    //cambio de email y contraseña
+                    case 'access':
+                        // E-mail
+                        if($_POST['change_email']) {
+                            if(empty($_POST['user_nemail'])) {
+                                $errors['email'] = Text::get('error-user-email-empty');
+                            }
+                            elseif(!\Goteo\Library\Check::mail($_POST['user_nemail'])) {
+                                $errors['email'] = Text::get('error-user-email-invalid');
+                            }
+                            elseif(empty($_POST['user_remail'])) {
+                                $errors['email']['retry'] = Text::get('error-user-email-empty');
+                            }
+                            elseif (strcmp($_POST['user_nemail'], $_POST['user_remail']) !== 0) {
+                                $errors['email']['retry'] = Text::get('error-user-email-confirm');
+                            }
+                            else {
+                                $user->email = $_POST['user_nemail'];
+                                unset($_POST['user_nemail']);
+                                unset($_POST['user_remail']);
+                                $success[] = 'Te hemos enviado un email para que confirmes el cambio de email';
+                            }
+                        }
+                        // Contraseña
+                        if($_POST['change_password']) {
+                            if(empty($_POST['user_password'])) {
+                                $errors['password'] = Text::get('error-user-password-empty');
+                            }
+                            elseif(!Model\User::login($user->id, $_POST['user_password'])) {
+                                $errors['password'] = Text::get('error-user-wrong-password');
+                            }
+                            elseif(empty($_POST['user_npassword'])) {
+                                $errors['password']['new'] = Text::get('error-user-password-empty');
+                            }
+                            elseif(!\Goteo\Library\Check::password($_POST['user_npassword'])) {
+                                $errors['password']['new'] = Text::get('error-user-password-invalid');
+                            }
+                            elseif(empty($_POST['user_rpassword'])) {
+                                $errors['password']['retry'] = Text::get('error-user-password-empty');
+                            }
+                            elseif(strcmp($_POST['user_npassword'], $_POST['user_rpassword']) !== 0) {
+                                $errors['password']['retry'] = Text::get('error-user-password-confirm');
+                            }
+                            else {
+                                $user->password = $_POST['user_npassword'];
+                                unset($_POST['user_password']);
+                                unset($_POST['user_npassword']);
+                                unset($_POST['user_rpassword']);
+                                $success[] = 'Te hemos enviado un email para que confirmes el cambio de contraseña';
+                            }
+                        }
+                        if($user->save($errors)) {
+                            // Refresca la sesión.
+                            $user = Model\User::flush();
+                        }
+                    break;
+                }
+			}
+
             return new View (
                 'view/dashboard/index.html.php',
                 array(
@@ -123,7 +282,11 @@ namespace Goteo\Controller {
                     'message' => "Estas en tu perfil: $option",
                     'section' => __FUNCTION__,
                     'option'  => $option,
-                    'action'  => $action
+                    'action'  => $action,
+                    'errors'  => $errors,
+                    'success' => $success,
+                    'user'    => $user,
+                    'personal'=> Model\User::getPersonal($user->id)
                 )
             );
         }
@@ -141,6 +304,12 @@ namespace Goteo\Controller {
          *
          */
         public function projects ($option = 'summary', $action = 'view') {
+            
+            $user = $_SESSION['user'];
+
+            $projects = Model\Project::ofmine($id);
+
+
             return new View (
                 'view/dashboard/index.html.php',
                 array(
@@ -148,7 +317,10 @@ namespace Goteo\Controller {
                     'message' => "Estas en tus proyectos: $option",
                     'section' => __FUNCTION__,
                     'option'  => $option,
-                    'action'  => $action
+                    'action'  => $action,
+                    'projects'=> $projects,
+                    'errors'  => $errors,
+                    'success' => $success
                 )
             );
         }

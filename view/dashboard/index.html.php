@@ -22,7 +22,16 @@ include 'view/header.html.php'; ?>
 
             <?php 
             echo new View ('view/dashboard/menu.html.php', $this);
+            ?>
+            <?php if (!empty($this['errors'])) {
+                echo '<pre>' . print_r($this['errors'], 1) . '</pre>';
+            } ?>
 
+            <?php if (!empty($this['success'])) {
+                echo '<pre>' . print_r($this['success'], 1) . '</pre>';
+            } ?>
+
+            <?php
             echo new View ('view/dashboard/'.$this['section'].'/'.$this['option'].'.html.php', $this);
             ?>
 
