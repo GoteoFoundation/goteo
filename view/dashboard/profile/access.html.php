@@ -6,7 +6,6 @@ extract($_POST);
 <form action="/dashboard/profile/access" method="post" enctype="multipart/form-data">
     <div class="superform">
         <div class="elements">
-            <h3>Usuario/Acceso</h3>
             <ol>
                 <li class="element textbox" id="user_id">
                     <label class="title" for="UserId">Nombre de usuario</label>

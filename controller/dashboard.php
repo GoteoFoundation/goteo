@@ -14,6 +14,7 @@ namespace Goteo\Controller {
          *  Muy guarro para poder moverse mientras desarrollamos
          */
         public function index ($section = null) {
+
             $user = $_SESSION['user']->id;
 
             // quitamos el stepped para que no nos lo coja para el siguiente proyecto que editemos
@@ -21,66 +22,17 @@ namespace Goteo\Controller {
                 unset($_SESSION['stepped']);
             }
 
-            $message = "Hola {$user}<br />";
+            $message = "Hola {$user}, bienvenido a tu panel<br />";
 
             if (ACL::check('/admin')) {
                 $message .= '<a href="/admin">Ir al panel de administración</a><br />';
             }
 
-
-            $projects = Model\Project::ofmine($user);
-
-            $status = Model\Project::status();
-
-            //mis cofinanciadores
-            // array de usuarios con:
-            //  foto, nombre, nivel, cantidad a mis proyectos, fecha ultimo aporte, nº proyectos que cofinancia
-            $investors = array();
-            foreach ($projects as $project) {
-
-                // compruebo que puedo editar mis proyectos
-                if (!ACL::check('/project/edit/'.$project->id)) {
-                    ACL::allow('/project/edit/'.$project->id, '*', 'user', $user);
-                }
-
-                // y borrarlos
-                if (!ACL::check('/project/delete/'.$project->id)) {
-                    ACL::allow('/project/delete/'.$project->id, '*', 'user', $user);
-                }
-
-                foreach (Model\Invest::investors($project->id) as $key=>$investor) {
-                    if (\array_key_exists($investor->user, $investors)) {
-                        // ya está en el array, quiere decir que cofinancia este otro proyecto
-                        // , añadir uno, sumar su aporte, actualizar la fecha
-                        ++$investors[$investor->user]->projects;
-                        $investors[$investor->user]->amount += $investor->amount;
-                        $investors[$investor->user]->date = $investor->date;  // <-- @TODO la fecha mas actual
-                    } else {
-                        $investors[$investor->user] = (object) array(
-                            'user' => $investor->user,
-                            'name' => $investor->name,
-                            'projects' => 1,
-                            'avatar' => $investor->avatar,
-                            'worth' => $investor->worth,
-                            'amount' => $investor->amount,
-                            'date' => $investor->date
-                        );
-                    }
-                }
-            }
-
-
-            // comparten intereses
-            $shares = Model\User\Interest::share($user);
-
             return new View (
-                'view/dashboard.html.php',
+                'view/dashboard/index.html.php',
                 array(
                     'message' => $message,
-                    'projects' => $projects,
-                    'status' => $status,
-                    'investors' => $investors,
-                    'shares' => $shares
+                    'menu'    => self::menu()
                 )
             );
 
@@ -94,14 +46,38 @@ namespace Goteo\Controller {
          * 
          */
         public function activity ($option = 'summary', $action = 'view') {
+
+            
+            $user = $_SESSION['user'];
+
+            $projects = Model\Project::ofmine($user->id);
+
+            $status = Model\Project::status();
+
+            foreach ($projects as $project) {
+
+                // compruebo que puedo editar mis proyectos
+                if (!ACL::check('/project/edit/'.$project->id)) {
+                    ACL::allow('/project/edit/'.$project->id, '*', 'user', $user);
+                }
+
+                // y borrarlos
+                if (!ACL::check('/project/delete/'.$project->id)) {
+                    ACL::allow('/project/delete/'.$project->id, '*', 'user', $user);
+                }
+            }
+
+
             return new View (
                 'view/dashboard/index.html.php',
                 array(
                     'menu'    => self::menu(),
-                    'message' => "Estas en tu actividad: $option",
+                    'message' => '',
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action,
+                    'projects'=> $projects,
+                    'status'  => $status,
                     'errors'  => $errors,
                     'success' => $success
                 )
@@ -279,7 +255,7 @@ namespace Goteo\Controller {
                 'view/dashboard/index.html.php',
                 array(
                     'menu'    => self::menu(),
-                    'message' => "Estas en tu perfil: $option",
+                    'message' => '',
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action,
@@ -307,18 +283,58 @@ namespace Goteo\Controller {
             
             $user = $_SESSION['user'];
 
-            $projects = Model\Project::ofmine($id);
+            $projects = Model\Project::ofmine($user->id);
 
+            $status = Model\Project::status();
+
+            //mis cofinanciadores
+            // array de usuarios con:
+            //  foto, nombre, nivel, cantidad a mis proyectos, fecha ultimo aporte, nº proyectos que cofinancia
+            $investors = array();
+            foreach ($projects as $project) {
+
+                // compruebo que puedo editar mis proyectos
+                if (!ACL::check('/project/edit/'.$project->id)) {
+                    ACL::allow('/project/edit/'.$project->id, '*', 'user', $user);
+                }
+
+                // y borrarlos
+                if (!ACL::check('/project/delete/'.$project->id)) {
+                    ACL::allow('/project/delete/'.$project->id, '*', 'user', $user);
+                }
+
+                foreach (Model\Invest::investors($project->id) as $key=>$investor) {
+                    if (\array_key_exists($investor->user, $investors)) {
+                        // ya está en el array, quiere decir que cofinancia este otro proyecto
+                        // , añadir uno, sumar su aporte, actualizar la fecha
+                        ++$investors[$investor->user]->projects;
+                        $investors[$investor->user]->amount += $investor->amount;
+                        $investors[$investor->user]->date = $investor->date;  // <-- @TODO la fecha mas actual
+                    } else {
+                        $investors[$investor->user] = (object) array(
+                            'user' => $investor->user,
+                            'name' => $investor->name,
+                            'projects' => 1,
+                            'avatar' => $investor->avatar,
+                            'worth' => $investor->worth,
+                            'amount' => $investor->amount,
+                            'date' => $investor->date
+                        );
+                    }
+                }
+            }
+            
 
             return new View (
                 'view/dashboard/index.html.php',
                 array(
                     'menu'    => self::menu(),
-                    'message' => "Estas en tus proyectos: $option",
+                    'message' => '',
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action,
                     'projects'=> $projects,
+                    'investors'=> $investors,
                     'errors'  => $errors,
                     'success' => $success
                 )
@@ -354,14 +370,8 @@ namespace Goteo\Controller {
                         'personal' => 'Datos personales',
                         'access'   => 'Datos de acceso',
                     )
-                )
-            );
-
-            // si tiene proyectos
-            $projects = Model\Project::ofmine($_SESSION['user']->id);
-
-            if (!empty($project)) {
-                $menu['projects'] = array(
+                ),
+                'projects' => array(
                     'label' => 'Mis proyectos',
                     'options' => array (
                         'summary'  => 'Resumen',
@@ -372,9 +382,8 @@ namespace Goteo\Controller {
                         'supports' => 'Editar colaboraciones',
                         'preview'  => 'Página pública',
                     )
-                );
-
-            }
+                )
+            );
 
             // si tiene permiso para ir al admin
             if (ACL::check('/admin')) {
