@@ -1201,9 +1201,15 @@ namespace Goteo\Model {
          */
         public static function ofmine($owner)
         {
+            $projects = array();
+
             $sql = "SELECT * FROM project WHERE status > 0 AND owner = ? ORDER BY name ASC";
             $query = self::query($sql, array($owner));
-            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
+                $projects[] = self::get($proj->id);
+            }
+            
+            return $projects;
         }
 
         /*
@@ -1291,7 +1297,7 @@ namespace Goteo\Model {
                                   AND project.id IN (SELECT DISTINCT(project) FROM invest$he)
                                   ORDER BY name ASC");
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
-                $projects[] = $proj;
+                $projects[] = self::get($proj->id);
             }
             return $projects;
         }
