@@ -6,6 +6,11 @@ if (function_exists('ini_set')) {
     throw new \Goteo\Core\Exception("No puedo añadir la API GOTEO al include_path.");
 }
 
+// quitar magic quotes sin depender del php.ini
+if (function_exists('ini_set')) {
+    ini_set('magic_quotes_gpc', '0'); 
+}
+
 // Nodo actual
 define('GOTEO_NODE', 'goteo');
 
