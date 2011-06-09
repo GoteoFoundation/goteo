@@ -1,7 +1,29 @@
-		<p>
-			Mis proyectos:<br />
-		<?php
-		foreach ($this['projects'] as $project) {
+<?php
+use Goteo\Core\View;
+?>
+<div class="widget projects">
+    <h2 class="title">Mis Proyectos</h2>
+    <?php foreach ($this['projects'] as $project) : ?>
+        <div>
+            <?php
+            // es instancia del proyecto
+            // se pintan con widget horizontal 
+            // muestran el estado en vez del creador // own
+            // muestran el boton editar si esta en edicion // own
+            // no muestran el boton apoyar  // dashboard
+            echo new View('view/project/widget/project.html.php', array(
+                'project'   => $project,
+                'dashboard' => true,
+                'own'       => true
+            )); ?>
+        </div>
+    <?php endforeach; ?>
+</div>
+
+
+
+            <?php
+            /*
             if (in_array($project->status, array(3, 4, 5))) {
                 echo '<a href="/project/' . $project->id . '" target="_blank">';
                 echo $project->name;
@@ -18,5 +40,6 @@
             }
             echo '<br />';
 		}
+             *
+             */
 		?>
-		</p>
