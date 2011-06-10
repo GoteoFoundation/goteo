@@ -281,29 +281,58 @@ namespace Goteo\Controller {
          */
         public function projects ($option = 'summary', $action = 'view') {
             
-            $user = $_SESSION['user'];
+            $user    = $_SESSION['user'];
+
+            if ($action == 'select' && !empty($_POST['project'])) {
+                $project = Model\Project::get($_POST['project']);
+            } else {
+                $project = $_SESSION['project'];
+            }
 
             $projects = Model\Project::ofmine($user->id);
 
-            $status = Model\Project::status();
+            // si no hay proyectos no tendria que estar aqui
+            if (count($projects) == 0) {
+                throw new Redirection('/project/create', Redirection::TEMPORARY);
+            } else {
+                // compruebo permisos
+                //@FIXME! buscar otro modo
+                /*
+                foreach ($projects as $proj) {
 
-            //mis cofinanciadores
-            // array de usuarios con:
-            //  foto, nombre, nivel, cantidad a mis proyectos, fecha ultimo aporte, nº proyectos que cofinancia
+                    // compruebo que puedo editar mis proyectos
+                    if (!ACL::check('/project/edit/'.$proj->id)) {
+                        ACL::allow('/project/edit/'.$proj->id, '*', 'user', $user);
+                    }
+
+                    // y borrarlos
+                    if (!ACL::check('/project/delete/'.$proj->id)) {
+                        ACL::allow('/project/delete/'.$proj->id, '*', 'user', $user);
+                    }
+                }
+                 *
+                 */
+            }
+            
+            if (empty($project)) {
+                $project = $projects[0];
+            }
+
+            // aqui necesito tener un proyecto de trabajo,
+            // si no hay ninguno ccoge el último
+            if ($project instanceof  \Goteo\Model\Project) {
+                $_SESSION['project'] = $project;
+            } else {
+                // si no es que hay un problema
+                throw new Redirection('/dashboard', Redirection::TEMPORARY);
+            }
+
+            
+            // mis cofinanciadores
+            // para gestion de retornos
             $investors = array();
-            foreach ($projects as $project) {
-
-                // compruebo que puedo editar mis proyectos
-                if (!ACL::check('/project/edit/'.$project->id)) {
-                    ACL::allow('/project/edit/'.$project->id, '*', 'user', $user);
-                }
-
-                // y borrarlos
-                if (!ACL::check('/project/delete/'.$project->id)) {
-                    ACL::allow('/project/delete/'.$project->id, '*', 'user', $user);
-                }
-
-                foreach (Model\Invest::investors($project->id) as $key=>$investor) {
+            foreach ($projects as $proj) {
+                foreach (Model\Invest::investors($proj->id) as $key=>$investor) {
                     if (\array_key_exists($investor->user, $investors)) {
                         // ya está en el array, quiere decir que cofinancia este otro proyecto
                         // , añadir uno, sumar su aporte, actualizar la fecha
@@ -333,7 +362,9 @@ namespace Goteo\Controller {
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action,
+                    'project' => $project,
                     'projects'=> $projects,
+                    'status'  => Model\Project::status(),
                     'investors'=> $investors,
                     'errors'  => $errors,
                     'success' => $success
