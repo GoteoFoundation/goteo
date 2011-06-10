@@ -9,6 +9,10 @@ $url = SITE_URL . '/widget/project/' . $_SESSION['project']->id;
 $widget_code = '<iframe frameborder="0" height="380px" src="'.$url.'" width="200px"></iframe>';
 
 ?>
+
+<p>SOLO DEBE PODER COMPARTIR ESTE WIDGET SI EL PROYECTO ESTA en campaña, financiado o retorno cumplido</p>
+
+
 <div class="widget projects">
     <h2 class="title">Comparte tu proyecto</h2>
     <div>
@@ -29,3 +33,4 @@ $widget_code = '<iframe frameborder="0" height="380px" src="'.$url.'" width="200
     </div>
 
 </div>
+

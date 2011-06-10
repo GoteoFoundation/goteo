@@ -29,7 +29,10 @@ include 'view/header.html.php'; ?>
             ?>
 
             <?php if (!empty($this['message'])) : ?>
-                <p><?php echo $this['message']; ?></p>
+                <div class="widget">
+                    <h2 class="title">Bienvenid@</h2>
+                    <p><?php echo $this['message']; ?></p>
+                </div>
             <?php endif; ?>
 
             <?php if (!empty($this['errors'])) {

@@ -6,7 +6,8 @@ namespace Goteo\Controller {
         Goteo\Core\Error,
         Goteo\Core\Redirection,
         Goteo\Core\View,
-        Goteo\Model;
+        Goteo\Model,
+        Goteo\Library\Page;
 
     class Dashboard extends \Goteo\Core\Controller {
 
@@ -15,18 +16,14 @@ namespace Goteo\Controller {
          */
         public function index ($section = null) {
 
-            $user = $_SESSION['user']->id;
-
             // quitamos el stepped para que no nos lo coja para el siguiente proyecto que editemos
             if (isset($_SESSION['stepped'])) {
                 unset($_SESSION['stepped']);
             }
 
-            $message = "Hola {$user}, bienvenido a tu panel<br />";
+            $page = Page::get('dashboard');
 
-            if (ACL::check('/admin')) {
-                $message .= '<a href="/admin">Ir al panel de administración</a><br />';
-            }
+            $message = \str_replace('%USER_NAME%', $_SESSION['user']->name, $page->content);
 
             return new View (
                 'view/dashboard/index.html.php',
