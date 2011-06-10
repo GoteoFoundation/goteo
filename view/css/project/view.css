@@ -9,6 +9,7 @@
 @import url('widget/supporters.css');
 @import url('widget/rewards.css');
 @import url('../user/widget/user.css');
+@import url('../worth/legend.css');
 
 
 body.project-show div#main {
@@ -90,7 +91,7 @@ body.project-show div#main div.widget.project-needs,
 body.project-show div#main div.widget.project-messages,
 body.project-show div#main div.widget.project-message,
 body.project-show div#main div.widget.project-supporters,
-body.project-show div#main div.widget.project-worthcracy{
+body.project-show div#main div.widget.worthcracy-legend {
     max-width: 580px;
     margin-right: 20px;
     clear: left;
