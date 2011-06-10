@@ -30,7 +30,9 @@ $icons = Reward::icons('individual');
                 <?php echo count($who); ?> cofinanciadores<br />
                 <?php echo $icons[$rewardData->icon]; ?> <?php echo $rewardData->reward; ?><br />
                 Recompensa: <?php echo $rewardData->description; ?><br />
+                <?php if (count($who) > 0) : ?>
                 <input type="button" onclick="msgto('<?php echo $rewardData->id; ?>')" value="mensaje a ese grupo"  />
+                <?php endif; ?>
             </div>
         <?php ++$num;
             endforeach; ?>

@@ -402,35 +402,37 @@ namespace Goteo\Controller {
                         // fin segun action
                     break;
                     case 'supports':
-                        // tratar colaboraciones existentes
-                        foreach ($project->supports as $key => $support) {
+                        if ($action == 'save') {
+                            // tratar colaboraciones existentes
+                            foreach ($project->supports as $key => $support) {
 
-                            // quitar las colaboraciones marcadas para quitar
-                            if (!empty($_POST["support-{$support->id}-remove"])) {
-                                unset($project->supports[$key]);
-                                continue;
+                                // quitar las colaboraciones marcadas para quitar
+                                if (!empty($_POST["support-{$support->id}-remove"])) {
+                                    unset($project->supports[$key]);
+                                    continue;
+                                }
+
+                                if (isset($_POST['support-' . $support->id . '-support'])) {
+                                    $support->support = $_POST['support-' . $support->id . '-support'];
+                                    $support->description = $_POST['support-' . $support->id . '-description'];
+                                    $support->type = $_POST['support-' . $support->id . '-type'];
+                                }
+
                             }
 
-                            if (isset($_POST['support-' . $support->id . '-support'])) {
-                                $support->support = $_POST['support-' . $support->id . '-support'];
-                                $support->description = $_POST['support-' . $support->id . '-description'];
-                                $support->type = $_POST['support-' . $support->id . '-type'];
+                            // añadir nueva colaboracion
+                            if (!empty($_POST['support-add'])) {
+                                $project->supports[] = new Model\Project\Support(array(
+                                    'project'       => $project->id,
+                                    'support'       => 'Nueva colaboración',
+                                    'type'          => 'task',
+                                    'description'   => ''
+                                ));
                             }
 
+                            // guardamos los datos que hemos tratado y los errores de los datos
+                            $project->save($errors);
                         }
-
-                        // añadir nueva colaboracion
-                        if (!empty($_POST['support-add'])) {
-                            $project->supports[] = new Model\Project\Support(array(
-                                'project'       => $project->id,
-                                'support'       => 'Nueva colaboración',
-                                'type'          => 'task',
-                                'description'   => ''
-                            ));
-                        }
-
-                        // guardamos los datos que hemos tratado y los errores de los datos
-                        $project->save($errors);
 
                     break;
                 }
