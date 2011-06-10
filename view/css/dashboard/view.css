@@ -1,0 +1,46 @@
+body.dashboard div#main {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/**
+* Menu
+* Por Julian (copiando del mypixel porque no se hacer nada desde cero ~_~ )
+* resulta evidente...
+**
+
+body.dashboard div#sub-header {
+    padding-bottom: 0;
+}
+
+body.dashboard div#dashboard-menu {
+    display: block;
+    max-width: 940px;
+    margin: 20px auto 0;
+}
+
+body.dashboard div#dashboard-menu ul {
+    list-style-type: none;
+    display: inline;
+    margin: 0;
+    padding: 0;
+    margin: 4px 8px;
+    display: block;
+}
+
+body.dashboard div#dashboard-menu ul li {
+    cursor: pointer;
+    position: relative;
+}
+
+body.dashboard div#dashboard-menu ul li a {
+    padding: 2px 8px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+body.dashboard div#dashboard-menu ul li ul{
+    float: left;
+}
+
+*/

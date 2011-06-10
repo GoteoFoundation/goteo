@@ -1363,6 +1363,19 @@ namespace Goteo\Model {
                 6=>'Retorno cumplido');
         }
 
+        /*
+         * Siguiente etapa en la vida del proyeto
+         */
+        public static function waitfor () {
+            return array(
+                1=>'Cuando lo tengas listo mándalo a revisión. Necesitas llegar a un mínimo de información en el formulario.',
+                2=>'Espera que te digamos algo. Lo publicaremos o te diremos cómo mejorarlo.',
+                3=>'Difunde tu proyecto y mucha suerte con los aportes.',
+                4=>'Has conseguido el mínimo o más en aportes. Ahora hablamos de dinero.',
+                5=>'Si no lo conseguiste o lo desechamos, mejóralo e intentalo de nuevo!',
+                6=>'Has cumplido con los retornos! Gracias por tu participación.');
+        }
+
 
         public static function blankErrors() {
             // para guardar los fallos en los datos

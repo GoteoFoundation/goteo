@@ -5,6 +5,8 @@ use Goteo\Library\Text,
 
 $errors = $this['errors'];
 $personal = $this['personal'];
+$this['level'] = 3;
+
 ?>
 <form method="post" action="/dashboard/profile/personal" class="project" enctype="multipart/form-data">
 

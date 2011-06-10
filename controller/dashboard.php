@@ -6,7 +6,8 @@ namespace Goteo\Controller {
         Goteo\Core\Error,
         Goteo\Core\Redirection,
         Goteo\Core\View,
-        Goteo\Model;
+        Goteo\Model,
+        Goteo\Library\Page;
 
     class Dashboard extends \Goteo\Core\Controller {
 
@@ -15,18 +16,14 @@ namespace Goteo\Controller {
          */
         public function index ($section = null) {
 
-            $user = $_SESSION['user']->id;
-
             // quitamos el stepped para que no nos lo coja para el siguiente proyecto que editemos
             if (isset($_SESSION['stepped'])) {
                 unset($_SESSION['stepped']);
             }
 
-            $message = "Hola {$user}, bienvenido a tu panel<br />";
+            $page = Page::get('dashboard');
 
-            if (ACL::check('/admin')) {
-                $message .= '<a href="/admin">Ir al panel de administración</a><br />';
-            }
+            $message = \str_replace('%USER_NAME%', $_SESSION['user']->name, $page->content);
 
             return new View (
                 'view/dashboard/index.html.php',
@@ -281,64 +278,201 @@ namespace Goteo\Controller {
          */
         public function projects ($option = 'summary', $action = 'view') {
             
-            $user = $_SESSION['user'];
+            $user    = $_SESSION['user'];
+
+            if ($action == 'select' && !empty($_POST['project'])) {
+                // otro proyecto de trabajo
+                $project = Model\Project::get($_POST['project']);
+            } else {
+                // si tenemos ya proyecto, mantener los datos actualizados
+                if (!empty($_SESSION['project']->id)) {
+                    $project = Model\Project::get($_SESSION['project']->id);
+                }
+            }
 
             $projects = Model\Project::ofmine($user->id);
 
-            $status = Model\Project::status();
+            // si no hay proyectos no tendria que estar aqui
+            if (count($projects) == 0) {
+                throw new Redirection('/project/create', Redirection::TEMPORARY);
+            } else {
+                // compruebo permisos
+                //@FIXME! buscar otro modo
+                /*
+                foreach ($projects as $proj) {
 
-            //mis cofinanciadores
-            // array de usuarios con:
-            //  foto, nombre, nivel, cantidad a mis proyectos, fecha ultimo aporte, nº proyectos que cofinancia
-            $investors = array();
-            foreach ($projects as $project) {
+                    // compruebo que puedo editar mis proyectos
+                    if (!ACL::check('/project/edit/'.$proj->id)) {
+                        ACL::allow('/project/edit/'.$proj->id, '*', 'user', $user);
+                    }
 
-                // compruebo que puedo editar mis proyectos
-                if (!ACL::check('/project/edit/'.$project->id)) {
-                    ACL::allow('/project/edit/'.$project->id, '*', 'user', $user);
-                }
-
-                // y borrarlos
-                if (!ACL::check('/project/delete/'.$project->id)) {
-                    ACL::allow('/project/delete/'.$project->id, '*', 'user', $user);
-                }
-
-                foreach (Model\Invest::investors($project->id) as $key=>$investor) {
-                    if (\array_key_exists($investor->user, $investors)) {
-                        // ya está en el array, quiere decir que cofinancia este otro proyecto
-                        // , añadir uno, sumar su aporte, actualizar la fecha
-                        ++$investors[$investor->user]->projects;
-                        $investors[$investor->user]->amount += $investor->amount;
-                        $investors[$investor->user]->date = $investor->date;  // <-- @TODO la fecha mas actual
-                    } else {
-                        $investors[$investor->user] = (object) array(
-                            'user' => $investor->user,
-                            'name' => $investor->name,
-                            'projects' => 1,
-                            'avatar' => $investor->avatar,
-                            'worth' => $investor->worth,
-                            'amount' => $investor->amount,
-                            'date' => $investor->date
-                        );
+                    // y borrarlos
+                    if (!ACL::check('/project/delete/'.$proj->id)) {
+                        ACL::allow('/project/delete/'.$proj->id, '*', 'user', $user);
                     }
                 }
+                 *
+                 */
             }
             
+            if (empty($project)) {
+                $project = $projects[0];
+            }
 
-            return new View (
-                'view/dashboard/index.html.php',
-                array(
+            // aqui necesito tener un proyecto de trabajo,
+            // si no hay ninguno ccoge el último
+            if ($project instanceof  \Goteo\Model\Project) {
+                $_SESSION['project'] = $project;
+            } else {
+                // si no es que hay un problema
+                throw new Redirection('/dashboard', Redirection::TEMPORARY);
+            }
+
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                \trace($_POST);
+			    $errors = array();
+                
+                switch ($option) {
+                    // gestionar retornos
+                    case 'rewards':
+                        // segun action
+                        switch ($action) {
+                            // filtro
+                            case 'filter':
+                                $filter = $_POST['filter'];
+                            break;
+                        
+                            // procesar marcas
+                            case 'process':
+                                $filter = $_POST['filter'];
+                                // todos los checkboxes
+                                $fulfill = array();
+                                // se marcan con Model/Invest con el id del aporte y el id de la recompensa
+                                // estos son ful_reward-[investid]-[rewardId]
+                                // no se pueden descumplir porque viene sin value (un admin en todo caso?)
+                                // o cuando sea con ajax @FIXME
+                                foreach ($_POST as $key=>$value) {
+                                    $parts = explode('-', $key);
+                                    if ($parts[0] == 'ful_reward') {
+                                        Model\Invest::setFulfilled($parts[1], $parts[2]);
+                                    }
+                                }
+                            break;
+
+                            // enviar mensaje
+                            case 'message':
+                                $filter = $_POST['filter'];
+
+                                if (empty($_POST['message'])) {
+                                    $errors[] = 'Escribe el mensaje';
+                                }
+
+                                if (!empty($_POST['msg_all'])) {
+                                    // si a todos
+                                    $who = Model\Invest::investors($project->id);
+                                } else {
+                                    $msg_rewards = array();
+                                    // estos son msg_reward-[rewardId]
+                                    foreach ($_POST as $key=>$value) {
+                                        $parts = explode('-', $key);
+                                        if ($parts[0] == 'msg_reward' && $value == 1) {
+                                            $msg_rewards[] = $parts[1];
+                                        }
+                                    }
+
+                                    $who = array();
+                                    // para cada recompensa
+                                    foreach ($msg_rewards as $reward) {
+                                        foreach (Model\Invest::choosed($reward) as $user) {
+                                            if (!in_array($user, $who)) {
+                                                $who[] = $user;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // segun destinatarios
+                                $enviandoa = !empty($msg_all) ? 'todos' : 'algunos';
+                                $message .= 'enviar a ' . $enviandoa  . '<br />';
+                                $message .= \trace($who);
+                                // mensaje
+                                $success[] = 'Mensaje enviado correctamente';
+                            break;
+                        }
+                        // fin segun action
+                    break;
+                    case 'supports':
+                        if ($action == 'save') {
+                            // tratar colaboraciones existentes
+                            foreach ($project->supports as $key => $support) {
+
+                                // quitar las colaboraciones marcadas para quitar
+                                if (!empty($_POST["support-{$support->id}-remove"])) {
+                                    unset($project->supports[$key]);
+                                    continue;
+                                }
+
+                                if (isset($_POST['support-' . $support->id . '-support'])) {
+                                    $support->support = $_POST['support-' . $support->id . '-support'];
+                                    $support->description = $_POST['support-' . $support->id . '-description'];
+                                    $support->type = $_POST['support-' . $support->id . '-type'];
+                                }
+
+                            }
+
+                            // añadir nueva colaboracion
+                            if (!empty($_POST['support-add'])) {
+                                $project->supports[] = new Model\Project\Support(array(
+                                    'project'       => $project->id,
+                                    'support'       => 'Nueva colaboración',
+                                    'type'          => 'task',
+                                    'description'   => ''
+                                ));
+                            }
+
+                            // guardamos los datos que hemos tratado y los errores de los datos
+                            $project->save($errors);
+                        }
+
+                    break;
+                }
+            }
+
+            // view data basico para esta seccion
+            $viewData = array(
                     'menu'    => self::menu(),
-                    'message' => '',
+                    'message' => $message,
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action,
                     'projects'=> $projects,
-                    'investors'=> $investors,
                     'errors'  => $errors,
                     'success' => $success
-                )
-            );
+                );
+
+
+            switch ($option) {
+                // gestionar retornos
+                case 'rewards':
+                    // recompensas ofrecidas
+                    $viewData['rewards'] = Model\Project\Reward::getAll($_SESSION['project']->id, 'individual');
+                    // aportes para este proyecto
+                    $viewData['invests'] = Model\Invest::getAll($_SESSION['project']->id);
+                    // ver por (esto son orden y filtros)
+                    $viewData['filter'] = $filter;
+                break;
+
+                // editar colaboraciones
+                case 'supports':
+                    $viewData['types'] = Model\Project\Support::types();
+                    $project->supports = Model\Project\Support::getAll($_SESSION['project']->id);
+                break;
+            
+            }
+
+            $viewData['project'] = $project;
+
+            return new View ('view/dashboard/index.html.php', $viewData);
         }
 
         /*
