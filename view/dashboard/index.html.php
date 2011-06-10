@@ -14,7 +14,7 @@ include 'view/header.html.php'; ?>
             <div>
                 <h2><img src="/image/<?php echo $user->avatar->id; ?>/75/75" />
                     <?php if (empty($this['option'])) {
-                        echo 'Mi dashboard / Bienvenid@';
+                        echo 'Mi dashboard';
                     } else {
                         echo 'Mi dashboard / ' . $this['menu'][$this['section']]['options'][$this['option']];
                     } ?><br />

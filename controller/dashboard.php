@@ -281,9 +281,13 @@ namespace Goteo\Controller {
             $user    = $_SESSION['user'];
 
             if ($action == 'select' && !empty($_POST['project'])) {
+                // otro proyecto de trabajo
                 $project = Model\Project::get($_POST['project']);
             } else {
-                $project = $_SESSION['project'];
+                // si tenemos ya proyecto, mantener los datos actualizados
+                if (!empty($_SESSION['project']->id)) {
+                    $project = Model\Project::get($_SESSION['project']->id);
+                }
             }
 
             $projects = Model\Project::ofmine($user->id);
@@ -324,49 +328,149 @@ namespace Goteo\Controller {
                 throw new Redirection('/dashboard', Redirection::TEMPORARY);
             }
 
-            
-            // mis cofinanciadores
-            // para gestion de retornos
-            $investors = array();
-            foreach ($projects as $proj) {
-                foreach (Model\Invest::investors($proj->id) as $key=>$investor) {
-                    if (\array_key_exists($investor->user, $investors)) {
-                        // ya está en el array, quiere decir que cofinancia este otro proyecto
-                        // , añadir uno, sumar su aporte, actualizar la fecha
-                        ++$investors[$investor->user]->projects;
-                        $investors[$investor->user]->amount += $investor->amount;
-                        $investors[$investor->user]->date = $investor->date;  // <-- @TODO la fecha mas actual
-                    } else {
-                        $investors[$investor->user] = (object) array(
-                            'user' => $investor->user,
-                            'name' => $investor->name,
-                            'projects' => 1,
-                            'avatar' => $investor->avatar,
-                            'worth' => $investor->worth,
-                            'amount' => $investor->amount,
-                            'date' => $investor->date
-                        );
-                    }
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                \trace($_POST);
+			    $errors = array();
+                
+                switch ($option) {
+                    // gestionar retornos
+                    case 'rewards':
+                        // segun action
+                        switch ($action) {
+                            // filtro
+                            case 'filter':
+                                $filter = $_POST['filter'];
+                            break;
+                        
+                            // procesar marcas
+                            case 'process':
+                                $filter = $_POST['filter'];
+                                // todos los checkboxes
+                                $fulfill = array();
+                                // se marcan con Model/Invest con el id del aporte y el id de la recompensa
+                                // estos son ful_reward-[investid]-[rewardId]
+                                // no se pueden descumplir porque viene sin value (un admin en todo caso?)
+                                // o cuando sea con ajax @FIXME
+                                foreach ($_POST as $key=>$value) {
+                                    $parts = explode('-', $key);
+                                    if ($parts[0] == 'ful_reward') {
+                                        Model\Invest::setFulfilled($parts[1], $parts[2]);
+                                    }
+                                }
+                            break;
+
+                            // enviar mensaje
+                            case 'message':
+                                $filter = $_POST['filter'];
+
+                                if (empty($_POST['message'])) {
+                                    $errors[] = 'Escribe el mensaje';
+                                }
+
+                                if (!empty($_POST['msg_all'])) {
+                                    // si a todos
+                                    $who = Model\Invest::investors($project->id);
+                                } else {
+                                    $msg_rewards = array();
+                                    // estos son msg_reward-[rewardId]
+                                    foreach ($_POST as $key=>$value) {
+                                        $parts = explode('-', $key);
+                                        if ($parts[0] == 'msg_reward' && $value == 1) {
+                                            $msg_rewards[] = $parts[1];
+                                        }
+                                    }
+
+                                    $who = array();
+                                    // para cada recompensa
+                                    foreach ($msg_rewards as $reward) {
+                                        foreach (Model\Invest::choosed($reward) as $user) {
+                                            if (!in_array($user, $who)) {
+                                                $who[] = $user;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // segun destinatarios
+                                $enviandoa = !empty($msg_all) ? 'todos' : 'algunos';
+                                $message .= 'enviar a ' . $enviandoa  . '<br />';
+                                $message .= \trace($who);
+                                // mensaje
+                                $success[] = 'Mensaje enviado correctamente';
+                            break;
+                        }
+                        // fin segun action
+                    break;
+                    case 'supports':
+                        // tratar colaboraciones existentes
+                        foreach ($project->supports as $key => $support) {
+
+                            // quitar las colaboraciones marcadas para quitar
+                            if (!empty($_POST["support-{$support->id}-remove"])) {
+                                unset($project->supports[$key]);
+                                continue;
+                            }
+
+                            if (isset($_POST['support-' . $support->id . '-support'])) {
+                                $support->support = $_POST['support-' . $support->id . '-support'];
+                                $support->description = $_POST['support-' . $support->id . '-description'];
+                                $support->type = $_POST['support-' . $support->id . '-type'];
+                            }
+
+                        }
+
+                        // añadir nueva colaboracion
+                        if (!empty($_POST['support-add'])) {
+                            $project->supports[] = new Model\Project\Support(array(
+                                'project'       => $project->id,
+                                'support'       => 'Nueva colaboración',
+                                'type'          => 'task',
+                                'description'   => ''
+                            ));
+                        }
+
+                        // guardamos los datos que hemos tratado y los errores de los datos
+                        $project->save($errors);
+
+                    break;
                 }
             }
-            
 
-            return new View (
-                'view/dashboard/index.html.php',
-                array(
+            // view data basico para esta seccion
+            $viewData = array(
                     'menu'    => self::menu(),
-                    'message' => '',
+                    'message' => $message,
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action,
-                    'project' => $project,
                     'projects'=> $projects,
-                    'status'  => Model\Project::status(),
-                    'investors'=> $investors,
                     'errors'  => $errors,
                     'success' => $success
-                )
-            );
+                );
+
+
+            switch ($option) {
+                // gestionar retornos
+                case 'rewards':
+                    // recompensas ofrecidas
+                    $viewData['rewards'] = Model\Project\Reward::getAll($_SESSION['project']->id, 'individual');
+                    // aportes para este proyecto
+                    $viewData['invests'] = Model\Invest::getAll($_SESSION['project']->id);
+                    // ver por (esto son orden y filtros)
+                    $viewData['filter'] = $filter;
+                break;
+
+                // editar colaboraciones
+                case 'supports':
+                    $viewData['types'] = Model\Project\Support::types();
+                    $project->supports = Model\Project\Support::getAll($_SESSION['project']->id);
+                break;
+            
+            }
+
+            $viewData['project'] = $project;
+
+            return new View ('view/dashboard/index.html.php', $viewData);
         }
 
         /*

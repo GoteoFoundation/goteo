@@ -62,8 +62,22 @@ namespace Goteo\Model {
 
         /*
          * Lista de inversiones (individuales) de un proyecto
+         *
+         * el parametro filter es para la gestion de recompensas (no es un autentico filtro, hay ordenaciones y hay filtros)
          */
-        public static function getAll ($project) {
+        public static function getAll ($project, $filter = null) {
+
+            /*
+             * Estos son los filtros
+             */
+            $filters = array(
+                'date'      => 'Fecha',
+                'user'      => 'Usuario',
+                'reward'    => 'Recompensa',
+                'pending'   => 'Pendientes',
+                'fulfilled' => 'Cumplidos'
+            );
+
 
             $invests = array();
 
@@ -93,7 +107,7 @@ namespace Goteo\Model {
                     ", array($invest->id));
 				$invest->address = $query->fetchObject();
                 
-                $invests[] = $invest;
+                $invests[$invest->id] = $invest;
             }
 
             return $invests;
@@ -258,6 +272,31 @@ namespace Goteo\Model {
         }
 
         /*
+         * Numero de cofinanciadores que han optado por cierta recompensa
+         */
+        public static function choosed ($reward) {
+
+            $users = array();
+
+            $sql = "
+                SELECT  DISTINCT(user) as user
+                FROM    invest
+                INNER JOIN invest_reward
+                    ON invest_reward.invest = invest.id
+                    AND invest_reward.reward = ?
+                WHERE   status <> 2
+                LIMIT 1";
+
+            $query = self::query($sql, array($reward));
+            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $investor) {
+                $users[] = $investor['user'];
+            }
+
+            return $users;
+        }
+
+
+        /*
          * Asignar a la aportación una recompensas
          */
         public function setReward ($reward) {
@@ -276,16 +315,17 @@ namespace Goteo\Model {
         }
 
         /*
-         * Marcar una recompensa como cumplida
+         * Marcar una recompensa como cumplida (o desmarcarla)
          */
-        public static function setFulfilled ($invest, $reward) {
+        public static function setFulfilled ($invest, $reward, $value = '1') {
 
             $values = array(
+                ':value' => $value,
                 ':invest' => $invest,
                 ':reward' => $reward
             );
 
-            $sql = "UPDATE invest_reward SET fulfilled = 1 WHERE invest=:invest AND reward=:reward";
+            $sql = "UPDATE invest_reward SET fulfilled = :value WHERE invest=:invest AND reward=:reward";
             if (self::query($sql, $values)) {
                 return true;
             } else {
