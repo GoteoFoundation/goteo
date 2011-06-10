@@ -32,8 +32,6 @@ $worthcracy = Worth::getAll();
             <li><?php echo new View('view/user/widget/supporter.html.php', array('user' => $investor, 'worthcracy' => $worthcracy)) ?></li>
         <?php endforeach ?>
         </ul>            
-    </div>    
-
-    <?php echo new View('view/worth/base.html.php', array('worthcracy' => $worthcracy, 'type' => 'main')); ?>
+    </div>        
     
 </div>

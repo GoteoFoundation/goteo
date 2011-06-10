@@ -81,26 +81,30 @@ $interests = Interest::getAll();
             </div>            
             <?php endif ?>
 
-            <div>
-                <h3>Proyectos que apoyo</h3>
-                <ul>
-                <?php foreach ($this['invested'] as $project) {
-                    // $project NO es una instancia de proyecto
-                    // ojo con este widget
-                    echo '<li><a href="/project/'. $project->id . '">'. $project->name . '</a></li>';
-                } ?>
-                </ul>
+            <div class="widget projects">
+                <h2 class="title">Proyectos que apoyo</h2>
+                <?php foreach ($this['invested'] as $project) : ?>
+                    <div>
+                        <?php
+                        // es instancia del proyecto
+                        echo new View('view/project/widget/project.html.php', array(
+                            'project'   => $project
+                        )); ?>
+                    </div>
+                <?php endforeach; ?>
     		</div>
 
-            <div>
-                <h3>Mis proyectos</h3>
-                <ul>
-                <?php foreach ($this['projects'] as $project) {
-                    // $project NO es una instancia de proyecto
-                    // ojo con este widget
-                    echo '<li><a href="/project/'. $project->id . '">'. $project->name . '</a></li>';
-                } ?>
-                </ul>
+            <div class="widget projects">
+                <h2 class="title">Mis proyectos</h2>
+                <?php foreach ($this['projects'] as $project) : ?>
+                    <div>
+                        <?php
+                        // es instancia del proyecto
+                        echo new View('view/project/widget/project.html.php', array(
+                            'project'   => $project
+                        )); ?>
+                    </div>
+                <?php endforeach; ?>
     		</div>
 
             <hr />
