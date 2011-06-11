@@ -27,18 +27,19 @@ $project = $this['project'];
         <?php foreach ($project->individual_rewards as $individual) : ?>
         <li class="<?php echo $individual->icon ?>">
             
-            <!--  <div>Aportando: <span><?php echo $individual->amount; ?></span></div> -->
+            <div>Aportando: <span><?php echo $individual->amount; ?>&euro;</span></div>
             <strong><?php echo htmlspecialchars($individual->reward) ?></strong>
             <p><?php echo htmlspecialchars($individual->description) ?></p>
-                
-            <!--
-                    <?php if (!empty($individual->units)) : ?>
+
+            <?php if (!empty($individual->units)) : ?>
+                <div>
                     <strong>Recompensa limitada:</strong><br />
                     Quedan <span><?php echo ($individual->units - $individual->taken); ?></span> unidades
-                <?php endif; ?>
-                <div><span><?php echo $individual->taken; ?></span>Cofinanciadores</div>
-            
-            -->
+                </div>
+            <?php endif; ?>
+
+                <div><span><?php echo $individual->taken; ?></span> Cofinanciadores</div>
+
         </li>
         <?php endforeach ?>
     </div>
