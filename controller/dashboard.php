@@ -256,9 +256,7 @@ namespace Goteo\Controller {
                 }
 			}
 
-            return new View (
-                'view/dashboard/index.html.php',
-                array(
+            $viewData = array(
                     'menu'    => self::menu(),
                     'message' => $message,
                     'section' => __FUNCTION__,
@@ -266,9 +264,24 @@ namespace Goteo\Controller {
                     'action'  => $action,
                     'errors'  => $errors,
                     'success' => $success,
-                    'user'    => $user,
-                    'personal'=> Model\User::getPersonal($user->id)
-                )
+                    'user'    => $user
+                );
+
+                switch ($option) {
+                    case 'profile':
+                        $viewData['interests'] = Model\User\Interest::getAll();
+                        break;
+                    case 'personal':
+                        $viewData['personal'] = Model\User::getPersonal($user->id);
+                        break;
+                    case 'access':
+                        break;
+                }
+
+
+            return new View (
+                'view/dashboard/index.html.php',
+                $viewData
             );
         }
 
