@@ -378,6 +378,23 @@ namespace Goteo\Model {
             }
         }
 
+        // version mini de get para sacar nombre i mail
+        public static function getMini ($id) {
+            try {
+                $query = static::query("
+                    SELECT
+                        name,
+                        email
+                    FROM user
+                    WHERE id = :id
+                    ", array(':id' => $id));
+                $user = $query->fetchObject(__CLASS__);
+                return $user;
+            } catch(\PDOException $e) {
+                return false;
+            }
+        }
+
         /**
          * Lista de usuarios.
          *

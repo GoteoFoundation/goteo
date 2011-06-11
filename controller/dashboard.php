@@ -8,7 +8,6 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Model,
         Goteo\Library\Page,
-        Goteo\Library\Communication,
         Goteo\Library\Mail;
 
     class Dashboard extends \Goteo\Core\Controller {
@@ -414,41 +413,49 @@ namespace Goteo\Controller {
                                 }
 
                                 // obtener contenido
+                                // segun destinatarios
+                                $enviandoa = !empty($msg_all) ? 'todos' : 'algunos';
+                                $message .= 'enviar a ' . $enviandoa  . '<br />';
+                                $message .= implode(',', $who);
+
                                 //asunto
-                                $subject = 'Mensaje de un proyecto que cofinancias en Goteo';
+                                $subject = 'Mensaje del proyecto que cofinancias: ' . $project->name;
                                 // el mensaje que ha escrito el productor
-                                $content = "Hola <strong>{$this->user->name}</strong>, este es un mensaje enviado desde Goteo por el productor del proyecto {$project->name}.
+                                $content = "Hola <strong>%NAME%</strong>, este es un mensaje enviado desde Goteo por el productor del proyecto {$project->name}.
                                 <br/><br/>
                                 {$msg_content}
                                 <br/><br/>
                                 Puedes ver el proyecto en ".SITE_URL."/project/{$project->id}";
 
-                                // reusamos el objeto mail
-                                $mailHandler = new Mail();
-
-                                // segun destinatarios
-                                $enviandoa = !empty($msg_all) ? 'todos' : 'algunos';
-                                $message .= 'enviar a ' . $enviandoa  . '<br />';
-
-                                $destinatarios = array();
-
                                 foreach ($who as $key=>$userId) {
 
                                     //me cojo su email y lo meto en un array para enviar solo con una instancia de Mail
-                                    $data = User::getMini($userId);
-                                    $data->email = str_replace('@.', '--', $data->email) . '@doukeshi.org';
-                                    $destinatarios[] = "{$data->name}: {$data->email}";
+                                    $data = Model\User::getMini($userId);
+                                    $data->email = $userId.'-goteo@doukeshi.org';
+
+                                    // temporalmente lo desactivamos
+                                    $success[] = 'Mensaje enviado correctamente a ' . $data->name . ' : ' . $data->email . '(TEMPORALMENTE no mandamos mails, hasta revisarlo)';
+
+                                    /*
+                                    // reusamos el objeto mail
+                                    $mailHandler = new Mail();
+
+                                    $mailHandler->to = $data->email;
+                                    //@TODO blind copy a comunicaciones@goteo.org
+                               //     $mailHandler->bcc = 'bcc@doukeshi.org';
+                                    $mailHandler->subject = $subject;
+                                    $mailHandler->content = str_replace('%NAME%', $data->name, $content);
+
+                                    $mailHandler->html = true;
+                                    if ($mailHandler->send($errors)) {
+                                        $success[] = 'Mensaje enviado correctamente a ' . $data->name . ' : ' . $data->email;
+                                    } else {
+                                        $errors[] = 'Falló al enviar el mensaje a ' . $data->name . ' : ' . $data->email;
+                                    }
+
+                                    unset($mailHandler);
+                                    */
                                 }
-
-                                $mailHandler->to = $destinatarios;
-                    //            $mail->to = $this->user->email;
-                                //@TODO blind copy a comunicaciones@goteo.org
-                                $mailHandler->bcc = 'bcc@doukeshi.org';
-                                $mailHandler->subject = $subject;
-                                $mailHandler->content = $content;
-
-                                $mailHandler->html = true;
-                                $mailHandler->send($errors);
                                 
 
                             break;
