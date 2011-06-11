@@ -267,13 +267,13 @@ namespace Goteo\Library {
 			$texto = substr($texto, 0, strrpos($texto, " "));
 
 			// Quitamos palabras vacías
-			$ultima = ultima_palabra($texto,$separadores );
+			$ultima = self::ultima_palabra($texto,$separadores );
 			while ($texto != "" && (in_array($ultima,$palabras_vacias) || strlen($ultima)<=2) || ($html && $ultima{1} == "<" && substr($ultima,-1) == ">")) {
 				$texto = substr($texto,0,strlen($texto)-strlen($ultima));
 				while ($texto != "" && in_array(substr($texto,-1),$separadores)){
 					$texto = substr($texto, 0, -1);
 				}
-				$ultima = ultima_palabra($texto,$separadores);
+				$ultima = self::ultima_palabra($texto,$separadores);
 			}
 
 			// Hemos cortado una etiqueta html?
@@ -281,10 +281,51 @@ namespace Goteo\Library {
 				$texto = substr($texto,0,strrpos($texto,"<"));
 			}
 			// Si el texto era html, cerramos las etiquetas
-			if ($html) $texto = cerrar_etiquetas($texto);
+			if ($html) $texto = self::cerrar_etiquetas($texto);
 			if ($puntos !== false) $texto .= $puntos;
 			return $texto;
 		}
+
+        static public function ultima_palabra ($texto, $separadores = false) {
+            $palabra = '';
+            if ($separadores === false) $separadores = array(" ", ".", ",", ";");
+            $i = strlen($texto) - 1;
+            while ($i >= 0 && (!in_array(substr($texto,$i,1), $separadores))) {
+                $palabra = substr($texto,$i,1).$palabra;
+                $i--;
+            }
+            return $palabra;
+        }
+
+        static public function cerrar_etiquetas ($html) {
+            // Ponemos todos los tags abiertos en un array
+            preg_match_all("#<([a-z]+)( .*)?(?!/)>#iU", $html, $res);
+            $abiertas = $res[1];
+
+            // Ponemos todos los tags cerrados en un array
+            preg_match_all("#</([a-z]+)>#iU", $html, $res);
+            $cerradas = $res[1];
+
+            // Obtenemos el array de etiquetas no cerradas
+
+            if (count($cerradas) == count($abiertas)) {
+                // *Suponemos* que todas las etiquetas están cerradas
+                return $html;
+            }
+
+            $abiertas = array_reverse($abiertas);
+
+            // Cerramos
+            for ($i = 0;$i < count($abiertas);$i++) {
+                if (!in_array($abiertas[$i],$cerradas)){
+                    $html .= "</".$abiertas[$i].">";
+                } else {
+                    unset($cerradas[array_search($abiertas[$i],$cerradas)]);
+                }
+            }
+            return $html;
+        }
+
 
 		/*
 		 *   Método para aplicar saltos de linea y poner links en las url
