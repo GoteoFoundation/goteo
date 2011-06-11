@@ -1,8 +1,16 @@
 <?php
 
-use Goteo\Core\View;
+use Goteo\Core\View,
+    Goteo\Model\Project\Category,
+    Goteo\Model\Project\Reward,
+    Goteo\Library\Location;
 
 $bodyClass = 'home';
+
+$categories = Category::getAll();
+$locations = Location::getList();
+$rewards = Reward::icons('individual');
+
 
 include 'view/prologue.html.php';
 
@@ -16,6 +24,14 @@ include 'view/header.html.php' ?>
         </div>
 
         <div id="main">
+            <?php echo new View('view/discover/searcher.html.php',
+                                array(
+                                    'categories' => $categories,
+                                    'locations'  => $locations,
+                                    'rewards'    => $rewards,
+                                    'params'     => $this['params']
+                                )
+                ); ?>
 
             <p><?php echo $this['message']; ?></p>
 
@@ -33,7 +49,7 @@ include 'view/header.html.php' ?>
                     </div>
                     <?php endforeach; ?>
                 <?php else : ?>
-                    <p>No se encontraron resultados para <?php echo $_GET['query']; ?></p>
+                    <p>No hemos encontrado ningún proyecto que cunmpla los criterios de búsqueda</p>
                 <?php endif; ?>
             </div>
         

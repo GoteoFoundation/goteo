@@ -24,42 +24,13 @@ include 'view/header.html.php' ?>
         </div>
 
         <div id="main">
-            
-        <form method="get" action="/discover/results">
-            <fieldset>
-                <legend>Buscar</legend>
-                <label>Por texto: <input type="text" name="query"  /></label>
-                <br />
-                <label>Por categoria:
-                    <select name="category">
-                        <option value="">Todas las categorias</option>
-                    <?php foreach ($categories as $id=>$name) : ?>
-                        <option value="<?php echo $id; ?>"><?php echo $name; ?></option>
-                    <?php endforeach; ?>
-                    </select>
-                </label>
-                <br />
-                <label>Por lugar:
-                    <select name="location">
-                        <option value="">Todos los lugares</option>
-                    <?php foreach ($locations as $id=>$name) : ?>
-                        <option value="<?php echo $id; ?>"><?php echo $name; ?></option>
-                    <?php endforeach; ?>
-                    </select>
-                </label>
-                <br />
-                <label>Por retorno:
-                    <select name="reward">
-                        <option value="">Todos los tipos</option>
-                    <?php foreach ($rewards as $id=>$reward) : ?>
-                        <option value="<?php echo $id; ?>"><?php echo $reward->name; ?></option>
-                    <?php endforeach; ?>
-                    </select>
-                </label>
-                <br />
-                <input type="submit" value="Buscar" >
-            </fieldset>
-        </form>
+            <?php echo new View('view/discover/searcher.html.php',
+                                array(
+                                    'categories' => $categories,
+                                    'locations'  => $locations,
+                                    'rewards'    => $rewards
+                                )
+                ); ?>
 
 		<?php foreach ($this['types'] as $type=>$list) :
             if (empty($list))
