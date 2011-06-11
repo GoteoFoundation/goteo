@@ -34,5 +34,5 @@ div.widget.projects div.project div.balloon > h4 {
 }
 
 div.widget.projects div.project div.description {
-    display: none;
+/*    display: none; Lo muestro y recorto caracteres*/
 }
