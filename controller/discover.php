@@ -58,6 +58,10 @@ namespace Goteo\Controller {
 
                 foreach ($params as $param => $empty) {
                     foreach ($_POST[$param] as $key => $value) {
+                        if ($value == 'all') {
+                            $params[$param] = array();
+                            break;
+                        }
                         $params[$param][] = "'{$value}'";
                     }
                 }
