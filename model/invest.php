@@ -285,7 +285,7 @@ namespace Goteo\Model {
                     ON invest_reward.invest = invest.id
                     AND invest_reward.reward = ?
                 WHERE   status <> 2
-                LIMIT 1";
+                ";
 
             $query = self::query($sql, array($reward));
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $investor) {

@@ -7,7 +7,9 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model,
-        Goteo\Library\Page;
+        Goteo\Library\Page,
+        Goteo\Library\Communication,
+        Goteo\Library\Mail;
 
     class Dashboard extends \Goteo\Core\Controller {
 
@@ -16,10 +18,13 @@ namespace Goteo\Controller {
          */
         public function index ($section = null) {
 
-            // quitamos el stepped para que no nos lo coja para el siguiente proyecto que editemos
-            if (isset($_SESSION['stepped'])) {
-                unset($_SESSION['stepped']);
+            /*
+            if (mail('jcanaves@gmail.com', 'test', 'prueba de la funcion mail en local')) {
+                echo 'dice que vale ';
+            } else{
+                echo 'dice que fail';
             }
+            */
 
             $page = Page::get('dashboard');
 
@@ -44,6 +49,10 @@ namespace Goteo\Controller {
          */
         public function activity ($option = 'summary', $action = 'view') {
 
+            // quitamos el stepped para que no nos lo coja para el siguiente proyecto que editemos
+            if (isset($_SESSION['stepped'])) {
+                unset($_SESSION['stepped']);
+            }
             
             $user = $_SESSION['user'];
 
@@ -69,7 +78,7 @@ namespace Goteo\Controller {
                 'view/dashboard/index.html.php',
                 array(
                     'menu'    => self::menu(),
-                    'message' => '',
+                    'message' => $message,
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action,
@@ -252,7 +261,7 @@ namespace Goteo\Controller {
                 'view/dashboard/index.html.php',
                 array(
                     'menu'    => self::menu(),
-                    'message' => '',
+                    'message' => $message,
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action,
@@ -365,11 +374,19 @@ namespace Goteo\Controller {
 
                                 if (empty($_POST['message'])) {
                                     $errors[] = 'Escribe el mensaje';
+                                    break;
+                                } else {
+                                    $msg_content = \strip_tags($_POST['message']);
                                 }
 
                                 if (!empty($_POST['msg_all'])) {
                                     // si a todos
-                                    $who = Model\Invest::investors($project->id);
+                                    $who = array();
+                                    foreach (Model\Invest::investors($project->id) as $investor) {
+                                        if (!in_array($investor->user, $who)) {
+                                            $who[] = $investor->user;
+                                        }
+                                    }
                                 } else {
                                     $msg_rewards = array();
                                     // estos son msg_reward-[rewardId]
@@ -391,12 +408,49 @@ namespace Goteo\Controller {
                                     }
                                 }
 
+                                if (count($who) == 0) {
+                                    $errors[] = 'No se han encontrado destinatarios';
+                                    break;
+                                }
+
+                                // obtener contenido
+                                //asunto
+                                $subject = 'Mensaje de un proyecto que cofinancias en Goteo';
+                                // el mensaje que ha escrito el productor
+                                $content = "Hola <strong>{$this->user->name}</strong>, este es un mensaje enviado desde Goteo por el productor del proyecto {$project->name}.
+                                <br/><br/>
+                                {$msg_content}
+                                <br/><br/>
+                                Puedes ver el proyecto en ".SITE_URL."/project/{$project->id}";
+
+                                // reusamos el objeto mail
+                                $mailHandler = new Mail();
+
                                 // segun destinatarios
                                 $enviandoa = !empty($msg_all) ? 'todos' : 'algunos';
                                 $message .= 'enviar a ' . $enviandoa  . '<br />';
-                                $message .= \trace($who);
-                                // mensaje
-                                $success[] = 'Mensaje enviado correctamente';
+
+                                $destinatarios = array();
+
+                                foreach ($who as $key=>$userId) {
+
+                                    //me cojo su email y lo meto en un array para enviar solo con una instancia de Mail
+                                    $data = User::getMini($userId);
+                                    $data->email = str_replace('@.', '--', $data->email) . '@doukeshi.org';
+                                    $destinatarios[] = "{$data->name}: {$data->email}";
+                                }
+
+                                $mailHandler->to = $destinatarios;
+                    //            $mail->to = $this->user->email;
+                                //@TODO blind copy a comunicaciones@goteo.org
+                                $mailHandler->bcc = 'bcc@doukeshi.org';
+                                $mailHandler->subject = $subject;
+                                $mailHandler->content = $content;
+
+                                $mailHandler->html = true;
+                                $mailHandler->send($errors);
+                                
+
                             break;
                         }
                         // fin segun action
