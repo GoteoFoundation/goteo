@@ -1,6 +1,7 @@
 <?php 
 
-use Goteo\Core\View;
+use Goteo\Core\View,
+    Goteo\Library\Text;
 
 $project = $this['project'];
 $level = $this['level'] ?: 3;
@@ -23,7 +24,7 @@ $level = $this['level'] ?: 3;
     
     <h<?php echo $level + 1 ?> class="author">Por: <a href="/user/profile/<?php echo htmlspecialchars($project->user->id) ?>"><?php echo htmlspecialchars($project->user->name) ?></a></h<?php echo $level + 1?>>
     
-    <div class="description"><?php echo $project->description ?></div>
+    <div class="description"><?php echo Text::recorta($project->description, 100); ?></div>
 
     <?php echo new View('view/project/meter_hor.html.php', array('project' => $project)) ?>
     
