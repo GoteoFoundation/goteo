@@ -10,10 +10,6 @@ $level = $this['level'] ?: 3;
 
 <div class="widget project">
     
-    <?php if (in_array($project->status, array(5, 6))) : // en estados financiado o retorno cumplido, tag de financiado ?>
-    FINANCIADO!<br />
-    <?php endif; ?>
-
     <?php if (isset($this['balloon'])): ?>
     <div class="balloon"><?php echo $this['balloon'] ?></div>
     <?php endif ?>
@@ -28,6 +24,10 @@ $level = $this['level'] ?: 3;
     
     <h<?php echo $level + 1 ?> class="author">Por: <a href="/user/profile/<?php echo htmlspecialchars($project->user->id) ?>"><?php echo htmlspecialchars($project->user->name) ?></a></h<?php echo $level + 1?>>
     
+    <?php if (in_array($project->status, array(4, 5))) : // en estados financiado o retorno cumplido, tag de financiado ?>
+    <div>¡FINANCIADO!</div>
+    <?php endif; ?>
+
     <div class="description"><?php echo Text::recorta($project->description, 100); ?></div>
 
     <?php echo new View('view/project/meter_hor.html.php', array('project' => $project)) ?>

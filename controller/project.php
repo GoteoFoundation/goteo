@@ -293,6 +293,12 @@ namespace Goteo\Controller {
 
                 //tenemos que tocar esto un poquito para gestionar los pasos al aportar
                 if ($show == 'invest') {
+
+                    // si no está en campaña no pueden esta qui ni de coña
+                    if ($project->status != 3) {
+                        throw new Redirection('/project/'.$id, Redirection::TEMPORARY);
+                    }
+
                     $viewData['show'] = 'supporters';
                     if (isset($_GET['confirm'])) {
                         if (\in_array($_GET['confirm'], array('ok', 'fail'))) {

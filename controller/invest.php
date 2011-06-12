@@ -23,6 +23,11 @@ namespace Goteo\Controller {
             $projectData = Model\Project::get($project);
             $methods = Model\Invest::methods();
 
+            // si no está en campaña no pueden esta qui ni de coña
+            if ($projectData->status != 3) {
+                throw new Redirection('/project/'.$project, Redirection::TEMPORARY);
+            }
+
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $errors = array();
                 $los_datos = $_POST;
