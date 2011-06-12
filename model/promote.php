@@ -1,7 +1,8 @@
 <?php
 namespace Goteo\Model {
 
-    use Goteo\Library\Text;
+    use Goteo\Library\Text,
+        Goteo\Model\Project;
 
     class Promote extends \Goteo\Core\Model {
 
@@ -41,12 +42,16 @@ namespace Goteo\Model {
          */
         public static function getAll ($node = \GOTEO_NODE) {
 
+            // estados
+            $status = Project::status();
+
             $promos = array();
 
             $query = static::query("
                 SELECT
                     promote.project as project,
                     project.name as name,
+                    project.status as status,
                     promote.title as title,
                     promote.description as description,
                     promote.order as `order`
@@ -59,6 +64,7 @@ namespace Goteo\Model {
             
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
                 $promo->description =Text::recorta($promo->description, 100);
+                $promo->status = $status[$promo->status];
                 $promos[] = $promo;
             }
 
