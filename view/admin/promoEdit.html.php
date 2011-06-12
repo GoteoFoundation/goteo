@@ -108,12 +108,11 @@ echo new SuperForm(array(
         ),
 
         'description' => array(
-            'type'  => 'textarea',
+            'type'  => 'textbox',
             'required'  => true,
             'title' => 'Descripción',
-            'rows'  => 10,
-            'cols'  => 30,
-            'hint'  => 'Texto que describe lo destacado de este proyecto',
+            'size'      => 20,
+            'hint'  => 'Al publicar se recorta a 100 caracteres (algo menos de lo que cabe en este cuadro)',
             'errors'    => array(),
             'value' => $promo->description
         )

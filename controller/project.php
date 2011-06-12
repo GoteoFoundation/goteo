@@ -49,7 +49,7 @@ namespace Goteo\Controller {
                      'supports' => 'supports'
                 );
 
-            if ($project->status != 1 && $_SESSION['user']->id == $project->owner) {
+            if ($project->status != 1 && !ACL::check('/project/edit/todos')) {
                 // solo seguimiento estado, progreso
                 // pasos preview, conseguido, recompensas
                 

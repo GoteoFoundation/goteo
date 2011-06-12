@@ -42,9 +42,19 @@ $level = $this['level'] ?: 3;
         
     </div>
 
+    <?php if ($this['dashboard'] === true) : // si estamos en el dashboard no hay (apoyar y el ver se abre en una ventana nueva) ?>
+    <div class="buttons">
+        <?php if ($this['own'] === true) : // si es propio puede ir a editarlo ?>
+        <a class="button" href="/project/edit/<?php echo $project->id ?>">Editar</a>
+        <?php endif; ?>
+        <a class="button view" href="/project/<?php echo $project->id ?>" target="_blank">Ver proyecto</a>
+    </div>
+    <?php else : // normal ?>
     <div class="buttons">
         <a class="button red supportit" href="/invest/<?php echo $project->id ?>">Apóyalo</a>
         <a class="button view" href="/project/<?php echo $project->id ?>">Ver proyecto</a>
     </div>
+    <?php endif; ?>
+
 
 </div>
