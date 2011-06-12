@@ -1,6 +1,6 @@
 <?php
 
-use Goteo\Model\Project\Category,
+use Goteo\Model\Category,
     Goteo\Model\Icon,
     Goteo\Library\Location;
 

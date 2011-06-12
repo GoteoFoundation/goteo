@@ -110,34 +110,6 @@ namespace Goteo\Model\Project {
 
 		}
 
-        /**
-         * Get all categories used in published projects
-         *
-         * @param void
-         * @return array
-         */
-		public static function getList () {
-            $array = array ();
-            try {
-                $sql = "SELECT id, name
-                        FROM category
-                        INNER JOIN project_category 
-                            ON category.id = project_category.category
-                        GROUP BY id
-                        ORDER BY name ASC";
-
-                $query = static::query($sql);
-                $categories = $query->fetchAll();
-                foreach ($categories as $cat) {
-                    $array[$cat[0]] = $cat[1];
-                }
-
-                return $array;
-            } catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
-            }
-		}
-
 		/**
 		 * Quitar una palabra clave de un proyecto
 		 *
