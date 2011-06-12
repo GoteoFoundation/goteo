@@ -13,12 +13,16 @@ $level = $this['level'] ?: 3;
     <?php if (isset($this['balloon'])): ?>
     <div class="balloon"><?php echo $this['balloon'] ?></div>
     <?php endif ?>
-    
+
     <div class="image">
         <?php if (!empty($project->gallery)): ?>
         <img alt="" src="<?php echo htmlspecialchars(current($project->gallery)->getLink(255, 143)) ?>" />
         <?php endif ?>
     </div>
+
+    <?php if (in_array($project-status, array(5, 6))) : // en estados financiado o retorno cumplido, tag de financiado ?>
+    <div>FINANCIADO!</div>
+    <?php endif; ?>
 
     <h<?php echo $level ?> class="title"><?php echo htmlspecialchars($project->name) ?></h<?php echo $level ?>>
     
