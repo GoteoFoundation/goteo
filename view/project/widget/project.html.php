@@ -10,6 +10,10 @@ $level = $this['level'] ?: 3;
 
 <div class="widget project">
     
+    <?php if (in_array($project->status, array(5, 6))) : // en estados financiado o retorno cumplido, tag de financiado ?>
+    FINANCIADO!<br />
+    <?php endif; ?>
+
     <?php if (isset($this['balloon'])): ?>
     <div class="balloon"><?php echo $this['balloon'] ?></div>
     <?php endif ?>
@@ -19,10 +23,6 @@ $level = $this['level'] ?: 3;
         <img alt="" src="<?php echo htmlspecialchars(current($project->gallery)->getLink(255, 143)) ?>" />
         <?php endif ?>
     </div>
-
-    <?php if (in_array($project-status, array(5, 6))) : // en estados financiado o retorno cumplido, tag de financiado ?>
-    <div>FINANCIADO!</div>
-    <?php endif; ?>
 
     <h<?php echo $level ?> class="title"><?php echo htmlspecialchars($project->name) ?></h<?php echo $level ?>>
     

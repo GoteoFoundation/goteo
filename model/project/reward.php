@@ -40,7 +40,7 @@ namespace Goteo\Model\Project {
 
                 $sqlFilter = "";
                 if (!empty($fulfilled)) {
-                    $sqlFilter .= "    AND fulfilled = :fulfilled";
+                    $sqlFilter .= "    AND fulsocial = :fulfilled";
                     $values[':fulfilled'] = $fulfilled == 'ok' ? 1 : 0;
                 }
                 if (!empty($icon)) {
