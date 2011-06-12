@@ -1,15 +1,8 @@
 <?php
 
-use Goteo\Core\View,
-    Goteo\Model\Project\Category,
-    Goteo\Model\Project\Reward,
-    Goteo\Library\Location;
+use Goteo\Core\View;
 
 $bodyClass = 'home';
-
-$categories = Category::getAll();
-$locations = Location::getList();
-$rewards = Reward::icons('individual');
 
 include 'view/prologue.html.php';
 

@@ -32,7 +32,7 @@ namespace Goteo\Model {
         }
 
         /*
-         * Lista de proyectos iconos
+         * Lista de iconos de recompensa
          */
         public static function getAll ($group = '') {
 
@@ -59,6 +59,41 @@ namespace Goteo\Model {
                 if ($group == 'social') {
                     $icon->licenses = License::getAll($icon->id);
                 }
+                $icons[$icon->id] = $icon;
+            }
+
+            return $icons;
+        }
+
+        /*
+         * Lista de iconos que se usen en proyectos 
+         */
+        public static function getList ($group = '') {
+
+            $icons = array();
+
+            $sql = "
+                SELECT
+                    icon.id,
+                    icon.name
+                FROM    icon
+                INNER JOIN reward
+                    ON icon.id = reward.icon
+                ";
+
+            if ($group != '') {
+                // de un grupo o de todos
+                $sql .= " WHERE `group` = :group OR `group` IS NULL";
+            }
+
+            $sql .= "
+                GROUP BY icon.id
+                ORDER BY icon.name ASC
+                ";
+
+            $query = static::query($sql, array(':group' => $group));
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $icon) {
                 $icons[$icon->id] = $icon;
             }
 

@@ -1,16 +1,8 @@
 <?php
 
-use Goteo\Core\View,
-    Goteo\Model\Project\Category,
-    Goteo\Model\Project\Reward,
-    Goteo\Library\Location;
+use Goteo\Core\View;
 
 $bodyClass = 'home';
-
-$categories = Category::getAll();
-$locations = Location::getList();
-$rewards = Reward::icons('individual');
-
 
 include 'view/prologue.html.php';
 
@@ -25,13 +17,7 @@ include 'view/header.html.php' ?>
 
         <div id="main">
             <?php echo new View('view/discover/searcher.html.php',
-                                array(
-                                    'categories' => $categories,
-                                    'locations'  => $locations,
-                                    'rewards'    => $rewards,
-                                    'params'     => $this['params']
-                                )
-                ); ?>
+                                array('params'     => $this['params'])); ?>
 
             <p><?php echo $this['message']; ?></p>
 

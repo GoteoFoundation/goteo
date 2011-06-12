@@ -38,7 +38,7 @@ $project = $this['project'];
                 </div>
             <?php endif; ?>
 
-                <div><span><?php echo $individual->taken; ?></span> Cofinanciadores</div>
+                <div><span><?php echo (int) $individual->taken; ?></span> Cofinanciadores</div>
 
         </li>
         <?php endforeach ?>
