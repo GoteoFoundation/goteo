@@ -134,7 +134,7 @@ namespace Goteo\Library {
 		 * @return type bool
 		 */
 		public static function password ($value) {
-		    if(strlen($value)<8) {
+		    if(strlen($value)<6) {
 		        return false;
 		    }
 		    return true;

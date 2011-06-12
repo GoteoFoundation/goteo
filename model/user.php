@@ -360,14 +360,7 @@ namespace Goteo\Model {
                     WHERE id = :id
                     ", array(':id' => $id));
                 $user = $query->fetchObject(__CLASS__);
-                /*
-                 * Comprobaciones acl
-                if (!$user instanceof  \Goteo\Model\User) {
-                    var_dump($id);
-                    die(\trace($user));
-                }
-                 *
-                 */
+                
                 $user->roles = $user->getRoles();
                 $user->avatar = Image::get($user->avatar);
                 $user->interests = User\Interest::get($id);
@@ -487,6 +480,59 @@ namespace Goteo\Model {
     			return $_SESSION['user'] = self::get($_SESSION['user']->id);
     		}
     	}
+
+		/**
+		 * Verificacion de recuperacion de contraseña
+		 *
+		 * @param string $username Nombre de usuario
+		 * @param string $email    Email de la cuenta
+		 * @return boolean true|false  Correctos y mail enviado
+		 */
+		public static function recover ($username, $email) {
+            $query = self::query("
+                    SELECT
+                        id,
+                        name,
+                        email
+                    FROM user
+                    WHERE BINARY id = :username
+                    AND BINARY email = :email",
+				array(
+					':username' => trim($username),
+					':email'    => trim($email)
+				)
+			);
+			if($row = $query->fetchObject()) {
+                // tenemos id, nombre, email
+                // genero el token
+                $token = md5(uniqid()) . '¬' . $row->email;
+                self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $row->id, ':token' => $token));
+
+                // Email de recuperacion
+                $mail = new Mail();
+                $mail->to = $row->email;
+                $mail->toName = $row->name;
+                $mail->subject = 'Su petición de recuperación de contraseña en Goteo';
+                $url = SITE_URL . '/user/recover/' . base64_encode($token);
+                $mail->content = sprintf('
+                    Estimado(a) <strong>%1$s</strong>:<br/>
+                    <br/>
+                    Hemos recibido una petición para recuperar la contraseña de tu cuenta de usuario en Goteo.org<br />
+                    Si no has solicitado esta recuperación de contraseña, ignora este mensaje<br />
+                    Para acceder a tu cuenta y cambiar la contraseña (utilice su nombre de usuario como contraseña actual), utiliza el siguiente enlace. Si no puedes hacer click, copialo y pegalo en el navegador.
+                    <br/>
+                    <a href="%2$s">%2$s</a><br/>
+                    <br/>
+                    Recuerde que su nombre de usuario es <strong>%3$s</strong>, póngalo como contraseña actual para cambiar la contraseña.<br/>
+                    Hasta pronto!
+                ', $row->name, $url, $row->id);
+                $mail->html = true;
+                if ($mail->send($errors)) {
+                    return true;
+                }
+			}
+			return false;
+		}
 
     	/**
     	 * Guarda el Token y envía un correo de confirmación.

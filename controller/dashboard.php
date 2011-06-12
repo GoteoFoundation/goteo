@@ -8,7 +8,8 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Model,
         Goteo\Library\Page,
-        Goteo\Library\Mail;
+        Goteo\Library\Mail,
+        Goteo\Library\Text;
 
     class Dashboard extends \Goteo\Core\Controller {
 
@@ -222,10 +223,18 @@ namespace Goteo\Controller {
                         }
                         // Contraseña
                         if($_POST['change_password']) {
+                            // la recuperacion de contraseña se hace con esta funcionalidad
+                            // no chequearemos la contraseña anterior
+                            $recover = false;
+                            if ($_POST['action'] == 'recover') {
+                                $action = 'recover';
+                                $recover = true;
+                            }
+
                             if(empty($_POST['user_password'])) {
                                 $errors['password'] = Text::get('error-user-password-empty');
                             }
-                            elseif(!Model\User::login($user->id, $_POST['user_password'])) {
+                            elseif(!$recover && !Model\User::login($user->id, $_POST['user_password'])) {
                                 $errors['password'] = Text::get('error-user-wrong-password');
                             }
                             elseif(empty($_POST['user_npassword'])) {
@@ -275,6 +284,10 @@ namespace Goteo\Controller {
                         $viewData['personal'] = Model\User::getPersonal($user->id);
                         break;
                     case 'access':
+                        // si es recover, en contraseña actual tendran que poner el username
+                        if ($action == 'recover') {
+                            $viewData['message'] = "Esta recuperando su contraseña, recuerde poner el nombre de usuario en el campo 'contraseña actual' para cambiarla";
+                        }
                         break;
                 }
 

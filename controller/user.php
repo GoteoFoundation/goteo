@@ -19,7 +19,7 @@ namespace Goteo\Controller {
 		    throw new Redirection('/user/profile/' .  $id, Redirection::PERMANENT);
 		}
 
-                /**
+        /**
          * Inicio de sesión.
          * Si no se le pasan parámetros carga el tpl de identificación.
          *
@@ -321,6 +321,58 @@ namespace Goteo\Controller {
                 Message::Error(Text::get('user-changeemail-fail'));
             }
             throw new Redirection('/dashboard');
+        }
+
+        /**
+         * Recuperacion de contraseña
+         * - Si no llega nada, mostrar formulario para que pongan su username y el email correspondiente
+         * - Si llega post es una peticion, comprobar que el username y el email que han puesto son válidos
+         *      si no lo son, dejarlos en el formulario y mensaje de error
+         *      si son válidos, enviar email con la url y mensaje de ok
+         *
+         * - Si llega un hash, verificar y darle acceso hasta su dashboard /profile/access para que la cambien
+         *
+         * @param string $username  Nombre de usuario
+         * @param string $email     Email de la cuenta
+         */
+        public function recover ($token = null) {
+
+            // si el token mola, logueo este usuario y lo llevo a su dashboard
+            if (!empty($token)) {
+                $token = base64_decode($token);
+                $parts = explode('¬', $token);
+                if(count($parts) > 1) {
+                    $query = Model\User::query('SELECT id FROM user WHERE email = ? AND token = ?', array($parts[1], $token));
+                    if($id = $query->fetchColumn()) {
+                        if(!empty($id)) {
+                            // el token coincide con el email y he obtenido una id
+                            $user = Model\User::get($id);
+                            $_SESSION['user'] = $user;
+                            throw new Redirection('/dashboard/profile/access/recover#password');
+                        }
+                    }
+                }
+                
+            }
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['recover'])) {
+                $username = $_POST['username'];
+                $email    = $_POST['email'];
+                if (false !== ($user = (\Goteo\Model\User::recover($username, $email)))) {
+                    // se pue recuperar
+                }
+                else {
+                    $error = true;
+                }
+            }
+
+            return new View (
+                'view/user/recover.html.php',
+                array(
+                    'error' => !empty($error)
+                )
+            );
+
         }
 
     }
