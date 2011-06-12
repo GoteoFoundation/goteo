@@ -1268,6 +1268,10 @@ namespace Goteo\Model {
                     // los que estan 'financiado' o 'retorno cumplido'
                     $sql = "SELECT id FROM project WHERE status = 4 OR status = 6 ORDER BY name ASC";
                     break;
+                case 'available':
+                    // ni edicion ni revision ni cancelados, estan disponibles para verse publicamente
+                    $sql = "SELECT id FROM project WHERE status > 2 AND status < 6 ORDER BY name ASC";
+                    break;
                 default: 
                     // todos los que estan 'en campaña'
                     $sql = "SELECT id FROM project WHERE status = 3 ORDER BY name ASC";

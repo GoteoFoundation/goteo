@@ -330,7 +330,7 @@ namespace Goteo\Controller {
                     switch ($_POST['action']) {
                         case 'add':
                             // proyectos publicados para promocionar
-                            $projects = Model\Project::published();
+                            $projects = Model\Project::published('available');
 
                             return new View(
                                 'view/admin/promoEdit.html.php',
