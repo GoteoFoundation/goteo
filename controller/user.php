@@ -352,24 +352,29 @@ namespace Goteo\Controller {
                         }
                     }
                 }
-                
+
+                $error = 'El código de recuperación no es válido';//Text::get('recover-token-incorrect');
             }
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['recover'])) {
                 $username = $_POST['username'];
                 $email    = $_POST['email'];
-                if (false !== ($user = (\Goteo\Model\User::recover($username, $email)))) {
+                if (Model\User::recover($username, $email)) {
                     // se pue recuperar
+                    $message = 'Te hemos enviado un email para recuperar tu cuenta. Verifica también la carpeta de correo no deseado o spam.';
+                    //Text::get('recover-email-sended');
                 }
                 else {
-                    $error = true;
+                    $error = 'No se puede recuperar ninguna cuenta con estos datos';
+                    //Text::get('recover-request-fail');
                 }
             }
 
             return new View (
                 'view/user/recover.html.php',
                 array(
-                    'error' => !empty($error)
+                    'error'   => $error,
+                    'message' => $message
                 )
             );
 

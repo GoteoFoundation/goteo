@@ -36,11 +36,11 @@ include 'view/header.html.php'; ?>
             <?php endif; ?>
 
             <?php if (!empty($this['errors'])) {
-                echo '<pre>' . print_r($this['errors'], 1) . '</pre>';
+                echo implode(',',$this['errors']);
             } ?>
 
             <?php if (!empty($this['success'])) {
-                echo '<pre>' . print_r($this['success'], 1) . '</pre>';
+                echo implode(',',$this['success']);
             } ?>
 
             <?php if (!empty($this['section']) && !empty($this['option'])) {

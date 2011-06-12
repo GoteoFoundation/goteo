@@ -7,6 +7,7 @@ include 'view/prologue.html.php';
 include 'view/header.html.php';
 
 $error = $this['error'];
+$message = $this['message'];
 extract($_POST);
 ?>
     <div id="main">
@@ -18,7 +19,10 @@ extract($_POST);
                 <h2>Recuperar contraseña</h2>
 
                 <?php if (!empty($error)): ?>
-                <p class="error">No se puede recuperar ninguna cuenta con estos datos</p>
+                <p class="error"><?php echo $error; ?></p>
+                <?php endif ?>
+                <?php if (!empty($message)): ?>
+                <p><?php echo $message; ?></p>
                 <?php endif ?>
 
                 <form action="/user/recover" method="post">

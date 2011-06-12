@@ -219,6 +219,7 @@ namespace Goteo\Controller {
                                 unset($_POST['user_nemail']);
                                 unset($_POST['user_remail']);
                                 $success[] = 'Te hemos enviado un email para que confirmes el cambio de email';
+                                //Text::get('user-email-change-sended');
                             }
                         }
                         // Contraseña
@@ -254,7 +255,8 @@ namespace Goteo\Controller {
                                 unset($_POST['user_password']);
                                 unset($_POST['user_npassword']);
                                 unset($_POST['user_rpassword']);
-                                $success[] = 'Te hemos enviado un email para que confirmes el cambio de contraseña';
+                                $success[] = 'Has cambiado tu contraseña';
+                                //Text::get('user-password-changed');
                             }
                         }
                         if($user->save($errors)) {

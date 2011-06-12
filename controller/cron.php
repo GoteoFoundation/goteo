@@ -4,7 +4,8 @@ namespace Goteo\Controller {
 
     use Goteo\Model,
         Goteo\Core\Error,
-        Goteo\Library\Paypal;
+        Goteo\Library\Paypal,
+        Goteo\Library\Tpv;
 
     class Cron extends \Goteo\Core\Controller {
         
@@ -162,3 +163,54 @@ namespace Goteo\Controller {
     }
     
 }
+
+
+/*
+ * Mensaje a los cofinanciadores de un proyecto si este falla
+ *
+function failNotice ($project) {
+
+    echo "Mensaje a los cofinanciadores de un proyecto fallido '{$project}'<br />";
+
+    $project = Model\Project::get($project);
+
+    $sql = "
+        SELECT  DISTINCT(user) as id
+        FROM    invest
+        WHERE   project = ?
+        AND status <> 2";
+
+    $query = Model::query($sql, array($project->id));
+
+    while ($row = $query->fetchObject()) {
+        echo "Cofinanciador: {$row->id}<br />";
+
+        continue;
+        
+        // Email de recuperacion
+        $mail = new Mail();
+        $mail->to = $row->email;
+        $mail->toName = $row->name;
+        $mail->subject = 'El proyecto ';
+        $url = SITE_URL . '/user/recover/' . base64_encode($token);
+        $mail->content = sprintf('
+            Estimado(a) <strong>%1$s</strong>:<br/>
+            <br/>
+            Hemos recibido una petición para recuperar la contraseña de tu cuenta de usuario en Goteo.org<br />
+            Si no has solicitado esta recuperación de contraseña, ignora este mensaje<br />
+            Para acceder a tu cuenta y cambiar la contraseña (utilice su nombre de usuario como contraseña actual), utiliza el siguiente enlace. Si no puedes hacer click, copialo y pegalo en el navegador.
+            <br/>
+            <a href="%2$s">%2$s</a><br/>
+            <br/>
+            Recuerde que su nombre de usuario es <strong>%3$s</strong>, póngalo como contraseña actual para cambiar la contraseña.<br/>
+            Hasta pronto!
+        ', $row->name, $url, $row->id);
+        $mail->html = true;
+        if ($mail->send($errors)) {
+            return true;
+        }
+    }
+    return false;
+}
+ * 
+*/
