@@ -16,7 +16,7 @@ switch ($this['action']) {
         foreach ($this['projects'] as $project) {
             $availables[] = array(
                 'value' => $project->id,
-                'label' => $project->name
+                'label' => $project->name . ' ('. $this['status'][$project->status] . ')'
             );
         }
 

@@ -79,9 +79,11 @@ namespace Goteo\Model {
             $query = static::query("
                 SELECT
                     project.id as id,
-                    project.name as name
+                    project.name as name,
+                    project.status as status
                 FROM    project
-                WHERE status = 3
+                WHERE status > 2
+                AND status < 6
                 AND project.id NOT IN (SELECT project FROM promote WHERE promote.node = :node)
                 ORDER BY name ASC
                 ", array(':node' => $node));
