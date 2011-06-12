@@ -69,6 +69,8 @@ namespace Goteo\Model {
             $days = 0, //para 40 desde la publicación o para 80 si no está caducado
             $investors = array(), // usuarios que han invertido
 
+            $round = 0, // para ver si ya está en la fase de los 40 a los 80
+
             $errors = array(), // para los fallos en los datos
             $okeys  = array(), // para los campos que estan ok
 
@@ -203,7 +205,6 @@ namespace Goteo\Model {
                 //-----------------------------------------------------------------
                 //para proyectos en campaña o posterior
                 if ($project->status > 2) {
-
                     // recompensas
                     foreach ($project->individual_rewards as &$reward) {
                         $reward->none = false;
@@ -230,18 +231,25 @@ namespace Goteo\Model {
                     // tiempo de campaña
                     if ($project->status == 3) {
                         $days = $project->daysActive();
-                        if ($days > 40)
+                        if ($days > 40) {
                             $days = 80 - $days;
-                        else
+                            $project->round = 2;
+                        } else {
                             $days = 40 - $days;
+                            $project->round = 1;
+                        }
 
-                        if ($days < 0)
+                        if ($days < 0) {
+                            // no deberia estar en campaña sino financuiado o caducado
                             $days = 0;
+                        }
 
                         if ($project->days != $days) {
                             self::query("UPDATE project SET days = '{$days}' WHERE id = ?", array($project->id));
                         }
                         $project->days = $days;
+                    } else {
+                        $project->days = 0;
                     }
                 }
                 //-----------------------------------------------------------------
@@ -1187,7 +1195,7 @@ namespace Goteo\Model {
         public function daysActive() {
             // días desde el published
             $sql = "
-                SELECT DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%e') as days
+                SELECT DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') as days
                 FROM project
                 WHERE id = ?";
             $query = self::query($sql, array($this->id));
@@ -1259,6 +1267,10 @@ namespace Goteo\Model {
                 case 'success':
                     // los que estan 'financiado' o 'retorno cumplido'
                     $sql = "SELECT id FROM project WHERE status = 4 OR status = 6 ORDER BY name ASC";
+                    break;
+                case 'available':
+                    // ni edicion ni revision ni cancelados, estan disponibles para verse publicamente
+                    $sql = "SELECT id FROM project WHERE status > 2 AND status < 6 ORDER BY name ASC";
                     break;
                 default: 
                     // todos los que estan 'en campaña'

@@ -80,8 +80,8 @@ include 'view/prologue.html.php';
                             <tr>
                                 <td><?php echo $reward->reward; ?></td>
                                 <td><?php echo $this['icons'][$reward->icon]; ?></td>
-                                <td><?php echo $reward->fulfilled ? 'Cumplido' : 'Pendiente'; ?></td>
-                                <?php if (!$reward->fulfilled) : ?>
+                                <td><?php echo $reward->fulsocial ? 'Cumplido' : 'Pendiente'; ?></td>
+                                <?php if (!$reward->fulsocial) : ?>
                                 <td><a href="<?php echo "/admin/rewards/fulfill/{$reward->id}{$filter}"; ?>">[Dar por cumplido]</a></td>
                                 <?php endif; ?>
                             </tr>

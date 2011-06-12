@@ -329,8 +329,9 @@ namespace Goteo\Controller {
 				else {
                     switch ($_POST['action']) {
                         case 'add':
-                            // proyectos publicados para promocionar
-                            $projects = Model\Project::published();
+                            // proyectos disponibles para promocionar y su estado
+                            $projects = Model\Promote::available();
+                            $status = Model\Project::status();
 
                             return new View(
                                 'view/admin/promoEdit.html.php',
@@ -338,6 +339,7 @@ namespace Goteo\Controller {
                                     'action' => 'add',
                                     'promo' => $promo,
                                     'projects' => $projects,
+                                    'status' => $status,
                                     'errors' => $errors
                                 )
                             );
@@ -369,6 +371,7 @@ namespace Goteo\Controller {
                 case 'add':
                     // proyectos publicados para promocionar
                     $projects = Model\Promote::available();
+                    $status = Model\Project::status();
 
                     // siguiente orden
                     $next = Model\Promote::next();
@@ -378,7 +381,8 @@ namespace Goteo\Controller {
                         array(
                             'action' => 'add',
                             'promo' => (object) array('order' => $next),
-                            'projects' => $projects
+                            'projects' => $projects,
+                            'status' => $status
                         )
                     );
                     break;
@@ -1333,19 +1337,19 @@ namespace Goteo\Controller {
 
             switch ($action)  {
                 case 'fulfill':
-                    $sql = "UPDATE reward SET fulfilled = 1 WHERE id = ?";
+                    $sql = "UPDATE reward SET fulsocial = 1 WHERE type= 'social' AND id = ?";
                     Model\Project\Reward::query($sql, array($id));
                     break;
                 /*
                 case 'unfill':
-                    $sql = "UPDATE reward SET fulfilled = 0 WHERE id = ?";
+                    $sql = "UPDATE reward SET fulsocial = 0 WHERE id = ?";
                     Model\Project\Reward::query($sql, array($id));
                     break;
                  * 
                  */
             }
 
-            $projects = Model\Project::published();
+            $projects = Model\Project::published('success');
 
             foreach ($projects as $kay=>&$project) {
                 $project->social_rewards = Model\Project\Reward::getAll($project->id, 'social', $filters['status'], $filters['icon']);

@@ -49,7 +49,7 @@ namespace Goteo\Controller {
                      'supports' => 'supports'
                 );
 
-            if ($project->status != 1 && $_SESSION['user']->id == $project->owner) {
+            if ($project->status != 1 && !ACL::check('/project/edit/todos')) {
                 // solo seguimiento estado, progreso
                 // pasos preview, conseguido, recompensas
                 
@@ -271,42 +271,53 @@ namespace Goteo\Controller {
         private function view ($id, $show) {
             $project = Model\Project::get($id);
 
-            // solo si está en campaña o no caducado
-            // o si es root ;)
-            /*
-            if ( $project->status < 3 || $project->status > 5 || $_SESSION['user']->id == 'root') {
-                throw new Redirection("/");
-            }
-             * 
-             */
+            // solamente se puede ver publicamente si
+            // - es el dueño
+            // - es un admin con permiso
+            // - es otro usuario y el proyecto esta available en campaña, financiado o retorno cumplido
+            if (($project->status > 2 && $project->status < 6) ||
+                $project->owner == $_SESSION['user']->id ||
+                ACL::check('/project/edit/todos')) {
+                // lo puede ver
+                
+                $viewData = array(
+                        'project' => $project,
+                        'show' => $show
+                    );
 
-            $viewData = array(
-                    'project' => $project,
-                    'show' => $show
-                );
+                // tenemos que tocar esto un poquito para motrar las necesitades no economicas
+                if ($show == 'needs-non') {
+                    $viewData['show'] = 'needs';
+                    $viewData['non-economic'] = true;
+                }
 
-            // tenemos que tocar esto un poquito para motrar las necesitades no economicas
-            if ($show == 'needs-non') {
-                $viewData['show'] = 'needs';
-                $viewData['non-economic'] = true;
-            }
+                //tenemos que tocar esto un poquito para gestionar los pasos al aportar
+                if ($show == 'invest') {
 
-            //tenemos que tocar esto un poquito para gestionar los pasos al aportar
-            if ($show == 'invest') {
-                $viewData['show'] = 'supporters';
-                if (isset($_GET['confirm'])) {
-                    if (\in_array($_GET['confirm'], array('ok', 'fail'))) {
-                        $invest = $_GET['confirm'];
+                    // si no está en campaña no pueden esta qui ni de coña
+                    if ($project->status != 3) {
+                        throw new Redirection('/project/'.$id, Redirection::TEMPORARY);
+                    }
+
+                    $viewData['show'] = 'supporters';
+                    if (isset($_GET['confirm'])) {
+                        if (\in_array($_GET['confirm'], array('ok', 'fail'))) {
+                            $invest = $_GET['confirm'];
+                        } else {
+                            $invest = 'start';
+                        }
                     } else {
                         $invest = 'start';
                     }
-                } else {
-                    $invest = 'start';
+                    $viewData['invest'] = $invest;
                 }
-                $viewData['invest'] = $invest;
-            }
 
-            return new View('view/project/public.html.php', $viewData);
+                return new View('view/project/public.html.php', $viewData);
+
+            } else {
+                // no lo puede ver
+                throw new Redirection("/");
+            }
         }
 
         //-----------------------------------------------
