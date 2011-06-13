@@ -167,8 +167,10 @@ namespace Goteo\Controller {
                         }
 
                         /// este es el único save que se lanza desde un metodo process_
-                        $user->save($errors);
-                        $user = Model\User::flush();
+                        if ($user->save($errors)) {
+                            $message = 'Informacion de perfil actualizada'; //Text::get('user-profile-saved');
+                            $user = Model\User::flush();
+                        }
                     break;
                     
                     // datos personales
@@ -194,7 +196,9 @@ namespace Goteo\Controller {
 
                         // actualizamos estos datos en los personales del usuario
                         if (!empty ($personalData)) {
-                            Model\User::setPersonal($user->id, $personalData, true, $errors);
+                            if (Model\User::setPersonal($user->id, $personalData, true, $errors)) {
+                                $message = 'Datos personales actualizados'; //Text::get('user-personal-saved');
+                            }
                         }
                     break;
 
@@ -228,7 +232,6 @@ namespace Goteo\Controller {
                             // no chequearemos la contraseña anterior
                             $recover = false;
                             if ($_POST['action'] == 'recover') {
-                                $action = 'recover';
                                 $recover = true;
                             }
 
