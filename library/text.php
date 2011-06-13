@@ -67,7 +67,7 @@ namespace Goteo\Library {
             }
             
 			// buscamos el texto en la tabla
-			$query = Model::query("SELECT text FROM text WHERE id = :id AND lang = :lang", array(':id' => $id, ':lang' => $lang));
+			$query = Model::query("SELECT `text` FROM text WHERE id = :id AND lang = :lang", array(':id' => $id, ':lang' => $lang));
 			$exist = $query->fetchObject();
 			if ($exist->text) {
                 $tmptxt = $_cache[$id][$lang] = $exist->text;
@@ -87,7 +87,7 @@ namespace Goteo\Library {
 
                 if (strcmp($texto, $id) === 0) {
                 // sino, lo metemos en la tabla y en purpose
-                    Model::query("REPLACE INTO text (id, lang, text) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
+                    Model::query("REPLACE INTO text (id, lang, `text`) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
                     Model::query("REPLACE INTO purpose (text, purpose) VALUES (:text, :purpose)", array(':text' => $id, ':purpose' => "Texto $id"));
                 }
 			}
@@ -101,9 +101,9 @@ namespace Goteo\Library {
 
 		static public function getPurpose ($id) {
 			// buscamos la explicación del texto en la tabla
-			$query = Model::query("SELECT purpose FROM purpose WHERE text = :id", array(':id' => $id));
+			$query = Model::query("SELECT purpose FROM purpose WHERE `text` = :id", array(':id' => $id));
 			$exist = $query->fetchObject();
-			if ($exist->purpose) {
+			if (!empty($exist->purpose)) {
 				return $exist->purpose;
 			} else {
 				Model::query("REPLACE INTO purpose (text, purpose) VALUES (:text, :purpose)", array(':text' => $id, ':purpose' => "Texto $id"));
@@ -156,6 +156,10 @@ namespace Goteo\Library {
                 $sql .= " AND purpose.`group` = :group";
                 $values[':group'] = "{$filters['group']}";
             }
+            if (!empty($filters['text'])) {
+                $sql .= " AND ( text.text LIKE :text OR (text.text IS NULL AND purpose.purpose LIKE :text ))";
+                $values[':text'] = "%{$filters['text']}%";
+            }
             $sql .= " ORDER BY purpose.`group` ASC";
             
             try {
@@ -180,10 +184,14 @@ namespace Goteo\Library {
 					return false;
 			}
 
-			if (Model::query("UPDATE text SET text = :text WHERE id = :id AND lang = :lang", array(':text' => $data['text'], ':id' => $data['id'], ':lang' => $data['lang']))) {
+            $sql = "REPLACE `text` SET
+                            `text` = :text,
+                            id = :id,
+                            lang = :lang
+                    ";
+			if (Model::query($sql, array(':text' => $data['text'], ':id' => $data['id'], ':lang' => $data['lang']))) {
 				return true;
-			}
-			else {
+			} else {
 				$errors[] = 'Error al insertar los datos <pre>' . print_r($data, 1) . '</pre>';
 				return false;
 			}

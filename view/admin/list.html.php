@@ -8,7 +8,10 @@ $filters = $this['filters'];
 
 // si hay filtro lo arrastramos
 if (!empty($filters)) {
-    $filter = "?idfilter={$filters['idfilter']['value']}&group={$filters['group']['value']}";
+    $filter = "?";
+    foreach ($filters as $key => $fil) {
+        $filter .= "$key={$fil['value']}&";
+    }
 } else {
     $filter = '';
 }
@@ -61,12 +64,20 @@ include 'view/prologue.html.php';
             <div class="widget board">
                 <form id="filter-form" action="<?php echo $this['url']; ?>" method="get">
                     <?php foreach ($filters as $id=>$fil) : ?>
+                    <?php if ($fil['type'] == 'select') : ?>
                         <label for="filter-<?php echo $id; ?>"><?php echo $fil['label']; ?></label>
                         <select id="filter-<?php echo $id; ?>" name="<?php echo $id; ?>" onchange="document.getElementById('filter-form').submit();">
                         <?php foreach ($fil['options'] as $val=>$opt) : ?>
                             <option value="<?php echo $val; ?>"<?php if ($fil['value'] == $val) echo ' selected="selected"';?>><?php echo $opt; ?></option>
                         <?php endforeach; ?>
                         </select>
+                    <?php endif; ?>
+                    <?php if ($fil['type'] == 'input') : ?>
+                        <br />
+                        <label for="filter-<?php echo $id; ?>"><?php echo $fil['label']; ?></label>
+                        <input name="<?php echo $id; ?>" value="<?php echo (string) $fil['value']; ?>" />
+                        <input type="submit" name="filter" value="Buscar">
+                    <?php endif; ?>
                     <?php endforeach; ?>
                 </form>
             </div>
@@ -89,7 +100,7 @@ include 'view/prologue.html.php';
                         <tr>
                         <?php foreach ($this['columns'] as $key=>$label) : ?>
                             <?php if (in_array($key, array('edit', 'remove', 'up', 'down'))) : ?>
-                                <td width="5%"><a title="Registro <?php echo (is_object($item)) ? $item->id : $item['id']; ?>" href='<?php $id = (is_object($item)) ? $item->id : $item['id']; echo "{$this['url']}/{$key}/{$id}{$filter}"; ?>'><?php echo $botones[$key]; ?></a></td>
+                                <td width="5%"><a title="Registro <?php echo (is_object($item)) ? $item->id : $item['id']; ?>" href='<?php $id = (is_object($item)) ? $item->id : $item['id']; echo "{$this['url']}/{$key}/{$id}/{$filter}"; ?>'><?php echo $botones[$key]; ?></a></td>
                             <?php else : ?>
                                 <td width="<?php echo round($per)-5; ?>%"><?php echo (is_object($item)) ? $item->$key : $item[$key]; ?></td>
                             <?php endif; ?>

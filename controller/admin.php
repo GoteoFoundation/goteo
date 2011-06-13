@@ -78,14 +78,14 @@ namespace Goteo\Controller {
 
             // comprobamos los filtros
             $filters = array();
-            $fields = array('idfilter', 'group');
+            $fields = array('idfilter', 'group', 'text');
             foreach ($fields as $field) {
                 if (isset($_GET[$field])) {
                     $filters[$field] = $_GET[$field];
                 }
             }
 
-            $filter = "?idfilter={$filters['idfilter']}&group={$filters['group']}";
+            $filter = "?idfilter={$filters['idfilter']}&group={$filters['group']}&text={$filters['text']}";
             
             // valores de filtro
             $idfilters = Text::filters();
@@ -117,14 +117,22 @@ namespace Goteo\Controller {
                             'url' => '/admin/texts',
                             'filters' => array(
                                 'idfilter' => array(
-                                        'label'  => 'Filtrar por tipo:',
+                                        'label'   => 'Filtrar por tipo:',
+                                        'type'    => 'select',
                                         'options' => $idfilters,
-                                        'value' => $filters['idfilter']
+                                        'value'   => $filters['idfilter']
                                     ),
                                 'group' => array(
-                                        'label'  => 'Filtrar por agrupación:',
+                                        'label'   => 'Filtrar por agrupación:',
+                                        'type'    => 'select',
                                         'options' => $groups,
-                                        'value' => $filters['group']
+                                        'value'   => $filters['group']
+                                    ),
+                                'text' => array(
+                                        'label'   => 'Buscar texto:',
+                                        'type'    => 'input',
+                                        'options' => null,
+                                        'value'   => $filters['text']
                                     )
                             ),
                             'errors' => $errors
