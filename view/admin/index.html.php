@@ -54,6 +54,7 @@ include 'view/prologue.html.php';
                 <div class="widget board collapse">
                     <h3 class="title">Plataforma Goteo</h3>
                     <ul>
+                        <li><a href="/admin/blog">Blog</a></li>
                         <li><a href="/admin/managing">Usuarios</a></li>
                         <li><a href="/admin/rewards">Retornos colectivos</a></li>
                     </ul>

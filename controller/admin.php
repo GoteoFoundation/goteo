@@ -11,6 +11,7 @@ namespace Goteo\Controller {
         Goteo\Library\Paypal,
         Goteo\Library\Tpv,
         Goteo\Library\Page,
+        Goteo\Library\Blog,
         Goteo\Library\Worth;
 
 	class Admin extends \Goteo\Core\Controller {
@@ -1376,6 +1377,70 @@ namespace Goteo\Controller {
                 )
             );
 
+
+        }
+
+        /*
+         * Gestión de entradas de blog
+         */
+        public function blog ($action = 'list', $id = null) {
+            
+            $url = '/admin/blog';
+
+            $filters = array();
+            $fields = array('date');
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    $filters[$field] = $_GET[$field];
+                }
+            }
+
+            $errors = array();
+
+            switch ($action)  {
+                case 'list':
+                    // lista de entradas
+                    // obtenemos los datos
+                    $posts = Blog::getPosts();
+
+                    return new View(
+                        'view/admin/list.html.php',
+                        array(
+                            'title' => 'Lista de entradas',
+                            'menu' => array(
+                                array(
+                                    'url' => "$url/add",
+                                    'label' => 'Nueva entrada'
+                                )
+                            ),
+                            'data' => $posts,
+                            'columns' => array(
+                                'title' => 'Titulo',
+                                'date'  => 'Fecha',
+                                'edit'  => '',
+                                'remove' => ''
+                            ),
+                            'url' => "$url",
+                            'errors' => $errors
+                        )
+                    );
+                    break;
+                case 'add':
+                    // nueva entrada con wisiwig
+                    // obtenemos datos basicos
+                    // lo que es el superform lo creamos con la libreria
+
+                    break;
+                case 'edit':
+                    // editar entrada con wisiwig
+                    // obtenemos los datos
+                    // lo que es el superform lo creamos con la libreria
+
+                    break;
+                case 'remove':
+                    // ocultar o eliminar una entrada
+                    break;
+            }
 
         }
 

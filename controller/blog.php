@@ -8,10 +8,15 @@ namespace Goteo\Controller {
 
     class Blog extends \Goteo\Core\Controller {
         
-        public function index ($id = null) {
+        public function index ($show = 'list', $post = null) {
+
+            // muestra, segun show: list , post
+
+            // segun eso montamos los viewData
+
 
             return new View(
-                'view/about/sample.html.php',
+                'view/blog/index.html.php',
                 array(
                     'name' => 'Blog',
                     'title' => 'Goteo blog',
