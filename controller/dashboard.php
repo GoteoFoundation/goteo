@@ -265,6 +265,9 @@ namespace Goteo\Controller {
                         if($user->save($errors)) {
                             // Refresca la sesión.
                             $user = Model\User::flush();
+                        } else {
+                            $errors[] = 'Ha habido algun problema al guardar los datos';
+                            //Text::get('user-save-fail');
                         }
                     break;
                 }
@@ -292,6 +295,7 @@ namespace Goteo\Controller {
                         // si es recover, en contraseña actual tendran que poner el username
                         if ($action == 'recover') {
                             $viewData['message'] = "Esta recuperando su contraseña, recuerde poner el nombre de usuario en el campo 'contraseña actual' para cambiarla";
+                            //Text::get('dashboard-password-recover-advice');
                         }
                         break;
                 }
@@ -305,7 +309,7 @@ namespace Goteo\Controller {
 
 
         /*
-         * Seccion, Mi proyecto (actualmente en campaña o financiado, solo uno)
+         * Seccion, Mis proyectos
          * Opciones:
          *      'actualizaciones' blog del proyecto (ahora son como mensajes),
          *      'editar colaboraciones' para modificar los mensajes de colaboraciones (no puede editar el proyecto y ya estan publicados)
@@ -315,7 +319,7 @@ namespace Goteo\Controller {
          *      'pagina publica' enlace a la página pública del proyecto
          *
          */
-        public function projects ($option = 'summary', $action = 'view') {
+        public function projects ($option = 'summary', $action = 'list', $id = null) {
             
             $user    = $_SESSION['user'];
 
@@ -367,6 +371,41 @@ namespace Goteo\Controller {
                 throw new Redirection('/dashboard', Redirection::TEMPORARY);
             }
 
+            // tenemos proyecto de trabajo, comprobar si el proyecto esta en estado de tener blog
+            if ($option == 'updates' && in_array($project->status, array(1,2,6))) {
+                $errors[] = 'Lo sentimos, aun no se pueden publicar actualizaciones en este proyecto';
+                //Text::get('dashboard-project-blog-wrongstatus');
+                $action = 'list';
+            } elseif ($option == 'updates') {
+                // solo cargamos el blog en la gestion de updates
+                $blog = Model\Blog::get($project->id);
+                if (!$blog instanceof \Goteo\Model\Blog) {
+                    $blog = new Model\Blog(
+                            array(
+                                'id' => '',
+                                'type' => 'project',
+                                'owner' => $project->id,
+                                'active' => true,
+                                'project' => $project->id,
+                                'posts' => array()
+                            )
+                        );
+                    if (!$blog->save($errors)) {
+                        $errors[] = 'Contacte con nosotros';
+                        //Text::get('dashboard-project-blog-fail');
+                        $option = 'summary';
+                        $action = 'view';
+                    }
+                } else {
+                    if (!$blog->active) {
+                        $errors[] = 'Lo sentimos, las actualizaciones para este proyecto estan desactivadas';
+                        //Text::get('dashboard-project-blog-inactive');
+                        $action = 'list';
+                    }
+                }
+            }
+
+
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 \trace($_POST);
 			    $errors = array();
@@ -404,6 +443,7 @@ namespace Goteo\Controller {
 
                                 if (empty($_POST['message'])) {
                                     $errors[] = 'Escribe el mensaje';
+                                    //Text::get('dashboard-investors-mail-text-required');
                                     break;
                                 } else {
                                     $msg_content = \strip_tags($_POST['message']);
@@ -440,6 +480,7 @@ namespace Goteo\Controller {
 
                                 if (count($who) == 0) {
                                     $errors[] = 'No se han encontrado destinatarios';
+                                    //Text::get('dashboard-investors-mail-nowho');
                                     break;
                                 }
 
@@ -451,12 +492,14 @@ namespace Goteo\Controller {
 
                                 //asunto
                                 $subject = 'Mensaje del proyecto que cofinancias: ' . $project->name;
+                                //Text::get('dashboard-investors-mail-subject');
                                 // el mensaje que ha escrito el productor
                                 $content = "Hola <strong>%NAME%</strong>, este es un mensaje enviado desde Goteo por el productor del proyecto {$project->name}.
                                 <br/><br/>
                                 {$msg_content}
                                 <br/><br/>
                                 Puedes ver el proyecto en ".SITE_URL."/project/{$project->id}";
+                                //Text::get('dashboard-investors-mail-template'); // lleva parametros
 
                                 foreach ($who as $key=>$userId) {
 
@@ -480,8 +523,10 @@ namespace Goteo\Controller {
                                     $mailHandler->html = true;
                                     if ($mailHandler->send($errors)) {
                                         $success[] = 'Mensaje enviado correctamente a ' . $data->name . ' : ' . $data->email;
+                                       //Text::get('dashboard-investors-mail-sended'); //lleva parametros
                                     } else {
                                         $errors[] = 'Falló al enviar el mensaje a ' . $data->name . ' : ' . $data->email;
+                                        //Text::get('dashboard-investors-mail-fail'); //lleva parametros
                                     }
 
                                     unset($mailHandler);
@@ -527,6 +572,103 @@ namespace Goteo\Controller {
                         }
 
                     break;
+
+                    case 'updates':
+                        // primero comprobar que tenemos blog
+                        if (!$blog instanceof Model\Blog) {
+                            $errors[] = 'No se ha encontrado ningún blog para este proyecto';
+                            //Text::get('dashboard-project-updates-noblog');
+                            $option = 'summary';
+                            $action = 'list';
+                            break;
+                        }
+
+                        // segun la accion
+                        switch ($action) {
+                            case 'list':
+                                // en principio la lista no recibe post
+                                break;
+                            case 'add':
+                                $post = new Model\Blog\Post(
+                                        array(
+                                            'blog' => $blog->id,
+                                            'date' => date('d-m-Y'),
+                                            'allow' => true
+                                        )
+                                    );
+                                break;
+                            case 'edit':
+                                if (empty($id)) {
+                                    $errors[] = 'No se ha encontrado la entrada';
+                                    //Text::get('dashboard-project-updates-nopost');
+                                    $action = 'list';
+                                    break;
+                                } else {
+                                    $post = $blog->posts[$id];
+
+                                    if (!$post instanceof Model\Blog\Post) {
+                                        $errors[] = 'La entrada esta corrupta, contacte con nosotros.';
+                                        //Text::get('dashboard-project-updates-postcorrupt');
+                                        $action = 'list';
+                                        break;
+                                    }
+                                }
+
+                                // vale, habemus entrada
+                                break;
+                        }
+
+                        // campos que actualizamos
+                        $fields = array(
+                            'id',
+                            'title',
+                            'text',
+                            'media',
+                            'date',
+                            'allow'
+                        );
+
+                        foreach ($fields as $field) {
+                            if (isset($_POST[$field])) {
+                                $post->$field = $_POST[$field];
+                            }
+                        }
+
+                        // tratar la imagen y ponerla en la propiedad image
+                        if(!empty($_FILES['image_upload']['name'])) {
+                            $post->image = $_FILES['image_upload'];
+                        }
+
+                        // tratar si quitan la imagen
+                        if (!empty($_POST['image-' . $post->image->id .  '-remove'])) {
+                            $post->image->remove('post');
+                            $post->image = '';
+                        }
+
+                        if (!empty($post->media)) {
+                            $post->media = new Model\Project\Media($post->media);
+                        }
+
+                        // tratar si quitan el video
+                        if (!empty($_POST['media-' . $post->id .  '-remove'])) {
+                            $post->media = '';
+                        }
+
+                        // el blog de proyecto no tiene tags?¿?
+                        // $post->tags = $_POST['tags'];
+
+                        /// este es el único save que se lanza desde un metodo process_
+                        if ($post->save($errors)) {
+                            if ($action == 'edit') {
+                                $success[] = 'La entrada se ha actualizado correctamente'; //Text::get('dashboard-project-updates-saved');
+                            } else {
+                                $success[] = 'Se ha añadido una nueva entrada'; //Text::get('dashboard-project-updates-inserted');
+                            }
+                            $action = 'list';
+                        } else {
+                            $error[] = 'Ha habido algun problema al guardar los datos'; //Text::get('dashboard-project-updates-fail');
+                        }
+                        break;
                 }
             }
 
@@ -559,7 +701,18 @@ namespace Goteo\Controller {
                     $viewData['types'] = Model\Project\Support::types();
                     $project->supports = Model\Project\Support::getAll($_SESSION['project']->id);
                 break;
-            
+
+                // publicar actualizaciones
+                case 'updates':
+                    switch ($action) {
+                        case 'list':
+                            $viewData['posts'] = Model\Blog\Post::getAll($blog);
+                            break;
+                        case 'add':
+                        case 'edit':
+                            break;
+                    }
+                    break;
             }
 
             $viewData['project'] = $project;
@@ -580,7 +733,7 @@ namespace Goteo\Controller {
         }
 
         private static function menu() {
-
+            // todos los textos del menu dashboard
             $menu = array(
                 'activity' => array(
                     'label'   => 'Mi actividad',
