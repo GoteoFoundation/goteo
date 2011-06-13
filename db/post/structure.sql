@@ -17,3 +17,4 @@ ALTER TABLE  `post` CHANGE  `description`  `text` LONGTEXT CHARACTER SET utf8 CO
 ALTER TABLE  `post` ADD  `image` INT( 10 ) NULL ,
 ADD  `date` DATE NOT NULL;
 ALTER TABLE `post` ADD `order` INT NULL DEFAULT '1';
+ALTER TABLE `post` ADD `allow` BOOLEAN NOT NULL DEFAULT '1' COMMENT 'Permite comentarios';
