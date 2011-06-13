@@ -44,6 +44,10 @@ include 'view/prologue.html.php';
 
                     <input type="hidden" name="action" value="<?php echo $this['action']; ?>" />
                     <input type="hidden" name="order" value="<?php echo $this['post']->order; ?>" />
+                    <input type="hidden" name="blog" value="<?php echo $this['post']->blog; ?>" />
+                    <input type="hidden" name="image" value="<?php echo $this['post']->image; ?>" />
+                    <input type="hidden" name="date" value="<?php echo date('Y-m-d'); ?>" />
+                    <input type="hidden" name="allow" value="0" />
 
                     <input type="hidden" name="id" value="<?php echo $this['post']->id; ?>" />
     <br />

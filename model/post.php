@@ -22,6 +22,8 @@ namespace Goteo\Model {
                         id,
                         title,
                         text as description,
+                        blog,
+                        image,
                         `media`,
                         `order`
                     FROM    post
@@ -46,6 +48,8 @@ namespace Goteo\Model {
                     `media`,
                     `order`
                 FROM    post
+                WHERE   blog = 1
+                AND     `order` > 0
                 ORDER BY `order` ASC, title ASC
                 ";
             

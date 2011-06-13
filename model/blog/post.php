@@ -104,7 +104,9 @@ namespace Goteo\Model\Blog {
                 `date`
                 );
 
-            $set = '';
+            // si editan por aqui no salen en portada, por ahora
+            //@FIXME
+            $set = '`order` = 0 ';
             $values = array();
 
             foreach ($fields as $field) {
