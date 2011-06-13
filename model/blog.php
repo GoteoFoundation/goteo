@@ -2,11 +2,10 @@
 
 namespace Goteo\Model {
 
-    use \Goteo\Model\Blog,
-        \Goteo\Model\Project\Media,
+    use \Goteo\Model\Project\Media,
         \Goteo\Model\Image;
 
-    class Post extends \Goteo\Core\Model {
+    class Blog extends \Goteo\Core\Model {
 
         public
             $id,

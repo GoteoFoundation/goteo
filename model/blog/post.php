@@ -113,6 +113,13 @@ namespace Goteo\Model\Blog {
                 $values[":$field"] = $this->$field;
             }
 
+            // Imagen
+            if (is_array($this->image) && !empty($this->image['name'])) {
+                $image = new Image($this->image);
+                $image->save();
+                $values[':image'] = $image->id;
+            }
+
             try {
                 $sql = "REPLACE INTO post SET " . $set;
                 self::query($sql, $values);
