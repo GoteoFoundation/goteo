@@ -1,0 +1,87 @@
+div.widget.worthcracy {
+    text-align: center;
+}
+
+div.widget.worthcracy .title {
+    text-align: left !important;
+}
+
+div.widget.worthcracy ul {
+    padding: 3em 52px 3em 0;
+    margin: 0;
+    list-style: none;
+    position: relative;
+    display: inline-block;
+    background: url('../euro/xl.png') no-repeat right center;
+}
+
+div.widget.worthcracy ul li {
+    display: inline-block;
+    width: 92px;
+    height: 8px;
+    overflow: visible;
+    background-color: #e7e7e7;
+    position: relative;
+}
+
+div.widget.worthcracy  ul li > span.threshold,
+div.widget.worthcracy  ul li > strong,
+div.widget.worthcracy  ul li > em {
+    display: block;
+    width: 92px;
+    position: absolute;
+    text-align: center;
+}
+
+div.widget.worthcracy  ul li > span.threshold {
+    top: -25px;
+    font-size: 16px;
+}
+
+div.widget.worthcracy  ul li > em,
+div.widget.worthcracy  ul li > strong {
+    top: 12px;    
+    width: 300px;
+    left: 50%;
+    margin-left: -150px;
+    color: #808285;        
+}
+
+div.widget.worthcracy  ul li > em {
+    font-style: normal;
+    font-size: 12px;
+}
+
+div.widget.user-worthcracy  ul li > strong {
+    font-weight: bold;
+    font-size: 18px;
+    text-transform: uppercase;    
+    top: 15px;
+    padding-top: 9px;
+    background: url('beak.png') no-repeat top center;
+}
+
+div.widget.worthcracy  ul li.done.worth-1 {
+    background-color: #B6CAE0;
+    color: #B6CAE0;
+}
+
+div.widget.worthcracy  ul li.done.worth-2 {
+    background-color: #92AFD1;
+    color: #92AFD1;
+}
+
+div.widget.worthcracy  ul li.done.worth-3 {
+    background-color: #799EC7;
+    color: #799EC7;
+}
+
+div.widget.worthcracy  ul li.done.worth-4 {
+    background-color: #3C71AE;
+    color: #3C71AE;
+}
+
+div.widget.worthcracy  ul li.done.worth-5 {
+    background-color: #0C4E99;
+    color: #0C4E99;
+}

@@ -1,8 +1,16 @@
 <?php
 
+use Goteo\Model\License;
+
 $level = (int) $this['level'] ?: 3;
 
 $project = $this['project'];
+
+$licenses = array();
+
+foreach (License::getAll() as $l) {
+    $licenses[$l->id] = $l;
+}
 
 ?>
 <div class="widget project-rewards collapsable" id="project-rewards">
@@ -16,6 +24,15 @@ $project = $this['project'];
             <li class="<?php echo $social->icon ?>">                
                 <strong><?php echo htmlspecialchars($social->reward) ?></strong>
                 <p><?php echo htmlspecialchars($social->description)?></p>
+                <?php if (!empty($social->license) && array_key_exists($social->license, $licenses)): ?>
+                <div class="license" class="<?php echo htmlspecialchars($social->license) ?>">
+                    <a href="<?php echo htmlspecialchars($licenses[$social->license]->url) ?>" target="_blank">
+                        <strong><?php echo htmlspecialchars($licenses[$social->license]->name) ?></strong>
+                        <?php if (!empty($licenses[$social->license]->description)): ?><br /> 
+                        <p><?php echo htmlspecialchars($licenses[$social->license]->description) ?></p>
+                        <?php endif ?>
+                </div>
+                <?php endif ?>
             </li>
         <?php endforeach; ?>
         </ul>

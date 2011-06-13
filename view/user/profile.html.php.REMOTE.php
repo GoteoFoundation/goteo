@@ -31,9 +31,11 @@ $worthcracy = Worth::getAll();
                 <div class="widget user-projects">
                 <h3>Proyectos que apoyo</h3>
                 <ul>
-                <?php foreach ($this['invested'] as $project): ?>
-                    <li><a href="/project/<?php echo $project->id ?>"><?php echo $project->name  ?></a></li>
-                <?php endforeach ?>
+                <?php foreach ($this['invested'] as $project) {
+                    // $project NO es una instancia de proyecto
+                    // ojo con este widget
+                    echo '<li><a href="/project/'. $project->id . '">'. $project->name . '</a></li>';
+                } ?>
                 </ul>
     		</div>
 
