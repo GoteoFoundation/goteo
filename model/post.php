@@ -21,7 +21,7 @@ namespace Goteo\Model {
                     SELECT
                         id,
                         title,
-                        description,
+                        text as description,
                         `media`,
                         `order`
                     FROM    post
@@ -74,20 +74,20 @@ namespace Goteo\Model {
             if (!$this->validate($errors)) return false;
 
             $fields = array(
-                'id',
-                'title',
-                'description',
-                'media',
-                'order'
+                'id' => 'id',
+                'title' => 'title',
+                'description' => 'text',
+                'media' => 'media',
+                'order' => 'order'
                 );
 
             $set = '';
             $values = array();
 
-            foreach ($fields as $field) {
+            foreach ($fields as $field=>$tableField) {
                 if ($set != '') $set .= ", ";
-                $set .= "`$field` = :$field ";
-                $values[":$field"] = $this->$field;
+                $set .= "`$tableField` = :$tableField ";
+                $values[":$tableField"] = $this->$field;
             }
 
             try {
