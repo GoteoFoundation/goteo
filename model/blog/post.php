@@ -72,7 +72,7 @@ namespace Goteo\Model\Blog {
                 $post->iamge = Image::get($post->image);
                 $post->num_comments = Post\Comment::getCount($post->id);
 
-                $list[] = $post;
+                $list[$post->id] = $post;
             }
 
             return $list;

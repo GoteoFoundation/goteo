@@ -6,10 +6,10 @@ namespace Goteo\Model\Blog\Post {
 
         public
             $id,
-            $title,
+            $post,
+            $date,
             $text,
-            $media,
-            $image;
+            $user;
 
         /*
          *  Devuelve datos de una comentario
@@ -18,11 +18,11 @@ namespace Goteo\Model\Blog\Post {
                 $query = static::query("
                     SELECT
                         id,
-                        title,
+                        post,
+                        date,
                         text,
-                        `media`,
-                        `image`
-                    FROM    post
+                        user
+                    FROM    comment
                     WHERE id = :id
                     ", array(':id' => $id));
 
@@ -32,35 +32,33 @@ namespace Goteo\Model\Blog\Post {
         /*
          * Lista de comentarios
          */
-        public static function getAll () {
+        public static function getAll ($post) {
 
             $list = array();
 
             $sql = "
                 SELECT
                     id,
-                    title,
+                    post,
+                    date,
                     text,
-                    `media`,
-                    `image`
-                FROM    post
-                image BY `image` ASC, title ASC
+                    user
+                FROM    comment
+                ORDER BY `date` DESC, id DESC
                 ";
             
             $query = static::query($sql);
                 
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
-                $post->media = new Media($post->media);
-
-                $list[] = $post;
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $comment) {
+                $list[$comment->id] = $comment;
             }
 
             return $list;
         }
 
         public function validate (&$errors = array()) { 
-            if (empty($this->title))
-                $errors[] = 'Falta nombre';
+            if (empty($this->text))
+                $errors[] = 'Falta texto';
 
             if (empty($errors))
                 return true;
@@ -73,10 +71,10 @@ namespace Goteo\Model\Blog\Post {
 
             $fields = array(
                 'id',
-                'title',
+                'post',
+                'date',
                 'text',
-                'media',
-                'image'
+                'user'
                 );
 
             $set = '';
@@ -89,7 +87,7 @@ namespace Goteo\Model\Blog\Post {
             }
 
             try {
-                $sql = "REPLACE INTO post SET " . $set;
+                $sql = "REPLACE INTO comment SET " . $set;
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
 
@@ -105,65 +103,12 @@ namespace Goteo\Model\Blog\Post {
          */
         public static function delete ($id) {
             
-            $sql = "DELETE FROM post WHERE id = :id";
+            $sql = "DELETE FROM comment WHERE id = :id";
             if (self::query($sql, array(':id'=>$id))) {
                 return true;
             } else {
                 return false;
             }
-
-        }
-
-        /*
-         * Para que una pregunta salga antes  (disminuir el image)
-         */
-        public static function up ($id) {
-
-            $query = self::query('SELECT `image` FROM post WHERE id = :id'
-                , array(':id'=>$id));
-            $image = $query->fetchColumn(0);
-
-            $image--;
-            if ($image < 1)
-                $image = 1;
-
-            $sql = "UPDATE post SET `image`=:image WHERE id = :id";
-            if (self::query($sql, array(':image'=>$image, ':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
-
-        }
-
-        /*
-         * Para que un proyecto salga despues  (aumentar el image)
-         */
-        public static function down ($id) {
-
-            $query = self::query('SELECT `image` FROM post WHERE id = :id'
-                , array(':id'=>$id));
-            $image = $query->fetchColumn(0);
-
-            $image++;
-
-            $sql = "UPDATE post SET `image`=:image WHERE id = :id";
-            if (self::query($sql, array(':image'=>$image, ':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
-
-        }
-
-        /*
-         * Orden para añadirlo al final
-         */
-        public static function next () {
-            $query = self::query('SELECT MAX(`image`) FROM post'
-                , array(':media'=>$media, ':node'=>$node));
-            $image = $query->fetchColumn(0);
-            return ++$image;
 
         }
 
