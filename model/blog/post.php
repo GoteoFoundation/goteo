@@ -80,10 +80,10 @@ namespace Goteo\Model\Blog {
 
         public function validate (&$errors = array()) { 
             if (empty($this->title))
-                $errors[] = 'Falta título';
+                $errors['title'] = 'Falta título';
 
             if (empty($this->text))
-                $errors[] = 'Falta texto';
+                $errors['text'] = 'Falta texto';
 
             if (empty($errors))
                 return true;
@@ -114,9 +114,12 @@ namespace Goteo\Model\Blog {
             }
 
             // Imagen
+            //@FIXME esto de los errores
+            $theerrors = array();
             if (is_array($this->image) && !empty($this->image['name'])) {
                 $image = new Image($this->image);
-                $image->save();
+                $image->save($theerrors);
+                $errors['image'] = implode(',', $theerrors);
                 $values[':image'] = $image->id;
             }
 

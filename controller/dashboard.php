@@ -403,7 +403,57 @@ namespace Goteo\Controller {
                         $action = 'list';
                     }
                 }
+
+                // primero comprobar que tenemos blog
+                if (!$blog instanceof Model\Blog) {
+                    $errors[] = 'No se ha encontrado ningún blog para este proyecto';
+                    //Text::get('dashboard-project-updates-noblog');
+                    $option = 'summary';
+                    $action = 'list';
+                    break;
+                }
+
+                // segun la accion
+                switch ($action) {
+                    case 'list':
+                        $posts = Model\Blog\Post::getAll($blog);
+                        $message = 'Lista de actualizaciones';
+                        //Text::get('dashboard-project-updates-list_title');
+                        break;
+                    case 'add':
+                        $post = new Model\Blog\Post(
+                                array(
+                                    'blog' => $blog->id,
+                                    'date' => date('d-m-Y'),
+                                    'allow' => true
+                                )
+                            );
+                        $message = 'Añadiendo una nueva entrada';
+                        //Text::get('dashboard-project-updates-add_title');
+                        break;
+                    case 'edit':
+                        if (empty($id)) {
+                            $errors[] = 'No se ha encontrado la entrada';
+                            //Text::get('dashboard-project-updates-nopost');
+                            $action = 'list';
+                            break;
+                        } else {
+                            $post = $blog->posts[$id];
+
+                            if (!$post instanceof Model\Blog\Post) {
+                                $errors[] = 'La entrada esta corrupta, contacte con nosotros.';
+                                //Text::get('dashboard-project-updates-postcorrupt');
+                                $action = 'list';
+                                break;
+                            }
+                        }
+
+                        $message = 'Editando una entrada existente';
+                        //Text::get('dashboard-project-updates-edit_title');
+                        break;
+                }
             }
+
 
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -574,50 +624,6 @@ namespace Goteo\Controller {
                     break;
 
                     case 'updates':
-                        // primero comprobar que tenemos blog
-                        if (!$blog instanceof Model\Blog) {
-                            $errors[] = 'No se ha encontrado ningún blog para este proyecto';
-                            //Text::get('dashboard-project-updates-noblog');
-                            $option = 'summary';
-                            $action = 'list';
-                            break;
-                        }
-
-                        // segun la accion
-                        switch ($action) {
-                            case 'list':
-                                // en principio la lista no recibe post
-                                break;
-                            case 'add':
-                                $post = new Model\Blog\Post(
-                                        array(
-                                            'blog' => $blog->id,
-                                            'date' => date('d-m-Y'),
-                                            'allow' => true
-                                        )
-                                    );
-                                break;
-                            case 'edit':
-                                if (empty($id)) {
-                                    $errors[] = 'No se ha encontrado la entrada';
-                                    //Text::get('dashboard-project-updates-nopost');
-                                    $action = 'list';
-                                    break;
-                                } else {
-                                    $post = $blog->posts[$id];
-
-                                    if (!$post instanceof Model\Blog\Post) {
-                                        $errors[] = 'La entrada esta corrupta, contacte con nosotros.';
-                                        //Text::get('dashboard-project-updates-postcorrupt');
-                                        $action = 'list';
-                                        break;
-                                    }
-                                }
-
-                                // vale, habemus entrada
-                                break;
-                        }
-
                         // campos que actualizamos
                         $fields = array(
                             'id',
@@ -704,14 +710,8 @@ namespace Goteo\Controller {
 
                 // publicar actualizaciones
                 case 'updates':
-                    switch ($action) {
-                        case 'list':
-                            $viewData['posts'] = Model\Blog\Post::getAll($blog);
-                            break;
-                        case 'add':
-                        case 'edit':
-                            break;
-                    }
+                    $viewData['blog'] = $blog;
+                    $viewData['post'] = $post;
                     break;
             }
 
