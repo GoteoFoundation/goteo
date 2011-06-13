@@ -22,11 +22,10 @@ include 'view/header.html.php'; ?>
             </div>
         </div>
 
-        <div id="main">
+        <?php  echo new View ('view/dashboard/menu.html.php', $this) ?>
 
-            <?php 
-            echo new View ('view/dashboard/menu.html.php', $this);
-            ?>
+        <div id="main">
+            
 
             <?php if (!empty($this['message'])) : ?>
                 <div class="widget">
