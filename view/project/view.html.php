@@ -35,7 +35,17 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
         <div id="sub-header">
             <div>
                 <h2><?php echo htmlspecialchars($project->name) ?></h2>
-                Categorias: <?php echo implode(', ', $categories); ?>
+                
+                <div class="categories"><h3>Categorias:</h3> 
+                    <?php 
+                    $i = 0;  
+                    foreach ($categories as $cat) {
+                        if ($i++ > 0) echo ', ';
+                        // @todo Enlaces en los nombres de las categorías?
+                        echo htmlspecialchars($cat);                        
+                    }
+                    ?>
+                </div>
             </div>
             
             <div class="sub-menu">

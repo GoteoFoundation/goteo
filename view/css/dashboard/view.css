@@ -2,13 +2,6 @@ body.dashboard div#main {
     overflow: visible;
 }
 
-/**
-* Menu
-* Por Julian (copiando del mypixel porque no se hacer nada desde cero ~_~ )
-* resulta evidente...
-*
-*/
-
 body.dashboard div#sub-header {
     padding-bottom: 4em;
     margin-bottom: 0;

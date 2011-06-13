@@ -25,6 +25,21 @@ body.project-show div#sub-header {
     padding-bottom: 0;
 }
 
+body.project-show div#sub-header div.categories {
+    text-align: right;
+    margin-top: -22px;
+}
+
+body.project-show div#sub-header div.categories h3 {
+    font-weight: normal;
+    color: #20B3B2;   
+    margin: 0 0 .5em;
+}
+
+body.project-show div#sub-header div.categories * {
+    font-size: 12px;
+}
+
 body.project-show div.project-menu {
     max-width: 940px;
     margin: 20px auto 0;
