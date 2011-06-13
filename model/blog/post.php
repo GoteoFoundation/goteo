@@ -1,20 +1,21 @@
 <?php
 
-namespace Goteo\Model {
+namespace Goteo\Model\Blog {
 
-    use \Goteo\Model\Blog,
-        \Goteo\Model\Project\Media,
+    use \Goteo\Model\Project\Media,
         \Goteo\Model\Image;
 
     class Post extends \Goteo\Core\Model {
 
         public
             $id,
+            $blog,
             $title,
             $text,
             $image,
             $media,
             $date,
+            $num_comments = 0,
             $comments = array();
 
         /*
@@ -24,40 +25,52 @@ namespace Goteo\Model {
                 $query = static::query("
                     SELECT
                         id,
+                        blog,
                         title,
                         text,
                         `image`,
-                        `media`
+                        `media`,
+                        `date`
                     FROM    post
                     WHERE id = :id
                     ", array(':id' => $id));
 
-                return $query->fetchObject(__CLASS__);
+                $post = $query->fetchObject(__CLASS__);
+
+                $post->comments = Post\Comment::getAll($id);
+
+                return $post;
         }
 
         /*
          * Lista de entradas
          * de mas nueva a mas antigua
+         * // si es portada son los que se meten por la gestion de entradas en portada que llevan el tag 1 'Portada'
          */
-        public static function getAll () {
+        public static function getAll ($blog, $portada = false) {
 
             $list = array();
 
             $sql = "
                 SELECT
                     id,
+                    blog,
                     title,
                     text,
                     `image`,
-                    `media`
+                    `media`,
+                    DATE_FORMAT(date, '%d-%m-%Y') as date
                 FROM    post
-                image BY `image` ASC, title ASC
+                ORDER BY date DESC, id DESC
                 ";
             
             $query = static::query($sql);
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
+                // el video
                 $post->media = new Media($post->media);
+                $post->iamge = Image::get($post->image);
+                $post->num_comments = Post\Comment::getCount($post->id);
 
                 $list[] = $post;
             }
@@ -68,6 +81,9 @@ namespace Goteo\Model {
         public function validate (&$errors = array()) { 
             if (empty($this->title))
                 $errors[] = 'Falta título';
+
+            if (empty($this->text))
+                $errors[] = 'Falta texto';
 
             if (empty($errors))
                 return true;
@@ -80,10 +96,12 @@ namespace Goteo\Model {
 
             $fields = array(
                 'id',
+                'blog',
                 'title',
                 'text',
                 'image',
-                'media'
+                'media',
+                `date`
                 );
 
             $set = '';

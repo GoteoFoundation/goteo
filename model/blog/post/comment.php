@@ -1,8 +1,6 @@
 <?php
 
-namespace Goteo\Model {
-
-    use \Goteo\Model\Blog;
+namespace Goteo\Model\Blog\Post {
 
     class Comment extends \Goteo\Core\Model {
 

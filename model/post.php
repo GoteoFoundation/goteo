@@ -42,7 +42,7 @@ namespace Goteo\Model {
                 SELECT
                     id,
                     title,
-                    description,
+                    text as description,
                     `media`,
                     `order`
                 FROM    post

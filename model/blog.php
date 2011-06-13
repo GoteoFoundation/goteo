@@ -14,24 +14,36 @@ namespace Goteo\Model {
             $owner,
             $project,
             $node,
-            $posts = array();
+            $posts = array(),
+            $active;
 
         /*
+         *  Para conseguir el ide del blog de un proyecto o de un nodo
          *  Devuelve datos de un blog
          */
-        public static function get ($id) {
+        public static function get ($owner, $type = 'project') {
                 $query = static::query("
                     SELECT
                         id,
-                        title,
-                        text,
-                        `image`,
-                        `media`
-                    FROM    post
-                    WHERE id = :id
-                    ", array(':id' => $id));
-
-                return $query->fetchObject(__CLASS__);
+                        type,
+                        owner,
+                        active
+                    FROM    blog
+                    WHERE owner = :owner
+                    AND type = :type
+                    ", array(':owner' => $owner, ':type' => $type));
+                
+                $blog =  $query->fetchObject(__CLASS__);
+                switch ($blog->type) {
+                    case 'node':
+                        $blog->node = $blog->owner;
+                        break;
+                    case 'project':
+                        $blog->project = $blog->owner;
+                        break;
+                }
+                $blog->posts = Blog\Post::getAll($blog->id);
+                return $blog;
         }
 
         public function validate (&$errors = array()) {
@@ -46,10 +58,9 @@ namespace Goteo\Model {
 
             $fields = array(
                 'id',
-                'title',
-                'text',
-                'image',
-                'media'
+                'type',
+                'owner',
+                'active'
                 );
 
             $set = '';
@@ -62,7 +73,7 @@ namespace Goteo\Model {
             }
 
             try {
-                $sql = "REPLACE INTO post SET " . $set;
+                $sql = "REPLACE INTO blog SET " . $set;
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
 
