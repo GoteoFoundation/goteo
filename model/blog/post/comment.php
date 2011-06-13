@@ -56,6 +56,22 @@ namespace Goteo\Model\Blog\Post {
             return $list;
         }
 
+        /*
+         *  Devuelve cuantos comentarios tiene una entrada
+         */
+        public static function getCount ($post) {
+                $query = static::query("
+                    SELECT
+                        COUNT(id) as cuantos
+                    FROM    comment
+                    WHERE post = :post
+                    ", array(':post' => $post));
+
+                $count = $query->fetchObject();
+
+                return $count->cuantos;
+        }
+
         public function validate (&$errors = array()) { 
             if (empty($this->text))
                 $errors[] = 'Falta texto';
