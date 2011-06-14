@@ -76,7 +76,7 @@ $level = (int) $this['level'] ?: 3;
                         <?php echo $post->media->getEmbedCode(); ?>
                     <?php endif; ?>
                     <p><a href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>">Leer</a></p>
-                    <p><a href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>"><?php echo $post->num_commnets > 0 ? $post->num_commnets : 'Sin'; ?> comentarios.</a></p>
+                    <p><a href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>"><?php echo $post->num_comments > 0 ? $post->num_commnets : 'Sin'; ?> comentarios.</a></p>
                 </div>
             <?php endforeach; ?>
         </div>

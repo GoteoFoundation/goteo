@@ -38,7 +38,7 @@ $url = '/dashboard/projects/updates';
                 <?php echo $post->media->getEmbedCode(); ?>
             <?php endif; ?>
             <div><a href="<?php echo $url; ?>/edit/<?php echo $post->id; ?>">[EDITAR]</a></div>
-            <p><?php echo $post->num_commnets > 0 ? $post->num_commnets : 'Sin'; ?> comentarios.   <a href="/project/<?php echo $blog->project; ?>/updates/<?php echo $post->id; ?>" target="_blank">Ir a ver/añadir comentarios</a></p>
+            <p><?php echo $post->num_commnets > 0 ? $post->num_comments : 'Sin'; ?> comentarios.   <a href="/project/<?php echo $blog->project; ?>/updates/<?php echo $post->id; ?>" target="_blank">Ir a ver/añadir comentarios</a></p>
         </div>
     <?php endforeach; ?>
     <?php else : ?>
