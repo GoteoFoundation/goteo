@@ -108,7 +108,7 @@ namespace Goteo\Controller {
         /*
          * Metodo para publicar una enttrada en un post
          */
-        public function post ($project, $post) {
+        public function post ($post, $project = null) {
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['message'])) {
                 $comment = new Model\Blog\Post\Comment(array(
@@ -125,7 +125,11 @@ namespace Goteo\Controller {
                 }
 			}
 
-            throw new Redirection("/project/{$project}/updates/{$post}", Redirection::TEMPORARY);
+            if (!empty($project)) {
+                throw new Redirection("/project/{$project}/updates/{$post}", Redirection::TEMPORARY);
+            } else {
+                throw new Redirection("/blog/{$post}", Redirection::TEMPORARY);
+            }
         }
 
     }
