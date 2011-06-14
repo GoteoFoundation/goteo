@@ -44,25 +44,42 @@ namespace Goteo\Controller {
 
 			if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['query'])) {
                 $errors = array();
-                $los_datos = $_GET;
 
-                $message = "Buscando <strong>{$_GET['query']}</strong>";
+                $query = $_GET['query']; // busqueda de texto
 
-                $results = \Goteo\Library\Search::text($_GET['query']);
+                $message = "Buscando <strong>{$query}</strong>";
 
-			} else {
+                $results = \Goteo\Library\Search::text($query);
+
+			} elseif ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['searcher'])) {
+
+                // vamos montando $params con los 3 parametros y las opciones marcadas en cada uno
+                $params = array('category'=>array(), 'location'=>array(), 'reward'=>array());
+
+                foreach ($params as $param => $empty) {
+                    foreach ($_POST[$param] as $key => $value) {
+                        if ($value == 'all') {
+                            $params[$param] = array();
+                            break;
+                        }
+                        $params[$param][] = "'{$value}'";
+                    }
+                }
+
+                // para cada parametro, si no hay ninguno es todos los valores
+                $results = \Goteo\Library\Search::params($params);
+
+            } else {
                 throw new Redirection('/discover', Redirection::PERMANENT);
-            }
-
-            if (!empty($errors)) {
-                $message .= 'Errores: ' . implode('.', $errors);
             }
 
             return new View(
                 'view/discover/results.html.php',
                 array(
                     'message' => $message,
-                    'results' => $results
+                    'results' => $results,
+                    'query'   => $query,
+                    'params'  => $params
                 )
              );
 

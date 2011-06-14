@@ -5,6 +5,7 @@ use Goteo\Library\Text,
 
 $user   = $this['user'];
 $errors = $this['errors'];
+$this['level'] = 3;
 
 $image = array(
     'avatar' => array(

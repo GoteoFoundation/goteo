@@ -22,15 +22,18 @@ foreach (License::getAll() as $l) {
         <ul>
         <?php foreach ($project->social_rewards as $social) : ?>
             <li class="<?php echo $social->icon ?>">                
-                <strong><?php echo htmlspecialchars($social->reward) ?></strong>
+                <h<?php echo $level + 1 ?> class="name"><?php echo htmlspecialchars($social->reward) ?></h<?php echo $level + 1 ?>
                 <p><?php echo htmlspecialchars($social->description)?></p>
                 <?php if (!empty($social->license) && array_key_exists($social->license, $licenses)): ?>
-                <div class="license" class="<?php echo htmlspecialchars($social->license) ?>">
+                <div class="license <?php echo htmlspecialchars($social->license) ?>">
+                    <h<?php echo $level + 2 ?>>Licencia</h<?php echo $level + 2 ?>>
                     <a href="<?php echo htmlspecialchars($licenses[$social->license]->url) ?>" target="_blank">
                         <strong><?php echo htmlspecialchars($licenses[$social->license]->name) ?></strong>
-                        <?php if (!empty($licenses[$social->license]->description)): ?><br /> 
-                        <p><?php echo htmlspecialchars($licenses[$social->license]->description) ?></p>
-                        <?php endif ?>
+                    
+                    <?php if (!empty($licenses[$social->license]->description)): ?>
+                    <p><?php echo htmlspecialchars($licenses[$social->license]->description) ?></p>
+                    <?php endif ?>
+                    </a>
                 </div>
                 <?php endif ?>
             </li>
@@ -44,18 +47,19 @@ foreach (License::getAll() as $l) {
         <?php foreach ($project->individual_rewards as $individual) : ?>
         <li class="<?php echo $individual->icon ?>">
             
-            <!--  <div>Aportando: <span><?php echo $individual->amount; ?></span></div> -->
+            <div>Aportando: <span><?php echo $individual->amount; ?>&euro;</span></div>
             <strong><?php echo htmlspecialchars($individual->reward) ?></strong>
             <p><?php echo htmlspecialchars($individual->description) ?></p>
-                
-            <!--
-                    <?php if (!empty($individual->units)) : ?>
+
+            <?php if (!empty($individual->units)) : ?>
+                <div>
                     <strong>Recompensa limitada:</strong><br />
                     Quedan <span><?php echo ($individual->units - $individual->taken); ?></span> unidades
-                <?php endif; ?>
-                <div><span><?php echo $individual->taken; ?></span>Cofinanciadores</div>
-            
-            -->
+                </div>
+            <?php endif; ?>
+
+                <div><span><?php echo (int) $individual->taken; ?></span> Cofinanciadores</div>
+
         </li>
         <?php endforeach ?>
     </div>
