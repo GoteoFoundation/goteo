@@ -127,10 +127,11 @@ namespace Goteo\Model {
         /*
          * Para que una pregunta salga antes  (disminuir el order)
          */
+        //@FIXME essse blog a piñon!
         public static function up ($id) {
             $extra = array (
                     'home' => 1,
-                    'node' => \GOTEO_NODE
+                    'blog' => 1
                 );
             return Check::reorder($id, 'up', 'post', 'id', 'order', $extra);
         }
@@ -138,10 +139,11 @@ namespace Goteo\Model {
         /*
          * Para que un proyecto salga despues  (aumentar el order)
          */
+        //@FIXME essse blog a piñon!
         public static function down ($id) {
             $extra = array (
                     'home' => 1,
-                    'node' => \GOTEO_NODE
+                    'blog' => 1
                 );
             return Check::reorder($id, 'down', 'post', 'id', 'order', $extra);
         }
