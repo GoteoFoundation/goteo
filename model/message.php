@@ -81,12 +81,15 @@ namespace Goteo\Model {
         public function validate (&$errors = array()) { 
             if (empty($this->user))
                 $errors[] = 'Falta usuario';
+                //Text::get('mandatory-message-user');
 
             if (empty($this->project))
                 $errors[] = 'Falta proyecto';
+                //Text::get('validate-message-noproject');
 
             if (empty($this->message))
                 $errors[] = 'Falta texto';
+                //Text::get('mandatory-message-text');
 
             if (empty($errors))
                 return true;

@@ -271,6 +271,7 @@ namespace Goteo\Model {
             // Estos son errores que no permiten continuar
             if (empty($this->id))
                 $errors[] = 'El proyecto no tiene id';
+                //Text::get('validate-project-noid');
 
             if (empty($this->status))
                 $this->status = 1;
@@ -280,6 +281,7 @@ namespace Goteo\Model {
             
             if (empty($this->owner))
                 $errors[] = 'El proyecto no tiene usuario creador';
+                //Text::get('validate-project-noowner');
             
             if (empty($this->node))
                 $this->node = 'goteo';
@@ -510,6 +512,7 @@ namespace Goteo\Model {
                 return !$fail;
 			} catch(\PDOException $e) {
                 $errors[] = 'Error sql al grabar el proyecto.' . $e->getMessage();
+                //Text::get('save-project-fail');
                 return false;
 			}
 
@@ -975,6 +978,7 @@ namespace Goteo\Model {
                 
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al habilitar para revisión. ' . $e->getMessage();
+                //Text::get('send-project-review-fail');
                 return false;
             }
         }
@@ -989,6 +993,7 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al habilitar para edición. ' . $e->getMessage();
+                //Text::get('send-project-reedit-fail');
                 return false;
             }
         }
@@ -1023,6 +1028,7 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al publicar el proyecto. ' . $e->getMessage();
+                //Text::get('send-project-publish-fail');
                 return false;
             }
         }
@@ -1037,6 +1043,7 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al cerrar el proyecto. ' . $e->getMessage();
+                //Text::get('send-projecct-close-fail');
                 return false;
             }
         }
@@ -1051,6 +1058,7 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al dar por financiado el proyecto. ' . $e->getMessage();
+                //Text::get('send-project-success-fail');
                 return false;
             }
         }
@@ -1065,6 +1073,7 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al dar el retorno por cunplido para el proyecto. ' . $e->getMessage();
+                //Text::get('send-project-fulfill-fail');
                 return false;
             }
         }

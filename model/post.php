@@ -66,7 +66,8 @@ namespace Goteo\Model {
 
         public function validate (&$errors = array()) { 
             if (empty($this->title))
-                $errors[] = 'Falta nombre';
+                $errors[] = 'Falta título';
+                //Text::get('mandatory-post-title');
 
             if (empty($errors))
                 return true;

@@ -61,6 +61,7 @@ namespace Goteo\Model {
         public function validate (&$errors = array()) {
             if (empty($this->name))
                 $errors[] = 'Falta nombre';
+                //Text::get('mandatory-interest-name');
 
             if (empty($errors))
                 return true;

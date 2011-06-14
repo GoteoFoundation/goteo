@@ -103,6 +103,7 @@ namespace Goteo\Model {
         public function validate (&$errors = array()) { 
             if (empty($this->name))
                 $errors[] = 'Falta nombre';
+                //Text::get('mandatory-icon-name');
 
             if (empty($errors))
                 return true;

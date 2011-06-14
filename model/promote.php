@@ -95,12 +95,15 @@ namespace Goteo\Model {
         public function validate (&$errors = array()) { 
             if (empty($this->node))
                 $errors[] = 'Falta nodo';
+                //Text::get('mandatory-promote-node');
 
             if (empty($this->project))
                 $errors[] = 'Falta proyecto';
+                //Text::get('validate-promote-noproject');
 
             if (empty($this->title))
                 $errors[] = 'Falta título';
+                //Text::get('mandatory-promote-title');
 
             if (empty($errors))
                 return true;

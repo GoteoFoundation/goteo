@@ -75,6 +75,7 @@ namespace Goteo\Model\Blog\Post {
         public function validate (&$errors = array()) { 
             if (empty($this->text))
                 $errors[] = 'Falta texto';
+                //Text::get('mandatory-comment-text');
 
             if (empty($errors))
                 return true;
