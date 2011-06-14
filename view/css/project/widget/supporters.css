@@ -83,7 +83,11 @@ div.widget.project-supporters .supporters ul li .avatar {
     height: 50px;
     text-align: center;
     display: block;
-    background: url('../../avatar/s.png');
+    background: url('../../avatar/m.png');
+}
+
+div.widget.project-supporters .supporters ul li .avatar img {
+    background-color: white;
 }
 
 div.widget.project-supporters .supporters ul li h3,
@@ -167,8 +171,9 @@ div.widget.project-supporters .supporters ul li dl dd.worthcracy ul li {
     display: inline-block;
     width: 23px;
     height: 6px;
-    overflow: hidden;
+    overflow: visible;
     background-color: #e7e7e7;
+    position: relative;
 }
 
 div.widget.project-supporters .supporters ul li dl dd.worthcracy ul li > * {
@@ -193,4 +198,15 @@ div.widget.project-supporters .supporters ul li dl dd.worthcracy ul li.done.wort
 
 div.widget.project-supporters .supporters ul li dl dd.worthcracy ul li.done.worth-5 {
     background-color: #0C4E99;
+}
+
+div.widget.project-supporters .supporters ul li dl dd.worthcracy ul li > strong {
+    display: block;
+    position: absolute;
+    top: 10px;    
+    font-weight: normal;
+    width: 200px;
+    left: 50%;
+    margin-left: -100px;
+    text-align: center;
 }

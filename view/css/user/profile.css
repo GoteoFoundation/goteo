@@ -1,0 +1,17 @@
+@import url('widget/worthcracy.css');
+@import url('widget/about.css');
+@import url('widget/social.css');
+
+body.user-profile div#main div.widget {
+    margin-bottom: 20px;
+}
+
+body.user-profile div#main > div.center {
+    min-width: 620px;
+    float: left;        
+}
+
+body.user-profile div#main > div.side {
+    float: right;
+    width: 300px;
+}
