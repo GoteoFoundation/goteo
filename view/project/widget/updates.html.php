@@ -33,8 +33,12 @@ $level = (int) $this['level'] ?: 3;
         <h<?php echo $level + 1?>><?php echo $post->title; ?></h<?php echo $level + 1?>>
         <span style="display:block;"><?php echo $post->date; ?></span>
         <blockquote><?php echo Text::recorta($post->text, 500); ?></blockquote>
-        <?php if (!empty($post->image->id)) echo "Imagen: {$post->image->name}"; ?>
-        <?php if (!empty($post->media)) echo "Video: {$post->media->url}"; ?>
+        <?php if (!empty($post->image)) : ?>
+            <img src="/image/<?php echo $post->image->id; ?>/110/110" alt="Imagen"/>
+        <?php endif; ?>
+        <?php if (!empty($post->media)) : ?>
+            <?php echo $post->media->getEmbedCode(); ?>
+        <?php endif; ?>
         <p><?php echo $post->num_commnets > 0 ? $post->num_commnets : 'Sin'; ?> comentarios.</p>
 
         <?php if (!empty($post->comments)): ?>
@@ -65,8 +69,12 @@ $level = (int) $this['level'] ?: 3;
                     <h<?php echo $level+1 ?> class="title"><?php echo $post->title; ?></h<?php echo $level+1 ?>
                     <span style="display:block;"><?php echo $post->date; ?></span>
                     <blockquote><?php echo Text::recorta($post->text, 500); ?></blockquote>
-                    <?php if (!empty($post->image->id)) echo "Imagen: {$post->image->name}"; ?>
-                    <?php if (!empty($post->media)) echo "Video: {$post->media}"; ?>
+                    <?php if (!empty($post->image)) : ?>
+                        <img src="/image/<?php echo $post->image->id; ?>/110/110" alt="Imagen"/>
+                    <?php endif; ?>
+                    <?php if (!empty($post->media)) : ?>
+                        <?php echo $post->media->getEmbedCode(); ?>
+                    <?php endif; ?>
                     <p><a href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>">Leer</a></p>
                     <p><a href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>"><?php echo $post->num_commnets > 0 ? $post->num_commnets : 'Sin'; ?> comentarios.</a></p>
                 </div>

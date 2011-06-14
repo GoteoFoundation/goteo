@@ -80,13 +80,10 @@ namespace Goteo\Model\Blog {
             $query = static::query($sql, array($blog));
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
-                // imagen, no hace falta instanciar, con el id basta para pintar
-                /*
+                // imagen
                 if (!empty($post->image)) {
                     $post->image = Image::get($post->image);
                 }
-                 * 
-                 */
 
                 // video
                 if (isset($post->media)) {

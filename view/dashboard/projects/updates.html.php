@@ -32,9 +32,11 @@ $url = '/dashboard/projects/updates';
             <span style="display:block;"><?php echo $post->date; ?></span>
             <blockquote><?php echo Text::recorta($post->text, 500); ?></blockquote>
             <?php if (!empty($post->image)) : ?>
-            <img src="/image/<?php echo $post->image; ?>/110/110" alt="Imagen"/>
+                <img src="/image/<?php echo $post->image->id; ?>/110/110" alt="Imagen"/>
             <?php endif; ?>
-            <?php if (!empty($post->media)) echo $post->media->getEmbedCode(); ?>
+            <?php if (!empty($post->media)) : ?>
+                <?php echo $post->media->getEmbedCode(); ?>
+            <?php endif; ?>
             <div><a href="<?php echo $url; ?>/edit/<?php echo $post->id; ?>">[EDITAR]</a></div>
             <p><?php echo $post->num_commnets > 0 ? $post->num_commnets : 'Sin'; ?> comentarios.   <a href="/project/<?php echo $blog->project; ?>/updates/<?php echo $post->id; ?>" target="_blank">Ir a ver/añadir comentarios</a></p>
         </div>
