@@ -323,6 +323,8 @@ namespace Goteo\Controller {
             
             $user    = $_SESSION['user'];
 
+            $errors = array();
+
             if ($action == 'select' && !empty($_POST['project'])) {
                 // otro proyecto de trabajo
                 $project = Model\Project::get($_POST['project']);
@@ -418,8 +420,6 @@ namespace Goteo\Controller {
 
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                \trace($_POST);
-			    $errors = array();
                 
                 switch ($option) {
                     // gestionar retornos
@@ -580,6 +580,9 @@ namespace Goteo\Controller {
                     break;
 
                     case 'updates':
+                        if (!in_array($action, array('add','edit')))
+                            break;
+
                         $post = new Model\Blog\Post();
                         // campos que actualizamos
                         $fields = array(
@@ -635,11 +638,6 @@ namespace Goteo\Controller {
             if ($option == 'updates') {
                 // segun la accion
                 switch ($action) {
-                    case 'list':
-                        $posts = Model\Blog\Post::getAll($blog->id);
-                        $message = 'Lista de actualizaciones';
-                        //Text::get('dashboard-project-updates-list_title');
-                        break;
                     case 'add':
                         $post = new Model\Blog\Post(
                                 array(
@@ -671,6 +669,12 @@ namespace Goteo\Controller {
 
                         $message = 'Editando una entrada existente';
                         //Text::get('dashboard-project-updates-edit_title');
+                        break;
+                    default:
+                        $posts = Model\Blog\Post::getAll($blog->id);
+                        $message = 'Lista de actualizaciones';
+                        //Text::get('dashboard-project-updates-list_title');
+                        $action = 'list';
                         break;
                 }
 

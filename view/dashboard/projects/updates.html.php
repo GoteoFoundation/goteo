@@ -13,13 +13,16 @@ $errors = $this['errors'];
 $level = $this['level'] = 3;
 
 $url = '/dashboard/projects/updates';
+
 ?>
 
     <h<?php echo $level ?> class="title"><?php echo $this['message']; ?></h<?php echo $level ?>
 
 <?php if ($this['action'] == 'list') : ?>
 
+    <?php if (!empty($blog->id) && $blog->active) : ?>
     <a href="<?php echo $url; ?>/add">Publicar nueva entrada</a>
+    <?php endif; ?>
 
     <!-- lista -->
     <?php if (!empty($posts)) : ?>

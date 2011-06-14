@@ -9,7 +9,7 @@ namespace Goteo\Model {
         public
             $id,
             $title,
-            $description,
+            $text,
             $media,
             $order;
 
@@ -21,7 +21,7 @@ namespace Goteo\Model {
                     SELECT
                         id,
                         title,
-                        text as description,
+                        `text`,
                         blog,
                         image,
                         `media`,
@@ -44,7 +44,8 @@ namespace Goteo\Model {
                 SELECT
                     id,
                     title,
-                    text as description,
+                    `text`,
+                    blog,
                     `media`,
                     `order`
                 FROM    post
@@ -79,20 +80,21 @@ namespace Goteo\Model {
             if (!$this->validate($errors)) return false;
 
             $fields = array(
-                'id' => 'id',
-                'title' => 'title',
-                'description' => 'text',
-                'media' => 'media',
-                'order' => 'order'
+                'id',
+                'blog',
+                'title',
+                'text',
+                'media',
+                'order'
                 );
 
             $set = '';
             $values = array();
 
-            foreach ($fields as $field=>$tableField) {
+            foreach ($fields as $field) {
                 if ($set != '') $set .= ", ";
-                $set .= "`$tableField` = :$tableField ";
-                $values[":$tableField"] = $this->$field;
+                $set .= "`$field` = :$field ";
+                $values[":$field"] = $this->$field;
             }
 
             try {

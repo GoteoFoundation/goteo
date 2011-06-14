@@ -177,7 +177,8 @@ namespace Goteo\Model {
             return array(
                 'node' => 'Goteo',
                 'project' => 'Proyecto',
-                'investors' => 'Cofinanciadores'
+                'investors' => 'Cofinanciadores',
+                'nodes' => 'Nodos'
             );
         }
 

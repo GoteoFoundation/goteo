@@ -753,8 +753,9 @@ namespace Goteo\Controller {
                 // objeto
                 $post = new Model\Post(array(
                     'id' => $_POST['id'],
+                    'blog' => $_POST['blog'],
                     'title' => $_POST['title'],
-                    'description' => $_POST['description'],
+                    'text' => $_POST['text'],
                     'media' => $_POST['media'],
                     'order' => $_POST['order']
                 ));
