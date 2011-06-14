@@ -31,7 +31,7 @@ $url = '/dashboard/projects/updates';
             <?php if (!empty($post->image->id)) echo "Imagen: {$post->image->name}"; ?>
             <?php if (!empty($post->media)) echo "Video: {$post->media->url}"; ?>
             <div><a href="<?php echo $url; ?>/edit/<?php echo $post->id; ?>">[EDITAR]</a></div>
-            <p><?php echo $post->num_commnets > 0 ? $post->num_commnets : 'Sin'; ?> comentarios.   <a href="/project/<?php echo $blog->project; ?>/updates/<?php echo $post->id; ?>">Ir a ver/añadir comentarios</a></p>
+            <p><?php echo $post->num_commnets > 0 ? $post->num_commnets : 'Sin'; ?> comentarios.   <a href="/project/<?php echo $blog->project; ?>/updates/<?php echo $post->id; ?>" target="_blank">Ir a ver/añadir comentarios</a></p>
         </div>
     <?php endforeach; ?>
     <?php else : ?>
@@ -102,7 +102,7 @@ $url = '/dashboard/projects/updates';
             ),
             'blog' => array (
                 'type' => 'hidden',
-                'value' => $blog->id
+                'value' => $post->blog
             ),
             'title' => array(
                 'type'      => 'textbox',

@@ -11,9 +11,9 @@ namespace Goteo\Controller {
 
     class Project extends \Goteo\Core\Controller {
 
-        public function index($id = null, $show = 'home') {
+        public function index($id = null, $show = 'home', $post = null) {
             if ($id !== null) {
-                return $this->view($id, $show);
+                return $this->view($id, $show, $post);
             } else if (isset($_GET['create'])) {
                 throw new Redirection("/project/create");
             } else {
@@ -268,7 +268,7 @@ namespace Goteo\Controller {
             throw new \Goteo\Core\Exception('Fallo al crear un nuevo proyecto');
         }
 
-        private function view ($id, $show) {
+        private function view ($id, $show, $post = null) {
             $project = Model\Project::get($id);
 
             // solamente se puede ver publicamente si
@@ -310,6 +310,10 @@ namespace Goteo\Controller {
                         $invest = 'start';
                     }
                     $viewData['invest'] = $invest;
+                }
+
+                if ($show == 'updates') {
+                    $viewData['post'] = $post;
                 }
 
                 return new View('view/project/public.html.php', $viewData);

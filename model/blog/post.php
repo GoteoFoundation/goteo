@@ -38,6 +38,7 @@ namespace Goteo\Model\Blog {
                 $post = $query->fetchObject(__CLASS__);
 
                 $post->comments = Post\Comment::getAll($id);
+                $post->num_comments = count($post->comments);
 
                 return $post;
         }
@@ -69,8 +70,8 @@ namespace Goteo\Model\Blog {
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 // el video
-                $post->media = new Media($post->media);
-                $post->iamge = Image::get($post->image);
+//                $post->media = new Media($post->media);
+//                $post->image = Image::get($post->image);
                 $post->num_comments = Post\Comment::getCount($post->id);
 
                 $list[$post->id] = $post;

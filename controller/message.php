@@ -106,23 +106,26 @@ namespace Goteo\Controller {
         }
 
         /*
-         * Metodo para publicar una enttrada en un blog (de nodo o de proyecto)
+         * Metodo para publicar una enttrada en un post
          */
-        public function blog ($blog, $post = null) {
-            if (empty($blog))
-                throw new Redirection('/', Redirection::TEMPORARY);
+        public function post ($project, $post) {
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['message'])) {
-                $comment = new Model\Blog\Comment(array(
+                $comment = new Model\Blog\Post\Comment(array(
                     'user' => $_SESSION['user']->id,
-                    'blog' => $blog,
-                    'message' => $_POST['message']
+                    'post' => $post,
+                    'date' => date('Y-m-d H:i:s'),
+                    'text' => $_POST['message']
                 ));
 
-                $comment->save($errors);
+                if ($comment->save($errors)) {
+                    // mensaje enviado con exito
+                } else {
+                    // error
+                }
 			}
 
-            throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
+            throw new Redirection("/project/{$project}/updates/{$post}", Redirection::TEMPORARY);
         }
 
     }

@@ -758,7 +758,7 @@ namespace Goteo\Controller {
                         'widgets'  => 'Widgets',
                         'contract' => 'Contrato',
                         'rewards'  => 'Gestionar retornos',
-                        'supports' => 'Editar colaboraciones',
+                        'supports' => 'Colaboraciones',
                         'preview'  => 'Página pública',
                     )
                 )

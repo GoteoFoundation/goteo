@@ -1,8 +1,21 @@
 <?php
 
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Model\Blog\Post;
 
 $project = $this['project'];
+$blog    = $this['blog'];
+if (empty($this['post'])) {
+    $posts = $blog->posts;
+    $action = 'list';
+} else {
+    $post = $this['post'];
+    if (!in_array($post, array_keys($blog->posts))) {
+        throw new Goteo\Core\Redirection("/project/{$project->id}/updates", Goteo\Core\Redirection::TEMPORARY);
+    }
+    $post = Post::get($post);
+    $action = 'post';
+}
 
 // segun lo que tengamos que mostrar :  lista o entrada
 // uso la libreria blog para sacar los datos adecuados para esta vista
@@ -15,24 +28,53 @@ $level = (int) $this['level'] ?: 3;
     <h<?php echo $level ?>><?php echo htmlspecialchars($project->name) ?></h<?php echo $level ?>>
 
     <!-- una entrada -->
-    <?php if (!empty($post)): ?>
+    <?php if ($action == 'post') : ?>
     <div class="post">
         <h<?php echo $level + 1?>><?php echo $post->title; ?></h<?php echo $level + 1?>>
-        <?php echo $post->content; //quizas con una vista sea mejor ?>
+        <span style="display:block;"><?php echo $post->date; ?></span>
+        <blockquote><?php echo Text::recorta($post->text, 500); ?></blockquote>
+        <?php if (!empty($post->image->id)) echo "Imagen: {$post->image->name}"; ?>
+        <?php if (!empty($post->media)) echo "Video: {$post->media->url}"; ?>
+        <p><?php echo $post->num_commnets > 0 ? $post->num_commnets : 'Sin'; ?> comentarios.</p>
 
-        <p>Comentarios</p>
+        <?php if (!empty($post->comments)): ?>
+        <div class="widget">
+            <h<?php echo $level + 2?>>Comentarios</h<?php echo $level + 2?>>
+            <?php foreach ($post->comments as $comment) : ?>
+                <?php \trace($comment); ?>
+            <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
 
-        <p>Escribe tu comentario</p>
+        <div class="widget">
+        <h<?php echo $level + 2?>>Escribe tu comentario</h<?php echo $level + 2?>>
+        <form method="post" action="/message/post/<?php echo $project->id; ?>/<?php echo $post->id; ?>">
+            <textarea name="message" cols="50" rows="5"></textarea>
+            <input class="button" type="submit" value="Enviar" />
+        </form>
+        </div>
     </div>
     <?php endif ?>
 
     <!-- Lista de entradas -->
-    <?php if (!empty($list)): ?>
-    <div class="posts">
-        <?php foreach ($list as $post) : ?>
-            <p><?php \trace($post); ?>Resumen de entrada, para ver comentarios, nuevo comentario, ir a la pagina de la entrada</p>
-        <?php endforeach; ?>
-    </div>
-    <?php endif ?>
+    <?php if ($action == 'list') : ?>
+        <?php if (!empty($posts)) : ?>
+        <div class="posts">
+            <?php foreach ($posts as $post) : ?>
+                <div class="widget">
+                    <h<?php echo $level+1 ?> class="title"><?php echo $post->title; ?></h<?php echo $level+1 ?>
+                    <span style="display:block;"><?php echo $post->date; ?></span>
+                    <blockquote><?php echo Text::recorta($post->text, 500); ?></blockquote>
+                    <?php if (!empty($post->image->id)) echo "Imagen: {$post->image->name}"; ?>
+                    <?php if (!empty($post->media)) echo "Video: {$post->media}"; ?>
+                    <p><a href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>">Leer</a></p>
+                    <p><a href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>"><?php echo $post->num_commnets > 0 ? $post->num_commnets : 'Sin'; ?> comentarios.</a></p>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <?php else : ?>
+            <p>No se ha publicado ninguna actualización</p>
+        <?php endif; ?>
+    <?php endif; ?>
     
 </div>
