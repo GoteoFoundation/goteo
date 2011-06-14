@@ -580,7 +580,7 @@ namespace Goteo\Controller {
                     break;
 
                     case 'updates':
-                        if (!isset($_POST['save-post'])) {
+                        if (empty($_POST['blog'])) {
                             break;
                         }
 
@@ -600,16 +600,19 @@ namespace Goteo\Controller {
                         foreach ($fields as $field) {
                             $post->$field = $_POST[$field];
                         }
-$testFiles = $_FILES;
+
                         // tratar la imagen y ponerla en la propiedad image
                         if(!empty($_FILES['image_upload']['name'])) {
                             $post->image = $_FILES['image_upload'];
                         }
 
+$testpost = $_POST;
                         // tratar si quitan la imagen
-                        if (!empty($_POST['image-' . $post->image->id .  '-remove'])) {
-                            $post->image->remove('post');
+                        if (isset($_POST['image-' . $post->image .  '-remove'])) {
+                            $image = Model\Image::get($post->image);
+                            $image->remove('post');
                             $post->image = '';
+                            $removed = true;
                         }
 
                         if (!empty($post->media)) {
@@ -628,7 +631,7 @@ $testFiles = $_FILES;
                                 $success[] = 'Se ha añadido una nueva entrada'; 
                                 ////Text::get('dashboard-project-updates-inserted');
                             }
-                            $action = 'list';
+                            $action = $removed ? 'edit' : 'list';
                         } else {
                             $errors[] = 'Ha habido algun problema al guardar los datos';
                             ////Text::get('dashboard-project-updates-fail');

@@ -203,7 +203,7 @@ namespace Goteo\Model {
 
                 // para usuarios y proyectos que tienen N imagenes
                 // por ahora post solo tiene 1
-                if (!\is_string($which) || !\in_array($which, array('user','project'))) {
+                if (\is_string($which) && \in_array($which, array('user','project'))) {
                     $sql = "DELETE FROM {$which}_image WHERE image = ?";
                     $query = self::query($sql, array($this->id));
                 }
