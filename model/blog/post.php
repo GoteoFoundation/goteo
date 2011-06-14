@@ -42,6 +42,12 @@ namespace Goteo\Model\Blog {
                     $post->image = Image::get($post->image);
                 }
 
+                // video
+                if (isset($post->media)) {
+                    $post->media = new Media($post->media);
+                }
+
+
                 $post->comments = Post\Comment::getAll($id);
                 $post->num_comments = count($post->comments);
 
@@ -74,9 +80,19 @@ namespace Goteo\Model\Blog {
             $query = static::query($sql, array($blog));
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
-                // el video
-//                $post->media = new Media($post->media);
-//                $post->image = Image::get($post->image);
+                // imagen, no hace falta instanciar, con el id basta para pintar
+                /*
+                if (!empty($post->image)) {
+                    $post->image = Image::get($post->image);
+                }
+                 * 
+                 */
+
+                // video
+                if (isset($post->media)) {
+                    $post->media = new Media($post->media);
+                }
+                
                 $post->num_comments = Post\Comment::getCount($post->id);
 
                 $list[$post->id] = $post;
