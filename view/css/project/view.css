@@ -8,6 +8,7 @@
 @import url('widget/collaborations.css');
 @import url('widget/supporters.css');
 @import url('widget/rewards.css');
+@import url('widget/messages.css');
 @import url('../user/widget/user.css');
 @import url('../worth/legend.css');
 
@@ -23,6 +24,21 @@ body.project-show div#main {
 
 body.project-show div#sub-header {
     padding-bottom: 0;
+}
+
+body.project-show div#sub-header div.categories {
+    text-align: right;
+    margin-top: -22px;
+}
+
+body.project-show div#sub-header div.categories h3 {
+    font-weight: normal;
+    color: #20B3B2;   
+    margin: 0 0 .5em;
+}
+
+body.project-show div#sub-header div.categories * {
+    font-size: 12px;
 }
 
 body.project-show div.project-menu {

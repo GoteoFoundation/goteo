@@ -32,18 +32,16 @@ include 'view/header.html.php' ?>
             <div class="widget projects promos">
                 <h2 class="title"><?php echo $this['title'][$type]; ?></h2>
                 <?php foreach ($list as $project) : ?>
-                    <div>
-                        <?php
-                        // la instancia del proyecto es $project
-                        // se pintan con el mismo widget que en la portada, sin balloon
-                        echo new View('view/project/widget/project.html.php', array(
-                            'project' => $project
-                        )); ?>
-                    </div>
+                    <?php
+                    // la instancia del proyecto es $project
+                    // se pintan con el mismo widget que en la portada, sin balloon
+                    echo new View('view/project/widget/project.html.php', array(
+                        'project' => $project
+                    )); ?>
                 <?php endforeach; ?>
-                <p>
-                    <a href="/discover/view/<?php echo $type; ?>">Ver todos</a>
-                </p>
+                
+                <div class="more"><a href="/discover/view/<?php echo $type; ?>">Ver más</a></div>
+                
             </div>
 
         <?php endforeach; ?>
