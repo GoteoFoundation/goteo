@@ -11,6 +11,7 @@ namespace Goteo\Controller {
         
         public function index () {
 
+            // hay que sacar los que van en portada de su blog (en cuanto aclaremos lo de los nodos)
             $posts    = Post::getAll();
             $promotes = Promote::getAll();
 

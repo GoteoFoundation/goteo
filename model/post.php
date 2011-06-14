@@ -37,7 +37,7 @@ namespace Goteo\Model {
         /*
          * Lista de entradas
          */
-        public static function getAll () {
+        public static function getAll ($blog = 1) {
 
             $list = array();
 
@@ -50,7 +50,7 @@ namespace Goteo\Model {
                     `media`,
                     `order`
                 FROM    post
-                WHERE   blog = 1
+                WHERE   blog = $blog
                 AND     home = 1
                 ORDER BY `order` ASC, title ASC
                 ";
