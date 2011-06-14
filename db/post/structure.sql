@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS `post` (
   `image` int(10) DEFAULT NULL,
   `date` date NOT NULL COMMENT 'fehca de publicacion',
   `order` int(11) DEFAULT '1',
+  `allow` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Permite comentarios',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Entradas para la portada';

@@ -1,4 +1,4 @@
-CREATE TABLE  `goteo`.`blog` (
+CREATE TABLE  `blog` (
 `id` SERIAL NOT NULL ,
 `type` VARCHAR( 10 ) NOT NULL ,
 `owner` VARCHAR( 50 ) NOT NULL COMMENT  'la id del proyecto o nodo',

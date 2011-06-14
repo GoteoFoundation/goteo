@@ -1,4 +1,4 @@
-CREATE TABLE  `goteo`.`tag` (
+CREATE TABLE  `tag` (
 `id` SERIAL NOT NULL ,
 `name` TINYTEXT NOT NULL ,
 `blog` BIGINT( 20 ) UNSIGNED NOT NULL
