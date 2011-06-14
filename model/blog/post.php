@@ -99,6 +99,18 @@ namespace Goteo\Model\Blog {
         public function save (&$errors = array()) {
             if (!$this->validate($errors)) return false;
 
+            // Primero la imagenImagen
+            //@FIXME esto de los errores
+            $theerrors = array();
+            if (is_array($this->image) && !empty($this->image['name'])) {
+                $image = new Image($this->image);
+                if ($image->save($errors)) {
+                    $this->image = $image->id;
+                } else {
+                    $this->image = '';
+                }
+            }
+
             $fields = array(
                 'id',
                 'blog',
@@ -118,16 +130,6 @@ namespace Goteo\Model\Blog {
                 if ($set != '') $set .= ", ";
                 $set .= "`$field` = :$field ";
                 $values[":$field"] = $this->$field;
-            }
-
-            // Imagen
-            //@FIXME esto de los errores
-            $theerrors = array();
-            if (is_array($this->image) && !empty($this->image['name'])) {
-                $image = new Image($this->image);
-                $image->save($theerrors);
-                $errors['image'] = implode(',', $theerrors);
-                $values[':image'] = $image->id;
             }
 
             try {

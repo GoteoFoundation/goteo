@@ -580,13 +580,15 @@ namespace Goteo\Controller {
                     break;
 
                     case 'updates':
-                        if (!in_array($action, array('add','edit')))
+                        if (!isset($_POST['save-post'])) {
                             break;
+                        }
 
                         $post = new Model\Blog\Post();
                         // campos que actualizamos
                         $fields = array(
                             'id',
+                            'blog',
                             'title',
                             'text',
                             'image',
@@ -598,7 +600,7 @@ namespace Goteo\Controller {
                         foreach ($fields as $field) {
                             $post->$field = $_POST[$field];
                         }
-
+$testFiles = $_FILES;
                         // tratar la imagen y ponerla en la propiedad image
                         if(!empty($_FILES['image_upload']['name'])) {
                             $post->image = $_FILES['image_upload'];
@@ -715,6 +717,7 @@ namespace Goteo\Controller {
                 // publicar actualizaciones
                 case 'updates':
                     $viewData['blog'] = $blog;
+                    $viewData['posts'] = $posts;
                     $viewData['post'] = $post;
                     break;
             }
