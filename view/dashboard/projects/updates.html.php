@@ -14,10 +14,9 @@ $level = $this['level'] = 3;
 
 $url = '/dashboard/projects/updates';
 
-\trace();
 ?>
 
-    <h<?php echo $level ?> class="title"><?php echo $this['message']; ?></h<?php echo $level ?>
+    <h<?php echo $level ?> class="title"><?php echo $this['message']; ?></h<?php echo $level ?>>
 
 <?php if ($this['action'] == 'list') : ?>
 
@@ -29,7 +28,7 @@ $url = '/dashboard/projects/updates';
     <?php if (!empty($posts)) : ?>
     <?php foreach ($posts as $post) : ?>
         <div class="widget">
-            <h<?php echo $level+1 ?> class="title"><?php echo $post->title; ?></h<?php echo $level+1 ?>
+            <h<?php echo $level+1 ?> class="title"><?php echo $post->title; ?></h<?php echo $level+1 ?>>
             <span style="display:block;"><?php echo $post->date; ?></span>
             <blockquote><?php echo Text::recorta($post->text, 500); ?></blockquote>
             <?php if (!empty($post->image)) : ?>

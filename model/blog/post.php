@@ -37,6 +37,11 @@ namespace Goteo\Model\Blog {
 
                 $post = $query->fetchObject(__CLASS__);
 
+                // imagen
+                if (!empty($post->image)) {
+                    $post->image = Image::get($post->image);
+                }
+
                 $post->comments = Post\Comment::getAll($id);
                 $post->num_comments = count($post->comments);
 
