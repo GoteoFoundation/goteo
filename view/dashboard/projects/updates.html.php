@@ -8,22 +8,40 @@ echo new View ('view/dashboard/projects/selector.html.php', $this);
 $blog  = $this['blog'];
 $posts = $blog->posts; // si lista
 
-$erorrs = $this['errors'];
+$errors = $this['errors'];
 
-$this['level'] = 3;
+$level = $this['level'] = 3;
+
+$url = '/dashboard/projects/updates';
 ?>
 
-<div class="widget projects">
-    <h2 class="title"><?php echo $this['message']; ?></h2>
+    <h<?php echo $level ?> class="title"><?php echo $this['message']; ?></h<?php echo $level ?>
 
 <?php if ($this['action'] == 'list') : ?>
 
-    <?php \trace($posts); ?>
+    <a href="<?php echo $url; ?>/add">Publicar nueva entrada</a>
+
+    <!-- lista -->
+    <?php if (!empty($posts)) : ?>
+    <?php foreach ($posts as $post) : ?>
+        <div class="widget">
+            <h<?php echo $level+1 ?> class="title"><?php echo $post->title; ?></h<?php echo $level+1 ?>
+            <span style="display:block;"><?php echo $post->date; ?></span>
+            <blockquote><?php echo Text::recorta($post->text, 500); ?></blockquote>
+            <?php if (!empty($post->image->id)) echo "Imagen: {$post->image->name}"; ?>
+            <?php if (!empty($post->media)) echo "Video: {$post->media->url}"; ?>
+            <div><a href="<?php echo $url; ?>/edit/<?php echo $post->id; ?>">[EDITAR]</a></div>
+            <p><?php echo $post->num_commnets > 0 ? $post->num_commnets : 'Sin'; ?> comentarios.   <a href="/project/<?php echo $blog->project; ?>/updates/<?php echo $post->id; ?>">Ir a ver/añadir comentarios</a></p>
+        </div>
+    <?php endforeach; ?>
+    <?php else : ?>
+    <p>No hay entradas</p>
+    <?php endif; ?>
 
 <?php  else : // sueprform!
 
         $post  = $this['post']; // si edit
-        $currently = array(
+        $allow = array(
             array(
                 'value'     => 1,
                 'label'     => 'Sí'
@@ -33,9 +51,33 @@ $this['level'] = 3;
                 'label'     => 'No'
                 )
         );
+
+
+        $image = array(
+            'image' => array(
+                'type'  => 'hidden',
+                'value' => $post->image->id,
+            ),
+            'post-image' => array(
+                'type'  => 'html',
+                'class' => 'inline',
+                'html'  => is_object($post->image) ?
+                           $post->image . '<img src="' . htmlspecialchars($post->image->getLink(110, 110)) . '" alt="Imagen" />' :
+                           ''
+            )
+        );
+
+        if (!empty($post->image) && is_object($post->image))
+            $image ["image-{$post->image->id}-remove"] = array(
+                'type'  => 'submit',
+                'label' => 'Quitar',
+                'class' => 'inline remove image-remove'
+            );
+
+
     ?>
 
-    <form method="post" action="/dashboard/projects/updates/<?php echo $this['action']; ?>" class="project" enctype="multipart/form-data">
+    <form method="post" action="/dashboard/projects/updates/<?php echo $this['action']; ?>/<?php echo $post->id; ?>" class="project" enctype="multipart/form-data">
 
     <?php echo new SuperForm(array(
 
@@ -54,7 +96,7 @@ $this['level'] = 3;
             )
         ),
         'elements'      => array(
-            'post' => array (
+            'id' => array (
                 'type' => 'hidden',
                 'value' => $post->id
             ),
@@ -76,7 +118,7 @@ $this['level'] = 3;
                 'required'  => true,
                 'cols'      => 40,
                 'rows'      => 4,
-                'title'     => 'Cuéntanos algo sobre ti',
+                'title'     => 'Texto de la entrada',
                 'hint'      => Text::get('tooltip-updates-text'),
                 'errors'    => !empty($errors['text']) ? array($errors['text']) : array(),
                 'value'     => $post->text
@@ -98,7 +140,7 @@ $this['level'] = 3;
                         'type'  => 'group',
                         'title' => 'Imagen actual',
                         'class' => 'inline gallery',
-                        'children'  => $post->image
+                        'children'  => $image
                     )
 
                 )
@@ -119,6 +161,14 @@ $this['level'] = 3;
                     )
                 )
             ),
+            "date" => array(
+                'type'      => 'datebox',
+                'required'  => true,
+                'title'     => 'Fecha de publicación',
+                'hint'      => Text::get('tooltip-updates-date'),
+                'size'      => 8,
+                'value'     => $post->date
+            ),
             'allow' => array(
                 'title'     => 'Permite comentarios',
                 'type'      => 'slider',
@@ -126,7 +176,7 @@ $this['level'] = 3;
                 'class'     => 'currently cols_' . count($allow),
                 'hint'      => Text::get('tooltip-updates-allow_comments'),
                 'errors'    => !empty($errors['allow']) ? array($errors['allow']) : array(),
-                'value'     => $post->allow
+                'value'     => (int) $post->allow
             )
 
         )
@@ -137,5 +187,3 @@ $this['level'] = 3;
     </form>
 
 <?php endif; ?>
-    
-</div>

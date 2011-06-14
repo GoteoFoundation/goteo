@@ -61,10 +61,11 @@ namespace Goteo\Model\Blog {
                     `media`,
                     DATE_FORMAT(date, '%d-%m-%Y') as date
                 FROM    post
+                WHERE blog = ?
                 ORDER BY date DESC, id DESC
                 ";
             
-            $query = static::query($sql);
+            $query = static::query($sql, array($blog));
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 // el video
@@ -85,6 +86,9 @@ namespace Goteo\Model\Blog {
             if (empty($this->text))
                 $errors['text'] = 'Falta texto';
 
+            if (empty($this->date))
+                $errors['date'] = 'Falta fecha';
+
             if (empty($errors))
                 return true;
             else
@@ -101,7 +105,7 @@ namespace Goteo\Model\Blog {
                 'text',
                 'image',
                 'media',
-                `date`
+                'date'
                 );
 
             // si editan por aqui no salen en portada, por ahora

@@ -413,45 +413,6 @@ namespace Goteo\Controller {
                     break;
                 }
 
-                // segun la accion
-                switch ($action) {
-                    case 'list':
-                        $posts = Model\Blog\Post::getAll($blog);
-                        $message = 'Lista de actualizaciones';
-                        //Text::get('dashboard-project-updates-list_title');
-                        break;
-                    case 'add':
-                        $post = new Model\Blog\Post(
-                                array(
-                                    'blog' => $blog->id,
-                                    'date' => date('d-m-Y'),
-                                    'allow' => true
-                                )
-                            );
-                        $message = 'Añadiendo una nueva entrada';
-                        //Text::get('dashboard-project-updates-add_title');
-                        break;
-                    case 'edit':
-                        if (empty($id)) {
-                            $errors[] = 'No se ha encontrado la entrada';
-                            //Text::get('dashboard-project-updates-nopost');
-                            $action = 'list';
-                            break;
-                        } else {
-                            $post = $blog->posts[$id];
-
-                            if (!$post instanceof Model\Blog\Post) {
-                                $errors[] = 'La entrada esta corrupta, contacte con nosotros.';
-                                //Text::get('dashboard-project-updates-postcorrupt');
-                                $action = 'list';
-                                break;
-                            }
-                        }
-
-                        $message = 'Editando una entrada existente';
-                        //Text::get('dashboard-project-updates-edit_title');
-                        break;
-                }
             }
 
 
@@ -557,10 +518,6 @@ namespace Goteo\Controller {
                                     $data = Model\User::getMini($userId);
                                     $data->email = $userId.'-goteo@doukeshi.org';
 
-                                    // temporalmente lo desactivamos
-                                    $success[] = 'Mensaje enviado correctamente a ' . $data->name . ' : ' . $data->email . '(TEMPORALMENTE no mandamos mails, hasta revisarlo)';
-
-                                    /*
                                     // reusamos el objeto mail
                                     $mailHandler = new Mail();
 
@@ -580,7 +537,6 @@ namespace Goteo\Controller {
                                     }
 
                                     unset($mailHandler);
-                                    */
                                 }
                                 
 
@@ -624,20 +580,20 @@ namespace Goteo\Controller {
                     break;
 
                     case 'updates':
+                        $post = new Model\Blog\Post();
                         // campos que actualizamos
                         $fields = array(
                             'id',
                             'title',
                             'text',
+                            'image',
                             'media',
                             'date',
                             'allow'
                         );
 
                         foreach ($fields as $field) {
-                            if (isset($_POST[$field])) {
-                                $post->$field = $_POST[$field];
-                            }
+                            $post->$field = $_POST[$field];
                         }
 
                         // tratar la imagen y ponerla en la propiedad image
@@ -655,28 +611,72 @@ namespace Goteo\Controller {
                             $post->media = new Model\Project\Media($post->media);
                         }
 
-                        // tratar si quitan el video
-                        if (!empty($_POST['media-' . $post->id .  '-remove'])) {
-                            $post->media = '';
-                        }
-
                         // el blog de proyecto no tiene tags?¿?
                         // $post->tags = $_POST['tags'];
 
                         /// este es el único save que se lanza desde un metodo process_
                         if ($post->save($errors)) {
                             if ($action == 'edit') {
-                                $success[] = 'La entrada se ha actualizado correctamente'; //Text::get('dashboard-project-updates-saved');
+                                $success[] = 'La entrada se ha actualizado correctamente'; 
+                                ////Text::get('dashboard-project-updates-saved');
                             } else {
-                                $success[] = 'Se ha añadido una nueva entrada'; //Text::get('dashboard-project-updates-inserted');
+                                $success[] = 'Se ha añadido una nueva entrada'; 
+                                ////Text::get('dashboard-project-updates-inserted');
                             }
                             $action = 'list';
                         } else {
-                            $error[] = 'Ha habido algun problema al guardar los datos'; //Text::get('dashboard-project-updates-fail');
+                            $errors[] = 'Ha habido algun problema al guardar los datos';
+                            ////Text::get('dashboard-project-updates-fail');
                         }
                         break;
                 }
             }
+
+            if ($option == 'updates') {
+                // segun la accion
+                switch ($action) {
+                    case 'list':
+                        $posts = Model\Blog\Post::getAll($blog->id);
+                        $message = 'Lista de actualizaciones';
+                        //Text::get('dashboard-project-updates-list_title');
+                        break;
+                    case 'add':
+                        $post = new Model\Blog\Post(
+                                array(
+                                    'blog' => $blog->id,
+                                    'date' => date('Y-m-d'),
+                                    'allow' => true
+                                )
+                            );
+
+                        $message = 'Añadiendo una nueva entrada';
+                        //Text::get('dashboard-project-updates-add_title');
+                        break;
+                    case 'edit':
+                        if (empty($id)) {
+                            $errors[] = 'No se ha encontrado la entrada';
+                            //Text::get('dashboard-project-updates-nopost');
+                            $action = 'list';
+                            break;
+                        } else {
+                            $post = Model\Blog\Post::get($id);
+
+                            if (!$post instanceof Model\Blog\Post) {
+                                $errors[] = 'La entrada esta corrupta, contacte con nosotros.';
+                                //Text::get('dashboard-project-updates-postcorrupt');
+                                $action = 'list';
+                                break;
+                            }
+                        }
+
+                        $message = 'Editando una entrada existente';
+                        //Text::get('dashboard-project-updates-edit_title');
+                        break;
+                }
+
+            }
+
+
 
             // view data basico para esta seccion
             $viewData = array(
