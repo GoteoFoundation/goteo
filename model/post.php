@@ -2,7 +2,8 @@
 
 namespace Goteo\Model {
 
-    use \Goteo\Model\Project\Media;
+    use Goteo\Model\Project\Media,
+        Goteo\Library\Check;
 
     class Post extends \Goteo\Core\Model {
 
@@ -50,7 +51,7 @@ namespace Goteo\Model {
                     `order`
                 FROM    post
                 WHERE   blog = 1
-                AND     `order` > 0
+                AND     home = 1
                 ORDER BY `order` ASC, title ASC
                 ";
             
@@ -127,49 +128,29 @@ namespace Goteo\Model {
          * Para que una pregunta salga antes  (disminuir el order)
          */
         public static function up ($id) {
-
-            $query = self::query('SELECT `order` FROM post WHERE id = :id'
-                , array(':id'=>$id));
-            $order = $query->fetchColumn(0);
-
-            $order--;
-            if ($order < 1)
-                $order = 1;
-
-            $sql = "UPDATE post SET `order`=:order WHERE id = :id";
-            if (self::query($sql, array(':order'=>$order, ':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
-
+            $extra = array (
+                    'home' => 1,
+                    'node' => \GOTEO_NODE
+                );
+            return Check::reorder($id, 'up', 'post', 'id', 'order', $extra);
         }
 
         /*
          * Para que un proyecto salga despues  (aumentar el order)
          */
         public static function down ($id) {
-
-            $query = self::query('SELECT `order` FROM post WHERE id = :id'
-                , array(':id'=>$id));
-            $order = $query->fetchColumn(0);
-
-            $order++;
-
-            $sql = "UPDATE post SET `order`=:order WHERE id = :id";
-            if (self::query($sql, array(':order'=>$order, ':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
-
+            $extra = array (
+                    'home' => 1,
+                    'node' => \GOTEO_NODE
+                );
+            return Check::reorder($id, 'down', 'post', 'id', 'order', $extra);
         }
 
         /*
          * Orden para añadirlo al final
          */
         public static function next () {
-            $query = self::query('SELECT MAX(`order`) FROM post'
+            $query = self::query('SELECT MAX(`order`) FROM post WHERE home=1'
                 , array(':media'=>$media, ':node'=>$node));
             $order = $query->fetchColumn(0);
             return ++$order;

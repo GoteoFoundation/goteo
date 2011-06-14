@@ -1,7 +1,9 @@
 <?php
 
 namespace Goteo\Model {
-    
+
+    use Goteo\Library\Check;
+
     class Faq extends \Goteo\Core\Model {
 
         public
@@ -124,42 +126,26 @@ namespace Goteo\Model {
          * Para que una pregunta salga antes  (disminuir el order)
          */
         public static function up ($id, $node = \GOTEO_NODE) {
-
-            $query = self::query('SELECT `order` FROM faq WHERE id = :id AND node = :node'
-                , array(':id'=>$id, ':node'=>$node));
-            $order = $query->fetchColumn(0);
-
-            $order--;
-            if ($order < 1)
-                $order = 1;
-
-            $sql = "UPDATE faq SET `order`=:order WHERE id = :id AND node = :node";
-            if (self::query($sql, array(':order'=>$order, ':id'=>$id, ':node'=>$node))) {
-                return true;
-            } else {
-                return false;
-            }
-
+            $query = static::query("SELECT section FROM faq WHERE id = ?", array($id));
+            $faq = $query->fetchObject();
+            $extra = array(
+                'section' => $faq->section,
+                'node' => $node
+            );
+            return Check::reorder($id, 'up', 'faq', 'id', 'order', $extra);
         }
 
         /*
          * Para que un proyecto salga despues  (aumentar el order)
          */
         public static function down ($id, $node = \GOTEO_NODE) {
-
-            $query = self::query('SELECT `order` FROM faq WHERE id = :id AND node = :node'
-                , array(':id'=>$id, ':node'=>$node));
-            $order = $query->fetchColumn(0);
-
-            $order++;
-
-            $sql = "UPDATE faq SET `order`=:order WHERE id = :id AND node = :node";
-            if (self::query($sql, array(':order'=>$order, ':id'=>$id, ':node'=>$node))) {
-                return true;
-            } else {
-                return false;
-            }
-
+            $query = static::query("SELECT section FROM faq WHERE id = ?", array($id));
+            $faq = $query->fetchObject();
+            $extra = array(
+                'section' => $faq->section,
+                'node' => $node
+            );
+            return Check::reorder($id, 'down', 'faq', 'id', 'order', $extra);
         }
 
         /*

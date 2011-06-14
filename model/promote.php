@@ -161,42 +161,20 @@ namespace Goteo\Model {
          * Para que un proyecto salga antes  (disminuir el order)
          */
         public static function up ($project, $node = \GOTEO_NODE) {
-
-            $query = self::query('SELECT `order` FROM promote WHERE project = :project AND node = :node'
-                , array(':project'=>$project, ':node'=>$node));
-            $order = $query->fetchColumn(0);
-
-            $order--;
-            if ($order < 1)
-                $order = 1;
-
-            $sql = "UPDATE promote SET `order`=:order WHERE project = :project AND node = :node";
-            if (self::query($sql, array(':order'=>$order, ':project'=>$project, ':node'=>$node))) {
-                return true;
-            } else {
-                return false;
-            }
-
+            $extra = array (
+                    'node' => $node
+                );
+            return Check::reorder($project, 'up', 'promote', 'id', 'order', $extra);
         }
 
         /*
          * Para que un proyecto salga despues  (aumentar el order)
          */
         public static function down ($project, $node = \GOTEO_NODE) {
-
-            $query = self::query('SELECT `order` FROM promote WHERE project = :project AND node = :node'
-                , array(':project'=>$project, ':node'=>$node));
-            $order = $query->fetchColumn(0);
-
-            $order++;
-
-            $sql = "UPDATE promote SET `order`=:order WHERE project = :project AND node = :node";
-            if (self::query($sql, array(':order'=>$order, ':project'=>$project, ':node'=>$node))) {
-                return true;
-            } else {
-                return false;
-            }
-
+            $extra = array (
+                    'node' => $node
+                );
+            return Check::reorder($project, 'down', 'promote', 'id', 'order', $extra);
         }
 
         /*
