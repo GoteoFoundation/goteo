@@ -1,8 +1,9 @@
 <?php
 namespace Goteo\Model {
 
-    use Goteo\Library\Text,
-        Goteo\Model\Project;
+    use \Goteo\Library\Text,
+        \Goteo\Model\Project,
+        \Goteo\Library\Check;
 
     class Promote extends \Goteo\Core\Model {
 
@@ -164,7 +165,7 @@ namespace Goteo\Model {
             $extra = array (
                     'node' => $node
                 );
-            return Check::reorder($project, 'up', 'promote', 'id', 'order', $extra);
+            return Check::reorder($project, 'up', 'promote', 'project', 'order', $extra);
         }
 
         /*
@@ -174,7 +175,7 @@ namespace Goteo\Model {
             $extra = array (
                     'node' => $node
                 );
-            return Check::reorder($project, 'down', 'promote', 'id', 'order', $extra);
+            return Check::reorder($project, 'down', 'promote', 'project', 'order', $extra);
         }
 
         /*
