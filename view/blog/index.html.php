@@ -4,6 +4,7 @@ use Goteo\Library\Text,
     Goteo\Core\View;
 
 $blog = $this['blog'];
+$posts = $blog->posts;
 
 $bodyClass = 'blog';
 
@@ -24,7 +25,7 @@ include 'view/prologue.html.php';
                 <?php if (!empty($posts)) : ?>
                     <?php foreach ($posts as $post) : ?>
                         <div class="widget">
-                            <?php echo new View('view/blog/post', $this); ?>
+                            <?php echo new View('view/blog/post.html.php', array('post'=>$post->id)); ?>
                             <?php if ($this['show'] == 'list') : ?>
                                 <div class="more"><a href="/blog/<?php echo $post->id; ?>">Leer más</a></div>
                             <?php endif; ?>
@@ -51,7 +52,9 @@ include 'view/prologue.html.php';
             <?php endif; ?>
             </div>
 
-            <?php echo new View('view/blog/side.html.php', array()) ; ?>
+            <div class="side">
+                <?php echo new View('view/blog/side.html.php', array()) ; ?>
+            </div>
 
         </div>
 
