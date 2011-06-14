@@ -39,24 +39,28 @@ $level = (int) $this['level'] ?: 3;
         <?php if (!empty($post->media)) : ?>
             <?php echo $post->media->getEmbedCode(); ?>
         <?php endif; ?>
-        <p><?php echo $post->num_commnets > 0 ? $post->num_commnets : 'Sin'; ?> comentarios.</p>
+        <p><?php echo $post->num_comments > 0 ? $post->num_comments : 'Sin'; ?> comentarios.</p>
 
         <?php if (!empty($post->comments)): ?>
-        <div class="widget">
             <h<?php echo $level + 2?>>Comentarios</h<?php echo $level + 2?>>
             <?php foreach ($post->comments as $comment) : ?>
-                <?php \trace($comment); ?>
+            <div class="message">
+               <span class="avatar"><img src="/image/<?php echo $comment->user->avatar->id; ?>/50/50" alt="" /></span>
+               <h<?php echo $level+3 ?> class="user"><?php echo htmlspecialchars($comment->user->name) ?></h<?php echo $level+3 ?>>
+               <div class="date"><span><?php echo $comment->date ?></span></div>
+               <blockquote><?php echo $comment->text; ?></blockquote>
+           </div>
             <?php endforeach; ?>
-        </div>
         <?php endif; ?>
 
         <div class="widget">
-        <h<?php echo $level + 2?>>Escribe tu comentario</h<?php echo $level + 2?>>
-        <form method="post" action="/message/post/<?php echo $project->id; ?>/<?php echo $post->id; ?>">
-            <textarea name="message" cols="50" rows="5"></textarea>
-            <input class="button" type="submit" value="Enviar" />
-        </form>
+            <h<?php echo $level + 2?>>Escribe tu comentario</h<?php echo $level + 2?>>
+            <form method="post" action="/message/post/<?php echo $project->id; ?>/<?php echo $post->id; ?>">
+                <textarea name="message" cols="50" rows="5"></textarea>
+                <input class="button" type="submit" value="Enviar" />
+            </form>
         </div>
+
     </div>
     <?php endif ?>
 
@@ -76,7 +80,7 @@ $level = (int) $this['level'] ?: 3;
                         <?php echo $post->media->getEmbedCode(); ?>
                     <?php endif; ?>
                     <p><a href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>">Leer</a></p>
-                    <p><a href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>"><?php echo $post->num_comments > 0 ? $post->num_commnets : 'Sin'; ?> comentarios.</a></p>
+                    <p><a href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>"><?php echo $post->num_comments > 0 ? $post->num_comments : 'Sin'; ?> comentarios.</a></p>
                 </div>
             <?php endforeach; ?>
         </div>

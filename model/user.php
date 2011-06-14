@@ -382,6 +382,9 @@ namespace Goteo\Model {
                     WHERE id = :id
                     ", array(':id' => $id));
                 $user = $query->fetchObject(__CLASS__);
+                
+                $user->avatar = Image::get($user->avatar);
+
                 return $user;
             } catch(\PDOException $e) {
                 return false;

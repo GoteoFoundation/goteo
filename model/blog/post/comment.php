@@ -40,16 +40,18 @@ namespace Goteo\Model\Blog\Post {
                 SELECT
                     id,
                     post,
-                    date,
+                    DATE_FORMAT(date, '%d/%m/%Y') as date,
                     text,
                     user
                 FROM    comment
+                WHERE post = ?
                 ORDER BY `date` DESC, id DESC
                 ";
             
-            $query = static::query($sql);
+            $query = static::query($sql, array($post));
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $comment) {
+                $comment->user = \Goteo\Model\User::getMini($comment->user);
                 $list[$comment->id] = $comment;
             }
 
@@ -69,7 +71,7 @@ namespace Goteo\Model\Blog\Post {
 
                 $count = $query->fetchObject();
 
-                return $count->cuantos;
+                return (int) $count->cuantos;
         }
 
         public function validate (&$errors = array()) { 
