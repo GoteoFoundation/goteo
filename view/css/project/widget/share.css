@@ -24,15 +24,15 @@ div.widget.project-share li a {
 }
 
 div.widget.project-share li.facebook {
-    background-image: url('share/facebook.png');
+    background-image: url('/view/css/social/facebook.png');
 }
 
 div.widget.project-share li.twitter {
-    background-image: url('share/twitter.png');    
+    background-image: url('/view/css/social/twitter.png');    
 }
 
 div.widget.project-share li.url {
-    background-image: url('share/url.png'); 
+    background-image: url('/view/css/social/url.png'); 
 }
 
 div.widget.project-share li.url span {

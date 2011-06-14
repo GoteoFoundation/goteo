@@ -55,7 +55,7 @@ $interests = Interest::getAll();
                     <?php endif ?>
 
                     <?php if (isset($user->location)): ?>
-                    <dt class="location">Ubicación</dt>
+                    <dt class="location">UbicaciÃ³n</dt>
                     <dd class="location"><a href="">Barcelona, ES</a></dd>
                     <?php endif ?>
 
@@ -109,19 +109,18 @@ $interests = Interest::getAll();
 
             <hr />
             <!-- lateral -->
-
-            <div>
+            <div class="widget users user-supporters">
                 <h3>Mis cofinanciadores</h3>
                 <div>
                 <?php foreach ($this['investors'] as $user=>$investor) {
                     echo new View('view/user/widget/supporter.html.php', array('user' => $investor, 'worthcracy' => $worthcracy));
-    //                echo "{$investor->avatar} {$investor->name} De nivel {$investor->worth}  Cofinancia {$investor->projects} proyectos  Me aporta: {$investor->amount} € <br />";
+    //                echo "{$investor->avatar} {$investor->name} De nivel {$investor->worth}  Cofinancia {$investor->projects} proyectos  Me aporta: {$investor->amount} â‚¬ <br />";
                 } ?>
                 </div>
                 <?php echo new View('view/worth/base.html.php', array('worthcracy' => $worthcracy, 'type' => 'side')); ?>
             </div>
 
-            <div>
+            <div class="widget users user-mates">
                 <h3>Compartiendo intereses</h3>
                 <?php foreach ($this['shares'] as $share) {
                     echo '<div style="float:left;margin: 10px;"><img src="/image/' . $share->avatar->id . '/50/50" /><br />';
@@ -129,7 +128,8 @@ $interests = Interest::getAll();
                     echo "Proyectos(" . $share->projects .")<br/>Aportacion(" . $share->invests ." )";
                     echo '</div>';
                 } ?>
-                <br clear="all" />
+                </div>
+            
             </div>
 
 
