@@ -58,6 +58,7 @@ include 'view/prologue.html.php';
                         <li><a href="/admin/blog">Blog</a></li>
                         <li><a href="/admin/managing">Usuarios</a></li>
                         <li><a href="/admin/rewards">Retornos colectivos</a></li>
+<!--                    <li><a href="/admin/moderate">Moderar mensajes</a></li>  -->
                     </ul>
                 </div>
 

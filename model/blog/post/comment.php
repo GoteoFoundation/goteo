@@ -150,7 +150,7 @@ namespace Goteo\Model\Blog\Post {
         }
 
         /*
-         * Para quitar una comentario
+         * Para quitar un comentario
          */
         public static function delete ($id) {
             

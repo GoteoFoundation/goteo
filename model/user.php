@@ -412,6 +412,17 @@ namespace Goteo\Model {
                     WHERE interest = {$filters['interest']}
                     ) ";
             }
+            if (!empty($filters['posted'])) {
+                /*
+                 * Si ha enviado algun mensaje o comentario
+                $sqlFilter .= " AND id IN (
+                    SELECT user
+                    FROM message
+                    WHERE interest = {$filters['interest']}
+                    ) ";
+                 *
+                 */
+            }
 
             $sql = "SELECT
                         id,
