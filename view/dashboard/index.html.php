@@ -29,7 +29,9 @@ include 'view/header.html.php'; ?>
 
             <?php if (!empty($this['message'])) : ?>
                 <div class="widget">
-                    <h2 class="title">Bienvenid@</h2>
+                    <?php if (empty($this['section']) && empty($this['option'])) : ?>
+                        <h2 class="title">Bienvenid@</h2>
+                    <?php endif; ?>
                     <p><?php echo $this['message']; ?></p>
                 </div>
             <?php endif; ?>

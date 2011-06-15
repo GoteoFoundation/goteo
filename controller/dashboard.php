@@ -18,14 +18,6 @@ namespace Goteo\Controller {
          */
         public function index ($section = null) {
 
-            /*
-            if (mail('jcanaves@gmail.com', 'test', 'prueba de la funcion mail en local')) {
-                echo 'dice que vale ';
-            } else{
-                echo 'dice que fail';
-            }
-            */
-
             $page = Page::get('dashboard');
 
             $message = \str_replace('%USER_NAME%', $_SESSION['user']->name, $page->content);
