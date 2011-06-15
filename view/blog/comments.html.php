@@ -7,6 +7,8 @@ $post = Post::get($this['post']);
 
 $level = (int) $this['level'] ?: 3;
 
+//@TODO: Si el usuario es el dueño del blog o tiene permiso para moderar, boton de borrar comentario
+
 ?>
 <?php if (!empty($post->comments)): ?>
     <h<?php echo $level + 2?>>Comentarios</h<?php echo $level + 2?>>

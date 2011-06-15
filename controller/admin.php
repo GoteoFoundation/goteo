@@ -1712,6 +1712,62 @@ namespace Goteo\Controller {
 
         }
 
+        /*
+         * Moderar mensajes
+         * @TODO: está a medias
+         *
+         *
+         */
+        public function moderate($action = 'list', $id = null) {
+            $filters = array();
+            $fields = array('project', 'user', 'blog');
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    $filters[$field] = $_GET[$field];
+                }
+            }
+            // proyectos con mensajes
+            $projects = Model\Project::published('available');
+            if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $sections)) {
+                $filter = $_GET['filter'];
+            } else {
+                $filter = 'node';
+            }
+
+            //blog
+
+            // usuarios
+            $users = Model\User::getAll(array('posted'=>true));
+
+            $errors = array();
+
+            switch ($action) {
+                case 'remove':
+                    // mensaje o comentario
+                    // Model\   ::delete($id);
+                    break;
+            }
+
+//            $list = Model\Message::getAll($filter);
+
+            return new View(
+                'view/admin/list.html.php',
+                array(
+                    'title' => 'Moderación de mensajes',
+                    'menu' => array(),
+                    'data' => $list,
+                    'columns' => array(
+                        'user' => 'Usuario',
+                        'project' => 'Proyecto',
+                        'message' => 'Mensaje',
+                        'remove' => ''
+                    ),
+                    'url' => "/admin/moderate",
+                    'errors' => $errors
+                )
+            );
+        }
+
 	}
 
 }
