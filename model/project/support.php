@@ -9,7 +9,8 @@ namespace Goteo\Model\Project {
 			$project,
 			$support,
 			$description,
-			$type = 'task';
+			$type = 'task',
+            $thread;
 
 	 	public static function get ($id) {
             try {
@@ -66,7 +67,8 @@ namespace Goteo\Model\Project {
 				'project',
 				'support',
 				'type',
-				'description'
+				'description',
+                'thread'
 				);
 
 			$set = '';

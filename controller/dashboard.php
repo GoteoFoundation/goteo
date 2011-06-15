@@ -556,6 +556,7 @@ namespace Goteo\Controller {
                                         $msg = Model\Message::get($support->thread);
                                         $msg->date = date('Y-m-d');
                                         $msg->message = "{$support->support}: {$support->description}";
+                                        $msg->blocked = true;
                                         $msg->save();
                                     } else {
                                         // grabar nuevo mensaje
