@@ -1296,7 +1296,7 @@ namespace Goteo\Controller {
                             'label' => 'Gestionar Blog'
                         )
                     ),
-                    'data' => $model::getList(),
+                    'data' => $model::getList(1),
                     'columns' => array(
                         'name' => 'Tag',
                         'used' => 'Entradas',

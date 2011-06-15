@@ -43,7 +43,7 @@ namespace Goteo\Model {
         /*
          * Lista de entradas
          */
-        public static function getAll ($blog = 1) {
+        public static function getAll ($blog = 1, $limit = null) {
 
             $list = array();
 
@@ -60,6 +60,9 @@ namespace Goteo\Model {
                 AND     home = 1
                 ORDER BY `order` ASC, title ASC
                 ";
+            if (!empty($limit)) {
+                $sql .= "LIMIT $limit";
+            }
             
             $query = static::query($sql);
                 
