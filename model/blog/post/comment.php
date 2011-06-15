@@ -59,6 +59,38 @@ namespace Goteo\Model\Blog\Post {
         }
 
         /*
+         * Lista de comentarios en el blog
+         */
+        public static function getList($blog, $limit = null) {
+
+            $list = array();
+
+            $sql = "
+                SELECT
+                    id,
+                    post,
+                    DATE_FORMAT(date, '%d/%m/%Y') as date,
+                    text,
+                    user
+                FROM    comment
+                WHERE post IN (SELECT id FROM post WHERE blog = ?)
+                ORDER BY `date` DESC, id DESC
+                ";
+            if (!empty($limit)) {
+                $sql .= "LIMIT $limit";
+            }
+
+            $query = static::query($sql, array($blog));
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $comment) {
+                $comment->user = \Goteo\Model\User::getMini($comment->user);
+                $list[$comment->id] = $comment;
+            }
+
+            return $list;
+        }
+
+        /*
          *  Devuelve cuantos comentarios tiene una entrada
          */
         public static function getCount ($post) {

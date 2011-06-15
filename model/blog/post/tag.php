@@ -62,7 +62,7 @@ namespace Goteo\Model\Blog\Post {
          * Lista de tags para gestión
          * de un post si recibe el parametro
          */
-        public static function getList () {
+        public static function getList ($blog) {
 
             $list = array();
 
@@ -76,6 +76,7 @@ namespace Goteo\Model\Blog\Post {
                         WHERE post_tag.tag = tag.id
                     ) as used
                 FROM    tag
+                WHERE tag.blog = $blog
                 ORDER BY tag.name ASC";
 
             $query = static::query($sql, array($post));

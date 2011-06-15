@@ -53,7 +53,9 @@ include 'view/prologue.html.php';
             </div>
 
             <div class="side">
-                <?php echo new View('view/blog/side.html.php', array()) ; ?>
+                <?php echo new View('view/blog/side.html.php', array('blog'=>$this['blog'], 'type'=>'posts')) ; ?>
+                <?php echo new View('view/blog/side.html.php', array('blog'=>$this['blog'], 'type'=>'tags')) ; ?>
+                <?php echo new View('view/blog/side.html.php', array('blog'=>$this['blog'], 'type'=>'comments')) ; ?>
             </div>
 
         </div>
