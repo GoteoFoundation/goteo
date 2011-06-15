@@ -1,4 +1,4 @@
-CREATE TABLE  `goteo`.`post_tag` (
+CREATE TABLE  `post_tag` (
 `post` BIGINT UNSIGNED NOT NULL ,
 `tag` BIGINT UNSIGNED NOT NULL ,
 PRIMARY KEY (  `post` ,  `tag` )
