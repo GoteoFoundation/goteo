@@ -1006,8 +1006,8 @@ namespace Goteo\Model {
 				$sql = "UPDATE project SET status = :status, published = :published WHERE id = :id";
 				self::query($sql, array(':status'=>3, ':published'=>date('Y-m-d'), ':id'=>$this->id));
 
-                // borramos mensajes anteriores
-                self::query("DELETE FROM message WHERE project = ?", array($this->id));
+                // borramos mensajes anteriores que sean de colaboraciones
+                self::query("DELETE FROM message WHERE id IN (SELECT thread FROM support WHERE project = ?)", array($this->id));
 
                 // creamos los hilos de colaboración en los mensajes
                 foreach ($this->supports as $id => $support) {
@@ -1018,9 +1018,9 @@ namespace Goteo\Model {
                         'message' => "{$support->support}: {$support->description}"
                         ));
                     if ($msg->save()) {
-                        // permiso para editarlo y borrarlo
-                        ACL::allow("/message/edit/{$msg->id}/{$this->id}", '*', 'user', $this->owner);
-                        ACL::allow("/message/delete/{$msg->id}/{$this->id}", '*', 'user', $this->owner);
+                        // asignado a la colaboracion como thread inicial
+                        $sql = "UPDATE support SET thread = :message WHERE id = :support";
+                        self::query($sql, array(':message'=>$msg->id, ':support'=>$support->id));
                     }
                     unset($msg);
                 }

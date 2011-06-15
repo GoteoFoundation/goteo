@@ -550,11 +550,32 @@ namespace Goteo\Controller {
                                     $support->support = $_POST['support-' . $support->id . '-support'];
                                     $support->description = $_POST['support-' . $support->id . '-description'];
                                     $support->type = $_POST['support-' . $support->id . '-type'];
+
+                                    if (!empty($support->thread)) {
+                                        // actualizar ese mensaje
+                                        $msg = Model\Message::get($support->thread);
+                                        $msg->date = date('Y-m-d');
+                                        $msg->message = "{$support->support}: {$support->description}";
+                                        $msg->save();
+                                    } else {
+                                        // grabar nuevo mensaje
+                                        $msg = new Model\Message(array(
+                                            'user'    => $project->owner,
+                                            'project' => $project->id,
+                                            'date'    => date('Y-m-d'),
+                                            'message' => "{$support->support}: {$support->description}"
+                                            ));
+                                        if ($msg->save()) {
+                                            // asignado a la colaboracion como thread inicial
+                                            $support->thread = $msg->id;
+                                        }
+                                    }
+
                                 }
 
                             }
 
-                            // añadir nueva colaboracion
+                            // añadir nueva colaboracion (no hacemos lo del mensaje porque esta sin texto)
                             if (!empty($_POST['support-add'])) {
                                 $project->supports[] = new Model\Project\Support(array(
                                     'project'       => $project->id,
