@@ -6,6 +6,8 @@ use Goteo\Library\Text,
 $blog = $this['blog'];
 $posts = $blog->posts;
 
+$tag = $this['tag'];
+
 $bodyClass = 'blog';
 
 include 'view/prologue.html.php';
