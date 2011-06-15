@@ -10,16 +10,15 @@ include 'view/prologue.html.php';
 
         <div id="sub-header">
             <div>
-                <h2>Entradas para la portada</h2>
+                <h2>Entradas de Blog Goteo</h2>
             </div>
 
             <div class="sub-menu">
                 <div class="admin-menu">
                     <ul>
                         <li class="home"><a href="/admin">Mainboard</a></li>
-                        <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
-                        <li><a href="/admin/posts/add">Nueva entrada en portada</a></li>
-                        <li class="accounting"><a href="/admin/blog">Gestión de blog</a></li>
+                        <li><a href="/admin/blog/add">Nueva entrada</a></li>
+                        <li class="checking"><a href="/admin/posts">Ordenar la portada</a></li>
                     </ul>
                 </div>
             </div>
@@ -40,10 +39,10 @@ include 'view/prologue.html.php';
                     <thead>
                         <tr>
                             <th>Título</th> <!-- title -->
-                            <th>Posición</th> <!-- order -->
-                            <td><!-- Move up --></td>
-                            <td><!-- Move down --></td>
+                            <th>Fecha</th> <!-- date -->
+                            <th>En portada</th> <!-- date -->
                             <td><!-- Edit --></td>
+                            <td></td><!-- preview -->
                             <td><!-- Remove --></td>
                         </tr>
                     </thead>
@@ -52,10 +51,11 @@ include 'view/prologue.html.php';
                         <?php foreach ($this['posts'] as $post) : ?>
                         <tr>
                             <td><?php echo $post->title; ?></td>
-                            <td><?php echo $post->order; ?></td>
-                            <td><a href="/admin/posts/up/<?php echo $post->id; ?>">[&uarr;]</a></td>
-                            <td><a href="/admin/posts/down/<?php echo $post->id; ?>">[&darr;]</a></td>
-                            <td><a href="/admin/blog/edit/<?php echo $post->id; ?>">[Editar] (salta a gestion de blog)</a></td>
+                            <td><?php echo $post->date; ?></td>
+                            <td><?php echo $post->home ? 'Sí' : ''; ?></td>
+                            <td><a href="/admin/blog/edit/<?php echo $post->id; ?>">[Editar]</a></td>
+                            <td><a href="/blog/<?php echo $post->id; ?>">[Ver publicado]</a></td>
+                            <td><a href="/admin/blog/remove/<?php echo $post->id; ?>">[Quitar]</a></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

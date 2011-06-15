@@ -1169,6 +1169,147 @@ namespace Goteo\Controller {
         }
 
         /*
+         *  Gestión de tags de blog
+         *  Si no lo usa ningun post se puede borrar
+         */
+        public function tags($action = 'list', $id = null) {
+
+            $model = 'Goteo\Model\Blog\Post\Tag';
+            $url = '/admin/tags';
+
+            $errors = array();
+
+            switch ($action) {
+                case 'add':
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Añadiendo un nuevo tag de blog",
+                            'menu' => array(
+                                array(
+                                    'url'   => $url,
+                                    'label' => 'Tags'
+                                )
+                            ),
+                            'data' => (object) array(),
+                            'form' => array(
+                                'action' => "$url/edit/",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'Añadir'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Tag',
+                                        'name' => 'name',
+                                        'type' => 'text'
+                                    )
+                                )
+
+                            )
+                        )
+                    );
+
+                    break;
+                case 'edit':
+
+                    // gestionar post
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
+
+                        $errors = array();
+
+                        // instancia
+                        $item = new $model(array(
+                            'id' => $_POST['id'],
+                            'name' => $_POST['name'],
+                            'blog' => 1
+                        ));
+
+                        if ($item->save($errors)) {
+                            throw new Redirection($url);
+                        }
+                    } else {
+                        $item = $model::get($id);
+                    }
+
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Editando un tag de blog",
+                            'menu' => array(
+                                array(
+                                    'url'   => $url,
+                                    'label' => 'Tags'
+                                )
+                            ),
+                            'data' => $item,
+                            'form' => array(
+                                'action' => "$url/edit/$id",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'guardar'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Tag',
+                                        'name' => 'name',
+                                        'type' => 'text'
+                                    )
+                                )
+
+                            ),
+                            'errors' => $errors
+                        )
+                    );
+
+                    break;
+                case 'remove':
+                    if ($model::delete($id)) {
+                        throw new Redirection($url);
+                    }
+                    break;
+            }
+
+            return new View(
+                'view/admin/list.html.php',
+                array(
+                    'title' => 'Gestión de tags para blog',
+                    'menu' => array(
+                        array(
+                            'url' => "$url/add",
+                            'label' => 'Nuevo tag'
+                        ),
+                        array (
+                            'url' => '/admin/blog',
+                            'label' => 'Gestionar Blog'
+                        )
+                    ),
+                    'data' => $model::getList(),
+                    'columns' => array(
+                        'name' => 'Tag',
+                        'used' => 'Entradas',
+                        'edit' => '',
+                        'remove' => ''
+                    ),
+                    'url' => "$url",
+                    'errors' => $errors
+                )
+            );
+        }
+
+        /*
          *  administración de nodos y usuarios (segun le permita el ACL al usuario validado)
          */
         public function managing($action = 'list', $id = null) {
@@ -1396,6 +1537,8 @@ namespace Goteo\Controller {
             
             $url = '/admin/blog';
 
+            /*
+             * Filtro de fecha
             $filters = array();
             $fields = array('date');
             foreach ($fields as $field) {
@@ -1403,56 +1546,171 @@ namespace Goteo\Controller {
                     $filters[$field] = $_GET[$field];
                 }
             }
+             * 
+             */
 
             $errors = array();
 
+            $blog = Model\Blog::get(\GOTEO_NODE, 'node');
+            if (!$blog instanceof \Goteo\Model\Blog) {
+                $errors[] = 'No tiene espacio de blog, Contacte con nosotros';
+                $action = 'list';
+            } else {
+                if (!$blog->active) {
+                    $errors[] = 'Lo sentimos, las actualizaciones para este proyecto estan desactivadas';
+                    $action = 'list';
+                }
+            }
+
+            // primero comprobar que tenemos blog
+            if (!$blog instanceof Model\Blog) {
+                $errors[] = 'No se ha encontrado ningún blog para este nodo';
+                $action = 'list';
+            }
+
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    if (empty($_POST['blog'])) {
+                        break;
+                    }
+                    
+                    $post = new Model\Blog\Post();
+                    // campos que actualizamos
+                    $fields = array(
+                        'id',
+                        'blog',
+                        'title',
+                        'text',
+                        'image',
+                        'media',
+                        'date',
+                        'home',
+                        'allow'
+                    );
+
+                    foreach ($fields as $field) {
+                        $post->$field = $_POST[$field];
+                    }
+
+                    // tratar la imagen y ponerla en la propiedad image
+                    if(!empty($_FILES['image_upload']['name'])) {
+                        $post->image = $_FILES['image_upload'];
+                    }
+
+                    // tratar si quitan la imagen
+                    if (isset($_POST['image-' . $post->image .  '-remove'])) {
+                        $image = Model\Image::get($post->image);
+                        $image->remove('post');
+                        $post->image = '';
+                        $removed = true;
+                    }
+
+                    if (!empty($post->media)) {
+                        $post->media = new Model\Project\Media($post->media);
+                    }
+
+                    $post->tags = $_POST['tags'];
+
+                    /// este es el único save que se lanza desde un metodo process_
+                    if ($post->save($errors)) {
+                        if ($action == 'edit') {
+                            $success[] = 'La entrada se ha actualizado correctamente';
+                            ////Text::get('dashboard-project-updates-saved');
+                        } else {
+                            $success[] = 'Se ha añadido una nueva entrada';
+                            ////Text::get('dashboard-project-updates-inserted');
+                        }
+                        $action = $removed ? 'edit' : 'list';
+                    } else {
+                        $errors[] = 'Ha habido algun problema al guardar los datos';
+                        ////Text::get('dashboard-project-updates-fail');
+                    }
+            }
+
             switch ($action)  {
+                case 'remove':
+                    // eliminar una entrada
+                    if (!empty($blog->posts[$id])) {
+                        if (Model\Blog\Post::delete($id)) {
+                            unset($blog->posts[$id]);
+                            $success[] = 'Entrada eliminada';
+                        } else {
+                            $errors[] = 'No se ha podido eliminar la entrada';
+                        }
+                    } else {
+                        $errors[] = 'La entrada que se quiere eliminar no es de este blog';
+                    }
                 case 'list':
                     // lista de entradas
                     // obtenemos los datos
-                    $posts = Blog::getPosts();
+                    $posts = $blog->posts;
 
                     return new View(
-                        'view/admin/list.html.php',
+                        'view/admin/blog.html.php',
                         array(
-                            'title' => 'Lista de entradas',
-                            'menu' => array(
-                                array(
-                                    'url' => "$url/add",
-                                    'label' => 'Nueva entrada'
-                                )
-                            ),
-                            'data' => $posts,
-                            'columns' => array(
-                                'title' => 'Titulo',
-                                'date'  => 'Fecha',
-                                'edit'  => '',
-                                'remove' => ''
-                            ),
-                            'url' => "$url",
-                            'errors' => $errors
+                            'posts' => $posts,
+                            'errors' => $errors,
+                            'success' => $success
                         )
                     );
                     break;
                 case 'add':
                     // nueva entrada con wisiwig
                     // obtenemos datos basicos
-                    // lo que es el superform lo creamos con la libreria
+                    $post = new Model\Blog\Post(
+                            array(
+                                'blog' => $blog->id,
+                                'date' => date('Y-m-d'),
+                                'allow' => true,
+                                'tags' => array()
+                            )
+                        );
 
+                    $message = 'Añadiendo una nueva entrada';
+
+                    return new View(
+                        'view/admin/blogEdit.html.php',
+                        array(
+                            'action' => 'add',
+                            'post' => $post,
+                            'tags' => Model\Blog\Post\Tag::getAll(),
+                            'message' => $message,
+                            'errors' => $errors
+                        )
+                    );
                     break;
                 case 'edit':
-                    // editar entrada con wisiwig
-                    // obtenemos los datos
-                    // lo que es el superform lo creamos con la libreria
+                    if (empty($id)) {
+                        $errors[] = 'No se ha encontrado la entrada';
+                        //Text::get('dashboard-project-updates-nopost');
+                        $action = 'list';
+                        break;
+                    } else {
+                        $post = Model\Blog\Post::get($id);
 
-                    break;
-                case 'remove':
-                    // ocultar o eliminar una entrada
+                        if (!$post instanceof Model\Blog\Post) {
+                            $errors[] = 'La entrada esta corrupta, contacte con nosotros.';
+                            //Text::get('dashboard-project-updates-postcorrupt');
+                            $action = 'list';
+                            break;
+                        }
+                    }
+
+                    $message = 'Editando una entrada existente';
+
+                    return new View(
+                        'view/admin/blogEdit.html.php',
+                        array(
+                            'action' => 'edit',
+                            'post' => $post,
+                            'tags' => Model\Blog\Post\Tag::getAll(),
+                            'message' => $message,
+                            'errors' => $errors
+                        )
+                    );
                     break;
             }
 
         }
-
 
 	}
 

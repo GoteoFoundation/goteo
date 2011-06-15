@@ -2,7 +2,7 @@
 
 namespace Goteo\Model\Blog\Post {
 
-    class tag extends \Goteo\Core\Model {
+    class Tag extends \Goteo\Core\Model {
 
         public
             $id,
@@ -58,6 +58,36 @@ namespace Goteo\Model\Blog\Post {
             return $list;
         }
 
+        /*
+         * Lista de tags para gestión
+         * de un post si recibe el parametro
+         */
+        public static function getList () {
+
+            $list = array();
+
+            $sql = "
+                SELECT
+                    tag.id,
+                    tag.name,
+                    (   SELECT
+                        COUNT(post_tag.post)
+                        FROM post_tag
+                        WHERE post_tag.tag = tag.id
+                    ) as used
+                FROM    tag
+                ORDER BY tag.name ASC";
+
+            $query = static::query($sql, array($post));
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $tag) {
+                $list[$tag->id] = $tag;
+            }
+
+            return $list;
+        }
+
+
         public function validate (&$errors = array()) { 
             if (empty($this->name))
                 $errors[] = 'Falta nombre';
@@ -102,7 +132,6 @@ namespace Goteo\Model\Blog\Post {
 
         // para añadir un nuevo tag al post
         public function assign (&$errors = array()) {
-            if (!$this->validate($errors)) return false;
 
             $fields = array(
                 'tag',

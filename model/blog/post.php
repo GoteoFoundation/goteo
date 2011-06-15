@@ -30,7 +30,9 @@ namespace Goteo\Model\Blog {
                         text,
                         `image`,
                         `media`,
-                        `date`
+                        `date`,
+                        DATE_FORMAT(date, '%d-%m-%Y') as fecha,
+                        home
                     FROM    post
                     WHERE id = :id
                     ", array(':id' => $id));
@@ -50,6 +52,9 @@ namespace Goteo\Model\Blog {
 
                 $post->comments = Post\Comment::getAll($id);
                 $post->num_comments = count($post->comments);
+
+                //tags
+                $post->tags = Post\Tag::getAll($id);
 
                 return $post;
         }
@@ -71,7 +76,9 @@ namespace Goteo\Model\Blog {
                     text,
                     `image`,
                     `media`,
-                    DATE_FORMAT(date, '%d-%m-%Y') as date
+                    DATE_FORMAT(date, '%d-%m-%Y') as date,
+                    DATE_FORMAT(date, '%d-%m-%Y') as fecha,
+                    home
                 FROM    post
                 WHERE blog = ?
                 ORDER BY date DESC, id DESC
@@ -136,7 +143,9 @@ namespace Goteo\Model\Blog {
                 'text',
                 'image',
                 'media',
-                'date'
+                'date',
+                'allow',
+                'home'
                 );
 
             // si editan por aqui no salen en portada, por ahora
@@ -154,6 +163,21 @@ namespace Goteo\Model\Blog {
                 $sql = "REPLACE INTO post SET " . $set;
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
+
+                // y los tags, si hay
+                if (!empty($this->id) && is_array($this->tags)) {
+                    static::query('DELETE FROM post_tag WHERE post= ?', $this->id);
+                    foreach ($this->tags as $tag) {
+                        $new = new Post\Tag(
+                                array(
+                                    'post' => $this->id,
+                                    'tag' => $tag
+                                )
+                            );
+                        $new->assign($errors);
+                        unset($new);
+                    }
+                }
 
                 return true;
             } catch(\PDOException $e) {
@@ -174,6 +198,26 @@ namespace Goteo\Model\Blog {
                 return false;
             }
 
+        }
+
+        /*
+         *  Para saber si una entrada permite comentarios
+         */
+        public static function allowed ($id) {
+                $query = static::query("
+                    SELECT
+                        allow
+                    FROM    post
+                    WHERE id = :id
+                    ", array(':id' => $id));
+
+                $post = $query->fetchObject(__CLASS__);
+
+                if ($post->allow > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
         }
 
     }

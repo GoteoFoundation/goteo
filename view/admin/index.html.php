@@ -33,7 +33,7 @@ include 'view/prologue.html.php';
                 <div class="widget board collapse">
                     <h3 class="title">Contenidos</h3>
                     <ul>
-                        <li><a href="/admin/posts">Entradas</a></li>
+                        <li><a href="/admin/posts">Entradas en portada</a></li>
                         <li><a href="/admin/promote">Proyectos destacados</a></li>
                         <li><a href="/admin/texts">Gestión de textos</a></li>
                         <li><a href="/admin/faq">Preguntas frecuentes</a></li>
@@ -46,8 +46,9 @@ include 'view/prologue.html.php';
                     <ul>
                         <li><a href="/admin/icons">Tipos de Retorno/Recompensa</a></li>
                         <li><a href="/admin/licenses">Licencias</a></li>
-                        <li><a href="/admin/categories">Categorias</a></li>
-                        <li><a href="/admin/interests">Intereses</a></li>
+                        <li><a href="/admin/categories">Categorias de proyectos</a></li>
+                        <li><a href="/admin/interests">Intereses de ususarios</a></li>
+                        <li><a href="/admin/tags">Tags del blog</a></li>
                     </ul>
                 </div>
 

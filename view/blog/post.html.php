@@ -14,7 +14,10 @@ if ($this['show'] == 'list') {
 }
 ?>
 <h<?php echo $level + 1?>><?php echo $post->title; ?></h<?php echo $level + 1?>>
-<span style="display:block;"><?php echo $post->date; ?></span>
+<span style="display:block;"><?php echo $post->fecha; ?></span>
+<?php if (!empty($post->tags)) : ?>
+<span style="display:block;"><?php echo implode(', ', $post->tags);  ?></span>
+<?php endif; ?>
 <blockquote><?php echo $post->text; ?></blockquote>
 <?php if (!empty($post->image)) : ?>
     <img src="/image/<?php echo $post->image->id; ?>/110/110" alt="Imagen"/>

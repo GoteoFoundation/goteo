@@ -31,7 +31,13 @@ namespace Goteo\Model {
                     WHERE id = :id
                     ", array(':id' => $id));
 
-                return $query->fetchObject(__CLASS__);
+                $post = $query->fetchObject(__CLASS__);
+
+                //sus tags, si tiene
+                $post->tags = Post\Tag::getAll($id);
+
+                return $post;
+
         }
 
         /*
