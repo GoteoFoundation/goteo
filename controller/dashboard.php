@@ -516,14 +516,13 @@ namespace Goteo\Controller {
 
                                     //me cojo su email y lo meto en un array para enviar solo con una instancia de Mail
                                     $data = Model\User::getMini($userId);
-                                    $data->email = $userId.'-goteo@doukeshi.org';
 
                                     // reusamos el objeto mail
                                     $mailHandler = new Mail();
 
                                     $mailHandler->to = $data->email;
-                                    //@TODO blind copy a comunicaciones@goteo.org
-                               //     $mailHandler->bcc = 'bcc@doukeshi.org';
+                                    //@TODO blind copy a goteo
+                                    $mailHandler->bcc = 'comunicaciones@goteo.org';
                                     $mailHandler->subject = $subject;
                                     $mailHandler->content = str_replace('%NAME%', $data->name, $content);
 

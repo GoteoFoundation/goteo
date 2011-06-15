@@ -86,7 +86,7 @@ namespace Goteo\Controller {
 
                 $mailHandler->to = $project->contract_email;
                 //@TODO blind copy a comunicaciones@goteo.org
-                $mailHandler->bcc = 'bcc@doukeshi.org';
+                $mailHandler->bcc = 'comunicaciones@goteo.org';
                 $mailHandler->subject = $subject;
                 $mailHandler->content = $content;
 
