@@ -15,6 +15,12 @@ $params = $this['params'];
 
     <form method="post" action="/discover/results">
 
+        <div style="display:block">
+            <legend>Por contenido:
+                <input type="text" name="query" size="48" value="<?php echo $params['query']; ?>" />
+            </legend>
+        </div>
+
         <div style="float:left">
             <label>Por categoria:<br />
                 <select name="category[]" multiple size="7">

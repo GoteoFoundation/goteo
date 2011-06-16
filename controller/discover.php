@@ -66,6 +66,8 @@ namespace Goteo\Controller {
                     }
                 }
 
+                $params['query'] = $_POST['query'];
+
                 // para cada parametro, si no hay ninguno es todos los valores
                 $results = \Goteo\Library\Search::params($params);
 

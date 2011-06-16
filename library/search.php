@@ -57,6 +57,7 @@ namespace Goteo\Library {
 
             $results = array();
             $where   = array();
+            $values  = array();
 
             if (!empty($params['category'])) {
                 $where[] = 'AND id IN (
@@ -78,6 +79,19 @@ namespace Goteo\Library {
                                     )';
             }
 
+            if (!empty($params['query'])) {
+                $where[] = ' AND (name LIKE :text
+                                OR description LIKE :text
+                                OR motivation LIKE :text
+                                OR about LIKE :text
+                                OR goal LIKE :text
+                                OR related LIKE :text
+                                OR keywords LIKE :text
+                                OR location LIKE :text
+                            )';
+                $values[':text'] = "%{$params['query']}%";
+            }
+
             $sql = "SELECT id
                     FROM project
                     WHERE status > 2
@@ -93,7 +107,7 @@ namespace Goteo\Library {
 //            echo "$sql<br />";
 
             try {
-                $query = Model::query($sql);
+                $query = Model::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $match) {
                     $results[] = Project::get($match->id);
                 }
