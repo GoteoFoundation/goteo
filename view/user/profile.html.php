@@ -85,8 +85,7 @@ $worthcracy = Worth::getAll();
                             <?php endforeach ?>                                                        
                             </ul>
                         </div>
-                        
-                        
+                        <a class="more" href="">Ver más</a>
                     </div>
             </div>
 
