@@ -15,18 +15,18 @@ $level = (int) $this['level'] ?: 4;
     
     <dl>
         
-        <dt class="projects">Cofinancia</dt>
-        <dd class="projects"><strong><?php echo $user->projects ?></strong> proyectos</dd>
+        <dt class="projects"><?php echo Texg::get('profile-invest_on-title'); ?></dt>
+        <dd class="projects"><strong><?php echo $user->projects ?></strong> <?php echo Texg::get('regular-projects'); ?></dd>
         
-        <dt class="worthcracy">Posición</dt>
+        <dt class="worthcracy"><?php echo Texg::get('profile-worthcracy-title'); ?></dt>
         <dd class="worthcracy">            
             <?php echo new View('view/worth/base.html.php', array('worthcracy' => $worthcracy, 'level' => $user->worth)) ?> 
         </dd>
         
-        <dt class="amount">Aporta</dt>
+        <dt class="amount"><?php echo Texg::get('profile-worth-title'); ?></dt>
         <dd class="amount"><strong><?php echo number_format($user->amount) ?></strong> <span class="euro">&euro;</span></dd>
         
-        <dt class="date">Fecha</dt>
+        <dt class="date"><?php echo Texg::get('profile-last_worth-title'); ?></dt>
         <dd class="date"><?php echo $user->date; ?></dd>
         
     </dl>
