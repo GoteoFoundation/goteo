@@ -1,4 +1,5 @@
 <?php
+use Goteo\Library\Text;
 
 $level = (int) $this['level'] ?: 3;
 

@@ -68,8 +68,7 @@ namespace Goteo\Library {
             
 			// buscamos el texto en la tabla
 			$query = Model::query("SELECT `text` FROM text WHERE id = :id AND lang = :lang", array(':id' => $id, ':lang' => $lang));
-			$exist = $query->fetchObject();
-			if ($exist->text) {
+			if ($exist = $query->fetchObject() && $exist->text) {
                 $tmptxt = $_cache[$id][$lang] = $exist->text;
 
                 //contamos cuantos argumentos necesita el texto
@@ -92,9 +91,9 @@ namespace Goteo\Library {
                 }
 			}
 
-            $text = nl2br($text);
+            $texto = nl2br($texto);
             // apaño temporal para los magic quotes
-            $text = \str_replace('\\', '', $text);
+            $texto = \str_replace('\\', '', $texto);
 
             return $texto;
 		}

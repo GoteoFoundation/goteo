@@ -46,8 +46,8 @@ $level = (int) $this['level'] ?: 3;
             <?php foreach ($posts as $post) : ?>
                 <div class="widget">
                     <?php echo new View('view/blog/post.html.php', array('post' => $post->id, 'show' => 'list')); ?>
-                   <span><?php echo $post->num_comments > 0 ? $post->num_comments : 'Sin'; ?> comentarios.</span>
-                   <div class="more"><a href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>">Leer más</a></div>
+                   <span><?php echo $post->num_comments > 0 ? $post->num_comments . ' ' .Text::get('blog-comments') : Text::get('blog-no_comments'); ?></span>
+                   <div class="more"><a href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>"><?php echo Text::get('blog-read_more'); ?></a></div>
                 </div>
             <?php endforeach; ?>
         </div>

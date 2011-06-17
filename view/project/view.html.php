@@ -5,7 +5,8 @@ use Goteo\Core\View,
     Goteo\Model\Project\Cost,
     Goteo\Model\Project\Support,
     Goteo\Model\Project\Category,
-    Goteo\Model\Blog;
+    Goteo\Model\Blog,
+    Goteo\Library\Text;
 
 $project = $this['project'];
 $show    = $this['show'];
