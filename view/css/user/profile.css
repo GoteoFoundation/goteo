@@ -7,7 +7,7 @@ body.user-profile div#main div.widget {
 }
 
 body.user-profile div#main > div.center {
-    min-width: 620px;
+    width: 620px;
     float: left;        
 }
 
