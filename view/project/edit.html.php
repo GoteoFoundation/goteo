@@ -15,7 +15,7 @@ include 'view/prologue.html.php';
 
     <div id="sub-header">
         <div>
-            <h2>Formulario</h2>
+            <h2><?php echo Texg::get('project-form-header'); ?></h2>
         </div>
     </div>
 
