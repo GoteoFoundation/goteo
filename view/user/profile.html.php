@@ -57,14 +57,14 @@ $worthcracy = Worth::getAll();
             </div>
             <div class="side">
                 <div class="widget user-supporters">
-                        <h3>Mis cofinanciadores</h3>
-                        <div>
-                        <?php foreach ($this['investors'] as $user=>$investor) {
-                            echo new View('view/user/widget/supporter.html.php', array('user' => $investor, 'worthcracy' => $worthcracy));
-            //                echo "{$investor->avatar} {$investor->name} De nivel {$investor->worth}  Cofinancia {$investor->projects} proyectos  Me aporta: {$investor->amount} € <br />";
-                        } ?>
-                        </div>
-                        <?php echo new View('view/worth/base.html.php', array('worthcracy' => $worthcracy, 'type' => 'side')); ?>
+                        <h3 class="supertitle">Mis cofinanciadores</h3>
+                        <div class="supporters">
+                        <ul>
+                            <?php foreach ($this['investors'] as $user => $investor): ?>
+                            <li><?php echo new View('view/user/widget/supporter.html.php', array('user' => $investor, 'worthcracy' => $worthcracy)) ?></li>                        
+                            <?php endforeach ?>
+                        </ul>
+                        </div>                        
                     </div>
 
                     <div class="widget user-mates">
