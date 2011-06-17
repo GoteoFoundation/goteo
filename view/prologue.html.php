@@ -3,7 +3,7 @@
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title><?php if(!empty($content->title)) { echo $content->title . ' - '; } ?><?php echo GOTEO_META_TITLE ?></title>
+        <title><?php echo GOTEO_META_TITLE ?></title>
         <meta name="description" content="<?php echo GOTEO_META_DESCRIPTION ?>" />
         <meta name="keywords" content="<?php echo GOTEO_META_KEYWORDS ?>" />
         <meta name="author" content="<?php echo GOTEO_META_AUTHOR ?>" />

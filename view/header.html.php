@@ -3,15 +3,15 @@
 
     <?php include 'view/header/lang.html.php' ?>
 
-    <h1>Goteo.org</h1>
+    <h1><?php echo Texg::get('regular-main-header'); ?></h1>
 
     <div id="super-header">
 
         <div id="about">
             <ul>
-                <li><a href="/about">Sobre Goteo</a></li>
-                <li><a href="/blog">Blog</a></li>
-                <li><a href="/faq">FAQ</a></li>
+                <li><a href="/about"><?php echo Texg::get('regular-header-about'); ?></a></li>
+                <li><a href="/blog"><?php echo Texg::get('regular-header-blog'); ?></a></li>
+                <li><a href="/faq"><?php echo Texg::get('regular-header-faq'); ?></a></li>
             </ul>
         </div>
 

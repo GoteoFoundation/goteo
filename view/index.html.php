@@ -10,8 +10,8 @@ $bodyClass = 'home'; include 'view/prologue.html.php' ?>
 
         <div id="sub-header">
             <div>
-                <h2>Accede a la comunidad goteo</h2>
-                <strong>100% Abierto</strong>
+                <h2><?php echo Texg::get('home-banner-header'); ?></h2>
+                <strong><?php echo Texg::get('home-banner-strong'); ?></strong>
             </div>
 
         </div>
@@ -22,7 +22,7 @@ $bodyClass = 'home'; include 'view/prologue.html.php' ?>
             
             <div class="widget learn">
                 
-            <h2 class="title">Cómo funciona goteo</h2>
+            <h2 class="title"><?php echo Texg::get('home-posts-header'); ?></h2>
             
                 <ul>
                     <?php foreach ($this['posts'] as $post) : ?>
@@ -48,7 +48,7 @@ $bodyClass = 'home'; include 'view/prologue.html.php' ?>
             
             <div class="widget projects promos">
                 
-                <h2 class="title">Proyectos destacados</h2>
+                <h2 class="title"><?php echo Texg::get('home-promotes-header'); ?></h2>
             
                 <?php foreach ($this['promotes'] as $promo) : ?>
                 
