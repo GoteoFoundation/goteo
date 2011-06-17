@@ -1,0 +1,56 @@
+div.widget.user-mates .users ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+div.widget.user-mates .users ul > li {        
+    height: 4.5em;
+    width: 50%;
+    float: left;
+    position: relative;
+    background: url("../../avatar/m.png") no-repeat 0 10px;
+}
+
+div.widget.user-mates .users ul > li .user {
+    padding: 10px 10px 10px 60px;    
+}
+
+div.widget.user-mates .users ul > li .avatar {
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 50px;
+    height: 50px;    
+    text-align: center;
+}
+
+div.widget.user-mates .users ul > li h3,
+div.widget.user-mates .users ul > li h4,
+div.widget.user-mates .users ul > li h5,
+div.widget.user-mates .users ul > li h6 {
+    margin: 0 0 .2em;
+    font-size: 11px;
+}
+
+div.widget.user-mates .users ul > li a {    
+    text-decoration: none;
+    font-size: 8px;
+}
+
+div.widget.user-mates .users ul > li h3 a,
+div.widget.user-mates .users ul > li h4 a,
+div.widget.user-mates .users ul > li h5 a,
+div.widget.user-mates .users ul > li h6 a {
+    font-size: 12px !important;
+    font-weight: bold;
+}
+
+
+div.widget.user-mates .users ul > li a.projects {    
+    color: #20b3b2;
+}
+
+div.widget.user-mates .users ul > li a.invests {    
+    color: #313b96;
+}

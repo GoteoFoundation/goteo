@@ -2,6 +2,7 @@
 @import url('widget/about.css');
 @import url('widget/social.css');
 @import url('widget/supporters.css');
+@import url('widget/mates.css');
 
 body.user-profile div#main div.widget {
     margin-bottom: 20px;

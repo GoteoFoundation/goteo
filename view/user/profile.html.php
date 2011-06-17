@@ -68,13 +68,25 @@ $worthcracy = Worth::getAll();
                     </div>
 
                     <div class="widget user-mates">
-                        <h3>Compartiendo intereses</h3>
-                        <?php foreach ($this['shares'] as $share) {
-                            echo '<div style="float:left;margin: 10px;"><img src="/image/' . $share->avatar->id . '/50/50" /><br />';
-                            echo '<a href="/user/' . $share->user . '">' . $share->name . '</a><br />';
-                            echo "Proyectos(" . $share->projects .")<br/>Aportacion(" . $share->invests ." )";
-                            echo '</div>';
-                        } ?>
+                        <h3 class="supertitle">Compartiendo intereses</h3>
+                        <div class="users">
+                            <ul>
+                            <?php foreach ($this['shares'] as $mate): ?>
+                                <li>
+                                    <div class="user">
+                                        <?php if ($mate->avatar instanceof Goteo\Model\Image): ?>
+                                        <div class="avatar"><img src="<?php echo htmlspecialchars($mate->avatar->getLink(50,50)) ?>" /></div>
+                                        <?php endif ?>
+                                        <h4><a href="/user/<?php echo htmlspecialchars($mate->user) ?>"><?php echo htmlspecialchars($mate->user) ?></a></h4>
+                                        <a class="projects" href="/user/<?php echo htmlspecialchars($mate->user) ?>">Proyectos (<?php echo $mate->projects ?>)</a>
+                                        <a class="invests" href="/user/<?php echo htmlspecialchars($mate->user) ?>">Aportaciones (<?php echo $mate->invests ?>)</a>
+                                    </div>
+                                </li>
+                            <?php endforeach ?>                                                        
+                            </ul>
+                        </div>
+                        
+                        
                     </div>
             </div>
 
