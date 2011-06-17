@@ -52,7 +52,7 @@ $level = (int) $this['level'] ?: 3;
             <?php endforeach; ?>
         </div>
         <?php else : ?>
-            <p>No se ha publicado ninguna actualización</p>
+            <p><?php echo Text::get('blog-no_posts'); ?></p>
         <?php endif; ?>
     <?php endif; ?>
     
