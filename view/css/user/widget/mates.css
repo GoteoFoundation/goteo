@@ -54,3 +54,13 @@ div.widget.user-mates .users ul > li a.projects {
 div.widget.user-mates .users ul > li a.invests {    
     color: #313b96;
 }
+
+
+div.widget.user-mates a.more  {    
+    color: #313b96;
+    font-size: 13px !important;
+    text-transform: uppercase;
+    float: right;
+    clear: both;
+    text-decoration: none;
+}
