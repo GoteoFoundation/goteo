@@ -16,7 +16,7 @@ extract($_POST);
 
             <div>
 
-                <h2><?php echo Texg::get('login-recover-header'); ?></h2>
+                <h2><?php echo Text::get('login-recover-header'); ?></h2>
 
                 <?php if (!empty($error)): ?>
                 <p class="error"><?php echo $error; ?></p>
@@ -27,16 +27,16 @@ extract($_POST);
 
                 <form action="/user/recover" method="post">
                     <div class="username">
-                        <label><?php echo Texg::get('login-recover-username-field'); ?>
+                        <label><?php echo Text::get('login-recover-username-field'); ?>
                         <input type="text" name="username" value="<?php echo $username?>" /></label>
                     </div>
 
                     <div class="email">
-                        <label><?php echo Texg::get('login-recover-email-field'); ?>
+                        <label><?php echo Text::get('login-recover-email-field'); ?>
                         <input type="text" name="email" value="<?php echo $email?>" /></label>
                     </div>
 
-                    <input type="submit" name="recover" value="<?php echo Texg::get('login-recover-button'); ?>" />
+                    <input type="submit" name="recover" value="<?php echo Text::get('login-recover-button'); ?>" />
 
                 </form>
 

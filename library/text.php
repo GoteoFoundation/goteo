@@ -232,7 +232,8 @@ namespace Goteo\Library {
                 'dashboard'=> 'Dashboard del usuario',
                 'register' => 'Registro de usuarios',
                 'login'    => 'Pagina de login',
-                'public_profile'    => 'Pagina de perfil de usuario',
+                'public_profile' => 'Pagina de perfil de usuario',
+                'project'  => 'Proyecto, pública y formulario',
                 'general'  => 'Propósito general'
             );
         }

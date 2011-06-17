@@ -12,7 +12,7 @@ if (!isset($user->webs)) {
 
 <div class="widget user collapsable">
     
-    <h<?php echo $level ?> class="supertitle"><?php echo Texg::get('profile-widget-user-header'); ?></h<?php echo $level ?>>
+    <h<?php echo $level ?> class="supertitle"><?php echo Text::get('profile-widget-user-header'); ?></h<?php echo $level ?>>
     
     <h<?php echo $level + 1 ?> class="title">
     <?php echo htmlspecialchars($user->name) ?></h<?php echo $level + 1 ?>>
@@ -30,12 +30,12 @@ if (!isset($user->webs)) {
     <dl>
         
         <?php if (isset($user->location)): ?>
-        <dt class="location"><?php echo Texg::get(''); ?></dt>
+        <dt class="location"><?php echo Text::get(''); ?></dt>
         <dd class="location"><?php echo Text::GmapsLink($user->location); ?></dd>
         <?php endif ?>
         
         <?php if (!empty($user->webs)): ?>        
-        <dt class="links"><?php echo Texg::get(''); ?></dt>
+        <dt class="links"><?php echo Text::get(''); ?></dt>
         <dd class="links">
             <ul>
                 <?php foreach ($user->webs as $link): ?>
@@ -47,7 +47,7 @@ if (!isset($user->webs)) {
         
     </dl>
     
-    <a class="button aqua profile" href="/user/<?php echo $user->id; ?>"><?php echo Texg::get('profile-widget-button'); ?></a>
+    <a class="button aqua profile" href="/user/<?php echo $user->id; ?>"><?php echo Text::get('profile-widget-button'); ?></a>
         
 </div>
 

@@ -17,7 +17,7 @@ $interests = Interest::getAll();
 
         <div id="sub-header">
             <div>
-                <h2><img src="/image/<?php echo $user->avatar->id; ?>/75/75" /> <?php echo Texg::get('profile-name-header'); ?><br /><em><?php echo $user->name; ?></em></h2>
+                <h2><img src="/image/<?php echo $user->avatar->id; ?>/75/75" /> <?php echo Text::get('profile-name-header'); ?><br /><em><?php echo $user->name; ?></em></h2>
             </div>
         </div>
 
@@ -26,10 +26,10 @@ $interests = Interest::getAll();
             <?php echo new View('view/worth/base.html.php', array('worthcracy' => $worthcracy, 'type' => 'main', 'level' => $user->worth)); ?>
                                     
             <div class="about">
-                <h4><?php echo Texg::get('profile-about-header'); ?></h4>
+                <h4><?php echo Text::get('profile-about-header'); ?></h4>
                 <p><?php echo $user->about ?></p>
                 <hr />
-                <h4><?php echo Texg::get('profile-interests-header'); ?></h4>
+                <h4><?php echo Text::get('profile-interests-header'); ?></h4>
                 <p><?php
                 $c = 0;
                 foreach ($user->interests as $interest) {
@@ -38,13 +38,13 @@ $interests = Interest::getAll();
                     $c++;
                 } ?></p>
                 <hr />
-                <h4><?php echo Texg::get('profile-keywords-header'); ?></h4>
+                <h4><?php echo Text::get('profile-keywords-header'); ?></h4>
                 <p><?php echo $user->keywords; ?></p>
                 <hr />
                 <dl>
 
                     <?php if (!empty($user->webs)): ?>
-                    <dt class="links"><?php echo Texg::get('profile-webs-header'); ?></dt>
+                    <dt class="links"><?php echo Text::get('profile-webs-header'); ?></dt>
                     <dd class="links">
                         <ul>
                             <?php foreach ($user->webs as $link): ?>
@@ -55,7 +55,7 @@ $interests = Interest::getAll();
                     <?php endif ?>
 
                     <?php if (isset($user->location)): ?>
-                    <dt class="location"><?php echo Texg::get('profile-location-header'); ?></dt>
+                    <dt class="location"><?php echo Text::get('profile-location-header'); ?></dt>
                     <dd class="location"><?php echo Text::GmapsLink($user->location); ?></dd>
                     <?php endif ?>
 
@@ -67,26 +67,26 @@ $interests = Interest::getAll();
             
             <?php if (isset($user->facebook) || isset($user->linkedin) || isset($user->twitter)): ?>            
             <div class="social">
-                <h2 class="title"><?php echo Texg::get('profile-social-header'); ?></h2>
+                <h2 class="title"><?php echo Text::get('profile-social-header'); ?></h2>
                 <ul>
                     <?php if (isset($user->facebook)): ?>
-                    <li class="facebook"><a href="<?php echo htmlspecialchars($user->facebook) ?>"><?php echo Texg::get('regular-facebook'); ?></a></li>
+                    <li class="facebook"><a href="<?php echo htmlspecialchars($user->facebook) ?>"><?php echo Text::get('regular-facebook'); ?></a></li>
                     <?php endif ?>
                     <?php if (isset($user->twitter)): ?>
-                    <li class="twitter"><a href="<?php echo htmlspecialchars($user->twitter) ?>"><?php echo Texg::get('regular-twitter'); ?></a></li>
+                    <li class="twitter"><a href="<?php echo htmlspecialchars($user->twitter) ?>"><?php echo Text::get('regular-twitter'); ?></a></li>
                     <?php endif ?>
                     <?php if (isset($user->identica)): ?>
-                    <li class="identica"><a href="<?php echo htmlspecialchars($user->identica) ?>"><?php echo Texg::get('regular-identica'); ?></a></li>
+                    <li class="identica"><a href="<?php echo htmlspecialchars($user->identica) ?>"><?php echo Text::get('regular-identica'); ?></a></li>
                     <?php endif ?>
                     <?php if (isset($user->linkedin)): ?>
-                    <li class="linkedin"><a href="<?php echo htmlspecialchars($user->linkedin) ?>"><?php echo Texg::get('regular-linkedin'); ?></a></li>
+                    <li class="linkedin"><a href="<?php echo htmlspecialchars($user->linkedin) ?>"><?php echo Text::get('regular-linkedin'); ?></a></li>
                     <?php endif ?>
                 </ul>                
             </div>            
             <?php endif ?>
 
             <div class="widget projects">
-                <h2 class="title"><?php echo Texg::get('profile-invest_on-header'); ?></h2>
+                <h2 class="title"><?php echo Text::get('profile-invest_on-header'); ?></h2>
                 <?php foreach ($this['invested'] as $project) : ?>
                     <div>
                         <?php
@@ -99,7 +99,7 @@ $interests = Interest::getAll();
     		</div>
 
             <div class="widget projects">
-                <h2 class="title"><?php echo Texg::get('profile--header'); ?></h2>
+                <h2 class="title"><?php echo Text::get('profile--header'); ?></h2>
                 <?php foreach ($this['projects'] as $project) : ?>
                     <div>
                         <?php
@@ -114,7 +114,7 @@ $interests = Interest::getAll();
             <hr />
             <!-- lateral -->
             <div class="widget users user-supporters">
-                <h3><?php echo Texg::get('profile-my_investors-header'); ?></h3>
+                <h3><?php echo Text::get('profile-my_investors-header'); ?></h3>
                 <div>
                 <?php foreach ($this['investors'] as $user=>$investor) {
                     echo new View('view/user/widget/supporter.html.php', array('user' => $investor, 'worthcracy' => $worthcracy));
@@ -125,7 +125,7 @@ $interests = Interest::getAll();
             </div>
 
             <div class="widget users user-mates">
-                <h3><?php echo Texg::get('profile-sharing_interests-header'); ?></h3>
+                <h3><?php echo Text::get('profile-sharing_interests-header'); ?></h3>
                 <?php foreach ($this['shares'] as $share) {
                     echo '<div style="float:left;margin: 10px;"><img src="/image/' . $share->avatar->id . '/50/50" /><br />';
                     echo '<a href="/user/' . $share->user . '">' . $share->name . '</a><br />';

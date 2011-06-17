@@ -46,7 +46,7 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
             <div>
                 <h2><?php echo htmlspecialchars($project->name) ?></h2>
                 
-                <div class="categories"><h3><?php echo Texg::get('project-view-categories-title'); ?></h3>
+                <div class="categories"><h3><?php echo Text::get('project-view-categories-title'); ?></h3>
                     <?php 
                     $i = 0;  
                     foreach ($categories as $cat) {
