@@ -231,10 +231,22 @@ namespace Goteo\Library {
                 'preview'  => 'Previsualización del proyecto',
                 'dashboard'=> 'Dashboard del usuario',
                 'register' => 'Registro de usuarios',
+                'login'    => 'Pagina de login',
+                'public_profile'    => 'Pagina de perfil de usuario',
                 'general'  => 'Propósito general'
             );
         }
 
+
+		/*
+		 *   Pone el enlace a gmaps segun localidad
+         * @TODO , ponerle el LANG
+		 */
+		static public function GmapsLink($location)
+		{
+			$texto = '<a href="http://maps.google.es/maps?q='.htmlspecialchars(rawurlencode($location)).'&hl=es" target="_blank">'.htmlspecialchars($location).'</a>';
+			return $texto;
+		}
 
 		/*
 		 *   Método para formatear friendly un texto para ponerlo en la url
