@@ -480,13 +480,13 @@ namespace Goteo\Controller {
                     Model\Faq::down($id);
                     break;
                 case 'add':
-                    $next = Model\Faq::next($section);
+                    $next = Model\Faq::next($filter);
 
                     return new View(
                         'view/admin/faqEdit.html.php',
                         array(
                             'action' => 'add',
-                            'faq' => (object) array('section' => $section, 'order' => $next),
+                            'faq' => (object) array('section' => $filter, 'order' => $next),
                             'filter' => $filter,
                             'sections' => $sections
                         )
