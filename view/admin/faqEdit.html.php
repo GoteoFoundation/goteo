@@ -44,7 +44,6 @@ include 'view/prologue.html.php';
 
                     <input type="hidden" name="action" value="<?php echo $this['action']; ?>" />
                     <input type="hidden" name="id" value="<?php echo $this['faq']->id; ?>" />
-                    <input type="hidden" name="order" value="<?php echo $this['faq']->order; ?>" />
 
                     <label for="faq-section">Sección:</label><br />
                     <select id="faq-section" name="section">
@@ -59,6 +58,9 @@ include 'view/prologue.html.php';
                     <label for="faq-description">Descripción:</label><br />
                     <textarea name="description" id="faq-description" cols="60" rows="10"><?php echo $this['faq']->description; ?></textarea>
 
+    <br />
+                    <label for="faq-order">Posición:</label><br />
+                    <input type="text" name="order" id="faq-order" value="<?php echo $this['faq']->order; ?>" />
 
 
                     <input type="submit" name="save" value="Guardar" />
