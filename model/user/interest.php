@@ -2,7 +2,7 @@
 
 namespace Goteo\Model\User {
 
-    class Interest extends \Goteo\Core\Model {
+    class Interest extends \Goteo\Model\Category {
 
         public
             $id,
@@ -38,7 +38,7 @@ namespace Goteo\Model\User {
 		public static function getAll () {
             $array = array ();
             try {
-                $query = static::query("SELECT id, name FROM interest ORDER BY name ASC");
+                $query = static::query("SELECT id, name FROM category ORDER BY name ASC");
                 $interests = $query->fetchAll();
                 foreach ($interests as $int) {
                     $array[$int[0]] = $int[1];

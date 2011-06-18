@@ -46,8 +46,8 @@ include 'view/prologue.html.php';
                     <ul>
                         <li><a href="/admin/icons">Tipos de Retorno/Recompensa</a></li>
                         <li><a href="/admin/licenses">Licencias</a></li>
-                        <li><a href="/admin/categories">Categorias de proyectos</a></li>
-                        <li><a href="/admin/interests">Intereses de ususarios</a></li>
+                        <li><a href="/admin/categories">Categorias</a></li>
+                        <!-- <li><a href="/admin/interests">Intereses de ususarios</a></li> -->
                         <li><a href="/admin/tags">Tags del blog</a></li>
                     </ul>
                 </div>

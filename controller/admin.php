@@ -864,7 +864,7 @@ namespace Goteo\Controller {
                     return new View(
                         'view/admin/edit.html.php',
                         array(
-                            'title' => "Añadiendo una nueva categoría de proyectos",
+                            'title' => "Añadiendo una nueva categoría",
                             'menu' => array(
                                 array(
                                     'url' => $url,
@@ -928,7 +928,7 @@ namespace Goteo\Controller {
                     return new View(
                         'view/admin/edit.html.php',
                         array(
-                            'title' => "Editando una categoría de proyectos",
+                            'title' => "Editando una categoría",
                             'menu' => array(
                                 array(
                                     'url' => $url,
@@ -985,7 +985,7 @@ namespace Goteo\Controller {
             return new View(
                 'view/admin/list.html.php',
                 array(
-                    'title' => 'Gestión de categorías de proyectos',
+                    'title' => 'Gestión de categorías',
                     'menu' => array(
                         array(
                             'url' => "$url/add",
@@ -995,167 +995,8 @@ namespace Goteo\Controller {
                     'data' => $model::getAll(),
                     'columns' => array(
                         'name' => 'Categoría',
-                        'used' => 'Proyectos',
-                        'order' => 'Prioridad',
-                        'up' => '',
-                        'down' => '',
-                        'edit' => '',
-                        'remove' => ''
-                    ),
-                    'url' => "$url",
-                    'errors' => $errors
-                )
-            );
-        }
-
-        /*
-         *  Gestión de intereses de usuarios
-         *  Si no la usa nadie se puede borrar
-         */
-        public function interests($action = 'list', $id = null) {
-
-            $model = 'Goteo\Model\Interest';
-            $url = '/admin/interests';
-
-            $errors = array();
-
-            switch ($action) {
-                case 'add':
-                    return new View(
-                        'view/admin/edit.html.php',
-                        array(
-                            'title' => "Añadiendo un nuevo interés de usuarios",
-                            'menu' => array(
-                                array(
-                                    'url'   => $url,
-                                    'label' => 'Intereses'
-                                )
-                            ),
-                            'data' => (object) array(),
-                            'form' => array(
-                                'action' => "$url/edit/",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => 'Añadir'
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Interés',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    ),
-                                    'description' => array(
-                                        'label' => 'Descripción',
-                                        'name' => 'description',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="2"',
-
-                                    )
-                                )
-
-                            )
-                        )
-                    );
-
-                    break;
-                case 'edit':
-
-                    // gestionar post
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
-
-                        $errors = array();
-
-                        // instancia
-                        $item = new $model(array(
-                            'id' => $_POST['id'],
-                            'name' => $_POST['name'],
-                            'description' => $_POST['description']
-                        ));
-
-                        if ($item->save($errors)) {
-                            throw new Redirection($url);
-                        }
-                    } else {
-                        $item = $model::get($id);
-                    }
-
-                    return new View(
-                        'view/admin/edit.html.php',
-                        array(
-                            'title' => "Editando un interés de usuario",
-                            'menu' => array(
-                                array(
-                                    'url'   => $url,
-                                    'label' => 'Intereses'
-                                )
-                            ),
-                            'data' => $item,
-                            'form' => array(
-                                'action' => "$url/edit/$id",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => 'guardar'
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Interés',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    ),
-                                    'description' => array(
-                                        'label' => 'Descripción',
-                                        'name' => 'description',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="2"',
-
-                                    )
-                                )
-
-                            ),
-                            'errors' => $errors
-                        )
-                    );
-
-                    break;
-                case 'up':
-                    $model::up($id);
-                    break;
-                case 'down':
-                    $model::down($id);
-                    break;
-                case 'remove':
-                    if ($model::delete($id)) {
-                        throw new Redirection($url);
-                    }
-                    break;
-            }
-
-            return new View(
-                'view/admin/list.html.php',
-                array(
-                    'title' => 'Gestión de intereses de usuarios',
-                    'menu' => array(
-                        array(
-                            'url' => "$url/add",
-                            'label' => 'Nuevo interés'
-                        )
-                    ),
-                    'data' => $model::getAll(),
-                    'columns' => array(
-                        'name' => 'Interes',
-                        'used' => 'Usuarios',
+                        'numProj' => 'Proyectos',
+                        'numUser' => 'Usuarios',
                         'order' => 'Prioridad',
                         'up' => '',
                         'down' => '',
@@ -1771,3 +1612,168 @@ namespace Goteo\Controller {
 	}
 
 }
+
+
+        /*
+         *  Gestión de intereses de usuarios es obsoleta
+         *  se usan las mismas categorias de proyecto
+         *
+        public function interests($action = 'list', $id = null) {
+
+            throw new Redirection('/admin/categories');
+
+            $model = 'Goteo\Model\Interest';
+            $url = '/admin/interests';
+
+            $errors = array();
+
+            switch ($action) {
+                case 'add':
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Añadiendo un nuevo interés de usuarios",
+                            'menu' => array(
+                                array(
+                                    'url'   => $url,
+                                    'label' => 'Intereses'
+                                )
+                            ),
+                            'data' => (object) array(),
+                            'form' => array(
+                                'action' => "$url/edit/",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'Añadir'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Interés',
+                                        'name' => 'name',
+                                        'type' => 'text'
+                                    ),
+                                    'description' => array(
+                                        'label' => 'Descripción',
+                                        'name' => 'description',
+                                        'type' => 'textarea',
+                                        'properties' => 'cols="100" rows="2"',
+
+                                    )
+                                )
+
+                            )
+                        )
+                    );
+
+                    break;
+                case 'edit':
+
+                    // gestionar post
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
+
+                        $errors = array();
+
+                        // instancia
+                        $item = new $model(array(
+                            'id' => $_POST['id'],
+                            'name' => $_POST['name'],
+                            'description' => $_POST['description']
+                        ));
+
+                        if ($item->save($errors)) {
+                            throw new Redirection($url);
+                        }
+                    } else {
+                        $item = $model::get($id);
+                    }
+
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Editando un interés de usuario",
+                            'menu' => array(
+                                array(
+                                    'url'   => $url,
+                                    'label' => 'Intereses'
+                                )
+                            ),
+                            'data' => $item,
+                            'form' => array(
+                                'action' => "$url/edit/$id",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'guardar'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Interés',
+                                        'name' => 'name',
+                                        'type' => 'text'
+                                    ),
+                                    'description' => array(
+                                        'label' => 'Descripción',
+                                        'name' => 'description',
+                                        'type' => 'textarea',
+                                        'properties' => 'cols="100" rows="2"',
+
+                                    )
+                                )
+
+                            ),
+                            'errors' => $errors
+                        )
+                    );
+
+                    break;
+                case 'up':
+                    $model::up($id);
+                    break;
+                case 'down':
+                    $model::down($id);
+                    break;
+                case 'remove':
+                    if ($model::delete($id)) {
+                        throw new Redirection($url);
+                    }
+                    break;
+            }
+
+            return new View(
+                'view/admin/list.html.php',
+                array(
+                    'title' => 'Gestión de intereses de usuarios',
+                    'menu' => array(
+                        array(
+                            'url' => "$url/add",
+                            'label' => 'Nuevo interés'
+                        )
+                    ),
+                    'data' => $model::getAll(),
+                    'columns' => array(
+                        'name' => 'Interes',
+                        'used' => 'Usuarios',
+                        'order' => 'Prioridad',
+                        'up' => '',
+                        'down' => '',
+                        'edit' => '',
+                        'remove' => ''
+                    ),
+                    'url' => "$url",
+                    'errors' => $errors
+                )
+            );
+        }
+         *
+         */
