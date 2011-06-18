@@ -51,6 +51,8 @@ namespace Goteo\Library {
             } else {
                 $nocache = false;
             }
+            
+            $nocache = true;
 
             // si hay mas de un argumento, hay que meter el resto con
             $args = \func_get_args();
