@@ -58,6 +58,27 @@ foreach ($this['scope'] as $value => $label) {
         );
 }
 
+
+$media = array();
+
+$media['media'] = array(
+    'type'  => 'textbox',
+    'class' => 'inline',
+    'title' => Text::get('overview-field-media'),
+    'hint'  => Text::get('tooltip-project-media'),
+    'value' => (string) $project->media
+);
+
+if (!empty($project->media->url)) {
+    $media['media-preview'] = array(
+        'type'  => 'media',
+        'title' => Text::get('overview-field-media_preview'),
+        'class' => 'media',
+        'type'  => 'html',
+        'html'  => '<div>' . (!empty($project->media) ? $project->media->getEmbedCode() : '') .'</div>'
+    );
+}
+
 $errors = $project->errors[$this['step']] ?: array();
 
 $superform = array(
@@ -173,24 +194,13 @@ $superform = array(
             'value'     => $project->keywords
         ),
 
-        'media' => array(
-            'type'      => 'textarea',
-            'title'     => Text::get('overview-field-media'),
-            'class'     => 'media',
+        'media_set' => array(
+            'type'      => 'group',
             'required'  => true,
-            'hint'      => Text::get('tooltip-project-media'),
             'errors'    => !empty($errors['media']) ? array($errors['media']) : array(),
-            'value'     => (string) $project->media,
-            'children'  => array(
-                'media-preview' => array(
-                    'title' => Text::get('overview-field-media_preview'),
-                    'class' => 'media-preview inline',
-                    'type'  => 'html',
-                    'html'  => '<div>' . (!empty($project->media) ? $project->media->getEmbedCode() : '') .'</div>'
-                )
-            )
+            'children'  => $mediaset
         ),
-                
+
         'currently' => array(    
             'title'     => Text::get('overview-field-currently'),
             'type'      => 'slider',

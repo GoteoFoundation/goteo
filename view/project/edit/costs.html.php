@@ -91,13 +91,15 @@ if (!empty($project->costs)) {
                             'type'      => 'datebox',
                             'size'      => 8,
                             'title'     => Text::get('costs-field-date_from'),
+                            'hint'      => Text::get('tooltip-project-cost-dates'),
                             'value'     => $cost->from
                         ),
                         "cost-{$cost->id}-until"  => array(
                             'class'     => 'inline cost-until',
-                            'title'     => Text::get('costs-field-date_until'),
                             'type'      => 'datebox',
                             'size'      => 8,
+                            'title'     => Text::get('costs-field-date_until'),
+                            'hint'      => Text::get('tooltip-project-cost-dates'),
                             'value'     => $cost->until
                         )
                     )
