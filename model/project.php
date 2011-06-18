@@ -959,7 +959,10 @@ namespace Goteo\Model {
             if ($progress > 100) $progress = 100;
             if ($progress < 0)   $progress = 0;
 
-            if ($this->status == 1 && $progress > 60) {
+            if ($this->status == 1 && 
+                $progress > 60 &&
+                \array_empty($this->errors)
+                ) {
                 $this->finishable = true;
             }
             $this->progress = $progress;
