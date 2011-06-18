@@ -1377,7 +1377,7 @@ namespace Goteo\Model {
          */
         public static function status () {
             return array(
-                0=>Text::get('form-project_status-cancelled'),
+//                0=>Text::get('form-project_status-cancelled'),
                 1=>Text::get('form-project_status-edit'),
                 2=>Text::get('form-project_status-review'),
                 3=>Text::get('form-project_status-campaing'),

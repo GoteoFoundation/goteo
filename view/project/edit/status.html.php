@@ -14,7 +14,7 @@
                 </div>
             
                 <div id="project-score">
-                    <h3><?php echo Text::get('form-project-status-title'); ?> <code><?php echo number_format($this['progress'], 0) ?>%</code></h3>
+                    <h3><?php echo Text::get('form-project-progress-title'); ?> <code><?php echo number_format($this['progress'], 0) ?>%</code></h3>
                     <p><?php echo Text::get('explain-project-progress') ?></p>
                     
                     <script type="text/javascript">
