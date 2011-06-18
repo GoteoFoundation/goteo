@@ -209,6 +209,7 @@ namespace Goteo\Controller {
                 case 'overview':
                     $viewData['currently'] = Model\Project::currentStatus();
                     $viewData['categories'] = Model\Project\Category::getAll();
+                    $viewData['scope'] = Model\Project::scope();
                     break;
 
                 case 'costs':
@@ -351,6 +352,7 @@ namespace Goteo\Controller {
                 'user_keywords'=>'keywords',
                 'user_contribution'=>'contribution',
                 'user_twitter'=>'twitter',
+                'user_identica'=>'identica',
                 'user_facebook'=>'facebook',
                 'user_linkedin'=>'linkedin'
             );
@@ -459,7 +461,8 @@ namespace Goteo\Controller {
                 'keywords',
                 'media',
                 'currently',
-                'project_location'
+                'project_location',
+                'scope'
             );
 
             foreach ($fields as $field) {

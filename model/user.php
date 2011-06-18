@@ -23,6 +23,7 @@ namespace Goteo\Model {
             $active,
             $facebook,
             $twitter,
+            $identica,
             $linkedin,
             $created,
             $modified,
@@ -179,6 +180,10 @@ namespace Goteo\Model {
 
                     if(isset($this->twitter)) {
                         $data[':twitter'] = $this->twitter;
+                    }
+
+                    if(isset($this->identica)) {
+                        $data[':identica'] = $this->identica;
                     }
 
                     if(isset($this->linkedin)) {
@@ -352,6 +357,7 @@ namespace Goteo\Model {
                         keywords,
                         facebook,
                         twitter,
+                        identica,
                         linkedin,
                         active,
                         created,

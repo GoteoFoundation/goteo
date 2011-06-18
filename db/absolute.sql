@@ -1180,6 +1180,7 @@ INSERT INTO `purpose` VALUES('form-apply-button', 'Aplicar', NULL, 'form');
 INSERT INTO `purpose` VALUES('form-navigation_bar-header', 'Ir a', NULL, 'form');
 INSERT INTO `purpose` VALUES('form-next-button', 'Siguiente', NULL, 'form');
 INSERT INTO `purpose` VALUES('form-project-info_status-title', 'Estado global de la informaciÃ³n', NULL, 'form');
+INSERT INTO `purpose` VALUES('form-project-progress-title', 'Estado del progreso', NULL, 'form');
 INSERT INTO `purpose` VALUES('form-project-status-title', 'Estado del proyecto', NULL, 'form');
 INSERT INTO `purpose` VALUES('form-project_status-campaing', 'En campaÃ±a', NULL, 'form');
 INSERT INTO `purpose` VALUES('form-project_status-cancel', 'Desechado', NULL, 'form');
@@ -1222,6 +1223,8 @@ INSERT INTO `purpose` VALUES('home-banner-header', 'Accede a la comunidad goteo'
 INSERT INTO `purpose` VALUES('home-banner-strong', '100% Abierto', NULL, 'home');
 INSERT INTO `purpose` VALUES('home-posts-header', 'Como funciona goteo', NULL, 'home');
 INSERT INTO `purpose` VALUES('home-promotes-header', 'Proyectos destacados', NULL, 'home');
+INSERT INTO `purpose` VALUES('login-acces-password-field', 'Texto login-acces-password-field', NULL, 'general');
+INSERT INTO `purpose` VALUES('login-acces-username-field', 'Texto login-acces-username-field', NULL, 'general');
 INSERT INTO `purpose` VALUES('login-access-button', 'Entrar', NULL, 'login');
 INSERT INTO `purpose` VALUES('login-access-header', 'Usuario registrado', NULL, 'login');
 INSERT INTO `purpose` VALUES('login-access-password-field', 'ContraseÃ±a', NULL, 'login');
@@ -1327,6 +1330,7 @@ INSERT INTO `purpose` VALUES('profile-location-header', 'Mi ubicaciÃ³n', NULL,
 INSERT INTO `purpose` VALUES('profile-main-header', 'Usuario/Perfil', NULL, 'profile');
 INSERT INTO `purpose` VALUES('profile-my_investors-header', 'Mis cofinanciadores', NULL, 'public_profile');
 INSERT INTO `purpose` VALUES('profile-my_projects-header', 'Mis proyectos', NULL, 'public_profile');
+INSERT INTO `purpose` VALUES('profile-my_worth-header', 'Mi posiciÃ³n en goteo', NULL, 'public_profile');
 INSERT INTO `purpose` VALUES('profile-name-header', 'Perfil de ', NULL, 'public_profile');
 INSERT INTO `purpose` VALUES('profile-sharing_interests-header', 'Compartiendo intereses', NULL, 'public_profile');
 INSERT INTO `purpose` VALUES('profile-social-header', 'Social', NULL, 'public_profile');
@@ -1348,11 +1352,13 @@ INSERT INTO `purpose` VALUES('regular-header-about', 'Sobre Goteo', NULL, 'gener
 INSERT INTO `purpose` VALUES('regular-header-blog', 'Blog', NULL, 'general');
 INSERT INTO `purpose` VALUES('regular-header-faq', 'FAQ', NULL, 'general');
 INSERT INTO `purpose` VALUES('regular-identica', 'Identica', NULL, 'general');
+INSERT INTO `purpose` VALUES('regular-investing', 'Aportando', NULL, 'general');
 INSERT INTO `purpose` VALUES('regular-linkedin', 'LinkedIn', NULL, 'general');
 INSERT INTO `purpose` VALUES('regular-main-header', 'Goteo.org', NULL, 'general');
 INSERT INTO `purpose` VALUES('regular-mandatory', 'Texto genÃ©rico para indicar campo obligatorio', NULL, 'general');
 INSERT INTO `purpose` VALUES('regular-new_project', 'Proyecto nuevo', NULL, 'project');
 INSERT INTO `purpose` VALUES('regular-projects', 'proyectos', NULL, 'general');
+INSERT INTO `purpose` VALUES('regular-see_more', 'Ver mÃ¡s', NULL, 'general');
 INSERT INTO `purpose` VALUES('regular-twiter', 'Twitter', NULL, 'general');
 INSERT INTO `purpose` VALUES('rewards-field-individual_reward-amount', 'Cantidad mÃ­nima', NULL, 'rewards');
 INSERT INTO `purpose` VALUES('rewards-field-individual_reward-description', 'Description', NULL, 'rewards');
@@ -1711,6 +1717,8 @@ INSERT INTO `text` VALUES('guide-project-user-information', 'es', '(1.Texto guÃ
 INSERT INTO `text` VALUES('guide-user-data', 'es', 'Texto guÃ­a en la ediciÃ³n de campos sensibles.');
 INSERT INTO `text` VALUES('guide-user-information', 'es', '2.Texto guÃ­a en la ediciÃ³n de informaciÃ³n del usuario. ???????');
 INSERT INTO `text` VALUES('guide-user-register', 'es', 'Texto guÃ­a en el registro de un nuevo usuario.');
+INSERT INTO `text` VALUES('login-acces-password-field', 'es', 'login-acces-password-field');
+INSERT INTO `text` VALUES('login-acces-username-field', 'es', 'login-acces-username-field');
 INSERT INTO `text` VALUES('mandatory-cost-field-amount', 'es', 'Es obligatorio ponerle un importe a los costes');
 INSERT INTO `text` VALUES('mandatory-cost-field-description', 'es', 'Es obligatorio poner alguna descripciÃ³n a los costes');
 INSERT INTO `text` VALUES('mandatory-cost-field-name', 'es', 'Es obligatorio ponerle un nombre al coste');

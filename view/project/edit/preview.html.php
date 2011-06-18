@@ -16,7 +16,7 @@ $project = $this['project'];
 $buttons = array(
     'review' => array(
         'type'  => 'submit',
-        'name'  => 'review',
+        'name'  => 'view-step-userProfile',
         'label' => Text::get('form-self_review-button'),
         'class' => 'retry'
     )

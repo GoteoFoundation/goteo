@@ -49,6 +49,15 @@ foreach ($this['currently'] as $value => $label) {
         );            
 }
 
+$scope = array();
+
+foreach ($this['scope'] as $value => $label) {
+    $scope[] =  array(
+        'value'     => $value,
+        'label'     => $label
+        );
+}
+
 $errors = $project->errors[$this['step']] ?: array();
 
 $superform = array(
@@ -93,7 +102,7 @@ $superform = array(
                     'type'  => 'file',
                     'class' => 'inline image_upload',
                     'title' => Text::get('overview-field-image_upload'),
-                    'hint'  => Text::get('tooltip-project-image_upload'),
+                    'hint'  => Text::get('tooltip-project-image'),
                 ),
                 'gallery' => array(
                     'type'  => 'group',
@@ -183,7 +192,7 @@ $superform = array(
         ),
                 
         'currently' => array(    
-            'title'     => 'Estado actual',
+            'title'     => Text::get('overview-field-currently'),
             'type'      => 'slider',
             'options'   => $currently,
             'class'     => 'currently cols_' . count($currently),
@@ -195,12 +204,22 @@ $superform = array(
         'location' => array(
             'type'      => 'textbox',
             'name'      => 'project_location',
-            'title'     => 'Localización',
+            'title'     => Text::get('overview-field-project_location'),
             'required'  => true,
             'hint'      => Text::get('tooltip-project-project_location'),
             'errors'    => !empty($errors['project_location']) ? array($errors['project_location']) : array(),
             'value'     => $project->project_location
-        )                                        
+        ),
+
+        'scope' => array(
+            'title'     => Text::get('overview-field-scope'),
+            'type'      => 'slider',
+            'options'   => $scope,
+            'class'     => 'scope cols_' . count($currently),
+            'hint'      => Text::get('tooltip-project-scope'),
+            'errors'    => !empty($errors['scope']) ? array($errors['scope']) : array(),
+            'value'     => $project->scope
+        )
 
     )
 

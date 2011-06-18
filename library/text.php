@@ -24,7 +24,7 @@ namespace Goteo\Library {
          */
         static public function html ($id) {
             // sacamos el contenido del texto
-            $text = call_user_func_array ( 'Text::get' , \func_get_args() );
+            $text = call_user_func_array ( 'static::get' , \func_get_args() );
             if (self::isHtml($id))
                 return $text; // el texto ES html, lo devuelve tal cual
             else
@@ -51,6 +51,8 @@ namespace Goteo\Library {
             } else {
                 $nocache = false;
             }
+            
+            $nocache = true;
 
             // si hay mas de un argumento, hay que meter el resto con
             $args = \func_get_args();
@@ -204,14 +206,18 @@ namespace Goteo\Library {
         static public function filters()
         {
             return array(
-                'mandatory'     => 'Campos obligatorios',
+                'header'        => 'Cabeceras de página o sección',
+                'field'         => 'Campos y agrupaciones de campos',
+                'mandatory'     => 'Mensajes de campos obligatorios',
                 'tooltip'       => 'Consejos para rellenar el formulario de proyecto',
                 'error-register'=> 'Errores al registrarse',
                 'explain'       => 'Explicaciones',
                 'guide-project' => 'Guias del formulario de proyecto',
                 'guide-user'    => 'Guias del formulario de usuario',
                 'step'          => 'Pasos del formulario',
-                'validate'      => 'Validaciones de campos'
+                'validate'      => 'Validaciones de campos',
+                'regular'       => 'De uso común',
+                'button'        => 'Genéricos para botones'
             );
         }
 
@@ -221,8 +227,10 @@ namespace Goteo\Library {
         static public function groups()
         {
             return array(
+                'public_profile' => 'Pagina de perfil de usuario',
+                'project'  => 'Proyecto, pública y formulario',
                 'form'     => 'Generales del formulario de proyecto',
-                'profile'  => 'Perfil del usuario',
+                'profile'  => 'Geestión de perfil del usuario',
                 'personal' => 'Datos personales del usuario',
                 'overview' => 'Descripción del proyecto',
                 'costs'    => 'Costes del proyecto',
@@ -232,8 +240,6 @@ namespace Goteo\Library {
                 'dashboard'=> 'Dashboard del usuario',
                 'register' => 'Registro de usuarios',
                 'login'    => 'Pagina de login',
-                'public_profile' => 'Pagina de perfil de usuario',
-                'project'  => 'Proyecto, pública y formulario',
                 'general'  => 'Propósito general'
             );
         }

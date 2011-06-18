@@ -44,6 +44,7 @@ namespace Goteo\Model {
             $keywords, // por ahora se guarda en texto tal cual
             $currently, // Current development status of the project
             $project_location, // project execution location
+            $scope,  // ambito de alcance
 
             // costs
             $costs = array(),  // project\cost instances with type
@@ -342,6 +343,7 @@ namespace Goteo\Model {
                     'media',
                     'currently',
                     'project_location',
+                    'scope',
                     'resource',
                     'comment'
                     );
@@ -765,6 +767,10 @@ namespace Goteo\Model {
             } else {
                  $okeys['overview']['project_location'] = 'ok';
                  ++$score;
+            }
+
+            if (!empty($this->scope)) {
+                 $okeys['overview']['scope'] = 'ok';
             }
 
             $this->setScore($score, 18);
@@ -1370,6 +1376,17 @@ namespace Goteo\Model {
                 2=>Text::get('overview-field-options-currently_medio'),
                 3=>Text::get('overview-field-options-currently_avanzado'),
                 4=>Text::get('overview-field-options-currently_finalizado'));
+        }
+
+        /*
+         * Ámbito de alcance de un proyecto
+         */
+        public static function scope () {
+            return array(
+                1=>Text::get('overview-field-options-scope_regional'),
+                2=>Text::get('overview-field-options-scope_local'),
+                3=>Text::get('overview-field-options-scope_nacional'),
+                4=>Text::get('overview-field-options-scope_global'));
         }
 
         /*

@@ -197,6 +197,16 @@ foreach ($user->webs as $web) {
                     'errors'    => !empty($errors['twitter']) ? array($errors['twitter']) : array(),
                     'value'     => $user->twitter
                 ),
+                'user_identica' => array(
+                    'type'      => 'textbox',
+                    'class'     => 'identica',
+                    'size'      => 40,
+                    'title'     => Text::get('regular-identica'),
+                    'hint'      => Text::get('tooltip-user-identica'),
+                    'errors'    => !empty($errors['identica']) ? array($errors['identica']) : array(),
+                    'ok'        => !empty($okays['identica']),
+                    'value'     => $user->identica
+                ),
                 'user_linkedin' => array(
                     'type'      => 'textbox',
                     'class'     => 'linkedin',
