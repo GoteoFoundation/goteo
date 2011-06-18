@@ -1366,10 +1366,10 @@ namespace Goteo\Model {
          */
         public static function currentStatus () {
             return array(
-                1=>'Inicial',
-                2=>'Medio',
-                3=>'Avanzado',
-                4=>'Finalizado');
+                1=>Text::get('overview-field-options-currently_inicial'),
+                2=>Text::get('overview-field-options-currently_medio'),
+                3=>Text::get('overview-field-options-currently_avanzado'),
+                4=>Text::get('overview-field-options-currently_finalizado'));
         }
 
         /*
@@ -1377,12 +1377,13 @@ namespace Goteo\Model {
          */
         public static function status () {
             return array(
-                1=>'Editándose',
-                2=>'Pendiente valoración',
-                3=>'En campaña',
-                4=>'Financiado',
-                5=>'Caducado',
-                6=>'Retorno cumplido');
+                0=>Text::get('form-project_status-cancelled'),
+                1=>Text::get('form-project_status-edit'),
+                2=>Text::get('form-project_status-review'),
+                3=>Text::get('form-project_status-campaing'),
+                4=>Text::get('form-project_status-success'),
+                5=>Text::get('form-project_status-fulfilled'),
+                6=>Text::get('form-project_status-expired'));
         }
 
         /*
@@ -1390,12 +1391,13 @@ namespace Goteo\Model {
          */
         public static function waitfor () {
             return array(
-                1=>'Cuando lo tengas listo mándalo a revisión. Necesitas llegar a un mínimo de información en el formulario.',
-                2=>'Espera que te digamos algo. Lo publicaremos o te diremos cómo mejorarlo.',
-                3=>'Difunde tu proyecto y mucha suerte con los aportes.',
-                4=>'Has conseguido el mínimo o más en aportes. Ahora hablamos de dinero.',
-                5=>'Si no lo conseguiste o lo desechamos, mejóralo e intentalo de nuevo!',
-                6=>'Has cumplido con los retornos! Gracias por tu participación.');
+                0=>Text::get('form-project_waitfor-cancel'),
+                1=>Text::get('form-project_waitfor-edit'),
+                2=>Text::get('form-project_waitfor-review'),
+                3=>Text::get('form-project_waitfor-campaing'),
+                4=>Text::get('form-project_waitfor-success'),
+                5=>Text::get('form-project_waitfor-fulfilled'),
+                6=>Text::get('form-project_waitfor-expired'));
         }
 
 

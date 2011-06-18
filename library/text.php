@@ -221,6 +221,7 @@ namespace Goteo\Library {
         static public function groups()
         {
             return array(
+                'form'     => 'Generales del formulario de proyecto',
                 'profile'  => 'Perfil del usuario',
                 'personal' => 'Datos personales del usuario',
                 'overview' => 'Descripción del proyecto',

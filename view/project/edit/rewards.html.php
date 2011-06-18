@@ -56,7 +56,7 @@ foreach ($project->social_rewards as $social_reward) {
             'class'     => 'reward social_reward',
             'children'  => array(                         
                 "social_reward-{$social_reward->id}-reward" => array(
-                    'title'     => 'Resumen',
+                    'title'     => Text::get('rewards-field-social_reward-reward'),
                     'type'      => 'textbox',
 //                    'required'  => true,
                     'size'      => 100,
@@ -65,7 +65,7 @@ foreach ($project->social_rewards as $social_reward) {
                     'hint'      => Text::get('tooltip-project-social_reward-reward'),
                 ),
                 "social_reward-{$social_reward->id}-icon" => array(
-                    'title'     => 'Tipo',
+                    'title'     => Text::get('rewards-field-social_reward-type'),
                     'class'     => 'inline social_reward-type reward-type',
                     'type'      => 'radios',
 //                    'required'  => true,
@@ -76,7 +76,7 @@ foreach ($project->social_rewards as $social_reward) {
                 "social_reward-{$social_reward->id}-description" => array(
                     'type'      => 'textarea',
 //                    'required'  => true,
-                    'title'     => 'Descripción',
+                    'title'     => Text::get('rewards-field-social_reward-description'),
                     'cols'      => 100,
                     'rows'      => 4,
                     'class'     => 'inline',
@@ -85,7 +85,7 @@ foreach ($project->social_rewards as $social_reward) {
                 ),    
                 "social_reward-{$social_reward->id}-license" => array(
                     'type'      => 'radios',
-                    'title'     => 'Licencia',
+                    'title'     => Text::get('rewards-field-social_reward-license'),
                     'options'   => $social_rewards_licenses,                    
                     'value'     => $social_reward->license,
                     'class'     => 'inline reward-license',
@@ -93,7 +93,7 @@ foreach ($project->social_rewards as $social_reward) {
                 ), 
                 "social_reward-{$social_reward->id}-remove" => array(
                     'type'  => 'submit',
-                    'label' => 'Quitar',
+                    'label' => Text::get('form-remove-button'),
                     'class' => 'inline remove reward-remove'
                 )
             )
@@ -107,7 +107,7 @@ foreach ($project->individual_rewards as $individual_reward) {
             'class'     => 'reward individual_reward',
             'children'  => array(                         
                 "individual_reward-{$individual_reward->id}-reward" => array(
-                    'title'     => 'Resumen',
+                    'title'     => Text::get('rewards-field-individual_reward-reward'),
                     'type'      => 'textbox',
                     'size'      => 100,
                     'class'     => 'inline',
@@ -115,7 +115,7 @@ foreach ($project->individual_rewards as $individual_reward) {
                     'hint'      => Text::get('tooltip-project-individual_reward-reward'),
                 ),
                 "individual_reward-{$individual_reward->id}-icon" => array(
-                    'title'     => 'Tipo',
+                    'title'     => Text::get('rewards-field-individual_reward-type'),
                     'class'     => 'inline  reward-type',
                     'type'      => 'radios',
                     'options'   => $individual_rewards_types,
@@ -124,7 +124,7 @@ foreach ($project->individual_rewards as $individual_reward) {
                 ),
                 "individual_reward-{$individual_reward->id}-description" => array(
                     'type'      => 'textarea',
-                    'title'     => 'Descripción',
+                    'title'     => Text::get('rewards-field-individual_reward-description'),
                     'cols'      => 100,
                     'rows'      => 4,
                     'class'     => 'inline',
@@ -132,7 +132,7 @@ foreach ($project->individual_rewards as $individual_reward) {
                     'value'     => $individual_reward->description
                 ),                                    
                 "individual_reward-{$individual_reward->id}-amount" => array(
-                    'title'     => 'Cantidad mínima',
+                    'title'     => Text::get('rewards-field-individual_reward-amount'),
                     'type'      => 'textbox',
                     'size'      => 5,
                     'class'     => 'inline reward-amount',
@@ -140,7 +140,7 @@ foreach ($project->individual_rewards as $individual_reward) {
                     'hint'      => Text::get('tooltip-project-individual_reward-amount'),
                 ),
                 "individual_reward-{$individual_reward->id}-units" => array(
-                    'title'     => 'Unidades',
+                    'title'     => Text::get('rewards-field-individual_reward-units'),
                     'type'      => 'textbox',
                     'size'      => 5,
                     'class'     => 'inline reward-units',
@@ -149,7 +149,7 @@ foreach ($project->individual_rewards as $individual_reward) {
                 ),
                 "individual_reward-{$individual_reward->id}-remove" => array(
                     'type'  => 'submit',
-                    'label' => 'Quitar',
+                    'label' => Text::get('form-remove-button'),
                     'class' => 'inline remove reward-remove'
                 )
             )
@@ -161,14 +161,14 @@ echo new SuperForm(array(
     'action'        => '',
     'level'         => $this['level'],
     'method'        => 'post',
-    'title'         => 'Proyecto/Retornos',
+    'title'         => Text::get('rewards-main-header'),
     'hint'          => Text::get('guide-project-rewards'),    
     'class'         => 'aqua',
     'footer'        => array(
         'view-step-supports' => array(
             'type'  => 'submit',
             'name'  => 'view-step-supports',
-            'label' => 'Siguiente',
+            'label' => Text::get('form-next-button'),
             'class' => 'next'
         )        
     ),    
@@ -180,7 +180,7 @@ echo new SuperForm(array(
         
         'social_rewards' => array(
             'type'      => 'group',
-            'title'     => 'Retornos colectivos',
+            'title'     => Text::get('rewards-fields-social_reward-title'),
             'hint'      => Text::get('tooltip-project-social_rewards'),
             'class'     => 'rewards',
             'children'  => $social_rewards + array(
@@ -194,13 +194,13 @@ echo new SuperForm(array(
         
         'individual_rewards' => array(
             'type'      => 'group',
-            'title'     => 'Recompensas individuales',
+            'title'     => Text::get('rewards-fields-individual_reward-title'),
             'hint'      => Text::get('tooltip-project-individual_rewards'),
             'class'     => 'rewards',
             'children'  => $individual_rewards + array(
                 'individual_reward-add' => array(
                     'type'  => 'submit',
-                    'label' => 'Añadir',
+                    'label' => Text::get('form-add-button'),
                     'class' => 'add reward-add',
                 )
             )

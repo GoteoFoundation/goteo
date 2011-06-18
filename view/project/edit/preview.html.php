@@ -17,7 +17,7 @@ $buttons = array(
     'review' => array(
         'type'  => 'submit',
         'name'  => 'review',
-        'label' => 'Revisar',
+        'label' => Text::get('form-self_review-button'),
         'class' => 'retry'
     )
 );
@@ -27,7 +27,7 @@ if ($project->finishable) {
     $buttons['finish'] = array(
         'type'  => 'submit',
         'name'  => 'finish',
-        'label' => 'Enviar',
+        'label' => Text::get('form-send_review-button'),
         'class' => 'confirm'
     );
 }
@@ -62,7 +62,7 @@ $elements      = array(
 if ($project->finishable) {
     $elements['comment'] = array(
             'type'  =>'textarea',
-            'title' => 'Notas adicionales para el administrador',
+            'title' => Text::get('preview-send-comment'),
             'rows'  => 8,
             'cols'  => 100,
             'hint'  => Text::get('tooltip-project-comment'),
@@ -75,7 +75,7 @@ echo new SuperForm(array(
     'action'        => '',
     'level'         => $this['level'],
     'method'        => 'post',
-    'title'         => 'Proyecto/Previsualización',
+    'title'         => Text::get('preview-main-header'),
     'hint'          => Text::get('guide-project-preview'),    
     'footer'        => $buttons,
     'elements'      => $elements

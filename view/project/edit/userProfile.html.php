@@ -23,7 +23,7 @@ $image = array(
 if (!empty($user->avatar) && is_object($user->avatar))
     $image ["avatar-{$user->avatar->id}-remove"] = array(
         'type'  => 'submit',
-        'label' => 'Quitar',
+        'label' => Text::get('form-remove-button'),
         'class' => 'inline remove image-remove'
     );
 
@@ -58,7 +58,7 @@ foreach ($user->webs as $web) {
             ),
             'web-' . $web->id . '-remove' => array(
                 'type'      => 'submit',                
-                'label'     => 'Quitar',
+                'label'     => Text::get('form-remove-button'),
                 'class'     => 'web-remove inline remove'
             )
         )
@@ -71,12 +71,12 @@ echo new SuperForm(array(
     'action'        => '',
     'level'         => $this['level'],
     'method'        => 'post',
-    'title'         => 'Usuario/Perfil',
+    'title'         => Text::get('profile-main-header'),
     'hint'          => Text::get('guide-project-user-information'),    
     'footer'        => array(
         'view-step-userPersonal' => array(
             'type'  => 'submit',
-            'label' => 'Siguiente',
+            'label' => Text::get('form-next-button'),
             'name'  => 'view-step-userPersonal',
             'class' => 'next'
         )        
@@ -90,7 +90,7 @@ echo new SuperForm(array(
             'type'      => 'textbox',
             'required'  => true,
             'size'      => 20,
-            'title'     => 'Alias',
+            'title'     => Text::get('profile-field-name'),
             'hint'      => Text::get('tooltip-user-name'),
             'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
             'value'     => $user->name,
@@ -99,13 +99,13 @@ echo new SuperForm(array(
             'type'      => 'textbox',
             'required'  => true,
             'size'      => 20,
-            'title'     => 'Dónde estás',
+            'title'     => Text::get('profile-field-location'),
             'hint'      => Text::get('tooltip-user-location'),
             'errors'    => !empty($errors['location']) ? array($errors['location']) : array(),
             'value'     => $user->location,
         ),
         'user_avatar' => array(                  
-            'title'     => 'Tu imagen',
+            'title'     => Text::get('profile-fields-image-title'),
             'type'      => 'group',
             'hint'      => Text::get('tooltip-user-image'),
             'errors'    => !empty($errors['avatar']) ? array($errors['avatar']) : array(),
@@ -114,12 +114,12 @@ echo new SuperForm(array(
                 'avatar_upload'    => array(
                     'type'  => 'file',
                     'class' => 'inline avatar_upload',
-                    'title' => 'Subir una imagen',
+                    'title' => Text::get('profile-field-avatar_upload'),
                     'hint'  => Text::get('tooltip-user-avatar_upload'),
                 ),                
                 'avatar-current' => array(
                     'type'  => 'group',
-                    'title' => 'Tu imagen actual',                    
+                    'title' => Text::get('profile-field-avatar_current'),
                     'class' => 'inline avatar',
                     'children'  => $image
                 )
@@ -131,7 +131,7 @@ echo new SuperForm(array(
             'type'      => 'textarea',
             'cols'      => 40,
             'rows'      => 4,
-            'title'     => 'Cuéntanos algo sobre ti',
+            'title'     => Text::get('profile-field-about'),
             'hint'      => Text::get('tooltip-user-about'),
             'errors'    => !empty($errors['about']) ? array($errors['about']) : array(),
             'value'     => $user->about
@@ -139,7 +139,7 @@ echo new SuperForm(array(
         'interests' => array(
             'type'      => 'checkboxes',
             'name'      => 'user_interests[]',
-            'title'     => 'Tus intereses',
+            'title'     => Text::get('profile-field-interests'),
             'hint'      => Text::get('tooltip-user-interests'),            
             'errors'    => !empty($errors['interests']) ? array($errors['interests']) : array(),
             'options'   => $interests
@@ -147,7 +147,7 @@ echo new SuperForm(array(
         'user_keywords' => array(
             'type'      => 'textbox',
             'size'      => 20,
-            'title'     => 'Palabras clave',
+            'title'     => Text::get('profile-field-keywords'),
             'hint'      => Text::get('tooltip-user-keywords'),
             'errors'    => !empty($errors['keywords']) ? array($errors['keywords']) : array(),
             'value'     => $user->keywords
@@ -156,32 +156,32 @@ echo new SuperForm(array(
             'type'      => 'textarea',
             'cols'      => 40,
             'rows'      => 4,
-            'title'     => 'Qué podrías aportar a Goteo',
+            'title'     => Text::get('profile-field-contribution'),
             'hint'      => Text::get('tooltip-user-contribution'),
             'errors'    => !empty($errors['contribution']) ? array($errors['contribution']) : array(),
             'value'     => $user->contribution
         ),
         'user_webs' => array(
-            'title'     => 'Mis webs',            
+            'title'     => Text::get('profile-field-websites'),
             'hint'      => Text::get('tooltip-user-webs'),
             'class'     => 'webs',
             'children'  => $user_webs + array(                
                 'web-add' => array(
                     'type'  => 'submit',
-                    'label' => 'Añadir',
+                    'label' => Text::get('form-add-button'),
                     'class' => 'add'                    
                 )
             )
         ),
         'user_social' => array(            
             'type'      => 'group',
-            'title'     => 'Perfiles sociales',
+            'title'     => Text::get('profile-fields-social-title'),
             'children'  => array(
                 'user_facebook' => array(
                     'type'      => 'textbox',
                     'class'     => 'facebook',
                     'size'      => 40,
-                    'title'     => 'Facebook',
+                    'title'     => Text::get('regular-facebook'),
                     'hint'      => Text::get('tooltip-user-facebook'),
                     'errors'    => !empty($errors['facebook']) ? array($errors['facebook']) : array(),
                     'value'     => $user->facebook
@@ -190,7 +190,7 @@ echo new SuperForm(array(
                     'type'      => 'textbox',
                     'class'     => 'twitter',
                     'size'      => 40,
-                    'title'     => 'Twitter',
+                    'title'     => Text::get('regular-twitter'),
                     'hint'      => Text::get('tooltip-user-twitter'),
                     'errors'    => !empty($errors['twitter']) ? array($errors['twitter']) : array(),
                     'value'     => $user->twitter
@@ -199,7 +199,7 @@ echo new SuperForm(array(
                     'type'      => 'textbox',
                     'class'     => 'linkedin',
                     'size'      => 40,
-                    'title'     => 'LinkedIn',
+                    'title'     => Text::get('regular-linkedin'),
                     'hint'      => Text::get('tooltip-user-linkedin'),
                     'errors'    => !empty($errors['linkedin']) ? array($errors['linkedin']) : array(),
                     'value'     => $user->linkedin
