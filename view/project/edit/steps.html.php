@@ -1,4 +1,8 @@
-<?php $errors = $this['errors'] ?>
+<?php
+
+use Goteo\Library\Text;
+
+$errors = $this['errors'] ?>
 
 <div id="project-steps">
             

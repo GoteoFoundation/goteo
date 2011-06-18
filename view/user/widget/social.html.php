@@ -1,4 +1,8 @@
-<?php $user = $this['user'] ?>
+<?php
+use Goteo\Library\Text;
+
+$user = $this['user']
+?>
 <?php if (isset($user->facebook) || isset($user->linkedin) || isset($user->twitter)): ?>
 <div class="widget user-social">
     <h4 class="title"><?php echo Text::get('profile-social-header'); ?></h4>

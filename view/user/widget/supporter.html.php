@@ -1,6 +1,7 @@
 <?php
 
-use Goteo\Core\View;
+use Goteo\Core\View,
+    Goteo\Library\Text;
 
 $user = $this['user'];
 $worthcracy = $this['worthcracy'];

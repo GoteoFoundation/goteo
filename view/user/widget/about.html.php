@@ -1,6 +1,7 @@
 <?php
 
-use Goteo\Model\User\Interest;
+use Goteo\Model\User\Interest,
+    Goteo\Library\Text;
 
 $user = $this['user'];
 

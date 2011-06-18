@@ -44,6 +44,7 @@ namespace Goteo\Library {
         }
 
         static public function get ($id) {
+            return 'aaaaa';
             $lang = \GOTEO_DEFAULT_LANG; // @TODO idiomas
 
             if (\defined('GOTEO_ADMIN_NOCACHE')) {

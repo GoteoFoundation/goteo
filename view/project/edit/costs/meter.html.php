@@ -1,5 +1,7 @@
 <?php
 
+use Goteo\Library\Text;
+
 $project    = $this['project'];
 
 $minimum    = $project->mincost;

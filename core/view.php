@@ -1,7 +1,7 @@
 <?php
 
 namespace Goteo\Core {
-        
+
     class View extends \ArrayObject implements Resource, Resource\MIME {
         
         private 
