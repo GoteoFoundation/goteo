@@ -26,12 +26,12 @@ extract($_POST);
                 <form action="/user/login" method="post">
                     <input type="hidden" name="return" value="<?php echo $_GET['return']; ?>" />
                     <div class="username">
-                        <label><?php echo Text::get('login-acces-username-field'); ?>
+                        <label><?php echo Text::get('login-access-username-field'); ?>
                         <input type="text" name="username" value="<?php echo $username?>" /></label>
                     </div>
 
                     <div class="password">
-                        <label><?php echo Text::get('login-acces-password-field'); ?>
+                        <label><?php echo Text::get('login-access-password-field'); ?>
                         <input type="password" name="password" value="<?php echo $username?>" /></label>
                     </div>
 
