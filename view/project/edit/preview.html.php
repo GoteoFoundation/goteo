@@ -4,19 +4,23 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-?>
-
-
-
-<?php
-            
 $project = $this['project'];
+
+// miramos el pruimer paso con errores para mandarlo a ese
+$goto = 'view-step-userProfile';
+foreach ($this['steps'] as $id => $data) {
+
+    if (empty($step) && !empty($project->errors[$id])) {
+        $goto = 'view-step-' . $id;
+        break;
+    }
+}
 
 // boton de revisar que no sirve para mucho
 $buttons = array(
     'review' => array(
         'type'  => 'submit',
-        'name'  => 'view-step-userProfile',
+        'name'  => $goto,
         'label' => Text::get('form-self_review-button'),
         'class' => 'retry'
     )

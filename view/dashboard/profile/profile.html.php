@@ -51,6 +51,7 @@ foreach ($user->webs as $web) {
             'web-' . $web->id . '-url' => array(
                 'type'      => 'textbox',
                 'value'     => $web->url,
+                'hint'      => Text::get('tooltip-user-webs'),
                 'errors'    => array(),
                 'required'  => true,
                 'class'     => 'web-url inline'

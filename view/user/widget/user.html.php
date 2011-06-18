@@ -32,12 +32,12 @@ if (!isset($user->webs)) {
     <dl>
         
         <?php if (isset($user->location)): ?>
-        <dt class="location"><?php echo Text::get(''); ?></dt>
+        <dt class="location"><?php echo Text::get('profile-location-header'); ?></dt>
         <dd class="location"><?php echo Text::GmapsLink($user->location); ?></dd>
         <?php endif ?>
         
         <?php if (!empty($user->webs)): ?>        
-        <dt class="links"><?php echo Text::get(''); ?></dt>
+        <dt class="links"><?php echo Text::get('profile-webs-header'); ?></dt>
         <dd class="links">
             <ul>
                 <?php foreach ($user->webs as $link): ?>
