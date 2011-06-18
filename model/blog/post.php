@@ -173,8 +173,6 @@ namespace Goteo\Model\Blog {
             if (!$this->validate($errors)) return false;
 
             // Primero la imagenImagen
-            //@FIXME esto de los errores
-            $theerrors = array();
             if (is_array($this->image) && !empty($this->image['name'])) {
                 $image = new Image($this->image);
                 if ($image->save($errors)) {
