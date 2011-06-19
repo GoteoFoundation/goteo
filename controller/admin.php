@@ -1631,7 +1631,7 @@ namespace Goteo\Controller {
                                     'label' => 'Noticias'
                                 )
                             ),
-                            'data' => (object) array(),
+                            'data' => (object) array('order' => $model::next()),
                             'form' => array(
                                 'action' => "$url/edit/",
                                 'submit' => array(
@@ -1648,11 +1648,18 @@ namespace Goteo\Controller {
                                     'title' => array(
                                         'label' => 'Noticia',
                                         'name' => 'title',
-                                        'type' => 'text'
+                                        'type' => 'text',
+                                        'properties' => 'size=100'
                                     ),
                                     'url' => array(
                                         'label' => 'Enlace',
                                         'name' => 'url',
+                                        'type' => 'text',
+                                        'properties' => 'size=100'
+                                    ),
+                                    'order' => array(
+                                        'label' => 'Posición',
+                                        'name' => 'order',
                                         'type' => 'text'
                                     )
                                 )
@@ -1711,12 +1718,14 @@ namespace Goteo\Controller {
                                     'title' => array(
                                         'label' => 'Noticia',
                                         'name' => 'title',
-                                        'type' => 'text'
+                                        'type' => 'text',
+                                        'properties' => 'size=100'
                                     ),
                                     'url' => array(
                                         'label' => 'Enlace',
                                         'name' => 'url',
-                                        'type' => 'text'
+                                        'type' => 'text',
+                                        'properties' => 'size=100'
                                     ),
                                     'order' => array(
                                         'label' => 'Posición',
@@ -1756,7 +1765,7 @@ namespace Goteo\Controller {
                     ),
                     'data' => $model::getAll(),
                     'columns' => array(
-                        'name' => 'Noticia',
+                        'title' => 'Noticia',
                         'url' => 'Enlace',
                         'order' => 'Posición',
                         'up' => '',
@@ -1785,14 +1794,14 @@ namespace Goteo\Controller {
                     return new View(
                         'view/admin/edit.html.php',
                         array(
-                            'name' => "Añadiendo un nuevo patrocinador",
+                            'title' => "Añadiendo un nuevo patrocinador",
                             'menu' => array(
                                 array(
                                     'url' => $url,
                                     'label' => 'Patrocinadores'
                                 )
                             ),
-                            'data' => (object) array(),
+                            'data' => (object) array('order' => $model::next() ),
                             'form' => array(
                                 'action' => "$url/edit/",
                                 'submit' => array(
@@ -1814,6 +1823,17 @@ namespace Goteo\Controller {
                                     'url' => array(
                                         'label' => 'Enlace',
                                         'name' => 'url',
+                                        'type' => 'text',
+                                        'properties' => 'size=100'
+                                    ),
+                                    'image' => array(
+                                        'label' => 'Logo',
+                                        'name' => 'image',
+                                        'type' => 'image'
+                                    ),
+                                    'order' => array(
+                                        'label' => 'Posición',
+                                        'name' => 'order',
                                         'type' => 'text'
                                     )
                                 )
@@ -1826,7 +1846,7 @@ namespace Goteo\Controller {
                 case 'edit':
 
                     // gestionar post
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                         $errors = array();
 
@@ -1839,14 +1859,15 @@ namespace Goteo\Controller {
                         ));
 
                         // tratar la imagen y ponerla en la propiedad image
-                        if(!empty($_FILES['image_upload']['name'])) {
-                            $item->image = $_FILES['image_upload'];
+                        if(!empty($_FILES['image']['name'])) {
+                            $item->image = $_FILES['image'];
                         }
 
                         // tratar si quitan la imagen
-                        if (isset($_POST['image-' . $item->image .  '-remove'])) {
-                            $image = Model\Image::get($post->image);
-                            $image->remove('post');
+                        $current = $_POST['image']; // la acual
+                        if (isset($_POST['image-' . $current .  '-remove'])) {
+                            $image = Model\Image::get($current);
+                            $image->remove('sponsor');
                             $item->image = '';
                             $removed = true;
                         }
@@ -1861,7 +1882,7 @@ namespace Goteo\Controller {
                     return new View(
                         'view/admin/edit.html.php',
                         array(
-                            'name' => "Editando un patrocinador",
+                            'title' => "Editando un patrocinador",
                             'menu' => array(
                                 array(
                                     'url' => $url,
@@ -1890,7 +1911,8 @@ namespace Goteo\Controller {
                                     'url' => array(
                                         'label' => 'Enlace',
                                         'name' => 'url',
-                                        'type' => 'text'
+                                        'type' => 'text',
+                                        'properties' => 'size=100'
                                     ),
                                     'image' => array(
                                         'label' => 'Logo',
@@ -1926,7 +1948,7 @@ namespace Goteo\Controller {
             return new View(
                 'view/admin/list.html.php',
                 array(
-                    'name' => 'Gestión de patrocinadores',
+                    'title' => 'Gestión de patrocinadores',
                     'menu' => array(
                         array(
                             'url' => "$url/add",
@@ -1937,6 +1959,7 @@ namespace Goteo\Controller {
                     'columns' => array(
                         'name' => 'Patrocinador',
                         'url' => 'Enlace',
+                        'image' => 'Imagen',
                         'order' => 'Posición',
                         'up' => '',
                         'down' => '',

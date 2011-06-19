@@ -43,7 +43,7 @@ $worthcracy = Worth::getAll();
                 </div>
 
                 <div class="widget projects">
-                    <h2 class="title"><?php echo Text::get('profile-profile-my_projects-header-header'); ?></h2>
+                    <h2 class="title"><?php echo Text::get('profile-my_projects-header'); ?></h2>
                     <?php foreach ($this['projects'] as $project) : ?>
                         <div>
                             <?php

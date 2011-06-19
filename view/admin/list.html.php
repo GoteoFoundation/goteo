@@ -101,6 +101,8 @@ include 'view/prologue.html.php';
                         <?php foreach ($this['columns'] as $key=>$label) : ?>
                             <?php if (in_array($key, array('edit', 'remove', 'up', 'down'))) : ?>
                                 <td width="5%"><a title="Registro <?php echo (is_object($item)) ? $item->id : $item['id']; ?>" href='<?php $id = (is_object($item)) ? $item->id : $item['id']; echo "{$this['url']}/{$key}/{$id}/{$filter}"; ?>'><?php echo $botones[$key]; ?></a></td>
+                            <?php elseif ($key == 'image') : ?>
+                                <td width="<?php echo round($per)-5; ?>%"><?php if (!empty($item->$key)) : ?><img src="/image/<?php echo (is_object($item)) ? $item->$key : $item[$key]; ?>/110/110" alt="image" /><?php endif; ?></td>
                             <?php else : ?>
                                 <td width="<?php echo round($per)-5; ?>%"><?php echo (is_object($item)) ? $item->$key : $item[$key]; ?></td>
                             <?php endif; ?>

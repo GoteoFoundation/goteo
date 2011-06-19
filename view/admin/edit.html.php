@@ -43,17 +43,19 @@ include 'view/prologue.html.php';
                                     <input type="text" id="<?php echo $Id; ?>" name="<?php echo $field['name']; ?>" <?php echo $field['properties']; ?> value="<?php $name = $field['name']; echo $this['data']->$name; ?>" />
                                 <?php break;
                                 case 'hidden': ?>
-                                    <input type="hidden" id="<?php echo $Id; ?>" name="<?php echo $field['name']; ?>" <?php echo $field['properties']; ?> value="<?php $name = $field['name']; echo $this['data']->$name; ?>" />
+                                    <input type="hidden" name="<?php echo $field['name']; ?>" <?php echo $field['properties']; ?> value="<?php $name = $field['name']; echo $this['data']->$name; ?>" />
                                 <?php break;
                                 case 'textarea': ?>
                                     <textarea id="<?php echo $Id; ?>" name="<?php echo $field['name']; ?>" <?php echo $field['properties']; ?>><?php $name = $field['name']; echo $this['data']->$name; ?></textarea>
                                 <?php break;
-                                case 'image': ?>
-                                    <input type="field" id="<?php echo $Id; ?>" name="<?php echo $field['name']; ?>" <?php echo $field['properties']; ?> value="<?php $name = $field['name']; echo $this['data']->$name; ?>" />
-                                    <?php $name = $field['name'];
-                                    if (!empty($this['data']->$name)) : ?>
-                                        <img src="/image/<?php echo $this['data']->$name->id; ?>/110/110" alt="<?php echo $field['name']; ?>" /><br />
-                                        <input type="hidden" name="image-<?php echo $this['data']->$name->id; ?>-remove" value="Quitar" />
+                                case 'image':
+                                     $name = $field['name'];
+                                    ?>
+                                    <input type="file" id="<?php echo $Id; ?>" name="<?php echo $field['name']; ?>" <?php echo $field['properties']; ?> value="<?php $name = $field['name']; echo $this['data']->$name; ?>" /> <br />
+                                    <?php if (!empty($this['data']->$name)) : ?>
+                                        <img src="/image/<?php echo $this['data']->$name; ?>/110/110" alt="<?php echo $field['name']; ?>" /><br />
+                                        <input type="hidden" name="<?php echo $field['name']; ?>" value="<?php echo $this['data']->$name; ?>" />
+                                        <input type="submit" name="image-<?php echo $this['data']->$name; ?>-remove" value="Quitar" />
                                     <?php endif; ?>
                                 <?php break;
                             } ?></dd>
