@@ -1,6 +1,16 @@
-<?php $bodyClass = 'faq'; include 'view/prologue.html.php' ?>
+<?php
 
-        <?php include 'view/header.html.php' ?>
+use Goteo\Library\Text;
+
+$bodyClass = 'faq';
+
+include 'view/prologue.html.php';
+
+include 'view/header.html.php';
+
+$go_up = Text::get('regular-go_up');
+
+?>
 
         <div id="main">
 
@@ -28,7 +38,7 @@
                             <a name="q<?php echo $question->id; ?>" />
                             <h4><?php echo $question->title; ?></h4>
                             <blockquote><?php echo $question->description; ?></blockquote>
-                            <a href="#">Subir</a>
+                            <a href="#"><?php echo $go_up; ?></a>
                         </div>
                     <?php endforeach; ?>
                 </div>
