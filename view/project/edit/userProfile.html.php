@@ -116,7 +116,7 @@ echo new SuperForm(array(
                     'type'  => 'file',
                     'class' => 'inline avatar_upload',
                     'title' => Text::get('profile-field-avatar_upload'),
-                    'hint'  => Text::get('tooltip-user-avatar_upload'),
+                    'hint'  => Text::get('tooltip-user-image'),
                 ),                
                 'avatar-current' => array(
                     'type'  => 'group',
