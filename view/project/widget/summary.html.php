@@ -1,5 +1,4 @@
 <?php
-
 use Goteo\Library\Text;
 
 $project = $this['project'];
@@ -19,7 +18,7 @@ $level = (int) $this['level'] ?: 3;
         
     <?php if (!empty($project->description)): ?>
     <div class="description">
-<!--        <h<?php echo $level + 1?>>Descripción</h<?php echo $level + 1?>>         -->
+<!--        <h<?php echo $level + 1?>><?php # echo Text::get('overview-field-description'); ?></h<?php echo $level + 1?>>         -->
         <?php echo $project->description; ?>
     </div>    
     <?php endif ?>
@@ -37,28 +36,28 @@ $level = (int) $this['level'] ?: 3;
 
     <?php if (!empty($project->about)): ?>
     <div class="about">
-        <h<?php echo $level + 1?>>Que es</h<?php echo $level + 1?>>
+        <h<?php echo $level + 1?>><?php echo Text::get('overview-field-about'); ?></h<?php echo $level + 1?>>
         <?php echo $project->about; ?>
     </div>    
     <?php endif ?>
     
     <?php if (!empty($project->motivation)): ?>
     <div class="motivation">
-        <h<?php echo $level + 1?>>Motivación</h<?php echo $level + 1?>>
+        <h<?php echo $level + 1?>><?php echo Text::get('overview-field-motivation'); ?></h<?php echo $level + 1?>>
         <?php echo $project->motivation; ?>
     </div>
     <?php endif ?>
 
     <?php if (!empty($project->goal)): ?>
     <div class="goal">
-        <h<?php echo $level + 1?>>Objetivos</h<?php echo $level + 1?>>        
+        <h<?php echo $level + 1?>><?php echo Text::get('overview-field-goal'); ?></h<?php echo $level + 1?>>
         <?php echo $project->goal; ?>
     </div>    
     <?php endif ?>
     
     <?php if (!empty($project->related)): ?>
     <div class="related">
-        <h<?php echo $level + 1?>>Experiencia relacionada y equipo</h<?php echo $level + 1?>>
+        <h<?php echo $level + 1?>><?php echo Text::get('overview-field-related'); ?></h<?php echo $level + 1?>>
         <?php echo htmlspecialchars($project->related) ?>
     </div>
     <?php endif ?>

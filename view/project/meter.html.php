@@ -82,7 +82,7 @@ $minimum_ratio =  min(100, round(($minimum / $optimum) * 100));
             <dd class="reached" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($reached) ?>%"><strong><?php echo number_format($reached) ?> <span class="euro">&euro;</span></strong></dd>
 
             <dt class="days"><span><?php echo Text::get('project-view-metter-days'); ?></span></dt>
-            <dd class="days"><strong><?php echo number_format($days) ?></strong> días</dd>
+            <dd class="days"><strong><?php echo number_format($days) ?></strong> <?php echo Text::get('regular-days'); ?></dd>
 
             <dt class="supporters"><span><?php echo Text::get('project-view-metter-investors'); ?></span></dt>
             <dd class="supporters"><strong><?php echo number_format($supporters) ?></strong></dd>                

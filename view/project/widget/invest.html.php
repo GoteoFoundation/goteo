@@ -2,7 +2,8 @@
 
 use Goteo\Core\View,
     Goteo\Library\Worth,
-    Goteo\Model\Invest;
+    Goteo\Model\Invest,
+    Goteo\Library\Text;
 
 $project = $this['project'];
 $personal = $this['personal'];
@@ -16,7 +17,7 @@ $worthcracy = Worth::getAll();
 ?>
 <div class="widget project-summary">
     
-    <h<?php echo $level ?>>Aportar</h<?php echo $level ?>>
+    <h<?php echo $level ?>><?php echo Text::get('regular-invest'); ?></h<?php echo $level ?>>
 
     <form method="post" action="/invest/<?php echo $project->id; ?>">
         <fieldset>

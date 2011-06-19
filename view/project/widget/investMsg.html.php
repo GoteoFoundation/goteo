@@ -1,21 +1,23 @@
 <?php
+use Goteo\Library\Text;
+
 // aviso para el usuario, puede ser start->hola , ok->gracias o fail->lo sentimos
 
 $user = $this['user'];
-$name = $user->name ? $user->name : 'Invitado (no olvides registrarte)';
+$name = $user->name ? $user->name : Text::get('project-invest-guest');
 
 switch ($this['message']) {
     case 'start':
-        $title   = "Hola $name";
-        $message = 'Estás a un paso de ser cofinanciador de este proyecto';
+        $title   = Text::get('regular-hello') . " $name";
+        $message = Text::get('project-invest-start');
         break;
     case 'ok':
-        $title   = "Gracias {$name}!";
-        $message = 'Ya eres cofinanciador de este proyecto';
+        $title   = Text::get('regular-thanks') . " {$name}!";
+        $message = Text::get('project-invest-ok');
         break;
     case 'fail':
-        $title   = "Lo sentimos {$name}";
-        $message = 'Algo ha fallado, por favor inténtalo de nuevo.';
+        $title   = Text::get('regular-sorry') . " {$name}";
+        $message = Text::get('project-invest-fail');
         break;
 }
 

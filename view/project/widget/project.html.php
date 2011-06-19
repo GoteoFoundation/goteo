@@ -25,7 +25,7 @@ $level = $this['level'] ?: 3;
     <h<?php echo $level + 1 ?> class="author">Por: <a href="/user/profile/<?php echo htmlspecialchars($project->user->id) ?>"><?php echo htmlspecialchars($project->user->name) ?></a></h<?php echo $level + 1?>>
     
     <?php if (in_array($project->status, array(4, 5))) : // en estados financiado o retorno cumplido, tag de financiado ?>
-    <div>¡FINANCIADO!</div>
+    <div><?php echo Text::get('regular-success_mark'); ?></div>
     <?php endif; ?>
 
     <div class="description"><?php echo Text::recorta($project->description, 100); ?></div>
@@ -33,7 +33,7 @@ $level = $this['level'] ?: 3;
     <?php echo new View('view/project/meter_hor.html.php', array('project' => $project)) ?>
     
     <div class="rewards">
-        <h<?php echo $level + 1 ?>>Retornos</h<?php echo $level + 1?>>        
+        <h<?php echo $level + 1 ?>><?php echo Text::get('project-rewards-header'); ?></h<?php echo $level + 1?>>
         
         <ul>
            <?php foreach ($project->individual_rewards as $individual): ?>
@@ -49,14 +49,14 @@ $level = $this['level'] ?: 3;
     <?php if ($this['dashboard'] === true) : // si estamos en el dashboard no hay (apoyar y el ver se abre en una ventana nueva) ?>
     <div class="buttons">
         <?php if ($this['own'] === true) : // si es propio puede ir a editarlo ?>
-        <a class="button" href="/project/edit/<?php echo $project->id ?>">Editar</a>
+        <a class="button" href="/project/edit/<?php echo $project->id ?>"><?php echo Text::get('regular-edit'); ?></a>
         <?php endif; ?>
-        <a class="button view" href="/project/<?php echo $project->id ?>" target="_blank">Ver proyecto</a>
+        <a class="button view" href="/project/<?php echo $project->id ?>" target="_blank"><?php echo Text::get('regular-view_project'); ?></a>
     </div>
     <?php else : // normal ?>
     <div class="buttons">
-        <a class="button red supportit" href="/invest/<?php echo $project->id ?>">Apóyalo</a>
-        <a class="button view" href="/project/<?php echo $project->id ?>">Ver proyecto</a>
+        <a class="button red supportit" href="/invest/<?php echo $project->id ?>"><?php echo Text::get('regular-invest_it'); ?></a>
+        <a class="button view" href="/project/<?php echo $project->id ?>"><?php echo Text::get('regular-view_project'); ?></a>
     </div>
     <?php endif; ?>
 
