@@ -194,11 +194,11 @@ $superform = array(
             'value'     => $project->keywords
         ),
 
-        'media_set' => array(
+        'media' => array(
             'type'      => 'group',
             'required'  => true,
             'errors'    => !empty($errors['media']) ? array($errors['media']) : array(),
-            'children'  => $mediaset
+            'children'  => $media
         ),
 
         'currently' => array(    

@@ -70,7 +70,7 @@ namespace Goteo\Library {
             
 			// buscamos el texto en la tabla
 			$query = Model::query("SELECT `text` FROM text WHERE id = :id AND lang = :lang", array(':id' => $id, ':lang' => $lang));
-			if ($exist = $query->fetchObject() && $exist->text) {
+			if ($exist = $query->fetchObject()) {
                 $tmptxt = $_cache[$id][$lang] = $exist->text;
 
                 //contamos cuantos argumentos necesita el texto
