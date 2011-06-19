@@ -57,7 +57,7 @@ echo new SuperForm(array(
         ),
         
         'address' => array(
-            'type'  => 'textarea',
+            'type'  => 'textbox',
             'required'  => true,
             'title' => Text::get('personal-field-address'),
             'rows'  => 6,

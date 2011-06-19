@@ -205,7 +205,7 @@ namespace Goteo\Library {
          */
         static public function filters()
         {
-            return array(
+            $filters = array(
                 'header'        => 'Cabeceras de página o sección',
                 'field'         => 'Campos y agrupaciones de campos',
                 'mandatory'     => 'Mensajes de campos obligatorios',
@@ -219,6 +219,10 @@ namespace Goteo\Library {
                 'regular'       => 'De uso común',
                 'button'        => 'Genéricos para botones'
             );
+
+            \asort($filters);
+
+            return $filters;
         }
 
         /*
@@ -226,7 +230,7 @@ namespace Goteo\Library {
          */
         static public function groups()
         {
-            return array(
+            $groups = array(
                 'public_profile' => 'Pagina de perfil de usuario',
                 'project'  => 'Proyecto, pública y formulario',
                 'form'     => 'Generales del formulario de proyecto',
@@ -242,6 +246,10 @@ namespace Goteo\Library {
                 'login'    => 'Pagina de login',
                 'general'  => 'Propósito general'
             );
+
+            \asort($groups);
+
+            return $groups;
         }
 
 
