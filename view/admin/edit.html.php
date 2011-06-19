@@ -34,7 +34,7 @@ include 'view/prologue.html.php';
 
             <div class="widget board">
                 <!-- superform -->
-                <form action="<?php echo $this['form']['action']; ?>" method="post">
+                <form action="<?php echo $this['form']['action']; ?>" method="post" enctype="multipart/form-data">
                     <dl>
                         <?php foreach ($this['form']['fields'] as $Id=>$field) : ?>
                             <dt><label for="<?php echo $Id; ?>"><?php echo $field['label']; ?></label></dt>
@@ -47,6 +47,14 @@ include 'view/prologue.html.php';
                                 <?php break;
                                 case 'textarea': ?>
                                     <textarea id="<?php echo $Id; ?>" name="<?php echo $field['name']; ?>" <?php echo $field['properties']; ?>><?php $name = $field['name']; echo $this['data']->$name; ?></textarea>
+                                <?php break;
+                                case 'image': ?>
+                                    <input type="field" id="<?php echo $Id; ?>" name="<?php echo $field['name']; ?>" <?php echo $field['properties']; ?> value="<?php $name = $field['name']; echo $this['data']->$name; ?>" />
+                                    <?php $name = $field['name'];
+                                    if (!empty($this['data']->$name)) : ?>
+                                        <img src="/image/<?php echo $this['data']->$name->id; ?>/110/110" alt="<?php echo $field['name']; ?>" /><br />
+                                        <input type="hidden" name="image-<?php echo $this['data']->$name->id; ?>-remove" value="Quitar" />
+                                    <?php endif; ?>
                                 <?php break;
                             } ?></dd>
 

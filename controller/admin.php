@@ -1838,6 +1838,19 @@ namespace Goteo\Controller {
                             'order' => $_POST['order']
                         ));
 
+                        // tratar la imagen y ponerla en la propiedad image
+                        if(!empty($_FILES['image_upload']['name'])) {
+                            $item->image = $_FILES['image_upload'];
+                        }
+
+                        // tratar si quitan la imagen
+                        if (isset($_POST['image-' . $item->image .  '-remove'])) {
+                            $image = Model\Image::get($post->image);
+                            $image->remove('post');
+                            $item->image = '';
+                            $removed = true;
+                        }
+
                         if ($item->save($errors)) {
                             throw new Redirection($url);
                         }
