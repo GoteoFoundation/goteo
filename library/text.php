@@ -24,7 +24,7 @@ namespace Goteo\Library {
          */
         static public function html ($id) {
             // sacamos el contenido del texto
-            $text = call_user_func_array ( 'static::get' , \func_get_args() );
+            $text = call_user_func_array ( 'Text::get' , \func_get_args() );
             if (self::isHtml($id))
                 return $text; // el texto ES html, lo devuelve tal cual
             else
@@ -45,6 +45,8 @@ namespace Goteo\Library {
 
         static public function get ($id) {
             $lang = \GOTEO_DEFAULT_LANG; // @TODO idiomas
+
+//            return 'aaaaa';
 
             if (\defined('GOTEO_ADMIN_NOCACHE')) {
                 $nocache = true;
@@ -88,7 +90,7 @@ namespace Goteo\Library {
 
                 if (strcmp($texto, $id) === 0) {
                 // sino, lo metemos en la tabla y en purpose
-                    Model::query("REPLACE INTO text (id, lang, `text`) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
+//                    Model::query("REPLACE INTO text (id, lang, `text`) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
                     Model::query("REPLACE INTO purpose (text, purpose) VALUES (:text, :purpose)", array(':text' => $id, ':purpose' => "Texto $id"));
                 }
 			}
