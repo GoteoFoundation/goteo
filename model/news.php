@@ -20,6 +20,7 @@ namespace Goteo\Model {
                     SELECT
                         id,
                         title,
+                        description,
                         url,
                         `order`
                     FROM    news
@@ -31,14 +32,15 @@ namespace Goteo\Model {
         }
 
         /*
-         * Lista de proyectos destacados
+         * Lista de noticias
          */
-        public static function getAll ($section = 'node') {
+        public static function getAll () {
 
             $sql = static::query("
                 SELECT
                     id,
                     title,
+                    description,
                     url,
                     `order`
                 FROM    news
@@ -69,6 +71,7 @@ namespace Goteo\Model {
             $fields = array(
                 'id',
                 'title',
+                'description',
                 'url',
                 'order'
                 );

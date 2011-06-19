@@ -1651,6 +1651,12 @@ namespace Goteo\Controller {
                                         'type' => 'text',
                                         'properties' => 'size=100'
                                     ),
+                                    'description' => array(
+                                        'label' => 'Entradilla',
+                                        'name' => 'description',
+                                        'type' => 'textarea',
+                                        'properties' => 'cols="100" rows="2"'
+                                    ),
                                     'url' => array(
                                         'label' => 'Enlace',
                                         'name' => 'url',
@@ -1678,10 +1684,11 @@ namespace Goteo\Controller {
 
                         // instancia
                         $item = new $model(array(
-                            'id' => $_POST['id'],
-                            'title' => $_POST['title'],
-                            'url' => $_POST['url'],
-                            'order' => $_POST['order']
+                            'id'          => $_POST['id'],
+                            'title'       => $_POST['title'],
+                            'description' => $_POST['description'],
+                            'url'         => $_POST['url'],
+                            'order'       => $_POST['order']
                         ));
 
                         if ($item->save($errors)) {
@@ -1720,6 +1727,12 @@ namespace Goteo\Controller {
                                         'name' => 'title',
                                         'type' => 'text',
                                         'properties' => 'size=100'
+                                    ),
+                                    'description' => array(
+                                        'label' => 'Entradilla',
+                                        'name' => 'description',
+                                        'type' => 'textarea',
+                                        'properties' => 'cols="100" rows="2"'
                                     ),
                                     'url' => array(
                                         'label' => 'Enlace',
