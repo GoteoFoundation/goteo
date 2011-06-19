@@ -1609,6 +1609,333 @@ namespace Goteo\Controller {
             );
         }
 
+        /*
+         *  Gestión de noticias
+         */
+        public function news($action = 'list', $id = null) {
+
+            $model = 'Goteo\Model\News';
+            $url = '/admin/news';
+
+            $errors = array();
+
+            switch ($action) {
+                case 'add':
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Añadiendo una nueva noticia",
+                            'menu' => array(
+                                array(
+                                    'url' => $url,
+                                    'label' => 'Noticias'
+                                )
+                            ),
+                            'data' => (object) array(),
+                            'form' => array(
+                                'action' => "$url/edit/",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'Añadir'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'title' => array(
+                                        'label' => 'Noticia',
+                                        'name' => 'title',
+                                        'type' => 'text'
+                                    ),
+                                    'url' => array(
+                                        'label' => 'Enlace',
+                                        'name' => 'url',
+                                        'type' => 'text'
+                                    )
+                                )
+
+                            )
+                        )
+                    );
+
+                    break;
+                case 'edit':
+
+                    // gestionar post
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
+
+                        $errors = array();
+
+                        // instancia
+                        $item = new $model(array(
+                            'id' => $_POST['id'],
+                            'title' => $_POST['title'],
+                            'url' => $_POST['url'],
+                            'order' => $_POST['order']
+                        ));
+
+                        if ($item->save($errors)) {
+                            throw new Redirection($url);
+                        }
+                    } else {
+                        $item = $model::get($id);
+                    }
+
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Editando una noticia",
+                            'menu' => array(
+                                array(
+                                    'url' => $url,
+                                    'label' => 'Noticias'
+                                )
+                            ),
+                            'data' => $item,
+                            'form' => array(
+                                'action' => "$url/edit/$id",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'guardar'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'title' => array(
+                                        'label' => 'Noticia',
+                                        'name' => 'title',
+                                        'type' => 'text'
+                                    ),
+                                    'url' => array(
+                                        'label' => 'Enlace',
+                                        'name' => 'url',
+                                        'type' => 'text'
+                                    ),
+                                    'order' => array(
+                                        'label' => 'Posición',
+                                        'name' => 'order',
+                                        'type' => 'text'
+                                    )
+                                )
+
+                            ),
+                            'errors' => $errors
+                        )
+                    );
+
+                    break;
+                case 'up':
+                    $model::up($id);
+                    break;
+                case 'down':
+                    $model::down($id);
+                    break;
+                case 'remove':
+                    if ($model::delete($id)) {
+                        throw new Redirection($url);
+                    }
+                    break;
+            }
+
+            return new View(
+                'view/admin/list.html.php',
+                array(
+                    'title' => 'Gestión de noticias',
+                    'menu' => array(
+                        array(
+                            'url' => "$url/add",
+                            'label' => 'Nueva noticia'
+                        )
+                    ),
+                    'data' => $model::getAll(),
+                    'columns' => array(
+                        'name' => 'Noticia',
+                        'url' => 'Enlace',
+                        'order' => 'Posición',
+                        'up' => '',
+                        'down' => '',
+                        'edit' => '',
+                        'remove' => ''
+                    ),
+                    'url' => "$url",
+                    'errors' => $errors
+                )
+            );
+        }
+
+        /*
+         *  Gestión de patrocinadores
+         */
+        public function sponsors($action = 'list', $id = null) {
+
+            $model = 'Goteo\Model\Sponsor';
+            $url = '/admin/sponsors';
+
+            $errors = array();
+
+            switch ($action) {
+                case 'add':
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'name' => "Añadiendo un nuevo patrocinador",
+                            'menu' => array(
+                                array(
+                                    'url' => $url,
+                                    'label' => 'Patrocinadores'
+                                )
+                            ),
+                            'data' => (object) array(),
+                            'form' => array(
+                                'action' => "$url/edit/",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'Añadir'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Patrocinador',
+                                        'name' => 'name',
+                                        'type' => 'text'
+                                    ),
+                                    'url' => array(
+                                        'label' => 'Enlace',
+                                        'name' => 'url',
+                                        'type' => 'text'
+                                    )
+                                )
+
+                            )
+                        )
+                    );
+
+                    break;
+                case 'edit':
+
+                    // gestionar post
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
+
+                        $errors = array();
+
+                        // instancia
+                        $item = new $model(array(
+                            'id' => $_POST['id'],
+                            'name' => $_POST['name'],
+                            'url' => $_POST['url'],
+                            'order' => $_POST['order']
+                        ));
+
+                        if ($item->save($errors)) {
+                            throw new Redirection($url);
+                        }
+                    } else {
+                        $item = $model::get($id);
+                    }
+
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'name' => "Editando un patrocinador",
+                            'menu' => array(
+                                array(
+                                    'url' => $url,
+                                    'label' => 'Patrocinadores'
+                                )
+                            ),
+                            'data' => $item,
+                            'form' => array(
+                                'action' => "$url/edit/$id",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'guardar'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Patrocinador',
+                                        'name' => 'name',
+                                        'type' => 'text'
+                                    ),
+                                    'url' => array(
+                                        'label' => 'Enlace',
+                                        'name' => 'url',
+                                        'type' => 'text'
+                                    ),
+                                    'image' => array(
+                                        'label' => 'Logo',
+                                        'name' => 'image',
+                                        'type' => 'image'
+                                    ),
+                                    'order' => array(
+                                        'label' => 'Posición',
+                                        'name' => 'order',
+                                        'type' => 'text'
+                                    )
+                                )
+
+                            ),
+                            'errors' => $errors
+                        )
+                    );
+
+                    break;
+                case 'up':
+                    $model::up($id);
+                    break;
+                case 'down':
+                    $model::down($id);
+                    break;
+                case 'remove':
+                    if ($model::delete($id)) {
+                        throw new Redirection($url);
+                    }
+                    break;
+            }
+
+            return new View(
+                'view/admin/list.html.php',
+                array(
+                    'name' => 'Gestión de patrocinadores',
+                    'menu' => array(
+                        array(
+                            'url' => "$url/add",
+                            'label' => 'Nuevo patrocinador'
+                        )
+                    ),
+                    'data' => $model::getAll(),
+                    'columns' => array(
+                        'name' => 'Patrocinador',
+                        'url' => 'Enlace',
+                        'order' => 'Posición',
+                        'up' => '',
+                        'down' => '',
+                        'edit' => '',
+                        'remove' => ''
+                    ),
+                    'url' => "$url",
+                    'errors' => $errors
+                )
+            );
+        }
+
 	}
 
 }
