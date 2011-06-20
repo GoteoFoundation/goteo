@@ -1649,7 +1649,7 @@ namespace Goteo\Controller {
                                         'label' => 'Noticia',
                                         'name' => 'title',
                                         'type' => 'text',
-                                        'properties' => 'size=100'
+                                        'properties' => 'size="100" maxlength="100"'
                                     ),
                                     'description' => array(
                                         'label' => 'Entradilla',
@@ -1726,7 +1726,7 @@ namespace Goteo\Controller {
                                         'label' => 'Noticia',
                                         'name' => 'title',
                                         'type' => 'text',
-                                        'properties' => 'size=100'
+                                        'properties' => 'size="100"  maxlength="100"'
                                     ),
                                     'description' => array(
                                         'label' => 'Entradilla',

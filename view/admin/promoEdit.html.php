@@ -111,8 +111,9 @@ echo new SuperForm(array(
             'type'  => 'textbox',
             'required'  => true,
             'title' => 'Descripción',
-            'size'      => 20,
-            'hint'  => 'Al publicar se recorta a 100 caracteres (algo menos de lo que cabe en este cuadro)',
+            'size' => 100,
+            'maxlength' => 100,
+            'hint'  => 'Máximo 100 caracteres',
             'errors'    => array(),
             'value' => $promo->description
         )

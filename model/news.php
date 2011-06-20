@@ -2,7 +2,8 @@
 
 namespace Goteo\Model {
 
-    use Goteo\Library\Check;
+    use Goteo\Library\Check,
+        Goteo\Library\Text;
 
     class News extends \Goteo\Core\Model {
 
@@ -34,7 +35,9 @@ namespace Goteo\Model {
         /*
          * Lista de noticias
          */
-        public static function getAll () {
+        public static function getAll ($highlights = false) {
+
+            $list = array();
 
             $sql = static::query("
                 SELECT
@@ -47,7 +50,14 @@ namespace Goteo\Model {
                 ORDER BY `order` ASC, title ASC
                 ");
             
-            return $sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+            foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
+                if ($highlights) {
+                    $item->title = Text::recorta($item->title, 100);
+                }
+                $list[] = $item;
+            }
+
+            return $list;
         }
 
         public function validate (&$errors = array()) { 

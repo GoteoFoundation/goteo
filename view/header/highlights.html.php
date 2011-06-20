@@ -3,7 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Model\News; 
 
-$highlights = News::getAll();
+$highlights = News::getAll(true);
 
 $see_more = Text::get('regular-see_more');
 
