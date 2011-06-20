@@ -52,7 +52,7 @@ namespace Goteo\Model {
             
             foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
                 if ($highlights) {
-                    $item->title = Text::recorta($item->title, 100);
+                    $item->title = Text::recorta($item->title, 80);
                 }
                 $list[] = $item;
             }

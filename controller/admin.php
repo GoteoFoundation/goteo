@@ -444,7 +444,8 @@ namespace Goteo\Controller {
                     'section' => $_POST['section'],
                     'title' => $_POST['title'],
                     'description' => $_POST['description'],
-                    'order' => $_POST['order']
+                    'order' => $_POST['order'],
+                    'move' => $_POST['move']
                 ));
 
 				if ($faq->save($errors)) {
@@ -486,7 +487,7 @@ namespace Goteo\Controller {
                         'view/admin/faqEdit.html.php',
                         array(
                             'action' => 'add',
-                            'faq' => (object) array('section' => $filter, 'order' => $next),
+                            'faq' => (object) array('section' => $filter, 'order' => $next, 'cuantos' => $next),
                             'filter' => $filter,
                             'sections' => $sections
                         )
@@ -494,6 +495,9 @@ namespace Goteo\Controller {
                     break;
                 case 'edit':
                     $faq = Model\Faq::get($id);
+
+                    $cuantos = Model\Faq::next($faq->section);
+                    $faq->cuantos = ($cuantos -1);
 
                     return new View(
                         'view/admin/faqEdit.html.php',
@@ -1726,7 +1730,7 @@ namespace Goteo\Controller {
                                         'label' => 'Noticia',
                                         'name' => 'title',
                                         'type' => 'text',
-                                        'properties' => 'size="100"  maxlength="100"'
+                                        'properties' => 'size="100"  maxlength="80"'
                                     ),
                                     'description' => array(
                                         'label' => 'Entradilla',
