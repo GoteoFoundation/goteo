@@ -100,13 +100,13 @@ namespace Goteo\Model {
                 $sql = "REPLACE INTO faq SET " . $set;
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
-
+/*
                 $extra = array(
                     'section' => $this->section,
                     'node' => $this->node
                 );
                 Check::reorder($this->id, 'up', 'faq', 'id', 'order', $extra);
-
+*/
                 return true;
             } catch(\PDOException $e) {
                 $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
