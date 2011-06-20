@@ -66,7 +66,7 @@ input[type="reset"],
 button,
 a.button {
     background-color: #58595B;
-    padding: .6em 1.3em;
+    padding: .6em 1.5em;
     text-transform: uppercase;
     border: none;    
     cursor: pointer;

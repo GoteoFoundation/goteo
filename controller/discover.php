@@ -4,10 +4,11 @@ namespace Goteo\Controller {
 
     use Goteo\Core\View,
         Goteo\Model,
-        Goteo\Core\Redirection;
+        Goteo\Core\Redirection,
+        Goteo\Library\Text;
 
     class Discover extends \Goteo\Core\Controller {
-
+    
         /*
          * Descubre proyectos, página general
          */
@@ -15,10 +16,10 @@ namespace Goteo\Controller {
 
             $viewData = array();
             $viewData['title'] = array(
-                'popular' => 'Proyectos más populares',
-                'outdate' => 'Proyectos a punto de caducar',
-                'recent' => 'Proyectos recientes',
-                'success' => 'Proyectos exitosos'
+                'popular' => Text::get('discover-group-popular-header'),
+                'outdate' => Text::get('discover-group-outdate-header'),
+                'recent'  => Text::get('discover-group-recent-header'),
+                'success' => Text::get('discover-group-success-header')
             );
             $viewData['types'] = array(
                 'popular' => Model\Project::published('popular', 3),
@@ -92,25 +93,14 @@ namespace Goteo\Controller {
          */
         public function view ($type = 'all') {
 
+            if (!in_array($type, array('popular', 'outdate', 'recent', 'success', 'all'))) {
+                throw new Redirection('/discover');
+            }
+
             $viewData = array();
 
             // segun el tipo cargamos el título de la página
-            switch ($type) {
-                case 'popular':
-                    $viewData['title'] = 'Proyectos más populares';
-                    break;
-                case 'outdate':
-                    $viewData['title'] = 'Proyectos a punto de caducar';
-                    break;
-                case 'recent':
-                    $viewData['title'] = 'Proyectos recientes';
-                    break;
-                case 'success':
-                    $viewData['title'] = 'Proyectos exitosos';
-                    break;
-                default: // all
-                    $viewData['title'] = 'Proyectos en campaña';
-            }
+            $viewData['title'] = Text::get('discover-group-'.$all.'-header');
 
             // segun el tipo cargamos la lista
             $viewData['list']  = Model\Project::published($type);

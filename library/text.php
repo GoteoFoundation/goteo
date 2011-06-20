@@ -44,6 +44,9 @@ namespace Goteo\Library {
         }
 
         static public function get ($id) {
+
+//            return 'aaaaaa';
+
             $lang = \GOTEO_DEFAULT_LANG; // @TODO idiomas
 
             if (\defined('GOTEO_ADMIN_NOCACHE')) {
@@ -210,14 +213,16 @@ namespace Goteo\Library {
                 'field'         => 'Campos y agrupaciones de campos',
                 'mandatory'     => 'Mensajes de campos obligatorios',
                 'tooltip'       => 'Consejos para rellenar el formulario de proyecto',
-                'error-register'=> 'Errores al registrarse',
+                'error'         => 'Errores que se muestran al usuario',
                 'explain'       => 'Explicaciones',
-                'guide-project' => 'Guias del formulario de proyecto',
-                'guide-user'    => 'Guias del formulario de usuario',
+                'guide'         => 'Textos de guia',
                 'step'          => 'Pasos del formulario',
+                'status'        => 'Estados de los proyectos',
+                'waitfot'       => 'Explicacion estados de los proyectos',
                 'validate'      => 'Validaciones de campos',
                 'regular'       => 'De uso común',
-                'button'        => 'Genéricos para botones'
+                'button'        => 'Genéricos para botones',
+                'subject'       => 'Asuntos para emails automáticos'
             );
 
             \asort($filters);
@@ -244,7 +249,10 @@ namespace Goteo\Library {
                 'dashboard'=> 'Dashboard del usuario',
                 'register' => 'Registro de usuarios',
                 'login'    => 'Pagina de login',
-                'general'  => 'Propósito general'
+                'discover'  => 'Sección descubre proyectos',
+                'community'  => 'Sección comunidad',
+                'general'  => 'Propósito general',
+                'faq'  => 'Pagina de FAQ'
             );
 
             \asort($groups);

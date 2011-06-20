@@ -1,8 +1,9 @@
 <?php
 
-use Goteo\Core\View;
+use Goteo\Core\View,
+    Goteo\Library\Text;
 
-$bodyClass = 'home';
+$bodyClass = 'discover';
 
 include 'view/prologue.html.php';
 
@@ -10,7 +11,7 @@ include 'view/header.html.php' ?>
 
         <div id="sub-header">
             <div>
-                <h2 class="title">Resultado de búsqueda</h2>
+                <h2 class="title"><?php echo Text::get('discover-results-header'); ?></h2>
             </div>
 
         </div>
@@ -35,7 +36,7 @@ include 'view/header.html.php' ?>
                     </div>
                     <?php endforeach; ?>
                 <?php else : ?>
-                    <p>No hemos encontrado ningún proyecto que cunmpla los criterios de búsqueda</p>
+                    <p><?php echo Text::get('discover-results-empty'); ?></p>
                 <?php endif; ?>
             </div>
         
