@@ -9,8 +9,11 @@
 @import url('dashboard.css');
 @import url('project.css');
 @import url('user.css');
+@import url('faq.css');
+@import url('blog.css');
 
-div#sub-header > div {
+div#sub-header > div,
+div#sub-header-secondary > div {
     display: block;
     max-width: 940px;
     margin: 0 auto;

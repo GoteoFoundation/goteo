@@ -1,0 +1,15 @@
+#blog-content {
+    width:620px;
+	margin: 0 20px 0 0;
+	float:left;
+}
+#blog-sidebar {
+    width:300px;
+	float:right;
+}
+div.widget.blog-content-module,
+div.widget.blog-sidebar-module {
+    background-color: white;
+    line-height: 18px;
+    margin: 0 0 20px;
+}
