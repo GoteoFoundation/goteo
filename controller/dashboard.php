@@ -756,6 +756,18 @@ $testpost = $_POST;
             }
         }
 
+        /*
+         * Salto al panel de revisor
+         *
+         */
+        public function review ($option = 'board') {
+            if (ACL::check('/review')) {
+                throw new Redirection('/review', Redirection::TEMPORARY);
+            } else {
+                throw new Redirection('/dashboard', Redirection::TEMPORARY);
+            }
+        }
+
         private static function menu() {
             // todos los textos del menu dashboard
             $menu = array(
@@ -792,6 +804,16 @@ $testpost = $_POST;
             if (ACL::check('/admin')) {
                 $menu['admin'] = array(
                     'label'   => 'Administración',
+                    'options' => array(
+                        'board' => 'Ir al panel'
+                    )
+                );
+            }
+
+            // si tiene permiso para ir a las revisiones
+            if (ACL::check('/review')) {
+                $menu['review'] = array(
+                    'label'   => 'Revisión',
                     'options' => array(
                         'board' => 'Ir al panel'
                     )
