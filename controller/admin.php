@@ -529,6 +529,112 @@ namespace Goteo\Controller {
         }
 
         /*
+         * criterios de puntuación Goteo
+         */
+        public function criteria($action = 'list', $id = null) {
+            // secciones
+            $sections = Model\Criteria::sections();
+            if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $sections)) {
+                $filter = $_GET['filter'];
+            } else {
+                $filter = 'project';
+            }
+
+            $errors = array();
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                // instancia
+                $criteria = new Model\Criteria(array(
+                    'id' => $_POST['id'],
+                    'section' => $_POST['section'],
+                    'title' => $_POST['title'],
+                    'description' => $_POST['description'],
+                    'order' => $_POST['order'],
+                    'move' => $_POST['move']
+                ));
+
+				if ($criteria->save($errors)) {
+                    switch ($_POST['action']) {
+                        case 'add':
+                            $success = 'Criterio añadido correctamente';
+                            break;
+                        case 'edit':
+                            $success = 'Criterio editado correctamente';
+                            break;
+                    }
+				}
+				else {
+                    return new View(
+                        'view/admin/criteriaEdit.html.php',
+                        array(
+                            'action' => $_POST['action'],
+                            'criteria' => $criteria,
+                            'filter' => $filter,
+                            'sections' => $sections,
+                            'errors' => $errors
+                        )
+                    );
+				}
+			}
+
+
+            switch ($action) {
+                case 'up':
+                    Model\Criteria::up($id);
+                    break;
+                case 'down':
+                    Model\Criteria::down($id);
+                    break;
+                case 'add':
+                    $next = Model\Criteria::next($filter);
+
+                    return new View(
+                        'view/admin/criteriaEdit.html.php',
+                        array(
+                            'action' => 'add',
+                            'criteria' => (object) array('section' => $filter, 'order' => $next, 'cuantos' => $next),
+                            'filter' => $filter,
+                            'sections' => $sections
+                        )
+                    );
+                    break;
+                case 'edit':
+                    $criteria = Model\Criteria::get($id);
+
+                    $cuantos = Model\Criteria::next($criteria->section);
+                    $criteria->cuantos = ($cuantos -1);
+
+                    return new View(
+                        'view/admin/criteriaEdit.html.php',
+                        array(
+                            'action' => 'edit',
+                            'criteria' => $criteria,
+                            'filter' => $filter,
+                            'sections' => $sections
+                        )
+                    );
+                    break;
+                case 'remove':
+                    Model\Criteria::delete($id);
+                    break;
+            }
+
+            $criterias = Model\Criteria::getAll($filter);
+
+            return new View(
+                'view/admin/criteria.html.php',
+                array(
+                    'criterias' => $criterias,
+                    'sections' => $sections,
+                    'filter' => $filter,
+                    'errors' => $errors,
+                    'success' => $success
+                )
+            );
+        }
+
+        /*
          * Tipos de Retorno/Recompensa (iconos)
          */
         public function icons($action = 'list', $id = null) {
