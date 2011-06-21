@@ -31,6 +31,10 @@ div.widget.project-share li.twitter {
     background-image: url('/view/css/social/twitter.png');    
 }
 
+div.widget.project-share li.identica {
+    background-image: url('/view/css/social/identica.png');
+}
+
 div.widget.project-share li.url {
     background-image: url('/view/css/social/url.png'); 
 }

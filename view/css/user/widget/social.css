@@ -34,3 +34,7 @@ div.widget.user-social li.linkedin {
 div.widget.user-social li.twitter {
     background-image: url('/view/css/social/twitter.png');    
 }
+
+div.widget.user-social li.identica {
+    background-image: url('/view/css/social/identica.png');
+}
