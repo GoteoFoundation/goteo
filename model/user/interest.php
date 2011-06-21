@@ -120,7 +120,7 @@ namespace Goteo\Model\User {
                             AND mine.user = :me
                         WHERE user_interest.user != :me
                         ";
-                $query = static::query($sql, array('me'=>$user));
+                $query = static::query($sql, array(':me'=>$user));
                 $shares = $query->fetchAll(\PDO::FETCH_ASSOC);
                 foreach ($shares as $share) {
 
