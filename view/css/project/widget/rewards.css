@@ -56,6 +56,14 @@ div.widget.project-rewards ul li.product {
     background-image: url('../../icon/m/product.png');
 }
 
+div.widget.project-rewards ul li.design {
+    background-image: url('../../icon/m/design.png');
+}
+
+div.widget.project-rewards ul li.other {
+    background-image: url('../../icon/m/other.png');
+}
+
 div.widget.project-rewards > a.more {
     display: inline-block;
     float: right;
