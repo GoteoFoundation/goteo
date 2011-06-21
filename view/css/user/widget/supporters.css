@@ -140,12 +140,12 @@ div.widget.user-supporters .supporters ul li dl dd.worthcracy ul li.done.worth-5
 div.widget.user-supporters .supporters ul li dl dd.worthcracy ul li > strong {
     display: block;
     position: absolute;
-    top: 10px;    
+    top: 7px;
     font-weight: normal;
     width: 200px;
     left: 50%;
     margin-left: -100px;
     text-align: center;
     background: url('../../worth/beak.png') no-repeat center top;
-    padding-top: 9px;
+    padding-top: 6px;
 }
