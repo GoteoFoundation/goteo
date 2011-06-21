@@ -50,7 +50,7 @@ foreach ($project->supports as $support) {
                 ),
                 "support-{$support->id}-remove" => array(
                     'type'  => 'submit',
-                    'label' => Text::get('supports-fields-support-title'),
+                    'label' => Text::get('form-remove-button'),
                     'class' => 'inline remove support-remove'
                 )
             )
