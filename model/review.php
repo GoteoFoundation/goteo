@@ -124,7 +124,7 @@ namespace Goteo\Model {
                     ORDER BY project.progress DESC
                     ";
 
-            echo "$sql <br />";
+//            echo "$sql <br />";
             $query = self::query($sql, array($node));
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
 
@@ -160,7 +160,7 @@ namespace Goteo\Model {
          * max es el maximo depuntuacio que podria haber obtenido
          *
          */
-        public function recount ($checker) {
+        public function recount ($checker, &$errors = array()) {
             try {
                 $score = 0;
                 $max   = 0;
@@ -191,10 +191,10 @@ namespace Goteo\Model {
         /*
          * Metodo para dar por cerrada una revisión
          */
-        public function close () {
+        public static function close ($id, &$errors = array()) {
             try {
                 $values = array(
-                    ':review' => $this->id
+                    ':review' => $id
                 );
 
                 $sql = "UPDATE review SET status = 0 WHERE id = :review";

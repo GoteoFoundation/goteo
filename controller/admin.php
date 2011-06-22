@@ -366,20 +366,49 @@ namespace Goteo\Controller {
                     );
 
                     break;
-                case 'finish':
-                    // marcamos la revision como completamente cerrada   "review->status = 0"
+                case 'close':
+                    // marcamos la revision como completamente cerrada
+                    if (Model\Review::close($id, $errors)) {
+                        $message = 'La revisión se ha cerrado';
+                    }
                     break;
                 case 'assign':
                     // asignamos la revision a este usuario
                     // la id de revision llega en $id
-                    // la id del usuario llega por post
+                    // la id del usuario llega por get
+                    $user = $_GET['user'];
+                    if (!empty($user)) {
+                        $assignation = new Model\User\Review(array(
+                            'id' => $id,
+                            'user' => $user
+                        ));
+                        $assignation->save($errors);
+                    }
                     break;
                 case 'unassign':
                     // se la quitamos a este revisor
-                    // nos llega la id
+                    // la id de revision llega en $id
+                    // la id del usuario llega por get
+                    $user = $_GET['user'];
+                    if (!empty($user)) {
+                        $assignation = new Model\User\Review(array(
+                            'id' => $id,
+                            'user' => $user
+                        ));
+                        $assignation->remove($errors);
+                    }
                     break;
-                case 'details':
+                case 'report':
                     // mostramos los detalles de revision
+                    $review = Model\Review::get($id);
+
+
+                    return new View(
+                        'view/review/report.html.php',
+                        array(
+                            'review' => $review
+                        )
+                    );
                     break;
             }
 
@@ -393,6 +422,7 @@ namespace Goteo\Controller {
             return new View(
                 'view/admin/checking.html.php',
                 array(
+                    'message' => $message,
                     'projects' => $projects,
                     'filters' => $filters,
                     'status' => $status,

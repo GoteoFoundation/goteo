@@ -31,9 +31,16 @@ include 'view/prologue.html.php';
         </div>
 
         <div id="main">
-            <?php if (!empty($this['errors'])) {
-                echo '<pre>' . print_r($this['errors'], 1) . '</pre>';
-            } ?>
+            <?php if (!empty($this['errors'])) : ?>
+                <div class="widget">
+                    <p><?php echo implode(',', $this['errors']); ?></p>
+                </div>
+            <?php endif; ?>
+            <?php if (!empty($this['message'])) : ?>
+                <div class="widget">
+                    <p><?php echo $this['message']; ?></p>
+                </div>
+            <?php endif; ?>
 
             <div class="widget board">
                 <form id="filter-form" action="/admin/checking" method="get">
@@ -61,10 +68,10 @@ include 'view/prologue.html.php';
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Proyecto</th> <!-- edit -->
-                                        <th>Creador</th> <!-- mailto -->
-                                        <th>%</th> <!-- segun estado -->
-                                        <th>Puntos</th> <!-- segun estado -->
+                                        <th width="30%">Proyecto</th> <!-- edit -->
+                                        <th width="20%">Creador</th> <!-- mailto -->
+                                        <th width="5%">%</th> <!-- segun estado -->
+                                        <th width="5%">Puntos</th> <!-- segun estado -->
                                         <th>
                                             <!-- Iniciar revision si no tiene registro de revision -->
                                             <!-- Editar si tiene registro -->
@@ -81,13 +88,15 @@ include 'view/prologue.html.php';
                                         <td><?php echo $project->progress; ?></td>
                                         <td><?php echo $project->score . ' / ' . $project->max; ?></td>
                                         <?php if (!empty($project->review)) : ?>
-                                        <td><a href="/admin/checking/edit/<?php echo $project->project; ?>">[Editar]</a></td>
-                                        <td><a href="/admin/checking/report/<?php echo $project->review; ?>">[Ver informe]</a></td>
+                                        <td><a href="/admin/checking/edit/<?php echo $project->project; ?>/<?php echo $filter; ?>">[Editar]</a></td>
+                                        <td><a href="/admin/checking/report/<?php echo $project->project; ?>" target="_blank">[Ver informe]</a></td>
                                             <?php if ( $project->status > 0 ) : ?>
-                                        <td><a href="/admin/checking/close/<?php echo $project->review; ?>">[Cerrar]</a></td>
+                                        <td><a href="/admin/checking/close/<?php echo $project->review; ?>/<?php echo $filter; ?>">[Cerrar]</a></td>
+                                            <?php else : ?>
+                                        <td>Revisión cerrada</td>
                                             <?php endif; ?>
                                         <?php else : ?>
-                                        <td><a href="/admin/checking/add/<?php echo $project->project; ?>">[Iniciar revision]</a></td>
+                                        <td><a href="/admin/checking/add/<?php echo $project->project; ?>/<?php echo $filter; ?>">[Iniciar revision]</a></td>
                                         <td></td>
                                         <td></td>
                                         <?php endif; ?>
@@ -103,17 +112,18 @@ include 'view/prologue.html.php';
                                     <th>Listo</th>
                                     <th></th>
                                 </tr>
-                                <?php foreach ($project->checker as $checker) : ?>
+                                <?php foreach ($project->checkers as $checker) : ?>
                                 <tr>
                                     <td><?php echo $checker->name; ?></td>
                                     <td><?php if ($checker->ready) echo 'Listo'; ?></td>
-                                    <td><a href="/admin/checking/unassign/<?php echo $checker->user; ?>">[Desasignar]</a></td>
+                                    <td><a href="/admin/checking/unassign/<?php echo $project->review; ?>/<?php echo $filter; ?>&user=<?php echo $checker->user; ?>">[Desasignar]</a></td>
                                 </tr>
                                 <?php endforeach; ?>
+                                <?php if ($project->status > 0) : ?>
                                 <tr>
-                                    <form id="form-assign-<?php echo $project->review; ?>" action="/admin/checking/assign/<?php echo $project->review; ?>" method="post">
+                                    <form id="form-assign-<?php echo $project->review; ?>" action="/admin/checking/assign/<?php echo $project->review; ?>/<?php echo $filter; ?>" method="get">
                                     <td colspan="2">
-                                        <select name="checker">
+                                        <select name="user">
                                             <option value="">Selecciona un nuevo revisor</option>
                                             <?php foreach ($this['checkers'] as $user) : ?>
                                             <option value="<?php echo $user->id; ?>"><?php echo $user->name; ?></option>
@@ -123,6 +133,7 @@ include 'view/prologue.html.php';
                                     <td><a href="#" onclick="document.getElementById('form-assign-<?php echo $project->review; ?>').submit(); return false;">[Asignar]</a></td>
                                     </form>
                                 </tr>
+                                <?php endif; ?>
                             </table>
                             <?php endif; ?>
                             
