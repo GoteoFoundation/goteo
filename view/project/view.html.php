@@ -2,14 +2,24 @@
 
 use Goteo\Core\View,
     Goteo\Model\User,
-    Goteo\Model\Project\Cost;
+    Goteo\Model\Project\Cost,
+    Goteo\Model\Project\Support,
+    Goteo\Model\Project\Category,
+    Goteo\Model\Blog,
+    Goteo\Library\Text;
 
 $project = $this['project'];
 $show    = $this['show'];
 $invest  = $this['invest'];
+$post    = $this['post'];
 
 $owner   = User::get($project->owner);
 $user    = $_SESSION['user'];
+
+$categories = Category::getNames($project->id);
+
+$blog = Blog::get($project->id);
+
 
 if (!empty($project->investors)) {
     $supporters = ' (' . count($project->investors) . ')';
@@ -21,6 +31,11 @@ if (!empty($project->messages)) {
 } else {
     $messages = '';
 }
+if (!empty($blog->posts)) {
+    $updates = ' (' . count($blog->posts) . ')';
+} else {
+    $updates = '';
+}
 
 
 
@@ -30,15 +45,30 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
 
         <div id="sub-header">
             <div>
-                <h2><?php echo htmlspecialchars($this['project']->name) ?></h2>
+                <h2><?php echo htmlspecialchars($project->name) ?></h2>
+                
+                <div class="categories"><h3><?php echo Text::get('project-view-categories-title'); ?></h3>
+                    <?php 
+                    $i = 0;  
+                    foreach ($categories as $cat) {
+                        if ($i++ > 0) echo ', ';
+                        // @todo Enlaces en los nombres de las categorías?
+                        echo htmlspecialchars($cat);                        
+                    }
+                    ?>
+                </div>
             </div>
             
             <div class="sub-menu">
-                <?php echo new View('view/project/view/menu.html.php', array(
-                                        'project' => $project,
-                                        'show' => $show,
-                                        'supporters' => $supporters, 
-                                        'messages' => $messages)); 
+                <?php echo new View('view/project/view/menu.html.php',
+                            array(
+                                'project' => $project,
+                                'show' => $show,
+                                'supporters' => $supporters,
+                                'messages' => $messages,
+                                'updates' => $updates
+                            )
+                    );
                 ?>
             </div>
                         
@@ -77,10 +107,16 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                 // los modulos centrales son diferentes segun el show
                 switch ($show) {
                     case 'needs':
-                        echo
-                            new View('view/project/widget/needs.html.php', 
-                                array('project' => $project, 'types' => Cost::types())),
-                            new View('view/project/widget/sendMsg.html.php', array('project' => $project));
+                        if ($this['non-economic']) {
+                            echo
+                                new View('view/project/widget/non-needs.html.php',
+                                    array('project' => $project, 'types' => Support::types()));
+                        } else {
+                            echo
+                                new View('view/project/widget/needs.html.php',
+                                    array('project' => $project, 'types' => Cost::types())),
+                                new View('view/project/widget/sendMsg.html.php', array('project' => $project));
+                        }
                         break;
                     case 'supporters':
                         // segun el paso de aporte
@@ -106,12 +142,21 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                             }
                         } else {
                             echo
-                                new View('view/project/widget/supporters.html.php', array('project' => $project));
+                                new View('view/project/widget/supporters.html.php', array('project' => $project)),
+                                new View('view/worth/legend.html.php');
                         }
                         break;
                     case 'messages':
                         echo
                             new View('view/project/widget/messages.html.php', array('project' => $project));
+                        break;
+                    case 'rewards':
+                        echo
+                            new View('view/project/widget/rewards-summary.html.php', array('project' => $project));
+                        break;
+                    case 'updates':
+                        echo
+                            new View('view/project/widget/updates.html.php', array('project' => $project, 'blog' => $blog, 'post' => $post));
                         break;
                     case 'home':
                     default:

@@ -4,10 +4,11 @@ namespace Goteo\Controller {
 
     use Goteo\Core\View,
         Goteo\Model,
-        Goteo\Core\Redirection;
+        Goteo\Core\Redirection,
+        Goteo\Library\Text;
 
     class Discover extends \Goteo\Core\Controller {
-
+    
         /*
          * Descubre proyectos, página general
          */
@@ -15,16 +16,16 @@ namespace Goteo\Controller {
 
             $viewData = array();
             $viewData['title'] = array(
-                'popular' => 'Proyectos más populares',
-                'outdate' => 'Proyectos a punto de caducar',
-                'recent' => 'Proyectos recientes',
-                'success' => 'Proyectos exitosos'
+                'popular' => Text::get('discover-group-popular-header'),
+                'outdate' => Text::get('discover-group-outdate-header'),
+                'recent'  => Text::get('discover-group-recent-header'),
+                'success' => Text::get('discover-group-success-header')
             );
             $viewData['types'] = array(
-                'popular' => Model\Project::published('popular'),
-                'outdate' => Model\Project::published('outdate'),
-                'recent' => Model\Project::published('recent'),
-                'success' => Model\Project::published('success')
+                'popular' => Model\Project::published('popular', 3),
+                'outdate' => Model\Project::published('outdate', 3),
+                'recent' => Model\Project::published('recent', 3),
+                'success' => Model\Project::published('success', 3)
             );
 
             return new View(
@@ -44,25 +45,44 @@ namespace Goteo\Controller {
 
 			if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['query'])) {
                 $errors = array();
-                $los_datos = $_GET;
 
-                $message = "Buscando <strong>{$_GET['query']}</strong>";
+                $query = $_GET['query']; // busqueda de texto
 
-                $results = \Goteo\Library\Search::text($_GET['query']);
+                $message = "Buscando <strong>{$query}</strong>";
 
-			} else {
+                $results = \Goteo\Library\Search::text($query);
+
+			} elseif ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['searcher'])) {
+
+                // vamos montando $params con los 3 parametros y las opciones marcadas en cada uno
+                $params = array('category'=>array(), 'location'=>array(), 'reward'=>array());
+
+                foreach ($params as $param => $empty) {
+                    foreach ($_POST[$param] as $key => $value) {
+                        if ($value == 'all') {
+                            $params[$param] = array();
+                            break;
+                        }
+                        $params[$param][] = "'{$value}'";
+                    }
+                }
+
+                $params['query'] = $_POST['query'];
+
+                // para cada parametro, si no hay ninguno es todos los valores
+                $results = \Goteo\Library\Search::params($params);
+
+            } else {
                 throw new Redirection('/discover', Redirection::PERMANENT);
-            }
-
-            if (!empty($errors)) {
-                $message .= 'Errores: ' . implode('.', $errors);
             }
 
             return new View(
                 'view/discover/results.html.php',
                 array(
                     'message' => $message,
-                    'results' => $results
+                    'results' => $results,
+                    'query'   => $query,
+                    'params'  => $params
                 )
              );
 
@@ -73,25 +93,14 @@ namespace Goteo\Controller {
          */
         public function view ($type = 'all') {
 
+            if (!in_array($type, array('popular', 'outdate', 'recent', 'success', 'all'))) {
+                throw new Redirection('/discover');
+            }
+
             $viewData = array();
 
             // segun el tipo cargamos el título de la página
-            switch ($type) {
-                case 'popular':
-                    $viewData['title'] = 'Proyectos más populares';
-                    break;
-                case 'outdate':
-                    $viewData['title'] = 'Proyectos a punto de caducar';
-                    break;
-                case 'recent':
-                    $viewData['title'] = 'Proyectos recientes';
-                    break;
-                case 'success':
-                    $viewData['title'] = 'Proyectos exitosos';
-                    break;
-                default: // all
-                    $viewData['title'] = 'Proyectos en campaña';
-            }
+            $viewData['title'] = Text::get('discover-group-'.$all.'-header');
 
             // segun el tipo cargamos la lista
             $viewData['list']  = Model\Project::published($type);

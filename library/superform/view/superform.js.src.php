@@ -145,33 +145,28 @@ if (!('Superform' in window)) {
         
         var cfb = false;
         
-        sf.delegate('li.element', 'focusin', function (event) {
+        sf.delegate('li.element', 'click focusin', function (event) {
         
-            var li = this;
-            var fb = $(li).find('div.feedback#superform-feedback-for-' + this.id).eq(0);
-
-            if (fb.length > 0) {
-                        
-                if (cfb && fb[0] !== cfb[0]) {
+            $(event.target).parents('li.element').each(function (i, li) {
+            
+                var fb = $(li).find('div.feedback#superform-feedback-for-' + li.id).not(':empty').first();
+                                                                
+                if (fb.length) {
                 
                     setTimeout(function () {
-                        cfb.fadeOut(200);
+                        sf.find('div.feedback').not(fb).fadeOut(200);
+                    });                                                                                                
+                                    
+                    setTimeout(function () {
+                        fb.fadeIn(200);
                     });
-                                                                                                
-                }            
+                    
+                    return false;
+                }
                 
-                setTimeout(function () {
-                    cfb = fb.fadeIn(200);
-                });                                        
-            }                
+            });            
             
-        });
-        
-        $('#<?php echo $this['id'] ?>').delegate('li.element', 'click', function (event) {
-            if (!sf.__cf) {
-                //$(this).find(':input').first().focus();
-            }
-        });
+        });                
         
     }); 
     

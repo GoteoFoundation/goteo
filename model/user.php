@@ -23,6 +23,7 @@ namespace Goteo\Model {
             $active,
             $facebook,
             $twitter,
+            $identica,
             $linkedin,
             $created,
             $modified,
@@ -95,7 +96,7 @@ namespace Goteo\Model {
                     $mail->to = $this->email;
                     $mail->toName = $this->name;
                     $mail->subject = Text::get('subject-register');
-                    $url = 'http://goteo.org/user/activate/' . $token;
+                    $url = SITE_URL . '/user/activate/' . $token;
                     $mail->content = sprintf('
                         Estimado(a) <strong>%1$s</strong>:<br/>
                         <br/>
@@ -179,6 +180,10 @@ namespace Goteo\Model {
 
                     if(isset($this->twitter)) {
                         $data[':twitter'] = $this->twitter;
+                    }
+
+                    if(isset($this->identica)) {
+                        $data[':identica'] = $this->identica;
                     }
 
                     if(isset($this->linkedin)) {
@@ -352,6 +357,7 @@ namespace Goteo\Model {
                         keywords,
                         facebook,
                         twitter,
+                        identica,
                         linkedin,
                         active,
                         created,
@@ -360,18 +366,31 @@ namespace Goteo\Model {
                     WHERE id = :id
                     ", array(':id' => $id));
                 $user = $query->fetchObject(__CLASS__);
-                /*
-                 * Comprobaciones acl
-                if (!$user instanceof  \Goteo\Model\User) {
-                    var_dump($id);
-                    die(\trace($user));
-                }
-                 *
-                 */
+                
                 $user->roles = $user->getRoles();
                 $user->avatar = Image::get($user->avatar);
                 $user->interests = User\Interest::get($id);
                 $user->webs = User\Web::get($id);
+                return $user;
+            } catch(\PDOException $e) {
+                return false;
+            }
+        }
+
+        // version mini de get para sacar nombre i mail
+        public static function getMini ($id) {
+            try {
+                $query = static::query("
+                    SELECT
+                        name,
+                        email
+                    FROM user
+                    WHERE id = :id
+                    ", array(':id' => $id));
+                $user = $query->fetchObject(__CLASS__);
+                
+                $user->avatar = Image::get($user->avatar);
+
                 return $user;
             } catch(\PDOException $e) {
                 return false;
@@ -384,9 +403,49 @@ namespace Goteo\Model {
          * @param  bool $visible    true|false
          * @return mixed            Array de objetos de usuario activos|todos.
          */
-        public static function getAll ($visible = true) {
-            $query = self::query('SELECT * FROM user WHERE active = ?', array($visible));
-            return $query->fetchAll(__CLASS__);
+        public static function getAll ($filters = array()) {
+            $users = array();
+
+            $sqlFilter = "";
+            if (!empty($filters['status'])) {
+                $active = $filters['status'] == 'active' ? '1' : '0';
+                $sqlFilter .= " AND active = '$active'";
+            }
+            if (!empty($filters['interest'])) {
+                $sqlFilter .= " AND id IN (
+                    SELECT user
+                    FROM user_interest
+                    WHERE interest = {$filters['interest']}
+                    ) ";
+            }
+            if (!empty($filters['posted'])) {
+                /*
+                 * Si ha enviado algun mensaje o comentario
+                $sqlFilter .= " AND id IN (
+                    SELECT user
+                    FROM message
+                    WHERE interest = {$filters['interest']}
+                    ) ";
+                 *
+                 */
+            }
+
+            $sql = "SELECT
+                        id,
+                        name,
+                        email,
+                        active
+                    FROM user
+                    WHERE id != ''
+                        $sqlFilter
+                    ORDER BY name ASC
+                    ";
+
+            $query = self::query($sql, array($node));
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $user) {
+                $users[] = $user;
+            }
+            return $users;
         }
 
 		/**
@@ -442,6 +501,59 @@ namespace Goteo\Model {
     		}
     	}
 
+		/**
+		 * Verificacion de recuperacion de contraseña
+		 *
+		 * @param string $username Nombre de usuario
+		 * @param string $email    Email de la cuenta
+		 * @return boolean true|false  Correctos y mail enviado
+		 */
+		public static function recover ($username, $email) {
+            $query = self::query("
+                    SELECT
+                        id,
+                        name,
+                        email
+                    FROM user
+                    WHERE BINARY id = :username
+                    AND BINARY email = :email",
+				array(
+					':username' => trim($username),
+					':email'    => trim($email)
+				)
+			);
+			if($row = $query->fetchObject()) {
+                // tenemos id, nombre, email
+                // genero el token
+                $token = md5(uniqid()) . '¬' . $row->email;
+                self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $row->id, ':token' => $token));
+
+                // Email de recuperacion
+                $mail = new Mail();
+                $mail->to = $row->email;
+                $mail->toName = $row->name;
+                $mail->subject = 'Su petición de recuperación de contraseña en Goteo';
+                $url = SITE_URL . '/user/recover/' . base64_encode($token);
+                $mail->content = sprintf('
+                    Estimado(a) <strong>%1$s</strong>:<br/>
+                    <br/>
+                    Hemos recibido una petición para recuperar la contraseña de tu cuenta de usuario en Goteo.org<br />
+                    Si no has solicitado esta recuperación de contraseña, ignora este mensaje<br />
+                    Para acceder a tu cuenta y cambiar la contraseña (utilice su nombre de usuario como contraseña actual), utiliza el siguiente enlace. Si no puedes hacer click, copialo y pegalo en el navegador.
+                    <br/>
+                    <a href="%2$s">%2$s</a><br/>
+                    <br/>
+                    Recuerde que su nombre de usuario es <strong>%3$s</strong>, póngalo como contraseña actual para cambiar la contraseña.<br/>
+                    Hasta pronto!
+                ', $row->name, $url, $row->id);
+                $mail->html = true;
+                if ($mail->send($errors)) {
+                    return true;
+                }
+			}
+			return false;
+		}
+
     	/**
     	 * Guarda el Token y envía un correo de confirmación.
     	 *
@@ -458,7 +570,7 @@ namespace Goteo\Model {
                     $mail->to = $email;
                     $mail->toName = $this->name;
                     $mail->subject = Text::get('subject-change-email');
-                    $url = 'http://goteo.org/user/changeemail/' . base64_encode($token);
+                    $url = SITE_URL . '/user/changeemail/' . base64_encode($token);
                     $mail->content = sprintf('
                         Estimado(a) <strong>%1$s</strong>:<br/>
                         <br/>

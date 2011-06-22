@@ -1,0 +1,214 @@
+div.widget.project-supporters {
+    background: transparent !important;
+    padding: 0 !important;
+    max-width: 620px !important;
+}
+
+div.widget.project-supporters .title {
+    display: none;
+}
+
+div.widget.project-supporters dl.summary {
+    margin: 0 0 20px;
+    background-color: white;
+    padding: 20px;    
+    line-height: 30px;    
+    overflow: hidden;
+}
+
+div.widget.project-supporters dl.summary dt,
+div.widget.project-supporters dl.summary dd {        
+    margin: 0;
+    float: left;    
+    height: 1.5em;
+    line-height: 1.5em;
+}
+
+div.widget.project-supporters dl.summary dt {
+    font-size: 16px;
+}
+
+div.widget.project-supporters dl.summary dd {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+div.widget.project-supporters dl.summary .supporters {
+    width: 50%;
+}
+
+div.widget.project-supporters dl.summary dd.supporters {
+    clear: left;    
+}
+
+div.widget.project-supporters dl.summary dt.reached {
+    margin-top: -1.5em;    
+    color: #ee4843;
+}
+
+div.widget.project-supporters dl.summary dd.reached {
+    background: url("../../euro/red/l.png") no-repeat scroll right center transparent;        
+    padding-right: 30px;
+    color: #ee4843;
+}
+
+
+div.widget.project-supporters dl.summary dd.reached .euro {
+    display: none;
+}
+
+
+div.widget.project-supporters .supporters ul {
+    list-style: none;
+    margin: -20px 0 0 -20px;
+    padding: 0;
+}
+
+div.widget.project-supporters .supporters > ul > li {
+    background-color:  white;
+    padding: 10px 10px 10px 70px;
+    float: left;
+    margin: 20px 0 0 20px;
+    min-width: 220px;
+    height: 4.5em;
+    position: relative;
+        
+}
+
+div.widget.project-supporters .supporters ul li .avatar {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    display: block;
+    background: url('../../avatar/m.png');
+}
+
+div.widget.project-supporters .supporters ul li .avatar img {
+    background-color: white;
+}
+
+div.widget.project-supporters .supporters ul li h3,
+div.widget.project-supporters .supporters ul li h4,
+div.widget.project-supporters .supporters ul li h5,
+div.widget.project-supporters .supporters ul li h6 {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0 0 .5em;
+}
+
+div.widget.project-supporters .supporters ul li a {
+    text-decoration: none;
+}
+
+div.widget.project-supporters .supporters ul li dl,
+div.widget.project-supporters .supporters ul li dl dt,
+div.widget.project-supporters .supporters ul li dl dd {
+    margin: 0;
+    font-size: 11px;
+}
+
+div.widget.project-supporters .supporters ul li dl dt {
+    float: left;
+    margin-right: .5em;
+    clear: left;
+}
+
+div.widget.project-supporters .supporters ul li dl dt.amount {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    margin: 0;
+    font-size: 11px;
+    color: #313b96;
+}
+
+div.widget.project-supporters .supporters ul li dl dd.amount {
+    position: absolute;
+    top: 25px;
+    right: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ee4843;
+}
+
+div.widget.project-supporters .supporters ul li dl dd.amount {
+    background: url("../../euro/red/m.png") no-repeat scroll right center transparent;        
+    height: 27px;    
+    line-height: 27px;
+    padding-right: 22px;
+}
+
+div.widget.project-supporters .supporters ul li dl dd.amount .euro {
+    display: none;
+}
+
+div.widget.project-supporters .supporters ul li dl dt.date {
+    display: none;
+}
+
+div.widget.project-supporters .supporters ul li dl dd.date {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;    
+    color: #a6a8ab;
+    font-size: 11px;
+}
+
+div.widget.project-supporters .supporters ul li dl dt.worthcracy {
+    display: none;
+}
+
+div.widget.project-supporters .supporters ul li dl dd.worthcracy ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+div.widget.project-supporters .supporters ul li dl dd.worthcracy ul li {
+    display: inline-block;
+    width: 23px;
+    height: 6px;
+    overflow: visible;
+    background-color: #e7e7e7;
+    position: relative;
+}
+
+div.widget.project-supporters .supporters ul li dl dd.worthcracy ul li > * {
+    display: none;
+}
+
+div.widget.project-supporters .supporters ul li dl dd.worthcracy ul li.done.worth-1 {
+    background-color: #B6CAE0;
+}
+
+div.widget.project-supporters .supporters ul li dl dd.worthcracy ul li.done.worth-2 {
+    background-color: #92AFD1;
+}
+
+div.widget.project-supporters .supporters ul li dl dd.worthcracy ul li.done.worth-3 {
+    background-color: #799EC7;
+}
+
+div.widget.project-supporters .supporters ul li dl dd.worthcracy ul li.done.worth-4 {
+    background-color: #3C71AE;
+}
+
+div.widget.project-supporters .supporters ul li dl dd.worthcracy ul li.done.worth-5 {
+    background-color: #0C4E99;
+}
+
+div.widget.project-supporters .supporters ul li dl dd.worthcracy ul li > strong {
+    display: block;
+    position: absolute;
+    top: 7px;
+    font-weight: normal;
+    width: 200px;
+    left: 50%;
+    margin-left: -100px;
+    text-align: center;
+    background: url('../../worth/beak.png') no-repeat center top;
+    padding-top: 6px;
+}

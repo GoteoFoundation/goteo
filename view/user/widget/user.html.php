@@ -1,5 +1,7 @@
 <?php
 
+use Goteo\Library\Text;
+
 $user = $this['user'];
 $level = (int) $this['level'] ?: 3;
 
@@ -7,14 +9,19 @@ $level = (int) $this['level'] ?: 3;
 if (!isset($user->webs)) {
     $user->webs = \Goteo\Model\User\Web::get($user->id);
 }
+
 ?>
 
 <div class="widget user collapsable">
     
-    <h<?php echo $level ?> class="title">Usuario</h<?php echo $level ?>>
+    <h<?php echo $level ?> class="supertitle"><?php echo Text::get('profile-widget-user-header'); ?></h<?php echo $level ?>>
     
-    <h<?php echo $level + 1 ?> class="subtitle"><img />
+    <h<?php echo $level + 1 ?> class="title">
     <?php echo htmlspecialchars($user->name) ?></h<?php echo $level + 1 ?>>
+    
+    <div class="image">
+        <?php if (!empty($user->avatar)): ?><img alt="" src="<?php echo htmlspecialchars($user->avatar->getLink(80, 80)) ?>" /><?php endif ?>
+    </div>
     
     <?php if (isset($user->about)): ?>
     <blockquote class="about">
@@ -25,12 +32,12 @@ if (!isset($user->webs)) {
     <dl>
         
         <?php if (isset($user->location)): ?>
-        <dt class="location">Ubicación</dt>
-        <dd class="location"><a href="">Barcelona, ES</a></dd>
+        <dt class="location"><?php echo Text::get('profile-location-header'); ?></dt>
+        <dd class="location"><?php echo Text::GmapsLink($user->location); ?></dd>
         <?php endif ?>
         
         <?php if (!empty($user->webs)): ?>        
-        <dt class="links">Webs</dt>        
+        <dt class="links"><?php echo Text::get('profile-webs-header'); ?></dt>
         <dd class="links">
             <ul>
                 <?php foreach ($user->webs as $link): ?>
@@ -42,7 +49,7 @@ if (!isset($user->webs)) {
         
     </dl>
     
-    <a class="button aqua profile" href="/user/<?php echo $user->id; ?>">Ver perfil</a>
+    <a class="button aqua profile" href="/user/<?php echo $user->id; ?>"><?php echo Text::get('profile-widget-button'); ?></a>
         
 </div>
 

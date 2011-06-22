@@ -10,7 +10,7 @@ html {
 
 html, body {        
     padding: 0;    
-    background-color: #e7e7e7;    
+    background-color: #e7e7e7;
 }
 
 body {
@@ -66,7 +66,7 @@ input[type="reset"],
 button,
 a.button {
     background-color: #58595B;
-    padding: .6em 1.5em;
+    padding: .6em 1.3em;
     text-transform: uppercase;
     border: none;    
     cursor: pointer;
@@ -77,22 +77,32 @@ a.button {
     display: inline-block;
     text-decoration: none;    
     text-align: center;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    background: #149290 url('button/aqua.png') repeat-x top;   
+}
+
+input[type="submit"]:active,
+input[type="reset"]:active,
+button:active,
+a.button:active {
+    background: #60c1bf url('button/aqua-active.png') repeat-x top;    
 }
 
 input.red[type="submit"],
 input.red[type="reset"],
 button.red,
-a.button.red {
-    background-color: #ed1a37;
+a.button.red {    
+    background: #b5161e url('button/red.png') repeat-x top;    
     color: white;    
 } 
 
-input.aqua[type="submit"],
-input.aqua[type="reset"],
-button.aqua,
-a.button.aqua {
-    background-color: #35b8b8;
-    color: white;
+input.red[type="submit"]:active,
+input.red[type="reset"]:active,
+button.red:active,
+a.button.red:active {
+    background: #e44133 url('button/red-active.png') repeat-x top;    
 } 
 
 input.green[type="submit"],
@@ -100,7 +110,6 @@ input.green[type="reset"],
 button.green,
 a.button.green {
     background-color: #00b05b;
-    color: white;
 } 
 
 h1, h2, h3, h4, h5, h6, h7, h8 {
@@ -108,3 +117,16 @@ h1, h2, h3, h4, h5, h6, h7, h8 {
     text-transform: uppercase;
     margin: 1em 0;
 }
+.clearfix:after {
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: " ";
+	clear: both;
+	height: 0;
+	}
+.clearfix { display: inline-table; }
+/* Hides from IE-mac \*/
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+/* End hide from IE-mac */

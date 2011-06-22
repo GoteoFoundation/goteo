@@ -2,7 +2,7 @@
 
 namespace Goteo\Model\User {
 
-    class Interest extends \Goteo\Core\Model {
+    class Interest extends \Goteo\Model\Category {
 
         public
             $id,
@@ -20,7 +20,7 @@ namespace Goteo\Model\User {
                 $query = static::query("SELECT interest FROM user_interest WHERE user = ?", array($id));
                 $interests = $query->fetchAll();
                 foreach ($interests as $int) {
-                    $array[] = $int[0];
+                    $array[$int[0]] = $int[0];
                 }
 
                 return $array;
@@ -36,22 +36,39 @@ namespace Goteo\Model\User {
          * @return array
          */
 		public static function getAll () {
-            return array(
-                1=>'Educación',
-                2=>'Economía solidaria',
-                3=>'Empresa abierta',
-                4=>'Formación técnica',
-                5=>'Desarrollo',
-                6=>'Software',
-                7=>'Hardware');
+            $array = array ();
+            try {
+                $query = static::query("SELECT id, name FROM category ORDER BY name ASC");
+                $interests = $query->fetchAll();
+                foreach ($interests as $int) {
+                    $array[$int[0]] = $int[1];
+                }
+
+                return $array;
+            } catch(\PDOException $e) {
+				throw new \Goteo\Core\Exception($e->getMessage());
+            }
 		}
 
-		public function validate(&$errors = array()) {}
+		public function validate(&$errors = array()) {
+            // Estos son errores que no permiten continuar
+            if (empty($this->id))
+                $errors[] = 'No hay ningun interes para guardar';
+                //Text::get('validate-interest-noid');
 
-		/*
-		 *  save... al ser un solo campo quiza no lo usemos
-		 */
+            if (empty($this->user))
+                $errors[] = 'No hay ningun usuario al que asignar';
+                //Text::get('validate-interest-nouser');
+
+            //cualquiera de estos errores hace fallar la validación
+            if (!empty($errors))
+                return false;
+            else
+                return true;
+        }
+
 		public function save (&$errors = array()) {
+            if (!$this->validate($errors)) return false;
 
             $values = array(':user'=>$this->user, ':interest'=>$this->id);
 
@@ -85,6 +102,7 @@ namespace Goteo\Model\User {
 				return true;
 			} catch(\PDOException $e) {
                 $errors[] = 'No se ha podido quitar el interes ' . $this->id . ' del usuario ' . $this->user . ' ' . $e->getMessage();
+                //Text::get('remove-interest-fail');
                 return false;
 			}
 		}

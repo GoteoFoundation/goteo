@@ -1,29 +1,38 @@
 <?php
 
 use Goteo\Core\View,
+    Goteo\Library\Text,
     Goteo\Library\Worth;
 
 $project = $this['project'];
 
 $level = (int) $this['level'] ?: 3;
 
-$reached    = $project->invested;
+$reached    = number_format($project->invested);
 $supporters = count($project->investors);
 
 $worthcracy = Worth::getAll();
 
 ?>
-<div class="widget project-summary">
+<div class="widget project-supporters">
     
-    <h<?php echo $level ?>>Cofinanciadores <?php echo $supporters; ?></h<?php echo $level ?>>
-    Total de aportaciones <span><?php echo number_format($reached); ?> &euro;</span>
+    <h<?php echo $level ?> class="title"><?php echo Text::get('project-menu-supporters'); ?></h<?php echo $level ?>>
+    
+    <dl class="summary">
+        <dt class="supporters"><?php echo Text::get('project-menu-supporters'); ?></dt>
+        <dd class="supporters"><?php echo $supporters ?></dd>
         
-    <div id="project-supporters">
-        <?php foreach ($project->investors as $investor) :
-            echo new View('view/user/widget/supporter.html.php', array('user' => $investor, 'worthcracy' => $worthcracy));
-        endforeach; ?>
-    </div>    
-
-    <?php echo new View('view/worth/base.html.php', array('worthcracy' => $worthcracy, 'type' => 'main')); ?>
+        <dt class="reached"><?php echo Text::get('project-invest-total'); ?></dt>
+        <dd class="reached"><?php echo $reached ?> <span class="euro">&euro;</span></dd>
+        
+    </dl>   
+        
+    <div class="supporters">
+        <ul>
+        <?php foreach ($project->investors as $investor): ?>
+            <li><?php echo new View('view/user/widget/supporter.html.php', array('user' => $investor, 'worthcracy' => $worthcracy)) ?></li>
+        <?php endforeach ?>
+        </ul>            
+    </div>        
     
 </div>

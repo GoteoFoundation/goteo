@@ -4,53 +4,99 @@ use Goteo\Library\Text;
 
 $bodyClass = 'admin';
 
+$filters = $this['filters'];
+
+//arrastramos los filtros
+$filter = "?status={$filters['status']}&icon={$filters['icon']}";
+
+$status = Goteo\Model\Project::status();
+
 include 'view/prologue.html.php';
 
     include 'view/header.html.php'; ?>
 
+        <div id="sub-header">
+            <div>
+                <h2>Gestión de retornos colectivos</h2>
+            </div>
+
+            <div class="sub-menu">
+                <div class="admin-menu">
+                    <ul>
+                        <li class="home"><a href="/admin">Mainboard</a></li>
+                        <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
         <div id="main">
-            <h2>Gestión de retornos</h2>
+            <?php if (!empty($this['errors'])) {
+                echo '<pre>' . print_r($this['errors'], 1) . '</pre>';
+            } ?>
 
-            <p><a href="/admin">Volver al Menú de administración</a></p>
-
-            <?php if (!empty($this['projects'])) : ?>
-            
-                <?php foreach ($this['projects'] as $project) : ?>
-                    <h3><?php echo $project->name; ?></h3>
-                    <?php foreach ($project->invests as $key=>$invest) : ?>
-                    <?php echo '<p>
-                           <img src="' . $invest->user->avatar . '" class="avatar" />
-                           <strong>' . $invest->user->name . '</strong><br />
-                           Aporta: ' . $invest->amount . ' €  el ' . $invest->invested . '<br />';
-
-                           if ($invest->resign == 1)  {
-                               echo 'Renuncia a recompensa por este aporte<br />';
-                           } else {
-                               echo 'Dirección de entrega: '.$invest->address->address.', '.$invest->address->location.', '.$invest->address->zipcode.'  '.$invest->address->country.'<br />';
-                                if (!empty($invest->rewards)) {
-                                    echo '<strong>Recompensas esperadas:</strong><br />';
-                                    foreach ($invest->rewards as $reward) {
-                                        echo $reward->reward;
-                                        if ($reward->fulfilled) {
-                                            echo ' CUMPLIDA';
-                                        } else {
-                                            echo ' <a href="?fulfill='.$invest->id.','.$reward->id.'">[Cumplir]</a>';
-                                        }
-                                        echo '<br />';
-                                    }
-                                }
-                           }
-
-                           echo '</p>';
-
-                    ?>
+            <div class="widget board">
+                <form id="filter-form" action="/admin/rewards" method="get">
+                    <label for="status-filter">Mostrar por estado:</label>
+                    <select id="status-filter" name="status" onchange="document.getElementById('filter-form').submit();">
+                        <option value="">Todos los estados</option>
+                    <?php foreach ($this['status'] as $statusId=>$statusName) : ?>
+                        <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
                     <?php endforeach; ?>
-                    <br />
-            <?php endforeach; ?>
-            <?php else : ?>
-                <p>No hay aportes en los proyectos financiados.</p>
-            <?php endif;?>
+                    </select>
 
+                    <label for="icon-filter">Mostrar retornos del tipo:</label>
+                    <select id="icon-filter" name="icon" onchange="document.getElementById('filter-form').submit();">
+                        <option value="">Todos los tipos</option>
+                    <?php foreach ($this['icons'] as $iconId=>$iconName) : ?>
+                        <option value="<?php echo $iconId; ?>"<?php if ($filters['icon'] == $iconId) echo ' selected="selected"';?>><?php echo $iconName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </form>
+            </div>
+
+            <div class="widget board">
+                <?php if (!empty($this['projects'])) : ?>
+                <?php foreach ($this['projects'] as $project) : ?>
+
+                    <?php if (empty($project->social_rewards)) continue; ?>
+                
+                    <h3><?php echo $project->name; ?></h3>
+                    <p><span><?php echo $status[$project->status]; ?></span></p>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Retorno</th>
+                                <th>Tipo</th>
+                                <th>Estado</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <?php foreach ($project->social_rewards as $reward) : ?>
+                            <tr>
+                                <td><?php echo $reward->reward; ?></td>
+                                <td><?php echo $this['icons'][$reward->icon]; ?></td>
+                                <td><?php echo $reward->fulsocial ? 'Cumplido' : 'Pendiente'; ?></td>
+                                <?php if (!$reward->fulsocial) : ?>
+                                <td><a href="<?php echo "/admin/rewards/fulfill/{$reward->id}{$filter}"; ?>">[Dar por cumplido]</a></td>
+                                <?php endif; ?>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+
+                    </table>
+
+                    <hr />
+
+                    <?php endforeach; ?>
+                <?php else : ?>
+                <p>No se han encontrado registros</p>
+                <?php endif; ?>
+            </div>
         </div>
 
 <?php

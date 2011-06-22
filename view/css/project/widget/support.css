@@ -12,7 +12,7 @@ div.widget.project-support dl {
 }
 
 div.widget.project-support dl dt {
-    margin-top: 1em;
+    margin-top: .4em;
 }
 
 div.widget.project-support dl dt,
@@ -86,7 +86,6 @@ div.widget.project-support dl dd.minimum {
 
 div.widget.project-support dl dt.reached {
     clear: both;
-    padding-top: 10px;
 }
 
 div.widget.project-support dl dd.reached {        
@@ -104,48 +103,46 @@ div.widget.project-support dl dd.supporters {
     color: #313b96;
 }
 
-div.widget.project-support a.button.supportit {
-    display: block;
-    margin: 1.5em 1em 0;
-}
-
 /* Animated/static meter */
-div.widget.project-support > div.data {
-    position: relative;
+div.widget.project-support > div.meter {
+    position: relative;    
 }
 
-div.widget.project-support div.meter {
+div.widget.project-support div.graph {
     width: 28px;
-    overflow: visible;
+    overflow: hidden;
     position: absolute;
-    left: 20px;
-    top: 22px;
+    left: 8px;
+    top: 50px;
     bottom: 0;
-    width: 26px;
+    width: 38px;
     border-bottom: 2px solid #ee4843;
     font-size: 0;
 }
 
-div.widget.project-support div.meter > div.optimum,
-div.widget.project-support div.meter > div.minimum {
+div.widget.project-support div.graph > div.optimum,
+div.widget.project-support div.graph > div.minimum {
     float: right;
     width: 26px;
+    overflow: visible;
 }
 
-div.widget.project-support div.meter > div.optimum {
+div.widget.project-support div.graph > div.optimum {
     background: url('support/optimum.png') no-repeat center top;
-    height: 45px;
+    height: 45px;    
 }
 
-div.widget.project-support div.meter > div.minimum {    
+div.widget.project-support div.graph > div.minimum {    
     background: url('support/minimum.png') no-repeat center top;    
     position: absolute;
     right: 0;
     top: 45px;
-    bottom: 0;
+    bottom: 0;   
+    height: 174px !important;
+    min-height: 174px !important;
 }
 
-div.widget.project-support div.meter > div.minimum > div.done {
+div.widget.project-support div.graph > div.minimum > div.done {
     background: url('support/done.png') no-repeat -9px bottom;    
     position: absolute;
     bottom: 0;
@@ -154,7 +151,7 @@ div.widget.project-support div.meter > div.minimum > div.done {
     overflow: visible;
 }
 
-div.widget.project-support div.meter > div.minimum > div.done strong {
+div.widget.project-support div.graph > div.minimum > div.done strong {
     background: url('support/marker.png') no-repeat center center;
     display: block;
     width: 29px;  
@@ -168,3 +165,19 @@ div.widget.project-support div.meter > div.minimum > div.done strong {
     margin-left: -12px;    
     text-align: center;
 }
+
+div.widget.project-support div.buttons {
+    border-top: 1px solid #ee4843;
+    padding: 1em 0 0;
+    margin: 1em 0 0;
+}
+
+div.widget.project-support a.button.supportit {    
+    margin: 0;
+}
+
+div.widget.project-support a.more {
+    float: right;
+    text-decoration: none;
+}
+

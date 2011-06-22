@@ -1,0 +1,151 @@
+div.widget.user-supporters .supporters ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+div.widget.user-supporters .supporters > ul > li {
+    background-color:  white;
+    padding: 10px 10px 10px 60px;    
+    height: 4.5em;
+    position: relative;
+}
+
+div.widget.user-supporters .supporters ul li .avatar {
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    display: block;
+    background: url('../../avatar/m.png');
+}
+
+div.widget.user-supporters .supporters ul li .avatar img {
+    background-color: white;
+}
+
+div.widget.user-supporters .supporters ul li h3,
+div.widget.user-supporters .supporters ul li h4,
+div.widget.user-supporters .supporters ul li h5,
+div.widget.user-supporters .supporters ul li h6 {    
+    margin: 0 0 .5em;
+}
+
+
+div.widget.user-supporters .supporters ul li a {
+    font-size: 11px !important;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+div.widget.user-supporters .supporters ul li dl,
+div.widget.user-supporters .supporters ul li dl dt,
+div.widget.user-supporters .supporters ul li dl dd {
+    margin: 0;
+    font-size: 11px;
+}
+
+div.widget.user-supporters .supporters ul li dl dt {
+    float: left;
+    margin-right: .5em;
+    clear: left;
+}
+
+div.widget.user-supporters .supporters ul li dl dt.amount {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    margin: 0;
+    font-size: 11px;
+    color: #313b96;
+}
+
+div.widget.user-supporters .supporters ul li dl dd.amount {
+    position: absolute;
+    top: 25px;
+    right: 10px;
+    font-size: 18px;
+    font-weight: normal;
+    color: #ee4843;
+}
+
+div.widget.user-supporters .supporters ul li dl dd.amount {
+    background: url("../../euro/red/s.png") no-repeat scroll right center transparent;        
+    height: 20px;    
+    line-height: 21px;
+    padding-right: 18px;
+}
+
+div.widget.user-supporters .supporters ul li dl dd.amount .euro {
+    display: none;
+}
+
+div.widget.user-supporters .supporters ul li dl dt.date {
+    display: none;
+}
+
+div.widget.user-supporters .supporters ul li dl dd.date {
+    position: absolute;
+    right: 10px;
+    bottom: 15px;    
+    color: #a6a8ab;
+    font-size: 11px;
+}
+
+div.widget.user-supporters .supporters ul li dl dt.worthcracy {
+    display: none;
+}
+
+div.widget.user-supporters .supporters ul li dl dd.worthcracy ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+div.widget.user-supporters .supporters ul li dl dd.worthcracy ul li {
+    display: inline-block;
+    width: 18px;
+    height: 6px;
+    overflow: visible;
+    background-color: #e7e7e7;
+    position: relative;
+}
+
+div.widget.user-supporters .supporters ul li dl dd.worthcracy ul li > * {
+    display: none;
+}
+
+div.widget.user-supporters .supporters ul li dl dd.worthcracy ul li.done.worth-1 {
+    background-color: #B6CAE0;
+}
+
+div.widget.user-supporters .supporters ul li dl dd.worthcracy ul li.done.worth-2 {
+    background-color: #92AFD1;
+}
+
+div.widget.user-supporters .supporters ul li dl dd.worthcracy ul li.done.worth-3 {
+    background-color: #799EC7;
+}
+
+div.widget.user-supporters .supporters ul li dl dd.worthcracy ul li.done.worth-4 {
+    background-color: #3C71AE;
+}
+
+div.widget.user-supporters .supporters ul li dl dd.worthcracy ul li.done.worth-5 {
+    background-color: #0C4E99;
+}
+
+div.widget.user-supporters .supporters ul li dl dd.worthcracy ul li > strong {
+    display: block;
+    position: absolute;
+    top: 7px;
+    font-weight: normal;
+    width: 200px;
+    left: 50%;
+    margin-left: -100px;
+    text-align: center;
+    background: url('../../worth/beak.png') no-repeat center top;
+    padding-top: 6px;
+}

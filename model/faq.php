@@ -1,7 +1,9 @@
 <?php
 
 namespace Goteo\Model {
-    
+
+    use Goteo\Library\Check;
+
     class Faq extends \Goteo\Core\Model {
 
         public
@@ -57,12 +59,15 @@ namespace Goteo\Model {
         public function validate (&$errors = array()) { 
             if (empty($this->node))
                 $errors[] = 'Falta nodo';
+                //Text::get('mandatory-faq-node');
 
             if (empty($this->section))
                 $errors[] = 'Falta seccion';
+                //Text::get('mandatory-faq-section');
 
             if (empty($this->title))
                 $errors[] = 'Falta título';
+                //Text::get('mandatory-faq-title');
 
             if (empty($errors))
                 return true;
@@ -96,6 +101,12 @@ namespace Goteo\Model {
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
 
+                $extra = array(
+                    'section' => $this->section,
+                    'node' => $this->node
+                );
+                Check::reorder($this->id, $this->move, 'faq', 'id', 'order', $extra);
+
                 return true;
             } catch(\PDOException $e) {
                 $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
@@ -121,42 +132,26 @@ namespace Goteo\Model {
          * Para que una pregunta salga antes  (disminuir el order)
          */
         public static function up ($id, $node = \GOTEO_NODE) {
-
-            $query = self::query('SELECT `order` FROM faq WHERE id = :id AND node = :node'
-                , array(':id'=>$id, ':node'=>$node));
-            $order = $query->fetchColumn(0);
-
-            $order--;
-            if ($order < 1)
-                $order = 1;
-
-            $sql = "UPDATE faq SET `order`=:order WHERE id = :id AND node = :node";
-            if (self::query($sql, array(':order'=>$order, ':id'=>$id, ':node'=>$node))) {
-                return true;
-            } else {
-                return false;
-            }
-
+            $query = static::query("SELECT section FROM faq WHERE id = ?", array($id));
+            $faq = $query->fetchObject();
+            $extra = array(
+                'section' => $faq->section,
+                'node' => $node
+            );
+            return Check::reorder($id, 'up', 'faq', 'id', 'order', $extra);
         }
 
         /*
          * Para que un proyecto salga despues  (aumentar el order)
          */
         public static function down ($id, $node = \GOTEO_NODE) {
-
-            $query = self::query('SELECT `order` FROM faq WHERE id = :id AND node = :node'
-                , array(':id'=>$id, ':node'=>$node));
-            $order = $query->fetchColumn(0);
-
-            $order++;
-
-            $sql = "UPDATE faq SET `order`=:order WHERE id = :id AND node = :node";
-            if (self::query($sql, array(':order'=>$order, ':id'=>$id, ':node'=>$node))) {
-                return true;
-            } else {
-                return false;
-            }
-
+            $query = static::query("SELECT section FROM faq WHERE id = ?", array($id));
+            $faq = $query->fetchObject();
+            $extra = array(
+                'section' => $faq->section,
+                'node' => $node
+            );
+            return Check::reorder($id, 'down', 'faq', 'id', 'order', $extra);
         }
 
         /*
@@ -174,7 +169,8 @@ namespace Goteo\Model {
             return array(
                 'node' => 'Goteo',
                 'project' => 'Proyecto',
-                'investors' => 'Cofinanciadores'
+                'investors' => 'Cofinanciadores',
+                'nodes' => 'Nodos'
             );
         }
 

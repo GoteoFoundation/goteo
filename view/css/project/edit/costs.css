@@ -49,12 +49,8 @@ body.project-edit div#main.costs div.superform li.element.cost div.children li.e
     background-image: url('../../icon/m/structure.png');
 }
 
-body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li.equip > label {
-    background-image: url('../../icon/m/equipment.png');
-}
-
-body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-amount {
-    overflow: hidden;
+body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-type li.material > label {
+    background-image: url('../../icon/m/material.png');
 }
 
 body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-amount > div.contents > input {

@@ -4,64 +4,101 @@ use Goteo\Library\Text;
 
 $bodyClass = 'admin';
 
+$filters = $this['filters'];
+
+//arrastramos los filtros
+$filter = "?status={$filters['status']}&category={$filters['category']}";
+
 include 'view/prologue.html.php';
 
     include 'view/header.html.php'; ?>
 
+        <div id="sub-header">
+            <div>
+                <h2>Revisión de proyectos</h2>
+            </div>
+
+            <div class="sub-menu">
+                <div class="admin-menu">
+                    <ul>
+                        <li class="home"><a href="/admin">Mainboard</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
         <div id="main">
-            <h2>Revisión de proyectos</h2>
+            <?php if (!empty($this['errors'])) {
+                echo '<pre>' . print_r($this['errors'], 1) . '</pre>';
+            } ?>
 
-            <p><a href="/admin">Volver al Menú de administración</a></p>
+            <div class="widget board">
+                <form id="filter-form" action="/admin/checking" method="get">
+                    <label for="status-filter">Mostrar por estado:</label>
+                    <select id="status-filter" name="status" onchange="document.getElementById('filter-form').submit();">
+                        <option value="">Todos los estados</option>
+                    <?php foreach ($this['status'] as $statusId=>$statusName) : ?>
+                        <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
 
-            <?php if (!empty($this['errors'])) :
-                echo '<p>';
-                foreach ($this['errors'] as $error) : ?>
-                    <span style="color:red;"><?php echo $error; ?></span><br />
-            <?php endforeach;
-                echo '</p>';
-                endif;?>
+                    <label for="category-filter">De la categoría:</label>
+                    <select id="category-filter" name="category" onchange="document.getElementById('filter-form').submit();">
+                        <option value="">Cualquier categoría</option>
+                    <?php foreach ($this['categories'] as $categoryId=>$categoryName) : ?>
+                        <option value="<?php echo $categoryId; ?>"<?php if ($filters['category'] == $categoryId) echo ' selected="selected"';?>><?php echo $categoryName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </form>
+            </div>
 
+            <div class="widget board">
+                <?php if (!empty($this['projects'])) : ?>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Proyecto</th> <!-- edit -->
+                            <th>Creador</th> <!-- mailto -->
+                            <th>Estado</th>
+                            <th>%</th> <!-- segun estado -->
+                            <th>Días</th> <!-- segun estado -->
+                            <th>Conseguido</th> <!-- segun estado -->
+                            <th>Mínimo</th> <!-- segun estado -->
+                            <th><!-- Editar --></th>
+                            <th><!-- Publicar --></th> <!-- si revisado -->
+                            <th><!-- Cancelar --></th> <!-- si no cancelado -->
+                            <th><!-- Rehabilitar --></th> <!-- si no edición -->
+<!--                                <th>Financiado</th> si está en campaña -->
+<!--                                <th>Cumplido</th> si está financiado -->
+                        </tr>
+                    </thead>
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <td>Proyecto</td> <!-- edit -->
-                                <td>Creador</td> <!-- mailto -->
-                                <td>Estado</td>
-                                <td>%</td> <!-- segun estado -->
-                                <td>Días</td> <!-- segun estado -->
-                                <td>Conseguido</td> <!-- segun estado -->
-                                <td>Mínimo</td> <!-- segun estado -->
-                                <td><!-- Preview --></td>
-                                <td><!-- Publicar --></td> <!-- si revisado -->
-                                <td><!-- Cancelar --></td> <!-- si no cancelado -->
-                                <td><!-- Rehabilitar --></td> <!-- si no edición -->
-                                <td><!-- Financiado --></td> <!-- si está en campaña -->
-                                <td><!-- Cumplido --></td> <!-- si está financiado -->
-                            </tr>
-                        </thead>
+                    <tbody>
+                        <?php foreach ($this['projects'] as $project) : ?>
+                        <tr>
+                            <td><a href="/project/<?php echo $project->id; ?>" target="_blank" title="Preview"><?php echo $project->name; ?></a></td>
+                            <td><?php echo $project->user->name; ?></td>
+                            <td><?php echo $this['status'][$project->status]; ?></td>
+                            <td><?php if ($project->status < 3)  echo $project->progress; ?></td>
+                            <td><?php if ($project->status == 3) echo $project->days; ?></td>
+                            <td><?php if ($project->status > 2) echo $project->invested; ?></td>
+                            <td><?php if ($project->status > 2) echo $project->mincost; ?></td>
+                            <td><a href="/project/edit/<?php echo $project->id; ?>" target="_blank">[Editar]</a></td>
+                            <td><?php if ($project->status < 3) : ?><a href="<?php echo "/admin/checking/publish/{$project->id}{$filter}"; ?>">[Publicar]</a><?php endif; ?></td>
+                            <td><?php if ($project->status != 5) : ?><a href="<?php echo "/admin/checking/cancel/{$project->id}{$filter}"; ?>">[Cancelar]</a><?php endif; ?></td>
+                            <td><?php if ($project->status > 1) : ?><a href="<?php echo "/admin/checking/enable/{$project->id}{$filter}"; ?>">[Reabrir]</a><?php endif; ?></td>
+<!--                                <td><?php if ($project->status == 3) : ?><a href="<?php echo "/admin/checking/complete/{$project->id}{$filter}"; ?>">[Financiado]</a><?php endif; ?></td> -->
+<!--                                <td><?php if ($project->status == 4) : ?><a href="<?php echo "/admin/checking/fulfill/{$project->id}{$filter}"; ?>">[Cumplido]</a><?php endif; ?></td> -->
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
 
-                        <tbody>
-                            <?php foreach ($this['projects'] as $project) : ?>
-                            <tr>
-                                <td><a href="/project/<?php echo $project->id; ?>" target="_blank" title="Preview"><?php echo $project->name; ?></a></td>
-                                <td><a href="mailto:<?php echo $project->user->email; ?>" title="Email"><?php echo $project->user->name; ?></a></td>
-                                <td><?php echo $this['status'][$project->status]; ?></td>
-                                <td><?php if ($project->status < 3)  echo $project->progress; ?></td>
-                                <td><?php if ($project->status == 3) echo $project->days; ?></td>
-                                <td><?php if ($project->status > 2) echo $project->invested; ?></td>
-                                <td><?php if ($project->status > 2) echo $project->mincost; ?></td>
-                                <td><a href="/project/edit/<?php echo $project->id; ?>" target="_blank">[Editar]</a></td>
-                                <td><?php if ($project->status < 3) : ?><a href="?publish=<?php echo $project->id; ?>">[Publicar]</a><?php endif; ?></td>
-                                <td><?php if ($project->status != 5) : ?><a href="?cancel=<?php echo $project->id; ?>">[Cancelar]</a><?php endif; ?></td>
-                                <td><?php if ($project->status == 5 || $project->status == 2) : ?><a href="?enable=<?php echo $project->id; ?>">[Reabrir]</a><?php endif; ?></td>
-                                <td><?php if ($project->status == 3) : ?><a href="?complete=<?php echo $project->id; ?>">[Financiado]</a><?php endif; ?></td>
-                                <td><?php if ($project->status == 4) : ?><a href="?fulfill=<?php echo $project->id; ?>">[Cumplido]</a><?php endif; ?></td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-
-                    </table>
+                </table>
+                <?php else : ?>
+                <p>No se han encontrado registros</p>
+                <?php endif; ?>
+            </div>
         </div>
 
 <?php

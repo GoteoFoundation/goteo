@@ -11,9 +11,9 @@ namespace Goteo\Controller {
 
     class Project extends \Goteo\Core\Controller {
 
-        public function index($id = null, $show = 'home') {
+        public function index($id = null, $show = 'home', $post = null) {
             if ($id !== null) {
-                return $this->view($id, $show);
+                return $this->view($id, $show, $post);
             } else if (isset($_GET['create'])) {
                 throw new Redirection("/project/create");
             } else {
@@ -41,17 +41,17 @@ namespace Goteo\Controller {
             // si no tenemos SESSION stepped es porque no venimos del create
             if (!isset($_SESSION['stepped']))
                 $_SESSION['stepped'] = array(
-                    'userProfile' => 'userProfile',
+                     'userProfile'  => 'userProfile',
                      'userPersonal' => 'userPersonal',
-                     'overview' => 'overview',
-                     'costs' => 'costs',
-                     'rewards' => 'rewards',
-                     'supports' => 'supports'
+                     'overview'     => 'overview',
+                     'costs'        => 'costs',
+                     'rewards'      => 'rewards',
+                     'supports'     => 'supports'
                 );
 
-            if ($project->status != 1 && $_SESSION['user']->id == $project->owner) {
-                // solo seguimiento estado, progreso
-                // pasos preview, conseguido, recompensas
+            if ($project->status != 1 && !ACL::check('/project/edit/todos')) {
+                // solo puede estar en preview
+                $step = 'preview';
                 
                 $steps = array(
                     'preview' => array(
@@ -64,7 +64,9 @@ namespace Goteo\Controller {
                  
                  
             } else {
-                // todos los pasos
+                // todos los pasos, entrando en userProfile por defecto
+                $step = 'userProfile';
+
                 $steps = array(
                     'userProfile' => array(
                         'name' => Text::get('step-1'),
@@ -107,7 +109,6 @@ namespace Goteo\Controller {
                 );
             }
             
-            $step = null;      
                         
             
             foreach ($_REQUEST as $k => $v) {                
@@ -115,7 +116,7 @@ namespace Goteo\Controller {
                     $step = substr($k, 10);
                 }                
             }
-            
+
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 $errors = array(); // errores al procesar, no son errores en los datos del proyecto
@@ -154,19 +155,6 @@ namespace Goteo\Controller {
 
             //re-evaluar el proyecto
             $project->check();
-
-            // vista por defecto, el primer paso por el que no ha pasado
-            foreach ($steps as $id => $data) {
-
-                if (empty($step) && !empty($project->errors[$id])) {
-                    $step = $id;
-                    break;
-                }
-            }
-
-            if (empty($step)) {
-                $step = 'preview';
-            }
 
             //si nos estan pidiendo el error de un campo, se lo damos
             if (!empty($_GET['errors'])) {
@@ -209,6 +197,7 @@ namespace Goteo\Controller {
                 case 'overview':
                     $viewData['currently'] = Model\Project::currentStatus();
                     $viewData['categories'] = Model\Project\Category::getAll();
+                    $viewData['scope'] = Model\Project::scope();
                     break;
 
                 case 'costs':
@@ -249,6 +238,11 @@ namespace Goteo\Controller {
         }
 
         public function create () {
+
+            if (empty($_SESSION['user'])) {
+                throw new Redirection("/about/howto");
+            }
+
             $project = new Model\Project;
             if ($project->create()) {
                 $_SESSION['stepped'] = array();
@@ -263,39 +257,60 @@ namespace Goteo\Controller {
             throw new \Goteo\Core\Exception('Fallo al crear un nuevo proyecto');
         }
 
-        private function view ($id, $show) {
+        private function view ($id, $show, $post = null) {
             $project = Model\Project::get($id);
 
-            // solo si está en campaña o no caducado
-            // o si es root ;)
-            /*
-            if ( $project->status < 3 || $project->status > 5 || $_SESSION['user']->id == 'root') {
-                throw new Redirection("/");
-            }
-             * 
-             */
+            // solamente se puede ver publicamente si
+            // - es el dueño
+            // - es un admin con permiso
+            // - es otro usuario y el proyecto esta available en campaña, financiado, retorno cumplido o caducado (que no es desechado)
+            if (($project->status > 2) ||
+                $project->owner == $_SESSION['user']->id ||
+                ACL::check('/project/edit/todos')) {
+                // lo puede ver
+                
+                $viewData = array(
+                        'project' => $project,
+                        'show' => $show
+                    );
 
-            $viewData = array(
-                    'project' => $project,
-                    'show' => $show
-                );
+                // tenemos que tocar esto un poquito para motrar las necesitades no economicas
+                if ($show == 'needs-non') {
+                    $viewData['show'] = 'needs';
+                    $viewData['non-economic'] = true;
+                }
 
-            //tenemos que tocar esto un poquito para gestionar los pasos al aportar
-            if ($show == 'invest') {
-                $viewData['show'] = 'supporters';
-                if (isset($_GET['confirm'])) {
-                    if (\in_array($_GET['confirm'], array('ok', 'fail'))) {
-                        $invest = $_GET['confirm'];
+                //tenemos que tocar esto un poquito para gestionar los pasos al aportar
+                if ($show == 'invest') {
+
+                    // si no está en campaña no pueden esta qui ni de coña
+                    if ($project->status != 3) {
+                        throw new Redirection('/project/'.$id, Redirection::TEMPORARY);
+                    }
+
+                    $viewData['show'] = 'supporters';
+                    if (isset($_GET['confirm'])) {
+                        if (\in_array($_GET['confirm'], array('ok', 'fail'))) {
+                            $invest = $_GET['confirm'];
+                        } else {
+                            $invest = 'start';
+                        }
                     } else {
                         $invest = 'start';
                     }
-                } else {
-                    $invest = 'start';
+                    $viewData['invest'] = $invest;
                 }
-                $viewData['invest'] = $invest;
-            }
 
-            return new View('view/project/public.html.php', $viewData);
+                if ($show == 'updates') {
+                    $viewData['post'] = $post;
+                }
+
+                return new View('view/project/public.html.php', $viewData);
+
+            } else {
+                // no lo puede ver
+                throw new Redirection("/");
+            }
         }
 
         //-----------------------------------------------
@@ -325,6 +340,7 @@ namespace Goteo\Controller {
                 'user_keywords'=>'keywords',
                 'user_contribution'=>'contribution',
                 'user_twitter'=>'twitter',
+                'user_identica'=>'identica',
                 'user_facebook'=>'facebook',
                 'user_linkedin'=>'linkedin'
             );
@@ -433,7 +449,8 @@ namespace Goteo\Controller {
                 'keywords',
                 'media',
                 'currently',
-                'project_location'
+                'project_location',
+                'scope'
             );
 
             foreach ($fields as $field) {
@@ -523,8 +540,8 @@ namespace Goteo\Controller {
                     'project' => $project->id,
                     'cost'  => 'Nueva tarea',
                     'type'  => 'task',
-                    'from' => date('Y-m-d'),
-                    'until' => date('Y-m-d')
+                    'from' => null,
+                    'until' => null
                     
                 ));
                 

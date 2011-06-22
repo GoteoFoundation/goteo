@@ -2,11 +2,15 @@
 @import url('widget/summary.css');
 @import url('widget/media.css');
 @import url('widget/share.css');
+@import url('widget/message.css');
 @import url('widget/support.css');
 @import url('widget/needs.css');
 @import url('widget/collaborations.css');
+@import url('widget/supporters.css');
 @import url('widget/rewards.css');
+@import url('widget/messages.css');
 @import url('../user/widget/user.css');
+@import url('../worth/legend.css');
 
 
 body.project-show div#main {
@@ -22,6 +26,21 @@ body.project-show div#sub-header {
     padding-bottom: 0;
 }
 
+body.project-show div#sub-header div.categories {
+    text-align: right;
+    margin-top: -22px;
+}
+
+body.project-show div#sub-header div.categories h3 {
+    font-weight: normal;
+    color: #20B3B2;   
+    margin: 0 0 .5em;
+}
+
+body.project-show div#sub-header div.categories * {
+    font-size: 12px;
+}
+
 body.project-show div.project-menu {
     max-width: 940px;
     margin: 20px auto 0;
@@ -34,7 +53,7 @@ body.project-show div.project-menu ul {
     font-size: 0;
 }
 
-body.project-show  div.project-menu ul li {
+body.project-show div.project-menu ul li {
     display: inline-block;
     margin-right: 1px;    
     background-color: #c8babc;
@@ -84,7 +103,12 @@ body.project-show div#main div.widget.user {
 
 body.project-show div#main div.widget.project-summary,
 body.project-show div#main div.widget.project-share,
-body.project-show div#main div.widget.project-needs {
+body.project-show div#main div.widget.project-needs,
+body.project-show div#main div.widget.project-messages,
+body.project-show div#main div.widget.project-message,
+body.project-show div#main div.widget.project-supporters,
+body.project-show div#main div.widget.worthcracy-legend {
     max-width: 580px;
     margin-right: 20px;
+    clear: left;
 }

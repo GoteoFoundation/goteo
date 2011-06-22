@@ -1,4 +1,5 @@
 <?php
+use Goteo\Library\Text;
 
 $project = $this['project'];
 $level = (int) $this['level'] ?: 3;
@@ -6,45 +7,42 @@ $level = (int) $this['level'] ?: 3;
 ?>
 <script type="text/javascript">
     function answer(id) {
-        document.getElementById('thread').value = id;
-        document.getElementById('message-text').value = 'Escribe tu respuesta aquí';
+        $('#thread').val(id);
+        $('#message-text').val('<?php echo Text::get('project-messages-send_message-your_answer'); ?>').focus().select();
     }
 </script>
-<div class="widget project-summary">
-    
-    <h<?php echo $level ?>>Escribe tu mensaje</h<?php echo $level ?>>
+
+<div class="widget project-message">
+    <h<?php echo $level ?> class="title"><?php echo Text::get('project-messages-send_message-header'); ?></h<?php echo $level ?>>
 
     <div>
         <form method="post" action="/message/<?php echo $project->id; ?>">
             <input type="hidden" id="thread" name="thread" value="" />
             <textarea id="message-text" name="message" cols="50" rows="5"></textarea>
-            <br />
-            <input type="submit" value="Enviar" />
+            <input class="button" type="submit" value="<?php echo Text::get('project-messages-send_message-button'); ?>" />
         </form>
     </div>
+</div>
 
+<div class="widget project-messages">
+    
+    
     <div id="project-messages">
+        
 		<?php foreach ($project->messages as $message) : ?>
-                <div class="thread">
-                   <img src="/image/<?php echo $message->user->avatar->id; ?>/50/50" />
-                   <span class="user"><?php echo $message->user->name; ?></span>
-                   <span class="when"><?php echo $message->date; ?></span>
-                   <a href="#" onclick="answer('<?php echo $message->id; ?>')">[Responder]</a>
-                   <?php // si puede borrar este mensaje
-                   if (\Goteo\Core\ACL::check("/message/delete/{$message->id}/{$project->id}")) : ?>
-                        <a href="/message/delete/<?php echo $message->id; ?>/<?php echo $project->id; ?>">[Borrar]</a>
-                   <?php endif; ?>
-                   <br />
-                   <?php // si puede editar este mensaje
-                   if (\Goteo\Core\ACL::check("/message/edit/{$message->id}/{$project->id}")) : ?>
-                   <form method="post" action="/message/edit/<?php echo $message->id; ?>/<?php echo $project->id; ?>">
-                        <textarea name="message" cols="50" rows="5"><?php echo $message->message; ?></textarea>
-                        <br />
-                        <input type="submit" value="Guardar" />
-                   </form>
-                   <?php else : ?>
-                       <blockquote><?php echo $message->message; ?></blockquote>
-                   <?php endif; ?>
+                <div class="message">         
+                   <span class="avatar"><img src="/image/<?php echo $message->user->avatar->id; ?>/50/50" alt="" /></span>
+                   <h<?php echo $level ?> class="user"><?php echo htmlspecialchars($message->user->name) ?></h<?php echo $level ?>>                                                             
+                   <div class="date"><span><?php echo $message->date ?></span></div>                   
+                   <blockquote><?php echo $message->message; ?></blockquote>                   
+                   <div class="actions">
+                        <a class="" href="#" onclick="answer('<?php echo $message->id; ?>')"><?php echo Text::get('project-messages-answer_it'); ?></a>
+                        <?php // si puede borrar este mensaje
+                        if (\Goteo\Core\ACL::check("/message/delete/{$message->id}/{$project->id}")) : ?>
+                                <a href="/message/delete/<?php echo $message->id; ?>/<?php echo $project->id; ?>"><?php echo Text::get('regular-delete'); ?></a>
+                        <?php endif ?>
+                   </div>
+                                
                </div>
 
                <?php if (!empty($message->responses)) : 
@@ -55,19 +53,10 @@ $level = (int) $this['level'] ?: 3;
                            <span class="when"><?php echo $child->date; ?></span>
                            <?php // si puede borrar este mensaje
                            if (\Goteo\Core\ACL::check("/message/delete/{$child->id}/{$project->id}")) : ?>
-                                <a href="/message/delete/<?php echo $child->id; ?>/<?php echo $project->id; ?>">[Borrar]</a>
+                                <a href="/message/delete/<?php echo $child->id; ?>/<?php echo $project->id; ?>"><?php echo Text::get('regular-delete'); ?></a>
                            <?php endif; ?>
                            <br />
-                       <?php // si puede editar este mensaje
-                       if (\Goteo\Core\ACL::check("/message/edit/{$child->id}/{$project->id}")) : ?>
-                       <form method="post" action="/message/edit/<?php echo $child->id; ?>/<?php echo $project->id; ?>">
-                            <textarea name="message" cols="50" rows="5"><?php echo $child->message; ?></textarea>
-                            <br />
-                            <input type="submit" value="Guardar" />
-                       </form>
-                       <?php else : ?>
                            <blockquote><?php echo $child->message; ?></blockquote>
-                       <?php endif; ?>
                        </div>
                 <?php endforeach;
                 endif; ?>

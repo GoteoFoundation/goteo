@@ -92,6 +92,7 @@ namespace Goteo\Library {
                     // Construye el mensaje
                     $mail->From = $this->from;
                     $mail->FromName = $this->fromName;
+                    // temporal para las pruebas
                     $mail->AddAddress($this->to, $this->toName);
                     if($this->cc) {
                         $mail->AddCC($this->cc);

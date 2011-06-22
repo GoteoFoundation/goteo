@@ -44,6 +44,7 @@ namespace Goteo\Model {
             $keywords, // por ahora se guarda en texto tal cual
             $currently, // Current development status of the project
             $project_location, // project execution location
+            $scope,  // ambito de alcance
 
             // costs
             $costs = array(),  // project\cost instances with type
@@ -68,6 +69,8 @@ namespace Goteo\Model {
             $invested = 0, //cantidad de inversión
             $days = 0, //para 40 desde la publicación o para 80 si no está caducado
             $investors = array(), // usuarios que han invertido
+
+            $round = 0, // para ver si ya está en la fase de los 40 a los 80
 
             $errors = array(), // para los fallos en los datos
             $okeys  = array(), // para los campos que estan ok
@@ -203,7 +206,6 @@ namespace Goteo\Model {
                 //-----------------------------------------------------------------
                 //para proyectos en campaña o posterior
                 if ($project->status > 2) {
-
                     // recompensas
                     foreach ($project->individual_rewards as &$reward) {
                         $reward->none = false;
@@ -230,18 +232,25 @@ namespace Goteo\Model {
                     // tiempo de campaña
                     if ($project->status == 3) {
                         $days = $project->daysActive();
-                        if ($days > 40)
+                        if ($days > 40) {
                             $days = 80 - $days;
-                        else
+                            $project->round = 2;
+                        } else {
                             $days = 40 - $days;
+                            $project->round = 1;
+                        }
 
-                        if ($days < 0)
+                        if ($days < 0) {
+                            // no deberia estar en campaña sino financuiado o caducado
                             $days = 0;
+                        }
 
                         if ($project->days != $days) {
                             self::query("UPDATE project SET days = '{$days}' WHERE id = ?", array($project->id));
                         }
                         $project->days = $days;
+                    } else {
+                        $project->days = 0;
                     }
                 }
                 //-----------------------------------------------------------------
@@ -263,6 +272,7 @@ namespace Goteo\Model {
             // Estos son errores que no permiten continuar
             if (empty($this->id))
                 $errors[] = 'El proyecto no tiene id';
+                //Text::get('validate-project-noid');
 
             if (empty($this->status))
                 $this->status = 1;
@@ -272,6 +282,7 @@ namespace Goteo\Model {
             
             if (empty($this->owner))
                 $errors[] = 'El proyecto no tiene usuario creador';
+                //Text::get('validate-project-noowner');
             
             if (empty($this->node))
                 $this->node = 'goteo';
@@ -332,6 +343,7 @@ namespace Goteo\Model {
                     'media',
                     'currently',
                     'project_location',
+                    'scope',
                     'resource',
                     'comment'
                     );
@@ -502,6 +514,7 @@ namespace Goteo\Model {
                 return !$fail;
 			} catch(\PDOException $e) {
                 $errors[] = 'Error sql al grabar el proyecto.' . $e->getMessage();
+                //Text::get('save-project-fail');
                 return false;
 			}
 
@@ -756,6 +769,10 @@ namespace Goteo\Model {
                  ++$score;
             }
 
+            if (!empty($this->scope)) {
+                 $okeys['overview']['scope'] = 'ok';
+            }
+
             $this->setScore($score, 18);
             /***************** FIN Revisión del paso 3, DESCRIPCION *****************/
 
@@ -942,7 +959,10 @@ namespace Goteo\Model {
             if ($progress > 100) $progress = 100;
             if ($progress < 0)   $progress = 0;
 
-            if ($progress > 60) {
+            if ($this->status == 1 && 
+                $progress > 60 &&
+                \array_empty($this->errors)
+                ) {
                 $this->finishable = true;
             }
             $this->progress = $progress;
@@ -967,6 +987,7 @@ namespace Goteo\Model {
                 
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al habilitar para revisión. ' . $e->getMessage();
+                //Text::get('send-project-review-fail');
                 return false;
             }
         }
@@ -981,6 +1002,7 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al habilitar para edición. ' . $e->getMessage();
+                //Text::get('send-project-reedit-fail');
                 return false;
             }
         }
@@ -993,8 +1015,8 @@ namespace Goteo\Model {
 				$sql = "UPDATE project SET status = :status, published = :published WHERE id = :id";
 				self::query($sql, array(':status'=>3, ':published'=>date('Y-m-d'), ':id'=>$this->id));
 
-                // borramos mensajes anteriores
-                self::query("DELETE FROM message WHERE project = ?", array($this->id));
+                // borramos mensajes anteriores que sean de colaboraciones
+                self::query("DELETE FROM message WHERE id IN (SELECT thread FROM support WHERE project = ?)", array($this->id));
 
                 // creamos los hilos de colaboración en los mensajes
                 foreach ($this->supports as $id => $support) {
@@ -1002,12 +1024,13 @@ namespace Goteo\Model {
                         'user'    => $this->owner,
                         'project' => $this->id,
                         'date'    => date('Y-m-d'),
-                        'message' => "{$support->support}: {$support->description}"
+                        'message' => "{$support->support}: {$support->description}",
+                        'blocked' => true
                         ));
                     if ($msg->save()) {
-                        // permiso para editarlo y borrarlo
-                        ACL::allow("/message/edit/{$msg->id}/{$this->id}", '*', 'user', $this->owner);
-                        ACL::allow("/message/delete/{$msg->id}/{$this->id}", '*', 'user', $this->owner);
+                        // asignado a la colaboracion como thread inicial
+                        $sql = "UPDATE support SET thread = :message WHERE id = :support";
+                        self::query($sql, array(':message'=>$msg->id, ':support'=>$support->id));
                     }
                     unset($msg);
                 }
@@ -1015,6 +1038,7 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al publicar el proyecto. ' . $e->getMessage();
+                //Text::get('send-project-publish-fail');
                 return false;
             }
         }
@@ -1029,6 +1053,7 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al cerrar el proyecto. ' . $e->getMessage();
+                //Text::get('send-projecct-close-fail');
                 return false;
             }
         }
@@ -1043,6 +1068,7 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al dar por financiado el proyecto. ' . $e->getMessage();
+                //Text::get('send-project-success-fail');
                 return false;
             }
         }
@@ -1057,6 +1083,7 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al dar el retorno por cunplido para el proyecto. ' . $e->getMessage();
+                //Text::get('send-project-fulfill-fail');
                 return false;
             }
         }
@@ -1187,7 +1214,7 @@ namespace Goteo\Model {
         public function daysActive() {
             // días desde el published
             $sql = "
-                SELECT DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%e') as days
+                SELECT DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') as days
                 FROM project
                 WHERE id = ?";
             $query = self::query($sql, array($this->id));
@@ -1201,15 +1228,21 @@ namespace Goteo\Model {
          */
         public static function ofmine($owner)
         {
+            $projects = array();
+
             $sql = "SELECT * FROM project WHERE status > 0 AND owner = ? ORDER BY name ASC";
             $query = self::query($sql, array($owner));
-            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
+                $projects[] = self::get($proj->id);
+            }
+            
+            return $projects;
         }
 
         /*
          * Lista de proyectos publicados
          */
-        public static function published($type = 'all')
+        public static function published($type = 'all', $limit = null)
         {
             // segun el tipo (ver controller/discover.php)
             switch ($type) {
@@ -1254,11 +1287,19 @@ namespace Goteo\Model {
                     // los que estan 'financiado' o 'retorno cumplido'
                     $sql = "SELECT id FROM project WHERE status = 4 OR status = 6 ORDER BY name ASC";
                     break;
+                case 'available':
+                    // ni edicion ni revision ni cancelados, estan disponibles para verse publicamente
+                    $sql = "SELECT id FROM project WHERE status > 2 AND status < 6 ORDER BY name ASC";
+                    break;
                 default: 
                     // todos los que estan 'en campaña'
                     $sql = "SELECT id FROM project WHERE status = 3 ORDER BY name ASC";
             }
-            
+
+            // Limite
+            if (!empty($limit) && \is_numeric($limit)) {
+                $sql .= " LIMIT $limit";
+            }
 
             $projects = array();
             $query = self::query($sql);
@@ -1287,7 +1328,7 @@ namespace Goteo\Model {
                                   AND project.id IN (SELECT DISTINCT(project) FROM invest$he)
                                   ORDER BY name ASC");
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
-                $projects[] = $proj;
+                $projects[] = self::get($proj->id);
             }
             return $projects;
         }
@@ -1298,9 +1339,31 @@ namespace Goteo\Model {
          * @param string node id
          * @return array of project instances
          */
-        public static function getList($node = \GOTEO_NODE) {
+        public static function getList($filters = array(), $node = \GOTEO_NODE) {
             $projects = array();
-            $query = self::query("SELECT id FROM project WHERE status > 0 AND node = ? ORDER BY progress DESC", array($node));
+
+            $sqlFilter = "";
+            if (!empty($filters['status'])) {
+                $sqlFilter .= " AND status = " . $filters['status'];
+            }
+            if (!empty($filters['category'])) {
+                $sqlFilter .= " AND id IN (
+                    SELECT project
+                    FROM project_category
+                    WHERE category = {$filters['category']}
+                    )";
+            }
+
+            $sql = "SELECT 
+                        id
+                    FROM project
+                    WHERE status > 0
+                        AND node = ?
+                        $sqlFilter
+                    ORDER BY progress DESC
+                    ";
+
+            $query = self::query($sql, array($node));
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
                 $projects[] = self::get($proj['id']);
             }
@@ -1312,10 +1375,21 @@ namespace Goteo\Model {
          */
         public static function currentStatus () {
             return array(
-                1=>'Inicial',
-                2=>'Medio',
-                3=>'Avanzado',
-                4=>'Finalizado');
+                1=>Text::get('overview-field-options-currently_inicial'),
+                2=>Text::get('overview-field-options-currently_medio'),
+                3=>Text::get('overview-field-options-currently_avanzado'),
+                4=>Text::get('overview-field-options-currently_finalizado'));
+        }
+
+        /*
+         * Ámbito de alcance de un proyecto
+         */
+        public static function scope () {
+            return array(
+                1=>Text::get('overview-field-options-scope_regional'),
+                2=>Text::get('overview-field-options-scope_local'),
+                3=>Text::get('overview-field-options-scope_nacional'),
+                4=>Text::get('overview-field-options-scope_global'));
         }
 
         /*
@@ -1323,12 +1397,27 @@ namespace Goteo\Model {
          */
         public static function status () {
             return array(
-                1=>'Editándose',
-                2=>'Pendiente valoración',
-                3=>'En campaña',
-                4=>'Financiado',
-                5=>'Caducado',
-                6=>'Retorno cumplido');
+//                0=>Text::get('form-project_status-cancelled'),
+                1=>Text::get('form-project_status-edit'),
+                2=>Text::get('form-project_status-review'),
+                3=>Text::get('form-project_status-campaing'),
+                4=>Text::get('form-project_status-success'),
+                5=>Text::get('form-project_status-fulfilled'),
+                6=>Text::get('form-project_status-expired'));
+        }
+
+        /*
+         * Siguiente etapa en la vida del proyeto
+         */
+        public static function waitfor () {
+            return array(
+                0=>Text::get('form-project_waitfor-cancel'),
+                1=>Text::get('form-project_waitfor-edit'),
+                2=>Text::get('form-project_waitfor-review'),
+                3=>Text::get('form-project_waitfor-campaing'),
+                4=>Text::get('form-project_waitfor-success'),
+                5=>Text::get('form-project_waitfor-fulfilled'),
+                6=>Text::get('form-project_waitfor-expired'));
         }
 
 

@@ -28,7 +28,8 @@ body.project-edit div#main div.project-preview div.widget.user {
 }
 
 body.project-edit div#main div.project-preview div.widget.project-summary,
-body.project-edit div#main div.project-preview div.widget.project-share {
+body.project-edit div#main div.project-preview div.widget.project-share,
+body.project-edit div#main div.project-preview div.widget.project-needs {
     max-width: 580px;
     margin-right: 20px;
 }

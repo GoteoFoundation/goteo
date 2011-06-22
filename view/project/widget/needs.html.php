@@ -1,4 +1,5 @@
 <?php
+use Goteo\Library\Text;
 
 $project = $this['project'];
 $types   = $this['types'];
@@ -16,7 +17,7 @@ foreach ($project->costs as $cost) {
         'name' => $cost->cost,
         'description' => $cost->description,
         'min' => $cost->required == 1 ? $cost->amount : '',
-        'opt' => $cost->required == 1 ? '' : $cost->amount
+        'opt' => $cost->amount
     );
 }
 
@@ -41,8 +42,8 @@ foreach ($project->costs as $cost) {
         <thead class="<?php echo htmlspecialchars($type)?>">
             <tr>
                 <th class="summary"><?php echo htmlspecialchars($types[$type]) ?></th>
-                <th class="min">Mínimo</th>
-                <th class="max">Óptimo</th>
+                <th class="min"><?php echo Text::get('project-view-metter-minimum'); ?></th>
+                <th class="max"><?php echo Text::get('project-view-metter-optimum'); ?></th>
             </tr>            
         </thead>
         
@@ -62,7 +63,7 @@ foreach ($project->costs as $cost) {
                                         
         <tfoot>
             <tr>
-                <th class="total">Total</th>
+                <th class="total"><?php echo Text::get('regular-total'); ?></th>
                 <th class="min"><?php echo $minimum ?></th>
                 <th class="max"><?php echo $optimum ?></th>
             </tr>

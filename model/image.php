@@ -190,21 +190,23 @@ namespace Goteo\Model {
         /**
          * Quita una imagen de la tabla de relaciones y de la tabla de imagenes
          *
-         * @param  string       $which    'user'|'project'
+         * @param  string       $which    'user'|'project'|'post'
          * @return bool        true|false
          *
          */
         public function remove($which) {
-            if (!\is_string($which) || !\in_array($which, array('user','project'))) {
-                return false;
-            }
 
             try {
                 self::query("START TRANSACTION");
                 $sql = "DELETE FROM image WHERE id = ?";
                 $query = self::query($sql, array($this->id));
-                $sql = "DELETE FROM {$which}_image WHERE image = ?";
-                $query = self::query($sql, array($this->id));
+
+                // para usuarios y proyectos que tienen N imagenes
+                // por ahora post solo tiene 1
+                if (\is_string($which) && \in_array($which, array('user','project'))) {
+                    $sql = "DELETE FROM {$which}_image WHERE image = ?";
+                    $query = self::query($sql, array($this->id));
+                }
                 self::query("COMMIT");
 
                 return true;

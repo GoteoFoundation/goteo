@@ -1,40 +1,62 @@
-<?php $bodyClass = 'faq'; include 'view/prologue.html.php' ?>
+<?php
 
-        <?php include 'view/header.html.php' ?>
+use Goteo\Library\Text;
 
-        <div id="main">
+$bodyClass = 'faq';
 
-            <h2><?php echo $this['name']; ?></h2>
-            <p><?php echo $this['title']; ?></p>
+include 'view/prologue.html.php';
 
-            <div id="content"><?php echo $this['content']; ?></div>
+include 'view/header.html.php';
 
-            <?php foreach ($this['sections'] as $sectionId=>$sectionName) : ?>
-                <div>
-                    <h3><?php echo $sectionName; ?></h3>
-                    <ol>
-                        <?php foreach ($this['faqs'][$sectionId] as $question)  : ?>
-                            <li><a href="#q<?php echo $question->id; ?>"><?php echo $question->title; ?></a></li>
-                        <?php endforeach; ?>
-                    </ol>
-                </div>
-            <?php endforeach; ?>
+$go_up = Text::get('regular-go_up');
 
-            <?php foreach ($this['sections'] as $sectionId=>$sectionName) : ?>
-                <div>
-                    <h3><?php echo $sectionName; ?></h3>
-                    <?php foreach ($this['faqs'][$sectionId] as $question)  : ?>
-                        <div>
-                            <a name="q<?php echo $question->id; ?>" />
-                            <h4><?php echo $question->title; ?></h4>
-                            <blockquote><?php echo $question->description; ?></blockquote>
-                            <a href="#">Subir</a>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php endforeach; ?>
+?>
+		<div id="sub-header-secondary">
+            <div class="clearfix">
+                <h2>GOTEO<span class="red">FAQ</span></h2>
+                <ul class="share-goteo">
+					<li class="twitter"><a href="#"><?php echo Text::get('regular-share-twitter'); ?></a></li>
+					<li class="facebook"><a href="#"><?php echo Text::get('regular-share-facebook'); ?></a></li>
+					<li class="rss"><a href="#"><?php echo Text::get('regular-share-rss'); ?></a></li>
+				</ul>
+            </div>
+        </div>
+        <div id="main" class="threecols">
+			<div id="faq-content">
+				<h2><?php echo $this['title']; ?></h2>
+				<?php foreach ($this['sections'] as $sectionId=>$sectionName) : ?>
+					<div class="widget faq-content-module">
+						<h3><?php echo $sectionName; ?></h3>
+						<ol>
+							<?php foreach ($this['faqs'][$sectionId] as $question)  : ?>
+								<li>
+									<a name="q<?php echo $question->id; ?>" />
+									<h4 style="color:#20b3b2;"><?php echo $question->title; ?></h4>
+									<p><?php echo $question->description; ?></p>
+									<a href="#"><?php echo $go_up; ?></a>
+								</li>
+							<?php endforeach; ?>
+						</ol>
+					</div>
+				<?php endforeach; ?>
+			</div>
+			<div id="faq-sidebar">
+				<?php foreach ($this['sections'] as $sectionId=>$sectionName) : ?>
+					<div class="widget faq-sidebar-module">
+						<h3 style="border-bottom-color: #20b3b2;" class="supertitle"><?php echo $sectionName; ?></h3>
+						<ol>
+							<?php foreach ($this['faqs'][$sectionId] as $question)  : ?>
+								<li><a style="color: #20b3b2;" href="#q<?php echo $question->id; ?>"><?php echo $question->title; ?></a></li>
+							<?php endforeach; ?>
+						</ol>
+					</div>
+				<?php endforeach; ?>
+				<div class="widget faq-sidebar-module">
+					<h3 class="supertitle ask"><?php echo $this['title']; ?></h3>
+					<p class="ask-content"><?php echo Text::get('faq-ask-question'); ?></p>
+					<a class="btn-ask" href="#"><?php echo Text::get('regular-ask'); ?></a>
+				</div>
+			</div>
         </div>        
-
-        <?php include 'view/footer.html.php' ?>
-    
+	<?php include 'view/footer.html.php' ?>
 <?php include 'view/epilogue.html.php' ?>

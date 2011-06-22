@@ -1,0 +1,54 @@
+@import url("project.css");
+
+div.widget.projects > .title {
+    margin-left: 3.33%;
+    margin-bottom: 20px;
+
+}
+
+div.widget.projects div.project {
+    background-color: #edecec;
+    width: 30%;
+    margin: 0 0 3.33% 3.33%;
+    float: left;    
+    padding: 0;
+    min-width: 260px;
+}
+
+div.widget.projects div.project div.balloon {
+    background: #cae4e6 url('../../balloonbeak.png') no-repeat bottom left;
+    border-bottom: 15px solid white;
+}
+
+div.widget.projects div.project div.balloon > blockquote {  
+    height: 4em;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+}
+
+div.widget.projects div.project div.balloon > h4 {
+    font-size:  14px;    
+    font-weight: bold;            
+    margin: 0 0 .5em;
+    padding: 0;
+}
+
+div.widget.projects div.project div.description {
+/*    display: none; Lo muestro y recorto caracteres*/
+}
+
+div.widget.projects > div.more {
+    clear: both;
+    text-align: right;
+    
+}
+
+div.widget.projects > div.more a {
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+div.widget.projects > div.more a:hover {
+    text-decoration: underline;
+}

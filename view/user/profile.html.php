@@ -2,6 +2,7 @@
 
 use Goteo\Core\View,
     Goteo\Library\Worth,
+    Goteo\Library\Text,
     Goteo\Model\User\Interest;
 
 $bodyClass = 'user-profile';
@@ -10,124 +11,84 @@ include 'view/header.html.php';
 
 $user = $this['user'];
 $worthcracy = Worth::getAll();
-
-$interests = Interest::getAll();
-
 ?>
 
         <div id="sub-header">
-            <div>
-                <h2><img src="/image/<?php echo $user->avatar->id; ?>/75/75" /> Perfil de <br /><em><?php echo $user->name; ?></em></h2>
+            <div>                                
+                <h2><img src="/image/<?php echo $user->avatar->id; ?>/75/75" /> <?php echo Text::get('profile-name-header'); ?> <br /><em><?php echo $user->name; ?></em></h2>
             </div>
         </div>
 
         <div id="main">
             
-            <?php echo new View('view/worth/base.html.php', array('worthcracy' => $worthcracy, 'type' => 'main', 'level' => $user->worth)); ?>
-                                    
-            <div class="about">
-                <h4>Sobre mi</h4>
-                <p><?php echo $user->about ?></p>
-                <hr />
-                <h4>Mis intereses</h4>
-                <p><?php
-                $c = 0;
-                foreach ($user->interests as $interest) {
-                    if ($c > 0) echo ', ';
-                    echo $interests[$interest];
-                    $c++;
-                } ?></p>
-                <hr />
-                <h4>Mis etiquetas</h4>
-                <p><?php echo $user->keywords; ?></p>
-                <hr />
-                <dl>
+            <div class="center">
+            
+                <?php echo new View('view/user/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $user->worth)) ?>
 
-                    <?php if (!empty($user->webs)): ?>
-                    <dt class="links">Webs</dt>
-                    <dd class="links">
+                <?php echo new View('view/user/widget/about.html.php', array('user' => $user)) ?>
+
+                <?php echo new View('view/user/widget/social.html.php', array('user' => $user)) ?>                        
+                                                
+                <div class="widget projects">
+                    <h2 class="title"><?php echo Text::get('profile-invest_on-header'); ?></h2>
+                    <?php foreach ($this['invested'] as $project) : ?>
+                        <div>
+                            <?php
+                            // es instancia del proyecto
+                            echo new View('view/project/widget/project.html.php', array(
+                                'project'   => $project
+                            )); ?>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+                <div class="widget projects">
+                    <h2 class="title"><?php echo Text::get('profile-my_projects-header'); ?></h2>
+                    <?php foreach ($this['projects'] as $project) : ?>
+                        <div>
+                            <?php
+                            // es instancia del proyecto
+                            echo new View('view/project/widget/project.html.php', array(
+                                'project'   => $project
+                            )); ?>
+                        </div>
+                    <?php endforeach; ?>
+                    </div>
+
+            </div>
+            <div class="side">
+                <div class="widget user-supporters">
+                        <h3 class="supertitle"><?php echo Text::get('profile-my_investors-header'); ?></h3>
+                        <div class="supporters">
                         <ul>
-                            <?php foreach ($user->webs as $link): ?>
-                            <li><a href="<?php echo htmlspecialchars($link->url) ?>" target="_blank"><?php echo htmlspecialchars($link->url) ?></a></li>
+                            <?php foreach ($this['investors'] as $user => $investor): ?>
+                            <li><?php echo new View('view/user/widget/supporter.html.php', array('user' => $investor, 'worthcracy' => $worthcracy)) ?></li>                        
                             <?php endforeach ?>
                         </ul>
-                    </dd>
-                    <?php endif ?>
+                        </div>                        
+                    </div>
 
-                    <?php if (isset($user->location)): ?>
-                    <dt class="location">Ubicación</dt>
-                    <dd class="location"><a href="">Barcelona, ES</a></dd>
-                    <?php endif ?>
-
-                </dl>
-
+                    <div class="widget user-mates">
+                        <h3 class="supertitle"><?php echo Text::get('profile-sharing_interests-header'); ?></h3>
+                        <div class="users">
+                            <ul>
+                            <?php foreach ($this['shares'] as $mate): ?>
+                                <li>
+                                    <div class="user">
+                                        <?php if ($mate->avatar instanceof Goteo\Model\Image): ?>
+                                        <div class="avatar"><img src="<?php echo htmlspecialchars($mate->avatar->getLink(50,50)) ?>" /></div>
+                                        <?php endif ?>
+                                        <h4><a href="/user/<?php echo htmlspecialchars($mate->user) ?>"><?php echo htmlspecialchars($mate->user) ?></a></h4>
+                                        <a class="projects" href="/user/<?php echo htmlspecialchars($mate->user) ?>"><?php echo Text::get('regular-projects'); ?> (<?php echo $mate->projects ?>)</a>
+                                        <a class="invests" href="/user/<?php echo htmlspecialchars($mate->user) ?>"><?php echo Text::get('regular-investing'); ?> (<?php echo $mate->invests ?>)</a>
+                                    </div>
+                                </li>
+                            <?php endforeach ?>                                                        
+                            </ul>
+                        </div>
+                        <a class="more" href=""><?php echo Text::get('regular-see_more'); ?></a>
+                    </div>
             </div>
-
-
-            
-            <?php if (isset($user->facebook) || isset($user->linkedin) || isset($user->twitter)): ?>            
-            <div class="social">
-                <ul>
-                    <?php if (isset($user->facebook)): ?>
-                    <li class="facebook"><a href="<?php echo htmlspecialchars($user->facebook) ?>">Facebook</a></li>
-                    <?php endif ?>
-                    <?php if (isset($user->twitter)): ?>
-                    <li class="twitter"><a href="<?php echo htmlspecialchars($user->twitter) ?>">Twitter</a></li>
-                    <?php endif ?>
-                    <?php if (isset($user->linkedin)): ?>
-                    <li class="linkedin"><a href="<?php echo htmlspecialchars($user->linkedin) ?>">LinkedIn</a></li>
-                    <?php endif ?>
-                </ul>                
-            </div>            
-            <?php endif ?>
-
-            <div>
-                <h3>Proyectos que apoyo</h3>
-                <ul>
-                <?php foreach ($this['invested'] as $project) {
-                    // $project NO es una instancia de proyecto
-                    // ojo con este widget
-                    echo '<li><a href="/project/'. $project->id . '">'. $project->name . '</a></li>';
-                } ?>
-                </ul>
-    		</div>
-
-            <div>
-                <h3>Mis proyectos</h3>
-                <ul>
-                <?php foreach ($this['projects'] as $project) {
-                    // $project NO es una instancia de proyecto
-                    // ojo con este widget
-                    echo '<li><a href="/project/'. $project->id . '">'. $project->name . '</a></li>';
-                } ?>
-                </ul>
-    		</div>
-
-            <hr />
-            <!-- lateral -->
-
-            <div>
-                <h3>Mis cofinanciadores</h3>
-                <div>
-                <?php foreach ($this['investors'] as $user=>$investor) {
-                    echo new View('view/user/widget/supporter.html.php', array('user' => $investor, 'worthcracy' => $worthcracy));
-    //                echo "{$investor->avatar} {$investor->name} De nivel {$investor->worth}  Cofinancia {$investor->projects} proyectos  Me aporta: {$investor->amount} € <br />";
-                } ?>
-                </div>
-                <?php echo new View('view/worth/base.html.php', array('worthcracy' => $worthcracy, 'type' => 'side')); ?>
-            </div>
-
-            <div>
-                <h3>Compartiendo intereses</h3>
-                <?php foreach ($this['shares'] as $share) {
-                    echo '<div style="float:left;margin: 10px;"><img src="/image/' . $share->avatar->id . '/50/50" /><br />';
-                    echo '<a href="/user/' . $share->user . '">' . $share->name . '</a><br />';
-                    echo "Proyectos(" . $share->projects .")<br/>Aportacion(" . $share->invests ." )";
-                    echo '</div>';
-                } ?>
-                <br clear="all" />
-            </div>
-
 
         </div>
         
