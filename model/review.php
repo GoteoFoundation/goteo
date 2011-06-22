@@ -151,6 +151,44 @@ namespace Goteo\Model {
             return $projects;
         }
 
+        /**
+         * Para obtener las revisiones de proyectos asignadas
+         */
+        public static function assigned($user) {
+            $projects = array();
+
+            $sql = "SELECT
+                        project.id as project,
+                        project.name as name,
+                        user.name as owner,
+                        review.id as review,
+                        review.status as status,
+                        project.progress as progress,
+                        review.score as score,
+                        review.max as max
+                    FROM project
+                    INNER JOIN user
+                        ON user.id = project.owner
+                    LEFT JOIN review
+                        ON review.project = project.id
+                    WHERE (project.status = 2 OR review.id IS NOT NULL)
+                        AND project.node = ?
+                        AND review.id IN (
+                            SELECT review
+                            FROM user_review
+                            WHERE user = '{$user}'
+                        )
+                    ORDER BY project.name ASC
+                    ";
+
+            echo "$sql <br />";
+            $query = self::query($sql, array($node));
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
+                $projects[] = $proj;
+            }
+            return $projects;
+        }
+
 
         /*
          * Metodo para contar la puntuacion
