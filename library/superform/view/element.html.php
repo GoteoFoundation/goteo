@@ -15,6 +15,7 @@ $element = $this['element'];
 </div>
 <?php endif ?>
 
+<?php if (!empty($element->errors) || !empty($element->hint)): ?>
 <div class="feedback" id="superform-feedback-for-<?php echo htmlspecialchars($element->id) ?>">
 
     <?php if (!empty($element->errors)): ?>
@@ -32,6 +33,7 @@ $element = $this['element'];
     <?php endif ?>
     
 </div>
+<?php endif ?>
 
 <?php if (!empty($element->children)): ?>
 <div class="children">
