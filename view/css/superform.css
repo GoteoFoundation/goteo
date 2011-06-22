@@ -144,7 +144,7 @@ div.superform input[type='password'],
 div.superform textarea {
     padding: .4em;    
     background-color: #d7d9da;
-    border: 1px solid #58595;    
+    border: 1px solid #58595b;
 }
 
 div.superform textarea {
@@ -197,22 +197,21 @@ div.superform li.element.fullwidth + li.element {
     border-top: none;
 }
 
-/* Element badges */
-
-div.superform div.elements > ol > li.busy > .title {
-    background: url('superform/badge/busy/cyan.gif') no-repeat right center;
+/* Element badges. Order is imporant */
+div.superform div.elements > ol > li.required > .title {
+    background: url('superform/badge/required.png') no-repeat right center;
 }
 
 div.superform div.elements > ol > li.ok > .title {
     background: url('superform/badge/ok.png') no-repeat right center;
 }
 
-div.superform div.elements > ol > li.required > .title {
-    background: url('superform/badge/required.png') no-repeat right center;
-}
-
 div.superform div.elements > ol > li.error > .title  {
     background: url('superform/badge/error.png') no-repeat right center !important;
+}
+
+div.superform div.elements > ol > li.busy > .title {
+    background: url('superform/badge/busy/cyan.gif') no-repeat right center;
 }
 
 div.superform li.element.hidden {

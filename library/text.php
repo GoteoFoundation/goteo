@@ -24,7 +24,7 @@ namespace Goteo\Library {
          */
         static public function html ($id) {
             // sacamos el contenido del texto
-            $text = call_user_func_array ( 'Text::get' , \func_get_args() );
+            $text = call_user_func_array ( 'static::get' , \func_get_args() );
             if (self::isHtml($id))
                 return $text; // el texto ES html, lo devuelve tal cual
             else
