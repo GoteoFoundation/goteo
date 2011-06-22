@@ -64,7 +64,7 @@ namespace Goteo\Model\Blog {
          * de mas nueva a mas antigua
          * // si es portada son los que se meten por la gestion de entradas en portada que llevan el tag 1 'Portada'
          */
-        public static function getAll ($blog, $portada = false) {
+        public static function getAll ($blog, $limit = null) {
 
             $list = array();
 
@@ -83,6 +83,9 @@ namespace Goteo\Model\Blog {
                 WHERE blog = ?
                 ORDER BY date DESC, id DESC
                 ";
+            if (!empty($limit)) {
+                $sql .= "LIMIT $limit";
+            }
             
             $query = static::query($sql, array($blog));
                 
