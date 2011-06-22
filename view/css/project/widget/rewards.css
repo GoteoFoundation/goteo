@@ -24,7 +24,12 @@ div.widget.project-rewards ul li > p {
     margin:  0 0 1em;
 }
 
-div.widget.project-rewards {}
+div.widget.project-rewards ul li > .name {
+    margin: 0 0 .4em;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: none;
+}
 
 
 div.widget.project-rewards ul li.file  {
@@ -55,4 +60,123 @@ div.widget.project-rewards > a.more {
     display: inline-block;
     float: right;
     text-decoration: none;
+}
+
+div.widget.project-rewards ul li div.license h4,
+div.widget.project-rewards ul li div.license h5,
+div.widget.project-rewards ul li div.license h6,
+div.widget.project-rewards ul li div.license h7,
+div.widget.project-rewards ul li div.license h8 {    
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: none;
+    border-bottom: 1px dashed #c8c8c8;
+    margin: .5em 0 .6em;
+    padding: 0 0 .2em;
+}
+div.widget.project-rewards ul li div.license > a strong {
+    background: url("/view/css/license/license.png") no-repeat left top;
+    padding-top: 34px;
+    display: block;
+}
+
+
+div.widget.project-rewards ul li div.license  {
+    font-size: 11px;
+}
+
+div.widget.project-rewards ul li div.license  p {
+    margin: .2em 0;
+}
+
+div.widget.project-rewards ul li div.license.agpl > a strong {
+    background-image: url('/view/css/license/agpl.png');
+}
+
+div.widget.project-rewards ul li div.license.apache > a strong {
+    background-image: url('/view/css/license/apache.png');
+}
+
+div.widget.project-rewards ul li div.license.balloon > a strong {
+    background-image: url('/view/css/license/balloon.png');
+}
+
+div.widget.project-rewards ul li div.license.bsd > a strong {
+    background-image: url('/view/css/license/bsd.png');
+}
+
+div.widget.project-rewards ul li div.license.cc0 > a strong {
+    background-image: url('/view/css/license/cc0.png');
+}
+
+div.widget.project-rewards ul li div.license.ccby > a strong {
+    background-image: url('/view/css/license/ccby.png');
+}
+
+div.widget.project-rewards ul li div.license.ccbync > a strong {
+    background-image: url('/view/css/license/ccbync.png');
+}
+
+div.widget.project-rewards ul li div.license.ccbyncnd > a strong {
+    background-image: url('/view/css/license/ccbyncnd.png');
+}
+
+div.widget.project-rewards ul li div.license.ccbyncsa > a strong {
+    background-image: url('/view/css/license/ccbyncsa.png');
+}
+
+div.widget.project-rewards ul li div.license.ccbynd > a strong {
+    background-image: url('/view/css/license/ccbynd.png');
+}
+
+div.widget.project-rewards ul li div.license.ccbysa > a strong {
+    background-image: url('/view/css/license/ccbysa.png');
+}
+
+div.widget.project-rewards ul li div.license.fal > a strong {
+    background-image: url('/view/css/license/fal.png');
+}
+
+div.widget.project-rewards ul li div.license.fdl > a strong {
+    background-image: url('/view/css/license/fdl.png');
+}
+
+div.widget.project-rewards ul li div.license.freebsd > a strong {
+    background-image: url('/view/css/license/freebsd.png');
+}
+
+div.widget.project-rewards ul li div.license.gpl > a strong {
+    background-image: url('/view/css/license/gpl.png');
+}
+
+div.widget.project-rewards ul li div.license.lgpl > a strong {
+    background-image: url('/view/css/license/lgpl.png');
+}
+
+div.widget.project-rewards ul li div.license.mit > a strong {
+    background-image: url('/view/css/license/mit.png');
+}
+div.widget.project-rewards ul li div.license.mpl > a strong {
+    background-image: url('/view/css/license/mpl.png');
+}
+div.widget.project-rewards ul li div.license.odbl > a strong {
+    background-image: url('/view/css/license/odbl.png');
+}
+div.widget.project-rewards ul li div.license.odcby > a strong {
+    background-image: url('/view/css/license/odcby.png');
+}
+div.widget.project-rewards ul li div.license.oshw > a strong {
+    background-image: url('/view/css/license/oshw.png');
+}
+div.widget.project-rewards ul li div.license.pd > a strong {
+    background-image: url('/view/css/license/pd.png');
+}
+div.widget.project-rewards ul li div.license.php > a strong {
+    background-image: url('/view/css/license/php.png');
+}
+div.widget.project-rewards ul li div.license.tapr > a strong {
+    background-image: url('/view/css/license/tapr.png');
+}
+div.widget.project-rewards ul li div.license.xoln > a strong {
+    background-image: url('/view/css/license/xoln.png');
 }

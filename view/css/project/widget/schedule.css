@@ -7,10 +7,14 @@ div.widget.project-schedule table {
 div.widget.project-schedule table td,
 div.widget.project-schedule table th {
     border: 1px solid #b2b2b2;    
-    border-width: 1px 1px 0 0;
+    border-width: 1px 1px 1px 0;
     text-align: center;
-    padding: .5em;
+    padding: .5em .1em;
     font-size: 11px;
+}
+
+div.widget.project-schedule thead th span {
+    display: none;
 }
 
 div.widget.project-schedule thead tr > * {
@@ -22,10 +26,8 @@ div.widget.project-schedule table tbody th {
     border-left: none;
     font-weight: normal;
     text-transform: uppercase;
-}
-
-div.widget.project-schedule table tbody td.on {
-    border-right-width:  0;
+    width: 20%;
+    padding: .5em;
 }
 
 div.widget.project-schedule table tbody tr:nth-child(4n+1) td.on {

@@ -9,7 +9,9 @@ namespace Goteo\Controller {
 	    Goteo\Library\Text,
 		Goteo\Library\Lang,
         Goteo\Library\Paypal,
+        Goteo\Library\Tpv,
         Goteo\Library\Page,
+        Goteo\Library\Blog,
         Goteo\Library\Worth;
 
 	class Admin extends \Goteo\Core\Controller {
@@ -76,14 +78,14 @@ namespace Goteo\Controller {
 
             // comprobamos los filtros
             $filters = array();
-            $fields = array('idfilter', 'group');
+            $fields = array('idfilter', 'group', 'text');
             foreach ($fields as $field) {
                 if (isset($_GET[$field])) {
                     $filters[$field] = $_GET[$field];
                 }
             }
 
-            $filter = "?idfilter={$filters['idfilter']}&group={$filters['group']}";
+            $filter = "?idfilter={$filters['idfilter']}&group={$filters['group']}&text={$filters['text']}";
             
             // valores de filtro
             $idfilters = Text::filters();
@@ -115,14 +117,22 @@ namespace Goteo\Controller {
                             'url' => '/admin/texts',
                             'filters' => array(
                                 'idfilter' => array(
-                                        'label'  => 'Filtrar por tipo:',
+                                        'label'   => 'Filtrar por tipo:',
+                                        'type'    => 'select',
                                         'options' => $idfilters,
-                                        'value' => $filters['idfilter']
+                                        'value'   => $filters['idfilter']
                                     ),
                                 'group' => array(
-                                        'label'  => 'Filtrar por agrupación:',
+                                        'label'   => 'Filtrar por agrupación:',
+                                        'type'    => 'select',
                                         'options' => $groups,
-                                        'value' => $filters['group']
+                                        'value'   => $filters['group']
+                                    ),
+                                'text' => array(
+                                        'label'   => 'Buscar texto:',
+                                        'type'    => 'input',
+                                        'options' => null,
+                                        'value'   => $filters['text']
                                     )
                             ),
                             'errors' => $errors
@@ -328,8 +338,9 @@ namespace Goteo\Controller {
 				else {
                     switch ($_POST['action']) {
                         case 'add':
-                            // proyectos publicados para promocionar
-                            $projects = Model\Project::published();
+                            // proyectos disponibles para promocionar y su estado
+                            $projects = Model\Promote::available();
+                            $status = Model\Project::status();
 
                             return new View(
                                 'view/admin/promoEdit.html.php',
@@ -337,6 +348,7 @@ namespace Goteo\Controller {
                                     'action' => 'add',
                                     'promo' => $promo,
                                     'projects' => $projects,
+                                    'status' => $status,
                                     'errors' => $errors
                                 )
                             );
@@ -368,6 +380,7 @@ namespace Goteo\Controller {
                 case 'add':
                     // proyectos publicados para promocionar
                     $projects = Model\Promote::available();
+                    $status = Model\Project::status();
 
                     // siguiente orden
                     $next = Model\Promote::next();
@@ -377,7 +390,8 @@ namespace Goteo\Controller {
                         array(
                             'action' => 'add',
                             'promo' => (object) array('order' => $next),
-                            'projects' => $projects
+                            'projects' => $projects,
+                            'status' => $status
                         )
                     );
                     break;
@@ -739,8 +753,9 @@ namespace Goteo\Controller {
                 // objeto
                 $post = new Model\Post(array(
                     'id' => $_POST['id'],
+                    'blog' => $_POST['blog'],
                     'title' => $_POST['title'],
-                    'description' => $_POST['description'],
+                    'text' => $_POST['text'],
                     'media' => $_POST['media'],
                     'order' => $_POST['order']
                 ));
@@ -1154,6 +1169,147 @@ namespace Goteo\Controller {
         }
 
         /*
+         *  Gestión de tags de blog
+         *  Si no lo usa ningun post se puede borrar
+         */
+        public function tags($action = 'list', $id = null) {
+
+            $model = 'Goteo\Model\Blog\Post\Tag';
+            $url = '/admin/tags';
+
+            $errors = array();
+
+            switch ($action) {
+                case 'add':
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Añadiendo un nuevo tag de blog",
+                            'menu' => array(
+                                array(
+                                    'url'   => $url,
+                                    'label' => 'Tags'
+                                )
+                            ),
+                            'data' => (object) array(),
+                            'form' => array(
+                                'action' => "$url/edit/",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'Añadir'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Tag',
+                                        'name' => 'name',
+                                        'type' => 'text'
+                                    )
+                                )
+
+                            )
+                        )
+                    );
+
+                    break;
+                case 'edit':
+
+                    // gestionar post
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
+
+                        $errors = array();
+
+                        // instancia
+                        $item = new $model(array(
+                            'id' => $_POST['id'],
+                            'name' => $_POST['name'],
+                            'blog' => 1
+                        ));
+
+                        if ($item->save($errors)) {
+                            throw new Redirection($url);
+                        }
+                    } else {
+                        $item = $model::get($id);
+                    }
+
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Editando un tag de blog",
+                            'menu' => array(
+                                array(
+                                    'url'   => $url,
+                                    'label' => 'Tags'
+                                )
+                            ),
+                            'data' => $item,
+                            'form' => array(
+                                'action' => "$url/edit/$id",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'guardar'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Tag',
+                                        'name' => 'name',
+                                        'type' => 'text'
+                                    )
+                                )
+
+                            ),
+                            'errors' => $errors
+                        )
+                    );
+
+                    break;
+                case 'remove':
+                    if ($model::delete($id)) {
+                        throw new Redirection($url);
+                    }
+                    break;
+            }
+
+            return new View(
+                'view/admin/list.html.php',
+                array(
+                    'title' => 'Gestión de tags para blog',
+                    'menu' => array(
+                        array(
+                            'url' => "$url/add",
+                            'label' => 'Nuevo tag'
+                        ),
+                        array (
+                            'url' => '/admin/blog',
+                            'label' => 'Gestionar Blog'
+                        )
+                    ),
+                    'data' => $model::getList(1),
+                    'columns' => array(
+                        'name' => 'Tag',
+                        'used' => 'Entradas',
+                        'edit' => '',
+                        'remove' => ''
+                    ),
+                    'url' => "$url",
+                    'errors' => $errors
+                )
+            );
+        }
+
+        /*
          *  administración de nodos y usuarios (segun le permita el ACL al usuario validado)
          */
         public function managing($action = 'list', $id = null) {
@@ -1232,6 +1388,28 @@ namespace Goteo\Controller {
                 );
             }
 
+            if ($action == 'execute') {
+                $invest = Model\Invest::get($id);
+                
+                switch ($invest->method) {
+                    case 'paypal':
+                        if (Paypal::pay($invest, $errors)) {
+                            $errors[] = 'Cargo paypal correcto';
+                        } else {
+                            $errors[] = 'Fallo al ejecutar cargo paypal: ' . implode('; ', $errors);
+                        }
+                        break;
+                    case 'tpv':
+                        if (Tpv::pay($invest, $errors)) {
+                            $errors[] = 'Cargo sermepa correcto';
+                        } else {
+                            $errors[] = 'Fallo al ejecutar cargo sermepal: ' . implode('; ', $errors);
+                        }
+                        break;
+                }
+
+            }
+
             /*
              *  Lista de proyectos en campaña
              *  indicando cuanto han conseguido, cuantos dias y los cofinanciadores
@@ -1286,7 +1464,8 @@ namespace Goteo\Controller {
                 array(
                     'projects' => $projects,
                     'status' => $status,
-                    'investStatus' => $investStatus
+                    'investStatus' => $investStatus,
+                    'errors' => $errors
                 )
             );
         }
@@ -1309,19 +1488,19 @@ namespace Goteo\Controller {
 
             switch ($action)  {
                 case 'fulfill':
-                    $sql = "UPDATE reward SET fulfilled = 1 WHERE id = ?";
+                    $sql = "UPDATE reward SET fulsocial = 1 WHERE type= 'social' AND id = ?";
                     Model\Project\Reward::query($sql, array($id));
                     break;
                 /*
                 case 'unfill':
-                    $sql = "UPDATE reward SET fulfilled = 0 WHERE id = ?";
+                    $sql = "UPDATE reward SET fulsocial = 0 WHERE id = ?";
                     Model\Project\Reward::query($sql, array($id));
                     break;
                  * 
                  */
             }
 
-            $projects = Model\Project::published();
+            $projects = Model\Project::published('success');
 
             foreach ($projects as $kay=>&$project) {
                 $project->social_rewards = Model\Project\Reward::getAll($project->id, 'social', $filters['status'], $filters['icon']);
@@ -1351,6 +1530,243 @@ namespace Goteo\Controller {
 
         }
 
+        /*
+         * Gestión de entradas de blog
+         */
+        public function blog ($action = 'list', $id = null) {
+            
+            $url = '/admin/blog';
+
+            /*
+             * Filtro de fecha
+            $filters = array();
+            $fields = array('date');
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    $filters[$field] = $_GET[$field];
+                }
+            }
+             * 
+             */
+
+            $errors = array();
+
+            $blog = Model\Blog::get(\GOTEO_NODE, 'node');
+            if (!$blog instanceof \Goteo\Model\Blog) {
+                $errors[] = 'No tiene espacio de blog, Contacte con nosotros';
+                $action = 'list';
+            } else {
+                if (!$blog->active) {
+                    $errors[] = 'Lo sentimos, las actualizaciones para este proyecto estan desactivadas';
+                    $action = 'list';
+                }
+            }
+
+            // primero comprobar que tenemos blog
+            if (!$blog instanceof Model\Blog) {
+                $errors[] = 'No se ha encontrado ningún blog para este nodo';
+                $action = 'list';
+            }
+
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    if (empty($_POST['blog'])) {
+                        break;
+                    }
+                    
+                    $post = new Model\Blog\Post();
+                    // campos que actualizamos
+                    $fields = array(
+                        'id',
+                        'blog',
+                        'title',
+                        'text',
+                        'image',
+                        'media',
+                        'date',
+                        'home',
+                        'allow'
+                    );
+
+                    foreach ($fields as $field) {
+                        $post->$field = $_POST[$field];
+                    }
+
+                    // tratar la imagen y ponerla en la propiedad image
+                    if(!empty($_FILES['image_upload']['name'])) {
+                        $post->image = $_FILES['image_upload'];
+                    }
+
+                    // tratar si quitan la imagen
+                    if (isset($_POST['image-' . $post->image .  '-remove'])) {
+                        $image = Model\Image::get($post->image);
+                        $image->remove('post');
+                        $post->image = '';
+                        $removed = true;
+                    }
+
+                    if (!empty($post->media)) {
+                        $post->media = new Model\Project\Media($post->media);
+                    }
+
+                    $post->tags = $_POST['tags'];
+
+                    /// este es el único save que se lanza desde un metodo process_
+                    if ($post->save($errors)) {
+                        if ($action == 'edit') {
+                            $success[] = 'La entrada se ha actualizado correctamente';
+                            ////Text::get('dashboard-project-updates-saved');
+                        } else {
+                            $success[] = 'Se ha añadido una nueva entrada';
+                            ////Text::get('dashboard-project-updates-inserted');
+                        }
+                        $action = $removed ? 'edit' : 'list';
+                    } else {
+                        $errors[] = 'Ha habido algun problema al guardar los datos';
+                        ////Text::get('dashboard-project-updates-fail');
+                    }
+            }
+
+            switch ($action)  {
+                case 'remove':
+                    // eliminar una entrada
+                    if (!empty($blog->posts[$id])) {
+                        if (Model\Blog\Post::delete($id)) {
+                            unset($blog->posts[$id]);
+                            $success[] = 'Entrada eliminada';
+                        } else {
+                            $errors[] = 'No se ha podido eliminar la entrada';
+                        }
+                    } else {
+                        $errors[] = 'La entrada que se quiere eliminar no es de este blog';
+                    }
+                case 'list':
+                    // lista de entradas
+                    // obtenemos los datos
+                    $posts = $blog->posts;
+
+                    return new View(
+                        'view/admin/blog.html.php',
+                        array(
+                            'posts' => $posts,
+                            'errors' => $errors,
+                            'success' => $success
+                        )
+                    );
+                    break;
+                case 'add':
+                    // nueva entrada con wisiwig
+                    // obtenemos datos basicos
+                    $post = new Model\Blog\Post(
+                            array(
+                                'blog' => $blog->id,
+                                'date' => date('Y-m-d'),
+                                'allow' => true,
+                                'tags' => array()
+                            )
+                        );
+
+                    $message = 'Añadiendo una nueva entrada';
+
+                    return new View(
+                        'view/admin/blogEdit.html.php',
+                        array(
+                            'action' => 'add',
+                            'post' => $post,
+                            'tags' => Model\Blog\Post\Tag::getAll(),
+                            'message' => $message,
+                            'errors' => $errors
+                        )
+                    );
+                    break;
+                case 'edit':
+                    if (empty($id)) {
+                        $errors[] = 'No se ha encontrado la entrada';
+                        //Text::get('dashboard-project-updates-nopost');
+                        $action = 'list';
+                        break;
+                    } else {
+                        $post = Model\Blog\Post::get($id);
+
+                        if (!$post instanceof Model\Blog\Post) {
+                            $errors[] = 'La entrada esta corrupta, contacte con nosotros.';
+                            //Text::get('dashboard-project-updates-postcorrupt');
+                            $action = 'list';
+                            break;
+                        }
+                    }
+
+                    $message = 'Editando una entrada existente';
+
+                    return new View(
+                        'view/admin/blogEdit.html.php',
+                        array(
+                            'action' => 'edit',
+                            'post' => $post,
+                            'tags' => Model\Blog\Post\Tag::getAll(),
+                            'message' => $message,
+                            'errors' => $errors
+                        )
+                    );
+                    break;
+            }
+
+        }
+
+        /*
+         * Moderar mensajes
+         * @TODO: está a medias
+         *
+         *
+         */
+        public function moderate($action = 'list', $id = null) {
+            $filters = array();
+            $fields = array('project', 'user', 'blog');
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    $filters[$field] = $_GET[$field];
+                }
+            }
+            // proyectos con mensajes
+            $projects = Model\Project::published('available');
+            if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $sections)) {
+                $filter = $_GET['filter'];
+            } else {
+                $filter = 'node';
+            }
+
+            //blog
+
+            // usuarios
+            $users = Model\User::getAll(array('posted'=>true));
+
+            $errors = array();
+
+            switch ($action) {
+                case 'remove':
+                    // mensaje o comentario
+                    // Model\   ::delete($id);
+                    break;
+            }
+
+//            $list = Model\Message::getAll($filter);
+
+            return new View(
+                'view/admin/list.html.php',
+                array(
+                    'title' => 'Moderación de mensajes',
+                    'menu' => array(),
+                    'data' => $list,
+                    'columns' => array(
+                        'user' => 'Usuario',
+                        'project' => 'Proyecto',
+                        'message' => 'Mensaje',
+                        'remove' => ''
+                    ),
+                    'url' => "/admin/moderate",
+                    'errors' => $errors
+                )
+            );
+        }
 
 	}
 

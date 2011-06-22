@@ -67,8 +67,8 @@ div.widget.project-needs table thead.structure th.summary {
     background-image: url('/view/css/icon/m/structure.png');
 }
 
-div.widget.project-needs table thead.equip th.summary {
-    background-image: url('/view/css/icon/m/equipment.png');
+div.widget.project-needs table thead.material th.summary {
+    background-image: url('/view/css/icon/m/material.png');
 }
 
 div.widget.project-needs table tfoot th.total {

@@ -11,7 +11,9 @@ namespace Goteo\Model {
             $thread, // hilo al que contesta, si es NULL es un hilo y tendrá respuestas ( o no)
             $date, // timestamp del momento en que se creó el mensaje
             $message, // el texto del mensaje en si
-            $responses = array(); // array de instancias mensaje que son respuesta a este
+            $responses = array(), // array de instancias mensaje que son respuesta a este
+            $blocked = 0, //no se puede editar ni borrar
+            $closed = 0; // no se puede responder
 
         /*
          *  Devuelve datos de un mensaje
@@ -81,12 +83,15 @@ namespace Goteo\Model {
         public function validate (&$errors = array()) { 
             if (empty($this->user))
                 $errors[] = 'Falta usuario';
+                //Text::get('mandatory-message-user');
 
             if (empty($this->project))
                 $errors[] = 'Falta proyecto';
+                //Text::get('validate-message-noproject');
 
             if (empty($this->message))
                 $errors[] = 'Falta texto';
+                //Text::get('mandatory-message-text');
 
             if (empty($errors))
                 return true;
@@ -97,12 +102,18 @@ namespace Goteo\Model {
         public function save (&$errors = array()) {
             if (!$this->validate($errors)) return false;
 
+            if (\is_object($this->user)) {
+                $this->user = $this->user->id;
+            }
+
             $fields = array(
                 'id',
                 'user',
                 'project',
                 'thread',
-                'message'
+                'message',
+                'blocked',
+                'closed'
                 );
 
             $set = '';
@@ -132,7 +143,11 @@ namespace Goteo\Model {
          * Para que el admin pueda borrar mensajes que no aporten nada
          */
         public function delete () {
-            
+
+            if ($this->blocked == 1) {
+                return false;
+            }
+
             $sql = "DELETE FROM message WHERE id = ?";
             if (self::query($sql, array($this->id))) {
                 if (empty($this->thread) && is_array($this->responses)) {

@@ -197,7 +197,7 @@ $superform = array(
             'name'      => 'project_location',
             'title'     => 'Localización',
             'required'  => true,
-            'hint'      => Text::get('tooltip-project-location'),
+            'hint'      => Text::get('tooltip-project-project_location'),
             'errors'    => !empty($errors['project_location']) ? array($errors['project_location']) : array(),
             'value'     => $project->project_location
         )                                        

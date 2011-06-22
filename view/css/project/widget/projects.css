@@ -12,6 +12,7 @@ div.widget.projects div.project {
     margin: 0 0 3.33% 3.33%;
     float: left;    
     padding: 0;
+    min-width: 260px;
 }
 
 div.widget.projects div.project div.balloon {
@@ -34,5 +35,20 @@ div.widget.projects div.project div.balloon > h4 {
 }
 
 div.widget.projects div.project div.description {
-    display: none;
+/*    display: none; Lo muestro y recorto caracteres*/
+}
+
+div.widget.projects > div.more {
+    clear: both;
+    text-align: right;
+    
+}
+
+div.widget.projects > div.more a {
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+div.widget.projects > div.more a:hover {
+    text-decoration: underline;
 }

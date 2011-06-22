@@ -99,7 +99,7 @@ namespace Goteo\Core {
 		public static function idealiza ($value) {
 			$id = trim(strtolower($value));
 			// Acentos
-			$id = strtr($id, "ÃÃ€Ã„Ã‚Ã¡Ã Ã¢Ã¤Ã‰ÃˆÃ‹ÃŠÃ©Ã¨ÃªÃ«ÃÃŒÃÃŽÃ­Ã¬Ã®Ã¯Ã“Ã’Ã–Ã”Ã³Ã²Ã´Ã¶ÃšÃ™Ã›ÃœÃºÃ¹Ã»Ã¼Ã‡Ã§Ã‘Ã±", "aaaaaaaaeeeeeeeeiiiiiiiioooooooouuuuuuuuccnn");
+			$id = strtr($id, "ÁÀÄÂáàâäÉÈËÊéèêëÍÌÏÎíìîïÓÒÖÔóòôöÚÙÛÜúùûüÇçÑñ", "aaaaaaaaeeeeeeeeiiiiiiiioooooooouuuuuuuuccnn");
 			// Separadores
 			$id = preg_replace("/[\s\,\;\_\/\-]+/i", "-", $id);
 			$id = preg_replace("/[^a-z0-9\.\-\+]/", "", $id);

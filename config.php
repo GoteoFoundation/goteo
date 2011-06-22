@@ -6,6 +6,11 @@ if (function_exists('ini_set')) {
     throw new \Goteo\Core\Exception("No puedo añadir la API GOTEO al include_path.");
 }
 
+// quitar magic quotes sin depender del php.ini
+if (function_exists('ini_set')) {
+    ini_set('magic_quotes_gpc', '0'); 
+}
+
 // Nodo actual
 define('GOTEO_NODE', 'goteo');
 
@@ -85,4 +90,12 @@ define('PAYPAL_IP_ADDRESS', '127.0.0.1');
 /****************************************************
 TPV constants
 ****************************************************/
-define('TPV_REDIRECT_URL', 'sermepa');
+define('TPV_MERCHANT_CODE', '58857178'); // AMASTE COMUNICACION SL
+//define('TPV_REDIRECT_URL', SITE_URL . '/tpv/simulacrum'); // desarrollo
+define('TPV_REDIRECT_URL', 'https://sis-t.sermepa.es:25443/sis/realizarPago'); // entorno test
+////////////////////define('TPV_REDIRECT_URL', 'https://sis.sermepa.es/sis/realizarPago'); // entorno real
+define('TPV_ENCRYPT_KEY', 'qwertyasdf0123456789'); // clave test
+/////////////////define('TPV_ENCRYPT_KEY', 'dso8uycgno97syeoi8i6'); // clave real (aun es falsa)
+define('TPV_WEBSERVICE_URL', 'https://sis-t.sermepa.es:25443/sis/operaciones'); //pruebas
+//define('TPV_WEBSERVICE_URL', 'https://sis.sermepa.es/sis/operaciones'); //real
+

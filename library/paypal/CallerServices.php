@@ -218,11 +218,9 @@ function call($MsgStr, $endpoint, $sandboxEmailAddress = '')
 
     //setting the MsgStr as POST FIELD to curl
     $conf = array('mode' => 0600, 'timeFormat' => '%X %x');
-    $logger = &Log::singleton('file', LOGFILENAME, 'caller', $conf);
+    $logger = &Log::singleton('file', 'logs/'.date('Ymd').'_invest.log', 'caller', $conf);
 
-    // JSON
-    $log_data='#####TRANSACTION#####';
-    $logger->log($log_data);
+    $logger->log('##### PAYPAL '.date('d/m/Y').' User:'.$_SESSION['user']->id.'#####');
     
     
     if (TRUST_ALL_CONNECTION == true){
@@ -247,6 +245,7 @@ function call($MsgStr, $endpoint, $sandboxEmailAddress = '')
     //getting response from server
     $response = curl_exec($ch);
     $logger->log("response: $response");
+    $logger->log('##### END PAYPAL '.date('d/m/Y').' User:'.$_SESSION['user']->id.'#####');
     $logger->close();
     
     if (curl_errno($ch)) {

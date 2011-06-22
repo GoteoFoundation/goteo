@@ -65,12 +65,6 @@ define('API_PASSWORD', '1302553034');
 define('API_SIGNATURE', 'A-D81ryvGKLufCxd6EZS-xPNHrW4AaRgutaPfjCXW6Z0Xa4na71lD.pg');
 
 /**
- * specifies the Log file path.
- * 
- */
-define('LOGFILENAME','logs/paypal_platform.log');
-
-/**
  * Use the following setting (false) if you are testing or using SDK against live PayPal's production server
  * 
  */

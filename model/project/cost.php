@@ -43,12 +43,15 @@ namespace Goteo\Model\Project {
             // Estos son errores que no permiten continuar
             if (empty($this->project))
                 $errors[] = 'No hay proyecto al que asignar el coste';
+                //Text::get('validate-cost-noproject');
 /*
             if (empty($this->cost))
                 $errors[] = 'No hay descripción de coste';
+                //Text::get('mandatory-cost-name');
 
             if (empty($this->type))
                 $errors[] = 'No hay tipo de coste';
+                //Text::get('mandatory-cost-description');
 */
             //cualquiera de estos errores hace fallar la validación
             if (!empty($errors))
@@ -110,6 +113,7 @@ namespace Goteo\Model\Project {
 				return true;
 			} catch (\PDOException $e) {
                 $errors[] = 'No se ha podido quitar el coste del proyecto ' . $this->project . ' ' . $e->getMessage();
+                //Text::get('remove-cost-fail');
                 return false;
 			}
 		}

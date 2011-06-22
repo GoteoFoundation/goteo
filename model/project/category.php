@@ -84,9 +84,11 @@ namespace Goteo\Model\Project {
             // Estos son errores que no permiten continuar
             if (empty($this->id))
                 $errors[] = 'No hay ninguna categoria para guardar';
+                //Text::get('validate-category-empty');
 
             if (empty($this->project))
                 $errors[] = 'No hay ningun proyecto al que asignar';
+                //Text::get('validate-category-noproject');
 
             //cualquiera de estos errores hace fallar la validación
             if (!empty($errors))
@@ -129,6 +131,7 @@ namespace Goteo\Model\Project {
 				return true;
 			} catch(\PDOException $e) {
 				$errors[] = 'No se ha podido quitar la categoria ' . $this->id . ' del proyecto ' . $this->project . ' ' . $e->getMessage();
+                //Text::get('remove-category-fail');
                 return false;
 			}
 		}

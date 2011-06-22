@@ -87,7 +87,7 @@ include 'view/prologue.html.php';
                             <td><a href="/project/edit/<?php echo $project->id; ?>" target="_blank">[Editar]</a></td>
                             <td><?php if ($project->status < 3) : ?><a href="<?php echo "/admin/checking/publish/{$project->id}{$filter}"; ?>">[Publicar]</a><?php endif; ?></td>
                             <td><?php if ($project->status != 5) : ?><a href="<?php echo "/admin/checking/cancel/{$project->id}{$filter}"; ?>">[Cancelar]</a><?php endif; ?></td>
-                            <td><?php if ($project->status == 5 || $project->status == 2) : ?><a href="<?php echo "/admin/checking/enable/{$project->id}{$filter}"; ?>">[Reabrir]</a><?php endif; ?></td>
+                            <td><?php if ($project->status > 1) : ?><a href="<?php echo "/admin/checking/enable/{$project->id}{$filter}"; ?>">[Reabrir]</a><?php endif; ?></td>
 <!--                                <td><?php if ($project->status == 3) : ?><a href="<?php echo "/admin/checking/complete/{$project->id}{$filter}"; ?>">[Financiado]</a><?php endif; ?></td> -->
 <!--                                <td><?php if ($project->status == 4) : ?><a href="<?php echo "/admin/checking/fulfill/{$project->id}{$filter}"; ?>">[Cumplido]</a><?php endif; ?></td> -->
                         </tr>

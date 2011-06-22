@@ -59,8 +59,8 @@ if (!empty($project->costs)) {
                     'title'     => 'Valor',
                     'size'      => 8,
                     'class'     => 'inline cost-amount',
-                    'value'     => $cost->amount,
                     'hint'      => Text::get('tooltip-project-cost-amount'),
+                    'value'     => $cost->amount
                 ),
                 "cost-{$cost->id}-required"  => array(
 //                    'required'  => true,

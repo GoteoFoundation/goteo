@@ -44,14 +44,18 @@ include 'view/prologue.html.php';
 
                     <input type="hidden" name="action" value="<?php echo $this['action']; ?>" />
                     <input type="hidden" name="order" value="<?php echo $this['post']->order; ?>" />
+                    <input type="hidden" name="blog" value="1" />
+                    <input type="hidden" name="image" value="<?php echo $this['post']->image; ?>" />
+                    <input type="hidden" name="date" value="<?php echo date('Y-m-d'); ?>" />
+                    <input type="hidden" name="allow" value="0" />
 
                     <input type="hidden" name="id" value="<?php echo $this['post']->id; ?>" />
     <br />
                     <label for="posts-title">Título:</label><br />
                     <input type="text" name="title" id="posts-title" value="<?php echo $this['post']->title; ?>" />
     <br />
-                    <label for="posts-description">Descripción:</label><br />
-                    <textarea name="description" id="posts-description" cols="60" rows="10"><?php echo $this['post']->description; ?></textarea>
+                    <label for="posts-text">Descripción:</label><br />
+                    <textarea name="text" id="posts-text" cols="60" rows="10"><?php echo $this['post']->text; ?></textarea>
 
     <br />
                     <label for="posts-media">Video:</label><br />

@@ -2,6 +2,8 @@
 
 namespace Goteo\Model {
 
+    use Goteo\Library\Check;
+    
     class License extends \Goteo\Core\Model {
 
         public
@@ -88,6 +90,7 @@ namespace Goteo\Model {
         public function validate (&$errors = array()) { 
             if (empty($this->name))
                 $errors[] = 'Falta nombre';
+                //Text::get('mandatory-license-name');
 
             if (empty($errors))
                 return true;
@@ -155,42 +158,14 @@ namespace Goteo\Model {
          * Para que una pregunta salga antes  (disminuir el order)
          */
         public static function up ($id) {
-
-            $query = self::query('SELECT `order` FROM license WHERE id = :id'
-                , array(':id'=>$id));
-            $order = $query->fetchColumn(0);
-
-            $order--;
-            if ($order < 1)
-                $order = 1;
-
-            $sql = "UPDATE license SET `order`=:order WHERE id = :id";
-            if (self::query($sql, array(':order'=>$order, ':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
-
+            return Check::reorder($id, 'up', 'license', 'id', 'order');
         }
 
         /*
          * Para que un proyecto salga despues  (aumentar el order)
          */
         public static function down ($id) {
-
-            $query = self::query('SELECT `order` FROM license WHERE id = :id'
-                , array(':id'=>$id));
-            $order = $query->fetchColumn(0);
-
-            $order++;
-
-            $sql = "UPDATE license SET `order`=:order WHERE id = :id";
-            if (self::query($sql, array(':order'=>$order, ':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
-
+            return Check::reorder($id, 'down', 'license', 'id', 'order');
         }
 
         /*

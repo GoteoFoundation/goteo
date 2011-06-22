@@ -2,6 +2,8 @@
 
 namespace Goteo\Model {
 
+    use Goteo\Library\Check;
+    
     class Category extends \Goteo\Core\Model {
 
         public
@@ -47,7 +49,7 @@ namespace Goteo\Model {
                     ) as used,
                     `order`
                 FROM    category
-                ORDER BY name ASC
+                ORDER BY `order` ASC
                 ";
 
             $query = static::query($sql);
@@ -59,9 +61,39 @@ namespace Goteo\Model {
             return $list;
         }
 
+        /**
+         * Get all categories used in published projects
+         *
+         * @param void
+         * @return array
+         */
+		public static function getList () {
+            $array = array ();
+            try {
+                $sql = "SELECT id, name
+                        FROM category
+                        INNER JOIN project_category
+                            ON category.id = project_category.category
+                        GROUP BY id
+                        ORDER BY name ASC";
+
+                $query = static::query($sql);
+                $categories = $query->fetchAll();
+                foreach ($categories as $cat) {
+                    $array[$cat[0]] = $cat[1];
+                }
+
+                return $array;
+            } catch(\PDOException $e) {
+				throw new \Goteo\Core\Exception($e->getMessage());
+            }
+		}
+
+        
         public function validate (&$errors = array()) { 
             if (empty($this->name))
                 $errors[] = 'Falta nombre';
+                //Text::get('mandatory-category-name');
 
             if (empty($errors))
                 return true;
@@ -117,42 +149,14 @@ namespace Goteo\Model {
          * Para que salga antes  (disminuir el order)
          */
         public static function up ($id) {
-
-            $query = self::query('SELECT `order` FROM category WHERE id = :id'
-                , array(':id'=>$id));
-            $order = $query->fetchColumn(0);
-
-            $order--;
-            if ($order < 1)
-                $order = 1;
-
-            $sql = "UPDATE category SET `order`=:order WHERE id = :id";
-            if (self::query($sql, array(':order'=>$order, ':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
-
+            return Check::reorder($id, 'up', 'category', 'id', 'order');
         }
 
         /*
          * Para que salga despues  (aumentar el order)
          */
         public static function down ($id) {
-
-            $query = self::query('SELECT `order` FROM category WHERE id = :id'
-                , array(':id'=>$id));
-            $order = $query->fetchColumn(0);
-
-            $order++;
-
-            $sql = "UPDATE category SET `order`=:order WHERE id = :id";
-            if (self::query($sql, array(':order'=>$order, ':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
-
+            return Check::reorder($id, 'down', 'category', 'id', 'order');
         }
 
         /*

@@ -4,16 +4,21 @@ use Goteo\Core\View,
     Goteo\Model\User,
     Goteo\Model\Project\Cost,
     Goteo\Model\Project\Support,
-    Goteo\Model\Project\Category;
+    Goteo\Model\Project\Category,
+    Goteo\Model\Blog;
 
 $project = $this['project'];
 $show    = $this['show'];
 $invest  = $this['invest'];
+$post    = $this['post'];
 
 $owner   = User::get($project->owner);
 $user    = $_SESSION['user'];
 
 $categories = Category::getNames($project->id);
+
+$blog = Blog::get($project->id);
+
 
 if (!empty($project->investors)) {
     $supporters = ' (' . count($project->investors) . ')';
@@ -25,6 +30,11 @@ if (!empty($project->messages)) {
 } else {
     $messages = '';
 }
+if (!empty($blog->posts)) {
+    $updates = ' (' . count($blog->posts) . ')';
+} else {
+    $updates = '';
+}
 
 
 
@@ -35,15 +45,29 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
         <div id="sub-header">
             <div>
                 <h2><?php echo htmlspecialchars($project->name) ?></h2>
-                Categorias: <?php echo implode(', ', $categories); ?>
+                
+                <div class="categories"><h3>Categorias:</h3> 
+                    <?php 
+                    $i = 0;  
+                    foreach ($categories as $cat) {
+                        if ($i++ > 0) echo ', ';
+                        // @todo Enlaces en los nombres de las categorías?
+                        echo htmlspecialchars($cat);                        
+                    }
+                    ?>
+                </div>
             </div>
             
             <div class="sub-menu">
-                <?php echo new View('view/project/view/menu.html.php', array(
-                                        'project' => $project,
-                                        'show' => $show,
-                                        'supporters' => $supporters, 
-                                        'messages' => $messages)); 
+                <?php echo new View('view/project/view/menu.html.php',
+                            array(
+                                'project' => $project,
+                                'show' => $show,
+                                'supporters' => $supporters,
+                                'messages' => $messages,
+                                'updates' => $updates
+                            )
+                    );
                 ?>
             </div>
                         
@@ -117,7 +141,8 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                             }
                         } else {
                             echo
-                                new View('view/project/widget/supporters.html.php', array('project' => $project));
+                                new View('view/project/widget/supporters.html.php', array('project' => $project)),
+                                new View('view/worth/legend.html.php');
                         }
                         break;
                     case 'messages':
@@ -127,6 +152,10 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                     case 'rewards':
                         echo
                             new View('view/project/widget/rewards-summary.html.php', array('project' => $project));
+                        break;
+                    case 'updates':
+                        echo
+                            new View('view/project/widget/updates.html.php', array('project' => $project, 'blog' => $blog, 'post' => $post));
                         break;
                     case 'home':
                     default:

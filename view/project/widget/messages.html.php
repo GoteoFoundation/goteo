@@ -6,12 +6,12 @@ $level = (int) $this['level'] ?: 3;
 ?>
 <script type="text/javascript">
     function answer(id) {
-        document.getElementById('thread').value = id;
-        document.getElementById('message-text').value = 'Escribe tu respuesta aquí';
+        $('#thread').val(id);
+        $('#message-text').val('Escribe tu respuesta aquí').focus().select();
     }
 </script>
-<div class="widget project-messages">
-    
+
+<div class="widget project-message">
     <h<?php echo $level ?> class="title">Escribe tu mensaje</h<?php echo $level ?>>
 
     <div>
@@ -21,19 +21,27 @@ $level = (int) $this['level'] ?: 3;
             <input class="button" type="submit" value="Enviar" />
         </form>
     </div>
+</div>
 
+<div class="widget project-messages">
+    
+    
     <div id="project-messages">
+        
 		<?php foreach ($project->messages as $message) : ?>
-                <div class="thread">
-                   <img src="/image/<?php echo $message->user->avatar->id; ?>/50/50" />
-                   <span class="user"><?php echo $message->user->name; ?></span>
-                   <span class="when"><?php echo $message->date; ?></span>
-                   <a href="#" onclick="answer('<?php echo $message->id; ?>')">[Responder]</a>
-                   <?php // si puede borrar este mensaje
-                   if (\Goteo\Core\ACL::check("/message/delete/{$message->id}/{$project->id}")) : ?>
-                        <a href="/message/delete/<?php echo $message->id; ?>/<?php echo $project->id; ?>">[Borrar]</a>
-                   <?php endif; ?>
-                   <blockquote><?php echo $message->message; ?></blockquote>
+                <div class="message">         
+                   <span class="avatar"><img src="/image/<?php echo $message->user->avatar->id; ?>/50/50" alt="" /></span>
+                   <h<?php echo $level ?> class="user"><?php echo htmlspecialchars($message->user->name) ?></h<?php echo $level ?>>                                                             
+                   <div class="date"><span><?php echo $message->date ?></span></div>                   
+                   <blockquote><?php echo $message->message; ?></blockquote>                   
+                   <div class="actions">
+                        <a class="" href="#" onclick="answer('<?php echo $message->id; ?>')">Responder</a>
+                        <?php // si puede borrar este mensaje
+                        if (\Goteo\Core\ACL::check("/message/delete/{$message->id}/{$project->id}")) : ?>
+                                <a href="/message/delete/<?php echo $message->id; ?>/<?php echo $project->id; ?>">Borrar</a>
+                        <?php endif ?>
+                   </div>
+                                
                </div>
 
                <?php if (!empty($message->responses)) : 

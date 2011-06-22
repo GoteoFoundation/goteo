@@ -1,7 +1,10 @@
 <?php
-
 namespace Goteo\Model {
-    
+
+    use \Goteo\Library\Text,
+        \Goteo\Model\Project,
+        \Goteo\Library\Check;
+
     class Promote extends \Goteo\Core\Model {
 
         public
@@ -40,10 +43,16 @@ namespace Goteo\Model {
          */
         public static function getAll ($node = \GOTEO_NODE) {
 
+            // estados
+            $status = Project::status();
+
+            $promos = array();
+
             $query = static::query("
                 SELECT
                     promote.project as project,
                     project.name as name,
+                    project.status as status,
                     promote.title as title,
                     promote.description as description,
                     promote.order as `order`
@@ -54,7 +63,13 @@ namespace Goteo\Model {
                 ORDER BY `order` ASC, title ASC
                 ", array(':node' => $node));
             
-            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+            foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
+                $promo->description =Text::recorta($promo->description, 100);
+                $promo->status = $status[$promo->status];
+                $promos[] = $promo;
+            }
+
+            return $promos;
         }
 
         /*
@@ -65,9 +80,11 @@ namespace Goteo\Model {
             $query = static::query("
                 SELECT
                     project.id as id,
-                    project.name as name
+                    project.name as name,
+                    project.status as status
                 FROM    project
-                WHERE status = 3
+                WHERE status > 2
+                AND status < 6
                 AND project.id NOT IN (SELECT project FROM promote WHERE promote.node = :node)
                 ORDER BY name ASC
                 ", array(':node' => $node));
@@ -79,12 +96,15 @@ namespace Goteo\Model {
         public function validate (&$errors = array()) { 
             if (empty($this->node))
                 $errors[] = 'Falta nodo';
+                //Text::get('mandatory-promote-node');
 
             if (empty($this->project))
                 $errors[] = 'Falta proyecto';
+                //Text::get('validate-promote-noproject');
 
             if (empty($this->title))
                 $errors[] = 'Falta título';
+                //Text::get('mandatory-promote-title');
 
             if (empty($errors))
                 return true;
@@ -142,42 +162,20 @@ namespace Goteo\Model {
          * Para que un proyecto salga antes  (disminuir el order)
          */
         public static function up ($project, $node = \GOTEO_NODE) {
-
-            $query = self::query('SELECT `order` FROM promote WHERE project = :project AND node = :node'
-                , array(':project'=>$project, ':node'=>$node));
-            $order = $query->fetchColumn(0);
-
-            $order--;
-            if ($order < 1)
-                $order = 1;
-
-            $sql = "UPDATE promote SET `order`=:order WHERE project = :project AND node = :node";
-            if (self::query($sql, array(':order'=>$order, ':project'=>$project, ':node'=>$node))) {
-                return true;
-            } else {
-                return false;
-            }
-
+            $extra = array (
+                    'node' => $node
+                );
+            return Check::reorder($project, 'up', 'promote', 'project', 'order', $extra);
         }
 
         /*
          * Para que un proyecto salga despues  (aumentar el order)
          */
         public static function down ($project, $node = \GOTEO_NODE) {
-
-            $query = self::query('SELECT `order` FROM promote WHERE project = :project AND node = :node'
-                , array(':project'=>$project, ':node'=>$node));
-            $order = $query->fetchColumn(0);
-
-            $order++;
-
-            $sql = "UPDATE promote SET `order`=:order WHERE project = :project AND node = :node";
-            if (self::query($sql, array(':order'=>$order, ':project'=>$project, ':node'=>$node))) {
-                return true;
-            } else {
-                return false;
-            }
-
+            $extra = array (
+                    'node' => $node
+                );
+            return Check::reorder($project, 'down', 'promote', 'project', 'order', $extra);
         }
 
         /*

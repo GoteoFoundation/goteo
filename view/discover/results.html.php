@@ -16,6 +16,8 @@ include 'view/header.html.php' ?>
         </div>
 
         <div id="main">
+            <?php echo new View('view/discover/searcher.html.php',
+                                array('params'     => $this['params'])); ?>
 
             <p><?php echo $this['message']; ?></p>
 
@@ -33,7 +35,7 @@ include 'view/header.html.php' ?>
                     </div>
                     <?php endforeach; ?>
                 <?php else : ?>
-                    <p>No se encontraron resultados para <?php echo $_GET['query']; ?></p>
+                    <p>No hemos encontrado ningún proyecto que cunmpla los criterios de búsqueda</p>
                 <?php endif; ?>
             </div>
         

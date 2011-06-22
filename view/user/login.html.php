@@ -38,6 +38,8 @@ extract($_POST);
 
                 </form>
 
+                <a href="/user/recover">Recuperar contraseña</a>
+
             </div>
         </div>
 

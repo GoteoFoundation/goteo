@@ -38,7 +38,7 @@ $bodyClass = 'home'; include 'view/prologue.html.php' ?>
                     <h3><?php echo $currentPost->title; ?></h3>
                     <div class="embed"><?php echo $currentPost->media->getEmbedCode(); ?></div>
                     <div class="description">
-                        <?php echo $currentPost->description ?>
+                        <?php echo $currentPost->text ?>
                     </div>
                 </div>                
                

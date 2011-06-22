@@ -67,7 +67,7 @@ namespace Goteo\Library {
             }
             
 			// buscamos el texto en la tabla
-			$query = Model::query("SELECT text FROM text WHERE id = :id AND lang = :lang", array(':id' => $id, ':lang' => $lang));
+			$query = Model::query("SELECT `text` FROM text WHERE id = :id AND lang = :lang", array(':id' => $id, ':lang' => $lang));
 			$exist = $query->fetchObject();
 			if ($exist->text) {
                 $tmptxt = $_cache[$id][$lang] = $exist->text;
@@ -87,7 +87,7 @@ namespace Goteo\Library {
 
                 if (strcmp($texto, $id) === 0) {
                 // sino, lo metemos en la tabla y en purpose
-                    Model::query("REPLACE INTO text (id, lang, text) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
+                    Model::query("REPLACE INTO text (id, lang, `text`) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
                     Model::query("REPLACE INTO purpose (text, purpose) VALUES (:text, :purpose)", array(':text' => $id, ':purpose' => "Texto $id"));
                 }
 			}
@@ -101,9 +101,9 @@ namespace Goteo\Library {
 
 		static public function getPurpose ($id) {
 			// buscamos la explicación del texto en la tabla
-			$query = Model::query("SELECT purpose FROM purpose WHERE text = :id", array(':id' => $id));
+			$query = Model::query("SELECT purpose FROM purpose WHERE `text` = :id", array(':id' => $id));
 			$exist = $query->fetchObject();
-			if ($exist->purpose) {
+			if (!empty($exist->purpose)) {
 				return $exist->purpose;
 			} else {
 				Model::query("REPLACE INTO purpose (text, purpose) VALUES (:text, :purpose)", array(':text' => $id, ':purpose' => "Texto $id"));
@@ -156,6 +156,10 @@ namespace Goteo\Library {
                 $sql .= " AND purpose.`group` = :group";
                 $values[':group'] = "{$filters['group']}";
             }
+            if (!empty($filters['text'])) {
+                $sql .= " AND ( text.text LIKE :text OR (text.text IS NULL AND purpose.purpose LIKE :text ))";
+                $values[':text'] = "%{$filters['text']}%";
+            }
             $sql .= " ORDER BY purpose.`group` ASC";
             
             try {
@@ -180,10 +184,14 @@ namespace Goteo\Library {
 					return false;
 			}
 
-			if (Model::query("UPDATE text SET text = :text WHERE id = :id AND lang = :lang", array(':text' => $data['text'], ':id' => $data['id'], ':lang' => $data['lang']))) {
+            $sql = "REPLACE `text` SET
+                            `text` = :text,
+                            id = :id,
+                            lang = :lang
+                    ";
+			if (Model::query($sql, array(':text' => $data['text'], ':id' => $data['id'], ':lang' => $data['lang']))) {
 				return true;
-			}
-			else {
+			} else {
 				$errors[] = 'Error al insertar los datos <pre>' . print_r($data, 1) . '</pre>';
 				return false;
 			}
@@ -267,13 +275,13 @@ namespace Goteo\Library {
 			$texto = substr($texto, 0, strrpos($texto, " "));
 
 			// Quitamos palabras vacías
-			$ultima = ultima_palabra($texto,$separadores );
+			$ultima = self::ultima_palabra($texto,$separadores );
 			while ($texto != "" && (in_array($ultima,$palabras_vacias) || strlen($ultima)<=2) || ($html && $ultima{1} == "<" && substr($ultima,-1) == ">")) {
 				$texto = substr($texto,0,strlen($texto)-strlen($ultima));
 				while ($texto != "" && in_array(substr($texto,-1),$separadores)){
 					$texto = substr($texto, 0, -1);
 				}
-				$ultima = ultima_palabra($texto,$separadores);
+				$ultima = self::ultima_palabra($texto,$separadores);
 			}
 
 			// Hemos cortado una etiqueta html?
@@ -281,10 +289,51 @@ namespace Goteo\Library {
 				$texto = substr($texto,0,strrpos($texto,"<"));
 			}
 			// Si el texto era html, cerramos las etiquetas
-			if ($html) $texto = cerrar_etiquetas($texto);
+			if ($html) $texto = self::cerrar_etiquetas($texto);
 			if ($puntos !== false) $texto .= $puntos;
 			return $texto;
 		}
+
+        static public function ultima_palabra ($texto, $separadores = false) {
+            $palabra = '';
+            if ($separadores === false) $separadores = array(" ", ".", ",", ";");
+            $i = strlen($texto) - 1;
+            while ($i >= 0 && (!in_array(substr($texto,$i,1), $separadores))) {
+                $palabra = substr($texto,$i,1).$palabra;
+                $i--;
+            }
+            return $palabra;
+        }
+
+        static public function cerrar_etiquetas ($html) {
+            // Ponemos todos los tags abiertos en un array
+            preg_match_all("#<([a-z]+)( .*)?(?!/)>#iU", $html, $res);
+            $abiertas = $res[1];
+
+            // Ponemos todos los tags cerrados en un array
+            preg_match_all("#</([a-z]+)>#iU", $html, $res);
+            $cerradas = $res[1];
+
+            // Obtenemos el array de etiquetas no cerradas
+
+            if (count($cerradas) == count($abiertas)) {
+                // *Suponemos* que todas las etiquetas están cerradas
+                return $html;
+            }
+
+            $abiertas = array_reverse($abiertas);
+
+            // Cerramos
+            for ($i = 0;$i < count($abiertas);$i++) {
+                if (!in_array($abiertas[$i],$cerradas)){
+                    $html .= "</".$abiertas[$i].">";
+                } else {
+                    unset($cerradas[array_search($abiertas[$i],$cerradas)]);
+                }
+            }
+            return $html;
+        }
+
 
 		/*
 		 *   Método para aplicar saltos de linea y poner links en las url

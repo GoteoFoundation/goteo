@@ -4,7 +4,8 @@ namespace Goteo\Controller {
 
     use Goteo\Model,
         Goteo\Core\Error,
-        Goteo\Library\Paypal;
+        Goteo\Library\Paypal,
+        Goteo\Library\Tpv;
 
     class Cron extends \Goteo\Core\Controller {
         
@@ -58,7 +59,7 @@ namespace Goteo\Controller {
                 }
                 // pero aqui seguimos trabajando con el numero de dias que lleva
 
-                echo 'Lleva recaudado ' . $amount . ' de ' . $project->mincost . '/' . $project->maxcost . ' en ' . $days . ' dias<br />';
+                echo 'Lleva recaudado ' . $amount . ' de ' . $project->mincost . '/' . $project->maxcost . ' en ' . $days . ' dias, le quedan '.$rest.'<br />';
 
                 //  (financiado a los 80 o cancelado si a los 40 no llega al minimo)
                 // si ha llegado a los 40 dias: mínimo-> ejecutar ; no minimo proyecto y todos los preapprovals cancelados
@@ -113,26 +114,9 @@ namespace Goteo\Controller {
 
                     $cancelIt = false;
 
-                    if (!empty($invest->preapproval)) {
-                        echo 'Preapproval: ';
-                        $preapproval = Paypal::preapprovalDetails($invest->preapproval, $errors);
-                        echo \trace($preapproval);
-                        
-                        // si tiene preapproval pero no se ha confirmado y no son de hoy, cancelado
-                        if ($preapproval->approved != 'true' || $preapproval->approved != true) {
-                            echo 'No confirmado';
-                            $parts = explode('T', $preapproval->startingDate);
-                            if ($parts[0] != date('Y-m-d')) {
-                                echo ' y no es de hoy.';
-                                $cancelIt = true;
-                            } else {
-                                echo ' pero es de hoy.';
-                            }
-                        } else {
-                            echo 'Confirmado. ';
-                        }
-                        echo '<br />';
-                    } else {
+                    if ($invest->method == 'paypal' && $invest->invested == date('Y-m-d')) {
+                            echo 'Es de hoy.';
+                    } elseif (empty($invest->preapproval)) {
                         //si no tiene preaproval, cancelar
                         echo 'Sin preapproval. ';
                         $cancelIt = true;
@@ -149,11 +133,21 @@ namespace Goteo\Controller {
                         echo 'Ejecutando: ';
                         $errors = array();
 
-                        if (Paypal::pay($invest, $errors)) {
-                            echo 'Correctamente';
-                            // quiero ver los detalles?
-                        } else {
-                            echo 'Fallo al ejecutar: ' . implode('; ', $errors);
+                        switch ($invest->method) {
+                            case 'paypal':
+                                if (Paypal::pay($invest, $errors)) {
+                                    echo 'Cargo paypal correcto';
+                                } else {
+                                    echo 'Fallo al ejecutar cargo paypal: ' . implode('; ', $errors);
+                                }
+                                break;
+                            case 'tpv':
+                                if (Tpv::pay($invest, $errors)) {
+                                    echo 'Cargo sermepa correcto';
+                                } else {
+                                    echo 'Fallo al ejecutar cargo sermepal: ' . implode('; ', $errors);
+                                }
+                                break;
                         }
 
                         echo '<br />';
@@ -169,3 +163,54 @@ namespace Goteo\Controller {
     }
     
 }
+
+
+/*
+ * Mensaje a los cofinanciadores de un proyecto si este falla
+ *
+function failNotice ($project) {
+
+    echo "Mensaje a los cofinanciadores de un proyecto fallido '{$project}'<br />";
+
+    $project = Model\Project::get($project);
+
+    $sql = "
+        SELECT  DISTINCT(user) as id
+        FROM    invest
+        WHERE   project = ?
+        AND status <> 2";
+
+    $query = Model::query($sql, array($project->id));
+
+    while ($row = $query->fetchObject()) {
+        echo "Cofinanciador: {$row->id}<br />";
+
+        continue;
+        
+        // Email de recuperacion
+        $mail = new Mail();
+        $mail->to = $row->email;
+        $mail->toName = $row->name;
+        $mail->subject = 'El proyecto ';
+        $url = SITE_URL . '/user/recover/' . base64_encode($token);
+        $mail->content = sprintf('
+            Estimado(a) <strong>%1$s</strong>:<br/>
+            <br/>
+            Hemos recibido una petición para recuperar la contraseña de tu cuenta de usuario en Goteo.org<br />
+            Si no has solicitado esta recuperación de contraseña, ignora este mensaje<br />
+            Para acceder a tu cuenta y cambiar la contraseña (utilice su nombre de usuario como contraseña actual), utiliza el siguiente enlace. Si no puedes hacer click, copialo y pegalo en el navegador.
+            <br/>
+            <a href="%2$s">%2$s</a><br/>
+            <br/>
+            Recuerde que su nombre de usuario es <strong>%3$s</strong>, póngalo como contraseña actual para cambiar la contraseña.<br/>
+            Hasta pronto!
+        ', $row->name, $url, $row->id);
+        $mail->html = true;
+        if ($mail->send($errors)) {
+            return true;
+        }
+    }
+    return false;
+}
+ * 
+*/

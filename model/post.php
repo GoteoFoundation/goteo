@@ -2,14 +2,15 @@
 
 namespace Goteo\Model {
 
-    use \Goteo\Model\Project\Media;
+    use Goteo\Model\Project\Media,
+        Goteo\Library\Check;
 
     class Post extends \Goteo\Core\Model {
 
         public
             $id,
             $title,
-            $description,
+            $text,
             $media,
             $order;
 
@@ -21,20 +22,28 @@ namespace Goteo\Model {
                     SELECT
                         id,
                         title,
-                        description,
+                        `text`,
+                        blog,
+                        image,
                         `media`,
                         `order`
                     FROM    post
                     WHERE id = :id
                     ", array(':id' => $id));
 
-                return $query->fetchObject(__CLASS__);
+                $post = $query->fetchObject(__CLASS__);
+
+                //sus tags, si tiene
+                $post->tags = Post\Tag::getAll($id);
+
+                return $post;
+
         }
 
         /*
          * Lista de entradas
          */
-        public static function getAll () {
+        public static function getAll ($blog = 1, $limit = null) {
 
             $list = array();
 
@@ -42,12 +51,18 @@ namespace Goteo\Model {
                 SELECT
                     id,
                     title,
-                    description,
+                    `text`,
+                    blog,
                     `media`,
                     `order`
                 FROM    post
+                WHERE   blog = $blog
+                AND     home = 1
                 ORDER BY `order` ASC, title ASC
                 ";
+            if (!empty($limit)) {
+                $sql .= "LIMIT $limit";
+            }
             
             $query = static::query($sql);
                 
@@ -62,7 +77,8 @@ namespace Goteo\Model {
 
         public function validate (&$errors = array()) { 
             if (empty($this->title))
-                $errors[] = 'Falta nombre';
+                $errors[] = 'Falta título';
+                //Text::get('mandatory-post-title');
 
             if (empty($errors))
                 return true;
@@ -75,8 +91,9 @@ namespace Goteo\Model {
 
             $fields = array(
                 'id',
+                'blog',
                 'title',
-                'description',
+                'text',
                 'media',
                 'order'
                 );
@@ -119,50 +136,32 @@ namespace Goteo\Model {
         /*
          * Para que una pregunta salga antes  (disminuir el order)
          */
+        //@FIXME essse blog a piñon!
         public static function up ($id) {
-
-            $query = self::query('SELECT `order` FROM post WHERE id = :id'
-                , array(':id'=>$id));
-            $order = $query->fetchColumn(0);
-
-            $order--;
-            if ($order < 1)
-                $order = 1;
-
-            $sql = "UPDATE post SET `order`=:order WHERE id = :id";
-            if (self::query($sql, array(':order'=>$order, ':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
-
+            $extra = array (
+                    'home' => 1,
+                    'blog' => 1
+                );
+            return Check::reorder($id, 'up', 'post', 'id', 'order', $extra);
         }
 
         /*
          * Para que un proyecto salga despues  (aumentar el order)
          */
+        //@FIXME essse blog a piñon!
         public static function down ($id) {
-
-            $query = self::query('SELECT `order` FROM post WHERE id = :id'
-                , array(':id'=>$id));
-            $order = $query->fetchColumn(0);
-
-            $order++;
-
-            $sql = "UPDATE post SET `order`=:order WHERE id = :id";
-            if (self::query($sql, array(':order'=>$order, ':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
-
+            $extra = array (
+                    'home' => 1,
+                    'blog' => 1
+                );
+            return Check::reorder($id, 'down', 'post', 'id', 'order', $extra);
         }
 
         /*
          * Orden para añadirlo al final
          */
         public static function next () {
-            $query = self::query('SELECT MAX(`order`) FROM post'
+            $query = self::query('SELECT MAX(`order`) FROM post WHERE home=1'
                 , array(':media'=>$media, ':node'=>$node));
             $order = $query->fetchColumn(0);
             return ++$order;
