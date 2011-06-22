@@ -27,10 +27,13 @@ namespace Goteo\Model {
                     WHERE project = :project
                     ", array(':project' => $project));
                 
-                $review =  $query->fetchObject(__CLASS__);
-
-                $review->checkers = User\Review::checkers($review->id);
-
+                if ($review =  $query->fetchObject(__CLASS__)) {
+                    $review->checkers = User\Review::checkers($review->id);
+                } else {
+                    $review = new self (array(
+                        'project' => $project
+                    ));
+                }
                 return $review;
         }
 

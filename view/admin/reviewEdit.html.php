@@ -4,10 +4,8 @@ use Goteo\Library\Text;
 
 $bodyClass = 'admin';
 
-$filters = $this['filters'];
-
-//arrastramos los filtros
-$filter = "?status={$filters['status']}&checker={$filters['checker']}";
+$project = $this['project'];
+$review  = $this['review'];
 
 include 'view/prologue.html.php';
 
@@ -32,10 +30,10 @@ include 'view/prologue.html.php';
         <div id="main">
             <?php switch ($this['action']) {
                 case 'add': ?>
-                    <h3>Iniciando nueva revisión para el proyecto '<?php echo $this['project']->name; ?>'</h3>
+                    <h3>Iniciando nueva revisión para el proyecto '<?php echo $project->name; ?>'</h3>
                     <?php break;
                 case 'edit': ?>
-                    <h3>Editando la revisión para el proyecto '<?php echo $this['project']->name; ?>'</h3>
+                    <h3>Editando la revisión para el proyecto '<?php echo $project->name; ?>'</h3>
                     <?php break;
             } ?>
 
@@ -45,39 +43,26 @@ include 'view/prologue.html.php';
 
             <div class="widget board">
                 <p>
-                    <label for="review-comment">Comentario del creador:</label><br />
-                    <textarea id="review-comment" cols="60" rows="10"><?php echo $this['project']->comment; ?></textarea>
+                    Comentario de <?php echo $project->user->name; ?>:<br />
+                    <?php echo $project->comment; ?>
                 </p>
 
-                <form method="post" action="/admin/checking/edit/?filter=<?php echo $this['filter']; ?>">
+                <form method="post" action="/admin/checking/<?php echo $this['action']; ?>/<?php echo $project->id; ?>/?filter=<?php echo $this['filter']; ?>">
 
-                    <input type="hidden" name="action" value="<?php echo $this['action']; ?>" />
-                    <input type="hidden" name="id" value="<?php echo $this['review']->id; ?>" />
-                    <input type="hidden" name="project" value="<?php echo $this['project']->id; ?>" />
+                    <input type="hidden" name="id" value="<?php echo $review->id; ?>" />
+                    <input type="hidden" name="project" value="<?php echo $project->id; ?>" />
 
                     <p>
-                        <label for="faq-description">Descripción:</label><br />
-                        <textarea name="description" id="faq-description" cols="60" rows="10"><?php echo $this['faq']->description; ?></textarea>
+                        <label for="review-to_checker">Comentario para el revisor:</label><br />
+                        <textarea name="to_checker" id="review-to_checker" cols="60" rows="10"><?php echo $review->to_checker; ?></textarea>
                     </p>
 
                     <p>
-                        <label for="faq-description">Descripción:</label><br />
-                        <textarea name="description" id="faq-description" cols="60" rows="10"><?php echo $this['faq']->description; ?></textarea>
+                        <label for="review-to_owner">Comentario para el productor:</label><br />
+                        <textarea name="to_owner" id="review-to_owner" cols="60" rows="10"><?php echo $review->to_owner; ?></textarea>
                     </p>
 
-                    <p>
-                        <label for="faq-order">Posición:</label><br />
-                        <select name="move">
-                            <option value="same" selected="selected" disabled>Tal cual</option>
-                            <option value="up">Antes de </option>
-                            <option value="down">Después de </option>
-                        </select>&nbsp;
-                        <input type="text" name="order" id="faq-order" value="<?php echo $this['faq']->order; ?>" size="4" />
-                        &nbsp;de&nbsp;<span id="faq-num"><?php echo $this['faq']->cuantos; ?></span>
-                    </p>
-
-
-                    <input type="submit" name="save" value="Guardar" />
+                   <input type="submit" name="save" value="Guardar" />
                 </form>
             </div>
 

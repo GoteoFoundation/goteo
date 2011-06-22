@@ -81,13 +81,13 @@ include 'view/prologue.html.php';
                                         <td><?php echo $project->progress; ?></td>
                                         <td><?php echo $project->score . ' / ' . $project->max; ?></td>
                                         <?php if (!empty($project->review)) : ?>
-                                        <td><a href="/admin/checking/edit/<?php echo $project->review; ?>">[Editar]</a></td>
+                                        <td><a href="/admin/checking/edit/<?php echo $project->project; ?>">[Editar]</a></td>
                                         <td><a href="/admin/checking/report/<?php echo $project->review; ?>">[Ver informe]</a></td>
                                             <?php if ( $project->status > 0 ) : ?>
                                         <td><a href="/admin/checking/close/<?php echo $project->review; ?>">[Cerrar]</a></td>
                                             <?php endif; ?>
                                         <?php else : ?>
-                                        <td><a href="/admin/checking/start/<?php echo $project->id; ?>">[Iniciar revision]</a></td>
+                                        <td><a href="/admin/checking/add/<?php echo $project->project; ?>">[Iniciar revision]</a></td>
                                         <td></td>
                                         <td></td>
                                         <?php endif; ?>

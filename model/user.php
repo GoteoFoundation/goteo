@@ -387,7 +387,7 @@ namespace Goteo\Model {
                     FROM user
                     WHERE id = :id
                     ", array(':id' => $id));
-                $user = $query->fetchObject(__CLASS__);
+                $user = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
                 
                 $user->avatar = Image::get($user->avatar);
 

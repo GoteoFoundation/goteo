@@ -325,24 +325,24 @@ namespace Goteo\Controller {
             $errors = array();
 
             switch ($action) {
+                case 'add':
                 case 'edit':
-                case 'start':
-                    // comenzar revision
-                    // formulario para comentarios a los revisores
-                    // Creamos el registro de revision
-                    // gestionar post
+
+                    // el get se hace con el id del proyecto
+                    $review = Model\Review::get($id);
+
+                    $project = Model\Project::getMini($review->project);
+
                     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
 
                         // instancia
-                        $review = new Model\Faq(array(
-                            'id'         => $_POST['id'],
-                            'project'    => $_POST['project'],
-                            'to_checker' => $_POST['to_checker'],
-                            'to_owner'   => $_POST['to_owner']
-                        ));
+                        $review->id         = $_POST['id'];
+                        $review->project    = $_POST['project'];
+                        $review->to_checker = $_POST['to_checker'];
+                        $review->to_owner   = $_POST['to_owner'];
 
                         if ($review->save($errors)) {
-                            switch ($_POST['action']) {
+                            switch ($action) {
                                 case 'add':
                                     $success = 'Revisión iniciada correctamente';
                                     break;
@@ -350,8 +350,7 @@ namespace Goteo\Controller {
                                     $success = 'Datos editados correctamente';
                                     break;
                             }
-                        }
-                        else {
+                            
                             throw new Redirection('/admin/checking/' . $filter);
                         }
                     }
@@ -359,7 +358,7 @@ namespace Goteo\Controller {
                     return new View(
                         'view/admin/reviewEdit.html.php',
                         array(
-                            'action' => $_POST['action'],
+                            'action' => $action,
                             'review' => $review,
                             'project'=> $project,
                             'errors' => $errors
