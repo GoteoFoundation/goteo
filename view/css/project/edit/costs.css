@@ -53,10 +53,6 @@ body.project-edit div#main.costs div.superform li.element.cost div.children li.e
     background-image: url('../../icon/m/equipment.png');
 }
 
-body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-amount {
-    overflow: hidden;
-}
-
 body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-amount > div.contents > input {
     width: 3em;
     max-width: 3em;

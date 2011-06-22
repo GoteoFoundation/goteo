@@ -21,7 +21,7 @@
  * @author     Philippe Jausions <Philippe.Jausions@11abacus.com>
  * @copyright  2002-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: Imagick2.php,v 1.10 2007/04/19 16:36:09 dufuz Exp $
+ * @version    CVS: $Id: Imagick2.php 266907 2008-10-01 21:10:50Z dufuz $
  * @link       http://pear.php.net/package/Image_Transform
  */
 
@@ -30,8 +30,8 @@ require_once 'Image/Transform.php';
 /**
  * imagick PECL extension implementation for Image_Transform package
  *
- * EXPERIMENTAL - please report bugs
- * Use the latest cvs version of imagick PECL
+ * WARNING: For version < 2.0 of the extension. For version 2.0 and up use
+ * Imagick3 driver instead
  *
  * @category   Image
  * @package    Image_Transform
@@ -52,6 +52,13 @@ class Image_Transform_Driver_Imagick2 extends Image_Transform
      * @var array
      */
     var $imageHandle = null;
+
+    /**
+     * Handler of the image ressource before
+     * the last transformation
+     * @var array
+     */
+    var $oldImage;
 
     /**
      * @see __construct()
@@ -114,7 +121,7 @@ class Image_Transform_Driver_Imagick2 extends Image_Transform
      */
     function _resize($new_x, $new_y, $options = null)
     {
-        if (!imagick_resize($this->imageHandle, $new_x, $new_y, IMAGICK_FILTER_UNKNOWN , 1)) {
+        if (!imagick_resize($this->imageHandle, $new_x, $new_y, IMAGICK_FILTER_UNKNOWN , 1, '!')) {
             return $this->raiseError('Couldn\'t resize image.',
                 IMAGE_TRANSFORM_ERROR_FAILED);
         }
@@ -171,31 +178,25 @@ class Image_Transform_Driver_Imagick2 extends Image_Transform
      */
     function addText($params)
     {
-        static $default_params = array(
-                                'text'          => 'This is a Text',
-                                'x'             => 10,
-                                'y'             => 20,
-                                'size'          => 12,
-                                'color'         => 'red',
-                                'font'          => 'Helvetica',
-                                'resize_first'  => false // Carry out the scaling of the image before annotation?
-                                );
-        $params = array_merge($default_params, $params);
+        $this->oldImage= $this->imageHandle;
+        $params = array_merge($this->_get_default_text_params(), $params);
 
-
-        $params['color']= is_array($params['color'])?$this->colorarray2colorhex($params['color']):strtolower($params['color']);
-
+        if (is_array($params['color'])) {
+            $params['color'] = $this->colorarray2colorhex($params['color']);
+        } else {
+            $params['color'] = strtolower($params['color']);
+        }
 
         static $cmds = array(
             'setfillcolor' => 'color',
             'setfontsize'  => 'size',
             'setfontface'  => 'font'
         );
-        imagick_begindraw($this->imageHandle ) ;
+        imagick_begindraw($this->imageHandle);
 
         foreach ($cmds as $cmd => $v) {
-            if (!call_user_func('imagick_' . $cmd, $this->imageHandle, $parms[$v])) {
-                return $this->raiseError("Problem with adding Text::{$v} = {$parms[$v]}",
+            if (!call_user_func('imagick_' . $cmd, $this->imageHandle, $params[$v])) {
+                return $this->raiseError("Problem with adding Text::{$v} = {$params[$v]}",
                     IMAGE_TRANSFORM_ERROR_FAILED);
             }
         }
@@ -235,7 +236,11 @@ class Image_Transform_Driver_Imagick2 extends Image_Transform
             return $this->raiseError('Couldn\'t save image to file.',
                 IMAGE_TRANSFORM_ERROR_IO);
         }
-        $this->free();
+
+        if (!$this->keep_settings_on_save) {
+            $this->free();
+        }
+
         return true;
 
     } // End save
@@ -260,7 +265,7 @@ class Image_Transform_Driver_Imagick2 extends Image_Transform
         $quality = $this->_getOption('quality', $options, 75);
         imagick_setcompressionquality($this->imageHandle, $quality);
 
-        if ($type && strcasecomp($type, $this->type)
+        if ($type && strcasecmp($type, $this->type)
             && !imagick_convert($this->imageHandle, $type)) {
             return $this->raiseError('Couldn\'t save image to file (conversion failed).',
                 IMAGE_TRANSFORM_ERROR_FAILED);

@@ -6,63 +6,130 @@ namespace Goteo\Controller {
         Goteo\Core\Error,
         Goteo\Core\Redirection,
         Goteo\Core\View,
-        Goteo\Model;
+        Goteo\Model,
+        Goteo\library\Mail;
 
     class Message extends \Goteo\Core\Controller {
 
-        /*
-         *  La manera de obtener el id del usuario validado cambiará al tener la session
-         */
         public function index ($project = null) {
-
-            if (empty($_SESSION['user']))
-                throw new Redirection ('/user/login?from=' . \rawurlencode('/message/' . $project), Redirection::TEMPORARY);
-
             if (empty($project))
-                throw new Redirection('/project/explore', Redirection::TEMPORARY);
+                throw new Redirection('/discover', Redirection::TEMPORARY);
 
-            $content = '';
+			if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['message'])) {
+                $message = new Model\Message(array(
+                    'user' => $_SESSION['user']->id,
+                    'project' => $project,
+                    'thread' => $_POST['thread'],
+                    'message' => $_POST['message']
+                ));
 
-			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $errors = array();
-
-                if (empty($_POST['message'])) {
-                    $errors[] = 'Falta el texto';
-                }
-
-                if (empty($errors)) {
-
-                    $message = new Model\Message(array(
-                        'user' => $_SESSION['user']->id,
-                        'project' => $project,
-                        'thread' => $_POST['thread'],
-                        'message' => $_POST['message']
-                    ));
-
-                    if ($message->save($errors)) {
-                        $content .= 'Mensaje enviado';
-                    }
-                }
-
-                if (!empty($errors)) {
-                    $content .= 'Errores: ' . implode('.', $errors);
-                }
-
-
+                $message->save($errors);
 			}
 
-            $projectData = Model\Project::get($project);
+            throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
+        }
 
-            $viewData = array(
-                    'content' => $content,
-                    'project' => $projectData
-                );
+        public function edit ($id, $project) {
 
-            return new View (
-                'view/messages.html.php',
-                $viewData
-            );
+            if (isset($_POST['message'])) {
+                $message = Model\Message::get($id);
+                $message->user = $message->user->id;
+                $message->message = ($_POST['message']);
 
+                $message->save();
+            }
+
+            throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
+        }
+
+        public function delete ($id, $project) {
+
+            Model\Message::get($id)->delete();
+
+            throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
+        }
+
+        /*
+         * Este metodo envia un mensaje interno
+         */
+        public function direct ($project = null) {
+            if (empty($project))
+                throw new Redirection('/discover', Redirection::TEMPORARY);
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['message'])) {
+
+                // sacamos el mail del responsable del proyecto
+                $project = Model\Project::get($project);
+
+                if (!$project instanceof Model\Project) {
+                    throw new Redirection('/', Redirection::TEMPORARY);
+                }
+
+                $msg_content = \strip_tags($_POST['message']);
+
+
+                // sacamos el mail del usuario
+
+                // el asunto
+                $subject = 'Mensaje de un nuevo cofinanciador de tu proyecto en Goteo';
+
+                // el mensaje que ha escrito el usuario
+                $content = "Hola <strong>{$project->contract_name}</strong>, este es un mensaje enviado desde Goteo por {$_SESSION['user']->name}.
+                <br/><br/>
+                {$msg_content}
+                <br/><br/>
+                Puedes ver los cofinanciadores de '{$project->name}' en tu Dashboard ".SITE_URL."/dashboard";
+
+
+
+                $mailHandler = new Mail();
+
+                $mailHandler->to = $project->contract_email;
+                //@TODO blind copy a comunicaciones@goteo.org
+                $mailHandler->bcc = 'comunicaciones@goteo.org';
+                $mailHandler->subject = $subject;
+                $mailHandler->content = $content;
+
+                $mailHandler->html = true;
+                if ($mailHandler->send($errors)) {
+                    // ok
+                } else {
+                    \trace($mailHandler);
+                    unset($mailHandler);
+                    die;
+                }
+
+                unset($mailHandler);
+			}
+
+            throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
+        }
+
+        /*
+         * Metodo para publicar una enttrada en un post
+         */
+        public function post ($post, $project = null) {
+
+			if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['message'])) {
+                $comment = new Model\Blog\Post\Comment(array(
+                    'user' => $_SESSION['user']->id,
+                    'post' => $post,
+                    'date' => date('Y-m-d H:i:s'),
+                    'text' => $_POST['message']
+                ));
+
+                if ($comment->save($errors)) {
+                    // mensaje enviado con exito
+                } else {
+                    // error
+                }
+			}
+
+            if (!empty($project)) {
+                throw new Redirection("/project/{$project}/updates/{$post}", Redirection::TEMPORARY);
+            } else {
+                throw new Redirection("/blog/{$post}", Redirection::TEMPORARY);
+            }
         }
 
     }

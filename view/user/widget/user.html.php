@@ -7,14 +7,19 @@ $level = (int) $this['level'] ?: 3;
 if (!isset($user->webs)) {
     $user->webs = \Goteo\Model\User\Web::get($user->id);
 }
+
 ?>
 
 <div class="widget user collapsable">
     
-    <h<?php echo $level ?> class="title">Usuario</h<?php echo $level ?>>
+    <h<?php echo $level ?> class="supertitle">Usuario</h<?php echo $level ?>>
     
-    <h<?php echo $level + 1 ?> class="subtitle"><img />
-    <?php echo htmlspecialchars($user->id) ?></h<?php echo $level + 1 ?>>
+    <h<?php echo $level + 1 ?> class="title">
+    <?php echo htmlspecialchars($user->name) ?></h<?php echo $level + 1 ?>>
+    
+    <div class="image">
+        <?php if (!empty($user->avatar)): ?><img alt="" src="<?php echo htmlspecialchars($user->avatar->getLink(80, 80)) ?>" /><?php endif ?>
+    </div>
     
     <?php if (isset($user->about)): ?>
     <blockquote class="about">
@@ -42,7 +47,7 @@ if (!isset($user->webs)) {
         
     </dl>
     
-    <a class="button aqua profile" href="">Ver perfil</a>
+    <a class="button aqua profile" href="/user/<?php echo $user->id; ?>">Ver perfil</a>
         
 </div>
 

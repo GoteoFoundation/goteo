@@ -1,39 +1,50 @@
-<?php $bodyClass = 'home'; include 'view/prologue.html.php' ?>
+<?php
 
-        <?php include 'view/header.html.php' ?>
+use Goteo\Core\View;
+
+$bodyClass = 'home';
+
+include 'view/prologue.html.php';
+
+include 'view/header.html.php' ?>
+
+        <div id="sub-header">
+            <div>
+                <h2>Por categoria, lugar o retorno,</h2>
+                <span type="color:red;">encuentra el proyecto</span> con el que más te identificas
+            </div>
+
+        </div>
 
         <div id="main">
-            
-        <form method="get" action="/discover/results">
-            <fieldset>
-                <legend>Buscar</legend>
-                <input type="text" name="query"  />
-                <input type="submit" value="Buscar" >
-            </fieldset>
-        </form>
+            <?php echo new View('view/discover/searcher.html.php',
+                                array(
+                                    'categories' => $categories,
+                                    'locations'  => $locations,
+                                    'rewards'    => $rewards
+                                )
+                ); ?>
 
-		<?php
-		foreach ($this['types'] as $type=>$list) {
+		<?php foreach ($this['types'] as $type=>$list) :
             if (empty($list))
                 continue;
-
-            echo '<h3>' . $this['title'][$type] . '</h3>
-                <a href="/discover/view/' . $type . '">Ver todos</a>';
-            foreach ($list as $project) {
-                echo '<p>' . $project->name. '<br />';
-                if ($project->status == 3)
-                    echo '<a href="/invest/' . $project->id . '">[Apóyalo]</a>';
+            ?>
+            <div class="widget projects promos">
+                <h2 class="title"><?php echo $this['title'][$type]; ?></h2>
+                <?php foreach ($list as $project) : ?>
+                    <?php
+                    // la instancia del proyecto es $project
+                    // se pintan con el mismo widget que en la portada, sin balloon
+                    echo new View('view/project/widget/project.html.php', array(
+                        'project' => $project
+                    )); ?>
+                <?php endforeach; ?>
                 
-                echo '<a href="/project/' . $project->id . '">[Ver proyecto]</a><br />
-                    Obtenido: ' . $project->invested . ' &euro;<br />
-                    Mínimo: ' . $project->mincost . ' &euro;<br />
-                    Óptimo: ' . $project->maxcost . ' &euro;<br />
-                    Quedan: ' . $project->days . ' días<br />
-                    Cofinanciadores: ' . count($project->investors) . '<br />
-               </p>';
-            }
-		}
-		?>
+                <div class="more"><a href="/discover/view/<?php echo $type; ?>">Ver más</a></div>
+                
+            </div>
+
+        <?php endforeach; ?>
         
         </div>        
 

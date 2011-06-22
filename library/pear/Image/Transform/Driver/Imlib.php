@@ -14,7 +14,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: Jason Rust <jrust@rustyparts.com>                           |
 // +----------------------------------------------------------------------+
-// $Id: Imlib.php,v 1.6 2007/04/19 16:36:09 dufuz Exp $
+// $Id: Imlib.php 258825 2008-04-30 23:00:13Z cweiske $
 // {{{ requires
 
 require_once 'Image/Transform.php';
@@ -78,7 +78,12 @@ class Image_Transform_Driver_Imlib extends Image_Transform {
     function __construct()
     {
         if (!PEAR::loadExtension('imlib')) {
-            $this->isError(PEAR::raiseError('Couldn\'t find the imlib extension.', true));
+            $this->isError(
+                PEAR::raiseError(
+                    'Couldn\'t find the imlib extension.',
+                    IMAGE_TRANSFORM_ERROR_UNSUPPORTED
+                )
+            );
         }
     }
 
@@ -145,7 +150,7 @@ class Image_Transform_Driver_Imlib extends Image_Transform {
             if ($color[0] == '#'){
                 $color = $this->colorhex2colorarray($color);
             } else {
-                include_once('Image/Transform/Driver/ColorsDefs.php');
+                include_once 'Image/Transform/Driver/ColorsDefs.php';
                 $color = isset($colornames[$color]) ? $colornames[$color] : false;
             }
         }
@@ -180,14 +185,12 @@ class Image_Transform_Driver_Imlib extends Image_Transform {
                 $y_pos++;
                 $x_pos++;
                 $this->crop($this->img_y, $this->img_x, $x_pos, $y_pos);
-            }
-            else {
+            } else {
                 $x_pos = ($new_x - $this->img_x) / 2;
                 $y_pos = ($new_y - $this->img_y) / 2;
                 $this->crop($this->img_x, $this->img_y, $x_pos, $y_pos);
             }
-        }
-        else {
+        } else {
             $this->img_x = $new_x;
             $this->img_y = $new_y;
         }

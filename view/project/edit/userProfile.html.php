@@ -6,6 +6,29 @@ use Goteo\Library\Text,
 $project = $this['project'];
 $user = $this['user'];
 
+$image = array(
+    'avatar' => array(
+        'type'  => 'hidden',
+        'value' => $user->avatar->id,
+    ),
+    'avatar-image' => array(
+        'type'  => 'html',
+        'class' => 'inline',
+        'html'  => is_object($user->avatar) ?
+                   $user->avatar . '<img src="' . htmlspecialchars($user->avatar->getLink(110, 110)) . '" alt="Avatar" />' :
+                   ''
+    )
+);
+
+if (!empty($user->avatar) && is_object($user->avatar))
+    $image ["avatar-{$user->avatar->id}-remove"] = array(
+        'type'  => 'submit',
+        'label' => 'Quitar',
+        'class' => 'inline remove image-remove'
+    );
+
+
+
 $interests = array();
 
 $errors = $project->errors[$this['step']] ?: array();
@@ -70,12 +93,21 @@ echo new SuperForm(array(
             'type'      => 'textbox',
             'required'  => true,
             'size'      => 20,
-            'title'     => 'Nombre completo',
+            'title'     => 'Alias',
             'hint'      => Text::get('tooltip-user-name'),
             'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
             'ok'        => !empty($okays['name']),
             'value'     => $user->name,
         ),                
+        'user_location' => array(
+            'type'      => 'textbox',
+            'required'  => true,
+            'size'      => 20,
+            'title'     => 'Dónde estás',
+            'hint'      => Text::get('tooltip-user-location'),
+            'errors'    => !empty($errors['location']) ? array($errors['location']) : array(),
+            'value'     => $user->location,
+        ),
         'user_avatar' => array(                  
             'title'     => 'Tu imagen',
             'type'      => 'group',
@@ -94,19 +126,7 @@ echo new SuperForm(array(
                     'type'  => 'group',
                     'title' => 'Tu imagen actual',                    
                     'class' => 'inline avatar',
-                    'children'  => array(                        
-                        'avatar' => array(
-                            'type'  => 'hidden',
-                            'value' => $user->avatar->id,                    
-                        ),
-                        'avatar-image' => array(
-                            'type'  => 'html',
-                            'class' => 'inline',
-                            'html'  => is_object($user->avatar) ? 
-                                       $user->avatar . '<img src="' . htmlspecialchars($user->avatar->getLink(110, 110)) . '" alt="Avatar" />' :
-                                       ''
-                        )                        
-                    )               
+                    'children'  => $image
                 )
                 
             )            

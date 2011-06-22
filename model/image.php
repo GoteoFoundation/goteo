@@ -2,6 +2,8 @@
 
 namespace Goteo\Model {
 
+    use Goteo\Library\Text;
+
     class Image extends \Goteo\Core\Model {
 
         public
@@ -155,6 +157,64 @@ namespace Goteo\Model {
                 return false;
             }
 		}
+
+        /**
+         * Galeria de imágenes de un usuario / proyecto
+         *
+         * @param  varchar(50)  $id    user id |project id
+         * @param  string       $which    'user'|'project'
+         * @return mixed        false|array de instancias de Image
+         */
+        public static function getAll ($id, $which) {
+
+            if (!\is_string($which) || !\in_array($which, array('user','project'))) {
+                return false;
+            }
+
+            $gallery = array();
+
+            try {
+                $sql = "SELECT image FROM {$which}_image WHERE {$which} = ?";
+                $query = self::query($sql, array($id));
+                foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $image) {
+                    $gallery[] = self::get($image['image']);
+                }
+
+                return $gallery;
+            } catch(\PDOException $e) {
+                return false;
+            }
+
+        }
+
+        /**
+         * Quita una imagen de la tabla de relaciones y de la tabla de imagenes
+         *
+         * @param  string       $which    'user'|'project'|'post'
+         * @return bool        true|false
+         *
+         */
+        public function remove($which) {
+
+            try {
+                self::query("START TRANSACTION");
+                $sql = "DELETE FROM image WHERE id = ?";
+                $query = self::query($sql, array($this->id));
+
+                // para usuarios y proyectos que tienen N imagenes
+                // por ahora post solo tiene 1
+                if (\is_string($which) && \in_array($which, array('user','project'))) {
+                    $sql = "DELETE FROM {$which}_image WHERE image = ?";
+                    $query = self::query($sql, array($this->id));
+                }
+                self::query("COMMIT");
+
+                return true;
+            } catch(\PDOException $e) {
+                return false;
+            }
+        }
+
 
 		/**
 		 * Enlace público.

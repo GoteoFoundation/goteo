@@ -6,15 +6,16 @@ namespace Goteo\Model {
         Goteo\Library\Text,
         Goteo\Model\Image,
         Goteo\Library\Mail,
-        Goteo\Library\Check;
+        Goteo\Library\Check,
+        Goteo\Library\Message;
 
 	class User extends \Goteo\Core\Model {
 
         public
             $id = false,
-            $role = null,
             $email,
             $name,
+            $location,
             $avatar = false,
             $about,
             $contribution,
@@ -23,11 +24,11 @@ namespace Goteo\Model {
             $facebook,
             $twitter,
             $linkedin,
-            $country,
             $created,
             $modified,
             $interests = array(),
-            $webs = array();
+            $webs = array(),
+            $roles = array();
 
         /**
          * Sobrecarga de métodos 'setter'.
@@ -73,22 +74,28 @@ namespace Goteo\Model {
                 // Nuevo usuario.
                 if(empty($this->id)) {
                     $insert = true;
-                    $this->id = static::idealiza($this->name);
-                    $data[':id'] = $this->id;
-                    $data[':role_id'] = 3; // @FIXME: Provisionalmente: 3 = Usuario
+                    $data[':id'] = $this->id = static::idealiza($this->name);
                     $data[':name'] = $this->name;
+                    $data[':location'] = $this->location;
                     $data[':email'] = $this->email;
+                    $data[':token'] = $token = md5(uniqid());
                     $data[':password'] = sha1($this->password);
                     $data[':created'] = date('Y-m-d H:i:s');
                     $data[':active'] = false;
+
+                    // Rol por defecto.
+                    static::query('INSERT INTO user_role (user_id, role_id, node_id) VALUES (:user, :role, :node);', array(
+                        ':user' => $this->id,
+                    	':role' => 'user',
+                    	':node' => '*',
+                    ));
 
                     // Activación
                     $mail = new Mail();
                     $mail->to = $this->email;
                     $mail->toName = $this->name;
                     $mail->subject = Text::get('subject-register');
-                    $token = date("YmdHis", \date2time($data[':created'])) . $this->id;
-                    $url = 'http://goteo.org/user/activate/' . base64_encode($token);
+                    $url = SITE_URL . '/user/activate/' . $token;
                     $mail->content = sprintf('
                         Estimado(a) <strong>%1$s</strong>:<br/>
                         <br/>
@@ -140,13 +147,18 @@ namespace Goteo\Model {
                          * Guarda la relación NM en la tabla 'user_image'.
                          */
                         if(!empty($image->id)) {
-                            self::query("REPLACE user_image (user_id, image_id) VALUES (:user, :image)", array(':user' => $this->id, ':image' => $image->id));
+                            self::query("REPLACE user_image (user, image) VALUES (:user, :image)", array(':user' => $this->id, ':image' => $image->id));
                         }
                     }
 
                     // Perfil público
                     if(isset($this->name)) {
                         $data[':name'] = $this->name;
+                    }
+
+                    // Dónde está
+                    if(isset($this->location)) {
+                        $data[':location'] = $this->location;
                     }
 
                     if(isset($this->about)) {
@@ -196,52 +208,15 @@ namespace Goteo\Model {
                     }
 
                     // Webs
-                    // Primero elimino TODAS las webs y luego las volveré a
-                    // añadir.
                     static::query('DELETE FROM user_web WHERE user= ?', $this->id);
-                    
-                    if (!empty($this->webs)) {                        
-                        foreach ($this->webs as $web) {                            
+                    if (!empty($this->webs)) {
+                        foreach ($this->webs as $web) {
                             if ($web instanceof User\Web) {
                                 $web->user = $this->id;
                                 $web->save($errors);
                             }
-                        }                                                
-                    }
-                    
-                    /*
-                    
-                     $query = static::query("SELECT id, user, url FROM user_web WHERE user = ?", array($id));
-                    $webs = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
-                    
-                    
-                    if(!empty($this->webs)) {
-                        // Eliminar
-                        $webs = User\Web::get($this->id);
-                        foreach($webs as $web) {
-                            if(array_key_exists($web->id, $this->webs['remove'])) {
-                                $web->remove($errors);
-                            }
-                        }
-                        // Modificar
-                        $webs = User\Web::get($this->id);
-                        foreach($webs as $web) {
-                            if(array_key_exists($web->id, $this->webs['edit'])) {
-                                $web->user = $this->id;
-                                $web->url = $this->webs['edit'][$web->id];
-                                $web->save($errors);
-                            }
-                        }
-                        // Añadir
-                        foreach($this->webs['add'] as $web) {
-                            $_web = new User\Web();
-                            $_web->user = $this->id;
-                            $_web->url = $web;
-                            $_web->save($errors);
                         }
                     }
-                     * 
-                     */
                 }
 
                 try {
@@ -298,14 +273,15 @@ namespace Goteo\Model {
                 }
 
                 // E-mail
-                if(!empty($this->email)) {
+                if (empty($this->email)) {
+                    $errors['email'] = Text::get('mandatory-register-field-email');
+                } elseif (!Check::mail($this->email)) {
+                    $errors['email'] = Text::get('validate-register-value-email');
+                } else {
                     $query = self::query('SELECT email FROM user WHERE email = ?', array($this->email));
                     if($query->fetchObject()) {
                         $errors['email'] = Text::get('error-register-email-exists');
                     }
-                }
-                else {
-                    $errors['email'] = Text::get('error-register-email-empty');
                 }
 
                 // Contraseña
@@ -344,78 +320,13 @@ namespace Goteo\Model {
                         $errors['password'] = Text::get('error-user-password-invalid');
                     }
                 }
-                if (empty($this->name)) {
-                    $errors['name'] = Text::get('validate-user-field-name');
-                } else {
-                    $okeys['name'] = 'ok';
-                }
+
                 if (is_array($this->avatar) && !empty($this->avatar['name'])) {
                     $image = new Image($this->avatar);
                     $_err = array();
                     $image->validate($_err);
                     $errors['avatar'] = $_err['image'];
                 }
-                elseif(!is_object($this->avatar)) {
-                    $errors['avatar'] = Text::get('validate-user-field-avatar');
-                } else {
-                    $okeys['avatar'] = 'ok';
-                }
-                if (empty($this->about)) {
-                    $errors['about'] = Text::get('validate-user-field-about');
-                } else {
-                    $okeys['about'] = 'ok';
-                }
-                $keywords = explode(',', $this->keywords);
-                if (sizeof($keywords) < 5) {
-                    $errors['keywords'] = Text::get('validate-user-field-keywords');
-                } else {
-                    $okeys['keywords'] = 'ok';
-                }
-                if (empty($this->contribution)) {
-                    $errors['contribution'] = Text::get('validate-user-field-contribution');
-                } else {
-                    $okeys['contribution'] = 'ok';
-                }
-                if (empty($this->interests)) {
-                    $errors['interests'] = Text::get('validate-user-field-interests');
-                } else {
-                    $okeys['interests'] = 'ok';
-                }
-                if (empty($this->webs)) {
-                    $errors['webs'] = Text::get('validate-user-field-webs');
-                } else {
-                    $okeys['webs'] = 'ok';
-                }
-                /*
-                 *  Esto ya no es necesario
-                else {
-                    if(isset($this->webs['add'])) {
-                        foreach($this->webs['add'] as $index => $web) {
-                            if(empty($web)) {
-                                unset($this->webs['add'][$index]);
-                            }
-                        }
-                    }
-                }
-                 */
-                if (empty($this->facebook)) {
-                    $errors['facebook'] = Text::get('validate-user-field-facebook');
-                } else {
-                    $okeys['facebook'] = 'ok';
-                }
-                /*
-                if (empty($this->twitter)) {
-                    $errors['twitter'] = Text::get('validate-user-field-twitter');
-                } else {
-                    $okeys['twitter'] = 'ok';
-                }
-                if (empty($this->linkedin)) {
-                    $errors['linkedin'] = Text::get('validate-user-field-linkedin');
-                } else {
-                    $okeys['linkedin'] = 'ok';
-                }
-                 * 
-                 */
             }
 
             return (empty($errors['email']) && empty($errors['password']));
@@ -432,9 +343,9 @@ namespace Goteo\Model {
                 $query = static::query("
                     SELECT
                         id,
-                        role_id AS role,
                         email,
                         name,
+                        location,
                         avatar,
                         about,
                         contribution,
@@ -449,9 +360,31 @@ namespace Goteo\Model {
                     WHERE id = :id
                     ", array(':id' => $id));
                 $user = $query->fetchObject(__CLASS__);
+                
+                $user->roles = $user->getRoles();
                 $user->avatar = Image::get($user->avatar);
                 $user->interests = User\Interest::get($id);
                 $user->webs = User\Web::get($id);
+                return $user;
+            } catch(\PDOException $e) {
+                return false;
+            }
+        }
+
+        // version mini de get para sacar nombre i mail
+        public static function getMini ($id) {
+            try {
+                $query = static::query("
+                    SELECT
+                        name,
+                        email
+                    FROM user
+                    WHERE id = :id
+                    ", array(':id' => $id));
+                $user = $query->fetchObject(__CLASS__);
+                
+                $user->avatar = Image::get($user->avatar);
+
                 return $user;
             } catch(\PDOException $e) {
                 return false;
@@ -464,9 +397,49 @@ namespace Goteo\Model {
          * @param  bool $visible    true|false
          * @return mixed            Array de objetos de usuario activos|todos.
          */
-        public static function getAll ($visible = true) {
-            $query = self::query('SELECT * FROM user WHERE active = ?', array($visible));
-            return $query->fetchAll(__CLASS__);
+        public static function getAll ($filters = array()) {
+            $users = array();
+
+            $sqlFilter = "";
+            if (!empty($filters['status'])) {
+                $active = $filters['status'] == 'active' ? '1' : '0';
+                $sqlFilter .= " AND active = '$active'";
+            }
+            if (!empty($filters['interest'])) {
+                $sqlFilter .= " AND id IN (
+                    SELECT user
+                    FROM user_interest
+                    WHERE interest = {$filters['interest']}
+                    ) ";
+            }
+            if (!empty($filters['posted'])) {
+                /*
+                 * Si ha enviado algun mensaje o comentario
+                $sqlFilter .= " AND id IN (
+                    SELECT user
+                    FROM message
+                    WHERE interest = {$filters['interest']}
+                    ) ";
+                 *
+                 */
+            }
+
+            $sql = "SELECT
+                        id,
+                        name,
+                        email,
+                        active
+                    FROM user
+                    WHERE id != ''
+                        $sqlFilter
+                    ORDER BY name ASC
+                    ";
+
+            $query = self::query($sql, array($node));
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $user) {
+                $users[] = $user;
+            }
+            return $users;
         }
 
 		/**
@@ -477,23 +450,28 @@ namespace Goteo\Model {
 		 * @return obj|false Objeto del usuario, en caso contrario devolverÃ¡ 'false'.
 		 */
 		public static function login ($username, $password) {
-			
-                        $query = self::query("
-				SELECT
-					id
-				FROM user
-				WHERE BINARY id = :username
-				AND BINARY password = :password",
+            $query = self::query("
+                    SELECT
+                        id
+                    FROM user
+                    WHERE BINARY id = :username
+                    AND BINARY password = :password",
 				array(
 					':username' => trim($username),
 					':password' => sha1($password)
 				)
 			);
 			if($row = $query->fetch()) {
-			    return static::get($row['id']);
+			    $user = static::get($row['id']);
+			    if($user->active) {
+			        return $user;
+
+			    }
+			    else {
+			        Message::Error(Text::get('user-account-inactive'));
+			    }
 			}
-                        
-                        return false;
+			return false;
 		}
 
 		/**
@@ -517,6 +495,59 @@ namespace Goteo\Model {
     		}
     	}
 
+		/**
+		 * Verificacion de recuperacion de contraseña
+		 *
+		 * @param string $username Nombre de usuario
+		 * @param string $email    Email de la cuenta
+		 * @return boolean true|false  Correctos y mail enviado
+		 */
+		public static function recover ($username, $email) {
+            $query = self::query("
+                    SELECT
+                        id,
+                        name,
+                        email
+                    FROM user
+                    WHERE BINARY id = :username
+                    AND BINARY email = :email",
+				array(
+					':username' => trim($username),
+					':email'    => trim($email)
+				)
+			);
+			if($row = $query->fetchObject()) {
+                // tenemos id, nombre, email
+                // genero el token
+                $token = md5(uniqid()) . '¬' . $row->email;
+                self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $row->id, ':token' => $token));
+
+                // Email de recuperacion
+                $mail = new Mail();
+                $mail->to = $row->email;
+                $mail->toName = $row->name;
+                $mail->subject = 'Su petición de recuperación de contraseña en Goteo';
+                $url = SITE_URL . '/user/recover/' . base64_encode($token);
+                $mail->content = sprintf('
+                    Estimado(a) <strong>%1$s</strong>:<br/>
+                    <br/>
+                    Hemos recibido una petición para recuperar la contraseña de tu cuenta de usuario en Goteo.org<br />
+                    Si no has solicitado esta recuperación de contraseña, ignora este mensaje<br />
+                    Para acceder a tu cuenta y cambiar la contraseña (utilice su nombre de usuario como contraseña actual), utiliza el siguiente enlace. Si no puedes hacer click, copialo y pegalo en el navegador.
+                    <br/>
+                    <a href="%2$s">%2$s</a><br/>
+                    <br/>
+                    Recuerde que su nombre de usuario es <strong>%3$s</strong>, póngalo como contraseña actual para cambiar la contraseña.<br/>
+                    Hasta pronto!
+                ', $row->name, $url, $row->id);
+                $mail->html = true;
+                if ($mail->send($errors)) {
+                    return true;
+                }
+			}
+			return false;
+		}
+
     	/**
     	 * Guarda el Token y envía un correo de confirmación.
     	 *
@@ -533,7 +564,7 @@ namespace Goteo\Model {
                     $mail->to = $email;
                     $mail->toName = $this->name;
                     $mail->subject = Text::get('subject-change-email');
-                    $url = 'http://goteo.org/user/changeemail/' . base64_encode($token);
+                    $url = SITE_URL . '/user/changeemail/' . base64_encode($token);
                     $mail->content = sprintf('
                         Estimado(a) <strong>%1$s</strong>:<br/>
                         <br/>
@@ -595,11 +626,9 @@ namespace Goteo\Model {
          * @return type array
          */
         public static function getPersonal ($id) {
-            $query = self::query('SELECT  
+            $query = self::query('SELECT
                                       contract_name,
-                                      contract_surname,
                                       contract_nif,
-                                      contract_email,
                                       phone,
                                       address,
                                       zipcode,
@@ -608,8 +637,8 @@ namespace Goteo\Model {
                                   FROM user_personal
                                   WHERE user = ?'
                 , array($id));
-            
-            $data = $query->fetch(\PDO::FETCH_ASSOC);
+
+            $data = $query->fetchObject();
             return $data;
         }
 
@@ -636,9 +665,7 @@ namespace Goteo\Model {
 
             $fields = array(
                   'contract_name',
-                  'contract_surname',
                   'contract_nif',
-                  'contract_email',
                   'phone',
                   'address',
                   'zipcode',
@@ -673,6 +700,18 @@ namespace Goteo\Model {
 
 
         }
+
+		private function getRoles () {
+		    $query = self::query('
+		    	SELECT
+		    		role.id,
+		    		role.name
+		    	FROM role
+		    	JOIN user_role ON role.id = user_role.role_id
+		    	WHERE user_id = ?
+		    ', array($this->id));
+		    return $query->fetchAll(\PDO::FETCH_OBJ);
+		}
 
 	}
 }

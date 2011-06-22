@@ -3,7 +3,10 @@
 @import url('common.css');
 @import url('header.css');
 @import url('footer.css');
+@import url('home.css');
 @import url('superform.css');
+@import url('admin.css');
+@import url('dashboard.css');
 @import url('project.css');
 @import url('user.css');
 
@@ -40,7 +43,7 @@ div.widget {
 }
 
  
- div.widget .title {
+ div.widget .supertitle {
     font-size: 13px;
     font-weight: normal;
     margin: 0;
@@ -49,19 +52,11 @@ div.widget {
     margin-bottom: 1em;
 }
 
-div.widget .subtitle {
-    font-size: 18px;
+div.widget .title  {
+    font-size: 16px;
     font-weight: bold;    
     padding: 0 2px 0;
     margin: 0 0 .5em;
-}
-
-div.widget input[type="submit"],
-div.widget input[type="reset"],
-div.widget button,
-div.widget a.button {
-    box-shadow: 2px 2px 0 rgba(0,0,0,.2);
-    -moz-box-shadow: 2px 2px 0 rgba(0,0,0,.2);
 }
 
 /**

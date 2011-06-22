@@ -2,6 +2,9 @@
 
 namespace Goteo\Model\Project {
 
+    use \Goteo\Model\Icon,
+        \Goteo\Model\License;
+
     class Reward extends \Goteo\Core\Model {
 
         public
@@ -26,10 +29,33 @@ namespace Goteo\Model\Project {
             }
 		}
 
-		public static function getAll ($project, $type = 'social') {
+		public static function getAll ($project, $type = 'social', $fulfilled = null, $icon = null) {
             try {
                 $array = array();
-				$query = self::query("SELECT * FROM reward WHERE project = ? AND type= ? ORDER BY id ASC", array($project, $type));
+
+                $values = array(
+                    ':project' => $project,
+                    ':type' => $type
+                );
+
+                $sqlFilter = "";
+                if (!empty($fulfilled)) {
+                    $sqlFilter .= "    AND fulsocial = :fulfilled";
+                    $values[':fulfilled'] = $fulfilled == 'ok' ? 1 : 0;
+                }
+                if (!empty($icon)) {
+                    $sqlFilter .= "    AND icon = :icon";
+                    $values[':icon'] = $icon;
+                }
+
+                $sql = "SELECT  *
+                        FROM    reward
+                        WHERE   project = :project
+                            AND type= :type
+                        $sqlFilter
+                        ORDER BY amount ASC, id ASC";
+
+				$query = self::query($sql, $values);
 				foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item ) {
                     $array[$item->id] = $item;
                 }
@@ -43,12 +69,15 @@ namespace Goteo\Model\Project {
             // Estos son errores que no permiten continuar
             if (empty($this->project))
                 $errors[] = 'No hay proyecto al que asignar la recompensa/rettorno';
+                //Text::get('validate-reward-noproject');
 /*
             if (empty($this->reward))
                 $errors[] = 'No hay nombre de recompensa/retorno';
+                //Text::get('validate-reward-name');
 
             if (empty($this->type))
                 $errors[] = 'No hay tipo de recompensa/retorno';
+                //Text::get('validate-reward-description');
 */
             //cualquiera de estos errores hace fallar la validación
             if (!empty($errors))
@@ -111,6 +140,7 @@ namespace Goteo\Model\Project {
 				return true;
 			} catch(\PDOException $e) {
 				$errors[] = 'No se ha podido quitar el retorno '. $this->id. '. ' . $e->getMessage();
+                //Text::get('remove-reward-fail');
                 return false;
 			}
 		}
@@ -147,28 +177,27 @@ namespace Goteo\Model\Project {
         }
 
 		public static function icons($type = 'social') {
-            $icons = array(
-                'file' => 'Archivos digitales',
-                'money' => 'Dinero',
-                'code' => 'Código fuente',
-                'service' => 'Servicios',
-                'manual' => 'Manuales');
+            $list  = array();
+            
+            $icons = Icon::getAll($type);
 
-			if ($type == 'individual') {
-				$icons['product'] = 'Producto';
-			}
+            foreach ($icons as $icon) {
+                $list[$icon->id] = $icon;
+            }
 
-            return $icons;
+            return $list;
 		}
 
 		public static function licenses() {
-            return array(
-                'ohl' => 'Open Hardware',
-                'cc' => 'Creative Commons',
-                'gpl' => 'General Public',
-                'odbl' => 'Open Database',
-                'xoln' => 'Red Abierta',
-                'agpl' => 'GNU Affero');
+            $list  = array();
+
+            $licenses = License::getAll();
+
+            foreach ($licenses as $license) {
+                $list[$license->id] = $license->name;
+            }
+
+            return $list;
 		}
 
 	}

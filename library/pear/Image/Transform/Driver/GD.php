@@ -1,4 +1,5 @@
 <?php
+
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 
 /**
@@ -20,7 +21,7 @@
  * @author     Philippe Jausions <Philippe.Jausions@11abacus.com>
  * @copyright  2002-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: GD.php,v 1.32 2007/04/19 16:36:09 dufuz Exp $
+ * @version    CVS: $Id: GD.php 258673 2008-04-28 21:56:06Z cweiske $
  * @link       http://pear.php.net/package/Image_Transform
  */
 
@@ -76,7 +77,7 @@ class Image_Transform_Driver_GD extends Image_Transform
      * @var resource $imageHandle
      * @access protected
      */
-    var $old_image = null;
+    var $oldImage = null;
 
     /**
      * Check settings
@@ -153,6 +154,18 @@ class Image_Transform_Driver_GD extends Image_Transform
     } // End load
 
     /**
+     * Returns the GD image handle
+     *
+     * @return resource
+     *
+     * @access public
+     */
+    function getHandle()
+    {
+        return $this->imageHandle;
+    }//function getHandle()
+
+    /**
      * Adds a border of constant width around an image
      *
      * @param int $border_width Width of border to add
@@ -203,6 +216,7 @@ class Image_Transform_Driver_GD extends Image_Transform
      */
     function addText($params)
     {
+        $this->oldImage = $this->imageHandle;
         $params = array_merge($this->_get_default_text_params(), $params);
         extract($params);
 
@@ -216,6 +230,7 @@ class Image_Transform_Driver_GD extends Image_Transform
         } else {
             ImagePSText($this->imageHandle, $size, $angle, $x, $y, $c, $font, $text);
         }
+
         return true;
     } // End addText
 
@@ -242,9 +257,9 @@ class Image_Transform_Driver_GD extends Image_Transform
         $color_mask = $this->_getColor('canvasColor', $options,
                                         array(255, 255, 255));
 
-        $mask   = imagecolorresolve($this->imageHandle, $color_mask[0], $color_mask[1], $color_mask[2]);
+        $mask = imagecolorresolve($this->imageHandle, $color_mask[0], $color_mask[1], $color_mask[2]);
 
-        $this->old_image   = $this->imageHandle;
+        $this->oldImage = $this->imageHandle;
 
         // Multiply by -1 to change the sign, so the image is rotated clockwise
         $this->imageHandle = ImageRotate($this->imageHandle, $angle * -1, $mask);
@@ -329,7 +344,7 @@ class Image_Transform_Driver_GD extends Image_Transform
                 IMAGE_TRANSFORM_ERROR_FAILED);
         }
 
-        $this->old_image = $this->imageHandle;
+        $this->oldImage = $this->imageHandle;
         $this->imageHandle = $new_img;
         $this->resized = true;
 
@@ -349,23 +364,23 @@ class Image_Transform_Driver_GD extends Image_Transform
         return true;
     }
 
-   /**
-    * Resize Action
-    *
-    * For GD 2.01+ the new copyresampled function is used
-    * It uses a bicubic interpolation algorithm to get far
-    * better result.
-    *
-    * Options:
-    *  - scaleMethod: "pixel" or "smooth"
-    *
-    * @param int   $new_x   New width
-    * @param int   $new_y   New height
-    * @param mixed $options Optional parameters
-    *
-    * @return bool|PEAR_Error TRUE on success or PEAR_Error object on error
-    * @access protected
-    */
+    /**
+     * Resize Action
+     *
+     * For GD 2.01+ the new copyresampled function is used
+     * It uses a bicubic interpolation algorithm to get far
+     * better result.
+     *
+     * @param int   $new_x   New width
+     * @param int   $new_y   New height
+     * @param array $options Optional parameters
+     * <ul>
+     *  <li>'scaleMethod': "pixel" or "smooth"</li>
+     * </ul>
+     *
+     * @return bool|PEAR_Error TRUE on success or PEAR_Error object on error
+     * @access protected
+     */
     function _resize($new_x, $new_y, $options = null)
     {
         if ($this->resized === true) {
@@ -390,7 +405,7 @@ class Image_Transform_Driver_GD extends Image_Transform
         if (!$icr_res) {
             ImageCopyResized($new_img, $this->imageHandle, 0, 0, 0, 0, $new_x, $new_y, $this->img_x, $this->img_y);
         }
-        $this->old_image = $this->imageHandle;
+        $this->oldImage = $this->imageHandle;
         $this->imageHandle = $new_img;
         $this->resized = true;
 
@@ -468,7 +483,7 @@ class Image_Transform_Driver_GD extends Image_Transform
             return PEAR::raiseError('Couldn\'t ' . $action,
                 IMAGE_TRANSFORM_ERROR_IO);
         }
-        $this->imageHandle = $this->old_image;
+        $this->imageHandle = $this->oldImage;
         if (!$this->keep_settings_on_save) {
             $this->free();
         }
@@ -489,7 +504,7 @@ class Image_Transform_Driver_GD extends Image_Transform
      */
     function display($type = '', $quality = null)
     {
-        return $this->_generate('', $type, $quality);;
+        return $this->_generate('', $type, $quality);
     }
 
     /**
@@ -524,10 +539,10 @@ class Image_Transform_Driver_GD extends Image_Transform
             ImageDestroy($this->imageHandle);
         }
         $this->imageHandle = null;
-        if (is_resource($this->old_image)){
-            ImageDestroy($this->old_image);
+        if (is_resource($this->oldImage)){
+            ImageDestroy($this->oldImage);
         }
-        $this->old_image = null;
+        $this->oldImage = null;
     }
 
     /**
@@ -561,6 +576,8 @@ class Image_Transform_Driver_GD extends Image_Transform
         if ($createtruecolor
             && function_exists('ImageCreateTrueColor')) {
             $new_img = @ImageCreateTrueColor($width, $height);
+            imagealphablending($new_img, false);
+            imagesavealpha($new_img, true);
         }
         if (!$new_img) {
             $new_img = ImageCreate($width, $height);

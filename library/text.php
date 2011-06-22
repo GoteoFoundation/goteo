@@ -69,7 +69,7 @@ namespace Goteo\Library {
             }
             
 			// buscamos el texto en la tabla
-			$query = Model::query("SELECT text FROM text WHERE id = :id AND lang = :lang", array(':id' => $id, ':lang' => $lang));
+			$query = Model::query("SELECT `text` FROM text WHERE id = :id AND lang = :lang", array(':id' => $id, ':lang' => $lang));
 			$exist = $query->fetchObject();
 			if ($exist->text) {
                 $tmptxt = $_cache[$id][$lang] = $exist->text;
@@ -89,19 +89,23 @@ namespace Goteo\Library {
 
                 if (strcmp($texto, $id) === 0) {
                 // sino, lo metemos en la tabla y en purpose
-                    Model::query("REPLACE INTO text (id, lang, text) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
+                    Model::query("REPLACE INTO text (id, lang, `text`) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
                     Model::query("REPLACE INTO purpose (text, purpose) VALUES (:text, :purpose)", array(':text' => $id, ':purpose' => "Texto $id"));
                 }
 			}
+
+            $text = nl2br($text);
+            // apaño temporal para los magic quotes
+            $text = \str_replace('\\', '', $text);
 
             return $texto;
 		}
 
 		static public function getPurpose ($id) {
 			// buscamos la explicación del texto en la tabla
-			$query = Model::query("SELECT purpose FROM purpose WHERE text = :id", array(':id' => $id));
+			$query = Model::query("SELECT purpose FROM purpose WHERE `text` = :id", array(':id' => $id));
 			$exist = $query->fetchObject();
-			if ($exist->purpose) {
+			if (!empty($exist->purpose)) {
 				return $exist->purpose;
 			} else {
 				Model::query("REPLACE INTO purpose (text, purpose) VALUES (:text, :purpose)", array(':text' => $id, ':purpose' => "Texto $id"));
@@ -132,22 +136,37 @@ namespace Goteo\Library {
 		/*
 		 *  Metodo para la lista de textos segun idioma
 		 */
-		public static function getAll($filter = null) {
+		public static function getAll($filters = array()) {
             $texts = array();
 
-            $values = array(':lang'=>\GOTEO_DEFAULT_LANG);
+            $values = array();
 
-            $sql = "SELECT id, text FROM text WHERE lang = :lang";
-            if (!empty($filter)) {
-                $sql .= " AND id LIKE :filter";
-                $values[':filter'] = "%$filter%";
+            $sql = "SELECT
+                        purpose.text as id,
+                        IFNULL(text.text,purpose.purpose) as text,
+                        purpose.`group` as `group`
+                    FROM purpose
+                    LEFT JOIN text
+                        ON text.id = purpose.text
+                    WHERE purpose.text != ''
+                    ";
+            if (!empty($filters['idfilter'])) {
+                $sql .= " AND purpose.text LIKE :idfilter";
+                $values[':idfilter'] = "%{$filters['idfilter']}%";
             }
-            $sql .= " ORDER BY id ASC";
+            if (!empty($filters['group'])) {
+                $sql .= " AND purpose.`group` = :group";
+                $values[':group'] = "{$filters['group']}";
+            }
+            if (!empty($filters['text'])) {
+                $sql .= " AND ( text.text LIKE :text OR (text.text IS NULL AND purpose.purpose LIKE :text ))";
+                $values[':text'] = "%{$filters['text']}%";
+            }
+            $sql .= " ORDER BY purpose.`group` ASC";
             
             try {
                 $query = Model::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $text) {
-                    $text->purpose = self::getPurpose($text->id);
                     $texts[] = $text;
                 }
                 return $texts;
@@ -167,10 +186,14 @@ namespace Goteo\Library {
 					return false;
 			}
 
-			if (Model::query("UPDATE text SET text = :text WHERE id = :id AND lang = :lang", array(':text' => $data['text'], ':id' => $data['id'], ':lang' => $data['lang']))) {
+            $sql = "REPLACE `text` SET
+                            `text` = :text,
+                            id = :id,
+                            lang = :lang
+                    ";
+			if (Model::query($sql, array(':text' => $data['text'], ':id' => $data['id'], ':lang' => $data['lang']))) {
 				return true;
-			}
-			else {
+			} else {
 				$errors[] = 'Error al insertar los datos <pre>' . print_r($data, 1) . '</pre>';
 				return false;
 			}
@@ -184,14 +207,33 @@ namespace Goteo\Library {
         static public function filters()
         {
             return array(
-                'mandatory'=>'Campos obligatorios',
-                'tooltip'=>'Consejos para rellenar el formulario de proyecto',
-                'error-register'=>'Errores al registrarse',
-                'explain'=>'Explicaciones',
-                'guide-project'=>'Guias del formulario de proyecto',
-                'guide-user'=>'Guias del formulario de usuario',
-                'step'=>'Pasos del formulario',
-                'validate'=>'Validaciones de campos'
+                'mandatory'     => 'Campos obligatorios',
+                'tooltip'       => 'Consejos para rellenar el formulario de proyecto',
+                'error-register'=> 'Errores al registrarse',
+                'explain'       => 'Explicaciones',
+                'guide-project' => 'Guias del formulario de proyecto',
+                'guide-user'    => 'Guias del formulario de usuario',
+                'step'          => 'Pasos del formulario',
+                'validate'      => 'Validaciones de campos'
+            );
+        }
+
+        /*
+         * Grupos de textos
+         */
+        static public function groups()
+        {
+            return array(
+                'profile'  => 'Perfil del usuario',
+                'personal' => 'Datos personales del usuario',
+                'overview' => 'Descripción del proyecto',
+                'costs'    => 'Costes del proyecto',
+                'rewards'  => 'Retornos y recompensas del proyecto',
+                'supports' => 'Colaboraciones del proyecto',
+                'preview'  => 'Previsualización del proyecto',
+                'dashboard'=> 'Dashboard del usuario',
+                'register' => 'Registro de usuarios',
+                'general'  => 'Propósito general'
             );
         }
 
@@ -235,13 +277,13 @@ namespace Goteo\Library {
 			$texto = substr($texto, 0, strrpos($texto, " "));
 
 			// Quitamos palabras vacías
-			$ultima = ultima_palabra($texto,$separadores );
+			$ultima = self::ultima_palabra($texto,$separadores );
 			while ($texto != "" && (in_array($ultima,$palabras_vacias) || strlen($ultima)<=2) || ($html && $ultima{1} == "<" && substr($ultima,-1) == ">")) {
 				$texto = substr($texto,0,strlen($texto)-strlen($ultima));
 				while ($texto != "" && in_array(substr($texto,-1),$separadores)){
 					$texto = substr($texto, 0, -1);
 				}
-				$ultima = ultima_palabra($texto,$separadores);
+				$ultima = self::ultima_palabra($texto,$separadores);
 			}
 
 			// Hemos cortado una etiqueta html?
@@ -249,9 +291,134 @@ namespace Goteo\Library {
 				$texto = substr($texto,0,strrpos($texto,"<"));
 			}
 			// Si el texto era html, cerramos las etiquetas
-			if ($html) $texto = cerrar_etiquetas($texto);
+			if ($html) $texto = self::cerrar_etiquetas($texto);
 			if ($puntos !== false) $texto .= $puntos;
 			return $texto;
+		}
+
+        static public function ultima_palabra ($texto, $separadores = false) {
+            $palabra = '';
+            if ($separadores === false) $separadores = array(" ", ".", ",", ";");
+            $i = strlen($texto) - 1;
+            while ($i >= 0 && (!in_array(substr($texto,$i,1), $separadores))) {
+                $palabra = substr($texto,$i,1).$palabra;
+                $i--;
+            }
+            return $palabra;
+        }
+
+        static public function cerrar_etiquetas ($html) {
+            // Ponemos todos los tags abiertos en un array
+            preg_match_all("#<([a-z]+)( .*)?(?!/)>#iU", $html, $res);
+            $abiertas = $res[1];
+
+            // Ponemos todos los tags cerrados en un array
+            preg_match_all("#</([a-z]+)>#iU", $html, $res);
+            $cerradas = $res[1];
+
+            // Obtenemos el array de etiquetas no cerradas
+
+            if (count($cerradas) == count($abiertas)) {
+                // *Suponemos* que todas las etiquetas están cerradas
+                return $html;
+            }
+
+            $abiertas = array_reverse($abiertas);
+
+            // Cerramos
+            for ($i = 0;$i < count($abiertas);$i++) {
+                if (!in_array($abiertas[$i],$cerradas)){
+                    $html .= "</".$abiertas[$i].">";
+                } else {
+                    unset($cerradas[array_search($abiertas[$i],$cerradas)]);
+                }
+            }
+            return $html;
+        }
+
+
+		/*
+		 *   Método para aplicar saltos de linea y poner links en las url
+         *   ¿¡Como se puede ser tan guay!?
+         *   http://www.kwi.dk/projects/php/UrlLinker/
+         * -------------------------------------------------------------------------------
+         *  UrlLinker - facilitates turning plaintext URLs into HTML links.
+         *
+         *  Author: SÃ¸ren LÃ¸vborg
+         *
+         *  To the extent possible under law, SÃ¸ren LÃ¸vborg has waived all copyright
+         *  and related or neighboring rights to UrlLinker.
+         *  http://creativecommons.org/publicdomain/zero/1.0/
+         * -------------------------------------------------------------------------------
+		 */
+		static public function urlink($text)
+		{
+            /*
+             *  Regular expression bits used by htmlEscapeAndLinkUrls() to match URLs.
+             */
+            $rexProtocol = '(https?://)?';
+            $rexDomain   = '((?:[-a-zA-Z0-9]{1,63}\.)+[-a-zA-Z0-9]{2,63}|(?:[0-9]{1,3}\.){3}[0-9]{1,3})';
+            $rexPort     = '(:[0-9]{1,5})?';
+            $rexPath     = '(/[!$-/0-9:;=@_\':;!a-zA-Z\x7f-\xff]*?)?';
+            $rexQuery    = '(\?[!$-/0-9:;=@_\':;!a-zA-Z\x7f-\xff]+?)?';
+            $rexFragment = '(#[!$-/0-9:;=@_\':;!a-zA-Z\x7f-\xff]+?)?';
+            $rexUrlLinker = "{\\b$rexProtocol$rexDomain$rexPort$rexPath$rexQuery$rexFragment(?=[?.!,;:\"]?(\s|$))}";
+
+            /**
+             *  $validTlds is an associative array mapping valid TLDs to the value true.
+             *  Since the set of valid TLDs is not static, this array should be updated
+             *  from time to time.
+             *
+             *  List source:  http://data.iana.org/TLD/tlds-alpha-by-domain.txt
+             *  Last updated: 2010-09-04
+             */
+            $validTlds = array_fill_keys(explode(" ", ".ac .ad .ae .aero .af .ag .ai .al .am .an .ao .aq .ar .arpa .as .asia .at .au .aw .ax .az .ba .bb .bd .be .bf .bg .bh .bi .biz .bj .bm .bn .bo .br .bs .bt .bv .bw .by .bz .ca .cat .cc .cd .cf .cg .ch .ci .ck .cl .cm .cn .co .com .coop .cr .cu .cv .cx .cy .cz .de .dj .dk .dm .do .dz .ec .edu .ee .eg .er .es .et .eu .fi .fj .fk .fm .fo .fr .ga .gb .gd .ge .gf .gg .gh .gi .gl .gm .gn .gov .gp .gq .gr .gs .gt .gu .gw .gy .hk .hm .hn .hr .ht .hu .id .ie .il .im .in .info .int .io .iq .ir .is .it .je .jm .jo .jobs .jp .ke .kg .kh .ki .km .kn .kp .kr .kw .ky .kz .la .lb .lc .li .lk .lr .ls .lt .lu .lv .ly .ma .mc .md .me .mg .mh .mil .mk .ml .mm .mn .mo .mobi .mp .mq .mr .ms .mt .mu .museum .mv .mw .mx .my .mz .na .name .nc .ne .net .nf .ng .ni .nl .no .np .nr .nu .nz .om .org .pa .pe .pf .pg .ph .pk .pl .pm .pn .pr .pro .ps .pt .pw .py .qa .re .ro .rs .ru .rw .sa .sb .sc .sd .se .sg .sh .si .sj .sk .sl .sm .sn .so .sr .st .su .sv .sy .sz .tc .td .tel .tf .tg .th .tj .tk .tl .tm .tn .to .tp .tr .travel .tt .tv .tw .tz .ua .ug .uk .us .uy .uz .va .vc .ve .vg .vi .vn .vu .wf .ws .xn--0zwm56d .xn--11b5bs3a9aj6g .xn--80akhbyknj4f .xn--9t4b11yi5a .xn--deba0ad .xn--fiqs8s .xn--fiqz9s .xn--fzc2c9e2c .xn--g6w251d .xn--hgbk6aj7f53bba .xn--hlcj6aya9esc7a .xn--j6w193g .xn--jxalpdlp .xn--kgbechtv .xn--kprw13d .xn--kpry57d .xn--mgbaam7a8h .xn--mgbayh7gpa .xn--mgberp4a5d4ar .xn--o3cw4h .xn--p1ai .xn--pgbs0dh .xn--wgbh1c .xn--xkc2al3hye2a .xn--ygbi2ammx .xn--zckzah .ye .yt .za .zm .zw"), true);
+
+            /**
+             *  Transforms plain text into valid HTML, escaping special characters and
+             *  turning URLs into links.
+             */
+            $result = "";
+
+            $position = 0;
+            while (preg_match($rexUrlLinker, $text, $match, PREG_OFFSET_CAPTURE, $position))
+            {
+                list($url, $urlPosition) = $match[0];
+
+                // Add the text leading up to the URL.
+                $result .= htmlspecialchars(substr($text, $position, $urlPosition - $position));
+
+                $domain = $match[2][0];
+                $port   = $match[3][0];
+                $path   = $match[4][0];
+
+                // Check that the TLD is valid or that $domain is an IP address.
+                $tld = strtolower(strrchr($domain, '.'));
+                if (preg_match('{^\.[0-9]{1,3}$}', $tld) || isset($validTlds[$tld]))
+                {
+                    // Prepend http:// if no protocol specified
+                    $completeUrl = $match[1][0] ? $url : "http://$url";
+
+                    // Add the hyperlink.
+                    $result .= '<a href="' . htmlspecialchars($completeUrl) . '" target="_blank">'
+                        . htmlspecialchars("$domain$port$path")
+                        . '</a>';
+                }
+                else
+                {
+                    // Not a valid URL.
+                    $result .= htmlspecialchars($url);
+                }
+
+                // Continue text parsing from after the URL.
+                $position = $urlPosition + strlen($url);
+            }
+
+            // Add the remainder of the text.
+            $result .= htmlspecialchars(substr($text, $position));
+            return $result;
+
+
 		}
 
 	}

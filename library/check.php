@@ -134,7 +134,7 @@ namespace Goteo\Library {
 		 * @return type bool
 		 */
 		public static function password ($value) {
-		    if(strlen($value)<8) {
+		    if(strlen($value)<6) {
 		        return false;
 		    }
 		    return true;
@@ -161,7 +161,71 @@ namespace Goteo\Library {
 				return false;
 		}
 
+        public static function country() {
+            //@TODO Sacar el pais de la ip ip2country de ode.google or something
+            return 'España';
+        }
 
-	}
+        /*
+         * Metodo para reordenar una tabla moviendo uno de sus registros
+         * Necesita tener un campo de orden actualizable, por defecto `order`
+         * Puede tener en cuenta que el registro tiene una seccion/categoria/agrupacion
+         *
+         */
+        public static function reorder($idReg, $updown, $table, $idField = 'id', $orderField = 'order', $extra = array()) {
+
+            //uso el modelo core para hacer los querys
+            $model = '\Goteo\Core\Model';
+            $regs = array();
+
+            // ojo con el campos extra para no pisar otros tegistros
+            $sqlSec = '';
+            $and = 'WHERE';
+            foreach ($extra as $campo=>$valor) {
+                $sqlSec .= " $and `{$campo}` = '{$valor}'";
+                $and = 'AND';
+            }
+            //sacar de la tabla ordenando y poniendo en array de 10 en 10
+            $sql = "SELECT `{$idField}` FROM {$table} {$sqlSec} ORDER  BY `{$orderField}` ASC";
+            if ($query = $model::query($sql)) {
+                $order = 10;
+                while ($row = $query->fetchObject()) {
+                    $regs[$row->$idField] = $order;
+                    $order+=10;
+                }
+
+                //al elemento target cambiarle segun 'up'-5  'down'+5
+                if ($updown == 'up') {
+                    $regs[$idReg] -= 15;
+                } elseif ($updown == 'down') {
+                    $regs[$idReg] += 15;
+                } else {
+                    return false;
+                }
+
+                //reordenar array
+                \asort($regs);
+
+                // hacer updates segun el nuevo orden en una transaccion
+                try {
+                    $model::query("START TRANSACTION");
+                    $order = 1;
+                    foreach ($regs as $id=>$ordenquenoponemos) {
+                        $sql = "UPDATE {$table} SET `{$orderField}`=:order WHERE {$idField} = :id";
+                        $query = $model::query($sql, array(':order'=>$order, ':id'=>$id));
+                        $order++;
+                    }
+                    $model::query("COMMIT");
+
+                    return true;
+                } catch(\PDOException $e) {
+                    return false;
+                }
+            }
+
+        }
+
+
+        }
 
 }

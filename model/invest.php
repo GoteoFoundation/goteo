@@ -8,7 +8,7 @@ namespace Goteo\Model {
             $id,
             $user,
             $project,
-            $account, // cuenta paypal
+            $account, // cuenta paypal o email del usuario
             $amount, //cantidad monetaria del aporte
             $preapproval, //clave del preapproval
             $payment, //clave del cargo
@@ -62,8 +62,22 @@ namespace Goteo\Model {
 
         /*
          * Lista de inversiones (individuales) de un proyecto
+         *
+         * el parametro filter es para la gestion de recompensas (no es un autentico filtro, hay ordenaciones y hay filtros)
          */
-        public static function getAll ($project) {
+        public static function getAll ($project, $filter = null) {
+
+            /*
+             * Estos son los filtros
+             */
+            $filters = array(
+                'date'      => 'Fecha',
+                'user'      => 'Usuario',
+                'reward'    => 'Recompensa',
+                'pending'   => 'Pendientes',
+                'fulfilled' => 'Cumplidos'
+            );
+
 
             $invests = array();
 
@@ -93,7 +107,7 @@ namespace Goteo\Model {
                     ", array($invest->id));
 				$invest->address = $query->fetchObject();
                 
-                $invests[] = $invest;
+                $invests[$invest->id] = $invest;
             }
 
             return $invests;
@@ -103,18 +117,23 @@ namespace Goteo\Model {
         public function validate (&$errors = array()) { 
             if (!is_numeric($this->amount))
                 $errors[] = 'La cantidad no es correcta';
+                //Text::get('validate-invest-amount');
 
             if (empty($this->method))
                 $errors[] = 'Falta metodo de pago';
+                //Text::get('mandatory-invest-method');
 
             if (empty($this->user))
                 $errors[] = 'Falta usuario';
+                //Text::get('mandatory-invest-user');
 
             if (empty($this->project))
                 $errors[] = 'Falta proyecto';
+                //Text::get('mandatory-invest-project');
 
             if (empty($this->account))
                 $errors[] = 'Falta cuenta paypal o email';
+                //Text::get('mandatory-invest-account');
 
             if (empty($errors))
                 return true;
@@ -208,7 +227,6 @@ namespace Goteo\Model {
          * Usuarios que han aportado aun proyecto
          */
         public static function investors ($project) {
-            //@FIXME, cada inversor muestra el aporte toal a este proyecto y la fecha del último aporte (cuando me lo confirme olivier)
             $investors = array();
 
             $sql = "
@@ -259,6 +277,31 @@ namespace Goteo\Model {
         }
 
         /*
+         * Numero de cofinanciadores que han optado por cierta recompensa
+         */
+        public static function choosed ($reward) {
+
+            $users = array();
+
+            $sql = "
+                SELECT  DISTINCT(user) as user
+                FROM    invest
+                INNER JOIN invest_reward
+                    ON invest_reward.invest = invest.id
+                    AND invest_reward.reward = ?
+                WHERE   status <> 2
+                ";
+
+            $query = self::query($sql, array($reward));
+            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $investor) {
+                $users[] = $investor['user'];
+            }
+
+            return $users;
+        }
+
+
+        /*
          * Asignar a la aportación una recompensas
          */
         public function setReward ($reward) {
@@ -277,16 +320,17 @@ namespace Goteo\Model {
         }
 
         /*
-         * Marcar una recompensa como cumplida
+         * Marcar una recompensa como cumplida (o desmarcarla)
          */
-        public static function setFulfilled ($invest, $reward) {
+        public static function setFulfilled ($invest, $reward, $value = '1') {
 
             $values = array(
+                ':value' => $value,
                 ':invest' => $invest,
                 ':reward' => $reward
             );
 
-            $sql = "UPDATE invest_reward SET fulfilled = 1 WHERE invest=:invest AND reward=:reward";
+            $sql = "UPDATE invest_reward SET fulfilled = :value WHERE invest=:invest AND reward=:reward";
             if (self::query($sql, $values)) {
                 return true;
             } else {
@@ -385,9 +429,14 @@ namespace Goteo\Model {
          *  si no se habia ejecutado el preapproval o no se habia confirmado
          *  es igual que cancelada
          */
-        public function cancel () {
+        public function cancel ($code = null) {
+
+            $sql = "UPDATE invest SET status = 2";
+            if (!empty($code)) {
+                $sql .= ", transaction = '$code'";
+            }
+            $sql .= " WHERE id = ?";
             
-            $sql = "UPDATE invest SET status = 2 WHERE id = ?";
             if (self::query($sql, array($this->id))) {
                 return true;
             } else {

@@ -1,11 +1,14 @@
+<?php
+use Goteo\Core\ACL;
+?>
     <div id="menu">
         
         <h2>Menú</h2>
         
         <ul>
             <li class="home"><a href="/">Inicio</a></li>                        
-            <li class="explore"><a href="/discover">Descubre proyectos</a></li>
-            <li class="create"><a href="/project/?create">Crea un proyecto</a></li>                                    
+            <li class="explore"><a class="button red" href="/discover">Descubre proyectos</a></li>
+            <li class="create"><a class="button aqua" href="/project/create">Crea un proyecto</a></li>
             <li class="search">
                 <form method="get" action="/discover/results">
                     <fieldset>
@@ -28,6 +31,9 @@
                         <li><a href="/dashboard/activity"><span>Mi actividad</span></a></li>
                         <li><a href="/dashboard/profile"><span>Mi perfil</span></a></li>
                         <li><a href="/dashboard/projects"><span>Mis proyectos</span></a></li>
+                        <?php if (ACL::check('/admin')) : ?>
+                        <li><a href="/admin"><span>Panel admin</span></a></li>
+                        <?php endif; ?>
                         <li class="logout"><a href="/user/logout"><span>Cerrar sesión</span></a></li>
                     </ul>
                 </div>
