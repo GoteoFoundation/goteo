@@ -1,25 +1,20 @@
 <?php
 
-$highlights = <<<END
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-Phasellus mi turpis, pharetra ut luctus ac, imperdiet eu enim. 
-Maecenas condimentum fringilla erat, non imperdiet quam faucibus sed. 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-Phasellus mi turpis, pharetra ut luctus ac, imperdiet eu enim. 
-Maecenas condimentum fringilla erat, non imperdiet quam faucibus sed. 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-Phasellus mi turpis, pharetra ut luctus ac, imperdiet eu enim. 
-Maecenas condimentum fringilla erat, non imperdiet quam faucibus sed. 
-END;
+use Goteo\Library\Text,
+    Goteo\Model\News; 
+
+$highlights = News::getAll(true);
+
+$see_more = Text::get('regular-see_more');
 
 ?>
 <div id="highlights">
     
-    <h2><a href="">Noticias</a></h2>
+    <h2><a href="/news"><?php echo Text::get('regular-news'); ?></a></h2>
     
     <ul>
-        <?php foreach (preg_split("/\n\s*/", $highlights) as $i => $hl): ?>
-        <li><?php echo htmlspecialchars($hl) ?> <a href="">Ver más</a></li>
+        <?php foreach ($highlights as $i => $hl) : ?>
+        <li><?php echo htmlspecialchars($hl->title) ?> <a href="<?php echo $hl->url; ?>" target="_blank"><?php echo $see_more; ?></a></li>
         <?php endforeach ?>
     </ul>
     

@@ -2,32 +2,13 @@
 
 namespace Goteo\Model {
 
-    use Goteo\Library\Check;
-    
-    class Interest extends \Goteo\Core\Model {
+    class Interest extends \Goteo\Model\Category {
 
         public
             $id,
             $name,
             $description,
             $used; // numero de usuarios que tienen este interés
-
-        /*
-         *  Devuelve datos de un interés
-         */
-        public static function get ($id) {
-                $query = static::query("
-                    SELECT
-                        id,
-                        name,
-                        description
-                    FROM    interest
-                    WHERE id = :id
-                    ", array(':id' => $id));
-                $interest = $query->fetchObject(__CLASS__);
-
-                return $interest;
-        }
 
         /*
          * Lista de intereses para usuarios
@@ -45,10 +26,10 @@ namespace Goteo\Model {
                     (   SELECT
                             COUNT(user_interest.user)
                         FROM user_interest
-                        WHERE user_interest.interest = interest.id
+                        WHERE user_interest.interest = category.id
                     ) as used,
                     `order`
-                FROM    interest
+                FROM    category
                 ORDER BY `order` ASC";
 
             $query = static::query($sql);
@@ -58,6 +39,31 @@ namespace Goteo\Model {
             }
 
             return $list;
+        }
+
+    }
+
+}
+
+
+/**
+ *
+    use Goteo\Library\Check;
+
+
+        //  Devuelve datos de un interés
+        public static function get ($id) {
+                $query = static::query("
+                    SELECT
+                        id,
+                        name,
+                        description
+                    FROM    interest
+                    WHERE id = :id
+                    ", array(':id' => $id));
+                $interest = $query->fetchObject(__CLASS__);
+
+                return $interest;
         }
 
         public function validate (&$errors = array()) {
@@ -101,9 +107,7 @@ namespace Goteo\Model {
             }
         }
 
-        /*
-         * Para quitar un interes de la tabla
-         */
+        // Para quitar un interes de la tabla
         public static function delete ($id) {
 
             $sql = "DELETE FROM interest WHERE id = :id";
@@ -115,29 +119,21 @@ namespace Goteo\Model {
 
         }
 
-        /*
-         * Para que salga antes  (disminuir el order)
-         */
+        // Para que salga antes  (disminuir el order)
         public static function up ($id) {
             return Check::reorder($id, 'up', 'interest', 'id', 'order');
         }
 
-        /*
-         * Para que salga despues  (aumentar el order)
-         */
+        // Para que salga despues  (aumentar el order)
         public static function down ($id) {
             return Check::reorder($id, 'down', 'interest', 'id', 'order');
         }
 
-        /*
-         * Orden para añadirlo al final
-         */
+        // Orden para añadirlo al final
         public static function next () {
             $query = self::query('SELECT MAX(`order`) FROM interest');
             $order = $query->fetchColumn(0);
             return ++$order;
 
         }
-    }
-
-}
+ */

@@ -10,8 +10,9 @@ CREATE TABLE IF NOT EXISTS `user` (
   `active` tinyint(1) NOT NULL,
   `avatar` int(11) DEFAULT NULL,
   `contribution` text COLLATE utf8_general_ci,
-  `twitter` tinytext COLLATE utf8_general_ci,
+  `twitter`  tinytext COLLATE utf8_general_ci,
   `facebook` tinytext COLLATE utf8_general_ci,
+  `identica` tinytext COLLATE utf8_general_ci,
   `linkedin` tinytext COLLATE utf8_general_ci,
   `worth` int(7) DEFAULT NULL,
   `created` timestamp NULL DEFAULT NULL,
@@ -19,3 +20,6 @@ CREATE TABLE IF NOT EXISTS `user` (
   `token` tinytext COLLATE utf8_general_ci,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+-- alters

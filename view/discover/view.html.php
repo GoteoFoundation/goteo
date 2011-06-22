@@ -1,8 +1,9 @@
 <?php
 
-use Goteo\Core\View;
+use Goteo\Core\View,
+    Goteo\Library\Text;
 
-$bodyClass = 'home';
+$bodyClass = 'discover';
 
 include 'view/prologue.html.php';
 

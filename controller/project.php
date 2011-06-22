@@ -41,17 +41,17 @@ namespace Goteo\Controller {
             // si no tenemos SESSION stepped es porque no venimos del create
             if (!isset($_SESSION['stepped']))
                 $_SESSION['stepped'] = array(
-                    'userProfile' => 'userProfile',
+                     'userProfile'  => 'userProfile',
                      'userPersonal' => 'userPersonal',
-                     'overview' => 'overview',
-                     'costs' => 'costs',
-                     'rewards' => 'rewards',
-                     'supports' => 'supports'
+                     'overview'     => 'overview',
+                     'costs'        => 'costs',
+                     'rewards'      => 'rewards',
+                     'supports'     => 'supports'
                 );
 
             if ($project->status != 1 && !ACL::check('/project/edit/todos')) {
-                // solo seguimiento estado, progreso
-                // pasos preview, conseguido, recompensas
+                // solo puede estar en preview
+                $step = 'preview';
                 
                 $steps = array(
                     'preview' => array(
@@ -64,7 +64,9 @@ namespace Goteo\Controller {
                  
                  
             } else {
-                // todos los pasos
+                // todos los pasos, entrando en userProfile por defecto
+                $step = 'userProfile';
+
                 $steps = array(
                     'userProfile' => array(
                         'name' => Text::get('step-1'),
@@ -107,7 +109,6 @@ namespace Goteo\Controller {
                 );
             }
             
-            $step = null;      
                         
             
             foreach ($_REQUEST as $k => $v) {                
@@ -115,7 +116,7 @@ namespace Goteo\Controller {
                     $step = substr($k, 10);
                 }                
             }
-            
+
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 $errors = array(); // errores al procesar, no son errores en los datos del proyecto
@@ -154,19 +155,6 @@ namespace Goteo\Controller {
 
             //re-evaluar el proyecto
             $project->check();
-
-            // vista por defecto, el primer paso por el que no ha pasado
-            foreach ($steps as $id => $data) {
-
-                if (empty($step) && !empty($project->errors[$id])) {
-                    $step = $id;
-                    break;
-                }
-            }
-
-            if (empty($step)) {
-                $step = 'preview';
-            }
 
             //si nos estan pidiendo el error de un campo, se lo damos
             if (!empty($_GET['errors'])) {
@@ -209,6 +197,7 @@ namespace Goteo\Controller {
                 case 'overview':
                     $viewData['currently'] = Model\Project::currentStatus();
                     $viewData['categories'] = Model\Project\Category::getAll();
+                    $viewData['scope'] = Model\Project::scope();
                     break;
 
                 case 'costs':
@@ -274,8 +263,8 @@ namespace Goteo\Controller {
             // solamente se puede ver publicamente si
             // - es el dueño
             // - es un admin con permiso
-            // - es otro usuario y el proyecto esta available en campaña, financiado o retorno cumplido
-            if (($project->status > 2 && $project->status < 6) ||
+            // - es otro usuario y el proyecto esta available en campaña, financiado, retorno cumplido o caducado (que no es desechado)
+            if (($project->status > 2) ||
                 $project->owner == $_SESSION['user']->id ||
                 ACL::check('/project/edit/todos')) {
                 // lo puede ver
@@ -351,6 +340,7 @@ namespace Goteo\Controller {
                 'user_keywords'=>'keywords',
                 'user_contribution'=>'contribution',
                 'user_twitter'=>'twitter',
+                'user_identica'=>'identica',
                 'user_facebook'=>'facebook',
                 'user_linkedin'=>'linkedin'
             );
@@ -459,7 +449,8 @@ namespace Goteo\Controller {
                 'keywords',
                 'media',
                 'currently',
-                'project_location'
+                'project_location',
+                'scope'
             );
 
             foreach ($fields as $field) {

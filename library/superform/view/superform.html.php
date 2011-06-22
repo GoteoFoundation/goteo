@@ -16,7 +16,6 @@
     
     <?php if (isset($this['hint'])): ?>
     <div class="hint">                    
-        <h4>Guía</h4>
         <blockquote><?php echo $this['hint'] ?></blockquote>
     </div>
     <?php endif ?>

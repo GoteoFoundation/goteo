@@ -199,10 +199,7 @@ namespace Goteo\Library {
                     $regs[$idReg] -= 15;
                 } elseif ($updown == 'down') {
                     $regs[$idReg] += 15;
-                } else {
-                    return false;
                 }
-
                 //reordenar array
                 \asort($regs);
 

@@ -5,7 +5,8 @@ use Goteo\Core\View,
     Goteo\Model\Project\Cost,
     Goteo\Model\Project\Support,
     Goteo\Model\Project\Category,
-    Goteo\Model\Blog;
+    Goteo\Model\Blog,
+    Goteo\Library\Text;
 
 $project = $this['project'];
 $show    = $this['show'];
@@ -46,7 +47,7 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
             <div>
                 <h2><?php echo htmlspecialchars($project->name) ?></h2>
                 
-                <div class="categories"><h3>Categorias:</h3> 
+                <div class="categories"><h3><?php echo Text::get('project-view-categories-title'); ?></h3>
                     <?php 
                     $i = 0;  
                     foreach ($categories as $cat) {

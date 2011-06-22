@@ -64,7 +64,7 @@ namespace Goteo\Model {
                 ", array(':node' => $node));
             
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
-                $promo->description =Text::recorta($promo->description, 100);
+                $promo->description =Text::recorta($promo->description, 100, false);
                 $promo->status = $status[$promo->status];
                 $promos[] = $promo;
             }

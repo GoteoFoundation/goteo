@@ -44,6 +44,9 @@ namespace Goteo\Library {
         }
 
         static public function get ($id) {
+
+//            return 'aaaaaa';
+
             $lang = \GOTEO_DEFAULT_LANG; // @TODO idiomas
 
             if (\defined('GOTEO_ADMIN_NOCACHE')) {
@@ -70,8 +73,7 @@ namespace Goteo\Library {
             
 			// buscamos el texto en la tabla
 			$query = Model::query("SELECT `text` FROM text WHERE id = :id AND lang = :lang", array(':id' => $id, ':lang' => $lang));
-			$exist = $query->fetchObject();
-			if ($exist->text) {
+			if ($exist = $query->fetchObject()) {
                 $tmptxt = $_cache[$id][$lang] = $exist->text;
 
                 //contamos cuantos argumentos necesita el texto
@@ -89,14 +91,14 @@ namespace Goteo\Library {
 
                 if (strcmp($texto, $id) === 0) {
                 // sino, lo metemos en la tabla y en purpose
-                    Model::query("REPLACE INTO text (id, lang, `text`) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
+//                    Model::query("REPLACE INTO text (id, lang, `text`) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
                     Model::query("REPLACE INTO purpose (text, purpose) VALUES (:text, :purpose)", array(':text' => $id, ':purpose' => "Texto $id"));
                 }
 			}
 
-            $text = nl2br($text);
+            $texto = nl2br($texto);
             // apaño temporal para los magic quotes
-            $text = \str_replace('\\', '', $text);
+            $texto = \str_replace('\\', '', $texto);
 
             return $texto;
 		}
@@ -206,16 +208,26 @@ namespace Goteo\Library {
          */
         static public function filters()
         {
-            return array(
-                'mandatory'     => 'Campos obligatorios',
+            $filters = array(
+                'header'        => 'Cabeceras de página o sección',
+                'field'         => 'Campos y agrupaciones de campos',
+                'mandatory'     => 'Mensajes de campos obligatorios',
                 'tooltip'       => 'Consejos para rellenar el formulario de proyecto',
-                'error-register'=> 'Errores al registrarse',
+                'error'         => 'Errores que se muestran al usuario',
                 'explain'       => 'Explicaciones',
-                'guide-project' => 'Guias del formulario de proyecto',
-                'guide-user'    => 'Guias del formulario de usuario',
+                'guide'         => 'Textos de guia',
                 'step'          => 'Pasos del formulario',
-                'validate'      => 'Validaciones de campos'
+                'status'        => 'Estados de los proyectos',
+                'waitfot'       => 'Explicacion estados de los proyectos',
+                'validate'      => 'Validaciones de campos',
+                'regular'       => 'De uso común',
+                'button'        => 'Genéricos para botones',
+                'subject'       => 'Asuntos para emails automáticos'
             );
+
+            \asort($filters);
+
+            return $filters;
         }
 
         /*
@@ -223,8 +235,11 @@ namespace Goteo\Library {
          */
         static public function groups()
         {
-            return array(
-                'profile'  => 'Perfil del usuario',
+            $groups = array(
+                'public_profile' => 'Pagina de perfil de usuario',
+                'project'  => 'Proyecto, pública y formulario',
+                'form'     => 'Generales del formulario de proyecto',
+                'profile'  => 'Geestión de perfil del usuario',
                 'personal' => 'Datos personales del usuario',
                 'overview' => 'Descripción del proyecto',
                 'costs'    => 'Costes del proyecto',
@@ -233,10 +248,28 @@ namespace Goteo\Library {
                 'preview'  => 'Previsualización del proyecto',
                 'dashboard'=> 'Dashboard del usuario',
                 'register' => 'Registro de usuarios',
-                'general'  => 'Propósito general'
+                'login'    => 'Pagina de login',
+                'discover'  => 'Sección descubre proyectos',
+                'community'  => 'Sección comunidad',
+                'general'  => 'Propósito general',
+                'faq'  => 'Pagina de FAQ'
             );
+
+            \asort($groups);
+
+            return $groups;
         }
 
+
+		/*
+		 *   Pone el enlace a gmaps segun localidad
+         * @TODO , ponerle el LANG
+		 */
+		static public function GmapsLink($location)
+		{
+			$texto = '<a href="http://maps.google.es/maps?q='.htmlspecialchars(rawurlencode($location)).'&hl=es" target="_blank">'.htmlspecialchars($location).'</a>';
+			return $texto;
+		}
 
 		/*
 		 *   Método para formatear friendly un texto para ponerlo en la url

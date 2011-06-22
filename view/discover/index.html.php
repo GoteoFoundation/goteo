@@ -1,8 +1,9 @@
 <?php
 
-use Goteo\Core\View;
+use Goteo\Core\View,
+    Goteo\Library\Text;
 
-$bodyClass = 'home';
+$bodyClass = 'discover';
 
 include 'view/prologue.html.php';
 
@@ -10,8 +11,8 @@ include 'view/header.html.php' ?>
 
         <div id="sub-header">
             <div>
-                <h2>Por categoria, lugar o retorno,</h2>
-                <span type="color:red;">encuentra el proyecto</span> con el que más te identificas
+                <h2><?php echo Text::get('discover-header-supertitle'); ?></h2>
+                <?php echo Text::get('discover-header-title'); ?>
             </div>
 
         </div>
@@ -40,7 +41,7 @@ include 'view/header.html.php' ?>
                     )); ?>
                 <?php endforeach; ?>
                 
-                <div class="more"><a href="/discover/view/<?php echo $type; ?>">Ver más</a></div>
+                <div class="more"><a href="/discover/view/<?php echo $type; ?>"><?php echo Text::get('regular-see_more'); ?></a></div>
                 
             </div>
 

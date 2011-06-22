@@ -11,7 +11,7 @@ $level = (int) $this['level'] ?: 3;
 
 ?>
 <?php if (!empty($post->comments)): ?>
-    <h<?php echo $level + 2?>>Comentarios</h<?php echo $level + 2?>>
+    <h<?php echo $level + 2?>><?php echo Text::get('blog-coments-header'); ?></h<?php echo $level + 2?>>
     <?php foreach ($post->comments as $comment) : ?>
     <div class="message">
        <span class="avatar"><img src="/image/<?php echo $comment->user->avatar->id; ?>/50/50" alt="" /></span>
@@ -21,5 +21,5 @@ $level = (int) $this['level'] ?: 3;
    </div>
     <?php endforeach; ?>
 <?php else : ?>
-    <p>No hay comentarios</p>
+    <p><?php echo Text::get('blog-comments_no_comments'); ?></p>
 <?php endif; ?>

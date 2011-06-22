@@ -1,4 +1,5 @@
 <?php
+use Goteo\Library\Text;
 
 $project = $this['project'];
 $types   = $this['types'];
@@ -56,5 +57,5 @@ foreach ($project->supports as $item) {
                                         
     </table>
     
-    <a class="button green" href="/project/<?php echo $project->id; ?>/messages">Colabora</a>
+    <a class="button green" href="/project/<?php echo $project->id; ?>/messages"><?php echo Text::get('regular-collaborate'); ?></a>
 </div>

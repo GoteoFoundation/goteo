@@ -61,6 +61,14 @@ body.project-edit div#main.rewards div.superform li.element.reward div.children 
     background-image: url('../../icon/m/product.png');
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_design > label {
+    background-image: url('../../icon/m/design.png');
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-type li.reward_other > label {
+    background-image: url('../../icon/m/other.png');
+}
+
 body.project-edit div#main.rewards div.superform li.element.reward div.children li.element.reward-license li > label {
     padding-left: 55px;        
     background: none no-repeat 10px center;

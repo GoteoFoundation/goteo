@@ -2,6 +2,7 @@
 
 use Goteo\Core\View,
     Goteo\Library\Worth,
+    Goteo\Library\Text,
     Goteo\Model\User\Interest;
 
 $bodyClass = 'user-profile';
@@ -14,7 +15,7 @@ $worthcracy = Worth::getAll();
 
         <div id="sub-header">
             <div>                                
-                <h2><img src="/image/<?php echo $user->avatar->id; ?>/75/75" /> Perfil de <br /><em><?php echo $user->name; ?></em></h2>
+                <h2><img src="/image/<?php echo $user->avatar->id; ?>/75/75" /> <?php echo Text::get('profile-name-header'); ?> <br /><em><?php echo $user->name; ?></em></h2>
             </div>
         </div>
 
@@ -29,7 +30,7 @@ $worthcracy = Worth::getAll();
                 <?php echo new View('view/user/widget/social.html.php', array('user' => $user)) ?>                        
                                                 
                 <div class="widget projects">
-                    <h2 class="title">Proyectos que apoyo</h2>
+                    <h2 class="title"><?php echo Text::get('profile-invest_on-header'); ?></h2>
                     <?php foreach ($this['invested'] as $project) : ?>
                         <div>
                             <?php
@@ -42,7 +43,7 @@ $worthcracy = Worth::getAll();
                 </div>
 
                 <div class="widget projects">
-                    <h2 class="title">Mis proyectos</h2>
+                    <h2 class="title"><?php echo Text::get('profile-my_projects-header'); ?></h2>
                     <?php foreach ($this['projects'] as $project) : ?>
                         <div>
                             <?php
@@ -57,7 +58,7 @@ $worthcracy = Worth::getAll();
             </div>
             <div class="side">
                 <div class="widget user-supporters">
-                        <h3 class="supertitle">Mis cofinanciadores</h3>
+                        <h3 class="supertitle"><?php echo Text::get('profile-my_investors-header'); ?></h3>
                         <div class="supporters">
                         <ul>
                             <?php foreach ($this['investors'] as $user => $investor): ?>
@@ -68,7 +69,7 @@ $worthcracy = Worth::getAll();
                     </div>
 
                     <div class="widget user-mates">
-                        <h3 class="supertitle">Compartiendo intereses</h3>
+                        <h3 class="supertitle"><?php echo Text::get('profile-sharing_interests-header'); ?></h3>
                         <div class="users">
                             <ul>
                             <?php foreach ($this['shares'] as $mate): ?>
@@ -78,14 +79,14 @@ $worthcracy = Worth::getAll();
                                         <div class="avatar"><img src="<?php echo htmlspecialchars($mate->avatar->getLink(50,50)) ?>" /></div>
                                         <?php endif ?>
                                         <h4><a href="/user/<?php echo htmlspecialchars($mate->user) ?>"><?php echo htmlspecialchars($mate->user) ?></a></h4>
-                                        <a class="projects" href="/user/<?php echo htmlspecialchars($mate->user) ?>">Proyectos (<?php echo $mate->projects ?>)</a>
-                                        <a class="invests" href="/user/<?php echo htmlspecialchars($mate->user) ?>">Aportaciones (<?php echo $mate->invests ?>)</a>
+                                        <a class="projects" href="/user/<?php echo htmlspecialchars($mate->user) ?>"><?php echo Text::get('regular-projects'); ?> (<?php echo $mate->projects ?>)</a>
+                                        <a class="invests" href="/user/<?php echo htmlspecialchars($mate->user) ?>"><?php echo Text::get('regular-investing'); ?> (<?php echo $mate->invests ?>)</a>
                                     </div>
                                 </li>
                             <?php endforeach ?>                                                        
                             </ul>
                         </div>
-                        <a class="more" href="">Ver más</a>
+                        <a class="more" href=""><?php echo Text::get('regular-see_more'); ?></a>
                     </div>
             </div>
 

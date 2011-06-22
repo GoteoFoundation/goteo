@@ -1,6 +1,7 @@
 <?php
 
 use Goteo\Core\View,
+    Goteo\Library\Text,
     Goteo\Library\Worth;
 
 $project = $this['project'];
@@ -15,13 +16,13 @@ $worthcracy = Worth::getAll();
 ?>
 <div class="widget project-supporters">
     
-    <h<?php echo $level ?> class="title">Cofinanciadores</h<?php echo $level ?>>
+    <h<?php echo $level ?> class="title"><?php echo Text::get('project-menu-supporters'); ?></h<?php echo $level ?>>
     
     <dl class="summary">
-        <dt class="supporters">Cofinanciadores</dt>
+        <dt class="supporters"><?php echo Text::get('project-menu-supporters'); ?></dt>
         <dd class="supporters"><?php echo $supporters ?></dd>
         
-        <dt class="reached">Total de aportaciones</dt>
+        <dt class="reached"><?php echo Text::get('project-invest-total'); ?></dt>
         <dd class="reached"><?php echo $reached ?> <span class="euro">&euro;</span></dd>
         
     </dl>   

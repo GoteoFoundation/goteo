@@ -290,6 +290,14 @@ div.widget.project div.rewards ul li.product {
     background-image: url('../../icon/m/product.png');
 }
 
+div.widget.project div.rewards ul li.design {
+    background-image: url('../../icon/m/design.png');
+}
+
+div.widget.project div.rewards ul li.other {
+    background-image: url('../../icon/m/other.png');
+}
+
 div.widget.project div.buttons {
     clear: both;
 }
