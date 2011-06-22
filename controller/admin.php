@@ -1712,20 +1712,16 @@ namespace Goteo\Controller {
             switch ($action)  {
                 case 'remove':
                     // eliminar una entrada
-                    if (!empty($blog->posts[$id])) {
-                        if (Model\Blog\Post::delete($id)) {
-                            unset($blog->posts[$id]);
-                            $success[] = 'Entrada eliminada';
-                        } else {
-                            $errors[] = 'No se ha podido eliminar la entrada';
-                        }
+                    if (Model\Blog\Post::delete($id)) {
+                        unset($blog->posts[$id]);
+                        $success[] = 'Entrada eliminada';
                     } else {
-                        $errors[] = 'La entrada que se quiere eliminar no es de este blog';
+                        $errors[] = 'No se ha podido eliminar la entrada';
                     }
                 case 'list':
                     // lista de entradas
                     // obtenemos los datos
-                    $posts = $blog->posts;
+                    $posts = Model\Blog\Post::getAll($blog->id);
 
                     return new View(
                         'view/admin/blog.html.php',

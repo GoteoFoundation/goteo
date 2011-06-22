@@ -26,13 +26,14 @@ include 'view/prologue.html.php';
             <!-- <p><a href="/admin/icons/add/?filter=<?php echo $this['filter']; ?>">Añadir tipo</a></p> -->
 
         <div id="main">
-            <?php if (!empty($this['errors'])) {
-                echo '<pre>' . print_r($this['errors'], 1) . '</pre>';
-            } ?>
-
-            <?php if (!empty($this['success'])) {
-                echo '<pre>' . print_r($this['success'], 1) . '</pre>';
-            } ?>
+            <?php if (!empty($this['errors']) || !empty($this['success'])) : ?>
+                <div class="widget">
+                    <p>
+                        <?php echo implode(',', $this['errors']); ?>
+                        <?php echo implode(',', $this['success']); ?>
+                    </p>
+                </div>
+            <?php endif; ?>
 
             <div class="widget board">
                 <form id="groupfilter-form" action="/admin/icons" method="get">
