@@ -443,6 +443,20 @@ namespace Goteo\Model {
 
             $query = self::query($sql, array($node));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $user) {
+
+                $query = static::query("
+                    SELECT
+                        user_id
+                    FROM user_role
+                    WHERE user_id = :id
+                    AND role_id = 'checker'
+                    ", array(':id' => $user->id));
+                $role = $query->fetchObject();
+
+                if ($role->user_id == $user->id) {
+                    $user->checker = true;
+                }
+
                 $users[] = $user;
             }
             return $users;
