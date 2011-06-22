@@ -17,7 +17,7 @@ include 'view/prologue.html.php';
                 <div class="admin-menu">
                     <ul>
                         <li class="home"><a href="/admin">Mainboard</a></li>
-                        <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
+                        <li class="checking"><a href="/admin/overview">Listado de proyectos</a></li>
                         <li class="accounting"><a href="/admin/accounting">Transacciones</a></li>
 <!--                    <li class="comunication"><a href="/admin/comunication">Comunicación</a></li> -->
                     </ul>
@@ -68,6 +68,7 @@ include 'view/prologue.html.php';
                     <h3 class="title">Evaluación de proyectos</h3>
                     <ul>
                         <li><a href="/admin/criteria">Criterios</a></li>
+                        <li><a href="/admin/checking">Revisiones</a></li>
                     </ul>
                 </div>
 

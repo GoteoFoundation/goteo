@@ -418,6 +418,13 @@ namespace Goteo\Model {
                     WHERE interest = {$filters['interest']}
                     ) ";
             }
+            if (!empty($filters['role'])) {
+                $sqlFilter .= " AND id IN (
+                    SELECT user_id
+                    FROM user_role
+                    WHERE role_id = '{$filters['role']}'
+                    ) ";
+            }
             if (!empty($filters['posted'])) {
                 /*
                  * Si ha enviado algun mensaje o comentario

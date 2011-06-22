@@ -79,6 +79,76 @@ namespace Goteo\Model {
         }
 
 
+        /**
+         * Saca una lista completa de proyectos con revision o susceptibles de abrir revision
+         *
+         * @param string node id
+         * @return array of project instances
+         */
+        public static function getList($filters = array(), $node = \GOTEO_NODE) {
+            $projects = array();
+
+            $sqlFilter = "";
+            if (!empty($filters['status'])) {
+                $status = $filters['status'] == 'open' ? '1' : '0';
+                $sqlFilter .= " AND review.status = " . $status;
+            }
+            if (!empty($filters['checker'])) {
+                $sqlFilter .= " AND review.id IN (
+                    SELECT review
+                    FROM user_review
+                    WHERE user = '{$filters['checker']}'
+                    )";
+            }
+
+            $sql = "SELECT
+                        project.id as project,
+                        project.name as name,
+                        user.name as owner,
+                        review.id as review,
+                        review.status as status,
+                        project.progress as progress,
+                        review.score as score,
+                        review.max as max
+                    FROM project
+                    INNER JOIN user
+                        ON user.id = project.owner
+                    LEFT JOIN review
+                        ON review.project = project.id
+                    WHERE (project.status = 2 OR review.id IS NOT NULL)
+                        AND project.node = ?
+                        $sqlFilter
+                    ORDER BY project.progress DESC
+                    ";
+
+            echo "$sql <br />";
+            $query = self::query($sql, array($node));
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
+
+                $checkers = array();
+
+                $subquery = self::query("
+                    SELECT
+                        user.id as user,
+                        user.name as name,
+                        user_review.ready as ready
+                    FROM user
+                    JOIN user_review ON user.id = user_review.user
+                    WHERE user_review.review = ?
+                ", array($proj->review));
+                foreach ($subquery->fetchAll(\PDO::FETCH_OBJ) as $checker) {
+                    $checkers[] =  $checker;
+                }
+                unset($subquery);
+
+                $proj->checkers = $checkers;
+
+                $projects[] = $proj;
+            }
+            return $projects;
+        }
+
+
         /*
          * Metodo para contar la puntuacion
          * @TODO otro metodo para grabarla

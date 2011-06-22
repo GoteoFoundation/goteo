@@ -245,9 +245,9 @@ namespace Goteo\Controller {
 		}
 
         /*
-         *  Revisión de proyectos, aqui llega con un nodo y si no es el suyo a la calle (o al suyo)
+         *  Lista de proyectos
          */
-        public function checking($action = 'list', $id = null) {
+        public function overview($action = 'list', $id = null) {
             $filters = array();
             $fields = array('status', 'category');
             foreach ($fields as $field) {
@@ -297,12 +297,107 @@ namespace Goteo\Controller {
             $categories = Model\Project\Category::getAll();
 
             return new View(
-                'view/admin/checking.html.php',
+                'view/admin/overview.html.php',
                 array(
                     'projects' => $projects,
                     'filters' => $filters,
                     'status' => $status,
                     'categories' => $categories,
+                    'errors' => $errors
+                )
+            );
+        }
+
+        /*
+         *  Revision de proyectos
+         */
+        public function checking($action = 'list', $id = null) {
+            $filters = array();
+            $fields = array('status', 'checker');
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    $filters[$field] = $_GET[$field];
+                }
+            }
+
+            $filter = "?status={$filters['status']}&checker={$filters['checker']}";
+
+            $errors = array();
+
+            switch ($action) {
+                case 'edit':
+                case 'start':
+                    // comenzar revision
+                    // formulario para comentarios a los revisores
+                    // Creamos el registro de revision
+                    // gestionar post
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
+
+                        // instancia
+                        $review = new Model\Faq(array(
+                            'id'         => $_POST['id'],
+                            'project'    => $_POST['project'],
+                            'to_checker' => $_POST['to_checker'],
+                            'to_owner'   => $_POST['to_owner']
+                        ));
+
+                        if ($review->save($errors)) {
+                            switch ($_POST['action']) {
+                                case 'add':
+                                    $success = 'Revisión iniciada correctamente';
+                                    break;
+                                case 'edit':
+                                    $success = 'Datos editados correctamente';
+                                    break;
+                            }
+                        }
+                        else {
+                            throw new Redirection('/admin/checking/' . $filter);
+                        }
+                    }
+                    
+                    return new View(
+                        'view/admin/reviewEdit.html.php',
+                        array(
+                            'action' => $_POST['action'],
+                            'review' => $review,
+                            'project'=> $project,
+                            'errors' => $errors
+                        )
+                    );
+
+                    break;
+                case 'finish':
+                    // marcamos la revision como completamente cerrada   "review->status = 0"
+                    break;
+                case 'assign':
+                    // asignamos la revision a este usuario
+                    // la id de revision llega en $id
+                    // la id del usuario llega por post
+                    break;
+                case 'unassign':
+                    // se la quitamos a este revisor
+                    // nos llega la id
+                    break;
+                case 'details':
+                    // mostramos los detalles de revision
+                    break;
+            }
+
+            $projects = Model\Review::getList($filters);
+            $status = array(
+                'open' => 'Abiertas',
+                'closed' => 'Cerradas'
+            );
+            $checkers = Model\User::getAll(array('role'=>'checker'));
+
+            return new View(
+                'view/admin/checking.html.php',
+                array(
+                    'projects' => $projects,
+                    'filters' => $filters,
+                    'status' => $status,
+                    'checkers' => $checkers,
                     'errors' => $errors
                 )
             );

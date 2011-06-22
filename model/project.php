@@ -1334,7 +1334,7 @@ namespace Goteo\Model {
         }
 
         /**
-         * Saca una lista completa de proyectos para la revisión
+         * Saca una lista completa de proyectos
          *
          * @param string node id
          * @return array of project instances
