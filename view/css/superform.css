@@ -84,10 +84,6 @@ div.superform div.elements > ol {
     list-style: none;
 }
 
-div.superform > div.elements div.elements > ol {
-    padding-left: 2em;    
-}
-
 div.superform li.element > div.contents + div.children > div.elements > ol,
 div.superform li.element > div.contents + div.feedback + div.children > div.elements > ol{
     margin-top: 1em;
@@ -97,7 +93,7 @@ div.superform li.element {
     position: relative;
     padding: 1em 0;
     border-top: 1px dashed #B7C2C5;
-    clear: both;
+    clear: both;    
 }
 
 div.superform li.element:last-child {
@@ -125,10 +121,12 @@ body.js div.superform > div.elements > ol > li.element {
 body.js div.superform > div.elements > ol > li.element li.element {
     margin-right: 0;
     border-right: none;
+    padding-left: 1em;
 }
 
-body div.superform > div.elements li.element li.element.inline {
+body div.superform > div.elements > ol > li.element li.element.inline {
     border-top: none;
+    padding-left: 0 !important;
 }
 
 div.superform div.elements > ol > li div.element {
@@ -232,7 +230,7 @@ div.superform li.element.textarea > div.contents > textarea {
     width: 100%;
     min-width: 100%;
     max-width: 100%;
-    margin: 0;    
+    margin: 0;
 }
 
 /* Custom textboxes */

@@ -12,12 +12,15 @@ body.project-edit div#main.costs div.superform li.element.cost div.children li.e
     position: absolute;
     left: 0;
     top: 1em;
+    width: 100%;
+    right: 0;
 }
 
-body.project-edit div#main.costs div.superform li.element.cost div.children li.element .contents {    
+body.project-edit div#main.costs div.superform li.element.cost > div.children > div.elements > ol > li.element > .contents {    
     margin-left: 25%;
     position: relative;
     margin-top: 0;
+    margin-right: 78px;
 }
 
 body.project-edit div#main.costs div.superform li.element.cost div.children li.element.add,
@@ -27,7 +30,7 @@ body.project-edit div#main.costs div.superform li.element.cost div.children li.e
 
 body.project-edit div#main.costs div.superform li.element.cost div.children li.element.remove {
     float: right;
-    margin-top: -4em;
+    margin-top: -5em;
 }
 
 body.project-edit div#main.costs div.superform li.element.cost div.children li.element.cost-description textarea {
