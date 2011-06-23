@@ -31,14 +31,12 @@ include 'view/prologue.html.php';
         </div>
 
         <div id="main">
-            <?php if (!empty($this['errors'])) : ?>
+            <?php if (!empty($this['errors']) || !empty($this['message'])) : ?>
                 <div class="widget">
-                    <p><?php echo implode(',', $this['errors']); ?></p>
-                </div>
-            <?php endif; ?>
-            <?php if (!empty($this['message'])) : ?>
-                <div class="widget">
-                    <p><?php echo $this['message']; ?></p>
+                    <p>
+                        <?php echo implode(',', $this['errors']); ?>
+                        <?php echo $this['message']; ?>
+                    </p>
                 </div>
             <?php endif; ?>
 

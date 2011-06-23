@@ -48,9 +48,13 @@ include 'view/prologue.html.php';
                     <?php break;
             } ?>
 
-            <?php if (!empty($this['errors'])) {
-                echo '<pre>' . print_r($this['errors'], 1) . '</pre>';
-            } ?>
+            <?php if (!empty($this['errors'])) : ?>
+                <div class="widget">
+                    <p>
+                        <?php echo implode(',', $this['errors']); ?>
+                    </p>
+                </div>
+            <?php endif; ?>
 
             <div class="widget board">
                 <form method="post" action="/admin/criteria/?filter=<?php echo $this['filter']; ?>">

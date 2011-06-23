@@ -63,3 +63,8 @@ body.review div#review-menu ul li.section.active,
 body.review div#review-menu ul li.section.active ul {
     background-color: #1db3b2;
 }
+
+body.review div#main div.widget {
+    margin-bottom: 20px;
+}
+

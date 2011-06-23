@@ -35,28 +35,20 @@ namespace Goteo\Controller {
         /*
          * Sección, Mi actividad
          * Opciones:
-         *      'projects' los proyectos que tengo actualmente asignados para revisar
+         *      'summary' resumen de los proyectos que tengo actualmente asignados para revisar
          * 
          */
-        public function activity ($option = 'summary', $action = 'view') {
+        public function activity ($option = 'summary', $action = 'list') {
 
             $user = $_SESSION['user'];
 
-            $projects = Model\Project::assigned($user->id);
-/*
-            foreach ($projects as $project) {
-
-                // compruebo que puedo editar la revision
-                // emmm... como lo hago ???
-                if (!ACL::check('/project/edit/'.$project->id)) {
-                    ACL::allow('/project/edit/'.$project->id, '*', 'user', $user);
-                }
+            $reviews = Model\Review::assigned($user->id);
+            // si no hay proyectos asignados no tendria que estar aqui
+            if (count($reviews) == 0) {
+                $message = 'No tienes asignada ninguna revisión de proyectos';
             }
- * 
- */
+
             // resumen de los proyectos que tengo actualmente asignados
-
-
             return new View (
                 'view/review/index.html.php',
                 array(
@@ -65,8 +57,7 @@ namespace Goteo\Controller {
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action,
-                    'reviews'=> $reviews,
-                    'status'  => $status,
+                    'reviews' => $reviews,
                     'errors'  => $errors,
                     'success' => $success
                 )
@@ -75,7 +66,7 @@ namespace Goteo\Controller {
         }
 
         /*
-         * Seccion, Mis proyectos asignados
+         * Seccion, Mis revisiones asignadas
          * Opciones:
          *      'summary' resumen de la revision del proyecto de trabajo: comentarios de administrador para esta revision y enlaces del proyecto
          *      'evaluate' marcar los puntos de criterios y comentarios de evaluacion y mejoras
@@ -83,83 +74,52 @@ namespace Goteo\Controller {
          *      'comments' resumen de comentarios de todos los revisores
          *
          */
-        public function projects ($option = 'summary', $action = 'list', $id = null) {
+        public function reviews ($option = 'summary', $action = 'list', $id = null) {
             
             $user    = $_SESSION['user'];
 
             $errors = array();
 
-            if ($action == 'select' && !empty($_POST['project'])) {
-                // otro proyecto de trabajo
-                $project = Model\Project::get($_POST['project']);
-            } else {
-                // si tenemos ya proyecto, mantener los datos actualizados
-                if (!empty($_SESSION['project']->id)) {
-                    $project = Model\Project::get($_SESSION['project']->id);
-                }
-            }
-
-            $projects = Model\Project::assigned($user->id);
+            $reviews = Model\Review::assigned($user->id);
 
             // si no hay proyectos asignados no tendria que estar aqui
-            if (count($projects) == 0) {
-                throw new Redirection('/review', Redirection::TEMPORARY);
+            if (count($reviews) == 0) {
+                throw new Redirection('/review/activity');
             }
+
+            $review = $_SESSION['review'];
+
+            if ($action == 'ready' && !empty($id)) {
+                $ready = new Model\User\Review(array(
+                                    'user' => $user->id,
+                                    'id'   => $id
+                                ));
+                if ($ready->ready($errors)) {
+                    $message = 'Se ha dado por terminada tu revisión';
+                    $review = Model\Review::getData($review->id);
+                }
+            }
+
+
+
+
+
+
+            if (empty($review)) {
+                $review = $reviews[0];
+            }
+
+            if ($action == 'select' && !empty($_POST['review'])) {
+                // otra revisión de trabajo
+                $review = Model\Review::getData($_POST['review']);
+            } elseif ($action == 'open' && !empty($id)) {
+                // otra revisión de trabajo por url
+                $review = Model\Review::getData($id);
+            }
+
+            $_SESSION['review'] = $review;
+
             
-            if (empty($project)) {
-                $project = $projects[0];
-            }
-
-            // aqui necesito tener un proyecto de trabajo,
-            // si no hay ninguno ccoge el último
-            if ($project instanceof  \Goteo\Model\Project) {
-                $_SESSION['project'] = $project;
-            } else {
-                // si no es que hay un problema
-                throw new Redirection('/review', Redirection::TEMPORARY);
-            }
-
-            // tenemos proyecto de trabajo, comprobar si el proyecto esta en estado de revision
-            if ($project->status != 2) {
-                $errors[] = 'este proyecto no esta en revision';
-                //Text::get('review-project-review-wrongstatus');
-                $action = 'list';
-            } else {
-                // cargamos la instancia de revision (si no hay la creamos
-                $review = Model\Review::get($project->id, $user->id);
-                if (!$review instanceof Model\Review) {
-                    $review = new Model\Review(
-                            array(
-                                'id' => '',
-                                'user' => $user->id,
-                                'project' => $project->id
-                            )
-                        );
-                    if (!$review->save($errors)) {
-                        $errors[] = 'Contacte con nosotros acerca de la revisión de este proyecto';
-                        //Text::get('review-project-review-fail');
-                        $option = 'summary';
-                        $action = 'view';
-                    }
-                } else {
-                    if (!$review->active) {
-                        $errors[] = 'Lo sentimos, la revision para este proyecto esta desactivada';
-                        //Text::get('review-project-review-inactive');
-                        $action = 'list';
-                    }
-                }
-
-                // recomprobar que tenemos revision
-                if (!$review instanceof Model\Review) {
-                    $errors[] = 'No se ha encontrado ninguna revision para este proyecto';
-                    //Text::get('review-project-review-noreview');
-                    $option = 'summary';
-                    $action = 'list';
-                    break;
-                }
-
-            }
-
             // view data basico para esta seccion
             $viewData = array(
                     'menu'    => self::menu(),
@@ -167,40 +127,15 @@ namespace Goteo\Controller {
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action,
-                    'project'=> $project,
-                    'review'=> $review,
+                    'reviews' => $reviews,
+                    'review'  => $review,
                     'errors'  => $errors,
                     'success' => $success
                 );
 
-
-            // segun lo que este gestionando
-            /*
-            switch ($option) {
-                case 'rewards':
-                    // recompensas ofrecidas
-                    $viewData['rewards'] = Model\Project\Reward::getAll($_SESSION['project']->id, 'individual');
-                    // aportes para este proyecto
-                    $viewData['invests'] = Model\Invest::getAll($_SESSION['project']->id);
-                    // ver por (esto son orden y filtros)
-                    $viewData['filter'] = $filter;
-                break;
-
-                // editar colaboraciones
-                case 'supports':
-                    $viewData['types'] = Model\Project\Support::types();
-                    $project->supports = Model\Project\Support::getAll($_SESSION['project']->id);
-                break;
-
-                // publicar actualizaciones
-                case 'updates':
-                    $viewData['blog'] = $blog;
-                    $viewData['posts'] = $posts;
-                    $viewData['post'] = $post;
-                    break;
+            if ($option == 'evaluate' || $option == 'report') {
+                $viewData['evaluation'] = Model\Review::getEvaluation($review->id, $user->id);
             }
-             *
-             */
 
             return new View ('view/review/index.html.php', $viewData);
         }
@@ -217,7 +152,13 @@ namespace Goteo\Controller {
 
             // sacamos las revisiones realizadas
 
-            $reviews = array();
+            $user = $_SESSION['user'];
+
+            $reviews = Model\Review::history($user->id);
+            // si no hay proyectos asignados no tendria que estar aqui
+            if (count($reviews) == 0) {
+                $message = 'No hay revisiones anteriores';
+            }
 
             $viewData = array(
                     'menu'    => self::menu(),
@@ -225,9 +166,9 @@ namespace Goteo\Controller {
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action,
+                    'reviews' => $reviews,
                     'errors'  => $errors,
-                    'success' => $success,
-                    'reviews'    => $reviews
+                    'success' => $success
                 );
 
             return new View (
@@ -246,12 +187,12 @@ namespace Goteo\Controller {
                         'summary' => 'Resumen'
                     )
                 ),
-                'projects' => array(
-                    'label' => 'Mis proyectos',
+                'reviews' => array(
+                    'label' => 'Mis revisiones',
                     'options' => array (
                         'summary'  => 'Resumen',
-                        'evaluate' => 'Puntuar',
-                        'comments' => 'Comentarios'
+                        'evaluate' => 'Evaluar',
+                        'report'   => 'Informe'
                     )
                 ),
                 'history' => array(

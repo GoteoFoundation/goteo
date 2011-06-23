@@ -151,10 +151,185 @@ namespace Goteo\Model {
             return $projects;
         }
 
+        /**
+         * Para obtener las revisiones de proyectos asignadas
+         */
+        public static function assigned($user) {
+            $reviews = array();
+
+            $sql = "SELECT
+                        review.id as id,
+                        project.id as project,
+                        project.name as name,
+                        user.name as owner_name,
+                        user.id as owner,
+                        user_review.ready as ready,
+                        project.progress as progress,
+                        review.score as score,
+                        review.max as max,
+                        review.to_checker as comment
+                    FROM user_review
+                    INNER JOIN review
+                        ON review.id = user_review.review
+                    INNER JOIN project
+                        ON project.id = review.project
+                    INNER JOIN user
+                        ON user.id = project.owner
+                    WHERE project.status = 2
+                    AND review.status = 1
+                    AND user_review.user = ?
+                    ORDER BY project.name ASC
+                    ";
+
+//            echo "$sql <br />";  die;
+            $query = self::query($sql, array($user));
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $review) {
+                $reviews[] = $review;
+            }
+            return $reviews;
+        }
+
+        /**
+         * Para obtener las revisiones del historial
+         */
+        public static function history($user) {
+            $reviews = array();
+
+            $sql = "SELECT
+                        review.id as id,
+                        project.id as project,
+                        project.name as name,
+                        user.name as owner_name,
+                        user.id as owner,
+                        user_review.ready as ready,
+                        project.progress as progress,
+                        review.score as score,
+                        review.max as max
+                    FROM user_review
+                    INNER JOIN review
+                        ON review.id = user_review.review
+                    INNER JOIN project
+                        ON project.id = review.project
+                    INNER JOIN user
+                        ON user.id = project.owner
+                    WHERE user_review.ready = 1
+                    AND user_review.user = ?
+                    ORDER BY project.name ASC
+                    ";
+
+//            echo "$sql <br />";  die;
+            $query = self::query($sql, array($user));
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $review) {
+                $reviews[] = $review;
+            }
+            return $reviews;
+        }
+
+        /*
+         *  Para conseguir los datos de una revision
+         *  Id, proyecto, nombre del proyecto
+         */
+        public static function getData ($id) {
+                $query = static::query("
+                    SELECT
+                        review.id as id,
+                        project.id as project,
+                        project.name as name,
+                        user.name as owner_name,
+                        user.id as owner,
+                        user_review.ready as ready,
+                        project.progress as progress,
+                        review.score as score,
+                        review.max as max,
+                        review.to_checker as comment
+                    FROM review
+                    INNER JOIN project
+                        ON project.id = review.project
+                    INNER JOIN user
+                        ON user.id = project.owner
+                    INNER JOIN user_review
+                        ON user_review.review = review.id
+                    WHERE project.status = 2
+                    AND review.status = 1
+                    AND review.id = :id
+                    ", array(':id' => $id));
+
+                return $query->fetchObject();
+        }
+
+
+        /*
+         * Monta el array de evaluación con los puntos de criterios y comentarios por seccion
+         */
+        public static function getEvaluation ($review, $user) {
+
+            $evaluation = array();
+
+            // primero los criterios
+            $evaluation['criteria'] = array();
+            $sql = "SELECT
+                        criteria,
+                        score
+                    FROM review_score
+                    WHERE user = :user
+                    AND review = :review
+                    ORDER BY criteria ASC
+                    ";
+
+//            echo "$sql <br />";  die;
+            $query = self::query($sql, array('review'=>$review, 'user'=>$user));
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                $evaluation['criteria'][$item->criteria] = $item->score;
+            }
+
+            // ahora los comentarios por seccion
+            $sql = "SELECT
+                        section,
+                        evaluation,
+                        recommendation
+                    FROM review_comment
+                    WHERE user = :user
+                    AND review = :review
+                    ORDER BY section ASC
+                    ";
+
+//            echo "$sql <br />";  die;
+            $query = self::query($sql, array('review'=>$review, 'user'=>$user));
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                $evaluation[$item->section]['evaluation'] = $item->evaluation;
+                $evaluation[$item->section]['recommendation'] = $item->recommendation;
+            }
+
+            // puntuacion actual
+            $sql = "SELECT
+                        COUNT(criteria.id) as `max`,
+                        COUNT(review_score.score) as score
+                    FROM criteria
+                    LEFT JOIN review_score
+                        ON review_score.criteria = criteria.id
+                        AND review_score.review = :review
+                        AND review_score.user = :user
+                    ";
+
+            $query = static::query($sql, array(
+                ':review' => $review,
+                ':user'  => $user
+            ));
+
+            $current = $query->fetchObject();
+            $evaluation['score'] = $current->score;
+            $evaluation['max'] = $current->max;
+
+
+
+            return $evaluation;
+        }
+
+
 
         /*
          * Metodo para contar la puntuacion
-         * @TODO otro metodo para grabarla
+         * @TODO agregar las puntuaciones de todos los revisores
          *
          * score es la puntuacion total
          * max es el maximo depuntuacio que podria haber obtenido
@@ -206,68 +381,6 @@ namespace Goteo\Model {
                 return false;
             }
         }
-
-        /*
-         * metodo para añadir un comentario (evaluación o recomendacion)
-         */
-        public function comment ($checker, $section, $evaluate, $recommendation) {
-
-            $values = array(
-                ':review'   => $this->id,
-                ':user'     => $checker,
-                ':section'  => $section,
-                ':evaluate' => $evaluate,
-                ':recommendation' => $recommendation
-            );
-
-            try {
-                $sql = "REPLACE INTO review_comment SET
-                            evaluate = :evaluate,
-                            recommendation = :recommendation
-                        WHERE review = :review
-                        AND user = :user
-                        AND section = :section
-                        ";
-                self::query($sql, $values);
-                if (empty($this->id)) $this->id = self::insertId();
-
-                return true;
-            } catch(\PDOException $e) {
-                $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
-                return false;
-            }
-        }
-
-        /*
-         * metodo para poner (o quitar) el punto a un criterio
-         */
-        public function score ($checker, $criteria, $score = null) {
-
-            $values = array(
-                ':review'   => $this->id,
-                ':user'     => $checker,
-                ':criteria' => $criteria,
-                ':score'    => $score
-            );
-
-            try {
-                $sql = "REPLACE INTO review_comment SET
-                            evaluate = :evaluate,
-                            recommendation = :recommendation
-                        WHERE review = :review
-                        AND user = :user
-                        AND section = :section
-                        ";
-                self::query($sql, $values);
-                if (empty($this->id)) $this->id = self::insertId();
-
-                return true;
-            } catch(\PDOException $e) {
-                $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
-                return false;
-            }
-        }
-
 
     }
     

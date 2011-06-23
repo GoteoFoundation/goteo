@@ -2,28 +2,15 @@
 use Goteo\Core\View,
     Goteo\Model;
 
-$waitfor = Model\Project::waitfor();
 ?>
-<div class="widget projects">
-    <h2 class="title">Mis Proyectos</h2>
-    <?php foreach ($this['projects'] as $project) : ?>
-        <div>
-            <?php
-
-            // estado en el balloon y siguiente paso en la descripcion
-
-            // es instancia del proyecto
-            // se pintan con widget horizontal 
-            // muestran el estado en vez del creador // own
-            // muestran el boton editar si esta en edicion // review y own
-            // no muestran el boton apoyar  // review
-            echo new View('view/project/widget/project.html.php', array(
-                'project'   => $project,
-                'balloon' => '<h4>' . htmlspecialchars($this['status'][$project->status]) . '</h4>' .
-                             '<blockquote>' . $waitfor[$project->status] . '</blockquote>',
-                'review' => true,
-                'own'       => true
-            )); ?>
+<?php if (!empty($this['reviews'])) : ?>
+    <h2 class="title">Mis revisiones actuales</h2>
+    <?php foreach ($this['reviews'] as $review) : ?>
+        <div class="widget">
+            <p>El proyecto <strong><?php echo $review->name; ?></strong> de <strong><?php echo $review->owner_name; ?></strong></p>
+            <p>La edición del proyecto alcanzó el <strong><?php echo $review->progress; ?>%</strong>, la puntuación actual de la revisión es de <strong><?php echo $review->score; ?>/<?php echo $review->max; ?></strong></p>
+            <p>Tu revisión está <?php echo $review->ready == 1 ? 'Lista' : 'Pendiente'; ?><?php if ($review->ready != 1) : ?> Puedes completarla en <a href="/review/reviews/evaluate/open/<?php echo $review->id; ?>">tus revisiones</a><?php endif; ?></p>
+            <p><a href="<?php echo SITE_URL . '/project/' . $review->project; ?>" target="_blank">Abrir el proyecto</a><br /><a href="<?php echo SITE_URL . '/user/' . $review->owner; ?>" target="_blank">Abrir el perfil del creador</a></p>
         </div>
     <?php endforeach; ?>
-</div>
+<?php endif; ?>
