@@ -90,7 +90,7 @@ namespace Goteo\Model\User {
         /*
          * Dar por lista una revision
          */
-		public function ready () {
+		public function ready (&$errors = array()) {
 			$values = array (
 				':user'=>$this->user,
 				':review'=>$this->id,
@@ -135,6 +135,145 @@ namespace Goteo\Model\User {
                 return $array;
             } catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
+            }
+        }
+
+        /*
+         * Devuelve true o false si es legal que este usuario haga algo con esta revision
+         */
+        public static function is_legal ($user, $review) {
+            $sql = "SELECT user, review FROM user_review WHERE user = :user AND review = :review";
+            $values = array(
+                'user' => $user,
+                'review' => $review
+            );
+            $query = static::query($sql, $values);
+            $legal = $query->fetchObject();
+            if ($legal->user == $user && $legal->review == $review) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        /*
+         * Graba un comentario para una sección
+         */
+         public function setComment ($section, $field, $text) {
+
+             if (empty($this->user) || empty($this->id)) {
+                 return false;
+             }
+
+             // primero comprobbar si ya hay registro,
+            $sql = "SELECT COUNT(*) as cuantos FROM review_comment WHERE user = :user AND review = :review AND section = :section";
+             $values = array(
+                 ':user'    => $this->user,
+                 ':review'  => $this->id,
+                 ':section' => $section
+             );
+
+            $query = static::query($sql, $values);
+            $exist = $query->fetchObject();
+
+            if ($exist->cuantos == 1) {
+                // si lo hay, update de este campo y texto
+                 $sql = "UPDATE review_comment SET
+                            `$field` = :text
+                         WHERE review = :review
+                         AND user = :user
+                         AND section = :section
+                         ";
+            } else {
+                // si no lo hay lo Insertamos con este campo y texto
+                 $sql = "INSERT INTO review_comment SET
+                            `$field` = :text,
+                            review = :review,
+                            user = :user,
+                            section = :section
+                         ";
+            }
+
+             $values[':text'] = $text;
+
+             if (self::query($sql, $values)) {
+                 return true;
+             } else {
+                 return false;
+             }
+
+         }
+
+        /*
+         * Graba la puntuacion para un criterio
+         */
+         public function setScore ($criteria, $score) {
+
+             if (empty($this->user) || empty($this->id)) {
+                 return false;
+             }
+
+             if ($score == true) {
+                 $sql = "REPLACE INTO review_score SET
+                            score = '1',
+                            review = :review,
+                            user = :user,
+                            criteria = :criteria
+                        ";
+             } else {
+                $sql = "DELETE FROM review_score
+                            WHERE review = :review
+                            AND user = :user
+                            AND criteria = :criteria
+                        ";
+             }
+
+             $values = array(
+                 ':user'     => $this->user,
+                 ':review'   => $this->id,
+                 ':criteria' => $criteria
+
+             );
+             if (self::query($sql, $values)) {
+                 return true;
+             } else {
+                 return false;
+             }
+
+         }
+
+        /*
+         * Metodo para contar la puntuacion dada por este revisor
+         *
+         * score es la puntuacion total
+         * max es el maximo depuntuacio que podria haber obtenido
+         *
+         */
+        public function recount (&$errors = array()) {
+            try {
+                $score = 0;
+                $max   = 0;
+
+                $sql = "SELECT
+                            COUNT(criteria.id) as `max`,
+                            COUNT(review_score.score) as score
+                        FROM criteria
+                        LEFT JOIN review_score
+                            ON review_score.criteria = criteria.id
+                            AND review_score.review = :review
+                            AND review_score.user = :user
+                        ";
+
+                $query = static::query($sql, array(
+                    ':review' => $this->id,
+                    ':user'  => $this->user
+                ));
+
+                return $query->fetchObject();
+
+            } catch(\PDOException $e) {
+                $errors[] = "No se ha aplicado la puntuacion. " . $e->getMessage();
+                return false;
             }
         }
 

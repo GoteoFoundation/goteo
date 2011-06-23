@@ -35,17 +35,20 @@ namespace Goteo\Controller {
         /*
          * Sección, Mi actividad
          * Opciones:
-         *      'projects' los proyectos que tengo actualmente asignados para revisar
+         *      'summary' resumen de los proyectos que tengo actualmente asignados para revisar
          * 
          */
-        public function activity ($option = 'summary', $action = 'view') {
+        public function activity ($option = 'summary', $action = 'list') {
 
             $user = $_SESSION['user'];
 
-            $projects = Model\Review::assigned($user->id);
+            $reviews = Model\Review::assigned($user->id);
+            // si no hay proyectos asignados no tendria que estar aqui
+            if (count($reviews) == 0) {
+                $message = 'No tienes asignada ninguna revisión de proyectos';
+            }
+
             // resumen de los proyectos que tengo actualmente asignados
-
-
             return new View (
                 'view/review/index.html.php',
                 array(
@@ -54,8 +57,7 @@ namespace Goteo\Controller {
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action,
-                    'reviews'=> $reviews,
-                    'status'  => $status,
+                    'reviews' => $reviews,
                     'errors'  => $errors,
                     'success' => $success
                 )
@@ -64,7 +66,7 @@ namespace Goteo\Controller {
         }
 
         /*
-         * Seccion, Mis proyectos asignados
+         * Seccion, Mis revisiones asignadas
          * Opciones:
          *      'summary' resumen de la revision del proyecto de trabajo: comentarios de administrador para esta revision y enlaces del proyecto
          *      'evaluate' marcar los puntos de criterios y comentarios de evaluacion y mejoras
@@ -72,62 +74,52 @@ namespace Goteo\Controller {
          *      'comments' resumen de comentarios de todos los revisores
          *
          */
-        public function projects ($option = 'summary', $action = 'list', $id = null) {
+        public function reviews ($option = 'summary', $action = 'list', $id = null) {
             
             $user    = $_SESSION['user'];
 
             $errors = array();
 
-            if ($action == 'select' && !empty($_POST['project'])) {
-                // otro proyecto de trabajo
-                $project = Model\Project::getMini($_POST['project']);
-            } else {
-                // si tenemos ya proyecto, mantener los datos actualizados
-                if (!empty($_SESSION['project']->id)) {
-                    $project = Model\Project::getMini($_SESSION['project']->id);
-                }
-            }
-
-            $projects = Model\Review::assigned($user->id);
+            $reviews = Model\Review::assigned($user->id);
 
             // si no hay proyectos asignados no tendria que estar aqui
-            if (count($projects) == 0) {
-                $errors[] = 'No tienes asignada ninguna revisión de proyectos';
-                $action = 'list';
-            }
-            
-            if (empty($project)) {
-                $project = $projects[0];
+            if (count($reviews) == 0) {
+                throw new Redirection('/review/activity');
             }
 
-            // aqui necesito tener un proyecto de trabajo,
-            // si no hay ninguno ccoge el último
-            if (empty($_SESSION['project'])) {
-                 $_SESSION['project'] = $project;
-            }
+            $review = $_SESSION['review'];
 
-            // tenemos proyecto de trabajo, comprobar si el proyecto esta en estado de revision
-            if ($project->status != 2) {
-                $errors[] = 'este proyecto no esta en revision';
-                //Text::get('review-project-review-wrongstatus');
-                $action = 'list';
-            } else {
-                // cargamos la instancia de revision 
-                $review = Model\Review::get($project->id);
-                if (!$review instanceof Model\Review) {
-                    // si no hay es que el admin no la ha inicializado
-                    $errors[] = 'No se ha encontrado ninguna revision para este proyecto';
-                    //Text::get('review-project-review-fail');
-                    $option = 'summary';
-                    $action = 'list';
-                } elseif (!$review->active) {
-                    $errors[] = 'Lo sentimos, la revision para este proyecto esta desactivada';
-                    //Text::get('review-project-review-inactive');
-                    $action = 'list';
+            if ($action == 'ready' && !empty($id)) {
+                $ready = new Model\User\Review(array(
+                                    'user' => $user->id,
+                                    'id'   => $id
+                                ));
+                if ($ready->ready($errors)) {
+                    $message = 'Se ha dado por terminada tu revisión';
+                    $review = Model\Review::getData($review->id);
                 }
-
             }
 
+
+
+
+
+
+            if (empty($review)) {
+                $review = $reviews[0];
+            }
+
+            if ($action == 'select' && !empty($_POST['review'])) {
+                // otra revisión de trabajo
+                $review = Model\Review::getData($_POST['review']);
+            } elseif ($action == 'open' && !empty($id)) {
+                // otra revisión de trabajo por url
+                $review = Model\Review::getData($id);
+            }
+
+            $_SESSION['review'] = $review;
+
+            
             // view data basico para esta seccion
             $viewData = array(
                     'menu'    => self::menu(),
@@ -135,11 +127,15 @@ namespace Goteo\Controller {
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action,
-                    'project'=> $project,
-                    'review'=> $review,
+                    'reviews' => $reviews,
+                    'review'  => $review,
                     'errors'  => $errors,
                     'success' => $success
                 );
+
+            if ($option == 'evaluate' || $option == 'report') {
+                $viewData['evaluation'] = Model\Review::getEvaluation($review->id, $user->id);
+            }
 
             return new View ('view/review/index.html.php', $viewData);
         }
@@ -156,7 +152,13 @@ namespace Goteo\Controller {
 
             // sacamos las revisiones realizadas
 
-            $reviews = array();
+            $user = $_SESSION['user'];
+
+            $reviews = Model\Review::history($user->id);
+            // si no hay proyectos asignados no tendria que estar aqui
+            if (count($reviews) == 0) {
+                $message = 'No hay revisiones anteriores';
+            }
 
             $viewData = array(
                     'menu'    => self::menu(),
@@ -164,9 +166,9 @@ namespace Goteo\Controller {
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action,
+                    'reviews' => $reviews,
                     'errors'  => $errors,
-                    'success' => $success,
-                    'reviews'    => $reviews
+                    'success' => $success
                 );
 
             return new View (
@@ -185,11 +187,11 @@ namespace Goteo\Controller {
                         'summary' => 'Resumen'
                     )
                 ),
-                'projects' => array(
-                    'label' => 'Mis proyectos',
+                'reviews' => array(
+                    'label' => 'Mis revisiones',
                     'options' => array (
                         'summary'  => 'Resumen',
-                        'evaluate' => 'Puntuar',
+                        'evaluate' => 'Evaluar',
                         'report'   => 'Informe'
                     )
                 ),
