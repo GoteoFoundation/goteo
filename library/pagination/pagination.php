@@ -148,7 +148,7 @@ class DoubleBarLayout implements PageLayout {
 
 		if(!$parent->isFirstPage()) {
 			if($currentPage != 1 && $currentPage != 2 && $currentPage != 3 && $currentPage != 4) {
-					$str .= "<a href='?page=1$queryVars' title='".Text::get('regular-first')."'>".Text::get('regular-first')."</a> &hellip; ";
+					$str .= "<li><a href='?page=1$queryVars' title='".Text::get('regular-first')."'>".Text::get('regular-first')."</a></li><li class='hellip'>&hellip; </li>";
 			}
 		}
 
@@ -156,7 +156,7 @@ class DoubleBarLayout implements PageLayout {
 	   	//if it is not the first page then write previous to the screen
 		if(!$parent->isFirstPage()) {
 			$previousPage = $currentPage - 1;
-			$str .= "<a href=\"?page=$previousPage$queryVars\">&larr; Anterior</a> ";
+			$str .= "<li><a href=\"?page=$previousPage$queryVars\"><  </a> </li>";
 		}
 
 		for($i = $currentPage - 3; $i <= $currentPage + 3; $i++) {
@@ -169,22 +169,22 @@ class DoubleBarLayout implements PageLayout {
 				break;
 			}
 			if($i == $currentPage) {
-				$str .= "<strong><i>$i</i></strong> ";
+				$str .= "<li class='selected'>$i</li> ";
 			}
 			else {
-				$str .= "<a href=\"?page=$i$queryVars\">$i</a> ";
+				$str .= "<li><a href=\"?page=$i$queryVars\">$i</a></li> ";
 			}
 		}//end for
 
 		if(!$parent->isLastPage()) {
 			$nextPage = $currentPage + 1;
-			$str .= "<a href=\"?page=$nextPage$queryVars\">Siguiente &rarr;</a>";
+			$str .= "<li><a href=\"?page=$nextPage$queryVars\"> ></a></li>";
 		}
 	
 		if (!$parent->isLastPage()) {
 			if($currentPage != $parent->fetchNumberPages() && $currentPage != $parent->fetchNumberPages() -1 && $currentPage != $parent->fetchNumberPages() - 2 && $currentPage != $parent->fetchNumberPages() - 3)
 			{
-				$str .= " &hellip; <a href=\"?page=".$parent->fetchNumberPages()."$queryVars\" title=\"".Text::get('regular-last')."\">".Text::get('regular-last')."(".$parent->fetchNumberPages().") </a>";
+				$str .= " <li class='hellip'>&hellip;</li><li><a href=\"?page=".$parent->fetchNumberPages()."$queryVars\" title=\"".Text::get('regular-last')."\">".Text::get('regular-last')."(".$parent->fetchNumberPages().") </a></li>";
 			}
 		}
 		return $str;

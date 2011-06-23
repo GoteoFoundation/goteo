@@ -383,6 +383,7 @@ namespace Goteo\Model {
                 $query = static::query("
                     SELECT
                         name,
+                        avatar,
                         email
                     FROM user
                     WHERE id = :id

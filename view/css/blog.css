@@ -1,3 +1,4 @@
+/* Content syles */ 
 #blog-content {
     width:620px;
 	margin: 0 20px 0 0;
@@ -60,6 +61,7 @@ div.widget.blog-content-module .comments-num a,
 	color:#00ad4e;
 	text-decoration:none;
 }
+/** share goteo **/
 div.widget.blog-content-module ul.share-goteo,
 #blog-content .post ul.share-goteo {
 	margin: 0 20px  0 0;
@@ -101,6 +103,111 @@ div.widget.blog-content-module ul.share-goteo li.facebook a,
 	color:#4a6393;
 	text-decoration:none;
 }
+/** end of share goteo **/
+/** blog pagination **/
+ #blog-content ul.pagination {
+	list-style:none;
+	float:left;
+	margin: 0px;
+	padding:0px;
+} 
+#blog-content ul.pagination li {
+	display:inline;
+	margin: 0 6px 0 0;
+	background: white;
+	width: auto;
+	float: left;
+	text-align: center;
+	-moz-box-shadow: 3px 3px 0px #E2E2E2;
+	-webkit-box-shadow: 3px 3px 0px #E2E2E2;
+	box-shadow: 3px 3px 0px #E2E2E2;
+} 
+#blog-content ul.pagination li.selected {
+	background:#cde4e5;
+	font-weight:bold;
+	padding: 6px 20px;
+} 
+#blog-content ul.pagination li.hellip {
+	padding: 6px 20px;
+} 
+#blog-content ul.pagination li a {
+	display: block;
+	padding: 6px 20px;
+	text-decoration:none;
+	font-weight:bold;
+} 
+#blog-content ul.pagination li a:hover {
+	background:#cde4e5;
+} 
+/** end of blog pagination **/
+/** blog comments **/
+#blog-content h5 {
+	font: bold 16px Helvetica, Arial, Geneva, sans-serif;
+	text-transform:uppercase;
+	color:#535353;
+}
+#blog-content div.message {
+    margin-left: 60px;
+    padding: 0em 1em .5em 1.5em;
+    overflow: visible;
+    position: relative;
+	border-bottom: 1px solid #cabcbf;
+}
+#blog-content div.message {
+    margin-top: 20px;
+}
+#blog-content div.message .arrow-up {
+    position: absolute;
+    left: -60px;
+    top: 0;
+    display: block;
+    width: 50px;
+    height: 50px;
+    background: url('over-blogavatar.png') scroll no-repeat  0 0 transparent; 
+	z-index:9;
+}
+#blog-content div.message .avatar {
+    position: absolute;
+    left: -60px;
+    top: 0;
+    display: block;
+    width: 50px;
+    height: 50px;   
+	z-index:0;
+}
+#blog-content div.message .user {
+    text-transform: none;
+	font: bold 12px Helvetica, Arial, Geneva, sans-serif;
+    margin: 0.8em 0 1em;
+    float: left;
+}
+#blog-content div.message .date {
+    float: right;
+    color: #808080;
+    font-size: 11px;
+}
+#blog-content div.message blockquote {
+    margin: 0;
+    padding: 0;
+    clear: both;
+}
+#blog-content div.widget.blog-comment {
+    margin: 20px 0 0 0;
+}
+#blog-content div.widget.blog-comment h5 {
+    margin: 0 0 5px 0;
+}
+#blog-content div.widget.blog-comment textarea {
+	display:block;
+	width:565px;
+}
+#blog-content div.widget.blog-comment input.button {
+	margin: 20px 0 0 0;
+	float:right;
+}
+/** end of blog comments **/
+/* end of Content syles */ 
+/* Sidebar styles */
 div.widget.blog-sidebar-module h3.title {
     border-bottom: 1px solid #20b3b2;
 	color: #20b3b2;
@@ -141,4 +248,5 @@ div.widget.blog-sidebar-module ul#blog-side-comments li{
 div.widget.blog-sidebar-module ul#blog-side-comments li p{
 	margin: 0px;
 }
+/* end of Sidebar styles */
 

@@ -31,7 +31,7 @@ namespace Goteo\Model\Blog {
                         `image`,
                         `media`,
                         `date`,
-                        DATE_FORMAT(date, '%d-%m-%Y') as fecha,
+                        DATE_FORMAT(date, '%d | %m | %Y') as fecha,
                         home
                     FROM    post
                     WHERE id = :id
@@ -77,7 +77,7 @@ namespace Goteo\Model\Blog {
                     `image`,
                     `media`,
                     DATE_FORMAT(date, '%d-%m-%Y') as date,
-                    DATE_FORMAT(date, '%d-%m-%Y') as fecha,
+                    DATE_FORMAT(date, '%d | %m | %Y') as fecha,
                     home
                 FROM    post
                 WHERE blog = ?

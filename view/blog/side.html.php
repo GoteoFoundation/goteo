@@ -34,6 +34,7 @@ switch ($this['type']) {
             $text = Text::recorta($item->text, 200);
             $list[] = "
 				<div>
+					<!--span class='avatar'><img src='/image/$item->user->avatar->id/50/50' alt='' /></span-->
 					<span class='date'>{$item->date}</span><br />
 					<strong>{$item->user->name}</strong>
 					<p>{$text}</p>

@@ -40,7 +40,7 @@ namespace Goteo\Model\Blog\Post {
                 SELECT
                     id,
                     post,
-                    DATE_FORMAT(date, '%d/%m/%Y') as date,
+                    DATE_FORMAT(date, '%d | %m | %Y') as date,
                     text,
                     user
                 FROM    comment
@@ -69,7 +69,7 @@ namespace Goteo\Model\Blog\Post {
                 SELECT
                     id,
                     post,
-                    DATE_FORMAT(date, '%d/%m/%Y') as date,
+                    DATE_FORMAT(date, '%d | %m | %Y') as date,
                     text,
                     user
                 FROM    comment

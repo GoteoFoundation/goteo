@@ -46,10 +46,10 @@ include 'view/header.html.php';
 							<?php endif; ?>
 						</div>
 					<?php endwhile; ?>
-                    <div class="pagination">
+                    <ul class="pagination">
                         <?php   $pagedResults->setLayout(new DoubleBarLayout());
                                 echo $pagedResults->fetchPagedNavigation(); ?>
-                    </div>
+                    </ul>
 				<?php else : ?>
 					<p>No hay entradas</p>
 				<?php endif; ?>
