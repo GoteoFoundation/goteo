@@ -6,7 +6,7 @@
     
     <script type="text/javascript">
         
-    <?php # include __DIR__ . '/superform.js.src.php' ?>
+    <?php include __DIR__ . '/superform.js.src.php' ?>
 
     </script>
     
