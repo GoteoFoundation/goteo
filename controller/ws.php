@@ -6,6 +6,18 @@ namespace Goteo\Controller {
 
     class Ws extends \Goteo\Core\Controller {
         
+        public function get_home_post($id) {
+            $Post = Model\Post::get($id);
+
+            header ('HTTP/1.1 200 Ok');
+            echo <<< EOD
+<h3>{$Post->title}</h3>
+<div class="embed">{$Post->media->getEmbedCode()}</div>
+<div class="description">{$Post->text}</div>
+EOD;
+            die;
+        }
+
         public function get_faq_order($section) {
             $next = Model\Faq::next($section);
 

@@ -32,9 +32,8 @@ namespace Goteo\Model {
                     ", array(':id' => $id));
 
                 $post = $query->fetchObject(__CLASS__);
-
-                //sus tags, si tiene
-                $post->tags = Post\Tag::getAll($id);
+                
+                $post->media = new Media($post->media);
 
                 return $post;
 
@@ -66,7 +65,7 @@ namespace Goteo\Model {
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 $post->media = new Media($post->media);
 
-                $list[] = $post;
+                $list[$post->id] = $post;
             }
 
             return $list;

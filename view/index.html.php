@@ -3,11 +3,37 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$currentPost = null;
+$currentPost = $this['posts'][$this['post']];
 
-$bodyClass = 'home'; include 'view/prologue.html.php' ?>
+$bodyClass = 'home';
 
-        <?php include 'view/header.html.php' ?>
+include 'view/prologue.html.php';
+include 'view/header.html.php' ?>
+
+    <script type="text/javascript">
+
+    jQuery(document).ready(function ($) {
+
+        $("#home-post-<?php echo $this['post']; ?>").show();
+
+        $(".navi-home-post").click(function (event) {
+            event.preventDefault();
+
+            /* Quitar todos los active, ocultar todos los elementos */
+            $(".navi-home-post").removeClass('active');
+            $(".post").hide();
+            /* Poner acctive a este, mostrar este*/
+            $(this).addClass('active');
+            $("#"+this.rel).show();
+            /*
+             * Y si lo quisieramos hacer sin  cargar todo el html, usariamos esto
+            content = $.ajax({async: false, url: '<?php echo SITE_URL; ?>/ws/get_home_post/'+this.rel}).responseText;
+            $('#home-post').html(content);
+            */
+        });
+
+    });
+    </script>
 
         <div id="sub-header">
             <div>
@@ -27,21 +53,21 @@ $bodyClass = 'home'; include 'view/prologue.html.php' ?>
             
                 <ul>
                     <?php foreach ($this['posts'] as $post) : ?>
-                    <?php if ($this['post'] == $post->id): $currentPost = $post ?>
-                    <li><strong><?php echo htmlspecialchars($post->title) ?></strong></li>
-                    <?php else: ?>
-                    <li><a href="?post=<?php echo $post->id ?>"><?php echo htmlspecialchars($post->title) ?></a></li>
-                    <?php endif ?>
+                    <li><a href="?post=<?php echo $post->id ?>" rel="home-post-<?php echo $post->id ?>" class="navi-home-post<?php if ($post->id == $this['post']) echo ' active'; ?>">
+                        <?php echo htmlspecialchars($post->title) ?></a>
+                    </li>
                     <?php endforeach ?>
                 </ul>
                                                                              
-                <div class="post">
-                    <h3><?php echo $currentPost->title; ?></h3>
-                    <div class="embed"><?php echo $currentPost->media->getEmbedCode(); ?></div>
+                <?php foreach ($this['posts'] as $post) : ?>
+                <div class="post" id="home-post-<?php echo $post->id; ?>">
+                    <h3><?php echo $post->title; ?></h3>
+                    <div class="embed"><?php echo $post->media->getEmbedCode(); ?></div>
                     <div class="description">
-                        <?php echo $currentPost->text ?>
+                        <?php echo $post->text ?>
                     </div>
                 </div>                
+                <?php endforeach ?>
                
             </div>
             
@@ -55,12 +81,6 @@ $bodyClass = 'home'; include 'view/prologue.html.php' ?>
                 
                     <div class="promo">
                                      
-                        <!--
-                        <div class="balloon">
-                            <h4><?php echo htmlspecialchars($promo->title) ?></h4>
-                            <blockquote><?php echo $promo->description ?></blockquote>
-                        </div>
-                            -->                
                         <?php echo new View('view/project/widget/project.html.php', array(
                             'project' => $promo->projectData,
                             'balloon' => '<h4>' . htmlspecialchars($promo->title) . '</h4>' .
