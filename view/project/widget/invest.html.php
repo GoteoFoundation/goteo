@@ -15,7 +15,7 @@ $methods = Invest::methods();
 $worthcracy = Worth::getAll();
 
 ?>
-<div class="widget project-summary">
+<div class="widget project-invest">
     
     <h<?php echo $level ?>><?php echo Text::get('regular-invest'); ?></h<?php echo $level ?>>
 

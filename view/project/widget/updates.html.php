@@ -26,7 +26,7 @@ if (empty($this['post'])) {
 $level = (int) $this['level'] ?: 3;
 
 ?>
-<div class="widget project-summary">
+<div class="widget project-updates">
     
     <h<?php echo $level ?>><?php echo htmlspecialchars($project->name) ?></h<?php echo $level ?>>
 

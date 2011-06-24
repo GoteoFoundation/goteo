@@ -11,7 +11,7 @@ $rewards = Icon::getList(); // iconos que se usan en proyectos
 
 $params = $this['params'];
 ?>
-<div class="widget">
+<div class="widget searcher">
     <h2 class="title"><?php echo Text::get('discover-searcher-header'); ?></h2>
 
     <form method="post" action="/discover/results">

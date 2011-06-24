@@ -1,0 +1,31 @@
+div.widget.project-updates h1,
+div.widget.project-updates h2,
+div.widget.project-updates h3,
+div.widget.project-updates h4,
+div.widget.project-updates h5,
+div.widget.project-updates h6 {
+    text-transform: none;
+    font-weight: bold;
+    margin-top: 0;
+}
+
+div.widget.project-updates h1,
+div.widget.project-updates h2,
+div.widget.project-updates h3 {
+    font-size: 24px;
+}
+
+div.widget.project-updates h4 {
+    font-size: 18px;
+}
+
+div.widget.project-updates h5,
+div.widget.project-updates h6,
+div.widget.project-updates h7,
+div.widget.project-updates h8 {
+    font-size: 16px;
+}
+
+div.widget.project-updates > div {
+    margin-bottom: 2em;
+}

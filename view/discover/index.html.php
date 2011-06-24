@@ -30,7 +30,7 @@ include 'view/header.html.php' ?>
             if (empty($list))
                 continue;
             ?>
-            <div class="widget projects promos">
+            <div class="widget projects">
                 <h2 class="title"><?php echo $this['title'][$type]; ?></h2>
                 <?php foreach ($list as $project) : ?>
                     <?php

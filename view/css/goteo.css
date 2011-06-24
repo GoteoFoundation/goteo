@@ -13,6 +13,7 @@
 @import url('faq.css');
 @import url('blog.css');
 @import url('news.css');
+@import url('discover.css');
 
 div#sub-header > div,
 div#sub-header-secondary > div {

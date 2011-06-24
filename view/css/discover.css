@@ -1,0 +1,4 @@
+body.discover div#main div.widget {
+    overflow: hidden;
+    margin-bottom: 15px;
+}
