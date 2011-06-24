@@ -60,7 +60,7 @@ include 'view/header.html.php' ?>
                 </ul>
                                                                              
                 <?php foreach ($this['posts'] as $post) : ?>
-                <div class="post" id="home-post-<?php echo $post->id; ?>">
+                <div class="post" id="home-post-<?php echo $post->id; ?>" <?php if ($post->id == $this['post']) echo '<style="display:block;"'; ?>>
                     <h3><?php echo $post->title; ?></h3>
                     <div class="embed"><?php echo $post->media->getEmbedCode(); ?></div>
                     <div class="description">
