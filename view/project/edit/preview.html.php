@@ -5,6 +5,7 @@ use Goteo\Core\View,
     Goteo\Library\SuperForm;
 
 $project = $this['project'];
+$errors = $project->errors ?: array();
 
 // miramos el pruimer paso con errores para mandarlo a ese
 $goto = 'view-step-userProfile';

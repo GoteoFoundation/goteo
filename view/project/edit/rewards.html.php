@@ -5,6 +5,8 @@ use Goteo\Library\Text,
             
 
 $project = $this['project'];
+$errors = $project->errors[$this['step']] ?: array();
+$okeys  = $project->okeys[$this['step']] ?: array();
 
 $social_rewards_types = array();
 $social_rewards_licenses = array();
@@ -58,30 +60,36 @@ foreach ($project->social_rewards as $social_reward) {
                 "social_reward-{$social_reward->id}-reward" => array(
                     'title'     => Text::get('rewards-field-social_reward-reward'),
                     'type'      => 'textbox',
-//                    'required'  => true,
+                    'required'  => true,
                     'size'      => 100,
                     'class'     => 'inline',
                     'value'     => $social_reward->reward,
-                    'hint'      => Text::get('tooltip-project-social_reward-reward'),
+                    'errors'    => !empty($errors["social_reward-{$social_reward->id}-reward"]) ? array($errors["social_reward-{$social_reward->id}-reward"]) : array(),
+                    'ok'        => !empty($okeys["social_reward-{$social_reward->id}-reward"]) ? array($okeys["social_reward-{$social_reward->id}-reward"]) : array(),
+                    'hint'      => Text::get('tooltip-project-social_reward-reward')
                 ),
                 "social_reward-{$social_reward->id}-icon" => array(
                     'title'     => Text::get('rewards-field-social_reward-type'),
                     'class'     => 'inline social_reward-type reward-type',
                     'type'      => 'radios',
-//                    'required'  => true,
+                    'required'  => true,
                     'options'   => $social_rewards_types,
                     'value'     => $social_reward->icon,
-                    'hint'      => Text::get('tooltip-project-social_reward-icon'),
+                    'errors'    => !empty($errors["social_reward-{$social_reward->id}-icon"]) ? array($errors["social_reward-{$social_reward->id}-icon"]) : array(),
+                    'ok'        => !empty($okeys["social_reward-{$social_reward->id}-icon"]) ? array($okeys["social_reward-{$social_reward->id}-icon"]) : array(),
+                    'hint'      => Text::get('tooltip-project-social_reward-type')
                 ),
                 "social_reward-{$social_reward->id}-description" => array(
                     'type'      => 'textarea',
-//                    'required'  => true,
+                    'required'  => true,
                     'title'     => Text::get('rewards-field-social_reward-description'),
                     'cols'      => 100,
                     'rows'      => 4,
                     'class'     => 'inline',
-                    'hint'      => Text::get('tooltip-project-social_reward-description'),
-                    'value'     => $social_reward->description
+                    'value'     => $social_reward->description,
+                    'errors'    => !empty($errors["social_reward-{$social_reward->id}-description"]) ? array($errors["social_reward-{$social_reward->id}-description"]) : array(),
+                    'ok'        => !empty($okeys["social_reward-{$social_reward->id}-description"]) ? array($okeys["social_reward-{$social_reward->id}-description"]) : array(),
+                    'hint'      => Text::get('tooltip-project-social_reward-description')
                 ),    
                 "social_reward-{$social_reward->id}-license" => array(
                     'type'      => 'radios',
@@ -89,12 +97,19 @@ foreach ($project->social_rewards as $social_reward) {
                     'options'   => $social_rewards_licenses,                    
                     'value'     => $social_reward->license,
                     'class'     => 'inline reward-license',
+                    'errors'    => !empty($errors["social_reward-{$social_reward->id}-license"]) ? array($errors["social_reward-{$social_reward->id}-license"]) : array(),
+                    'ok'        => !empty($okeys["social_reward-{$social_reward->id}-license"]) ? array($okeys["social_reward-{$social_reward->id}-license"]) : array(),
                     'hint'      => Text::get('tooltip-project-social_reward-license')                    
                 ), 
                 "social_reward-{$social_reward->id}-remove" => array(
                     'type'  => 'submit',
                     'label' => Text::get('form-remove-button'),
                     'class' => 'inline remove reward-remove'
+                ),
+                "social_reward-{$social_reward->id}-accept" => array(
+                    'type'  => 'submit',
+                    'label' => Text::get('form-accept-button'),
+                    'class' => 'inline accept reward-accept'
                 )
             )
         );
@@ -108,36 +123,48 @@ foreach ($project->individual_rewards as $individual_reward) {
             'children'  => array(                         
                 "individual_reward-{$individual_reward->id}-reward" => array(
                     'title'     => Text::get('rewards-field-individual_reward-reward'),
+                    'required'  => true,
                     'type'      => 'textbox',
                     'size'      => 100,
                     'class'     => 'inline',
                     'value'     => $individual_reward->reward,
-                    'hint'      => Text::get('tooltip-project-individual_reward-reward'),
+                    'errors'    => !empty($errors["individual_reward-{$individual_reward->id}-reward"]) ? array($errors["individual_reward-{$individual_reward->id}-reward"]) : array(),
+                    'ok'        => !empty($okeys["individual_reward-{$individual_reward->id}-reward"]) ? array($okeys["individual_reward-{$individual_reward->id}-reward"]) : array(),
+                    'hint'      => Text::get('tooltip-project-individual_reward-reward')
                 ),
                 "individual_reward-{$individual_reward->id}-icon" => array(
                     'title'     => Text::get('rewards-field-individual_reward-type'),
+                    'required'  => true,
                     'class'     => 'inline  reward-type',
                     'type'      => 'radios',
                     'options'   => $individual_rewards_types,
                     'value'     => $individual_reward->icon,
-                    'hint'      => Text::get('tooltip-individual_reward-social_reward-icon'),
+                    'errors'    => !empty($errors["individual_reward-{$individual_reward->id}-icon"]) ? array($errors["individual_reward-{$individual_reward->id}-icon"]) : array(),
+                    'ok'        => !empty($okeys["individual_reward-{$individual_reward->id}-icon"]) ? array($okeys["individual_reward-{$individual_reward->id}-icon"]) : array(),
+                    'hint'      => Text::get('tooltip-project-individual_reward-type')
                 ),
                 "individual_reward-{$individual_reward->id}-description" => array(
                     'type'      => 'textarea',
+                    'required'  => true,
                     'title'     => Text::get('rewards-field-individual_reward-description'),
                     'cols'      => 100,
                     'rows'      => 4,
                     'class'     => 'inline',
-                    'hint'      => Text::get('tooltip-project-individual_reward-description'),
-                    'value'     => $individual_reward->description
+                    'value'     => $individual_reward->description,
+                    'errors'    => !empty($errors["individual_reward-{$individual_reward->id}-description"]) ? array($errors["individual_reward-{$individual_reward->id}-description"]) : array(),
+                    'ok'        => !empty($okeys["individual_reward-{$individual_reward->id}-description"]) ? array($okeys["individual_reward-{$individual_reward->id}-description"]) : array(),
+                    'hint'      => Text::get('tooltip-project-individual_reward-description')
                 ),                                    
                 "individual_reward-{$individual_reward->id}-amount" => array(
                     'title'     => Text::get('rewards-field-individual_reward-amount'),
+                    'required'  => true,
                     'type'      => 'textbox',
                     'size'      => 5,
                     'class'     => 'inline reward-amount',
                     'value'     => $individual_reward->amount,
-                    'hint'      => Text::get('tooltip-project-individual_reward-amount'),
+                    'errors'    => !empty($errors["individual_reward-{$individual_reward->id}-amount"]) ? array($errors["individual_reward-{$individual_reward->id}-amount"]) : array(),
+                    'ok'        => !empty($okeys["individual_reward-{$individual_reward->id}-amount"]) ? array($okeys["individual_reward-{$individual_reward->id}-amount"]) : array(),
+                    'hint'      => Text::get('tooltip-project-individual_reward-amount')
                 ),
                 "individual_reward-{$individual_reward->id}-units" => array(
                     'title'     => Text::get('rewards-field-individual_reward-units'),
@@ -151,6 +178,11 @@ foreach ($project->individual_rewards as $individual_reward) {
                     'type'  => 'submit',
                     'label' => Text::get('form-remove-button'),
                     'class' => 'inline remove reward-remove'
+                ),
+                "individual_reward-{$individual_reward->id}-accept" => array(
+                    'type'  => 'submit',
+                    'label' => Text::get('form-raccept-button'),
+                    'class' => 'inline remove reward-accept'
                 )
             )
         );

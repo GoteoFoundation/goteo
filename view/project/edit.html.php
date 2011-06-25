@@ -38,6 +38,8 @@ include 'view/prologue.html.php';
 
     </div>            
 
+<?php \trace($project->errors); \trace($project->okeys); ?>
+
     <?php include 'view/footer.html.php' ?>
     
 <?php include 'view/epilogue.html.php' ?>

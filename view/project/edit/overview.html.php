@@ -4,6 +4,8 @@ use Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
 $project = $this['project'];
+$errors = $project->errors[$this['step']] ?: array();
+$okeys  = $project->okeys[$this['step']] ?: array();
 
 $images = array();
 foreach ($project->gallery as $image) {
@@ -109,6 +111,7 @@ $superform = array(
             'hint'      => Text::get('tooltip-project-name'),
             'value'     => $project->name,
             'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
+            'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array()
         ),
         
         'images' => array(        
@@ -117,6 +120,7 @@ $superform = array(
             'required'  => true,
             'hint'      => Text::get('tooltip-project-image'),
             'errors'    => !empty($errors['image']) ? array($errors['image']) : array(),
+            'ok'        => !empty($okeys['image']) ? array($okeys['image']) : array(),
             'class'     => 'images',
             'children'  => array(
                 'image_upload'    => array(
@@ -142,6 +146,7 @@ $superform = array(
             'hint'      => Text::get('tooltip-project-description'),
             'value'     => $project->description,            
             'errors'    => !empty($errors['description']) ? array($errors['description']) : array(),
+            'ok'        => !empty($okeys['description']) ? array($okeys['description']) : array(),
             'children'  => array(                
                 'about' => array(
                     'type'      => 'textarea',       
@@ -149,6 +154,7 @@ $superform = array(
                     'required'  => true,
                     'hint'      => Text::get('tooltip-project-about'),
                     'errors'    => !empty($errors['about']) ? array($errors['about']) : array(),
+                    'ok'        => !empty($okeys['about']) ? array($okeys['about']) : array(),
                     'value'     => $project->about
                 ),
                 'motivation' => array(
@@ -157,6 +163,7 @@ $superform = array(
                     'required'  => true,
                     'hint'      => Text::get('tooltip-project-motivation'),
                     'errors'    => !empty($errors['motivation']) ? array($errors['motivation']) : array(),
+                    'ok'        => !empty($okeys['motivation']) ? array($okeys['motivation']) : array(),
                     'value'     => $project->motivation
                 ),
                 'goal' => array(
@@ -164,6 +171,7 @@ $superform = array(
                     'title'     => Text::get('overview-field-goal'),
                     'hint'      => Text::get('tooltip-project-goal'),
                     'errors'    => !empty($errors['goal']) ? array($errors['goal']) : array(),
+                    'ok'        => !empty($okeys['goal']) ? array($okeys['goal']) : array(),
                     'value'     => $project->goal
                 ),
                 'related' => array(
@@ -171,6 +179,7 @@ $superform = array(
                     'title'     => Text::get('overview-field-related'),
                     'hint'      => Text::get('tooltip-project-related'),
                     'errors'    => !empty($errors['related']) ? array($errors['related']) : array(),
+                    'ok'        => !empty($okeys['related']) ? array($okeys['related']) : array(),
                     'value'     => $project->related
                 ),
             )
@@ -184,13 +193,16 @@ $superform = array(
             'options'   => $categories,
             'hint'      => Text::get('tooltip-project-category'),
             'errors'    => !empty($errors['categories']) ? array($errors['categories']) : array(),
+            'ok'        => !empty($okeys['categories']) ? array($okeys['categories']) : array()
         ),       
 
         'keywords' => array(
             'type'      => 'textbox',
             'title'     => Text::get('overview-field-keywords'),
+            'required'  => true,
             'hint'      => Text::get('tooltip-project-keywords'),
             'errors'    => !empty($errors['keywords']) ? array($errors['keywords']) : array(),
+            'ok'        => !empty($okeys['keywords']) ? array($okeys['keywords']) : array(),
             'value'     => $project->keywords
         ),
 
@@ -198,16 +210,19 @@ $superform = array(
             'type'      => 'group',
             'required'  => true,
             'errors'    => !empty($errors['media']) ? array($errors['media']) : array(),
+            'ok'        => !empty($okeys['media']) ? array($okeys['media']) : array(),
             'children'  => $media
         ),
 
         'currently' => array(    
             'title'     => Text::get('overview-field-currently'),
             'type'      => 'slider',
+            'required'  => true,
             'options'   => $currently,
             'class'     => 'currently cols_' . count($currently),
             'hint'      => Text::get('tooltip-project-currently'),
             'errors'    => !empty($errors['currently']) ? array($errors['currently']) : array(),
+            'ok'        => !empty($okeys['currently']) ? array($okeys['currently']) : array(),
             'value'     => $project->currently
         ),
 
@@ -218,16 +233,19 @@ $superform = array(
             'required'  => true,
             'hint'      => Text::get('tooltip-project-project_location'),
             'errors'    => !empty($errors['project_location']) ? array($errors['project_location']) : array(),
+            'ok'        => !empty($okeys['project_location']) ? array($okeys['project_location']) : array(),
             'value'     => $project->project_location
         ),
 
         'scope' => array(
             'title'     => Text::get('overview-field-scope'),
             'type'      => 'slider',
+            'required'  => true,
             'options'   => $scope,
             'class'     => 'scope cols_' . count($currently),
             'hint'      => Text::get('tooltip-project-scope'),
             'errors'    => !empty($errors['scope']) ? array($errors['scope']) : array(),
+            'ok'        => !empty($okeys['scope']) ? array($okeys['scope']) : array(),
             'value'     => $project->scope
         )
 

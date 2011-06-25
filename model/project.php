@@ -732,9 +732,12 @@ namespace Goteo\Model {
              } else {
                  $okeys['overview']['about'] = 'ok';
                  ++$score;
+                 /*
                  if (\strlen($this->about) > 2000) {
                      $errors['overview']['about'] = Text::get('validate-project-field-about');
                  }
+                  * 
+                  */
             }
 
             if (empty($this->motivation)) {

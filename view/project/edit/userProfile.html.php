@@ -32,6 +32,7 @@ if (!empty($user->avatar) && is_object($user->avatar))
 $interests = array();
 
 $errors = $project->errors[$this['step']] ?: array();
+$okeys  = $project->okeys[$this['step']] ?: array();
 
 foreach ($this['interests'] as $value => $label) {
     $interests[] =  array(
@@ -51,16 +52,21 @@ foreach ($user->webs as $web) {
         'children'  => array(            
             'web-' . $web->id . '-url' => array(
                 'type'      => 'textbox',
+                'required'  => true,
                 'value'     => $web->url,
                 'hint'      => Text::get('tooltip-user-webs'),
                 'errors'    => array(),
-                'required'  => true,
                 'class'     => 'web-url inline'
             ),
             'web-' . $web->id . '-remove' => array(
                 'type'      => 'submit',                
                 'label'     => Text::get('form-remove-button'),
                 'class'     => 'web-remove inline remove'
+            ),
+            'web-' . $web->id . '-accept' => array(
+                'type'      => 'submit',
+                'label'     => Text::get('form-accept-button'),
+                'class'     => 'web-accept inline accept'
             )
         )
     );
@@ -94,7 +100,8 @@ echo new SuperForm(array(
             'title'     => Text::get('profile-field-name'),
             'hint'      => Text::get('tooltip-user-name'),
             'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
-            'value'     => $user->name,
+            'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array(),
+            'value'     => $user->name
         ),                
         'user_location' => array(
             'type'      => 'textbox',
@@ -103,13 +110,16 @@ echo new SuperForm(array(
             'title'     => Text::get('profile-field-location'),
             'hint'      => Text::get('tooltip-user-location'),
             'errors'    => !empty($errors['location']) ? array($errors['location']) : array(),
-            'value'     => $user->location,
+            'ok'        => !empty($okeys['location']) ? array($okeys['location']) : array(),
+            'value'     => $user->location
         ),
         'user_avatar' => array(                  
-            'title'     => Text::get('profile-fields-image-title'),
             'type'      => 'group',
+            'required'  => true,
+            'title'     => Text::get('profile-fields-image-title'),
             'hint'      => Text::get('tooltip-user-image'),
             'errors'    => !empty($errors['avatar']) ? array($errors['avatar']) : array(),
+            'ok'        => !empty($okeys['avatar']) ? array($okeys['avatar']) : array(),
             'class'     => 'user_avatar',
             'children'  => array(                
                 'avatar_upload'    => array(
@@ -130,36 +140,44 @@ echo new SuperForm(array(
         
         'user_about' => array(
             'type'      => 'textarea',
+            'required'  => true,
             'cols'      => 40,
             'rows'      => 4,
             'title'     => Text::get('profile-field-about'),
             'hint'      => Text::get('tooltip-user-about'),
             'errors'    => !empty($errors['about']) ? array($errors['about']) : array(),
+            'ok'        => !empty($okeys['about']) ? array($okeys['about']) : array(),
             'value'     => $user->about
         ),          
         'interests' => array(
             'type'      => 'checkboxes',
+            'required'  => true,
             'name'      => 'user_interests[]',
             'title'     => Text::get('profile-field-interests'),
             'hint'      => Text::get('tooltip-user-interests'),            
             'errors'    => !empty($errors['interests']) ? array($errors['interests']) : array(),
+            'ok'        => !empty($okeys['interests']) ? array($okeys['interests']) : array(),
             'options'   => $interests
         ),  
         'user_keywords' => array(
             'type'      => 'textbox',
+            'required'  => true,
             'size'      => 20,
             'title'     => Text::get('profile-field-keywords'),
             'hint'      => Text::get('tooltip-user-keywords'),
             'errors'    => !empty($errors['keywords']) ? array($errors['keywords']) : array(),
+            'ok'        => !empty($okeys['keywords']) ? array($okeys['keywords']) : array(),
             'value'     => $user->keywords
         ), 
         'user_contribution' => array(
             'type'      => 'textarea',
+            'required'  => true,
             'cols'      => 40,
             'rows'      => 4,
             'title'     => Text::get('profile-field-contribution'),
             'hint'      => Text::get('tooltip-user-contribution'),
             'errors'    => !empty($errors['contribution']) ? array($errors['contribution']) : array(),
+            'ok'        => !empty($okeys['contribution']) ? array($okeys['contribution']) : array(),
             'value'     => $user->contribution
         ),
         'user_webs' => array(
@@ -185,6 +203,7 @@ echo new SuperForm(array(
                     'title'     => Text::get('regular-facebook'),
                     'hint'      => Text::get('tooltip-user-facebook'),
                     'errors'    => !empty($errors['facebook']) ? array($errors['facebook']) : array(),
+                    'ok'        => !empty($okeys['facebook']) ? array($okeys['facebook']) : array(),
                     'value'     => $user->facebook
                 ), 
                 'user_twitter' => array(
@@ -194,6 +213,7 @@ echo new SuperForm(array(
                     'title'     => Text::get('regular-twitter'),
                     'hint'      => Text::get('tooltip-user-twitter'),
                     'errors'    => !empty($errors['twitter']) ? array($errors['twitter']) : array(),
+                    'ok'        => !empty($okeys['twitter']) ? array($okeys['twitter']) : array(),
                     'value'     => $user->twitter
                 ), 
                 'user_identica' => array(
@@ -203,6 +223,7 @@ echo new SuperForm(array(
                     'title'     => Text::get('regular-identica'),
                     'hint'      => Text::get('tooltip-user-identica'),
                     'errors'    => !empty($errors['identica']) ? array($errors['identica']) : array(),
+                    'ok'        => !empty($okeys['identica']) ? array($okeys['identica']) : array(),
                     'value'     => $user->identica
                 ),
                 'user_linkedin' => array(
@@ -212,6 +233,7 @@ echo new SuperForm(array(
                     'title'     => Text::get('regular-linkedin'),
                     'hint'      => Text::get('tooltip-user-linkedin'),
                     'errors'    => !empty($errors['linkedin']) ? array($errors['linkedin']) : array(),
+                    'ok'        => !empty($okeys['linkedin']) ? array($okeys['linkedin']) : array(),
                     'value'     => $user->linkedin
                 )
             )            

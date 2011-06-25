@@ -5,6 +5,8 @@ use Goteo\Library\Text,
     Goteo\Core\View;
             
 $project = $this['project'];
+$errors = $project->errors[$this['step']] ?: array();
+$okeys  = $project->okeys[$this['step']] ?: array();
 
 $costsTypes = array();
 
@@ -28,42 +30,51 @@ if (!empty($project->costs)) {
             'children'  => array(                         
                 "cost-{$cost->id}-cost" => array(
                     'title'     => Text::get('costs-field-cost'),
-//                    'required'  => true,
+                    'required'  => true,
                     'type'      => 'textbox',
                     'size'      => 100,
                     'class'     => 'inline',
                     'value'     => $cost->cost,
+                    'errors'    => !empty($errors["cost-{$cost->id}-cost"]) ? array($errors["cost-{$cost->id}-cost"]) : array(),
+                    'ok'        => !empty($okeys["cost-{$cost->id}-cost"]) ? array($okeys["cost-{$cost->id}-cost"]) : array(),
                     'hint'      => Text::get('tooltip-project-cost-cost'),
                 ),
                 "cost-{$cost->id}-type" => array(
                     'title'     => Text::get('costs-field-type'),
-//                    'required'  => true,
+                    'required'  => true,
                     'class'     => 'inline cost-type',
                     'type'      => 'radios',
                     'options'   => $costTypes,
                     'value'     => $cost->type,
+                    'errors'    => !empty($errors["cost-{$cost->id}-type"]) ? array($errors["cost-{$cost->id}-type"]) : array(),
+                    'ok'        => !empty($okeys["cost-{$cost->id}-type"]) ? array($okeys["cost-{$cost->id}-type"]) : array(),
                     'hint'      => Text::get('tooltip-project-cost-type'),
                 ),
                 "cost-{$cost->id}-description" => array(
                     'type'      => 'textarea',
+                    'required'  => true,
                     'title'     => Text::get('costs-field-description'),
                     'cols'      => 100,
                     'rows'      => 4,
                     'class'     => 'inline cost-description',
                     'hint'      => Text::get('tooltip-project-cost-description'),
+                    'errors'    => !empty($errors["cost-{$cost->id}-description"]) ? array($errors["cost-{$cost->id}-description"]) : array(),
+                    'ok'        => !empty($okeys["cost-{$cost->id}-description"]) ? array($okeys["cost-{$cost->id}-description"]) : array(),
                     'value'     => $cost->description
                 ),                                       
                 "cost-{$cost->id}-amount" => array(
                     'type'      => 'textbox',
-//                    'required'  => true,
+                    'required'  => true,
                     'title'     => Text::get('costs-field-amount'),
                     'size'      => 8,
                     'class'     => 'inline cost-amount',
                     'hint'      => Text::get('tooltip-project-cost-amount'),
+                    'errors'    => !empty($errors["cost-{$cost->id}-amount"]) ? array($errors["cost-{$cost->id}-amount"]) : array(),
+                    'ok'        => !empty($okeys["cost-{$cost->id}-amount"]) ? array($okeys["cost-{$cost->id}-amount"]) : array(),
                     'value'     => $cost->amount
                 ),
                 "cost-{$cost->id}-required"  => array(
-//                    'required'  => true,
+                    'required'  => true,
                     'title'     => Text::get('costs-field-required_cost'),
                     'class'     => 'inline cost-required',
                     'type'      => 'radios',
@@ -78,12 +89,17 @@ if (!empty($project->costs)) {
                                             )
                                     ),
                     'value'     => $cost->required,
+                    'errors'    => !empty($errors["cost-{$cost->id}-required"]) ? array($errors["cost-{$cost->id}-required"]) : array(),
+                    'ok'        => !empty($okeys["cost-{$cost->id}-required"]) ? array($okeys["cost-{$cost->id}-required"]) : array(),
                     'hint'      => Text::get('tooltip-project-cost-required'),
                 ),
                 "cost-{$cost->id}-dates" => array(
                     'type'      => 'group',
+                    'required'  => $cost->type == 'task' ? true : false,
                     'title'     => Text::get('costs-field-dates'),
                     'class'     => 'inline cost-dates',
+                    'errors'    => !empty($errors["cost-{$cost->id}-dates"]) ? array($errors["cost-{$cost->id}-dates"]) : array(),
+                    'ok'        => !empty($okeys["cost-{$cost->id}-dates"]) ? array($okeys["cost-{$cost->id}-dates"]) : array(),
                     'hint'      => Text::get('tooltip-project-cost-dates'),
                     'children'  => array(
                         "cost-{$cost->id}-from"  => array(
@@ -91,7 +107,6 @@ if (!empty($project->costs)) {
                             'type'      => 'datebox',
                             'size'      => 8,
                             'title'     => Text::get('costs-field-date_from'),
-                            'hint'      => Text::get('tooltip-project-cost-dates'),
                             'value'     => $cost->from
                         ),
                         "cost-{$cost->id}-until"  => array(
@@ -99,7 +114,6 @@ if (!empty($project->costs)) {
                             'type'      => 'datebox',
                             'size'      => 8,
                             'title'     => Text::get('costs-field-date_until'),
-                            'hint'      => Text::get('tooltip-project-cost-dates'),
                             'value'     => $cost->until
                         )
                     )
@@ -108,6 +122,11 @@ if (!empty($project->costs)) {
                     'type'  => 'submit',
                     'label' => Text::get('form-remove-button'),
                     'class' => 'inline remove'
+                ),
+                "cost-{$cost->id}-accept" => array(
+                    'type'  => 'submit',
+                    'label' => Text::get('form-accept-button'),
+                    'class' => 'inline accept'
                 )
             )
         );
