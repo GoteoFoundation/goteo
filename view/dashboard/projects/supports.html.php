@@ -3,6 +3,8 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
+define('ADMIN_NOAUTOSAVE', true);
+
 echo new View ('view/dashboard/projects/selector.html.php', $this);
 
 $project = $this['project'];
