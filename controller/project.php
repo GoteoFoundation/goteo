@@ -627,13 +627,30 @@ namespace Goteo\Controller {
             }
             
             // añadir nueva colaboracion
+            // necesito hacer el save aqui para tener id y mantenerlo abierto en edicion
             if (!empty($_POST['support-add'])) {
-                $project->supports[] = new Model\Project\Support(array(
+                 $new_support = new Model\Project\Support(array(
                     'project'       => $project->id,
                     'support'       => 'Nueva colaboración',
                     'type'          => 'task',
                     'description'   => ''
                 ));
+                if ($new_support->save()) {
+
+                    $project->supports[] = $new_support;
+                    $_POST['support-'.$new_support->id.'-edit'] = true;
+                    
+                } else {
+                    // si lo lo puede grabar aqui lo añadimos de todos modos
+                    $project->supports[] = new Model\Project\Support(array(
+                        'project'       => $project->id,
+                        'support'       => 'Nueva colaboración',
+                        'type'          => 'task',
+                        'description'   => ''
+                    ));
+                    
+                }
+
             }
 
             return true;
