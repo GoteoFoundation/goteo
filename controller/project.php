@@ -134,14 +134,6 @@ namespace Goteo\Controller {
                 // guardamos los datos que hemos tratado y los errores de los datos
                 $project->save($errors);
 
-                // si ha ocurrido algun error de proces (como p.ej. "no se ha podido guardar loqueseaa")
-                /*
-                 * Me follo la exception de si falla el save, ya veremos como mostrar esos errors
-                if (!empty($errors))
-                    throw new \Goteo\Core\Exception(implode('. ', $errors));
-                 *
-                 */
-
                 // si estan enviando el proyecto a revisión
                 if (isset($_POST['process_preview']) && isset($_POST['finish'])) {
                     $errors = array();
@@ -168,17 +160,6 @@ namespace Goteo\Controller {
                 }
             }
 
-            // si
-            // para cada paso, si no han pasado por el, quitamos errores y okleys de ese paso
-            foreach ($steps as $id => $data) {
-                if (!in_array($id, $_SESSION['stepped'])) {
-                    unset($project->errors[$id]);
-                    unset($project->okeys[$id]);
-                }
-            }
-
-
-            
             // variables para la vista
             $viewData = array(
                 'project' => $project,
