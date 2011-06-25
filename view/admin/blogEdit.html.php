@@ -5,6 +5,8 @@ use Goteo\Library\Text,
     Goteo\Core\Redirection,
     Goteo\Library\SuperForm;
 
+define('ADMIN_NOAUTOSAVE', true);
+
 $bodyClass = 'admin';
 
 $post = $this['post'];

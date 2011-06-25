@@ -3,6 +3,8 @@
 use Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
+define('ADMIN_NOAUTOSAVE', true);
+
 $bodyClass = 'admin';
 
 $promo = $this['promo'];
