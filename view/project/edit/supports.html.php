@@ -87,7 +87,7 @@ foreach ($project->supports as $support) {
                     "support-{$support->id}-support" => array(
                         'type'      => 'html',
                         'class'     => 'inline',
-                        'html'      => $support->support . ' Tipo: ' . $this['types'][$support->type]
+                        'html'      => $this['types'][$support->type] . ': ' . $support->support
                     ),
                     "support-{$support->id}-edit" => array(
                         'type'  => 'submit',

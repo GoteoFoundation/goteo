@@ -516,15 +516,33 @@ namespace Goteo\Controller {
 
             //añadir nuevo coste
             if (!empty($_POST['cost-add'])) {
-                
-                $project->costs[] = new Model\Project\Cost(array(
+
+                $new_cost = new Model\Project\Cost(array(
                     'project' => $project->id,
                     'cost'  => 'Nueva tarea',
                     'type'  => 'task',
                     'from' => null,
                     'until' => null
-                    
+
                 ));
+
+                if ($new_cost->save($errors)) {
+
+                    $project->costs[] = $new_cost;
+                    $_POST['cost-'.$new_cost->id.'-edit'] = true;
+
+                } else {
+
+                    $project->costs[] = new Model\Project\Cost(array(
+                        'project' => $project->id,
+                        'cost'  => 'Nueva tarea',
+                        'type'  => 'task',
+                        'from' => null,
+                        'until' => null
+
+                    ));
+
+                }
                 
             }
            
@@ -576,18 +594,38 @@ namespace Goteo\Controller {
 
             // tratar nuevos retornos
             if (!empty($_POST['social_reward-add'])) {
-                $project->social_rewards[] = new Model\Project\Reward(array(
+
+                 $new_social_reward = new Model\Project\Reward(array(
                     'type'      => 'social',
                     'project'   => $project->id,
                     'reward'    => 'Nuevo retorno colectivo',
                     'icon'      => 'file',
-                    'license'   => 'cc0'
+                    'license'   => ''
 
                 ));
+
+                if ($new_social_reward->save()) {
+
+                    $project->social_rewards[] = $new_social_reward;
+                    $_POST['social_reward-'.$new_social_reward->id.'-edit'] = true;
+
+                } else {
+
+                    $project->social_rewards[] = new Model\Project\Reward(array(
+                        'type'      => 'social',
+                        'project'   => $project->id,
+                        'reward'    => 'Nuevo retorno colectivo',
+                        'icon'      => 'file',
+                        'license'   => ''
+
+                    ));
+
+                }
             }
             
             if (!empty($_POST['individual_reward-add'])) {
-                $project->individual_rewards[] = new Model\Project\Reward(array(
+
+                $new_individual_reward = new Model\Project\Reward(array(
                     'type'      => 'individual',
                     'project'   => $project->id,
                     'reward'    => 'Nueva recompensa individual',
@@ -595,6 +633,24 @@ namespace Goteo\Controller {
                     'amount'    => 10,
                     'units'     => 0
                 ));
+
+                if ($new_individual_reward->save()) {
+
+                    $project->individual_rewards[] = $new_individual_reward;
+                    $_POST['individual_reward-'.$new_individual_reward->id.'-edit'] = true;
+
+                } else {
+
+                    $project->individual_rewards[] = new Model\Project\Reward(array(
+                        'type'      => 'individual',
+                        'project'   => $project->id,
+                        'reward'    => 'Nueva recompensa individual',
+                        'icon'      => 'product',
+                        'amount'    => 10,
+                        'units'     => 0
+                    ));
+
+                }
             }
 
             return true;
