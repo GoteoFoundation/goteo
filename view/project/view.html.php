@@ -44,7 +44,7 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
         <?php include 'view/header.html.php' ?>
 
         <div id="sub-header">
-            <div>
+            <div class="project-header">
                 <img src="/image/<?php echo $project->user->avatar->id; ?>/75/75" />
                 <h2><span><?php echo htmlspecialchars($project->name) ?></span></h2>
                 <div class="project-by">Por: <?php echo $project->user->name; ?></div>

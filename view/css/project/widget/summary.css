@@ -65,4 +65,5 @@ div.widget.project-summary ul.navi li > a.active {
 
 div.widget.project-summary div.gallery div.gallery-image {
     display: none;
+    text-align: center;
 }

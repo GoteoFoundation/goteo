@@ -28,6 +28,10 @@ body.project-show div#sub-header {
     padding-bottom: 0;
 }
 
+body.project-show div#sub-header div.project-header{
+    min-height: 70px;
+}
+
 body.project-show div#sub-header img{
     float: left;
 }

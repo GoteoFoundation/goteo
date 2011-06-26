@@ -8,6 +8,43 @@ div.widget.project-rewards > div.individual ul li,
     background-color: #fbf3f4;
 }
 
+div.widget.project-rewards > div.individual ul li div.amount,
+#rewards-summary > div.individual ul li div.amount {
+    text-align: right;
+    color: #e32526;
+}
+
+#rewards-summary > div.individual ul li div.amount {
+    margin-bottom: -20px;
+}
+
+div.widget.project-rewards > div.individual ul li div.amount span.euro,
+#rewards-summary > div.individual ul li div.amount span.euro {
+    padding: 5px 20px 5px 10px;
+    margin: 0px;
+    background: url('../../euro/red/s.png') no-repeat right center;
+    display: inline-block;
+    background-color: #e7e7e7;
+}
+
+div.widget.project-rewards > div.individual ul li div.investors,
+#rewards-summary > div.individual ul li div.investors {
+    color: #213f9a;
+/*    border: #213f9a 1px solid; */
+    padding: 2px 6px 2px 3px;
+    text-transform: uppercase;
+    margin-left: -60px;
+    margin-top: 10px;
+}
+
+div.widget.project-rewards > div.individual ul li span.taken,
+#rewards-summary > div.individual ul li span.taken {
+    color: #213f9a;
+    border: #213f9a 1px solid;
+    margin-right: 5px;
+    padding: 2px 6px 2px 6px;
+}
+
 
 div.widget.project-rewards ul,
 #rewards-summary ul {
