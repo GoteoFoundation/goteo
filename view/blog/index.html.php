@@ -10,7 +10,13 @@ $bodyClass = 'blog';
 // paginacion
 require_once 'library/pagination/pagination.php';
 
-$pagedResults = new \Paginated($posts, 7, isset($_GET['page']) ? $_GET['page'] : 1);
+//recolocamos los post para la paginacion
+$the_posts = array();
+foreach ($posts as $i=>$p) {
+    $the_posts[] = $p;
+}
+
+$pagedResults = new \Paginated($the_posts, 7, isset($_GET['page']) ? $_GET['page'] : 1);
 
 include 'view/prologue.html.php';
 include 'view/header.html.php'; 

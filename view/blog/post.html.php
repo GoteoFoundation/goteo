@@ -8,14 +8,16 @@
 	if ($this['show'] == 'list') {
 		$post->text = Text::recorta($post->text, 200);
 	}
+
+    $url = empty($this['url']) ? '/blog/' : $this['url'];
 ?>
-	<h<?php echo $level + 1?>><a href="/blog/<?php echo $post->id; ?>"><?php echo $post->title; ?></a></h<?php echo $level + 1?>>
+	<h<?php echo $level + 1?>><a href="<?php echo $url.$post->id; ?>"><?php echo $post->title; ?></a></h<?php echo $level + 1?>>
 	<span class="date"><?php echo $post->fecha; ?></span>
 	<?php if (!empty($post->tags)) : ?>
 		<span class="categories"><?php echo implode(', ', $post->tags);  ?></span>
 	<?php endif; ?>
 	<?php if (!empty($post->image)) : ?>
-		<img src="/image/<?php echo $post->image->id; ?>/110/110" alt="Imagen"/>
+		<img src="/image/<?php echo $post->image->id; ?>/580" alt="Imagen"/>
 	<?php endif; ?>
 	<?php if (!empty($post->media->url)) : ?>
 		<div class="embed">

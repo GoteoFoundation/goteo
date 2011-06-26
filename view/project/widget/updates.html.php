@@ -13,11 +13,14 @@ if (empty($this['post'])) {
 } else {
     $post = $this['post'];
     if (!in_array($post, array_keys($blog->posts))) {
-        throw new Goteo\Core\Redirection("/project/{$project->id}/updates", Goteo\Core\Redirection::TEMPORARY);
+        $posts = $blog->posts;
+        $action = 'list';
+        $this['show'] = 'list';
+    } else {
+        $post = Post::get($post);
+        $action = 'post';
+        $this['show'] = 'post';
     }
-    $post = Post::get($post);
-    $action = 'post';
-    $this['show'] = 'post';
 }
 
 // segun lo que tengamos que mostrar :  lista o entrada
@@ -33,7 +36,7 @@ $level = (int) $this['level'] ?: 3;
     <!-- una entrada -->
     <?php if ($action == 'post') : ?>
     <div class="post">
-        <?php echo new View('view/blog/post.html.php', array('post' => $post->id, 'show' => 'post')); ?>
+        <?php echo new View('view/blog/post.html.php', array('post' => $post->id, 'show' => 'post', 'url' => '/project/'.$project->id.'/updates/')); ?>
         <?php echo new View('view/blog/comments.html.php', array('post' => $post->id)); ?>
         <?php echo new View('view/blog/sendComment.html.php', array('post' => $post->id, 'project' => $project->id)); ?>
     </div>
@@ -45,7 +48,7 @@ $level = (int) $this['level'] ?: 3;
         <div class="posts">
             <?php foreach ($posts as $post) : ?>
                 <div class="widget">
-                    <?php echo new View('view/blog/post.html.php', array('post' => $post->id, 'show' => 'list')); ?>
+                    <?php echo new View('view/blog/post.html.php', array('post' => $post->id, 'show' => 'list', 'url' => '/project/'.$project->id.'/updates/')); ?>
                    <span><?php echo $post->num_comments > 0 ? $post->num_comments . ' ' .Text::get('blog-comments') : Text::get('blog-no_comments'); ?></span>
                    <div class="more"><a href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>"><?php echo Text::get('blog-read_more'); ?></a></div>
                 </div>
