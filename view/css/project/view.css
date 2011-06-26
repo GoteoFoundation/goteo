@@ -28,9 +28,21 @@ body.project-show div#sub-header {
     padding-bottom: 0;
 }
 
+body.project-show div#sub-header img{
+    float: left;
+}
+
+body.project-show div#sub-header div.project-by {
+    padding-left: 82px;
+    font-weight: normal;
+    color: #20B3B2;
+    margin: 0 0 .5em;
+    font-size: 12px;
+}
+
 body.project-show div#sub-header div.categories {
     text-align: right;
-    margin-top: -22px;
+    margin-top: -60px;
 }
 
 body.project-show div#sub-header div.categories h3 {

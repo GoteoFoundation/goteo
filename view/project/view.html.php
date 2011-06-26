@@ -45,7 +45,10 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
 
         <div id="sub-header">
             <div>
-                <h2><?php echo htmlspecialchars($project->name) ?></h2>
+                <img src="/image/<?php echo $project->user->avatar->id; ?>/75/75" />
+                <h2><span><?php echo htmlspecialchars($project->name) ?></span></h2>
+                <div class="project-by">Por: <?php echo $project->user->name; ?></div>
+                <br clear="both" />
                 
                 <div class="categories"><h3><?php echo Text::get('project-view-categories-title'); ?></h3>
                     <?php 
