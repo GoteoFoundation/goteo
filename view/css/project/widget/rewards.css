@@ -11,7 +11,7 @@ div.widget.project-rewards > div.individual ul li,
 div.widget.project-rewards > div.individual ul li div.amount,
 #rewards-summary > div.individual ul li div.amount {
     text-align: right;
-    color: #e32526;
+    color: #EE4843;
 }
 
 #rewards-summary > div.individual ul li div.amount {
@@ -29,8 +29,8 @@ div.widget.project-rewards > div.individual ul li div.amount span.euro,
 
 div.widget.project-rewards > div.individual ul li div.investors,
 #rewards-summary > div.individual ul li div.investors {
-    color: #213f9a;
-/*    border: #213f9a 1px solid; */
+    color: #313B96;
+/*    border: #313B96 1px solid; */
     padding: 2px 6px 2px 3px;
     text-transform: uppercase;
     margin-left: -60px;
@@ -39,8 +39,8 @@ div.widget.project-rewards > div.individual ul li div.investors,
 
 div.widget.project-rewards > div.individual ul li span.taken,
 #rewards-summary > div.individual ul li span.taken {
-    color: #213f9a;
-    border: #213f9a 1px solid;
+    color: #313B96;
+    border: #313B96 1px solid;
     margin-right: 5px;
     padding: 2px 6px 2px 6px;
 }

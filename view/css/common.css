@@ -109,7 +109,8 @@ input.green[type="submit"],
 input.green[type="reset"],
 button.green,
 a.button.green {
-    background-color: #00b05b;
+    background: #00b05b url('button/green.png') repeat-x top;
+    color: white;
 } 
 
 h1, h2, h3, h4, h5, h6, h7, h8 {
