@@ -12,7 +12,7 @@ foreach (License::getAll() as $l) {
     $licenses[$l->id] = $l;
 }
 ?>
-<div class="widget" id="rewards-summary">
+<div class="widget project-rewards-summary" id="rewards-summary">
 
     <h<?php echo $level ?> class="supertitle"><?php echo Text::get('project-rewards-supertitle'); ?></h<?php echo $level ?>>
 
@@ -60,8 +60,5 @@ foreach (License::getAll() as $l) {
         </li>
         <?php endforeach ?>
     </div>
-
-    <a class="more" href="/project/<?php echo $project->id; ?>/investors"><?php echo Text::get('regular-see_more'); ?></a>
-
 
 </div>
