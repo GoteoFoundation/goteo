@@ -29,10 +29,7 @@ if (empty($this['post'])) {
 $level = (int) $this['level'] ?: 3;
 
 ?>
-<div class="widget project-updates">
-    
-    <h<?php echo $level ?>><?php echo htmlspecialchars($project->name) ?></h<?php echo $level ?>>
-
+<div class="project-updates"> 
     <!-- una entrada -->
     <?php if ($action == 'post') : ?>
     <div class="post">
@@ -41,19 +38,20 @@ $level = (int) $this['level'] ?: 3;
         <?php echo new View('view/blog/sendComment.html.php', array('post' => $post->id, 'project' => $project->id)); ?>
     </div>
     <?php endif ?>
-
     <!-- Lista de entradas -->
     <?php if ($action == 'list') : ?>
         <?php if (!empty($posts)) : ?>
-        <div class="posts">
             <?php foreach ($posts as $post) : ?>
-                <div class="widget">
+                <div class="widget post">
                     <?php echo new View('view/blog/post.html.php', array('post' => $post->id, 'show' => 'list', 'url' => '/project/'.$project->id.'/updates/')); ?>
-                   <span><?php echo $post->num_comments > 0 ? $post->num_comments . ' ' .Text::get('blog-comments') : Text::get('blog-no_comments'); ?></span>
-                   <div class="more"><a href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>"><?php echo Text::get('blog-read_more'); ?></a></div>
+					<ul class="share-goteo">
+						<li class="sharetext">Compartir en:</li>
+						<li class="twitter"><a href="#"><?php echo Text::get('regular-twitter'); ?></a></li>
+						<li class="facebook"><a href="#"><?php echo Text::get('regular-share-facebook'); ?></a></li>
+					</ul>
+					<div class="comments-num"><a href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>"><?php echo $post->num_comments > 0 ? $post->num_comments . ' ' .Text::get('blog-comments') : Text::get('blog-no_comments'); ?></a></div>
                 </div>
             <?php endforeach; ?>
-        </div>
         <?php else : ?>
             <p><?php echo Text::get('blog-no_posts'); ?></p>
         <?php endif; ?>

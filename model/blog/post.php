@@ -102,7 +102,7 @@ namespace Goteo\Model\Blog {
                 
                 $post->num_comments = Post\Comment::getCount($post->id);
 
-                $list[] = $post;
+                $list[$post->id] = $post;
             }
 
             return $list;
