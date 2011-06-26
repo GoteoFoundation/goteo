@@ -71,6 +71,10 @@ div.widget.project-needs table thead.material th.summary {
     background-image: url('/view/css/icon/m/material.png');
 }
 
+div.widget.project-needs table thead.lend th.summary {
+    background-image: url('../../icon/m/lend.png');
+}
+
 div.widget.project-needs table tfoot th.total {
     text-align: right;
 }

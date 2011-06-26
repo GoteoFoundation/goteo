@@ -25,15 +25,7 @@ foreach ($project->costs as $cost) {
 ?>
 <div class="widget project-needs">
         
-    <!--
-    <div id="project-costs-header">
-        <span class="minimum" style="color:red;">Mínimo</span>
-        <span class="optimum" style="color:black;">Óptimo</span>
-    </div>
-    -->
-        
-    
-    <!--<h<?php echo $level ?>>Necesidades</h<?php echo $level ?>>-->
+    <h<?php echo $level+1 ?> class="title"><?php echo Text::get('project-view-metter-investment'); ?></h<?php echo $level+1 ?>>
            
     <table>
         

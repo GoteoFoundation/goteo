@@ -98,9 +98,11 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                 echo new View('view/project/widget/collaborations.html.php', array('project' => $project));
             }
 
-            echo
-                new View('view/project/widget/rewards.html.php', array('project' => $project)),
-                new View('view/user/widget/user.html.php', array('user' => $owner));
+            if ($show != 'rewards') {
+                echo new View('view/project/widget/rewards.html.php', array('project' => $project));
+            }
+
+            echo new View('view/user/widget/user.html.php', array('user' => $owner));
             
             ?>                
             </div>
