@@ -5,7 +5,12 @@ use Goteo\Core\View,
     Goteo\Library\SuperForm;
 
 $project = $this['project'];
+$types   = $this['types'];
 $errors = $project->errors ?: array();
+
+if (!empty($this['success'])) {
+    $success = '<br /><br />' . implode('<br /><br />', $this['success']);
+}
 
 // miramos el pruimer paso con errores para mandarlo a ese
 $goto = 'view-step-userProfile';
@@ -57,7 +62,7 @@ $elements      = array(
                        . new View('view/project/widget/media.html.php', array('project' => $project))
                        . new View('view/project/widget/share.html.php', array('project' => $project))
                        . new View('view/project/widget/summary.html.php', array('project' => $project))
-                       . new View('view/project/widget/needs.html.php', array('project' => $project))
+                       . new View('view/project/widget/needs.html.php', array('project' => $project, 'types' => $types))
                        . '</div>'
                        . '</div></div>'
     )
@@ -81,7 +86,7 @@ echo new SuperForm(array(
     'level'         => $this['level'],
     'method'        => 'post',
     'title'         => Text::get('preview-main-header'),
-    'hint'          => Text::get('guide-project-preview'),    
+    'hint'          => Text::get('guide-project-preview') . $success,
     'footer'        => $buttons,
     'elements'      => $elements
 ));

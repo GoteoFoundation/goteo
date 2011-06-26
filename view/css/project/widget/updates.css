@@ -55,14 +55,19 @@ div.widget.project-updates > div {
 .project-updates .post blockquote{
 	color: #58595B;
 	padding: 0 0 20px 0;
-	border-bottom: 1px solid #CABCBF;
 	margin: 18px 18px 12px 18px;
 }
-.project-updates .post .embed,
-.project-updates .post img.post-image{
+.project-updates .post .embed{
     width: 500px;
     height: 285px;
 	margin: 10px  30px;
+}
+.project-updates .widget.post .image{
+	display:block;
+	text-align:center;
+}
+.project-updates .widget.post .image img{
+	margin: 0 auto;
 }
 .project-updates .post .comments-num{
 	float:left;
@@ -71,7 +76,7 @@ div.widget.project-updates > div {
 	height:24px;
 	margin: 0 0 0 20px;
 }
-.project-updates .post .comments-num {
+.project-updates .post .comments-num a {
 	color:#00ad4e;
 	text-decoration:none;
 }
@@ -109,6 +114,73 @@ div.widget.project-updates > div {
 	color:#4a6393;
 	text-decoration:none;
 }
+
+/** blog comments **/
+.project-updates h5 {
+	font: bold 16px Helvetica, Arial, Geneva, sans-serif;
+	text-transform:uppercase;
+	color:#535353;
+}
+.project-updates div.message {
+    margin-left: 60px;
+    padding: 0em 1em .5em 1.5em;
+    overflow: visible;
+    position: relative;
+	border-bottom: 1px solid #cabcbf;
+}
+.project-updates div.message {
+    margin-top: 20px;
+}
+.project-updates div.message .arrow-up {
+    position: absolute;
+    left: -60px;
+    top: 0;
+    display: block;
+    width: 50px;
+    height: 50px;
+    background: url('over-blogavatar.png') scroll no-repeat  0 0 transparent; 
+	z-index:9;
+}
+.project-updates div.message .avatar {
+    position: absolute;
+    left: -60px;
+    top: 0;
+    display: block;
+    width: 50px;
+    height: 50px;   
+	z-index:0;
+}
+.project-updates div.message .user {
+    text-transform: none;
+	font: bold 12px Helvetica, Arial, Geneva, sans-serif;
+    margin: 0.8em 0 1em;
+    float: left;
+}
+.project-updates div.message .date {
+    float: right;
+    color: #808080;
+    font-size: 11px;
+}
+.project-updates div.message blockquote {
+    margin: 0;
+    padding: 0;
+    clear: both;
+}
+.project-updates div.widget.blog-comment {
+    margin: 20px 0 0 0;
+}
+.project-updates div.widget.blog-comment h5 {
+    margin: 0 0 5px 0;
+}
+.project-updates div.widget.blog-comment textarea {
+	display:block;
+	width:530px;
+}
+.project-updates div.widget.blog-comment input.button {
+	margin: 20px 0 0 0;
+	float:right;
+}
+/** end of blog comments **/
 .side {
 	float:right;
 }

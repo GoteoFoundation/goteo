@@ -48,6 +48,15 @@ div.widget.blog-content-module  .embed,
     height: 285px;
 	margin: 10px  30px;
 }
+div.widget.blog-content-module  .image,
+#blog-content .post .image{
+	display:block;
+	text-align:center;
+}
+div.widget.blog-content-module  .image img,
+#blog-content .post .image img{
+	margin: 0 auto;
+}
 div.widget.blog-content-module .comments-num,
 #blog-content .post .comments-num{
 	float:left;

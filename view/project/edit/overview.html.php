@@ -65,9 +65,12 @@ $media = array();
 
 $media['media'] = array(
     'type'  => 'textbox',
+    'required'  => true,
     'class' => 'inline',
     'title' => Text::get('overview-field-media'),
     'hint'  => Text::get('tooltip-project-media'),
+    'errors'    => !empty($errors['media']) ? array($errors['media']) : array(),
+    'ok'        => !empty($okeys['media']) ? array($okeys['media']) : array(),
     'value' => (string) $project->media
 );
 
@@ -208,9 +211,6 @@ $superform = array(
 
         'media' => array(
             'type'      => 'group',
-            'required'  => true,
-            'errors'    => !empty($errors['media']) ? array($errors['media']) : array(),
-            'ok'        => !empty($okeys['media']) ? array($okeys['media']) : array(),
             'children'  => $media
         ),
 

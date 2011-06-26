@@ -205,6 +205,7 @@ namespace Goteo\Controller {
                         $success[] = Text::get('guide-project-success-okfinish');
                     }
                     $viewData['success'] = $success;
+                    $viewData['types'] = Model\Project\Cost::types();
                     break;
             }
 

@@ -32,7 +32,7 @@ $level = (int) $this['level'] ?: 3;
 <div class="project-updates"> 
     <!-- una entrada -->
     <?php if ($action == 'post') : ?>
-    <div class="post">
+    <div class="post widget">
         <?php echo new View('view/blog/post.html.php', array('post' => $post->id, 'show' => 'post', 'url' => '/project/'.$project->id.'/updates/')); ?>
         <?php echo new View('view/blog/comments.html.php', array('post' => $post->id)); ?>
         <?php echo new View('view/blog/sendComment.html.php', array('post' => $post->id, 'project' => $project->id)); ?>

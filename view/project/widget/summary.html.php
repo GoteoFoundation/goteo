@@ -48,7 +48,7 @@ $level = (int) $this['level'] ?: 3;
     <div class="gallery">
         <?php foreach ($project->gallery as $image) : ?>
         <div class="gallery-image" id="gallery-image-<?php echo $image->id; ?>">
-            <img src="/image/<?php echo $image->id; ?>/580" alt="<?php echo $project->name; ?>" />
+            <img src="/image/<?php echo $image->id; ?>/580/580" alt="<?php echo $project->name; ?>" />
         </div>
         <?php endforeach; ?>
         

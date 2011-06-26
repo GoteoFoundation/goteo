@@ -17,7 +17,9 @@
 		<span class="categories"><?php echo implode(', ', $post->tags);  ?></span>
 	<?php endif; ?>
 	<?php if (!empty($post->image)) : ?>
-		<img src="/image/<?php echo $post->image->id; ?>/580" alt="Imagen" class="post-image"/>
+		<div class="image">
+			<img src="/image/<?php echo $post->image->id; ?>/580/580" alt="Imagen"/>
+		</div>
 	<?php endif; ?>
 	<?php if (!empty($post->media->url)) : ?>
 		<div class="embed">
