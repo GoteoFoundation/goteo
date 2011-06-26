@@ -30,7 +30,7 @@ $level = (int) $this['level'] ?: 3;
     <div id="project-messages">
         
 		<?php foreach ($project->messages as $message) : ?>
-                <div class="message">         
+                <div class="message<?php if ($message->user->id == $project->owner) echo ' owner'; ?>">
                    <span class="avatar"><img src="/image/<?php echo $message->user->avatar->id; ?>/50/50" alt="" /></span>
                    <h<?php echo $level ?> class="user"><?php echo htmlspecialchars($message->user->name) ?></h<?php echo $level ?>>                                                             
                    <div class="date"><span><?php echo $message->date ?></span></div>                   
@@ -47,16 +47,17 @@ $level = (int) $this['level'] ?: 3;
 
                <?php if (!empty($message->responses)) : 
                     foreach ($message->responses as $child) : ?>
-                       <div class="child" style="margin-left:50px;">
-                           <img src="/image/<?php echo $child->user->avatar->id; ?>/40/40" />
-                           <span class="user"><?php echo $child->user->name; ?></span>
-                           <span class="when"><?php echo $child->date; ?></span>
+                       <div class="child<?php if ($child->user->id == $project->owner) echo ' owner'; ?>">
+                           <span class="avatar"><img src="/image/<?php echo $child->user->avatar->id; ?>/40/40" /></span>
+                           <h<?php echo $level ?> class="user"><?php echo $child->user->name; ?></h<?php echo $level ?>>
+                           <div class="date"><span><?php echo $child->date; ?></span></div>
+                           <blockquote><?php echo $child->message; ?></blockquote>
                            <?php // si puede borrar este mensaje
                            if (\Goteo\Core\ACL::check("/message/delete/{$child->id}/{$project->id}")) : ?>
+                           <div class="actions">
                                 <a href="/message/delete/<?php echo $child->id; ?>/<?php echo $project->id; ?>"><?php echo Text::get('regular-delete'); ?></a>
+                           </div>
                            <?php endif; ?>
-                           <br />
-                           <blockquote><?php echo $child->message; ?></blockquote>
                        </div>
                 <?php endforeach;
                 endif; ?>
