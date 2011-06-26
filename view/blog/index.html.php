@@ -35,14 +35,21 @@ include 'view/header.html.php';
 		<div id="blog-content">
 			<?php if ($this['show'] == 'list') : ?>
 				<?php if (!empty($posts)) : ?>
-					<?php while ($post = $pagedResults->fetchPagedRow()) : ?>
+					<?php while ($post = $pagedResults->fetchPagedRow()) :
+
+                            $share_title = $post->title;
+                            $share_url = $this['show'] == SITE_URL . '/blog/' . $post->id;
+                            $facebook_url = 'http://facebook.com/sharer.php?u=' . rawurlencode($share_url) . '&t=' . rawurlencode($share_title . ' | Goteo.org');
+                            $twitter_url = 'http://twitter.com/home?status=' . rawurlencode($share_title . ': ' . $share_url . ' #Goteo');
+
+                        ?>
 						<div class="widget blog-content-module">
 							<?php echo new View('view/blog/post.html.php', array('post'=>$post->id)); ?>
 							<?php if ($this['show'] == 'list') : ?>
 								<ul class="share-goteo">
-									<li class="sharetext">Compartir en:</li>
-									<li class="twitter"><a href="#">Twitter</a></li>
-									<li class="facebook"><a href="#">Facebook</a></li>
+									<li class="sharetext"><?php echo Text::get('regular-share_this'); ?></li>
+									<li class="twitter"><a href="<?php echo htmlspecialchars($twitter_url) ?>" onclick="alert('desactivado hasta puesta en marcha'); return false;"><?php echo Text::get('regular-twitter'); ?></a></li>
+									<li class="facebook"><a href="<?php echo htmlspecialchars($facebook_url) ?>" onclick="alert('desactivado hasta puesta en marcha'); return false;"><?php echo Text::get('regular-facebook'); ?></a></li>
 								</ul>
 							<?php endif; ?>
 							<?php if ($this['show'] == 'list') : ?>
@@ -62,11 +69,16 @@ include 'view/header.html.php';
 			<?php endif; ?>
 			<?php if ($this['show'] == 'post') : ?>
 				<div class="widget post">
-					<?php echo new View('view/blog/post.html.php', $this); ?>
+					<?php echo new View('view/blog/post.html.php', $this);
+                        $share_title = $post->title;
+                        $share_url = $this['show'] == SITE_URL . '/blog/' . $post->id;
+                        $facebook_url = 'http://facebook.com/sharer.php?u=' . rawurlencode($share_url) . '&t=' . rawurlencode($share_title . ' | Goteo.org');
+                        $twitter_url = 'http://twitter.com/home?status=' . rawurlencode($share_title . ': ' . $share_url . ' #Goteo');
+                    ?>
 					<ul class="share-goteo">
-							<li class="sharetext">Compartir en:</li>
-							<li class="twitter"><a href="#">Twitter</a></li>
-							<li class="facebook"><a href="#">Facebook</a></li>
+							<li class="sharetext"><?php echo Text::get('regular-share_this'); ?></li>
+							<li class="twitter"><a href="<?php echo htmlspecialchars($twitter_url) ?>" onclick="alert('desactivado hasta puesta en marcha'); return false;"><?php echo Text::get('regular-twitter'); ?></a></li>
+							<li class="facebook"><a href="<?php echo htmlspecialchars($facebook_url) ?>" onclick="alert('desactivado hasta puesta en marcha'); return false;"><?php echo Text::get('regular-facebook'); ?></a></li>
 					</ul>
 					<div class="comments-num"><a href="/blog/<?php echo $post->id; ?>"><?php echo $post->num_comments > 0 ? $post->num_comments . ' ' .Text::get('blog-comments') : Text::get('blog-no_comments'); ?></a></div>
 				</div>
