@@ -8,24 +8,107 @@ div.widget.project-updates h6 {
     font-weight: bold;
     margin-top: 0;
 }
-
 div.widget.project-updates h1,
 div.widget.project-updates h2,
 div.widget.project-updates h3 {
     font-size: 24px;
 }
-
 div.widget.project-updates h4 {
     font-size: 18px;
 }
-
 div.widget.project-updates h5,
 div.widget.project-updates h6,
 div.widget.project-updates h7,
 div.widget.project-updates h8 {
     font-size: 16px;
 }
-
 div.widget.project-updates > div {
     margin-bottom: 2em;
+}
+.project-updates {
+    width:620px;
+	margin: 0 20px 0 0;
+	float:left;
+}
+.project-updates .post{
+    background-color: white;
+    line-height: 18px;
+    margin: 0 0 20px;
+}
+.project-updates .post h4 a {
+    font: bold 18px Helvetica, Arial, Geneva, sans-serif;
+	margin: 0 0 5px 0;
+	text-transform:none;
+	color:#535353;
+	text-decoration:none;
+}
+.project-updates .post  .date{
+    display:block;
+	color:#cabcbf;
+	margin: 0 0 5px 0;
+}
+.project-updates .post .categories{
+    display:block;
+	color:#808285;
+	margin: 0 0 8px 0;
+}
+.project-updates .post blockquote{
+	color: #58595B;
+	padding: 0 0 20px 0;
+	border-bottom: 1px solid #CABCBF;
+	margin: 18px 18px 12px 18px;
+}
+.project-updates .post .embed,
+.project-updates .post img.post-image{
+    width: 500px;
+    height: 285px;
+	margin: 10px  30px;
+}
+.project-updates .post .comments-num{
+	float:left;
+	background: transparent url('../../ico-blogcomment.png') scroll no-repeat  0 0;
+	padding: 0 0 0 26px;
+	height:24px;
+	margin: 0 0 0 20px;
+}
+.project-updates .post .comments-num {
+	color:#00ad4e;
+	text-decoration:none;
+}
+/** share goteo **/
+.project-updates .post ul.share-goteo {
+	margin: 0 20px  0 0;
+	padding:0px;
+	list-style:none;
+	float:right;
+}
+.project-updates .post ul.share-goteo li{
+	display:inline;
+	float:left;
+	margin: 0 0 0 10px;
+}
+.project-updates .post  ul.share-goteo li.twitter a,
+.project-updates .post  ul.share-goteo li.facebook a,
+.project-updates .post  ul.share-goteo li.rss a{
+	height:20px;
+	float:left;
+	padding: 0 0 0 25px;
+}
+.project-updates .post ul.share-goteo li.sharetext{
+	height:20px;
+	float:left;
+	color:#cabcbf;
+}
+.project-updates .post ul.share-goteo li.twitter a{
+	background: transparent url('../../twitter.png') scroll no-repeat  0 0;
+	color:#13c2ec;
+	text-decoration:none;
+}
+.project-updates .post ul.share-goteo li.facebook a{
+	background: transparent url('../../facebook.png') scroll no-repeat  0 0;
+	color:#4a6393;
+	text-decoration:none;
+}
+.side {
+	float:right;
 }

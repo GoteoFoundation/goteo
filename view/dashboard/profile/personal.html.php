@@ -3,8 +3,6 @@
 use Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-define('ADMIN_NOAUTOSAVE', true);
-
 $errors = $this['errors'];
 $personal = $this['personal'];
 $this['level'] = 3;

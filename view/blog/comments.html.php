@@ -10,7 +10,7 @@
 		<?php foreach ($post->comments as $comment) : ?>
 			<div class="message">
 				<div class="arrow-up"></div>
-			   <div class="avatar"><img src="/image/<?php echo $comment->user->avatar->id; ?>/50/50" alt="" /></div>
+			   <div class="avatar"><img src="/image/<?php echo $comment->user->avatar->id; ?>/50/50" alt="<?php echo $comment->user->name; ?>" /></div>
 			   <h<?php echo $level+3 ?> class="user"><?php echo htmlspecialchars($comment->user->name) ?></h<?php echo $level+3 ?>>
 			   <div class="date"><span><?php echo $comment->date ?></span></div>
 			   <blockquote><?php echo $comment->text; ?></blockquote>

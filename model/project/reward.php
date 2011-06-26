@@ -17,7 +17,7 @@ namespace Goteo\Model\Project {
 			$license,
 			$amount,
 			$units,
-            $taken, // recompensas comprometidas por aporte
+            $taken = 0, // recompensas comprometidas por aporte
             $none; // si no quedan unidades de esta recompensa
 
 	 	public static function get ($id) {

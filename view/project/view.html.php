@@ -44,8 +44,11 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
         <?php include 'view/header.html.php' ?>
 
         <div id="sub-header">
-            <div>
-                <h2><?php echo htmlspecialchars($project->name) ?></h2>
+            <div class="project-header">
+                <img src="/image/<?php echo $project->user->avatar->id; ?>/75/75" />
+                <h2><span><?php echo htmlspecialchars($project->name) ?></span></h2>
+                <div class="project-by">Por: <?php echo $project->user->name; ?></div>
+                <br clear="both" />
                 
                 <div class="categories"><h3><?php echo Text::get('project-view-categories-title'); ?></h3>
                     <?php 
@@ -95,9 +98,11 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                 echo new View('view/project/widget/collaborations.html.php', array('project' => $project));
             }
 
-            echo
-                new View('view/project/widget/rewards.html.php', array('project' => $project)),
-                new View('view/user/widget/user.html.php', array('user' => $owner));
+            if ($show != 'rewards') {
+                echo new View('view/project/widget/rewards.html.php', array('project' => $project));
+            }
+
+            echo new View('view/user/widget/user.html.php', array('user' => $owner));
             
             ?>                
             </div>

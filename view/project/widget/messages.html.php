@@ -19,7 +19,7 @@ $level = (int) $this['level'] ?: 3;
         <form method="post" action="/message/<?php echo $project->id; ?>">
             <input type="hidden" id="thread" name="thread" value="" />
             <textarea id="message-text" name="message" cols="50" rows="5"></textarea>
-            <input class="button" type="submit" value="<?php echo Text::get('project-messages-send_message-button'); ?>" />
+            <button class="green" type="submit"><?php echo Text::get('project-messages-send_message-button'); ?></button>
         </form>
     </div>
 </div>

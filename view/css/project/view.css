@@ -28,9 +28,25 @@ body.project-show div#sub-header {
     padding-bottom: 0;
 }
 
+body.project-show div#sub-header div.project-header{
+    min-height: 70px;
+}
+
+body.project-show div#sub-header img{
+    float: left;
+}
+
+body.project-show div#sub-header div.project-by {
+    padding-left: 82px;
+    font-weight: normal;
+    color: #20B3B2;
+    margin: 0 0 .5em;
+    font-size: 12px;
+}
+
 body.project-show div#sub-header div.categories {
     text-align: right;
-    margin-top: -22px;
+    margin-top: -60px;
 }
 
 body.project-show div#sub-header div.categories h3 {
@@ -104,6 +120,7 @@ body.project-show div#main div.widget.user {
 }
 
 body.project-show div#main div.widget.project-summary,
+body.project-show div#main div.widget.project-rewards-summary,
 body.project-show div#main div.widget.project-share,
 body.project-show div#main div.widget.project-needs,
 body.project-show div#main div.widget.project-messages,
