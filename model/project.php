@@ -1409,8 +1409,8 @@ namespace Goteo\Model {
          */
         public static function scope () {
             return array(
-                1=>Text::get('overview-field-options-scope_regional'),
-                2=>Text::get('overview-field-options-scope_local'),
+                1=>Text::get('overview-field-options-scope_local'),
+                2=>Text::get('overview-field-options-scope_regional'),
                 3=>Text::get('overview-field-options-scope_nacional'),
                 4=>Text::get('overview-field-options-scope_global'));
         }
