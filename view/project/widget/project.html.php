@@ -36,11 +36,18 @@ $level = $this['level'] ?: 3;
         <h<?php echo $level + 1 ?>><?php echo Text::get('project-rewards-header'); ?></h<?php echo $level + 1?>>
         
         <ul>
-           <?php foreach ($project->individual_rewards as $individual): ?>
+           <?php $q = 1; foreach ($project->social_rewards as $social): ?>
+            <li class="<?php echo $social->icon ?>">
+                <a href="/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$social->reward} al procomún") ?>" class="tipsy"><?php echo htmlspecialchars($social->reward) ?></a>
+            </li>
+           <?php if ($q > 5) break; $q++; 
+               endforeach ?>
+           <?php if ($q < 5) foreach ($project->individual_rewards as $individual): ?>
             <li class="<?php echo $individual->icon ?>">
                 <a href="/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$individual->reward} aportando {$individual->amount}") ?> &euro;" class="tipsy"><?php echo htmlspecialchars($individual->reward) ?></a>
             </li>
-           <?php endforeach ?>
+           <?php if ($q > 5) break; $q++;
+           endforeach ?>
         </ul>
         
         

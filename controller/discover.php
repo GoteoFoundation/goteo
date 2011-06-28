@@ -105,7 +105,7 @@ namespace Goteo\Controller {
             $viewData = array();
 
             // segun el tipo cargamos el título de la página
-            $viewData['title'] = Text::get('discover-group-'.$all.'-header');
+            $viewData['title'] = Text::get('discover-group-'.$type.'-header');
 
             // segun el tipo cargamos la lista
             $viewData['list']  = Model\Project::published($type);
