@@ -82,12 +82,8 @@ include 'view/header.html.php';
 					</ul>
 					<div class="comments-num"><a href="/blog/<?php echo $post->id; ?>"><?php echo $post->num_comments > 0 ? $post->num_comments . ' ' .Text::get('blog-comments') : Text::get('blog-no_comments'); ?></a></div>
 				</div>
-				<div>
-					<?php
-						echo new View('view/blog/comments.html.php', $this);
-						echo new View('view/blog/sendComment.html.php', $this);
-					?>
-				</div>
+                <?php echo new View('view/blog/comments.html.php', $this) ?>
+                <?php echo new View('view/blog/sendComment.html.php', $this) ?>
 			<?php endif; ?>
 		</div>
 		<div id="blog-sidebar">

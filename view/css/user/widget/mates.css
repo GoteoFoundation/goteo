@@ -9,7 +9,7 @@ div.widget.user-mates .users ul > li {
     width: 50%;
     float: left;
     position: relative;
-    background: url("../../avatar/m.png") no-repeat 0 10px;
+/*    background: url("../../avatar/m.png") no-repeat 0 10px;    //@FIXME revisar esto porque los avatares trasparentes o pequeños salen con este abajo*/
 }
 
 div.widget.user-mates .users ul > li .user {

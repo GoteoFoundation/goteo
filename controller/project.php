@@ -285,6 +285,7 @@ namespace Goteo\Controller {
 
                 if ($show == 'updates') {
                     $viewData['post'] = $post;
+                    $viewData['owner'] = $project->owner;
                 }
 
                 return new View('view/project/public.html.php', $viewData);
