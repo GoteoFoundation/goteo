@@ -227,7 +227,7 @@ namespace Goteo\Model {
 //            echo "$sql <br />";  die;
             $query = self::query($sql, array($user));
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $review) {
-                $reviews[] = $review;
+                $reviews[$review->id] = $review;
             }
             return $reviews;
         }
