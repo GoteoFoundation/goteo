@@ -3,9 +3,19 @@ div.widget.project-rewards > div.social ul li,
     background-color: #f6f9f4;
 }
 
+div.widget.project-rewards > div.social ul li.active,
+#rewards-summary > div.social ul li.active {
+    background-color: #06f9f4;
+}
+
 div.widget.project-rewards > div.individual ul li,
 #rewards-summary > div.individual ul li{
     background-color: #fbf3f4;
+}
+
+div.widget.project-rewards > div.individual ul li.active,
+#rewards-summary > div.individual ul li.active {
+    background-color: #0bf3f4;
 }
 
 div.widget.project-rewards > div.individual ul li span.name,

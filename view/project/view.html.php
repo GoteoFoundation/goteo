@@ -41,7 +41,20 @@ if (!empty($blog->posts)) {
 
 $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
 
-        <?php include 'view/header.html.php' ?>
+<?php include 'view/header.html.php' ?>
+
+    <script type="text/javascript">
+
+    jQuery(document).ready(function ($) {
+
+        /* Rolover sobre los cuadros de color */
+        $("li").hover(
+                function () { $(this).addClass('active') },
+                function () { $(this).removeClass('active') }
+        );
+
+    });
+    </script>
 
         <div id="sub-header">
             <div class="project-header">
