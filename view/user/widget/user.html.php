@@ -20,7 +20,7 @@ if (!isset($user->webs)) {
     <?php echo htmlspecialchars($user->name) ?></h<?php echo $level + 1 ?>>
     
     <div class="image">
-        <?php if (!empty($user->avatar)): ?><img alt="" src="<?php echo htmlspecialchars($user->avatar->getLink(80, 80)) ?>" /><?php endif ?>
+        <?php if (!empty($user->avatar)): ?><img alt="<?php echo htmlspecialchars($user->name) ?>" src="/image/<?php echo $user->avatar->id; ?>/80/80" /><?php endif ?>
     </div>
     
     <?php if (isset($user->about)): ?>

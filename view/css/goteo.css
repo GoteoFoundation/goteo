@@ -63,6 +63,7 @@ div.widget .title  {
     font-weight: bold;    
     padding: 0 2px 0;
     margin: 0 0 .5em;
+    text-decoration: none;
 }
 
 /**

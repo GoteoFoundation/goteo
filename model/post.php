@@ -53,6 +53,7 @@ namespace Goteo\Model {
                     `text`,
                     blog,
                     `media`,
+                    image,
                     `order`
                 FROM    post
                 WHERE   blog = $blog
@@ -64,6 +65,11 @@ namespace Goteo\Model {
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 $post->media = new Media($post->media);
+
+                // imagen
+                if (!empty($post->image)) {
+                    $post->image = Image::get($post->image);
+                }
 
                 $list[$post->id] = $post;
             }

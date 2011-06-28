@@ -34,14 +34,25 @@ body.project-show div#sub-header div.project-header{
 
 body.project-show div#sub-header img{
     float: left;
+    margin-right: 20px;
 }
 
 body.project-show div#sub-header div.project-by {
     padding-left: 82px;
+    color: #20B3B2;
+    font-size: 12px;
+    margin: 0 0 .5em;
+}
+
+body.project-show div#sub-header div.project-by a {
     font-weight: normal;
     color: #20B3B2;
-    margin: 0 0 .5em;
     font-size: 12px;
+    text-decoration: none;
+}
+
+body.project-show div#sub-header div.project-by a:hover {
+    color: #58595B;
 }
 
 body.project-show div#sub-header div.categories {
@@ -57,6 +68,15 @@ body.project-show div#sub-header div.categories h3 {
 
 body.project-show div#sub-header div.categories * {
     font-size: 12px;
+}
+
+body.project-show div#sub-header div.categories a {
+    color: #58595B;
+    text-decoration: none;
+}
+
+body.project-show div#sub-header div.categories a:hover {
+    color: #20B3B2;
 }
 
 body.project-show div.project-menu {

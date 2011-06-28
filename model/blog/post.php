@@ -3,7 +3,8 @@
 namespace Goteo\Model\Blog {
 
     use \Goteo\Model\Project\Media,
-        \Goteo\Model\Image;
+        \Goteo\Model\Image,
+        \Goteo\Library\Text;
 
     class Post extends \Goteo\Core\Model {
 
@@ -56,6 +57,9 @@ namespace Goteo\Model\Blog {
                 //tags
                 $post->tags = Post\Tag::getAll($id);
 
+                // reconocimiento de enlaces y saltos de linea
+                $post->text = nl2br(Text::urlink($post->text));
+
                 return $post;
         }
 
@@ -101,6 +105,9 @@ namespace Goteo\Model\Blog {
                 }
                 
                 $post->num_comments = Post\Comment::getCount($post->id);
+
+                // reconocimiento de enlaces y saltos de linea
+                $post->text = nl2br(Text::urlink($post->text));
 
                 $list[$post->id] = $post;
             }

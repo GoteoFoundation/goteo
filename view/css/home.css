@@ -48,7 +48,8 @@ body.home div#main div.learn div.post {
     display: none;
 }
 
-body.home div#main div.learn div.embed {    
+body.home div#main div.learn div.embed,
+body.home div#main div.learn div.image {
     position: absolute;
     left: 0;
     top: 0;        

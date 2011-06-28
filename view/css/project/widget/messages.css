@@ -23,6 +23,7 @@ div.project-messages div.owner {
 }
 
 div.project-messages div.message + div.message,
+div.project-messages div.child + div.message,
 div.project-messages div.child {
     margin-top: 20px;
 }

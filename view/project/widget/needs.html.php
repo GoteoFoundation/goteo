@@ -27,7 +27,7 @@ foreach ($project->costs as $cost) {
         
     <h<?php echo $level+1 ?> class="title"><?php echo Text::get('project-view-metter-investment'); ?></h<?php echo $level+1 ?>>
            
-    <table>
+    <table width="100%">
         
         <?php foreach ($costs as $type => $list): ?>
         

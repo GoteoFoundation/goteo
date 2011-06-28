@@ -47,8 +47,8 @@ foreach (License::getAll() as $l) {
         <li class="<?php echo $individual->icon ?>">
 
             <div class="amount"><?php echo Text::get('regular-investing'); ?> <span class="euro"><?php echo $individual->amount; ?></span></div>
-            <strong><?php echo htmlspecialchars($individual->reward) ?></strong>
-            <p><?php echo htmlspecialchars($individual->description) ?></p>
+            <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>
+            <p><?php echo htmlspecialchars($individual->description)?></p>
 
                     <?php if (!empty($individual->units)) : ?>
                     <strong><?php echo Text::get('project-rewards-individual_reward-limited'); ?></strong><br />

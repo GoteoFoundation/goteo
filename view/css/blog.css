@@ -32,8 +32,16 @@ div.widget.blog-content-module .date,
 div.widget.blog-content-module .categories,
 #blog-content .post .categories{
     display:block;
-	color:#808285;
 	margin: 0 0 8px 0;
+}
+div.widget.blog-content-module .categories a,
+#blog-content .post .categories a {
+	color:#808285;
+    text-decoration: none;
+}
+div.widget.blog-content-module .categories a:hover,
+#blog-content .post .categories a:hover {
+	color:#535353;
 }
 div.widget.blog-content-module  blockquote,
 #blog-content .post blockquote{

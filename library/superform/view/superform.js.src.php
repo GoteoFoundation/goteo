@@ -35,7 +35,7 @@ if (!('Superform' in window)) {
             },
 
             update: function (el, success) {
-            
+
                 el = $(el);
 
                 el.is('li.element') || (el = el.parents('li.element').eq(0));

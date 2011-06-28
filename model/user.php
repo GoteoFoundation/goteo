@@ -369,6 +369,8 @@ namespace Goteo\Model {
                 
                 $user->roles = $user->getRoles();
                 $user->avatar = Image::get($user->avatar);
+                // @FIXME temporal para usuarios sin avatar
+                if (empty($user->avatar->id)) $user->avatar->id = 1;
                 $user->interests = User\Interest::get($id);
                 $user->webs = User\Web::get($id);
                 return $user;

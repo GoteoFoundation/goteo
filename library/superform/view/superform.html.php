@@ -6,9 +6,9 @@
     
     <script type="text/javascript">
         
-    <?php if (!defined('ADMIN_NOAUTOSAVE')) {
+    <?php if (!defined('ADMIN_NOAUTOSAVE')) :
         include __DIR__ . '/superform.js.src.php';
-    } ?>
+    endif; ?>
 
     </script>
     

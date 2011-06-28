@@ -16,11 +16,11 @@ $level = $this['level'] ?: 3;
 
     <div class="image">
         <?php if (!empty($project->gallery)): ?>
-        <img alt="" src="<?php echo htmlspecialchars(current($project->gallery)->getLink(255, 143)) ?>" />
+        <a href="/project/<?php echo $project->id ?>"><img alt="<?php echo $project->name ?>" src="<?php echo htmlspecialchars(current($project->gallery)->getLink(255, 143)) ?>" /></a>
         <?php endif ?>
     </div>
 
-    <h<?php echo $level ?> class="title"><?php echo htmlspecialchars($project->name) ?></h<?php echo $level ?>>
+    <h<?php echo $level ?> class="title"><a href="/project/<?php echo $project->id ?>" class="title"><?php echo htmlspecialchars($project->name) ?></a></h<?php echo $level ?>>
     
     <h<?php echo $level + 1 ?> class="author">Por: <a href="/user/profile/<?php echo htmlspecialchars($project->user->id) ?>"><?php echo htmlspecialchars($project->user->name) ?></a></h<?php echo $level + 1?>>
     

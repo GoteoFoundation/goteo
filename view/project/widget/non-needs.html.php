@@ -25,7 +25,7 @@ foreach ($project->supports as $item) {
         
     <h<?php echo $level ?> class="title"><?php echo Text::get('project-collaborations-title'); ?></h<?php echo $level ?>>
            
-    <table>
+    <table width="100%">
         
         <?php foreach ($items as $type => $list): ?>
         

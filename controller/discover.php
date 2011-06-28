@@ -38,12 +38,17 @@ namespace Goteo\Controller {
         /*
          * Descubre proyectos, resultados de búsqueda
          */
-        public function results () {
+        public function results ($category = null) {
 
             $message = '';
             $results = null;
 
-			if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['query'])) {
+            // si recibimos categoria por get emulamos post con un parametro 'category'
+            if (!empty($category)) {
+                $_POST['category'][] = $category;
+            }
+
+			if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['query']) && !isset($category)) {
                 $errors = array();
 
                 $query = $_GET['query']; // busqueda de texto
@@ -52,7 +57,7 @@ namespace Goteo\Controller {
 
                 $results = \Goteo\Library\Search::text($query);
 
-			} elseif ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['searcher'])) {
+			} elseif (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['searcher']) || !empty($category))) {
 
                 // vamos montando $params con los 3 parametros y las opciones marcadas en cada uno
                 $params = array('category'=>array(), 'location'=>array(), 'reward'=>array());
