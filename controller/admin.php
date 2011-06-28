@@ -372,6 +372,19 @@ namespace Goteo\Controller {
                         $message = 'La revisión se ha cerrado';
                     }
                     break;
+                case 'unready':
+                    // se la reabrimos para que pueda seguir editando
+                    // la id de revision llega en $id
+                    // la id del usuario llega por get
+                    $user = $_GET['user'];
+                    if (!empty($user)) {
+                        $user_rev = new Model\User\Review(array(
+                            'id' => $id,
+                            'user' => $user
+                        ));
+                        $user_rev->unready($errors);
+                    }
+                    break;
                 case 'assign':
                     // asignamos la revision a este usuario
                     // la id de revision llega en $id

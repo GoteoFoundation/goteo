@@ -2,11 +2,14 @@
 
 namespace Goteo\Model\User {
 
+    use Goteo\Model;
+
     class Review extends \Goteo\Core\Model {
 
         public
             $id,
             $user,
+            $name,
             $ready;
 
 
@@ -98,10 +101,37 @@ namespace Goteo\Model\User {
 
             try {
                 self::query("UPDATE user_review SET ready = 1 WHERE review = :review AND user = :user", $values);
+
+                // recalcular puntuacion global de la revision
+                Model\Review::recount($this->id, $errors);
+
 				return true;
 			} catch(\PDOException $e) {
                 $errors[] = 'No se ha podido marcar la revision ' . $this->id . ' del usuario ' . $this->user . ' como lista. ' . $e->getMessage();
-                //Text::get('remove-review-fail');
+                //Text::get('review-set_ready-fail');
+                return false;
+			}
+		}
+
+        /*
+         * Reabrir una revision
+         */
+		public function unready (&$errors = array()) {
+			$values = array (
+				':user'=>$this->user,
+				':review'=>$this->id,
+			);
+
+            try {
+                self::query("UPDATE user_review SET ready = 0 WHERE review = :review AND user = :user", $values);
+
+                // recalcular puntuacion global de la revision
+                Model\Review::recount($this->id, $errors);
+
+				return true;
+			} catch(\PDOException $e) {
+                $errors[] = 'No se ha podido reabrir la revision ' . $this->id . ' del usuario ' . $this->user . '. ' . $e->getMessage();
+                //Text::get('review-set_unready-fail');
                 return false;
 			}
 		}
@@ -118,13 +148,13 @@ namespace Goteo\Model\User {
                         FROM user_review
                         WHERE user_review.review = :id
                         ";
-                $query = static::query($sql, array(':id'=>$user));
+                $query = static::query($sql, array(':id'=>$review));
                 foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $share) {
 
                     // nombre i avatar
                     $user = \Goteo\Model\User::getMini($share['id']);
 
-                    $array[] = (object) array(
+                    $array[$share['id']] = (object) array(
                         'user'   => $share['id'],
                         'avatar' => $user->avatar,
                         'name'   => $user->name,

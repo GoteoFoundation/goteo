@@ -67,6 +67,7 @@ include 'view/prologue.html.php';
                 <div class="widget board collapse">
                     <h3 class="title">Evaluación de proyectos</h3>
                     <ul>
+                        <li><a href="/admin/overview">Listado</a></li>
                         <li><a href="/admin/criteria">Criterios</a></li>
                         <li><a href="/admin/checking">Revisiones</a></li>
                     </ul>
