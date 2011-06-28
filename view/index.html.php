@@ -62,12 +62,21 @@ include 'view/header.html.php' ?>
                 <?php foreach ($this['posts'] as $post) : ?>
                 <div class="post" id="home-post-<?php echo $post->id; ?>" <?php if ($post->id == $this['post']) echo '<style="display:block;"'; ?>>
                     <h3><?php echo $post->title; ?></h3>
-                    <div class="embed"><?php echo $post->media->getEmbedCode(); ?></div>
+                    <?php if (!empty($post->media->url)) : ?>
+                        <div class="embed">
+                            <?php echo $post->media->getEmbedCode(); ?>
+                        </div>
+                    <?php elseif (!empty($post->image)) : ?>
+                        <div class="image">
+                            <img src="/image/<?php echo $post->image->id; ?>/500/285" alt="Imagen"/>
+                        </div>
+                    <?php endif; ?>
+                    
                     <div class="description">
                         <?php echo $post->text ?>
                     </div>
                 </div>                
-                <?php endforeach ?>
+                <?php endforeach; ?>
                
             </div>
             

@@ -29,6 +29,25 @@ namespace Goteo\Model\Project {
 
         }
 
+        protected static function getSlideshareCode ($id, $https = false) {
+
+            return '<iframe src="http://www.slideshare.net/slideshow/embed_code/'
+                    . $id . '" width="100%" height="100%" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>';
+
+        }
+
+        protected static function getPreziCode ($id, $https = false) {
+
+            return '<object id="prezi_'
+                    . $id . '" name="prezi_'
+                    . $id . '" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="100%" height="100%"><param name="movie" value="http://prezi.com/bin/preziloader.swf"/><param name="allowfullscreen" value="true"/><param name="allowscriptaccess" value="always"/><param name="bgcolor" value="#ffffff"/><param name="flashvars" value="prezi_id='
+                    . $id . '&amp;lock_to_path=0&amp;color=ffffff&amp;autoplay=no&amp;autohide_ctrls=0"/><embed id="preziEmbed_'
+                    . $id . '" name="preziEmbed_'
+                    . $id . '" src="http://prezi.com/bin/preziloader.swf" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="100%" height="100%" bgcolor="#ffffff" flashvars="prezi_id='
+                    . $id . '&amp;lock_to_path=0&amp;color=ffffff&amp;autoplay=no&amp;autohide_ctrls=0"></embed></object>';
+
+        }
+
         public function getEmbedCode () {
 
             $code = '';
@@ -60,6 +79,16 @@ namespace Goteo\Model\Project {
                      case (preg_match('#^(http(?<https>s)?://)?(?:www\.)?vimeo.com/(?<video>\d+)#', $this->url, $vm)):
                         // URL de Vimeo
                         $code = static::getVimeoCode($vm['video'], !empty($vm['https']));
+                        break;
+
+                     case (preg_match('#^\[slideshare\sid\=(?<slide>\d+)#', $this->url, $sh)):
+                        // URL de Slideshare
+                        $code = static::getSlideshareCode($sh['slide']);
+                        break;
+
+                     case (preg_match('#^(http(?<https>s)?://)?(?:www\.)?prezi.com/(?<slide>\w+)/#', $this->url, $pz)):
+                        // URL de Slideshare
+                        $code = static::getPreziCode($pz['slide']);
                         break;
 
                     default:
