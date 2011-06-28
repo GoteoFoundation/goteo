@@ -53,7 +53,7 @@ include 'view/header.html.php' ?>
             
                 <ul>
                     <?php foreach ($this['posts'] as $post) : ?>
-                    <li><a href="?post=<?php echo $post->id ?>" rel="home-post-<?php echo $post->id ?>" class="navi-home-post<?php if ($post->id == $this['post']) echo ' active'; ?>">
+                    <li><a href="?post=<?php echo $post->id ?>" rel="home-post-<?php echo $post->id ?>" class="tipsy navi-home-post<?php if ($post->id == $this['post']) echo ' active'; ?>" title="<?php echo htmlspecialchars($post->title) ?>">
                         <?php echo htmlspecialchars($post->title) ?></a>
                     </li>
                     <?php endforeach ?>

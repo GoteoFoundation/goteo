@@ -38,7 +38,7 @@ $level = $this['level'] ?: 3;
         <ul>
            <?php foreach ($project->individual_rewards as $individual): ?>
             <li class="<?php echo $individual->icon ?>">
-                <a href="/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$individual->reward} aportando {$individual->amount}") ?> &euro;"><?php echo htmlspecialchars($individual->reward) ?></a>
+                <a href="/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$individual->reward} aportando {$individual->amount}") ?> &euro;" class="tipsy"><?php echo htmlspecialchars($individual->reward) ?></a>
             </li>
            <?php endforeach ?>
         </ul>
