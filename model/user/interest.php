@@ -126,6 +126,7 @@ namespace Goteo\Model\User {
 
                     // nombre i avatar
                     $user = \Goteo\Model\User::get($share['id']);
+                    if (empty($user->avatar)) $user->avatar = (object) array('id'=>1);
                     // meritocracia
                     $support = (object) $user->support;
                     // proyectos publicados
