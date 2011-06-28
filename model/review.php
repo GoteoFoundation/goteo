@@ -256,12 +256,37 @@ namespace Goteo\Model {
                         ON user.id = project.owner
                     INNER JOIN user_review
                         ON user_review.review = review.id
-                    WHERE project.status = 2
-                    AND review.status = 1
-                    AND review.id = :id
+                    WHERE review.id = :id
                     ", array(':id' => $id));
 
-                return $query->fetchObject();
+                $review = $query->fetchObject();
+
+
+                $checkers = array();
+
+                $subquery = self::query("
+                    SELECT
+                        user_review.review as id,
+                        user.id as user,
+                        user.name as name,
+                        user_review.ready as ready
+                    FROM user
+                    JOIN user_review ON user.id = user_review.user
+                    WHERE user_review.review = ?
+                ", array($id));
+                foreach ($subquery->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User\Review') as $checker) {
+
+                    $cuenta = $checker->recount();
+                    $checker->score = $cuenta->score;
+                    $checker->max   = $cuenta->max;
+
+                    $checkers[$checker->user] =  $checker;
+                }
+                unset($subquery);
+
+                $review->checkers = $checkers;
+
+                return $review;
         }
 
 
@@ -369,8 +394,6 @@ namespace Goteo\Model {
                 $query = static::query($sql, array($id));
 
                 $checkers = $query->fetchAll(\PDO::FETCH_CLASS);
-
-                \trace($checkers);
 
                 foreach ($checkers as $checker) {
                     $sql = "SELECT

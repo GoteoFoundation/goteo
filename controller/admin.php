@@ -413,13 +413,22 @@ namespace Goteo\Controller {
                     break;
                 case 'report':
                     // mostramos los detalles de revision
+                    // ojo que este id es la id del proyecto, no de la revision
                     $review = Model\Review::get($id);
+                    $review = Model\Review::getData($review->id);
+
+                    $evaluation = array();
+
+                    foreach ($review->checkers as $user=>$user_data) {
+                        $evaluation[$user] = Model\Review::getEvaluation($review->id, $user);
+                    }
 
 
                     return new View(
                         'view/review/report.html.php',
                         array(
-                            'review' => $review
+                            'review'     => $review,
+                            'evaluation' => $evaluation
                         )
                     );
                     break;
