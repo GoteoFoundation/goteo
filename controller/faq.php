@@ -22,9 +22,6 @@ namespace Goteo\Controller {
             return new View(
                 'view/faq.html.php',
                 array(
-                    'name' => $page->name,
-                    'title' => $page->description,
-                    'content' => $page->content,
                     'faqs' => $faqs,
                     'sections' => $sections
                 )

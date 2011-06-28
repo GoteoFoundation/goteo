@@ -23,7 +23,7 @@ $go_up = Text::get('regular-go_up');
         </div>
         <div id="main" class="threecols">
 			<div id="faq-content">
-				<h2><?php echo $this['title']; ?></h2>
+				<h2><?php echo Text::get('regular-faq') ?></h2>
 				<?php foreach ($this['sections'] as $sectionId=>$sectionName) : ?>
 					<div class="widget faq-content-module">
 						<h3><?php echo $sectionName; ?></h3>
@@ -52,7 +52,7 @@ $go_up = Text::get('regular-go_up');
 					</div>
 				<?php endforeach; ?>
 				<div class="widget faq-sidebar-module">
-					<h3 class="supertitle ask"><?php echo $this['title']; ?></h3>
+					<h3 class="supertitle ask"><?php echo Text::get('regular-faq') ?></h3>
 					<p class="ask-content"><?php echo Text::get('faq-ask-question'); ?></p>
 					<a class="btn-ask" href="#"><?php echo Text::get('regular-ask'); ?></a>
 				</div>
