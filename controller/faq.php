@@ -14,6 +14,7 @@ namespace Goteo\Controller {
             $faqs = array();
 
             $sections = Model\Faq::sections();
+            $colors   = Model\Faq::colors();
 
             foreach ($sections as $id=>$name) {
                 $faqs[$id] = Model\Faq::getAll($id);
@@ -22,8 +23,9 @@ namespace Goteo\Controller {
             return new View(
                 'view/faq.html.php',
                 array(
-                    'faqs' => $faqs,
-                    'sections' => $sections
+                    'faqs'     => $faqs,
+                    'sections' => $sections,
+                    'colors'   => $colors
                 )
              );
 

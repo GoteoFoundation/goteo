@@ -31,7 +31,7 @@ $go_up = Text::get('regular-go_up');
 							<?php foreach ($this['faqs'][$sectionId] as $question)  : ?>
 								<li>
 									<a name="q<?php echo $question->id; ?>" />
-									<h4 style="color:#20b3b2;"><?php echo $question->title; ?></h4>
+									<h4 style="color:<?php echo $this['colors'][$sectionId] ?>;"><?php echo $question->title; ?></h4>
 									<p><?php echo $question->description; ?></p>
 									<a href="#"><?php echo $go_up; ?></a>
 								</li>
@@ -43,10 +43,10 @@ $go_up = Text::get('regular-go_up');
 			<div id="faq-sidebar">
 				<?php foreach ($this['sections'] as $sectionId=>$sectionName) : ?>
 					<div class="widget faq-sidebar-module">
-						<h3 style="border-bottom-color: #20b3b2;" class="supertitle"><?php echo $sectionName; ?></h3>
+						<h3 style="border-bottom-color: <?php echo $this['colors'][$sectionId] ?>;" class="supertitle"><?php echo $sectionName; ?></h3>
 						<ol>
 							<?php foreach ($this['faqs'][$sectionId] as $question)  : ?>
-								<li><a style="color: #20b3b2;" href="#q<?php echo $question->id; ?>"><?php echo $question->title; ?></a></li>
+								<li><a style="color: <?php echo $this['colors'][$sectionId] ?>;" href="#q<?php echo $question->id; ?>"><?php echo $question->title; ?></a></li>
 							<?php endforeach; ?>
 						</ol>
 					</div>

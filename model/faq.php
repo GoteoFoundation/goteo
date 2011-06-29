@@ -174,6 +174,15 @@ namespace Goteo\Model {
             );
         }
 
+        public static function colors () {
+            return array(
+                'node' => '#808285',
+                'project' => '#20b3b2',
+                'investors' => '#0c4e99',
+                'nodes' => '#8f8f8f'
+            );
+        }
+
 
     }
     
