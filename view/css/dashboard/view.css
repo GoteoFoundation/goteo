@@ -10,7 +10,7 @@ body.dashboard div#sub-header {
 
 body.dashboard div#dashboard-menu {
     display: block;
-    max-width: 940px;
+    width: 940px;
     font-size: 13px;
     margin: -2.6em auto 0;    
     background-color: #78d1d1;

@@ -19,7 +19,7 @@
 div#sub-header > div,
 div#sub-header-secondary > div {
     display: block;
-    max-width: 940px;
+    width: 940px;
     margin: 0 auto;
 }
 

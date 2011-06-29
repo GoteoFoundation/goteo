@@ -80,7 +80,7 @@ body.project-show div#sub-header div.categories a:hover {
 }
 
 body.project-show div.project-menu {
-    max-width: 940px;
+    width: 940px;
     margin: 20px auto 0;
 }
 
