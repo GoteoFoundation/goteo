@@ -20,10 +20,8 @@ include 'view/header.html.php' ?>
             <?php echo new View('view/discover/searcher.html.php',
                                 array('params'     => $this['params'])); ?>
 
-            <p><?php echo $this['message']; ?></p>
-
             <div class="widget projects promos">
-                <?php if (isset($this['results'])) : ?>
+                <?php if (!empty($this['results'])) : ?>
                     <?php foreach ($this['results'] as $result) : ?>
                     <div>
                     <?php
@@ -36,7 +34,7 @@ include 'view/header.html.php' ?>
                     </div>
                     <?php endforeach; ?>
                 <?php else : ?>
-                    <p><?php echo Text::get('discover-results-empty'); ?></p>
+                    <?php echo Text::get('discover-results-empty'); ?>
                 <?php endif; ?>
             </div>
         

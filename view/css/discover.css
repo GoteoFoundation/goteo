@@ -3,6 +3,90 @@ body.discover div#main div.widget {
     margin-bottom: 15px;
 }
 
+/* Buscador */
+div.searcher{
+	padding-left:75px !important;
+}
+
+.searcher .text-filter{
+	display: block;
+	margin-bottom: 20px;
+}
+
+.searcher .text-filter label{
+	color: #FFFFFF;
+	font-weight: bold;
+	padding: 5px 90px 6px 15px;
+	text-transform:capitalize;
+	background:url('triangulo-lateral.png') right no-repeat #656566;
+}
+
+.searcher #text-query {
+	background-color:#8f8f8f;
+	color:#ffffff;
+	padding: 5px 5px 6px 15px;
+	border:none;
+	width: 415px;
+	margin-top:10px;
+    margin-left: 31px;
+    font-size: 0.9em;
+}
+
+.searcher #text-query:focus{
+	background-color:#e7e7e7;
+    color: #656566;
+}
+
+
+.searcher .filter{
+	float:left;
+	width:200px;
+	margin-right:35px;
+	position:relative;
+    margin-bottom: 10px;
+}
+
+.searcher .filter label{
+	color: #FFFFFF;
+	display: block;
+	font-weight: bold;
+	padding: 5px 5px 6px 15px;
+	text-transform:capitalize;
+	background:url('triangulo.png') right no-repeat #656566;
+}
+
+.searcher .filter select{
+	color:#8F8F8F;
+	border:none;
+	width:100%;	
+	margin-top:10px;
+    font-size: 0.9em;
+}
+
+.searcher .filter select option{
+	color:#8F8F8F;	
+}
+
+.searcher .filter select option[selected="selected"] {
+	color:#656566;
+	background-color:#e7e7e7;
+}
+
+.searcher .filter select option.all{
+	color:#656566;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+#searcher{
+	background:url('lupa.png') no-repeat;
+	height:33px;
+	width:80px;
+	text-indent:-9999px;
+	margin-top:-1px;
+}
+/* // Buscador */
+
 div.discover-group div.widget.project {
     margin: 0px;
 }
