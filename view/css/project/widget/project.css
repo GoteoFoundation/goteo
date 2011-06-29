@@ -122,6 +122,10 @@ div.widget.project div.meter dl * {
     margin: 0;
 }
 
+div.widget.project div.meter dl .minimum {
+    min-width: 10%;
+}
+
 div.widget.project div.meter dl .optimum,
 div.widget.project div.meter dl .minimum {
     line-height: 14px;
