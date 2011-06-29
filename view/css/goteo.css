@@ -30,7 +30,7 @@ div#sub-header > div > h2 {
 
 /* Main container */
 div#main {    
-    max-width: 940px;
+    width: 940px;
     margin: 20px auto;
     clear: both;
     overflow-y: auto;
