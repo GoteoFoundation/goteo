@@ -55,8 +55,8 @@ textarea {
     min-height: 8em;
 }
 
-body.user-login input[type="text"]:focus,
-body.user-login input[type="password"]:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
 textarea:focus {    
     background-color: white !important;
 }

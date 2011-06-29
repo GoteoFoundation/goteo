@@ -24,15 +24,14 @@ div.searcher{
 .searcher #text-query {
 	background-color:#8f8f8f;
 	color:#ffffff;
-	padding: 5px 5px 6px 15px;
+	padding: 6px 5px 6px 15px;
 	border:none;
 	width: 415px;
-	margin-top:10px;
     margin-left: 31px;
     font-size: 0.9em;
 }
 
-.searcher #text-query:focus{
+.searcher input[type="text"]:focus {
 	background-color:#e7e7e7;
     color: #656566;
 }

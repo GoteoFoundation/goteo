@@ -7,7 +7,7 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model,
-        Goteo\library\Mail;
+        Goteo\Library\Mail;
 
     class Message extends \Goteo\Core\Controller {
 

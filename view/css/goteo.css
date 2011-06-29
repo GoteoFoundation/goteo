@@ -15,6 +15,7 @@
 @import url('news.css');
 @import url('discover.css');
 @import url('tipsy/tipsy.css');
+@import url('about.css');
 
 div#sub-header > div,
 div#sub-header-secondary > div {
