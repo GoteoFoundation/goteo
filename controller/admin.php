@@ -1000,7 +1000,7 @@ namespace Goteo\Controller {
          * Es una idea de blog porque luego lo que salga en la portada
          *  seran los posts de cierta categoria, o algo así
          */
-        public function posts($action = 'list', $id = null) {
+        public function posts($action = 'list', $id = null, $type = 'home') {
 
             $errors = array();
 
@@ -1013,7 +1013,9 @@ namespace Goteo\Controller {
                     'title' => $_POST['title'],
                     'text' => $_POST['text'],
                     'media' => $_POST['media'],
-                    'order' => $_POST['order']
+                    'order' => $_POST['order'],
+                    'home' => $_POST['home'],
+                    'footer' => $_POST['footer']
                 ));
 
                 if (!empty($post->media)) {
@@ -1026,6 +1028,7 @@ namespace Goteo\Controller {
                             $success = 'Entrada creada correctamente';
                             break;
                         case 'edit':
+                            throw new Redirection('/admin/blog');
                             $success = 'Entrada editada correctamente';
                             break;
                     }
@@ -1037,20 +1040,26 @@ namespace Goteo\Controller {
                                 'view/admin/postEdit.html.php',
                                 array(
                                     'action' => 'add',
+                                    'type' => $this['type'],
                                     'post' => $post,
                                     'errors' => $errors
                                 )
                             );
                             break;
                         case 'edit':
+                            throw new Redirection('/admin/blog');
+                            /*
                             return new View(
                                 'view/admin/postEdit.html.php',
                                 array(
                                     'action' => 'edit',
+                                    'type' => $this['type'],
                                     'post' => $post,
                                     'errors' => $errors
                                 )
                             );
+                             *
+                             */
                             break;
                     }
 				}
@@ -1059,14 +1068,14 @@ namespace Goteo\Controller {
 
             switch ($action) {
                 case 'up':
-                    Model\Post::up($id);
+                    Model\Post::up($id, $type);
                     break;
                 case 'down':
-                    Model\Post::down($id);
+                    Model\Post::down($id, $type);
                     break;
                 case 'add':
                     // siguiente orden
-                    $next = Model\Post::next();
+                    $next = Model\Post::next($type);
 
                     return new View(
                         'view/admin/postEdit.html.php',
@@ -1077,6 +1086,8 @@ namespace Goteo\Controller {
                     );
                     break;
                 case 'edit':
+                    throw new Redirection('/admin/blog');
+                    /*
                     $post = Model\Post::get($id);
 
                     return new View(
@@ -1086,6 +1097,8 @@ namespace Goteo\Controller {
                             'post' => $post
                         )
                     );
+                     * 
+                     */
                     break;
                 case 'remove':
                     Model\Post::delete($id);

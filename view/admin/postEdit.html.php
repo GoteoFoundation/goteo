@@ -28,7 +28,7 @@ include 'view/prologue.html.php';
         <div id="main">
             <?php switch ($this['action']) {
                 case 'add': ?>
-                    <h3>Añadiendo nueva entrada para la portada</h3>
+                    <h3>Añadiendo nueva entrada para <?php if($this['type'] == 'home') echo 'la portada'; else echo 'el pie'; ?></h3>
                     <?php break;
                 case 'edit': ?>
                     <h3>Editando la entrada '<?php echo $this['post']->title; ?>'</h3>
@@ -63,8 +63,12 @@ include 'view/prologue.html.php';
                     <textarea name="text" id="posts-text" cols="60" rows="10"><?php echo $this['post']->text; ?></textarea>
 
     <br />
+                    <label>Aparece en:</label><br />
+                    <input type="radio" name="type" value="home" <?php if ($this['type'] == 'home') echo 'selected="selected"'; ?> /> Portada<br />
+                    <input type="radio" name="type" value="footer" <?php if ($this['type'] == 'footer') echo 'selected="selected"'; ?> /> Pie<br />
+    <br />
                     <label for="posts-media">Video:</label><br />
-                    <textarea name="media" id="posts-media" cols="30" rows="5"><?php echo $this['post']->media; ?></textarea>
+                    Solo entradas nuevas, para gestionar media ir a la gestión de blog.
 
 
 

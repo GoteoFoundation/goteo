@@ -16,6 +16,8 @@ namespace Goteo\Model\Blog {
             $image,
             $media,
             $date,
+            $home,
+            $footer,
             $num_comments = 0,
             $comments = array();
 
@@ -33,7 +35,8 @@ namespace Goteo\Model\Blog {
                         `media`,
                         `date`,
                         DATE_FORMAT(date, '%d | %m | %Y') as fecha,
-                        home
+                        home,
+                        footer
                     FROM    post
                     WHERE id = :id
                     ", array(':id' => $id));
@@ -82,7 +85,8 @@ namespace Goteo\Model\Blog {
                     `media`,
                     DATE_FORMAT(date, '%d-%m-%Y') as date,
                     DATE_FORMAT(date, '%d | %m | %Y') as fecha,
-                    home
+                    home,
+                    footer
                 FROM    post
                 WHERE blog = ?
                 ORDER BY date DESC, id DESC
@@ -133,7 +137,8 @@ namespace Goteo\Model\Blog {
                     `media`,
                     DATE_FORMAT(date, '%d-%m-%Y') as date,
                     DATE_FORMAT(date, '%d-%m-%Y') as fecha,
-                    home
+                    home,
+                    footer
                 FROM    post
                 INNER JOIN post_tag
                     ON post_tag.post = post.id
@@ -201,12 +206,10 @@ namespace Goteo\Model\Blog {
                 'media',
                 'date',
                 'allow',
-                'home'
+                'home',
+                'footer'
                 );
 
-            // si editan por aqui no salen en portada, por ahora
-            //@FIXME
-            $set = '`order` = 0 ';
             $values = array();
 
             foreach ($fields as $field) {

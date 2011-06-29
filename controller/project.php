@@ -245,7 +245,7 @@ namespace Goteo\Controller {
             // solamente se puede ver publicamente si
             // - es el dueño
             // - es un admin con permiso
-            // - es otro usuario y el proyecto esta available en campaña, financiado, retorno cumplido o caducado (que no es desechado)
+            // - es otro usuario y el proyecto esta available: en campaña, financiado, retorno cumplido o caducado (que no es desechado)
             if (($project->status > 2) ||
                 $project->owner == $_SESSION['user']->id ||
                 ACL::check('/project/edit/todos')) {

@@ -54,10 +54,13 @@ namespace Goteo\Model {
                     blog,
                     `media`,
                     image,
-                    `order`
+                    `order`,
+                    `home`,
+                    `footer`
                 FROM    post
                 WHERE   blog = $blog
-                AND     home = 1
+                AND (   home = 1
+                OR      footer = 1)
                 ORDER BY `order` ASC, title ASC
                 ";
             
@@ -70,6 +73,8 @@ namespace Goteo\Model {
                 if (!empty($post->image)) {
                     $post->image = Image::get($post->image);
                 }
+
+                $post->type = $post->home == 1 ? 'home' : 'footer';
 
                 $list[$post->id] = $post;
             }
@@ -97,7 +102,9 @@ namespace Goteo\Model {
                 'title',
                 'text',
                 'media',
-                'order'
+                'order',
+                'home',
+                'footer'
                 );
 
             $set = '';
@@ -139,9 +146,9 @@ namespace Goteo\Model {
          * Para que una pregunta salga antes  (disminuir el order)
          */
         //@FIXME essse blog a piñon!
-        public static function up ($id) {
+        public static function up ($id, $type = 'home') {
             $extra = array (
-                    'home' => 1,
+                    $type => 1,
                     'blog' => 1
                 );
             return Check::reorder($id, 'up', 'post', 'id', 'order', $extra);
@@ -151,9 +158,9 @@ namespace Goteo\Model {
          * Para que un proyecto salga despues  (aumentar el order)
          */
         //@FIXME essse blog a piñon!
-        public static function down ($id) {
+        public static function down ($id, $type = 'home') {
             $extra = array (
-                    'home' => 1,
+                    $type => 1,
                     'blog' => 1
                 );
             return Check::reorder($id, 'down', 'post', 'id', 'order', $extra);
@@ -162,8 +169,8 @@ namespace Goteo\Model {
         /*
          * Orden para añadirlo al final
          */
-        public static function next () {
-            $query = self::query('SELECT MAX(`order`) FROM post WHERE home=1'
+        public static function next ($type = 'home') {
+            $query = self::query('SELECT MAX(`order`) FROM post WHERE '.$type.'=1'
                 , array(':media'=>$media, ':node'=>$node));
             $order = $query->fetchColumn(0);
             return ++$order;
