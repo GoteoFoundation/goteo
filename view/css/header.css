@@ -17,7 +17,7 @@ div#header strong {
 
 /* Super-header */
 div#super-header {
-    width: 940px;
+    max-width: 940px;
     margin: 0 auto;
     height: 2.2em;
     font-size: 12px;
@@ -117,7 +117,7 @@ div#header div#about {
 
 div#header div#about ul {
     margin: 0 auto;
-    width: 940px;
+    max-width: 940px;
     padding: 0;
     list-style: none;
     text-align: right;
@@ -189,7 +189,7 @@ div#header div#menu {
 }
 
 div#header div#menu > ul {
-    width: 940px;
+    max-width: 940px;
     margin: 0 auto;
     padding: 0;
     position: relative;

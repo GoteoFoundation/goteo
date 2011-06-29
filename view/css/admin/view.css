@@ -12,7 +12,7 @@ body.admin div#sub-header {
 }
 
 body.admin div.admin-menu {
-    width: 940px;
+    max-width: 940px;
     margin: 20px auto 0;
 }
 

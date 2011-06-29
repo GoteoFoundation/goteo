@@ -3,7 +3,7 @@ div#footer {
     background-color: white;     
     height: 8em;
     z-index: 0;    
-    width: 940px;
+    max-width: 940px;
     margin: 0 auto;
     position: relative;
     bottom: 0;
