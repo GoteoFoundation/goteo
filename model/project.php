@@ -716,15 +716,11 @@ namespace Goteo\Model {
 
             if (empty($this->description)) {
                 $errors['overview']['description'] = Text::get('mandatory-project-field-description');
+            } elseif (!Check::words($this->description, 150)) {
+                 $errors['overview']['description'] = Text::get('validate-project-field-description');
             } else {
                  $okeys['overview']['description'] = 'ok';
                  ++$score;
-                 /*
-                 if (\strlen($this->about) > 250) {
-                     $errors['overview']['description'] = Text::get('validate-project-field-description');
-                 }
-                  * 
-                  */
             }
 
             if (empty($this->about)) {

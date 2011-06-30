@@ -8,11 +8,10 @@ div.widget.projects > .title {
 
 div.widget.projects div.project {
     background-color: #edecec;
-    width: 30%;
     margin: 0 0 3.33% 3.33%;
     float: left;    
     padding: 0;
-    min-width: 270px;
+    width: 270px;
 }
 
 div.widget.projects div.project div.balloon {

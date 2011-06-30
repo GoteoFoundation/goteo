@@ -94,8 +94,8 @@ body.project-show div.project-menu ul {
 body.project-show div.project-menu ul li {
     display: inline-block;
     margin-right: 1px;    
-    background-color: #c8babc;
-
+    background-image: url('/view/css/project/menu/regular_menu.png');
+    background-repeat: repeat-x;
 }
 
 body.project-show div.project-menu ul li a {
@@ -106,20 +106,35 @@ body.project-show div.project-menu ul li a {
     text-decoration: none;
 }
 
-body.project-show div.project-menu ul li.messages {
+body.project-show div.project-menu ul li.active {
+    background-image: url('/view/css/project/menu/hover_menu.png');
+    background-repeat: repeat-x;
+}
+
+body.project-show div.project-menu ul li.show {
+    background-image: url('/view/css/project/menu/active_menu.png');
+    background-position: left;
+    background-repeat: no-repeat;
+}
+
+body.project-show div.project-menu ul li.messages a {
     background-color: #00b05b;
 }
 
-body.project-show div.project-menu ul li.home {
+body.project-show div.project-menu ul li.home a {
     background-color: #1fb0b0;
 } 
 
-body.project-show div.project-menu ul li.needs {
+body.project-show div.project-menu ul li.needs a {
     background-color: #e13028;
 } 
 
-body.project-show div.project-menu ul li.supporters {
+body.project-show div.project-menu ul li.supporters a {
     background-color: #313b96;
+}
+
+body.project-show div.project-menu ul li.updates a {
+    background-color: #c8babc;
 }
 
 body.project-show div#main div.widget {

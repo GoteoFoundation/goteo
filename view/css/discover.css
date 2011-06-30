@@ -32,8 +32,8 @@ div.searcher{
 }
 
 .searcher input[type="text"]:focus {
-	background-color:#e7e7e7;
-    color: #656566;
+	background-color:#e7e7e7 !important;
+    color: #656566 !important;
 }
 
 

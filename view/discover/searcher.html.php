@@ -22,8 +22,8 @@ $params = $this['params'];
         </div>
 
         <div class="filter">
-            <label><?php echo Text::get('discover-searcher-bycategory-header'); ?></label>
-                <select name="category[]" multiple size="10">
+            <label for="category"><?php echo Text::get('discover-searcher-bycategory-header'); ?></label>
+                <select id="category" name="category[]" multiple size="10">
                     <option class="all" value="all"<?php if (empty($params['category'])) echo ' selected="selected"'; ?>><?php echo Text::get('discover-searcher-bycategory-all'); ?></option>
                 <?php foreach ($categories as $id=>$name) : ?>
                     <option value="<?php echo $id; ?>"<?php if (in_array("'{$id}'", $params['category'])) echo ' selected="selected"'; ?>><?php echo $name; ?></option>
@@ -33,8 +33,8 @@ $params = $this['params'];
         </div>
 
         <div class="filter">
-            <label><?php echo Text::get('discover-searcher-bylocation-header'); ?></label>
-                <select name="location[]" multiple size="10">
+            <label for="location"><?php echo Text::get('discover-searcher-bylocation-header'); ?></label>
+                <select id="location" name="location[]" multiple size="10">
                     <option class="all" value="all"<?php if (empty($params['location'])) echo ' selected="selected"'; ?>><?php echo Text::get('discover-searcher-bylocation-all'); ?></option>
                 <?php foreach ($locations as $id=>$name) : ?>
                     <option value="<?php echo $id; ?>"<?php if (in_array("'{$id}'", $params['location'])) echo ' selected="selected"'; ?>><?php echo $name; ?></option>
@@ -44,8 +44,8 @@ $params = $this['params'];
         </div>
 
         <div class="filter">
-            <label><?php echo Text::get('discover-searcher-byreward-header'); ?> </label>
-                <select name="reward[]" multiple size="10">
+            <label for="reward"><?php echo Text::get('discover-searcher-byreward-header'); ?> </label>
+                <select id="reward" name="reward[]" multiple size="10">
                     <option class="all" value="all"<?php if (empty($params['reward'])) echo ' selected="selected"'; ?>><?php echo Text::get('discover-searcher-byreward-all'); ?></option>
                 <?php foreach ($rewards as $id=>$reward) : ?>
                     <option value="<?php echo $id; ?>"<?php if (in_array("'{$id}'", $params['reward'])) echo ' selected="selected"'; ?>><?php echo $reward->name; ?></option>

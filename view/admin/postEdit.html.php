@@ -64,8 +64,8 @@ include 'view/prologue.html.php';
 
     <br />
                     <label>Aparece en:</label><br />
-                    <input type="radio" name="type" value="home" <?php if ($this['type'] == 'home') echo 'selected="selected"'; ?> /> Portada<br />
-                    <input type="radio" name="type" value="footer" <?php if ($this['type'] == 'footer') echo 'selected="selected"'; ?> /> Pie<br />
+                    <input type="checkbox" name="home" value="1" <?php if ($this['type'] == 'home') echo 'selected="selected"'; ?> /> Portada<br />
+                    <input type="checkboz" name="footer" value="1" <?php if ($this['type'] == 'footer') echo 'selected="selected"'; ?> /> Pie<br />
     <br />
                     <label for="posts-media">Video:</label><br />
                     Solo entradas nuevas, para gestionar media ir a la gestión de blog.
