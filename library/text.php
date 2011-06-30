@@ -252,7 +252,9 @@ namespace Goteo\Library {
                 'discover'  => 'Sección descubre proyectos',
                 'community'  => 'Sección comunidad',
                 'general'  => 'Propósito general',
-                'faq'  => 'Pagina de FAQ'
+                'faq'  => 'Pagina de FAQ',
+                'contact'  => 'Pagina de contacto',
+                'widget'  => 'Textos para etiquetas en el widget de un proyecto'
             );
 
             \asort($groups);
