@@ -91,7 +91,7 @@ $minimum_ratio =  min(100, round(($minimum / $optimum) * 100));
 
     <?php
     // si en estado 3 ha alcanzado el optimo o segunda ronda, "aun puedes seguir aportando" junto al quedan tantos días
-    if ($project->status == 3 && ($project->round == 2  || $project->amount >= $project->maxcost || ($project->round == 1  || $project->amount >= $project->mincost) )) : ?>
+    if ($project->status == 3 && ($project->round == 2  || $project->amount >= $project->maxcost || ($project->round == 1  && $project->amount >= $project->mincost) )) : ?>
         <div class="keepiton"><?php echo Text::get('regular-keepiton') ?></div>
     <?php endif;?>
 
