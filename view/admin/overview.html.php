@@ -73,10 +73,10 @@ include 'view/prologue.html.php';
                             <th>Mínimo</th> <!-- segun estado -->
                             <th><!-- Editar --></th>
                             <th><!-- Publicar --></th> <!-- si revisado -->
-                            <th><!-- Cancelar --></th> <!-- si no cancelado -->
+                            <th><!-- Cancelar --></th> <!-- para siempre -->
                             <th><!-- Rehabilitar --></th> <!-- si no edición -->
 <!--                                <th>Financiado</th> si está en campaña -->
-<!--                                <th>Cumplido</th> si está financiado -->
+                             <th><!--   Cumplido si está financiado --></th>
                         </tr>
                     </thead>
 
@@ -92,10 +92,10 @@ include 'view/prologue.html.php';
                             <td><?php if ($project->status > 2) echo $project->mincost; ?></td>
                             <td><a href="/project/edit/<?php echo $project->id; ?>" target="_blank">[Editar]</a></td>
                             <td><?php if ($project->status < 3) : ?><a href="<?php echo "/admin/overview/publish/{$project->id}{$filter}"; ?>">[Publicar]</a><?php endif; ?></td>
-                            <td><?php if ($project->status != 5) : ?><a href="<?php echo "/admin/overview/cancel/{$project->id}{$filter}"; ?>">[Cancelar]</a><?php endif; ?></td>
+                            <td><a href="<?php echo "/admin/overview/cancel/{$project->id}{$filter}"; ?>">[Cancelar]</a></td>
                             <td><?php if ($project->status > 1) : ?><a href="<?php echo "/admin/overview/enable/{$project->id}{$filter}"; ?>">[Reabrir]</a><?php endif; ?></td>
 <!--                                <td><?php if ($project->status == 3) : ?><a href="<?php echo "/admin/overview/complete/{$project->id}{$filter}"; ?>">[Financiado]</a><?php endif; ?></td> -->
-<!--                                <td><?php if ($project->status == 4) : ?><a href="<?php echo "/admin/overview/fulfill/{$project->id}{$filter}"; ?>">[Cumplido]</a><?php endif; ?></td> -->
+                            <td><?php if ($project->status == 4) : ?><a href="<?php echo "/admin/overview/fulfill/{$project->id}{$filter}"; ?>">[Cumplido]</a><?php endif; ?></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

@@ -271,9 +271,9 @@ namespace Goteo\Controller {
                     $project->publish($errors);
                     break;
                 case 'cancel':
-                    // dar un proyecto por fallido / cerrado  manualmente
+                    // descartar un proyecto por malo
                     $project = Model\Project::get($id);
-                    $project->fail($errors);
+                    $project->cancel($errors);
                     break;
                 case 'enable':
                     // si no está en edición, recuperarlo

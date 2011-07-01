@@ -1063,12 +1063,27 @@ namespace Goteo\Model {
         }
 
         /*
+         * Cambio a estado canecelado
+         */
+        public function cancel(&$errors = array()) {
+			try {
+				$sql = "UPDATE project SET status = :status, closed = :closed WHERE id = :id";
+				self::query($sql, array(':status'=>0, ':closed'=>date('Y-m-d'), ':id'=>$this->id));
+                return true;
+            } catch (\PDOException $e) {
+                $errors[] = 'Fallo al cerrar el proyecto. ' . $e->getMessage();
+                //Text::get('send-projecct-close-fail');
+                return false;
+            }
+        }
+
+        /*
          * Cambio a estado caducado
          */
         public function fail(&$errors = array()) {
 			try {
 				$sql = "UPDATE project SET status = :status, closed = :closed WHERE id = :id";
-				self::query($sql, array(':status'=>5, ':closed'=>date('Y-m-d'), ':id'=>$this->id));
+				self::query($sql, array(':status'=>6, ':closed'=>date('Y-m-d'), ':id'=>$this->id));
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al cerrar el proyecto. ' . $e->getMessage();
@@ -1098,7 +1113,7 @@ namespace Goteo\Model {
         public function satisfied(&$errors = array()) {
 			try {
 				$sql = "UPDATE project SET status = :status WHERE id = :id";
-				self::query($sql, array(':status'=>6, ':id'=>$this->id));
+				self::query($sql, array(':status'=>5, ':id'=>$this->id));
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al dar el retorno por cunplido para el proyecto. ' . $e->getMessage();
@@ -1304,7 +1319,7 @@ namespace Goteo\Model {
                     break;
                 case 'success':
                     // los que estan 'financiado' o 'retorno cumplido'
-                    $sql = "SELECT id FROM project WHERE status = 4 OR status = 6 ORDER BY name ASC";
+                    $sql = "SELECT id FROM project WHERE status = 4 OR status = 5 ORDER BY name ASC";
                     break;
                 case 'available':
                     // ni edicion ni revision ni cancelados, estan disponibles para verse publicamente
