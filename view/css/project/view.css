@@ -89,32 +89,37 @@ body.project-show div.project-menu ul {
     margin: 0;
     list-style: none;
     font-size: 0;
+    height: 28px;
 }
 
 body.project-show div.project-menu ul li {
     display: inline-block;
     margin-right: 1px;    
-    background-image: url('/view/css/project/menu/regular_menu.png');
-    background-repeat: repeat-x;
 }
 
 body.project-show div.project-menu ul li a {
     display: inline-block;
-    padding: .6em 2em .2em .6em;
+/*    padding: .6em 2em .2em .6em; */
+    padding: 8px 8px 1px 8px;
     color: white;
     text-transform: uppercase;
     text-decoration: none;
-}
-
-body.project-show div.project-menu ul li.active {
-    background-image: url('/view/css/project/menu/hover_menu.png');
+    height: 28px;
+    background-image: url('/view/css/project/view/menu/regular_menu.png');
+    background-position: left;
     background-repeat: repeat-x;
 }
 
-body.project-show div.project-menu ul li.show {
-    background-image: url('/view/css/project/menu/active_menu.png');
+body.project-show div.project-menu ul li.active a {
+    background-image: url('/view/css/project/view/menu/hover_menu.png');
     background-position: left;
-    background-repeat: no-repeat;
+    background-repeat: repeat-x;
+}
+
+body.project-show div.project-menu ul li.show a {
+    background-image: url('/view/css/project/view/menu/active_menu.png') !important;
+    background-position: left !important;
+    background-repeat: no-repeat !important;
 }
 
 body.project-show div.project-menu ul li.messages a {
