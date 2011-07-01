@@ -16,8 +16,8 @@ $project = $this['project'];
  // tag de financiado cuando ha alcanzado el optimo o despues de los 80 dias
     if ($project->status == 4 || ( $project->status == 3 && $project->amount >= $project->maxcost )) :
         echo '<div class="tagmark red">' . Text::get('regular-gotit_mark') . '</div>';
-// tag de en marcha cuando está en la segunda ronda
-    elseif ($project->status == 3 && $project->round == 2 ) :
+// tag de en marcha cuando está en la segunda ronda o si estando en la primera ha alcanzado el mínimo
+    elseif ($project->status == 3 && ($project->round == 2 ||  ( $project->round == 1 && $project->amount >= $project->mincost ))) :
         echo '<div class="tagmark green">' . Text::get('regular-onrun_mark') . '</div>';
  // tag de exitoso cuando es retorno cumplido
     elseif ($project->status == 5) :
