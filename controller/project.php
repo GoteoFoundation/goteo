@@ -118,7 +118,6 @@ namespace Goteo\Controller {
             }
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                
                 $errors = array(); // errores al procesar, no son errores en los datos del proyecto
                 foreach ($steps as $id => &$data) {
                     
@@ -174,12 +173,15 @@ namespace Goteo\Controller {
 
             // si
             // para cada paso, si no han pasado por el, quitamos errores y okleys de ese paso
+            /*
             foreach ($steps as $id => $data) {
                 if (!in_array($id, $_SESSION['stepped'])) {
                     unset($project->errors[$id]);
                     unset($project->okeys[$id]);
                 }
             }
+             * 
+             */
 
 
             
@@ -229,10 +231,56 @@ namespace Goteo\Controller {
                     $viewData['stypes'] = Model\Project\Reward::icons('social');
                     $viewData['itypes'] = Model\Project\Reward::icons('individual');
                     $viewData['licenses'] = Model\Project\Reward::licenses();
+                    if ($_POST) {
+                        foreach ($_POST as $k => $v) {
+                            if (!empty($v) && preg_match('/social_reward-(\d+)-edit/', $k, $r)) {
+                                $viewData['editsocial_reward'] = $r[1];
+                                break;
+                            }
+                            if (!empty($v) && preg_match('/individual_reward-(\d+)-edit/', $k, $r)) {
+                                $viewData['editindividual_reward'] = $r[1];
+                                break;
+                            }
+                        }
+                    }
+
+                    if (empty($viewData['editsocial_reward']) && $_POST['social_reward-add']) {
+
+                        $last = end($project->social_rewards);
+
+                        if ($last !== false) {
+                            $viewData['editsocial_reward'] = $last->id;
+                        }
+                    }
+                    if (empty($viewData['editindividual_reward']) && $_POST['individual_reward-add']) {
+
+                        $last = end($project->individual_rewards);
+
+                        if ($last !== false) {
+                            $viewData['editindividual_reward'] = $last->id;
+                        }
+                    }
                     break;
 
                 case 'supports':
                     $viewData['types'] = Model\Project\Support::types();
+                    if ($_POST) {
+                        foreach ($_POST as $k => $v) {
+                            if (!empty($v) && preg_match('/support-(\d+)-edit/', $k, $r)) {
+                                $viewData['editsupport'] = $r[1];
+                                break;
+                            }
+                        }
+                    }
+
+                    if (empty($viewData['editsupport']) && $_POST['support-add']) {
+
+                        $last = end($project->supports);
+
+                        if ($last !== false) {
+                            $viewData['editsupport'] = $last->id;
+                        }
+                    }
                     break;
                 
                 case 'preview':

@@ -21,12 +21,14 @@ $supports = array();
 
 foreach ($project->supports as $support) {
 
+    $ch = array();
+
     // a ver si es el que estamos editando o no
-    if (isset($_POST["support-{$support->id}-edit"])) {
+    if ($support->id === $this['editsupport']) {
         // a este grupo le ponemos estilo de edicion
         $supports["support-{$support->id}"] = array(
                 'type'      => 'group',
-                'class'     => 'support edit',
+                'class'     => 'support editsupport',
                 'children'  => array(
                     "support-{$support->id}-support" => array(
                         'title'     => Text::get('supports-field-support'),
@@ -56,53 +58,49 @@ foreach ($project->supports as $support) {
                         'title'     => Text::get('supports-field-description'),
                         'cols'      => 100,
                         'rows'      => 4,
-                        'class'     => 'inline',
+                        'class'     => 'inline support-description',
                         'value'     => $support->description,
                         'errors'    => !empty($errors["support-{$support->id}-description"]) ? array($errors["support-{$support->id}-description"]) : array(),
                         'ok'        => !empty($okeys["support-{$support->id}-description"]) ? array($okeys["support-{$support->id}-description"]) : array(),
                         'hint'      => Text::get('tooltip-project-support-description')
                     ),
-                    "support-{$support->id}-remove" => array(
-                        'type'  => 'submit',
-                        'label' => Text::get('form-remove-button'),
-                        'class' => 'inline remove support-remove'
-                    ),
-                    "support-{$support->id}-accept" => array(
-                        'type'  => 'submit',
-                        'label' => Text::get('form-accept-button'),
-                        'class' => 'inline accept support-accept'
+                    "support-{$support->id}-buttons" => array(
+                        'type' => 'group',
+                        'class' => 'buttons',
+                        'children' => array(
+                            "support-{$support->id}-ok" => array(
+                                'type'  => 'submit',
+                                'label' => Text::get('form-accept-button'),
+                                'class' => 'inline ok'
+                            ),
+                            "support-{$support->id}-remove" => array(
+                                'type'  => 'submit',
+                                'label' => Text::get('form-remove-button'),
+                                'class' => 'inline remove'
+                            )
+                        )
                     )
                 )
             );
 
     } else {
-        // a este grupo lo ponemos cerrado, en html y boton para ir a editarlo
-        // ese boton lanza el formulario igual que lo hace el de añadir, quitar o aceptar
-        // a ver si el tipo de registro lo podemos poner con el icono
-        // y el boton de editar en la misma linea
+
         $supports["support-{$support->id}"] = array(
-                'type'      => 'group',
-                'class'     => 'support line',
-                'children'  => array(
-                    "support-{$support->id}-support" => array(
-                        'type'      => 'html',
-                        'class'     => 'inline',
-                        'html'      => $this['types'][$support->type] . ': ' . $support->support
-                    ),
-                    "support-{$support->id}-edit" => array(
-                        'type'  => 'submit',
-                        'label' => Text::get('form-edit-button'),
-                        'class' => 'inline edit support-edit'
-                    )
-                )
-            );
+            'class'     => 'support',
+            'view'      => 'view/project/edit/supports/support.html.php',
+            'data'      => array('support' => $support),
+        );
 
     }
 
 
 }
 
+$sfid = 'sf-project-supports';
+
 echo new SuperForm(array(
+
+    'id'            => $sfid,
 
     'action'        => '',
     'level'         => $this['level'],
@@ -123,7 +121,7 @@ echo new SuperForm(array(
             'type' => 'hidden',
             'value' => 'supports'
         ),
-        'suppports' => array(
+        'supports' => array(
             'type'      => 'group',
             'title'     => Text::get('supports-fields-support-title'),
             'hint'      => Text::get('tooltip-project-supports'),
@@ -138,3 +136,39 @@ echo new SuperForm(array(
     )
 
 ));
+?>
+<script type="text/javascript">
+$(function () {
+
+    var supports = $('div#<?php echo $sfid ?> li.element#supports');
+
+    supports.delegate('li.element.support input.edit', 'click', function (event) {
+        var data = {};
+        data[this.name] = '1';
+        Superform.update(supports, data);
+        event.preventDefault();
+    });
+
+    supports.delegate('li.element.editsupport input.ok', 'click', function (event) {
+        var data = {};
+        data[this.name.substring(0, 12) + 'edit'] = '0';
+        Superform.update(supports, data);
+        event.preventDefault();
+    });
+
+    supports.delegate('li.element.editsupport input.remove, li.element.support input.remove', 'click', function (event) {
+        var data = {};
+        data[this.name] = '1';
+        Superform.update(supports, data);
+        event.preventDefault();
+    });
+
+    supports.delegate('#support-add input', 'click', function (event) {
+       var data = {};
+       data[this.name] = '1';
+       Superform.update(supports, data);
+       event.preventDefault();
+    });
+
+});
+</script>

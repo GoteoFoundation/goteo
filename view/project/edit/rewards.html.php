@@ -26,6 +26,8 @@ foreach ($this['stypes'] as $id => $type) {
         );
     }
 
+    \trace($licenses);
+
 
     $social_rewards_types[] = array(
         'value' => $id,
@@ -54,11 +56,11 @@ foreach ($this['licenses'] as $id => $license) {
 foreach ($project->social_rewards as $social_reward) {
 
     // a ver si es el que estamos editando o no
-    if (isset($_POST["social_reward-{$social_reward->id}-edit"])) {
+    if ($social_reward->id === $this['editsocial_reward']) {
         // a este grupo le ponemos estilo de edicion
         $social_rewards["social_reward-{$social_reward->id}"] = array(
                 'type'      => 'group',
-                'class'     => 'reward social_reward edit',
+                'class'     => 'reward social_reward editsocial_reward',
                 'children'  => array(
                     "social_reward-{$social_reward->id}-reward" => array(
                         'title'     => Text::get('rewards-field-social_reward-reward'),
@@ -88,7 +90,7 @@ foreach ($project->social_rewards as $social_reward) {
                         'title'     => Text::get('rewards-field-social_reward-description'),
                         'cols'      => 100,
                         'rows'      => 4,
-                        'class'     => 'inline',
+                        'class'     => 'inline reward-description',
                         'value'     => $social_reward->description,
                         'errors'    => !empty($errors["social_reward-{$social_reward->id}-description"]) ? array($errors["social_reward-{$social_reward->id}-description"]) : array(),
                         'ok'        => !empty($okeys["social_reward-{$social_reward->id}-description"]) ? array($okeys["social_reward-{$social_reward->id}-description"]) : array(),
@@ -104,39 +106,32 @@ foreach ($project->social_rewards as $social_reward) {
                         'ok'        => !empty($okeys["social_reward-{$social_reward->id}-license"]) ? array($okeys["social_reward-{$social_reward->id}-license"]) : array(),
                         'hint'      => Text::get('tooltip-project-social_reward-license')
                     ),
-                    "social_reward-{$social_reward->id}-remove" => array(
-                        'type'  => 'submit',
-                        'label' => Text::get('form-remove-button'),
-                        'class' => 'inline remove reward-remove'
-                    ),
-                    "social_reward-{$social_reward->id}-accept" => array(
-                        'type'  => 'submit',
-                        'label' => Text::get('form-accept-button'),
-                        'class' => 'inline accept reward-accept'
+                    "social_reward-{$social_reward->id}-buttons" => array(
+                        'type' => 'group',
+                        'class' => 'buttons',
+                        'children' => array(
+                            "social_reward-{$social_reward->id}-ok" => array(
+                                'type'  => 'submit',
+                                'label' => Text::get('form-accept-button'),
+                                'class' => 'inline ok'
+                            ),
+                            "social_reward-{$social_reward->id}-remove" => array(
+                                'type'  => 'submit',
+                                'label' => Text::get('form-remove-button'),
+                                'class' => 'inline remove'
+                            )
+                        )
                     )
                 )
             );
     } else {
-        // a este grupo lo ponemos cerrado, en html y boton para ir a editarlo
-        // ese boton lanza el formulario igual que lo hace el de añadir, quitar o aceptar
-        // a ver si el tipo de registro lo podemos poner con el icono
-        // y el boton de editar en la misma linea
+
         $social_rewards["social_reward-{$social_reward->id}"] = array(
-                'type'      => 'group',
-                'class'     => 'reward social_reward line',
-                'children'  => array(
-                    "social_reward-{$social_reward->id}-reward" => array(
-                        'type'      => 'html',
-                        'class'     => 'inline',
-                        'html'      => $this['stypes'][$social_reward->icon]->name . ': ' . $social_reward->reward . ' ' . $social_reward->icon
-                    ),
-                    "social_reward-{$social_reward->id}-edit" => array(
-                        'type'  => 'submit',
-                        'label' => Text::get('form-edit-button'),
-                        'class' => 'inline edit reward-edit'
-                    )
-                )
-            );
+            'class'     => 'reward social_reward',
+            'view'      => 'view/project/edit/rewards/reward.html.php',
+            'data'      => array('reward' => $social_reward),
+        );
+        
     }
 
 }
@@ -144,11 +139,11 @@ foreach ($project->social_rewards as $social_reward) {
 foreach ($project->individual_rewards as $individual_reward) {
 
     // a ver si es el que estamos editando o no
-    if (isset($_POST["individual_reward-{$individual_reward->id}-edit"])) {
+    if ($individual_reward->id === $this['editindividual_reward']) {
         // a este grupo le ponemos estilo de edicion
         $individual_rewards["individual_reward-{$individual_reward->id}"] = array(
                 'type'      => 'group',
-                'class'     => 'reward individual_reward',
+                'class'     => 'reward individual_reward editindividual_reward',
                 'children'  => array(
                     "individual_reward-{$individual_reward->id}-reward" => array(
                         'title'     => Text::get('rewards-field-individual_reward-reward'),
@@ -178,7 +173,7 @@ foreach ($project->individual_rewards as $individual_reward) {
                         'title'     => Text::get('rewards-field-individual_reward-description'),
                         'cols'      => 100,
                         'rows'      => 4,
-                        'class'     => 'inline',
+                        'class'     => 'inline reward-description',
                         'value'     => $individual_reward->description,
                         'errors'    => !empty($errors["individual_reward-{$individual_reward->id}-description"]) ? array($errors["individual_reward-{$individual_reward->id}-description"]) : array(),
                         'ok'        => !empty($okeys["individual_reward-{$individual_reward->id}-description"]) ? array($okeys["individual_reward-{$individual_reward->id}-description"]) : array(),
@@ -203,44 +198,41 @@ foreach ($project->individual_rewards as $individual_reward) {
                         'value'     => $individual_reward->units,
                         'hint'      => Text::get('tooltip-project-individual_reward-units'),
                     ),
-                    "individual_reward-{$individual_reward->id}-remove" => array(
-                        'type'  => 'submit',
-                        'label' => Text::get('form-remove-button'),
-                        'class' => 'inline remove reward-remove'
-                    ),
-                    "individual_reward-{$individual_reward->id}-accept" => array(
-                        'type'  => 'submit',
-                        'label' => Text::get('form-accept-button'),
-                        'class' => 'inline remove reward-accept'
+                    "individual_reward-{$individual_reward->id}-buttons" => array(
+                        'type' => 'group',
+                        'class' => 'buttons',
+                        'children' => array(
+                            "individual_reward-{$individual_reward->id}-ok" => array(
+                                'type'  => 'submit',
+                                'label' => Text::get('form-accept-button'),
+                                'class' => 'inline ok'
+                            ),
+                            "individual_reward-{$individual_reward->id}-remove" => array(
+                                'type'  => 'submit',
+                                'label' => Text::get('form-remove-button'),
+                                'class' => 'inline remove'
+                            )
+                        )
                     )
                 )
             );
                     
     } else {
-        // a este grupo lo ponemos cerrado, en html y boton para ir a editarlo
-        // ese boton lanza el formulario igual que lo hace el de añadir, quitar o aceptar
-        // a ver si el tipo de registro lo podemos poner con el icono
-        // y el boton de editar en la misma linea
+
         $individual_rewards["individual_reward-{$individual_reward->id}"] = array(
-                'type'      => 'group',
-                'class'     => 'reward individual_reward line',
-                'children'  => array(
-                    "individual_reward-{$individual_reward->id}-reward" => array(
-                        'type'      => 'html',
-                        'class'     => 'inline',
-                        'html'      => $this['itypes'][$individual_reward->icon]->name . ': ' . $individual_reward->reward
-                    ),
-                    "individual_reward-{$individual_reward->id}-edit" => array(
-                        'type'  => 'submit',
-                        'label' => Text::get('form-edit-button'),
-                        'class' => 'inline edit reward-edit'
-                    )
-                )
-            );
+            'class'     => 'reward individual_reward',
+            'view'      => 'view/project/edit/rewards/reward.html.php',
+            'data'      => array('reward' => $individual_reward),
+        );
+        
     }
 }
 
+$sfid = 'sf-project-rewards';
+
 echo new SuperForm(array(
+
+    'id'            => $sfid,
 
     'action'        => '',
     'level'         => $this['level'],
@@ -270,7 +262,7 @@ echo new SuperForm(array(
             'children'  => $social_rewards + array(
                 'social_reward-add' => array(
                     'type'  => 'submit',
-                    'label' => 'Añadir',
+                    'label' => Text::get('form-add-button'),
                     'class' => 'add reward-add',
                 )
             )
@@ -292,3 +284,71 @@ echo new SuperForm(array(
     )
 
 ));
+?>
+<script type="text/javascript">
+$(function () {
+
+    /* social rewards buttons */
+    var socials = $('div#<?php echo $sfid ?> li.element#social_rewards');
+
+    socials.delegate('li.element.social_reward input.edit', 'click', function (event) {
+        var data = {};
+        data[this.name] = '1';
+        Superform.update(socials, data);
+        event.preventDefault();
+    });
+
+    socials.delegate('li.element.social_reward input.ok', 'click', function (event) {
+        var data = {};
+        data[this.name.substring(0, 18) + 'edit'] = '0';
+        Superform.update(socials, data);
+        event.preventDefault();
+    });
+
+    socials.delegate('li.element.editsocial_reward input.remove, li.element.social_reward input.remove', 'click', function (event) {
+        var data = {};
+        data[this.name] = '1';
+        Superform.update(socials, data);
+        event.preventDefault();
+    });
+
+    socials.delegate('#social_reward-add input', 'click', function (event) {
+       var data = {};
+       data[this.name] = '1';
+       Superform.update(socials, data);
+       event.preventDefault();
+    });
+
+    /* individual_rewards buttons */
+    var individuals = $('div#<?php echo $sfid ?> li.element#individual_rewards');
+
+    individuals.delegate('li.element.individual_reward input.edit', 'click', function (event) {
+        var data = {};
+        data[this.name] = '1';
+        Superform.update(individuals, data);
+        event.preventDefault();
+    });
+
+    individuals.delegate('li.element.editindividual_reward input.ok', 'click', function (event) {
+        var data = {};
+        data[this.name.substring(0, 22) + 'edit'] = '0';
+        Superform.update(individuals, data);
+        event.preventDefault();
+    });
+
+    individuals.delegate('li.element.editindividual_reward input.remove, li.element.individual_reward input.remove', 'click', function (event) {
+        var data = {};
+        data[this.name] = '1';
+        Superform.update(individuals, data);
+        event.preventDefault();
+    });
+
+    individuals.delegate('#individual_reward-add input', 'click', function (event) {
+       var data = {};
+       data[this.name] = '1';
+       Superform.update(individuals, data);
+       event.preventDefault();
+    });
+
+});
+</script>

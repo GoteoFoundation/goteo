@@ -1,4 +1,8 @@
-<?php $cost = $this['data']['cost'] ?>
+<?php
+
+use Goteo\Library\Text;
+
+$cost = $this['data']['cost'] ?>
 
 <div class="cost <?php echo $cost->type ?>">
     
@@ -14,8 +18,8 @@
     
     <div class="required"></div>
     
-    <input type="submit" class="edit" name="cost-<?php echo $cost->id ?>-edit" value="Editar" />    
-    <input type="submit" class="remove" name="cost-<?php echo $cost->id ?>-remove" value="Quitar" />
+    <input type="submit" class="edit" name="cost-<?php echo $cost->id ?>-edit" value="<?php echo Text::get('form-edit-button') ?>" />
+    <input type="submit" class="remove" name="cost-<?php echo $cost->id ?>-remove" value="<?php echo Text::get('form-remove-button') ?>" />
     
 </div>
 
