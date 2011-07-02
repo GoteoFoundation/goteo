@@ -18,7 +18,7 @@ $(function () {
            clearTimeout(li[0].__updating);   
 
            li[0].__updating = setTimeout(function () {
-               window.Superform.update(li, function () {
+               window.Superform.update(li, null, function () {
                    li.removeClass('busy');
                });
            }, 1000);

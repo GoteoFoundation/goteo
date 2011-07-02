@@ -20,101 +20,133 @@ foreach ($this['types'] as $id => $type) {
 $costs = array();
 
 if (!empty($project->costs)) {
+    
     foreach ($project->costs as $cost) {     
         
-        $costs["cost-{$cost->id}"] = array(
-            'type'      => 'group',      
-            'class'     => 'cost',
-            'children'  => array(                         
-                "cost-{$cost->id}-cost" => array(
-                    'title'     => Text::get('costs-field-cost'),
-//                    'required'  => true,
-                    'type'      => 'textbox',
-                    'size'      => 100,
-                    'class'     => 'inline',
-                    'value'     => $cost->cost,
-                    'hint'      => Text::get('tooltip-project-cost-cost'),
-                ),
-                "cost-{$cost->id}-type" => array(
-                    'title'     => Text::get('costs-field-type'),
-//                    'required'  => true,
-                    'class'     => 'inline cost-type',
-                    'type'      => 'radios',
-                    'options'   => $costTypes,
-                    'value'     => $cost->type,
-                    'hint'      => Text::get('tooltip-project-cost-type'),
-                ),
-                "cost-{$cost->id}-description" => array(
-                    'type'      => 'textarea',
-                    'title'     => Text::get('costs-field-description'),
-                    'cols'      => 100,
-                    'rows'      => 4,
-                    'class'     => 'inline cost-description',
-                    'hint'      => Text::get('tooltip-project-cost-description'),
-                    'value'     => $cost->description
-                ),                                       
-                "cost-{$cost->id}-amount" => array(
-                    'type'      => 'textbox',
-//                    'required'  => true,
-                    'title'     => Text::get('costs-field-amount'),
-                    'size'      => 8,
-                    'class'     => 'inline cost-amount',
-                    'hint'      => Text::get('tooltip-project-cost-amount'),
-                    'value'     => $cost->amount
-                ),
-                "cost-{$cost->id}-required"  => array(
-//                    'required'  => true,
-                    'title'     => Text::get('costs-field-required_cost'),
-                    'class'     => 'inline cost-required',
-                    'type'      => 'radios',
-                    'options'   => array (
-                                        array(
-                                                'value'     => '1',
-                                                'label'     => Text::get('costs-field-required_cost-yes')
-                                            ),
-                                        array(
-                                                'value'     => '0',
-                                                'label'     => Text::get('costs-field-required_cost-no')
-                                            )
-                                    ),
-                    'value'     => $cost->required,
-                    'hint'      => Text::get('tooltip-project-cost-required'),
-                ),
-                "cost-{$cost->id}-dates" => array(
-                    'type'      => 'group',
-                    'title'     => Text::get('costs-field-dates'),
-                    'class'     => 'inline cost-dates',
-                    'hint'      => Text::get('tooltip-project-cost-dates'),
-                    'children'  => array(
-                        "cost-{$cost->id}-from"  => array(
-                            'class'     => 'inline cost-from',
-                            'type'      => 'datebox',
-                            'size'      => 8,
-                            'title'     => Text::get('costs-field-date_from'),
-                            'hint'      => Text::get('tooltip-project-cost-dates'),
-                            'value'     => $cost->from
+        $ch = array();
+        
+        if ($cost->id === $this['editcost']) {
+                        
+            $costs["cost-{$cost->id}"] = array(
+                'type'      => 'group',      
+                'class'     => 'cost editcost',
+                'children'  => array(                         
+                    "cost-{$cost->id}-cost" => array(
+                        'title'     => Text::get('costs-field-cost'),
+    //                    'required'  => true,
+                        'type'      => 'textbox',
+                        'size'      => 100,
+                        'class'     => 'inline',
+                        'value'     => $cost->cost,
+                        'hint'      => Text::get('tooltip-project-cost-cost'),
+                    ),
+                    "cost-{$cost->id}-type" => array(
+                        'title'     => Text::get('costs-field-type'),
+    //                    'required'  => true,
+                        'class'     => 'inline cost-type',
+                        'type'      => 'radios',
+                        'options'   => $costTypes,
+                        'value'     => $cost->type,
+                        'hint'      => Text::get('tooltip-project-cost-type'),
+                    ),
+                    "cost-{$cost->id}-description" => array(
+                        'type'      => 'textarea',
+                        'title'     => Text::get('costs-field-description'),
+                        'cols'      => 100,
+                        'rows'      => 4,
+                        'class'     => 'inline cost-description',
+                        'hint'      => Text::get('tooltip-project-cost-description'),
+                        'value'     => $cost->description
+                    ),                                       
+                    "cost-{$cost->id}-amount" => array(
+                        'type'      => 'textbox',
+    //                    'required'  => true,
+                        'title'     => Text::get('costs-field-amount'),
+                        'size'      => 8,
+                        'class'     => 'inline cost-amount',
+                        'hint'      => Text::get('tooltip-project-cost-amount'),
+                        'value'     => $cost->amount
+                    ),
+                    "cost-{$cost->id}-required"  => array(
+    //                    'required'  => true,
+                        'title'     => Text::get('costs-field-required_cost'),
+                        'class'     => 'inline cost-required',
+                        'type'      => 'radios',
+                        'options'   => array (
+                            array(
+                                    'value'     => '1',
+                                    'label'     => Text::get('costs-field-required_cost-yes')
+                                ),
+                            array(
+                                    'value'     => '0',
+                                    'label'     => Text::get('costs-field-required_cost-no')
+                                )
                         ),
-                        "cost-{$cost->id}-until"  => array(
-                            'class'     => 'inline cost-until',
-                            'type'      => 'datebox',
-                            'size'      => 8,
-                            'title'     => Text::get('costs-field-date_until'),
-                            'hint'      => Text::get('tooltip-project-cost-dates'),
-                            'value'     => $cost->until
+                        'value'     => $cost->required,
+                        'hint'      => Text::get('tooltip-project-cost-required'),
+                    ),
+                    "cost-{$cost->id}-dates" => array(
+                        'type'      => 'group',
+                        'title'     => Text::get('costs-field-dates'),
+                        'class'     => 'inline cost-dates',
+                        'hint'      => Text::get('tooltip-project-cost-dates'),
+                        'children'  => array(
+                            "cost-{$cost->id}-from"  => array(
+                                'class'     => 'inline cost-from',
+                                'type'      => 'datebox',
+                                'size'      => 8,
+                                'title'     => Text::get('costs-field-date_from'),
+                                'hint'      => Text::get('tooltip-project-cost-dates'),
+                                'value'     => $cost->from
+                            ),
+                            "cost-{$cost->id}-until"  => array(
+                                'class'     => 'inline cost-until',
+                                'type'      => 'datebox',
+                                'size'      => 8,
+                                'title'     => Text::get('costs-field-date_until'),
+                                'hint'      => Text::get('tooltip-project-cost-dates'),
+                                'value'     => $cost->until
+                            )
                         )
-                    )
-                ),        
-                "cost-{$cost->id}-remove" => array(
-                    'type'  => 'submit',
-                    'label' => Text::get('form-remove-button'),
-                    'class' => 'inline remove'
+                    ),        
+                    "cost-{$cost->id}-buttons" => array(
+                        'type' => 'group',
+                        'class' => 'buttons',
+                        'children' => array(
+                            "cost-{$cost->id}-ok" => array(
+                                'type'  => 'submit',
+                                'label' => 'Ok', // @todo Text::get()
+                                'class' => 'inline ok'
+                            ),
+                            "cost-{$cost->id}-remove" => array(
+                                'type'  => 'submit',
+                                'label' => Text::get('form-remove-button'),
+                                'class' => 'inline remove'
+                            )
+                        )                        
+                    )                    
                 )
-            )
-        );
+            );
+            
+        } else {
+            
+            $costs["cost-{$cost->id}"] = array(                
+                'class'     => 'cost',
+                'view'      => 'view/project/edit/costs/cost.html.php',
+                'data'      => array('cost' => $cost),                
+            );
+            
+        }
+        
+        
     }    
 }
 
+$sfid = 'sf-project-costs';
+
 echo new SuperForm(array(
+    
+    'id'            => $sfid,
 
     'action'        => '',
     'level'         => $this['level'],
@@ -174,3 +206,42 @@ echo new SuperForm(array(
     )
 
 ));
+?>
+<script type="text/javascript">
+$(function () {
+    
+    var costs = $('div#<?php echo $sfid ?> li.element#costs');    
+    
+    costs.delegate('li.element.cost input.edit', 'click', function (event) {
+        var data = {};
+        data[this.name] = '1';
+        //Superform.update(this, data);
+        Superform.update(costs, data); 
+        event.preventDefault();
+    });
+    
+    costs.delegate('li.element.editcost input.ok', 'click', function (event) {
+        var data = {};
+        data[this.name.substring(0, 9) + 'edit'] = '0';
+        //Superform.update($(this).parents('li.element.editcost'), data);        
+        Superform.update(costs, data); 
+        //Superform.update($('#cost-meter'));        
+        event.preventDefault();
+    });
+    
+    costs.delegate('li.element.editcost input.remove, li.element.cost input.remove', 'click', function (event) {        
+        var data = {};
+        data[this.name] = '1';        
+        Superform.update(costs, data); 
+        event.preventDefault();
+    });
+    
+    costs.delegate('#cost-add input', 'click', function (event) {
+       var data = {};
+       data[this.name] = '1';
+       Superform.update(costs, data); 
+       event.preventDefault();
+    });
+        
+});
+</script>

@@ -89,7 +89,6 @@ var Superform = {
                     success:    function (data, status, xhr) {                       
                                     try {                   
                                         var nel = $('<div></div>').html(data).find('li.element#' + id);                                        
-                                        console.log(nel.eq(0));
                                         el.removeClass('busy');
                                     } catch (e) {
                                     }
