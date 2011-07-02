@@ -137,6 +137,7 @@ namespace Goteo\Controller {
                 // si ha ocurrido algun error de proces (como p.ej. "no se ha podido guardar loqueseaa")
                 /*
                  * Me follo la exception de si falla el save, ya veremos como mostrar esos errors
+                 * @todo
                 if (!empty($errors))
                     throw new \Goteo\Core\Exception(implode('. ', $errors));
                  *
@@ -156,6 +157,8 @@ namespace Goteo\Controller {
             //re-evaluar el proyecto
             $project->check();
 
+            /*
+             * @deprecated
             //si nos estan pidiendo el error de un campo, se lo damos
             if (!empty($_GET['errors'])) {
                 foreach ($project->errors as $paso) {
@@ -167,6 +170,7 @@ namespace Goteo\Controller {
                     }
                 }
             }
+            */
 
             // si
             // para cada paso, si no han pasado por el, quitamos errores y okleys de ese paso
@@ -202,6 +206,23 @@ namespace Goteo\Controller {
 
                 case 'costs':
                     $viewData['types'] = Model\Project\Cost::types();
+                    if ($_POST) {
+                        foreach ($_POST as $k => $v) {
+                            if (!empty($v) && preg_match('/cost-(\d+)-edit/', $k, $r)) {
+                                $viewData['editcost'] = $r[1];
+                                break;
+                            }
+                        }
+                    }
+                    
+                    if (empty($viewData['editcost']) && $_POST['cost-add']) {
+                        
+                        $last = end($project->costs);
+                        
+                        if ($last !== false) {
+                            $viewData['editcost'] = $last->id;
+                        }
+                    }
                     break;
 
                 case 'rewards':

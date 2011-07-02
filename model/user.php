@@ -383,11 +383,12 @@ namespace Goteo\Model {
                 $query = static::query("
                     SELECT
                         name,
+                        avatar,
                         email
                     FROM user
                     WHERE id = :id
                     ", array(':id' => $id));
-                $user = $query->fetchObject(__CLASS__);
+                $user = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
                 
                 $user->avatar = Image::get($user->avatar);
 
@@ -418,6 +419,13 @@ namespace Goteo\Model {
                     WHERE interest = {$filters['interest']}
                     ) ";
             }
+            if (!empty($filters['role'])) {
+                $sqlFilter .= " AND id IN (
+                    SELECT user_id
+                    FROM user_role
+                    WHERE role_id = '{$filters['role']}'
+                    ) ";
+            }
             if (!empty($filters['posted'])) {
                 /*
                  * Si ha enviado algun mensaje o comentario
@@ -443,6 +451,20 @@ namespace Goteo\Model {
 
             $query = self::query($sql, array($node));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $user) {
+
+                $query = static::query("
+                    SELECT
+                        user_id
+                    FROM user_role
+                    WHERE user_id = :id
+                    AND role_id = 'checker'
+                    ", array(':id' => $user->id));
+                $role = $query->fetchObject();
+
+                if ($role->user_id == $user->id) {
+                    $user->checker = true;
+                }
+
                 $users[] = $user;
             }
             return $users;

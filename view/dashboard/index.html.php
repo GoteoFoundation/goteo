@@ -5,20 +5,20 @@ use Goteo\Library\Text,
 
 $bodyClass = 'dashboard';
 
-$user = $_SESSION['user']->id;
+$user = $_SESSION['user'];
 
 include 'view/prologue.html.php';
 include 'view/header.html.php'; ?>
 
         <div id="sub-header">
             <div>
-                <h2><img src="/image/<?php echo $user->avatar->id; ?>/75/75" />
+                <h2><img src="/image/<?php echo $user->avatar->id; ?>/75/75" /> 
                     <?php if (empty($this['option'])) {
                         echo 'Mi dashboard';
                     } else {
                         echo 'Mi dashboard / ' . $this['menu'][$this['section']]['options'][$this['option']];
                     } ?><br />
-                    <em><?php echo $user->name; ?></em></h2>
+                    </h2>
             </div>
         </div>
 

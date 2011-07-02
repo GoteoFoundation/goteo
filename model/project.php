@@ -265,6 +265,26 @@ namespace Goteo\Model {
 		}
 
         /*
+         *  Cargamos los datos mínimos de un proyecto
+         */
+        public static function getMini($id) {
+
+            try {
+				// metemos los datos del proyecto en la instancia
+				$query = self::query("SELECT id, name, owner, comment FROM project WHERE id = ?", array($id));
+				$project = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
+
+                // owner
+                $project->user = User::getMini($project->owner);
+
+				return $project;
+
+			} catch(\PDOException $e) {
+				throw \Goteo\Core\Exception($e->getMessage());
+			}
+		}
+
+        /*
          *  Para validar los campos del proyecto que son NOT NULL en la tabla
          */
         public function validate(&$errors = array()) {
@@ -1334,7 +1354,7 @@ namespace Goteo\Model {
         }
 
         /**
-         * Saca una lista completa de proyectos para la revisión
+         * Saca una lista completa de proyectos
          *
          * @param string node id
          * @return array of project instances

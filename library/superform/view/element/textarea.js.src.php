@@ -21,7 +21,7 @@ $(function () {
                li.addClass('busy');
                                              
                updating = setTimeout(function () {
-                   window.Superform.update(input, function () {
+                   window.Superform.update(input, null, function () {
                        li.removeClass('busy');
                    });
                });  

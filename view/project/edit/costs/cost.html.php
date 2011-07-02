@@ -1,14 +1,11 @@
-<div class="cost">
-    <pre><?php print_r($this['cost']) ?></pre>
-            
-    <div class="type">
-        <?php echo $this['cost']->type ?>
-    </div>
+<?php $cost = $this['data']['cost'] ?>
+
+<div class="cost <?php echo $cost->type ?>">
     
-    <div class="summary"></div>
     
-    <div class="description">
-    </div>
+    <div class="title"><strong><?php echo htmlspecialchars($cost->cost) ?></strong></div>
+    
+    <div class="description"><?php echo htmlspecialchars($cost->description) ?></div>
     
     <div class="amount"></div>
     
@@ -17,4 +14,11 @@
     
     <div class="required"></div>
     
+    <input type="submit" class="edit" name="cost-<?php echo $cost->id ?>-edit" value="Editar" />    
+    <input type="submit" class="remove" name="cost-<?php echo $cost->id ?>-remove" value="Quitar" />
+    
 </div>
+
+    
+
+    

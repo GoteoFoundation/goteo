@@ -2,6 +2,8 @@
 if (!('Superform' in window)) {
 
     $(function () {
+    
+        var sf = $('#<?php echo $this['id'] ?>');
 
         window.Superform = {        
             
@@ -26,22 +28,105 @@ if (!('Superform' in window)) {
 
                     event.stopPropagation();
 
-                };
-
-                $(el).click(handler).find(':input').focus(function (event) {
-
-                });;  
+                };                
 
             },
+            
+            updateElement: function (el, nel) {      
+                               
+                try {                                                                            
 
-            update: function (el, success) {
+                    $(function () {  
+
+                        setTimeout(function () {    
+                            
+                            // Get focused element
+                            var focused = $(':focus').first();
+                                                       
+                            // Contents
+                            var contents = el.children('div.contents');
+                            var ncontents = nel.children('div.contents');
+                            
+                            if (contents.length) {                                
+                                if (!ncontents.length) {                                
+                                    //contents.slideUp('fast', 'swing');
+                                    //contents.remove();
+                                } else if (!$.contains(contents[0], focused[0])) {
+                                    contents.replaceWith(ncontents);
+                                }
+                            } else if (ncontents.length) {
+                                el.append(ncontents);
+                            }
+
+                            // Feedback
+                            var feedback = el.children('div.feedback');          
+                            var nfeedback = nel.children('div.feedback');
+                            if (nfeedback.length) {                                                                        
+                                if (feedback.length) {
+                                    feedback.html(nfeedback.html());
+                                } else {
+                                    el.append(nfeedback);
+                                }                                        
+                            } else if (feedback.length) {
+                                feedback.remove();
+                            }
+                            
+                            var children = el.children('div.children').children('div.elements').children('ol').children('li.element');
+                            var nchildren = nel.children('div.children').children('div.elements').children('ol').children('li.element');
+                                                        
+                            
+                            children.each(function (i, child) {
+                                var nchild = nchildren.filter('div.element#' + child.id);
+                                if (nchild.length) {                               
+                                    Superform.updateElement(child, nchild);
+                                    nchildren = nchildren.not(nchild);
+                                } else {
+                                    $(child).slideUp('fast', 'swing');                                    
+                                }
+                            });
+                            
+                            if (nchildren.length) {
+                            
+                                if (!children.length) {
+                                    el.children('div.children').remove();
+                                    var c = $('<div class="children"><div class="elements"><ol></ol></div></div>');
+                                    el.append(c);
+                                    
+                                }
+                                
+                                setTimeout(function () {
+                                    nchildren.hide();
+                                    el.children('div.children').children('div.elements').children('ol').append(nchildren);
+                                    nchildren.slideDown('fast', 'swing');                                    
+                                });
+                                
+                            }
+                            el.attr('class', nel.attr('class'));                            
+
+                        }); // setTimeout
+
+                    }); // $
+
+
+
+                } catch (e) {
+                
+                    
+                }
+            },
+
+            update: function (el, params, success) {
             
-                console.log(el);
-            
-                el = $(el);
+                if (typeof el === 'string') {
+                    el = $('#' + el);
+                } else {                                                    
+                    el = $(el);
+                }
 
                 el.is('li.element') || (el = el.parents('li.element').eq(0));
-                                
+                
+                el.addClass('busy');
+                                                                
                 if (el.length) {
                 
                     if (el.__updating) {
@@ -52,98 +137,57 @@ if (!('Superform' in window)) {
                     
                     if (frm) {
                     
-                        // Thank you, jQuery. All [0] on you.
                         var id = el.attr('id');
+                        
+                        var data = frm.serializeArray();
+                        
+                        if (params) {
+                            $.each(params, function (k, v) {
+                                data.push({
+                                    name: k,
+                                    value: v
+                                });
+                            });
+                        }         
+                        
                         
                         el.__updating = $.ajax({
                             type:       'POST',
                             url:        frm.attr('target'),
                             cache:      false,
-                            data:       frm.serialize(),
-                            success:    function (data, status, xhr) {                             
+                            data:       data,                            
+                            success:    function (html, status, xhr) {                            
+                            
+                                            var s = html.indexOf('<!-- SFEL#' + id + ' -->', 0);
+                                            
+                                            if (s > 0) {
 
-                                            try {
+                                                var e = html.indexOf('<!-- /SFEL#' + id + ' -->', s);
 
-                                                var s = data.indexOf('<!-- SFEL#' + id + ' -->', 0);
+                                                if (e > 0) {
 
-                                                if (s > 0) {
-                                                    var e = data.indexOf('<!-- /SFEL#' + id + ' -->', s);
-                                                    if (e > 0) {
+                                                    var html = html.substring(s, e);
 
-                                                        var html = data.substring(s, e);
-
-                                                        var nel = $('<div></div>');                                                        
-                                                        nel[0].innerHTML = html;
-                                                        
-                                                        delete data;
-                                                        
-
-                                                        $(function () {       
-                                                        
-                                                            setTimeout(function () {    
-                                                        
-                                                                var nli = nel.find('li');
-
-                                                                el.attr('class', nli.attr('class'));
-
-                                                                // Get focused element
-                                                                var focused = $(':focus');
-
-                                                                var children = el.children('div.children').eq(0);
-                                                                var contents = el.children('div.contents').eq(0);
-                                                                var feedback = el.children('div.feedback').eq(0);
-
-                                                                var nchildren = nli.children('div.children').eq(0);
-                                                                var ncontents = nli.children('div.contents').eq(0);
-                                                                var nfeedback = nli.children('div.feedback').eq(0);
-
-                                                                // Copy new class
-                                                                if (!focused.is(':input') || !$.contains(contents[0], focused[0])) {
-                                                                    contents.replaceWith(ncontents);
-                                                                    delete contents;
-                                                                }
-                                                                                                                                
-                                                                if (nfeedback.length) {
-                                                                    feedback.html(nfeedback.html());
-                                                                    nfeedback.remove();
-                                                                }
-                                                                
-                                                                if (children.length) {    
-                                                                    children.find('li.element').each (function (i, child) {                                                                        
-                                                                        // Thanks, jQuery                                                                                                                                                
-                                                                        if (!($.contains(child, focused[0]))) {
-                                                                            var newChild = nchildren.find('li.element#' + $(child).attr('id'));
-                                                                            if (newChild.length) {
-                                                                                $(child).replaceWith(newChild);
-                                                                                $(child).remove;
-                                                                                delete child;
-                                                                            }
-                                                                        }                                                                    
-                                                                        
-                                                                    });
-                                                                }                                                                                                                                                                                                                                                                
-
-                                                            }, 50); // setTimeout
-                                                            
-                                                        }); // $
-
-                                                    }
+                                                    var wrp = $('<div></div>');                                                        
+                                                    wrp[0].innerHTML = html;
+                                                    delete html;                                                                                                        
+                                                    
+                                                    var nel = wrp.children().first();                                                    
+                                                    
+                                                    Superform.updateElement(el, nel);
+                                                    
                                                 }
-
-                                            } catch (e) {}
-
-
-
+                                                
+                                            }                                            
                                         }
+                                        
                         }); // el.__updating = $.ajax();
                     }
 
                 }
             }
 
-        };
-        
-        var sf = $('#<?php echo $this['id'] ?>');
+        };                
         
         var cfb = false;
         

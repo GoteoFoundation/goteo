@@ -10,7 +10,9 @@ $(function () {
        
        var updating = null;
 
-       var update = function (val) {                          
+       var update = function () {
+       
+           var val = input.val();
        
            clearTimeout(updating);
 
@@ -20,7 +22,7 @@ $(function () {
                
                li.addClass('busy');
                                              
-               updating = setTimeout(function () {
+               updating = setTimeout(function () {               
                    window.Superform.update(input, function () {
                        li.removeClass('busy');
                    });
@@ -34,8 +36,6 @@ $(function () {
        
        input.keydown(function () {
        
-           var val = input.val();
-
            if (!updating) {   
                li.addClass('busy');                       
            } else {               
@@ -43,12 +43,12 @@ $(function () {
            }
 
            updating = setTimeout(function () {
-               update(val);
+               update();
            }, 700);
        });
       
       input.bind('paste', function () {             
-          update(input.val());          
+          update();          
       });
        
        input.focus(function () {
@@ -56,10 +56,9 @@ $(function () {
           updating = null;
           
           input.one('blur', function () {               
-              updating = update(input.val());
+              updating = update();
           });
           
-
        });
 
     }

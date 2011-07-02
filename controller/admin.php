@@ -245,9 +245,9 @@ namespace Goteo\Controller {
 		}
 
         /*
-         *  Revisión de proyectos, aqui llega con un nodo y si no es el suyo a la calle (o al suyo)
+         *  Lista de proyectos
          */
-        public function checking($action = 'list', $id = null) {
+        public function overview($action = 'list', $id = null) {
             $filters = array();
             $fields = array('status', 'category');
             foreach ($fields as $field) {
@@ -297,12 +297,136 @@ namespace Goteo\Controller {
             $categories = Model\Project\Category::getAll();
 
             return new View(
-                'view/admin/checking.html.php',
+                'view/admin/overview.html.php',
                 array(
                     'projects' => $projects,
                     'filters' => $filters,
                     'status' => $status,
                     'categories' => $categories,
+                    'errors' => $errors
+                )
+            );
+        }
+
+        /*
+         *  Revision de proyectos
+         */
+        public function checking($action = 'list', $id = null) {
+            $filters = array();
+            $fields = array('status', 'checker');
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    $filters[$field] = $_GET[$field];
+                }
+            }
+
+            $filter = "?status={$filters['status']}&checker={$filters['checker']}";
+
+            $errors = array();
+
+            switch ($action) {
+                case 'add':
+                case 'edit':
+
+                    // el get se hace con el id del proyecto
+                    $review = Model\Review::get($id);
+
+                    $project = Model\Project::getMini($review->project);
+
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
+
+                        // instancia
+                        $review->id         = $_POST['id'];
+                        $review->project    = $_POST['project'];
+                        $review->to_checker = $_POST['to_checker'];
+                        $review->to_owner   = $_POST['to_owner'];
+
+                        if ($review->save($errors)) {
+                            switch ($action) {
+                                case 'add':
+                                    $success = 'Revisión iniciada correctamente';
+                                    break;
+                                case 'edit':
+                                    $success = 'Datos editados correctamente';
+                                    break;
+                            }
+                            
+                            throw new Redirection('/admin/checking/' . $filter);
+                        }
+                    }
+                    
+                    return new View(
+                        'view/admin/reviewEdit.html.php',
+                        array(
+                            'action' => $action,
+                            'review' => $review,
+                            'project'=> $project,
+                            'errors' => $errors
+                        )
+                    );
+
+                    break;
+                case 'close':
+                    // marcamos la revision como completamente cerrada
+                    if (Model\Review::close($id, $errors)) {
+                        $message = 'La revisión se ha cerrado';
+                    }
+                    break;
+                case 'assign':
+                    // asignamos la revision a este usuario
+                    // la id de revision llega en $id
+                    // la id del usuario llega por get
+                    $user = $_GET['user'];
+                    if (!empty($user)) {
+                        $assignation = new Model\User\Review(array(
+                            'id' => $id,
+                            'user' => $user
+                        ));
+                        $assignation->save($errors);
+                    }
+                    break;
+                case 'unassign':
+                    // se la quitamos a este revisor
+                    // la id de revision llega en $id
+                    // la id del usuario llega por get
+                    $user = $_GET['user'];
+                    if (!empty($user)) {
+                        $assignation = new Model\User\Review(array(
+                            'id' => $id,
+                            'user' => $user
+                        ));
+                        $assignation->remove($errors);
+                    }
+                    break;
+                case 'report':
+                    // mostramos los detalles de revision
+                    $review = Model\Review::get($id);
+
+
+                    return new View(
+                        'view/review/report.html.php',
+                        array(
+                            'review' => $review
+                        )
+                    );
+                    break;
+            }
+
+            $projects = Model\Review::getList($filters);
+            $status = array(
+                'open' => 'Abiertas',
+                'closed' => 'Cerradas'
+            );
+            $checkers = Model\User::getAll(array('role'=>'checker'));
+
+            return new View(
+                'view/admin/checking.html.php',
+                array(
+                    'message' => $message,
+                    'projects' => $projects,
+                    'filters' => $filters,
+                    'status' => $status,
+                    'checkers' => $checkers,
                     'errors' => $errors
                 )
             );
@@ -520,6 +644,112 @@ namespace Goteo\Controller {
                 'view/admin/faq.html.php',
                 array(
                     'faqs' => $faqs,
+                    'sections' => $sections,
+                    'filter' => $filter,
+                    'errors' => $errors,
+                    'success' => $success
+                )
+            );
+        }
+
+        /*
+         * criterios de puntuación Goteo
+         */
+        public function criteria($action = 'list', $id = null) {
+            // secciones
+            $sections = Model\Criteria::sections();
+            if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $sections)) {
+                $filter = $_GET['filter'];
+            } else {
+                $filter = 'project';
+            }
+
+            $errors = array();
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                // instancia
+                $criteria = new Model\Criteria(array(
+                    'id' => $_POST['id'],
+                    'section' => $_POST['section'],
+                    'title' => $_POST['title'],
+                    'description' => $_POST['description'],
+                    'order' => $_POST['order'],
+                    'move' => $_POST['move']
+                ));
+
+				if ($criteria->save($errors)) {
+                    switch ($_POST['action']) {
+                        case 'add':
+                            $success = 'Criterio añadido correctamente';
+                            break;
+                        case 'edit':
+                            $success = 'Criterio editado correctamente';
+                            break;
+                    }
+				}
+				else {
+                    return new View(
+                        'view/admin/criteriaEdit.html.php',
+                        array(
+                            'action' => $_POST['action'],
+                            'criteria' => $criteria,
+                            'filter' => $filter,
+                            'sections' => $sections,
+                            'errors' => $errors
+                        )
+                    );
+				}
+			}
+
+
+            switch ($action) {
+                case 'up':
+                    Model\Criteria::up($id);
+                    break;
+                case 'down':
+                    Model\Criteria::down($id);
+                    break;
+                case 'add':
+                    $next = Model\Criteria::next($filter);
+
+                    return new View(
+                        'view/admin/criteriaEdit.html.php',
+                        array(
+                            'action' => 'add',
+                            'criteria' => (object) array('section' => $filter, 'order' => $next, 'cuantos' => $next),
+                            'filter' => $filter,
+                            'sections' => $sections
+                        )
+                    );
+                    break;
+                case 'edit':
+                    $criteria = Model\Criteria::get($id);
+
+                    $cuantos = Model\Criteria::next($criteria->section);
+                    $criteria->cuantos = ($cuantos -1);
+
+                    return new View(
+                        'view/admin/criteriaEdit.html.php',
+                        array(
+                            'action' => 'edit',
+                            'criteria' => $criteria,
+                            'filter' => $filter,
+                            'sections' => $sections
+                        )
+                    );
+                    break;
+                case 'remove':
+                    Model\Criteria::delete($id);
+                    break;
+            }
+
+            $criterias = Model\Criteria::getAll($filter);
+
+            return new View(
+                'view/admin/criteria.html.php',
+                array(
+                    'criterias' => $criterias,
                     'sections' => $sections,
                     'filter' => $filter,
                     'errors' => $errors,
@@ -1177,6 +1407,14 @@ namespace Goteo\Controller {
                     $sql = "UPDATE user SET active = 1 WHERE id = ?";
                     Model\User::query($sql, array($id));
                     break;
+                case 'checker':
+                    $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'checker')";
+                    Model\User::query($sql, array(':user'=>$id));
+                    break;
+                case 'nochecker':
+                    $sql = "DELETE FROM user_role WHERE role_id = 'checker' AND user_id = ?";
+                    Model\User::query($sql, array($id));
+                    break;
             }
 
             $users = Model\User::getAll($filters);
@@ -1474,20 +1712,16 @@ namespace Goteo\Controller {
             switch ($action)  {
                 case 'remove':
                     // eliminar una entrada
-                    if (!empty($blog->posts[$id])) {
-                        if (Model\Blog\Post::delete($id)) {
-                            unset($blog->posts[$id]);
-                            $success[] = 'Entrada eliminada';
-                        } else {
-                            $errors[] = 'No se ha podido eliminar la entrada';
-                        }
+                    if (Model\Blog\Post::delete($id)) {
+                        unset($blog->posts[$id]);
+                        $success[] = 'Entrada eliminada';
                     } else {
-                        $errors[] = 'La entrada que se quiere eliminar no es de este blog';
+                        $errors[] = 'No se ha podido eliminar la entrada';
                     }
                 case 'list':
                     // lista de entradas
                     // obtenemos los datos
-                    $posts = $blog->posts;
+                    $posts = Model\Blog\Post::getAll($blog->id);
 
                     return new View(
                         'view/admin/blog.html.php',

@@ -13,7 +13,7 @@ switch ($this['type']) {
         $items = Post::getAll($blog->id, 7);
         // enlace a la entrada
         foreach ($items as $item) {
-            $list[] = '<a href="/blog/'.$item->id.'">'.Text::recorta($item->title, 100).'</a>';
+            $list[] = '<a href="/blog/'.$item->id.'"> '.Text::recorta($item->title, 100).'</a>';
         }
         break;
     case 'tags':
@@ -33,17 +33,18 @@ switch ($this['type']) {
         foreach ($items as $item) {
             $text = Text::recorta($item->text, 200);
             $list[] = "
-<div>
-    <span>{$item->date}</span><br />
-    <strong>{$item->user->name}</strong>
-    <p>{$text}</p>
-</div>";
+				<div>
+					<!--span class='avatar'><img src='/image/$item->user->avatar->id/50/50' alt='' /></span-->
+					<span class='date'>{$item->date}</span><br />
+					<strong>{$item->user->name}</strong>
+					<p>{$text}</p>
+				</div>";
             }
         break;
 }
 
 if (!empty($list)) : ?>
-<div class="widget">
+<div class="widget blog-sidebar-module">
     <h3 class="title"><?php echo $title; ?></h3>
     <ul id="blog-side-<?php echo $this['type']; ?>">
         <?php foreach ($list as $item) : ?>

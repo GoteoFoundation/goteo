@@ -1,0 +1,110 @@
+<?php
+
+use Goteo\Library\Text;
+
+$bodyClass = 'admin';
+
+include 'view/prologue.html.php';
+
+    include 'view/header.html.php'; ?>
+
+    <script type="text/javascript">
+
+    jQuery(document).ready(function ($) {
+
+        $('#criteria-section').change(function () {
+            order = $.ajax({async: false, url: '<?php echo SITE_URL; ?>/ws/get_criteria_order/'+$('#criteria-section').val()}).responseText;
+            $('#criteria-order').val(order);
+            $('#criteria-num').html(order);
+        });
+        
+    });
+    </script>
+
+        <div id="sub-header">
+            <div>
+                <h2>Criterios de puntuación</h2>
+            </div>
+
+            <div class="sub-menu">
+                <div class="admin-menu">
+                    <ul>
+                        <li class="home"><a href="/admin">Mainboard</a></li>
+                        <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
+                        <li><a href="/admin/criteria?filter=<?php echo $this['filter']; ?>">Criterios</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="main">
+            <?php switch ($this['action']) {
+                case 'add': ?>
+                    <h3>Añadiendo nuevo criterio</h3>
+                    <?php break;
+                case 'edit': ?>
+                    <h3>Editando el criterio '<?php echo $this['criteria']->title; ?>'</h3>
+                    <?php break;
+            } ?>
+
+            <?php if (!empty($this['errors'])) : ?>
+                <div class="widget">
+                    <p>
+                        <?php echo implode(',', $this['errors']); ?>
+                    </p>
+                </div>
+            <?php endif; ?>
+
+            <div class="widget board">
+                <form method="post" action="/admin/criteria/?filter=<?php echo $this['filter']; ?>">
+
+                    <input type="hidden" name="action" value="<?php echo $this['action']; ?>" />
+                    <input type="hidden" name="id" value="<?php echo $this['criteria']->id; ?>" />
+
+                    <p>
+                    <?php if ($this['action'] == 'add') : ?>
+                        <label for="criteria-section">Sección:</label><br />
+                        <select id="criteria-section" name="section">
+                            <option value="" disabled>Elige la sección</option>
+                            <?php foreach ($this['sections'] as $id=>$name) : ?>
+                            <option value="<?php echo $id; ?>"<?php if ($id == $this['criteria']->section) echo ' selected="selected"'; ?>><?php echo $name; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    <?php else : ?>
+                        <label for="criteria-section">Sección: <?php echo $this['sections'][$this['criteria']->section]; ?></label><br />
+                        <input type="hidden" name="section" value="<?php echo $this['criteria']->section; ?>" />
+                    <?php endif; ?>
+                    </p>
+
+                    <p>
+                        <label for="criteria-title">Título:</label><br />
+                        <input type="text" name="title" id="criteria-title" value="<?php echo $this['criteria']->title; ?>" />
+                    </p>
+
+                    <p>
+                        <label for="criteria-description">Descripción:</label><br />
+                        <textarea name="description" id="criteria-description" cols="60" rows="10"><?php echo $this['criteria']->description; ?></textarea>
+                    </p>
+
+                    <p>
+                        <label for="criteria-order">Posición:</label><br />
+                        <select name="move">
+                            <option value="same" selected="selected" disabled>Tal cual</option>
+                            <option value="up">Antes de </option>
+                            <option value="down">Después de </option>
+                        </select>&nbsp;
+                        <input type="text" name="order" id="criteria-order" value="<?php echo $this['criteria']->order; ?>" size="4" />
+                        &nbsp;de&nbsp;<span id="criteria-num"><?php echo $this['criteria']->cuantos; ?></span>
+                    </p>
+
+
+                    <input type="submit" name="save" value="Guardar" />
+                </form>
+            </div>
+
+        </div>
+
+<?php
+    include 'view/footer.html.php';
+include 'view/epilogue.html.php';
