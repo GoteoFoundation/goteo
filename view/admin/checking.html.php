@@ -107,14 +107,16 @@ include 'view/prologue.html.php';
                             <table>
                                 <tr>
                                     <th>Revisor</th>
+                                    <th>Puntos</th>
                                     <th>Listo</th>
                                     <th></th>
                                 </tr>
-                                <?php foreach ($project->checkers as $checker) : ?>
+                                <?php foreach ($project->checkers as $user=>$checker) : ?>
                                 <tr>
                                     <td><?php echo $checker->name; ?></td>
-                                    <td><?php if ($checker->ready) echo 'Listo'; ?></td>
-                                    <td><a href="/admin/checking/unassign/<?php echo $project->review; ?>/<?php echo $filter; ?>&user=<?php echo $checker->user; ?>">[Desasignar]</a></td>
+                                    <td><?php echo $checker->score . '/' . $checker->max; ?></td>
+                                    <td><?php if ($checker->ready) : ?>Listo <a href="/admin/checking/unready/<?php echo $project->review; ?>/<?php echo $filter; ?>&user=<?php echo $user; ?>">[Reabrir]</a><?php endif ?></td>
+                                    <td><a href="/admin/checking/unassign/<?php echo $project->review; ?>/<?php echo $filter; ?>&user=<?php echo $user; ?>">[Desasignar]</a></td>
                                 </tr>
                                 <?php endforeach; ?>
                                 <?php if ($project->status > 0) : ?>
@@ -123,7 +125,9 @@ include 'view/prologue.html.php';
                                     <td colspan="2">
                                         <select name="user">
                                             <option value="">Selecciona un nuevo revisor</option>
-                                            <?php foreach ($this['checkers'] as $user) : ?>
+                                            <?php foreach ($this['checkers'] as $user) :
+                                                if (in_array($user->id, array_keys($project->checkers))) continue;
+                                                ?>
                                             <option value="<?php echo $user->id; ?>"><?php echo $user->name; ?></option>
                                             <?php endforeach; ?>
                                         </select>

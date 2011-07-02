@@ -41,21 +41,32 @@ if (!empty($blog->posts)) {
 
 $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
 
-        <?php include 'view/header.html.php' ?>
+<?php include 'view/header.html.php' ?>
+
+    <script type="text/javascript">
+
+    jQuery(document).ready(function ($) {
+
+        /* Rolover sobre los cuadros de color */
+        $("li").hover(
+                function () { $(this).addClass('active') },
+                function () { $(this).removeClass('active') }
+        );
+
+    });
+    </script>
 
         <div id="sub-header">
-            <div>
-                <h2><?php echo htmlspecialchars($project->name) ?></h2>
+            <div class="project-header">
+                <a href="/user/<?php echo $project->owner; ?>"><img src="/image/<?php echo $project->user->avatar->id; ?>/75/75" /></a>
+                <h2><span><?php echo htmlspecialchars($project->name) ?></span></h2>
+                <div class="project-by"><a href="/user/<?php echo $project->owner; ?>">Por: <?php echo $project->user->name; ?></a></div>
+                <br clear="both" />
                 
                 <div class="categories"><h3><?php echo Text::get('project-view-categories-title'); ?></h3>
-                    <?php 
-                    $i = 0;  
-                    foreach ($categories as $cat) {
-                        if ($i++ > 0) echo ', ';
-                        // @todo Enlaces en los nombres de las categorías?
-                        echo htmlspecialchars($cat);                        
-                    }
-                    ?>
+                    <?php $sep = ''; foreach ($categories as $key=>$value) :
+                        echo $sep.'<a href="/discover/results/'.$key.'">'.htmlspecialchars($value).'</a>';
+                    $sep = ', '; endforeach; ?>
                 </div>
             </div>
             
@@ -95,9 +106,11 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                 echo new View('view/project/widget/collaborations.html.php', array('project' => $project));
             }
 
-            echo
-                new View('view/project/widget/rewards.html.php', array('project' => $project)),
-                new View('view/user/widget/user.html.php', array('user' => $owner));
+            if ($show != 'rewards') {
+                echo new View('view/project/widget/rewards.html.php', array('project' => $project));
+            }
+
+            echo new View('view/user/widget/user.html.php', array('user' => $owner));
             
             ?>                
             </div>

@@ -146,7 +146,7 @@ namespace Goteo\Controller {
          *      'summary' resumen de los revisados anteriormente
          *
          */
-        public function history ($option = 'summary', $action = 'view') {
+        public function history ($option = 'summary', $id = null) {
 
             // tratamos el post segun la opcion y la acion
 
@@ -170,6 +170,15 @@ namespace Goteo\Controller {
                     'errors'  => $errors,
                     'success' => $success
                 );
+
+            if ($option == 'details') {
+                if (!empty($id)) {
+                    $viewData['review']     = $reviews[$id];
+                    $viewData['evaluation'] = Model\Review::getEvaluation($id, $user->id);
+                } else {
+                    $viewData['options'] = 'summary';
+                }
+            }
 
             return new View (
                 'view/review/index.html.php',
@@ -198,7 +207,7 @@ namespace Goteo\Controller {
                 'history' => array(
                     'label'   => 'Mi historial',
                     'options' => array (
-                        'summary'  => 'Resumen'
+                        'summary'  => 'Listado'
                     )
                 )
             );

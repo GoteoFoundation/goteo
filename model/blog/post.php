@@ -3,7 +3,8 @@
 namespace Goteo\Model\Blog {
 
     use \Goteo\Model\Project\Media,
-        \Goteo\Model\Image;
+        \Goteo\Model\Image,
+        \Goteo\Library\Text;
 
     class Post extends \Goteo\Core\Model {
 
@@ -15,6 +16,8 @@ namespace Goteo\Model\Blog {
             $image,
             $media,
             $date,
+            $home,
+            $footer,
             $num_comments = 0,
             $comments = array();
 
@@ -32,7 +35,8 @@ namespace Goteo\Model\Blog {
                         `media`,
                         `date`,
                         DATE_FORMAT(date, '%d | %m | %Y') as fecha,
-                        home
+                        home,
+                        footer
                     FROM    post
                     WHERE id = :id
                     ", array(':id' => $id));
@@ -56,6 +60,9 @@ namespace Goteo\Model\Blog {
                 //tags
                 $post->tags = Post\Tag::getAll($id);
 
+                // reconocimiento de enlaces y saltos de linea
+                $post->text = nl2br(Text::urlink($post->text));
+
                 return $post;
         }
 
@@ -78,7 +85,8 @@ namespace Goteo\Model\Blog {
                     `media`,
                     DATE_FORMAT(date, '%d-%m-%Y') as date,
                     DATE_FORMAT(date, '%d | %m | %Y') as fecha,
-                    home
+                    home,
+                    footer
                 FROM    post
                 WHERE blog = ?
                 ORDER BY date DESC, id DESC
@@ -102,7 +110,10 @@ namespace Goteo\Model\Blog {
                 
                 $post->num_comments = Post\Comment::getCount($post->id);
 
-                $list[] = $post;
+                // reconocimiento de enlaces y saltos de linea
+                $post->text = nl2br(Text::urlink($post->text));
+
+                $list[$post->id] = $post;
             }
 
             return $list;
@@ -126,7 +137,8 @@ namespace Goteo\Model\Blog {
                     `media`,
                     DATE_FORMAT(date, '%d-%m-%Y') as date,
                     DATE_FORMAT(date, '%d-%m-%Y') as fecha,
-                    home
+                    home,
+                    footer
                 FROM    post
                 INNER JOIN post_tag
                     ON post_tag.post = post.id
@@ -194,12 +206,10 @@ namespace Goteo\Model\Blog {
                 'media',
                 'date',
                 'allow',
-                'home'
+                'home',
+                'footer'
                 );
 
-            // si editan por aqui no salen en portada, por ahora
-            //@FIXME
-            $set = '`order` = 0 ';
             $values = array();
 
             foreach ($fields as $field) {

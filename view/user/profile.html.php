@@ -75,9 +75,7 @@ $worthcracy = Worth::getAll();
                             <?php foreach ($this['shares'] as $mate): ?>
                                 <li>
                                     <div class="user">
-                                        <?php if ($mate->avatar instanceof Goteo\Model\Image): ?>
-                                        <div class="avatar"><img src="<?php echo htmlspecialchars($mate->avatar->getLink(50,50)) ?>" /></div>
-                                        <?php endif ?>
+                                        <div class="avatar"><a href="/user/<?php echo htmlspecialchars($mate->user) ?>"><img src="/image/<?php echo $mate->avatar->id ?>/50/50" /></a></div>
                                         <h4><a href="/user/<?php echo htmlspecialchars($mate->user) ?>"><?php echo htmlspecialchars($mate->user) ?></a></h4>
                                         <a class="projects" href="/user/<?php echo htmlspecialchars($mate->user) ?>"><?php echo Text::get('regular-projects'); ?> (<?php echo $mate->projects ?>)</a>
                                         <a class="invests" href="/user/<?php echo htmlspecialchars($mate->user) ?>"><?php echo Text::get('regular-investing'); ?> (<?php echo $mate->invests ?>)</a>

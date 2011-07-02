@@ -18,7 +18,8 @@ include 'view/prologue.html.php';
                     <ul>
                         <li class="home"><a href="/admin">Mainboard</a></li>
                         <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
-                        <li><a href="/admin/posts/add">Nueva entrada en portada</a></li>
+                        <li><a href="/admin/posts/add//home">Nueva entrada en portada</a></li>
+                        <li><a href="/admin/posts/add//footer">Nueva entrada al pie</a></li>
                         <li class="accounting"><a href="/admin/blog">Gestión de blog</a></li>
                     </ul>
                 </div>
@@ -41,6 +42,8 @@ include 'view/prologue.html.php';
                     <thead>
                         <tr>
                             <th>Título</th> <!-- title -->
+                            <th>Portada</th>
+                            <th>Pie</th>
                             <th>Posición</th> <!-- order -->
                             <td><!-- Move up --></td>
                             <td><!-- Move down --></td>
@@ -53,10 +56,12 @@ include 'view/prologue.html.php';
                         <?php foreach ($this['posts'] as $post) : ?>
                         <tr>
                             <td><?php echo $post->title; ?></td>
+                            <td><?php if ($post->home == 1) echo 'Portada'; ?></td>
+                            <td><?php if ($post->footer == 1) echo 'Pie'; ?></td>
                             <td><?php echo $post->order; ?></td>
-                            <td><a href="/admin/posts/up/<?php echo $post->id; ?>">[&uarr;]</a></td>
-                            <td><a href="/admin/posts/down/<?php echo $post->id; ?>">[&darr;]</a></td>
-                            <td><a href="/admin/blog/edit/<?php echo $post->id; ?>">[Editar] (salta a gestion de blog)</a></td>
+                            <td><a href="/admin/posts/up/<?php echo $post->id ?>/<?php echo $post->type ?>">[&uarr;]</a></td>
+                            <td><a href="/admin/posts/down/<?php echo $post->id ?>/<?php echo $post->type ?>">[&darr;]</a></td>
+                            <td><a href="/admin/blog/edit/<?php echo $post->id ?>/<?php echo $post->type ?>">[Editar] (Ojo! salta a gestión de blog)</a></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

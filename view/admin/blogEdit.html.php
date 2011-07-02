@@ -5,6 +5,8 @@ use Goteo\Library\Text,
     Goteo\Core\Redirection,
     Goteo\Library\SuperForm;
 
+define('ADMIN_NOAUTOSAVE', true);
+
 $bodyClass = 'admin';
 
 $post = $this['post'];
@@ -218,6 +220,15 @@ include 'view/prologue.html.php';
                 'hint'      => Text::get('tooltip-updates-home'),
                 'errors'    => !empty($errors['home']) ? array($errors['home']) : array(),
                 'value'     => (int) $post->home
+            ),
+            'footer' => array(
+                'title'     => 'Enlace en footer',
+                'type'      => 'slider',
+                'options'   => $allow,
+                'class'     => 'currently cols_' . count($allow),
+                'hint'      => Text::get('tooltip-updates-footer'),
+                'errors'    => !empty($errors['footer']) ? array($errors['footer']) : array(),
+                'value'     => (int) $post->footer
             )
 
         )

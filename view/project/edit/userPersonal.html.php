@@ -5,6 +5,7 @@ use Goteo\Library\Text,
 
 $project = $this['project'];
 $errors = $project->errors[$this['step']] ?: array();         
+$okeys  = $project->okeys[$this['step']] ?: array();
 
 echo new SuperForm(array(
 
@@ -33,6 +34,7 @@ echo new SuperForm(array(
             'title'     => Text::get('personal-field-contract_name'),
             'hint'      => Text::get('tooltip-project-contract_name'),
             'errors'    => !empty($errors['contract_name']) ? array($errors['contract_name']) : array(),
+            'ok'        => !empty($okeys['contract_name']) ? array($okeys['contract_name']) : array(),
             'value'     => $project->contract_name
         ),
         
@@ -43,58 +45,64 @@ echo new SuperForm(array(
             'size'      => 9,
             'hint'      => Text::get('tooltip-project-contract_nif'),
             'errors'    => !empty($errors['contract_nif']) ? array($errors['contract_nif']) : array(),
+            'ok'        => !empty($okeys['contract_nif']) ? array($okeys['contract_nif']) : array(),
             'value'     => $project->contract_nif
         ),
         
         'phone' => array(
-            'type'  => 'textbox',
+            'type'      => 'textbox',
             'required'  => true,
-            'title' => Text::get('personal-field-phone'),
-            'dize'  => 15,
-            'hint'  => Text::get('tooltip-project-phone'),
+            'title'     => Text::get('personal-field-phone'),
+            'dize'      => 15,
+            'hint'      => Text::get('tooltip-project-phone'),
             'errors'    => !empty($errors['phone']) ? array($errors['phone']) : array(),
-            'value' => $project->phone
+            'ok'        => !empty($okeys['phone']) ? array($okeys['phone']) : array(),
+            'value'     => $project->phone
         ),
         
         'address' => array(
-            'type'  => 'textbox',
+            'type'      => 'textbox',
             'required'  => true,
-            'title' => Text::get('personal-field-address'),
-            'rows'  => 6,
-            'cols'  => 40,
-            'hint'  => Text::get('tooltip-project-address'),
+            'title'     => Text::get('personal-field-address'),
+            'rows'      => 6,
+            'cols'      => 40,
+            'hint'      => Text::get('tooltip-project-address'),
             'errors'    => !empty($errors['address']) ? array($errors['address']) : array(),
-            'value' => $project->address
+            'ok'        => !empty($okeys['address']) ? array($okeys['address']) : array(),
+            'value'     => $project->address
         ),
         
         'zipcode' => array(
-            'type'  => 'textbox',
+            'type'      => 'textbox',
             'required'  => true,
-            'title' => Text::get('personal-field-zipcode'),
-            'size'  => 7,
-            'hint'  => Text::get('tooltip-project-zipcode'),
+            'title'     => Text::get('personal-field-zipcode'),
+            'size'      => 7,
+            'hint'      => Text::get('tooltip-project-zipcode'),
             'errors'    => !empty($errors['zipcode']) ? array($errors['zipcode']) : array(),
-            'value' => $project->zipcode
+            'ok'        => !empty($okeys['zipcode']) ? array($okeys['zipcode']) : array(),
+            'value'     => $project->zipcode
         ),
         
         'location' => array(
-            'type'  => 'textbox',
+            'type'      => 'textbox',
             'required'  => true,
-            'title' => Text::get('personal-field-location'),
-            'size'  => 25,
-            'hint'  => Text::get('tooltip-project-location'),
+            'title'     => Text::get('personal-field-location'),
+            'size'      => 25,
+            'hint'      => Text::get('tooltip-project-location'),
             'errors'    => !empty($errors['location']) ? array($errors['location']) : array(),
-            'value' => $project->location
+            'ok'        => !empty($okeys['location']) ? array($okeys['location']) : array(),
+            'value'     => $project->location
         ),
         
         'country' => array(
-            'type'  => 'textbox',
+            'type'      => 'textbox',
             'required'  => true,
-            'title' => Text::get('personal-field-country'),
-            'size'  => 25,
-            'hint'  => Text::get('tooltip-project-country'),
+            'title'     => Text::get('personal-field-country'),
+            'size'      => 25,
+            'hint'      => Text::get('tooltip-project-country'),
             'errors'    => !empty($errors['country']) ? array($errors['country']) : array(),
-            'value' => $project->country
+            'ok'        => !empty($okeys['country']) ? array($okeys['country']) : array(),
+            'value'     => $project->country
         ),
         
     )

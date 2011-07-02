@@ -47,16 +47,16 @@ foreach (License::getAll() as $l) {
         <?php foreach ($project->individual_rewards as $individual) : ?>
         <li class="<?php echo $individual->icon ?>">
             
-            <div><?php echo Text::get('regular-investing'); ?> <span><?php echo $individual->amount; ?>&euro;</span></div>
-            <strong><?php echo htmlspecialchars($individual->reward) ?></strong>
-            <p><?php echo htmlspecialchars($individual->description) ?></p>
+            <div class="amount"><?php echo Text::get('regular-investing'); ?> <span class="euro"><?php echo $individual->amount; ?></span></div>
+            <h<?php echo $level + 1 ?> class="name"><?php echo htmlspecialchars($individual->reward) ?></h<?php echo $level + 1 ?>
+            <p><?php echo htmlspecialchars($individual->description)?></p>
 
                 <?php if (!empty($individual->units)) : ?>
                 <strong><?php echo Text::get('project-rewards-individual_reward-limited'); ?></strong><br />
                 <?php $units = ($individual->units - $individual->taken); 
-                echo Text::get('project-rewards-individual_reward-units_left', $units); ?><br />
+                echo Text::html('project-rewards-individual_reward-units_left', $units); ?><br />
             <?php endif; ?>
-            <div><span>[<?php echo $individual->taken; ?>]</span><?php echo Text::get('project-view-metter-investors'); ?></div>
+            <div class="investors"><span class="taken"><?php echo $individual->taken; ?></span><?php echo Text::get('project-view-metter-investors'); ?></div>
 
         </li>
         <?php endforeach ?>

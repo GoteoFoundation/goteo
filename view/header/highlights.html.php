@@ -14,7 +14,7 @@ $see_more = Text::get('regular-see_more');
     
     <ul>
         <?php foreach ($highlights as $i => $hl) : ?>
-        <li><?php echo htmlspecialchars($hl->title) ?> <a href="<?php echo $hl->url; ?>" target="_blank"><?php echo $see_more; ?></a></li>
+        <li><?php echo htmlspecialchars($hl->title) ?> <?php if (!empty ($hl->url)) : ?><a href="<?php echo $hl->url; ?>" target="_blank"><?php echo $see_more; ?></a><?php endif; ?></li>
         <?php endforeach ?>
     </ul>
     

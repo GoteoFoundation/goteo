@@ -181,3 +181,47 @@ div.widget.project-support a.more {
     text-decoration: none;
 }
 
+/* Las tagmark */
+div.widget.project-support div.tagmark {
+    position: absolute;
+    z-index: 9999;
+    text-align: left;
+    color: #ffffff;
+    font-size: 1.3em;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-left: -20px;
+    margin-top: -5px;
+    width: 235px;
+    height: 20px;
+    padding: 8px 30px 4px 35px;
+}
+
+div.widget.project-support div.tagmark.green {
+	background:url('/view/css/project/long_tagmark_green.png') left no-repeat;
+}
+
+div.widget.project-support div.tagmark.red {
+	background:url('/view/css/project/long_tagmark_red.png') left no-repeat;
+}
+
+div.widget.project-support div.keepiton {
+    position: absolute;
+    z-index: 9999;
+    display: inline-block;
+    text-align: center;
+    font-size: 0.8em;
+    font-weight: bold;
+    text-transform: uppercase;
+    overflow: visible;
+    background-color: #19b5b3;
+    color: #ffffff;
+    border-radius: 2px 4px;
+    width: 120px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    padding: 3px;
+    right: 0px;
+    bottom: -57px;
+    cursor: default;
+}

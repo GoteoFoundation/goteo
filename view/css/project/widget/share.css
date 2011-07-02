@@ -39,12 +39,19 @@ div.widget.project-share li.url {
     background-image: url('/view/css/social/url.png'); 
 }
 
-div.widget.project-share li.url span {
+div.widget.project-share li.embed {
+    background-image: url('/view/css/social/embed.png');
+}
+
+div.widget.project-share li.url span,
+div.widget.project-share li.embed span{
     display: none;
 }
 
 div.widget.project-share li.url input,
-div.widget.project-share li.url input:focus {
+div.widget.project-share li.url input:focus,
+div.widget.project-share li.embed input,
+div.widget.project-share li.embed input:focus {
     border: none;
     font-size: inherit;
     background-color: #e6e6e6 !important;

@@ -579,12 +579,27 @@ namespace Goteo\Controller {
 
                             // añadir nueva colaboracion (no hacemos lo del mensaje porque esta sin texto)
                             if (!empty($_POST['support-add'])) {
-                                $project->supports[] = new Model\Project\Support(array(
+
+                                $new_support = new Model\Project\Support(array(
                                     'project'       => $project->id,
                                     'support'       => 'Nueva colaboración',
                                     'type'          => 'task',
                                     'description'   => ''
                                 ));
+
+                                if ($new_support->save($errors)) {
+
+                                    $project->supports[] = $new_support;
+                                    $_POST['support-'.$new_support->id.'-edit'] = true;
+
+                                } else {
+                                    $project->supports[] = new Model\Project\Support(array(
+                                        'project'       => $project->id,
+                                        'support'       => 'Nueva colaboración',
+                                        'type'          => 'task',
+                                        'description'   => ''
+                                    ));
+                                }
                             }
 
                             // guardamos los datos que hemos tratado y los errores de los datos

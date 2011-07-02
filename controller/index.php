@@ -19,11 +19,7 @@ namespace Goteo\Controller {
                 $promo->projectData = Project::get($promo->project);
             }
 
-            if (isset($_GET['post'])) {
-                $post = $_GET['post'];
-            } else {
-                $post = $posts[0]->id;
-            }
+            $post = isset($_GET['post']) ? $_GET['post'] : reset($posts)->id;
 
             return new View('view/index.html.php',
                 array(

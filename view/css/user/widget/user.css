@@ -6,7 +6,7 @@ div.widget.user div.image {
     width: 80px;
     height: 80px;
     display: block;
-    background: url('/view/css/avatar/l.png') no-repeat top left;       
+/*    background: url('/view/css/avatar/l.png') no-repeat top left;       //@FIXME revisar esto porque los avatares trasparentes o pequeños salen con este abajo*/
     margin-bottom: 12px;
 }
 

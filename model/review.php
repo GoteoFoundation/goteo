@@ -73,6 +73,7 @@ namespace Goteo\Model {
                 $sql = "REPLACE INTO review SET " . $set;
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
+                self::recount($this->id);
 
                 return true;
             } catch(\PDOException $e) {
@@ -132,6 +133,7 @@ namespace Goteo\Model {
 
                 $subquery = self::query("
                     SELECT
+                        user_review.review as id,
                         user.id as user,
                         user.name as name,
                         user_review.ready as ready
@@ -139,8 +141,13 @@ namespace Goteo\Model {
                     JOIN user_review ON user.id = user_review.user
                     WHERE user_review.review = ?
                 ", array($proj->review));
-                foreach ($subquery->fetchAll(\PDO::FETCH_OBJ) as $checker) {
-                    $checkers[] =  $checker;
+                foreach ($subquery->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User\Review') as $checker) {
+
+                    $cuenta = $checker->recount();
+                    $checker->score = $cuenta->score;
+                    $checker->max   = $cuenta->max;
+
+                    $checkers[$checker->user] =  $checker;
                 }
                 unset($subquery);
 
@@ -220,7 +227,7 @@ namespace Goteo\Model {
 //            echo "$sql <br />";  die;
             $query = self::query($sql, array($user));
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $review) {
-                $reviews[] = $review;
+                $reviews[$review->id] = $review;
             }
             return $reviews;
         }
@@ -249,12 +256,37 @@ namespace Goteo\Model {
                         ON user.id = project.owner
                     INNER JOIN user_review
                         ON user_review.review = review.id
-                    WHERE project.status = 2
-                    AND review.status = 1
-                    AND review.id = :id
+                    WHERE review.id = :id
                     ", array(':id' => $id));
 
-                return $query->fetchObject();
+                $review = $query->fetchObject();
+
+
+                $checkers = array();
+
+                $subquery = self::query("
+                    SELECT
+                        user_review.review as id,
+                        user.id as user,
+                        user.name as name,
+                        user_review.ready as ready
+                    FROM user
+                    JOIN user_review ON user.id = user_review.user
+                    WHERE user_review.review = ?
+                ", array($id));
+                foreach ($subquery->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User\Review') as $checker) {
+
+                    $cuenta = $checker->recount();
+                    $checker->score = $cuenta->score;
+                    $checker->max   = $cuenta->max;
+
+                    $checkers[$checker->user] =  $checker;
+                }
+                unset($subquery);
+
+                $review->checkers = $checkers;
+
+                return $review;
         }
 
 
@@ -328,34 +360,65 @@ namespace Goteo\Model {
 
 
         /*
-         * Metodo para contar la puntuacion
-         * @TODO agregar las puntuaciones de todos los revisores
+         * Metodo para contar la puntuacion general de la revision
+         * Hace la media de las revisiones de revisor que esten listas
          *
-         * score es la puntuacion total
-         * max es el maximo depuntuacio que podria haber obtenido
+         * score es la media de las puntuaciones
+         * max es el maximo depuntuacio que podria haber obtenido (numero de criterios)
          *
          */
-        public function recount ($checker, &$errors = array()) {
+        public static function recount ($id, &$errors = array()) {
             try {
                 $score = 0;
                 $max   = 0;
 
                 $sql = "SELECT
-                            COUNT(criteria.id) as `max`,
-                            COUNT(review_score.score) as score
+                            COUNT(criteria.id) as `max`
                         FROM criteria
-                        LEFT JOIN review_score
-                            ON review_score.criteria = criteria.id
-                            AND review_score.review = :review
-                            AND review_score.user = :user
                         ";
 
-                $query = static::query($sql, array(
-                    ':review' => $this->id,
-                    ':user'  => $checker
-                ));
+                $query = static::query($sql);
                 
-                return $query->fetchObject();
+                $cuenta = $query->fetchObject();
+
+                $max = $cuenta->max;
+
+                // listado de revisiones listas
+                $sql = "SELECT
+                            user_review.user as id
+                        FROM user_review
+                        WHERE user_review.review = ?
+                        AND user_review.ready = 1
+                        ";
+
+                $query = static::query($sql, array($id));
+
+                $checkers = $query->fetchAll(\PDO::FETCH_CLASS);
+
+                foreach ($checkers as $checker) {
+                    $sql = "SELECT
+                                COUNT(review_score.score) as score
+                            FROM review_score
+                                WHERE review_score.review = :review
+                                AND review_score.user = :user
+                            ";
+
+                    $query = static::query($sql, array(
+                        ':review' => $id,
+                        ':user'  => $checker->id
+                    ));
+
+                    $rev = $query->fetchObject();
+
+                    $score += $rev->score;
+                }
+
+                $score = $score / count($checkers);
+
+                $sql = "UPDATE review SET score = :score, max = :max WHERE id = :review";
+                self::query($sql, array(':review' => $id, ':score' => $score, ':max' => $max));
+
+                return true;
                 
             } catch(\PDOException $e) {
                 $errors[] = "No se ha aplicado la puntuacion. " . $e->getMessage();

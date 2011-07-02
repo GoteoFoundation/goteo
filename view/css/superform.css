@@ -252,8 +252,7 @@ div.superform div.elements > ol > li.element.slider > div.contents > ul {
 div.superform div.elements > ol > li.element.checkboxes > div.contents > ul > li,
 div.superform div.elements > ol > li.element.radios > div.contents > ul > li,
 div.superform div.elements > ol > li.element.slider > div.contents > ul > li {
-    float: left;        
-    width: 50%;    
+/*    float: left;   width: 50%;    */
     border-bottom: 1px dashed #bcbdbf;
     border-right: 1px dashed #bcbdbf;
     margin-left: -1px;

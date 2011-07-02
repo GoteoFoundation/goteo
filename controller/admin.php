@@ -271,9 +271,9 @@ namespace Goteo\Controller {
                     $project->publish($errors);
                     break;
                 case 'cancel':
-                    // dar un proyecto por fallido / cerrado  manualmente
+                    // descartar un proyecto por malo
                     $project = Model\Project::get($id);
-                    $project->fail($errors);
+                    $project->cancel($errors);
                     break;
                 case 'enable':
                     // si no está en edición, recuperarlo
@@ -372,6 +372,19 @@ namespace Goteo\Controller {
                         $message = 'La revisión se ha cerrado';
                     }
                     break;
+                case 'unready':
+                    // se la reabrimos para que pueda seguir editando
+                    // la id de revision llega en $id
+                    // la id del usuario llega por get
+                    $user = $_GET['user'];
+                    if (!empty($user)) {
+                        $user_rev = new Model\User\Review(array(
+                            'id' => $id,
+                            'user' => $user
+                        ));
+                        $user_rev->unready($errors);
+                    }
+                    break;
                 case 'assign':
                     // asignamos la revision a este usuario
                     // la id de revision llega en $id
@@ -400,13 +413,22 @@ namespace Goteo\Controller {
                     break;
                 case 'report':
                     // mostramos los detalles de revision
+                    // ojo que este id es la id del proyecto, no de la revision
                     $review = Model\Review::get($id);
+                    $review = Model\Review::getData($review->id);
+
+                    $evaluation = array();
+
+                    foreach ($review->checkers as $user=>$user_data) {
+                        $evaluation[$user] = Model\Review::getEvaluation($review->id, $user);
+                    }
 
 
                     return new View(
                         'view/review/report.html.php',
                         array(
-                            'review' => $review
+                            'review'     => $review,
+                            'evaluation' => $evaluation
                         )
                     );
                     break;
@@ -978,7 +1000,7 @@ namespace Goteo\Controller {
          * Es una idea de blog porque luego lo que salga en la portada
          *  seran los posts de cierta categoria, o algo así
          */
-        public function posts($action = 'list', $id = null) {
+        public function posts($action = 'list', $id = null, $type = 'home') {
 
             $errors = array();
 
@@ -991,7 +1013,9 @@ namespace Goteo\Controller {
                     'title' => $_POST['title'],
                     'text' => $_POST['text'],
                     'media' => $_POST['media'],
-                    'order' => $_POST['order']
+                    'order' => $_POST['order'],
+                    'home' => $_POST['home'],
+                    'footer' => $_POST['footer']
                 ));
 
                 if (!empty($post->media)) {
@@ -1004,6 +1028,7 @@ namespace Goteo\Controller {
                             $success = 'Entrada creada correctamente';
                             break;
                         case 'edit':
+                            throw new Redirection('/admin/blog');
                             $success = 'Entrada editada correctamente';
                             break;
                     }
@@ -1015,20 +1040,26 @@ namespace Goteo\Controller {
                                 'view/admin/postEdit.html.php',
                                 array(
                                     'action' => 'add',
+                                    'type' => $this['type'],
                                     'post' => $post,
                                     'errors' => $errors
                                 )
                             );
                             break;
                         case 'edit':
+                            throw new Redirection('/admin/blog');
+                            /*
                             return new View(
                                 'view/admin/postEdit.html.php',
                                 array(
                                     'action' => 'edit',
+                                    'type' => $this['type'],
                                     'post' => $post,
                                     'errors' => $errors
                                 )
                             );
+                             *
+                             */
                             break;
                     }
 				}
@@ -1037,14 +1068,14 @@ namespace Goteo\Controller {
 
             switch ($action) {
                 case 'up':
-                    Model\Post::up($id);
+                    Model\Post::up($id, $type);
                     break;
                 case 'down':
-                    Model\Post::down($id);
+                    Model\Post::down($id, $type);
                     break;
                 case 'add':
                     // siguiente orden
-                    $next = Model\Post::next();
+                    $next = Model\Post::next($type);
 
                     return new View(
                         'view/admin/postEdit.html.php',
@@ -1055,6 +1086,8 @@ namespace Goteo\Controller {
                     );
                     break;
                 case 'edit':
+                    throw new Redirection('/admin/blog');
+                    /*
                     $post = Model\Post::get($id);
 
                     return new View(
@@ -1064,6 +1097,8 @@ namespace Goteo\Controller {
                             'post' => $post
                         )
                     );
+                     * 
+                     */
                     break;
                 case 'remove':
                     Model\Post::delete($id);

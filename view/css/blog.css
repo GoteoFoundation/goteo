@@ -32,8 +32,16 @@ div.widget.blog-content-module .date,
 div.widget.blog-content-module .categories,
 #blog-content .post .categories{
     display:block;
-	color:#808285;
 	margin: 0 0 8px 0;
+}
+div.widget.blog-content-module .categories a,
+#blog-content .post .categories a {
+	color:#808285;
+    text-decoration: none;
+}
+div.widget.blog-content-module .categories a:hover,
+#blog-content .post .categories a:hover {
+	color:#535353;
 }
 div.widget.blog-content-module  blockquote,
 #blog-content .post blockquote{
@@ -48,6 +56,15 @@ div.widget.blog-content-module  .embed,
     height: 285px;
 	margin: 10px  30px;
 }
+div.widget.blog-content-module  .image,
+#blog-content .post .image{
+	display:block;
+	text-align:center;
+}
+div.widget.blog-content-module  .image img,
+#blog-content .post .image img{
+	margin: 0 auto;
+}
 div.widget.blog-content-module .comments-num,
 #blog-content .post .comments-num{
 	float:left;
@@ -61,6 +78,53 @@ div.widget.blog-content-module .comments-num a,
 	color:#00ad4e;
 	text-decoration:none;
 }
+/** Comments like messages **/
+div.post-comments div.message {
+    background: #e7e7e7 url('/view/css/message/beak/1.png') no-repeat left top;
+    margin-left: 60px;
+    padding: .5em 1em .5em 1.5em;
+    overflow: visible;
+    position: relative;
+}
+
+div.post-comments div.owner {
+    background: #e9f4ea url('/view/css/message/beak/2.png') no-repeat left top !important;
+}
+
+div.post-comments div.message + div.message {
+    margin-top: 20px;
+}
+
+div.post-comments div.message .avatar {
+    position: absolute;
+    left: -60px;
+    top: 0;
+    display: block;
+    width: 50px;
+    height: 50px;
+/*    background: url('../../avatar/s.png');    //@FIXME revisar esto porque los avatares trasparentes o pequeños salen con este abajo*/
+}
+
+div.post-comments div.message .user {
+    text-transform: none;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0 0 1em;
+    float: left;
+}
+
+div.post-comments div.message .date {
+    float: right;
+    color: #808080;
+    font-size: 11px;
+}
+
+div.post-comments div.message blockquote {
+    margin: 0;
+    padding: 0;
+    clear: both;
+}
+/** end Comments like messages**/
 /** share goteo **/
 div.widget.blog-content-module ul.share-goteo,
 #blog-content .post ul.share-goteo {
@@ -141,6 +205,8 @@ div.widget.blog-content-module ul.share-goteo li.facebook a,
 } 
 /** end of blog pagination **/
 /** blog comments **/
+/*
+// he copaido mas arriba el css de mensajes
 #blog-content h5 {
 	font: bold 16px Helvetica, Arial, Geneva, sans-serif;
 	text-transform:uppercase;
@@ -156,6 +222,7 @@ div.widget.blog-content-module ul.share-goteo li.facebook a,
 #blog-content div.message {
     margin-top: 20px;
 }
+/// esta flechita realmente es lo que hay en mensajes pero no lo pintaron bien
 #blog-content div.message .arrow-up {
     position: absolute;
     left: -60px;
@@ -191,6 +258,8 @@ div.widget.blog-content-module ul.share-goteo li.facebook a,
     padding: 0;
     clear: both;
 }
+*/
+/* send Comment */
 #blog-content div.widget.blog-comment {
     margin: 20px 0 0 0;
 }
@@ -205,6 +274,7 @@ div.widget.blog-content-module ul.share-goteo li.facebook a,
 	margin: 20px 0 0 0;
 	float:right;
 }
+/* end send comment */
 /** end of blog comments **/
 /* end of Content syles */ 
 /* Sidebar styles */

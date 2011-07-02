@@ -20,24 +20,16 @@ include 'view/header.html.php' ?>
             <?php echo new View('view/discover/searcher.html.php',
                                 array('params'     => $this['params'])); ?>
 
-            <p><?php echo $this['message']; ?></p>
-
-            <div class="widget projects promos">
-                <?php if (isset($this['results'])) : ?>
-                    <?php foreach ($this['results'] as $result) : ?>
-                    <div>
-                    <?php
-                        // la instancia del proyecto es $result
-                        // se pintan con el mismo widget que en portada
+            <div class="widget projects">
+                <?php if (!empty($this['results'])) :
+                    foreach ($this['results'] as $result) :
                         echo new View('view/project/widget/project.html.php', array(
                             'project' => $result
                         )); 
-                    ?>
-                    </div>
-                    <?php endforeach; ?>
-                <?php else : ?>
-                    <p><?php echo Text::get('discover-results-empty'); ?></p>
-                <?php endif; ?>
+                    endforeach;
+                else :
+                    echo Text::get('discover-results-empty');
+                endif; ?>
             </div>
         
         </div>        

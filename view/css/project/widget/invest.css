@@ -1,0 +1,31 @@
+div.widget.project-invest h1,
+div.widget.project-invest h2,
+div.widget.project-invest h3,
+div.widget.project-invest h4,
+div.widget.project-invest h5,
+div.widget.project-invest h6 {
+    text-transform: none;
+    font-weight: bold;
+    margin-top: 0;
+}
+
+div.widget.project-invest h1,
+div.widget.project-invest h2,
+div.widget.project-invest h3 {
+    font-size: 24px;
+}
+
+div.widget.project-invest h4 {
+    font-size: 18px;
+}
+
+div.widget.project-invest h5,
+div.widget.project-invest h6,
+div.widget.project-invest h7,
+div.widget.project-invest h8 {
+    font-size: 16px;
+}
+
+div.widget.project-invest > div {
+    margin-bottom: 2em;
+}

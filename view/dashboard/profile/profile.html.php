@@ -16,7 +16,7 @@ $image = array(
         'type'  => 'html',
         'class' => 'inline',
         'html'  => is_object($user->avatar) ?
-                   $user->avatar . '<img src="' . htmlspecialchars($user->avatar->getLink(110, 110)) . '" alt="Avatar" />' :
+                   $user->avatar . '<img src="/image/' . $user->avatar->id . '/110/110" alt="Avatar" />' :
                    ''
     )
 );

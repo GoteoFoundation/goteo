@@ -33,7 +33,7 @@ include 'view/prologue.html.php';
                 <div class="widget board collapse">
                     <h3 class="title">Contenidos</h3>
                     <ul>
-                        <li><a href="/admin/posts">Entradas en portada</a></li>
+                        <li><a href="/admin/posts">Entradas de blog en portada o footer</a></li>
                         <li><a href="/admin/promote">Proyectos destacados</a></li>
                         <li><a href="/admin/texts">Gestión de textos</a></li>
                         <li><a href="/admin/faq">Preguntas frecuentes</a></li>
@@ -67,6 +67,7 @@ include 'view/prologue.html.php';
                 <div class="widget board collapse">
                     <h3 class="title">Evaluación de proyectos</h3>
                     <ul>
+                        <li><a href="/admin/overview">Listado</a></li>
                         <li><a href="/admin/criteria">Criterios</a></li>
                         <li><a href="/admin/checking">Revisiones</a></li>
                     </ul>

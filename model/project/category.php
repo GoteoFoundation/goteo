@@ -56,7 +56,7 @@ namespace Goteo\Model\Project {
          * @param void
          * @return array
          */
-		public static function getNames ($project = null) {
+		public static function getNames ($project = null, $limit = null) {
             $array = array ();
             try {
                 $sqlFilter = "";
@@ -67,7 +67,11 @@ namespace Goteo\Model\Project {
                 $sql = "SELECT id, name
                         FROM category
                         $sqlFilter
-                        ORDER BY name ASC";
+                        ORDER BY `order` ASC
+                        ";
+                if (!empty($limit)) {
+                    $sql .= "LIMIT $limit";
+                }
                 $query = static::query($sql);
                 $categories = $query->fetchAll();
                 foreach ($categories as $cat) {

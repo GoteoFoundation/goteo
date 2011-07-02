@@ -1,0 +1,234 @@
+div.widget.project-updates h1,
+div.widget.project-updates h2,
+div.widget.project-updates h3,
+div.widget.project-updates h4,
+div.widget.project-updates h5,
+div.widget.project-updates h6 {
+    text-transform: none;
+    font-weight: bold;
+    margin-top: 0;
+}
+div.widget.project-updates h1,
+div.widget.project-updates h2,
+div.widget.project-updates h3 {
+    font-size: 24px;
+}
+div.widget.project-updates h4 {
+    font-size: 18px;
+}
+div.widget.project-updates h5,
+div.widget.project-updates h6,
+div.widget.project-updates h7,
+div.widget.project-updates h8 {
+    font-size: 16px;
+}
+div.widget.project-updates > div {
+    margin-bottom: 2em;
+}
+.project-updates {
+    width:620px;
+	margin: 0 20px 0 0;
+	float:left;
+}
+.project-updates .post{
+    background-color: white;
+    line-height: 18px;
+    margin: 0 0 20px;
+}
+.project-updates .post h4 a {
+    font: bold 18px Helvetica, Arial, Geneva, sans-serif;
+	margin: 0 0 5px 0;
+	text-transform:none;
+	color:#535353;
+	text-decoration:none;
+}
+.project-updates .post  .date{
+    display:block;
+	color:#cabcbf;
+	margin: 0 0 5px 0;
+}
+.project-updates .post .categories{
+    display:block;
+	color:#808285;
+	margin: 0 0 8px 0;
+}
+.project-updates .post blockquote{
+	color: #58595B;
+	padding: 0 0 20px 0;
+	margin: 18px 18px 12px 18px;
+}
+.project-updates .post .embed{
+    width: 500px;
+    height: 285px;
+	margin: 10px  30px;
+}
+.project-updates .widget.post .image{
+	display:block;
+	text-align:center;
+}
+.project-updates .widget.post .image img{
+	margin: 0 auto;
+}
+.project-updates .post .comments-num{
+	float:left;
+	background: transparent url('../../ico-blogcomment.png') scroll no-repeat  0 0;
+	padding: 0 0 0 26px;
+	height:24px;
+	margin: 0 0 0 20px;
+}
+.project-updates .post .comments-num a {
+	color:#00ad4e;
+	text-decoration:none;
+}
+/** Comments like messages **/
+div.post-comments div.message {
+    background: #e7e7e7 url('/view/css/message/beak/1.png') no-repeat left top;
+    margin-left: 60px;
+    padding: .5em 1em .5em 1.5em;
+    overflow: visible;
+    position: relative;
+}
+
+div.post-comments div.owner {
+    background: #e9f4ea url('/view/css/message/beak/2.png') no-repeat left top !important;
+}
+
+div.post-comments div.message + div.message {
+    margin-top: 20px;
+}
+
+div.post-comments div.message .avatar {
+    position: absolute;
+    left: -60px;
+    top: 0;
+    display: block;
+    width: 50px;
+    height: 50px;
+/*    background: url('../../avatar/s.png');    //@FIXME revisar esto porque los avatares trasparentes o pequeños salen con este abajo*/
+}
+
+div.post-comments div.message .user {
+    text-transform: none;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0 0 1em;
+    float: left;
+}
+
+div.post-comments div.message .date {
+    float: right;
+    color: #808080;
+    font-size: 11px;
+}
+
+div.post-comments div.message blockquote {
+    margin: 0;
+    padding: 0;
+    clear: both;
+}
+/** end Comments like messages**/
+/** share goteo **/
+.project-updates .post ul.share-goteo {
+	margin: 0 20px  0 0;
+	padding:0px;
+	list-style:none;
+	float:right;
+}
+.project-updates .post ul.share-goteo li{
+	display:inline;
+	float:left;
+	margin: 0 0 0 10px;
+}
+.project-updates .post  ul.share-goteo li.twitter a,
+.project-updates .post  ul.share-goteo li.facebook a,
+.project-updates .post  ul.share-goteo li.rss a{
+	height:20px;
+	float:left;
+	padding: 0 0 0 25px;
+}
+.project-updates .post ul.share-goteo li.sharetext{
+	height:20px;
+	float:left;
+	color:#cabcbf;
+}
+.project-updates .post ul.share-goteo li.twitter a{
+	background: transparent url('../../twitter.png') scroll no-repeat  0 0;
+	color:#13c2ec;
+	text-decoration:none;
+}
+.project-updates .post ul.share-goteo li.facebook a{
+	background: transparent url('../../facebook.png') scroll no-repeat  0 0;
+	color:#4a6393;
+	text-decoration:none;
+}
+
+/** blog comments
+// He copiado el css de los mensajes
+.project-updates h5 {
+	font: bold 16px Helvetica, Arial, Geneva, sans-serif;
+	text-transform:uppercase;
+	color:#535353;
+}
+.project-updates div.message {
+    margin-left: 60px;
+    padding: 0em 1em .5em 1.5em;
+    overflow: visible;
+    position: relative;
+	border-bottom: 1px solid #cabcbf;
+}
+.project-updates div.message {
+    margin-top: 20px;
+}
+.project-updates div.message .arrow-up {
+    position: absolute;
+    left: -60px;
+    top: 0;
+    display: block;
+    width: 50px;
+    height: 50px;
+    background: url('over-blogavatar.png') scroll no-repeat  0 0 transparent; 
+	z-index:9;
+}
+.project-updates div.message .avatar {
+    position: absolute;
+    left: -60px;
+    top: 0;
+    display: block;
+    width: 50px;
+    height: 50px;   
+	z-index:0;
+}
+.project-updates div.message .user {
+    text-transform: none;
+	font: bold 12px Helvetica, Arial, Geneva, sans-serif;
+    margin: 0.8em 0 1em;
+    float: left;
+}
+.project-updates div.message .date {
+    float: right;
+    color: #808080;
+    font-size: 11px;
+}
+.project-updates div.message blockquote {
+    margin: 0;
+    padding: 0;
+    clear: both;
+}
+ end of blog comments **/
+.project-updates div.widget.blog-comment {
+    margin: 20px 0 0 0;
+}
+.project-updates div.widget.blog-comment h5 {
+    margin: 0 0 5px 0;
+}
+.project-updates div.widget.blog-comment textarea {
+	display:block;
+	width:530px;
+}
+.project-updates div.widget.blog-comment input.button {
+	margin: 20px 0 0 0;
+	float:right;
+}
+.side {
+	float:right;
+}

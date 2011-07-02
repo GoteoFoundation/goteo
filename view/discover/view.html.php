@@ -18,17 +18,12 @@ include 'view/header.html.php' ?>
         </div>
 
         <div id="main">
-            <div class="widget projects promos">
-                
-                <?php foreach ($this['list'] as $project) : ?>
-                    <div>
-                        <?php
+            <div class="widget projects">
+                <?php foreach ($this['list'] as $project) : 
                         echo new View('view/project/widget/project.html.php', array(
                             'project' => $project
                             ));
-                        ?>
-                    </div>
-                <?php endforeach; ?>
+                endforeach; ?>
             </div>
         
         </div>        
