@@ -167,6 +167,12 @@ div.widget.project-rewards ul li div.license h8,
     margin: .5em 0 .6em;
     padding: 0 0 .2em;
 }
+
+div.widget.project-rewards ul li div.license a,
+#rewards-summary ul li div.license a {
+    text-decoration: none;
+}
+
 div.widget.project-rewards ul li div.license > a strong,
 #rewards-summary ul li div.license > a strong {
     background: url("/view/css/license/license.png") no-repeat left top;
