@@ -121,7 +121,7 @@ body.project-edit div#main.rewards div.superform li.element.editindividual_rewar
     line-height: 32px;
 }
 
-body.project-edit div#main.rewards div.superform li.element.editsocial_reward div.children li.element.reward-type li.reward_file > label,º
+body.project-edit div#main.rewards div.superform li.element.editsocial_reward div.children li.element.reward-type li.reward_file > label,
 body.project-edit div#main.rewards div.superform li.element.editindividual_reward div.children li.element.reward-type li.reward_file > label {
     background-image: url('../../icon/m/file.png');
 }

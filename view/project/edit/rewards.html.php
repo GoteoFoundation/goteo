@@ -26,9 +26,6 @@ foreach ($this['stypes'] as $id => $type) {
         );
     }
 
-    \trace($licenses);
-
-
     $social_rewards_types[] = array(
         'value' => $id,
         'class' => "reward_{$id} social_{$id}",
