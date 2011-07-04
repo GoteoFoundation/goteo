@@ -85,3 +85,75 @@ div.widget.worthcracy  ul li.done.worth-5 {
     background-color: #0C4E99;
     color: #0C4E99;
 }
+
+/* Para el mini legend del lateral */
+div.side-worthcracy ul {
+    padding: 1em 20px 1em 0;
+    margin: 0;
+    list-style: none;
+    position: relative;
+    display: inline-block;
+    background: url('../euro/s.png') no-repeat right center;
+}
+
+div.side-worthcracy ul li {
+    display: inline-block;
+    width: 44px;
+    height: 6px;
+    overflow: visible;
+    background-color: #e7e7e7;
+    position: relative;
+}
+
+div.side-worthcracy  ul li > span.threshold,
+div.side-worthcracy  ul li > strong,
+div.side-worthcracy  ul li > em {
+    display: block;
+    width: 44px;
+    position: absolute;
+    text-align: center;
+}
+
+div.side-worthcracy  ul li > span.threshold {
+    top: -14px;
+    font-size: 9px;
+}
+
+div.side-worthcracy  ul li > em,
+div.side-worthcracy  ul li > strong {
+    top: 10px;
+    width: 301px;
+    left: 50%;
+    margin-left: -150px;
+    color: #808285;
+}
+
+div.side-worthcracy  ul li > em {
+    font-style: normal;
+    font-size: 9px;
+}
+
+div.side-worthcracy  ul li.done.worth-1 {
+    background-color: #B6CAE0;
+    color: #B6CAE0;
+}
+
+div.side-worthcracy  ul li.done.worth-2 {
+    background-color: #92AFD1;
+    color: #92AFD1;
+}
+
+div.side-worthcracy  ul li.done.worth-3 {
+    background-color: #799EC7;
+    color: #799EC7;
+}
+
+div.side-worthcracy  ul li.done.worth-4 {
+    background-color: #3C71AE;
+    color: #3C71AE;
+}
+
+div.side-worthcracy  ul li.done.worth-5 {
+    background-color: #0C4E99;
+    color: #0C4E99;
+}

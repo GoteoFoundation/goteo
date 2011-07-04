@@ -95,10 +95,10 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
             echo
                 new View('view/project/widget/support.html.php', array('project' => $project));
 
-            if (!empty($project->investors) && 
+            if ((!empty($project->investors) &&
                 !empty($invest) &&
-                in_array($invest, array('start', 'ok', 'fail')) ) {
-
+                in_array($invest, array('start', 'ok', 'fail')) )
+                || $show == 'messages' ) {
                 echo new View('view/project/widget/investors.html.php', array('project' => $project));
             }
             
@@ -106,7 +106,7 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                 echo new View('view/project/widget/collaborations.html.php', array('project' => $project));
             }
 
-            if ($show != 'rewards') {
+            if ($show != 'rewards' && $show != 'messages') {
                 echo new View('view/project/widget/rewards.html.php', array('project' => $project));
             }
 
@@ -140,6 +140,11 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                                     echo 
                                         new View('view/project/widget/investMsg.html.php', array('message' => $invest, 'user' => $user)),
                                         new View('view/project/widget/invest.html.php', array('project' => $project, 'personal' => User::getPersonal($user->id)));
+                                    break;
+                                case 'continue':
+                                    echo
+                                        new View('view/project/widget/investMsg.html.php', array('message' => $invest, 'user' => $user)),
+                                        new View('view/project/widget/invest_redirect.html.php', array('project' => $project, 'personal' => User::getPersonal($user->id)));
                                     break;
                                 case 'ok':
                                     echo

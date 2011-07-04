@@ -254,7 +254,8 @@ namespace Goteo\Library {
                 'general'  => 'Propósito general',
                 'faq'  => 'Pagina de FAQ',
                 'contact'  => 'Pagina de contacto',
-                'widget'  => 'Textos para etiquetas en el widget de un proyecto'
+                'widget'  => 'Textos para etiquetas en el widget de un proyecto',
+                'invest'  => 'Pagina de aportar a un proyecto'
             );
 
             \asort($groups);

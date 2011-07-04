@@ -11,6 +11,10 @@ switch ($this['message']) {
         $title   = Text::get('regular-hello') . " $name";
         $message = Text::get('project-invest-start');
         break;
+    case 'continue':
+        $title   = Text::get('regular-hello') . " $name";
+        $message = Text::get('project-invest-continue');
+        break;
     case 'ok':
         $title   = Text::get('regular-thanks') . " {$name}!";
         $message = Text::get('project-invest-ok');
@@ -24,16 +28,9 @@ switch ($this['message']) {
 $level = (int) $this['level'] ?: 3;
 
 ?>
-<div class="widget project-summary">
-
-    <div>
-        <img src="/image/<?php echo $user->avatar->id; ?>/50/50" />
-    </div>
-
-    <div>
-        <h<?php echo $level ?>><?php echo $title; ?></h<?php echo $level ?>>
-        
-        <p><?php echo $message; ?></p>
-    </div>
+<div class="widget invest-message">
+    <h2><img src="/image/<?php echo $user->avatar->id; ?>/50/50" /><span><?php echo $title; ?></span><br />
+    <span class="message"><?php echo $message; ?></span></h2>
+    
 
 </div>
