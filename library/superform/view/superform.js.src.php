@@ -153,7 +153,7 @@ if (!('Superform' in window)) {
                         
                         el.__updating = $.ajax({
                             type:       'POST',
-                            url:        frm.attr('target'),
+                            url:        frm.attr('action'),
                             cache:      false,
                             data:       data,                            
                             success:    function (html, status, xhr) {                            
@@ -179,8 +179,10 @@ if (!('Superform' in window)) {
                                                 }
                                                 
                                             }                                            
-                                        }
-                                        
+                                        },
+                            error: function () {
+                                alert('Error -->' + frm.attr('action') + '<--');
+                            }
                         }); // el.__updating = $.ajax();
                     }
 
