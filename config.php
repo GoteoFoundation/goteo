@@ -3,13 +3,24 @@ define('GOTEO_PATH', __DIR__ . DIRECTORY_SEPARATOR);
 if (function_exists('ini_set')) {
     ini_set('include_path', GOTEO_PATH . PATH_SEPARATOR . '.');
 } else {
-    throw new \Goteo\Core\Exception("No puedo añadir la API GOTEO al include_path.");
+    throw new Exception("No puedo añadir la API GOTEO al include_path.");
 }
 
-// quitar magic quotes sin depender del php.ini
+// Esto no sirve para quitar magic quotes. Ver php.net/manual/en/security.magicquotes.disabling.php
+// Tampoco lo he podido quitar a nivel de htacces, sale php.ini
+/*
 if (function_exists('ini_set')) {
-    ini_set('magic_quotes_gpc', '0'); 
+    if (ini_set('magic_quotes_gpc', '0') === false) {
+        phpinfo();
+        die;
+        throw new Exception("No puedo quitar las magic quotes");
+    }
+} else {
+    throw new Exception("no hay ini_set");
 }
+ * 
+ */
+
 
 // Nodo actual
 define('GOTEO_NODE', 'goteo');
@@ -18,7 +29,7 @@ define('PEAR', GOTEO_PATH . 'library' . '/' . 'pear' . '/');
 if (function_exists('ini_set')) {
     ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . PEAR);
 } else {
-    throw new \Goteo\Core\Exception("No puedo añadir las librerías PEAR al include_path.");
+    throw new Exception("No puedo añadir las librerías PEAR al include_path.");
 }
 
 if (!defined('PHPMAILER_CLASS')) {

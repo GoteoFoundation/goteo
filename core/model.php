@@ -59,6 +59,16 @@ namespace Goteo\Core {
             }
 
                 $params = func_num_args() === 2 && is_array($params) ? $params : array_slice(func_get_args(), 1);
+
+// hasta que quiten las magic quotes
+if (get_magic_quotes_gpc() && (\strpos($query, 'INSERT') !== 0 || \strpos($query, 'REPLACE') !== 0 || \strpos($query, 'UPDATE') !== 0)) {
+    foreach ($params as $key => $value) {
+        $params[$key] = \str_replace("\\", '', $value);
+    }
+    array_walk($params, 'stripslashes');
+}
+
+
             $result = $db->prepare($query);
 
             try {
