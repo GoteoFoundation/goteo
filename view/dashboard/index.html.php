@@ -3,7 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Core\View;
 
-$bodyClass = 'dashboard';
+$bodyClass = 'dashboard project-edit';
 
 $user = $_SESSION['user'];
 
@@ -24,7 +24,7 @@ include 'view/header.html.php'; ?>
 
         <?php  echo new View ('view/dashboard/menu.html.php', $this) ?>
 
-        <div id="main">
+        <div id="main" class="<?php echo $this['option'] ?>">
             
 
             <?php if (!empty($this['message'])) : ?>

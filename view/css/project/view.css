@@ -29,7 +29,7 @@ body.project-show div#sub-header {
 }
 
 body.project-show div#sub-header div.project-header{
-    min-height: 50px;
+    min-height: 75px;
 }
 
 body.project-show div#sub-header img{

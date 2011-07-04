@@ -743,6 +743,25 @@ $testpost = $_POST;
                 // editar colaboraciones
                 case 'supports':
                     $viewData['types'] = Model\Project\Support::types();
+
+                    if ($_POST) {
+                        foreach ($_POST as $k => $v) {
+                            if (!empty($v) && preg_match('/support-(\d+)-edit/', $k, $r)) {
+                                $viewData['editsupport'] = $r[1];
+                                break;
+                            }
+                        }
+                    }
+
+                    if (empty($viewData['editsupport']) && $_POST['support-add']) {
+
+                        $last = end($project->supports);
+
+                        if ($last !== false) {
+                            $viewData['editsupport'] = $last->id;
+                        }
+                    }
+
                     $project->supports = Model\Project\Support::getAll($_SESSION['project']->id);
                 break;
 
