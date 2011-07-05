@@ -28,7 +28,8 @@ $worthcracy = Worth::getAll();
                 <?php echo new View('view/user/widget/about.html.php', array('user' => $user)) ?>
 
                 <?php echo new View('view/user/widget/social.html.php', array('user' => $user)) ?>                        
-                                                
+
+                <?php if (!empty($this['invested'])) : ?>
                 <div class="widget projects">
                     <h2 class="title"><?php echo Text::get('profile-invest_on-header'); ?></h2>
                     <?php foreach ($this['invested'] as $project) : ?>
@@ -41,7 +42,9 @@ $worthcracy = Worth::getAll();
                         </div>
                     <?php endforeach; ?>
                 </div>
+                <?php endif ?>
 
+                <?php if (!empty($this['projects'])) : ?>
                 <div class="widget projects">
                     <h2 class="title"><?php echo Text::get('profile-my_projects-header'); ?></h2>
                     <?php foreach ($this['projects'] as $project) : ?>
@@ -53,7 +56,8 @@ $worthcracy = Worth::getAll();
                             )); ?>
                         </div>
                     <?php endforeach; ?>
-                    </div>
+                </div>
+                <?php endif ?>
 
             </div>
             <div class="side">

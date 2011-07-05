@@ -624,8 +624,9 @@ namespace Goteo\Controller {
                     'project' => $project->id,
                     'cost'  => 'Nueva tarea',
                     'type'  => 'task',
-                    'from' => null,
-                    'until' => null
+                    'required' => 1,
+                    'from' => date('Y-m-d'),
+                    'until' => date('Y-m-d')
                     
                 ));
                 
@@ -684,7 +685,7 @@ namespace Goteo\Controller {
                     'project'   => $project->id,
                     'reward'    => 'Nuevo retorno colectivo',
                     'icon'      => 'file',
-                    'license'   => 'cc0'
+                    'license'   => ''
 
                 ));
             }

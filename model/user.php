@@ -725,7 +725,7 @@ namespace Goteo\Model {
                     return true;
 
                 } catch (\PDOException $e) {
-                    $errors[] = "FALLO al gestionar el registro de fdatos personales " . $e->getMessage();
+                    $errors[] = "FALLO al gestionar el registro de datos personales " . $e->getMessage();
                     return false;
                 }
             }
@@ -744,6 +744,35 @@ namespace Goteo\Model {
 		    ', array($this->id));
 		    return $query->fetchAll(\PDO::FETCH_OBJ);
 		}
+
+
+        /*
+         * Lista de proyectos cofinanciados
+         */
+        public static function invested($user)
+        {
+            $projects = array();
+
+            $sql = "SELECT project.id
+                    FROM  project
+                    INNER JOIN invest
+                        ON project.id = invest.project
+                        AND invest.user = ?
+                        AND invest.status <> 2
+                    WHERE project.status > 1 AND project.status < 7
+                    GROUP BY project.id
+                    ORDER BY name ASC
+                    ";
+
+            echo "$sql<br />";
+
+            $query = self::query($sql, array($user));
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $proj) {
+                $projects[] = \Goteo\Model\Project::get($proj->id);
+            }
+            return $projects;
+        }
+
 
 	}
 }
