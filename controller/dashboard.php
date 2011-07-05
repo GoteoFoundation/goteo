@@ -318,25 +318,11 @@ namespace Goteo\Controller {
 
             $errors = array();
 
-            if ($action == 'select' && !empty($_POST['project'])) {
-                // otro proyecto de trabajo
-                $project = Model\Project::get($_POST['project']);
-            } else {
-                // si tenemos ya proyecto, mantener los datos actualizados
-                if (!empty($_SESSION['project']->id)) {
-                    $project = Model\Project::get($_SESSION['project']->id);
-                }
-            }
-
             $projects = Model\Project::ofmine($user->id);
 
             // si no hay proyectos no tendria que estar aqui
-            if (count($projects) == 0) {
-                throw new Redirection('/project/create', Redirection::TEMPORARY);
-            } else {
+            if (!empty($projects)) {
                 // compruebo permisos
-                //@FIXME! buscar otro modo
-                /*
                 foreach ($projects as $proj) {
 
                     // compruebo que puedo editar mis proyectos
@@ -349,11 +335,19 @@ namespace Goteo\Controller {
                         ACL::allow('/project/delete/'.$proj->id, '*', 'user', $user);
                     }
                 }
-                 *
-                 */
             }
-            
-            if (empty($project)) {
+
+            if ($action == 'select' && !empty($_POST['project'])) {
+                // otro proyecto de trabajo
+                $project = Model\Project::get($_POST['project']);
+            } else {
+                // si tenemos ya proyecto, mantener los datos actualizados
+                if (!empty($_SESSION['project']->id)) {
+                    $project = Model\Project::get($_SESSION['project']->id);
+                }
+            }
+
+            if (empty($project) && !empty($projects)) {
                 $project = $projects[0];
             }
 
@@ -362,8 +356,8 @@ namespace Goteo\Controller {
             if ($project instanceof  \Goteo\Model\Project) {
                 $_SESSION['project'] = $project;
             } else {
-                // si no es que hay un problema
-                throw new Redirection('/dashboard', Redirection::TEMPORARY);
+                unset($project);
+                $option = 'summary';
             }
 
             // tenemos proyecto de trabajo, comprobar si el proyecto esta en estado de tener blog
@@ -391,13 +385,11 @@ namespace Goteo\Controller {
                         $option = 'summary';
                         $action = 'view';
                     }
-                } else {
-                    if (!$blog->active) {
+                } elseif (!$blog->active) {
                         $errors[] = 'Lo sentimos, las actualizaciones para este proyecto estan desactivadas';
                         //Text::get('dashboard-project-blog-inactive');
                         $action = 'list';
                     }
-                }
 
                 // primero comprobar que tenemos blog
                 if (!$blog instanceof Model\Blog) {

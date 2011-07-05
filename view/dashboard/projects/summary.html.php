@@ -5,6 +5,10 @@ echo new View ('view/dashboard/projects/selector.html.php', $this);
 
 $project = $this['project'];
 
+if ($project instanceof  Goteo\Model\Project) {
+    return;
+}
+
 $status = new View('view/project/edit/status.html.php', array('status' => $project->status, 'progress' => $project->progress));
 $metter = new View('view/project/widget/support.html.php', array('project' => $project));
 ?>
@@ -17,8 +21,8 @@ $metter = new View('view/project/widget/support.html.php', array('project' => $p
     if (in_array($project->status, array(3, 4, 5))) {
         echo '<a href="/project/' . $project->id . '" target="_blank">Ver publicado</a><br />';
     }
-    if ($project->status == 1) {
         echo '<a href="/project/edit/' . $project->id . '">[Editar]</a>';
+    if ($project->status == 1) {
         echo '<a href="/project/delete/' . $project->id . '" onclick="return confirm(\'Seguro que desea eliminar este proyecto?\')">[Borrar]</a>';
     }
     ?>

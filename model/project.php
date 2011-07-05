@@ -1127,7 +1127,7 @@ namespace Goteo\Model {
          */
         public function delete(&$errors = array()) {
 
-            if ($project->status != 1) {
+            if ($this->status != 1) {
                 return false;
             }
 

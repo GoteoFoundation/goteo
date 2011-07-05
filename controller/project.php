@@ -30,8 +30,12 @@ namespace Goteo\Controller {
 
         public function delete ($id) {
             $project = Model\Project::get($id);
-            $project->delete();
-            throw new Redirection("/dashboard");
+            if ($project->delete()) {
+                if ($_SESSION['project']->id == $id) {
+                    unset($_SESSION['project']);
+                }
+            }
+            throw new Redirection("/dashboard/projects");
         }
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
@@ -309,8 +313,12 @@ namespace Goteo\Controller {
 
         public function create () {
 
-            if (empty($_SESSION['user'])) {
+            if (strpos($_SERVER['HTTP_REFERER'], 'howto') === false) {
                 throw new Redirection("/about/howto");
+            }
+
+            if (empty($_SESSION['user'])) {
+                throw new Redirection("/user/login");
             }
 
             $project = new Model\Project;
@@ -352,6 +360,11 @@ namespace Goteo\Controller {
 
                 //tenemos que tocar esto un poquito para gestionar los pasos al aportar
                 if ($show == 'invest') {
+
+                    // piñon para betatesters
+                    if (!in_array($_SESSION['user']->id, array('root', 'goteo', 'olivier', 'esenabre', 'diegobus'))) {
+                        throw new Redirection('/about/beta', Redirection::TEMPORARY);
+                    }
 
                     // si no está en campaña no pueden esta qui ni de coña
                     if ($project->status != 3) {
