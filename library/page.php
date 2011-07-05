@@ -96,13 +96,13 @@ namespace Goteo\Library {
                     ':page' => $this->id,
                     ':lang' => $this->lang,
                     ':node' => $this->node,
-                    'content' => $this->content
+                    ':contenido' => $this->content
                 );
 
 				$sql = "REPLACE INTO page_node
                             (page, node, lang, content)
                         VALUES
-                            (:page, :node, :lang, :content)
+                            (:page, :node, :lang, :contenido)
                         ";
 				if (Model::query($sql, $values)) {
                     return true;
