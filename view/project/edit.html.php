@@ -28,9 +28,7 @@ include 'view/prologue.html.php';
             <?php echo $status ?>
             <?php echo $steps ?>            
             
-            <?php 
-                        
-            echo new View("view/project/edit/{$this['step']}.html.php", $this->getArrayCopy() + array('level' => 3)) ?>
+            <?php echo new View("view/project/edit/{$this['step']}.html.php", $this->getArrayCopy() + array('level' => 3)) ?>
 
             <?php echo $steps ?>                                    
 

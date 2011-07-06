@@ -15,7 +15,7 @@ namespace Goteo\Library\SuperForm\Element {
             
             if (!is_array($this->options)) {
                 $this->options = array();
-            }
+            }            
             
             foreach ($this->options as $value => &$option) { 
                 
@@ -29,7 +29,7 @@ namespace Goteo\Library\SuperForm\Element {
                     
                 } else if (is_array($option)) {
                     
-                    $option = new Radio($option + array('name' => $this->name));
+                    $option = new Radio($option + array('name' => $this->name, 'level' => $this->level + 1));
                     
                 } else {
                     
@@ -39,7 +39,9 @@ namespace Goteo\Library\SuperForm\Element {
                 
                 if (isset($this->value)) {
                     $option->checked = ($option->value == $this->value); 
-                }
+                }                
+                
+                $option->id = $this->id . '-' . $option->value;
                 
             }            
             
