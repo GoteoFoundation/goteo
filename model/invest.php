@@ -159,7 +159,9 @@ namespace Goteo\Model {
                 'resign',
                 'invested',
                 'charged',
-                'returned'
+                'returned',
+                'admin',
+                'campaign'
                 );
 
             $set = '';
@@ -469,7 +471,8 @@ namespace Goteo\Model {
         public static function methods () {
             return array (
                 'paypal' => 'Paypal',
-                'tpv' => 'Tarjeta'
+                'tpv'    => 'Tarjeta',
+                'cash'   => 'Manual'
             );
         }
 
