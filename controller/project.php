@@ -684,7 +684,7 @@ namespace Goteo\Controller {
                     'type'      => 'social',
                     'project'   => $project->id,
                     'reward'    => 'Nuevo retorno colectivo',
-                    'icon'      => 'file',
+                    'icon'      => '',
                     'license'   => ''
 
                 ));
