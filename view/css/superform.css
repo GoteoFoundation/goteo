@@ -5,6 +5,10 @@
  
 @import url('superform/datepicker.css');
 
+body.js div.superform .jshidden {
+    display: none;
+}
+
 div.superform fieldset {
     border: 1px solid #99a2a5;    
 }
