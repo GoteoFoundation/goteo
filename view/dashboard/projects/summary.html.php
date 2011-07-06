@@ -5,7 +5,7 @@ echo new View ('view/dashboard/projects/selector.html.php', $this);
 
 $project = $this['project'];
 
-if ($project instanceof  Goteo\Model\Project) {
+if (!$project instanceof  Goteo\Model\Project) {
     return;
 }
 

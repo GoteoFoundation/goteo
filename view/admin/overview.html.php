@@ -71,12 +71,6 @@ include 'view/prologue.html.php';
                             <th>Días</th> <!-- segun estado -->
                             <th>Conseguido</th> <!-- segun estado -->
                             <th>Mínimo</th> <!-- segun estado -->
-                            <th><!-- Editar --></th>
-                            <th><!-- Publicar --></th> <!-- si revisado -->
-                            <th><!-- Cancelar --></th> <!-- para siempre -->
-                            <th><!-- Rehabilitar --></th> <!-- si no edición -->
-<!--                                <th>Financiado</th> si está en campaña -->
-                             <th><!--   Cumplido si está financiado --></th>
                         </tr>
                     </thead>
 
@@ -90,12 +84,19 @@ include 'view/prologue.html.php';
                             <td><?php if ($project->status == 3) echo $project->days; ?></td>
                             <td><?php if ($project->status > 2) echo $project->invested; ?></td>
                             <td><?php if ($project->status > 2) echo $project->mincost; ?></td>
-                            <td><a href="/project/edit/<?php echo $project->id; ?>" target="_blank">[Editar]</a></td>
-                            <td><?php if ($project->status < 3) : ?><a href="<?php echo "/admin/overview/publish/{$project->id}{$filter}"; ?>">[Publicar]</a><?php endif; ?></td>
-                            <td><a href="<?php echo "/admin/overview/cancel/{$project->id}{$filter}"; ?>">[Cancelar]</a></td>
-                            <td><?php if ($project->status > 1) : ?><a href="<?php echo "/admin/overview/enable/{$project->id}{$filter}"; ?>">[Reabrir]</a><?php endif; ?></td>
-<!--                                <td><?php if ($project->status == 3) : ?><a href="<?php echo "/admin/overview/complete/{$project->id}{$filter}"; ?>">[Financiado]</a><?php endif; ?></td> -->
-                            <td><?php if ($project->status == 4) : ?><a href="<?php echo "/admin/overview/fulfill/{$project->id}{$filter}"; ?>">[Cumplido]</a><?php endif; ?></td>
+                        </tr>
+                        <tr>
+                            <td colspan="7"> >>> Acciones:
+                                <a href="/project/edit/<?php echo $project->id; ?>" target="_blank">[Editar]</a>
+                                <?php if ($project->status == 1) : ?><a href="<?php echo "/admin/overview/review/{$project->id}{$filter}"; ?>">[A revisión]</a><?php endif; ?>
+                                <?php if ($project->status < 3) : ?><a href="<?php echo "/admin/overview/publish/{$project->id}{$filter}"; ?>">[Publicar]</a><?php endif; ?>
+                                <?php if ($project->status > 1) : ?><a href="<?php echo "/admin/overview/enable/{$project->id}{$filter}"; ?>">[Reabrir]</a><?php endif; ?>
+                                <?php if ($project->status == 4) : ?><a href="<?php echo "/admin/overview/fulfill/{$project->id}{$filter}"; ?>">[Retorno Cumplido]</a><?php endif; ?>
+                                <a href="<?php echo "/admin/overview/cancel/{$project->id}{$filter}"; ?>" onclick="return confirm('El proyecto va a quedar DESCARTADO permanentemente, ¿seguro que hacemos eso?');">[Descartar]</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="7"><hr /></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

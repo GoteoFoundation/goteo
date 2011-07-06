@@ -265,6 +265,11 @@ namespace Goteo\Controller {
              *
              */
             switch ($action) {
+                case 'review':
+                    // pasar un proyecto a revision
+                    $project = Model\Project::get($id);
+                    $project->ready($errors);
+                    break;
                 case 'publish':
                     // poner un proyecto en campaña
                     $project = Model\Project::get($id);
