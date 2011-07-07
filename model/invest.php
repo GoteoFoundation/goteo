@@ -114,6 +114,77 @@ namespace Goteo\Model {
         }
 
 
+        /*
+         * Lista de aportes individuales
+         *
+         * Los filtros vienen de la gestión de aportes
+         * Los datos que sacamos: usuario, proyecto, cantidad, estado de proyecto, estado de aporte, fecha de aporte, tipo de aporte, campaña
+         * .... anonimo, resign, etc...
+         */
+        public static function getList ($filters = array()) {
+
+            /*
+             * Estos son los filtros
+            $fields = array('method', 'status', 'investStatus', 'project', 'user', 'campaign');
+             */
+
+            $list = array();
+
+            $sqlFilter = "";
+            if (!empty($filters['method'])) {
+                $sqlFilter .= " AND method = '{$filters['method']}'";
+            }
+            if (!empty($filters['status'])) {
+                $sqlFilter .= " AND project.status = '{$filters['status']}'";
+            }
+            if (is_numeric($filters['investStatus'])) {
+                $sqlFilter .= " AND invest.status = '{$filters['investStatus']}'";
+            }
+            if (!empty($filters['project'])) {
+                $sqlFilter .= " AND invest.project = " . $filters['project'];
+            }
+            if (!empty($filters['user'])) {
+                $sqlFilter .= " AND invest.user = " . $filters['user'];
+            }
+            if (!empty($filters['campaign'])) {
+                $sqlFilter .= " AND invest.campaign = " . $filters['campaign'];
+            }
+
+            $sql = "SELECT
+                        invest.id as id,
+                        invest.user as user,
+                        invest.project as project,
+                        invest.method as method,
+                        invest.status as investStatus,
+                        project.status as status,
+                        invest.campaign as campaign,
+                        invest.amount as amount,
+                        invest.anonymous as anonymous,
+                        invest.resign as resign,
+                        DATE_FORMAT(invest.invested, '%d/%m/%Y') as invested,
+                        DATE_FORMAT(invest.charged , '%d/%m/%Y') as charged,
+                        DATE_FORMAT(invest.returned, '%d/%m/%Y') as returned,
+                        user.name as admin
+                    FROM invest
+                    INNER JOIN project
+                        ON invest.project = project.id
+                    LEFT JOIN user
+                        ON invest.admin = user.id
+                    WHERE invest.project IS NOT NULL
+                        $sqlFilter
+                    ORDER BY invest.id DESC
+                    ";
+
+            $query = self::query($sql);
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $list[$item->id] = $item;
+            }
+            return $list;
+        }
+
+
+
+
         public function validate (&$errors = array()) { 
             if (!is_numeric($this->amount))
                 $errors[] = 'La cantidad no es correcta';
@@ -206,6 +277,54 @@ namespace Goteo\Model {
                 $errors[] = "El aporte no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
                 return false;
             }
+        }
+
+        /*
+         * Lista de proyectos con aportes
+         */
+        public static function projects ($node = \GOTEO_NODE) {
+
+            $list = array();
+
+            $query = static::query("
+                SELECT
+                    project.id as id,
+                    project.name as name
+                FROM    project
+                INNER JOIN invest
+                    ON project.id = invest.project
+                ORDER BY project.name ASC
+                ", array(':node' => $node));
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $list[$item->id] = $item->name;
+            }
+
+            return $list;
+        }
+
+        /*
+         * Lista de usuarios que han aportado a algo
+         */
+        public static function users () {
+
+            $list = array();
+
+            $query = static::query("
+                SELECT
+                    user.id as id,
+                    user.name as name
+                FROM    user
+                INNER JOIN invest
+                    ON user.id = invest.user
+                ORDER BY user.name ASC
+                ");
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $list[$item->id] = $item->name;
+            }
+
+            return $list;
         }
 
         /*

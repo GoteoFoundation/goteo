@@ -285,6 +285,28 @@ namespace Goteo\Model {
 		}
 
         /*
+         * Listado simple de todos los proyectos
+         */
+        public static function getAll($node = \GOTEO_NODE) {
+
+            $list = array();
+
+            $query = static::query("
+                SELECT
+                    project.id as id,
+                    project.name as name
+                FROM    project
+                ORDER BY project.name ASC
+                ", array(':node' => $node));
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $list[$item->id] = $item->name;
+            }
+
+            return $list;
+        }
+
+        /*
          *  Para validar los campos del proyecto que son NOT NULL en la tabla
          */
         public function validate(&$errors = array()) {

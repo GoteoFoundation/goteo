@@ -1479,27 +1479,97 @@ namespace Goteo\Controller {
 
         /*
          *  Revisión de aportes
-         *
-         * dummy para ejecutar cargos
          */
         public function accounting($action = 'list', $id = null) {
-            // estados del proyecto
-            $status = Model\Project::status();
-            // estados de aporte
-            $investStatus = Model\Invest::status();
 
+            $errors = array();
+
+            // si estamos generando aportes cargamos la lista completa de usuarios, proyectos y campañas
+           if ($action == 'invest') {
+               
+                // listado de proyectos existentes
+                $projects = Model\Project::getAll();
+                // usuarios
+                $users = Model\User::getAllMini();
+                // campañas
+                $campaigns = array('1' => 'Campaña GIJ');
+
+                // aporte manual
+                if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add']) ) {
+
+                    $userData = Model\User::getMini($_POST['user']);
+
+                    $invest = new Model\Invest(
+                        array(
+                            'amount'    => $_POST['amount'],
+                            'user'      => $userData->id,
+                            'project'   => $_POST['project'],
+                            'account'   => $userData->email,
+                            'method'    => 'cash',
+                            'status'    => 1,
+                            'invested'  => date('Y-m-d'),
+                            'charged'   => date('Y-m-d'),
+                            'anonymous' => $_POST['anonymous'],
+                            'resign'    => 1,
+                            'admin'     => $_SESSION['user']->id,
+                            'campaign'  => $_POST['campaign']
+                        )
+                    );
+
+                    if ($invest->save($errors)) {
+                        $errors[] = 'Aporte manual creado correctamente';
+                    } else{
+                        $errors[] = 'Ha fallado algo al crear el aporte manual';
+                    }
+
+                }
+
+                 $viewData = array(
+                        'users'         => $users,
+                        'projects'      => $projects,
+                        'campaigns'     => $campaigns,
+                        'errors'        => $errors
+                    );
+
+                return new View(
+                    'view/admin/investAdd.html.php',
+                    $viewData
+                );
+
+                // fin de la historia
+
+           } else {
+
+               // sino, cargamos los filtros
+                $filters = array();
+                $fields = array('methods', 'status', 'investStatus', 'projects', 'users', 'campaigns');
+                foreach ($fields as $field) {
+                    if (isset($_GET[$field])) {
+                        $filters[$field] = $_GET[$field];
+                    }
+                }
+
+                // tipos de aporte
+                $methods = Model\Invest::methods();
+                // estados del proyecto
+                $status = Model\Project::status();
+                // estados de aporte
+                $investStatus = Model\Invest::status();
+                // listado de proyectos
+                $projects = Model\Invest::projects();
+                // usuarios cofinanciadores
+                $users = Model\Invest::users();
+                // campañas que tienen aportes
+                $campaigns = array('1' => 'Campaña GIJ');
+                // Model\Invest::campaigns();
+
+           }
 
             /// si piden unos detalles,
+            /*
             if ($action == 'details') {
                 $invest = Model\Invest::get($id);
                 $project = Model\Project::get($invest->project);
-                $details = array();
-                if (!empty($invest->preapproval)) {
-                    $details['preapproval'] = Paypal::preapprovalDetails($invest->preapproval, $errors);
-                }
-                if (!empty($invest->payment)) {
-                    $details['payment'] = Paypal::paymentDetails($invest->payment, $errors);
-                }
                 return new View(
                     'view/admin/investDetails.html.php',
                     array(
@@ -1510,6 +1580,10 @@ namespace Goteo\Controller {
                     )
                 );
             }
+             *
+             */
+
+
 
             if ($action == 'execute') {
                 $invest = Model\Invest::get($id);
@@ -1533,14 +1607,48 @@ namespace Goteo\Controller {
 
             }
 
-            /*
-             *  Lista de proyectos en campaña
-             *  indicando cuanto han conseguido, cuantos dias y los cofinanciadores
-             *  Para cada cofinanciador sus aportes
-             *  enlace para ejecutar cargo
-             */
-            $projects = Model\Project::invested();
+            if ($action == 'return') {
+                $invest = Model\Invest::get($id);
 
+                switch ($invest->method) {
+                    case 'paypal':
+                        if (Paypal::cancelPreapproval($invest, $errors)) {
+                            $errors[] = 'Preaproval paypal cancelado, aporte cancelado.';
+                        } else {
+                            $errors[] = 'Fallo al cancelar el preapproval en paypal: ' . implode('; ', $errors);
+                            if ($invest->cancel()) {
+                                $errors[] = 'Aporte cancelado';
+                            } else{
+                                $errors[] = 'Fallo al cancelar el aporte';
+                            }
+                        }
+                        break;
+                    case 'tpv':
+                        if (Tpv::cancelPreapproval($invest, $errors)) {
+                            $errors[] = 'Transacción sermepa cancelada, aporte cancelado.';
+                        } else {
+                            $errors[] = 'Fallo al cancelar la transaccion sermepa: ' . implode('; ', $errors);
+                            if ($invest->cancel()) {
+                                $errors[] = 'Aporte cancelado';
+                            } else{
+                                $errors[] = 'Fallo al cancelar el aporte';
+                            }
+                        }
+                        break;
+                    case 'cash':
+                        if ($invest->cancel()) {
+                            $errors[] = 'Aporte cancelado';
+                        } else{
+                            $errors[] = 'Fallo al cancelar el aporte';
+                        }
+                        break;
+                }
+
+            }
+
+            /**
+             * Esto que viene aqui es trabajo del cron
+             *
             foreach ($projects as &$project) {
 
                 $project->invests = Model\Invest::getAll($project->id);
@@ -1581,16 +1689,29 @@ namespace Goteo\Controller {
                 }
 
             }
+             * 
+             */
+
+            // listado de aportes
+             $list = Model\Invest::getList($filters);
+
+             $viewData = array(
+                    'list'          => $list,
+                    'filters'       => $filters,
+                    'users'         => $users,
+                    'projects'      => $projects,
+                    'campaigns'     => $campaigns,
+                    'methods'       => $methods,
+                    'status'        => $status,
+                    'investStatus'  => $investStatus,
+                    'errors'        => $errors
+                );
 
             return new View(
                 'view/admin/accounting.html.php',
-                array(
-                    'projects' => $projects,
-                    'status' => $status,
-                    'investStatus' => $investStatus,
-                    'errors' => $errors
-                )
+                $viewData
             );
+
         }
 
 
