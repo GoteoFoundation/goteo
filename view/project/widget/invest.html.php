@@ -12,6 +12,7 @@ $personal = $this['personal'];
 $level = (int) $this['level'] ?: 3;
 
 $methods = Invest::methods();
+unset($methods['cash']);
 
 $worthcracy = Worth::getAll();
 
@@ -31,35 +32,6 @@ foreach (License::getAll() as $l) {
 </div>
 
     
-<div class="widget project-invest">
-    <h<?php echo $level ?> class="beak"><?php echo Text::get('invest-social-header') ?></h<?php echo $level ?>>
-    
-    <div class="social">
-        <h<?php echo $level + 1 ?> class="title"><?php echo Text::get('project-rewards-social_reward-title'); ?></h<?php echo $level + 1 ?>>
-        <ul>
-        <?php foreach ($project->social_rewards as $social) : ?>
-            <li class="<?php echo $social->icon ?>">
-                <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($social->reward) ?></h<?php echo $level + 2 ?>
-                <p><?php echo htmlspecialchars($social->description)?></p>
-                <?php if (!empty($social->license) && array_key_exists($social->license, $licenses)): ?>
-                <div class="license <?php echo htmlspecialchars($social->license) ?>">
-                    <h<?php echo $level + 3 ?>><?php echo Text::get('regular-license'); ?></h<?php echo $level + 3 ?>>
-                    <a href="<?php echo htmlspecialchars($licenses[$social->license]->url) ?>" target="_blank">
-                        <strong><?php echo htmlspecialchars($licenses[$social->license]->name) ?></strong>
-
-                    <?php if (!empty($licenses[$social->license]->description)): ?>
-                    <p><?php echo htmlspecialchars($licenses[$social->license]->description) ?></p>
-                    <?php endif ?>
-                    </a>
-                </div>
-                <?php endif ?>
-            </li>
-        <?php endforeach; ?>
-        </ul>
-    </div>
-</div>
-
-
 <div class="widget project-invest">
     <h<?php echo $level ?> class="beak"><?php echo Text::get('invest-individual-header') ?></h<?php echo $level ?>>
     
@@ -125,4 +97,32 @@ foreach (License::getAll() as $l) {
 <?php echo new View('view/project/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $_SESSION['user']->worth)) ?>
 
 </form>
+
+<div class="widget project-invest">
+    <h<?php echo $level ?> class="beak"><?php echo Text::get('invest-social-header') ?></h<?php echo $level ?>>
+
+    <div class="social">
+        <h<?php echo $level + 1 ?> class="title"><?php echo Text::get('project-rewards-social_reward-title'); ?></h<?php echo $level + 1 ?>>
+        <ul>
+        <?php foreach ($project->social_rewards as $social) : ?>
+            <li class="<?php echo $social->icon ?>">
+                <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($social->reward) ?></h<?php echo $level + 2 ?>
+                <p><?php echo htmlspecialchars($social->description)?></p>
+                <?php if (!empty($social->license) && array_key_exists($social->license, $licenses)): ?>
+                <div class="license <?php echo htmlspecialchars($social->license) ?>">
+                    <h<?php echo $level + 3 ?>><?php echo Text::get('regular-license'); ?></h<?php echo $level + 3 ?>>
+                    <a href="<?php echo htmlspecialchars($licenses[$social->license]->url) ?>" target="_blank">
+                        <strong><?php echo htmlspecialchars($licenses[$social->license]->name) ?></strong>
+
+                    <?php if (!empty($licenses[$social->license]->description)): ?>
+                    <p><?php echo htmlspecialchars($licenses[$social->license]->description) ?></p>
+                    <?php endif ?>
+                    </a>
+                </div>
+                <?php endif ?>
+            </li>
+        <?php endforeach; ?>
+        </ul>
+    </div>
+</div>
 
