@@ -211,6 +211,7 @@ namespace Goteo\Model {
                     self::query("UPDATE project SET amount = '{$amount}' WHERE id = ?", array($id));
                 }
                 $project->invested = $amount;
+                $project->amount   = $amount;
 
                 // recompensas
                 foreach ($project->individual_rewards as &$reward) {

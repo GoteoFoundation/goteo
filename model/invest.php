@@ -361,10 +361,8 @@ namespace Goteo\Model {
                 WHERE   project = :project
                 AND     status <> 2
                 ", array(':project' => $project));
-            if ($got = $query->fetchObject())
-                return $got->much;
-            else
-                return 0;
+            $got = $query->fetchObject();
+            return (int) $got->much;
         }
 
         /*
