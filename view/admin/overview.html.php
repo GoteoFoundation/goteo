@@ -82,8 +82,8 @@ include 'view/prologue.html.php';
                             <td><?php echo $this['status'][$project->status]; ?></td>
                             <td><?php if ($project->status < 3)  echo $project->progress; ?></td>
                             <td><?php if ($project->status == 3) echo $project->days; ?></td>
-                            <td><?php if ($project->status > 2) echo $project->invested; ?></td>
-                            <td><?php if ($project->status > 2) echo $project->mincost; ?></td>
+                            <td><?php echo $project->invested; ?></td>
+                            <td><?php echo $project->mincost; ?></td>
                         </tr>
                         <tr>
                             <td colspan="7"> >>> Acciones:

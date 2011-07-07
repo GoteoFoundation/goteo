@@ -88,6 +88,7 @@ include 'view/prologue.html.php';
                 <table width="100%">
                     <thead>
                         <tr>
+                            <th>Aporte ID</th>
                             <th>Cofinanciador</th>
                             <th>Proyecto</th>
                             <th>Estado</th>
@@ -107,13 +108,14 @@ include 'view/prologue.html.php';
                     <tbody>
                         <?php foreach ($this['list'] as $invest) : ?>
                         <tr>
+                            <td><?php echo $invest->id ?></td>
                             <td><?php echo $this['users'][$invest->user] ?></td>
                             <td><?php echo $this['projects'][$invest->project] ?></td>
                             <td><?php echo $this['status'][$invest->status] ?></td>
                             <td><?php echo $this['methods'][$invest->method] ?></td>
                             <td><?php echo $this['investStatus'][$invest->investStatus] ?></td>
                             <td><?php echo $invest->amount ?></td>
-                            <td><?php echo $this['campaign'][$invest->campaign] ?></td>
+                            <td><?php echo $this['campaigns'][$invest->campaign] ?></td>
                             <td><?php echo $invest->invested ?></td>
                             <td><?php echo $invest->charged ?></td>
                             <td><?php echo $invest->returned ?></td>

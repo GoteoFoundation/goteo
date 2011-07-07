@@ -39,7 +39,7 @@ include 'view/prologue.html.php';
                 <form id="filter-form" action="/admin/accounting/invest" method="post">
                     <p>
                         <label for="invest-amount">Importe:</label><br />
-                        <input type="text" id="invest-amount" name="amount" value="20" />
+                        <input type="text" id="invest-amount" name="amount" value="5" />
                     </p>
                     <p>
                         <label for="invest-user">Usuario:</label><br />

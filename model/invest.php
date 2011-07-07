@@ -131,8 +131,8 @@ namespace Goteo\Model {
             $list = array();
 
             $sqlFilter = "";
-            if (!empty($filters['method'])) {
-                $sqlFilter .= " AND method = '{$filters['method']}'";
+            if (!empty($filters['methods'])) {
+                $sqlFilter .= " AND method = '{$filters['methods']}'";
             }
             if (!empty($filters['status'])) {
                 $sqlFilter .= " AND project.status = '{$filters['status']}'";
@@ -140,14 +140,14 @@ namespace Goteo\Model {
             if (is_numeric($filters['investStatus'])) {
                 $sqlFilter .= " AND invest.status = '{$filters['investStatus']}'";
             }
-            if (!empty($filters['project'])) {
-                $sqlFilter .= " AND invest.project = " . $filters['project'];
+            if (!empty($filters['projects'])) {
+                $sqlFilter .= " AND invest.project = '{$filters['projects']}'";
             }
-            if (!empty($filters['user'])) {
-                $sqlFilter .= " AND invest.user = " . $filters['user'];
+            if (!empty($filters['users'])) {
+                $sqlFilter .= " AND invest.user = '{$filters['users']}'";
             }
-            if (!empty($filters['campaign'])) {
-                $sqlFilter .= " AND invest.campaign = " . $filters['campaign'];
+            if (!empty($filters['campaigns'])) {
+                $sqlFilter .= " AND invest.campaign = '{$filters['campaigns']}'";
             }
 
             $sql = "SELECT
@@ -337,8 +337,7 @@ namespace Goteo\Model {
                 WHERE   project = :project
                 AND     status <> 2
                 ", array(':project' => $project));
-            $got = $query->fetchObject();
-            if (!empty($got->much))
+            if ($got = $query->fetchObject())
                 return $got->much;
             else
                 return 0;
@@ -354,7 +353,8 @@ namespace Goteo\Model {
                 SELECT  DISTINCT(user) as id
                 FROM    invest
                 WHERE   project = ?
-                AND status <> 2";
+                AND status <> 2
+                AND (anonymous = 0 OR anonymous IS NULL)";
 
             $query = self::query($sql, array($project));
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $investor) {
