@@ -61,6 +61,7 @@ include 'view/prologue.html.php';
                         <li><a href="/admin/rewards">Retornos colectivos</a></li>
                         <li><a href="/admin/news">Noticias</a></li>
                         <li><a href="/admin/sponsors">Patrocinadores</a></li>
+                        <li><a href="/admin/campaigns">Campañas</a></li>
 <!--                    <li><a href="/admin/moderate">Moderar mensajes</a></li>  -->
                     </ul>
                 </div>

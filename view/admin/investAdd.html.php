@@ -17,7 +17,7 @@ include 'view/prologue.html.php';
                 <div class="admin-menu">
                     <ul>
                         <li class="home"><a href="/admin">Mainboard</a></li>
-                        <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
+                        <li class="checking"><a href="/admin/overview">Listado de proyectos</a></li>
                         <li class="accounting"><a href="/admin/accounting">Volver a la lista</a></li>
                     </ul>
                 </div>

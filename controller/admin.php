@@ -1492,7 +1492,7 @@ namespace Goteo\Controller {
                 // usuarios
                 $users = Model\User::getAllMini();
                 // campañas
-                $campaigns = array('1' => 'Campaña GIJ');
+                $campaigns = Model\Campaign::getAll();
 
                 // aporte manual
                 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add']) ) {
@@ -1545,7 +1545,11 @@ namespace Goteo\Controller {
                 $fields = array('methods', 'status', 'investStatus', 'projects', 'users', 'campaigns');
                 foreach ($fields as $field) {
                     if (isset($_GET[$field])) {
-                        $filters[$field] = $_GET[$field];
+                        if (\is_numeric($_GET[$field])) {
+                            $filters[$field] = (int) $_GET[$field];
+                        } else {
+                            $filters[$field] = (string) $_GET[$field];
+                        }
                     }
                 }
 
@@ -1560,13 +1564,11 @@ namespace Goteo\Controller {
                 // usuarios cofinanciadores
                 $users = Model\Invest::users();
                 // campañas que tienen aportes
-                $campaigns = array('1' => 'Campaña GIJ');
-                // Model\Invest::campaigns();
+                $campaigns = Model\Invest::campaigns();
 
            }
 
             /// si piden unos detalles,
-            /*
             if ($action == 'details') {
                 $invest = Model\Invest::get($id);
                 $project = Model\Project::get($invest->project);
@@ -1580,8 +1582,6 @@ namespace Goteo\Controller {
                     )
                 );
             }
-             *
-             */
 
 
 
@@ -2383,6 +2383,155 @@ namespace Goteo\Controller {
                 )
             );
         }
+
+        /*
+         *  Gestión de campañas
+         */
+        public function campaigns($action = 'list', $id = null) {
+
+            $model = 'Goteo\Model\Campaign';
+            $url = '/admin/campaigns';
+
+            $errors = array();
+
+            switch ($action) {
+                case 'add':
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Añadiendo una nueva campaña",
+                            'menu' => array(
+                                array(
+                                    'url'   => $url,
+                                    'label' => 'Campañas'
+                                )
+                            ),
+                            'data' => (object) array(),
+                            'form' => array(
+                                'action' => "$url/edit/",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'Añadir'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Campaña',
+                                        'name' => 'name',
+                                        'type' => 'text'
+                                    ),
+                                    'description' => array(
+                                        'label' => 'Descripción',
+                                        'name' => 'description',
+                                        'type' => 'textarea',
+                                        'properties' => 'cols="100" rows="2"'
+                                    )
+                                )
+
+                            )
+                        )
+                    );
+
+                    break;
+                case 'edit':
+
+                    // gestionar post
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
+
+                        $errors = array();
+
+                        // instancia
+                        $item = new $model(array(
+                            'id' => $_POST['id'],
+                            'name' => $_POST['name'],
+                            'description' => $_POST['description']
+                        ));
+
+                        if ($item->save($errors)) {
+                            throw new Redirection($url);
+                        }
+                    } else {
+                        $item = $model::get($id);
+                    }
+
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Editando una campaña",
+                            'menu' => array(
+                                array(
+                                    'url'   => $url,
+                                    'label' => 'Campañas'
+                                )
+                            ),
+                            'data' => $item,
+                            'form' => array(
+                                'action' => "$url/edit/$id",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'guardar'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Campaña',
+                                        'name' => 'name',
+                                        'type' => 'text'
+                                    ),
+                                    'description' => array(
+                                        'label' => 'Descripción',
+                                        'name' => 'description',
+                                        'type' => 'textarea',
+                                        'properties' => 'cols="100" rows="2"'
+                                    )
+                                )
+
+                            ),
+                            'errors' => $errors
+                        )
+                    );
+
+                    break;
+                case 'remove':
+                    if ($model::delete($id)) {
+                        throw new Redirection($url);
+                    }
+                    break;
+            }
+
+            return new View(
+                'view/admin/list.html.php',
+                array(
+                    'title' => 'Gestión de caqmpañas',
+                    'menu' => array(
+                        array(
+                            'url' => "$url/add",
+                            'label' => 'Nueva campaña'
+                        )
+                    ),
+                    'data' => $model::getList(),
+                    'columns' => array(
+                        'name' => 'Campaña',
+                        'used' => 'Aportes',
+                        'edit' => '',
+                        'remove' => ''
+                    ),
+                    'url' => "$url",
+                    'errors' => $errors
+                )
+            );
+        }
+
 
 	}
 

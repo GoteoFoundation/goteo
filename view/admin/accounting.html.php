@@ -26,7 +26,7 @@ include 'view/prologue.html.php';
                 <div class="admin-menu">
                     <ul>
                         <li class="home"><a href="/admin">Mainboard</a></li>
-                        <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
+                        <li class="checking"><a href="/admin/overview">Listado de proyectos</a></li>
                         <li class="accounting"><a href="/admin/accounting/invest">Generar aportes manualmente</a></li>
                         <li><a href="/cron" target="_blank">Ejecutar proceso cron</a></li>
                     </ul>
@@ -69,22 +69,27 @@ include 'view/prologue.html.php';
             <div class="widget board">
                 <h3 class="title">Filtros</h3>
                 <form id="filter-form" action="/admin/accounting" method="get">
+                    <input type="hidden" name="filtered" value="yes" />
                     <?php foreach ($the_filters as $filter=>$data) : ?>
                     <div style="float:left;margin:5px;">
                         <label for="<?php echo $filter ?>-filter"><?php echo $data['label'] ?></label><br />
                         <select id="<?php echo $filter ?>-filter" name="<?php echo $filter ?>" onchange="document.getElementById('filter-form').submit();">
-                            <option value=""><?php echo $data['first'] ?></option>
+                            <option value="<?php if ($filter == 'investStatus') echo 'all' ?>"<?php if ($filter == 'investStatus' && $filters[$filter] == 'all') echo ' selected="selected"'?>><?php echo $data['first'] ?></option>
                         <?php foreach ($this[$filter] as $itemId=>$itemName) : ?>
-                            <option value="<?php echo $itemId; ?>"<?php if ($filters[$filter] == $itemId) echo ' selected="selected"';?>><?php echo $itemName; ?></option>
+                            <option value="<?php echo $itemId; ?>"<?php if ($filters[$filter] === $itemId) echo ' selected="selected"';?>><?php echo $itemName; ?></option>
                         <?php endforeach; ?>
                         </select>
                     </div>
                     <?php endforeach; ?>
                 </form>
+                <br clear="both" />
+                <a href="/admin/accounting">Quitar filtros</a>
             </div>
 
             <div class="widget board">
-            <?php if (!empty($this['list'])) : ?>
+            <?php if (!isset($_GET['filtered'])) : ?>
+                <p>Actualmente hay <?php echo count($this['list']) ?> aportes en el sistema, mejor poner algún filtro.</p>
+            <?php elseif (!empty($this['list'])) : ?>
                 <table width="100%">
                     <thead>
                         <tr>

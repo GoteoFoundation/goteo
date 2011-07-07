@@ -3,3 +3,6 @@ CREATE TABLE `goteo`.`campaign` (
 `name` TINYTEXT NOT NULL ,
 PRIMARY KEY ( `id` )
 ) ENGINE = InnoDB;
+
+-- alters
+ALTER TABLE `campaign` ADD `description` TEXT NULL ;

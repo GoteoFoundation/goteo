@@ -328,6 +328,30 @@ namespace Goteo\Model {
         }
 
         /*
+         * Lista de campañas con aportes asociados
+         */
+        public static function campaigns () {
+
+            $list = array();
+
+            $query = static::query("
+                SELECT
+                    campaign.id as id,
+                    campaign.name as name
+                FROM    campaign
+                INNER JOIN invest
+                    ON campaign.id = invest.campaign
+                ORDER BY campaign.name ASC
+                ");
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $list[$item->id] = $item->name;
+            }
+
+            return $list;
+        }
+
+        /*
          * Obtenido por un proyecto
          */
         public static function invested ($project) {
