@@ -337,7 +337,8 @@ namespace Goteo\Controller {
 
         private function view ($id, $show, $post = null) {
             $project = Model\Project::get($id);
-
+            // los retornos ordenados por cantidad
+            $project->individual_rewards = Model\Project\Reward::getAll($id, 'individual', null, null, 'amount');
             // solamente se puede ver publicamente si
             // - es el dueño
             // - es un admin con permiso
@@ -695,9 +696,9 @@ namespace Goteo\Controller {
                     'type'      => 'individual',
                     'project'   => $project->id,
                     'reward'    => 'Nueva recompensa individual',
-                    'icon'      => 'product',
-                    'amount'    => 10,
-                    'units'     => 0
+                    'icon'      => '',
+                    'amount'    => '',
+                    'units'     => ''
                 ));
             }
 
