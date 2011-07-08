@@ -8,49 +8,10 @@ $project = $this['project'];
 $errors = $project->errors[$this['step']] ?: array();
 $okeys  = $project->okeys[$this['step']] ?: array();
 
-$social_rewards_types = array();
-$social_rewards_licenses = array();
 $social_rewards = array();
 
 $individual_rewards = array();
 $individual_rewards_types = array();
-
-foreach ($this['stypes'] as $id => $type) {
-
-    $licenses = array();
-    
-    $licenses[] = array(
-        'label' => 'Ninguna',
-        'value' => '',
-        'class' => ''
-    );
-    
-    foreach ($type->licenses as $lid => $license) {        
-        
-        $licenses[] = array(
-            'label' => $license->name,
-            'value' => $license->id,            
-            'class' => 'license_' . $license->id
-        );
-
-    }            
-
-    $social_rewards_types[] = array(
-        'value' => $id,
-        'class' => "reward_{$id} social_{$id}",
-        'label' => $type->name,
-        'children' => array(
-            array(
-                'type'      => 'radios',
-                'name'      => 'license[]',
-                'class'     => 'license',
-                'title'     => Text::get('rewards-field-social_reward-license'),
-                'options'   => $licenses
-            )
-        )
-    );
-        
-}
 
 foreach ($this['itypes'] as $id => $type) {
     $individual_rewards_types[] = array(
@@ -60,21 +21,45 @@ foreach ($this['itypes'] as $id => $type) {
     );
 }
 
-foreach ($this['licenses'] as $id => $license) {
-    $social_rewards_licenses[] = array(
-        'value' => $id,
-        'class' => "license_{$id}",
-        'label' => $license
-    );
-}
-
-//print_r($this);die;
-
 foreach ($project->social_rewards as $social_reward) {
-
+       
     // a ver si es el que estamos editando o no
     if ($social_reward->id === $this['editsocial_reward']) {
-        
+                
+        $types = array();
+                        
+        foreach ($this['stypes'] as $type) {
+            
+            $licenses = array();
+            
+            foreach ($type->licenses as $lid => $license) {        
+                        
+                $licenses["social_reward-{$social_reward->id}-license-{$license->id}"] = array(
+                    'label' => $license->name,
+                    'value' => $license->id,            
+                    'class' => 'license_' . $license->id,
+                    'id'    => "social_reward-{$social_reward->id}-license-{$license->id}"
+                );
+
+            }            
+            
+            $types["social_reward-{$social_reward->id}-icon-{$type->id}"] =  array(
+                'value' => $type->id,
+                'class' => "reward_{$type->id} social_{$type->id}",
+                'label' => $type->name,
+                'children' => array(
+                    "social_reward-{$social_reward->id}-license" => array(
+                        'type'      => 'radios',
+                        'class'     => 'license',
+                        'title'     => Text::get('rewards-field-social_reward-license'),
+                        'options'   => $licenses,
+                        'value'     => $social_reward->license,
+                        'name'      => "social_reward-{$social_reward->id}-license"
+                    )
+                )
+            );
+                
+        }                       
         
         // a este grupo le ponemos estilo de edicion
         $social_rewards["social_reward-{$social_reward->id}"] = array(
@@ -92,6 +77,17 @@ foreach ($project->social_rewards as $social_reward) {
                         'ok'        => !empty($okeys["social_reward-{$social_reward->id}-reward"]) ? array($okeys["social_reward-{$social_reward->id}-reward"]) : array(),
                         'hint'      => Text::get('tooltip-project-social_reward-reward')
                     ),
+                    "social_reward-{$social_reward->id}-icon" => array(
+                        'title'     => Text::get('rewards-field-social_reward-type'),
+                        'class'     => 'inline social_reward-type reward-type',
+                        'type'      => 'radios',
+                        'required'  => true,
+                        'options'   => $types,
+                        'value'     => $social_reward->icon,
+                        'errors'    => !empty($errors["social_reward-{$social_reward->id}-icon"]) ? array($errors["social_reward-{$social_reward->id}-icon"]) : array(),
+                        'ok'        => !empty($okeys["social_reward-{$social_reward->id}-icon"]) ? array($okeys["social_reward-{$social_reward->id}-icon"]) : array(),
+                        'hint'      => Text::get('tooltip-project-social_reward-type')
+                    ),                    
                     "social_reward-{$social_reward->id}-description" => array(
                         'type'      => 'textarea',
                         'required'  => true,
@@ -104,28 +100,6 @@ foreach ($project->social_rewards as $social_reward) {
                         'ok'        => !empty($okeys["social_reward-{$social_reward->id}-description"]) ? array($okeys["social_reward-{$social_reward->id}-description"]) : array(),
                         'hint'      => Text::get('tooltip-project-social_reward-description')
                     ),
-                    "social_reward-{$social_reward->id}-icon" => array(
-                        'title'     => Text::get('rewards-field-social_reward-type'),
-                        'class'     => 'inline social_reward-type reward-type',
-                        'type'      => 'radios',
-                        'required'  => true,
-                        'options'   => $social_rewards_types,
-                        'value'     => $social_reward->icon,
-                        'errors'    => !empty($errors["social_reward-{$social_reward->id}-icon"]) ? array($errors["social_reward-{$social_reward->id}-icon"]) : array(),
-                        'ok'        => !empty($okeys["social_reward-{$social_reward->id}-icon"]) ? array($okeys["social_reward-{$social_reward->id}-icon"]) : array(),
-                        'hint'      => Text::get('tooltip-project-social_reward-type')
-                    ),                    
-                                /*
-                    "social_reward-{$social_reward->id}-license" => array(
-                        'type'      => 'radios',
-                        'title'     => Text::get('rewards-field-social_reward-license'),
-                        'options'   => $social_rewards_licenses,
-                        'value'     => $social_reward->license,
-                        'class'     => 'inline reward-license',
-                        'errors'    => !empty($errors["social_reward-{$social_reward->id}-license"]) ? array($errors["social_reward-{$social_reward->id}-license"]) : array(),
-                        'ok'        => !empty($okeys["social_reward-{$social_reward->id}-license"]) ? array($okeys["social_reward-{$social_reward->id}-license"]) : array(),
-                        'hint'      => Text::get('tooltip-project-social_reward-license')
-                    ),*/
                     "social_reward-{$social_reward->id}-buttons" => array(
                         'type' => 'group',
                         'class' => 'buttons',
@@ -149,7 +123,7 @@ foreach ($project->social_rewards as $social_reward) {
         $social_rewards["social_reward-{$social_reward->id}"] = array(
             'class'     => 'reward social_reward',
             'view'      => 'view/project/edit/rewards/reward.html.php',
-            'data'      => array('reward' => $social_reward, 'license' => $this['licenses'][$social_reward->license]),
+            'data'      => array('reward' => $social_reward),
         );
         
     }
