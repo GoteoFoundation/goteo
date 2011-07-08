@@ -106,19 +106,16 @@ body.project-show div.project-menu ul li a {
     text-decoration: none;
     height: 28px;
     background-image: url('/view/css/project/view/menu/regular_menu.png');
-    background-position: left;
+    background-position: left top !important;
     background-repeat: repeat-x;
 }
 
 body.project-show div.project-menu ul li.active a {
     background-image: url('/view/css/project/view/menu/hover_menu.png');
-    background-position: left;
-    background-repeat: repeat-x;
 }
 
 body.project-show div.project-menu ul li.show a {
     background-image: url('/view/css/project/view/menu/active_menu.png') !important;
-    background-position: left !important;
     background-repeat: no-repeat !important;
 }
 
