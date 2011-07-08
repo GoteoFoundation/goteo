@@ -142,6 +142,9 @@ namespace Goteo\Model {
                     if (is_array($this->avatar) && !empty($this->avatar['name'])) {
                         $image = new Image($this->avatar);
                         $image->save();
+                        // una vez con el contenido de la imagen guardado en la tabla
+                        // recortar el avatar cuadrado
+                        $image->avatarCrop();
                         $data[':avatar'] = $image->id;
 
                         /**

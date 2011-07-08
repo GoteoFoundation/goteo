@@ -268,6 +268,46 @@ namespace Goteo\Model {
 		}
 
 		/**
+		 * Recorta cuadrada una imagen
+         * para los avatars
+		 */
+        public function avatarCrop () {
+            require_once PEAR . 'Image/Transform.php';
+            $it =& \Image_Transform::factory('GD');
+            if (\PEAR::isError($it)) {
+                die($it->getMessage() . '<br />' . $it->getDebugInfo());
+            }
+            $this->load();
+            $src = $this->tmp;
+            $it->load($src);
+            // obtener el ancho y el alto, el lado mayor es el que recortamos
+            if ($it->img_x != $it->img_y) {
+                if ($it->img_x > $it->img_y) {
+                    $at = ( $it->img_x - $it->img_y ) / 2;
+                    $it->crop($it->img_y, $it->img_y, $at, 0);
+                } else {
+                    $at = ( $it->img_y - $it->img_x ) / 2;
+                    $it->crop($it->img_x, $it->img_x, 0, $at);
+                }
+
+                //get new content and new content size
+                $image = $it->getHandle();
+                $functionName = 'image'.$it->type;
+                $functionName($image, $this->tmp);
+                $new_content = \file_get_contents($this->tmp);
+                $new_size = \strlen($new_content);
+
+                // grabamops el contenido de nuevo
+                $sql = "UPDATE image SET content = :content, size = :size WHERE id = :id";
+                self::query($sql, array(':content' => $new_content, ':size' => $new_size, ':id' => $this->id));
+
+                return true;
+            } else {
+                return true;
+            }
+		}
+
+		/**
 		 * Muestra la imagen en pantalla.
 		 * @param type int	$width
 		 * @param type int	$height
