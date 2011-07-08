@@ -200,7 +200,12 @@ namespace Goteo\Controller {
             // segun el paso añadimos los datos auxiliares para pintar
             switch ($step) {
                 case 'userProfile':
-                    $viewData['user'] = Model\User::get($project->owner);
+                    $owner = Model\User::get($project->owner);
+                    // si es el avatar por defecto no lo mostramos aqui
+                    if ($owner->avatar->id == 1) {
+                        unset($owner->avatar);
+                    }
+                    $viewData['user'] = $owner;
                     $viewData['interests'] = Model\User\Interest::getAll();
                     break;
                 
@@ -656,7 +661,7 @@ namespace Goteo\Controller {
                     $reward->reward = $_POST['social_reward-' . $reward->id . '-reward'];
                     $reward->description = $_POST['social_reward-' . $reward->id . '-description'];
                     $reward->icon = $_POST['social_reward-' . $reward->id . '-icon'];
-                    $reward->license = $_POST['social_reward-' . $reward->id . '-license'];
+                    $reward->license = $_POST['social_reward-' . $reward->id . '-' . $reward->icon . '-license'];
                 }
                 
             }

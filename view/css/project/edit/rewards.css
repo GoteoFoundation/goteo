@@ -60,6 +60,13 @@ body.project-edit div#main.rewards div.superform li.element.reward div.descripti
     margin: .5em 0;
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.license {
+    padding-left: 110px !important;
+    background: none no-repeat 10px center;
+    min-height: 32px;
+    line-height: 32px;
+}
+
 body.project-edit div#main.rewards div.superform li.element.reward input.edit,
 body.project-edit div#main.rewards div.superform li.element.reward input.remove {
     float: right;
@@ -174,94 +181,127 @@ body.project-edit div#main.rewards div.superform li.element.editsocial_reward .s
     line-height: 32px;
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.license_agpl ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_agpl > label {
     background-image: url('/view/css/license/agpl.png');
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.license_apache ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_apache > label {
     background-image: url('/view/css/license/apache.png');
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.license_balloon ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_balloon > label {
     background-image: url('/view/css/license/balloon.png');
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.license_bsd ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_bsd > label {
     background-image: url('/view/css/license/bsd.png');
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.license_cc0 ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_cc0 > label {
     background-image: url('/view/css/license/cc0.png');
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.license_ccby ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_ccby > label {
     background-image: url('/view/css/license/ccby.png');
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.license_ccbync ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_ccbync > label {
     background-image: url('/view/css/license/ccbync.png');
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.license_ccbyncnd ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_ccbyncnd > label {
     background-image: url('/view/css/license/ccbyncnd.png');
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.license_ccbyncsa ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_ccbyncsa > label {
     background-image: url('/view/css/license/ccbyncsa.png');
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.license_ccbynd ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_ccbynd > label {
     background-image: url('/view/css/license/ccbynd.png');
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.license_ccbysa ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_ccbysa > label {
     background-image: url('/view/css/license/ccbysa.png');
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.license_fal ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_fal > label {
     background-image: url('/view/css/license/fal.png');
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.license_fdl ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_fdl > label {
     background-image: url('/view/css/license/fdl.png');
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.license_freebsd ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_freebsd > label {
     background-image: url('/view/css/license/freebsd.png');
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.license_gpl ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_gpl > label {
     background-image: url('/view/css/license/gpl.png');
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.license_lgpl ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_lgpl > label {
     background-image: url('/view/css/license/lgpl.png');
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.license_mit ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_mit > label {
     background-image: url('/view/css/license/mit.png');
 }
+
+body.project-edit div#main.rewards div.superform li.element.reward div.license_mpl ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_mpl > label {
     background-image: url('/view/css/license/mpl.png');
 }
+
+body.project-edit div#main.rewards div.superform li.element.reward div.license_odbl ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_odbl > label {
     background-image: url('/view/css/license/odbl.png');
 }
+
+body.project-edit div#main.rewards div.superform li.element.reward div.license_odcby ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_odcby > label {
     background-image: url('/view/css/license/odcby.png');
 }
+
+body.project-edit div#main.rewards div.superform li.element.reward div.license_oshw ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_oshw > label {
     background-image: url('/view/css/license/oshw.png');
 }
+
+body.project-edit div#main.rewards div.superform li.element.reward div.license_pd ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_pd > label {
     background-image: url('/view/css/license/pd.png');
 }
+
+body.project-edit div#main.rewards div.superform li.element.reward div.license_php ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_php > label {
     background-image: url('/view/css/license/php.png');
 }
+
+body.project-edit div#main.rewards div.superform li.element.reward div.license_tapr ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_tapr > label {
     background-image: url('/view/css/license/tapr.png');
 }
+
+body.project-edit div#main.rewards div.superform li.element.reward div.license_xoln ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward .social_reward-type .license li.license_xoln > label {
     background-image: url('/view/css/license/xoln.png');
 }/* Fin licencias */

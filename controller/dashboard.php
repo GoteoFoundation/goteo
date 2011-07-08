@@ -95,6 +95,10 @@ namespace Goteo\Controller {
 
             // tratamos el post segun la opcion y la acion
             $user = $_SESSION['user'];
+            // si es el avatar por defecto no lo mostramos aqui
+            if ($user->avatar->id == 1) {
+                unset($user->avatar);
+            }
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
