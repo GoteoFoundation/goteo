@@ -96,7 +96,9 @@ include 'view/header.html.php' ?>
                     
                 <?php endforeach ?>
 
-            </div>        
+            </div>
+
+        </div>
 
         <?php include 'view/footer.html.php' ?>
     

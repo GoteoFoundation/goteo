@@ -41,7 +41,7 @@ namespace Goteo\Model {
         }
 
         /*
-         * Lista de proyectos destacados
+         * Lista de patrocinadores
          */
         public static function getAll () {
 
@@ -65,6 +65,30 @@ namespace Goteo\Model {
                     $sponsor->image = $image->id;
                 }
 
+                $list[] = $sponsor;
+            }
+
+            return $list;
+        }
+
+        /*
+         * Lista de patrocinadores
+         */
+        public static function getList () {
+
+            $list = array();
+
+            $sql = static::query("
+                SELECT
+                    id,
+                    name,
+                    url,
+                    image
+                FROM    sponsor
+                ORDER BY `order` ASC, name ASC
+                ");
+
+            foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $sponsor) {
                 $list[] = $sponsor;
             }
 

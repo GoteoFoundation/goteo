@@ -14,10 +14,6 @@ div#footer {
     z-index: 0;
 }
 
-div#footer hr {
-    display: none;
-}
-
 div#footer * {
     color: #1f1d1e;
     font-size: 12px;
@@ -40,33 +36,24 @@ div#footer > div {
     min-width: 135px;
 }
 
-div#footer div.platoniq {
-    padding-top: 0;
-    border-width: 0;
+div#footer div.categories,
+div#footer div.projects,
+div#footer div.resources {
+    position: relative;
+    width: 135px;
     min-width: 0 !important;
 }
 
-div#footer div.platoniq * {
-    text-transform: lowercase;
-    font-size: 11px;
-}
-
-div#footer div.platoniq a {
-    display: block;
-    width: 94px;
-    height: 17px;
-    text-indent: 2000px;
-    line-height: 2000px;
-    overflow: hidden;
-    background: url('platoniq.png') no-repeat;
-    margin-top: .2em;
-}
-
-div#footer div.other-projects ul {
+div#footer div.projects ul {
     margin-top: 5px;
-    list-style: disc inside;
+    list-style: none;
 }
 
+div#footer div.social {
+    position: relative;
+    width: 95px;
+    min-width: 0 !important;
+}
 
 div#footer div.social li a {
     font-size: 13px;    
@@ -92,23 +79,67 @@ div#footer div.social li.rss a {
     background-image: url('rss.png');
 }
 
-div#footer div.goteo {
+div#footer div.sponsors {
     position: relative;
-    float: right;
-    width: 28px;
+    width: 165px;
     min-width: 0 !important;
 }
 
-div#footer div.goteo a {
-    width: 18px;
-    height: 25px;
-    overflow: hidden;
-    line-height: 2000px;
-    text-indent: 2000px;
-    background: url('drop.png') no-repeat left;
-    display: block;
-    position: absolute;
-    bottom: 5px;
-    right: 20px;
+div#footer div.services {
+    position: relative;
+    width: 85px;
+    min-width: 0 !important;
 }
 
+/* sub-footer */
+div#sub-footer {
+    max-width: 940px;
+    margin: 0 auto;
+    height: 2.2em;
+    font-size: 12px;
+    overflow: hidden;
+    padding: 0 1em;
+    background-color: #58595B;
+}
+
+div#sub-footer + * {
+    font-size: 12px;
+    border-top: 2.2em solid #59595c;
+    margin-top: -2.2em;
+}
+
+div#sub-footer ul {
+    margin-top: 5px;
+    list-style: none;
+}
+
+div#sub-footer a {
+    color: #e9e3dc;
+    font-size: 12px;
+}
+
+div#sub-footer a:hover {
+    color: #8ed9d8 !important;
+}
+
+div#sub-footer div.platoniq {
+    padding-top: 0;
+    border-width: 0;
+    min-width: 0 !important;
+}
+
+div#sub-footer div.platoniq * {
+    text-transform: lowercase;
+    font-size: 11px;
+}
+
+div#sub-footer div.platoniq a {
+    display: block;
+    width: 94px;
+    height: 17px;
+    text-indent: 2000px;
+    line-height: 2000px;
+    overflow: hidden;
+    background: url('platoniq.png') no-repeat;
+    margin-top: .2em;
+}
