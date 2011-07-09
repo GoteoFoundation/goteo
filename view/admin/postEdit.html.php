@@ -10,7 +10,7 @@ include 'view/prologue.html.php';
 
         <div id="sub-header">
             <div>
-                <h2>Entradas para la portada</h2>
+                <h2>Entradas para la portada o pie</h2>
             </div>
 
             <div class="sub-menu">
@@ -31,7 +31,7 @@ include 'view/prologue.html.php';
                     <h3>Añadiendo nueva entrada para <?php if($this['type'] == 'home') echo 'la portada'; else echo 'el pie'; ?></h3>
                     <?php break;
                 case 'edit': ?>
-                    <h3>Editando la entrada '<?php echo $this['post']->title; ?>'</h3>
+                    <h3>Editando la entrada '<?php echo $this['post']->title; ?>'  para <?php if($this['post']->type == 'home') echo 'la portada'; else echo 'el pie'; ?></h3>
                     <?php break;
             } ?>
 
@@ -55,21 +55,19 @@ include 'view/prologue.html.php';
                     <input type="hidden" name="allow" value="0" />
 
                     <input type="hidden" name="id" value="<?php echo $this['post']->id; ?>" />
-    <br />
-                    <label for="posts-title">Título:</label><br />
-                    <input type="text" name="title" id="posts-title" value="<?php echo $this['post']->title; ?>" />
-    <br />
-                    <label for="posts-text">Descripción:</label><br />
-                    <textarea name="text" id="posts-text" cols="60" rows="10"><?php echo $this['post']->text; ?></textarea>
 
-    <br />
-                    <label>Aparece en:</label><br />
-                    <input type="checkbox" name="home" value="1" <?php if ($this['type'] == 'home') echo 'selected="selected"'; ?> /> Portada<br />
-                    <input type="checkboz" name="footer" value="1" <?php if ($this['type'] == 'footer') echo 'selected="selected"'; ?> /> Pie<br />
-    <br />
-                    <label for="posts-media">Video:</label><br />
-                    Solo entradas nuevas, para gestionar media ir a la gestión de blog.
+                    <p>
+                        <label for="posts-title">Título:</label><br />
+                        <input type="text" name="title" id="posts-title" value="<?php echo $this['post']->title; ?>" />
+                    </p>
 
+                    <p>
+                        <label>Aparece en:</label><br />
+                        <input type="checkbox" name="home" value="1" <?php if ($this['type'] == 'home') echo 'selected="selected"'; ?> /> Portada<br />
+                        <input type="checkbox" name="footer" value="1" <?php if ($this['type'] == 'footer') echo 'selected="selected"'; ?> /> Pie<br />
+                    </p>
+                    
+                    <p>Solo entradas rápidas para portada/pie, para gestionar media/imagenes ir a la gestión de blog.</p>
 
 
                     <input type="submit" name="save" value="Guardar" />

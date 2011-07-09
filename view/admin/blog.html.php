@@ -42,6 +42,7 @@ include 'view/prologue.html.php';
                             <th>Título</th> <!-- title -->
                             <th>Fecha</th> <!-- date -->
                             <th>En portada</th> <!-- date -->
+                            <th>Al pie</th> <!-- date -->
                             <td><!-- Edit --></td>
                             <td></td><!-- preview -->
                             <td><!-- Remove --></td>
@@ -54,6 +55,7 @@ include 'view/prologue.html.php';
                             <td><?php echo $post->title; ?></td>
                             <td><?php echo $post->date; ?></td>
                             <td><?php echo $post->home ? 'Sí' : ''; ?></td>
+                            <td><?php echo $post->footer ? 'Sí' : ''; ?></td>
                             <td><a href="/admin/blog/edit/<?php echo $post->id; ?>">[Editar]</a></td>
                             <td><a href="/blog/<?php echo $post->id; ?>">[Ver publicado]</a></td>
                             <td><a href="/admin/blog/remove/<?php echo $post->id; ?>">[Quitar]</a></td>

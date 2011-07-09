@@ -1110,12 +1110,14 @@ namespace Goteo\Controller {
                     break;
             }
 
-            $posts = Model\Post::getAll();
+            $home_posts = Model\Post::getAll('home');
+            $footer_posts = Model\Post::getAll('footer');
 
             return new View(
                 'view/admin/post.html.php',
                 array(
-                    'posts' => $posts,
+                    'home_posts' => $home_posts,
+                    'footer_posts' => $footer_posts,
                     'errors' => $errors,
                     'success' => $success
                 )
@@ -1801,7 +1803,7 @@ namespace Goteo\Controller {
                 $action = 'list';
             } else {
                 if (!$blog->active) {
-                    $errors[] = 'Lo sentimos, las actualizaciones para este proyecto estan desactivadas';
+                    $errors[] = 'Lo sentimos, el blog para este nodo esta desactivado';
                     $action = 'list';
                 }
             }
@@ -1828,6 +1830,7 @@ namespace Goteo\Controller {
                         'media',
                         'date',
                         'home',
+                        'footer',
                         'allow'
                     );
 

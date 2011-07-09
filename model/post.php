@@ -42,7 +42,11 @@ namespace Goteo\Model {
         /*
          * Lista de entradas
          */
-        public static function getAll ($blog = 1) {
+        public static function getAll ($position = 'home', $blog = 1) {
+
+            if (!in_array($position, array('home', 'footer'))) {
+                $position = 'home';
+            }
 
             $list = array();
 
@@ -59,8 +63,7 @@ namespace Goteo\Model {
                     `footer`
                 FROM    post
                 WHERE   blog = $blog
-                AND (   home = 1
-                OR      footer = 1)
+                AND     $position = 1
                 ORDER BY `order` ASC, title ASC
                 ";
             
@@ -77,6 +80,37 @@ namespace Goteo\Model {
                 $post->type = $post->home == 1 ? 'home' : 'footer';
 
                 $list[$post->id] = $post;
+            }
+
+            return $list;
+        }
+
+        /*
+         * Entradas en portada o pie
+         */
+        public static function getList ($position = 'home', $blog = 1) {
+
+            if (!in_array($position, array('home', 'footer'))) {
+                $position = 'home';
+            }
+
+            $list = array();
+
+            $sql = "
+                SELECT
+                    id,
+                    title,
+                    `order`
+                FROM    post
+                WHERE   blog = $blog
+                AND     $position = 1
+                ORDER BY `order` ASC, title ASC
+                ";
+
+            $query = static::query($sql);
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
+                $list[$post->id] = $post->title;
             }
 
             return $list;
