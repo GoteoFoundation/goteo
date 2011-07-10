@@ -116,9 +116,10 @@ namespace Goteo\Controller {
                             'user_about'=>'about',
                             'user_keywords'=>'keywords',
                             'user_contribution'=>'contribution',
+                            'user_facebook'=>'facebook',
+                            'user_google'=>'google',
                             'user_twitter'=>'twitter',
                             'user_identica'=>'identica',
-                            'user_facebook'=>'facebook',
                             'user_linkedin'=>'linkedin'
                         );
 

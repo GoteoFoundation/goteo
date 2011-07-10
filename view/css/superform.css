@@ -211,6 +211,7 @@ div.superform li.element.textarea > div.contents > textarea {
 /* Custom textboxes */
 
 div.superform div.elements li.element.textbox.facebook > div.contents,
+div.superform div.elements li.element.textbox.google > div.contents,
 div.superform div.elements li.element.textbox.twitter > div.contents,
 div.superform div.elements li.element.textbox.identica > div.contents,
 div.superform div.elements li.element.textbox.linkedin > div.contents {
@@ -221,6 +222,10 @@ div.superform div.elements li.element.textbox.linkedin > div.contents {
 
 div.superform div.elements li.element.textbox.facebook > div.contents {
     background-image: url('superform/facebook.png');
+}
+
+div.superform div.elements li.element.textbox.google > div.contents {
+    background-image: url('superform/google.png');
 }
 
 div.superform div.elements li.element.textbox.twitter > div.contents {

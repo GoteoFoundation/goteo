@@ -27,8 +27,8 @@ div.widget.user-social li.facebook {
     background-image: url('/view/css/social/facebook.png');
 }
 
-div.widget.user-social li.linkedin {
-    background-image: url('/view/css/social/linkedin.png');    
+div.widget.user-social li.google {
+    background-image: url('/view/css/social/google.png');
 }
 
 div.widget.user-social li.twitter {
@@ -37,4 +37,8 @@ div.widget.user-social li.twitter {
 
 div.widget.user-social li.identica {
     background-image: url('/view/css/social/identica.png');
+}
+
+div.widget.user-social li.linkedin {
+    background-image: url('/view/css/social/linkedin.png');
 }
