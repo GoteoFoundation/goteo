@@ -64,6 +64,7 @@ include 'view/prologue.html.php';
                     <thead>
                         <tr>
                             <th>Nombre</th> <!-- name -->
+                            <th>Tooltip</th> <!-- description -->
                             <th>Agrupación</th> <!-- group -->
                             <th>Posición</th> <!-- order -->
                             <th><!-- Move up --></th>
@@ -77,6 +78,7 @@ include 'view/prologue.html.php';
                         <?php foreach ($this['licenses'] as $license) : ?>
                         <tr>
                             <td><?php echo $license->name; ?></td>
+                            <td><?php echo $license->description; ?></td>
                             <td><?php echo !empty($license->group) ? $this['groups'][$license->group] : ''; ?></td>
                             <td><?php echo $license->order; ?></td>
                             <td><a href="/admin/licenses/up/<?php echo $license->id; ?>/?filter=<?php echo $filters['group']; ?>">[&uarr;]</a></td>

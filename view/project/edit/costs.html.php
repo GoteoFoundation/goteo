@@ -14,6 +14,7 @@ foreach ($this['types'] as $id => $type) {
     $costTypes[] = array(
         'value'     => $id,
         'label'     => $type,
+        'hint'      => Text::get('tooltip-project-cost-type-'.$type),
         'class'     => $id
     );
 }

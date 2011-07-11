@@ -13,6 +13,7 @@ foreach ($this['types'] as $id => $type) {
     $support_types[] = array(
         'value' => $id,
         'class' => "support_{$id}",
+        'hint'  => Text::get('tooltip-project-support-type-'.$type),
         'label' => $type
     );
 }

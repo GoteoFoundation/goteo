@@ -29,6 +29,7 @@ foreach ($project->social_rewards as $social_reward) {
                         'label' => $license->name,
                         'value' => $license->id,
                         'class' => 'license_' . $license->id,
+                        'hint'  => $license->description,
                         'id'    => "social_reward-{$social_reward->id}-license-{$license->id}"
                     );
 
@@ -71,6 +72,7 @@ foreach ($project->social_rewards as $social_reward) {
                 'value' => $type->id,
                 'class' => "reward_{$type->id} social_{$type->id}",
                 'label' => $type->name,
+                'hint'  => $type->description,
                 'children' => $children
             );
                 
@@ -161,6 +163,7 @@ foreach ($project->individual_rewards as $individual_reward) {
                     'value' => $type->id,
                     'class' => "reward_{$type->id} individual_{$type->id}",
                     'label' => $type->name,
+                    'hint' => $type->description,
                     'children' => array(
                         "individual_reward-{$individual_reward->id}-other" => array(
                             'type'      => 'textbox',
@@ -175,7 +178,8 @@ foreach ($project->individual_rewards as $individual_reward) {
                 $types["individual_reward-{$individual_reward->id}-icon-{$type->id}"] =  array(
                     'value' => $type->id,
                     'class' => "reward_{$type->id} individual_{$type->id}",
-                    'label' => $type->name
+                    'label' => $type->name,
+                    'hint'  => $type->description
                 );
             }
             

@@ -62,7 +62,7 @@ include 'view/prologue.html.php';
                     <label for="license-name">Nombre:</label><br />
                     <input type="text" name="name" id="license-name" value="<?php echo $this['license']->name; ?>" />
     <br />
-                    <label for="license-description">Descripción:</label><br />
+                    <label for="license-description">Texto tooltip:</label><br />
                     <textarea name="description" id="license-description" cols="60" rows="10"><?php echo $this['license']->description; ?></textarea>
     <br />
                     <label for="license-url">Url:</label><br />
