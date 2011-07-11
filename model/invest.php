@@ -376,7 +376,9 @@ namespace Goteo\Model {
                 FROM    invest
                 WHERE   project = ?
                 AND status <> 2
-                AND (anonymous = 0 OR anonymous IS NULL)";
+                AND (anonymous = 0 OR anonymous IS NULL)
+                ORDER BY invest.id DESC
+                ";
 
             $query = self::query($sql, array($project));
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $investor) {

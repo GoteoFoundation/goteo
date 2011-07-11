@@ -65,18 +65,22 @@ $worthcracy = Worth::getAll();
                         <h3 class="supertitle"><?php echo Text::get('profile-my_investors-header'); ?></h3>
                         <div class="supporters">
                         <ul>
-                            <?php foreach ($this['investors'] as $user => $investor): ?>
+                            <?php $c=1; // limitado a 6 cofinanciadores en el lateral
+                            foreach ($this['investors'] as $user => $investor): ?>
                             <li><?php echo new View('view/user/widget/supporter.html.php', array('user' => $investor, 'worthcracy' => $worthcracy)) ?></li>                        
-                            <?php endforeach ?>
+                            <?php if ($c>5) break; else $c++;
+                            endforeach ?>
                         </ul>
                         </div>                        
+                        <a class="more" href=""><?php echo Text::get('regular-see_more'); ?></a>
                     </div>
 
                     <div class="widget user-mates">
                         <h3 class="supertitle"><?php echo Text::get('profile-sharing_interests-header'); ?></h3>
                         <div class="users">
                             <ul>
-                            <?php foreach ($this['shares'] as $mate): ?>
+                            <?php $c=1; // limitado a 6 sharemates en el lateral
+                            foreach ($this['shares'] as $mate): ?>
                                 <li>
                                     <div class="user">
                                         <div class="avatar"><a href="/user/<?php echo htmlspecialchars($mate->user) ?>"><img src="/image/<?php echo $mate->avatar->id ?>/50/50" /></a></div>
@@ -85,7 +89,8 @@ $worthcracy = Worth::getAll();
                                         <a class="invests" href="/user/<?php echo htmlspecialchars($mate->user) ?>"><?php echo Text::get('regular-investing'); ?> (<?php echo $mate->invests ?>)</a>
                                     </div>
                                 </li>
-                            <?php endforeach ?>                                                        
+                            <?php if ($c>5) break; else $c++;
+                            endforeach ?>
                             </ul>
                         </div>
                         <a class="more" href=""><?php echo Text::get('regular-see_more'); ?></a>

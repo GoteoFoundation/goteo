@@ -36,8 +36,13 @@ div.widget.user-supporters .supporters ul li h6 {
 
 div.widget.user-supporters .supporters ul li a {
     font-size: 11px !important;
-    font-weight: bold;
+    text-transform: none !important;
+/*    font-weight: bold; */
     text-decoration: none;
+}
+
+div.widget.user-supporters .supporters ul li a:hover {
+    color: #20B3B2;
 }
 
 div.widget.user-supporters .supporters ul li dl,
@@ -148,4 +153,14 @@ div.widget.user-supporters .supporters ul li dl dd.worthcracy ul li > strong {
     text-align: center;
     background: url('../../worth/beak.png') no-repeat center top;
     padding-top: 6px;
+}
+
+div.widget.user-supporters a.more  {
+    color: #313B96;
+    font-size: 12px !important;
+    text-transform: uppercase;
+    float: right;
+    clear: both;
+    text-decoration: none;
+
 }

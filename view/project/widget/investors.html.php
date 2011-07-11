@@ -19,9 +19,11 @@ $worthcracy = Worth::getAll();
 
         <div class="investors">
         <ul>
-            <?php foreach ($project->investors as $investor): ?>
+            <?php $c=1; // limitado a 6 cofinanciadores en el lateral
+            foreach ($project->investors as $investor): ?>
             <li><?php echo new View('view/user/widget/supporter.html.php', array('user' => $investor, 'worthcracy' => $worthcracy)) ?></li>
-            <?php endforeach ?>
+            <?php if ($c>5) break; else $c++;
+            endforeach ?>
         </ul>
 
         <a class="more" href="/project/<?php echo $project->id; ?>/supporters"><?php echo Text::get('regular-see_more'); ?></a><br />
