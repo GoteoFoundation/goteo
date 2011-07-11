@@ -11,6 +11,10 @@ div.widget.user-supporters .supporters > ul > li {
     position: relative;
 }
 
+div.widget.user-supporters .supporters ul  li.active {
+    background-color:  #f3f3f3;
+}
+
 div.widget.user-supporters .supporters ul li .avatar {
     position: absolute;
     left: 0;
@@ -37,7 +41,6 @@ div.widget.user-supporters .supporters ul li h6 {
 div.widget.user-supporters .supporters ul li a {
     font-size: 11px !important;
     text-transform: none !important;
-/*    font-weight: bold; */
     text-decoration: none;
 }
 

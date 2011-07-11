@@ -76,6 +76,10 @@ div.widget.project-supporters .supporters > ul > li {
         
 }
 
+div.widget.project-supporters .supporters ul li.active {
+    background-color:  #f3f3f3;
+}
+
 div.widget.project-supporters .supporters ul li .avatar {
     position: absolute;
     left: 10px;
@@ -101,8 +105,15 @@ div.widget.project-supporters .supporters ul li h6 {
 }
 
 div.widget.project-supporters .supporters ul li a {
+    font-size: 11px !important;
+    text-transform: none !important;
     text-decoration: none;
 }
+
+div.widget.project-supporters .supporters ul li a:hover {
+    color: #20B3B2;
+}
+
 
 div.widget.project-supporters .supporters ul li dl,
 div.widget.project-supporters .supporters ul li dl dt,
@@ -280,6 +291,10 @@ div.widget.project-investors .investors > ul > li {
     position: relative;
 }
 
+div.widget.project-investors .investors ul li.active {
+    background-color:  #f3f3f3;
+}
+
 div.widget.project-investors .investors ul li .avatar {
     position: absolute;
     left: 0;
@@ -305,9 +320,14 @@ div.widget.project-investors .investors ul li h6 {
 
 div.widget.project-investors .investors ul li a {
     font-size: 11px !important;
-    font-weight: bold;
+    text-transform: none !important;
     text-decoration: none;
 }
+
+div.widget.project-investors .investors ul li a:hover {
+    color: #20B3B2;
+}
+
 
 div.widget.project-investors .investors ul li dl,
 div.widget.project-investors .investors ul li dl dt,

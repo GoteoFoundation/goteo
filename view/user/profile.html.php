@@ -12,6 +12,19 @@ include 'view/header.html.php';
 $user = $this['user'];
 $worthcracy = Worth::getAll();
 ?>
+    <script type="text/javascript">
+
+    jQuery(document).ready(function ($) {
+
+        /* Rolover sobre los cuadros de color */
+        $("li").hover(
+                function () { $(this).addClass('active') },
+                function () { $(this).removeClass('active') }
+        );
+
+    });
+    </script>
+
 
         <div id="sub-header">
             <div>                                
@@ -85,8 +98,8 @@ $worthcracy = Worth::getAll();
                                     <div class="user">
                                         <div class="avatar"><a href="/user/<?php echo htmlspecialchars($mate->user) ?>"><img src="/image/<?php echo $mate->avatar->id ?>/50/50" /></a></div>
                                         <h4><a href="/user/<?php echo htmlspecialchars($mate->user) ?>"><?php echo htmlspecialchars($mate->user) ?></a></h4>
-                                        <a class="projects" href="/user/<?php echo htmlspecialchars($mate->user) ?>"><?php echo Text::get('regular-projects'); ?> (<?php echo $mate->projects ?>)</a>
-                                        <a class="invests" href="/user/<?php echo htmlspecialchars($mate->user) ?>"><?php echo Text::get('regular-investing'); ?> (<?php echo $mate->invests ?>)</a>
+                                        <span class="projects"><?php echo Text::get('regular-projects'); ?> (<?php echo $mate->projects ?>)</span>
+                                        <span class="invests"><?php echo Text::get('regular-investing'); ?> (<?php echo $mate->invests ?>)</span>
                                     </div>
                                 </li>
                             <?php if ($c>5) break; else $c++;

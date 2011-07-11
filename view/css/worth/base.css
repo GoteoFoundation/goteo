@@ -61,28 +61,33 @@ div.widget.user-worthcracy  ul li > strong {
     background: url('beak.png') no-repeat top center;
 }
 
-div.widget.worthcracy  ul li.done.worth-1 {
-    background-color: #B6CAE0;
+div.widget.worthcracy  ul li.done.worth-1,
+div.widget.worthcracy  ul li.done.worth-1.active {
+    background-color: #B6CAE0 !important;
     color: #B6CAE0;
 }
 
-div.widget.worthcracy  ul li.done.worth-2 {
-    background-color: #92AFD1;
+div.widget.worthcracy  ul li.done.worth-2,
+div.widget.worthcracy  ul li.done.worth-2.active {
+    background-color: #92AFD1 !important;
     color: #92AFD1;
 }
 
-div.widget.worthcracy  ul li.done.worth-3 {
-    background-color: #799EC7;
+div.widget.worthcracy  ul li.done.worth-3,
+div.widget.worthcracy  ul li.done.worth-3.active {
+    background-color: #799EC7 !important;
     color: #799EC7;
 }
 
-div.widget.worthcracy  ul li.done.worth-4 {
-    background-color: #3C71AE;
+div.widget.worthcracy  ul li.done.worth-4,
+div.widget.worthcracy  ul li.done.worth-4.active {
+    background-color: #3C71AE !important;
     color: #3C71AE;
 }
 
-div.widget.worthcracy  ul li.done.worth-5 {
-    background-color: #0C4E99;
+div.widget.worthcracy  ul li.done.worth-5,
+div.widget.worthcracy  ul li.done.worth-5.active {
+    background-color: #0C4E99 !important;
     color: #0C4E99;
 }
 
