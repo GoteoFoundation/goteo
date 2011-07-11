@@ -264,7 +264,7 @@ div.superform div.elements > ol > li.element.slider > div.contents > ul > li {
 /*    float: left;   width: 50%;    */
     border-bottom: 1px dashed #bcbdbf;
     border-right: 1px dashed #bcbdbf;
-    margin-left: -1px;
+/*    margin-left: -1px; */
     margin-bottom: -1px;
     padding: 0;
 }

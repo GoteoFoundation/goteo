@@ -14,6 +14,7 @@ namespace Goteo\Model\Project {
 			$description,
 			$type = 'social',
 			$icon,
+            $other, // para el icono de otro, texto que diga el tipo
 			$license,
 			$amount,
 			$units,
@@ -102,6 +103,7 @@ namespace Goteo\Model\Project {
 				'description',
 				'type',
 				'icon',
+				'other',
 				'license',
 				'amount',
 				'units'
