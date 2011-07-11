@@ -17,4 +17,6 @@ include 'view/header.html.php'; ?>
 
     </div>
     
-    <?php include 'view/footer.html.php' ?>
+<?php include 'view/footer.html.php' ?>
+
+<?php include 'view/epilogue.html.php' ?>
