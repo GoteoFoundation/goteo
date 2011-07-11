@@ -22,6 +22,7 @@ namespace Goteo\Model {
             $keywords,
             $active,
             $facebook,
+            $google,
             $twitter,
             $identica,
             $linkedin,
@@ -142,6 +143,9 @@ namespace Goteo\Model {
                     if (is_array($this->avatar) && !empty($this->avatar['name'])) {
                         $image = new Image($this->avatar);
                         $image->save();
+                        // una vez con el contenido de la imagen guardado en la tabla
+                        // recortar el avatar cuadrado
+                        $image->avatarCrop();
                         $data[':avatar'] = $image->id;
 
                         /**
@@ -176,6 +180,10 @@ namespace Goteo\Model {
 
                     if(isset($this->facebook)) {
                         $data[':facebook'] = $this->facebook;
+                    }
+
+                    if(isset($this->google)) {
+                        $data[':google'] = $this->google;
                     }
 
                     if(isset($this->twitter)) {
@@ -356,6 +364,7 @@ namespace Goteo\Model {
                         contribution,
                         keywords,
                         facebook,
+                        google,
                         twitter,
                         identica,
                         linkedin,
@@ -472,6 +481,28 @@ namespace Goteo\Model {
                 $users[] = $user;
             }
             return $users;
+        }
+
+        /*
+         * Listado simple de todos los usuarios
+         */
+        public static function getAllMini() {
+
+            $list = array();
+
+            $query = static::query("
+                SELECT
+                    user.id as id,
+                    user.name as name
+                FROM    user
+                ORDER BY user.name ASC
+                ");
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $list[$item->id] = $item->name;
+            }
+
+            return $list;
         }
 
 		/**
@@ -725,7 +756,7 @@ namespace Goteo\Model {
                     return true;
 
                 } catch (\PDOException $e) {
-                    $errors[] = "FALLO al gestionar el registro de fdatos personales " . $e->getMessage();
+                    $errors[] = "FALLO al gestionar el registro de datos personales " . $e->getMessage();
                     return false;
                 }
             }
@@ -744,6 +775,35 @@ namespace Goteo\Model {
 		    ', array($this->id));
 		    return $query->fetchAll(\PDO::FETCH_OBJ);
 		}
+
+
+        /*
+         * Lista de proyectos cofinanciados
+         */
+        public static function invested($user)
+        {
+            $projects = array();
+
+            $sql = "SELECT project.id
+                    FROM  project
+                    INNER JOIN invest
+                        ON project.id = invest.project
+                        AND invest.user = ?
+                        AND invest.status <> 2
+                    WHERE project.status > 1 AND project.status < 7
+                    GROUP BY project.id
+                    ORDER BY name ASC
+                    ";
+
+            echo "$sql<br />";
+
+            $query = self::query($sql, array($user));
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $proj) {
+                $projects[] = \Goteo\Model\Project::get($proj->id);
+            }
+            return $projects;
+        }
+
 
 	}
 }

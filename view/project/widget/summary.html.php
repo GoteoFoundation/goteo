@@ -90,7 +90,7 @@ $level = (int) $this['level'] ?: 3;
     <?php if (!empty($project->related)): ?>
     <div class="related">
         <h<?php echo $level + 1?>><?php echo Text::get('overview-field-related'); ?></h<?php echo $level + 1?>>
-        <?php echo htmlspecialchars($project->related) ?>
+        <?php echo $project->related ?>
     </div>
     <?php endif ?>
 

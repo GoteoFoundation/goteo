@@ -18,7 +18,7 @@ foreach (License::getAll() as $l) {
     <h<?php echo $level + 1 ?> class="supertitle"><?php echo Text::get('project-rewards-supertitle'); ?></h<?php echo $level + 1?>>
        
     <div class="social">
-        <h<?php echo $level ?> class="title"><?php echo Text::get('project-rewards-social_reward-title'); ?></h<?php echo $level ?>>
+        <h<?php echo $level + 1 ?> class="title"><?php echo Text::get('project-rewards-social_reward-title'); ?></h<?php echo $level + 1 ?>>
         <ul>
         <?php foreach ($project->social_rewards as $social) : ?>
             <li class="<?php echo $social->icon ?>">                

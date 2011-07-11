@@ -18,7 +18,7 @@ include 'view/prologue.html.php';
                     <ul>
                         <li class="home"><a href="/admin">Mainboard</a></li>
                         <li class="checking"><a href="/admin/overview">Listado de proyectos</a></li>
-                        <li class="accounting"><a href="/admin/accounting">Transacciones</a></li>
+                        <li class="accounting"><a href="/admin/accounting">Listado de aportes</a></li>
 <!--                    <li class="comunication"><a href="/admin/comunication">Comunicación</a></li> -->
                     </ul>
                 </div>
@@ -56,10 +56,12 @@ include 'view/prologue.html.php';
                     <h3 class="title">Plataforma Goteo</h3>
                     <ul>
                         <li><a href="/admin/blog">Blog</a></li>
+                        <li><a href="/admin/accounting">Aportes</a></li>
                         <li><a href="/admin/managing">Usuarios</a></li>
                         <li><a href="/admin/rewards">Retornos colectivos</a></li>
                         <li><a href="/admin/news">Noticias</a></li>
                         <li><a href="/admin/sponsors">Patrocinadores</a></li>
+                        <li><a href="/admin/campaigns">Campañas</a></li>
 <!--                    <li><a href="/admin/moderate">Moderar mensajes</a></li>  -->
                     </ul>
                 </div>

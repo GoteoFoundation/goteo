@@ -27,6 +27,10 @@ div.widget.project-share li.facebook {
     background-image: url('/view/css/social/facebook.png');
 }
 
+div.widget.project-share li.google {
+    background-image: url('/view/css/social/google.png');
+}
+
 div.widget.project-share li.twitter {
     background-image: url('/view/css/social/twitter.png');    
 }

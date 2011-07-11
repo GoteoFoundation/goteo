@@ -29,3 +29,76 @@ div.widget.project-invest h8 {
 div.widget.project-invest > div {
     margin-bottom: 2em;
 }
+
+div.invest-message {
+    background-color: #cce7e8 !important;
+    min-height: 70px;
+    background: url("/view/css/project/view/invest/message_beak.png") no-repeat left bottom;
+}
+
+div.invest-message h2 {
+    margin: 0px !important;
+}
+
+div.invest-message h2 span {
+    color: #232020;
+}
+
+div.invest-message img{
+    float: left;
+    margin-right: 20px;
+}
+
+div.invest-message span.message {
+    padding: 0px;
+    font-size: 0.9em !important;
+    text-transform: none !important;
+    font-weight: normal !important;
+    color: #57595b !important;
+}
+
+div.widget.project-invest h3.beak {
+    background-color: #cce7e8 !important;
+    padding: 20px 0px 30px 20px;
+    background: url("/view/css/project/view/invest/header_beak.png") no-repeat left bottom;
+    font-size: 1em !important;
+    text-transform: uppercase !important;
+}
+
+div.widget.project-invest.address table {
+    width: 100%;
+}
+div.widget.project-invest.address table tr td label {
+    text-align: right;
+    padding-right: 5px;
+    padding-left: 10px;
+}
+div.widget.project-invest #amount {
+    background: url('/view/css/euro/red/l.png') no-repeat left center #D7D9DA;
+    color: #ee4245;
+    padding-left: 40px;
+    width: 100px;
+    height: 24px;
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 20px;
+}
+div.widget.project-invest #address {
+    width: 266px;
+}
+div.widget.project-invest #zipcode {
+    width: 100px;
+}
+div.widget.project-invest #location {
+    width: 100px;
+}
+div.widget.project-invest #country {
+    width: 100px;
+}
+div.widget.project-invest #email {
+    width: 350px;
+}
+div.widget.project-invest div.individual ul li label.amount {
+    color: #ee4245;
+    font-weight: bold;
+}

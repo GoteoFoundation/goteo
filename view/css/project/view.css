@@ -29,7 +29,7 @@ body.project-show div#sub-header {
 }
 
 body.project-show div#sub-header div.project-header{
-    min-height: 70px;
+    min-height: 75px;
 }
 
 body.project-show div#sub-header img{
@@ -106,19 +106,16 @@ body.project-show div.project-menu ul li a {
     text-decoration: none;
     height: 28px;
     background-image: url('/view/css/project/view/menu/regular_menu.png');
-    background-position: left;
+    background-position: left top !important;
     background-repeat: repeat-x;
 }
 
 body.project-show div.project-menu ul li.active a {
     background-image: url('/view/css/project/view/menu/hover_menu.png');
-    background-position: left;
-    background-repeat: repeat-x;
 }
 
 body.project-show div.project-menu ul li.show a {
     background-image: url('/view/css/project/view/menu/active_menu.png') !important;
-    background-position: left !important;
     background-repeat: no-repeat !important;
 }
 
@@ -153,6 +150,7 @@ body.project-show div#main div.widget.project-support {
 body.project-show div#main div.widget.project-support,
 body.project-show div#main div.widget.project-rewards,
 body.project-show div#main div.widget.project-collaborations,
+body.project-show div#main div.widget.project-investors,
 body.project-show div#main div.widget.user {
     width: 260px;
     float: right;
@@ -166,6 +164,9 @@ body.project-show div#main div.widget.project-needs,
 body.project-show div#main div.widget.project-messages,
 body.project-show div#main div.widget.project-message,
 body.project-show div#main div.widget.project-supporters,
+body.project-show div#main div.widget.project-invest,
+body.project-show div#main div.widget.invest-message,
+body.project-show div#main div.widget.worthcracy,
 body.project-show div#main div.widget.worthcracy-legend {
     max-width: 580px;
     margin-right: 20px;

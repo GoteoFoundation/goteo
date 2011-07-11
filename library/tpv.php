@@ -215,7 +215,7 @@ namespace Goteo\Library {
             try {
                 // la transaccion se cancela sola, no hay movimiento contable y no genera costes
                 // cancelar el aporte
-                $invest->cancelPreapproval();
+                $invest->cancel();
                 return true;
             }
             catch(Exception $ex) {

@@ -31,3 +31,7 @@ ALTER TABLE `invest` ADD `transaction` VARCHAR( 256 ) NULL COMMENT 'PaypalId';
 ALTER TABLE `invest` ADD `account` VARCHAR( 256 ) NOT NULL AFTER `project` ;
 
 ALTER TABLE `invest` ADD `method` VARCHAR( 20 ) NOT NULL COMMENT 'Metodo de pago';
+
+-- Para aportes manuales y aportes de campaña
+ALTER TABLE `invest` ADD `admin` VARCHAR( 50 ) NULL COMMENT 'Admin que creó el aporte manual';
+ALTER TABLE `invest` ADD `campaign` BIGINT UNSIGNED NULL COMMENT 'campaña de la que forma parte este dinero';

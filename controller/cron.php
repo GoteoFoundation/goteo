@@ -148,6 +148,9 @@ namespace Goteo\Controller {
                                     echo 'Fallo al ejecutar cargo sermepal: ' . implode('; ', $errors);
                                 }
                                 break;
+                            case 'cash':
+                                echo 'Aporte al contado, nada que ejecutar.';
+                                break;
                         }
 
                         echo '<br />';

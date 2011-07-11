@@ -126,8 +126,7 @@ body.project-edit div#main.costs div.superform li.element.editcost div.children 
 body.project-edit div#main.costs div.superform li.element.editcost div.children li.element.cost-dates > div.children > div.elements > ol > li {
     margin-top: -1em;
 }
-
-body.project-edit div#main.costs div.superform li.element.editcost div.children li.element.cost-dates > .title,
+/* body.project-edit div#main.costs div.superform li.element.editcost div.children li.element.cost-dates > .title, */
 body.project-edit div#main.costs div.superform li.element.editcost div.children li.element.cost-dates > div.children > div.elements > ol > li.cost-from,
 body.project-edit div#main.costs div.superform li.element.editcost div.children li.element.cost-dates > div.children > div.elements > ol > li.cost-until {
     float: left;
@@ -137,7 +136,8 @@ body.project-edit div#main.costs div.superform li.element.editcost div.children 
 }
 
 body.project-edit div#main.costs div.superform li.element.editcost div.children li.element.cost-dates > .title {
-    margin-right: 2em;
+    display: block;
+     /* margin-right: 2em; */
 }
 
 body.project-edit div#main.costs div.superform li.element.editcost div.children li.element.cost-dates > div.children > div.elements > ol > li.cost-from input,

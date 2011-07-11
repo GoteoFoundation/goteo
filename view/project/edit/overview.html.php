@@ -74,6 +74,14 @@ $media['media'] = array(
     'value' => (string) $project->media
 );
 
+$media['media-upload'] = array(
+    'name' => "upload",
+    'type'  => 'submit',
+    'label' => Text::get('form-upload-button'),
+    'class' => 'inline'
+);
+
+
 if (!empty($project->media->url)) {
     $media['media-preview'] = array(
         'type'  => 'media',

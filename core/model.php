@@ -58,7 +58,17 @@ namespace Goteo\Core {
                 $db = new DB;
             }
 
-                $params = func_num_args() === 2 && is_array($params) ? $params : array_slice(func_get_args(), 1);
+            $params = func_num_args() === 2 && is_array($params) ? $params : array_slice(func_get_args(), 1);
+
+            // ojo que el stripslashes jode el contenido blob al grabar las imagenes
+            if (\get_magic_quotes_gpc ()) {
+                foreach ($params as $key => $value) {
+                    if ($key != ':content') {
+                        $params[$key] = \stripslashes(\stripslashes($value));
+                    }
+                }
+            }
+
             $result = $db->prepare($query);
 
             try {

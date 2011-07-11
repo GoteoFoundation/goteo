@@ -204,31 +204,32 @@ namespace Goteo\Model {
                 //-----------------------------------------------------------------
                 // Diferentes verificaciones segun el estado del proyecto
                 //-----------------------------------------------------------------
-                //para proyectos en campaña o posterior
-                if ($project->status > 2) {
-                    // recompensas
-                    foreach ($project->individual_rewards as &$reward) {
-                        $reward->none = false;
-                        // si controla unidades de esta recompensa, mirar si quedan
-                        if ($reward->units > 0) {
-                            $reward->taken = $reward->getTaken();
-                            if ($reward->taken >= $reward->units) {
-                                $reward->none = true;
-                            }
+                $project->investors = Invest::investors($id);
+
+                $amount = Invest::invested($id);
+                if ($project->invested != $amount) {
+                    self::query("UPDATE project SET amount = '{$amount}' WHERE id = ?", array($id));
+                }
+                $project->invested = $amount;
+                $project->amount   = $amount;
+
+                // recompensas
+                foreach ($project->individual_rewards as &$reward) {
+                    $reward->none = false;
+                    // si controla unidades de esta recompensa, mirar si quedan
+                    if ($reward->units > 0) {
+                        $reward->taken = $reward->getTaken();
+                        if ($reward->taken >= $reward->units) {
+                            $reward->none = true;
                         }
                     }
+                }
 
-                    $project->investors = Invest::investors($project->id);
+                //mensajes
+                $project->messages = Message::getAll($project->id);
 
-                    $amount = Invest::invested($project->id);
-                    if ($project->invested != $amount) {
-                        self::query("UPDATE project SET amount = '{$amount}' WHERE id = ?", array($project->id));
-                    }
-                    $project->invested = $amount;
-
-                    //mensajes
-                    $project->messages = Message::getAll($project->id);
-
+                //para proyectos en campaña o posterior
+                if ($project->status > 2) {
                     // tiempo de campaña
                     if ($project->status == 3) {
                         $days = $project->daysActive();
@@ -283,6 +284,28 @@ namespace Goteo\Model {
 				throw \Goteo\Core\Exception($e->getMessage());
 			}
 		}
+
+        /*
+         * Listado simple de todos los proyectos
+         */
+        public static function getAll($node = \GOTEO_NODE) {
+
+            $list = array();
+
+            $query = static::query("
+                SELECT
+                    project.id as id,
+                    project.name as name
+                FROM    project
+                ORDER BY project.name ASC
+                ", array(':node' => $node));
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $list[$item->id] = $item->name;
+            }
+
+            return $list;
+        }
 
         /*
          *  Para validar los campos del proyecto que son NOT NULL en la tabla
@@ -1127,7 +1150,7 @@ namespace Goteo\Model {
          */
         public function delete(&$errors = array()) {
 
-            if ($project->status != 1) {
+            if ($this->status != 1) {
                 return false;
             }
 
@@ -1346,20 +1369,15 @@ namespace Goteo\Model {
         /*
          * Lista de proyectos cofinanciados
          */
-        public static function invested($user = null)
+        public static function invested()
         {
-            // si recibimos un usuario, sacamos los que haya invertido ese usuario
-            if (!empty($user)) {
-                $he = " WHERE user='$user'";
-            } else {
-                $he = '';
-            }
-
             $projects = array();
-            $query = self::query("SELECT *
+            $query = self::query("SELECT project.id
                                   FROM  project
+                                  INNER JOIN invest
+                                        ON project.id = invest.project
                                   WHERE project.status = 3 OR project.status = 4
-                                  AND project.id IN (SELECT DISTINCT(project) FROM invest$he)
+                                  GROUP BY project.id
                                   ORDER BY name ASC");
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
                 $projects[] = self::get($proj->id);
@@ -1394,7 +1412,7 @@ namespace Goteo\Model {
                     WHERE status > 0
                         AND node = ?
                         $sqlFilter
-                    ORDER BY progress DESC
+                    ORDER BY name ASC
                     ";
 
             $query = self::query($sql, array($node));

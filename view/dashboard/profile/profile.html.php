@@ -189,6 +189,15 @@ foreach ($user->webs as $web) {
                     'errors'    => !empty($errors['facebook']) ? array($errors['facebook']) : array(),
                     'value'     => $user->facebook
                 ),
+                'user_google' => array(
+                    'type'      => 'textbox',
+                    'class'     => 'google',
+                    'size'      => 40,
+                    'title'     => Text::get('regular-google'),
+                    'hint'      => Text::get('tooltip-user-google'),
+                    'errors'    => !empty($errors['google']) ? array($errors['google']) : array(),
+                    'value'     => $user->google
+                ),
                 'user_twitter' => array(
                     'type'      => 'textbox',
                     'class'     => 'twitter',

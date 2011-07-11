@@ -95,6 +95,10 @@ namespace Goteo\Controller {
 
             // tratamos el post segun la opcion y la acion
             $user = $_SESSION['user'];
+            // si es el avatar por defecto no lo mostramos aqui
+            if ($user->avatar->id == 1) {
+                unset($user->avatar);
+            }
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -112,9 +116,10 @@ namespace Goteo\Controller {
                             'user_about'=>'about',
                             'user_keywords'=>'keywords',
                             'user_contribution'=>'contribution',
+                            'user_facebook'=>'facebook',
+                            'user_google'=>'google',
                             'user_twitter'=>'twitter',
                             'user_identica'=>'identica',
-                            'user_facebook'=>'facebook',
                             'user_linkedin'=>'linkedin'
                         );
 
@@ -318,25 +323,11 @@ namespace Goteo\Controller {
 
             $errors = array();
 
-            if ($action == 'select' && !empty($_POST['project'])) {
-                // otro proyecto de trabajo
-                $project = Model\Project::get($_POST['project']);
-            } else {
-                // si tenemos ya proyecto, mantener los datos actualizados
-                if (!empty($_SESSION['project']->id)) {
-                    $project = Model\Project::get($_SESSION['project']->id);
-                }
-            }
-
             $projects = Model\Project::ofmine($user->id);
 
             // si no hay proyectos no tendria que estar aqui
-            if (count($projects) == 0) {
-                throw new Redirection('/project/create', Redirection::TEMPORARY);
-            } else {
+            if (!empty($projects)) {
                 // compruebo permisos
-                //@FIXME! buscar otro modo
-                /*
                 foreach ($projects as $proj) {
 
                     // compruebo que puedo editar mis proyectos
@@ -349,11 +340,19 @@ namespace Goteo\Controller {
                         ACL::allow('/project/delete/'.$proj->id, '*', 'user', $user);
                     }
                 }
-                 *
-                 */
             }
-            
-            if (empty($project)) {
+
+            if ($action == 'select' && !empty($_POST['project'])) {
+                // otro proyecto de trabajo
+                $project = Model\Project::get($_POST['project']);
+            } else {
+                // si tenemos ya proyecto, mantener los datos actualizados
+                if (!empty($_SESSION['project']->id)) {
+                    $project = Model\Project::get($_SESSION['project']->id);
+                }
+            }
+
+            if (empty($project) && !empty($projects)) {
                 $project = $projects[0];
             }
 
@@ -362,8 +361,8 @@ namespace Goteo\Controller {
             if ($project instanceof  \Goteo\Model\Project) {
                 $_SESSION['project'] = $project;
             } else {
-                // si no es que hay un problema
-                throw new Redirection('/dashboard', Redirection::TEMPORARY);
+                unset($project);
+                $option = 'summary';
             }
 
             // tenemos proyecto de trabajo, comprobar si el proyecto esta en estado de tener blog
@@ -391,13 +390,11 @@ namespace Goteo\Controller {
                         $option = 'summary';
                         $action = 'view';
                     }
-                } else {
-                    if (!$blog->active) {
+                } elseif (!$blog->active) {
                         $errors[] = 'Lo sentimos, las actualizaciones para este proyecto estan desactivadas';
                         //Text::get('dashboard-project-blog-inactive');
                         $action = 'list';
                     }
-                }
 
                 // primero comprobar que tenemos blog
                 if (!$blog instanceof Model\Blog) {
@@ -743,6 +740,25 @@ $testpost = $_POST;
                 // editar colaboraciones
                 case 'supports':
                     $viewData['types'] = Model\Project\Support::types();
+
+                    if ($_POST) {
+                        foreach ($_POST as $k => $v) {
+                            if (!empty($v) && preg_match('/support-(\d+)-edit/', $k, $r)) {
+                                $viewData['editsupport'] = $r[1];
+                                break;
+                            }
+                        }
+                    }
+
+                    if (empty($viewData['editsupport']) && $_POST['support-add']) {
+
+                        $last = end($project->supports);
+
+                        if ($last !== false) {
+                            $viewData['editsupport'] = $last->id;
+                        }
+                    }
+
                     $project->supports = Model\Project\Support::getAll($_SESSION['project']->id);
                 break;
 

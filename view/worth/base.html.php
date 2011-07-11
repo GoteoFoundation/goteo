@@ -13,7 +13,7 @@ if (!isset($this['level'])) $this['level'] = 9999;
 <ul class="worthcracy">
 <?php foreach ($worthcracy as $level => $worth): ?>
 <li class="worth-<?php echo $level ?><?php if ($level <= $this['level']) echo ' done' ?>">
-    <span class="threshold">+ de <strong><?php echo $worth->amount ?></strong> <span class="euro">&euro;</span> </span>        
+    <span class="threshold">+ de <strong><?php echo $worth->amount ?></strong></span>        
     <?php if ($level == $this['level']) : ?>
     <strong class="name"><?php echo htmlspecialchars($worth->name) ?></strong>
     <?php else: ?>
