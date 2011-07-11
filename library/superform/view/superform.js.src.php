@@ -49,7 +49,7 @@ if (!('Superform' in window)) {
                             
                             if (contents.length) {                                
                                 if (!ncontents.length) {                                
-                                    //contents.slideUp('fast', 'swing');
+                                    //contents.slideUp('slow');
                                     //contents.remove();
                                 } else if (!$.contains(contents[0], focused[0])) {
                                     contents.replaceWith(ncontents);
@@ -81,7 +81,7 @@ if (!('Superform' in window)) {
                                     Superform.updateElement(child, nchild);
                                     nchildren = nchildren.not(nchild);
                                 } else {
-                                    $(child).slideUp('fast', 'swing');                                    
+                                    $(child).slideUp('slow');                                    
                                 }
                             });
                             
@@ -97,7 +97,7 @@ if (!('Superform' in window)) {
                                 setTimeout(function () {
                                     nchildren.hide();
                                     el.children('div.children').children('div.elements').children('ol').append(nchildren);
-                                    nchildren.slideDown('fast', 'swing');                                    
+                                    nchildren.slideDown('slow');                                    
                                 });
                                 
                             }
@@ -153,7 +153,7 @@ if (!('Superform' in window)) {
                         
                         el.__updating = $.ajax({
                             type:       'POST',
-                            url:        frm.attr('target'),
+                            url:        frm.attr('action'),
                             cache:      false,
                             data:       data,                            
                             success:    function (html, status, xhr) {                            
@@ -179,8 +179,10 @@ if (!('Superform' in window)) {
                                                 }
                                                 
                                             }                                            
-                                        }
-                                        
+                                        },
+                            error: function () {
+                                alert('Error -->' + frm.attr('action') + '<--');
+                            }
                         }); // el.__updating = $.ajax();
                     }
 
