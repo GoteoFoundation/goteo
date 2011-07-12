@@ -650,6 +650,8 @@ namespace Goteo\Controller {
                 return false;
             }
 
+            $types = Model\Project\Reward::icons('');
+
             //tratar retornos sociales
             foreach ($project->social_rewards as $k => $reward) {
                 
@@ -666,6 +668,7 @@ namespace Goteo\Controller {
                         $reward->other = $_POST['social_reward-' . $reward->id . '-other'];
                     }
                     $reward->license = $_POST['social_reward-' . $reward->id . '-' . $reward->icon . '-license'];
+                    $reward->icon_name = $types[$reward->icon]->name;
                 }
                 
             }
@@ -687,6 +690,7 @@ namespace Goteo\Controller {
                     }
                     $reward->amount = $_POST['individual_reward-' . $reward->id . '-amount'];
                     $reward->units = $_POST['individual_reward-' . $reward->id . '-units'];
+                    $reward->icon_name = $types[$reward->icon]->name;
                 }
                 
             }

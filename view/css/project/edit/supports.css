@@ -23,11 +23,11 @@ body.project-edit div#main.supports div.superform li.element.support div.support
 }
 
 body.project-edit div#main.supports div.superform li.element.support div.task {
-    background-image: url('../../icon/m/task.png');
+    background-image: url('/view/css/icon/m/task.png');
 }
 
 body.project-edit div#main.supports div.superform li.element.support div.lend {
-    background-image: url('../../icon/m/lend.png');
+    background-image: url('/view/css/icon/m/lend.png');
 }
 
 body.project-edit div#main.supports div.superform li.element.support div.description {
