@@ -84,16 +84,16 @@ body.project-edit div#main.supports div.superform li.element.editsupport div.chi
     min-height: 4em;
 }
 
-body.project-edit div#main.supports div.superform li.element.editsupport div.children li.element.support-type li > label {
+body.project-edit div#main.supports div.superform li.element.editsupport li.support-type > label {
     padding-left: 55px;
     background: none no-repeat 10px center;
     min-height: 32px;
     line-height: 32px;
 }
-body.project-edit div#main.supports div.superform li.element.editsupport div.children li.element.support-type li.support_task > label {
-    background-image: url('../../icon/m/task.png');
+body.project-edit div#main.supports div.superform li.element.editsupport li.support_task > label {
+    background-image: url('/view/css/icon/m/task.png');
 }
 
-body.project-edit div#main.supports div.superform li.element.editsupport div.children li.element.support-type li.support_lend > label {
-    background-image: url('../../icon/m/lend.png');
+body.project-edit div#main.supports div.superform li.element.editsupport li.support_lend > label {
+    background-image: url('/view/css/icon/m/lend.png');
 }
