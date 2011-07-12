@@ -75,7 +75,7 @@ define('GOTEO_MAIL_SMTP_PASSWORD', 'goteo1234');
 define('GOTEO_DEFAULT_LANG', 'es');
 
 // url
-define('SITE_URL', 'http://devgoteo.org');
+define('SITE_URL', 'http://jaume.goteo.org');
 
 /****************************************************
 Paypal web_constants.php
