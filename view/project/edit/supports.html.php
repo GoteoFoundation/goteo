@@ -25,9 +25,9 @@ foreach ($project->supports as $support) {
                 'value' => $id,
                 'type'  => 'radio',
                 'class' => "support-type support_{$id}",
-                'hint'  => Text::get('tooltip-project-support-type-'.$type),
+                'hint'  => Text::get('tooltip-project-support-type-'.$id),
                 'label' => $type,
-                'checked' => $support->type
+                'checked' => $id == $support->type  ? true : false
             );
         }
 
@@ -53,6 +53,7 @@ foreach ($project->supports as $support) {
                         'required'  => true,
                         'class'     => 'inline',
                         'type'      => 'group',
+                        'value'     => $support->type,
                         'children'  => $support_types,
                         'errors'    => !empty($errors["support-{$support->id}-type"]) ? array($errors["support-{$support->id}-type"]) : array(),
                         'ok'        => !empty($okeys["support-{$support->id}-type"]) ? array($okeys["support-{$support->id}-type"]) : array(),
