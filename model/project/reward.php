@@ -81,8 +81,6 @@ namespace Goteo\Model\Project {
 
                     if ($item->icon == 'other' && !empty($item->other)) {
                         $item->icon_name = $item->other;
-                    } else {
-                        $item->icon_name = $item->icon_name;
                     }
 
                     $array[$item->id] = $item;

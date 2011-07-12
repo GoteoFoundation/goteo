@@ -35,7 +35,7 @@ $element = $this['element'];
 </div>
 <?php endif ?>
 
-<?php if (!empty($element->children)): ?>
+<?php if (!empty($element->children) && $element->type == 'group'): ?>
 <div class="children">
     <?php echo new View('library/superform/view/elements.html.php', $element->children) ?>
 </div>

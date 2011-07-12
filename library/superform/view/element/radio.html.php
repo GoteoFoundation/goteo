@@ -20,7 +20,7 @@ use Goteo\Core\View;
 $(function () {
    $("div.superform input#<?php echo $this['id'] ?>").click(function () {
        
-       $(this).closest('li.element').first().find("input[type='radio'][name='<?php echo $this['name'] ?>']").each(function (i, r) {
+       $(this).closest('li.group').first().find("input[type='radio'][name='<?php echo $this['name'] ?>']").each(function (i, r) {
           try {
               if ('<?php echo $this['id'] ?>' == r.id) {
                   $('div.children#' + r.id + '-children').slideDown(400);

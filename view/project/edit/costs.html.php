@@ -8,18 +8,6 @@ $project = $this['project'];
 $errors = $project->errors[$this['step']] ?: array();
 $okeys  = $project->okeys[$this['step']] ?: array();
 
-$costsTypes = array();
-
-foreach ($this['types'] as $id => $type) {
-    $costTypes[] = array(
-        'value'     => $id,
-        'label'     => $type,
-        'hint'      => Text::get('tooltip-project-cost-type-'.$type),
-        'class'     => $id
-    );
-}
-
-
 $costs = array();
 
 if (!empty($project->costs)) {
@@ -29,7 +17,23 @@ if (!empty($project->costs)) {
         $ch = array();
         
         if ($cost->id === $this['editcost']) {
-                        
+
+            $costsTypes = array();
+
+            foreach ($this['types'] as $id => $type) {
+                $costTypes["cost-{$cost->id}-type-{$id}"] = array(
+                    'name'  => "cost-{$cost->id}-type",
+                    'value' => $id,
+                    'type'  => 'radio',
+                    'class' => "cost-type $id",
+                    'label' => $type,
+                    'hint'  => Text::get('tooltip-project-cost-type-'.$id),
+                    'checked' => $id == $cost->type  ? true : false
+                );
+            }
+
+
+
             $costs["cost-{$cost->id}"] = array(
                 'type'      => 'group',      
                 'class'     => 'cost editcost',
@@ -48,9 +52,9 @@ if (!empty($project->costs)) {
                     "cost-{$cost->id}-type" => array(
                         'title'     => Text::get('costs-field-type'),
                         'required'  => true,
-                        'class'     => 'inline cost-type',
-                        'type'      => 'radios',
-                        'options'   => $costTypes,
+                        'class'     => 'inline',
+                        'type'      => 'group',
+                        'children'  => $costTypes,
                         'value'     => $cost->type,
                         'errors'    => !empty($errors["cost-{$cost->id}-type"]) ? array($errors["cost-{$cost->id}-type"]) : array(),
                         'ok'        => !empty($okeys["cost-{$cost->id}-type"]) ? array($okeys["cost-{$cost->id}-type"]) : array(),

@@ -22,15 +22,15 @@ body.project-edit div#main.costs div.superform li.element.cost div.cost {
     min-height: 32px;
 }
 body.project-edit div#main.costs div.superform li.element.cost div.task {
-    background-image: url('../../icon/m/task.png');
+    background-image: url('/view/css/icon/m/task.png');
 }
 
 body.project-edit div#main.costs div.superform li.element.cost div.structure {
-    background-image: url('../../icon/m/structure.png');
+    background-image: url('/view/css/icon/m/structure.png');
 }
 
 body.project-edit div#main.costs div.superform li.element.cost div.material {
-    background-image: url('../../icon/m/material.png');
+    background-image: url('/view/css/icon/m/material.png');
 }
 
 body.project-edit div#main.costs div.superform li.element.cost div.description {
@@ -87,22 +87,22 @@ body.project-edit div#main.costs div.superform li.element.editcost div.children 
     min-height: 4em;
 }
 
-body.project-edit div#main.costs div.superform li.element.editcost div.children li.element.cost-type li > label {
+body.project-edit div#main.costs div.superform li.element.editcost li.cost-type div.contents {
     padding-left: 55px;        
     background: none no-repeat 10px center;
     min-height: 32px;
     line-height: 32px;
 }
-body.project-edit div#main.costs div.superform li.element.editcost div.children li.element.cost-type li.task > label {
-    background-image: url('../../icon/m/task.png');
+body.project-edit div#main.costs div.superform li.element.editcost li.task div.contents {
+    background-image: url('/view/css/icon/m/task.png');
 }
 
-body.project-edit div#main.costs div.superform li.element.editcost div.children li.element.cost-type li.structure > label {
-    background-image: url('../../icon/m/structure.png');
+body.project-edit div#main.costs div.superform li.element.editcost li.structure div.contents {
+    background-image: url('/view/css/icon/m/structure.png');
 }
 
-body.project-edit div#main.costs div.superform li.element.editcost div.children li.element.cost-type li.material > label {
-    background-image: url('../../icon/m/material.png');
+body.project-edit div#main.costs div.superform li.element.editcost li.material div.contents {
+    background-image: url('/view/css/icon/m/material.png');
 }
 
 body.project-edit div#main.costs div.superform li.element.editcost div.children li.element.cost-amount > div.contents > input {
