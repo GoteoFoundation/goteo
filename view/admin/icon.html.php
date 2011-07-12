@@ -52,6 +52,7 @@ include 'view/prologue.html.php';
                     <thead>
                         <tr>
                             <th>Nombre</th> <!-- name -->
+                            <th>Tooltip</th> <!-- descripcion -->
                             <th>Agrupación</th> <!-- group -->
                             <th><!-- Editar --></th>
 <!--                        <th> Remove </th>  -->
@@ -62,6 +63,7 @@ include 'view/prologue.html.php';
                         <?php foreach ($this['icons'] as $icon) : ?>
                         <tr>
                             <td><?php echo $icon->name; ?></td>
+                            <td><?php echo $icon->description; ?></td>
                             <td><?php echo !empty($icon->group) ? $this['groups'][$icon->group] : 'Ambas'; ?></td>
                             <td><a href="/admin/icons/edit/<?php echo $icon->id; ?>/?filter=<?php echo $this['filter']; ?>">[Edit]</a></td>
                             <!-- <td><a href="/admin/icons/remove/<?php echo $icon->id; ?>/?filter=<?php echo $this['filter']; ?>">[Quitar]</a></td> -->

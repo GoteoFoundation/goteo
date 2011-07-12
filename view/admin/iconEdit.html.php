@@ -62,7 +62,7 @@ include 'view/prologue.html.php';
                     <label for="icon-name">Nombre:</label><br />
                     <input type="text" name="name" id="icon-name" value="<?php echo $this['icon']->name; ?>" />
     <br />
-                    <label for="icon-description">Descripción:</label><br />
+                    <label for="icon-description">Texto tooltip:</label><br />
                     <textarea name="description" id="icon-description" cols="60" rows="10"><?php echo $this['icon']->description; ?></textarea>
 
 

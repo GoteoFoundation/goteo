@@ -662,6 +662,9 @@ namespace Goteo\Controller {
                     $reward->reward = $_POST['social_reward-' . $reward->id . '-reward'];
                     $reward->description = $_POST['social_reward-' . $reward->id . '-description'];
                     $reward->icon = $_POST['social_reward-' . $reward->id . '-icon'];
+                    if ($reward->icon == 'other') {
+                        $reward->other = $_POST['social_reward-' . $reward->id . '-other'];
+                    }
                     $reward->license = $_POST['social_reward-' . $reward->id . '-' . $reward->icon . '-license'];
                 }
                 
@@ -679,6 +682,9 @@ namespace Goteo\Controller {
                     $reward->reward = $_POST['individual_reward-' . $reward->id .'-reward'];
                     $reward->description = $_POST['individual_reward-' . $reward->id . '-description'];
                     $reward->icon = $_POST['individual_reward-' . $reward->id . '-icon'];
+                    if ($reward->icon == 'other') {
+                        $reward->other = $_POST['individual_reward-' . $reward->id . '-other'];
+                    }
                     $reward->amount = $_POST['individual_reward-' . $reward->id . '-amount'];
                     $reward->units = $_POST['individual_reward-' . $reward->id . '-units'];
                 }

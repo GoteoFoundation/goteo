@@ -9,17 +9,7 @@ $errors = $project->errors[$this['step']] ?: array();
 $okeys  = $project->okeys[$this['step']] ?: array();
 
 $social_rewards = array();
-
 $individual_rewards = array();
-$individual_rewards_types = array();
-
-foreach ($this['itypes'] as $id => $type) {
-    $individual_rewards_types[] = array(
-        'value' => $id,
-        'class' => "reward_{$id} individual_{$id}",
-        'label' => $type->name
-    );
-}
 
 foreach ($project->social_rewards as $social_reward) {
        
@@ -32,27 +22,33 @@ foreach ($project->social_rewards as $social_reward) {
             
             $licenses = array();
 
-            $licenses["social_reward-{$social_reward->id}-license-none"] = array(
-                'label' => 'Ninguna',
-                'value' => ''
-            );
+            if (!empty($type->licenses)) {
+                foreach ($type->licenses as $lid => $license) {
 
-            foreach ($type->licenses as $lid => $license) {        
-                        
-                $licenses["social_reward-{$social_reward->id}-license-{$license->id}"] = array(
-                    'label' => $license->name,
-                    'value' => $license->id,            
-                    'class' => 'license_' . $license->id,
-                    'id'    => "social_reward-{$social_reward->id}-license-{$license->id}"
+                    $licenses["social_reward-{$social_reward->id}-license-{$license->id}"] = array(
+                        'label' => $license->name,
+                        'value' => $license->id,
+                        'class' => 'license_' . $license->id,
+                        'hint'  => $license->description,
+                        'id'    => "social_reward-{$social_reward->id}-license-{$license->id}"
+                    );
+
+                }
+            }
+
+            if ($type->id == 'other') {
+                // un campo para especificar el tipo
+                $children = array(
+                    "social_reward-{$social_reward->id}-other" => array(
+                        'type'      => 'textbox',
+                        'class'     => 'inline',
+                        'title'     => Text::get('rewards-field-social_reward-other'),
+                        'value'     => $social_reward->other,
+                        'name'      => "social_reward-{$social_reward->id}-{$type->id}"
+                    )
                 );
-
-            }            
-            
-            $types["social_reward-{$social_reward->id}-icon-{$type->id}"] =  array(
-                'value' => $type->id,
-                'class' => "reward_{$type->id} social_{$type->id}",
-                'label' => $type->name,
-                'children' => array(
+            } elseif (!empty($licenses)) {
+                $children = array(
                     "social_reward-{$social_reward->id}-license" => array(
                         'type'      => 'radios',
                         'class'     => 'license',
@@ -61,7 +57,23 @@ foreach ($project->social_rewards as $social_reward) {
                         'value'     => $social_reward->license,
                         'name'      => "social_reward-{$social_reward->id}-{$type->id}-license"
                     )
-                )
+                );
+            } else {
+                $children = array(
+                    "social_reward-{$social_reward->id}-empty" => array(
+                        'type'      => 'radios',
+                        'class'     => 'license'
+                    )
+                );
+            }
+
+
+            $types["social_reward-{$social_reward->id}-icon-{$type->id}"] =  array(
+                'value' => $type->id,
+                'class' => "reward_{$type->id} social_{$type->id}",
+                'label' => $type->name,
+                'hint'  => $type->description,
+                'children' => $children
             );
                 
         }                       
@@ -139,6 +151,40 @@ foreach ($project->individual_rewards as $individual_reward) {
 
     // a ver si es el que estamos editando o no
     if ($individual_reward->id === $this['editindividual_reward']) {
+
+        // lo mismo que para las licencias solamente para el texto en el tipo otro
+        $types = array();
+
+        foreach ($this['itypes'] as $type) {
+
+            if ($type->id == 'other') {
+                // un campo para especificar el tipo
+                $types["individual_reward-{$individual_reward->id}-icon-{$type->id}"] =  array(
+                    'value' => $type->id,
+                    'class' => "reward_{$type->id} individual_{$type->id}",
+                    'label' => $type->name,
+                    'hint' => $type->description,
+                    'children' => array(
+                        "individual_reward-{$individual_reward->id}-other" => array(
+                            'type'      => 'textbox',
+                            'class'     => 'inline',
+                            'title'     => Text::get('rewards-field-individual_reward-other'),
+                            'value'     => $individual_reward->other,
+                            'name'      => "individual_reward-{$individual_reward->id}-{$type->id}"
+                        )
+                    )
+                );
+            } else {
+                $types["individual_reward-{$individual_reward->id}-icon-{$type->id}"] =  array(
+                    'value' => $type->id,
+                    'class' => "reward_{$type->id} individual_{$type->id}",
+                    'label' => $type->name,
+                    'hint'  => $type->description
+                );
+            }
+            
+        }
+
         // a este grupo le ponemos estilo de edicion
         $individual_rewards["individual_reward-{$individual_reward->id}"] = array(
                 'type'      => 'group',
@@ -172,7 +218,7 @@ foreach ($project->individual_rewards as $individual_reward) {
                         'required'  => true,
                         'class'     => 'inline  reward-type',
                         'type'      => 'radios',
-                        'options'   => $individual_rewards_types,
+                        'options'   => $types,
                         'value'     => $individual_reward->icon,
                         'errors'    => !empty($errors["individual_reward-{$individual_reward->id}-icon"]) ? array($errors["individual_reward-{$individual_reward->id}-icon"]) : array(),
                         'ok'        => !empty($okeys["individual_reward-{$individual_reward->id}-icon"]) ? array($okeys["individual_reward-{$individual_reward->id}-icon"]) : array(),
@@ -215,7 +261,7 @@ foreach ($project->individual_rewards as $individual_reward) {
                     )
                 )
             );
-                    
+        
     } else {
 
         $individual_rewards["individual_reward-{$individual_reward->id}"] = array(

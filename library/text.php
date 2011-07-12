@@ -239,7 +239,7 @@ namespace Goteo\Library {
                 'public_profile' => 'Pagina de perfil de usuario',
                 'project'  => 'Proyecto, pública y formulario',
                 'form'     => 'Generales del formulario de proyecto',
-                'profile'  => 'Geestión de perfil del usuario',
+                'profile'  => 'Gestión de perfil del usuario',
                 'personal' => 'Datos personales del usuario',
                 'overview' => 'Descripción del proyecto',
                 'costs'    => 'Costes del proyecto',
@@ -255,7 +255,8 @@ namespace Goteo\Library {
                 'faq'  => 'Pagina de FAQ',
                 'contact'  => 'Pagina de contacto',
                 'widget'  => 'Textos para etiquetas en el widget de un proyecto',
-                'invest'  => 'Pagina de aportar a un proyecto'
+                'invest'  => 'Pagina de aportar a un proyecto',
+                'types' => 'Tooltips para tipos de necesidades'
             );
 
             \asort($groups);
