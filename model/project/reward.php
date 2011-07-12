@@ -49,21 +49,41 @@ namespace Goteo\Model\Project {
                     $values[':icon'] = $icon;
                 }
 
-                $sql = "SELECT  *
+                $sql = "SELECT
+                            reward.id as id,
+                            reward.reward as reward,
+                            reward.description as description,
+                            reward.type as type,
+                            reward.icon as icon,
+                            reward.other as other,
+                            reward.license as license,
+                            reward.amount as amount,
+                            reward.units as units,
+                            reward.fulsocial as fulsocial,
+                            icon.name as icon_name
                         FROM    reward
+                        LEFT JOIN icon
+                            ON icon.id = reward.icon
                         WHERE   project = :project
                             AND type= :type
                         $sqlFilter
                         ";
 
                 if ($order == 'id') {
-                    $sql .= " ORDER BY id ASC";
+                    $sql .= " ORDER BY reward.id ASC";
                 } else {
-                    $sql .= " ORDER BY amount ASC, id ASC";
+                    $sql .= " ORDER BY reward.amount ASC, reward.id ASC";
                 }
 
 				$query = self::query($sql, $values);
 				foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item ) {
+
+                    if ($item->icon == 'other' && !empty($item->other)) {
+                        $item->icon_name = $item->other;
+                    } else {
+                        $item->icon_name = $item->icon_name;
+                    }
+
                     $array[$item->id] = $item;
                 }
 				return $array;

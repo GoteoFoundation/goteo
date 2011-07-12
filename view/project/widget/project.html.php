@@ -2,14 +2,12 @@
 
 use Goteo\Core\View,
     Goteo\Library\Text,
-    Goteo\Model\Project\Category,
-    Goteo\Model\Project\Reward;
+    Goteo\Model\Project\Category;
 
 $project = $this['project'];
 $level = $this['level'] ?: 3;
 
 $categories = Category::getNames($project->id, 2);
-$types = Reward::icons('');
 ?>
 
 <div class="widget project">
@@ -56,19 +54,15 @@ $types = Reward::icons('');
         <h<?php echo $level + 1 ?>><?php echo Text::get('project-rewards-header'); ?></h<?php echo $level + 1?>>
         
         <ul>
-           <?php $q = 1; foreach ($project->social_rewards as $social):
-               if ($social->icon == 'other' && !empty($social->other)) $types[$social->icon]->name = $social->other;
-               ?>
+           <?php $q = 1; foreach ($project->social_rewards as $social): ?>
             <li class="<?php echo $social->icon ?>">
-                <a href="/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$types[$social->icon]->name}: {$social->reward} al procomún") ?>" class="tipsy"><?php echo htmlspecialchars($social->reward) ?></a>
+                <a href="/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$social->icon_name}: {$social->reward} al procomún") ?>" class="tipsy"><?php echo htmlspecialchars($social->reward) ?></a>
             </li>
            <?php if ($q > 5) break; $q++; 
                endforeach ?>
-           <?php if ($q < 5) foreach ($project->individual_rewards as $individual):
-               if ($individual->icon == 'other' && !empty($individual->other)) $types[$individual->icon]->name = $individual->other;
-               ?>
+           <?php if ($q < 5) foreach ($project->individual_rewards as $individual): ?>
             <li class="<?php echo $individual->icon ?>">
-                <a href="/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$types[$individual->icon]->name}: {$individual->reward} aportando {$individual->amount}") ?> &euro;" class="tipsy"><?php echo htmlspecialchars($individual->reward) ?></a>
+                <a href="/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$individual->icon_name}: {$individual->reward} aportando {$individual->amount}") ?> &euro;" class="tipsy"><?php echo htmlspecialchars($individual->reward) ?></a>
             </li>
            <?php if ($q > 5) break; $q++;
            endforeach ?>
