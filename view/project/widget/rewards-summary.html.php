@@ -11,17 +11,21 @@ $licenses = array();
 foreach (License::getAll() as $l) {
     $licenses[$l->id] = $l;
 }
+
+if (empty($project->social_rewards) && empty($project->individual_rewards))
+    return '';
 ?>
 <div class="widget project-rewards-summary" id="rewards-summary">
 
     <h<?php echo $level ?> class="supertitle"><?php echo Text::get('project-rewards-supertitle'); ?></h<?php echo $level ?>>
 
+    <?php if (!empty($project->social_rewards)) : ?>
     <div class="social">
         <h<?php echo $level + 1 ?> class="title"><?php echo Text::get('project-rewards-social_reward-title'); ?></h<?php echo $level + 1 ?>>
         <ul>
         <?php foreach ($project->social_rewards as $social) : ?>
             <li class="<?php echo $social->icon ?>">
-                <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($social->reward) ?></h<?php echo $level + 2 ?>
+                <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($social->icon_name) . ': ' .htmlspecialchars($social->reward) ?></h<?php echo $level + 2 ?>
                 <p><?php echo htmlspecialchars($social->description)?></p>
                 <?php if (!empty($social->license) && array_key_exists($social->license, $licenses)): ?>
                 <div class="license <?php echo htmlspecialchars($social->license) ?>">
@@ -39,7 +43,9 @@ foreach (License::getAll() as $l) {
         <?php endforeach; ?>
         </ul>
     </div>
+    <?php endif; ?>
 
+    <?php if (!empty($project->individual_rewards)) : ?>
     <div class="individual">
         <h<?php echo $level+1 ?> class="title"><?php echo Text::get('project-rewards-individual_reward-title'); ?></h<?php echo $level+1 ?>>
         <ul>
@@ -47,7 +53,7 @@ foreach (License::getAll() as $l) {
         <li class="<?php echo $individual->icon ?>">
 
             <div class="amount"><?php echo Text::get('regular-investing'); ?> <span class="euro"><?php echo $individual->amount; ?></span></div>
-            <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>
+            <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->icon_name) . ': ' . htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>
             <p><?php echo htmlspecialchars($individual->description)?></p>
 
                     <?php if (!empty($individual->units)) : ?>
@@ -59,6 +65,8 @@ foreach (License::getAll() as $l) {
 
         </li>
         <?php endforeach ?>
+        </ul>
     </div>
+    <?php endif; ?>
 
 </div>
