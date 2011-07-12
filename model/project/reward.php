@@ -51,6 +51,7 @@ namespace Goteo\Model\Project {
 
                 $sql = "SELECT
                             reward.id as id,
+                            reward.project as project,
                             reward.reward as reward,
                             reward.description as description,
                             reward.type as type,
