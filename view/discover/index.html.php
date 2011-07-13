@@ -38,8 +38,7 @@
 	</script>
         <div id="sub-header">
             <div>
-                <h2><?php echo Text::get('discover-header-supertitle'); ?><br />
-                <?php echo Text::get('discover-header-title'); ?></h2>
+                <h2><?php echo Text::html('discover-banner-header') ?></h2>
             </div>
         </div>
 

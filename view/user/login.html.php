@@ -14,14 +14,9 @@ extract($_POST);
 <div id="sub-header">
 	<div class="clearfix">
 		<div>
-			<h2><?php echo Text::get('home-banner-header'); ?><br />
-			<span class="greenblue"><?php echo Text::get('home-banner-strong'); ?></span></h2>
+			<h2><?php echo Text::html('login-banner-header'); ?></h2>
 		</div>
-		<div class="mod-pojctopen">
-			<div class="modpo-open">OPEN</div>
-			<div class="modpo-percent">100% ABIERTO</div>
-			<div class="modpo-whyopen">¿Por qué abierto?</div>
-		</div>
+		<div class="mod-pojctopen"><?php echo Text::html('open-banner-header'); ?></div>
 	</div>
 </div>
     <div id="main">

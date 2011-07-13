@@ -37,8 +37,7 @@ include 'view/header.html.php' ?>
 
         <div id="sub-header">
             <div>
-                <h2><?php echo Text::get('home-banner-header'); ?></h2>
-                <strong><?php echo Text::get('home-banner-strong'); ?></strong>
+                <h2><?php echo Text::html('login-banner-header'); ?></h2>
             </div>
 
         </div>

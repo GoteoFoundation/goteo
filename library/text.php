@@ -236,6 +236,7 @@ namespace Goteo\Library {
         static public function groups()
         {
             $groups = array(
+                'home' => 'Portada',
                 'public_profile' => 'Pagina de perfil de usuario',
                 'project'  => 'Proyecto, pública y formulario',
                 'form'     => 'Generales del formulario de proyecto',
@@ -256,7 +257,8 @@ namespace Goteo\Library {
                 'contact'  => 'Pagina de contacto',
                 'widget'  => 'Textos para etiquetas en el widget de un proyecto',
                 'invest'  => 'Pagina de aportar a un proyecto',
-                'types' => 'Tooltips para tipos de necesidades'
+                'types' => 'Tooltips para tipos de necesidades',
+                'banners' => 'Banners y cabeceras'
             );
 
             \asort($groups);
