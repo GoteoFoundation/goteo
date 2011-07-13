@@ -67,8 +67,47 @@ div#sub-header-secondary > div > h2{
 	float:left;
 }
 
-div#sub-header-secondary > div > h2 .red{
+.discover div#sub-header > div{
+	margin:30px auto;
+}
+
+.user-login div#sub-header > div > div{
+	width:500px;
+	float:left;
+	margin:18px 0 0 0;
+}
+
+.user-login div#sub-header > div > div.mod-pojctopen{
+	float:right;
+	width:171px;
+	margin: 0 66px 0 0;
+}
+
+.user-login div#sub-header > div > div.mod-pojctopen > .modpo-open{
+	font: bold 60px Helvetica, Arial, Geneva, sans-serif;
 	color:#ee4343;
+}
+
+.user-login div#sub-header > div > div.mod-pojctopen > .modpo-percent{
+	font: bold 24px Helvetica, Arial, Geneva, sans-serif;
+	color:#1eb2b2;
+	margin: -10px 0 0;
+	border-bottom: 1px solid #a7a9ac;
+	padding: 0 0 8px 0;
+}
+
+.user-login div#sub-header > div > div.mod-pojctopen > .modpo-whyopen{
+	font: bold 14px Helvetica, Arial, Geneva, sans-serif;
+	padding:6px 0 0 22px;
+}
+
+div#sub-header-secondary > div > h2 .red,
+div#sub-header > div > h2 .red{
+	color:#ee4343;
+}
+
+div#sub-header > div > div > h2 .greenblue{
+	color:#1eb2b2;
 }
 
 div#sub-header-secondary > div > ul.share-goteo{

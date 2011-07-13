@@ -11,6 +11,19 @@ $error = $this['error'];
 $message = $this['message'];
 extract($_POST);
 ?>
+<div id="sub-header">
+	<div class="clearfix">
+		<div>
+			<h2><?php echo Text::get('home-banner-header'); ?><br />
+			<span class="greenblue"><?php echo Text::get('home-banner-strong'); ?></span></h2>
+		</div>
+		<div class="mod-pojctopen">
+			<div class="modpo-open">OPEN</div>
+			<div class="modpo-percent">100% ABIERTO</div>
+			<div class="modpo-whyopen">¿Por qué abierto?</div>
+		</div>
+	</div>
+</div>
     <div id="main">
 
         <div class="login">
