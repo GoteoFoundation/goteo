@@ -13,6 +13,11 @@
         <?php if (!isset($useJQuery) || !empty($useJQuery)): ?>
         <script type="text/javascript" src="/view/js/jquery.js"></script>
         <script type="text/javascript" src="/view/js/jquery.tipsy.js"></script>
+          <!-- custom scrollbars -->
+          <link type="text/css" href="/view/css/jquery.jscrollpane.css" rel="stylesheet" media="all" />
+          <script type="text/javascript" src="/view/js/jquery.mousewheel.js"></script>
+          <script type="text/javascript" src="/view/js/jquery.jscrollpane.min.js"></script>
+          <!-- end custom scrollbars -->
         <?php endif ?>
     </head>
 
