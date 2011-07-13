@@ -2,7 +2,7 @@ body{
 	overflow:hidden !important;
 }
 
-ul{
+div#footer ul {
 	margin:0;padding:0;
 }
 
@@ -36,7 +36,8 @@ div#sub-footer{
 	color:#fff;
 }
 
-.w940{
+div#footer .w940,
+div#sub-footer .w940 {
 	width:940px;
 	margin:0 auto;
 }
@@ -61,74 +62,74 @@ div#footer div.block{
 }
 
 
-div#social{
+div#footer div#social{
 	width:125px;
 }
-div#sponsor{
+div#footer div#sponsor{
 	width:225px;	
 }
-div#services{
+div#footer div#services{
 	width:115px;
 }
 
 
 /*hijos de div.block*/
-div.block h8{
+div#footer div.block h8{
 	font-size:11px;
 	color:#59595C;
 }
 
-div.block ul{
+div#footer div.block ul{
 	list-style:none;
 	margin-top:15px;
 	height:115px;
 	overflow:auto;
 }
 
-div.block ul li{
+div#footer div.block ul li{
 	line-height:12px;
 	height:12px;
 	margin-bottom:7px;
 		font-size:11px;
 }
 
-div.block ul li a{
+div#footer div.block ul li a{
 	font-size:11px;
 	color:#808285;
 }
 
-div.block ul li a:hover{
+div#footer div.block ul li a:hover{
 	color:#1db3b2;
 }
 
-.scroll-pane
+div#footer .scroll-pane
 {
 	width: 100%;
 	height: 200px;
 	overflow: auto;
 }
-.horizontal-only
+div#footer .horizontal-only
 {
 	height: auto;
 	max-height: 200px;
 }
 
 /*particular de social*/
-div.social{
+div#footer div.social{
 	width:108px !important; /*+15 left padding = w 125*/
 }
 
-div.social ul{
+div#footer div.social ul{
 	overflow:visible;
 }
 
-div.social ul li{
+div#footer div.social ul li{
 	height:18px;
 	font-size:11px;	
 	margin-bottom:5px;
 }
 
-div.social ul li a{
+div#footer div.social ul li a{
 	margin:0;
 	font-size:11px; 
     padding-left: 30px;
@@ -169,16 +170,16 @@ div#footer div.social li.rss a {
 
 
 /*particular de apoyo social*/
-div.sponsors{
+div#footer div.sponsors{
 	width:188px !important; /*+15 left padding = w 125*/
 }
 
 /*particular de servicios*/
-div.services{
+div#footer div.services{
 
 }
 
-div.services ul li a{
+div#footer div.services ul li a{
 	text-transform:uppercase;
 }
 
@@ -198,7 +199,7 @@ div#footer div.services {
 
 
 /*particular de sponsor*/
-div.sponsors img#current{
+div#footer div.sponsors img#current{
 	margin-left:13px;
 	margin-top:20px;
 }
@@ -208,6 +209,7 @@ div.sponsors img#current{
 div#sub-footer ul{
 	float:left;
 	max-width:700px;
+	padding-left:0;
 }
 
 div#sub-footer ul li{
@@ -222,12 +224,12 @@ div#sub-footer ul li a{
 	color:#fff;
 }
 
-.platoniq{
+div#footer .platoniq{
 	float:right;
 	font-size:11px;
 }
 
-.platoniq a{
+div#footer .platoniq a{
 	display:block;
 	background:url('platoniq.png');
 }
@@ -256,6 +258,7 @@ div#sub-footer div.platoniq {
     border-width: 0;
     min-width: 0 !important;
 	position:relative;
+	float:right;
 }
 
 div#sub-footer div.platoniq span.text{

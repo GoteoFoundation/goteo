@@ -258,7 +258,8 @@ namespace Goteo\Library {
                 'widget'  => 'Textos para etiquetas en el widget de un proyecto',
                 'invest'  => 'Pagina de aportar a un proyecto',
                 'types' => 'Tooltips para tipos de necesidades',
-                'banners' => 'Banners y cabeceras'
+                'banners' => 'Banners y cabeceras',
+                'footer' => 'Footer'
             );
 
             \asort($groups);
