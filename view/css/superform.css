@@ -275,6 +275,7 @@ div.superform div.elements > ol > li.element.slider.inline > div.contents > ul >
     margin-bottom: 0;
 }
 
+div.superform div.elements > ol > li.radio > div.contents > label,
 div.superform div.elements > ol > li.element.checkboxes > div.contents > ul > li > label,
 div.superform div.elements > ol > li.element.radios > div.contents > ul > li > label,
 div.superform div.elements > ol > li.element.slider > div.contents > ul > li > label {
@@ -315,6 +316,7 @@ div.superform div.elements > ol > li.element.slider.cols_6 > div.contents > ul >
 }
 
 
+div.superform div.elements > ol > li.radio > div.contents > label > input[type="radio"],
 div.superform div.elements > ol > li.element.checkboxes > div.contents > ul > li > label > input[type="checkbox"],
 div.superform div.elements > ol > li.element.radios > div.contents > ul > li > label > input[type="radio"],
 div.superform div.elements > ol > li.element.slider > div.contents > ul > li > label > input[type="radio"] {
@@ -325,6 +327,11 @@ div.superform div.elements > ol > li.element.slider > div.contents > ul > li > l
     height: 1em;
     cursor: pointer;
 }
+
+div.superform div.elements > ol > li.element.radio {
+    padding: 0px !important;
+}
+
 
 /* Feedback */
 div.superform li.element > div.feedback {
