@@ -9,7 +9,8 @@ namespace Goteo\Controller {
         Goteo\Model,
         Goteo\Library\Page,
         Goteo\Library\Mail,
-        Goteo\Library\Text;
+        Goteo\Library\Text,
+        Goteo\Library\Listing;
 
     class Dashboard extends \Goteo\Core\Controller {
 
@@ -47,10 +48,20 @@ namespace Goteo\Controller {
             }
             
             $user = $_SESSION['user'];
-
-            $projects = Model\Project::ofmine($user->id);
-
             $status = Model\Project::status();
+
+            // agrupacion de proyectos que cofinancia y proyectos suyos
+            $lists = array();
+            // mis proyectos
+            $projects = Model\Project::ofmine($user->id);
+            if (!empty($projects)) {
+                $lists['my_projects'] = Listing::get($projects);
+            }
+            // proyectos que cofinancio
+            $invested = Model\User::invested($user->id);
+            if (!empty($invested)) {
+                $lists['invest_on'] = Listing::get($invested);
+            }
 
             foreach ($projects as $project) {
 
@@ -74,7 +85,7 @@ namespace Goteo\Controller {
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action,
-                    'projects'=> $projects,
+                    'lists'   => $lists,
                     'status'  => $status,
                     'errors'  => $errors,
                     'success' => $success
@@ -805,8 +816,7 @@ $testpost = $_POST;
                 'activity' => array(
                     'label'   => 'Mi actividad',
                     'options' => array (
-                        'summary' => 'Resumen',
-                        'wall'    => 'Mi muro'
+                        'summary' => 'Resumen'
                     )
                 ),
                 'profile' => array(
@@ -814,7 +824,7 @@ $testpost = $_POST;
                     'options' => array (
                         'profile'  => 'Editar perfil',
                         'personal' => 'Datos personales',
-                        'access'   => 'Datos de acceso',
+                        'access'   => 'Datos de acceso'
                     )
                 ),
                 'projects' => array(
@@ -823,13 +833,22 @@ $testpost = $_POST;
                         'summary'  => 'Resumen',
                         'updates'  => 'Actualizaciones',
                         'widgets'  => 'Widgets',
-                        'contract' => 'Contrato',
-                        'rewards'  => 'Gestionar retornos',
                         'supports' => 'Colaboraciones',
-                        'preview'  => 'Página pública',
+                        'preview'  => 'Página pública'
                     )
                 )
             );
+
+            /*
+             * Quitados por falta de contenid/requerimientos
+             *
+             * Activity: , 'wall'    => 'Mi muro'
+             * Projects: 'contract' => 'Contrato', 'rewards'  => 'Gestionar retornos',
+
+             *
+             *
+             */
+
 
             // si tiene permiso para ir al admin
             if (ACL::check('/admin')) {

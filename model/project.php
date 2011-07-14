@@ -1287,7 +1287,7 @@ namespace Goteo\Model {
         {
             $projects = array();
 
-            $sql = "SELECT * FROM project WHERE status > 0 AND owner = ? ORDER BY name ASC";
+            $sql = "SELECT * FROM project WHERE status > 0 AND owner = ? ORDER BY created DESC";
             $query = self::query($sql, array($owner));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
                 $projects[] = self::get($proj->id);

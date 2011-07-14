@@ -5,7 +5,8 @@ namespace Goteo\Controller {
     use Goteo\Core\View,
         Goteo\Model,
         Goteo\Core\Redirection,
-        Goteo\Library\Text;
+        Goteo\Library\Text,
+        Goteo\Library\Listing;
 
     class Discover extends \Goteo\Core\Controller {
     
@@ -31,32 +32,11 @@ namespace Goteo\Controller {
                 'success'
             );
 
-            $viewData['types'] = $types;
-
             // cada tipo tiene sus grupos
             foreach ($types as $type) {
-                $list = array();
-                $popular = Model\Project::published($type);
-                $g = 1;
-                $c = 1;
-                foreach ($popular as $k=>$project) {
-                    // al grupo
-                    $list[$g]['items'][] = $project;
-                    
-                    // cada 3 mientras no sea el ultimo
-                    if (($c % 3) == 0 && $c<count($popular)) {
-                        $list[$g]['prev'] = ($g-1);
-                        $list[$g]['next'] = ($g+1);
-                        $g++;
-                    }
-                    $c++;
-                }
-                
-                $list[1]['prev']  = $g;
-                $list[$g]['prev'] = $g == 1 ? 1 : ($g-1);
-                $list[$g]['next'] = 1;
-
-                $viewData['lists'][$type] = $list;
+                $projects = Model\Project::published($type);
+                if (empty($projects)) continue;
+                $viewData['lists'][$type] = Listing::get($projects);
             }
 
             return new View(

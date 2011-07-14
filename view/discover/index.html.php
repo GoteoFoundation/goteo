@@ -8,7 +8,8 @@
 	<script type="text/javascript">	
 		jQuery(document).ready(function ($) {
 			/* todo esto para cada tipo de grupo */
-			<?php foreach ($this['types'] as $type) : ?>
+			<?php foreach ($this['lists'] as $type=>$list) :
+                if(array_empty($list)) continue; ?>
 				$("#discover-group-<?php echo $type ?>-1").show();
 				$("#navi-discover-group-<?php echo $type ?>-1").addClass('active');
 			<?php endforeach; ?>
@@ -52,7 +53,7 @@
                 ); ?>
 
 		<?php foreach ($this['lists'] as $type=>$list) :
-            if (empty($list))
+            if (array_empty($list))
                 continue;
             ?>
             <div class="widget projects">
