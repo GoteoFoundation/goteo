@@ -1,3 +1,6 @@
+@import url('activity/summary.css');
+@import url('projects/rewards.css');
+
 body.dashboard div#main {
     overflow: visible;
 }
@@ -8,13 +11,21 @@ body.dashboard div#sub-header {
     
 }
 
+body.dashboard div#sub-header div.dashboard-header{
+    min-height: 100px;
+}
+
+body.dashboard div#sub-header img{
+    float: left;
+    margin-right: 20px;
+}
+
 body.dashboard div#dashboard-menu {
     display: block;
     max-width: 940px;
     font-size: 13px;
     margin: -2.6em auto 0;    
-    background-color: #78d1d1;
-    
+/*    background-color: #78d1d1; */
 }
 
 body.dashboard div#dashboard-menu ul {
@@ -24,13 +35,13 @@ body.dashboard div#dashboard-menu ul {
     position: relative;
 }
 
-body.dashboard div#dashboard-menu ul li {    
+body.dashboard div#dashboard-menu ul li {
+
     display: inline-block;
 }
 
 body.dashboard div#dashboard-menu ul li,
 body.dashboard div#dashboard-menu ul li a {
-    color: white;
     text-decoration: none;
 }
 
@@ -59,7 +70,37 @@ body.dashboard div#dashboard-menu ul li.section.active ul {
     right: 0;
 }
 
-body.dashboard div#dashboard-menu ul li.section.active,
+body.dashboard div#dashboard-menu ul li.section a.section {
+    background-color: #c7ecec;
+    color: #20b3b2;
+    min-width: 80px !important;
+}
+
+body.dashboard div#dashboard-menu ul li.section a.section:hover {
+    color: #ffffff;
+    background-color: #79d1d1;
+}
+
+body.dashboard div#dashboard-menu ul li.section.active a.section {
+    color: #ffffff;
+}
+
+body.dashboard div#dashboard-menu ul li.section.active a.section,
 body.dashboard div#dashboard-menu ul li.section.active ul {
+    background-color: #1db3b2;
+}
+
+body.dashboard div#dashboard-menu li.option a {
+    color: #c7ecec;
+}
+
+body.dashboard div#dashboard-menu li.option a:hover {
+    color: #ffffff;
+    background-color: #79d1d1;
+}
+
+body.dashboard div#dashboard-menu li.option.active a,
+body.dashboard div#dashboard-menu li.option.active a:hover {
+    color: #ffffff;
     background-color: #1db3b2;
 }

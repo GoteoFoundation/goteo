@@ -85,13 +85,12 @@ div.searcher{
 	margin-top:-1px;
 }
 /* // Buscador */
-
 div.discover-group div.widget.project {
     margin: 0px;
 }
 
 div.discover-group div.widget.project + div.widget.project {
-    margin-left: 20px;
+    margin-left: 40px;
 }
 
 div.discover-group {

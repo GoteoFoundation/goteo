@@ -8,6 +8,9 @@ $project = $this['project'];
 $level = $this['level'] ?: 3;
 
 $categories = Category::getNames($project->id, 2);
+
+//si llega $this['investor'] llegará $this['amount'] con la cantidad a poner en "mi aporte"
+
 ?>
 
 <div class="widget project">
@@ -29,6 +32,10 @@ $categories = Category::getNames($project->id, 2);
             echo '<div class="tagmark red">' . Text::get('regular-success_mark') . '</div>';
         endif;
         ?>
+
+        <?php if (isset($this['investor'])) : ?>
+            <div class="investor"><img src="/image/<?php echo $this['investor']->avatar ?>/50/50" alt="<?php echo $this['investor']->name ?>" /><div class="invest">Mi aporte<br /><span class="amount"><?php echo $this['amount'] ?></span></div></div>
+        <?php endif; ?>
 
         <?php if (!empty($project->gallery)): ?>
         <a href="/project/<?php echo $project->id ?>"><img alt="<?php echo $project->name ?>" src="<?php echo htmlspecialchars(current($project->gallery)->getLink(255, 143)) ?>" /></a>

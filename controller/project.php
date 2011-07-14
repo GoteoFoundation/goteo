@@ -344,15 +344,18 @@ namespace Goteo\Controller {
             $project = Model\Project::get($id);
             // los retornos ordenados por cantidad
             $project->individual_rewards = Model\Project\Reward::getAll($id, 'individual', null, null, 'amount');
+            // DE ESTO PASAMOS HASTA LA PUESTA EN MARCHA
             // solamente se puede ver publicamente si
             // - es el dueño
             // - es un admin con permiso
             // - es otro usuario y el proyecto esta available: en campaña, financiado, retorno cumplido o caducado (que no es desechado)
+            /*
             if (($project->status > 2) ||
                 $project->owner == $_SESSION['user']->id ||
                 ACL::check('/project/edit/todos')) {
                 // lo puede ver
-                
+              */
+
                 $viewData = array(
                         'project' => $project,
                         'show' => $show
@@ -397,10 +400,13 @@ namespace Goteo\Controller {
 
                 return new View('view/project/public.html.php', $viewData);
 
+            /*
             } else {
                 // no lo puede ver
                 throw new Redirection("/");
             }
+             *
+             */
         }
 
         //-----------------------------------------------

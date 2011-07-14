@@ -11,8 +11,8 @@ include 'view/prologue.html.php';
 include 'view/header.html.php'; ?>
 
         <div id="sub-header">
-            <div class="project-header">
-                <a href="/user/<?php echo $user->id; ?>" target="_blank"><img src="/image/<?php echo $user->avatar->id; ?>/50/50" /></a>
+            <div class="dashboard-header">
+                <a href="/user/<?php echo $user->id; ?>" target="_blank"><img src="/image/<?php echo $user->avatar->id; ?>/56/56" /></a>
                 <h2><span>                    <?php if (empty($this['option'])) {
                         echo 'Mi dashboard';
                     } else {

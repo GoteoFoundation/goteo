@@ -790,12 +790,16 @@ namespace Goteo\Model {
                         ON project.id = invest.project
                         AND invest.user = ?
                         AND invest.status <> 2
-                    WHERE project.status > 1 AND project.status < 7
+                    WHERE project.status < 7
                     GROUP BY project.id
                     ORDER BY name ASC
                     ";
 
-            echo "$sql<br />";
+            /*
+             * Restriccion de que no aparecen los que cofinancio que esten en edicion
+             *  solamente no sacamos los caducados
+             * project.status > 1 AND
+             */
 
             $query = self::query($sql, array($user));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $proj) {
