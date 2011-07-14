@@ -18,8 +18,10 @@ body.project-edit div#main.userProfile div.superform li.element.webs li.element.
     padding-right: 1em;
 }
 
+body.project-edit div#main.userProfile div.superform li.element.webs li.element.web-accept input,
 body.project-edit div#main.userProfile div.superform li.element.webs li.element.web-remove input {
     margin: 0;
+    margin-right: 3px;
 }
 
 body.project-edit div#main.userProfile div.superform li.element.webs > div.children > div.elements > ol ol {

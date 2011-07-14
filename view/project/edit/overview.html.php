@@ -24,7 +24,7 @@ foreach ($project->gallery as $image) {
                 'name' => "gallery-{$image->id}-remove",
                 'type'  => 'submit',
                 'label' => Text::get('form-remove-button'),
-                'class' => 'inline remove image-remove'
+                'class' => 'inline remove image-remove red'
             )
         )
     );

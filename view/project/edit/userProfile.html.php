@@ -24,7 +24,7 @@ if (!empty($user->avatar) && is_object($user->avatar))
     $image ["avatar-{$user->avatar->id}-remove"] = array(
         'type'  => 'submit',
         'label' => Text::get('form-remove-button'),
-        'class' => 'inline remove image-remove'
+        'class' => 'inline remove image-remove red'
     );
 
 
@@ -58,15 +58,15 @@ foreach ($user->webs as $web) {
                 'errors'    => array(),
                 'class'     => 'web-url inline'
             ),
-            'web-' . $web->id . '-remove' => array(
-                'type'      => 'submit',                
-                'label'     => Text::get('form-remove-button'),
-                'class'     => 'web-remove inline remove'
-            ),
             'web-' . $web->id . '-accept' => array(
                 'type'      => 'submit',
                 'label'     => Text::get('form-accept-button'),
                 'class'     => 'web-accept inline accept'
+            ),
+            'web-' . $web->id . '-remove' => array(
+                'type'      => 'submit',                
+                'label'     => Text::get('form-remove-button'),
+                'class'     => 'web-remove inline remove red'
             )
         )
     );
@@ -181,6 +181,7 @@ echo new SuperForm(array(
             'value'     => $user->contribution
         ),
         'user_webs' => array(
+            'type'      => 'group',
             'title'     => Text::get('profile-field-websites'),
             'hint'      => Text::get('tooltip-user-webs'),
             'class'     => 'webs',

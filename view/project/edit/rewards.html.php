@@ -137,7 +137,7 @@ foreach ($project->social_rewards as $social_reward) {
                             "social_reward-{$social_reward->id}-remove" => array(
                                 'type'  => 'submit',
                                 'label' => Text::get('form-remove-button'),
-                                'class' => 'inline remove'
+                                'class' => 'inline remove red'
                             )
                         )
                     )
@@ -270,7 +270,7 @@ foreach ($project->individual_rewards as $individual_reward) {
                             "individual_reward-{$individual_reward->id}-remove" => array(
                                 'type'  => 'submit',
                                 'label' => Text::get('form-remove-button'),
-                                'class' => 'inline remove'
+                                'class' => 'inline remove red'
                             )
                         )
                     )

@@ -140,7 +140,7 @@ if (!empty($project->costs)) {
                             "cost-{$cost->id}-remove" => array(
                                 'type'  => 'submit',
                                 'label' => Text::get('form-remove-button'),
-                                'class' => 'inline remove'
+                                'class' => 'inline remove red'
                             )
                         )                        
                     )                    

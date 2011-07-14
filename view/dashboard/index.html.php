@@ -35,13 +35,17 @@ include 'view/header.html.php'; ?>
                 </div>
             <?php endif; ?>
 
-            <?php if (!empty($this['errors'])) {
-                echo implode(',',$this['errors']);
-            } ?>
+            <?php if (!empty($this['errors'])) : ?>
+                <div class="widget">
+                    <?php echo implode(',',$this['errors']); ?>
+                </div>
+            <?php endif; ?>
 
-            <?php if (!empty($this['success'])) {
-                echo implode(',',$this['success']);
-            } ?>
+            <?php if (!empty($this['success'])) : ?>
+                <div class="widget">
+                    <?php echo implode(',',$this['success']); ?>
+                </div>
+            <?php endif; ?>
 
             <?php if (!empty($this['section']) && !empty($this['option'])) {
                 echo new View ('view/dashboard/'.$this['section'].'/'.$this['option'].'.html.php', $this);
