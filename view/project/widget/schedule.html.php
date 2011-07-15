@@ -163,6 +163,8 @@ $until = mktime(0, 0, 0, date('m', $until) + 1, -1, date('Y', $until));
                         $i++;
                         $d = mktime(0, 0, 0, date('m', $d), date('d', $d) + 1, date('Y', $d));
                     }
+                    
+                    $cls = 'on ' . htmlspecialchars($cost->type);
 
                     echo '<td';
 
@@ -170,8 +172,9 @@ $until = mktime(0, 0, 0, date('m', $until) + 1, -1, date('Y', $until));
                         echo ' colspan="', $span, '"';
                     }
 
-                    echo ' class="on"><span title="', date('d/m/Y', $cost_from), ' - ', date('d/m/Y', $cost_until), '">', 
-                        htmlspecialchars($cost->cost), '</span></td>';
+                    echo ' class="', $cls, '">',
+                         '<span title="', date('d/m/Y', $cost_from), ' - ', date('d/m/Y', $cost_until), '">',
+                         htmlspecialchars($cost->cost), '</span></td>';
 
                     $span = 0;
 

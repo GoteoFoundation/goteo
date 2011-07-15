@@ -80,23 +80,41 @@ div.widget.project-schedule table tbody td.on {
     border-radius: 8px;
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
-    background-color: #d1edf1;
-    color: #00B1ca;
+    background-color: #d1edf1;    
+    text-align: left;
+    padding: 1em;
 }
+
+div.widget.project-schedule table tbody td.on span {
+    opacity: .75;
+}
+
+div.widget.project-schedule table tbody td.on.task {
+    background: #d1edf1 url("/view/css/icon/s/task.png") no-repeat 10px center;
+    padding-left: 38px;
+}
+
+div.widget.project-schedule table tbody td.on.material {
+    background: #d1edf1 url("/view/css/icon/s/material.png") no-repeat 10px center;
+    padding-left: 38px;
+}
+
+div.widget.project-schedule table tbody td.on.structure {
+    background: #d1edf1 url("/view/css/icon/s/structure.png") no-repeat 10px center;
+    padding-left: 38px;
+} 
+
 
 div.widget.project-schedule table tbody tr:nth-child(4n+1) td.on {
     background-color: #f9d3d4;
-    color: #BC202D;
 }
 
 div.widget.project-schedule table tbody tr:nth-child(4n+3) td.on {
     background-color: #d2f0f0;
-    color: #20B3B2;
 }
 
 div.widget.project-schedule table tbody tr:nth-child(4n+4) td.on {
     background-color: #c7c7e4;
-    color: #313B96;
 }
 
 
