@@ -7,10 +7,18 @@
 @import url('superform.css');
 @import url('admin.css');
 @import url('dashboard.css');
+@import url('review.css');
 @import url('project.css');
 @import url('user.css');
+@import url('faq.css');
+@import url('blog.css');
+@import url('news.css');
+@import url('discover.css');
+@import url('tipsy/tipsy.css');
+@import url('about.css');
 
-div#sub-header > div {
+div#sub-header > div,
+div#sub-header-secondary > div {
     display: block;
     max-width: 940px;
     margin: 0 auto;
@@ -23,7 +31,7 @@ div#sub-header > div > h2 {
 
 /* Main container */
 div#main {    
-    max-width: 940px;
+    width: 940px;
     margin: 20px auto;
     clear: both;
     overflow-y: auto;
@@ -57,6 +65,7 @@ div.widget .title  {
     font-weight: bold;    
     padding: 0 2px 0;
     margin: 0 0 .5em;
+    text-decoration: none;
 }
 
 /**

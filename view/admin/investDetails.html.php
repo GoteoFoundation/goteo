@@ -18,7 +18,7 @@ include 'view/prologue.html.php';
                     <ul>
                         <li class="home"><a href="/admin">Mainboard</a></li>
                         <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
-                        <li><a href="/admin/accounting">Transacciones</a></li>
+                        <li class="accounting"><a href="/admin/accounting">Listado de aportes</a></li>
                     </ul>
                 </div>
             </div>
@@ -26,15 +26,9 @@ include 'view/prologue.html.php';
         </div>
 
         <div id="main">
-            <h3>Detalle de la transacción <?php echo $this['invest']->id; ?> </h3>
-
-            <?php if (!empty($this['project'])) : ?>
-                <h4><?php echo $this['project']->name . ' ' . $this['status'][$this['project']->status]; ?></h4>
-                <p><?php echo '<pre>' . print_r($this['invest'], 1) . '</pre>'; ?></p>
-                <?php foreach ($this['details'] as $point=>$data) {
-                    echo "<p>$point<pre>" . print_r($data, 1) . "</pre></p>";
-                } ?>
-            <?php endif;?>
+            <h3>Detalles del aporte</h3>
+            
+            <p><?php echo '<pre>' . print_r($this['invest'], 1) . '</pre>'; ?></p>
         </div>
 
 <?php

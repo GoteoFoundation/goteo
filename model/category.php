@@ -46,7 +46,12 @@ namespace Goteo\Model {
                             COUNT(project_category.project)
                         FROM project_category
                         WHERE project_category.category = category.id
-                    ) as used,
+                    ) as numProj,
+                    (   SELECT
+                            COUNT(user_interest.user)
+                        FROM user_interest
+                        WHERE user_interest.interest = category.id
+                    ) as numUser,
                     `order`
                 FROM    category
                 ORDER BY `order` ASC
@@ -72,8 +77,10 @@ namespace Goteo\Model {
             try {
                 $sql = "SELECT id, name
                         FROM category
-                        INNER JOIN project_category
+                        LEFT JOIN project_category
                             ON category.id = project_category.category
+                        LEFT JOIN user_interest
+                            ON category.id = user_interest.interest
                         GROUP BY id
                         ORDER BY name ASC";
 

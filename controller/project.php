@@ -30,8 +30,12 @@ namespace Goteo\Controller {
 
         public function delete ($id) {
             $project = Model\Project::get($id);
-            $project->delete();
-            throw new Redirection("/dashboard");
+            if ($project->delete()) {
+                if ($_SESSION['project']->id == $id) {
+                    unset($_SESSION['project']);
+                }
+            }
+            throw new Redirection("/dashboard/projects");
         }
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
@@ -41,17 +45,17 @@ namespace Goteo\Controller {
             // si no tenemos SESSION stepped es porque no venimos del create
             if (!isset($_SESSION['stepped']))
                 $_SESSION['stepped'] = array(
-                    'userProfile' => 'userProfile',
+                     'userProfile'  => 'userProfile',
                      'userPersonal' => 'userPersonal',
-                     'overview' => 'overview',
-                     'costs' => 'costs',
-                     'rewards' => 'rewards',
-                     'supports' => 'supports'
+                     'overview'     => 'overview',
+                     'costs'        => 'costs',
+                     'rewards'      => 'rewards',
+                     'supports'     => 'supports'
                 );
 
             if ($project->status != 1 && !ACL::check('/project/edit/todos')) {
-                // solo seguimiento estado, progreso
-                // pasos preview, conseguido, recompensas
+                // solo puede estar en preview
+                $step = 'preview';
                 
                 $steps = array(
                     'preview' => array(
@@ -64,7 +68,9 @@ namespace Goteo\Controller {
                  
                  
             } else {
-                // todos los pasos
+                // todos los pasos, entrando en userProfile por defecto
+                $step = 'userProfile';
+
                 $steps = array(
                     'userProfile' => array(
                         'name' => Text::get('step-1'),
@@ -107,7 +113,6 @@ namespace Goteo\Controller {
                 );
             }
             
-            $step = null;      
                         
             
             foreach ($_REQUEST as $k => $v) {                
@@ -115,9 +120,8 @@ namespace Goteo\Controller {
                     $step = substr($k, 10);
                 }                
             }
-            
+
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                
                 $errors = array(); // errores al procesar, no son errores en los datos del proyecto
                 foreach ($steps as $id => &$data) {
                     
@@ -136,6 +140,7 @@ namespace Goteo\Controller {
                 // si ha ocurrido algun error de proces (como p.ej. "no se ha podido guardar loqueseaa")
                 /*
                  * Me follo la exception de si falla el save, ya veremos como mostrar esos errors
+                 * @todo
                 if (!empty($errors))
                     throw new \Goteo\Core\Exception(implode('. ', $errors));
                  *
@@ -155,19 +160,8 @@ namespace Goteo\Controller {
             //re-evaluar el proyecto
             $project->check();
 
-            // vista por defecto, el primer paso por el que no ha pasado
-            foreach ($steps as $id => $data) {
-
-                if (empty($step) && !empty($project->errors[$id])) {
-                    $step = $id;
-                    break;
-                }
-            }
-
-            if (empty($step)) {
-                $step = 'preview';
-            }
-
+            /*
+             * @deprecated
             //si nos estan pidiendo el error de un campo, se lo damos
             if (!empty($_GET['errors'])) {
                 foreach ($project->errors as $paso) {
@@ -179,15 +173,19 @@ namespace Goteo\Controller {
                     }
                 }
             }
+            */
 
             // si
             // para cada paso, si no han pasado por el, quitamos errores y okleys de ese paso
+            /*
             foreach ($steps as $id => $data) {
                 if (!in_array($id, $_SESSION['stepped'])) {
                     unset($project->errors[$id]);
                     unset($project->okeys[$id]);
                 }
             }
+             * 
+             */
 
 
             
@@ -202,27 +200,96 @@ namespace Goteo\Controller {
             // segun el paso añadimos los datos auxiliares para pintar
             switch ($step) {
                 case 'userProfile':
-                    $viewData['user'] = Model\User::get($project->owner);
+                    $owner = Model\User::get($project->owner);
+                    // si es el avatar por defecto no lo mostramos aqui
+                    if ($owner->avatar->id == 1) {
+                        unset($owner->avatar);
+                    }
+                    $viewData['user'] = $owner;
                     $viewData['interests'] = Model\User\Interest::getAll();
                     break;
                 
                 case 'overview':
                     $viewData['currently'] = Model\Project::currentStatus();
                     $viewData['categories'] = Model\Project\Category::getAll();
+                    $viewData['scope'] = Model\Project::scope();
                     break;
 
                 case 'costs':
                     $viewData['types'] = Model\Project\Cost::types();
+                    if ($_POST) {
+                        foreach ($_POST as $k => $v) {
+                            if (!empty($v) && preg_match('/cost-(\d+)-edit/', $k, $r)) {
+                                $viewData['editcost'] = $r[1];
+                                break;
+                            }
+                        }
+                    }
+                    
+                    if (empty($viewData['editcost']) && $_POST['cost-add']) {
+                        
+                        $last = end($project->costs);
+                        
+                        if ($last !== false) {
+                            $viewData['editcost'] = $last->id;
+                        }
+                    }
                     break;
 
                 case 'rewards':
                     $viewData['stypes'] = Model\Project\Reward::icons('social');
                     $viewData['itypes'] = Model\Project\Reward::icons('individual');
                     $viewData['licenses'] = Model\Project\Reward::licenses();
+                    if ($_POST) {
+                        foreach ($_POST as $k => $v) {
+                            if (!empty($v) && preg_match('/social_reward-(\d+)-edit/', $k, $r)) {
+                                $viewData['editsocial_reward'] = $r[1];
+                                break;
+                            }
+                            if (!empty($v) && preg_match('/individual_reward-(\d+)-edit/', $k, $r)) {
+                                $viewData['editindividual_reward'] = $r[1];
+                                break;
+                            }
+                        }
+                    }
+
+                    if (empty($viewData['editsocial_reward']) && $_POST['social_reward-add']) {
+
+                        $last = end($project->social_rewards);
+
+                        if ($last !== false) {
+                            $viewData['editsocial_reward'] = $last->id;
+                        }
+                    }
+                    if (empty($viewData['editindividual_reward']) && $_POST['individual_reward-add']) {
+
+                        $last = end($project->individual_rewards);
+
+                        if ($last !== false) {
+                            $viewData['editindividual_reward'] = $last->id;
+                        }
+                    }
                     break;
 
                 case 'supports':
                     $viewData['types'] = Model\Project\Support::types();
+                    if ($_POST) {
+                        foreach ($_POST as $k => $v) {
+                            if (!empty($v) && preg_match('/support-(\d+)-edit/', $k, $r)) {
+                                $viewData['editsupport'] = $r[1];
+                                break;
+                            }
+                        }
+                    }
+
+                    if (empty($viewData['editsupport']) && $_POST['support-add']) {
+
+                        $last = end($project->supports);
+
+                        if ($last !== false) {
+                            $viewData['editsupport'] = $last->id;
+                        }
+                    }
                     break;
                 
                 case 'preview':
@@ -235,6 +302,7 @@ namespace Goteo\Controller {
                         $success[] = Text::get('guide-project-success-okfinish');
                     }
                     $viewData['success'] = $success;
+                    $viewData['types'] = Model\Project\Cost::types();
                     break;
             }
 
@@ -250,8 +318,12 @@ namespace Goteo\Controller {
 
         public function create () {
 
-            if (empty($_SESSION['user'])) {
+            if (strpos($_SERVER['HTTP_REFERER'], 'howto') === false) {
                 throw new Redirection("/about/howto");
+            }
+
+            if (empty($_SESSION['user'])) {
+                throw new Redirection("/user/login");
             }
 
             $project = new Model\Project;
@@ -270,12 +342,13 @@ namespace Goteo\Controller {
 
         private function view ($id, $show, $post = null) {
             $project = Model\Project::get($id);
-
+            // los retornos ordenados por cantidad
+            $project->individual_rewards = Model\Project\Reward::getAll($id, 'individual', null, null, 'amount');
             // solamente se puede ver publicamente si
             // - es el dueño
             // - es un admin con permiso
-            // - es otro usuario y el proyecto esta available en campaña, financiado o retorno cumplido
-            if (($project->status > 2 && $project->status < 6) ||
+            // - es otro usuario y el proyecto esta available: en campaña, financiado, retorno cumplido o caducado (que no es desechado)
+            if (($project->status > 2) ||
                 $project->owner == $_SESSION['user']->id ||
                 ACL::check('/project/edit/todos')) {
                 // lo puede ver
@@ -293,6 +366,11 @@ namespace Goteo\Controller {
 
                 //tenemos que tocar esto un poquito para gestionar los pasos al aportar
                 if ($show == 'invest') {
+
+                    // piñon para betatesters
+                    if (!in_array($_SESSION['user']->id, array('root', 'goteo', 'olivier', 'esenabre', 'diegobus'))) {
+                        throw new Redirection('/about/beta', Redirection::TEMPORARY);
+                    }
 
                     // si no está en campaña no pueden esta qui ni de coña
                     if ($project->status != 3) {
@@ -314,6 +392,7 @@ namespace Goteo\Controller {
 
                 if ($show == 'updates') {
                     $viewData['post'] = $post;
+                    $viewData['owner'] = $project->owner;
                 }
 
                 return new View('view/project/public.html.php', $viewData);
@@ -350,8 +429,10 @@ namespace Goteo\Controller {
                 'user_about'=>'about',
                 'user_keywords'=>'keywords',
                 'user_contribution'=>'contribution',
-                'user_twitter'=>'twitter',
                 'user_facebook'=>'facebook',
+                'user_google'=>'google',
+                'user_twitter'=>'twitter',
+                'user_identica'=>'identica',
                 'user_linkedin'=>'linkedin'
             );
                         
@@ -459,7 +540,8 @@ namespace Goteo\Controller {
                 'keywords',
                 'media',
                 'currently',
-                'project_location'
+                'project_location',
+                'scope'
             );
 
             foreach ($fields as $field) {
@@ -549,8 +631,9 @@ namespace Goteo\Controller {
                     'project' => $project->id,
                     'cost'  => 'Nueva tarea',
                     'type'  => 'task',
-                    'from' => null,
-                    'until' => null
+                    'required' => 1,
+                    'from' => date('Y-m-d'),
+                    'until' => date('Y-m-d')
                     
                 ));
                 
@@ -579,7 +662,10 @@ namespace Goteo\Controller {
                     $reward->reward = $_POST['social_reward-' . $reward->id . '-reward'];
                     $reward->description = $_POST['social_reward-' . $reward->id . '-description'];
                     $reward->icon = $_POST['social_reward-' . $reward->id . '-icon'];
-                    $reward->license = $_POST['social_reward-' . $reward->id . '-license'];
+                    if ($reward->icon == 'other') {
+                        $reward->other = $_POST['social_reward-' . $reward->id . '-other'];
+                    }
+                    $reward->license = $_POST['social_reward-' . $reward->id . '-' . $reward->icon . '-license'];
                 }
                 
             }
@@ -596,6 +682,9 @@ namespace Goteo\Controller {
                     $reward->reward = $_POST['individual_reward-' . $reward->id .'-reward'];
                     $reward->description = $_POST['individual_reward-' . $reward->id . '-description'];
                     $reward->icon = $_POST['individual_reward-' . $reward->id . '-icon'];
+                    if ($reward->icon == 'other') {
+                        $reward->other = $_POST['individual_reward-' . $reward->id . '-other'];
+                    }
                     $reward->amount = $_POST['individual_reward-' . $reward->id . '-amount'];
                     $reward->units = $_POST['individual_reward-' . $reward->id . '-units'];
                 }
@@ -608,8 +697,8 @@ namespace Goteo\Controller {
                     'type'      => 'social',
                     'project'   => $project->id,
                     'reward'    => 'Nuevo retorno colectivo',
-                    'icon'      => 'file',
-                    'license'   => 'cc0'
+                    'icon'      => '',
+                    'license'   => ''
 
                 ));
             }
@@ -619,9 +708,9 @@ namespace Goteo\Controller {
                     'type'      => 'individual',
                     'project'   => $project->id,
                     'reward'    => 'Nueva recompensa individual',
-                    'icon'      => 'product',
-                    'amount'    => 10,
-                    'units'     => 0
+                    'icon'      => '',
+                    'amount'    => '',
+                    'units'     => ''
                 ));
             }
 

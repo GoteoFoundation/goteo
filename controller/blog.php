@@ -33,7 +33,7 @@ namespace Goteo\Controller {
                     'show' => $show,
                     'tag'  => $tag,
                     'post' => $post,
-                    'node' => \GOTEO_NODE
+                    'owner' => \GOTEO_NODE
                 )
              );
 

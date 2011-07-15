@@ -37,7 +37,7 @@ body.home div#main div.learn ul li > a {
     background-color: #cdcdce;       
 }
 
-body.home div#main div.learn ul li > strong {
+body.home div#main div.learn ul li > a.active {
     background-color: #808184;
 }
 
@@ -45,9 +45,11 @@ body.home div#main div.learn div.post {
     position: relative;
     min-height: 305px;
     padding-left: 520px;
+    display: none;
 }
 
-body.home div#main div.learn div.embed {    
+body.home div#main div.learn div.embed,
+body.home div#main div.learn div.image {
     position: absolute;
     left: 0;
     top: 0;        

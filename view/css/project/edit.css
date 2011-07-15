@@ -10,6 +10,37 @@
 @import url('edit/supports.css');
 @import url('edit/preview.css');
 
+body.project-edit div#sub-header {
+    padding-bottom: 0;
+}
+
+body.project-edit div#sub-header div.project-header{
+    min-height: 75px;
+}
+
+body.project-edit div#sub-header img{
+    float: left;
+    margin-right: 20px;
+}
+
+body.project-edit div#sub-header div.project-by {
+    padding-left: 82px;
+    color: #20B3B2;
+    font-size: 12px;
+    margin: 0 0 .5em;
+}
+
+body.project-edit div#sub-header div.project-by a {
+    font-weight: normal;
+    color: #20B3B2;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+body.project-edit div#sub-header div.project-by a:hover {
+    color: #58595B;
+}
+
 body.project-edit div#main div.status {
     color: #bcbdbd;
     padding-bottom: 30px;

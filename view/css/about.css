@@ -1,0 +1,33 @@
+body.about div#main div.widget {
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+div.field {
+    margin-top: 10px;
+}
+
+div.widget.contact-message label {
+    margin-left: 1px;
+}
+
+div.widget.contact-message input {
+    display: block;
+    background-color: #dceedf;
+    width: 350px;
+    margin: -1px;
+    padding: .3em 0;
+}
+
+div.widget.contact-message textarea {
+    display: block;
+    background-color: #dceedf;
+    width: 350px;
+    margin: -1px;
+    padding: .3em 0;
+}
+
+div.widget.contact-message .button {
+    float: right;
+    margin: 1em 0 0;
+}

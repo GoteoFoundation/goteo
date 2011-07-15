@@ -3,7 +3,7 @@
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title><?php if(!empty($content->title)) { echo $content->title . ' - '; } ?><?php echo GOTEO_META_TITLE ?></title>
+        <title><?php echo GOTEO_META_TITLE ?></title>
         <meta name="description" content="<?php echo GOTEO_META_DESCRIPTION ?>" />
         <meta name="keywords" content="<?php echo GOTEO_META_KEYWORDS ?>" />
         <meta name="author" content="<?php echo GOTEO_META_AUTHOR ?>" />
@@ -12,6 +12,7 @@
         <link rel="stylesheet" type="text/css" href="/view/css/goteo.css" />
         <?php if (!isset($useJQuery) || !empty($useJQuery)): ?>
         <script type="text/javascript" src="/view/js/jquery.js"></script>
+        <script type="text/javascript" src="/view/js/jquery.tipsy.js"></script>
         <?php endif ?>
     </head>
 
@@ -19,7 +20,7 @@
 
         <script type="text/javascript">
             // Mark DOM as javascript-enabled
-            jQuery(document).ready(function ($) { $('body').addClass('js'); });
+            jQuery(document).ready(function ($) { $('body').addClass('js'); $('.tipsy').tipsy(); });
         </script>
         <noscript><!-- Please enable JavaScript --></noscript>
 

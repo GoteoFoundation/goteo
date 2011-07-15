@@ -289,7 +289,7 @@ namespace Goteo\Library {
                     $errors[] = 'Preapproval cancel faild. <pre>' . print_r($ap->getLastError(), 1) . '</pre>';
                     return false;
                 } else {
-                    $invest->cancelPreapproval();
+                    $invest->cancel();
                     return true;
                 }
             }

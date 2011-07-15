@@ -1,38 +1,99 @@
 
 /**
- * Costs 
+ * Supports
  */
  
-body.project-edit div#main.supports div.superform li.element.support div.children li.element .title {
-    padding: .3em 0;
-    position: absolute;
-    left: 0;
-    top: 1em;
+body.project-edit div#main.supports div.superform li.element.support-new > .title {
+    display: none;
 }
 
-body.project-edit div#main.supports div.superform li.element.support div.children li.element .contents {    
-    margin-left: 25%;
-    position: relative;
+/* Viendo */
+
+body.project-edit div#main.supports div.superform li.element.support div.title {
+    font-size: 14px;
+    text-transform: uppercase;
+    width: 70%;
+    float: left;
+}
+
+body.project-edit div#main.supports div.superform li.element.support div.support {
+    padding-left: 55px;
+    background: none no-repeat 10px center;
+    min-height: 32px;
+}
+
+body.project-edit div#main.supports div.superform li.element.support div.task {
+    background-image: url('../../icon/m/task.png');
+}
+
+body.project-edit div#main.supports div.superform li.element.support div.lend {
+    background-image: url('../../icon/m/lend.png');
+}
+
+body.project-edit div#main.supports div.superform li.element.support div.description {
+    float: left;
+    width: 70%;
+    margin: .5em 0;
+}
+
+body.project-edit div#main.supports div.superform li.element.support input.edit,
+body.project-edit div#main.supports div.superform li.element.support input.remove {
+    float: right;
+    clear: right;
+    width: 7em;
+}
+
+body.project-edit div#main.supports div.superform li.element.support input.edit {
+    margin-top: -1em;
+}
+
+body.project-edit div#main.supports div.superform li.element.support input.remove {
+    margin-bottom: 1em;
     margin-top: 0;
 }
 
-body.project-edit div#main.supports div.superform li.element.support li.element.support-remove {
-    text-align: right;
-    padding-top: 0;
+/* Editando */
+
+
+body.project-edit div#main.supports div.superform li.element.editsupport > .children  ol {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+body.project-edit div#main.supports div.superform li.element.editsupport li.buttons div.contents,
+body.project-edit div#main.supports div.superform li.element.editsupport li.buttons ol {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+body.project-edit div#main.supports div.superform li.element.editsupport li.buttons li {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+body.project-edit div#main.supports div.superform li.element.editsupport li.buttons input {
+    width: auto;
+    float: left;
+    margin: 0 10px 0 0;
 }
 
 
-body.project-edit div#main.supports div.superform li.element.support div.children li.element.support-type li > label {
-    padding-left: 55px;        
+body.project-edit div#main.supports div.superform li.element.editsupport div.children li.element.support-description textarea {
+    height: 4em;
+    min-height: 4em;
+}
+
+body.project-edit div#main.supports div.superform li.element.editsupport div.children li.element.support-type li > label {
+    padding-left: 55px;
     background: none no-repeat 10px center;
     min-height: 32px;
     line-height: 32px;
 }
-
-body.project-edit div#main.supports div.superform li.element.support div.children li.element.support-type li.support_task > label {
+body.project-edit div#main.supports div.superform li.element.editsupport div.children li.element.support-type li.support_task > label {
     background-image: url('../../icon/m/task.png');
 }
 
-body.project-edit div#main.supports div.superform li.element.support div.children li.element.support-type li.support_lend > label {
+body.project-edit div#main.supports div.superform li.element.editsupport div.children li.element.support-type li.support_lend > label {
     background-image: url('../../icon/m/lend.png');
 }

@@ -3,28 +3,27 @@
 use Goteo\Library\Text,
     Goteo\Core\View;
 
-$bodyClass = 'dashboard';
+$bodyClass = 'dashboard project-edit';
 
-$user = $_SESSION['user']->id;
+$user = $_SESSION['user'];
 
 include 'view/prologue.html.php';
 include 'view/header.html.php'; ?>
 
         <div id="sub-header">
-            <div>
-                <h2><img src="/image/<?php echo $user->avatar->id; ?>/75/75" />
-                    <?php if (empty($this['option'])) {
+            <div class="project-header">
+                <a href="/user/<?php echo $user->id; ?>" target="_blank"><img src="/image/<?php echo $user->avatar->id; ?>/50/50" /></a>
+                <h2><span>                    <?php if (empty($this['option'])) {
                         echo 'Mi dashboard';
                     } else {
                         echo 'Mi dashboard / ' . $this['menu'][$this['section']]['options'][$this['option']];
-                    } ?><br />
-                    <em><?php echo $user->name; ?></em></h2>
+                    } ?></span></h2>
             </div>
         </div>
 
         <?php  echo new View ('view/dashboard/menu.html.php', $this) ?>
 
-        <div id="main">
+        <div id="main" class="<?php echo $this['option'] ?>">
             
 
             <?php if (!empty($this['message'])) : ?>

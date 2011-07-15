@@ -3,7 +3,8 @@
 namespace Goteo\Model\Blog {
 
     use \Goteo\Model\Project\Media,
-        \Goteo\Model\Image;
+        \Goteo\Model\Image,
+        \Goteo\Library\Text;
 
     class Post extends \Goteo\Core\Model {
 
@@ -15,6 +16,8 @@ namespace Goteo\Model\Blog {
             $image,
             $media,
             $date,
+            $home,
+            $footer,
             $num_comments = 0,
             $comments = array();
 
@@ -31,8 +34,9 @@ namespace Goteo\Model\Blog {
                         `image`,
                         `media`,
                         `date`,
-                        DATE_FORMAT(date, '%d-%m-%Y') as fecha,
-                        home
+                        DATE_FORMAT(date, '%d | %m | %Y') as fecha,
+                        home,
+                        footer
                     FROM    post
                     WHERE id = :id
                     ", array(':id' => $id));
@@ -56,6 +60,9 @@ namespace Goteo\Model\Blog {
                 //tags
                 $post->tags = Post\Tag::getAll($id);
 
+                // reconocimiento de enlaces y saltos de linea
+                $post->text = nl2br(Text::urlink($post->text));
+
                 return $post;
         }
 
@@ -64,7 +71,7 @@ namespace Goteo\Model\Blog {
          * de mas nueva a mas antigua
          * // si es portada son los que se meten por la gestion de entradas en portada que llevan el tag 1 'Portada'
          */
-        public static function getAll ($blog, $portada = false) {
+        public static function getAll ($blog, $limit = null) {
 
             $list = array();
 
@@ -77,12 +84,16 @@ namespace Goteo\Model\Blog {
                     `image`,
                     `media`,
                     DATE_FORMAT(date, '%d-%m-%Y') as date,
-                    DATE_FORMAT(date, '%d-%m-%Y') as fecha,
-                    home
+                    DATE_FORMAT(date, '%d | %m | %Y') as fecha,
+                    home,
+                    footer
                 FROM    post
                 WHERE blog = ?
                 ORDER BY date DESC, id DESC
                 ";
+            if (!empty($limit)) {
+                $sql .= "LIMIT $limit";
+            }
             
             $query = static::query($sql, array($blog));
                 
@@ -98,6 +109,9 @@ namespace Goteo\Model\Blog {
                 }
                 
                 $post->num_comments = Post\Comment::getCount($post->id);
+
+                // reconocimiento de enlaces y saltos de linea
+                $post->text = nl2br(Text::urlink($post->text));
 
                 $list[$post->id] = $post;
             }
@@ -123,7 +137,8 @@ namespace Goteo\Model\Blog {
                     `media`,
                     DATE_FORMAT(date, '%d-%m-%Y') as date,
                     DATE_FORMAT(date, '%d-%m-%Y') as fecha,
-                    home
+                    home,
+                    footer
                 FROM    post
                 INNER JOIN post_tag
                     ON post_tag.post = post.id
@@ -173,8 +188,6 @@ namespace Goteo\Model\Blog {
             if (!$this->validate($errors)) return false;
 
             // Primero la imagenImagen
-            //@FIXME esto de los errores
-            $theerrors = array();
             if (is_array($this->image) && !empty($this->image['name'])) {
                 $image = new Image($this->image);
                 if ($image->save($errors)) {
@@ -193,12 +206,10 @@ namespace Goteo\Model\Blog {
                 'media',
                 'date',
                 'allow',
-                'home'
+                'home',
+                'footer'
                 );
 
-            // si editan por aqui no salen en portada, por ahora
-            //@FIXME
-            $set = '`order` = 0 ';
             $values = array();
 
             foreach ($fields as $field) {

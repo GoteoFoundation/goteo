@@ -1,6 +1,7 @@
 <?php
 
-use Goteo\Core\View;
+use Goteo\Core\View,
+    Goteo\Library\Text;
 
 $bodyClass = 'user-login';
 include 'view/prologue.html.php';
@@ -16,7 +17,7 @@ extract($_POST);
 
             <div>
 
-                <h2>Recuperar contraseña</h2>
+                <h2><?php echo Text::get('login-recover-header'); ?></h2>
 
                 <?php if (!empty($error)): ?>
                 <p class="error"><?php echo $error; ?></p>
@@ -27,16 +28,16 @@ extract($_POST);
 
                 <form action="/user/recover" method="post">
                     <div class="username">
-                        <label>Nombre de usuario
+                        <label><?php echo Text::get('login-recover-username-field'); ?>
                         <input type="text" name="username" value="<?php echo $username?>" /></label>
                     </div>
 
                     <div class="email">
-                        <label>Email de la cuenta
+                        <label><?php echo Text::get('login-recover-email-field'); ?>
                         <input type="text" name="email" value="<?php echo $email?>" /></label>
                     </div>
 
-                    <input type="submit" name="recover" value="Recuperar" />
+                    <input type="submit" name="recover" value="<?php echo Text::get('login-recover-button'); ?>" />
 
                 </form>
 

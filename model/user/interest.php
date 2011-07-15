@@ -2,7 +2,7 @@
 
 namespace Goteo\Model\User {
 
-    class Interest extends \Goteo\Core\Model {
+    class Interest extends \Goteo\Model\Category {
 
         public
             $id,
@@ -38,7 +38,7 @@ namespace Goteo\Model\User {
 		public static function getAll () {
             $array = array ();
             try {
-                $query = static::query("SELECT id, name FROM interest ORDER BY name ASC");
+                $query = static::query("SELECT id, name FROM category ORDER BY name ASC");
                 $interests = $query->fetchAll();
                 foreach ($interests as $int) {
                     $array[$int[0]] = $int[1];
@@ -120,12 +120,13 @@ namespace Goteo\Model\User {
                             AND mine.user = :me
                         WHERE user_interest.user != :me
                         ";
-                $query = static::query($sql, array('me'=>$user));
+                $query = static::query($sql, array(':me'=>$user));
                 $shares = $query->fetchAll(\PDO::FETCH_ASSOC);
                 foreach ($shares as $share) {
 
                     // nombre i avatar
                     $user = \Goteo\Model\User::get($share['id']);
+                    if (empty($user->avatar)) $user->avatar = (object) array('id'=>1);
                     // meritocracia
                     $support = (object) $user->support;
                     // proyectos publicados

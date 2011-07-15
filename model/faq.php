@@ -101,6 +101,12 @@ namespace Goteo\Model {
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
 
+                $extra = array(
+                    'section' => $this->section,
+                    'node' => $this->node
+                );
+                Check::reorder($this->id, $this->move, 'faq', 'id', 'order', $extra);
+
                 return true;
             } catch(\PDOException $e) {
                 $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
@@ -165,6 +171,15 @@ namespace Goteo\Model {
                 'project' => 'Proyecto',
                 'investors' => 'Cofinanciadores',
                 'nodes' => 'Nodos'
+            );
+        }
+
+        public static function colors () {
+            return array(
+                'node' => '#808285',
+                'project' => '#20b3b2',
+                'investors' => '#0c4e99',
+                'nodes' => '#8f8f8f'
             );
         }
 

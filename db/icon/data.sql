@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 18-05-2011 a las 18:46:15
+-- Tiempo de generación: 12-07-2011 a las 00:10:53
 -- Versión del servidor: 5.1.49
 -- Versión de PHP: 5.3.3-1ubuntu9.3
 
@@ -23,11 +23,11 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Volcar la base de datos para la tabla `icon`
 --
 
-INSERT INTO `icon` (`id`, `name`, `description`, `group`) VALUES('code', 'CÃ³digo fuente', '', 'social');
-INSERT INTO `icon` (`id`, `name`, `description`, `group`) VALUES('design', 'DiseÃ±o', '', 'social');
-INSERT INTO `icon` (`id`, `name`, `description`, `group`) VALUES('file', 'Archivos digitales', '', NULL);
-INSERT INTO `icon` (`id`, `name`, `description`, `group`) VALUES('manual', 'Manuales', '', 'social');
-INSERT INTO `icon` (`id`, `name`, `description`, `group`) VALUES('money', 'Dinero', '', 'individual');
-INSERT INTO `icon` (`id`, `name`, `description`, `group`) VALUES('other', 'Otro', '', NULL);
-INSERT INTO `icon` (`id`, `name`, `description`, `group`) VALUES('product', 'Producto', '', 'individual');
-INSERT INTO `icon` (`id`, `name`, `description`, `group`) VALUES('service', 'Servicios', '', NULL);
+INSERT INTO `icon` (`id`, `name`, `description`, `group`, `order`) VALUES('code', 'CÃ³digo fuente', '', 'social', 0);
+INSERT INTO `icon` (`id`, `name`, `description`, `group`, `order`) VALUES('design', 'DiseÃ±o', '', 'social', 0);
+INSERT INTO `icon` (`id`, `name`, `description`, `group`, `order`) VALUES('file', 'Archivos digitales', '', NULL, 0);
+INSERT INTO `icon` (`id`, `name`, `description`, `group`, `order`) VALUES('manual', 'Manuales', '', 'social', 0);
+INSERT INTO `icon` (`id`, `name`, `description`, `group`, `order`) VALUES('money', 'Dinero', '', 'individual', 88);
+INSERT INTO `icon` (`id`, `name`, `description`, `group`, `order`) VALUES('other', 'Otro', '', NULL, 99);
+INSERT INTO `icon` (`id`, `name`, `description`, `group`, `order`) VALUES('product', 'Producto', '', 'individual', 0);
+INSERT INTO `icon` (`id`, `name`, `description`, `group`, `order`) VALUES('service', 'Servicios', '', NULL, 0);

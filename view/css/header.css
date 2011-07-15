@@ -42,13 +42,70 @@ div#super-header a:hover {
 
 
 /* Sub-header */ 
-div#sub-header {
+div#sub-header,
+div#sub-header-secondary {
     background-color: white;
     clear: both;
     padding: 20px 0;
     margin-bottom: 20px;
 }
 
+div#sub-header{
+    background-color: white;
+}
+
+div#sub-header-secondary{
+    background-color: #d7eaeb;
+	margin-top: 4px;
+}
+
+div#sub-header-secondary > div > h2{
+    font: bold 52px Helvetica, Arial, Geneva, sans-serif;
+    margin: 0px;
+    text-transform: uppercase;
+	width:40%;
+	float:left;
+}
+
+div#sub-header-secondary > div > h2 .red{
+	color:#ee4343;
+}
+
+div#sub-header-secondary > div > ul.share-goteo{
+	margin:20px 0 0 0;
+	padding:0px;
+	list-style:none;
+	float:right;
+	font-size: 14px;
+}
+
+div#sub-header-secondary > div > ul.share-goteo li{
+	display:inline;
+	float:left;
+	margin: 0 0 0 22px;
+}
+div#sub-header-secondary > div > ul.share-goteo li.twitter a,
+div#sub-header-secondary > div > ul.share-goteo li.facebook a,
+div#sub-header-secondary > div > ul.share-goteo li.rss a{
+	height:20px;
+	float:left;
+	padding: 4px 0 0 30px;
+}
+div#sub-header-secondary > div > ul.share-goteo li.twitter a{
+	background: #d7eaeb url('sprite-socials-icons.gif') scroll no-repeat  0 0;
+	color:#13c2ec;
+	text-decoration:none;
+}
+div#sub-header-secondary > div > ul.share-goteo li.facebook a{
+	background: #d7eaeb url('sprite-socials-icons.gif') scroll no-repeat  0 -24px;
+	color:#4a6393;
+	text-decoration:none;
+}
+div#sub-header-secondary > div > ul.share-goteo li.rss a{
+	background: #d7eaeb url('sprite-socials-icons.gif') scroll no-repeat  0 -48px;
+	color:#f38321;
+	text-decoration:none;
+}
 div#header div#about {    
     font-size: 12px;
     height: 2.2em;
@@ -147,7 +204,7 @@ div#header div#menu > ul > li {
 }
 
 div#header div#menu > ul > li.home {
-    width: 133px;
+    width: 87px;
     height: 100%;
     position: absolute;
     left: 0;

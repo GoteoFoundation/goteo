@@ -4,20 +4,30 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-?>
-
-
-
-<?php
-            
 $project = $this['project'];
+$types   = $this['types'];
+$errors = $project->errors ?: array();
+
+if (!empty($this['success'])) {
+    $success = '<br /><br />' . implode('<br /><br />', $this['success']);
+}
+
+// miramos el pruimer paso con errores para mandarlo a ese
+$goto = 'view-step-userProfile';
+foreach ($this['steps'] as $id => $data) {
+
+    if (empty($step) && !empty($project->errors[$id])) {
+        $goto = 'view-step-' . $id;
+        break;
+    }
+}
 
 // boton de revisar que no sirve para mucho
 $buttons = array(
     'review' => array(
         'type'  => 'submit',
-        'name'  => 'review',
-        'label' => 'Revisar',
+        'name'  => $goto,
+        'label' => Text::get('form-self_review-button'),
         'class' => 'retry'
     )
 );
@@ -27,7 +37,7 @@ if ($project->finishable) {
     $buttons['finish'] = array(
         'type'  => 'submit',
         'name'  => 'finish',
-        'label' => 'Enviar',
+        'label' => Text::get('form-send_review-button'),
         'class' => 'confirm'
     );
 }
@@ -52,7 +62,7 @@ $elements      = array(
                        . new View('view/project/widget/media.html.php', array('project' => $project))
                        . new View('view/project/widget/share.html.php', array('project' => $project))
                        . new View('view/project/widget/summary.html.php', array('project' => $project))
-                       . new View('view/project/widget/needs.html.php', array('project' => $project))
+                       . new View('view/project/widget/needs.html.php', array('project' => $project, 'types' => $types))
                        . '</div>'
                        . '</div></div>'
     )
@@ -62,7 +72,7 @@ $elements      = array(
 if ($project->finishable) {
     $elements['comment'] = array(
             'type'  =>'textarea',
-            'title' => 'Notas adicionales para el administrador',
+            'title' => Text::get('preview-send-comment'),
             'rows'  => 8,
             'cols'  => 100,
             'hint'  => Text::get('tooltip-project-comment'),
@@ -75,8 +85,8 @@ echo new SuperForm(array(
     'action'        => '',
     'level'         => $this['level'],
     'method'        => 'post',
-    'title'         => 'Proyecto/Previsualización',
-    'hint'          => Text::get('guide-project-preview'),    
+    'title'         => Text::get('preview-main-header'),
+    'hint'          => Text::get('guide-project-preview') . $success,
     'footer'        => $buttons,
     'elements'      => $elements
 ));

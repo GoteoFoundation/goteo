@@ -30,9 +30,14 @@ include 'view/prologue.html.php';
         </div>
 
         <div id="main">
-            <?php if (!empty($this['errors'])) {
-                echo '<pre>' . print_r($this['errors'], 1) . '</pre>';
-            } ?>
+            <?php if (!empty($this['errors']) || !empty($this['success'])) : ?>
+                <div class="widget">
+                    <p>
+                        <?php echo implode(',', $this['errors']); ?>
+                        <?php echo implode(',', $this['success']); ?>
+                    </p>
+                </div>
+            <?php endif; ?>
 
             <div class="widget board">
                 <form id="filter-form" action="/admin/managing" method="get">
@@ -62,7 +67,8 @@ include 'view/prologue.html.php';
                             <th>Usuario</th> <!-- view profile -->
                             <th>Email</th>
                             <th>Estado</th>
-<!--                            <th></th> edit data -->
+                            <th></th>
+                            <th>Revisor</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -73,11 +79,16 @@ include 'view/prologue.html.php';
                             <td><a href="/user/<?php echo $user->id; ?>" target="_blank" title="Preview"><?php echo $user->name; ?></a></td>
                             <td><?php echo $user->email; ?></td>
                             <td><?php echo $user->active ? 'Activo' : 'Inactivo'; ?></td>
-<!--                            <td><a href="/user/edit/<?php echo $user->id; ?>" target="_blank">[Editar]</a></td> -->
                             <?php if ($user->active) : ?>
                             <td><a href="<?php echo "/admin/managing/ban/{$user->id}{$filter}"; ?>">[Desactivar]</a></td>
                             <?php else : ?>
                             <td><a href="<?php echo "/admin/managing/unban/{$user->id}{$filter}"; ?>">[Activar]</a></td>
+                            <?php endif; ?>
+                            <td><?php echo $user->checker ? 'Revisor' : ''; ?></td>
+                            <?php if ($user->checker) : ?>
+                            <td><a href="<?php echo "/admin/managing/nochecker/{$user->id}{$filter}"; ?>">[Quitarlo de revisor]</a></td>
+                            <?php else : ?>
+                            <td><a href="<?php echo "/admin/managing/checker/{$user->id}{$filter}"; ?>">[Hacerlo revisor]</a></td>
                             <?php endif; ?>
                         </tr>
                         <?php endforeach; ?>

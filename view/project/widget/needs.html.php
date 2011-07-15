@@ -1,4 +1,5 @@
 <?php
+use Goteo\Library\Text;
 
 $project = $this['project'];
 $types   = $this['types'];
@@ -24,25 +25,17 @@ foreach ($project->costs as $cost) {
 ?>
 <div class="widget project-needs">
         
-    <!--
-    <div id="project-costs-header">
-        <span class="minimum" style="color:red;">Mínimo</span>
-        <span class="optimum" style="color:black;">Óptimo</span>
-    </div>
-    -->
-        
-    
-    <!--<h<?php echo $level ?>>Necesidades</h<?php echo $level ?>>-->
+    <h<?php echo $level+1 ?> class="title"><?php echo Text::get('project-view-metter-investment'); ?></h<?php echo $level+1 ?>>
            
-    <table>
+    <table width="100%">
         
         <?php foreach ($costs as $type => $list): ?>
         
         <thead class="<?php echo htmlspecialchars($type)?>">
             <tr>
                 <th class="summary"><?php echo htmlspecialchars($types[$type]) ?></th>
-                <th class="min">Mínimo</th>
-                <th class="max">Óptimo</th>
+                <th class="min"><?php echo Text::get('project-view-metter-minimum'); ?></th>
+                <th class="max"><?php echo Text::get('project-view-metter-optimum'); ?></th>
             </tr>            
         </thead>
         
@@ -62,7 +55,7 @@ foreach ($project->costs as $cost) {
                                         
         <tfoot>
             <tr>
-                <th class="total">Total</th>
+                <th class="total"><?php echo Text::get('regular-total'); ?></th>
                 <th class="min"><?php echo $minimum ?></th>
                 <th class="max"><?php echo $optimum ?></th>
             </tr>

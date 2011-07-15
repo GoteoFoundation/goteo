@@ -246,8 +246,7 @@ namespace Goteo\Controller {
             $shares = Model\User\Interest::share($id);
 
             // proyectos que cofinancio
-            $invested = Model\Project::invested($id);
-
+            $invested = Model\User::invested($id);
 
             return new View (
                 'view/user/profile.html.php',

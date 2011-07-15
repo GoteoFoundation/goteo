@@ -51,7 +51,7 @@ namespace Goteo\Model {
                 $sql .= " WHERE `group` = :group OR `group` IS NULL";
             }
 
-            $sql .= " ORDER BY name ASC";
+            $sql .= " ORDER BY `order` ASC, name ASC";
 
             $query = static::query($sql, array(':group' => $group));
 

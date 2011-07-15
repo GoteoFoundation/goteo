@@ -245,9 +245,9 @@ namespace Goteo\Controller {
 		}
 
         /*
-         *  Revisión de proyectos, aqui llega con un nodo y si no es el suyo a la calle (o al suyo)
+         *  Lista de proyectos
          */
-        public function checking($action = 'list', $id = null) {
+        public function overview($action = 'list', $id = null) {
             $filters = array();
             $fields = array('status', 'category');
             foreach ($fields as $field) {
@@ -265,15 +265,20 @@ namespace Goteo\Controller {
              *
              */
             switch ($action) {
+                case 'review':
+                    // pasar un proyecto a revision
+                    $project = Model\Project::get($id);
+                    $project->ready($errors);
+                    break;
                 case 'publish':
                     // poner un proyecto en campaña
                     $project = Model\Project::get($id);
                     $project->publish($errors);
                     break;
                 case 'cancel':
-                    // dar un proyecto por fallido / cerrado  manualmente
+                    // descartar un proyecto por malo
                     $project = Model\Project::get($id);
-                    $project->fail($errors);
+                    $project->cancel($errors);
                     break;
                 case 'enable':
                     // si no está en edición, recuperarlo
@@ -297,12 +302,158 @@ namespace Goteo\Controller {
             $categories = Model\Project\Category::getAll();
 
             return new View(
-                'view/admin/checking.html.php',
+                'view/admin/overview.html.php',
                 array(
                     'projects' => $projects,
                     'filters' => $filters,
                     'status' => $status,
                     'categories' => $categories,
+                    'errors' => $errors
+                )
+            );
+        }
+
+        /*
+         *  Revision de proyectos
+         */
+        public function checking($action = 'list', $id = null) {
+            $filters = array();
+            $fields = array('status', 'checker');
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    $filters[$field] = $_GET[$field];
+                }
+            }
+
+            $filter = "?status={$filters['status']}&checker={$filters['checker']}";
+
+            $errors = array();
+
+            switch ($action) {
+                case 'add':
+                case 'edit':
+
+                    // el get se hace con el id del proyecto
+                    $review = Model\Review::get($id);
+
+                    $project = Model\Project::getMini($review->project);
+
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
+
+                        // instancia
+                        $review->id         = $_POST['id'];
+                        $review->project    = $_POST['project'];
+                        $review->to_checker = $_POST['to_checker'];
+                        $review->to_owner   = $_POST['to_owner'];
+
+                        if ($review->save($errors)) {
+                            switch ($action) {
+                                case 'add':
+                                    $success = 'Revisión iniciada correctamente';
+                                    break;
+                                case 'edit':
+                                    $success = 'Datos editados correctamente';
+                                    break;
+                            }
+                            
+                            throw new Redirection('/admin/checking/' . $filter);
+                        }
+                    }
+                    
+                    return new View(
+                        'view/admin/reviewEdit.html.php',
+                        array(
+                            'action' => $action,
+                            'review' => $review,
+                            'project'=> $project,
+                            'errors' => $errors
+                        )
+                    );
+
+                    break;
+                case 'close':
+                    // marcamos la revision como completamente cerrada
+                    if (Model\Review::close($id, $errors)) {
+                        $message = 'La revisión se ha cerrado';
+                    }
+                    break;
+                case 'unready':
+                    // se la reabrimos para que pueda seguir editando
+                    // la id de revision llega en $id
+                    // la id del usuario llega por get
+                    $user = $_GET['user'];
+                    if (!empty($user)) {
+                        $user_rev = new Model\User\Review(array(
+                            'id' => $id,
+                            'user' => $user
+                        ));
+                        $user_rev->unready($errors);
+                    }
+                    break;
+                case 'assign':
+                    // asignamos la revision a este usuario
+                    // la id de revision llega en $id
+                    // la id del usuario llega por get
+                    $user = $_GET['user'];
+                    if (!empty($user)) {
+                        $assignation = new Model\User\Review(array(
+                            'id' => $id,
+                            'user' => $user
+                        ));
+                        $assignation->save($errors);
+                    }
+                    break;
+                case 'unassign':
+                    // se la quitamos a este revisor
+                    // la id de revision llega en $id
+                    // la id del usuario llega por get
+                    $user = $_GET['user'];
+                    if (!empty($user)) {
+                        $assignation = new Model\User\Review(array(
+                            'id' => $id,
+                            'user' => $user
+                        ));
+                        $assignation->remove($errors);
+                    }
+                    break;
+                case 'report':
+                    // mostramos los detalles de revision
+                    // ojo que este id es la id del proyecto, no de la revision
+                    $review = Model\Review::get($id);
+                    $review = Model\Review::getData($review->id);
+
+                    $evaluation = array();
+
+                    foreach ($review->checkers as $user=>$user_data) {
+                        $evaluation[$user] = Model\Review::getEvaluation($review->id, $user);
+                    }
+
+
+                    return new View(
+                        'view/review/report.html.php',
+                        array(
+                            'review'     => $review,
+                            'evaluation' => $evaluation
+                        )
+                    );
+                    break;
+            }
+
+            $projects = Model\Review::getList($filters);
+            $status = array(
+                'open' => 'Abiertas',
+                'closed' => 'Cerradas'
+            );
+            $checkers = Model\User::getAll(array('role'=>'checker'));
+
+            return new View(
+                'view/admin/checking.html.php',
+                array(
+                    'message' => $message,
+                    'projects' => $projects,
+                    'filters' => $filters,
+                    'status' => $status,
+                    'checkers' => $checkers,
                     'errors' => $errors
                 )
             );
@@ -444,7 +595,8 @@ namespace Goteo\Controller {
                     'section' => $_POST['section'],
                     'title' => $_POST['title'],
                     'description' => $_POST['description'],
-                    'order' => $_POST['order']
+                    'order' => $_POST['order'],
+                    'move' => $_POST['move']
                 ));
 
 				if ($faq->save($errors)) {
@@ -480,13 +632,13 @@ namespace Goteo\Controller {
                     Model\Faq::down($id);
                     break;
                 case 'add':
-                    $next = Model\Faq::next($section);
+                    $next = Model\Faq::next($filter);
 
                     return new View(
                         'view/admin/faqEdit.html.php',
                         array(
                             'action' => 'add',
-                            'faq' => (object) array('section' => $section, 'order' => $next),
+                            'faq' => (object) array('section' => $filter, 'order' => $next, 'cuantos' => $next),
                             'filter' => $filter,
                             'sections' => $sections
                         )
@@ -494,6 +646,9 @@ namespace Goteo\Controller {
                     break;
                 case 'edit':
                     $faq = Model\Faq::get($id);
+
+                    $cuantos = Model\Faq::next($faq->section);
+                    $faq->cuantos = ($cuantos -1);
 
                     return new View(
                         'view/admin/faqEdit.html.php',
@@ -516,6 +671,112 @@ namespace Goteo\Controller {
                 'view/admin/faq.html.php',
                 array(
                     'faqs' => $faqs,
+                    'sections' => $sections,
+                    'filter' => $filter,
+                    'errors' => $errors,
+                    'success' => $success
+                )
+            );
+        }
+
+        /*
+         * criterios de puntuación Goteo
+         */
+        public function criteria($action = 'list', $id = null) {
+            // secciones
+            $sections = Model\Criteria::sections();
+            if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $sections)) {
+                $filter = $_GET['filter'];
+            } else {
+                $filter = 'project';
+            }
+
+            $errors = array();
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                // instancia
+                $criteria = new Model\Criteria(array(
+                    'id' => $_POST['id'],
+                    'section' => $_POST['section'],
+                    'title' => $_POST['title'],
+                    'description' => $_POST['description'],
+                    'order' => $_POST['order'],
+                    'move' => $_POST['move']
+                ));
+
+				if ($criteria->save($errors)) {
+                    switch ($_POST['action']) {
+                        case 'add':
+                            $success = 'Criterio añadido correctamente';
+                            break;
+                        case 'edit':
+                            $success = 'Criterio editado correctamente';
+                            break;
+                    }
+				}
+				else {
+                    return new View(
+                        'view/admin/criteriaEdit.html.php',
+                        array(
+                            'action' => $_POST['action'],
+                            'criteria' => $criteria,
+                            'filter' => $filter,
+                            'sections' => $sections,
+                            'errors' => $errors
+                        )
+                    );
+				}
+			}
+
+
+            switch ($action) {
+                case 'up':
+                    Model\Criteria::up($id);
+                    break;
+                case 'down':
+                    Model\Criteria::down($id);
+                    break;
+                case 'add':
+                    $next = Model\Criteria::next($filter);
+
+                    return new View(
+                        'view/admin/criteriaEdit.html.php',
+                        array(
+                            'action' => 'add',
+                            'criteria' => (object) array('section' => $filter, 'order' => $next, 'cuantos' => $next),
+                            'filter' => $filter,
+                            'sections' => $sections
+                        )
+                    );
+                    break;
+                case 'edit':
+                    $criteria = Model\Criteria::get($id);
+
+                    $cuantos = Model\Criteria::next($criteria->section);
+                    $criteria->cuantos = ($cuantos -1);
+
+                    return new View(
+                        'view/admin/criteriaEdit.html.php',
+                        array(
+                            'action' => 'edit',
+                            'criteria' => $criteria,
+                            'filter' => $filter,
+                            'sections' => $sections
+                        )
+                    );
+                    break;
+                case 'remove':
+                    Model\Criteria::delete($id);
+                    break;
+            }
+
+            $criterias = Model\Criteria::getAll($filter);
+
+            return new View(
+                'view/admin/criteria.html.php',
+                array(
+                    'criterias' => $criterias,
                     'sections' => $sections,
                     'filter' => $filter,
                     'errors' => $errors,
@@ -744,7 +1005,7 @@ namespace Goteo\Controller {
          * Es una idea de blog porque luego lo que salga en la portada
          *  seran los posts de cierta categoria, o algo así
          */
-        public function posts($action = 'list', $id = null) {
+        public function posts($action = 'list', $id = null, $type = 'home') {
 
             $errors = array();
 
@@ -757,7 +1018,9 @@ namespace Goteo\Controller {
                     'title' => $_POST['title'],
                     'text' => $_POST['text'],
                     'media' => $_POST['media'],
-                    'order' => $_POST['order']
+                    'order' => $_POST['order'],
+                    'home' => $_POST['home'],
+                    'footer' => $_POST['footer']
                 ));
 
                 if (!empty($post->media)) {
@@ -770,6 +1033,7 @@ namespace Goteo\Controller {
                             $success = 'Entrada creada correctamente';
                             break;
                         case 'edit':
+                            throw new Redirection('/admin/blog');
                             $success = 'Entrada editada correctamente';
                             break;
                     }
@@ -781,20 +1045,26 @@ namespace Goteo\Controller {
                                 'view/admin/postEdit.html.php',
                                 array(
                                     'action' => 'add',
+                                    'type' => $this['type'],
                                     'post' => $post,
                                     'errors' => $errors
                                 )
                             );
                             break;
                         case 'edit':
+                            throw new Redirection('/admin/blog');
+                            /*
                             return new View(
                                 'view/admin/postEdit.html.php',
                                 array(
                                     'action' => 'edit',
+                                    'type' => $this['type'],
                                     'post' => $post,
                                     'errors' => $errors
                                 )
                             );
+                             *
+                             */
                             break;
                     }
 				}
@@ -803,14 +1073,14 @@ namespace Goteo\Controller {
 
             switch ($action) {
                 case 'up':
-                    Model\Post::up($id);
+                    Model\Post::up($id, $type);
                     break;
                 case 'down':
-                    Model\Post::down($id);
+                    Model\Post::down($id, $type);
                     break;
                 case 'add':
                     // siguiente orden
-                    $next = Model\Post::next();
+                    $next = Model\Post::next($type);
 
                     return new View(
                         'view/admin/postEdit.html.php',
@@ -821,6 +1091,8 @@ namespace Goteo\Controller {
                     );
                     break;
                 case 'edit':
+                    throw new Redirection('/admin/blog');
+                    /*
                     $post = Model\Post::get($id);
 
                     return new View(
@@ -830,18 +1102,22 @@ namespace Goteo\Controller {
                             'post' => $post
                         )
                     );
+                     * 
+                     */
                     break;
                 case 'remove':
                     Model\Post::delete($id);
                     break;
             }
 
-            $posts = Model\Post::getAll();
+            $home_posts = Model\Post::getAll('home');
+            $footer_posts = Model\Post::getAll('footer');
 
             return new View(
                 'view/admin/post.html.php',
                 array(
-                    'posts' => $posts,
+                    'home_posts' => $home_posts,
+                    'footer_posts' => $footer_posts,
                     'errors' => $errors,
                     'success' => $success
                 )
@@ -864,7 +1140,7 @@ namespace Goteo\Controller {
                     return new View(
                         'view/admin/edit.html.php',
                         array(
-                            'title' => "Añadiendo una nueva categoría de proyectos",
+                            'title' => "Añadiendo una nueva categoría",
                             'menu' => array(
                                 array(
                                     'url' => $url,
@@ -928,7 +1204,7 @@ namespace Goteo\Controller {
                     return new View(
                         'view/admin/edit.html.php',
                         array(
-                            'title' => "Editando una categoría de proyectos",
+                            'title' => "Editando una categoría",
                             'menu' => array(
                                 array(
                                     'url' => $url,
@@ -985,7 +1261,7 @@ namespace Goteo\Controller {
             return new View(
                 'view/admin/list.html.php',
                 array(
-                    'title' => 'Gestión de categorías de proyectos',
+                    'title' => 'Gestión de categorías',
                     'menu' => array(
                         array(
                             'url' => "$url/add",
@@ -995,167 +1271,8 @@ namespace Goteo\Controller {
                     'data' => $model::getAll(),
                     'columns' => array(
                         'name' => 'Categoría',
-                        'used' => 'Proyectos',
-                        'order' => 'Prioridad',
-                        'up' => '',
-                        'down' => '',
-                        'edit' => '',
-                        'remove' => ''
-                    ),
-                    'url' => "$url",
-                    'errors' => $errors
-                )
-            );
-        }
-
-        /*
-         *  Gestión de intereses de usuarios
-         *  Si no la usa nadie se puede borrar
-         */
-        public function interests($action = 'list', $id = null) {
-
-            $model = 'Goteo\Model\Interest';
-            $url = '/admin/interests';
-
-            $errors = array();
-
-            switch ($action) {
-                case 'add':
-                    return new View(
-                        'view/admin/edit.html.php',
-                        array(
-                            'title' => "Añadiendo un nuevo interés de usuarios",
-                            'menu' => array(
-                                array(
-                                    'url'   => $url,
-                                    'label' => 'Intereses'
-                                )
-                            ),
-                            'data' => (object) array(),
-                            'form' => array(
-                                'action' => "$url/edit/",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => 'Añadir'
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Interés',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    ),
-                                    'description' => array(
-                                        'label' => 'Descripción',
-                                        'name' => 'description',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="2"',
-
-                                    )
-                                )
-
-                            )
-                        )
-                    );
-
-                    break;
-                case 'edit':
-
-                    // gestionar post
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
-
-                        $errors = array();
-
-                        // instancia
-                        $item = new $model(array(
-                            'id' => $_POST['id'],
-                            'name' => $_POST['name'],
-                            'description' => $_POST['description']
-                        ));
-
-                        if ($item->save($errors)) {
-                            throw new Redirection($url);
-                        }
-                    } else {
-                        $item = $model::get($id);
-                    }
-
-                    return new View(
-                        'view/admin/edit.html.php',
-                        array(
-                            'title' => "Editando un interés de usuario",
-                            'menu' => array(
-                                array(
-                                    'url'   => $url,
-                                    'label' => 'Intereses'
-                                )
-                            ),
-                            'data' => $item,
-                            'form' => array(
-                                'action' => "$url/edit/$id",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => 'guardar'
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Interés',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    ),
-                                    'description' => array(
-                                        'label' => 'Descripción',
-                                        'name' => 'description',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="2"',
-
-                                    )
-                                )
-
-                            ),
-                            'errors' => $errors
-                        )
-                    );
-
-                    break;
-                case 'up':
-                    $model::up($id);
-                    break;
-                case 'down':
-                    $model::down($id);
-                    break;
-                case 'remove':
-                    if ($model::delete($id)) {
-                        throw new Redirection($url);
-                    }
-                    break;
-            }
-
-            return new View(
-                'view/admin/list.html.php',
-                array(
-                    'title' => 'Gestión de intereses de usuarios',
-                    'menu' => array(
-                        array(
-                            'url' => "$url/add",
-                            'label' => 'Nuevo interés'
-                        )
-                    ),
-                    'data' => $model::getAll(),
-                    'columns' => array(
-                        'name' => 'Interes',
-                        'used' => 'Usuarios',
+                        'numProj' => 'Proyectos',
+                        'numUser' => 'Usuarios',
                         'order' => 'Prioridad',
                         'up' => '',
                         'down' => '',
@@ -1332,6 +1449,14 @@ namespace Goteo\Controller {
                     $sql = "UPDATE user SET active = 1 WHERE id = ?";
                     Model\User::query($sql, array($id));
                     break;
+                case 'checker':
+                    $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'checker')";
+                    Model\User::query($sql, array(':user'=>$id));
+                    break;
+                case 'nochecker':
+                    $sql = "DELETE FROM user_role WHERE role_id = 'checker' AND user_id = ?";
+                    Model\User::query($sql, array($id));
+                    break;
             }
 
             $users = Model\User::getAll($filters);
@@ -1356,27 +1481,99 @@ namespace Goteo\Controller {
 
         /*
          *  Revisión de aportes
-         *
-         * dummy para ejecutar cargos
          */
         public function accounting($action = 'list', $id = null) {
-            // estados del proyecto
-            $status = Model\Project::status();
-            // estados de aporte
-            $investStatus = Model\Invest::status();
 
+            $errors = array();
+
+            // si estamos generando aportes cargamos la lista completa de usuarios, proyectos y campañas
+           if ($action == 'invest') {
+               
+                // listado de proyectos existentes
+                $projects = Model\Project::getAll();
+                // usuarios
+                $users = Model\User::getAllMini();
+                // campañas
+                $campaigns = Model\Campaign::getAll();
+
+                // aporte manual
+                if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add']) ) {
+
+                    $userData = Model\User::getMini($_POST['user']);
+
+                    $invest = new Model\Invest(
+                        array(
+                            'amount'    => $_POST['amount'],
+                            'user'      => $userData->id,
+                            'project'   => $_POST['project'],
+                            'account'   => $userData->email,
+                            'method'    => 'cash',
+                            'status'    => 1,
+                            'invested'  => date('Y-m-d'),
+                            'charged'   => date('Y-m-d'),
+                            'anonymous' => $_POST['anonymous'],
+                            'resign'    => 1,
+                            'admin'     => $_SESSION['user']->id,
+                            'campaign'  => $_POST['campaign']
+                        )
+                    );
+
+                    if ($invest->save($errors)) {
+                        $errors[] = 'Aporte manual creado correctamente';
+                    } else{
+                        $errors[] = 'Ha fallado algo al crear el aporte manual';
+                    }
+
+                }
+
+                 $viewData = array(
+                        'users'         => $users,
+                        'projects'      => $projects,
+                        'campaigns'     => $campaigns,
+                        'errors'        => $errors
+                    );
+
+                return new View(
+                    'view/admin/investAdd.html.php',
+                    $viewData
+                );
+
+                // fin de la historia
+
+           } else {
+
+               // sino, cargamos los filtros
+                $filters = array();
+                $fields = array('methods', 'status', 'investStatus', 'projects', 'users', 'campaigns');
+                foreach ($fields as $field) {
+                    if (isset($_GET[$field])) {
+                        if (\is_numeric($_GET[$field])) {
+                            $filters[$field] = (int) $_GET[$field];
+                        } else {
+                            $filters[$field] = (string) $_GET[$field];
+                        }
+                    }
+                }
+
+                // tipos de aporte
+                $methods = Model\Invest::methods();
+                // estados del proyecto
+                $status = Model\Project::status();
+                // estados de aporte
+                $investStatus = Model\Invest::status();
+                // listado de proyectos
+                $projects = Model\Invest::projects();
+                // usuarios cofinanciadores
+                $users = Model\Invest::users();
+                // campañas que tienen aportes
+                $campaigns = Model\Invest::campaigns();
+
+           }
 
             /// si piden unos detalles,
             if ($action == 'details') {
                 $invest = Model\Invest::get($id);
                 $project = Model\Project::get($invest->project);
-                $details = array();
-                if (!empty($invest->preapproval)) {
-                    $details['preapproval'] = Paypal::preapprovalDetails($invest->preapproval, $errors);
-                }
-                if (!empty($invest->payment)) {
-                    $details['payment'] = Paypal::paymentDetails($invest->payment, $errors);
-                }
                 return new View(
                     'view/admin/investDetails.html.php',
                     array(
@@ -1387,6 +1584,8 @@ namespace Goteo\Controller {
                     )
                 );
             }
+
+
 
             if ($action == 'execute') {
                 $invest = Model\Invest::get($id);
@@ -1410,14 +1609,48 @@ namespace Goteo\Controller {
 
             }
 
-            /*
-             *  Lista de proyectos en campaña
-             *  indicando cuanto han conseguido, cuantos dias y los cofinanciadores
-             *  Para cada cofinanciador sus aportes
-             *  enlace para ejecutar cargo
-             */
-            $projects = Model\Project::invested();
+            if ($action == 'return') {
+                $invest = Model\Invest::get($id);
 
+                switch ($invest->method) {
+                    case 'paypal':
+                        if (Paypal::cancelPreapproval($invest, $errors)) {
+                            $errors[] = 'Preaproval paypal cancelado, aporte cancelado.';
+                        } else {
+                            $errors[] = 'Fallo al cancelar el preapproval en paypal: ' . implode('; ', $errors);
+                            if ($invest->cancel()) {
+                                $errors[] = 'Aporte cancelado';
+                            } else{
+                                $errors[] = 'Fallo al cancelar el aporte';
+                            }
+                        }
+                        break;
+                    case 'tpv':
+                        if (Tpv::cancelPreapproval($invest, $errors)) {
+                            $errors[] = 'Transacción sermepa cancelada, aporte cancelado.';
+                        } else {
+                            $errors[] = 'Fallo al cancelar la transaccion sermepa: ' . implode('; ', $errors);
+                            if ($invest->cancel()) {
+                                $errors[] = 'Aporte cancelado';
+                            } else{
+                                $errors[] = 'Fallo al cancelar el aporte';
+                            }
+                        }
+                        break;
+                    case 'cash':
+                        if ($invest->cancel()) {
+                            $errors[] = 'Aporte cancelado';
+                        } else{
+                            $errors[] = 'Fallo al cancelar el aporte';
+                        }
+                        break;
+                }
+
+            }
+
+            /**
+             * Esto que viene aqui es trabajo del cron
+             *
             foreach ($projects as &$project) {
 
                 $project->invests = Model\Invest::getAll($project->id);
@@ -1458,16 +1691,29 @@ namespace Goteo\Controller {
                 }
 
             }
+             * 
+             */
+
+            // listado de aportes
+             $list = Model\Invest::getList($filters);
+
+             $viewData = array(
+                    'list'          => $list,
+                    'filters'       => $filters,
+                    'users'         => $users,
+                    'projects'      => $projects,
+                    'campaigns'     => $campaigns,
+                    'methods'       => $methods,
+                    'status'        => $status,
+                    'investStatus'  => $investStatus,
+                    'errors'        => $errors
+                );
 
             return new View(
                 'view/admin/accounting.html.php',
-                array(
-                    'projects' => $projects,
-                    'status' => $status,
-                    'investStatus' => $investStatus,
-                    'errors' => $errors
-                )
+                $viewData
             );
+
         }
 
 
@@ -1557,7 +1803,7 @@ namespace Goteo\Controller {
                 $action = 'list';
             } else {
                 if (!$blog->active) {
-                    $errors[] = 'Lo sentimos, las actualizaciones para este proyecto estan desactivadas';
+                    $errors[] = 'Lo sentimos, el blog para este nodo esta desactivado';
                     $action = 'list';
                 }
             }
@@ -1584,6 +1830,7 @@ namespace Goteo\Controller {
                         'media',
                         'date',
                         'home',
+                        'footer',
                         'allow'
                     );
 
@@ -1629,20 +1876,16 @@ namespace Goteo\Controller {
             switch ($action)  {
                 case 'remove':
                     // eliminar una entrada
-                    if (!empty($blog->posts[$id])) {
-                        if (Model\Blog\Post::delete($id)) {
-                            unset($blog->posts[$id]);
-                            $success[] = 'Entrada eliminada';
-                        } else {
-                            $errors[] = 'No se ha podido eliminar la entrada';
-                        }
+                    if (Model\Blog\Post::delete($id)) {
+                        unset($blog->posts[$id]);
+                        $success[] = 'Entrada eliminada';
                     } else {
-                        $errors[] = 'La entrada que se quiere eliminar no es de este blog';
+                        $errors[] = 'No se ha podido eliminar la entrada';
                     }
                 case 'list':
                     // lista de entradas
                     // obtenemos los datos
-                    $posts = $blog->posts;
+                    $posts = Model\Blog\Post::getAll($blog->id);
 
                     return new View(
                         'view/admin/blog.html.php',
@@ -1768,6 +2011,696 @@ namespace Goteo\Controller {
             );
         }
 
+        /*
+         *  Gestión de noticias
+         */
+        public function news($action = 'list', $id = null) {
+
+            $model = 'Goteo\Model\News';
+            $url = '/admin/news';
+
+            $errors = array();
+
+            switch ($action) {
+                case 'add':
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Añadiendo una nueva noticia",
+                            'menu' => array(
+                                array(
+                                    'url' => $url,
+                                    'label' => 'Noticias'
+                                )
+                            ),
+                            'data' => (object) array('order' => $model::next()),
+                            'form' => array(
+                                'action' => "$url/edit/",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'Añadir'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'title' => array(
+                                        'label' => 'Noticia',
+                                        'name' => 'title',
+                                        'type' => 'text',
+                                        'properties' => 'size="100" maxlength="100"'
+                                    ),
+                                    'description' => array(
+                                        'label' => 'Entradilla',
+                                        'name' => 'description',
+                                        'type' => 'textarea',
+                                        'properties' => 'cols="100" rows="2"'
+                                    ),
+                                    'url' => array(
+                                        'label' => 'Enlace',
+                                        'name' => 'url',
+                                        'type' => 'text',
+                                        'properties' => 'size=100'
+                                    ),
+                                    'order' => array(
+                                        'label' => 'Posición',
+                                        'name' => 'order',
+                                        'type' => 'text'
+                                    )
+                                )
+
+                            )
+                        )
+                    );
+
+                    break;
+                case 'edit':
+
+                    // gestionar post
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
+
+                        $errors = array();
+
+                        // instancia
+                        $item = new $model(array(
+                            'id'          => $_POST['id'],
+                            'title'       => $_POST['title'],
+                            'description' => $_POST['description'],
+                            'url'         => $_POST['url'],
+                            'order'       => $_POST['order']
+                        ));
+
+                        if ($item->save($errors)) {
+                            throw new Redirection($url);
+                        }
+                    } else {
+                        $item = $model::get($id);
+                    }
+
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Editando una noticia",
+                            'menu' => array(
+                                array(
+                                    'url' => $url,
+                                    'label' => 'Noticias'
+                                )
+                            ),
+                            'data' => $item,
+                            'form' => array(
+                                'action' => "$url/edit/$id",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'guardar'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'title' => array(
+                                        'label' => 'Noticia',
+                                        'name' => 'title',
+                                        'type' => 'text',
+                                        'properties' => 'size="100"  maxlength="80"'
+                                    ),
+                                    'description' => array(
+                                        'label' => 'Entradilla',
+                                        'name' => 'description',
+                                        'type' => 'textarea',
+                                        'properties' => 'cols="100" rows="2"'
+                                    ),
+                                    'url' => array(
+                                        'label' => 'Enlace',
+                                        'name' => 'url',
+                                        'type' => 'text',
+                                        'properties' => 'size=100'
+                                    ),
+                                    'order' => array(
+                                        'label' => 'Posición',
+                                        'name' => 'order',
+                                        'type' => 'text'
+                                    )
+                                )
+
+                            ),
+                            'errors' => $errors
+                        )
+                    );
+
+                    break;
+                case 'up':
+                    $model::up($id);
+                    break;
+                case 'down':
+                    $model::down($id);
+                    break;
+                case 'remove':
+                    if ($model::delete($id)) {
+                        throw new Redirection($url);
+                    }
+                    break;
+            }
+
+            return new View(
+                'view/admin/list.html.php',
+                array(
+                    'title' => 'Gestión de noticias',
+                    'menu' => array(
+                        array(
+                            'url' => "$url/add",
+                            'label' => 'Nueva noticia'
+                        )
+                    ),
+                    'data' => $model::getAll(),
+                    'columns' => array(
+                        'title' => 'Noticia',
+                        'url' => 'Enlace',
+                        'order' => 'Posición',
+                        'up' => '',
+                        'down' => '',
+                        'edit' => '',
+                        'remove' => ''
+                    ),
+                    'url' => "$url",
+                    'errors' => $errors
+                )
+            );
+        }
+
+        /*
+         *  Gestión de patrocinadores
+         */
+        public function sponsors($action = 'list', $id = null) {
+
+            $model = 'Goteo\Model\Sponsor';
+            $url = '/admin/sponsors';
+
+            $errors = array();
+
+            switch ($action) {
+                case 'add':
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Añadiendo un nuevo patrocinador",
+                            'menu' => array(
+                                array(
+                                    'url' => $url,
+                                    'label' => 'Patrocinadores'
+                                )
+                            ),
+                            'data' => (object) array('order' => $model::next() ),
+                            'form' => array(
+                                'action' => "$url/edit/",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'Añadir'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Patrocinador',
+                                        'name' => 'name',
+                                        'type' => 'text'
+                                    ),
+                                    'url' => array(
+                                        'label' => 'Enlace',
+                                        'name' => 'url',
+                                        'type' => 'text',
+                                        'properties' => 'size=100'
+                                    ),
+                                    'image' => array(
+                                        'label' => 'Logo',
+                                        'name' => 'image',
+                                        'type' => 'image'
+                                    ),
+                                    'order' => array(
+                                        'label' => 'Posición',
+                                        'name' => 'order',
+                                        'type' => 'text'
+                                    )
+                                )
+
+                            )
+                        )
+                    );
+
+                    break;
+                case 'edit':
+
+                    // gestionar post
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                        $errors = array();
+
+                        // instancia
+                        $item = new $model(array(
+                            'id' => $_POST['id'],
+                            'name' => $_POST['name'],
+                            'url' => $_POST['url'],
+                            'order' => $_POST['order']
+                        ));
+
+                        // tratar la imagen y ponerla en la propiedad image
+                        if(!empty($_FILES['image']['name'])) {
+                            $item->image = $_FILES['image'];
+                        }
+
+                        // tratar si quitan la imagen
+                        $current = $_POST['image']; // la acual
+                        if (isset($_POST['image-' . $current .  '-remove'])) {
+                            $image = Model\Image::get($current);
+                            $image->remove('sponsor');
+                            $item->image = '';
+                            $removed = true;
+                        }
+
+                        if ($item->save($errors)) {
+                            throw new Redirection($url);
+                        }
+                    } else {
+                        $item = $model::get($id);
+                    }
+
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Editando un patrocinador",
+                            'menu' => array(
+                                array(
+                                    'url' => $url,
+                                    'label' => 'Patrocinadores'
+                                )
+                            ),
+                            'data' => $item,
+                            'form' => array(
+                                'action' => "$url/edit/$id",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'guardar'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Patrocinador',
+                                        'name' => 'name',
+                                        'type' => 'text'
+                                    ),
+                                    'url' => array(
+                                        'label' => 'Enlace',
+                                        'name' => 'url',
+                                        'type' => 'text',
+                                        'properties' => 'size=100'
+                                    ),
+                                    'image' => array(
+                                        'label' => 'Logo',
+                                        'name' => 'image',
+                                        'type' => 'image'
+                                    ),
+                                    'order' => array(
+                                        'label' => 'Posición',
+                                        'name' => 'order',
+                                        'type' => 'text'
+                                    )
+                                )
+
+                            ),
+                            'errors' => $errors
+                        )
+                    );
+
+                    break;
+                case 'up':
+                    $model::up($id);
+                    break;
+                case 'down':
+                    $model::down($id);
+                    break;
+                case 'remove':
+                    if ($model::delete($id)) {
+                        throw new Redirection($url);
+                    }
+                    break;
+            }
+
+            return new View(
+                'view/admin/list.html.php',
+                array(
+                    'title' => 'Gestión de patrocinadores',
+                    'menu' => array(
+                        array(
+                            'url' => "$url/add",
+                            'label' => 'Nuevo patrocinador'
+                        )
+                    ),
+                    'data' => $model::getAll(),
+                    'columns' => array(
+                        'name' => 'Patrocinador',
+                        'url' => 'Enlace',
+                        'image' => 'Imagen',
+                        'order' => 'Posición',
+                        'up' => '',
+                        'down' => '',
+                        'edit' => '',
+                        'remove' => ''
+                    ),
+                    'url' => "$url",
+                    'errors' => $errors
+                )
+            );
+        }
+
+        /*
+         *  Gestión de campañas
+         */
+        public function campaigns($action = 'list', $id = null) {
+
+            $model = 'Goteo\Model\Campaign';
+            $url = '/admin/campaigns';
+
+            $errors = array();
+
+            switch ($action) {
+                case 'add':
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Añadiendo una nueva campaña",
+                            'menu' => array(
+                                array(
+                                    'url'   => $url,
+                                    'label' => 'Campañas'
+                                )
+                            ),
+                            'data' => (object) array(),
+                            'form' => array(
+                                'action' => "$url/edit/",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'Añadir'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Campaña',
+                                        'name' => 'name',
+                                        'type' => 'text'
+                                    ),
+                                    'description' => array(
+                                        'label' => 'Descripción',
+                                        'name' => 'description',
+                                        'type' => 'textarea',
+                                        'properties' => 'cols="100" rows="2"'
+                                    )
+                                )
+
+                            )
+                        )
+                    );
+
+                    break;
+                case 'edit':
+
+                    // gestionar post
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
+
+                        $errors = array();
+
+                        // instancia
+                        $item = new $model(array(
+                            'id' => $_POST['id'],
+                            'name' => $_POST['name'],
+                            'description' => $_POST['description']
+                        ));
+
+                        if ($item->save($errors)) {
+                            throw new Redirection($url);
+                        }
+                    } else {
+                        $item = $model::get($id);
+                    }
+
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Editando una campaña",
+                            'menu' => array(
+                                array(
+                                    'url'   => $url,
+                                    'label' => 'Campañas'
+                                )
+                            ),
+                            'data' => $item,
+                            'form' => array(
+                                'action' => "$url/edit/$id",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'guardar'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Campaña',
+                                        'name' => 'name',
+                                        'type' => 'text'
+                                    ),
+                                    'description' => array(
+                                        'label' => 'Descripción',
+                                        'name' => 'description',
+                                        'type' => 'textarea',
+                                        'properties' => 'cols="100" rows="2"'
+                                    )
+                                )
+
+                            ),
+                            'errors' => $errors
+                        )
+                    );
+
+                    break;
+                case 'remove':
+                    if ($model::delete($id)) {
+                        throw new Redirection($url);
+                    }
+                    break;
+            }
+
+            return new View(
+                'view/admin/list.html.php',
+                array(
+                    'title' => 'Gestión de caqmpañas',
+                    'menu' => array(
+                        array(
+                            'url' => "$url/add",
+                            'label' => 'Nueva campaña'
+                        )
+                    ),
+                    'data' => $model::getList(),
+                    'columns' => array(
+                        'name' => 'Campaña',
+                        'used' => 'Aportes',
+                        'edit' => '',
+                        'remove' => ''
+                    ),
+                    'url' => "$url",
+                    'errors' => $errors
+                )
+            );
+        }
+
+
 	}
 
 }
+
+
+        /*
+         *  Gestión de intereses de usuarios es obsoleta
+         *  se usan las mismas categorias de proyecto
+         *
+        public function interests($action = 'list', $id = null) {
+
+            throw new Redirection('/admin/categories');
+
+            $model = 'Goteo\Model\Interest';
+            $url = '/admin/interests';
+
+            $errors = array();
+
+            switch ($action) {
+                case 'add':
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Añadiendo un nuevo interés de usuarios",
+                            'menu' => array(
+                                array(
+                                    'url'   => $url,
+                                    'label' => 'Intereses'
+                                )
+                            ),
+                            'data' => (object) array(),
+                            'form' => array(
+                                'action' => "$url/edit/",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'Añadir'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Interés',
+                                        'name' => 'name',
+                                        'type' => 'text'
+                                    ),
+                                    'description' => array(
+                                        'label' => 'Descripción',
+                                        'name' => 'description',
+                                        'type' => 'textarea',
+                                        'properties' => 'cols="100" rows="2"',
+
+                                    )
+                                )
+
+                            )
+                        )
+                    );
+
+                    break;
+                case 'edit':
+
+                    // gestionar post
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
+
+                        $errors = array();
+
+                        // instancia
+                        $item = new $model(array(
+                            'id' => $_POST['id'],
+                            'name' => $_POST['name'],
+                            'description' => $_POST['description']
+                        ));
+
+                        if ($item->save($errors)) {
+                            throw new Redirection($url);
+                        }
+                    } else {
+                        $item = $model::get($id);
+                    }
+
+                    return new View(
+                        'view/admin/edit.html.php',
+                        array(
+                            'title' => "Editando un interés de usuario",
+                            'menu' => array(
+                                array(
+                                    'url'   => $url,
+                                    'label' => 'Intereses'
+                                )
+                            ),
+                            'data' => $item,
+                            'form' => array(
+                                'action' => "$url/edit/$id",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'guardar'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Interés',
+                                        'name' => 'name',
+                                        'type' => 'text'
+                                    ),
+                                    'description' => array(
+                                        'label' => 'Descripción',
+                                        'name' => 'description',
+                                        'type' => 'textarea',
+                                        'properties' => 'cols="100" rows="2"',
+
+                                    )
+                                )
+
+                            ),
+                            'errors' => $errors
+                        )
+                    );
+
+                    break;
+                case 'up':
+                    $model::up($id);
+                    break;
+                case 'down':
+                    $model::down($id);
+                    break;
+                case 'remove':
+                    if ($model::delete($id)) {
+                        throw new Redirection($url);
+                    }
+                    break;
+            }
+
+            return new View(
+                'view/admin/list.html.php',
+                array(
+                    'title' => 'Gestión de intereses de usuarios',
+                    'menu' => array(
+                        array(
+                            'url' => "$url/add",
+                            'label' => 'Nuevo interés'
+                        )
+                    ),
+                    'data' => $model::getAll(),
+                    'columns' => array(
+                        'name' => 'Interes',
+                        'used' => 'Usuarios',
+                        'order' => 'Prioridad',
+                        'up' => '',
+                        'down' => '',
+                        'edit' => '',
+                        'remove' => ''
+                    ),
+                    'url' => "$url",
+                    'errors' => $errors
+                )
+            );
+        }
+         *
+         */

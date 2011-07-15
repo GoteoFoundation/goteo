@@ -14,10 +14,11 @@ namespace Goteo\Model\Project {
 			$description,
 			$type = 'social',
 			$icon,
+            $other, // para el icono de otro, texto que diga el tipo
 			$license,
 			$amount,
 			$units,
-            $taken, // recompensas comprometidas por aporte
+            $taken = 0, // recompensas comprometidas por aporte
             $none; // si no quedan unidades de esta recompensa
 
 	 	public static function get ($id) {
@@ -29,7 +30,7 @@ namespace Goteo\Model\Project {
             }
 		}
 
-		public static function getAll ($project, $type = 'social', $fulfilled = null, $icon = null) {
+		public static function getAll ($project, $type = 'social', $fulfilled = null, $icon = null, $order = 'id') {
             try {
                 $array = array();
 
@@ -53,7 +54,13 @@ namespace Goteo\Model\Project {
                         WHERE   project = :project
                             AND type= :type
                         $sqlFilter
-                        ORDER BY amount ASC, id ASC";
+                        ";
+
+                if ($order == 'id') {
+                    $sql .= " ORDER BY id ASC";
+                } else {
+                    $sql .= " ORDER BY amount ASC, id ASC";
+                }
 
 				$query = self::query($sql, $values);
 				foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item ) {
@@ -96,6 +103,7 @@ namespace Goteo\Model\Project {
 				'description',
 				'type',
 				'icon',
+				'other',
 				'license',
 				'amount',
 				'units'

@@ -1,0 +1,187 @@
+body.discover div#main div.widget {
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+/* Buscador */
+div.searcher{
+	padding-left:75px !important;
+}
+
+.searcher .text-filter{
+	display: block;
+	margin-bottom: 20px;
+}
+
+.searcher .text-filter label{
+	color: #FFFFFF;
+	font-weight: bold;
+	padding: 5px 90px 6px 15px;
+	text-transform:capitalize;
+	background:url('triangulo-lateral.png') right no-repeat #656566;
+}
+
+.searcher #text-query {
+	background-color:#8f8f8f;
+	color:#ffffff;
+	padding: 6px 5px 6px 15px;
+	border:none;
+	width: 415px;
+    margin-left: 31px;
+    font-size: 0.9em;
+}
+
+.searcher input[type="text"]:focus {
+	background-color:#e7e7e7 !important;
+    color: #656566 !important;
+}
+
+
+.searcher .filter{
+	float:left;
+	width:200px;
+	margin-right:35px;
+	position:relative;
+    margin-bottom: 10px;
+}
+
+.searcher .filter label{
+	color: #FFFFFF;
+	display: block;
+	font-weight: bold;
+	padding: 5px 5px 6px 15px;
+	text-transform:capitalize;
+	background:url('triangulo.png') right no-repeat #656566;
+}
+
+.searcher .filter select{
+	color:#8F8F8F;
+	border:none;
+	width:100%;	
+	margin-top:10px;
+    font-size: 0.9em;
+}
+
+.searcher .filter select option{
+	color:#8F8F8F;	
+}
+
+.searcher .filter select option[selected="selected"] {
+	color:#656566;
+	background-color:#e7e7e7;
+}
+
+.searcher .filter select option.all{
+	color:#656566;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+#searcher{
+	background:url('lupa.png') no-repeat;
+	height:33px;
+	width:80px;
+	text-indent:-9999px;
+	margin-top:-1px;
+}
+/* // Buscador */
+
+div.discover-group div.widget.project {
+    margin: 0px;
+}
+
+div.discover-group div.widget.project + div.widget.project {
+    margin-left: 20px;
+}
+
+div.discover-group {
+    display: none;
+}
+
+div.navi-bar ul.navi {
+    list-style: none;
+    height: 10px;
+    z-index: 900;
+    margin: 0px;
+    padding: 10px;
+}
+
+div.navi-bar ul.navi li {
+    display: block;
+    float: left;
+    width: 1em;
+    height: 1em;
+    overflow: hidden;
+    margin-right: .5em;
+}
+
+div.navi-bar ul.navi li > * {
+    display: block;
+    height: 100%;
+    width: 100%;
+    text-indent: 2000px;
+    line-height: 2000px;
+}
+
+div.navi-bar ul.navi li > a {
+    background-color: #cdcdce;
+}
+
+div.navi-bar ul.navi li > a.active {
+    background-color: #808184;
+}
+
+div.navi-bar {
+    clear: both;
+    display: block;
+}
+
+div.navi-bar a.all{
+    text-decoration: none;
+    text-transform: uppercase;
+    position:relative;
+    top: -20px;
+    right: -775px;
+}
+
+a.discover-arrow {
+    position:relative;
+    top: 150px;
+    color: white;
+    line-height: 24px;
+    text-indent: 24px;
+}
+
+div.discover-arrow-left,
+div.discover-arrow-right {
+    width: 24px;
+}
+
+div.discover-arrow-left {
+    float: left;
+}
+
+div.discover-arrow-right {
+    float: right;
+}
+
+div.discover-arrow-left a.discover-arrow {
+	background: url('carrousel-arrow.png') scroll no-repeat  0 0px;
+}
+
+div.discover-arrow-left a.discover-arrow:hover {
+	background: url('carrousel-arrow-active.png') scroll no-repeat  0 0px;
+}
+
+div.discover-arrow-right a.discover-arrow {
+	background: url('carrousel-arrow.png') scroll no-repeat  0 -24px;
+}
+
+div.discover-arrow-right a.discover-arrow:hover {
+	background: url('carrousel-arrow-active.png') scroll no-repeat  0 -24px;
+}
+
+a.discover-arrow {
+    display: inline-block;
+    vertical-align: middle;
+}

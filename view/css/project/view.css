@@ -9,6 +9,8 @@
 @import url('widget/supporters.css');
 @import url('widget/rewards.css');
 @import url('widget/messages.css');
+@import url('widget/updates.css');
+@import url('widget/invest.css');
 @import url('widget/schedule.css');
 @import url('../user/widget/user.css');
 @import url('../worth/legend.css');
@@ -27,9 +29,36 @@ body.project-show div#sub-header {
     padding-bottom: 0;
 }
 
+body.project-show div#sub-header div.project-header{
+    min-height: 75px;
+}
+
+body.project-show div#sub-header img{
+    float: left;
+    margin-right: 20px;
+}
+
+body.project-show div#sub-header div.project-by {
+    padding-left: 82px;
+    color: #20B3B2;
+    font-size: 12px;
+    margin: 0 0 .5em;
+}
+
+body.project-show div#sub-header div.project-by a {
+    font-weight: normal;
+    color: #20B3B2;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+body.project-show div#sub-header div.project-by a:hover {
+    color: #58595B;
+}
+
 body.project-show div#sub-header div.categories {
     text-align: right;
-    margin-top: -22px;
+    margin-top: -60px;
 }
 
 body.project-show div#sub-header div.categories h3 {
@@ -42,6 +71,15 @@ body.project-show div#sub-header div.categories * {
     font-size: 12px;
 }
 
+body.project-show div#sub-header div.categories a {
+    color: #58595B;
+    text-decoration: none;
+}
+
+body.project-show div#sub-header div.categories a:hover {
+    color: #20B3B2;
+}
+
 body.project-show div.project-menu {
     max-width: 940px;
     margin: 20px auto 0;
@@ -52,37 +90,54 @@ body.project-show div.project-menu ul {
     margin: 0;
     list-style: none;
     font-size: 0;
+    height: 28px;
 }
 
 body.project-show div.project-menu ul li {
     display: inline-block;
     margin-right: 1px;    
-    background-color: #c8babc;
-
 }
 
 body.project-show div.project-menu ul li a {
     display: inline-block;
-    padding: .6em 2em .2em .6em;
+/*    padding: .6em 2em .2em .6em; */
+    padding: 8px 8px 1px 8px;
     color: white;
     text-transform: uppercase;
     text-decoration: none;
+    height: 28px;
+    background-image: url('/view/css/project/view/menu/regular_menu.png');
+    background-position: left top !important;
+    background-repeat: repeat-x;
 }
 
-body.project-show div.project-menu ul li.messages {
+body.project-show div.project-menu ul li.active a {
+    background-image: url('/view/css/project/view/menu/hover_menu.png');
+}
+
+body.project-show div.project-menu ul li.show a {
+    background-image: url('/view/css/project/view/menu/active_menu.png') !important;
+    background-repeat: no-repeat !important;
+}
+
+body.project-show div.project-menu ul li.messages a {
     background-color: #00b05b;
 }
 
-body.project-show div.project-menu ul li.home {
+body.project-show div.project-menu ul li.home a {
     background-color: #1fb0b0;
 } 
 
-body.project-show div.project-menu ul li.needs {
+body.project-show div.project-menu ul li.needs a {
     background-color: #e13028;
 } 
 
-body.project-show div.project-menu ul li.supporters {
+body.project-show div.project-menu ul li.supporters a {
     background-color: #313b96;
+}
+
+body.project-show div.project-menu ul li.updates a {
+    background-color: #c8babc;
 }
 
 body.project-show div#main div.widget {
@@ -96,6 +151,7 @@ body.project-show div#main div.widget.project-support {
 body.project-show div#main div.widget.project-support,
 body.project-show div#main div.widget.project-rewards,
 body.project-show div#main div.widget.project-collaborations,
+body.project-show div#main div.widget.project-investors,
 body.project-show div#main div.widget.user {
     width: 260px;
     float: right;
@@ -103,11 +159,15 @@ body.project-show div#main div.widget.user {
 }
 
 body.project-show div#main div.widget.project-summary,
+body.project-show div#main div.widget.project-rewards-summary,
 body.project-show div#main div.widget.project-share,
 body.project-show div#main div.widget.project-needs,
 body.project-show div#main div.widget.project-messages,
 body.project-show div#main div.widget.project-message,
 body.project-show div#main div.widget.project-supporters,
+body.project-show div#main div.widget.project-invest,
+body.project-show div#main div.widget.invest-message,
+body.project-show div#main div.widget.worthcracy,
 body.project-show div#main div.widget.worthcracy-legend {
     max-width: 580px;
     margin-right: 20px;

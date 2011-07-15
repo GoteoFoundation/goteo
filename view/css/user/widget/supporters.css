@@ -11,6 +11,10 @@ div.widget.user-supporters .supporters > ul > li {
     position: relative;
 }
 
+div.widget.user-supporters .supporters ul  li.active {
+    background-color:  #f3f3f3;
+}
+
 div.widget.user-supporters .supporters ul li .avatar {
     position: absolute;
     left: 0;
@@ -19,7 +23,7 @@ div.widget.user-supporters .supporters ul li .avatar {
     height: 50px;
     text-align: center;
     display: block;
-    background: url('../../avatar/m.png');
+/*    background: url('../../avatar/m.png');    //@FIXME revisar esto porque los avatares trasparentes o pequeños salen con este abajo*/
 }
 
 div.widget.user-supporters .supporters ul li .avatar img {
@@ -36,8 +40,12 @@ div.widget.user-supporters .supporters ul li h6 {
 
 div.widget.user-supporters .supporters ul li a {
     font-size: 11px !important;
-    font-weight: bold;
+    text-transform: none !important;
     text-decoration: none;
+}
+
+div.widget.user-supporters .supporters ul li a:hover {
+    color: #20B3B2;
 }
 
 div.widget.user-supporters .supporters ul li dl,
@@ -140,12 +148,22 @@ div.widget.user-supporters .supporters ul li dl dd.worthcracy ul li.done.worth-5
 div.widget.user-supporters .supporters ul li dl dd.worthcracy ul li > strong {
     display: block;
     position: absolute;
-    top: 10px;    
+    top: 7px;
     font-weight: normal;
     width: 200px;
     left: 50%;
     margin-left: -100px;
     text-align: center;
     background: url('../../worth/beak.png') no-repeat center top;
-    padding-top: 9px;
+    padding-top: 6px;
+}
+
+div.widget.user-supporters a.more  {
+    color: #313B96;
+    font-size: 12px !important;
+    text-transform: uppercase;
+    float: right;
+    clear: both;
+    text-decoration: none;
+
 }

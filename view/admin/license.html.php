@@ -29,13 +29,14 @@ include 'view/prologue.html.php';
         </div>
 
         <div id="main">
-            <?php if (!empty($this['errors'])) {
-                echo '<pre>' . print_r($this['errors'], 1) . '</pre>';
-            } ?>
-
-            <?php if (!empty($this['success'])) {
-                echo '<pre>' . print_r($this['success'], 1) . '</pre>';
-            } ?>
+            <?php if (!empty($this['errors']) || !empty($this['success'])) : ?>
+                <div class="widget">
+                    <p>
+                        <?php echo implode(',', $this['errors']); ?>
+                        <?php echo implode(',', $this['success']); ?>
+                    </p>
+                </div>
+            <?php endif; ?>
 
             <div class="widget board">
                 <form id="filter-form" action="/admin/licenses" method="get">
@@ -63,6 +64,7 @@ include 'view/prologue.html.php';
                     <thead>
                         <tr>
                             <th>Nombre</th> <!-- name -->
+                            <th>Tooltip</th> <!-- description -->
                             <th>Agrupación</th> <!-- group -->
                             <th>Posición</th> <!-- order -->
                             <th><!-- Move up --></th>
@@ -76,6 +78,7 @@ include 'view/prologue.html.php';
                         <?php foreach ($this['licenses'] as $license) : ?>
                         <tr>
                             <td><?php echo $license->name; ?></td>
+                            <td><?php echo $license->description; ?></td>
                             <td><?php echo !empty($license->group) ? $this['groups'][$license->group] : ''; ?></td>
                             <td><?php echo $license->order; ?></td>
                             <td><a href="/admin/licenses/up/<?php echo $license->id; ?>/?filter=<?php echo $filters['group']; ?>">[&uarr;]</a></td>

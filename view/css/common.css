@@ -10,7 +10,7 @@ html {
 
 html, body {        
     padding: 0;    
-    background-color: #e7e7e7;    
+    background-color: #e7e7e7;
 }
 
 body {
@@ -109,7 +109,8 @@ input.green[type="submit"],
 input.green[type="reset"],
 button.green,
 a.button.green {
-    background-color: #00b05b;
+    background: #00b05b url('button/green.png') repeat-x top;
+    color: white;
 } 
 
 h1, h2, h3, h4, h5, h6, h7, h8 {
@@ -117,3 +118,16 @@ h1, h2, h3, h4, h5, h6, h7, h8 {
     text-transform: uppercase;
     margin: 1em 0;
 }
+.clearfix:after {
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: " ";
+	clear: both;
+	height: 0;
+	}
+.clearfix { display: inline-table; }
+/* Hides from IE-mac \*/
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+/* End hide from IE-mac */

@@ -29,3 +29,41 @@ div.widget.project-summary h8 {
 div.widget.project-summary > div {
     margin-bottom: 2em;
 }
+
+div.widget.project-summary ul.navi {
+    list-style: none;
+    height: 10px;
+    z-index: 900;
+    margin: 0px;
+    padding: 10px;
+}
+
+div.widget.project-summary ul.navi li {
+    display: block;
+    float: left;
+    width: 1em;
+    height: 1em;
+    overflow: hidden;
+    margin-right: .5em;
+}
+
+div.widget.project-summary ul.navi li > * {
+    display: block;
+    height: 100%;
+    width: 100%;
+    text-indent: 2000px;
+    line-height: 2000px;
+}
+
+div.widget.project-summary ul.navi li > a {
+    background-color: #cdcdce;
+}
+
+div.widget.project-summary ul.navi li > a.active {
+    background-color: #808184;
+}
+
+div.widget.project-summary div.gallery div.gallery-image {
+    display: none;
+    text-align: center;
+}

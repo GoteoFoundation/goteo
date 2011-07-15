@@ -15,7 +15,7 @@ $image = array(
         'type'  => 'html',
         'class' => 'inline',
         'html'  => is_object($user->avatar) ?
-                   $user->avatar . '<img src="' . htmlspecialchars($user->avatar->getLink(110, 110)) . '" alt="Avatar" />' :
+                   $user->avatar . '<img src="/image/' . $user->avatar->id . '/110/110" alt="Avatar" />' :
                    ''
     )
 );
@@ -23,7 +23,7 @@ $image = array(
 if (!empty($user->avatar) && is_object($user->avatar))
     $image ["avatar-{$user->avatar->id}-remove"] = array(
         'type'  => 'submit',
-        'label' => 'Quitar',
+        'label' => Text::get('form-remove-button'),
         'class' => 'inline remove image-remove'
     );
 
@@ -32,6 +32,7 @@ if (!empty($user->avatar) && is_object($user->avatar))
 $interests = array();
 
 $errors = $project->errors[$this['step']] ?: array();
+$okeys  = $project->okeys[$this['step']] ?: array();
 
 foreach ($this['interests'] as $value => $label) {
     $interests[] =  array(
@@ -51,15 +52,21 @@ foreach ($user->webs as $web) {
         'children'  => array(            
             'web-' . $web->id . '-url' => array(
                 'type'      => 'textbox',
-                'value'     => $web->url,
-                'errors'    => array(),
                 'required'  => true,
+                'value'     => $web->url,
+                'hint'      => Text::get('tooltip-user-webs'),
+                'errors'    => array(),
                 'class'     => 'web-url inline'
             ),
             'web-' . $web->id . '-remove' => array(
                 'type'      => 'submit',                
-                'label'     => 'Quitar',
+                'label'     => Text::get('form-remove-button'),
                 'class'     => 'web-remove inline remove'
+            ),
+            'web-' . $web->id . '-accept' => array(
+                'type'      => 'submit',
+                'label'     => Text::get('form-accept-button'),
+                'class'     => 'web-accept inline accept'
             )
         )
     );
@@ -71,12 +78,12 @@ echo new SuperForm(array(
     'action'        => '',
     'level'         => $this['level'],
     'method'        => 'post',
-    'title'         => 'Usuario/Perfil',
+    'title'         => Text::get('profile-main-header'),
     'hint'          => Text::get('guide-project-user-information'),    
     'footer'        => array(
         'view-step-userPersonal' => array(
             'type'  => 'submit',
-            'label' => 'Siguiente',
+            'label' => Text::get('form-next-button'),
             'name'  => 'view-step-userPersonal',
             'class' => 'next'
         )        
@@ -90,36 +97,40 @@ echo new SuperForm(array(
             'type'      => 'textbox',
             'required'  => true,
             'size'      => 20,
-            'title'     => 'Alias',
+            'title'     => Text::get('profile-field-name'),
             'hint'      => Text::get('tooltip-user-name'),
             'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
-            'value'     => $user->name,
+            'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array(),
+            'value'     => $user->name
         ),                
         'user_location' => array(
             'type'      => 'textbox',
             'required'  => true,
             'size'      => 20,
-            'title'     => 'Dónde estás',
+            'title'     => Text::get('profile-field-location'),
             'hint'      => Text::get('tooltip-user-location'),
             'errors'    => !empty($errors['location']) ? array($errors['location']) : array(),
-            'value'     => $user->location,
+            'ok'        => !empty($okeys['location']) ? array($okeys['location']) : array(),
+            'value'     => $user->location
         ),
         'user_avatar' => array(                  
-            'title'     => 'Tu imagen',
             'type'      => 'group',
+            'required'  => true,
+            'title'     => Text::get('profile-fields-image-title'),
             'hint'      => Text::get('tooltip-user-image'),
             'errors'    => !empty($errors['avatar']) ? array($errors['avatar']) : array(),
+            'ok'        => !empty($okeys['avatar']) ? array($okeys['avatar']) : array(),
             'class'     => 'user_avatar',
             'children'  => array(                
                 'avatar_upload'    => array(
                     'type'  => 'file',
                     'class' => 'inline avatar_upload',
-                    'title' => 'Subir una imagen',
-                    'hint'  => Text::get('tooltip-user-avatar_upload'),
+                    'title' => Text::get('profile-field-avatar_upload'),
+                    'hint'  => Text::get('tooltip-user-image'),
                 ),                
                 'avatar-current' => array(
                     'type'  => 'group',
-                    'title' => 'Tu imagen actual',                    
+                    'title' => Text::get('profile-field-avatar_current'),
                     'class' => 'inline avatar',
                     'children'  => $image
                 )
@@ -129,79 +140,110 @@ echo new SuperForm(array(
         
         'user_about' => array(
             'type'      => 'textarea',
+            'required'  => true,
             'cols'      => 40,
             'rows'      => 4,
-            'title'     => 'Cuéntanos algo sobre ti',
+            'title'     => Text::get('profile-field-about'),
             'hint'      => Text::get('tooltip-user-about'),
             'errors'    => !empty($errors['about']) ? array($errors['about']) : array(),
+            'ok'        => !empty($okeys['about']) ? array($okeys['about']) : array(),
             'value'     => $user->about
         ),          
         'interests' => array(
             'type'      => 'checkboxes',
+            'required'  => true,
             'name'      => 'user_interests[]',
-            'title'     => 'Tus intereses',
+            'title'     => Text::get('profile-field-interests'),
             'hint'      => Text::get('tooltip-user-interests'),            
             'errors'    => !empty($errors['interests']) ? array($errors['interests']) : array(),
+            'ok'        => !empty($okeys['interests']) ? array($okeys['interests']) : array(),
             'options'   => $interests
         ),  
         'user_keywords' => array(
             'type'      => 'textbox',
+            'required'  => true,
             'size'      => 20,
-            'title'     => 'Palabras clave',
+            'title'     => Text::get('profile-field-keywords'),
             'hint'      => Text::get('tooltip-user-keywords'),
             'errors'    => !empty($errors['keywords']) ? array($errors['keywords']) : array(),
+            'ok'        => !empty($okeys['keywords']) ? array($okeys['keywords']) : array(),
             'value'     => $user->keywords
         ), 
         'user_contribution' => array(
             'type'      => 'textarea',
+            'required'  => true,
             'cols'      => 40,
             'rows'      => 4,
-            'title'     => 'Qué podrías aportar a Goteo',
+            'title'     => Text::get('profile-field-contribution'),
             'hint'      => Text::get('tooltip-user-contribution'),
             'errors'    => !empty($errors['contribution']) ? array($errors['contribution']) : array(),
+            'ok'        => !empty($okeys['contribution']) ? array($okeys['contribution']) : array(),
             'value'     => $user->contribution
         ),
         'user_webs' => array(
-            'title'     => 'Mis webs',            
+            'title'     => Text::get('profile-field-websites'),
             'hint'      => Text::get('tooltip-user-webs'),
             'class'     => 'webs',
             'children'  => $user_webs + array(                
                 'web-add' => array(
                     'type'  => 'submit',
-                    'label' => 'Añadir',
+                    'label' => Text::get('form-add-button'),
                     'class' => 'add'                    
                 )
             )
         ),
         'user_social' => array(            
             'type'      => 'group',
-            'title'     => 'Perfiles sociales',
+            'title'     => Text::get('profile-fields-social-title'),
             'children'  => array(
                 'user_facebook' => array(
                     'type'      => 'textbox',
                     'class'     => 'facebook',
                     'size'      => 40,
-                    'title'     => 'Facebook',
+                    'title'     => Text::get('regular-facebook'),
                     'hint'      => Text::get('tooltip-user-facebook'),
                     'errors'    => !empty($errors['facebook']) ? array($errors['facebook']) : array(),
+                    'ok'        => !empty($okeys['facebook']) ? array($okeys['facebook']) : array(),
                     'value'     => $user->facebook
                 ), 
+                'user_google' => array(
+                    'type'      => 'textbox',
+                    'class'     => 'google',
+                    'size'      => 40,
+                    'title'     => Text::get('regular-google'),
+                    'hint'      => Text::get('tooltip-user-google'),
+                    'errors'    => !empty($errors['google']) ? array($errors['google']) : array(),
+                    'ok'        => !empty($okeys['google']) ? array($okeys['google']) : array(),
+                    'value'     => $user->google
+                ),
                 'user_twitter' => array(
                     'type'      => 'textbox',
                     'class'     => 'twitter',
                     'size'      => 40,
-                    'title'     => 'Twitter',
+                    'title'     => Text::get('regular-twitter'),
                     'hint'      => Text::get('tooltip-user-twitter'),
                     'errors'    => !empty($errors['twitter']) ? array($errors['twitter']) : array(),
+                    'ok'        => !empty($okeys['twitter']) ? array($okeys['twitter']) : array(),
                     'value'     => $user->twitter
                 ), 
+                'user_identica' => array(
+                    'type'      => 'textbox',
+                    'class'     => 'identica',
+                    'size'      => 40,
+                    'title'     => Text::get('regular-identica'),
+                    'hint'      => Text::get('tooltip-user-identica'),
+                    'errors'    => !empty($errors['identica']) ? array($errors['identica']) : array(),
+                    'ok'        => !empty($okeys['identica']) ? array($okeys['identica']) : array(),
+                    'value'     => $user->identica
+                ),
                 'user_linkedin' => array(
                     'type'      => 'textbox',
                     'class'     => 'linkedin',
                     'size'      => 40,
-                    'title'     => 'LinkedIn',
+                    'title'     => Text::get('regular-linkedin'),
                     'hint'      => Text::get('tooltip-user-linkedin'),
                     'errors'    => !empty($errors['linkedin']) ? array($errors['linkedin']) : array(),
+                    'ok'        => !empty($okeys['linkedin']) ? array($okeys['linkedin']) : array(),
                     'value'     => $user->linkedin
                 )
             )            

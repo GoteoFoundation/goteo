@@ -22,7 +22,9 @@ namespace Goteo\Model {
             $keywords,
             $active,
             $facebook,
+            $google,
             $twitter,
+            $identica,
             $linkedin,
             $created,
             $modified,
@@ -141,6 +143,9 @@ namespace Goteo\Model {
                     if (is_array($this->avatar) && !empty($this->avatar['name'])) {
                         $image = new Image($this->avatar);
                         $image->save();
+                        // una vez con el contenido de la imagen guardado en la tabla
+                        // recortar el avatar cuadrado
+                        $image->avatarCrop();
                         $data[':avatar'] = $image->id;
 
                         /**
@@ -177,8 +182,16 @@ namespace Goteo\Model {
                         $data[':facebook'] = $this->facebook;
                     }
 
+                    if(isset($this->google)) {
+                        $data[':google'] = $this->google;
+                    }
+
                     if(isset($this->twitter)) {
                         $data[':twitter'] = $this->twitter;
+                    }
+
+                    if(isset($this->identica)) {
+                        $data[':identica'] = $this->identica;
                     }
 
                     if(isset($this->linkedin)) {
@@ -351,7 +364,9 @@ namespace Goteo\Model {
                         contribution,
                         keywords,
                         facebook,
+                        google,
                         twitter,
+                        identica,
                         linkedin,
                         active,
                         created,
@@ -363,6 +378,8 @@ namespace Goteo\Model {
                 
                 $user->roles = $user->getRoles();
                 $user->avatar = Image::get($user->avatar);
+                // @FIXME temporal para usuarios sin avatar
+                if (empty($user->avatar->id)) $user->avatar->id = 1;
                 $user->interests = User\Interest::get($id);
                 $user->webs = User\Web::get($id);
                 return $user;
@@ -376,14 +393,17 @@ namespace Goteo\Model {
             try {
                 $query = static::query("
                     SELECT
+                        id,
                         name,
+                        avatar,
                         email
                     FROM user
                     WHERE id = :id
                     ", array(':id' => $id));
-                $user = $query->fetchObject(__CLASS__);
+                $user = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
                 
                 $user->avatar = Image::get($user->avatar);
+                if (empty($user->avatar->id)) $user->avatar->id = 1;
 
                 return $user;
             } catch(\PDOException $e) {
@@ -412,6 +432,13 @@ namespace Goteo\Model {
                     WHERE interest = {$filters['interest']}
                     ) ";
             }
+            if (!empty($filters['role'])) {
+                $sqlFilter .= " AND id IN (
+                    SELECT user_id
+                    FROM user_role
+                    WHERE role_id = '{$filters['role']}'
+                    ) ";
+            }
             if (!empty($filters['posted'])) {
                 /*
                  * Si ha enviado algun mensaje o comentario
@@ -437,9 +464,45 @@ namespace Goteo\Model {
 
             $query = self::query($sql, array($node));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $user) {
+
+                $query = static::query("
+                    SELECT
+                        user_id
+                    FROM user_role
+                    WHERE user_id = :id
+                    AND role_id = 'checker'
+                    ", array(':id' => $user->id));
+                $role = $query->fetchObject();
+
+                if ($role->user_id == $user->id) {
+                    $user->checker = true;
+                }
+
                 $users[] = $user;
             }
             return $users;
+        }
+
+        /*
+         * Listado simple de todos los usuarios
+         */
+        public static function getAllMini() {
+
+            $list = array();
+
+            $query = static::query("
+                SELECT
+                    user.id as id,
+                    user.name as name
+                FROM    user
+                ORDER BY user.name ASC
+                ");
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $list[$item->id] = $item->name;
+            }
+
+            return $list;
         }
 
 		/**
@@ -693,7 +756,7 @@ namespace Goteo\Model {
                     return true;
 
                 } catch (\PDOException $e) {
-                    $errors[] = "FALLO al gestionar el registro de fdatos personales " . $e->getMessage();
+                    $errors[] = "FALLO al gestionar el registro de datos personales " . $e->getMessage();
                     return false;
                 }
             }
@@ -712,6 +775,35 @@ namespace Goteo\Model {
 		    ', array($this->id));
 		    return $query->fetchAll(\PDO::FETCH_OBJ);
 		}
+
+
+        /*
+         * Lista de proyectos cofinanciados
+         */
+        public static function invested($user)
+        {
+            $projects = array();
+
+            $sql = "SELECT project.id
+                    FROM  project
+                    INNER JOIN invest
+                        ON project.id = invest.project
+                        AND invest.user = ?
+                        AND invest.status <> 2
+                    WHERE project.status > 1 AND project.status < 7
+                    GROUP BY project.id
+                    ORDER BY name ASC
+                    ";
+
+            echo "$sql<br />";
+
+            $query = self::query($sql, array($user));
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $proj) {
+                $projects[] = \Goteo\Model\Project::get($proj->id);
+            }
+            return $projects;
+        }
+
 
 	}
 }

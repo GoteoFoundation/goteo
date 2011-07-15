@@ -1,17 +1,44 @@
 <?php 
 
-use Goteo\Core\View;
+use Goteo\Core\View,
+    Goteo\Library\Text;
 
-$currentPost = null;
+$currentPost = $this['posts'][$this['post']];
 
-$bodyClass = 'home'; include 'view/prologue.html.php' ?>
+$bodyClass = 'home';
 
-        <?php include 'view/header.html.php' ?>
+include 'view/prologue.html.php';
+include 'view/header.html.php' ?>
+
+    <script type="text/javascript">
+
+    jQuery(document).ready(function ($) {
+
+        $("#home-post-<?php echo $this['post']; ?>").show();
+
+        $(".navi-home-post").click(function (event) {
+            event.preventDefault();
+
+            /* Quitar todos los active, ocultar todos los elementos */
+            $(".navi-home-post").removeClass('active');
+            $(".post").hide();
+            /* Poner acctive a este, mostrar este*/
+            $(this).addClass('active');
+            $("#"+this.rel).show();
+            /*
+             * Y si lo quisieramos hacer sin  cargar todo el html, usariamos esto
+            content = $.ajax({async: false, url: '<?php echo SITE_URL; ?>/ws/get_home_post/'+this.rel}).responseText;
+            $('#home-post').html(content);
+            */
+        });
+
+    });
+    </script>
 
         <div id="sub-header">
             <div>
-                <h2>Accede a la comunidad goteo</h2>
-                <strong>100% Abierto</strong>
+                <h2><?php echo Text::get('home-banner-header'); ?></h2>
+                <strong><?php echo Text::get('home-banner-strong'); ?></strong>
             </div>
 
         </div>
@@ -22,55 +49,56 @@ $bodyClass = 'home'; include 'view/prologue.html.php' ?>
             
             <div class="widget learn">
                 
-            <h2 class="title">Cómo funciona goteo</h2>
+            <h2 class="title"><?php echo Text::get('home-posts-header'); ?></h2>
             
                 <ul>
                     <?php foreach ($this['posts'] as $post) : ?>
-                    <?php if ($this['post'] == $post->id): $currentPost = $post ?>
-                    <li><strong><?php echo htmlspecialchars($post->title) ?></strong></li>
-                    <?php else: ?>
-                    <li><a href="?post=<?php echo $post->id ?>"><?php echo htmlspecialchars($post->title) ?></a></li>
-                    <?php endif ?>
+                    <li><a href="?post=<?php echo $post->id ?>" rel="home-post-<?php echo $post->id ?>" class="tipsy navi-home-post<?php if ($post->id == $this['post']) echo ' active'; ?>" title="<?php echo htmlspecialchars($post->title) ?>">
+                        <?php echo htmlspecialchars($post->title) ?></a>
+                    </li>
                     <?php endforeach ?>
                 </ul>
                                                                              
-                <div class="post">
-                    <h3><?php echo $currentPost->title; ?></h3>
-                    <div class="embed"><?php echo $currentPost->media->getEmbedCode(); ?></div>
+                <?php foreach ($this['posts'] as $post) : ?>
+                <div class="post" id="home-post-<?php echo $post->id; ?>" <?php if ($post->id == $this['post']) echo '<style="display:block;"'; ?>>
+                    <h3><?php echo $post->title; ?></h3>
+                    <?php if (!empty($post->media->url)) : ?>
+                        <div class="embed">
+                            <?php echo $post->media->getEmbedCode(); ?>
+                        </div>
+                    <?php elseif (!empty($post->image)) : ?>
+                        <div class="image">
+                            <img src="/image/<?php echo $post->image->id; ?>/500/285" alt="Imagen"/>
+                        </div>
+                    <?php endif; ?>
+                    
                     <div class="description">
-                        <?php echo $currentPost->text ?>
+                        <?php echo $post->text ?>
                     </div>
                 </div>                
+                <?php endforeach; ?>
                
             </div>
             
             <?php endif ?>
             
-            <div class="widget projects promos">
+            <div class="widget projects">
                 
-                <h2 class="title">Proyectos destacados</h2>
+                <h2 class="title"><?php echo Text::get('home-promotes-header'); ?></h2>
             
                 <?php foreach ($this['promotes'] as $promo) : ?>
                 
-                    <div class="promo">
-                                     
-                        <!--
-                        <div class="balloon">
-                            <h4><?php echo htmlspecialchars($promo->title) ?></h4>
-                            <blockquote><?php echo $promo->description ?></blockquote>
-                        </div>
-                            -->                
                         <?php echo new View('view/project/widget/project.html.php', array(
                             'project' => $promo->projectData,
                             'balloon' => '<h4>' . htmlspecialchars($promo->title) . '</h4>' .
                                          '<blockquote>' . $promo->description . '</blockquote>'
                         )) ?>
                     
-                    </div>
-                                        
                 <?php endforeach ?>
 
-            </div>        
+            </div>
+
+        </div>
 
         <?php include 'view/footer.html.php' ?>
     

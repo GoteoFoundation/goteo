@@ -2,6 +2,8 @@
 
 namespace Goteo\Model\Blog\Post {
 
+    use Goteo\Library\Text;
+
     class Comment extends \Goteo\Core\Model {
 
         public
@@ -26,7 +28,12 @@ namespace Goteo\Model\Blog\Post {
                     WHERE id = :id
                     ", array(':id' => $id));
 
-                return $query->fetchObject(__CLASS__);
+                $comment = $query->fetchObject(__CLASS__);
+
+                // reconocimiento de enlaces y saltos de linea
+                $comment->text = nl2br(Text::urlink($comment->text));
+
+                return $comment;
         }
 
         /*
@@ -40,7 +47,7 @@ namespace Goteo\Model\Blog\Post {
                 SELECT
                     id,
                     post,
-                    DATE_FORMAT(date, '%d/%m/%Y') as date,
+                    DATE_FORMAT(date, '%d | %m | %Y') as date,
                     text,
                     user
                 FROM    comment
@@ -52,6 +59,10 @@ namespace Goteo\Model\Blog\Post {
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $comment) {
                 $comment->user = \Goteo\Model\User::getMini($comment->user);
+
+                // reconocimiento de enlaces y saltos de linea
+                $comment->text = nl2br(Text::urlink($comment->text));
+                
                 $list[$comment->id] = $comment;
             }
 
@@ -69,7 +80,7 @@ namespace Goteo\Model\Blog\Post {
                 SELECT
                     id,
                     post,
-                    DATE_FORMAT(date, '%d/%m/%Y') as date,
+                    DATE_FORMAT(date, '%d | %m | %Y') as date,
                     text,
                     user
                 FROM    comment
@@ -83,7 +94,12 @@ namespace Goteo\Model\Blog\Post {
             $query = static::query($sql, array($blog));
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $comment) {
+                
                 $comment->user = \Goteo\Model\User::getMini($comment->user);
+
+                // reconocimiento de enlaces y saltos de linea
+                $comment->text = nl2br(Text::urlink($comment->text));
+
                 $list[$comment->id] = $comment;
             }
 

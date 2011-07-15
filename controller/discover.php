@@ -4,10 +4,11 @@ namespace Goteo\Controller {
 
     use Goteo\Core\View,
         Goteo\Model,
-        Goteo\Core\Redirection;
+        Goteo\Core\Redirection,
+        Goteo\Library\Text;
 
     class Discover extends \Goteo\Core\Controller {
-
+    
         /*
          * Descubre proyectos, página general
          */
@@ -15,17 +16,48 @@ namespace Goteo\Controller {
 
             $viewData = array();
             $viewData['title'] = array(
-                'popular' => 'Proyectos más populares',
-                'outdate' => 'Proyectos a punto de caducar',
-                'recent' => 'Proyectos recientes',
-                'success' => 'Proyectos exitosos'
+                'popular' => Text::get('discover-group-popular-header'),
+                'outdate' => Text::get('discover-group-outdate-header'),
+                'recent'  => Text::get('discover-group-recent-header'),
+                'success' => Text::get('discover-group-success-header')
             );
-            $viewData['types'] = array(
-                'popular' => Model\Project::published('popular', 3),
-                'outdate' => Model\Project::published('outdate', 3),
-                'recent' => Model\Project::published('recent', 3),
-                'success' => Model\Project::published('success', 3)
+
+            $viewData['lists'] = array();
+
+            $types = array(
+                'popular',
+                'outdate',
+                'recent',
+                'success'
             );
+
+            $viewData['types'] = $types;
+
+            // cada tipo tiene sus grupos
+            foreach ($types as $type) {
+                $list = array();
+                $popular = Model\Project::published($type);
+                $g = 1;
+                $c = 1;
+                foreach ($popular as $k=>$project) {
+                    // al grupo
+                    $list[$g]['items'][] = $project;
+                    
+                    // cada 3 mientras no sea el ultimo
+                    if (($c % 3) == 0 && $c<count($popular)) {
+                        $list[$g]['prev'] = ($g-1);
+                        $list[$g]['next'] = ($g+1);
+                        $g++;
+                    }
+                    $c++;
+                }
+                
+                $list[1]['prev']  = $g;
+                $list[$g]['prev'] = $g == 1 ? 1 : ($g-1);
+                $list[$g]['next'] = 1;
+
+                $viewData['lists'][$type] = $list;
+            }
 
             return new View(
                 'view/discover/index.html.php',
@@ -37,12 +69,17 @@ namespace Goteo\Controller {
         /*
          * Descubre proyectos, resultados de búsqueda
          */
-        public function results () {
+        public function results ($category = null) {
 
             $message = '';
             $results = null;
 
-			if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['query'])) {
+            // si recibimos categoria por get emulamos post con un parametro 'category'
+            if (!empty($category)) {
+                $_POST['category'][] = $category;
+            }
+
+			if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['query']) && !isset($category)) {
                 $errors = array();
 
                 $query = $_GET['query']; // busqueda de texto
@@ -51,7 +88,7 @@ namespace Goteo\Controller {
 
                 $results = \Goteo\Library\Search::text($query);
 
-			} elseif ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['searcher'])) {
+			} elseif (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['searcher']) || !empty($category))) {
 
                 // vamos montando $params con los 3 parametros y las opciones marcadas en cada uno
                 $params = array('category'=>array(), 'location'=>array(), 'reward'=>array());
@@ -92,25 +129,14 @@ namespace Goteo\Controller {
          */
         public function view ($type = 'all') {
 
+            if (!in_array($type, array('popular', 'outdate', 'recent', 'success', 'all'))) {
+                throw new Redirection('/discover');
+            }
+
             $viewData = array();
 
             // segun el tipo cargamos el título de la página
-            switch ($type) {
-                case 'popular':
-                    $viewData['title'] = 'Proyectos más populares';
-                    break;
-                case 'outdate':
-                    $viewData['title'] = 'Proyectos a punto de caducar';
-                    break;
-                case 'recent':
-                    $viewData['title'] = 'Proyectos recientes';
-                    break;
-                case 'success':
-                    $viewData['title'] = 'Proyectos exitosos';
-                    break;
-                default: // all
-                    $viewData['title'] = 'Proyectos en campaña';
-            }
+            $viewData['title'] = Text::get('discover-group-'.$type.'-header');
 
             // segun el tipo cargamos la lista
             $viewData['list']  = Model\Project::published($type);

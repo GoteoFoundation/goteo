@@ -1,7 +1,9 @@
 <?php
 
 namespace Goteo\Model {
-    
+
+    use Goteo\Library\Text;
+
     class Message extends \Goteo\Core\Model {
 
         public
@@ -28,6 +30,9 @@ namespace Goteo\Model {
                 
                 // datos del usuario
                 $message->user = User::get($message->user);
+
+                // reconocimiento de enlaces y saltos de linea
+                $message->message = nl2br(Text::urlink($message->message));
 
                 if (empty($message->thread)) {
                     $query = static::query("
@@ -58,6 +63,9 @@ namespace Goteo\Model {
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $message) {
                 // datos del usuario
                 $message->user = User::get($message->user);
+                
+                // reconocimiento de enlaces y saltos de linea
+                $message->message = nl2br(Text::urlink($message->message));
 
                 $query = static::query("
                     SELECT  id

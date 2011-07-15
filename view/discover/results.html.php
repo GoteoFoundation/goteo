@@ -1,8 +1,9 @@
 <?php
 
-use Goteo\Core\View;
+use Goteo\Core\View,
+    Goteo\Library\Text;
 
-$bodyClass = 'home';
+$bodyClass = 'discover';
 
 include 'view/prologue.html.php';
 
@@ -10,7 +11,7 @@ include 'view/header.html.php' ?>
 
         <div id="sub-header">
             <div>
-                <h2 class="title">Resultado de búsqueda</h2>
+                <h2 class="title"><?php echo Text::get('discover-results-header'); ?></h2>
             </div>
 
         </div>
@@ -19,24 +20,16 @@ include 'view/header.html.php' ?>
             <?php echo new View('view/discover/searcher.html.php',
                                 array('params'     => $this['params'])); ?>
 
-            <p><?php echo $this['message']; ?></p>
-
-            <div class="widget projects promos">
-                <?php if (isset($this['results'])) : ?>
-                    <?php foreach ($this['results'] as $result) : ?>
-                    <div>
-                    <?php
-                        // la instancia del proyecto es $result
-                        // se pintan con el mismo widget que en portada
+            <div class="widget projects">
+                <?php if (!empty($this['results'])) :
+                    foreach ($this['results'] as $result) :
                         echo new View('view/project/widget/project.html.php', array(
                             'project' => $result
                         )); 
-                    ?>
-                    </div>
-                    <?php endforeach; ?>
-                <?php else : ?>
-                    <p>No hemos encontrado ningún proyecto que cunmpla los criterios de búsqueda</p>
-                <?php endif; ?>
+                    endforeach;
+                else :
+                    echo Text::get('discover-results-empty');
+                endif; ?>
             </div>
         
         </div>        

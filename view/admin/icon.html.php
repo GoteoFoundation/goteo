@@ -26,13 +26,14 @@ include 'view/prologue.html.php';
             <!-- <p><a href="/admin/icons/add/?filter=<?php echo $this['filter']; ?>">Añadir tipo</a></p> -->
 
         <div id="main">
-            <?php if (!empty($this['errors'])) {
-                echo '<pre>' . print_r($this['errors'], 1) . '</pre>';
-            } ?>
-
-            <?php if (!empty($this['success'])) {
-                echo '<pre>' . print_r($this['success'], 1) . '</pre>';
-            } ?>
+            <?php if (!empty($this['errors']) || !empty($this['success'])) : ?>
+                <div class="widget">
+                    <p>
+                        <?php echo implode(',', $this['errors']); ?>
+                        <?php echo implode(',', $this['success']); ?>
+                    </p>
+                </div>
+            <?php endif; ?>
 
             <div class="widget board">
                 <form id="groupfilter-form" action="/admin/icons" method="get">
@@ -51,6 +52,7 @@ include 'view/prologue.html.php';
                     <thead>
                         <tr>
                             <th>Nombre</th> <!-- name -->
+                            <th>Tooltip</th> <!-- descripcion -->
                             <th>Agrupación</th> <!-- group -->
                             <th><!-- Editar --></th>
 <!--                        <th> Remove </th>  -->
@@ -61,6 +63,7 @@ include 'view/prologue.html.php';
                         <?php foreach ($this['icons'] as $icon) : ?>
                         <tr>
                             <td><?php echo $icon->name; ?></td>
+                            <td><?php echo $icon->description; ?></td>
                             <td><?php echo !empty($icon->group) ? $this['groups'][$icon->group] : 'Ambas'; ?></td>
                             <td><a href="/admin/icons/edit/<?php echo $icon->id; ?>/?filter=<?php echo $this['filter']; ?>">[Edit]</a></td>
                             <!-- <td><a href="/admin/icons/remove/<?php echo $icon->id; ?>/?filter=<?php echo $this['filter']; ?>">[Quitar]</a></td> -->

@@ -9,7 +9,11 @@ div.widget.user-mates .users ul > li {
     width: 50%;
     float: left;
     position: relative;
-    background: url("../../avatar/m.png") no-repeat 0 10px;
+/*    background: url("../../avatar/m.png") no-repeat 0 10px;    //@FIXME revisar esto porque los avatares trasparentes o pequeños salen con este abajo*/
+}
+
+div.widget.user-mates .users ul > li.active {
+    background-color:  #f3f3f3 !important;
 }
 
 div.widget.user-mates .users ul > li .user {
@@ -33,9 +37,14 @@ div.widget.user-mates .users ul > li h6 {
     font-size: 11px;
 }
 
-div.widget.user-mates .users ul > li a {    
+div.widget.user-mates .users ul li a {
+    font-size: 11px !important;
+    text-transform: none !important;
     text-decoration: none;
-    font-size: 8px;
+}
+
+div.widget.user-mates .users ul li a:hover {
+    color: #20B3B2;
 }
 
 div.widget.user-mates .users ul > li h3 a,
@@ -46,12 +55,15 @@ div.widget.user-mates .users ul > li h6 a {
     font-weight: bold;
 }
 
+div.widget.user-mates .users ul > li span {
+    font-size: 9px;
+}
 
-div.widget.user-mates .users ul > li a.projects {    
+div.widget.user-mates .users ul > li span.projects {
     color: #20b3b2;
 }
 
-div.widget.user-mates .users ul > li a.invests {    
+div.widget.user-mates .users ul > li span.invests {
     color: #313b96;
 }
 

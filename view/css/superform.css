@@ -5,6 +5,10 @@
  
 @import url('superform/datepicker.css');
 
+body.js div.superform .jshidden {
+    display: none;
+}
+
 div.superform fieldset {
     border: 1px solid #99a2a5;    
 }
@@ -144,42 +148,11 @@ div.superform input[type='password'],
 div.superform textarea {
     padding: .4em;    
     background-color: #d7d9da;
-    border: 1px solid #58595;    
+    border: 1px solid #58595b;
 }
 
 div.superform textarea {
     min-height: 6em;
-}
-
-div.superform input[type='submit'],
-div.superform input[type='reset']
-div.superform button {
-    background-color: #58595b;
-    border: 1px solid #58595b;        
-    cursor: pointer;    
-    font-weight: normal;
-    margin: 0.5em 0;
-    padding: 0.4em 1.5em;
-    text-align: center;
-    text-decoration: none;    
-}
-
-div.superform input.add[type="submit"],
-div.superform input.add[type="reset"],
-div.superform button.add {
-    background-image: url('superform/button/add.png');
-    background-repeat: no-repeat;
-    background-position: .6em center;
-    padding-left: 2em;
-}
-
-div.superform input.remove[type="submit"],
-div.superform input.remove[type="reset"],
-div.superform button.remove {
-    background-image: url('superform/button/remove.png');
-    background-repeat: no-repeat;
-    background-position: .6em center;
-    padding-left: 2em;
 }
 
 /* Full-width elements */
@@ -197,22 +170,21 @@ div.superform li.element.fullwidth + li.element {
     border-top: none;
 }
 
-/* Element badges */
-
-div.superform div.elements > ol > li.busy > .title {
-    background: url('superform/badge/busy/cyan.gif') no-repeat right center;
+/* Element badges. Order is imporant */
+div.superform div.elements > ol > li.required > .title {
+    background: url('superform/badge/required.png') no-repeat right center;
 }
 
 div.superform div.elements > ol > li.ok > .title {
     background: url('superform/badge/ok.png') no-repeat right center;
 }
 
-div.superform div.elements > ol > li.required > .title {
-    background: url('superform/badge/required.png') no-repeat right center;
-}
-
 div.superform div.elements > ol > li.error > .title  {
     background: url('superform/badge/error.png') no-repeat right center !important;
+}
+
+div.superform div.elements > ol > li.busy > .title {
+    background: url('superform/badge/busy/cyan.gif') no-repeat right center;
 }
 
 div.superform li.element.hidden {
@@ -230,16 +202,18 @@ div.superform li.element.textbox > div.contents > input[type="text"],
 div.superform li.element.textbox > div.contents > input[type="password"],
 div.superform li.element.textarea > div.contents > textarea {
     display: block;
-    width: 100%;
-    min-width: 100%;
-    max-width: 100%;
+    width: 99%;
+    min-width: 99%;
+    max-width: 99%;
     margin: 0;    
 }
 
 /* Custom textboxes */
 
 div.superform div.elements li.element.textbox.facebook > div.contents,
+div.superform div.elements li.element.textbox.google > div.contents,
 div.superform div.elements li.element.textbox.twitter > div.contents,
+div.superform div.elements li.element.textbox.identica > div.contents,
 div.superform div.elements li.element.textbox.linkedin > div.contents {
     padding-left: 39px;
     background-position: left center;
@@ -250,8 +224,16 @@ div.superform div.elements li.element.textbox.facebook > div.contents {
     background-image: url('superform/facebook.png');
 }
 
+div.superform div.elements li.element.textbox.google > div.contents {
+    background-image: url('superform/google.png');
+}
+
 div.superform div.elements li.element.textbox.twitter > div.contents {
     background-image: url('superform/twitter.png');
+}
+
+div.superform div.elements li.element.textbox.identica > div.contents {
+    background-image: url('superform/identica.png');
 }
 
 div.superform div.elements li.element.textbox.linkedin > div.contents {
@@ -279,11 +261,10 @@ div.superform div.elements > ol > li.element.slider > div.contents > ul {
 div.superform div.elements > ol > li.element.checkboxes > div.contents > ul > li,
 div.superform div.elements > ol > li.element.radios > div.contents > ul > li,
 div.superform div.elements > ol > li.element.slider > div.contents > ul > li {
-    float: left;        
-    width: 50%;    
+/*    float: left;   width: 50%;    */
     border-bottom: 1px dashed #bcbdbf;
     border-right: 1px dashed #bcbdbf;
-    margin-left: -1px;
+/*    margin-left: -1px; */
     margin-bottom: -1px;
     padding: 0;
 }
@@ -427,32 +408,11 @@ div.superform > div.footer > div.elements > div.element {
 
 div.superform div.footer input,
 div.superform div.footer button {
-    background-color: #ee4843 !important;
-    border-color: #ee4843 !important;
     padding-left: 4em;
     padding-right: 4em;
     box-shadow: 2px 2px 0 rgba(0,0,0,.2);    
     -moz-box-shadow: 2px 2px 0 rgba(0,0,0,.2);    
     -webkit-box-shadow: 2px 2px 0 rgba(0,0,0,.2);
-}s
-
-div.superform div.footer input:hover,
-div.superform div.footer button:hover,
-div.superform div.footer input:focus,
-div.superform div.footer button:focus{
-    background-color: #ed1a37 !important;
-    border-color: #ed1a37 !important;
-    padding-left: 4em;
-    padding-right: 4em;
-}
-
-div.superform div.footer input.next:hover,
-div.superform div.footer button.next:hover,
-div.superform div.footer input.next:focus,
-div.superform div.footer button.next:focus {
-    background-image: url('superform/button/next.png');
-    background-position: 95% center;
-    background-repeat: no-repeat;
 }
 
 /* Additional color schemes */  
@@ -467,21 +427,6 @@ div.superform.aqua li.element > div.feedback {
 
 body.js div.superform.aqua li.element > div.feedback  {    
     background-image: url('superform/tooltip/beak/aqua/w.png');
-}
-
-div.superform.aqua input[type="text"],
-div.superform.aqua input[type="password"],
-div.superform.aqua textarea {
-    background-color: #dff2f3;
-    border-color: #1fb0b0;
-}
-
-div.superform.aqua input[type="submit"],
-div.superform.aqua input[type="reset"],
-div.superform.aqua button {
-    background-color: #1fb0b0;
-    border-color: #1fb0b0;
-    color: white;
 }
 
 div.superform.aqua div.elements > ol > li.busy > .title {
@@ -512,14 +457,6 @@ div.superform.red textarea {
     background-color: #fdedec;
     border-color: #ee4843;
 }
-
-div.superform.red input[type="submit"],
-div.superform.red input[type="reset"],
-div.superform.red button {
-    background-color: #ee4843;
-    border-color: #ee4843;
-    color: white;
-} 
 
 div.superform.red > div.hint h4,
 div.superform.red > div.hint blockquote {    
@@ -554,14 +491,6 @@ div.superform.green textarea {
     background-color: #e7f3e8;
     border-color: #00b05b;
 }
-
-div.superform.green input[type="submit"],
-div.superform.green input[type="reset"],
-div.superform.green button {
-    background-color: #00b05b;
-    border-color: #00b05b;
-    color: white;
-} 
 
 div.superform.green > div.hint h4,
 div.superform.green > div.hint blockquote {    

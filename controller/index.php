@@ -12,18 +12,18 @@ namespace Goteo\Controller {
         public function index () {
 
             // hay que sacar los que van en portada de su blog (en cuanto aclaremos lo de los nodos)
-            $posts    = Post::getAll();
+            $posts    = Post::getList();
             $promotes = Promote::getAll();
+
+            foreach ($posts as $id=>$title) {
+                $posts[$id] = Post::get($id);
+            }
 
             foreach ($promotes as $key => &$promo) {
                 $promo->projectData = Project::get($promo->project);
             }
 
-            if (isset($_GET['post'])) {
-                $post = $_GET['post'];
-            } else {
-                $post = $posts[0]->id;
-            }
+            $post = isset($_GET['post']) ? $_GET['post'] : reset($posts)->id;
 
             return new View('view/index.html.php',
                 array(

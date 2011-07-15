@@ -4,7 +4,7 @@ div.widget.project {
 
 div.widget.project > *  {
     margin: 0;
-    padding: 12px !important;    
+    padding: 12px;    
 }
 
 div.widget.project div.image {
@@ -20,12 +20,75 @@ div.widget.project div.image img {
     height: 100%;
 }
 
+div.widget.project div.image div.tagmark {
+    position: absolute;
+    z-index: 9999;
+    text-align: left;
+    color: #ffffff;
+    font-size: 1.3em;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: 8px;
+    width: 190px;
+    height: 20px;
+    padding: 8px 30px 4px 35px;
+}
+
+div.widget.project div.image div.tagmark.green {
+	background:url('/view/css/project/tagmark_green.png') left no-repeat;
+}
+
+div.widget.project div.image div.tagmark.red {
+	background:url('/view/css/project/tagmark_red.png') left no-repeat;
+}
+
+div.widget.project div.image div.categories {
+    text-align: left;
+    color: #ffffff;
+    background-color: #19b5b3;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    margin-top: -20px;
+    padding: 4px 8px;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+    cursor: default;
+}
+
+div.widget.project div.keepiton {
+    position: absolute;
+    z-index: 9999;
+    display: inline-block;
+    text-align: center;
+    font-size: 0.8em;
+    font-weight: bold;
+    text-transform: uppercase;
+    overflow: visible;
+    background-color: #19b5b3;
+    color: #ffffff;
+    border-radius: 2px 4px;
+    width: 120px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    padding: 3px;
+    right: 0px;
+    bottom: -9px;
+    cursor: default;
+}
+
 div.widget.project > .title {    
     height: 2em;
+    padding: 0px 12px !important;
+}
+
+div.widget.project > .title a {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 div.widget.project > .author {
-    margin-top: -12px;
+    padding: 6px 0px 0px 12px;
 }
 
 div.widget.project > .author,
@@ -36,9 +99,14 @@ div.widget.project > .author a {
     text-transform: none;
 }
 
+div.widget.project div.description {
+    padding: 4px 12px;
+    min-height: 48px;
+}
+
 div.widget.project div.meter {
     border-top: 1px solid #d1d3d4;    
-    padding: 12px 0 80px !important;
+    padding: 4px 0 80px !important;
     position: relative;
     margin: 0 12px !important;
 }
@@ -120,6 +188,10 @@ div.widget.project div.meter dl {
 
 div.widget.project div.meter dl * {
     margin: 0;
+}
+
+div.widget.project div.meter dl .minimum {
+    min-width: 10%;
 }
 
 div.widget.project div.meter dl .optimum,
@@ -288,6 +360,14 @@ div.widget.project div.rewards ul li.manual  {
 
 div.widget.project div.rewards ul li.product {
     background-image: url('../../icon/m/product.png');
+}
+
+div.widget.project div.rewards ul li.design {
+    background-image: url('../../icon/m/design.png');
+}
+
+div.widget.project div.rewards ul li.other {
+    background-image: url('../../icon/m/other.png');
 }
 
 div.widget.project div.buttons {

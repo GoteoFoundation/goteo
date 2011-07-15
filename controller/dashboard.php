@@ -95,6 +95,10 @@ namespace Goteo\Controller {
 
             // tratamos el post segun la opcion y la acion
             $user = $_SESSION['user'];
+            // si es el avatar por defecto no lo mostramos aqui
+            if ($user->avatar->id == 1) {
+                unset($user->avatar);
+            }
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -112,8 +116,10 @@ namespace Goteo\Controller {
                             'user_about'=>'about',
                             'user_keywords'=>'keywords',
                             'user_contribution'=>'contribution',
-                            'user_twitter'=>'twitter',
                             'user_facebook'=>'facebook',
+                            'user_google'=>'google',
+                            'user_twitter'=>'twitter',
+                            'user_identica'=>'identica',
                             'user_linkedin'=>'linkedin'
                         );
 
@@ -317,25 +323,11 @@ namespace Goteo\Controller {
 
             $errors = array();
 
-            if ($action == 'select' && !empty($_POST['project'])) {
-                // otro proyecto de trabajo
-                $project = Model\Project::get($_POST['project']);
-            } else {
-                // si tenemos ya proyecto, mantener los datos actualizados
-                if (!empty($_SESSION['project']->id)) {
-                    $project = Model\Project::get($_SESSION['project']->id);
-                }
-            }
-
             $projects = Model\Project::ofmine($user->id);
 
             // si no hay proyectos no tendria que estar aqui
-            if (count($projects) == 0) {
-                throw new Redirection('/project/create', Redirection::TEMPORARY);
-            } else {
+            if (!empty($projects)) {
                 // compruebo permisos
-                //@FIXME! buscar otro modo
-                /*
                 foreach ($projects as $proj) {
 
                     // compruebo que puedo editar mis proyectos
@@ -348,11 +340,19 @@ namespace Goteo\Controller {
                         ACL::allow('/project/delete/'.$proj->id, '*', 'user', $user);
                     }
                 }
-                 *
-                 */
             }
-            
-            if (empty($project)) {
+
+            if ($action == 'select' && !empty($_POST['project'])) {
+                // otro proyecto de trabajo
+                $project = Model\Project::get($_POST['project']);
+            } else {
+                // si tenemos ya proyecto, mantener los datos actualizados
+                if (!empty($_SESSION['project']->id)) {
+                    $project = Model\Project::get($_SESSION['project']->id);
+                }
+            }
+
+            if (empty($project) && !empty($projects)) {
                 $project = $projects[0];
             }
 
@@ -361,8 +361,8 @@ namespace Goteo\Controller {
             if ($project instanceof  \Goteo\Model\Project) {
                 $_SESSION['project'] = $project;
             } else {
-                // si no es que hay un problema
-                throw new Redirection('/dashboard', Redirection::TEMPORARY);
+                unset($project);
+                $option = 'summary';
             }
 
             // tenemos proyecto de trabajo, comprobar si el proyecto esta en estado de tener blog
@@ -390,13 +390,11 @@ namespace Goteo\Controller {
                         $option = 'summary';
                         $action = 'view';
                     }
-                } else {
-                    if (!$blog->active) {
+                } elseif (!$blog->active) {
                         $errors[] = 'Lo sentimos, las actualizaciones para este proyecto estan desactivadas';
                         //Text::get('dashboard-project-blog-inactive');
                         $action = 'list';
                     }
-                }
 
                 // primero comprobar que tenemos blog
                 if (!$blog instanceof Model\Blog) {
@@ -578,12 +576,27 @@ namespace Goteo\Controller {
 
                             // añadir nueva colaboracion (no hacemos lo del mensaje porque esta sin texto)
                             if (!empty($_POST['support-add'])) {
-                                $project->supports[] = new Model\Project\Support(array(
+
+                                $new_support = new Model\Project\Support(array(
                                     'project'       => $project->id,
                                     'support'       => 'Nueva colaboración',
                                     'type'          => 'task',
                                     'description'   => ''
                                 ));
+
+                                if ($new_support->save($errors)) {
+
+                                    $project->supports[] = $new_support;
+                                    $_POST['support-'.$new_support->id.'-edit'] = true;
+
+                                } else {
+                                    $project->supports[] = new Model\Project\Support(array(
+                                        'project'       => $project->id,
+                                        'support'       => 'Nueva colaboración',
+                                        'type'          => 'task',
+                                        'description'   => ''
+                                    ));
+                                }
                             }
 
                             // guardamos los datos que hemos tratado y los errores de los datos
@@ -727,6 +740,25 @@ $testpost = $_POST;
                 // editar colaboraciones
                 case 'supports':
                     $viewData['types'] = Model\Project\Support::types();
+
+                    if ($_POST) {
+                        foreach ($_POST as $k => $v) {
+                            if (!empty($v) && preg_match('/support-(\d+)-edit/', $k, $r)) {
+                                $viewData['editsupport'] = $r[1];
+                                break;
+                            }
+                        }
+                    }
+
+                    if (empty($viewData['editsupport']) && $_POST['support-add']) {
+
+                        $last = end($project->supports);
+
+                        if ($last !== false) {
+                            $viewData['editsupport'] = $last->id;
+                        }
+                    }
+
                     $project->supports = Model\Project\Support::getAll($_SESSION['project']->id);
                 break;
 
@@ -750,6 +782,18 @@ $testpost = $_POST;
         public function admin ($option = 'board') {
             if (ACL::check('/admin')) {
                 throw new Redirection('/admin', Redirection::TEMPORARY);
+            } else {
+                throw new Redirection('/dashboard', Redirection::TEMPORARY);
+            }
+        }
+
+        /*
+         * Salto al panel de revisor
+         *
+         */
+        public function review ($option = 'board') {
+            if (ACL::check('/review')) {
+                throw new Redirection('/review', Redirection::TEMPORARY);
             } else {
                 throw new Redirection('/dashboard', Redirection::TEMPORARY);
             }
@@ -791,6 +835,16 @@ $testpost = $_POST;
             if (ACL::check('/admin')) {
                 $menu['admin'] = array(
                     'label'   => 'Administración',
+                    'options' => array(
+                        'board' => 'Ir al panel'
+                    )
+                );
+            }
+
+            // si tiene permiso para ir a las revisiones
+            if (ACL::check('/review')) {
+                $menu['review'] = array(
+                    'label'   => 'Revisión',
                     'options' => array(
                         'board' => 'Ir al panel'
                     )

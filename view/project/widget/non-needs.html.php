@@ -1,4 +1,5 @@
 <?php
+use Goteo\Library\Text;
 
 $project = $this['project'];
 $types   = $this['types'];
@@ -22,17 +23,9 @@ foreach ($project->supports as $item) {
 ?>
 <div class="widget project-needs">
         
-    <!--
-    <div id="project-costs-header">
-        <span class="minimum" style="color:red;">Mínimo</span>
-        <span class="optimum" style="color:black;">Óptimo</span>
-    </div>
-    -->
-        
-    
-    <!--<h<?php echo $level ?>>Necesidades</h<?php echo $level ?>>-->
+    <h<?php echo $level ?> class="title"><?php echo Text::get('project-collaborations-title'); ?></h<?php echo $level ?>>
            
-    <table>
+    <table width="100%">
         
         <?php foreach ($items as $type => $list): ?>
         
@@ -47,6 +40,7 @@ foreach ($project->supports as $item) {
             <tr>
                 <th class="summary"><strong><?php echo htmlspecialchars($item->name) ?></strong>
                 <blockquote><?php echo $item->description ?></blockquote>
+                <a class="button green" href="/project/<?php echo $project->id; ?>/messages"><?php echo Text::get('regular-collaborate'); ?></a>
                 </th>
             </tr>            
             <?php endforeach ?>
@@ -56,5 +50,4 @@ foreach ($project->supports as $item) {
                                         
     </table>
     
-    <a class="button green" href="/project/<?php echo $project->id; ?>/messages">Colabora</a>
 </div>

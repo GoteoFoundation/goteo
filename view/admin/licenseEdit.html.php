@@ -35,9 +35,14 @@ include 'view/prologue.html.php';
                     <?php break;
             } ?>
 
-            <?php if (!empty($this['errors'])) {
-                echo '<pre>' . print_r($this['errors'], 1) . '</pre>';
-            } ?>
+            <?php if (!empty($this['errors']) || !empty($this['success'])) : ?>
+                <div class="widget">
+                    <p>
+                        <?php echo implode(',', $this['errors']); ?>
+                        <?php echo implode(',', $this['success']); ?>
+                    </p>
+                </div>
+            <?php endif; ?>
 
             <div class="widget board">
                 <form method="post" action="/admin/licenses?filter=<?php echo serialize($filters); ?>">
@@ -57,7 +62,7 @@ include 'view/prologue.html.php';
                     <label for="license-name">Nombre:</label><br />
                     <input type="text" name="name" id="license-name" value="<?php echo $this['license']->name; ?>" />
     <br />
-                    <label for="license-description">Descripción:</label><br />
+                    <label for="license-description">Texto tooltip:</label><br />
                     <textarea name="description" id="license-description" cols="60" rows="10"><?php echo $this['license']->description; ?></textarea>
     <br />
                     <label for="license-url">Url:</label><br />
