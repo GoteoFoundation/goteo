@@ -1,3 +1,12 @@
+div.widget.project.active {
+	opacity:0.85;
+	filter:alpha(opacity=85);
+}
+
+div.widget.project.active > .title a {
+    color: #20B3B2 !important;
+}
+
 div.widget.project {
     overflow: visible;
 }
@@ -134,6 +143,12 @@ div.widget.project > .author a {
     text-decoration: none;
     text-transform: none;
 }
+
+div.widget.project > .title a:hover,
+div.widget.project > .author a:hover {
+    color: #20B3B2;
+}
+
 
 div.widget.project div.description {
     padding: 4px 12px;

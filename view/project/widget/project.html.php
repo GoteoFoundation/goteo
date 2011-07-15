@@ -17,7 +17,7 @@ if (isset($this['investor'])) {
 }
 ?>
 
-<div class="widget project">
+<div class="widget project activable">
     
     <?php if (isset($this['balloon'])): ?>
     <div class="balloon"><?php echo $this['balloon'] ?></div>

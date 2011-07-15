@@ -88,9 +88,8 @@ div#footer div.block ul{
 
 div#footer div.block ul li{
 	line-height:12px;
-	height:12px;
-	margin-bottom:7px;
-		font-size:11px;
+    margin-bottom:5px;
+    font-size:11px;
 }
 
 div#footer div.block ul li a{

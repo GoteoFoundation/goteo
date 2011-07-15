@@ -25,7 +25,14 @@
 
         <script type="text/javascript">
             // Mark DOM as javascript-enabled
-            jQuery(document).ready(function ($) { $('body').addClass('js'); $('.tipsy').tipsy(); });
+            jQuery(document).ready(function ($) { 
+                $('body').addClass('js');
+                $('.tipsy').tipsy();
+                $('.activable').hover(
+                    function () { $(this).addClass('active') },
+                    function () { $(this).removeClass('active') }
+                );
+            });
         </script>
         <noscript><!-- Please enable JavaScript --></noscript>
 
