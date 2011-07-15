@@ -3,7 +3,8 @@
 use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Model\Project\Category,
-    Goteo\Model\Project\Reward;
+    Goteo\Model\Project\Reward,
+    Goteo\Model\Image;
 
 $project = $this['project'];
 $level = $this['level'] ?: 3;
@@ -32,7 +33,7 @@ $types = Reward::icons('');
         endif;
         ?>
 
-        <?php if (!empty($project->gallery)): ?>
+        <?php if (!empty($project->gallery) && (current($project->gallery) instanceof Image)): ?>
         <a href="/project/<?php echo $project->id ?>"><img alt="<?php echo $project->name ?>" src="<?php echo htmlspecialchars(current($project->gallery)->getLink(255, 143)) ?>" /></a>
         <?php endif ?>
         <?php if (!empty($categories)): ?>
