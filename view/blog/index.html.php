@@ -1,10 +1,14 @@
 <?php
 use Goteo\Library\Text,
-    Goteo\Core\View;
+    Goteo\Core\View,
+    Goteo\Model\Blog\Post;
 
 $blog = $this['blog'];
 $posts = $blog->posts;
 $tag = $this['tag'];
+if (!empty($this['post'])) {
+    $post = Post::get($this['post']);
+}
 $bodyClass = 'blog';
 
 // paginacion
@@ -71,7 +75,7 @@ include 'view/header.html.php';
 				<div class="widget post">
 					<?php echo new View('view/blog/post.html.php', $this);
                         $share_title = $post->title;
-                        $share_url = $this['show'] == SITE_URL . '/blog/' . $post->id;
+                        $share_url = SITE_URL . '/blog/' . $post->id;
                         $facebook_url = 'http://facebook.com/sharer.php?u=' . rawurlencode($share_url) . '&t=' . rawurlencode($share_title . ' | Goteo.org');
                         $twitter_url = 'http://twitter.com/home?status=' . rawurlencode($share_title . ': ' . $share_url . ' #Goteo');
                     ?>

@@ -3,8 +3,10 @@
 // puede ser resumen en la lista o completa
 	use Goteo\Library\Text,
 		Goteo\Model\Blog\Post;
-		$post = Post::get($this['post']);
-		$level = (int) $this['level'] ?: 3;
+
+    $post = Post::get($this['post']);
+    $level = (int) $this['level'] ?: 3;
+    
 	if ($this['show'] == 'list') {
 		$post->text = Text::recorta($post->text, 200);
 	}
