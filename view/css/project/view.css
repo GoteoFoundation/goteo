@@ -143,12 +143,6 @@ body.project-show div#main div.widget {
     margin-bottom: 20px;
 }
 
-body.project-show div#main div.widget h4.supertitle {
-    font-size: 12px !important;
-    padding: 0 2px 0.5em !important;
-}
-
-
 body.project-show div#main div.widget.project-support {
     min-height: 340px;
 }

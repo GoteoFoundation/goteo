@@ -52,10 +52,10 @@ div.widget {
 
  
  div.widget .supertitle {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: normal;
     margin: 0;
-    padding: 0 2px .2em;
+    padding: 0 2px .5em;
     border-bottom: 1px solid #21b0b0;
     margin-bottom: 1em;
 }
