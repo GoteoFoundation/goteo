@@ -1,6 +1,8 @@
 div.widget.project-media {
     padding: 0;
-    width: 620px;
+    width: 620px !important;
+    min-width: 620px !important;
+    max-width: 620px !important;
     height: 380px;
     margin-right: 20px;
 }
@@ -11,5 +13,6 @@ div.widget.project-media > embed {
     min-width: 620px !important;
     min-height: 380px !important;
     width: 620px !important;
+    max-width: 620px !important;
     height: 380px !important;
 }
