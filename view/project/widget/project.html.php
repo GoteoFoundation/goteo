@@ -2,15 +2,12 @@
 
 use Goteo\Core\View,
     Goteo\Library\Text,
-    Goteo\Model\Project\Category,
-    Goteo\Model\Project\Reward,
-    Goteo\Model\Image;
+    Goteo\Model\Project\Category;
 
 $project = $this['project'];
 $level = $this['level'] ?: 3;
 
 $categories = Category::getNames($project->id, 2);
-$types = Reward::icons('');
 ?>
 
 <div class="widget project">
@@ -24,7 +21,7 @@ $types = Reward::icons('');
      // tag de financiado cuando ha alcanzado el optimo o despues de los 80 dias
         if ($project->status == 4 || ( $project->status == 3 && $project->amount >= $project->maxcost )) :
             echo '<div class="tagmark red">' . Text::get('regular-gotit_mark') . '</div>';
-    // tag de en marcha cuando está en la segunda ronda o si estando en la primera ha alcanzado el mínimo
+    // tag de en marcha cuando estÃ¡ en la segunda ronda o si estando en la primera ha alcanzado el mÃ­nimo
         elseif ($project->status == 3 && ($project->round == 2 ||  ( $project->round == 1 && $project->amount >= $project->mincost ))) :
             echo '<div class="tagmark green">' . Text::get('regular-onrun_mark') . '</div>';
      // tag de exitoso cuando es retorno cumplido
@@ -57,19 +54,15 @@ $types = Reward::icons('');
         <h<?php echo $level + 1 ?>><?php echo Text::get('project-rewards-header'); ?></h<?php echo $level + 1?>>
         
         <ul>
-           <?php $q = 1; foreach ($project->social_rewards as $social):
-               if ($social->icon == 'other' && !empty($social->other)) $types[$social->icon]->name = $social->other;
-               ?>
+           <?php $q = 1; foreach ($project->social_rewards as $social): ?>
             <li class="<?php echo $social->icon ?>">
-                <a href="/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$types[$social->icon]->name}: {$social->reward} al procomún") ?>" class="tipsy"><?php echo htmlspecialchars($social->reward) ?></a>
+                <a href="/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$social->icon_name}: {$social->reward} al procomÃºn") ?>" class="tipsy"><?php echo htmlspecialchars($social->reward) ?></a>
             </li>
            <?php if ($q > 5) break; $q++; 
                endforeach ?>
-           <?php if ($q < 5) foreach ($project->individual_rewards as $individual):
-               if ($individual->icon == 'other' && !empty($individual->other)) $types[$individual->icon]->name = $individual->other;
-               ?>
+           <?php if ($q < 5) foreach ($project->individual_rewards as $individual): ?>
             <li class="<?php echo $individual->icon ?>">
-                <a href="/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$types[$individual->icon]->name}: {$individual->reward} aportando {$individual->amount}") ?> &euro;" class="tipsy"><?php echo htmlspecialchars($individual->reward) ?></a>
+                <a href="/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$individual->icon_name}: {$individual->reward} aportando {$individual->amount}") ?> &euro;" class="tipsy"><?php echo htmlspecialchars($individual->reward) ?></a>
             </li>
            <?php if ($q > 5) break; $q++;
            endforeach ?>
@@ -87,7 +80,7 @@ $types = Reward::icons('');
     </div>
     <?php else : // normal ?>
     <div class="buttons">
-        <?php if ($project->status == 3) : // si esta en campaña se puede aportar ?>
+        <?php if ($project->status == 3) : // si esta en campaÃ±a se puede aportar ?>
         <a class="button red supportit" href="/invest/<?php echo $project->id ?>"><?php echo Text::get('regular-invest_it'); ?></a>
         <?php else : ?>
         <a class="button view" href="/project/<?php echo $project->id ?>/updates"><?php echo Text::get('regular-see_blog'); ?></a>
