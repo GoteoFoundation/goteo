@@ -82,11 +82,9 @@ namespace Goteo\Controller {
 			if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['query']) && !isset($category)) {
                 $errors = array();
 
-                $query = $_GET['query']; // busqueda de texto
+                $params['query'] = $_GET['query']; // busqueda de texto
 
-                $message = "Buscando <strong>{$query}</strong>";
-
-                $results = \Goteo\Library\Search::text($query);
+                $results = \Goteo\Library\Search::text($params['query']);
 
 			} elseif (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['searcher']) || !empty($category))) {
 

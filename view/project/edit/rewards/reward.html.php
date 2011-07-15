@@ -6,7 +6,7 @@ $reward = $this['data']['reward'] ?>
 
 <div class="reward <?php echo $reward->icon ?>">
     
-    <div class="title"><strong><?php echo htmlspecialchars($reward->reward) ?></strong></div>
+    <div class="title"><strong><?php echo htmlspecialchars($reward->icon_name) . ': ' . htmlspecialchars($reward->reward) ?></strong></div>
     
     <div class="description">
         <p><?php echo htmlspecialchars($reward->description) ?></p>
