@@ -125,10 +125,10 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                                 new View('view/project/widget/non-needs.html.php',
                                     array('project' => $project, 'types' => Support::types()));
                         } else {
-                            echo
-                                new View('view/project/widget/needs.html.php',
-                                    array('project' => $project, 'types' => Cost::types())),
-                                new View('view/project/widget/sendMsg.html.php', array('project' => $project));
+                        echo
+                            new View('view/project/widget/needs.html.php', array('project' => $project, 'types' => Cost::types())),
+                            new View('view/project/widget/schedule.html.php', array('project' => $project)),
+                            new View('view/project/widget/sendMsg.html.php', array('project' => $project));
                         }
                         break;
                     case 'supporters':
