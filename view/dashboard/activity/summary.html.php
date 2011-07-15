@@ -70,7 +70,10 @@ $support = $user->support;
                             'own'       => true
                         ));                    
                     } else {
-                        echo new View('view/project/widget/project.html.php', array('project' => $project));
+                        echo new View('view/project/widget/project.html.php', array(
+                            'project' => $project,
+                            'investor'  => $user
+                        ));
                     }
 
                 endforeach; ?>

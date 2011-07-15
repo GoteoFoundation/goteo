@@ -2,15 +2,19 @@
 
 use Goteo\Core\View,
     Goteo\Library\Text,
-    Goteo\Model\Project\Category;
+    Goteo\Model\Project\Category,
+    Goteo\Model\Invest;
 
 $project = $this['project'];
 $level = $this['level'] ?: 3;
 
 $categories = Category::getNames($project->id, 2);
 
-//si llega $this['investor'] llegará $this['amount'] con la cantidad a poner en "mi aporte"
-
+//si llega $this['investor'] sacamos el total aportado para poner en "mi aporte"
+if (isset($this['investor'])) {
+    $investor = $this['investor'];
+    $invest = Invest::supported($investor->id, $project->id);
+}
 ?>
 
 <div class="widget project">
@@ -34,7 +38,7 @@ $categories = Category::getNames($project->id, 2);
         ?>
 
         <?php if (isset($this['investor'])) : ?>
-            <div class="investor"><img src="/image/<?php echo $this['investor']->avatar ?>/50/50" alt="<?php echo $this['investor']->name ?>" /><div class="invest">Mi aporte<br /><span class="amount"><?php echo $this['amount'] ?></span></div></div>
+            <div class="investor"><img src="/image/<?php echo $investor->avatar->id ?>/43/43" alt="<?php echo $investor->name ?>" /><div class="invest">Mi aporte<br /><span class="amount"><?php echo $invest->total ?></span></div></div>
         <?php endif; ?>
 
         <?php if (!empty($project->gallery)): ?>

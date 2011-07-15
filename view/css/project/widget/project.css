@@ -42,6 +42,42 @@ div.widget.project div.image div.tagmark.red {
 	background:url('/view/css/project/tagmark_red.png') left no-repeat;
 }
 
+div.widget.project div.image div.investor {
+    position: absolute;
+    z-index: 9999;
+    background-color: #f3f3f3;
+    margin-top: 81px;
+    margin-left: 3px;
+}
+
+div.widget.project div.image div.investor img {
+    width: 34px !important;
+    height: 34px !important;
+    margin: 3px;
+    float: left;
+}
+
+div.widget.project div.image div.investor div.invest {
+    text-transform: uppercase;
+    text-align: left;
+    font-size: 9px;
+    line-height: 9px;
+    color: #58595B;
+    float: left;
+    padding-top: 12px;
+    padding-left: 2px;
+    padding-right: 4px;
+}
+
+div.widget.project div.image div.investor div.invest span.amount {
+    color: #EE4843;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 18px !important;
+    background: url("/view/css/euro/red/s.png") no-repeat right center;
+    padding-right: 19px;
+}
+
 div.widget.project div.image div.categories {
     text-align: left;
     color: #ffffff;

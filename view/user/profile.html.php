@@ -86,7 +86,11 @@ $worthcracy = Worth::getAll();
                         </div>
 
                         <?php foreach ($projects['items'] as $project) :
-                            echo new View('view/project/widget/project.html.php', array('project' => $project));
+                            if ($type == 'my_projects')  {
+                                echo new View('view/project/widget/project.html.php', array('project' => $project));
+                            } else {
+                                echo new View('view/project/widget/project.html.php', array('project' => $project, 'investor' => $user));
+                            }
                         endforeach; ?>
 
                         <div class="discover-arrow-right">
