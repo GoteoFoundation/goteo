@@ -14,11 +14,9 @@ $level = $this['level'] = 3;
 
 $url = '/dashboard/projects/updates';
 
-echo new View ('view/dashboard/projects/selector.html.php', $this);
+if ($this['action'] == 'none') return;
+
 ?>
-
-<?php if ($this['action'] == 'none') return; ?>
-
 <?php if ($this['action'] == 'list') : ?>
 <div class="widget">
     <?php if (!empty($blog->id) && $blog->active) : ?>

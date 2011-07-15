@@ -25,6 +25,8 @@ include 'view/header.html.php'; ?>
 
         <div id="main" class="<?php echo $this['option'] ?>">
             
+<?php if ($this['section'] == 'projects') echo new View ('view/dashboard/projects/selector.html.php', $this); ?>
+
             <?php if (!empty($this['message'])) : ?>
                 <div class="widget">
                     <?php if (empty($this['section']) && empty($this['option'])) : ?>

@@ -3,8 +3,6 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-echo new View ('view/dashboard/projects/selector.html.php', $this);
-
 $project = $this['project'];
 $errors = $project->errors['supports'] ?: array();
 $okeys  = $project->okeys['supports'] ?: array();

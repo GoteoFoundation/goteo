@@ -3,8 +3,6 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Model\Project;
 
-echo new View ('view/dashboard/projects/selector.html.php', $this);
-
 $project = $this['project'];
 
 if (!$project instanceof  Goteo\Model\Project) {
@@ -12,7 +10,11 @@ if (!$project instanceof  Goteo\Model\Project) {
 }
 ?>
 <div class="widget">
-    <?php if ($project->name == '') : ?><p><strong>Ojo! Proyecto sin nombre</strong></p><?php endif ?>
+    <?php if ($project->name == '') : ?>
+        <p><strong>Ojo! Proyecto sin nombre</strong></p>
+    <?php else : ?>
+        <p><strong><?php echo $project->name ?></strong></p>
+    <?php endif ?>
     <a class="button" href="/project/edit/<?php echo $project->id ?>">Editar</a>
     <a class="button" href="/project/<?php echo $project->id ?>" target="_blank">Ver página pública</a>
     <?php if ($project->status == 1) : ?>

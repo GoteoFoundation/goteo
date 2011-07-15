@@ -3,8 +3,6 @@ use Goteo\Core\View,
  Goteo\Model\Project\Reward,
  Goteo\Model\Invest;
 
-echo new View ('view/dashboard/projects/selector.html.php', $this);
-
 $filters = array(
     'date'      => 'Fecha',
     'user'      => 'Usuario',
