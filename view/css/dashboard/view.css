@@ -152,10 +152,6 @@ body.dashboard div#main div.status #project-status {
     padding: 20px 100px 62px 30px !important;
 }
 
-body.dashboard div#main div.meter {
-    float: left;
-}
-
 /* Lista entradas */
 body.dashboard div#main div.post {
     margin: 20px;

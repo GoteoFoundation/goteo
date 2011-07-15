@@ -1,9 +1,15 @@
 <?php
 use Goteo\Core\View,
     Goteo\Model,
+    Goteo\Library\Worth,
     Goteo\Library\Text;
 
 $waitfor = Model\Project::waitfor();
+$worthcracy = Worth::getAll();
+
+$user = $_SESSION['user'];
+
+$support = $user->support;
 ?>
 <script type="text/javascript">
 
@@ -89,3 +95,6 @@ $waitfor = Model\Project::waitfor();
     </div>
 
 <?php endforeach; ?>
+
+<!-- nivel de meritocracia -->
+<?php echo new View('view/user/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $user->worth, 'amount' => $support['amount'])) ?>

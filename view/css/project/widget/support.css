@@ -1,3 +1,8 @@
+/* Detalle de la linea roja (y otras cosillas) en el supertitle del termometro*/
+div.widget.project-support h4.supertitle {
+    border-bottom: 1px solid #EE4843 !important;
+}
+
 div.widget.project-support dl {
     margin: 0;
     padding: 0 0 0 20px;
