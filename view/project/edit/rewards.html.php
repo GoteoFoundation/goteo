@@ -26,11 +26,14 @@ foreach ($project->social_rewards as $social_reward) {
                 foreach ($type->licenses as $lid => $license) {
 
                     $licenses["social_reward-{$social_reward->id}-license-{$license->id}"] = array(
+                        'name'  => "social_reward-{$social_reward->id}-{$type->id}-license",
                         'label' => $license->name,
                         'value' => $license->id,
-                        'class' => 'license_' . $license->id,
+                        'type'  => 'radio',
+                        'class' => 'license license_' . $license->id,
                         'hint'  => $license->description,
-                        'id'    => "social_reward-{$social_reward->id}-license-{$license->id}"
+                        'id'    => "social_reward-{$social_reward->id}-license-{$license->id}",
+                        'checked' => $license->id == $social_reward->license ? true : false
                     );
 
                 }
@@ -41,38 +44,43 @@ foreach ($project->social_rewards as $social_reward) {
                 $children = array(
                     "social_reward-{$social_reward->id}-other" => array(
                         'type'      => 'textbox',
-                        'class'     => 'inline',
+                        'class'     => 'inline other',
                         'title'     => Text::get('rewards-field-social_reward-other'),
                         'value'     => $social_reward->other,
-                        'name'      => "social_reward-{$social_reward->id}-{$type->id}"
+                        'name'      => "social_reward-{$social_reward->id}-{$type->id}",
+                        'hint'      => Text::get('tooltip-project-social_reward-icon-other')
                     )
                 );
             } elseif (!empty($licenses)) {
                 $children = array(
                     "social_reward-{$social_reward->id}-license" => array(
-                        'type'      => 'radios',
+                        'type'      => 'group',
                         'class'     => 'license',
                         'title'     => Text::get('rewards-field-social_reward-license'),
-                        'options'   => $licenses,
+                        'children'  => $licenses,
                         'value'     => $social_reward->license,
                         'name'      => "social_reward-{$social_reward->id}-{$type->id}-license"
                     )
                 );
             } else {
                 $children = array(
-                    "social_reward-{$social_reward->id}-empty" => array(
-                        'type'      => 'radios',
-                        'class'     => 'license'
+                    "social_reward-{$social_reward->id}-license" => array(
+                        'type' => 'hidden',
+                        'name' => "social_reward-{$social_reward->id}-{$type->id}-license"
                     )
                 );
             }
 
 
             $types["social_reward-{$social_reward->id}-icon-{$type->id}"] =  array(
+                'name'  => "social_reward-{$social_reward->id}-icon",
                 'value' => $type->id,
-                'class' => "reward_{$type->id} social_{$type->id}",
+                'type'  => 'radio',
+                'class' => "social_reward-type reward-type reward_{$type->id} social_{$type->id}",
                 'label' => $type->name,
                 'hint'  => $type->description,
+                'id'    => "social_reward-{$social_reward->id}-icon-{$type->id}",
+                'checked' => $type->id == $social_reward->icon ? true : false,
                 'children' => $children
             );
                 
@@ -108,10 +116,10 @@ foreach ($project->social_rewards as $social_reward) {
                     ),
                     "social_reward-{$social_reward->id}-icon" => array(
                         'title'     => Text::get('rewards-field-social_reward-type'),
-                        'class'     => 'inline social_reward-type reward-type',
-                        'type'      => 'radios',
+                        'class'     => 'inline',
+                        'type'      => 'group',
                         'required'  => true,
-                        'options'   => $types,
+                        'children'  => $types,
                         'value'     => $social_reward->icon,
                         'errors'    => !empty($errors["social_reward-{$social_reward->id}-icon"]) ? array($errors["social_reward-{$social_reward->id}-icon"]) : array(),
                         'ok'        => !empty($okeys["social_reward-{$social_reward->id}-icon"]) ? array($okeys["social_reward-{$social_reward->id}-icon"]) : array(),
@@ -159,30 +167,37 @@ foreach ($project->individual_rewards as $individual_reward) {
 
             if ($type->id == 'other') {
                 // un campo para especificar el tipo
-                $types["individual_reward-{$individual_reward->id}-icon-{$type->id}"] =  array(
-                    'value' => $type->id,
-                    'class' => "reward_{$type->id} individual_{$type->id}",
-                    'label' => $type->name,
-                    'hint' => $type->description,
-                    'children' => array(
+                $children = array(
                         "individual_reward-{$individual_reward->id}-other" => array(
                             'type'      => 'textbox',
-                            'class'     => 'inline',
+                            'class'     => 'inline other',
                             'title'     => Text::get('rewards-field-individual_reward-other'),
                             'value'     => $individual_reward->other,
-                            'name'      => "individual_reward-{$individual_reward->id}-{$type->id}"
+                            'name'      => "individual_reward-{$individual_reward->id}-{$type->id}",
+                            'hint'     => Text::get('tooltip-project-individual_reward-icon-other')
                         )
-                    )
-                );
+                    );
             } else {
-                $types["individual_reward-{$individual_reward->id}-icon-{$type->id}"] =  array(
-                    'value' => $type->id,
-                    'class' => "reward_{$type->id} individual_{$type->id}",
-                    'label' => $type->name,
-                    'hint'  => $type->description
+                // como tener children sin tenerlos
+                $children = array(
+                    "individual_reward-{$individual_reward->id}-{$type->id}" => array(
+                        'type'      => 'hidden',
+                        'name'      => "individual_reward-{$individual_reward->id}-other"
+                    )
                 );
             }
             
+            $types["individual_reward-{$individual_reward->id}-icon-{$type->id}"] =  array(
+                'name'  => "individual_reward-{$individual_reward->id}-icon",
+                'value' => $type->id,
+                'type'  => 'radio',
+                'class' => "reward-type reward_{$type->id} individual_{$type->id}",
+                'label' => $type->name,
+                'hint'  => $type->description,
+                'id'    => "individual_reward-{$individual_reward->id}-icon-{$type->id}",
+                'checked' => $type->id == $individual_reward->icon ? true : false,
+                'children' => $children
+            );
         }
 
         // a este grupo le ponemos estilo de edicion
@@ -216,9 +231,9 @@ foreach ($project->individual_rewards as $individual_reward) {
                     "individual_reward-{$individual_reward->id}-icon" => array(
                         'title'     => Text::get('rewards-field-individual_reward-type'),
                         'required'  => true,
-                        'class'     => 'inline  reward-type',
-                        'type'      => 'radios',
-                        'options'   => $types,
+                        'class'     => 'inline',
+                        'type'      => 'group',
+                        'children'  => $types,
                         'value'     => $individual_reward->icon,
                         'errors'    => !empty($errors["individual_reward-{$individual_reward->id}-icon"]) ? array($errors["individual_reward-{$individual_reward->id}-icon"]) : array(),
                         'ok'        => !empty($okeys["individual_reward-{$individual_reward->id}-icon"]) ? array($okeys["individual_reward-{$individual_reward->id}-icon"]) : array(),

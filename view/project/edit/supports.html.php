@@ -7,17 +7,6 @@ $project = $this['project'];
 $errors = $project->errors[$this['step']] ?: array();
 $okeys  = $project->okeys[$this['step']] ?: array();
 
-$support_types = array();
-
-foreach ($this['types'] as $id => $type) {
-    $support_types[] = array(
-        'value' => $id,
-        'class' => "support_{$id}",
-        'hint'  => Text::get('tooltip-project-support-type-'.$type),
-        'label' => $type
-    );
-}
-
 $supports = array();
 
 foreach ($project->supports as $support) {
@@ -26,6 +15,23 @@ foreach ($project->supports as $support) {
 
     // a ver si es el que estamos editando o no
     if ($support->id === $this['editsupport']) {
+
+
+        $support_types = array();
+
+        foreach ($this['types'] as $id => $type) {
+            $support_types["support-{$support->id}-type-{$id}"] = array(
+                'name'  => "support-{$support->id}-type",
+                'value' => $id,
+                'type'  => 'radio',
+                'class' => "support-type support_{$id}",
+                'hint'  => Text::get('tooltip-project-support-type-'.$id),
+                'label' => $type,
+                'checked' => $id == $support->type  ? true : false
+            );
+        }
+
+
         // a este grupo le ponemos estilo de edicion
         $supports["support-{$support->id}"] = array(
                 'type'      => 'group',
@@ -45,10 +51,10 @@ foreach ($project->supports as $support) {
                     "support-{$support->id}-type" => array(
                         'title'     => Text::get('supports-field-type'),
                         'required'  => true,
-                        'class'     => 'inline support-type',
-                        'type'      => 'radios',
-                        'options'   => $support_types,
+                        'class'     => 'inline',
+                        'type'      => 'group',
                         'value'     => $support->type,
+                        'children'  => $support_types,
                         'errors'    => !empty($errors["support-{$support->id}-type"]) ? array($errors["support-{$support->id}-type"]) : array(),
                         'ok'        => !empty($okeys["support-{$support->id}-type"]) ? array($okeys["support-{$support->id}-type"]) : array(),
                         'hint'      => Text::get('tooltip-project-support-type')

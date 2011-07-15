@@ -33,6 +33,9 @@ namespace Goteo\Model {
 
                 $post = $query->fetchObject(__CLASS__);
                 
+                if (!empty($post->image)) {
+                    $post->image = Image::get($post->image);
+                }
                 $post->media = new Media($post->media);
 
                 return $post;
