@@ -2,7 +2,7 @@
 	use Goteo\Core\View;
 	echo new View ('view/dashboard/projects/selector.html.php', $this);
 	$url = SITE_URL . '/widget/project/' . $_SESSION['project']->id;
-	$widget_code = '<iframe frameborder="0" height="380px" src="'.$url.'" width="200px"></iframe>';
+	$widget_code = '<iframe frameborder="0" height="380px" src="'.$url.'" width="250px"></iframe>';
 ?>
 <p>SOLO DEBE PODER COMPARTIR ESTE WIDGET SI EL PROYECTO ESTA en campaña, financiado o retorno cumplido</p>
 <div class="widget projects">

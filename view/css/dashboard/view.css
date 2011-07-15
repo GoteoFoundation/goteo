@@ -120,8 +120,9 @@ body.dashboard div.superform {
 
 /* Seccion proyectos */
 body.dashboard div#project-selector {
+    background-color: #ffffff;
     margin-bottom: 20px;
-    padding: 5px 10px;
+    padding: 20px;
 }
 
 body.dashboard div#project-selector label{
@@ -137,3 +138,36 @@ body.dashboard div#project-selector select{
     font-size: 14px;
 }
 
+/* status */
+body.dashboard div#main div.status {
+    float: left;
+    color: #bcbdbd;
+    border: none !important;
+    padding: 0px !important;
+    margin-right: 20px;
+}
+
+body.dashboard div#main div.status #project-status {
+    background-color: #ffffff;
+    padding: 20px 100px 62px 30px !important;
+}
+
+body.dashboard div#main div.meter {
+    float: left;
+}
+
+/* Lista entradas */
+body.dashboard div#main div.post {
+    margin: 20px;
+    border-bottom: 1px dashed #B7C2C5;
+}
+
+body.dashboard div#main div.post strong {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+body.dashboard div#main div.post span {
+    font-weight: normal;
+    font-size: 10px;
+}

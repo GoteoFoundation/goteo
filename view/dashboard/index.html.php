@@ -25,7 +25,6 @@ include 'view/header.html.php'; ?>
 
         <div id="main" class="<?php echo $this['option'] ?>">
             
-
             <?php if (!empty($this['message'])) : ?>
                 <div class="widget">
                     <?php if (empty($this['section']) && empty($this['option'])) : ?>

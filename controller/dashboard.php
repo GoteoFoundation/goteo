@@ -380,7 +380,7 @@ namespace Goteo\Controller {
             if ($option == 'updates' && in_array($project->status, array(1,2,6))) {
                 $errors[] = 'Lo sentimos, aun no se pueden publicar actualizaciones en este proyecto';
                 //Text::get('dashboard-project-blog-wrongstatus');
-                $action = 'list';
+                $action = 'none';
             } elseif ($option == 'updates') {
                 // solo cargamos el blog en la gestion de updates
                 $blog = Model\Blog::get($project->id);
@@ -399,12 +399,12 @@ namespace Goteo\Controller {
                         $errors[] = 'Contacte con nosotros';
                         //Text::get('dashboard-project-blog-fail');
                         $option = 'summary';
-                        $action = 'view';
+                        $action = 'none';
                     }
                 } elseif (!$blog->active) {
                         $errors[] = 'Lo sentimos, las actualizaciones para este proyecto estan desactivadas';
                         //Text::get('dashboard-project-blog-inactive');
-                        $action = 'list';
+                        $action = 'none';
                     }
 
                 // primero comprobar que tenemos blog
@@ -412,7 +412,7 @@ namespace Goteo\Controller {
                     $errors[] = 'No se ha encontrado ningún blog para este proyecto';
                     //Text::get('dashboard-project-updates-noblog');
                     $option = 'summary';
-                    $action = 'list';
+                    $action = 'none';
                     break;
                 }
 
@@ -680,6 +680,8 @@ $testpost = $_POST;
             if ($option == 'updates') {
                 // segun la accion
                 switch ($action) {
+                    case 'none' :
+                        break;
                     case 'add':
                         $post = new Model\Blog\Post(
                                 array(
@@ -689,8 +691,6 @@ $testpost = $_POST;
                                 )
                             );
 
-                        $message = 'Añadiendo una nueva entrada';
-                        //Text::get('dashboard-project-updates-add_title');
                         break;
                     case 'edit':
                         if (empty($id)) {
@@ -709,13 +709,20 @@ $testpost = $_POST;
                             }
                         }
 
-                        $message = 'Editando una entrada existente';
-                        //Text::get('dashboard-project-updates-edit_title');
+                        break;
+                    case 'delete':
+                        $post = Model\Blog\Post::get($id);
+                        if ($post->delete($id)) {
+                            $success[] = 'Entrada eliminada';
+                        } else {
+                            $errors[] = 'Error al eliminar la entrada';
+                        }
+                        $posts = Model\Blog\Post::getAll($blog->id);
+                        $action = 'list';
+
                         break;
                     default:
                         $posts = Model\Blog\Post::getAll($blog->id);
-                        $message = 'Lista de actualizaciones';
-                        //Text::get('dashboard-project-updates-list_title');
                         $action = 'list';
                         break;
                 }
@@ -833,8 +840,7 @@ $testpost = $_POST;
                         'summary'  => 'Resumen',
                         'updates'  => 'Actualizaciones',
                         'widgets'  => 'Widgets',
-                        'supports' => 'Colaboraciones',
-                        'preview'  => 'Página pública'
+                        'supports' => 'Colaboraciones'
                     )
                 )
             );
@@ -843,9 +849,7 @@ $testpost = $_POST;
              * Quitados por falta de contenid/requerimientos
              *
              * Activity: , 'wall'    => 'Mi muro'
-             * Projects: 'contract' => 'Contrato', 'rewards'  => 'Gestionar retornos',
-
-             *
+             * Projects: 'contract' => 'Contrato', 'rewards'  => 'Gestionar retornos', 'preview'  => 'Página pública',
              *
              */
 
