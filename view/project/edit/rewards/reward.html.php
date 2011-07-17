@@ -10,14 +10,17 @@ $reward = $this['data']['reward'] ?>
     
     <div class="description">
         <p><?php echo htmlspecialchars($reward->description) ?></p>
-        <div class="license license_<?php echo $reward->license ?>">
-            <?php echo htmlspecialchars($this['data']['licenses'][$reward->license]) ?>
-        </div>
+        <div class="license license_<?php echo $reward->license ?>"><?php echo htmlspecialchars($this['data']['licenses'][$reward->license]) ?></div>
+        <?php if (!empty($reward->units)) : ?>
+                <strong><?php echo Text::get('project-rewards-individual_reward-limited'); ?></strong>
+                <?php $units = $reward->units;
+                echo Text::html('project-rewards-individual_reward-units_left', $units); ?><br />
+            <?php endif; ?>
     </div>
 
     
     <input type="submit" class="edit" name="<?php echo $reward->type ?>_reward-<?php echo $reward->id ?>-edit" value="<?php echo Text::get('form-edit-button') ?>" />
-    <input type="submit" class="remove red" name="<?php echo $reward->type ?>_reward-<?php echo $reward->id ?>-remove" value="<?php echo Text::get('form-remove-button') ?>" />
+    <input type="submit" class="remove weak" name="<?php echo $reward->type ?>_reward-<?php echo $reward->id ?>-remove" value="<?php echo Text::get('form-remove-button') ?>" />
     
 </div>
 

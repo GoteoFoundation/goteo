@@ -5,7 +5,8 @@
  
 body.project-edit div#main.userProfile div.superform li.element.webs li.element.web li.element,
 body.project-edit div#main.userProfile div.superform li.element.user_avatar > div.children > div.elements > ol > li.element {
-    display: table-cell;
+/*    display: table-cell; */
+    display: inline-block;
     vertical-align: top;
 }
 
@@ -29,14 +30,14 @@ body.project-edit div#main.userProfile div.superform li.element.webs > div.child
     margin: 0;
 }
 
-body.project-edit div#main.userProfile div.superform li.element.user_avatar li.element.avatar {
+body.project-edit div#main.userProfile div.superform li.element.user_avatar li.element.avatar-image {
     padding: 0 2em;
+    margin: 0px !important;
 }
 
 body.project-edit div#main.userProfile div.superform li.element.user_avatar li.element.avatar img {
-    max-width: 110px;
-    max-height: 110px;
-    border: 1px solid #58595b;
+    width: 128px;
+    height: 128px;
 }
 
 body.project-edit div#main.userProfile div.superform li.element.user_avatar li.element .title {

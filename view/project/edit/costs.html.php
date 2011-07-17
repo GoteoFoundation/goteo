@@ -85,16 +85,18 @@ if (!empty($project->costs)) {
                     ),
                     "cost-{$cost->id}-required"  => array(
                         'required'  => true,
-                        'title'     => Text::get('costs-field-required_cost'),
-                        'class'     => 'inline cost-required',
+/*                        'title'     => Text::get('costs-field-required_cost'),  */
+                        'class'     => 'inline cost-required cols_2',
                         'type'      => 'radios',
                         'options'   => array (
                             array(
                                     'value'     => '1',
+                                    'class'     => 'required_cost-yes',
                                     'label'     => Text::get('costs-field-required_cost-yes')
                                 ),
                             array(
                                     'value'     => '0',
+                                    'class'     => 'required_cost-no',
                                     'label'     => Text::get('costs-field-required_cost-no')
                                 )
                         ),
@@ -140,7 +142,7 @@ if (!empty($project->costs)) {
                             "cost-{$cost->id}-remove" => array(
                                 'type'  => 'submit',
                                 'label' => Text::get('form-remove-button'),
-                                'class' => 'inline remove red'
+                                'class' => 'inline remove weak'
                             )
                         )                        
                     )                    
@@ -189,20 +191,26 @@ echo new SuperForm(array(
 
         'costs' => array(
             'type'      => 'group',
+            'required'  => true,
             'title'     => Text::get('costs-fields-main-title'),
             'hint'      => Text::get('tooltip-project-costs'),
+            'errors'    => !empty($errors["costs"]) ? array($errors["costs"]) : array(),
+            'ok'        => !empty($okeys["costs"]) ? array($okeys["costs"]) : array(),
             'children'  => $costs  + array(
                 'cost-add' => array(
                     'type'  => 'submit',
                     'label' => Text::get('form-add-button'),
-                    'class' => 'add',
+                    'class' => 'add red',
                 )                
             )
         ),
         
         'cost-meter' => array(
             'title'     => Text::get('costs-fields-metter-title'),
+            'required'  => true,
             'class'     => 'cost-meter',
+            'errors'    => !empty($errors["total-costs"]) ? array($errors["total-costs"]) : array(),
+            'ok'        => !empty($okeys["total-costs"]) ? array($okeys["total-costs"]) : array(),
             'view'      => new View('view/project/edit/costs/meter.html.php', array(
                 'project'   => $project
             )),
@@ -216,6 +224,8 @@ echo new SuperForm(array(
             'rows'      => 4,
             'title'     => Text::get('costs-field-resoure'),
             'hint'      => Text::get('tooltip-project-resource'),
+            'errors'    => !empty($errors["resource"]) ? array($errors["resource"]) : array(),
+            'ok'        => !empty($okeys["resource"]) ? array($okeys["resource"]) : array(),
             'value'     => $project->resource
         )/*
         

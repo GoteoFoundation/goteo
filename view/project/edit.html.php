@@ -38,7 +38,10 @@ include 'view/prologue.html.php';
 
         </form>
 
-    </div>            
+    </div>
+
+    <?php echo '<pre>' . print_r($project->errors, 1) . '</pre>' ?>
+
 
     <?php include 'view/footer.html.php' ?>
     

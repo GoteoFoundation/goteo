@@ -83,7 +83,7 @@ foreach ($project->supports as $support) {
                             "support-{$support->id}-remove" => array(
                                 'type'  => 'submit',
                                 'label' => Text::get('form-remove-button'),
-                                'class' => 'inline remove red'
+                                'class' => 'inline remove weak'
                             )
                         )
                     )
@@ -136,7 +136,7 @@ echo new SuperForm(array(
                 'support-add' => array(
                     'type'  => 'submit',
                     'label' => Text::get('form-add-button'),
-                    'class' => 'add support-add',
+                    'class' => 'add support-add red',
                 )
             )
         )        

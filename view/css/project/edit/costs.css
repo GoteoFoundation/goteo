@@ -41,8 +41,6 @@ body.project-edit div#main.costs div.superform li.element.cost div.description {
 
 body.project-edit div#main.costs div.superform li.element.cost input.edit,
 body.project-edit div#main.costs div.superform li.element.cost input.remove {
-    float: right;
-    clear: right;
     width: 7em;
 }
 
@@ -67,6 +65,10 @@ body.project-edit div#main.costs div.superform li.element.editcost li.buttons di
 body.project-edit div#main.costs div.superform li.element.editcost li.buttons ol {
     margin: 0 !important;
     padding: 0 !important;
+}
+
+body.project-edit div#main.costs div.superform li.element.editcost li.buttons ol {
+    text-align: right;
 }
 
 body.project-edit div#main.costs div.superform li.element.editcost li.buttons li {

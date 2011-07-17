@@ -59,7 +59,7 @@ include 'view/header.html.php' ?>
                 </ul>
                                                                              
                 <?php foreach ($this['posts'] as $post) : ?>
-                <div class="post" id="home-post-<?php echo $post->id; ?>" <?php if ($post->id == $this['post']) echo '<style="display:block;"'; ?>>
+                <div class="post" id="home-post-<?php echo $post->id; ?>">
                     <h3><?php echo $post->title; ?></h3>
                     <?php if (!empty($post->media->url)) : ?>
                         <div class="embed">
@@ -72,8 +72,10 @@ include 'view/header.html.php' ?>
                     <?php endif; ?>
                     
                     <div class="description">
-                        <?php echo $post->text ?>
+                        <?php echo Text::recorta($post->text, 500) ?>
                     </div>
+
+                    <div class="read_more"><a href="/blog/<?php echo $post->id; ?>"><?php echo Text::get('regular-read_more') ?></a></div>
                 </div>                
                 <?php endforeach; ?>
                

@@ -60,6 +60,13 @@ body.project-edit div#main.rewards div.superform li.element.reward div.descripti
     margin: .5em 0;
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.description span.left {
+    color: #EE4843;
+    font-weight: bold;
+}
+
+
+
 body.project-edit div#main.rewards div.superform li.element.reward div.license {
     padding-left: 110px !important;
     background: none no-repeat 10px center;
@@ -69,9 +76,7 @@ body.project-edit div#main.rewards div.superform li.element.reward div.license {
 
 body.project-edit div#main.rewards div.superform li.element.reward input.edit,
 body.project-edit div#main.rewards div.superform li.element.reward input.remove {
-    float: right;
-    clear: right;
-    width: 7em;
+    width: 6em;
 }
 
 body.project-edit div#main.rewards div.superform li.element.reward input.edit {
@@ -92,8 +97,8 @@ body.project-edit div#main.rewards div.superform li.element.editindividual_rewar
 }
 
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward li.buttons div.contents,
-body.project-edit div#main.rewards div.superform li.element.editindividual_reward li.buttons ol,
-body.project-edit div#main.rewards div.superform li.element.editsocial_reward li.buttons div.contents,
+body.project-edit div#main.rewards div.superform li.element.editsocial_reward li.buttons ol,
+body.project-edit div#main.rewards div.superform li.element.editindividual_reward li.buttons div.contents,
 body.project-edit div#main.rewards div.superform li.element.editindividual_reward li.buttons ol {
     margin: 0 !important;
     padding: 0 !important;
@@ -104,6 +109,11 @@ body.project-edit div#main.rewards div.superform li.element.editindividual_rewar
     display: inline-block;
     padding: 0;
     margin: 0;
+}
+
+body.project-edit div#main.rewards div.superform li.element.editsocial_reward li.buttons ol,
+body.project-edit div#main.rewards div.superform li.element.editindividual_reward li.buttons ol {
+    text-align: right;
 }
 
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward li.buttons input,
