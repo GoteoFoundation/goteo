@@ -3,7 +3,8 @@
 use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Model\Project\Category,
-    Goteo\Model\Invest;
+    Goteo\Model\Invest,
+    Goteo\Model\Image;
 
 $project = $this['project'];
 $level = $this['level'] ?: 3;
@@ -41,7 +42,7 @@ if (isset($this['investor'])) {
             <div class="investor"><img src="/image/<?php echo $investor->avatar->id ?>/43/43" alt="<?php echo $investor->name ?>" /><div class="invest">Mi aporte<br /><span class="amount"><?php echo $invest->total ?></span></div></div>
         <?php endif; ?>
 
-        <?php if (!empty($project->gallery)): ?>
+        <?php if (!empty($project->gallery) && (current($project->gallery) instanceof Image)): ?>
         <a href="/project/<?php echo $project->id ?>"><img alt="<?php echo $project->name ?>" src="<?php echo htmlspecialchars(current($project->gallery)->getLink(255, 143)) ?>" /></a>
         <?php endif ?>
         <?php if (!empty($categories)): ?>
