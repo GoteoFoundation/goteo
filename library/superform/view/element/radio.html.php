@@ -15,7 +15,6 @@ use Goteo\Core\View;
 <div class="<?php if (!$this['checked']) echo 'jshidden ' ?>children" id="<?php echo htmlspecialchars($this['id']) ?>-children">
         <?php echo new View('library/superform/view/elements.html.php', Goteo\Library\SuperForm::getChildren($this['children'], $this['level'])) ?>
 </div>
-
 <script type="text/javascript">
 $(function () {
    $("div.superform input#<?php echo $this['id'] ?>").click(function () {
@@ -28,15 +27,12 @@ $(function () {
                   $('div.children#' + r.id + '-children').slideUp(400);
               }
           } catch (e) {}
-       });
-       /*
-        if (this.checked) {
-            $('div.superform div.children#<?php echo $this['id'] ?>-children').slideDown();
-        } else {
-            $('div.superform div.children#<?php echo $this['id'] ?>-children').slideUp();
-        }
-        */
+       });       
    });
 });  
 </script>
 <?php endif; ?>
+
+<script type="text/javascript">
+<?php include __DIR__ . '/radio.js.src.php' ?>
+</script>

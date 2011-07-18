@@ -1,6 +1,6 @@
 $(function () {
 
-    var li= $('#<?php echo $this['id'] ?>');
+    var li= $('li.element#<?php echo $this['id'] ?>');
 
     var input = li.children('div.contents').find('textarea');
 

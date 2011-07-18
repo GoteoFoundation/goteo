@@ -66,7 +66,14 @@ $elements      = array(
                        . new View('view/project/widget/schedule.html.php', array('project' => $project))
                        . '</div>'
                        . '</div></div>'
-    )
+    ),
+     'errors' => array(
+            'title' => 'Errores',
+            'view'  => new View('view/project/edit/errors.html.php', array(
+                'project'   => $project,
+                'step'      => $this['step']
+            ))
+        )
 );
 
 // si es enviable ponemos el campo de comentario

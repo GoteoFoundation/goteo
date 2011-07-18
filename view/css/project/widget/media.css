@@ -2,7 +2,7 @@ div.widget.project-media {
     padding: 0;
     width: 620px !important;
     min-width: 620px !important;
-    max-width: 620px !important;
+    maxjd-width: 620px !important;
     height: 380px;
     margin-right: 20px;
 }

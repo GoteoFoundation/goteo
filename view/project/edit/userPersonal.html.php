@@ -1,7 +1,8 @@
 <?php
 
 use Goteo\Library\Text,
-    Goteo\Library\SuperForm;
+    Goteo\Library\SuperForm,
+    Goteo\Core\View;
 
 $project = $this['project'];
 $errors = $project->errors[$this['step']] ?: array();         
@@ -104,6 +105,14 @@ echo new SuperForm(array(
             'ok'        => !empty($okeys['country']) ? array($okeys['country']) : array(),
             'value'     => $project->country
         ),
+        
+        'errors' => array(
+            'title' => 'Errores',
+            'view'  => new View('view/project/edit/errors.html.php', array(
+                'project'   => $project,
+                'step'      => $this['step']
+            ))
+        )
         
     )
 

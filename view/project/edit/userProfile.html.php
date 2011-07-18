@@ -1,7 +1,8 @@
 <?php
 
 use Goteo\Library\Text,
-    Goteo\Library\SuperForm;
+    Goteo\Library\SuperForm,
+    Goteo\Core\View;
             
 $project = $this['project'];
 $user = $this['user'];
@@ -240,6 +241,13 @@ echo new SuperForm(array(
                     'value'     => $user->linkedin
                 )
             )            
-        )        
+        ),
+        'errors' => array(
+            'title' => 'Errores',
+            'view'  => new View('view/project/edit/errors.html.php', array(
+                'project'   => $project,
+                'step'      => $this['step']
+            ))
+        )
     )
 ));

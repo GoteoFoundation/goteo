@@ -1,6 +1,7 @@
 <?php
 
-use Goteo\Library\Text,
+use Goteo\Core\View,
+    Goteo\Library\Text,
     Goteo\Library\SuperForm;
             
 $project = $this['project'];
@@ -14,8 +15,7 @@ foreach ($project->supports as $support) {
     $ch = array();
 
     // a ver si es el que estamos editando o no
-    if ($support->id === $this['editsupport']) {
-
+    if (!empty($this["support-{$support->id}-edit"])) {
 
         $support_types = array();
 
@@ -36,7 +36,11 @@ foreach ($project->supports as $support) {
         $supports["support-{$support->id}"] = array(
                 'type'      => 'group',
                 'class'     => 'support editsupport',
-                'children'  => array(
+                'children'  => array(                    
+                    "support-{$support->id}-edit" => array(
+                        'type'  => 'hidden',
+                        'value' => '1'
+                    ),
                     "support-{$support->id}-support" => array(
                         'title'     => Text::get('supports-field-support'),
                         'type'      => 'textbox',
@@ -139,7 +143,14 @@ echo new SuperForm(array(
                     'class' => 'add support-add red',
                 )
             )
-        )        
+        ),
+        'errors' => array(
+            'title' => 'Errores',
+            'view'  => new View('view/project/edit/errors.html.php', array(
+                'project'   => $project,
+                'step'      => $this['step']
+            ))
+        )
     )
 
 ));
