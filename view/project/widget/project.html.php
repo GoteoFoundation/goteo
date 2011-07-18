@@ -2,15 +2,22 @@
 
 use Goteo\Core\View,
     Goteo\Library\Text,
-    Goteo\Model\Project\Category;
+    Goteo\Model\Project\Category,
+    Goteo\Model\Invest;
 
 $project = $this['project'];
 $level = $this['level'] ?: 3;
 
 $categories = Category::getNames($project->id, 2);
+
+//si llega $this['investor'] sacamos el total aportado para poner en "mi aporte"
+if (isset($this['investor'])) {
+    $investor = $this['investor'];
+    $invest = Invest::supported($investor->id, $project->id);
+}
 ?>
 
-<div class="widget project">
+<div class="widget project activable">
     
     <?php if (isset($this['balloon'])): ?>
     <div class="balloon"><?php echo $this['balloon'] ?></div>
@@ -21,7 +28,7 @@ $categories = Category::getNames($project->id, 2);
      // tag de financiado cuando ha alcanzado el optimo o despues de los 80 dias
         if ($project->status == 4 || ( $project->status == 3 && $project->amount >= $project->maxcost )) :
             echo '<div class="tagmark red">' . Text::get('regular-gotit_mark') . '</div>';
-    // tag de en marcha cuando estÃ¡ en la segunda ronda o si estando en la primera ha alcanzado el mÃ­nimo
+    // tag de en marcha cuando está en la segunda ronda o si estando en la primera ha alcanzado el mínimo
         elseif ($project->status == 3 && ($project->round == 2 ||  ( $project->round == 1 && $project->amount >= $project->mincost ))) :
             echo '<div class="tagmark green">' . Text::get('regular-onrun_mark') . '</div>';
      // tag de exitoso cuando es retorno cumplido
@@ -30,7 +37,11 @@ $categories = Category::getNames($project->id, 2);
         endif;
         ?>
 
-        <?php if (!empty($project->gallery) && (current($project->gallery) instanceof Image)): ?>
+        <?php if (isset($this['investor'])) : ?>
+            <div class="investor"><img src="/image/<?php echo $investor->avatar->id ?>/43/43" alt="<?php echo $investor->name ?>" /><div class="invest">Mi aporte<br /><span class="amount"><?php echo $invest->total ?></span></div></div>
+        <?php endif; ?>
+
+        <?php if (!empty($project->gallery)): ?>
         <a href="/project/<?php echo $project->id ?>"><img alt="<?php echo $project->name ?>" src="<?php echo htmlspecialchars(current($project->gallery)->getLink(255, 143)) ?>" /></a>
         <?php endif ?>
         <?php if (!empty($categories)): ?>
@@ -55,13 +66,13 @@ $categories = Category::getNames($project->id, 2);
         
         <ul>
            <?php $q = 1; foreach ($project->social_rewards as $social): ?>
-            <li class="<?php echo $social->icon ?>">
-                <a href="/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$social->icon_name}: {$social->reward} al procomÃºn") ?>" class="tipsy"><?php echo htmlspecialchars($social->reward) ?></a>
+            <li class="<?php echo $social->icon ?> activable">
+                <a href="/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$social->icon_name}: {$social->reward} al procomún") ?>" class="tipsy"><?php echo htmlspecialchars($social->reward) ?></a>
             </li>
            <?php if ($q > 5) break; $q++; 
                endforeach ?>
            <?php if ($q < 5) foreach ($project->individual_rewards as $individual): ?>
-            <li class="<?php echo $individual->icon ?>">
+            <li class="<?php echo $individual->icon ?> activable">
                 <a href="/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$individual->icon_name}: {$individual->reward} aportando {$individual->amount}") ?> &euro;" class="tipsy"><?php echo htmlspecialchars($individual->reward) ?></a>
             </li>
            <?php if ($q > 5) break; $q++;
@@ -80,7 +91,7 @@ $categories = Category::getNames($project->id, 2);
     </div>
     <?php else : // normal ?>
     <div class="buttons">
-        <?php if ($project->status == 3) : // si esta en campaÃ±a se puede aportar ?>
+        <?php if ($project->status == 3) : // si esta en campaña se puede aportar ?>
         <a class="button red supportit" href="/invest/<?php echo $project->id ?>"><?php echo Text::get('regular-invest_it'); ?></a>
         <?php else : ?>
         <a class="button view" href="/project/<?php echo $project->id ?>/updates"><?php echo Text::get('regular-see_blog'); ?></a>

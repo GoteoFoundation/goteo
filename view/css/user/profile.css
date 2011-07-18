@@ -17,3 +17,9 @@ body.user-profile div#main > div.side {
     float: right;
     width: 300px;
 }
+
+/* Detalle de la linea azul*/
+div.widget.user-supporters h3.supertitle {
+    border-bottom: 1px solid #313B96 !important;
+}
+

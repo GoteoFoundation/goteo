@@ -3,8 +3,6 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-echo new View ('view/dashboard/projects/selector.html.php', $this);
-
 $project = $this['project'];
 $errors = $project->errors['supports'] ?: array();
 $okeys  = $project->okeys['supports'] ?: array();
@@ -25,8 +23,27 @@ $supports = array();
 
 foreach ($project->supports as $support) {
 
+    $ch = array();
+
     // a ver si es el que estamos editando o no
     if ($support->id === $this['editsupport']) {
+
+
+        $support_types = array();
+
+        foreach ($this['types'] as $id => $type) {
+            $support_types["support-{$support->id}-type-{$id}"] = array(
+                'name'  => "support-{$support->id}-type",
+                'value' => $id,
+                'type'  => 'radio',
+                'class' => "support-type support_{$id}",
+                'hint'  => Text::get('tooltip-project-support-type-'.$id),
+                'label' => $type,
+                'checked' => $id == $support->type  ? true : false
+            );
+        }
+
+
         // a este grupo le ponemos estilo de edicion
     $supports["support-{$support->id}"] = array(
             'type'      => 'group',
@@ -46,10 +63,10 @@ foreach ($project->supports as $support) {
                 "support-{$support->id}-type" => array(
                     'title'     => Text::get('supports-field-type'),
                     'required'  => true,
-                    'class'     => 'inline support-type',
-                    'type'      => 'radios',
-                    'options'   => $support_types,
-                    'value'     => $support->type,
+                        'class'     => 'inline',
+                        'type'      => 'group',
+                        'value'     => $support->type,
+                        'children'  => $support_types,
                     'errors'    => !empty($errors["support-{$support->id}-type"]) ? array($errors["support-{$support->id}-type"]) : array(),
                     'ok'        => !empty($okeys["support-{$support->id}-type"]) ? array($okeys["support-{$support->id}-type"]) : array(),
                     'hint'      => Text::get('tooltip-project-support-type'),
@@ -78,12 +95,12 @@ foreach ($project->supports as $support) {
                         "support-{$support->id}-remove" => array(
                             'type'  => 'submit',
                             'label' => Text::get('form-remove-button'),
-                            'class' => 'inline remove'
+                                'class' => 'inline remove red'
+                            )
                         )
                     )
                 )
-            )
-        );
+            );
 
     } else {
 

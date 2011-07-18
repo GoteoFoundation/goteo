@@ -54,12 +54,17 @@ body.js div.superform > div.hint {
 }
 
 div.superform > div.elements {
-    border-right: 1px dashed #b7c2c5
+    border-right: 1px dashed #b7c2c5;
+    margin-bottom: 46px;
 }
 
 div.superform > div.hint h4,
 div.superform > div.hint blockquote {    
-    background-color: #ddf0f1;
+    background-color: #ffffff;
+/*
+    background: url('/view/css/superform/guide.png') 20px 20px;
+    padding-left: 60px;
+*/
     padding: 20px;    
     vertical-align: top;
     border: dashed #b7c2c5;
@@ -108,7 +113,7 @@ div.superform li.element:last-child {
     padding-bottom: 0;
 }
 
-div.superform > div.elements > ol > li.element {        
+div.superform > div.elements > ol > li.element {
     padding: 2em 2em 2em 0;
 }
 
@@ -275,6 +280,7 @@ div.superform div.elements > ol > li.element.slider.inline > div.contents > ul >
     margin-bottom: 0;
 }
 
+div.superform div.elements > ol > li.radio > div.contents > label,
 div.superform div.elements > ol > li.element.checkboxes > div.contents > ul > li > label,
 div.superform div.elements > ol > li.element.radios > div.contents > ul > li > label,
 div.superform div.elements > ol > li.element.slider > div.contents > ul > li > label {
@@ -290,16 +296,25 @@ div.superform div.elements > ol > li.element.slider.cols_1 > div.contents > ul >
     width: 100%;
 }
 
+div.superform div.elements > ol > li.element.checkboxes.cols_2 > div.contents > ul > li,
+div.superform div.elements > ol > li.element.radios.cols_2 > div.contents > ul > li,
+div.superform div.elements > ol > li.element.slider.cols_2 > div.contents > ul > li {
+    width: 49.8%;
+    float:left;
+}
+
 div.superform div.elements > ol > li.element.checkboxes.cols_3 > div.contents > ul > li,
 div.superform div.elements > ol > li.element.radios.cols_3 > div.contents > ul > li,
 div.superform div.elements > ol > li.element.slider.cols_3 > div.contents > ul > li {
-    width: 33.33%;
+    width: 33.16%;
+    float:left;
 }
 
 div.superform div.elements > ol > li.element.checkboxes.cols_4 > div.contents > ul > li,
 div.superform div.elements > ol > li.element.radios.cols_4 > div.contents > ul > li,
 div.superform div.elements > ol > li.element.slider.cols_4 > div.contents > ul > li {
-    width: 25%;
+    width: 24.8%;
+    float:left;
 }
 
 div.superform div.elements > ol > li.element.checkboxes.cols_5 > div.contents > ul > li,
@@ -315,6 +330,7 @@ div.superform div.elements > ol > li.element.slider.cols_6 > div.contents > ul >
 }
 
 
+div.superform div.elements > ol > li.radio > div.contents > label > input[type="radio"],
 div.superform div.elements > ol > li.element.checkboxes > div.contents > ul > li > label > input[type="checkbox"],
 div.superform div.elements > ol > li.element.radios > div.contents > ul > li > label > input[type="radio"],
 div.superform div.elements > ol > li.element.slider > div.contents > ul > li > label > input[type="radio"] {
@@ -325,6 +341,11 @@ div.superform div.elements > ol > li.element.slider > div.contents > ul > li > l
     height: 1em;
     cursor: pointer;
 }
+
+div.superform div.elements > ol > li.element.radio {
+    padding: 0px !important;
+}
+
 
 /* Feedback */
 div.superform li.element > div.feedback {
@@ -500,4 +521,72 @@ div.superform.green > div.hint blockquote {
 
 div.superform.green div.elements > ol > li.busy > .title {
     background: url('superform/badge/busy/green.gif') no-repeat right top;
+}
+
+/* Estilos específicos*/
+/* botones */
+div.superform input[type="submit"] {
+    padding: 0.3em 1.2em !important;
+    font-weight: bold;
+    font-size: 12px !important;
+}
+
+div.superform button.image-remove {
+    position: absolute;
+    right: 5px;
+    top: -10px;
+    background: url("/view/css/button/cross.png") no-repeat center center !important;
+    width: 20px;
+    height: 20px;
+    padding: 0px !important;
+    margin: 0px 10px 0px 0px !important;
+}
+
+div.superform button.image-remove:hover {
+    background: url("/view/css/button/cross-active.png") no-repeat center center !important;
+}
+
+/* titulos */
+div.superform li#social_rewards h4.title,
+div.superform li#individual_rewards,
+div.superform li#supports {
+    padding-left: 25px;
+}
+
+/* backgrounds */
+div.superform li#supports,
+div.superform li#social_rewards {
+    background-color: #f5faf4 !important;
+}
+div.superform li#individual_rewards {
+    background-color: #fdf3f4 !important;
+}
+
+div.superform li.editcost {
+    background-color: #fdf3f4 !important;
+}
+
+div.superform li.editcost li.required_cost-yes{
+    background-color: #fce9e9 !important;
+}
+
+div.superform li.editcost li.required_cost-no{
+    background-color: #f2f2f2 !important;
+}
+
+
+/* Imágenes gallery*/
+div.superform li#gallery div.elements li.gallery-image {
+    margin: 5px 25px !important;
+    display: inline-block !important;
+    width: 153px !important;
+}
+
+
+/* bordes */
+div.superform li#scope,
+div.superform li#supports,
+div.superform li#social_rewards,
+div.superform li#individual_rewards {
+    border-bottom: 1px dashed #b7c2c5;
 }

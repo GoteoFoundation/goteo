@@ -11,7 +11,11 @@ div.widget.projects div.project {
     margin: 0 0 3.33% 3.33%;
     float: left;    
     padding: 0;
-    width: 270px;
+    width: 250px;
+}
+
+div.widget.projects div.project a.button{
+    padding: 0.4em 1em !important;
 }
 
 div.widget.projects div.project div.balloon {
@@ -50,4 +54,33 @@ div.widget.projects > div.more a {
 
 div.widget.projects > div.more a:hover {
     text-decoration: underline;
+}
+
+/* Estilos para el apartado WIDGETS de MIS PROYECTOS en el DASHBOARD */
+
+div.widget.projects > .widget-title {
+    margin: 0 0 5px 30px;
+    padding: 0;
+
+}
+div.widget.projects > .widget-porject-legend {
+	margin: 0 0 20px 30px;
+	text-transform:uppercase;
+}
+div.widget.projects > #widget-code  {
+	width:350px;
+	float:left;
+	margin: 0 0 0 20px;
+}
+div.widget.projects > #widget-code .wc-embed  {
+	background: url("/view/css/social/embed.png") no-repeat;
+	height:20px;
+	text-transform:uppercase;
+	padding: 3px 0 0 25px;
+}
+div.widget.projects > #widget-code blockquote  {
+	width:200px;
+	margin: 10px 0;
+	padding:10px;
+	background:#E7E7E7;
 }

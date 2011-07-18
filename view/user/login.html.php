@@ -11,14 +11,18 @@ $error = $this['login_error'];
 $errors = $this['errors'];
 extract($_POST);
 ?>
+<div id="sub-header">
+	<div class="clearfix">
+		<div>
+			<h2><?php echo Text::html('login-banner-header'); ?></h2>
+		</div>
+		<div class="mod-pojctopen"><?php echo Text::html('open-banner-header'); ?></div>
+	</div>
+</div>
     <div id="main">
-
         <div class="login">
-
             <div>
-
                 <h2><?php echo Text::get('login-access-header'); ?></h2>
-
                 <?php if (!empty($error)): ?>
                 <p class="error"><?php echo Text::get('login-fail'); ?></p>
                 <?php endif ?>

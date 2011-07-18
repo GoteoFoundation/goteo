@@ -15,8 +15,7 @@ foreach ($project->supports as $support) {
     $ch = array();
 
     // a ver si es el que estamos editando o no
-    if ($support->id === $this['editsupport']) {
-
+    if (!empty($this["support-{$support->id}-edit"])) {
 
         $support_types = array();
 
@@ -37,7 +36,7 @@ foreach ($project->supports as $support) {
         $supports["support-{$support->id}"] = array(
                 'type'      => 'group',
                 'class'     => 'support editsupport',
-                'children'  => array(
+                'children'  => array(                    
                     "support-{$support->id}-edit" => array(
                         'type'  => 'hidden',
                         'value' => '1'
@@ -88,7 +87,7 @@ foreach ($project->supports as $support) {
                             "support-{$support->id}-remove" => array(
                                 'type'  => 'submit',
                                 'label' => Text::get('form-remove-button'),
-                                'class' => 'inline remove'
+                                'class' => 'inline remove weak'
                             )
                         )
                     )
@@ -141,7 +140,7 @@ echo new SuperForm(array(
                 'support-add' => array(
                     'type'  => 'submit',
                     'label' => Text::get('form-add-button'),
-                    'class' => 'add support-add',
+                    'class' => 'add support-add red',
                 )
             )
         ),
@@ -170,7 +169,7 @@ $(function () {
 
     supports.delegate('li.element.editsupport input.ok', 'click', function (event) {
         var data = {};
-        data[this.name.substring(0, 11) + 'edit'] = '0';
+        data[this.name.substring(0, 12) + 'edit'] = '0';
         Superform.update(supports, data);
         event.preventDefault();
     });

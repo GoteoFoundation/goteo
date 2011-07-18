@@ -11,23 +11,11 @@ $okeys  = $project->okeys[$this['step']] ?: array();
 $images = array();
 foreach ($project->gallery as $image) {
     $images[] = array(
-        'type'  => 'group',
-        'class' => 'inline image',
-        'children'  => array(
-            'gallery-image' => array(
-                'type'  => 'html',
-                'class' => 'inline image',
-                'html'  => is_object($image) ?
-                           $image . '<img src="' . htmlspecialchars($image->getLink(110, 110)) . '" alt="Imagen" />' :
-                           ''
-                ),
-             'remove' => array(
-                'name' => "gallery-{$image->id}-remove",
-                'type'  => 'submit',
-                'label' => Text::get('form-remove-button'),
-                'class' => 'inline remove image-remove'
-            )
-        )
+        'type'  => 'html',
+        'class' => 'inline gallery-image',
+        'html'  => is_object($image) ?
+                   $image . '<img src="' . htmlspecialchars($image->getLink(128, 128)) . '" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->id.'-remove" title="Quitar imagen" value="remove"></button>' :
+                   ''
     );
 
 }
@@ -62,35 +50,21 @@ foreach ($this['scope'] as $value => $label) {
 }
 
 
-$media = array();
-
-$media['media'] = array(
-    'type'  => 'textbox',
-    'required'  => true,
-    'class' => 'inline',
-    'title' => Text::get('overview-field-media'),
-    'hint'  => Text::get('tooltip-project-media'),
-    'errors'    => !empty($errors['media']) ? array($errors['media']) : array(),
-    'ok'        => !empty($okeys['media']) ? array($okeys['media']) : array(),
-    'value' => (string) $project->media
-);
-
-$media['media-upload'] = array(
-    'name' => "upload",
-    'type'  => 'submit',
-    'label' => Text::get('form-upload-button'),
-    'class' => 'inline'
-);
-
-
 if (!empty($project->media->url)) {
-    $media['media-preview'] = array(
-        'type'  => 'media',
-        'title' => Text::get('overview-field-media_preview'),
-        'class' => 'media',
-        'type'  => 'html',
-        'html'  => '<div>' . (!empty($project->media) ? $project->media->getEmbedCode() : '') .'</div>'
+    $media = array(
+            'type'  => 'media',
+            'title' => Text::get('overview-field-media_preview'),
+            'class' => 'inline media',
+            'type'  => 'html',
+            'html'  => '<div>' . (!empty($project->media) ? $project->media->getEmbedCode() : '') .'</div>'
     );
+} else {
+    $media = array(
+        'type'  => 'hidden',
+        'class' => 'inline'
+    );
+
+
 }
 
 $errors = $project->errors[$this['step']] ?: array();
@@ -138,18 +112,16 @@ $superform = array(
                 'image_upload'    => array(
                     'type'  => 'file',
                     'class' => 'inline image_upload',
-                    'title' => Text::get('overview-field-image_upload'),
-                    'hint'  => Text::get('tooltip-project-image'),
-                ),
-                'gallery' => array(
-                    'type'  => 'group',
-                    'title' => Text::get('overview-field-image_gallery'),
-                    'class' => 'inline gallery',
-                    'children'  => $images
+                    'hint'  => Text::get('tooltip-project-image')
                 )
-
             )
         ),        
+        'gallery' => array(
+            'type'  => 'group',
+            'title' => Text::get('overview-field-image_gallery'),
+            'class' => 'inline',
+            'children'  => $images
+        ),
 
         'description' => array(            
             'type'      => 'textarea',
@@ -158,7 +130,10 @@ $superform = array(
             'hint'      => Text::get('tooltip-project-description'),
             'value'     => $project->description,            
             'errors'    => !empty($errors['description']) ? array($errors['description']) : array(),
-            'ok'        => !empty($okeys['description']) ? array($okeys['description']) : array(),
+            'ok'        => !empty($okeys['description']) ? array($okeys['description']) : array()
+        ),
+        'description_group' => array(
+            'type' => 'group',
             'children'  => array(                
                 'about' => array(
                     'type'      => 'textarea',       
@@ -202,6 +177,7 @@ $superform = array(
             'name'      => 'categories[]',
             'title'     => Text::get('overview-field-categories'),
             'required'  => true,
+            'class'     => 'cols_3',
             'options'   => $categories,
             'hint'      => Text::get('tooltip-project-category'),
             'errors'    => !empty($errors['categories']) ? array($errors['categories']) : array(),
@@ -219,14 +195,29 @@ $superform = array(
         ),
 
         'media' => array(
-            'type'      => 'group',
-            'children'  => $media
+            'type'      => 'textbox',
+            'required'  => true,
+            'title'     => Text::get('overview-field-media'),
+            'hint'      => Text::get('tooltip-project-media'),
+            'errors'    => !empty($errors['media']) ? array($errors['media']) : array(),
+            'ok'        => !empty($okeys['media']) ? array($okeys['media']) : array(),
+            'value'     => (string) $project->media
         ),
+
+        'media-upload' => array(
+            'name' => "upload",
+            'type'  => 'submit',
+            'label' => Text::get('form-upload-button'),
+            'class' => 'inline media-upload'
+        ),
+        
+        'media-preview' => $media
+        ,
 
         'currently' => array(    
             'title'     => Text::get('overview-field-currently'),
             'type'      => 'slider',
-            'required'  => true,
+//            'required'  => true,
             'options'   => $currently,
             'class'     => 'currently cols_' . count($currently),
             'hint'      => Text::get('tooltip-project-currently'),
@@ -249,7 +240,7 @@ $superform = array(
         'scope' => array(
             'title'     => Text::get('overview-field-scope'),
             'type'      => 'slider',
-            'required'  => true,
+//            'required'  => true,
             'options'   => $scope,
             'class'     => 'scope cols_' . count($currently),
             'hint'      => Text::get('tooltip-project-scope'),

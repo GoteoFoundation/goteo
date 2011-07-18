@@ -10,6 +10,7 @@ $okeys  = $project->okeys[$this['step']] ?: array();
 
 $costs = array();
 
+
 if (!empty($project->costs)) {
     
     foreach ($project->costs as $cost) {     
@@ -32,15 +33,13 @@ if (!empty($project->costs)) {
                 );
             }
 
-
-
             $costs["cost-{$cost->id}"] = array(
                 'type'      => 'group',      
                 'class'     => 'cost editcost',
-                'children'  => array(
+                'children'  => array(                         
                     "cost-{$cost->id}-edit" => array(
-                        'type'      => 'hidden',
-                        'value'     => '1'
+                        'type'  => 'hidden',
+                        'value' => '1'
                     ),
                     "cost-{$cost->id}-cost" => array(
                         'title'     => Text::get('costs-field-cost'),
@@ -89,16 +88,18 @@ if (!empty($project->costs)) {
                     ),
                     "cost-{$cost->id}-required"  => array(
                         'required'  => true,
-                        'title'     => Text::get('costs-field-required_cost'),
-                        'class'     => 'inline cost-required',
+/*                        'title'     => Text::get('costs-field-required_cost'),  */
+                        'class'     => 'inline cost-required cols_2',
                         'type'      => 'radios',
                         'options'   => array (
                             array(
                                     'value'     => '1',
+                                    'class'     => 'required_cost-yes',
                                     'label'     => Text::get('costs-field-required_cost-yes')
                                 ),
                             array(
                                     'value'     => '0',
+                                    'class'     => 'required_cost-no',
                                     'label'     => Text::get('costs-field-required_cost-no')
                                 )
                         ),
@@ -144,7 +145,7 @@ if (!empty($project->costs)) {
                             "cost-{$cost->id}-remove" => array(
                                 'type'  => 'submit',
                                 'label' => Text::get('form-remove-button'),
-                                'class' => 'inline remove'
+                                'class' => 'inline remove weak'
                             )
                         )                        
                     )                    
@@ -193,20 +194,26 @@ echo new SuperForm(array(
 
         'costs' => array(
             'type'      => 'group',
+            'required'  => true,
             'title'     => Text::get('costs-fields-main-title'),
             'hint'      => Text::get('tooltip-project-costs'),
+            'errors'    => !empty($errors["costs"]) ? array($errors["costs"]) : array(),
+            'ok'        => !empty($okeys["costs"]) ? array($okeys["costs"]) : array(),
             'children'  => $costs  + array(
                 'cost-add' => array(
                     'type'  => 'submit',
                     'label' => Text::get('form-add-button'),
-                    'class' => 'add',
+                    'class' => 'add red',
                 )                
             )
         ),
         
         'cost-meter' => array(
             'title'     => Text::get('costs-fields-metter-title'),
+            'required'  => true,
             'class'     => 'cost-meter',
+            'errors'    => !empty($errors["total-costs"]) ? array($errors["total-costs"]) : array(),
+            'ok'        => !empty($okeys["total-costs"]) ? array($okeys["total-costs"]) : array(),
             'view'      => new View('view/project/edit/costs/meter.html.php', array(
                 'project'   => $project
             )),
@@ -215,17 +222,22 @@ echo new SuperForm(array(
         
         'resource' => array(
             'type'      => 'textarea',
+            'required'  => true,
             'cols'      => 40,
             'rows'      => 4,
             'title'     => Text::get('costs-field-resoure'),
             'hint'      => Text::get('tooltip-project-resource'),
+            'errors'    => !empty($errors["resource"]) ? array($errors["resource"]) : array(),
+            'ok'        => !empty($okeys["resource"]) ? array($okeys["resource"]) : array(),
             'value'     => $project->resource
         ),
-        /*        
-        'schedule' => array(                        
-            'title'     => Text::get('costs-field-schedule'),
-            'class'     => 'fullwidth'
-        ), */         
+        
+        'schedule' => array(
+            'type'      => 'html',
+            'class'     => 'schedule',
+            'html'      => new View('view/project/widget/schedule.html.php', array('project' => $project))
+        ),
+        
         'errors' => array(
             'title' => 'Errores',
             'view'  => new View('view/project/edit/errors.html.php', array(
@@ -233,19 +245,19 @@ echo new SuperForm(array(
                 'step'      => $this['step']
             ))
         )
-        
     )
 
 ));
 ?>
 <script type="text/javascript">
 $(function () {
-        
+    
     var costs = $('div#<?php echo $sfid ?> li.element#costs');    
     
     costs.delegate('li.element.cost input.edit', 'click', function (event) {
         var data = {};
         data[this.name] = '1';
+        //Superform.update(this, data);
         Superform.update(costs, data); 
         event.preventDefault();
     });
@@ -253,15 +265,15 @@ $(function () {
     costs.delegate('li.element.editcost input.ok', 'click', function (event) {
         var data = {};
         data[this.name.substring(0, 9) + 'edit'] = '0';
-        Superform.update(costs, data); 
-        Superform.update($('#cost-meter'));        
+        //Superform.update($(this).parents('li.element.editcost'), data);        
+        Superform.update(costs, data);         
         event.preventDefault();
     });
     
     costs.delegate('li.element.editcost input.remove, li.element.cost input.remove', 'click', function (event) {        
         var data = {};
-        data[this.name] = '1';        
-        Superform.update(costs, data); 
+        data[this.name] = '1';
+        Superform.update(costs, data);
         event.preventDefault();
     });
     
@@ -272,9 +284,10 @@ $(function () {
        event.preventDefault();
     });
     
-    costs.bind('sfafterupdate', function (ev, el, html){
-       Superform.updateElement($('li#cost-meter'), null, html);
-    });        
+    costs.bind('sfafterupdate', function (ev, el, html) {
+        Superform.updateElement($('li#cost-meter'), null, html);
+        Superform.updateElement($('li#schedule'), null, html);
+    });
         
 });
 </script>

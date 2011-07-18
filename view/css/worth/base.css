@@ -162,3 +162,20 @@ div.side-worthcracy  ul li.done.worth-5 {
     background-color: #0C4E99;
     color: #0C4E99;
 }
+
+/* Para la cantidad total aportada */
+div.widget.user-worthcracy div.worth-amount {
+    display: inline;
+    float:left;
+    color: #EE4843;
+    font-weight: bold;
+    font-size: 30px;
+    position: relative;
+    top: 25px;
+    left: 35px;
+    line-height: 33px;
+    padding-right: 30px;
+    background: url('/view/css/euro/red/l.png') no-repeat center right;
+    border-bottom: 1px solid #EE4843;
+}
+

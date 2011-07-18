@@ -1,56 +1,46 @@
 <?php
+	use Goteo\Core\View,
+		Goteo\Library\Text;
+	$bodyClass = 'discover';
+	include 'view/prologue.html.php';
+	include 'view/header.html.php' ?>
+	
+	<script type="text/javascript">	
+		jQuery(document).ready(function ($) {
+			/* todo esto para cada tipo de grupo */
+			<?php foreach ($this['lists'] as $type=>$list) :
+                if(array_empty($list)) continue; ?>
+				$("#discover-group-<?php echo $type ?>-1").show();
+				$("#navi-discover-group-<?php echo $type ?>-1").addClass('active');
+			<?php endforeach; ?>
 
-use Goteo\Core\View,
-    Goteo\Library\Text;
+			$(".discover-arrow").click(function (event) {
+				event.preventDefault();
 
-$bodyClass = 'discover';
+				/* Quitar todos los active, ocultar todos los elementos */
+				$(".navi-discover-group-"+this.rev).removeClass('active');
+				$(".discover-group-"+this.rev).hide();
+				/* Poner acctive a este, mostrar este */
+				$("#navi-discover-group-"+this.rel).addClass('active');
+				$("#discover-group-"+this.rel).show();
+			});
 
-include 'view/prologue.html.php';
+			$(".navi-discover-group").click(function (event) {
+				event.preventDefault();
 
-include 'view/header.html.php' ?>
-
-<script type="text/javascript">
-
-jQuery(document).ready(function ($) {
-
-    /* todo esto para cada tipo de grupo */
-<?php foreach ($this['types'] as $type) : ?>
-    $("#discover-group-<?php echo $type ?>-1").show();
-    $("#navi-discover-group-<?php echo $type ?>-1").addClass('active');
-<?php endforeach; ?>
-
-    $(".discover-arrow").click(function (event) {
-        event.preventDefault();
-
-        /* Quitar todos los active, ocultar todos los elementos */
-        $(".navi-discover-group-"+this.rev).removeClass('active');
-        $(".discover-group-"+this.rev).hide();
-        /* Poner acctive a este, mostrar este */
-        $("#navi-discover-group-"+this.rel).addClass('active');
-        $("#discover-group-"+this.rel).show();
-    });
-
-    $(".navi-discover-group").click(function (event) {
-        event.preventDefault();
-
-        /* Quitar todos los active, ocultar todos los elementos */
-        $(".navi-discover-group-"+this.rev).removeClass('active');
-        $(".discover-group-"+this.rev).hide();
-        /* Poner acctive a este, mostrar este */
-        $("#navi-discover-group-"+this.rel).addClass('active');
-        $("#discover-group-"+this.rel).show();
-    });
-
-});
-</script>
-
-
+				/* Quitar todos los active, ocultar todos los elementos */
+				$(".navi-discover-group-"+this.rev).removeClass('active');
+				$(".discover-group-"+this.rev).hide();
+				/* Poner acctive a este, mostrar este */
+				$("#navi-discover-group-"+this.rel).addClass('active');
+				$("#discover-group-"+this.rel).show();
+			});
+		});
+	</script>
         <div id="sub-header">
             <div>
-                <h2><?php echo Text::get('discover-header-supertitle'); ?></h2>
-                <?php echo Text::get('discover-header-title'); ?>
+                <h2><?php echo Text::html('discover-banner-header') ?></h2>
             </div>
-
         </div>
 
         <div id="main">
@@ -63,7 +53,7 @@ jQuery(document).ready(function ($) {
                 ); ?>
 
 		<?php foreach ($this['lists'] as $type=>$list) :
-            if (empty($list))
+            if (array_empty($list))
                 continue;
             ?>
             <div class="widget projects">

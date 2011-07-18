@@ -3,10 +3,12 @@
 // puede ser resumen en la lista o completa
 	use Goteo\Library\Text,
 		Goteo\Model\Blog\Post;
-		$post = Post::get($this['post']);
-		$level = (int) $this['level'] ?: 3;
+
+    $post = Post::get($this['post']);
+    $level = (int) $this['level'] ?: 3;
+    
 	if ($this['show'] == 'list') {
-		$post->text = Text::recorta($post->text, 200);
+		$post->text = Text::recorta($post->text, 500);
 	}
 
     $url = empty($this['url']) ? '/blog/' : $this['url'];
@@ -30,4 +32,7 @@
 			<?php echo $post->media->getEmbedCode(); ?>
 		</div>
 	<?php endif; ?>
-	<blockquote><?php echo $post->text; ?></blockquote>
+	<blockquote>
+        <?php echo $post->text; ?>
+        <?php if ($this['show'] == 'list') : ?><div class="read_more"><a href="<?php echo $url.$post->id; ?>"><?php echo Text::get('regular-read_more') ?></a></div><?php endif ?>
+    </blockquote>

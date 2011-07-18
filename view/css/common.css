@@ -90,6 +90,13 @@ a.button:active {
     background: #60c1bf url('button/aqua-active.png') repeat-x top;    
 }
 
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+button:hover,
+a.button:hover {
+    background: #60c1bf url('button/aqua-active.png') repeat-x top;
+}
+
 input.red[type="submit"],
 input.red[type="reset"],
 button.red,
@@ -104,6 +111,35 @@ button.red:active,
 a.button.red:active {
     background: #e44133 url('button/red-active.png') repeat-x top;    
 } 
+
+input.red[type="submit"]:hover,
+input.red[type="reset"]:hover,
+button.red:hover,
+a.button.red:hover {
+    background: #e44133 url('button/red-active.png') repeat-x top;
+}
+
+input.weak[type="submit"],
+input.weak[type="reset"],
+button.weak,
+a.button.weak {
+    background: #60c1bf url('button/aqua-active.png') repeat-x top;
+    color: white;
+}
+
+input.weak[type="submit"]:active,
+input.weak[type="reset"]:active,
+button.weak:active,
+a.button.weak:active {
+    background: #b5161e url('button/red.png') repeat-x top;
+}
+
+input.weak[type="submit"]:hover,
+input.weak[type="reset"]:hover,
+button.weak:hover,
+a.button.weak:hover {
+    background: #b5161e url('button/red.png') repeat-x top;
+}
 
 input.green[type="submit"],
 input.green[type="reset"],

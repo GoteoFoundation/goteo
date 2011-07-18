@@ -11,8 +11,8 @@ include 'view/prologue.html.php';
 include 'view/header.html.php'; ?>
 
         <div id="sub-header">
-            <div class="project-header">
-                <a href="/user/<?php echo $user->id; ?>" target="_blank"><img src="/image/<?php echo $user->avatar->id; ?>/50/50" /></a>
+            <div class="dashboard-header">
+                <a href="/user/<?php echo $user->id; ?>" target="_blank"><img src="/image/<?php echo $user->avatar->id; ?>/56/56" /></a>
                 <h2><span>                    <?php if (empty($this['option'])) {
                         echo 'Mi dashboard';
                     } else {
@@ -25,6 +25,7 @@ include 'view/header.html.php'; ?>
 
         <div id="main" class="<?php echo $this['option'] ?>">
             
+<?php if ($this['section'] == 'projects') echo new View ('view/dashboard/projects/selector.html.php', $this); ?>
 
             <?php if (!empty($this['message'])) : ?>
                 <div class="widget">
@@ -35,13 +36,17 @@ include 'view/header.html.php'; ?>
                 </div>
             <?php endif; ?>
 
-            <?php if (!empty($this['errors'])) {
-                echo implode(',',$this['errors']);
-            } ?>
+            <?php if (!empty($this['errors'])) : ?>
+                <div class="widget">
+                    <?php echo implode(',',$this['errors']); ?>
+                </div>
+            <?php endif; ?>
 
-            <?php if (!empty($this['success'])) {
-                echo implode(',',$this['success']);
-            } ?>
+            <?php if (!empty($this['success'])) : ?>
+                <div class="widget">
+                    <?php echo implode(',',$this['success']); ?>
+                </div>
+            <?php endif; ?>
 
             <?php if (!empty($this['section']) && !empty($this['option'])) {
                 echo new View ('view/dashboard/'.$this['section'].'/'.$this['option'].'.html.php', $this);

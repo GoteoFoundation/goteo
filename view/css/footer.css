@@ -1,67 +1,143 @@
-/* Footer */
-div#footer {    
-    background-color: white;     
-    height: 8em;
+body{
+	overflow:hidden !important;
+}
+
+div#footer ul {
+	margin:0;padding:0;
+}
+
+div#footer {  
+	width:100%;  
+	height: 150px;
+	margin:0;
+	padding: 20px 0 10px 0;
+    position: relative;		
+    background-color: white;         
     z-index: 0;    
-    max-width: 940px;
-    margin: 0 auto;
-    position: relative;
+    /*max-width: 940px;*/
     bottom: 0;
     overflow: hidden;
-    border-bottom: 25px solid white;
-    padding-top: 35px;
     clear: both;
-    z-index: 0;
-}
-
-div#footer * {
     color: #1f1d1e;
     font-size: 12px;
-    text-decoration: none;    
+    text-decoration: none;   
 }
 
-div#footer > div p, div#footer > div ul {
+div#sub-footer{
+	width:100%;
     margin: 0;
-    padding: 0;
-    list-style: none;
-    line-height: 180%;
+	height:25px;
+    font-size: 12px;
+    overflow: hidden;
+    background-color: #58595B;
+	float:none !important;
+	color:#fff;
 }
 
-div#footer > div {
-    border-left: 1px solid #e3dcdd;
-    float: left;
-    padding: 5px 15px;    
-    margin-top: -10px;
-    height: 100%;
-    min-width: 135px;
+div#footer .w940,
+div#sub-footer .w940 {
+	width:940px;
+	margin:0 auto;
 }
 
-div#footer div.categories,
-div#footer div.projects,
-div#footer div.resources {
-    position: relative;
-    width: 135px;
-    min-width: 0 !important;
+/*generics*/
+div#footer a,div#subfooter a{
+	text-decoration:none;
 }
 
-div#footer div.projects ul {
-    margin-top: 5px;
-    list-style: none;
+div#subfooter a:hover{
+	color:#1db3b2;
 }
 
-div#footer div.social {
-    position: relative;
-    width: 95px;
-    min-width: 0 !important;
+/*hijos de footer*/
+div#footer div.block{
+	float:left;
+	width:148px;
+	height: 142px;
+	padding-left:15px;	
+	border-left:#ebe9ea 2px solid;	
+    overflow: hidden;
 }
 
-div#footer div.social li a {
-    font-size: 13px;    
+
+div#footer div#social{
+	width:125px;
+}
+div#footer div#sponsor{
+	width:225px;	
+}
+div#footer div#services{
+	width:115px;
+}
+
+
+/*hijos de div.block*/
+div#footer div.block h8{
+	font-size:11px;
+	color:#59595C;
+}
+
+div#footer div.block ul{
+	list-style:none;
+	margin-top:15px;
+	height:115px;
+	overflow:auto;
+}
+
+div#footer div.block ul li{
+	line-height:12px;
+    margin-bottom:5px;
+    font-size:11px;
+}
+
+div#footer div.block ul li a{
+	font-size:11px;
+	color:#808285;
+}
+
+div#footer div.block ul li a:hover{
+	color:#1db3b2;
+}
+
+div#footer .scroll-pane
+{
+	width: 100%;
+	height: 200px;
+	overflow: auto;
+}
+div#footer .horizontal-only
+{
+	height: auto;
+	max-height: 200px;
+}
+
+/*particular de social*/
+div#footer div.social{
+	width:108px !important; /*+15 left padding = w 125*/
+}
+
+div#footer div.social ul{
+	overflow:visible;
+}
+
+div#footer div.social ul li{
+	height:18px;
+	font-size:11px;	
+	margin-bottom:5px;
+}
+
+div#footer div.social ul li a{
+	margin:0;
+	font-size:11px; 
     padding-left: 30px;
     display: block;
     background: no-repeat left center;
-    line-height: 28px;
-    margin-bottom: 10px;
+    line-height: 20px;
+}
+
+div#footer div.social li a:hover{
+	opacity:0.7;
+	filter:alpha(opacity=70)
 }
 
 div#footer div.social li.twitter a {
@@ -74,10 +150,37 @@ div#footer div.social li.facebook a {
     background-image: url('facebook.png');
 }
 
+div#footer div.social li.identica a {
+    color: #c42f31;
+    background-image: url('identica.png');
+}
+
+div#footer div.social li.gplus a {
+    color: #5075aa;
+    background-image: url('google.png');
+}
+
 div#footer div.social li.rss a {
     color: #ee8226;
     background-image: url('rss.png');
 }
+
+
+/*particular de apoyo social*/
+div#footer div.sponsors{
+	width:188px !important; /*+15 left padding = w 125*/
+}
+
+/*particular de servicios*/
+div#footer div.services{
+
+}
+
+div#footer div.services ul li a{
+	text-transform:uppercase;
+}
+
+
 
 div#footer div.sponsors {
     position: relative;
@@ -91,17 +194,42 @@ div#footer div.services {
     min-width: 0 !important;
 }
 
-/* sub-footer */
-div#sub-footer {
-    max-width: 940px;
-    margin: 0 auto;
-    height: 2.2em;
-    font-size: 12px;
-    overflow: hidden;
-    padding: 0 1em;
-    background-color: #58595B;
+
+/*particular de sponsor*/
+div#footer div.sponsors img#current{
+	margin-left:13px;
+	margin-top:20px;
 }
 
+
+/*hijos de sub-footer*/
+div#sub-footer ul{
+	float:left;
+	max-width:700px;
+	padding-left:0;
+}
+
+div#sub-footer ul li{
+	display:inline-block;
+	color:#fff;
+	margin-right:50px;
+}
+
+div#sub-footer ul li a{
+	text-decoration:none;
+	text-transform:uppercase;
+	color:#fff;
+}
+
+div#footer .platoniq{
+	float:right;
+	font-size:11px;
+}
+
+div#footer .platoniq a{
+	display:block;
+	background:url('platoniq.png');
+}
 div#sub-footer + * {
     font-size: 12px;
     border-top: 2.2em solid #59595c;
@@ -126,20 +254,31 @@ div#sub-footer div.platoniq {
     padding-top: 0;
     border-width: 0;
     min-width: 0 !important;
+	position:relative;
+	float:right;
 }
 
-div#sub-footer div.platoniq * {
+div#sub-footer div.platoniq span.text{
+	margin-right:15px;
+}
+
+/*div#sub-footer div.platoniq * {
     text-transform: lowercase;
     font-size: 11px;
 }
-
+*/
 div#sub-footer div.platoniq a {
-    display: block;
-    width: 94px;
+    display: inline-block;
+    width: 72px;
     height: 17px;
+    background: url('platoniq.png') no-repeat;
     text-indent: 2000px;
     line-height: 2000px;
     overflow: hidden;
-    background: url('platoniq.png') no-repeat;
-    margin-top: .2em;
+	position:relative;
+	top:5px;
+}
+
+div#sub-footer div.platoniq a:hover{
+	background: url('platoniq2.png') no-repeat;
 }

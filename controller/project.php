@@ -223,12 +223,12 @@ namespace Goteo\Controller {
                                 $viewData[$k] = true;
                             }
                         }
-                    }
-                    
-                    if (!empty($_POST['cost-add'])) {
-                        $last = end($project->costs);
-                        if ($last !== false) {
-                            $viewData["cost-{$last->id}-edit"] = true;
+                        
+                        if (!empty($_POST['cost-add'])) {
+                            $last = end($project->costs);
+                            if ($last !== false) {
+                                $viewData["cost-{$last->id}-edit"] = true;
+                            }
                         }
                     }
                     break;
@@ -236,36 +236,34 @@ namespace Goteo\Controller {
                 case 'rewards':
                     $viewData['stypes'] = Model\Project\Reward::icons('social');
                     $viewData['itypes'] = Model\Project\Reward::icons('individual');
-                    $viewData['licenses'] = Model\Project\Reward::licenses();
+                    $viewData['licenses'] = Model\Project\Reward::licenses();                                                                                
+                    $viewData['types'] = Model\Project\Support::types();            
+                    
                     if ($_POST) {
                         foreach ($_POST as $k => $v) {
-                            if (!empty($v) && preg_match('/social_reward-(\d+)-edit/', $k, $r)) {
-                                $viewData['editsocial_reward'] = $r[1];
+                            if (!empty($v) && preg_match('/((social)|(individual))_reward-(\d+)-edit/', $k)) {                                
+                                $viewData[$k] = true;
                                 break;
+                            }                            
+                        }
+                        
+                        if (!empty($_POST['social_reward-add'])) {
+                            $last = end($project->social_rewards);
+                            if ($last !== false) {
+                                $viewData["social_reward-{$last->id}-edit"] = true;
                             }
-                            if (!empty($v) && preg_match('/individual_reward-(\d+)-edit/', $k, $r)) {
-                                $viewData['editindividual_reward'] = $r[1];
-                                break;
+                        }
+                        if (!empty($_POST['individual_reward-add'])) {
+
+                            $last = end($project->individual_rewards);
+
+                            if ($last !== false) {
+                                $viewData["individual_reward-{$last->id}-edit"] = true;
                             }
                         }
                     }
 
-                    if (empty($viewData['editsocial_reward']) && $_POST['social_reward-add']) {
-
-                        $last = end($project->social_rewards);
-
-                        if ($last !== false) {
-                            $viewData['editsocial_reward'] = $last->id;
-                        }
-                    }
-                    if (empty($viewData['editindividual_reward']) && $_POST['individual_reward-add']) {
-
-                        $last = end($project->individual_rewards);
-
-                        if ($last !== false) {
-                            $viewData['editindividual_reward'] = $last->id;
-                        }
-                    }
+                    
                     break;
 
                 case 'supports':
@@ -273,20 +271,18 @@ namespace Goteo\Controller {
                     if ($_POST) {
                         foreach ($_POST as $k => $v) {
                             if (!empty($v) && preg_match('/support-(\d+)-edit/', $k, $r)) {
-                                $viewData['editsupport'] = $r[1];
-                                break;
+                                $viewData[$k] = true;
                             }
                         }
-                    }
-
-                    if (empty($viewData['editsupport']) && $_POST['support-add']) {
-
-                        $last = end($project->supports);
-
-                        if ($last !== false) {
-                            $viewData['editsupport'] = $last->id;
+                        
+                        if (!empty($_POST['support-add'])) {
+                            $last = end($project->supports);
+                            if ($last !== false) {
+                                $viewData["support-{$last->id}-edit"] = true;
+                            }
                         }
-                    }
+                    }                   
+                    
                     break;
                 
                 case 'preview':
@@ -341,15 +337,18 @@ namespace Goteo\Controller {
             $project = Model\Project::get($id);
             // los retornos ordenados por cantidad
             $project->individual_rewards = Model\Project\Reward::getAll($id, 'individual', null, null, 'amount');
+            // DE ESTO PASAMOS HASTA LA PUESTA EN MARCHA
             // solamente se puede ver publicamente si
             // - es el dueño
             // - es un admin con permiso
             // - es otro usuario y el proyecto esta available: en campaña, financiado, retorno cumplido o caducado (que no es desechado)
+            /*
             if (($project->status > 2) ||
                 $project->owner == $_SESSION['user']->id ||
                 ACL::check('/project/edit/todos')) {
                 // lo puede ver
-                
+              */
+
                 $viewData = array(
                         'project' => $project,
                         'show' => $show
@@ -394,10 +393,13 @@ namespace Goteo\Controller {
 
                 return new View('view/project/public.html.php', $viewData);
 
+            /*
             } else {
                 // no lo puede ver
                 throw new Redirection("/");
             }
+             *
+             */
         }
 
         //-----------------------------------------------

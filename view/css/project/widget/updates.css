@@ -57,6 +57,13 @@ div.widget.project-updates > div {
 	padding: 0 0 20px 0;
 	margin: 18px 18px 12px 18px;
 }
+.project-updates .post blockquote div.read_more{
+    text-align: right;
+}
+.project-updates .post blockquote div.read_more a {
+    text-decoration: none;
+    text-transform: uppercase;
+}
 .project-updates .post .embed{
     width: 500px;
     height: 285px;

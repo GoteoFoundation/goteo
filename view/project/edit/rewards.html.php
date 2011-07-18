@@ -12,10 +12,12 @@ $okeys  = $project->okeys[$this['step']] ?: array();
 $social_rewards = array();
 $individual_rewards = array();
 
+$txt_details = Text::get('regular-see_details');
+
 foreach ($project->social_rewards as $social_reward) {
        
     // a ver si es el que estamos editando o no
-    if ($social_reward->id === $this['editsocial_reward']) {
+    if (!empty($this["social_reward-{$social_reward->id}-edit"])) {
                 
         $types = array();
                         
@@ -26,13 +28,19 @@ foreach ($project->social_rewards as $social_reward) {
             if (!empty($type->licenses)) {
                 foreach ($type->licenses as $lid => $license) {
 
+                    if (!empty($license->url)) {
+                        $url = ' <a href="'.$license->url.'" target="_blank" class="license-hint-details">'.$txt_details.'</a>';
+                    } else {
+                        $url = '';
+                    }
+
                     $licenses["social_reward-{$social_reward->id}-license-{$license->id}"] = array(
                         'name'  => "social_reward-{$social_reward->id}-{$type->id}-license",
                         'label' => $license->name,
                         'value' => $license->id,
                         'type'  => 'radio',
                         'class' => 'license license_' . $license->id,
-                        'hint'  => $license->description,
+                        'hint'  => $license->description .  $url,
                         'id'    => "social_reward-{$social_reward->id}-license-{$license->id}",
                         'checked' => $license->id == $social_reward->license ? true : false
                     );
@@ -142,7 +150,7 @@ foreach ($project->social_rewards as $social_reward) {
                             "social_reward-{$social_reward->id}-remove" => array(
                                 'type'  => 'submit',
                                 'label' => Text::get('form-remove-button'),
-                                'class' => 'inline remove'
+                                'class' => 'inline remove weak'
                             )
                         )
                     )
@@ -163,7 +171,7 @@ foreach ($project->social_rewards as $social_reward) {
 foreach ($project->individual_rewards as $individual_reward) {
 
     // a ver si es el que estamos editando o no
-    if ($individual_reward->id === $this['editindividual_reward']) {
+    if (!empty($this["individual_reward-{$individual_reward->id}-edit"])) {
 
         // lo mismo que para las licencias solamente para el texto en el tipo otro
         $types = array();
@@ -279,7 +287,7 @@ foreach ($project->individual_rewards as $individual_reward) {
                             "individual_reward-{$individual_reward->id}-remove" => array(
                                 'type'  => 'submit',
                                 'label' => Text::get('form-remove-button'),
-                                'class' => 'inline remove'
+                                'class' => 'inline remove weak'
                             )
                         )
                     )
@@ -324,28 +332,34 @@ echo new SuperForm(array(
         
         'social_rewards' => array(
             'type'      => 'group',
+            'required'  => true,
             'title'     => Text::get('rewards-fields-social_reward-title'),
             'hint'      => Text::get('tooltip-project-social_rewards'),
             'class'     => 'rewards',
+            'errors'    => !empty($errors["social_rewards"]) ? array($errors["social_rewards"]) : array(),
+            'ok'        => !empty($okeys["social_rewards"]) ? array($okeys["social_rewards"]) : array(),
             'children'  => $social_rewards + array(
                 'social_reward-add' => array(
                     'type'  => 'submit',
                     'label' => Text::get('form-add-button'),
-                    'class' => 'add reward-add',
+                    'class' => 'add reward-add red',
                 )
             )
         ),
         
         'individual_rewards' => array(
             'type'      => 'group',
+            'required'  => true,
             'title'     => Text::get('rewards-fields-individual_reward-title'),
             'hint'      => Text::get('tooltip-project-individual_rewards'),
             'class'     => 'rewards',
+            'errors'    => !empty($errors["individual_rewards"]) ? array($errors["individual_rewards"]) : array(),
+            'ok'        => !empty($okeys["individual_rewards"]) ? array($okeys["individual_rewards"]) : array(),
             'children'  => $individual_rewards + array(
                 'individual_reward-add' => array(
                     'type'  => 'submit',
                     'label' => Text::get('form-add-button'),
-                    'class' => 'add reward-add',
+                    'class' => 'add reward-add red',
                 )
             )
         ),

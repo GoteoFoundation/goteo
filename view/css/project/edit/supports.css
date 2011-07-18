@@ -38,8 +38,6 @@ body.project-edit div#main.supports div.superform li.element.support div.descrip
 
 body.project-edit div#main.supports div.superform li.element.support input.edit,
 body.project-edit div#main.supports div.superform li.element.support input.remove {
-    float: right;
-    clear: right;
     width: 7em;
 }
 
@@ -64,6 +62,10 @@ body.project-edit div#main.supports div.superform li.element.editsupport li.butt
 body.project-edit div#main.supports div.superform li.element.editsupport li.buttons ol {
     margin: 0 !important;
     padding: 0 !important;
+}
+
+body.project-edit div#main.supports div.superform li.element.editsupport li.buttons ol {
+    text-align: right;
 }
 
 body.project-edit div#main.supports div.superform li.element.editsupport li.buttons li {

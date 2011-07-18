@@ -1,6 +1,5 @@
-<div class="widget projects">
+<div id="project-selector">
     <?php if (!empty($this['projects'])) : ?>
-    <div id="project-selector">
         <form id="selector-form" name="selector_form" action="<?php echo '/dashboard/'.$this['section'].'/'.$this['option'].'/select'; ?>" method="post">
         <label for="selector">Proyecto:</label>
         <select id="selector" name="project" onchange="document.getElementById('selector-form').submit();">
@@ -10,7 +9,6 @@
         </select>
         <!-- un boton para seleccionar si no tiene javascript -->
         </form>
-    </div>
     <?php else : ?>
     <p>No tienes ning&uacute;n proyecto, puedes crear uno <a href="/project/create">aqu&iacute;</a></p>
     <?php endif; ?>

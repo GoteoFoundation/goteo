@@ -58,7 +58,7 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
 
         <div id="sub-header">
             <div class="project-header">
-                <a href="/user/<?php echo $project->owner; ?>"><img src="/image/<?php echo $project->user->avatar->id; ?>/75/75" /></a>
+                <a href="/user/<?php echo $project->owner; ?>"><img src="/image/<?php echo $project->user->avatar->id; ?>/56/56" /></a>
                 <h2><span><?php echo htmlspecialchars($project->name) ?></span></h2>
                 <div class="project-by"><a href="/user/<?php echo $project->owner; ?>">Por: <?php echo $project->user->name; ?></a></div>
                 <br clear="both" />

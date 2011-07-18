@@ -5,8 +5,6 @@ use Goteo\Core\View,
 
 define('ADMIN_NOAUTOSAVE', true);
 
-echo new View ('view/dashboard/projects/selector.html.php', $this);
-
 $blog  = $this['blog'];
 $posts = $this['posts'];
 
@@ -16,36 +14,30 @@ $level = $this['level'] = 3;
 
 $url = '/dashboard/projects/updates';
 
+if ($this['action'] == 'none') return;
+
 ?>
-
-    <h<?php echo $level ?> class="title"><?php echo $this['message']; ?></h<?php echo $level ?>>
-
 <?php if ($this['action'] == 'list') : ?>
-
+<div class="widget">
     <?php if (!empty($blog->id) && $blog->active) : ?>
-    <a href="<?php echo $url; ?>/add">Publicar nueva entrada</a>
+        <a class="button" href="<?php echo $url; ?>/add">Publicar nueva entrada</a>
     <?php endif; ?>
 
     <!-- lista -->
     <?php if (!empty($posts)) : ?>
     <?php foreach ($posts as $post) : ?>
-        <div class="widget">
-            <h<?php echo $level+1 ?> class="title"><?php echo $post->title; ?></h<?php echo $level+1 ?>>
-            <span style="display:block;"><?php echo $post->date; ?></span>
-            <blockquote><?php echo Text::recorta($post->text, 500); ?></blockquote>
-            <?php if (!empty($post->image)) : ?>
-                <img src="/image/<?php echo $post->image->id; ?>/110/110" alt="Imagen"/>
-            <?php endif; ?>
-            <?php if (!empty($post->media)) : ?>
-                <?php echo $post->media->getEmbedCode(); ?>
-            <?php endif; ?>
-            <div><a href="<?php echo $url; ?>/edit/<?php echo $post->id; ?>">[EDITAR]</a></div>
-            <p><?php echo $post->num_commnets > 0 ? $post->num_comments : 'Sin'; ?> comentarios.   <a href="/project/<?php echo $blog->project; ?>/updates/<?php echo $post->id; ?>" target="_blank">Ir a ver/añadir comentarios</a></p>
+        <div class="post">
+            <a class="button" href="<?php echo $url; ?>/edit/<?php echo $post->id; ?>">Editar</a>&nbsp;&nbsp;&nbsp;
+            <a class="remove button red" href="<?php echo $url; ?>/delete/<?php echo $post->id; ?>" onclick="return confirm('¿Seguro que deseas eliminar esta actualización?');">Eliminar</a>
+            <strong><?php echo $post->title; ?></strong>
+            <span><?php echo $post->date; ?></span>
         </div>
     <?php endforeach; ?>
     <?php else : ?>
-    <p>No hay entradas</p>
+        <p>No hay entradas</p>
     <?php endif; ?>
+
+</div>
 
 <?php  else : // sueprform!
 

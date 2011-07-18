@@ -63,6 +63,7 @@ $elements      = array(
                        . new View('view/project/widget/share.html.php', array('project' => $project))
                        . new View('view/project/widget/summary.html.php', array('project' => $project))
                        . new View('view/project/widget/needs.html.php', array('project' => $project, 'types' => $types))
+                       . new View('view/project/widget/schedule.html.php', array('project' => $project))
                        . '</div>'
                        . '</div></div>'
     ),

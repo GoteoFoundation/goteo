@@ -7,7 +7,8 @@ namespace Goteo\Controller {
         Goteo\Core\View,
 		Goteo\Model,
         Goteo\Library\Text,
-        Goteo\Library\Message;
+        Goteo\Library\Message,
+        Goteo\library\Listing;
 
 	class User extends \Goteo\Core\Controller {
 
@@ -206,6 +207,8 @@ namespace Goteo\Controller {
         public function profile ($id) {
             $user = Model\User::get($id);
 
+            $viewData = array();
+            $viewData['user'] = $user;
 
             $projects = Model\Project::ofmine($id);
 
@@ -214,11 +217,16 @@ namespace Goteo\Controller {
             //  foto, nombre, nivel, cantidad a mis proyectos, fecha ultimo aporte, nº proyectos que cofinancia
             $investors = array();
             foreach ($projects as $kay=>$project) {
+
+                /*
+                 * PASAMOS DE ESTA RESTRICCION POR AHORA
                 // quitamos los no publicados o caducados
                 if ($project->status < 3 || $project->status > 5) {
                     unset ($projects[$kay]);
                     continue;
                 }
+                 *
+                 */
 
                 foreach (Model\Invest::investors($project->id) as $key=>$investor) {
                     if (\array_key_exists($investor->user, $investors)) {
@@ -241,23 +249,24 @@ namespace Goteo\Controller {
                 }
             }
 
+            $viewData['investors'] = $investors;
 
             // comparten intereses
-            $shares = Model\User\Interest::share($id);
+            $viewData['shares'] = Model\User\Interest::share($id);
 
             // proyectos que cofinancio
             $invested = Model\User::invested($id);
 
-            return new View (
-                'view/user/profile.html.php',
-                array(
-                    'user' => $user,
-                    'projects' => $projects,
-                    'invested' => $invested,
-                    'investors' => $investors,
-                    'shares' => $shares
-                )
-            );
+            // agrupacion de proyectos que cofinancia y proyectos suyos
+            $viewData['lists'] = array();
+            if (!empty($invested)) {
+                $viewData['lists']['invest_on'] = Listing::get($invested, 2);
+            }
+            if (!empty($projects)) {
+                $viewData['lists']['my_projects'] = Listing::get($projects, 2);
+            }
+
+            return new View ('view/user/profile.html.php', $viewData);
         }
 
         /**

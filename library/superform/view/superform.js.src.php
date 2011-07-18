@@ -3,7 +3,7 @@ if (!('Superform' in window)) {
 
     $(function () {
     
-        var sf = $('#<?php echo $this['id'] ?>');
+        var sf = $('div.superform#<?php echo $this['id'] ?>');
 
         window.Superform = {        
             
@@ -226,14 +226,13 @@ if (!('Superform' in window)) {
 
                 } catch (e) {
                 
-                    el.attr('class', nel.attr('class'));
                 }
             },
 
             update: function (el, params, success) {
             
                 if (typeof el === 'string') {
-                    el = $('#' + el);
+                    el = $('div.element#' + el);
                 } else {                                                    
                     el = $(el);
                 }

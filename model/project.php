@@ -799,7 +799,7 @@ namespace Goteo\Model {
             }
 
             if (!empty($this->currently)) {
-                 $okeys['overview']['currently'] = 'ok';
+//                 $okeys['overview']['currently'] = 'ok';
                  ++$score;
                  if ($this->currently == 2 || $this->currently == 3) ++$score;
             }
@@ -812,7 +812,7 @@ namespace Goteo\Model {
             }
 
             if (!empty($this->scope)) {
-                 $okeys['overview']['scope'] = 'ok';
+//                 $okeys['overview']['scope'] = 'ok';
             }
 
             $this->setScore($score, 18);
@@ -820,17 +820,18 @@ namespace Goteo\Model {
 
             /***************** Revisión de campos del paso 4, COSTES *****************/
             $score = 0; $scoreName = $scoreDesc = $scoreAmount = $scoreDate = 0;
-            if (empty($this->costs)) {
+            if (count($this->costs) < 2) {
                 $errors['costs']['costs'] = Text::get('mandatory-project-costs');
             } else {
-                if (count($this->costs) >= 2) {
-                    ++$score;
-                }
+                 $okeys['costs']['costs'] = 'ok';
+                ++$score;
             }
 
+            $anyerror = false;
             foreach($this->costs as $cost) {
                 if (empty($cost->cost)) {
                     $errors['costs']['cost-'.$cost->id.'-cost'] = Text::get('mandatory-cost-field-name');
+                    $anyerror = !$anyerror ?: true;
                 } else {
                      $okeys['costs']['cost-'.$cost->id.'-cost'] = 'ok';
                      $scoreName = 1;
@@ -838,29 +839,39 @@ namespace Goteo\Model {
 
                 if (empty($cost->type)) {
                     $errors['costs']['cost-'.$cost->id.'-type'] = Text::get('mandatory-cost-field-type');
+                    $anyerror = !$anyerror ?: true;
                 } else {
                      $okeys['costs']['cost-'.$cost->id.'-type'] = 'ok';
                 }
 
-                if (!empty($cost->description)) {
+                if (empty($cost->description)) {
+                    $errors['costs']['cost-'.$cost->id.'-description'] = Text::get('mandatory-cost-field-description');
+                    $anyerror = !$anyerror ?: true;
+                } else {
                      $okeys['costs']['cost-'.$cost->id.'-description'] = 'ok';
                      $scoreDesc = 1;
                 }
 
                 if (empty($cost->amount)) {
                     $errors['costs']['cost-'.$cost->id.'-amount'] = Text::get('mandatory-cost-field-amount');
+                    $anyerror = !$anyerror ?: true;
                 } else {
                      $okeys['costs']['cost-'.$cost->id.'-amount'] = 'ok';
                      $scoreAmount = 1;
                 }
 
-                if ($cost->type == 'task' && !empty($cost->from) && !empty($cost->until)) {
+                if ($cost->type == 'task' && (empty($cost->from) || empty($cost->until))) {
+                    $errors['costs']['cost-'.$cost->id.'-dates'] = Text::get('mandatory-cost-field-task_dates');
+                    $anyerror = !$anyerror ?: true;
+                } elseif ($cost->type == 'task') {
+                    $okeys['costs']['cost-'.$cost->id.'-dates'] = 'ok';
                     $scoreDate = 1;
                 }
+            }
 
-                if (isset($cost->required)) {
-                     $okeys['costs']['cost-'.$cost->id.'-required'] = 'ok';
-                }
+            if ($anyerror) {
+                unset($okeys['costs']['costs']);
+                $errors['costs']['costs'] = Text::get('validate-project-costs-any_error');
             }
 
             $score = $score + $scoreName + $scoreDesc + $scoreAmount + $scoreDate;
@@ -868,14 +879,20 @@ namespace Goteo\Model {
             $costdif = $this->maxcost - $this->mincost;
             $maxdif = $this->mincost * 0.40;
             $scoredif = $this->mincost * 0.35;
-            if ($costdif > $maxdif ) {
+            if ($this->mincost == 0) {
+                $errors['costs']['total-costs'] = Text::get('mandatory-project-total-costs');
+            } elseif ($costdif > $maxdif ) {
                 $errors['costs']['total-costs'] = Text::get('validate-project-total-costs');
+            } else {
+                $okeys['costs']['total-costs'] = 'ok';
             }
             if ($costdif <= $scoredif ) {
                 ++$score;
             }
 
-            if (!empty($this->resource)) {
+            if (empty($this->resource)) {
+                $errors['costs']['resource'] = Text::get('mandatory-project-resource');
+            } else {
                  $okeys['costs']['resource'] = 'ok';
                  ++$score;
             }
@@ -888,34 +905,44 @@ namespace Goteo\Model {
             if (empty($this->social_rewards)) {
                 $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards');
             } else {
+                 $okeys['rewards']['social_rewards'] = 'ok';
                  if (count($this->social_rewards) >= 2) {
                      ++$score;
                  }
             }
 
-            if (!empty($this->individual_rewards) && count($this->individual_rewards) >= 3) {
-                 ++$score;
+            if (empty($this->individual_rewards)) {
+                $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards');
+            } else {
+                $okeys['rewards']['individual_rewards'] = 'ok';
+                if (count($this->individual_rewards) >= 3) {
+                    ++$score;
+                }
             }
 
+            $anyerror = false;
             foreach ($this->social_rewards as $social) {
                 if (empty($social->reward)) {
                     $errors['rewards']['social_reward-'.$social->id.'reward'] = Text::get('mandatory-social_reward-field-name');
+                    $anyerror = !$anyerror ?: true;
                 } else {
                      $okeys['rewards']['social_reward-'.$social->id.'reward'] = 'ok';
                      $scoreName = 4;
                 }
 
                 if (empty($social->description)) {
-                    $errors['rewards']['social_rewards-'.$social->id.'-description'] = Text::get('mandatory-social_reward-field-description');
+                    $errors['rewards']['social_reward-'.$social->id.'-description'] = Text::get('mandatory-social_reward-field-description');
+                    $anyerror = !$anyerror ?: true;
                 } else {
-                     $okeys['rewards']['social_rewards-'.$social->id.'-description'] = 'ok';
+                     $okeys['rewards']['social_reward-'.$social->id.'-description'] = 'ok';
                      $scoreDesc = 1;
                 }
 
                 if (empty($social->icon)) {
-                    $errors['rewards']['social_rewards-'.$social->id.'-icon'] = Text::get('mandatory-social_reward-field-description');
+                    $errors['rewards']['social_reward-'.$social->id.'-icon'] = Text::get('mandatory-social_reward-field-icon');
+                    $anyerror = !$anyerror ?: true;
                 } else {
-                     $okeys['rewards']['social_rewards-'.$social->id.'-icon'] = 'ok';
+                     $okeys['rewards']['social_reward-'.$social->id.'-icon'] = 'ok';
                 }
 
                 if (!empty($social->license)) {
@@ -929,25 +956,54 @@ namespace Goteo\Model {
                      */
                 }
             }
+
+            if ($anyerror) {
+                unset($okeys['rewards']['social_rewards']);
+                $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards-any_error');
+            }
+
             
             $score = $score + $scoreName + $scoreDesc + $scoreLicense;
             $scoreName = $scoreDesc = 0;
 
+            $anyerror = false;
             foreach ($this->individual_rewards as $individual) {
-                if (!empty($individual->reward)) {
+                if (empty($individual->reward)) {
+                    $errors['rewards']['individual_reward-'.$individual->id.'-reward'] = Text::get('mandatory-individual_reward-field-name');
+                    $anyerror = !$anyerror ?: true;
+                } else {
                      $okeys['rewards']['individual_reward-'.$individual->id.'-reward'] = 'ok';
                      $scoreName = 1;
                 }
 
-                if (!empty($individual->description)) {
+                if (empty($individual->description)) {
+                    $errors['rewards']['individual_reward-'.$individual->id.'-description'] = Text::get('mandatory-individual_reward-field-description');
+                    $anyerror = !$anyerror ?: true;
+                } else {
                      $okeys['rewards']['individual_reward-'.$individual->id.'-description'] = 'ok';
                      $scoreDesc = 1;
                 }
 
-                if (!empty($individual->amount)) {
+                if (empty($individual->amount)) {
+                    $errors['rewards']['individual_reward-'.$individual->id.'-amount'] = Text::get('mandatory-individual_reward-field-amount');
+                    $anyerror = !$anyerror ?: true;
+                } else {
                      $okeys['rewards']['individual_reward-'.$individual->id.'-amount'] = 'ok';
                      $scoreAmount = 1;
                 }
+
+                if (empty($individual->icon)) {
+                    $errors['rewards']['individual_reward-'.$individual->id.'-icon'] = Text::get('mandatory-individual_reward-field-icon');
+                    $anyerror = !$anyerror ?: true;
+                } else {
+                     $okeys['rewards']['individual_reward-'.$individual->id.'-icon'] = 'ok';
+                }
+
+            }
+
+            if ($anyerror) {
+                unset($okeys['rewards']['individual_rewards']);
+                $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards-any_error');
             }
 
             $score = $score + $scoreName + $scoreDesc + $scoreAmount;
@@ -1287,7 +1343,7 @@ namespace Goteo\Model {
         {
             $projects = array();
 
-            $sql = "SELECT * FROM project WHERE status > 0 AND owner = ? ORDER BY name ASC";
+            $sql = "SELECT * FROM project WHERE status > 0 AND owner = ? ORDER BY created DESC";
             $query = self::query($sql, array($owner));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
                 $projects[] = self::get($proj->id);
