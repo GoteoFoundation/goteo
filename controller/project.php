@@ -220,18 +220,15 @@ namespace Goteo\Controller {
                     if ($_POST) {
                         foreach ($_POST as $k => $v) {
                             if (!empty($v) && preg_match('/cost-(\d+)-edit/', $k, $r)) {
-                                $viewData['editcost'] = $r[1];
-                                break;
+                                $viewData[$k] = true;
                             }
                         }
                     }
                     
-                    if (empty($viewData['editcost']) && $_POST['cost-add']) {
-                        
+                    if (!empty($_POST['cost-add'])) {
                         $last = end($project->costs);
-                        
                         if ($last !== false) {
-                            $viewData['editcost'] = $last->id;
+                            $viewData["cost-{$last->id}-edit"] = true;
                         }
                     }
                     break;

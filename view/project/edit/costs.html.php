@@ -16,7 +16,7 @@ if (!empty($project->costs)) {
         
         $ch = array();
         
-        if ($cost->id === $this['editcost']) {
+        if (!empty($this["cost-{$cost->id}-edit"])) {
 
             $costsTypes = array();
 
@@ -37,7 +37,11 @@ if (!empty($project->costs)) {
             $costs["cost-{$cost->id}"] = array(
                 'type'      => 'group',      
                 'class'     => 'cost editcost',
-                'children'  => array(                         
+                'children'  => array(
+                    "cost-{$cost->id}-edit" => array(
+                        'type'      => 'hidden',
+                        'value'     => '1'
+                    ),
                     "cost-{$cost->id}-cost" => array(
                         'title'     => Text::get('costs-field-cost'),
                         'required'  => true,
@@ -216,25 +220,32 @@ echo new SuperForm(array(
             'title'     => Text::get('costs-field-resoure'),
             'hint'      => Text::get('tooltip-project-resource'),
             'value'     => $project->resource
-        )/*
-        
+        ),
+        /*        
         'schedule' => array(                        
             'title'     => Text::get('costs-field-schedule'),
             'class'     => 'fullwidth'
         ), */         
+        'errors' => array(
+            'title' => 'Errores',
+            'view'  => new View('view/project/edit/errors.html.php', array(
+                'project'   => $project,
+                'step'      => $this['step']
+            ))
+        )
+        
     )
 
 ));
 ?>
 <script type="text/javascript">
 $(function () {
-    
+        
     var costs = $('div#<?php echo $sfid ?> li.element#costs');    
     
     costs.delegate('li.element.cost input.edit', 'click', function (event) {
         var data = {};
         data[this.name] = '1';
-        //Superform.update(this, data);
         Superform.update(costs, data); 
         event.preventDefault();
     });
@@ -242,7 +253,6 @@ $(function () {
     costs.delegate('li.element.editcost input.ok', 'click', function (event) {
         var data = {};
         data[this.name.substring(0, 9) + 'edit'] = '0';
-        //Superform.update($(this).parents('li.element.editcost'), data);        
         Superform.update(costs, data); 
         Superform.update($('#cost-meter'));        
         event.preventDefault();
@@ -261,6 +271,10 @@ $(function () {
        Superform.update(costs, data); 
        event.preventDefault();
     });
+    
+    costs.bind('sfafterupdate', function (ev, el, html){
+       Superform.updateElement($('li#cost-meter'), null, html);
+    });        
         
 });
 </script>

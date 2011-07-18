@@ -1,6 +1,7 @@
 <?php
 
-use Goteo\Library\Text,
+use Goteo\Core\View,
+    Goteo\Library\Text,
     Goteo\Library\SuperForm;
             
 
@@ -91,6 +92,10 @@ foreach ($project->social_rewards as $social_reward) {
                 'type'      => 'group',
                 'class'     => 'reward social_reward editsocial_reward',
                 'children'  => array(
+                    "social_reward-{$social_reward->id}-edit" => array(
+                        'type'      => 'hidden',
+                        'value'     => '1'
+                    ),
                     "social_reward-{$social_reward->id}-reward" => array(
                         'title'     => Text::get('rewards-field-social_reward-reward'),
                         'type'      => 'textbox',
@@ -205,6 +210,10 @@ foreach ($project->individual_rewards as $individual_reward) {
                 'type'      => 'group',
                 'class'     => 'reward individual_reward editindividual_reward',
                 'children'  => array(
+                    "individual_reward-{$individual_reward->id}-edit" => array(
+                        'type'      => 'hidden',
+                        'value'     => '1'
+                    ),
                     "individual_reward-{$individual_reward->id}-reward" => array(
                         'title'     => Text::get('rewards-field-individual_reward-reward'),
                         'required'  => true,
@@ -339,7 +348,15 @@ echo new SuperForm(array(
                     'class' => 'add reward-add',
                 )
             )
-        )          
+        ),
+        
+        'errors' => array(
+            'title' => 'Errores',
+            'view'  => new View('view/project/edit/errors.html.php', array(
+                'project'   => $project,
+                'step'      => $this['step']
+            ))
+        )
     )
 
 ));

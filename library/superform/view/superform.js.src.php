@@ -32,86 +32,201 @@ if (!('Superform' in window)) {
 
             },
             
-            updateElement: function (el, nel) {      
-                               
-                try {                                                                            
-
-                    $(function () {  
-
-                        setTimeout(function () {    
+            updateElement: function (el, nel, html) {                            
+                        
+                try {       
+                
+                    el = $(el);
+                    
+                    el.addClass('updating busy');                                        
+                    
+                    if (!nel) {
+                    
+                        if (html) {
+                        
+                            var el_id = el.attr('id');
                             
-                            // Get focused element
-                            var focused = $(':focus').first();
-                                                       
-                            // Contents
-                            var contents = el.children('div.contents');
-                            var ncontents = nel.children('div.contents');
-                            
-                            if (contents.length) {                                
-                                if (!ncontents.length) {                                
-                                    //contents.slideUp('slow');
-                                    //contents.remove();
-                                } else if (!$.contains(contents[0], focused[0])) {
-                                    contents.replaceWith(ncontents);
+                            var s = html.indexOf('<!-- SFEL#' + el.attr('id') + ' -->', 0);
+
+                            if (s > 0) {
+
+                                var e = html.indexOf('<!-- /SFEL#' + el.attr('id') + ' -->', s);
+
+                                if (e > 0) {
+
+                                    var nelhtml = html.substring(s, e);
+
+                                    var wrp = $('<div></div>');                                                        
+                                    wrp[0].innerHTML = nelhtml;
+                                    delete nelhtml;                                                                                                        
+
+                                    nel = wrp.children().first();                               
+
+                                } else {
+                                    throw new Exception;
                                 }
-                            } else if (ncontents.length) {
-                                el.append(ncontents);
+
+                            } else {
+                                throw new Exception;
+                            }
+                            
+                        } else {
+                            throw new Exception;
+                        }
+                    
+                    } else {
+                        nel = $(nel);
+                    }   
+                    
+                    var ev = $.Event('sfbeforeupdate');
+
+                    el.trigger(ev, [el, nel]);
+                                                            
+                    if (ev.isDefaultPrevented()) {
+                        
+                        throw new Exception;
+                    
+                    } else {
+                    
+                        // Get focused element
+                        var focused = $(':focus').first();                                                
+
+                        // Contents
+                        var contents = el.children('div.contents');
+                        var ncontents = nel.children('div.contents');
+
+                        if (contents.length) {                                
+                            if (!ncontents.length) {                                
+                                contents.slideUp('slow');
+                                contents.remove();
+                            } else if (!focused.length || (!$.contains(contents[0], focused[0]))) {
+                                contents.replaceWith(ncontents);
+                            }
+                        } else if (ncontents.length) {
+                            el.append(ncontents);
+                        }
+
+                        // Feedback
+                        var feedback = el.children('div.feedback');          
+                        var nfeedback = nel.children('div.feedback');
+                        if (nfeedback.length) {                                                                        
+                            if (feedback.length) {
+                                feedback.html(nfeedback.html());
+                            } else {
+                                el.append(nfeedback);
+                            }                                        
+                        } else if (feedback.length) {
+                            feedback.remove();
+                        }
+                        
+                        var ol_children = el.children('div.children').children('div.elements').children('ol');
+                                                                        
+                        var children = ol_children.children('li.element');
+                        
+                        var nchildren = nel.children('div.children').children('div.elements').children('ol').children('li.element');
+                        
+                        if (!children.length && nchildren.length) {
+                            el.children('div.children').remove();
+                            var c = $('<div class="children"><div class="elements"><ol></ol></div></div>');
+                            el.append(c);
+                            ol_children = el.children('div.children').children('div.elements').children('ol')
+                        }                                                
+                        
+                        var m = 0;
+                        
+                        nchildren.each(function (i, nchild) {
+                            
+                            var $nchild = $(nchild);
+                            var nchild_id = $nchild.attr('id');
+                                
+                            var $child = children.filter('li.element#' + nchild_id);
+                            
+                            if ($child.length) {
+                                Superform.updateElement($child, $nchild, html);                             
+                                $child.appendTo($child.parent());
+                            } else {
+                                $nchild.hide();
+                                $nchild.appendTo(ol_children);
+                                $nchild.slideDown('slow');                                
+                            }
+                            
+                            m++;
+                                                                                
+                        });                        
+                        
+                        children.each(function (i, child) {
+                            var $child = $(child);
+                            if (!nchildren.filter('li.element#' + $child.attr('id')).length) {
+                                $child.slideUp('slow', function () {
+                                    $child.remove();
+                                });
+                            }
+                        });                                                
+                        
+                        /*
+                        var children = el.children('div.children').children('div.elements').children('ol').children('li.element');
+                        var nchildren = nel.children('div.children').children('div.elements').children('ol').children('li.element');                                              
+                        
+                        children.each(function (i, child) {
+
+                            var nchild = nchildren.filter('li.element#' + child.id);
+
+                            if (nchild.length) {               
+                                Superform.updateElement(child, nchild, html);
+                                nchildren = nchildren.not(nchild);
+                            } else {
+                                var ev = $.Event('sfbeforeremove');
+                                $(child).trigger(ev, [child]);
+                                if (!ev.isDefaultPrevented()) {
+                                    $(child).slideUp('slow');
+                                    $(child).remove();
+                                }
+
                             }
 
-                            // Feedback
-                            var feedback = el.children('div.feedback');          
-                            var nfeedback = nel.children('div.feedback');
-                            if (nfeedback.length) {                                                                        
-                                if (feedback.length) {
-                                    feedback.html(nfeedback.html());
-                                } else {
-                                    el.append(nfeedback);
-                                }                                        
-                            } else if (feedback.length) {
-                                feedback.remove();
+                        });
+
+                        if (nchildren.length) {
+
+                            if (!children.length) {
+                                el.children('div.children').remove();
+                                var c = $('<div class="children"><div class="elements"><ol></ol></div></div>');
+                                el.append(c);
                             }
-                            
-                            var children = el.children('div.children').children('div.elements').children('ol').children('li.element');
-                            var nchildren = nel.children('div.children').children('div.elements').children('ol').children('li.element');
-                                                        
-                            
-                            children.each(function (i, child) {
-                                var nchild = nchildren.filter('div.element#' + child.id);
-                                if (nchild.length) {                               
-                                    Superform.updateElement(child, nchild);
-                                    nchildren = nchildren.not(nchild);
-                                } else {
-                                    $(child).slideUp('slow');                                    
-                                }
+
+                            nchildren.hide();
+                            el.children('div.children').children('div.elements').children('ol').append(nchildren);
+                            nchildren.slideDown('slow');                                    
+                        }
+                        */
+                        
+                        try {
+                        
+                            var parents = el.parentsUntil('.updating', 'div.superform, li.element');
+                            parents.addClass('updating');
+
+                            el.triggerHandler('sfafterupdate', [el, html]);
+
+                            parents.each(function (i, e) {
+                                $e = $(e);              
+                                $e.triggerHandler('sfafterupdate', [$e, html]);
                             });
                             
-                            if (nchildren.length) {
-                            
-                                if (!children.length) {
-                                    el.children('div.children').remove();
-                                    var c = $('<div class="children"><div class="elements"><ol></ol></div></div>');
-                                    el.append(c);
-                                    
-                                }
-                                
-                                setTimeout(function () {
-                                    nchildren.hide();
-                                    el.children('div.children').children('div.elements').children('ol').append(nchildren);
-                                    nchildren.slideDown('slow');                                    
-                                });
-                                
-                            }
+                        } catch (e) {}
+                        
+                        if (nel) {
                             el.attr('class', nel.attr('class'));                            
-
-                        }); // setTimeout
-
-                    }); // $
-
+                        }
+                        
+                        throw new Exception;
+                        
+                            
+                    } // beforeupdate.isDefaultPrevented()
 
 
                 } catch (e) {
                 
-                    
+                    el.attr('class', nel.attr('class'));
                 }
             },
 
@@ -124,9 +239,7 @@ if (!('Superform' in window)) {
                 }
 
                 el.is('li.element') || (el = el.parents('li.element').eq(0));
-                
-                el.addClass('busy');
-                                                                
+                                                                                                
                 if (el.length) {
                 
                     if (el.__updating) {
@@ -156,29 +269,10 @@ if (!('Superform' in window)) {
                             url:        frm.attr('action'),
                             cache:      false,
                             data:       data,                            
-                            success:    function (html, status, xhr) {                            
-                            
-                                            var s = html.indexOf('<!-- SFEL#' + id + ' -->', 0);
-                                            
-                                            if (s > 0) {
-
-                                                var e = html.indexOf('<!-- /SFEL#' + id + ' -->', s);
-
-                                                if (e > 0) {
-
-                                                    var html = html.substring(s, e);
-
-                                                    var wrp = $('<div></div>');                                                        
-                                                    wrp[0].innerHTML = html;
-                                                    delete html;                                                                                                        
-                                                    
-                                                    var nel = wrp.children().first();                                                    
-                                                    
-                                                    Superform.updateElement(el, nel);
-                                                    
-                                                }
-                                                
-                                            }                                            
+                            success:    function (html, status, xhr) {                        
+                                            Superform.updateElement(el, null, html);
+                                            sf.removeClass('updating');
+                                            sf.find('li.element').removeClass('updating busy');
                                         },
                             error: function () {
                                 alert('Error -->' + frm.attr('action') + '<--');

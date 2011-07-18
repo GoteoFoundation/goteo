@@ -1,6 +1,7 @@
 <?php
 
-use Goteo\Library\Text,
+use Goteo\Core\View,
+    Goteo\Library\Text,
     Goteo\Library\SuperForm;
             
 $project = $this['project'];
@@ -37,6 +38,10 @@ foreach ($project->supports as $support) {
                 'type'      => 'group',
                 'class'     => 'support editsupport',
                 'children'  => array(
+                    "support-{$support->id}-edit" => array(
+                        'type'  => 'hidden',
+                        'value' => '1'
+                    ),
                     "support-{$support->id}-support" => array(
                         'title'     => Text::get('supports-field-support'),
                         'type'      => 'textbox',
@@ -139,7 +144,14 @@ echo new SuperForm(array(
                     'class' => 'add support-add',
                 )
             )
-        )        
+        ),
+        'errors' => array(
+            'title' => 'Errores',
+            'view'  => new View('view/project/edit/errors.html.php', array(
+                'project'   => $project,
+                'step'      => $this['step']
+            ))
+        )
     )
 
 ));
@@ -158,7 +170,7 @@ $(function () {
 
     supports.delegate('li.element.editsupport input.ok', 'click', function (event) {
         var data = {};
-        data[this.name.substring(0, 12) + 'edit'] = '0';
+        data[this.name.substring(0, 11) + 'edit'] = '0';
         Superform.update(supports, data);
         event.preventDefault();
     });
