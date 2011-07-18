@@ -534,7 +534,7 @@ div.superform input[type="submit"] {
 div.superform button.image-remove {
     position: absolute;
     right: 5px;
-    top: 5px;
+    top: -10px;
     background: url("/view/css/button/cross.png") no-repeat center center !important;
     width: 20px;
     height: 20px;

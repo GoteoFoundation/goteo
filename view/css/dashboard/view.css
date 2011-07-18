@@ -1,4 +1,5 @@
 @import url('activity/summary.css');
+@import url('profile/profile.css');
 @import url('projects/rewards.css');
 
 body.dashboard div#main {

@@ -227,12 +227,13 @@ echo new SuperForm(array(
             'errors'    => !empty($errors["resource"]) ? array($errors["resource"]) : array(),
             'ok'        => !empty($okeys["resource"]) ? array($okeys["resource"]) : array(),
             'value'     => $project->resource
-        )/*
+        ),
         
-        'schedule' => array(                        
-            'title'     => Text::get('costs-field-schedule'),
-            'class'     => 'fullwidth'
-        ), */         
+        'schedule' => array(
+            'type'      => 'html',
+            'class'     => 'fullwidth',
+            'html'      => new View('view/project/widget/schedule.html.php', array('project' => $project))
+        )
     )
 
 ));

@@ -11,6 +11,8 @@ $okeys  = $project->okeys[$this['step']] ?: array();
 $social_rewards = array();
 $individual_rewards = array();
 
+$txt_details = Text::get('regular-see_details');
+
 foreach ($project->social_rewards as $social_reward) {
        
     // a ver si es el que estamos editando o no
@@ -25,13 +27,19 @@ foreach ($project->social_rewards as $social_reward) {
             if (!empty($type->licenses)) {
                 foreach ($type->licenses as $lid => $license) {
 
+                    if (!empty($license->url)) {
+                        $url = ' <a href="'.$license->url.'" target="_blank" class="license-hint-details">'.$txt_details.'</a>';
+                    } else {
+                        $url = '';
+                    }
+
                     $licenses["social_reward-{$social_reward->id}-license-{$license->id}"] = array(
                         'name'  => "social_reward-{$social_reward->id}-{$type->id}-license",
                         'label' => $license->name,
                         'value' => $license->id,
                         'type'  => 'radio',
                         'class' => 'license license_' . $license->id,
-                        'hint'  => $license->description,
+                        'hint'  => $license->description .  $url,
                         'id'    => "social_reward-{$social_reward->id}-license-{$license->id}",
                         'checked' => $license->id == $social_reward->license ? true : false
                     );

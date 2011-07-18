@@ -11,14 +11,12 @@ div#footer {
 	height: 150px;
 	margin:0;
 	padding: 20px 0 10px 0;
-	
     position: relative;		
     background-color: white;         
     z-index: 0;    
     /*max-width: 940px;*/
     bottom: 0;
     overflow: hidden;
-    border-bottom: 25px solid white;    
     clear: both;
     color: #1f1d1e;
     font-size: 12px;

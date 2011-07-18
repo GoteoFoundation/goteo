@@ -112,7 +112,6 @@ echo new SuperForm(array(
                 'avatar_upload'    => array(
                     'type'  => 'file',
                     'class' => 'inline avatar_upload',
-                    'title' => Text::get('profile-field-avatar_upload'),
                     'hint'  => Text::get('tooltip-user-image'),
                 ),
                 'avatar-current' => array(
@@ -121,7 +120,6 @@ echo new SuperForm(array(
                 ),
                 'avatar-image' => array(
                     'type'  => 'html',
-                    'title' => Text::get('profile-field-avatar_current'),
                     'class' => 'inline avatar-image',
                     'html'  => is_object($user->avatar) ?
                                $user->avatar . '<img src="/image/' . $user->avatar->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->id.'-remove" title="Quitar imagen" value="remove">X</button>' :

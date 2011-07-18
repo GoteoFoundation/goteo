@@ -106,6 +106,11 @@ namespace Goteo\Controller {
 
             // tratamos el post segun la opcion y la acion
             $user = $_SESSION['user'];
+
+            if ($option == 'public') {
+                throw new Redirection('/user/profile/'.$user->id);
+            }
+
             // si es el avatar por defecto no lo mostramos aqui
             if ($user->avatar->id == 1) {
                 unset($user->avatar);
@@ -831,7 +836,8 @@ $testpost = $_POST;
                     'options' => array (
                         'profile'  => 'Editar perfil',
                         'personal' => 'Datos personales',
-                        'access'   => 'Datos de acceso'
+                        'access'   => 'Datos de acceso',
+                        'public'   => 'perfil público'
                     )
                 ),
                 'projects' => array(

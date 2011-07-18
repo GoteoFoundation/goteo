@@ -24,10 +24,11 @@ foreach (License::getAll() as $l) {
 
 
 ?>
-<form method="post" action="/invest/<?php echo $project->id; ?>">
-
 <div class="widget project-invest">
     <h<?php echo $level ?> class="title"><?php echo Text::get('invest-amount') ?></h<?php echo $level ?>>
+    
+    <form method="post" action="/invest/<?php echo $project->id; ?>">
+
     <label><input type="text" id="amount" name="amount" value="10" /><?php echo Text::get('invest-amount-tooltip') ?></label>
 </div>
 
@@ -92,11 +93,11 @@ foreach (License::getAll() as $l) {
         
 <input type="submit" value="<?php echo Text::get('invest-next_step') ?>" />
 
+</form>
 </div>
 
 <?php echo new View('view/project/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $_SESSION['user']->worth)) ?>
 
-</form>
 
 <div class="widget project-invest">
     <h<?php echo $level ?> class="beak"><?php echo Text::get('invest-social-header') ?></h<?php echo $level ?>>

@@ -7,27 +7,14 @@ $user   = $this['user'];
 $errors = $this['errors'];
 $this['level'] = 3;
 
-$image = array(
-    'avatar' => array(
-        'type'  => 'hidden',
-        'value' => $user->avatar->id,
-    ),
-    'avatar-image' => array(
-        'type'  => 'html',
-        'class' => 'inline',
-        'html'  => is_object($user->avatar) ?
-                   $user->avatar . '<img src="/image/' . $user->avatar->id . '/110/110" alt="Avatar" />' :
-                   ''
-    )
-);
-
+/*
 if (!empty($user->avatar) && is_object($user->avatar))
     $image ["avatar-{$user->avatar->id}-remove"] = array(
         'type'  => 'submit',
         'label' => Text::get('form-remove-button'),
-        'class' => 'inline remove image-remove'
+        'class' => 'inline remove image-remove weak'
     );
-
+*/
 
 
 $interests = array();
@@ -64,7 +51,7 @@ foreach ($user->webs as $web) {
             'web-' . $web->id . '-remove' => array(
                 'type'      => 'submit',
                 'label'     => Text::get('form-remove-button'),
-                'class'     => 'web-remove inline remove red'
+                'class'     => 'web-remove inline remove weak'
             )
         )
     );
@@ -125,14 +112,18 @@ foreach ($user->webs as $web) {
                 'avatar_upload'    => array(
                     'type'  => 'file',
                     'class' => 'inline avatar_upload',
-                    'title' => Text::get('profile-field-avatar_upload'),
                     'hint'  => Text::get('tooltip-user-image'),
                 ),
                 'avatar-current' => array(
-                    'type'  => 'group',
-                    'title' => Text::get('profile-field-avatar_current'),
-                    'class' => 'inline avatar',
-                    'children'  => $image
+                    'type' => 'hidden',
+                    'value' => $user->avatar->id,
+                ),
+                'avatar-image' => array(
+                    'type'  => 'html',
+                    'class' => 'inline avatar-image',
+                    'html'  => is_object($user->avatar) ?
+                               $user->avatar . '<img src="/image/' . $user->avatar->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->id.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               ''
                 )
 
             )
@@ -152,6 +143,7 @@ foreach ($user->webs as $web) {
         'interests' => array(
             'type'      => 'checkboxes',
             'required'  => true,
+            'class'     => 'cols_3',
             'name'      => 'user_interests[]',
             'title'     => Text::get('profile-field-interests'),
             'hint'      => Text::get('tooltip-user-interests'),
@@ -189,7 +181,7 @@ foreach ($user->webs as $web) {
                 'web-add' => array(
                     'type'  => 'submit',
                     'label' => Text::get('form-add-button'),
-                    'class' => 'add'
+                    'class' => 'add red'
                 )
             )
         ),

@@ -48,7 +48,7 @@ namespace Goteo\Model {
 
             if ($group != '') {
                 // de un grupo o de todos
-                $sql .= " WHERE `group` = :group OR `group` IS NULL";
+                $sql .= " WHERE `group` = :group OR `group` IS NULL OR `group` = ''";
             }
 
             $sql .= " ORDER BY `order` ASC, name ASC";
@@ -83,7 +83,7 @@ namespace Goteo\Model {
 
             if ($group != '') {
                 // de un grupo o de todos
-                $sql .= " WHERE `group` = :group OR `group` IS NULL";
+                $sql .= " WHERE `group` = :group OR `group` IS NULL OR `group` = ''";
             }
 
             $sql .= "

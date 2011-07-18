@@ -807,7 +807,7 @@ namespace Goteo\Controller {
                     'id' => $_POST['id'],
                     'name' => $_POST['name'],
                     'description' => $_POST['description'],
-                    'group' => $_POST['group']
+                    'group' => empty($_POST['group']) ? null : $_POST['group']
                 ));
 
 				if ($icon->save($errors)) {

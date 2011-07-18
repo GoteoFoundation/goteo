@@ -12,12 +12,12 @@ $errors = $this['errors'] ?>
 
                 <div class="steps">
                     
-                    <span class="step first-off off activable<?php if ($this['step'] === 'userProfile') echo ' active'; else echo ' activable'; ?>">
+                    <span class="step first-off off<?php if ($this['step'] === 'userProfile') echo ' active'; else echo ' activable'; ?>">
                         <button type="submit" name="view-step-userProfile" value="<?php echo Text::get('step-1'); ?>"><?php echo Text::get('step-1'); ?>
                         <strong class="number">1</strong></button>                        
                     </span>
                     
-                    <span class="step off-off off activable<?php if ($this['step'] === 'userPersonal') echo ' active'; else echo ' activable'; ?>">
+                    <span class="step off-off off<?php if ($this['step'] === 'userPersonal') echo ' active'; else echo ' activable'; ?>">
                         <button type="submit" name="view-step-userPersonal" value="<?php echo Text::get('step-2'); ?>"><?php echo Text::get('step-2'); ?>
                         <strong class="number">2</strong></button>
                     </span>

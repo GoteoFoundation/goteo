@@ -66,13 +66,13 @@ if (isset($this['investor'])) {
         
         <ul>
            <?php $q = 1; foreach ($project->social_rewards as $social): ?>
-            <li class="<?php echo $social->icon ?>">
+            <li class="<?php echo $social->icon ?> activable">
                 <a href="/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$social->icon_name}: {$social->reward} al procomún") ?>" class="tipsy"><?php echo htmlspecialchars($social->reward) ?></a>
             </li>
            <?php if ($q > 5) break; $q++; 
                endforeach ?>
            <?php if ($q < 5) foreach ($project->individual_rewards as $individual): ?>
-            <li class="<?php echo $individual->icon ?>">
+            <li class="<?php echo $individual->icon ?> activable">
                 <a href="/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$individual->icon_name}: {$individual->reward} aportando {$individual->amount}") ?> &euro;" class="tipsy"><?php echo htmlspecialchars($individual->reward) ?></a>
             </li>
            <?php if ($q > 5) break; $q++;

@@ -1,0 +1,40 @@
+body.project-edit div#main.profile div.superform li.element.webs li.element.web li.element,
+body.project-edit div#main.profile div.superform li.element.user_avatar > div.children > div.elements > ol > li.element {
+/*    display: table-cell; */
+    display: inline-block;
+    vertical-align: top;
+}
+
+body.project-edit div#main.profile div.superform li.element.user_avatar ol {
+    padding: 0;
+}
+
+body.project-edit div#main.profile div.superform li.element.webs li.element.web-url {
+    width: 100%;
+    padding-right: 1em;
+}
+
+body.project-edit div#main.profile div.superform li.element.webs li.element.web-accept input,
+body.project-edit div#main.profile div.superform li.element.webs li.element.web-remove input {
+    margin: 0;
+    margin-right: 3px;
+}
+
+body.project-edit div#main.profile div.superform li.element.webs > div.children > div.elements > ol ol {
+    padding: 0;
+    margin: 0;
+}
+
+body.project-edit div#main.profile div.superform li.element.user_avatar li.element.avatar-image {
+    padding: 0 2em;
+    margin: 0px !important;
+}
+
+body.project-edit div#main.profile div.superform li.element.user_avatar li.element.avatar img {
+    width: 128px;
+    height: 128px;
+}
+
+body.project-edit div#main.profile div.superform li.element.user_avatar li.element .title {
+    display: none;
+}
