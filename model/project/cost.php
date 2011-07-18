@@ -53,6 +53,14 @@ namespace Goteo\Model\Project {
                 $errors[] = 'No hay tipo de coste';
                 //Text::get('mandatory-cost-description');
 */
+            if (empty($this->from) || $this->from == '0000-00-00') {
+                $this->from = null;
+            }
+
+            if (empty($this->until) || $this->until == '0000-00-00') {
+                $this->until = null;
+            }
+
             //cualquiera de estos errores hace fallar la validación
             if (!empty($errors))
                 return false;

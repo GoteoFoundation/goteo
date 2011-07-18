@@ -239,3 +239,8 @@ div.post-comments div.message blockquote {
 .side {
 	float:right;
 }
+
+.project-updates ul#pagination {
+	margin: 0px 0px 10px 0px !important;
+}
+

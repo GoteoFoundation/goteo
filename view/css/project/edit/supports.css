@@ -36,10 +36,12 @@ body.project-edit div#main.supports div.superform li.element.support div.descrip
     margin: .5em 0;
 }
 
+/*
 body.project-edit div#main.supports div.superform li.element.support input.edit,
 body.project-edit div#main.supports div.superform li.element.support input.remove {
     width: 7em;
 }
+*/
 
 body.project-edit div#main.supports div.superform li.element.support input.edit {
     margin-top: -1em;

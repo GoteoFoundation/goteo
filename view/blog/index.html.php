@@ -57,7 +57,7 @@ include 'view/header.html.php';
                             <div class="comments-num"><a href="/blog/<?php echo $post->id; ?>"><?php echo $post->num_comments > 0 ? $post->num_comments . ' ' .Text::get('blog-comments') : Text::get('blog-no_comments'); ?></a></div>
 						</div>
 					<?php endwhile; ?>
-                    <ul class="pagination">
+                    <ul id="pagination">
                         <?php   $pagedResults->setLayout(new DoubleBarLayout());
                                 echo $pagedResults->fetchPagedNavigation(); ?>
                     </ul>

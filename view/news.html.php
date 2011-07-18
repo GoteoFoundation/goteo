@@ -46,7 +46,7 @@ include 'view/header.html.php';
                 <a href="<?php echo $content->url; ?>"><?php echo $read_more; ?></a>
             </div>
         <?php endwhile; ?>
-        <ul class="pagination">
+        <ul id="pagination">
             <?php   $pagedResults->setLayout(new DoubleBarLayout());
                     echo $pagedResults->fetchPagedNavigation(); ?>
         </ul>

@@ -74,10 +74,12 @@ body.project-edit div#main.rewards div.superform li.element.reward div.license {
     line-height: 32px;
 }
 
+/*
 body.project-edit div#main.rewards div.superform li.element.reward input.edit,
 body.project-edit div#main.rewards div.superform li.element.reward input.remove {
     width: 6em;
 }
+*/
 
 body.project-edit div#main.rewards div.superform li.element.reward input.edit {
     margin-top: -1em;

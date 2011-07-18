@@ -150,9 +150,9 @@ if (!empty($project->costs)) {
             );
             
         } else {
-            
+            $req_class = $cost->required ? 'required_cost-yes' : 'required_cost-no';
             $costs["cost-{$cost->id}"] = array(                
-                'class'     => 'cost',
+                'class'     => 'cost ' . $req_class,
                 'view'      => 'view/project/edit/costs/cost.html.php',
                 'data'      => array('cost' => $cost),                
             );

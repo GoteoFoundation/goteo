@@ -10,9 +10,7 @@ $(function () {
        
        var updating = null;
 
-       var update = function () {
-       
-           var val = input.val();
+       var update = function (val) {
        
            clearTimeout(updating);
 

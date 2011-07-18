@@ -38,7 +38,7 @@ if ($project->finishable) {
         'type'  => 'submit',
         'name'  => 'finish',
         'label' => Text::get('form-send_review-button'),
-        'class' => 'confirm'
+        'class' => 'confirm red'
     );
 }
 
