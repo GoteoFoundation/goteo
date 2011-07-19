@@ -1,3 +1,7 @@
+div.widget.project-support {
+    position: relative;
+}
+
 /* Detalle de la linea roja (y otras cosillas) en el supertitle del termometro*/
 div.widget.project-support h4.supertitle {
     border-bottom: 1px solid #EE4843 !important;
@@ -6,10 +10,12 @@ div.widget.project-support h4.supertitle {
 div.widget.project-support dl {
     margin: 0;
     padding: 0 0 0 20px;
+    float: left;
+    margin-left: 15px;
 }
 
 body.js div.widget.project-support dl {
-    padding-left: 54px;
+    padding-left: 0;
 }
 
 div.widget.project-support dl {
@@ -37,7 +43,7 @@ div.widget.project-support dl dd * {
 
 div.widget.project-support dl dt.optimum,
 div.widget.project-support dl dt.minimum {
-    width: 6em;
+    width: 5.5em;
     float: left;
     margin-left: 0;
     line-height: 45px;
@@ -110,41 +116,35 @@ div.widget.project-support dl dd.supporters {
 
 /* Animated/static meter */
 div.widget.project-support > div.meter {
-    position: relative;    
+    position: relative;
+    overflow: visible;
 }
 
 div.widget.project-support div.graph {
-    width: 28px;
-    overflow: hidden;
-    position: absolute;
-    left: 8px;
-    top: 50px;
-    bottom: 0;
-    width: 38px;
+    width: 26px;
+    overflow: visible;            
     border-bottom: 2px solid #ee4843;
     font-size: 0;
+    margin-left: 5px;
+    margin-top: 22px;
+    float: left;
 }
 
 div.widget.project-support div.graph > div.optimum,
 div.widget.project-support div.graph > div.minimum {
-    float: right;
     width: 26px;
     overflow: visible;
 }
 
 div.widget.project-support div.graph > div.optimum {
     background: url('support/optimum.png') no-repeat center top;
-    height: 45px;    
+    height: 45px;
 }
 
 div.widget.project-support div.graph > div.minimum {    
     background: url('support/minimum.png') no-repeat center top;    
-    position: absolute;
-    right: 0;
-    top: 45px;
-    bottom: 0;   
-    height: 174px !important;
-    min-height: 174px !important;
+    position: relative;    
+    min-height: 145px !important;
 }
 
 div.widget.project-support div.graph > div.minimum > div.done {
@@ -174,10 +174,14 @@ div.widget.project-support div.graph > div.minimum > div.done strong {
 div.widget.project-support div.buttons {
     border-top: 1px solid #ee4843;
     padding: 1em 0 0;
-    margin: 1em 0 0;
+    clear: both;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
 }
 
-div.widget.project-support a.button.supportit {    
+div.widget.project-support a.button {    
     margin: 0;
 }
 
