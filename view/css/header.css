@@ -46,7 +46,7 @@ div#sub-header,
 div#sub-header-secondary { 
     clear: both;
     padding: 20px 0;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
 }
 
 div#sub-header{
@@ -454,7 +454,7 @@ div#header div#menu > ul > li {
 }
 
 div#header div#menu > ul > li.home {
-    width: 87px;
+    width: 90px;
     height: 100%;
     position: absolute;
     left: 0;
