@@ -11,8 +11,9 @@ div#footer {
 	height: 150px;
 	margin:0;
 	padding: 20px 0 10px 0;
+	
     position: relative;		
-    background-color: white;         
+    background-color: #faf8f8;         
     z-index: 0;    
     /*max-width: 940px;*/
     bottom: 0;
@@ -281,4 +282,73 @@ div#sub-footer div.platoniq a {
 
 div#sub-footer div.platoniq a:hover{
 	background: url('platoniq2.png') no-repeat;
+}
+
+/* Sponsors */
+.slidersponsors-ctrl {
+	max-width: 940px;
+	margin: 0 auto;
+	list-style:none;
+	padding:0px;
+    display: block;
+}
+
+.slidersponsors-ctrl li {
+	cursor:pointer;
+    display: block;
+    float: left;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.slidersponsors-ctrl li.navi > * {
+    display: block;
+    height: 100%;
+    width: 100%;
+    text-indent: 2000px;
+    line-height: 2000px;
+    margin: 0px 3px;
+}
+
+.slidersponsors-ctrl li.navi a {
+    width: 10px;
+    height: 10px;
+    margin-top: 3px;
+    background-color: #cdcdce;
+    color: #cdcdce;
+}
+
+.slidersponsors-ctrl li.navi a:hover {
+    background-color: #e3262a;
+    color: #e3262a;
+}
+
+.slidersponsors-ctrl li.navi.active a {
+    background-color: #808184 !important;
+    color: #808184 !important;
+}
+
+.slidersponsors-ctrl li.prev,
+.slidersponsors-ctrl li.next {
+    width: 16px;
+    height: 16px;
+	line-height: 2000px !important;
+	overflow: hidden;
+/*	display: inline-block; */
+}
+
+.slidersponsors-ctrl li.prev {
+	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 0;
+}
+
+.slidersponsors-ctrl li.prev:hover {
+	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -32px;
+}
+
+.slidersponsors-ctrl li.next {
+	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -16px;
+}
+
+.slidersponsors-ctrl li.next:hover {
+	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -48px;
 }

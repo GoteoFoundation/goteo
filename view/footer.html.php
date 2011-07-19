@@ -65,16 +65,19 @@ jQuery(document).ready(function($) {
 
            <div class="block sponsors">
                 <h8 class="title"><?php echo Text::get('footer-header-sponsors') ?></h8>
-<!--                <img id="current" src="../image/logo1-carusel.jpg" width="150" height="85"> -->
-                
-                
-                <!-- para carrusel aplicar la misma solucion que para los banners 
-                <?php foreach ($sponsors as $sponsor) : ?>
-                <div class="sponsor">
+                <?php $i = 1; foreach ($sponsors as $sponsor) : ?>
+                <div class="sponsor" id ="footer-sponsor-<?php echo $i ?>"<?php if ($i > 1) echo ' style="display:none;"'?>>
                 	<a href="<?php echo $sponsor->url ?>" title="<?php echo $sponsor->name ?>" target="_blank"><img src="/image/<?php echo $sponsor->image ?>/150/50" alt="<?php echo $sponsor->name ?>" /></a>
                 </div>
-                <?php break; endforeach; ?>
-                por ahora maquetar un solo sponsor, para el carrusel se repetirá la maquetacion de este -->
+                <?php $i++; endforeach; ?>
+
+                <ul class="slidersponsors-ctrl">
+                    <li class="prev"><a href="#" class="a-null">Anterior</a></li>
+                    <?php $i = 1; foreach ($sponsors as $sponsor) : ?>
+                    <li class="navi<?php if ($i == 1) echo ' active'?>"><a href="#" class="a-null">&nbsp</a></li>
+                    <?php $i++; endforeach; ?>
+                    <li class="next"><a href="#" class="a-null">Siguiente</a></li>
+                </ul>
             </div>
 
             <div class="block services" style="border-right:#ebe9ea 2px solid;">

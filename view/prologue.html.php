@@ -32,6 +32,9 @@
                     function () { $(this).addClass('active') },
                     function () { $(this).removeClass('active') }
                 );
+                $(".a-null").click(function (event) {
+                    event.preventDefault();
+                });
             });
         </script>
         <noscript><!-- Please enable JavaScript --></noscript>

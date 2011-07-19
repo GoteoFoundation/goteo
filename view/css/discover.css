@@ -126,6 +126,10 @@ div.navi-bar ul.navi li > a {
     background-color: #cdcdce;
 }
 
+div.navi-bar ul.navi li > a:hover {
+    background-color: #e3262a;
+}
+
 div.navi-bar ul.navi li > a.active {
     background-color: #808184;
 }
@@ -165,20 +169,22 @@ div.discover-arrow-right {
 }
 
 div.discover-arrow-left a.discover-arrow {
-	background: url('carrousel-arrow.png') scroll no-repeat  0 0px;
+	background: url('arrowslider-sprt.png') scroll no-repeat 0 0;
 }
 
 div.discover-arrow-left a.discover-arrow:hover {
-	background: url('carrousel-arrow-active.png') scroll no-repeat  0 0px;
+	background: url('arrowslider-sprt.png') scroll no-repeat 0 -48px;
 }
 
 div.discover-arrow-right a.discover-arrow {
-	background: url('carrousel-arrow.png') scroll no-repeat  0 -24px;
+	background: url('arrowslider-sprt.png') scroll no-repeat 0 -24px;
 }
 
 div.discover-arrow-right a.discover-arrow:hover {
-	background: url('carrousel-arrow-active.png') scroll no-repeat  0 -24px;
+	background: url('arrowslider-sprt.png') scroll no-repeat 0 -72px;
 }
+
+
 
 a.discover-arrow {
     display: inline-block;

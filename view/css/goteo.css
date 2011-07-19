@@ -32,7 +32,7 @@ div#sub-header > div > h2 {
 /* Main container */
 div#main {    
     width: 940px;
-    margin: 20px auto;
+    margin: 10px auto;
     clear: both;
     overflow-y: auto;
     overflow-x: hidden;

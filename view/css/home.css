@@ -12,17 +12,18 @@ body.home div#main div.learn ul {
     list-style: none;
     margin: 0;    
     height: 10px;
-    padding: 10px 0 0;
+    padding: 10px 0px 0px;
     z-index: 900;
+    line-height: 24px;
 }
 
 body.home div#main div.learn ul li {
     display: block;
     float: left;
-    width: 1em;
-    height: 1em;    
-    overflow: hidden;
-    margin-right: .5em;    
+	cursor:pointer;
+    overflow: hidden; 
+/*    margin-right: 4px; */
+    line-height: 24px;
 }
 
 body.home div#main div.learn ul li > * {
@@ -33,12 +34,48 @@ body.home div#main div.learn ul li > * {
     line-height: 2000px;
 }
 
-body.home div#main div.learn ul li > a {
+body.home div#main div.learn ul li.navi {
+    width: 18px;
+    height: 18px;
+    margin: 3px;
+}
+
+
+body.home div#main div.learn ul li.navi > a {
     background-color: #cdcdce;       
 }
 
-body.home div#main div.learn ul li > a.active {
-    background-color: #808184;
+body.home div#main div.learn ul li.navi > a:hover {
+    background-color: #e3262a;
+}
+
+body.home div#main div.learn ul li.navi > a.active {
+    background-color: #808184 !important;
+}
+
+body.home div#main div.learn ul li.prev,
+body.home div#main div.learn ul li.next {
+    width: 24px;
+    height: 24px;
+	line-height: 2000px;
+	overflow: hidden;
+}
+
+
+body.home div#main div.learn ul li.prev {
+	background: url('arrowslider-sprt.png') scroll no-repeat 0 0;
+}
+
+body.home div#main div.learn ul li.prev:hover {
+	background: url('arrowslider-sprt.png') scroll no-repeat 0 -48px;
+}
+
+body.home div#main div.learn ul li.next {
+	background: url('arrowslider-sprt.png') scroll no-repeat 0 -24px;
+}
+
+body.home div#main div.learn ul li.next:hover {
+	background: url('arrowslider-sprt.png') scroll no-repeat 0 -72px;
 }
 
 body.home div#main div.learn div.post {

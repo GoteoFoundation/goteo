@@ -19,7 +19,7 @@ div#header strong {
 div#super-header {
     max-width: 940px;
     margin: 0 auto;
-    height: 2.2em;
+    height: 25px;
     font-size: 12px;
     overflow: hidden;
     padding: 0 1em;
@@ -33,7 +33,7 @@ div#super-header + * {
 
 div#super-header a {
     color: #e9e3dc;
-    font-size: 12px;    
+    font-size: 11px;    
 }
 
 div#super-header a:hover {
@@ -43,20 +43,23 @@ div#super-header a:hover {
 
 /* Sub-header */ 
 div#sub-header,
-div#sub-header-secondary {
-    background-color: white;
+div#sub-header-secondary { 
     clear: both;
     padding: 20px 0;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
 div#sub-header{
-    background-color: white;
+   background-color: #faf8f8;
+}
+
+div#sub-header.banners{
+    padding:0;
 }
 
 div#sub-header-secondary{
     background-color: #d7eaeb;
-	margin-top: 4px;
+/*	margin-top: 4px; */
 }
 
 div#sub-header-secondary > div > h2{
@@ -71,24 +74,159 @@ div#sub-header-secondary > div > h2{
 	margin:30px auto;
 }
 
-.user-login div#sub-header > div > div{
-	width:500px;
+div#sub-header > div > div{
+	width:680px;
 	float:left;
 	margin:18px 0 0 0;
 }
 
-.user-login div#sub-header > div > div.mod-pojctopen{
-	float:right;
-	width:171px;
-	margin: 0 66px 0 0;
+div#sub-header > div > div.subhead-banner{
+	margin:0px;
 }
 
-.user-login div#sub-header > div > div.mod-pojctopen > .modpo-open{
+div#sub-header > div > div.subhead-banner .shb-img{
+	margin:0px;
+	background: url('header/banners/test-banner-home.jpg') scroll no-repeat  0 0;
+	height:156px;
+}
+
+div#sub-header > div > div.subhead-banner .shb-info{
+	margin:0px;
+	background:#FFFFFF;
+	width:335px;
+	height:116px;
+	position:absolute;
+	margin: 10px 0 10px 314px;
+	opacity: 0.9;
+	filter: alpha(opacity=90);
+	z-index:5;
+	padding:10px;
+}
+
+div#sub-header > div > div.subhead-banner .shb-info h2{
+	font: bold 14px Helvetica, Arial, Geneva, sans-serif;
+    margin: 0px;
+    text-transform: uppercase;
+}
+
+div#sub-header > div > div.subhead-banner .shb-info small{
+	font: normal 11px Helvetica, Arial, Geneva, sans-serif;
+    margin: 2px 0;
+    color:#1eb2b2;
+	display:block;
+}
+
+div#sub-header > div > div.subhead-banner .shb-info .col-return{
+	border-top: 1px solid #58595B;
+	border-bottom: 1px solid #58595B;
+	margin: 0;
+	padding: 5px 0;
+	width: 240px;
+	float:left;
+}
+
+div#sub-header > div > div.subhead-banner .shb-info .col-return h3{
+	font: bold 11px Helvetica, Arial, Geneva, sans-serif;
+    margin: 0px;
+    text-transform: uppercase;
+}
+
+div#sub-header > div > div.subhead-banner .shb-info .col-return p{
+    margin: 0px 0px 4px 0px;
+	font: normal 11px Helvetica, Arial, Geneva, sans-serif;
+}
+
+div#sub-header > div > div.subhead-banner .shb-info .col-return ul{
+    float:left;
+	list-style:none;
+	padding:0;
+	margin:3px 0 0 0;
+}
+
+div#sub-header > div > div.subhead-banner .shb-info .col-return ul li{
+    display:inline;
+	margin:0 3px 0 0;
+	padding:0;
+}
+
+div#sub-header > div > div.subhead-banner .shb-info .col-return .license{
+    float:right;
+}
+
+div#sub-header > div > div.subhead-banner .shb-info .financ-meter{
+    float:right;
+	width:75px;
+	font: normal 11px Helvetica, Arial, Geneva, sans-serif;
+	list-style:none;
+	margin:0 0 0 20px;
+	padding:0;
+}
+
+div#sub-header > div > div.subhead-banner .shb-info .financ-meter li{
+	margin:0;
+	padding:0;
+}
+
+div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.reached{
+    font: bold 14px Helvetica, Arial, Geneva, sans-serif;
+	color:#1eb2b2;
+}
+
+div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.optimun{
+    font: bold 14px Helvetica, Arial, Geneva, sans-serif;
+	color:#ee4343;
+}
+
+div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.reached .euro,
+div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.optimun .euro{
+	height: 16px;
+	width: 16px;
+	line-height: 2000px;
+	overflow: hidden;
+	display: inline-block;
+	margin-bottom: -3px;
+}
+
+div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.reached .euro{
+	background: url('euro/green/s.png') scroll no-repeat top right;
+}
+
+div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.optimun .euro{
+	background: url('euro/red/s.png') scroll no-repeat top right;
+}
+
+div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.days{
+	color:#1eb2b2;
+}
+
+div#sub-header > div > div.subhead-banner .sign-in-with{
+	float:left;
+	list-style:none;
+	margin:0px;
+	padding:0 0 10px 0;
+}
+
+div#sub-header > div > div.subhead-banner .sign-in-with li{
+	display: inline;
+	margin: 0 20px 0 0;
+}
+
+div#sub-header > div > div.mod-pojctopen{
+	float:right;
+	width:171px;
+	margin: 0 40px 0 0;
+}
+
+div#sub-header.banners > div > div.mod-pojctopen{
+	margin: 12px 40px 18px 0;
+}
+
+div#sub-header > div > div.mod-pojctopen > .modpo-open{
 	font: bold 60px Helvetica, Arial, Geneva, sans-serif;
 	color:#ee4343;
 }
 
-.user-login div#sub-header > div > div.mod-pojctopen > .modpo-percent{
+div#sub-header > div > div.mod-pojctopen > .modpo-percent{
 	font: bold 24px Helvetica, Arial, Geneva, sans-serif;
 	color:#1eb2b2;
 	margin: -10px 0 0;
@@ -96,7 +234,7 @@ div#sub-header-secondary > div > h2{
 	padding: 0 0 8px 0;
 }
 
-.user-login div#sub-header > div > div.mod-pojctopen > .modpo-whyopen{
+div#sub-header > div > div.mod-pojctopen > .modpo-whyopen{
 	font: bold 14px Helvetica, Arial, Geneva, sans-serif;
 	padding:6px 0 0 22px;
 }
@@ -108,6 +246,74 @@ div#sub-header > div > h2 .red{
 
 div#sub-header > div > div > h2 .greenblue{
 	color:#1eb2b2;
+}
+
+.sliderbanners-ctrl {
+	max-width: 940px;
+	margin: 0 auto;
+	list-style:none;
+	padding:0px;
+    display: block;
+}
+
+.sliderbanners-ctrl li {
+	cursor:pointer;
+    display: block;
+    float: left;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.sliderbanners-ctrl li.navi > * {
+    display: block;
+    height: 100%;
+    width: 100%;
+    text-indent: 2000px;
+    line-height: 2000px;
+    margin: 0px 3px;
+}
+
+.sliderbanners-ctrl li.navi a {
+    width: 10px;
+    height: 10px;
+    margin-top: 3px;
+    background-color: #cdcdce;
+    color: #cdcdce;
+}
+
+.sliderbanners-ctrl li.navi a:hover {
+    background-color: #e3262a;
+    color: #e3262a;
+}
+
+.sliderbanners-ctrl li.navi.active a {
+    background-color: #808184 !important;
+    color: #808184 !important;
+}
+
+.sliderbanners-ctrl li.prev,
+.sliderbanners-ctrl li.next {
+    width: 16px;
+    height: 16px;
+	line-height: 2000px;
+	overflow: hidden;
+/*	display: inline-block; */
+}
+
+.sliderbanners-ctrl li.prev {
+	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 0;
+}
+
+.sliderbanners-ctrl li.prev:hover {
+	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -32px;
+}
+
+.sliderbanners-ctrl li.next {
+	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -16px;
+}
+
+.sliderbanners-ctrl li.next:hover {
+	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -48px;
 }
 
 div#sub-header-secondary > div > ul.share-goteo{
@@ -190,7 +396,7 @@ div#header div#highlights > ul > li,
 div#header div#highlights > ul > li > a {
     font-weight: normal;
     text-transform: none;
-    font-size: 12px;
+    font-size: 11px;
     line-height: 2.2em;
     height: 2.2em;
 }
@@ -199,6 +405,11 @@ div#header div#highlights > h2 {
     color: #e7e1d9;
     margin: 0 1em 0 0;
     float: left;
+}
+
+div#header div#highlights > h2 a{
+	font-size:11px;
+	text-transform:uppercase;	
 }
 
 div#header div#highlights > ul {
@@ -255,18 +466,18 @@ div#header div#menu > ul > li.home > a {
     text-indent: 2000px;
     display: block;
     line-height: 2000px;
-    width: 93px;
+    width: 106px;
     height: 36px;  
     position: absolute;
     left: 50%;
     top: 50%;
-    margin-left: -48px;
+    margin-left: -30px;
     margin-top: -19px;
     background: url('header/goteo.png') no-repeat left;        
 }
 
 div#header div#menu > ul > li.home > a:hover {
-    background-position: right;
+    background: url('header/goteo.png') no-repeat 102% center;
 }
 
 div#header div#menu > ul > li.explore,
@@ -284,6 +495,7 @@ div#header div#menu > ul > li.create > a {
     margin: .6em .2em .6em 0;
     max-width: 7.5em;
     text-align: left;
+	width:80px;
 }
 
 div#header div#menu > ul > li.explore > a {    
@@ -301,6 +513,7 @@ div#header div#menu > ul > li.search fieldset {
     border: 1px solid #808184;    
     padding-right: 1.6em;
     position: relative;
+	top:-4px;
     font-size: 14px;
 }
 
@@ -310,7 +523,7 @@ div#header div#menu > ul > li.search fieldset legend {
 
 div#header div#menu > ul > li.search fieldset input[type="text"] {
     border: none;
-    height: 1.2em;
+    height: 12px;
     padding: .2em;
     background-color: transparent;
     font-size: 14px;
@@ -329,7 +542,7 @@ div#header div#menu > ul > li.search fieldset input[type="submit"] {
     right: 0;
     top: 0;
     width: 1.6em;
-    height: 1.6em;    
+    height: 18px;    
     padding: 0;
     overflow: hidden;
     line-height: 2000px;
