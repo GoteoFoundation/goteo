@@ -225,44 +225,9 @@ div.widget.project-supporters .supporters ul li dl dd.worthcracy ul li > strong 
     padding-top: 6px;
 }
 
-/** cofinanciadores pagination **/
- div.widget.project-supporters ul.pagination {
-	list-style:none;
-	float:left;
-	margin: 10px 0px 0px 0px;
-	padding:0px;
+div.widget.project-supporters ul#pagination {
+	margin: 10px 0px 0px 0px !important;
 }
-div.widget.project-supporters ul.pagination li {
-	display:inline;
-	margin: 0 6px 0 0;
-	background: white;
-	width: auto;
-	float: left;
-	text-align: center;
-	-moz-box-shadow: 3px 3px 0px #E2E2E2;
-	-webkit-box-shadow: 3px 3px 0px #E2E2E2;
-	box-shadow: 3px 3px 0px #E2E2E2;
-}
-div.widget.project-supporters ul.pagination li.selected {
-	background:#cde4e5;
-	font-weight:bold;
-	padding: 6px 20px;
-}
-div.widget.project-supporters ul.pagination li.hellip {
-	padding: 6px 20px;
-}
-div.widget.project-supporters ul.pagination li a {
-	display: block;
-	padding: 6px 20px;
-	text-decoration:none;
-	font-weight:bold;
-}
-div.widget.project-supporters ul.pagination li a:hover {
-	background:#cde4e5;
-}
-/** end of cofinanciadores pagination **/
-
-
 
 /* Widget lateral de cofinanciadores: div.widget.project-investors */
 div.widget.project-investors a.more {

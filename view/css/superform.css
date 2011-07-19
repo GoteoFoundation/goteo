@@ -546,19 +546,31 @@ div.superform button.image-remove:hover {
     background: url("/view/css/button/cross-active.png") no-repeat center center !important;
 }
 
+div.superform input.next,
+div.superform input.confirm,
+div.superform input.retry {
+    padding: 0.6em 1.6em !important;
+    font-size: 15px !important;
+}
+
 /* titulos */
 div.superform li#social_rewards h4.title,
-div.superform li#individual_rewards,
-div.superform li#supports {
+div.superform li#individual_rewards h4.title,
+div.superform li#supports h4.title,
+div.superform li#costs h4.title {
     padding-left: 25px;
 }
 
 /* backgrounds */
 div.superform li#supports,
 div.superform li#social_rewards {
-    background-color: #f5faf4 !important;
+    background-color: #f3f9f2 !important;
 }
 div.superform li#individual_rewards {
+    background-color: #f8e3e3 !important;
+}
+
+div.superform li#costs {
     background-color: #fdf3f4 !important;
 }
 
@@ -566,11 +578,13 @@ div.superform li.editcost {
     background-color: #fdf3f4 !important;
 }
 
-div.superform li.editcost li.required_cost-yes{
+div.superform li.cost.required_cost-yes,
+div.superform li.editcost li.required_cost-yes {
     background-color: #fce9e9 !important;
 }
 
-div.superform li.editcost li.required_cost-no{
+div.superform li.cost.required_cost-no,
+div.superform li.editcost li.required_cost-no {
     background-color: #f2f2f2 !important;
 }
 

@@ -175,42 +175,6 @@ div.widget.blog-content-module ul.share-goteo li.facebook a,
 	text-decoration:none;
 }
 /** end of share goteo **/
-/** blog pagination **/
- #blog-content ul.pagination {
-	list-style:none;
-	float:left;
-	margin: 0px;
-	padding:0px;
-} 
-#blog-content ul.pagination li {
-	display:inline;
-	margin: 0 6px 0 0;
-	background: white;
-	width: auto;
-	float: left;
-	text-align: center;
-	-moz-box-shadow: 3px 3px 0px #E2E2E2;
-	-webkit-box-shadow: 3px 3px 0px #E2E2E2;
-	box-shadow: 3px 3px 0px #E2E2E2;
-} 
-#blog-content ul.pagination li.selected {
-	background:#cde4e5;
-	font-weight:bold;
-	padding: 6px 20px;
-} 
-#blog-content ul.pagination li.hellip {
-	padding: 6px 20px;
-} 
-#blog-content ul.pagination li a {
-	display: block;
-	padding: 6px 20px;
-	text-decoration:none;
-	font-weight:bold;
-} 
-#blog-content ul.pagination li a:hover {
-	background:#cde4e5;
-} 
-/** end of blog pagination **/
 /** blog comments **/
 /*
 // he copaido mas arriba el css de mensajes

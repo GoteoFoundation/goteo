@@ -167,3 +167,40 @@ h1, h2, h3, h4, h5, h6, h7, h8 {
 * html .clearfix { height: 1%; }
 .clearfix { display: block; }
 /* End hide from IE-mac */
+
+/** pagination **/
+ ul#pagination {
+	list-style:none;
+	float:left;
+	margin: 0px;
+	padding:0px;
+}
+ul#pagination li {
+	display:inline;
+	margin: 0 6px 0 0;
+	background: white;
+	width: auto;
+	float: left;
+	text-align: center;
+	-moz-box-shadow: 3px 3px 0px #E2E2E2;
+	-webkit-box-shadow: 3px 3px 0px #E2E2E2;
+	box-shadow: 3px 3px 0px #E2E2E2;
+}
+ul#pagination li.selected {
+	background:#cde4e5;
+	font-weight:bold;
+	padding: 6px 20px;
+}
+ul#pagination li.hellip {
+	padding: 6px 20px;
+}
+ul#pagination li a {
+	display: block;
+	padding: 6px 20px;
+	text-decoration:none;
+	font-weight:bold;
+}
+ul#pagination li a:hover {
+	background:#cde4e5;
+}
+/** end of pagination **/

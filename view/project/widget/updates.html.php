@@ -23,6 +23,19 @@ if (empty($this['post'])) {
     }
 }
 
+if ($this['show'] == 'list') {
+    // paginacion
+    require_once 'library/pagination/pagination.php';
+
+    //recolocamos los post para la paginacion
+    $the_posts = array();
+    foreach ($posts as $i=>$p) {
+        $the_posts[] = $p;
+    }
+
+    $pagedResults = new \Paginated($the_posts, 7, isset($_GET['page']) ? $_GET['page'] : 1);
+}
+
 // segun lo que tengamos que mostrar :  lista o entrada
 // uso la libreria blog para sacar los datos adecuados para esta vista
 
@@ -41,7 +54,7 @@ $level = (int) $this['level'] ?: 3;
     <!-- Lista de entradas -->
     <?php if ($action == 'list') : ?>
         <?php if (!empty($posts)) : ?>
-            <?php foreach ($posts as $post) :
+            <?php while ($post = $pagedResults->fetchPagedRow()) :
                 
                     $share_title = $post->title;
                     $share_url = $this['show'] == SITE_URL . '/project/'.$project->id.'/updates/' . $post->id;
@@ -57,7 +70,11 @@ $level = (int) $this['level'] ?: 3;
 					</ul>
 					<div class="comments-num"><a href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>"><?php echo $post->num_comments > 0 ? $post->num_comments . ' ' .Text::get('blog-comments') : Text::get('blog-no_comments'); ?></a></div>
                 </div>
-            <?php endforeach; ?>
+            <?php endwhile; ?>
+            <ul id="pagination">
+                <?php   $pagedResults->setLayout(new DoubleBarLayout());
+                        echo $pagedResults->fetchPagedNavigation(); ?>
+            </ul>
         <?php else : ?>
             <p><?php echo Text::get('blog-no_posts'); ?></p>
         <?php endif; ?>

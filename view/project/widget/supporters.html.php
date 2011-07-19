@@ -41,7 +41,7 @@ $pagedResults = new \Paginated($project->investors, 20, isset($_GET['page']) ? $
         </ul>            
     </div>        
 
-    <ul class="pagination">
+    <ul id="pagination">
         <?php   $pagedResults->setLayout(new DoubleBarLayout());
                 echo $pagedResults->fetchPagedNavigation(); ?>
     </ul>

@@ -631,8 +631,8 @@ namespace Goteo\Controller {
                     'cost'  => 'Nueva tarea',
                     'type'  => 'task',
                     'required' => 1,
-                    'from' => date('Y-m-d'),
-                    'until' => date('Y-m-d')
+                    'from' => null,
+                    'until' => null
                     
                 ));
                 
