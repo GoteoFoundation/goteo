@@ -169,7 +169,7 @@ $(function () {
 
     supports.delegate('li.element.editsupport input.ok', 'click', function (event) {
         var data = {};
-        data[this.name.substring(0, 12) + 'edit'] = '0';
+        data[this.name.substring(0, 11) + 'edit'] = '0';        
         Superform.update(supports, data);
         event.preventDefault();
     });
