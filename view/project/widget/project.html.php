@@ -43,7 +43,7 @@ if (isset($this['investor'])) {
         <?php endif; ?>
 
         <?php if (!empty($project->gallery) && (current($project->gallery) instanceof Image)): ?>
-        <a href="/project/<?php echo $project->id ?>"><img alt="<?php echo $project->name ?>" src="<?php echo htmlspecialchars(current($project->gallery)->getLink(255, 143)) ?>" /></a>
+        <a href="/project/<?php echo $project->id ?>"><img alt="<?php echo $project->name ?>" src="<?php echo htmlspecialchars(current($project->gallery)->getLink(255, 130)) ?>" /></a>
         <?php endif ?>
         <?php if (!empty($categories)): ?>
         <div class="categories">

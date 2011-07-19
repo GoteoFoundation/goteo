@@ -1,6 +1,6 @@
 div.widget.project.active {
-	opacity:0.85;
-	filter:alpha(opacity=85);
+    opacity: 0.85;
+    filter: alpha(opacity=85);
 }
 
 div.widget.project.active > .title a {
@@ -17,11 +17,12 @@ div.widget.project > *  {
 }
 
 div.widget.project div.image {
-    height: 143px;
+    height: 130px;
     text-align: center;
     background-color: #deddde;
-    margin: 12px;
+    margin: 12px 12px 10px;
     padding: 0 !important;
+    position: relative;
 }
 
 div.widget.project div.image img {
@@ -44,11 +45,11 @@ div.widget.project div.image div.tagmark {
 }
 
 div.widget.project div.image div.tagmark.green {
-	background:url('/view/css/project/tagmark_green.png') left no-repeat;
+    background:url('/view/css/project/tagmark_green.png') left no-repeat;
 }
 
 div.widget.project div.image div.tagmark.red {
-	background:url('/view/css/project/tagmark_red.png') left no-repeat;
+    background:url('/view/css/project/tagmark_red.png') left no-repeat;
 }
 
 div.widget.project div.image div.investor {
@@ -92,12 +93,15 @@ div.widget.project div.image div.categories {
     color: #ffffff;
     background-color: #19b5b3;
     font-size: 0.8em;
-    text-transform: uppercase;
-    margin-top: -20px;
+    text-transform: uppercase;    
     padding: 4px 8px;
     opacity: 0.8;
     filter: alpha(opacity=80);
     cursor: default;
+    position: absolute;
+    bottom: 0;
+    right: 0;    
+    left: 0;
 }
 
 div.widget.project div.keepiton {
@@ -122,24 +126,25 @@ div.widget.project div.keepiton {
 }
 
 div.widget.project > .title {    
+    font-size: 14px !important;
     height: 2em;
     padding: 0px 12px !important;
 }
 
 div.widget.project > .title a {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     text-decoration: none;
 }
 
 div.widget.project > .author {
-    padding: 6px 0px 0px 12px;
+    padding: 2px 0px 0px 12px;
 }
 
 div.widget.project > .author,
 div.widget.project > .author a {
     font-weight: bold;
-    font-size: 12px;
+    font-size: 11px;
     text-decoration: none;
     text-transform: none;
 }
@@ -151,15 +156,17 @@ div.widget.project > .author a:hover {
 
 
 div.widget.project div.description {
-    padding: 4px 12px;
-    min-height: 48px;
+    padding: 2px 12px;
+    min-height: 42px;
+    font-size: 11px;
 }
 
 div.widget.project div.meter {
     border-top: 1px solid #d1d3d4;    
-    padding: 4px 0 80px !important;
+    padding: 4px 0 78px !important;
     position: relative;
     margin: 0 12px !important;
+    height: 55px;
 }
 
 div.widget.project div.meter h2,
@@ -169,9 +176,10 @@ div.widget.project div.meter h5,
 div.widget.project div.meter h6,
 div.widget.project div.meter h7,
 div.widget.project div.meter h8 {
-    margin: 0 .2em;
+    margin: 0;
     font-size: 12px;
     font-weight: bold;
+    padding: 2px 0 0;
 }
 
 
@@ -179,7 +187,7 @@ div.widget.project div.meter div.graph {
     background-color: #58595b;
     height: 8px;
     border-right: 40px solid #58595b;
-    margin: 55px 0 80px;    
+    margin: 40px 5px 70px;    
     position: relative;   
 }
 
@@ -260,12 +268,12 @@ div.widget.project div.meter dl dt.minimum {
 
 div.widget.project div.meter dl dd.optimum,
 div.widget.project div.meter dl dd.minimum {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: normal;
 }
 
 div.widget.project div.meter dl dt.optimum {
-    margin-top: 10px;
+    margin-top: 18px;
 }
 
 div.widget.project div.meter dl .optimum {
@@ -288,6 +296,7 @@ div.widget.project div.meter dl .minimum > * {
     width: 60px;
     position: absolute;
     right: 0;
+    top: 21px;
     width: 60px;
     margin-right: -30px;
 }
@@ -299,7 +308,7 @@ div.widget.project div.meter dl dt.minimum {
 
 div.widget.project div.meter dl dd.minimum > * {
     position: absolute;
-    top: -46px;
+    top: -25px;
 }
 
 div.widget.project div.meter dl .reached,
@@ -325,19 +334,19 @@ div.widget.project div.meter dl .days {
     position: absolute;
     border-top: 1px solid #d1d3d4;
     top: 55px;
-    padding: .8em .2em;    
+    padding: .8em 0;    
     font-size: 12px;
     line-height: 1.5em;
     font-weight: bold;
 }
 
 div.widget.project div.meter dl dt.days {    
-    width: 30%;
+    width: 90px;
     text-transform: uppercase;
 }
 
 div.widget.project div.meter dl dd.days {
-    left: 30%;
+    left: 90px;
     right: -40px;
     color: #eb2227;
     font-weight: bold;
@@ -345,9 +354,10 @@ div.widget.project div.meter dl dd.days {
 
 div.widget.project div.rewards {
     border-top: 1px solid #d1d3d4;    
-    padding: 0px !important;
+    padding: 5px 0 0 !important;
     position: relative;
-    margin: 12px 12px 0 !important;
+    margin: 10px 12px 0 !important;
+    height: 20px;
 }
 
 div.widget.project div.rewards h2,
@@ -358,15 +368,15 @@ div.widget.project div.rewards h6,
 div.widget.project div.rewards h7,
 div.widget.project div.rewards h8 {
     margin: 0;
-    height: 32px;
-    line-height: 32px;
-    display: inline-block;
+    line-height: 22px;
+    float: left;
+    width: 90px;
+    font-size: 12px;
 }
 
 div.widget.project div.rewards ul {
     margin: 0;
     padding: 0;
-    height: 32px;
     list-style: none;
 }
 
@@ -379,13 +389,13 @@ div.widget.project div.rewards ul li {
     text-indent: 2000px;
     overflow: hidden;
     background-image: url('/view/css/icon/s/blank.png');
-	opacity:0.60;
-	filter:alpha(opacity=60);
+    opacity:0.60;
+    filter:alpha(opacity=60);
 }
 
 div.widget.project div.rewards ul li.active {
-	opacity: 1 !important;
-	filter:alpha(opacity=100) !important;
+    opacity: 1 !important;
+    filter:alpha(opacity=100) !important;
 }
 
 div.widget.project div.rewards ul li a {
@@ -429,7 +439,12 @@ div.widget.project div.rewards ul li.other {
 }
 
 div.widget.project div.buttons {
-    clear: both;
+    padding-top: 10px !important;
+}
+
+div.widget.project div.buttons a.button {
+    margin: 0;
+    pading-top: 0 !important;
 }
 
 div.widget.project div.buttons .button + .button {
