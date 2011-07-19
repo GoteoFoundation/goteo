@@ -116,7 +116,6 @@ div.widget.project-support dl dd.supporters {
 
 /* Animated/static meter */
 div.widget.project-support > div.meter {
-    position: relative;
     overflow: visible;
 }
 
@@ -207,17 +206,17 @@ div.widget.project-support div.tagmark {
 }
 
 div.widget.project-support div.tagmark.green {
-	background:url('/view/css/project/long_tagmark_green.png') left no-repeat;
+    background:url('/view/css/project/long_tagmark_green.png') left no-repeat;
 }
 
 div.widget.project-support div.tagmark.red {
-	background:url('/view/css/project/long_tagmark_red.png') left no-repeat;
+    background:url('/view/css/project/long_tagmark_red.png') left no-repeat;
 }
 
 div.widget.project-support div.keepiton {
     position: absolute;
     z-index: 9999;
-    display: inline-block;
+    display: block;
     text-align: center;
     font-size: 0.8em;
     font-weight: bold;
@@ -230,7 +229,7 @@ div.widget.project-support div.keepiton {
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     padding: 3px;
-    right: 0px;
-    bottom: -57px;
+    right: 20px;
+    bottom: 20px;
     cursor: default;
 }
