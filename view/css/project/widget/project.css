@@ -341,12 +341,12 @@ div.widget.project div.meter dl .days {
 }
 
 div.widget.project div.meter dl dt.days {    
-    width: 90px;
+    width: 85px;
     text-transform: uppercase;
 }
 
 div.widget.project div.meter dl dd.days {
-    left: 90px;
+    left: 85px;
     right: -40px;
     color: #eb2227;
     font-weight: bold;
@@ -357,7 +357,8 @@ div.widget.project div.rewards {
     padding: 5px 0 0 !important;
     position: relative;
     margin: 10px 12px 0 !important;
-    height: 20px;
+    height: 21px;
+    overflow: hidden;
 }
 
 div.widget.project div.rewards h2,
@@ -370,7 +371,7 @@ div.widget.project div.rewards h8 {
     margin: 0;
     line-height: 22px;
     float: left;
-    width: 90px;
+    width: 85px;
     font-size: 12px;
 }
 
@@ -382,7 +383,7 @@ div.widget.project div.rewards ul {
 
 div.widget.project div.rewards ul li {
     display: inline-block;
-    margin-right: 5px;
+    margin-right: 3px;
     width: 21px;
     height: 21px;
     line-height: 2000px;
