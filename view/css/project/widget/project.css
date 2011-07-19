@@ -120,8 +120,8 @@ div.widget.project div.keepiton {
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     padding: 3px;
-    right: 0px;
-    bottom: -9px;
+    bottom: 25px;
+    left: 0;
     cursor: default;
 }
 
