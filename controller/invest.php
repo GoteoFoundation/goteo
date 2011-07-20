@@ -103,6 +103,10 @@ namespace Goteo\Controller {
                             Paypal::preapproval($invest, $errors);
                             die;
                             break;
+                        case 'cash':
+                            // En betatest aceptamos cash para pruebas
+                            throw new Redirection("/project/$project/invest/?confirm=ok");
+                            break;
                     }
 
                     // si seguimos aqui es que algo ha fallado
@@ -110,7 +114,7 @@ namespace Goteo\Controller {
                 }
 			}
 
-            throw new Redirection("/project/$project/invest", Redirection::TEMPORARY);
+            throw new Redirection("/project/$project/invest");
         }
 
 
