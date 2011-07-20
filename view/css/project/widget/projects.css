@@ -29,6 +29,7 @@ div.widget.projects div.project div.balloon > blockquote {
     overflow: hidden;
     padding: 0;
     margin: 0;
+    font-size: 11px;
 }
 
 div.widget.projects div.project div.balloon > h4 {
