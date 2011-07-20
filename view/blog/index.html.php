@@ -28,11 +28,7 @@ include 'view/header.html.php';
 	<div id="sub-header-secondary">
 		<div class="clearfix">
 			<h2>GOTEO<span class="red">BLOG</span></h2>
-			<ul class="share-goteo">
-				<li class="twitter"><a href="#"><?php echo Text::get('regular-share-twitter'); ?></a></li>
-				<li class="facebook"><a href="#"><?php echo Text::get('regular-share-facebook'); ?></a></li>
-				<li class="rss"><a href="#"><?php echo Text::get('regular-share-rss'); ?></a></li>
-			</ul>
+            <?php echo new View('view/header/share.html.php') ?>
 		</div>
 	</div>
 	<div id="main" class="threecols">

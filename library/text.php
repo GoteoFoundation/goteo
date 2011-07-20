@@ -259,7 +259,8 @@ namespace Goteo\Library {
                 'invest'  => 'Pagina de aportar a un proyecto',
                 'types' => 'Tooltips para tipos de necesidades',
                 'banners' => 'Banners y cabeceras',
-                'footer' => 'Footer'
+                'footer' => 'Footer',
+                'social' => 'Cuentas de redes sociales'
             );
 
             \asort($groups);

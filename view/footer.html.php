@@ -54,10 +54,10 @@ jQuery(document).ready(function($) {
             <div class="block social">
                 <h8 class="title"><?php echo Text::get('footer-header-social') ?></h8>
                 <ul>
-                    <li class="twitter"><a href="http://twitter.com" target="_blank"><?php echo Text::get('regular-twitter') ?></a></li>
-                    <li class="facebook"><a href="http://facebook.com" target="_blank"><?php echo Text::get('regular-facebook') ?></a></li>
-                    <li class="identica"><a href="http://identi.ca"><?php echo Text::get('regular-identica') ?></a></li>
-                    <li class="gplus"><a href="http://plus.google.com"><?php echo Text::get('regular-google') ?></a></li>
+                    <li class="twitter"><a href="<?php echo Text::get('social-account-twitter') ?>" target="_blank"><?php echo Text::get('regular-twitter') ?></a></li>
+                    <li class="facebook"><a href="<?php echo Text::get('social-account-facebook') ?>" target="_blank"><?php echo Text::get('regular-facebook') ?></a></li>
+                    <li class="identica"><a href="<?php echo Text::get('social-account-identica') ?>"><?php echo Text::get('regular-identica') ?></a></li>
+                    <li class="gplus"><a href="<?php echo Text::get('social-account-google') ?>"><?php echo Text::get('regular-google') ?></a></li>
                     <li class="rss"><a href="/rss">RSS</a></li>
                     
                 </ul>
