@@ -24,25 +24,25 @@ foreach (License::getAll() as $l) {
 
 
 ?>
-<div class="widget project-invest">
+<div class="widget project-invest project-invest-amount">
     <h<?php echo $level ?> class="title"><?php echo Text::get('invest-amount') ?></h<?php echo $level ?>>
     
     <form method="post" action="/invest/<?php echo $project->id; ?>">
 
-    <label><input type="text" id="amount" name="amount" value="10" /><?php echo Text::get('invest-amount-tooltip') ?></label>
+    <label><input type="text" id="amount" name="amount" class="amount" value="10" /><?php echo Text::get('invest-amount-tooltip') ?></label>
 </div>
 
     
-<div class="widget project-invest">
+<div class="widget project-invest project-invest-individual_rewards">
     <h<?php echo $level ?> class="beak"><?php echo Text::get('invest-individual-header') ?></h<?php echo $level ?>>
     
     <div class="individual">
         <h<?php echo $level+1 ?> class="title"><?php echo Text::get('project-rewards-individual_reward-title'); ?></h<?php echo $level+1 ?>>
         <ul>
-            <li><label class="resign"><input type="checkbox" name="resign" value="1" /><?php echo Text::get('invest-resign') ?></label></li>
+            <li><label class="resign"><input class="resign" type="checkbox" name="resign" value="1" /><?php echo Text::get('invest-resign') ?></label></li>
         <?php foreach ($project->individual_rewards as $individual) : ?>
         <li class="<?php echo $individual->icon ?>">
-            <label class="amount"><input type="checkbox"<?php if ($individual->none) echo ' disabled="disabled"';?> name="reward_<?php echo $individual->id; ?>" value="<?php echo $individual->amount; ?>" /><?php echo $individual->amount; ?> &euro;</label>
+            <label class="amount"><input type="checkbox"<?php if ($individual->none) echo ' disabled="disabled"';?> name="reward_<?php echo $individual->id; ?>" value="<?php echo $individual->amount; ?>" class="individual_reward" /><?php echo $individual->amount; ?> &euro;</label>
             <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>
             <p><?php echo htmlspecialchars($individual->description)?></p>
             <?php if ($individual->none) : ?><p><?php echo Text::get('invest-reward-cestfini') ?></p><?php endif; ?>
@@ -127,3 +127,80 @@ foreach (License::getAll() as $l) {
     </div>
 </div>
 
+<script type="text/javascript">
+    
+    $(function () {
+        
+        var input = $('div.widget.project-invest-amount input.amount'),
+            lastVal = {},
+            updating = null;
+            
+        var update = function () {
+            
+            try {
+            
+                var val = input.val();
+
+                if (val !== lastVal) {
+                    clearTimeout(updating);
+                    lastVal = val;      
+                    updating = setTimeout(function () {
+                        var euros = parseFloat(val);
+                        if (isNaN(euros)) {
+                            euros = 0;
+                        }
+                        
+                        var resign = $('div.widget.project-invest-individual_rewards input.resign:checked').length > 0;
+                        
+                        $('div.widget.project-invest-individual_rewards input.individual_reward').each(function (i, cb) {
+                           var $cb = $(cb);
+                           var rval = parseFloat($cb.val());
+                           if (!resign && (rval > 0 && rval <= euros)) {
+                               $cb.removeAttr('disabled');
+                           } else {
+                               $cb.attr('disabled', 'disabled');
+                           }
+                        });
+                    });                  
+                } 
+            } catch (e) {
+                clearTimeout(updating);
+            }
+            
+        };    
+        
+        $('div.widget.project-invest-individual_rewards input.resign').change(function () {
+            if (this.checked) {
+                $('div.widget.project-invest-individual_rewards input.individual_reward').attr('disabled', 'disabled');
+            } else {
+                // Force update
+                lastVal = {};
+                update();
+            }
+        });
+
+        input.keydown(function () {        
+            clearTimeout(updating);
+            updating = setTimeout(
+                function () {
+                    update();
+                }, 
+                150);                
+        });
+
+        input.bind('paste', function () {             
+            update();
+        });
+
+        input.focus(function () {
+            updating = null;
+            input.one('blur', function () {               
+                updating = update();
+            });
+        });
+        
+        update();
+        
+    });    
+    
+</script>
