@@ -128,3 +128,12 @@ body.project-edit div.superform {
     border-width: 3px 0;     
 }
 
+
+body.project-edit div.superform > .elements > ol > li#errors {
+    border: none;
+    position: absolute;
+    top: 100%;
+    margin-top: 54px;
+    padding: 10px;
+}
+

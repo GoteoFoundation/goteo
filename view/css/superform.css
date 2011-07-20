@@ -56,6 +56,7 @@ body.js div.superform > div.hint {
 div.superform > div.elements {
     border-right: 1px dashed #b7c2c5;
     margin-bottom: 46px;
+    position: relative;
 }
 
 div.superform > div.hint h4,
