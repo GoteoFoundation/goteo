@@ -102,3 +102,11 @@ div.widget.project-invest div.individual ul li label.amount {
     color: #ee4245;
     font-weight: bold;
 }
+
+div.widget.project-invest div.individual ul li.disabled{
+    background-color: #e8e7e7;
+}
+
+div.widget.project-invest div.individual ul li.disabled label.amount {
+    color: #58595b;
+}

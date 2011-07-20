@@ -157,8 +157,10 @@ foreach (License::getAll() as $l) {
                            var rval = parseFloat($cb.val());
                            if (!resign && (rval > 0 && rval <= euros)) {
                                $cb.removeAttr('disabled');
+                               $cb.closest('li').removeClass('disabled');
                            } else {
                                $cb.attr('disabled', 'disabled');
+                               $cb.closest('li').addClass('disabled');
                            }
                         });
                     });                  
@@ -170,13 +172,9 @@ foreach (License::getAll() as $l) {
         };    
         
         $('div.widget.project-invest-individual_rewards input.resign').change(function () {
-            if (this.checked) {
-                $('div.widget.project-invest-individual_rewards input.individual_reward').attr('disabled', 'disabled');
-            } else {
-                // Force update
-                lastVal = {};
-                update();
-            }
+            // Force update
+            lastVal = {};
+            update();
         });
 
         input.keydown(function () {        
