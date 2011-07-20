@@ -11,7 +11,7 @@ $level = (int) $this['level'] ?: 4;
 ?>
 <div class="supporter">
     
-    <span class="avatar"><a href="/user/<?php echo htmlspecialchars($user->user) ?>"><img src="/image/<?php echo $user->avatar->id; ?>/43/43" /></a></span>
+    <span class="avatar"><img src="/image/<?php echo $user->avatar->id; ?>/43/43" /></span>
     <h<?php echo $level ?>><a href="/user/<?php echo htmlspecialchars($user->user) ?>"><?php echo $user->name; ?></a></h<?php echo $level ?>>
     
     <dl>

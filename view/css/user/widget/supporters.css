@@ -7,7 +7,7 @@ div.widget.user-supporters .supporters ul {
 div.widget.user-supporters .supporters > ul > li {
     background-color:  white;
     padding: 10px 10px 10px 60px;    
-    height: 4.5em;
+    height: 4em;
     position: relative;
 }
 
@@ -35,13 +35,25 @@ div.widget.user-supporters .supporters ul li h4,
 div.widget.user-supporters .supporters ul li h5,
 div.widget.user-supporters .supporters ul li h6 {    
     margin: 0;
+    height: 1.1em;
 }
 
 
-div.widget.user-supporters .supporters ul li a {
+div.widget.user-supporters .supporters ul li h3 a,
+div.widget.user-supporters .supporters ul li h4 a,
+div.widget.user-supporters .supporters ul li h5 a,
+div.widget.user-supporters .supporters ul li h6 a {
     font-size: 11px !important;
     text-transform: none !important;
     text-decoration: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 10px 10px 10px 60px;
+    z-index: 9999;
+    display: block;
 }
 
 div.widget.user-supporters .supporters ul li a:hover {
@@ -97,7 +109,7 @@ div.widget.user-supporters .supporters ul li dl dt.date {
 div.widget.user-supporters .supporters ul li dl dd.date {
     position: absolute;
     right: 8px;
-    bottom: 21px;
+    bottom: 8px;
     color: #a6a8ab;
     font-size: 11px;
 }
