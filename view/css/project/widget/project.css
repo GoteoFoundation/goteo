@@ -375,6 +375,10 @@ div.widget.project div.rewards h8 {
     font-size: 12px;
 }
 
+div.widget.project div.rewards h4 {
+    width: 62px !important;
+}
+
 div.widget.project div.rewards ul {
     margin: 0;
     padding: 0;
