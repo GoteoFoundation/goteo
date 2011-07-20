@@ -42,7 +42,7 @@ foreach (License::getAll() as $l) {
             <li><label class="resign"><input type="checkbox" name="resign" value="1" /><?php echo Text::get('invest-resign') ?></label></li>
         <?php foreach ($project->individual_rewards as $individual) : ?>
         <li class="<?php echo $individual->icon ?>">
-            <label class="amount"><input type="checkbox"<?php if ($individual->none) echo ' disabled="disabled"';?> name="reward_<?php echo $individual->id; ?>" value="<?php echo $individual->id; ?>" /><?php echo $individual->amount; ?> &euro;</label>
+            <label class="amount"><input type="checkbox"<?php if ($individual->none) echo ' disabled="disabled"';?> name="reward_<?php echo $individual->id; ?>" value="<?php echo $individual->amount; ?>" /><?php echo $individual->amount; ?> &euro;</label>
             <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>
             <p><?php echo htmlspecialchars($individual->description)?></p>
             <?php if ($individual->none) : ?><p><?php echo Text::get('invest-reward-cestfini') ?></p><?php endif; ?>

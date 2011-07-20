@@ -52,9 +52,12 @@ namespace Goteo\Controller {
                 } else {
                     foreach ($_POST as $key=>$value) {
                         if (substr($key, 0, strlen('reward_')) == 'reward_') {
+
+                            $id = \str_replace('reward_', '', $key);
+
                             //no darle las recompensas que no entren en el rango del aporte por mucho que vengan marcadas
-                            if ($projectData->individual_rewards[$value]->amount <= $_POST['amount']) {
-                                $rewards[] = $value;
+                            if ($projectData->individual_rewards[$id]->amount <= $_POST['amount']) {
+                                $rewards[] = $id;
                             }
                         }
                     }
