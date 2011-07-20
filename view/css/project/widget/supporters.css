@@ -226,7 +226,8 @@ div.widget.project-supporters .supporters ul li dl dd.worthcracy ul li > strong 
 }
 
 div.widget.project-supporters ul#pagination {
-	margin: 10px 0px 0px 0px !important;
+    margin: 10px 0px 0px 0px !important;
+    clear: both;
 }
 
 /* Widget lateral de cofinanciadores: div.widget.project-investors */
