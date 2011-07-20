@@ -12,7 +12,7 @@ $personal = $this['personal'];
 $level = (int) $this['level'] ?: 3;
 
 $methods = Invest::methods();
-unset($methods['cash']);
+//unset($methods['cash']);  <-- solo en beta aceptamos aportes manuales
 
 $worthcracy = Worth::getAll();
 
