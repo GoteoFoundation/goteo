@@ -22,7 +22,8 @@ namespace Goteo\Model {
                         id,
                         name,
                         description,
-                        `group`
+                        `group`,
+                        `order`
                     FROM    icon
                     WHERE id = :id
                     ", array(':id' => $id));
@@ -122,7 +123,8 @@ namespace Goteo\Model {
                 'id',
                 'name',
                 'description',
-                'group'
+                'group',
+                'order'
                 );
 
             $set = '';

@@ -50,6 +50,7 @@ include 'view/prologue.html.php';
 
                     <input type="hidden" name="action" value="<?php echo $this['action']; ?>" />
                     <input type="hidden" name="id" value="<?php echo $this['icon']->id; ?>" />
+                    <input type="hidden" name="order" value="<?php echo $this['icon']->order; ?>" />
 
                     <label for="icon-group">Agrupación:</label><br />
                     <select id="icon-group" name="group">

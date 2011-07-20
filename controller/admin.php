@@ -807,6 +807,7 @@ namespace Goteo\Controller {
                     'id' => $_POST['id'],
                     'name' => $_POST['name'],
                     'description' => $_POST['description'],
+                    'order' => $_POST['order'],
                     'group' => empty($_POST['group']) ? null : $_POST['group']
                 ));
 
