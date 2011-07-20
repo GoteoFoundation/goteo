@@ -18,7 +18,7 @@ if (isset($this['investor'])) {
 }
 ?>
 
-<div class="widget project activable">
+<div class="widget project activable<?php if (isset($this['balloon'])) echo ' balloon' ?>">
     
     <?php if (isset($this['balloon'])): ?>
     <div class="balloon"><?php echo $this['balloon'] ?></div>
@@ -100,6 +100,4 @@ if (isset($this['investor'])) {
         <a class="button view" href="/project/<?php echo $project->id ?>"><?php echo Text::get('regular-view_project'); ?></a>
     </div>
     <?php endif; ?>
-
-
 </div>

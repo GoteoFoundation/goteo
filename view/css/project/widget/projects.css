@@ -21,6 +21,7 @@ div.widget.projects div.project a.button{
 div.widget.projects div.project div.balloon {
     background: #cae4e6 url('../../balloonbeak.png') no-repeat bottom left;
     border-bottom: 15px solid white;
+    height: 76px;
 }
 
 div.widget.projects div.project div.balloon > blockquote {  

@@ -1,6 +1,6 @@
 div.widget.project.active {
     opacity: 0.85;
-    filter: alpha(opacity=85);
+    filter: alpha(opacity=85);    
 }
 
 div.widget.project.active > .title a {
@@ -9,6 +9,7 @@ div.widget.project.active > .title a {
 
 div.widget.project {
     overflow: visible;
+    position: relative;
 }
 
 div.widget.project > *  {
@@ -32,7 +33,7 @@ div.widget.project div.image img {
 
 div.widget.project div.image div.tagmark {
     position: absolute;
-    z-index: 9999;
+    z-index: 899;
     text-align: left;
     color: #ffffff;
     font-size: 1.3em;
@@ -54,7 +55,7 @@ div.widget.project div.image div.tagmark.red {
 
 div.widget.project div.image div.investor {
     position: absolute;
-    z-index: 9999;
+    z-index: 899;
     background-color: #f3f3f3;
     margin-top: 81px;
     margin-left: 3px;
@@ -106,7 +107,7 @@ div.widget.project div.image div.categories {
 
 div.widget.project div.keepiton {
     position: absolute;
-    z-index: 9999;
+    z-index: 899;
     display: inline-block;
     text-align: center;
     font-size: 0.8em;
@@ -135,6 +136,17 @@ div.widget.project > .title a {
     font-size: 14px;
     font-weight: bold;
     text-decoration: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    padding: 152px 12px 12px;
+    z-index: 900;
+}
+
+div.widget.project.balloon > .title a {
+    padding-top: 267px;
 }
 
 div.widget.project > .author {
@@ -355,7 +367,7 @@ div.widget.project div.meter dl dd.days {
 div.widget.project div.rewards {
     border-top: 1px solid #d1d3d4;    
     padding: 5px 0 0 !important;
-    position: relative;
+    position: relative;    
     margin: 10px 12px 0 !important;
     height: 21px;
     overflow: hidden;
@@ -383,6 +395,8 @@ div.widget.project div.rewards ul {
     margin: 0;
     padding: 0;
     list-style: none;
+    position: relative;
+    z-index: 910;
 }
 
 div.widget.project div.rewards ul li {
@@ -409,6 +423,8 @@ div.widget.project div.rewards ul li a {
     height: 21px;
     line-height: 2000px;
     text-indent: 2000px;
+    position: relative;
+    z-index: 910;
 }
 
 div.widget.project div.rewards ul li.file  {
@@ -450,6 +466,8 @@ div.widget.project div.buttons {
 div.widget.project div.buttons a.button {
     margin: 0;
     pading-top: 0 !important;
+    position: relative;
+    z-index: 900;
 }
 
 div.widget.project div.buttons .button + .button {
