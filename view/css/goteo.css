@@ -96,3 +96,15 @@ body.user-profile div#sub-header h2 em {
     font-style: normal;
 }
 
+/* read more */
+div.read_more {
+    text-align: right;
+}
+div.read_more a {
+    text-decoration: none;
+    text-transform: uppercase;
+}
+div.read_more a:hover {
+    color: #20B3B2;
+}
+/** end readmore **/

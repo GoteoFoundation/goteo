@@ -86,13 +86,7 @@ body.home div#main div.learn div.post {
 }
 
 body.home div#main div.learn div.post div.read_more{
-    text-align: right;
     margin: 30px;
-}
-
-body.home div#main div.learn div.post div.read_more a {
-    text-decoration: none;
-    text-transform: uppercase;
 }
 
 body.home div#main div.learn div.embed,

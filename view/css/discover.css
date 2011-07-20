@@ -86,13 +86,13 @@ div.searcher{
 }
 /* // Buscador */
 div.discover-group div.widget.project {
-    margin: 0px;
+    margin: 0px 0px 0px 25px;
 }
-
+/*
 div.discover-group div.widget.project + div.widget.project {
     margin-left: 30px;
 }
-
+*/
 div.discover-group {
     display: none;
 }
@@ -145,6 +145,10 @@ div.navi-bar a.all{
     position:relative;
     top: -20px;
     right: -775px;
+}
+
+div.navi-bar a.all:hover{
+    color: #20B3B2;
 }
 
 a.discover-arrow {
