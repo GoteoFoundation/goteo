@@ -22,6 +22,10 @@ body, td, th, a, a:link, a:visited, a:active, a:hover, input, textarea, button {
     color: #58595b;
 }
 
+img {
+    border: none;
+}
+
 input, textarea, button {
     font-size: 14px;
 }

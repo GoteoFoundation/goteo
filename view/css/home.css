@@ -11,7 +11,7 @@ body.home div#main div.widget.projects .title {
 
 body.home div#main div.learn ul {
     position: absolute;
-    bottom: 20px;
+    bottom: 22px;
     left: 20px;
     list-style: none;
     margin: 0;    
@@ -90,7 +90,9 @@ body.home div#main div.learn div.post {
 }
 
 body.home div#main div.learn div.post div.read_more{
-    margin: 30px;
+    bottom: -10px;
+    right: 20px;
+    position: absolute;
 }
 
 body.home div#main div.learn div.embed,

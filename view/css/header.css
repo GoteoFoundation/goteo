@@ -466,7 +466,7 @@ div#header div#menu > ul > li.home > a {
     text-indent: 2000px;
     display: block;
     line-height: 2000px;
-    width: 106px;
+    width: 104px;
     height: 36px;  
     position: absolute;
     left: 50%;
@@ -477,7 +477,7 @@ div#header div#menu > ul > li.home > a {
 }
 
 div#header div#menu > ul > li.home > a:hover {
-    background: url('header/goteo.png') no-repeat 102% center;
+    background: url('header/goteo.png') no-repeat right center;
 }
 
 div#header div#menu > ul > li.explore,
