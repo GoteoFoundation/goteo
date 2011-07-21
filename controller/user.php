@@ -16,8 +16,8 @@ namespace Goteo\Controller {
 	     * Atajo al perfil de usuario.
 	     * @param string $id   Nombre de usuario
 	     */
-		public function index ($id) {
-		    throw new Redirection('/user/profile/' .  $id, Redirection::PERMANENT);
+		public function index ($id, $show = '') {
+		    throw new Redirection('/user/profile/' .  $id . '/' . $show, Redirection::PERMANENT);
 		}
 
         /**
@@ -204,7 +204,12 @@ namespace Goteo\Controller {
          *
          * @param string $id    Nombre de usuario
          */
-        public function profile ($id) {
+        public function profile ($id, $show = 'profile') {
+
+            if (!in_array($show, array('profile', 'investors', 'sharemates'))) {
+                $show = 'profile';
+            }
+
             $user = Model\User::get($id);
 
             $viewData = array();
@@ -266,7 +271,7 @@ namespace Goteo\Controller {
                 $viewData['lists']['my_projects'] = Listing::get($projects, 2);
             }
 
-            return new View ('view/user/profile.html.php', $viewData);
+            return new View ('view/user/'.$show.'.html.php', $viewData);
         }
 
         /**
