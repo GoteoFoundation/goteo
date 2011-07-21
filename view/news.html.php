@@ -50,7 +50,7 @@ include 'view/header.html.php';
     </div>
     <div id="news-sidebar">
         <div class="widget news-sidebar-module">
-            <h3 class="title"><?php echo $title; ?></h3>
+            <h3 class="supertitle"><?php echo $title; ?></h3>
             <ul id="news-side-posts">
                 <?php foreach ($list as $item) : ?>
                 <li><?php echo $item; ?></li>

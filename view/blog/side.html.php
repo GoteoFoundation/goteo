@@ -45,7 +45,7 @@ switch ($this['type']) {
 
 if (!empty($list)) : ?>
 <div class="widget blog-sidebar-module">
-    <h3 class="title"><?php echo $title; ?></h3>
+    <h3 class="supertitle"><?php echo $title; ?></h3>
     <ul id="blog-side-<?php echo $this['type']; ?>">
         <?php foreach ($list as $item) : ?>
         <li><?php echo $item; ?></li>

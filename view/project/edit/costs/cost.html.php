@@ -11,12 +11,13 @@ $cost = $this['data']['cost'] ?>
     
     <div class="description"><?php echo htmlspecialchars($cost->description) ?></div>
     
-    <div class="amount"></div>
-    
-    <div class="from"></div>
-    <div class="until"></div>
-    
-    <div class="required"></div>
+    <span class="required"><?php echo 'Este coste es ';
+    if ($cost->required) {
+        echo Text::get('costs-field-required_cost-yes');
+    } else {
+        echo Text::get('costs-field-required_cost-no');
+    }
+    ?></span>
     
     <input type="submit" class="edit" name="cost-<?php echo $cost->id ?>-edit" value="<?php echo Text::get('form-edit-button') ?>" />
     <input type="submit" class="remove weak" name="cost-<?php echo $cost->id ?>-remove" value="<?php echo Text::get('form-remove-button') ?>" />

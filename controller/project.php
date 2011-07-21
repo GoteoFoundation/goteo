@@ -311,12 +311,12 @@ namespace Goteo\Controller {
 
         public function create () {
 
-            if (strpos($_SERVER['HTTP_REFERER'], 'howto') === false) {
-                throw new Redirection("/about/howto");
-            }
-
             if (empty($_SESSION['user'])) {
                 throw new Redirection("/user/login");
+            }
+
+            if ($_POST['action'] != 'continue' || $_POST['confirm'] != 'true') {
+                throw new Redirection("/about/howto");
             }
 
             $project = new Model\Project;

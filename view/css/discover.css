@@ -4,7 +4,7 @@ body.discover div#main div.widget {
 }
 
 /* Buscador */
-div.searcher{
+div.searcher form {
 	padding-left:75px !important;
 }
 

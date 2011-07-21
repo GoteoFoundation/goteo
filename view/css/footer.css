@@ -61,15 +61,17 @@ div#footer div.block{
 }
 
 
+/*
 div#footer div#social{
 	width:125px;
 }
-div#footer div#sponsor{
+div#footer div#sponsors{
 	width:225px;	
 }
 div#footer div#services{
 	width:115px;
 }
+*/
 
 
 /*hijos de div.block*/
@@ -172,6 +174,11 @@ div#footer div.sponsors{
 	width:188px !important; /*+15 left padding = w 125*/
 }
 
+div#footer div.sponsors > .sponsor {
+    height: 100px;
+    margin: 20px 10px 0;
+}
+
 /*particular de servicios*/
 div#footer div.services{
 
@@ -191,7 +198,7 @@ div#footer div.sponsors {
 
 div#footer div.services {
     position: relative;
-    width: 85px;
+    width: 96px;
     min-width: 0 !important;
 }
 
@@ -244,7 +251,7 @@ div#sub-footer ul {
 
 div#sub-footer a {
     color: #e9e3dc;
-    font-size: 12px;
+    font-size: 11px;
 }
 
 div#sub-footer a:hover {
@@ -270,7 +277,7 @@ div#sub-footer div.platoniq span.text{
 */
 div#sub-footer div.platoniq a {
     display: inline-block;
-    width: 72px;
+    width: 60px;
     height: 17px;
     background: url('platoniq.png') no-repeat;
     text-indent: 2000px;
@@ -291,6 +298,8 @@ div#sub-footer div.platoniq a:hover{
 	list-style:none;
 	padding:0px;
     display: block;
+    position: absolute;
+    top: 110px;
 }
 
 .slidersponsors-ctrl li {
@@ -323,7 +332,7 @@ div#sub-footer div.platoniq a:hover{
     color: #e3262a;
 }
 
-.slidersponsors-ctrl li.navi.active a {
+.slidersponsors-ctrl li.navi a.active {
     background-color: #808184 !important;
     color: #808184 !important;
 }

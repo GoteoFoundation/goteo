@@ -1,9 +1,7 @@
 @import url("project.css");
 
 div.widget.projects > .title {
-    margin-left: 3.33%;
     margin-bottom: 20px;
-
 }
 
 div.widget.projects div.project {

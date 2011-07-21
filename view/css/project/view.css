@@ -181,3 +181,7 @@ body.project-show div#main > div.center > div.widget {
     margin-right: 20px;
     clear: left;
 }
+
+body.project-show div#main > div.side > div.widget .title {
+    background: none !important;
+}

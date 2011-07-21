@@ -39,6 +39,12 @@ body.project-edit div#main.costs div.superform li.element.cost div.description {
     margin: .5em 0;
 }
 
+body.project-edit div#main.costs div.superform li.element.cost span.required {
+    float: left;
+    width: 70%;
+    margin: .5em 0;
+}
+
 /*
 body.project-edit div#main.costs div.superform li.element.cost input.edit,
 body.project-edit div#main.costs div.superform li.element.cost input.remove {

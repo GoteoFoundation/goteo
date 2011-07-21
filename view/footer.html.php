@@ -13,6 +13,63 @@ $sponsors   = Sponsor::getList();
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 	$('.scroll-pane').jScrollPane({showArrows: true});
+
+        $("#footer-sponsor-1").show();
+        $("#navi-footer-sponsor-1").addClass('active');
+
+        $(".footer-navi-arrow").click(function (event) {
+            alert('click');
+            event.preventDefault();
+
+            /* Quitar todos los active, ocultar todos los elementos */
+            $(".navi-footer-sponsor").removeClass('active');
+            $(".sponsor").hide();
+            /* Poner acctive a este, mostrar este */
+            $("#navi-footer-sponsor-"+this.rel).addClass('active');
+            $("#footer-sponsor-"+this.rel).show();
+
+            var prev;
+            var next;
+
+            if (this.id == 'footer-navi-next') {
+                prev = parseFloat($("#footer-navi-prev").attr('rel')) - 1;
+                next = parseFloat($("#footer-navi-next").attr('rel')) + 1;
+            } else {
+                prev = parseFloat(this.rel) - 1;
+                next = parseFloat(this.rel);
+            }
+
+            if (prev < 1) {
+                prev = <?php echo count($sponsors) ?>;
+            }
+
+            if (next > <?php echo count($sponsors) ?>) {
+                next = 1;
+            }
+
+            if (next < 1) {
+                next = <?php echo count($sponsors) ?>;
+            }
+
+            if (prev > <?php echo count($sponsors) ?>) {
+                prev = 1;
+            }
+
+            $("#footer-navi-prev").attr('rel', prev);
+            $("#footer-navi-next").attr('rel', next);
+        });
+
+        $(".navi-footer-sponsor").click(function (event) {
+            event.preventDefault();
+
+            /* Quitar todos los active, ocultar todos los elementos */
+            $(".navi-footer-sponsor").removeClass('active');
+            $(".sponsor").hide();
+            /* Poner acctive a este, mostrar este*/
+            $(this).addClass('active');
+            $("#"+this.rel).show();
+        });
+
 });
 </script>
 
@@ -66,17 +123,17 @@ jQuery(document).ready(function($) {
            <div class="block sponsors">
                 <h8 class="title"><?php echo Text::get('footer-header-sponsors') ?></h8>
                 <?php $i = 1; foreach ($sponsors as $sponsor) : ?>
-                <div class="sponsor" id ="footer-sponsor-<?php echo $i ?>"<?php if ($i > 1) echo ' style="display:none;"'?>>
-                	<a href="<?php echo $sponsor->url ?>" title="<?php echo $sponsor->name ?>" target="_blank"><img src="/image/<?php echo $sponsor->image ?>/150/50" alt="<?php echo $sponsor->name ?>" /></a>
+                <div class="sponsor" id ="footer-sponsor-<?php echo $i ?>">
+                	<a href="<?php echo $sponsor->url ?>" title="<?php echo $sponsor->name ?>" target="_blank"><img src="/image/<?php echo $sponsor->image ?>/150/85" alt="<?php echo $sponsor->name ?>" /></a>
                 </div>
                 <?php $i++; endforeach; ?>
 
                 <ul class="slidersponsors-ctrl">
-                    <li class="prev"><a href="#" class="a-null">Anterior</a></li>
+                    <li class="prev"><a href="#" id="footer-navi-prev" rel="<?php echo count($sponsors) ?>" class="footer-navi-arrow">Anterior</a></li>
                     <?php $i = 1; foreach ($sponsors as $sponsor) : ?>
-                    <li class="navi<?php if ($i == 1) echo ' active'?>"><a href="#" class="a-null">&nbsp</a></li>
+                    <li class="navi"><a href="#" id="navi-footer-sponsor-<?php echo $i ?>" rel="footer-sponsor-<?php echo $i ?>" class="navi-footer-sponsor">&nbsp</a></li>
                     <?php $i++; endforeach; ?>
-                    <li class="next"><a href="#" class="a-null">Siguiente</a></li>
+                    <li class="next"><a href="#" id="footer-navi-next" rel="2" class="footer-navi-arrow">Siguiente</a></li>
                 </ul>
             </div>
 

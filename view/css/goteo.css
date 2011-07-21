@@ -62,11 +62,13 @@ div.widget {
 
 div.widget .title  {
     font-size: 16px;
-    font-weight: bold;    
-    padding: 0 2px 0;
-    margin: 0 0 .5em;
+    font-weight: bold;
+    padding: 0 0 0 20px;
+    margin: 0 0 .5em -20px;
     text-decoration: none;
+	background:url("arrowH2-section.gif") left -16px no-repeat;
 }
+
 
 /**
  * User profile 
