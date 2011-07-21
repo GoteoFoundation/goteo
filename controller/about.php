@@ -89,7 +89,18 @@ namespace Goteo\Controller {
                     )
                 );
             }
-            
+
+            if ($id == 'howto') {
+                return new View(
+                    'view/about/howto.html.php',
+                    array(
+                        'name' => $page->name,
+                        'title' => $page->description,
+                        'content' => $page->content
+                    )
+                 );
+            }
+
             return new View(
                 'view/about/sample.html.php',
                 array(

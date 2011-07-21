@@ -141,6 +141,23 @@ a.button.weak:hover {
     background: #b5161e url('button/red.png') repeat-x top;
 }
 
+input.disabled[type="submit"],
+input.disabled[type="reset"],
+button.disabled,
+a.button.disabled {
+    background: #CCCCCC;
+    color: white;
+    cursor: default;
+}
+
+input.disabled[type="submit"]:hover,
+input.disabled[type="reset"]:hover,
+button.disabled:hover,
+a.button.disabled:hover {
+    background: #CCCCCC;
+    cursor: default;
+}
+
 input.green[type="submit"],
 input.green[type="reset"],
 button.green,
