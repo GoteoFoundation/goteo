@@ -364,7 +364,7 @@ namespace Goteo\Controller {
                 if ($show == 'invest') {
 
                     // piñon para betatesters
-                    if (!in_array($_SESSION['user']->id, array('root', 'goteo', 'olivier', 'esenabre', 'diegobus'))) {
+                    if (!in_array($_SESSION['user']->id, array('root', 'goteo', 'olivier', 'esenabre', 'diegobus', 'pepe'))) {
                         throw new Redirection('/about/beta', Redirection::TEMPORARY);
                     }
 
