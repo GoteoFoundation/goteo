@@ -15,11 +15,13 @@ if (!empty($project->costs)) {
     
     foreach ($project->costs as $cost) {     
         
+        $req_class = $cost->required ? 'required_cost-yes' : 'required_cost-no';
+
         $ch = array();
         
         if (!empty($this["cost-{$cost->id}-edit"])) {
 
-            $costsTypes = array();
+            $costTypes = array();
 
             foreach ($this['types'] as $id => $type) {
                 $costTypes["cost-{$cost->id}-type-{$id}"] = array(
@@ -35,7 +37,7 @@ if (!empty($project->costs)) {
 
             $costs["cost-{$cost->id}"] = array(
                 'type'      => 'group',      
-                'class'     => 'cost editcost',
+                'class'     => 'cost editcost '.$req_class,
                 'children'  => array(                         
                     "cost-{$cost->id}-edit" => array(
                         'type'  => 'hidden',
@@ -153,7 +155,6 @@ if (!empty($project->costs)) {
             );
             
         } else {
-            $req_class = $cost->required ? 'required_cost-yes' : 'required_cost-no';
             $costs["cost-{$cost->id}"] = array(                
                 'class'     => 'cost ' . $req_class,
                 'view'      => 'view/project/edit/costs/cost.html.php',

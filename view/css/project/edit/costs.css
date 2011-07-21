@@ -1,4 +1,3 @@
-
 /**
  * Costs 
  */
@@ -34,14 +33,12 @@ body.project-edit div#main.costs div.superform li.element.cost div.material {
 }
 
 body.project-edit div#main.costs div.superform li.element.cost div.description {
-    float: left;
+/*    float: left; */
     width: 70%;
-    margin: .5em 0;
+    margin: -10px 0px 0px;
 }
 
-body.project-edit div#main.costs div.superform li.element.cost span.required {
-    float: left;
-    width: 70%;
+body.project-edit div#main.costs div.superform li.element.cost div.description p {
     margin: .5em 0;
 }
 

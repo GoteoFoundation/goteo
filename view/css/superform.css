@@ -576,19 +576,29 @@ div.superform li#costs {
 }
 
 div.superform li.editcost {
-    background-color: #fdf3f4 !important;
+    background-color: #fdf3f4;
 }
 
 div.superform li.cost.required_cost-yes,
+div.superform li.editcost.required_cost-yes,
 div.superform li.editcost li.required_cost-yes {
     background-color: #fce9e9 !important;
 }
 
 div.superform li.cost.required_cost-no,
+div.superform li.editcost.required_cost-no,
 div.superform li.editcost li.required_cost-no {
     background-color: #f2f2f2 !important;
 }
 
+/*
+div.superform li.editcost.required_cost-yes,
+div.superform li.editcost.required_cost-no {
+    margin: 0px -26px;
+    padding: 0px 26px;
+    border-top: none;
+}
+*/
 
 /* Imágenes gallery*/
 div.superform li#gallery div.elements li.gallery-image {
