@@ -102,12 +102,24 @@ div.widget.project-supporters .supporters ul li h6 {
     font-size: 14px;
     font-weight: bold;
     margin: 0 0 .5em;
+    height: 1em;
 }
 
-div.widget.project-supporters .supporters ul li a {
+div.widget.project-supporters .supporters ul li h3 a,
+div.widget.project-supporters .supporters ul li h4 a,
+div.widget.project-supporters .supporters ul li h5 a,
+div.widget.project-supporters .supporters ul li h6 a {
     font-size: 11px !important;
     text-transform: none !important;
     text-decoration: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 10px 10px 10px 70px;
+    z-index: 9999;
+    display: block;
 }
 
 div.widget.project-supporters .supporters ul li a:hover {
@@ -226,7 +238,8 @@ div.widget.project-supporters .supporters ul li dl dd.worthcracy ul li > strong 
 }
 
 div.widget.project-supporters ul#pagination {
-	margin: 10px 0px 0px 0px !important;
+    margin: 10px 0px 0px 0px !important;
+    clear: both;
 }
 
 /* Widget lateral de cofinanciadores: div.widget.project-investors */
@@ -275,18 +288,30 @@ div.widget.project-investors .investors ul li .avatar img {
     background-color: white;
 }
 
+
 div.widget.project-investors .investors ul li h3,
 div.widget.project-investors .investors ul li h4,
 div.widget.project-investors .investors ul li h5,
 div.widget.project-investors .investors ul li h6 {
     margin: 0 0 .5em;
+    height: 1em;
 }
 
-
-div.widget.project-investors .investors ul li a {
+div.widget.project-investors .investors ul li h3 a,
+div.widget.project-investors .investors ul li h4 a,
+div.widget.project-investors .investors ul li h5 a,
+div.widget.project-investors .investors ul li h6 a {
     font-size: 11px !important;
     text-transform: none !important;
     text-decoration: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 10px 10px 10px 60px;
+    z-index: 9999;
+    display: block;
 }
 
 div.widget.project-investors .investors ul li a:hover {

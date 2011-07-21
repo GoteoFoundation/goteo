@@ -50,7 +50,6 @@ div.superform > div.hint {
 body.js div.superform > div.hint {
     background: url('superform/wizard.png') no-repeat right top;     
     border-right: 1px dashed #b7c2c5;      
-    padding-right: 250px;
 }
 
 div.superform > div.elements {
@@ -82,6 +81,10 @@ div.superform > div.hint blockquote {
     font-size: 12px;
     border-right-width: 1px;
     min-height: 3em;
+}
+
+body.js div.superform > div.hint blockquote {
+    margin-right: 250px;
 }
 
 div.superform > div.hint blockquote p {
