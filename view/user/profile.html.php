@@ -16,12 +16,6 @@ $worthcracy = Worth::getAll();
 
     jQuery(document).ready(function ($) {
 
-        /* Rolover sobre los cuadros de color */
-        $("li").hover(
-                function () { $(this).addClass('active') },
-                function () { $(this).removeClass('active') }
-        );
-
         /* todo esto para cada lista de proyectos (flechitas navegacion) */
         <?php foreach ($this['lists'] as $type=>$list) :
             if(array_empty($list)) continue; ?>
@@ -57,7 +51,7 @@ $worthcracy = Worth::getAll();
 
 <div id="sub-header">
     <div>
-        <h2><img src="/image/<?php echo $user->avatar->id; ?>/75/75" /> <?php echo Text::get('profile-name-header'); ?> <br /><em><?php echo $user->name; ?></em></h2>
+        <h2><a href="/user/<?php echo $user->id; ?>"><img src="/image/<?php echo $user->avatar->id; ?>/75/75" /></a> <?php echo Text::get('profile-name-header'); ?> <br /><em><?php echo $user->name; ?></em></h2>
     </div>
 </div>
 
