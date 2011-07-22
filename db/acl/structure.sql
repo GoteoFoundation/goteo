@@ -10,4 +10,4 @@ CREATE TABLE IF NOT EXISTS `acl` (
   KEY `role_FK` (`role_id`),
   KEY `user_FK` (`user_id`),
   KEY `node_FK` (`node_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;
