@@ -1,6 +1,10 @@
 div.widget.project.active {
+    background-color: #f8f8f8 !important;
+}
+
+div.widget.project.active div.image {
     opacity: 0.85;
-    filter: alpha(opacity=85);    
+    filter: alpha(opacity=85);
 }
 
 div.widget.project.active > .title a {
