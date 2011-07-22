@@ -1,6 +1,11 @@
 /* Estos estilos son para:
 La pagina de aportar, la pagina de retornos, el lateral de retornos
 */
+/* Detalle de la linea verde */
+div.widget.project-rewards h4.supertitle {
+    border-bottom: 1px solid #00B25A !important;
+}
+
 div.widget.project-invest div.social h4.title,
 div.widget.project-rewards div.social h4.title,
 #rewards-summary div.social h4.title {

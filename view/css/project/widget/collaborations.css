@@ -1,3 +1,8 @@
+/* Detalle de la linea verde */
+div.widget.project-collaborations h4.supertitle {
+    border-bottom: 1px solid #00B25A !important;
+}
+
 div.widget.project-collaborations ul {    
     margin: 1em 0;
     padding: 0;
