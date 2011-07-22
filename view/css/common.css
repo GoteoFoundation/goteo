@@ -170,6 +170,14 @@ a.button.green {
     color: white;
 } 
 
+input.green[type="submit"]:hover,
+input.green[type="reset"]:hover,
+button.green:hover,
+a.button.green:hover {
+/*    background: #00b05b url('button/green-active.png') repeat-x top;  cuando tengamos el rollover */
+    background: #00b05b url('button/green.png') repeat-x top;
+}
+
 h1, h2, h3, h4, h5, h6, h7, h8 {
     font-weight: bold;        
     text-transform: uppercase;
@@ -222,6 +230,6 @@ ul#pagination li a {
 	font-weight:bold;
 }
 ul#pagination li a:hover {
-	background:#cde4e5;
+	background:#F3F3F3;
 }
 /** end of pagination **/

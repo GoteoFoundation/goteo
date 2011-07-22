@@ -51,7 +51,7 @@ $go_up = Text::get('regular-go_up');
 				<div class="widget faq-sidebar-module">
 					<h3 class="supertitle ask"><?php echo Text::get('regular-faq') ?></h3>
 					<p class="ask-content"><?php echo Text::get('faq-ask-question'); ?></p>
-					<a class="btn-ask" href="/about/contact"><?php echo Text::get('regular-ask'); ?></a>
+					<a class="button green btn-ask" href="/about/contact"><?php echo Text::get('regular-ask'); ?></a>
 				</div>
 			</div>
         </div>        

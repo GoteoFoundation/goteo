@@ -15,13 +15,21 @@ div.widget.blog-sidebar-module,
     line-height: 18px;
     margin: 0 0 20px;
 }
+div.widget.blog-content-module h4,
+#blog-content .post h4 {
+	margin: 2px 0;
+}
 div.widget.blog-content-module h4 a,
 #blog-content .post h4 a {
-    font: bold 18px Helvetica, Arial, Geneva, sans-serif;
+    font: normal 20px Helvetica, Arial, Geneva, sans-serif;
 	margin: 0 0 5px 0;
 	text-transform:none;
 	color:#535353;
 	text-decoration:none;
+}
+div.widget.blog-content-module h4 a:hover,
+#blog-content .post h4 a:hover {
+	color:#20B3B2;
 }
 div.widget.blog-content-module .date,
 #blog-content .post  .date{
@@ -41,7 +49,7 @@ div.widget.blog-content-module .categories a,
 }
 div.widget.blog-content-module .categories a:hover,
 #blog-content .post .categories a:hover {
-	color:#535353;
+	text-decoration: underline;
 }
 div.widget.blog-content-module  blockquote,
 #blog-content .post blockquote{
@@ -244,13 +252,13 @@ div.widget.blog-content-module ul.share-goteo li.facebook a,
 /* Sidebar styles */
 div.widget.blog-sidebar-module h3.title {
     border-bottom: 1px solid #20b3b2;
-	color: #20b3b2;
+	color: #000000;
     font: normal 15px Helvetica,Arial,Geneva,sans-serif;
     margin: 0 0 1em;
     padding: 0 2px 0.2em;
 }
 div.widget.blog-sidebar-module ul#blog-side-posts{
-    margin:0 25px;
+    margin:0 25px 25px 25px;
 	padding: 0;
 }
 div.widget.blog-sidebar-module ul#blog-side-posts li{
@@ -259,9 +267,12 @@ div.widget.blog-sidebar-module ul#blog-side-posts li{
 div.widget.blog-sidebar-module ul#blog-side-posts li a{
 	text-decoration:none;
 }
+div.widget.blog-sidebar-module ul#blog-side-posts li a:hover{
+	text-decoration:underline;
+}
 div.widget.blog-sidebar-module ul#blog-side-tags,
 div.widget.blog-sidebar-module ul#blog-side-comments{
-    margin:0 10px;
+    margin:0 10px 25px 10px;
 	padding: 0;
 	list-style:none;
 }
@@ -269,8 +280,11 @@ div.widget.blog-sidebar-module ul#blog-side-tags li{
     margin:0 0 5px 0;
 }
 div.widget.blog-sidebar-module ul#blog-side-tags li a{
+	text-decoration:none;
+	color:#20B3B2;
+}
+div.widget.blog-sidebar-module ul#blog-side-tags li a:hover{
 	text-decoration:underline;
-	color:#e32526;
 }
 div.widget.blog-sidebar-module ul#blog-side-comments li .date{
     color:#cabcbf;
@@ -278,6 +292,14 @@ div.widget.blog-sidebar-module ul#blog-side-comments li .date{
 }
 div.widget.blog-sidebar-module ul#blog-side-comments li{
     margin:0 0 20px 0;
+}
+div.widget.blog-sidebar-module ul#blog-side-comments li div div.high-comment{
+    margin:6px 0 0 -9px;
+	display:block;
+	padding:4px 8px;
+}
+div.widget.blog-sidebar-module ul#blog-side-comments li div div.high-comment:hover{
+    background:#F3F3F3;
 }
 div.widget.blog-sidebar-module ul#blog-side-comments li p{
 	margin: 0px;

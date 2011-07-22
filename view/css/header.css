@@ -213,12 +213,11 @@ div#sub-header > div > div.subhead-banner .sign-in-with li{
 
 div#sub-header > div > div.mod-pojctopen{
 	float:right;
-	width:171px;
-	margin: 0 40px 0 0;
+	width:180px;
 }
 
 div#sub-header.banners > div > div.mod-pojctopen{
-	margin: 12px 40px 18px 0;
+	margin: 12px 20px 18px 0;
 }
 
 div#sub-header > div > div.mod-pojctopen > .modpo-open{

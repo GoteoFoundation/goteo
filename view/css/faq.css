@@ -57,21 +57,17 @@ div.widget.faq-sidebar-module ol li {
 div.widget.faq-sidebar-module ol li a {
 	text-decoration:none;
 }
+div.widget.faq-sidebar-module ol li a:hover {
+	text-decoration:underline;
+}
 div.widget.faq-sidebar-module p.ask-content{
 	padding: 0 0 12px 24px;
 	margin: 8px 0 0 0;
 	border-bottom: 1px solid #25a345;
 }
+
 div.widget.faq-sidebar-module a.btn-ask{
-	display:block;
-	padding:8px;
-	background:#25a345;
-	color:#ffffff;
-	font: bold 14px Helvetica, Arial, Geneva, sans-serif;
-	text-align:center;
-	text-decoration:none;
-	margin: 12px;
-	-moz-box-shadow: 3px 3px 0px #E2E2E2;
-	-webkit-box-shadow: 3px 3px 0px #E2E2E2;
-	box-shadow: 3px 3px 0px #E2E2E2;
+	margin: 12px 0px 0px 0px !important;
+    font-weight: bold;
+    font-size: 16px;
 }

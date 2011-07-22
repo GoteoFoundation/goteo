@@ -75,7 +75,7 @@ include 'view/header.html.php' ?>
 			<div class="clearfix">
 				<!-- Módulo de texto más sign in -->
 				<!--div class="subhead-banner">
-					<h2>Red social para <span class="greenblue">cofinanciar y colaborar con</span><br /> proyectos creativos que fomentan el procom�n<br /> �Tienes un proyecto con <span class="greenblue">adn abierto?</span></h2>
+					<h2>Red social para <span class="greenblue">cofinanciar y colaborar con</span><br /> proyectos creativos que fomentan el procomún<br /> ¿Tienes un proyecto con <span class="greenblue">adn abierto?</span></h2>
 					<ul class="sign-in-with">
 						<li>Accede con facebook</li>
 						<li>Accede con Twitter</li>
