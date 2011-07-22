@@ -26,7 +26,7 @@ foreach ($project->supports as $support) {
     $ch = array();
 
     // a ver si es el que estamos editando o no
-    if ($support->id === $this['editsupport']) {
+    if (!empty($this["support-{$support->id}-edit"])) {
 
 
         $support_types = array();
@@ -175,7 +175,7 @@ $(function () {
 
     supports.delegate('li.element.editsupport input.ok', 'click', function (event) {
         var data = {};
-        data[this.name.substring(0, 12) + 'edit'] = '0';
+        data[this.name.substring(0, 11) + 'edit'] = '0';
         Superform.update(supports, data);
         event.preventDefault();
     });

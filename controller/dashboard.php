@@ -111,11 +111,6 @@ namespace Goteo\Controller {
                 throw new Redirection('/user/profile/'.$user->id);
             }
 
-            // si es el avatar por defecto no lo mostramos aqui
-            if ($user->avatar->id == 1) {
-                unset($user->avatar);
-            }
-
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 			    $errors = array();
@@ -301,6 +296,22 @@ namespace Goteo\Controller {
                 switch ($option) {
                     case 'profile':
                         $viewData['interests'] = Model\User\Interest::getAll();
+
+                        if ($_POST) {
+                            foreach ($_POST as $k => $v) {
+                                if (!empty($v) && preg_match('/web-(\d+)-edit/', $k, $r)) {
+                                    $viewData[$k] = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (!empty($_POST['web-add'])) {
+                            $last = end($user->webs);
+                            if ($last !== false) {
+                                $viewData["web-{$last->id}-edit"] = true;
+                            }
+                        }
                         break;
                     case 'personal':
                         $viewData['personal'] = Model\User::getPersonal($user->id);
@@ -767,18 +778,16 @@ $testpost = $_POST;
                     if ($_POST) {
                         foreach ($_POST as $k => $v) {
                             if (!empty($v) && preg_match('/support-(\d+)-edit/', $k, $r)) {
-                                $viewData['editsupport'] = $r[1];
+                                $viewData[$k] = true;
                                 break;
                             }
                         }
                     }
 
-                    if (empty($viewData['editsupport']) && $_POST['support-add']) {
-
+                    if (!empty($_POST['support-add'])) {
                         $last = end($project->supports);
-
                         if ($last !== false) {
-                            $viewData['editsupport'] = $last->id;
+                            $viewData['support-'.$last->id.'-edit'] = true;
                         }
                     }
 

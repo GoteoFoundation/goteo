@@ -1,7 +1,8 @@
 <?php
 
 use Goteo\Library\Text,
-    Goteo\Library\SuperForm;
+    Goteo\Library\SuperForm,
+    Goteo\Core\View;
 
 $user   = $this['user'];
 $errors = $this['errors'];
@@ -30,39 +31,69 @@ foreach ($this['interests'] as $value => $label) {
 $user_webs = array();
 
 foreach ($user->webs as $web) {
+        
+    $ch = array();
 
-    $user_webs['web' . $web->id] = array(
-        'type'      => 'group',
-        'class'     => 'web',
-        'children'  => array(
-            'web-' . $web->id . '-url' => array(
-                'type'      => 'textbox',
-                'required'  => true,
-                'value'     => $web->url,
-                'hint'      => Text::get('tooltip-user-webs'),
-                'errors'    => array(),
-                'class'     => 'web-url inline'
-            ),
-            'web-' . $web->id . '-accept' => array(
-                'type'      => 'submit',
-                'label'     => Text::get('form-accept-button'),
-                'class'     => 'web-accept inline accept'
-            ),
-            'web-' . $web->id . '-remove' => array(
-                'type'      => 'submit',
-                'label'     => Text::get('form-remove-button'),
-                'class'     => 'web-remove inline remove weak'
-            )
-        )
-    );
+    // a ver si es el que estamos editando o no
+    if (!empty($this["web-{$web->id}-edit"])) {
+
+        $user_webs["web-{$web->id}"] = array(
+            'type'      => 'group',
+            'class'     => 'web editweb',
+            'children'  => array(
+                    "web-{$web->id}-edit" => array(
+                        'type'  => 'hidden',
+                        'class' => 'inline',
+                        'value' => '1'
+                    ), 
+                    'web-' . $web->id . '-url' => array(
+                        'type'      => 'textbox',
+                        'required'  => true,
+                        'title'     => Text::get('profile-field-url'),
+                        'value'     => $web->url,
+                        'hint'      => Text::get('tooltip-user-webs'),
+                        'errors'    => !empty($errors['web-' . $web->id . '-url']) ? array($errors['web-' . $web->id . '-url']) : array(),
+                        'ok'        => !empty($okeys['web-' . $web->id . '-url']) ? array($okeys['web-' . $web->id . '-url']) : array(),
+                        'class'     => 'web-url inline'
+                    ),
+                    "web-{$web->id}-buttons" => array(
+                        'type' => 'group',
+                        'class' => 'inline buttons',
+                        'children' => array(
+                            "web-{$web->id}-ok" => array(
+                                'type'  => 'submit',
+                                'label' => Text::get('form-accept-button'),
+                                'class' => 'inline ok'
+                            ),
+                            "web-{$web->id}-remove" => array(
+                                'type'  => 'submit',
+                                'label' => Text::get('form-remove-button'),
+                                'class' => 'inline remove weak'
+                            )
+                        )
+                    )
+                )
+        );
+
+    } else {
+
+        $user_webs["web-{$web->id}"] = array(
+            'class'     => 'web',
+            'view'      => 'view/project/edit/webs/web.html.php',
+            'data'      => array('web' => $web),
+        );
+
+    }
 
 }
+$sfid = 'sf-project-profile';
+
 ?>
 
 <form method="post" action="/dashboard/profile/profile" class="project" enctype="multipart/form-data">
 
 <?php echo new SuperForm(array(
-
+    'id'            => $sfid,
     'action'        => '',
     'level'         => $this['level'],
     'method'        => 'post',
@@ -88,7 +119,7 @@ foreach ($user->webs as $web) {
             'hint'      => Text::get('tooltip-user-name'),
             'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
             'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array(),
-            'value'     => $user->name,
+            'value'     => $user->name
         ),
         'user_location' => array(
             'type'      => 'textbox',
@@ -98,7 +129,7 @@ foreach ($user->webs as $web) {
             'hint'      => Text::get('tooltip-user-location'),
             'errors'    => !empty($errors['location']) ? array($errors['location']) : array(),
             'ok'        => !empty($okeys['location']) ? array($okeys['location']) : array(),
-            'value'     => $user->location,
+            'value'     => $user->location
         ),
         'user_avatar' => array(
             'type'      => 'group',
@@ -116,12 +147,12 @@ foreach ($user->webs as $web) {
                 ),
                 'avatar-current' => array(
                     'type' => 'hidden',
-                    'value' => $user->avatar->id,
+                    'value' => $user->avatar->id == 1 ? '' : $user->avatar->id,
                 ),
                 'avatar-image' => array(
                     'type'  => 'html',
                     'class' => 'inline avatar-image',
-                    'html'  => is_object($user->avatar) ?
+                    'html'  => is_object($user->avatar) &&  $user->avatar->id != 1 ?
                                $user->avatar . '<img src="/image/' . $user->avatar->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->id.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
@@ -174,9 +205,12 @@ foreach ($user->webs as $web) {
         ),
         'user_webs' => array(
             'type'      => 'group',
+            'required'  => true,
             'title'     => Text::get('profile-field-websites'),
             'hint'      => Text::get('tooltip-user-webs'),
             'class'     => 'webs',
+            'errors'    => !empty($errors['webs']) ? array($errors['webs']) : array(),
+            'ok'        => !empty($okeys['webs']) ? array($okeys['webs']) : array(),
             'children'  => $user_webs + array(
                 'web-add' => array(
                     'type'  => 'submit',
@@ -246,3 +280,38 @@ foreach ($user->webs as $web) {
 
 ?>
 </form>
+<script type="text/javascript">
+$(function () {
+
+    var webs = $('div#<?php echo $sfid ?> li.element#user_webs');
+
+    webs.delegate('li.element.web input.edit', 'click', function (event) {
+        var data = {};
+        data[this.name] = '1';
+        Superform.update(webs, data);
+        event.preventDefault();
+    });
+
+    webs.delegate('li.element.editweb input.ok', 'click', function (event) {
+        var data = {};
+        data[this.name.substring(0, 7) + 'edit'] = '0';
+        Superform.update(webs, data);
+        event.preventDefault();
+    });
+
+    webs.delegate('li.element.editweb input.remove, li.element.web input.remove', 'click', function (event) {
+        var data = {};
+        data[this.name] = '1';
+        Superform.update(webs, data);
+        event.preventDefault();
+    });
+
+    webs.delegate('#web-add input', 'click', function (event) {
+       var data = {};
+       data[this.name] = '1';
+       Superform.update(webs, data);
+       event.preventDefault();
+    });
+
+});
+</script>

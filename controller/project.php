@@ -207,6 +207,21 @@ namespace Goteo\Controller {
                     }
                     $viewData['user'] = $owner;
                     $viewData['interests'] = Model\User\Interest::getAll();
+
+                    if ($_POST) {
+                        foreach ($_POST as $k => $v) {
+                            if (!empty($v) && preg_match('/web-(\d+)-edit/', $k, $r)) {
+                                $viewData[$k] = true;
+                            }
+                        }
+
+                        if (!empty($_POST['web-add'])) {
+                            $last = end($owner->webs);
+                            if ($last !== false) {
+                                $viewData["web-{$last->id}-edit"] = true;
+                            }
+                        }
+                    }
                     break;
                 
                 case 'overview':

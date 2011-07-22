@@ -633,10 +633,27 @@ namespace Goteo\Model {
                 ++$score;
             }
 
-            if (!empty($this->user->webs)) {
+            if (empty($this->user->webs)) {
+                $errors['userProfile']['webs'] = Text::get('validate-project-userProfile-web');
+            } else {
                 $okeys['userProfile']['webs'] = 'ok';
                 ++$score;
                 if (count($this->user->webs) > 2) ++$score;
+
+                $anyerror = false;
+                foreach ($this->user->webs as $web) {
+                    if (trim(str_replace('http://','',$web->url)) == '') {
+                        $anyerror = !$anyerror ?: true;
+                        $errors['userProfile']['web-'.$web->id.'-url'] = Text::get('validate-user-field-web');
+                    } else {
+                        $okeys['userProfile']['web-'.$web->id.'-url'] = 'ok';
+                    }
+                }
+
+                if ($anyerror) {
+                    unset($okeys['userProfile']['webs']);
+                    $errors['userProfile']['webs'] = Text::get('validate-project-userProfile-any_error');
+                }
             }
 
             if (!empty($this->user->facebook)) {
