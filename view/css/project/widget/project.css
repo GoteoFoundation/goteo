@@ -358,12 +358,12 @@ div.widget.project div.meter dl .days {
 }
 
 div.widget.project div.meter dl dt.days {    
-    width: 78px;
+    width: 70px;
     text-transform: uppercase;
 }
 
 div.widget.project div.meter dl dd.days {
-    left: 78px;
+    left: 70px;
     right: -40px;
     color: #eb2227;
     font-weight: bold;
@@ -388,7 +388,7 @@ div.widget.project div.rewards h8 {
     margin: 0;
     line-height: 22px;
     float: left;
-    width: 78px;
+    width: 70px;
     font-size: 12px;
 }
 
