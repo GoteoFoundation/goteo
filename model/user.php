@@ -421,6 +421,9 @@ namespace Goteo\Model {
             $users = array();
 
             $sqlFilter = "";
+            if (!empty($filters['name'])) {
+                $sqlFilter .= " AND ( name LIKE ('%{$filters['name']}%') OR email LIKE ('%{$filters['name']}%') )";
+            }
             if (!empty($filters['status'])) {
                 $active = $filters['status'] == 'active' ? '1' : '0';
                 $sqlFilter .= " AND active = '$active'";
@@ -467,15 +470,20 @@ namespace Goteo\Model {
 
                 $query = static::query("
                     SELECT
-                        user_id
+                        role_id
                     FROM user_role
                     WHERE user_id = :id
-                    AND role_id = 'checker'
                     ", array(':id' => $user->id));
-                $role = $query->fetchObject();
-
-                if ($role->user_id == $user->id) {
-                    $user->checker = true;
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $role) {
+                    if ($role->role_id == 'checker') {
+                        $user->checker = true;
+                    }
+                    if ($role->role_id == 'translator') {
+                        $user->translator = true;
+                    }
+                    if ($role->role_id == 'admin') {
+                        $user->admin = true;
+                    }
                 }
 
                 $users[] = $user;

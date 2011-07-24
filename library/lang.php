@@ -15,6 +15,19 @@ namespace Goteo\Library {
 			return $query->fetchObject();
 		}
 
+        /*
+         * Devuelve los idiomas
+         */
+		public static function getAll ($activeOnly = false) {
+            $array = array();
+			$query = Model::query("SELECT id, name FROM lang ORDER BY id ASC");
+            foreach ( $query->fetchAll(\PDO::FETCH_CLASS) as $lang) {
+                $array[$lang->id] = $lang;
+            }
+            return $array;
+		}
+
+
 		/*
 		 *  Esto se usara para la gestión de idiomas
          * aunque quizas no haya gestión de idiomas

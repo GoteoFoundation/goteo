@@ -56,6 +56,21 @@ include 'view/prologue.html.php';
                         <option value="<?php echo $interestId; ?>"<?php if ($filters['interest'] == $interestId) echo ' selected="selected"';?>><?php echo $interestName; ?></option>
                     <?php endforeach; ?>
                     </select>
+
+
+                    <label for="role-filter">Mostrar usuarios con rol:</label>
+                    <select id="role-filter" name="role" onchange="document.getElementById('filter-form').submit();">
+                        <option value="">Cualquier rol</option>
+                    <?php foreach ($this['roles'] as $roleId=>$roleName) : ?>
+                        <option value="<?php echo $roleId; ?>"<?php if ($filters['role'] == $roleId) echo ' selected="selected"';?>><?php echo $roleName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+
+                    <br />
+                    <label for="name-filter">Por nombre o email:</label>
+                    <input id="name-filter" name="name" value="<?php echo $filters['name']; ?>" />
+                    <input type="submit" name="filter" value="Buscar">
+
                 </form>
             </div>
 
@@ -66,10 +81,9 @@ include 'view/prologue.html.php';
                         <tr>
                             <th>Usuario</th> <!-- view profile -->
                             <th>Email</th>
-                            <th>Estado</th>
-                            <th></th>
-                            <th>Revisor</th>
-                            <th></th>
+                            <th colspan="2">Estado</th>
+                            <th colspan="2">Revisor</th>
+                            <th colspan="2">Traductor</th>
                         </tr>
                     </thead>
 
@@ -89,6 +103,12 @@ include 'view/prologue.html.php';
                             <td><a href="<?php echo "/admin/managing/nochecker/{$user->id}{$filter}"; ?>">[Quitarlo de revisor]</a></td>
                             <?php else : ?>
                             <td><a href="<?php echo "/admin/managing/checker/{$user->id}{$filter}"; ?>">[Hacerlo revisor]</a></td>
+                            <?php endif; ?>
+                            <td><?php echo $user->translator ? 'Traductor' : ''; ?></td>
+                            <?php if ($user->translator) : ?>
+                            <td><a href="<?php echo "/admin/managing/notranslator/{$user->id}{$filter}"; ?>">[Quitarlo de traductor]</a></td>
+                            <?php else : ?>
+                            <td><a href="<?php echo "/admin/managing/translator/{$user->id}{$filter}"; ?>">[Hacerlo traductor]</a></td>
                             <?php endif; ?>
                         </tr>
                         <?php endforeach; ?>

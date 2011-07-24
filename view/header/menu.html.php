@@ -32,6 +32,9 @@ use Goteo\Core\ACL,
                         <li><a href="/dashboard/activity"><span>Mi actividad</span></a></li>
                         <li><a href="/dashboard/profile"><span>Mi perfil</span></a></li>
                         <li><a href="/dashboard/projects"><span>Mis proyectos</span></a></li>
+                        <?php if (ACL::check('/translate')) : ?>
+                        <li><a href="/translate"><span><?php echo Text::get('regular-translate_board'); ?></span></a></li>
+                        <?php endif; ?>
                         <?php if (ACL::check('/review')) : ?>
                         <li><a href="/review"><span><?php echo Text::get('regular-review_board'); ?></span></a></li>
                         <?php endif; ?>

@@ -25,10 +25,6 @@ namespace Goteo\Controller {
          * Gestión de páginas institucionales
          */
 		public function pages ($action = 'list', $id = null) {
-            // idioma que estamos gestionando
-            $lang = GOTEO_DEFAULT_LANG;
-
-			$using = Lang::get($lang);
 
             $errors = array();
 
@@ -49,7 +45,6 @@ namespace Goteo\Controller {
                     return new View(
                         'view/admin/pageEdit.html.php',
                         array(
-                            'using' => $using,
                             'page' => $page,
                             'errors'=>$errors
                         )
@@ -62,7 +57,6 @@ namespace Goteo\Controller {
                     return new View(
                         'view/admin/pages.html.php',
                         array(
-                            'using' => $using,
                             'pages' => $pages
                         )
                     );
@@ -1432,7 +1426,7 @@ namespace Goteo\Controller {
          */
         public function managing($action = 'list', $id = null) {
             $filters = array();
-            $fields = array('status', 'interest');
+            $fields = array('status', 'interest', 'role', 'name');
             foreach ($fields as $field) {
                 if (isset($_GET[$field])) {
                     $filters[$field] = $_GET[$field];
@@ -1458,22 +1452,37 @@ namespace Goteo\Controller {
                     $sql = "DELETE FROM user_role WHERE role_id = 'checker' AND user_id = ?";
                     Model\User::query($sql, array($id));
                     break;
+                case 'translator':
+                    $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'translator')";
+                    Model\User::query($sql, array(':user'=>$id));
+                    break;
+                case 'notranslator':
+                    $sql = "DELETE FROM user_role WHERE role_id = 'translator' AND user_id = ?";
+                    Model\User::query($sql, array($id));
+                    break;
             }
 
             $users = Model\User::getAll($filters);
             $status = array(
                         'active' => 'Activo',
-                        'inactive' => 'Inactive'
+                        'inactive' => 'Inactivo'
                     );
             $interests = Model\User\Interest::getAll();
+            $roles = array(
+                'admin' => 'Administrador',
+                'checker' => 'Revisor',
+                'translator' => 'Traductor'
+            );
 
             return new View(
                 'view/admin/managing.html.php',
                 array(
                     'users'=>$users,
                     'filters' => $filters,
+                    'name' => $name,
                     'status' => $status,
                     'interests' => $interests,
+                    'roles' => $roles,
                     'errors' => $errors
                 )
             );
