@@ -9,7 +9,7 @@ jQuery(document).ready(function($) {
     $("#create_accept").click(function (event) {
         if (this.checked) {
             $("#create_continue").removeClass('disabled').addClass('weak');
-            $("#create_continue").attr('disabled', 'false');
+            $("#create_continue").removeAttr('disabled');
         } else {
             $("#create_continue").removeClass('weak').addClass('disabled');
             $("#create_continue").attr('disabled', 'disabled');
