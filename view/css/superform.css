@@ -391,6 +391,7 @@ div.superform li.element > div.feedback > div {
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
     border-radius: 7px;
+    line-height: 16px !important;
 }
 
 div.superform li.element > div.feedback > div + div {

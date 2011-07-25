@@ -105,6 +105,7 @@ namespace Goteo\Model {
                 'id',
                 'name',
                 'description',
+                'url',
                 'group',
                 'order'
                 );
