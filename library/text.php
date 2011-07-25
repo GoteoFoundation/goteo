@@ -43,11 +43,7 @@ namespace Goteo\Library {
                 return $text;
         }
 
-        static public function get ($id) {
-
-//            return 'aaaaaa';
-
-            $lang = \GOTEO_DEFAULT_LANG; // @TODO idiomas
+        static public function get ($id, $lang = \GOTEO_DEFAULT_LANG) {
 
             if (\defined('GOTEO_ADMIN_NOCACHE')) {
                 $nocache = true;
@@ -138,10 +134,10 @@ namespace Goteo\Library {
 		/*
 		 *  Metodo para la lista de textos segun idioma
 		 */
-		public static function getAll($filters = array()) {
+		public static function getAll($filters = array(), $lang = \GOTEO_DEFAULT_LANG) {
             $texts = array();
 
-            $values = array();
+            $values = array(':lang' => $lang);
 
             $sql = "SELECT
                         purpose.text as id,
@@ -150,6 +146,7 @@ namespace Goteo\Library {
                     FROM purpose
                     LEFT JOIN text
                         ON text.id = purpose.text
+                        AND text.lang = :lang
                     WHERE purpose.text != ''
                     ";
             if (!empty($filters['idfilter'])) {
@@ -253,6 +250,7 @@ namespace Goteo\Library {
                 'discover'  => 'Sección descubre proyectos',
                 'community'  => 'Sección comunidad',
                 'general'  => 'Propósito general',
+                'blog'  => 'Blog/Actualizaciones',
                 'faq'  => 'Pagina de FAQ',
                 'contact'  => 'Pagina de contacto',
                 'widget'  => 'Textos para etiquetas en el widget de un proyecto',
@@ -260,7 +258,9 @@ namespace Goteo\Library {
                 'types' => 'Tooltips para tipos de necesidades',
                 'banners' => 'Banners y cabeceras',
                 'footer' => 'Footer',
-                'social' => 'Cuentas de redes sociales'
+                'social' => 'Cuentas de redes sociales',
+                'review' => 'Panel revisor',
+                'translate' => 'Panel traductor'
             );
 
             \asort($groups);

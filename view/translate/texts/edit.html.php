@@ -1,81 +1,31 @@
 <?php
 
-echo 'En preparación';
-return;
-
 use Goteo\Library\Text;
 
 $bodyClass = 'admin';
 
-include 'view/prologue.html.php';
+// no cache para textos
+define('GOTEO_ADMIN_NOCACHE', true);
 
-    include 'view/header.html.php'; ?>
+$text = new stdClass();
 
-        <div id="sub-header">
-            <div>
-                <h2><?php echo $this['title']; ?></h2>
-            </div>
+$text->id = $this['id'];
+$text->purpose = Text::getPurpose($this['id']);
+$text->text = Text::get($this['id'], $_SESSION['translator_lang']);
 
-            <div class="sub-menu">
-                <div class="admin-menu">
-                    <ul>
-                        <li class="home"><a href="/admin">Mainboard</a></li>
-                        <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
-                    <?php foreach ($this['menu'] as $menu) : ?>
-                        <li><a href="<?php echo $menu['url']; ?>"><?php echo $menu['label']; ?></a></li>
-                    <?php endforeach; ?>
-                    </ul>
-                </div>
-            </div>
+?>
+<div class="widget board">
+    <h3 class="title">Editando el texto '<?php echo $text->id; ?>'</h3>
 
-        </div>
+    <fieldset>
+        <legend>Propósito de este texto</legend>
+        <blockquote><?php echo $text->purpose; ?></blockquote>
+    </fieldset>
 
-        <div id="main">
-            <?php if (!empty($this['errors']) || !empty($this['success'])) : ?>
-                <div class="widget">
-                    <p>
-                        <?php echo implode(',', $this['errors']); ?>
-                        <?php echo implode(',', $this['success']); ?>
-                    </p>
-                </div>
-            <?php endif; ?>
+    <form action="/translate/texts/edit/<?php echo $text->id ?>/<?php echo $this['filter'] ?>" method="post" >
 
-            <div class="widget board">
-                <!-- superform -->
-                <form action="<?php echo $this['form']['action']; ?>" method="post" enctype="multipart/form-data">
-                    <dl>
-                        <?php foreach ($this['form']['fields'] as $Id=>$field) : ?>
-                            <dt><label for="<?php echo $Id; ?>"><?php echo $field['label']; ?></label></dt>
-                            <dd><?php switch ($field['type']) {
-                                case 'text': ?>
-                                    <input type="text" id="<?php echo $Id; ?>" name="<?php echo $field['name']; ?>" <?php echo $field['properties']; ?> value="<?php $name = $field['name']; echo $this['data']->$name; ?>" />
-                                <?php break;
-                                case 'hidden': ?>
-                                    <input type="hidden" name="<?php echo $field['name']; ?>" <?php echo $field['properties']; ?> value="<?php $name = $field['name']; echo $this['data']->$name; ?>" />
-                                <?php break;
-                                case 'textarea': ?>
-                                    <textarea id="<?php echo $Id; ?>" name="<?php echo $field['name']; ?>" <?php echo $field['properties']; ?>><?php $name = $field['name']; echo $this['data']->$name; ?></textarea>
-                                <?php break;
-                                case 'image':
-                                     $name = $field['name'];
-                                    ?>
-                                    <input type="file" id="<?php echo $Id; ?>" name="<?php echo $field['name']; ?>" <?php echo $field['properties']; ?> value="<?php $name = $field['name']; echo $this['data']->$name; ?>" /> <br />
-                                    <?php if (!empty($this['data']->$name)) : ?>
-                                        <img src="/image/<?php echo $this['data']->$name; ?>/110/110" alt="<?php echo $field['name']; ?>" /><br />
-                                        <input type="hidden" name="<?php echo $field['name']; ?>" value="<?php echo $this['data']->$name; ?>" />
-                                        <input type="submit" name="image-<?php echo $this['data']->$name; ?>-remove" value="Quitar" />
-                                    <?php endif; ?>
-                                <?php break;
-                            } ?></dd>
+        <textarea name="text" cols="120" rows="10"><?php echo $text->text; ?></textarea><br />
+        <input type="submit" name="save" value="Guardar" />
 
-                        <?php endforeach; ?>
-                    </dl>
-                    <input type="submit" name="<?php echo $this['form']['submit']['name']; ?>" value="<?php echo $this['form']['submit']['label']; ?>" />
-                </form>
-            </div>
-
-        </div>
-
-<?php
-    include 'view/footer.html.php';
-include 'view/epilogue.html.php';
+    </form>
+</div>

@@ -24,9 +24,10 @@ include 'view/header.html.php'; ?>
             <div class="sub-menu">
                 <div class="admin-menu">
                     <ul>
-                        <li class="home"><a href="/translate/texts">Textos</a></li>
-                        <li class="checking"><a href="/translate/pages">Páginas</a></li>
-                        <li class="accounting"><a href="/translate/contents">Contenidos</a></li>
+                        <li class="home"><a href="/translate">Portada</a></li>
+                        <li class="checking"><a href="/translate/texts">Textos</a></li>
+                        <li class="accounting"><a href="/translate/pages">Páginas</a></li>
+<!--                        <li class="messages"><a href="/translate/contents">Contenidos</a></li> -->
                     </ul>
                 </div>
             </div>
@@ -48,7 +49,7 @@ include 'view/header.html.php'; ?>
             <?php if (!empty($this['section']) && !empty($this['option'])) {
                 echo new View ('view/translate/'.$this['section'].'/'.$this['option'].'.html.php', $this);
             } else {
-                echo '<div class="widget">Mensaje por defecto portada panel traductor</div>';
+                echo '<div class="widget">' . Text::get('translate-home-guide') . '</div>';
             } ?>
 
         </div>
