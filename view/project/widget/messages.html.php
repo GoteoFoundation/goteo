@@ -32,7 +32,7 @@ $level = (int) $this['level'] ?: 3;
 		<?php foreach ($project->messages as $message) : ?>
                 <div class="message<?php if ($message->user->id == $project->owner) echo ' owner'; ?>">
                    <span class="avatar"><img src="/image/<?php echo $message->user->avatar->id; ?>/50/50" alt="" /></span>
-                   <h<?php echo $level ?> class="user"><?php echo htmlspecialchars($message->user->name) ?></h<?php echo $level ?>>                                                             
+                   <h<?php echo $level ?> class="user"><?php echo htmlspecialchars($message->user->name); if ($message->blocked == 1) echo ' ' . Text::get('regular-looks_for'); ?></h<?php echo $level ?>>
                    <div class="date"><span><?php echo $message->date ?></span></div>                   
                    <blockquote><?php echo $message->message; ?></blockquote>                   
                    <div class="actions">

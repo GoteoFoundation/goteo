@@ -14,7 +14,7 @@ namespace Goteo\Model {
             $date, // timestamp del momento en que se creó el mensaje
             $message, // el texto del mensaje en si
             $responses = array(), // array de instancias mensaje que son respuesta a este
-            $blocked = 0, //no se puede editar ni borrar
+            $blocked = 0, //no se puede editar ni borrar (es un mensaje thread de colaboracion)
             $closed = 0; // no se puede responder
 
         /*
