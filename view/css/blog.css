@@ -169,10 +169,24 @@ div.widget.blog-content-module ul.share-goteo li.twitter a,
 	color:#13c2ec;
 	text-decoration:none;
 }
+div.widget.blog-content-module ul.share-goteo li.twitter a:hover,
+#blog-content .post ul.share-goteo li.twitter a:hover{
+	background: transparent url('twitter.png') scroll no-repeat  0 0;
+	opacity:0.6;
+	color:#1db3b2;
+	text-decoration:none;
+}
 div.widget.blog-content-module ul.share-goteo li.facebook a,
 #blog-content .post ul.share-goteo li.facebook a{
 	background: transparent url('facebook.png') scroll no-repeat  0 0;
 	color:#4a6393;
+	text-decoration:none;
+}
+div.widget.blog-content-module ul.share-goteo li.facebook a:hover,
+#blog-content .post ul.share-goteo li.facebook a:hover{
+	background: transparent url('facebook.png') scroll no-repeat  0 0;
+	color:#1db3b2;
+	opacity:0.6;
 	text-decoration:none;
 }
 /** end of share goteo **/

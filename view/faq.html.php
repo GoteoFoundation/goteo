@@ -30,7 +30,7 @@ $go_up = Text::get('regular-go_up');
 									<a name="q<?php echo $question->id; ?>" />
 									<h4 style="color:<?php echo $this['colors'][$sectionId] ?>;"><?php echo $question->title; ?></h4>
 									<p><?php echo $question->description; ?></p>
-									<a href="#"><?php echo $go_up; ?></a>
+									<a class="up" href="#"><?php echo $go_up; ?></a>
 								</li>
 							<?php endforeach; ?>
 						</ol>

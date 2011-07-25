@@ -37,6 +37,9 @@ div.widget.faq-sidebar-module {
     line-height: 18px;
     margin: 0 0 20px;
 }
+div.widget.faq-content-module ol li a.up:hover{
+    color:#20b3b2;
+}
 div.widget.faq-sidebar-module .supertitle {
     border-bottom: 1px solid #58595b;
     font: bold 16px Helvetica, Arial, Geneva, sans-serif;
