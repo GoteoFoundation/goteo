@@ -2,7 +2,7 @@
 $messages = $_SESSION['messages'];
 unset($_SESSION['messages']);
 ?>
-    <div id="message" style="position: absolute: top: 0; left: 0; background: red; width: 100%; padding: 20px; /* @FIXME: JAIME MODIFICALO YA! */">
+    <div id="message" style="position: absolute; top: 0; left: 0; background: white; width: 100%; padding: 20px;">
         <ul>
 <?php foreach($messages as $message): ?>
             <li>
@@ -12,5 +12,5 @@ unset($_SESSION['messages']);
 <?php endforeach; ?>
         </ul>
         <!--  Esto sólo debería salir con javascript! :) -->
-        <input type="button" value="Cerrar" />
+<!--        <input type="button" value="Cerrar" /> -->
     </div>
