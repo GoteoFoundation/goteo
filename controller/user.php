@@ -215,7 +215,7 @@ namespace Goteo\Controller {
             $viewData = array();
             $viewData['user'] = $user;
 
-            $projects = Model\Project::ofmine($id);
+            $projects = Model\Project::ofmine($id, true);
 
             //mis cofinanciadores
             // array de usuarios con:

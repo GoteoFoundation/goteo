@@ -1356,11 +1356,17 @@ namespace Goteo\Model {
         /*
          * Lista de proyectos de un usuario
          */
-        public static function ofmine($owner)
+        public static function ofmine($owner, $published = false)
         {
             $projects = array();
 
-            $sql = "SELECT * FROM project WHERE status > 0 AND owner = ? ORDER BY created DESC";
+            $sql = "SELECT * FROM project WHERE owner = ?";
+            if ($published) {
+                $sql .= " AND status > 2";
+            } else {
+                $sql .= " AND status > 0";
+            }
+            $sql .= " ORDER BY created DESC";
             $query = self::query($sql, array($owner));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
                 $projects[] = self::get($proj->id);
