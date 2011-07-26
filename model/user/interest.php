@@ -130,7 +130,7 @@ namespace Goteo\Model\User {
                     // meritocracia
                     $support = (object) $user->support;
                     // proyectos publicados
-                    $query = self::query('SELECT COUNT(id) FROM project WHERE owner = ? AND status = 3', array($share['id']));
+                    $query = self::query('SELECT COUNT(id) FROM project WHERE owner = ? AND status > 2', array($share['id']));
                     $projects = $query->fetchColumn(0);
 
                     $array[] = (object) array(
