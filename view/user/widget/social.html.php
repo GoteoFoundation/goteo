@@ -3,7 +3,7 @@ use Goteo\Library\Text;
 
 $user = $this['user']
 ?>
-<?php if (isset($user->facebook) || isset($user->google) || isset($user->twitter) || isset($user->identica) || isset($user->linkedin)): ?>
+<?php if (!empty($user->facebook) || !empty($user->google) || !empty($user->twitter) || !empty($user->identica) || !empty($user->linkedin)): ?>
 <div class="widget user-social">
     <h4 class="title"><?php echo Text::get('profile-social-header'); ?></h4>
     <ul>
