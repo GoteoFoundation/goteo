@@ -1,127 +1,102 @@
 <?php
 
-echo 'En preparación';
-return;
-
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Library\Content;
 
 $bodyClass = 'admin';
 
-$filters = $this['filters'];
+$filter = $this['filter'];
 
-// si hay filtro lo arrastramos
-if (!empty($filters)) {
-    $filter = "?";
-    foreach ($filters as $key => $fil) {
-        $filter .= "$key={$fil['value']}&";
-    }
-} else {
-    $filter = '';
-}
+$data = Content::getAll($this['filters'], $_SESSION['translator_lang']);
 
-$botones = array(
-    'edit' => '[Editar]',
-    'remove' => '[Quitar]',
-    'up' => '[&uarr;]',
-    'down' => '[&darr;]'
-);
+die('<pre>'.print_r($data, 1).'</pre>');
 
-// ancho de los tds depende del numero de columnas
-$cols = count($this['columns']);
-$per = 100 / $cols;
+// valores de filtro
+$types     = Content::$types; // por tipo de campo
+$tables    = Content::$tables; // por tabla
 
-include 'view/prologue.html.php';
+//auxiliar
+$fields    = Content::$fields; // los campos
 
-    include 'view/header.html.php'; ?>
+// metemos el todos
+\array_unshift($types, 'Todos los tipos');
+\array_unshift($tables, 'Todas las tablas');
 
-        <div id="sub-header">
-            <div>
-                <h2><?php echo $this['title']; ?></h2>
-            </div>
 
-            <div class="sub-menu">
-                <div class="admin-menu">
-                    <ul>
-                        <li class="home"><a href="/admin">Mainboard</a></li>
-                        <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
-                    <?php foreach ($this['menu'] as $menu) : ?>
-                        <li><a href="<?php echo $menu['url']; ?>"><?php echo $menu['label']; ?></a></li>
-                    <?php endforeach; ?>
-                    </ul>
-                </div>
-            </div>
+$filters = array(
+            'type' => array(
+                    'label'   => 'Filtrar por tipo de contenido:',
+                    'type'    => 'select',
+                    'options' => $types,
+                    'value'   => $this['filters']['type']
+                ),
+            'table' => array(
+                    'label'   => 'Filtrar por tabla:',
+                    'type'    => 'select',
+                    'options' => $tables,
+                    'value'   => $this['filters']['table']
+                ),
+            'text' => array(
+                    'label'   => 'Buscar texto:',
+                    'type'    => 'input',
+                    'options' => null,
+                    'value'   => $this['filters']['text']
+                )
+        );
 
-        </div>
+?>
+<h3 class="title">Traducción de contenidos</h3>
+<!-- Filtro -->
+<?php if (!empty($filters)) : ?>
+<div class="widget board">
+    <form id="filter-form" action="/translate/contents/list/<?php echo $filter ?>" method="get">
+        <?php foreach ($filters as $id=>$fil) : ?>
+        <?php if ($fil['type'] == 'select') : ?>
+            <label for="filter-<?php echo $id; ?>"><?php echo $fil['label']; ?></label>
+            <select id="filter-<?php echo $id; ?>" name="<?php echo $id; ?>" onchange="document.getElementById('filter-form').submit();">
+            <?php foreach ($fil['options'] as $val=>$opt) : ?>
+                <option value="<?php echo $val; ?>"<?php if ($fil['value'] == $val) echo ' selected="selected"';?>><?php echo $opt; ?></option>
+            <?php endforeach; ?>
+            </select>
+        <?php endif; ?>
+        <?php if ($fil['type'] == 'input') : ?>
+            <br />
+            <label for="filter-<?php echo $id; ?>"><?php echo $fil['label']; ?></label>
+            <input name="<?php echo $id; ?>" value="<?php echo (string) $fil['value']; ?>" />
+            <input type="submit" name="filter" value="Buscar">
+        <?php endif; ?>
+        <?php endforeach; ?>
+    </form>
+</div>
+<?php endif; ?>
 
-        <div id="main">
-            <?php if (!empty($this['errors']) || !empty($this['success'])) : ?>
-                <div class="widget">
-                    <p>
-                        <?php echo implode(',', $this['errors']); ?>
-                        <?php echo implode(',', $this['success']); ?>
-                    </p>
-                </div>
-            <?php endif; ?>
+<!-- lista -->
+<div class="widget board">
+    <?php if (!empty($data)) : ?>
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Texto</th>
+                <th>Tipo</th>
+                <th>Tabla</th>
+                <th></th>
+            </tr>
+        </thead>
 
-            <!-- Filtro -->
-            <?php if (!empty($filters)) : ?>
-            <div class="widget board">
-                <form id="filter-form" action="<?php echo $this['url']; ?>" method="get">
-                    <?php foreach ($filters as $id=>$fil) : ?>
-                    <?php if ($fil['type'] == 'select') : ?>
-                        <label for="filter-<?php echo $id; ?>"><?php echo $fil['label']; ?></label>
-                        <select id="filter-<?php echo $id; ?>" name="<?php echo $id; ?>" onchange="document.getElementById('filter-form').submit();">
-                        <?php foreach ($fil['options'] as $val=>$opt) : ?>
-                            <option value="<?php echo $val; ?>"<?php if ($fil['value'] == $val) echo ' selected="selected"';?>><?php echo $opt; ?></option>
-                        <?php endforeach; ?>
-                        </select>
-                    <?php endif; ?>
-                    <?php if ($fil['type'] == 'input') : ?>
-                        <br />
-                        <label for="filter-<?php echo $id; ?>"><?php echo $fil['label']; ?></label>
-                        <input name="<?php echo $id; ?>" value="<?php echo (string) $fil['value']; ?>" />
-                        <input type="submit" name="filter" value="Buscar">
-                    <?php endif; ?>
-                    <?php endforeach; ?>
-                </form>
-            </div>
-            <?php endif; ?>
-
-            <!-- lista -->
-            <div class="widget board">
-                <?php if (!empty($this['data'])) : ?>
-                <table>
-                    <thead>
-                        <tr>
-                            <?php foreach ($this['columns'] as $key=>$label) : ?>
-                                <th><?php echo $label; ?></th>
-                            <?php endforeach; ?>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                    <?php foreach ($this['data'] as $item) : ?>
-                        <tr>
-                        <?php foreach ($this['columns'] as $key=>$label) : ?>
-                            <?php if (in_array($key, array('edit', 'remove', 'up', 'down'))) : ?>
-                                <td width="5%"><a title="Registro <?php echo (is_object($item)) ? $item->id : $item['id']; ?>" href='<?php $id = (is_object($item)) ? $item->id : $item['id']; echo "{$this['url']}/{$key}/{$id}/{$filter}"; ?>'><?php echo $botones[$key]; ?></a></td>
-                            <?php elseif ($key == 'image') : ?>
-                                <td width="<?php echo round($per)-5; ?>%"><?php if (!empty($item->$key)) : ?><img src="/image/<?php echo (is_object($item)) ? $item->$key : $item[$key]; ?>/110/110" alt="image" /><?php endif; ?></td>
-                            <?php else : ?>
-                                <td width="<?php echo round($per)-5; ?>%"><?php echo (is_object($item)) ? $item->$key : $item[$key]; ?></td>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                        </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
-                <?php else : ?>
-                <p>No se han encontrado registros</p>
-                <?php endif; ?>
-            </div>
-
-        </div>
-
-<?php
-    include 'view/footer.html.php';
-include 'view/epilogue.html.php';
+        <tbody>
+        <?php foreach ($data as $item) : ?>
+            <tr>
+                <td width="5%"><a title="Registro <?php echo $item->table.'-'.$item->id ?>" href='/translate/contents/edit/<?php echo $item->table.'-'.$item->id . $filter ?>'>[Edit]</a></td>
+                <td width="70%"><?php echo Text::recorta($item->value, 150) ?></td>
+                <td width="25%"><?php echo $types[$item->field] ?></td>
+                <td width="25%"><?php echo $tables[$item->table] ?></td>
+                <td></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+    <?php else : ?>
+    <p>No se han encontrado registros</p>
+    <?php endif; ?>
+</div>

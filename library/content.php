@@ -12,7 +12,7 @@ namespace Goteo\Library {
 	 */
     class Content {
 
-        public
+        public static 
             $tables = array(
                 'promote'   => 'Proyectos destacados',
                 'icon'      => 'Tipos de retorno/recompensa',
@@ -56,6 +56,13 @@ namespace Goteo\Library {
                 'tag' => array (
                     'name' => 'Nombre'
                 )
+            ),
+            $types = array(
+                'title'       => 'Título',
+                'name'        => 'Nombre',
+                'description' => 'Descripción',
+                'url'         => 'Enlace',
+                'text'        => 'Texto extenso'
             );
 
         /*
@@ -95,14 +102,94 @@ namespace Goteo\Library {
 		/*
 		 *  Metodo para la lista de registros de las tablas de contenidos
 		 */
-		public static function getAll() {
+		public static function getAll($filters = array(), $lang = \GOTEO_DEFAULT_LANG) {
+            $contents = array();
+
+            $values = array(':lang' => $lang);
+
+            /// filters:  type  //tipo de campo
+            //          , table //tabla o modelo o concepto
+            //          , text //cadena de texto
+
+            // si hay filtro de tabla solo sacamos de una tabla
+
+            // si hay filtro de tipo, solo las tablas que tengan ese tipo y solo ese tipo en los resultados
+
+            // si hay filtro de texto es para todas las sentencias
+
+            // y todos los campos sacan el contenido "purpose" si no tienen del suyo
+
+            $sql = "";
+            $t = 0;
+            foreach (self::$tables as $table=>$tableName) {
+                if (!self::checkLangTable($table)) continue;
+                if (!empty($filters['type']) && !isset(self::$fields[$table][$filters['type']])) continue;
+                if (!empty($filters['table']) && $table != $filters['table']) continue;
+
+                $sql .= "(SELECT
+                            {$table}.id as id,
+                            '{$table}' as `table`,
+                            ";
+
+                foreach (self::$fields[$table] as $field=>$fieldName) {
+                    $sql .= "IFNULL({$table}_lang.$field, {$table}.$field) as $field
+                            ";
+                }
+
+                $sql .= "FROM {$table}
+                         LEFT JOIN {$table}_lang
+                            ON {$table}_lang.id = {$table}.id
+                            AND {$table}_lang.lang = :lang
+                         WHERE {$table}.id 
+                    ";
+
+
+                // para cada campo
+                if (!empty($filters['text'])) {
+                    foreach (self::$fields[$table] as $field=>$fieldName) {
+                        $sql .= " AND ( {$table}_lang.{$field} LIKE :text{$table}{$field} OR ({$table}_lang.{$field} IS NULL AND {$table}.{$field} LIKE :text{$table}{$field} ))
+                            ";
+                        $values[":text{$table}{$field}"] = "%{$filters['text']}%";
+                    }
+                }
+
+                $sql .= ")
+	    			UNION ALL
+                    ";
+
+                $t++;
+            }
+
+            // quito el último union si hay mas de una tabla
+            if ($t > 1) {
+                // $sql ....
+        	    $sql = substr($sql, 0, -10);
+                $sql .= " ORDER BY `table` ASC, `id' ASC";
+            }
+
+            echo $sql;
+            die;
 
             try {
-                $query = Model::query("SELECT id, name, description, url FROM page ORDER BY name ASC");
-                foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $page) {
-                    $pages[] = $page;
+                $query = Model::query($sql, $values);
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $content) {
+
+                    foreach (self::$fields[$content->table] as $field=>$fieldName) {
+                        if (!empty($filters['type']) && $field != $filters['type']) continue;
+
+                        $data = array(
+                            'table' => $content->table,
+                            'id' => $content->id,
+                            'field' => $field,
+                            'value' => $content->field
+                        );
+
+                        $contents[$content->table] = (object) $data;
+
+                    }
+
                 }
-                return $pages;
+                return $contents;
             } catch (\PDOException $e) {
                 throw new Exception('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
             }
@@ -149,6 +236,10 @@ namespace Goteo\Library {
 
 		}
 
+
+        public static function checkLangTable($table) {
+            
+        }
 
 	}
 }
