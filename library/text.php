@@ -433,9 +433,11 @@ namespace Goteo\Library {
                 $port   = $match[3][0];
                 $path   = $match[4][0];
 
-                // Check that the TLD is valid or that $domain is an IP address.
+                // Check that the TLD is valid (or that $domain is an IP address).
+                // Quitamos esto para que no confunda los millares con ips
+                //preg_match('{^\.[0-9]{1,3}$}', $tld) ||
                 $tld = strtolower(strrchr($domain, '.'));
-                if (preg_match('{^\.[0-9]{1,3}$}', $tld) || isset($validTlds[$tld]))
+                if (isset($validTlds[$tld]))
                 {
                     // Prepend http:// if no protocol specified
                     $completeUrl = $match[1][0] ? $url : "http://$url";
