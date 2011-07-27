@@ -5,7 +5,7 @@
 div#header,
 div#super-header {
     position: relative;
-    z-index: 9999;
+    z-index: 999;
 }
  
 div#header a,
