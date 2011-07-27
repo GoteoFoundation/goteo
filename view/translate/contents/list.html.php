@@ -9,8 +9,6 @@ $filter = $this['filter'];
 
 $data = Content::getAll($this['filters'], $_SESSION['translator_lang']);
 
-die('<pre>'.print_r($data, 1).'</pre>');
-
 // valores de filtro
 $types     = Content::$types; // por tipo de campo
 $tables    = Content::$tables; // por tabla
@@ -71,32 +69,31 @@ $filters = array(
 <?php endif; ?>
 
 <!-- lista -->
+    <?php foreach ($tables as $table=>$tableName) :
+        if (!empty($data[$table])) : ?>
 <div class="widget board">
-    <?php if (!empty($data)) : ?>
+    <h3 class="title">Contenidos de <?php echo $tableName ?></h3>
     <table>
         <thead>
             <tr>
                 <th></th>
+                <th>Registro</th>
+                <th>Campo</th>
                 <th>Texto</th>
-                <th>Tipo</th>
-                <th>Tabla</th>
-                <th></th>
             </tr>
         </thead>
 
         <tbody>
-        <?php foreach ($data as $item) : ?>
+        <?php foreach ($data[$table] as $item) : ?>
             <tr>
                 <td width="5%"><a title="Registro <?php echo $item->table.'-'.$item->id ?>" href='/translate/contents/edit/<?php echo $item->table.'-'.$item->id . $filter ?>'>[Edit]</a></td>
-                <td width="70%"><?php echo Text::recorta($item->value, 150) ?></td>
-                <td width="25%"><?php echo $types[$item->field] ?></td>
-                <td width="25%"><?php echo $tables[$item->table] ?></td>
-                <td></td>
+                <td width="25%"><?php echo $item->id ?></td>
+                <td width="25%"><?php echo $fields[$item->table][$item->field] ?></td>
+                <td width="70%"><?php echo Text::recorta($item->value, 250) ?></td>
             </tr>
         <?php endforeach; ?>
         </tbody>
     </table>
-    <?php else : ?>
-    <p>No se han encontrado registros</p>
-    <?php endif; ?>
 </div>
+    <?php endif; 
+    endforeach; ?>

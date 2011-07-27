@@ -76,7 +76,8 @@ namespace Goteo\Library {
                         ";
 
             foreach (self::$fields[$table] as $field=>$fieldName) {
-                $sql .= "IFNULL({$table}_lang.$field, {$table}.$field) as $field
+                $sql .= "{$table}_lang.$field as $field, 
+                         {$table}.$field as original_$field,
                         ";
             }
 
@@ -105,8 +106,6 @@ namespace Goteo\Library {
 		public static function getAll($filters = array(), $lang = \GOTEO_DEFAULT_LANG) {
             $contents = array();
 
-            $values = array(':lang' => $lang);
-
             /// filters:  type  //tipo de campo
             //          , table //tabla o modelo o concepto
             //          , text //cadena de texto
@@ -119,76 +118,74 @@ namespace Goteo\Library {
 
             // y todos los campos sacan el contenido "purpose" si no tienen del suyo
 
-            $sql = "";
-            $t = 0;
-            foreach (self::$tables as $table=>$tableName) {
-                if (!self::checkLangTable($table)) continue;
-                if (!empty($filters['type']) && !isset(self::$fields[$table][$filters['type']])) continue;
-                if (!empty($filters['table']) && $table != $filters['table']) continue;
-
-                $sql .= "(SELECT
-                            {$table}.id as id,
-                            '{$table}' as `table`,
-                            ";
-
-                foreach (self::$fields[$table] as $field=>$fieldName) {
-                    $sql .= "IFNULL({$table}_lang.$field, {$table}.$field) as $field
-                            ";
-                }
-
-                $sql .= "FROM {$table}
-                         LEFT JOIN {$table}_lang
-                            ON {$table}_lang.id = {$table}.id
-                            AND {$table}_lang.lang = :lang
-                         WHERE {$table}.id 
-                    ";
-
-
-                // para cada campo
-                if (!empty($filters['text'])) {
-                    foreach (self::$fields[$table] as $field=>$fieldName) {
-                        $sql .= " AND ( {$table}_lang.{$field} LIKE :text{$table}{$field} OR ({$table}_lang.{$field} IS NULL AND {$table}.{$field} LIKE :text{$table}{$field} ))
-                            ";
-                        $values[":text{$table}{$field}"] = "%{$filters['text']}%";
-                    }
-                }
-
-                $sql .= ")
-	    			UNION ALL
-                    ";
-
-                $t++;
-            }
-
-            // quito el último union si hay mas de una tabla
-            if ($t > 1) {
-                // $sql ....
-        	    $sql = substr($sql, 0, -10);
-                $sql .= " ORDER BY `table` ASC, `id' ASC";
-            }
-
-            echo $sql;
-            die;
-
             try {
-                $query = Model::query($sql, $values);
-                foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $content) {
 
-                    foreach (self::$fields[$content->table] as $field=>$fieldName) {
-                        if (!empty($filters['type']) && $field != $filters['type']) continue;
+                foreach (self::$tables as $table=>$tableName) {
+                    if (!self::checkLangTable($table)) continue;
+                    if (!empty($filters['type']) && !isset(self::$fields[$table][$filters['type']])) continue;
+                    if (!empty($filters['table']) && $table != $filters['table']) continue;
 
-                        $data = array(
-                            'table' => $content->table,
-                            'id' => $content->id,
-                            'field' => $field,
-                            'value' => $content->field
-                        );
+                    $sql = "";
+                    $values = array();
 
-                        $contents[$content->table] = (object) $data;
+                    $sql .= "SELECT
+                                {$table}.id as id,
+                                ";
+
+                    foreach (self::$fields[$table] as $field=>$fieldName) {
+                        $sql .= "IFNULL({$table}_lang.$field, {$table}.$field) as $field,
+                                ";
+                    }
+
+                    $sql .= "CONCAT('{$table}') as `table`
+                            ";
+
+                    $sql .= "FROM {$table}
+                             LEFT JOIN {$table}_lang
+                                ON {$table}_lang.id = {$table}.id
+                                AND {$table}_lang.lang = '$lang'
+                             WHERE {$table}.id IS NOT NULL
+                        ";
+
+                        // solo entradas de goteo en esta gestión
+                        if ($table == 'post') {
+                            $sql .= "AND post.blog = 1
+                                ";
+                        }
+
+                    // para cada campo
+                    if (!empty($filters['text'])) {
+                        foreach (self::$fields[$table] as $field=>$fieldName) {
+                            $sql .= " AND ( {$table}_lang.{$field} LIKE :text{$table}{$field} OR ({$table}_lang.{$field} IS NULL AND {$table}.{$field} LIKE :text{$table}{$field} ))
+                                ";
+                            $values[":text{$table}{$field}"] = "%{$filters['text']}%";
+                        }
+                    }
+
+                    $sql .= " ORDER BY id ASC";
+
+                    $query = Model::query($sql, $values);
+                    foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $content) {
+
+                        foreach (self::$fields[$table] as $field=>$fieldName) {
+                            if (!empty($filters['type']) && $field != $filters['type']) continue;
+
+                            $data = array(
+                                'table' => $table,
+                                'id' => $content->id,
+                                'field' => $field,
+                                'value' => $content->$field
+                            );
+
+                            $contents[$table][] = (object) $data;
+
+                        }
 
                     }
 
+
                 }
+
                 return $contents;
             } catch (\PDOException $e) {
                 throw new Exception('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
@@ -202,7 +199,11 @@ namespace Goteo\Library {
 		/*
 		 *  Esto se usa para actualizar datos en cualquier tabla de contenido
 		 */
-		public function save(&$errors = array()) {
+		public static function save($data, &$errors = array()) {
+
+            if (empty($data)) {
+                return false;
+            }
 
   			try {
                 // tenemos el id en $this->id  (el campo id siempre se llama id)
@@ -211,17 +212,17 @@ namespace Goteo\Library {
                 // tenemos los campos en self::$fields[$table] y el contenido de cada uno en $this->$field
                 $set = '`id` = :id, `lang` = :lang ';
                 $values = array(
-                    ':id' => $this->id,
-                    ':lang' => $this->lang
+                    ':id' => $data['id'],
+                    ':lang' => $data['lang']
                 );
 
-                foreach (self::$fields[$this->table] as $field=>$fieldDesc) {
+                foreach (self::$fields[$data['table']] as $field=>$fieldDesc) {
                     if ($set != '') $set .= ", ";
                     $set .= "`$field` = :$field ";
-                    $values[":$field"] = $this->$field;
+                    $values[":$field"] = $data[$field];
                 }
 
-				$sql = "REPLACE INTO {$this->table}_lang SET $set";
+				$sql = "REPLACE INTO {$data['table']}_lang SET $set";
 				if (Model::query($sql, $values)) {
                     return true;
                 } else {
@@ -238,7 +239,8 @@ namespace Goteo\Library {
 
 
         public static function checkLangTable($table) {
-            
+            //assume yes
+            return true;
         }
 
 	}

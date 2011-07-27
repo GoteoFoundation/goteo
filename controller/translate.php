@@ -119,23 +119,18 @@ namespace Goteo\Controller {
 
             // si llega post, vamos a guardar los cambios
             if ($option == 'edit' && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
-                die(\trace($_POST));
-                /*
-                'id'   => $id,
-                'text' => $_POST['text'],
-                 */
 
-                /*
-                 * Falta añadir los campos
-                 * 
-                if (Contents::save(array(
-                                'id'   => $id,
-                                'table'=> $table,
-                                'lang' => $_SESSION['translator_lang']
-                            ), $errors)) {
+                echo '<pre>'.print_r($_POST, 1).'</pre>';
+
+                $table = $_POST['table'];
+                if (!in_array($table, \array_keys(Content::$tables))) {
+                    $errors[] = "Tabla $table desconocida";
+                    break;
+                }
+
+                if (Content::save($_POST, $errors)) {
                     throw new Redirection("/translate/contents/$filter");
                 }
-                 */
             }
 
             // sino, mostramos la lista
