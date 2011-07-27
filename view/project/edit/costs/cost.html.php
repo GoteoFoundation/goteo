@@ -13,11 +13,9 @@ $cost = $this['data']['cost'] ?>
     
     <div class="description">
         <?php echo htmlspecialchars($cost->description) ?>
-        <p><strong><?php if ($cost->required) {
-            echo Text::get('costs-field-required_cost-yes');
-        } else {
-            echo Text::get('costs-field-required_cost-no');
-        } ?></strong></p>
+        <p><?php echo (int) $cost->amount ?> €  
+            <strong><?php echo $cost->required ? Text::get('costs-field-required_cost-yes') : Text::get('costs-field-required_cost-no') ?></strong>
+        </p>
 
     </div>
     

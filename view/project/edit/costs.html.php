@@ -223,7 +223,6 @@ echo new SuperForm(array(
         
         'resource' => array(
             'type'      => 'textarea',
-            'required'  => true,
             'cols'      => 40,
             'rows'      => 4,
             'title'     => Text::get('costs-field-resoure'),

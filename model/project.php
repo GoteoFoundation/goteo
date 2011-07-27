@@ -907,12 +907,15 @@ namespace Goteo\Model {
                 ++$score;
             }
 
+            /*
             if (empty($this->resource)) {
                 $errors['costs']['resource'] = Text::get('mandatory-project-resource');
             } else {
                  $okeys['costs']['resource'] = 'ok';
                  ++$score;
             }
+             * 
+             */
 
             $this->setScore($score, 7);
             /***************** FIN Revisión del paso 4, COSTES *****************/

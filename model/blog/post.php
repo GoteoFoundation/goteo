@@ -60,9 +60,6 @@ namespace Goteo\Model\Blog {
                 //tags
                 $post->tags = Post\Tag::getAll($id);
 
-                // reconocimiento de enlaces y saltos de linea
-                $post->text = nl2br(Text::urlink($post->text));
-
                 return $post;
         }
 

@@ -54,11 +54,11 @@ namespace Goteo\Model\Project {
                 //Text::get('mandatory-cost-description');
 */
             if (empty($this->from) || $this->from == '0000-00-00') {
-                $this->from = null;
+                $this->from = date('Y-m-d');
             }
 
             if (empty($this->until) || $this->until == '0000-00-00') {
-                $this->until = null;
+                $this->until = date('Y-m-d');
             }
 
             //cualquiera de estos errores hace fallar la validación

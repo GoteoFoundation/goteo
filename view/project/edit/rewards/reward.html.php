@@ -10,12 +10,13 @@ $reward = $this['data']['reward'] ?>
     
     <div class="description">
         <p><?php echo htmlspecialchars($reward->description) ?></p>
-        <div class="license license_<?php echo $reward->license ?>"><?php echo htmlspecialchars($this['data']['licenses'][$reward->license]) ?></div>
         <?php if (!empty($reward->units)) : ?>
+                <?php echo "{$reward->units} u. x {$reward->amount} € = " . ($reward->units * $reward->amount) ." €<br />"; ?>
                 <strong><?php echo Text::get('project-rewards-individual_reward-limited'); ?></strong>
                 <?php $units = $reward->units;
                 echo Text::html('project-rewards-individual_reward-units_left', $units); ?><br />
             <?php endif; ?>
+        <div class="license license_<?php echo $reward->license ?>"><?php echo htmlspecialchars($this['data']['licenses'][$reward->license]) ?></div>
     </div>
 
     

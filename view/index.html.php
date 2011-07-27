@@ -139,7 +139,7 @@ include 'view/header.html.php' ?>
                     <?php endif; ?>
                     
                     <div class="description">
-                        <?php echo Text::recorta($post->text, 500) ?>
+                        <?php echo Text::recorta(nl2br(Text::urlink($post->text)), 500) ?>
                     </div>
 
                     <div class="read_more"><a href="/blog/<?php echo $post->id; ?>"><?php echo Text::get('regular-read_more') ?></a></div>

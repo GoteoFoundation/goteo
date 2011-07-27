@@ -89,9 +89,7 @@ jQuery(document).ready(function($) {
                 <ul>
                     <li><a href="/"><?php echo Text::get('home-promotes-header') ?></a></li>
                     <li><a href="/discover/view/popular"><?php echo Text::get('discover-group-popular-header') ?></a></li>
-                    <!--<li><a href="/discover/view/outdate"><?php echo Text::get('discover-group-outdate-header') ?></a></li>-->
-                    <li><a href="/discover/view/outdate"><?php echo Text::recorta(Text::get('discover-group-outdate-header'), 24) ?></a></li>
-                    
+                    <li><a href="/discover/view/outdate"><?php echo Text::get('discover-group-outdate-header') ?></a></li>
                     <li><a href="/discover/view/recent"><?php echo Text::get('discover-group-recent-header') ?></a></li>
                     <li><a href="/discover/view/success"><?php echo Text::get('discover-group-success-header') ?></a></li>
                     <li><a href="/project/create"><?php echo Text::get('regular-create') ?></a></li>
