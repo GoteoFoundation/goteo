@@ -11,3 +11,6 @@ CREATE TABLE IF NOT EXISTS `acl` (
   KEY `user_FK` (`user_id`),
   KEY `node_FK` (`node_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;
+
+--
+ALTER TABLE `acl` AUTO_INCREMENT =1000;
