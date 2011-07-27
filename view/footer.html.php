@@ -108,18 +108,6 @@ jQuery(document).ready(function($) {
                 </ul>
             </div>
 
-            <div class="block social">
-                <h8 class="title"><?php echo Text::get('footer-header-social') ?></h8>
-                <ul>
-                    <li class="twitter"><a href="<?php echo Text::get('social-account-twitter') ?>" target="_blank"><?php echo Text::get('regular-twitter') ?></a></li>
-                    <li class="facebook"><a href="<?php echo Text::get('social-account-facebook') ?>" target="_blank"><?php echo Text::get('regular-facebook') ?></a></li>
-                    <li class="identica"><a href="<?php echo Text::get('social-account-identica') ?>"><?php echo Text::get('regular-identica') ?></a></li>
-                    <li class="gplus"><a href="<?php echo Text::get('social-account-google') ?>"><?php echo Text::get('regular-google') ?></a></li>
-                    <li class="rss"><a href="/rss">RSS</a></li>
-                    
-                </ul>
-            </div>
-
            <div class="block sponsors">
                 <h8 class="title"><?php echo Text::get('footer-header-sponsors') ?></h8>
                 <?php $i = 1; foreach ($sponsors as $sponsor) : ?>
@@ -137,7 +125,7 @@ jQuery(document).ready(function($) {
                 </ul>
             </div>
 
-            <div class="block services" style="border-right:#ebe9ea 2px solid;">
+            <div class="block services">
                 
                 <h8 class="title"><?php echo Text::get('footer-header-services') ?></h8>
                 <ul>
@@ -148,6 +136,18 @@ jQuery(document).ready(function($) {
                 
             </div>
          
+            <div class="block social" style="border-right:#ebe9ea 2px solid;">
+                <h8 class="title"><?php echo Text::get('footer-header-social') ?></h8>
+                <ul>
+                    <li class="twitter"><a href="<?php echo Text::get('social-account-twitter') ?>" target="_blank"><?php echo Text::get('regular-twitter') ?></a></li>
+                    <li class="facebook"><a href="<?php echo Text::get('social-account-facebook') ?>" target="_blank"><?php echo Text::get('regular-facebook') ?></a></li>
+                    <li class="identica"><a href="<?php echo Text::get('social-account-identica') ?>"><?php echo Text::get('regular-identica') ?></a></li>
+                    <li class="gplus"><a href="<?php echo Text::get('social-account-google') ?>"><?php echo Text::get('regular-google') ?></a></li>
+                    <li class="rss"><a href="/rss">RSS</a></li>
+
+                </ul>
+            </div>
+
 		</div>
     </div>
 
