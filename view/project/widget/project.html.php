@@ -12,7 +12,7 @@ $level = $this['level'] ?: 3;
 $categories = Category::getNames($project->id, 2);
 
 //si llega $this['investor'] sacamos el total aportado para poner en "mi aporte"
-if (isset($this['investor'])) {
+if (isset($this['investor']) && is_object($this['investor'])) {
     $investor = $this['investor'];
     $invest = Invest::supported($investor->id, $project->id);
 }

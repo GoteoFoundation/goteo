@@ -2,11 +2,31 @@ div.widget.project-share .title {
     border: none;
 }
 
+div.widget.project-share div.left,div.widget.project-share div.right{
+	float:left;
+}
+
+div.widget.project-share div.left{
+	width:70%;
+}
+
+div.widget.project-share div.right{
+	width:30%;
+}
+
+
+div.widget.project-share h4{
+	font-weight:normal;
+	margin-top:0;
+}
+
 div.widget.project-share ul {
-    list-style: none;
-    overflow: visible;
-    margin: 0;
-    padding: 0;
+	height: 60px;
+	list-style: none outside none;
+	margin: 0;
+	overflow: visible;
+	padding: 0;
+	position: relative;
 }
 
 div.widget.project-share li {
@@ -23,17 +43,40 @@ div.widget.project-share li a {
     text-decoration: none;
 }
 
+div.widget.project-share li.twitter {
+    background-image: url('/view/css/social/twitter.png');    
+	position:absolute;
+	top:0;left:0;
+}
+
 div.widget.project-share li.facebook {
     background-image: url('/view/css/social/facebook.png');
+	position:absolute;
+	top:30px;left:0;	
+}
+
+div.widget.project-share li.url{
+	position:absolute;
+	top:0;left:100px;
+}
+
+div.widget.project-share li.proyecto{
+	background-image: url("/view/css/project/widget/proyecto.jpg");
+	font-size: 11px;
+	height: 20px;
+	line-height: 20px;
+	margin-left: 5px;
+	width: 128px;
+}
+div.widget.project-share li.proyecto a{
+	color:#fff;
 }
 
 div.widget.project-share li.google {
-    background-image: url('/view/css/social/google.png');
+    background-image: url('/view/css/social/google.png');	
 }
 
-div.widget.project-share li.twitter {
-    background-image: url('/view/css/social/twitter.png');    
-}
+
 
 div.widget.project-share li.identica {
     background-image: url('/view/css/social/identica.png');
