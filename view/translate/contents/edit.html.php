@@ -1,81 +1,53 @@
 <?php
 
-echo 'En preparación';
-return;
-
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Library\Content;
 
 $bodyClass = 'admin';
 
-include 'view/prologue.html.php';
+list($table, $id) = explode('-', $this['id']);
 
-    include 'view/header.html.php'; ?>
+$content = Content::get($table, $id, $_SESSION['translator_lang']);
 
-        <div id="sub-header">
-            <div>
-                <h2><?php echo $this['title']; ?></h2>
-            </div>
+$sizes = array(
+    'title'       => 'cols="120" rows="2"',
+    'name'        => 'cols="120" rows="1"',
+    'description' => 'cols="120" rows="4"',
+    'url'         => 'cols="120" rows="1"',
+    'text'        => 'cols="120" rows="10"'
+);
+?>
+<div class="widget board">
+    <h3 class="title">Editando el registro '<?php echo $id ?>' de la tabla '<?php echo Content::$tables[$table] ?>'</h3>
 
-            <div class="sub-menu">
-                <div class="admin-menu">
-                    <ul>
-                        <li class="home"><a href="/admin">Mainboard</a></li>
-                        <li class="checking"><a href="/admin/checking">Revisión de proyectos</a></li>
-                    <?php foreach ($this['menu'] as $menu) : ?>
-                        <li><a href="<?php echo $menu['url']; ?>"><?php echo $menu['label']; ?></a></li>
-                    <?php endforeach; ?>
-                    </ul>
-                </div>
-            </div>
+    <form action="/translate/contents/edit/<?php echo $text->id ?>/<?php echo $this['filter'] ?>" method="post" >
+        <input type="hidden" name="table" value="<?php echo $table ?>" />
+        <input type="hidden" name="id" value="<?php echo $id ?>" />
+        <input type="hidden" name="lang" value="<?php echo $_SESSION['translator_lang'] ?>" />
 
-        </div>
 
-        <div id="main">
-            <?php if (!empty($this['errors']) || !empty($this['success'])) : ?>
-                <div class="widget">
-                    <p>
-                        <?php echo implode(',', $this['errors']); ?>
-                        <?php echo implode(',', $this['success']); ?>
-                    </p>
-                </div>
-            <?php endif; ?>
+        <?php foreach (Content::$fields[$table] as $field=>$fieldName) : ?>
+        <p>
+            <label for="<?php echo 'id'.$field ?>"><?php echo $fieldName ?></label><br />
+            <textarea id="<?php echo 'id'.$field ?>" name="<?php echo $field ?>" <?php echo $sizes[$field] ?>><?php echo $content->$field; ?></textarea>
+        </p>
+        <?php endforeach;  ?>
+        <input type="submit" name="save" value="Guardar" />
 
-            <div class="widget board">
-                <!-- superform -->
-                <form action="<?php echo $this['form']['action']; ?>" method="post" enctype="multipart/form-data">
-                    <dl>
-                        <?php foreach ($this['form']['fields'] as $Id=>$field) : ?>
-                            <dt><label for="<?php echo $Id; ?>"><?php echo $field['label']; ?></label></dt>
-                            <dd><?php switch ($field['type']) {
-                                case 'text': ?>
-                                    <input type="text" id="<?php echo $Id; ?>" name="<?php echo $field['name']; ?>" <?php echo $field['properties']; ?> value="<?php $name = $field['name']; echo $this['data']->$name; ?>" />
-                                <?php break;
-                                case 'hidden': ?>
-                                    <input type="hidden" name="<?php echo $field['name']; ?>" <?php echo $field['properties']; ?> value="<?php $name = $field['name']; echo $this['data']->$name; ?>" />
-                                <?php break;
-                                case 'textarea': ?>
-                                    <textarea id="<?php echo $Id; ?>" name="<?php echo $field['name']; ?>" <?php echo $field['properties']; ?>><?php $name = $field['name']; echo $this['data']->$name; ?></textarea>
-                                <?php break;
-                                case 'image':
-                                     $name = $field['name'];
-                                    ?>
-                                    <input type="file" id="<?php echo $Id; ?>" name="<?php echo $field['name']; ?>" <?php echo $field['properties']; ?> value="<?php $name = $field['name']; echo $this['data']->$name; ?>" /> <br />
-                                    <?php if (!empty($this['data']->$name)) : ?>
-                                        <img src="/image/<?php echo $this['data']->$name; ?>/110/110" alt="<?php echo $field['name']; ?>" /><br />
-                                        <input type="hidden" name="<?php echo $field['name']; ?>" value="<?php echo $this['data']->$name; ?>" />
-                                        <input type="submit" name="image-<?php echo $this['data']->$name; ?>-remove" value="Quitar" />
-                                    <?php endif; ?>
-                                <?php break;
-                            } ?></dd>
+    </form>
+</div>
 
-                        <?php endforeach; ?>
-                    </dl>
-                    <input type="submit" name="<?php echo $this['form']['submit']['name']; ?>" value="<?php echo $this['form']['submit']['label']; ?>" />
-                </form>
-            </div>
+<div class="widget board">
+    <h3>Contenido original en español sin multiidioma</h3>
 
-        </div>
+    <?php foreach (Content::$fields[$table] as $field=>$fieldName) :
+        $campo = 'original_'.$field; ?>
+        <label for="<?php echo 'id'.$field ?>"><?php echo $fieldName ?>:</label><br />
+        <blockquote>
+            <?php echo $content->$campo; ?>
+        </blockquote>
+        <br />
+    <?php endforeach;  ?>
 
-<?php
-    include 'view/footer.html.php';
-include 'view/epilogue.html.php';
+
+</div>

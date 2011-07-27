@@ -8,6 +8,7 @@ namespace Goteo\Controller {
         Goteo\Model,
 	    Goteo\Library\Text,
 	    Goteo\Library\Page,
+	    Goteo\Library\Content,
 		Goteo\Library\Lang;
 
 	class Translate extends \Goteo\Core\Controller {
@@ -75,8 +76,6 @@ namespace Goteo\Controller {
             // si llega post, vamos a guardar los cambios
             if ($option == 'edit' && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
 
-
-
                 if (Text::save(array(
                                 'id'   => $id,
                                 'text' => $_POST['text'],
@@ -95,7 +94,6 @@ namespace Goteo\Controller {
                     'id'      => $id,
                     'filter' => $filter,
                     'filters' => $filters,
-                    'data'    => $data,
                     'errors'  => $errors
                 )
              );
@@ -105,19 +103,48 @@ namespace Goteo\Controller {
 
         /* Contents */
 		public function contents ($option = 'list', $id = null) {
-            $contents = array (
-                'promotes'  => 'Destacados',
-                'faq'  => 'FAQ',
-                'posts'  => 'Blog',
-                'news' => 'Noticias',
-                'tags' => 'Tags',
-                'icons' => 'Tipos',
-                'licenses' => 'Licencias',
-                'categories' => 'Categorias/Intereses'
-            );
 
+            $errors = array();
 
-            return new View('view/translate/index.html.php');
+            // comprobamos los filtros
+            $filters = array();
+            $fields = array('type', 'table', 'text');
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    $filters[$field] = $_GET[$field];
+                }
+            }
+
+            $filter = "?type={$filters['type']}&table={$filters['table']}&text={$filters['text']}";
+
+            // si llega post, vamos a guardar los cambios
+            if ($option == 'edit' && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
+
+                echo '<pre>'.print_r($_POST, 1).'</pre>';
+
+                $table = $_POST['table'];
+                if (!in_array($table, \array_keys(Content::$tables))) {
+                    $errors[] = "Tabla $table desconocida";
+                    break;
+                }
+
+                if (Content::save($_POST, $errors)) {
+                    throw new Redirection("/translate/contents/$filter");
+                }
+            }
+
+            // sino, mostramos la lista
+            return new View(
+                'view/translate/index.html.php',
+                array(
+                    'section' => 'contents',
+                    'option'  => $option,
+                    'id'      => $id,
+                    'filter' => $filter,
+                    'filters' => $filters,
+                    'errors'  => $errors
+                )
+             );
         }
 
         /*

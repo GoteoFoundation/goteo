@@ -27,7 +27,7 @@ include 'view/header.html.php'; ?>
                         <li class="home"><a href="/translate">Portada</a></li>
                         <li class="checking"><a href="/translate/texts">Textos</a></li>
                         <li class="accounting"><a href="/translate/pages">Páginas</a></li>
-<!--                        <li class="messages"><a href="/translate/contents">Contenidos</a></li> -->
+                        <li class="messages"><a href="/translate/contents">Contenidos</a></li>
                     </ul>
                 </div>
             </div>

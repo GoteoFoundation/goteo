@@ -11,7 +11,7 @@ $text = new stdClass();
 
 $text->id = $this['id'];
 $text->purpose = Text::getPurpose($this['id']);
-$text->text = Text::get($this['id'], $_SESSION['translator_lang']);
+$text->text = Text::get($this['id']);
 
 ?>
 <div class="widget board">

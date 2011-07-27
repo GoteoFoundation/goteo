@@ -43,7 +43,9 @@ namespace Goteo\Library {
                 return $text;
         }
 
-        static public function get ($id, $lang = \GOTEO_DEFAULT_LANG) {
+        static public function get ($id) {
+
+            $lang = isset($_SESSION['translator_lang']) ? $_SESSION['translator_lang'] : \GOTEO_DEFAULT_LANG;
 
             if (\defined('GOTEO_ADMIN_NOCACHE')) {
                 $nocache = true;
