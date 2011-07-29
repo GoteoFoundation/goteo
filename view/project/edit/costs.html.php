@@ -178,15 +178,7 @@ echo new SuperForm(array(
     'method'        => 'post',
     'title'         => Text::get('costs-main-header'),
     'hint'          => Text::get('guide-project-costs'),    
-    'class'         => 'aqua',
-    'footer'        => array(
-        'view-step-rewards' => array(
-            'name'  => 'view-step-rewards',
-            'type'  => 'submit',
-            'label' => Text::get('form-next-button'),
-            'class' => 'next'
-        )        
-    ),    
+    'class'         => 'aqua',      
     'elements'      => array(        
         'process_costs' => array (
             'type' => 'hidden',
@@ -238,13 +230,31 @@ echo new SuperForm(array(
             'html'      => new View('view/project/widget/schedule.html.php', array('project' => $project))
         ),
         
-        'errors' => array(
-            'title' => 'Errores',
-            'view'  => new View('view/project/edit/errors.html.php', array(
-                'project'   => $project,
-                'step'      => $this['step']
-            ))
+        'footer' => array(
+            'type'      => 'group',
+            'children'  => array(
+                'errors' => array(
+                    'title' => 'Errores',
+                    'view'  => new View('view/project/edit/errors.html.php', array(
+                        'project'   => $project,
+                        'step'      => $this['step']
+                    ))                    
+                ),
+                'buttons'  => array(
+                    'type'  => 'group',
+                    'children' => array(
+                        'next' => array(
+                            'type'  => 'submit',
+                            'name'  => 'view-step-rewards',
+                            'label' => Text::get('form-next-button'),
+                            'class' => 'next'
+                        )
+                    )
+                )
+            )
+        
         )
+        
     )
 
 ));

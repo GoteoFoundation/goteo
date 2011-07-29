@@ -4,6 +4,7 @@ body.project-edit div#main #project-steps {
     padding: 30px 0 45px;
     text-align: center;    
     font-size: 0;
+    clear: both;
 }
 
 body.project-edit div#main #project-steps fieldset {

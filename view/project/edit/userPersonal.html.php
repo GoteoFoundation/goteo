@@ -14,14 +14,6 @@ echo new SuperForm(array(
     'method'        => 'post',
     'title'         => Text::get('personal-main-header'),
     'hint'          => Text::get('guide-project-contract-information'),    
-    'footer'        => array(
-        'view-step-overview' => array(
-            'type'  => 'submit',
-            'label' => Text::get('form-next-button'),
-            'class' => 'next',
-            'name'  => 'view-step-overview'
-        )        
-    ),
     'elements'      => array(
         'process_userPersonal' => array (
             'type' => 'hidden',
@@ -106,12 +98,29 @@ echo new SuperForm(array(
             'value'     => $project->country
         ),
         
-        'errors' => array(
-            'title' => 'Errores',
-            'view'  => new View('view/project/edit/errors.html.php', array(
-                'project'   => $project,
-                'step'      => $this['step']
-            ))
+        'footer' => array(
+            'type'      => 'group',
+            'children'  => array(
+                'errors' => array(
+                    'title' => 'Errores',
+                    'view'  => new View('view/project/edit/errors.html.php', array(
+                        'project'   => $project,
+                        'step'      => $this['step']
+                    ))                    
+                ),
+                'buttons'  => array(
+                    'type'  => 'group',
+                    'children' => array(
+                        'next' => array(
+                            'type'  => 'submit',
+                            'name'  => 'view-step-overview',
+                            'label' => Text::get('form-next-button'),
+                            'class' => 'next'
+                        )
+                    )
+                )
+            )
+        
         )
         
     )

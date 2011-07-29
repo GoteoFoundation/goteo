@@ -54,7 +54,6 @@ body.js div.superform > div.hint {
 
 div.superform > div.elements {
     border-right: 1px dashed #b7c2c5;
-    margin-bottom: 46px;
     position: relative;
 }
 
@@ -414,31 +413,6 @@ div.superform li.element > div.feedback > div.error + div.hint > blockquote {
 div.superform li.element > div.feedback > div.error blockquote {
     padding-left: 30px;
     background: url("superform/feedback/error.png") no-repeat left .2em;
-}
-
-/* Footer (aka "button bar") */
-
-div.superform > div.footer {
-    border: solid #0a0a0a; 
-    border-width: 3px 0 0;
-    padding: 20px;
-    text-align: right;
-    position: relative;
-    z-index: 900;
-}
-
-div.superform > div.footer > div.elements > div.element {
-    display: inline-block;
-    margin-left: 1em;
-}
-
-div.superform div.footer input,
-div.superform div.footer button {
-    padding-left: 4em;
-    padding-right: 4em;
-    box-shadow: 2px 2px 0 rgba(0,0,0,.2);    
-    -moz-box-shadow: 2px 2px 0 rgba(0,0,0,.2);    
-    -webkit-box-shadow: 2px 2px 0 rgba(0,0,0,.2);
 }
 
 /* Additional color schemes */  

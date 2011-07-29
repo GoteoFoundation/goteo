@@ -315,15 +315,7 @@ echo new SuperForm(array(
     'method'        => 'post',
     'title'         => Text::get('rewards-main-header'),
     'hint'          => Text::get('guide-project-rewards'),    
-    'class'         => 'aqua',
-    'footer'        => array(
-        'view-step-supports' => array(
-            'type'  => 'submit',
-            'name'  => 'view-step-supports',
-            'label' => Text::get('form-next-button'),
-            'class' => 'next'
-        )        
-    ),    
+    'class'         => 'aqua',    
     'elements'      => array(
         'process_rewards' => array (
             'type' => 'hidden',
@@ -364,13 +356,30 @@ echo new SuperForm(array(
             )
         ),
         
-        'errors' => array(
-            'title' => 'Errores',
-            'view'  => new View('view/project/edit/errors.html.php', array(
-                'project'   => $project,
-                'step'      => $this['step']
-            ))
+        'footer' => array(
+            'type'      => 'group',
+            'children'  => array(
+                'errors' => array(
+                    'title' => 'Errores',
+                    'view'  => new View('view/project/edit/errors.html.php', array(
+                        'project'   => $project,
+                        'step'      => $this['step']
+                    ))                    
+                ),
+                'buttons'  => array(
+                    'type'  => 'group',
+                    'children' => array(
+                        'next' => array(
+                            'type'  => 'submit',
+                            'name'  => 'view-step-supports',
+                            'label' => Text::get('form-next-button'),
+                            'class' => 'next'
+                        )
+                    )
+                )
+            )
         )
+               
     )
 
 ));

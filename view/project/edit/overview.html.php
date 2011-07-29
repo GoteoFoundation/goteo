@@ -67,23 +67,13 @@ if (!empty($project->media->url)) {
 
 }
 
-$errors = $project->errors[$this['step']] ?: array();
-
 $superform = array(
     'level'         => $this['level'],
     'action'        => '',
     'method'        => 'post',
     'title'         => Text::get('overview-main-header'),
     'hint'          => Text::get('guide-project-description'),
-    'class'         => 'aqua',    
-    'footer'        => array(
-        'view-step-costs' => array(
-            'type'  => 'submit',
-            'name'  => 'view-step-costs',
-            'label' => Text::get('form-next-button'),
-            'class' => 'next'
-        )        
-    ),
+    'class'         => 'aqua',        
     'elements'      => array(
         'process_overview' => array (
             'type' => 'hidden',
@@ -249,17 +239,35 @@ $superform = array(
             'value'     => $project->scope
         ),
         
-        'errors' => array(
-            'title' => 'Errores',
-            'view'  => new View('view/project/edit/errors.html.php', array(
-                'project'   => $project,
-                'step'      => $this['step']
-            ))
+        'footer' => array(
+            'type'      => 'group',
+            'children'  => array(
+                'errors' => array(
+                    'title' => 'Errores',
+                    'view'  => new View('view/project/edit/errors.html.php', array(
+                        'project'   => $project,
+                        'step'      => $this['step']
+                    ))                    
+                ),
+                'buttons'  => array(
+                    'type'  => 'group',
+                    'children' => array(
+                        'next' => array(
+                            'type'  => 'submit',
+                            'name'  => 'view-step-costs',
+                            'label' => Text::get('form-next-button'),
+                            'class' => 'next'
+                        )
+                    )
+                )
+            )
+        
         )
 
     )
 
 );
+
 
 foreach ($superform['elements'] as $id => &$element) {
     

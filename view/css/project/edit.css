@@ -136,3 +136,44 @@ body.project-edit div.superform > .elements > ol > li#errors {
     padding: 10px;
 }
 
+/* Footer  */
+
+body.project-edit div.superform li.element#footer {
+    background-color: #e7e7e7;
+    border-top: 3px solid #0a0a0a;
+    padding: 20px;
+    position: relative;
+    z-index: 900;
+    margin: 46px -5px 0 0;
+    overflow: hidden;
+}
+
+body.project-edit div.superform li.element#footer div,
+body.project-edit div.superform li.element#footer ol,
+body.project-edit div.superform li.element#footer li,
+body.project-edit div.superform li.element#footer ul {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+body.project-edit div.superform li.element#footer li#errors {
+    width: 70%;
+    float: left;
+}
+
+body.project-edit div.superform li.element#footer li#buttons {
+    width: 30%;
+    float: left;    
+    clear: none;
+    text-align: right;
+}
+
+body.project-edit div.superform li.element#footer li#buttons input,
+body.project-edit div.superform li.element#footer li#buttons button {
+    padding-left: 4em;
+    padding-right: 4em;
+    box-shadow: 2px 2px 0 rgba(0,0,0,.2);    
+    -moz-box-shadow: 2px 2px 0 rgba(0,0,0,.2);    
+    -webkit-box-shadow: 2px 2px 0 rgba(0,0,0,.2);
+}

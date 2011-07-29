@@ -66,14 +66,7 @@ $elements      = array(
                        . new View('view/project/widget/schedule.html.php', array('project' => $project))
                        . '</div>'
                        . '</div></div>'
-    ),
-     'errors' => array(
-            'title' => 'Errores',
-            'view'  => new View('view/project/edit/errors.html.php', array(
-                'project'   => $project,
-                'step'      => $this['step']
-            ))
-        )
+    )
 );
 
 // si es enviable ponemos el campo de comentario
@@ -86,7 +79,28 @@ if ($project->finishable) {
             'hint'  => Text::get('tooltip-project-comment'),
             'value' => $project->comment
         );
+    
+    
 }
+
+// Footer
+$elements['footer'] = array(
+    'type'      => 'group',
+    'children'  => array(
+        'errors' => array(
+            'title' => 'Errores',
+            'view'  => new View('view/project/edit/errors.html.php', array(
+                'project'   => $project,
+                'step'      => $this['step']
+            ))                    
+        ),
+        'buttons'  => array(
+            'type'  => 'group',
+            'children' => $buttons
+        )
+    )
+
+);
 
 // lanzamos el superform
 echo new SuperForm(array(
@@ -95,6 +109,5 @@ echo new SuperForm(array(
     'method'        => 'post',
     'title'         => Text::get('preview-main-header'),
     'hint'          => Text::get('guide-project-preview') . $success,
-    'footer'        => $buttons,
     'elements'      => $elements
 ));
