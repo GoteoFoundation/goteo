@@ -226,7 +226,7 @@ div.widget.project div.meter div.graph .minimum {
 }
 
 div.widget.project div.meter div.graph .minimum .done {
-    background-color: #eb2227;
+    background-color: #ee4843;
     height: 10px;
     position: absolute;
     left: 0;
@@ -250,7 +250,7 @@ div.widget.project div.meter div.graph .minimum .done strong {
 div.widget.project div.meter div.graph .minimum .left {
     float: right;
     height: 14px;
-    border-right: 4px solid #eb2227;
+    border-right: 4px solid #ee4843;
     margin-right: -2px;
     margin-top: -6px;
 }
@@ -307,7 +307,7 @@ div.widget.project div.meter dl .optimum {
 }
 
 div.widget.project div.meter dl .minimum {
-    color: #eb2227;
+    color: #ee4843;
     width: 80px;        
     position: relative;
 }
@@ -369,7 +369,7 @@ div.widget.project div.meter dl dt.days {
 div.widget.project div.meter dl dd.days {
     left: 70px;
     right: -40px;
-    color: #eb2227;
+    color: #ee4843;
     font-weight: bold;
 }
 

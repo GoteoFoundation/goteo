@@ -174,7 +174,7 @@ div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.reached{
 
 div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.optimun{
     font: bold 14px Helvetica, Arial, Geneva, sans-serif;
-	color:#ee4343;
+	color:#ee4843;
 }
 
 div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.reached .euro,
@@ -222,7 +222,7 @@ div#sub-header.banners > div > div.mod-pojctopen{
 
 div#sub-header > div > div.mod-pojctopen > .modpo-open{
 	font: bold 60px Helvetica, Arial, Geneva, sans-serif;
-	color:#ee4343;
+	color:#ee4843;
 }
 
 div#sub-header > div > div.mod-pojctopen > .modpo-percent{
@@ -240,7 +240,7 @@ div#sub-header > div > div.mod-pojctopen > .modpo-whyopen{
 
 div#sub-header-secondary > div > h2 .red,
 div#sub-header > div > h2 .red{
-	color:#ee4343;
+	color:#ee4843;
 }
 
 div#sub-header > div > div > h2 .greenblue{
@@ -402,7 +402,7 @@ div#header div#highlights > ul > li > a {
 
 div#header div#highlights > h2 {
     color: #e7e1d9;
-    margin: 0 1em 0 0;
+    margin: 0 3px 0 0;
     float: left;
 }
 
