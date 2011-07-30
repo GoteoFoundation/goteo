@@ -36,8 +36,8 @@ $twitter_url = 'http://twitter.com/home?status=' . rawurlencode($share_title . '
         <ul>
         	<li class="proyecto">
             <a target="_blank" id="a-proyecto" href="#proyecto" title="">Widget del proyecto</a>
-            <div style="display: none;">
-                <div id="proyecto" class="widget projects" style="width:600px;height:500px;overflow:auto;">
+            <div style="display: none;">               
+            <div id="proyecto" class="widget projects" style="width:600px;height:560px;overflow:auto;">
                     <h2 class="widget-title">PUBLICA EL WIDGET DEL PROYECTO</h2>
                     <div class="widget-porject-legend">Copia y pega el código en tu web o blog y ayuda a difundir este proyecto</div>
                     <?php echo new View('view/project/widget/embed.html.php', array('project'=>$project)) ?>

@@ -115,6 +115,7 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
             ?>                
             </div>
             
+            <?php $printSendMsg = false; //no quitar - Susanna?>
             <div class="center">
                 <?php
                 // los modulos centrales son diferentes segun el show
@@ -132,7 +133,8 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                         }
                         break;
                     case 'supporters':
-                        // segun el paso de aporte
+                        
+						// segun el paso de aporte
                         if (!empty($invest) && in_array($invest, array('start', 'ok', 'fail'))) {
 
                             switch ($invest) {
@@ -149,8 +151,10 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                                 case 'ok':
                                     echo
                                         new View('view/project/widget/investMsg.html.php', array('message' => $invest, 'user' => $user)),
-                                        new View('view/project/widget/spread.html.php',array('project' => $project)),
-                                        new View('view/project/widget/sendMsg.html.php',array('project' => $project));
+                                        new View('view/project/widget/spread.html.php',array('project' => $project));
+										//prueba para sacarlo del contenedor
+										$printSendMsg=true;                                        
+										//new View('view/project/widget/sendMsg.html.php',array('project' => $project));
                                     break;
                                 case 'fail':
                                     echo
@@ -185,7 +189,15 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                         break;
                 }
                 ?>
+                
             </div>
+            
+			<?php
+				if($printSendMsg){
+					 echo new View('view/project/widget/sendMsg.html.php',array('project' => $project));
+				}
+            ?>
+
                                     
             
             

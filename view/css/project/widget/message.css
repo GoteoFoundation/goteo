@@ -1,9 +1,50 @@
+div.project-message{	
+	position:relative;
+}
+
+div.project-message div#bocadillo{
+	background:url(../../bocadillo.jpg) no-repeat;
+	position:absolute;
+	width:56px;
+	height:51px;
+}
+
+div.project-message h3.title{
+	font-size: 20px;
+	font-weight: bold;
+	line-height: 19px;
+	padding-bottom:5px;
+	margin-bottom:12px;
+}
+
+div.project-message button{
+	float:right;
+	padding:5px 20px;
+	margin-top:35px;
+	font-weight:bold;
+}
+
 div.widget.project-message textarea {
-    display: block;
-    background-color: #dceedf;
-    width: 100%;
-    margin: -1px;
-    padding: .3em 0;
+    background-color: #DCEEDF;
+	border: 1px solid #2EAB58;
+	clear: right;
+	display: block;
+	float: right;
+	height: 50px;
+	margin: -1px;
+	padding: 0.3em 0;
+	width: 525px;
+	resize:none;
+}
+
+div.widget.project-message a.preview{
+	color: #2EAB58;
+	font-weight: bold;
+	left: 52px;
+	position: relative;
+	text-decoration: none;
+	text-transform: uppercase;
+	top: 10px;
 }
 
 div.widget.project-message .button {
