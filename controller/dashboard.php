@@ -637,6 +637,8 @@ namespace Goteo\Controller {
                             break;
                         }
 
+                        $editing = false;
+
                         $post = new Model\Blog\Post();
                         // campos que actualizamos
                         $fields = array(
@@ -647,6 +649,7 @@ namespace Goteo\Controller {
                             'image',
                             'media',
                             'date',
+                            'publish',
                             'allow'
                         );
 
@@ -657,15 +660,15 @@ namespace Goteo\Controller {
                         // tratar la imagen y ponerla en la propiedad image
                         if(!empty($_FILES['image_upload']['name'])) {
                             $post->image = $_FILES['image_upload'];
+                            $editing = true;
                         }
 
-$testpost = $_POST;
                         // tratar si quitan la imagen
                         if (isset($_POST['image-' . $post->image .  '-remove'])) {
                             $image = Model\Image::get($post->image);
                             $image->remove('post');
                             $post->image = '';
-                            $removed = true;
+                            $editing = true;
                         }
 
                         if (!empty($post->media)) {
@@ -684,7 +687,7 @@ $testpost = $_POST;
                                 $success[] = 'Se ha añadido una nueva entrada'; 
                                 ////Text::get('dashboard-project-updates-inserted');
                             }
-                            $action = $removed ? 'edit' : 'list';
+                            $action = $editing ? 'edit' : 'list';
                         } else {
                             $errors[] = 'Ha habido algun problema al guardar los datos';
                             ////Text::get('dashboard-project-updates-fail');
@@ -703,6 +706,7 @@ $testpost = $_POST;
                                 array(
                                     'blog' => $blog->id,
                                     'date' => date('Y-m-d'),
+                                    'publish' => false,
                                     'allow' => true
                                 )
                             );
@@ -733,12 +737,12 @@ $testpost = $_POST;
                         } else {
                             $errors[] = 'Error al eliminar la entrada';
                         }
-                        $posts = Model\Blog\Post::getAll($blog->id);
+                        $posts = Model\Blog\Post::getAll($blog->id, null, false);
                         $action = 'list';
 
                         break;
                     default:
-                        $posts = Model\Blog\Post::getAll($blog->id);
+                        $posts = Model\Blog\Post::getAll($blog->id, null, false);
                         $action = 'list';
                         break;
                 }

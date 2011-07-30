@@ -62,6 +62,7 @@ namespace Goteo\Model {
                     `media`,
                     image,
                     `order`,
+                    `publish`,
                     `home`,
                     `footer`
                 FROM    post
@@ -107,6 +108,7 @@ namespace Goteo\Model {
                 FROM    post
                 WHERE   blog = $blog
                 AND     $position = 1
+                AND     publish = 1
                 ORDER BY `order` ASC, title ASC
                 ";
 
@@ -140,6 +142,7 @@ namespace Goteo\Model {
                 'text',
                 'media',
                 'order',
+                'publish',
                 'home',
                 'footer'
                 );

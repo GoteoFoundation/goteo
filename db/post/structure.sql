@@ -19,5 +19,6 @@ ALTER TABLE  `post` ADD  `image` INT( 10 ) NULL ,
 ADD  `date` DATE NOT NULL;
 ALTER TABLE `post` ADD `order` INT NULL DEFAULT '1';
 ALTER TABLE `post` ADD `allow` BOOLEAN NOT NULL DEFAULT '1' COMMENT 'Permite comentarios';
+ALTER TABLE `post` ADD `publish` BOOLEAN NOT NULL DEFAULT '0' COMMENT 'Publicado';
 ALTER TABLE  `post` ADD  `home` BOOLEAN NOT NULL DEFAULT  '0' COMMENT  'para los de portada';
 ALTER TABLE `post` ADD `footer` BOOLEAN NOT NULL DEFAULT '0' COMMENT 'Para los del footer';

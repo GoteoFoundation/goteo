@@ -1014,6 +1014,7 @@ namespace Goteo\Controller {
                     'text' => $_POST['text'],
                     'media' => $_POST['media'],
                     'order' => $_POST['order'],
+                    'publish' => $_POST['publish'],
                     'home' => $_POST['home'],
                     'footer' => $_POST['footer']
                 ));
@@ -1029,7 +1030,6 @@ namespace Goteo\Controller {
                             break;
                         case 'edit':
                             throw new Redirection('/admin/blog');
-                            $success = 'Entrada editada correctamente';
                             break;
                     }
 				}
@@ -1048,18 +1048,6 @@ namespace Goteo\Controller {
                             break;
                         case 'edit':
                             throw new Redirection('/admin/blog');
-                            /*
-                            return new View(
-                                'view/admin/postEdit.html.php',
-                                array(
-                                    'action' => 'edit',
-                                    'type' => $this['type'],
-                                    'post' => $post,
-                                    'errors' => $errors
-                                )
-                            );
-                             *
-                             */
                             break;
                     }
 				}
@@ -1081,7 +1069,7 @@ namespace Goteo\Controller {
                         'view/admin/postEdit.html.php',
                         array(
                             'action' => 'add',
-                            'post' => (object) array('order' => $next)
+                            'post' => (object) array('order' => $next, 'publish' => 0)
                         )
                     );
                     break;
@@ -1828,7 +1816,9 @@ namespace Goteo\Controller {
                     if (empty($_POST['blog'])) {
                         break;
                     }
-                    
+
+                    $editing = false;
+
                     $post = new Model\Blog\Post();
                     // campos que actualizamos
                     $fields = array(
@@ -1839,6 +1829,7 @@ namespace Goteo\Controller {
                         'image',
                         'media',
                         'date',
+                        'publish',
                         'home',
                         'footer',
                         'allow'
@@ -1851,6 +1842,7 @@ namespace Goteo\Controller {
                     // tratar la imagen y ponerla en la propiedad image
                     if(!empty($_FILES['image_upload']['name'])) {
                         $post->image = $_FILES['image_upload'];
+                        $editing = true;
                     }
 
                     // tratar si quitan la imagen
@@ -1858,7 +1850,7 @@ namespace Goteo\Controller {
                         $image = Model\Image::get($post->image);
                         $image->remove('post');
                         $post->image = '';
-                        $removed = true;
+                        $editing = true;
                     }
 
                     if (!empty($post->media)) {
@@ -1876,7 +1868,7 @@ namespace Goteo\Controller {
                             $success[] = 'Se ha añadido una nueva entrada';
                             ////Text::get('dashboard-project-updates-inserted');
                         }
-                        $action = $removed ? 'edit' : 'list';
+                        $action = $editing ? 'edit' : 'list';
                     } else {
                         $errors[] = 'Ha habido algun problema al guardar los datos';
                         ////Text::get('dashboard-project-updates-fail');
@@ -1895,7 +1887,7 @@ namespace Goteo\Controller {
                 case 'list':
                     // lista de entradas
                     // obtenemos los datos
-                    $posts = Model\Blog\Post::getAll($blog->id);
+                    $posts = Model\Blog\Post::getAll($blog->id, null, false);
 
                     return new View(
                         'view/admin/blog.html.php',
@@ -1913,6 +1905,7 @@ namespace Goteo\Controller {
                             array(
                                 'blog' => $blog->id,
                                 'date' => date('Y-m-d'),
+                                'publish' => false,
                                 'allow' => true,
                                 'tags' => array()
                             )

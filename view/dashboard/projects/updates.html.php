@@ -28,7 +28,8 @@ if ($this['action'] == 'none') return;
     <?php foreach ($posts as $post) : ?>
         <div class="post">
             <a class="button" href="<?php echo $url; ?>/edit/<?php echo $post->id; ?>">Editar</a>&nbsp;&nbsp;&nbsp;
-            <a class="remove button red" href="<?php echo $url; ?>/delete/<?php echo $post->id; ?>" onclick="return confirm('¿Seguro que deseas eliminar esta actualización?');">Eliminar</a>
+            <a class="remove button weak" href="<?php echo $url; ?>/delete/<?php echo $post->id; ?>" onclick="return confirm('¿Seguro que deseas eliminar esta actualización?');">Eliminar</a>
+            <span><?php echo $post->publish ? 'Publicado' : 'Borrador'; ?></span>
             <strong><?php echo $post->title; ?></strong>
             <span><?php echo $post->date; ?></span>
         </div>
@@ -178,6 +179,15 @@ if ($this['action'] == 'none') return;
                 'hint'      => Text::get('tooltip-updates-allow_comments'),
                 'errors'    => !empty($errors['allow']) ? array($errors['allow']) : array(),
                 'value'     => (int) $post->allow
+            ),
+            'publish' => array(
+                'title'     => 'Publicado',
+                'type'      => 'slider',
+                'options'   => $allow,
+                'class'     => 'currently cols_' . count($allow),
+                'hint'      => Text::get('tooltip-updates-publish'),
+                'errors'    => !empty($errors['publish']) ? array($errors['publish']) : array(),
+                'value'     => (int) $post->publish
             )
 
         )

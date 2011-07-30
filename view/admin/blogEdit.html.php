@@ -212,8 +212,17 @@ include 'view/prologue.html.php';
                 'errors'    => !empty($errors['allow']) ? array($errors['allow']) : array(),
                 'value'     => (int) $post->allow
             ),
+            'publish' => array(
+                'title'     => 'Publicado',
+                'type'      => 'slider',
+                'options'   => $allow,
+                'class'     => 'currently cols_' . count($allow),
+                'hint'      => Text::get('tooltip-updates-publish'),
+                'errors'    => !empty($errors['publish']) ? array($errors['publish']) : array(),
+                'value'     => (int) $post->publish
+            ),
             'home' => array(
-                'title'     => 'Publicado en portada',
+                'title'     => 'En portada',
                 'type'      => 'slider',
                 'options'   => $allow,
                 'class'     => 'currently cols_' . count($allow),

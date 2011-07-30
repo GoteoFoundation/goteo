@@ -16,6 +16,7 @@ namespace Goteo\Model\Blog {
             $image,
             $media,
             $date,
+            $publish,
             $home,
             $footer,
             $num_comments = 0,
@@ -35,6 +36,7 @@ namespace Goteo\Model\Blog {
                         `media`,
                         `date`,
                         DATE_FORMAT(date, '%d | %m | %Y') as fecha,
+                        publish,
                         home,
                         footer
                     FROM    post
@@ -68,7 +70,7 @@ namespace Goteo\Model\Blog {
          * de mas nueva a mas antigua
          * // si es portada son los que se meten por la gestion de entradas en portada que llevan el tag 1 'Portada'
          */
-        public static function getAll ($blog, $limit = null) {
+        public static function getAll ($blog, $limit = null, $published = true) {
 
             $list = array();
 
@@ -82,11 +84,17 @@ namespace Goteo\Model\Blog {
                     `media`,
                     DATE_FORMAT(date, '%d-%m-%Y') as date,
                     DATE_FORMAT(date, '%d | %m | %Y') as fecha,
+                    publish,
                     home,
                     footer
                 FROM    post
                 WHERE blog = ?
-                ORDER BY date DESC, id DESC
+                ";
+            if ($published) {
+                $sql .= " AND publish = 1
+                ";
+            }
+            $sql .= "ORDER BY date DESC, id DESC
                 ";
             if (!empty($limit)) {
                 $sql .= "LIMIT $limit";
@@ -120,7 +128,7 @@ namespace Goteo\Model\Blog {
          * Lista de entradas filtradas por tag
          * de mas nueva a mas antigua
          */
-        public static function getList ($blog, $tag) {
+        public static function getList ($blog, $tag, $published = true) {
 
             $list = array();
 
@@ -134,6 +142,7 @@ namespace Goteo\Model\Blog {
                     `media`,
                     DATE_FORMAT(date, '%d-%m-%Y') as date,
                     DATE_FORMAT(date, '%d-%m-%Y') as fecha,
+                    publish,
                     home,
                     footer
                 FROM    post
@@ -141,6 +150,12 @@ namespace Goteo\Model\Blog {
                     ON post_tag.post = post.id
                     AND post_tag.tag = :tag
                 WHERE blog = :blog
+                ";
+            if ($published) {
+                $sql .= " AND publish = 1
+                ";
+            }
+            $sql .= "
                 ORDER BY date DESC, id DESC
                 ";
 
@@ -203,6 +218,7 @@ namespace Goteo\Model\Blog {
                 'media',
                 'date',
                 'allow',
+                'publish',
                 'home',
                 'footer'
                 );
