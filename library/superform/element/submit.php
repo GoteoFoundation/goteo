@@ -5,7 +5,8 @@ namespace Goteo\Library\SuperForm\Element {
     class Submit extends Named {
         
         public
-            $label;                        
+            $label,
+            $disabled;
         
     }    
     

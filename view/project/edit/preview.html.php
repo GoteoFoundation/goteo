@@ -40,6 +40,14 @@ if ($project->finishable) {
         'label' => Text::get('form-send_review-button'),
         'class' => 'confirm red'
     );
+} else {
+    $buttons['nofinish'] = array(
+        'type'  => 'submit',
+        'name'  => 'nofinish',
+        'label' => Text::get('form-send_review-button'),
+        'class' => 'confirm disabled',
+        'disabled' => 'disabled'
+    );
 }
 
 // elementos generales de preview
@@ -79,8 +87,6 @@ if ($project->finishable) {
             'hint'  => Text::get('tooltip-project-comment'),
             'value' => $project->comment
         );
-    
-    
 }
 
 // Footer
@@ -88,7 +94,7 @@ $elements['footer'] = array(
     'type'      => 'group',
     'children'  => array(
         'errors' => array(
-            'title' => 'Errores',
+            'title' => Text::get('form-footer-errors_title'),
             'view'  => new View('view/project/edit/errors.html.php', array(
                 'project'   => $project,
                 'step'      => $this['step']

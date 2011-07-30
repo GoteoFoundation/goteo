@@ -274,7 +274,7 @@ if (!('Superform' in window)) {
                                             sf.find('li.element').removeClass('updating busy');
                                         },
                             error: function () {
-                                alert('Error -->' + frm.attr('action') + '<--');
+                                /*alert('Error -->' + frm.attr('action') + '<--');*/
                             }
                         }); // el.__updating = $.ajax();
                     }

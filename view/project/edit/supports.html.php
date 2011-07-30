@@ -140,7 +140,7 @@ echo new SuperForm(array(
             'type'      => 'group',
             'children'  => array(
                 'errors' => array(
-                    'title' => 'Errores',
+                    'title' => Text::get('form-footer-errors_title'),
                     'view'  => new View('view/project/edit/errors.html.php', array(
                         'project'   => $project,
                         'step'      => $this['step']
