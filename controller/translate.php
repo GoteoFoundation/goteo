@@ -120,7 +120,7 @@ namespace Goteo\Controller {
             // si llega post, vamos a guardar los cambios
             if ($option == 'edit' && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
 
-                echo '<pre>'.print_r($_POST, 1).'</pre>';
+//                echo '<pre>'.print_r($_POST, 1).'</pre>';
 
                 $table = $_POST['table'];
                 if (!in_array($table, \array_keys(Content::$tables))) {

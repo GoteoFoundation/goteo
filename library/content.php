@@ -76,7 +76,7 @@ namespace Goteo\Library {
                         ";
 
             foreach (self::$fields[$table] as $field=>$fieldName) {
-                $sql .= "{$table}_lang.$field as $field, 
+                $sql .= "IFNULL({$table}_lang.$field, {$table}.$field) as $field,
                          {$table}.$field as original_$field,
                         ";
             }
@@ -154,16 +154,25 @@ namespace Goteo\Library {
                         }
 
                     // para cada campo
+                        $and = "AND";
                     if (!empty($filters['text'])) {
                         foreach (self::$fields[$table] as $field=>$fieldName) {
-                            $sql .= " AND ( {$table}_lang.{$field} LIKE :text{$table}{$field} OR ({$table}_lang.{$field} IS NULL AND {$table}.{$field} LIKE :text{$table}{$field} ))
+                            $sql .= " $and ( {$table}_lang.{$field} LIKE :text{$field} OR ({$table}_lang.{$field} IS NULL AND {$table}.{$field} LIKE :text{$field} ))
                                 ";
-                            $values[":text{$table}{$field}"] = "%{$filters['text']}%";
+                            $values[":text{$field}"] = "%{$filters['text']}%";
+                            $and = "OR";
                         }
                     }
 
                     $sql .= " ORDER BY id ASC";
 
+                    /*
+                    echo $sql . '<br /><br />';
+                    var_dump($values);
+                    echo '<br /><br />';
+                     * 
+                     */
+                    
                     $query = Model::query($sql, $values);
                     foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $content) {
 
@@ -182,7 +191,6 @@ namespace Goteo\Library {
                         }
 
                     }
-
 
                 }
 
