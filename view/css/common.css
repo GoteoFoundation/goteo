@@ -170,12 +170,18 @@ a.button.green {
     color: white;
 } 
 
+input.green[type="submit"]:active,
+input.green[type="reset"]:active,
+button.green:active,
+a.button.green:active {
+    background: #00b05b url('button/green-active.png') repeat-x top;
+}
+
 input.green[type="submit"]:hover,
 input.green[type="reset"]:hover,
 button.green:hover,
 a.button.green:hover {
-/*    background: #00b05b url('button/green-active.png') repeat-x top;  cuando tengamos el rollover */
-    background: #00b05b url('button/green.png') repeat-x top;
+    background: #00b05b url('button/green-active.png') repeat-x top;
 }
 
 h1, h2, h3, h4, h5, h6, h7, h8 {
