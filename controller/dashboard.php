@@ -58,7 +58,7 @@ namespace Goteo\Controller {
                 $lists['my_projects'] = Listing::get($projects);
             }
             // proyectos que cofinancio
-            $invested = Model\User::invested($user->id);
+            $invested = Model\User::invested($user->id, false);
             if (!empty($invested)) {
                 $lists['invest_on'] = Listing::get($invested);
             }

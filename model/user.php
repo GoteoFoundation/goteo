@@ -143,9 +143,6 @@ namespace Goteo\Model {
                     if (is_array($this->avatar) && !empty($this->avatar['name'])) {
                         $image = new Image($this->avatar);
                         $image->save();
-                        // una vez con el contenido de la imagen guardado en la tabla
-                        // recortar el avatar cuadrado
-                        $image->avatarCrop();
                         $data[':avatar'] = $image->id;
 
                         /**
@@ -375,7 +372,7 @@ namespace Goteo\Model {
                     WHERE id = :id
                     ", array(':id' => $id));
                 $user = $query->fetchObject(__CLASS__);
-                
+
                 $user->roles = $user->getRoles();
                 $user->avatar = Image::get($user->avatar);
                 // @FIXME temporal para usuarios sin avatar
@@ -401,7 +398,7 @@ namespace Goteo\Model {
                     WHERE id = :id
                     ", array(':id' => $id));
                 $user = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
-                
+
                 $user->avatar = Image::get($user->avatar);
                 if (empty($user->avatar->id)) $user->avatar->id = 1;
 
@@ -788,7 +785,7 @@ namespace Goteo\Model {
         /*
          * Lista de proyectos cofinanciados
          */
-        public static function invested($user)
+        public static function invested($user, $publicOnly = true)
         {
             $projects = array();
 
@@ -799,7 +796,12 @@ namespace Goteo\Model {
                         AND invest.user = ?
                         AND invest.status <> 2
                     WHERE project.status < 7
-                    GROUP BY project.id
+                    ";
+            if ($publicOnly) {
+                $sql .= "AND project.status >= 3
+                    ";
+            }
+            $sql .= "GROUP BY project.id
                     ORDER BY name ASC
                     ";
 

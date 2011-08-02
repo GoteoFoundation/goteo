@@ -7,9 +7,9 @@ namespace Goteo\Controller {
 
     class Image extends \Goteo\Core\Controller {
 
-        public function index($id, $width = 200, $height = 200) {
+        public function index($id, $width = 200, $height = 200, $crop = false) {
             if ($image = Model\Image::get($id)) {
-                $image->display($width, $height);
+                $image->display($width, $height, $crop);
             } else {
                 throw new Error(Error::NOT_FOUND);
             }

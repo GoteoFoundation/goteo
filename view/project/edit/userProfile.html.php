@@ -3,7 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Library\SuperForm,
     Goteo\Core\View;
-            
+
 $project = $this['project'];
 $user = $this['user'];
 
@@ -27,13 +27,13 @@ foreach ($this['interests'] as $value => $label) {
         'value'     => $value,
         'label'     => $label,
         'checked'   => in_array($value, $user->interests)
-        );            
+        );
 }
 
 $user_webs = array();
 
 foreach ($user->webs as $web) {
-        
+
     $ch = array();
 
     // a ver si es el que estamos editando o no
@@ -97,7 +97,7 @@ echo new SuperForm(array(
     'level'         => $this['level'],
     'method'        => 'post',
     'title'         => Text::get('profile-main-header'),
-    'hint'          => Text::get('guide-project-user-information'),    
+    'hint'          => Text::get('guide-project-user-information'),
     'elements'      => array(
         'process_userProfile' => array (
             'type' => 'hidden',
@@ -112,7 +112,7 @@ echo new SuperForm(array(
             'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
             'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array(),
             'value'     => $user->name
-        ),                
+        ),
         'user_location' => array(
             'type'      => 'textbox',
             'required'  => true,
@@ -123,7 +123,7 @@ echo new SuperForm(array(
             'ok'        => !empty($okeys['location']) ? array($okeys['location']) : array(),
             'value'     => $user->location
         ),
-        'user_avatar' => array(                  
+        'user_avatar' => array(
             'type'      => 'group',
             'required'  => true,
             'title'     => Text::get('profile-fields-image-title'),
@@ -131,7 +131,7 @@ echo new SuperForm(array(
             'errors'    => !empty($errors['avatar']) ? array($errors['avatar']) : array(),
             'ok'        => !empty($okeys['avatar']) ? array($okeys['avatar']) : array(),
             'class'     => 'user_avatar',
-            'children'  => array(                
+            'children'  => array(
                 'avatar_upload'    => array(
                     'type'  => 'file',
                     'class' => 'inline avatar_upload',
@@ -148,10 +148,10 @@ echo new SuperForm(array(
                                $user->avatar . '<img src="/image/' . $user->avatar->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->id.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
-                
-            )            
-        ),        
-        
+
+            )
+        ),
+
         'user_about' => array(
             'type'      => 'textarea',
             'required'  => true,
@@ -162,18 +162,18 @@ echo new SuperForm(array(
             'errors'    => !empty($errors['about']) ? array($errors['about']) : array(),
             'ok'        => !empty($okeys['about']) ? array($okeys['about']) : array(),
             'value'     => $user->about
-        ),          
+        ),
         'interests' => array(
             'type'      => 'checkboxes',
             'required'  => true,
             'class'     => 'cols_3',
             'name'      => 'user_interests[]',
             'title'     => Text::get('profile-field-interests'),
-            'hint'      => Text::get('tooltip-user-interests'),            
+            'hint'      => Text::get('tooltip-user-interests'),
             'errors'    => !empty($errors['interests']) ? array($errors['interests']) : array(),
             'ok'        => !empty($okeys['interests']) ? array($okeys['interests']) : array(),
             'options'   => $interests
-        ),  
+        ),
         'user_keywords' => array(
             'type'      => 'textbox',
             'required'  => true,
@@ -183,7 +183,7 @@ echo new SuperForm(array(
             'errors'    => !empty($errors['keywords']) ? array($errors['keywords']) : array(),
             'ok'        => !empty($okeys['keywords']) ? array($okeys['keywords']) : array(),
             'value'     => $user->keywords
-        ), 
+        ),
         'user_contribution' => array(
             'type'      => 'textarea',
             'required'  => true,
@@ -203,7 +203,7 @@ echo new SuperForm(array(
             'class'     => 'webs',
             'errors'    => !empty($errors['webs']) ? array($errors['webs']) : array(),
             'ok'        => !empty($okeys['webs']) ? array($okeys['webs']) : array(),
-            'children'  => $user_webs + array(                
+            'children'  => $user_webs + array(
                 'web-add' => array(
                     'type'  => 'submit',
                     'label' => Text::get('form-add-button'),
@@ -211,7 +211,7 @@ echo new SuperForm(array(
                 )
             )
         ),
-        'user_social' => array(            
+        'user_social' => array(
             'type'      => 'group',
             'title'     => Text::get('profile-fields-social-title'),
             'children'  => array(
@@ -224,7 +224,7 @@ echo new SuperForm(array(
                     'errors'    => !empty($errors['facebook']) ? array($errors['facebook']) : array(),
                     'ok'        => !empty($okeys['facebook']) ? array($okeys['facebook']) : array(),
                     'value'     => $user->facebook
-                ), 
+                ),
                 'user_google' => array(
                     'type'      => 'textbox',
                     'class'     => 'google',
@@ -244,7 +244,7 @@ echo new SuperForm(array(
                     'errors'    => !empty($errors['twitter']) ? array($errors['twitter']) : array(),
                     'ok'        => !empty($okeys['twitter']) ? array($okeys['twitter']) : array(),
                     'value'     => $user->twitter
-                ), 
+                ),
                 'user_identica' => array(
                     'type'      => 'textbox',
                     'class'     => 'identica',
@@ -265,7 +265,7 @@ echo new SuperForm(array(
                     'ok'        => !empty($okeys['linkedin']) ? array($okeys['linkedin']) : array(),
                     'value'     => $user->linkedin
                 )
-            )            
+            )
         ),
         'footer' => array(
             'type'      => 'group',
@@ -275,7 +275,7 @@ echo new SuperForm(array(
                     'view'  => new View('view/project/edit/errors.html.php', array(
                         'project'   => $project,
                         'step'      => $this['step']
-                    ))                    
+                    ))
                 ),
                 'buttons'  => array(
                     'type'  => 'group',

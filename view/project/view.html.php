@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Goteo\Core\View,
     Goteo\Model\User,
@@ -58,18 +58,18 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
 
         <div id="sub-header">
             <div class="project-header">
-                <a href="/user/<?php echo $project->owner; ?>"><img src="/image/<?php echo $project->user->avatar->id; ?>/56/56" /></a>
+                <a href="/user/<?php echo $project->owner; ?>"><img src="/image/<?php echo $project->user->avatar->id; ?>/56/56/1" /></a>
                 <h2><span><?php echo htmlspecialchars($project->name) ?></span></h2>
                 <div class="project-by"><a href="/user/<?php echo $project->owner; ?>">Por: <?php echo $project->user->name; ?></a></div>
                 <br clear="both" />
-                
+
                 <div class="categories"><h3><?php echo Text::get('project-view-categories-title'); ?></h3>
                     <?php $sep = ''; foreach ($categories as $key=>$value) :
                         echo $sep.'<a href="/discover/results/'.$key.'">'.htmlspecialchars($value).'</a>';
                     $sep = ', '; endforeach; ?>
                 </div>
             </div>
-            
+
             <div class="sub-menu">
                 <?php echo new View('view/project/view/menu.html.php',
                             array(
@@ -82,13 +82,13 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                     );
                 ?>
             </div>
-                        
+
         </div>
 
-        
+
 
         <div id="main" class="threecols">
-            
+
             <div class="side">
             <?php
             // el lateral es diferente segun el show (y el invest)
@@ -101,7 +101,7 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                 || $show == 'messages' ) {
                 echo new View('view/project/widget/investors.html.php', array('project' => $project));
             }
-            
+
             if (!empty($project->supports)) {
                 echo new View('view/project/widget/collaborations.html.php', array('project' => $project));
             }
@@ -111,10 +111,10 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
             }
 
             echo new View('view/user/widget/user.html.php', array('user' => $owner));
-            
-            ?>                
+
+            ?>
             </div>
-            
+
             <?php $printSendMsg = false; //no quitar - Susanna?>
             <div class="center">
                 <?php
@@ -133,13 +133,13 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                         }
                         break;
                     case 'supporters':
-                        
+
 						// segun el paso de aporte
                         if (!empty($invest) && in_array($invest, array('start', 'ok', 'fail'))) {
 
                             switch ($invest) {
                                 case 'start':
-                                    echo 
+                                    echo
                                         new View('view/project/widget/investMsg.html.php', array('message' => $invest, 'user' => $user)),
                                         new View('view/project/widget/invest.html.php', array('project' => $project, 'personal' => User::getPersonal($user->id)));
                                     break;
@@ -153,7 +153,7 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                                         new View('view/project/widget/investMsg.html.php', array('message' => $invest, 'user' => $user)),
                                         new View('view/project/widget/spread.html.php',array('project' => $project));
 										//prueba para sacarlo del contenedor
-										$printSendMsg=true;                                        
+										$printSendMsg=true;
 										//new View('view/project/widget/sendMsg.html.php',array('project' => $project));
                                     break;
                                 case 'fail':
@@ -189,20 +189,20 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                         break;
                 }
                 ?>
-                
+
             </div>
-            
+
 			<?php
 				if($printSendMsg){
 					 echo new View('view/project/widget/sendMsg.html.php',array('project' => $project));
 				}
             ?>
 
-                                    
-            
-            
-        </div>        
+
+
+
+        </div>
 
         <?php include 'view/footer.html.php' ?>
-    
+
 <?php include 'view/epilogue.html.php' ?>

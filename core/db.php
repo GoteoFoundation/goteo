@@ -7,13 +7,19 @@ namespace Goteo\Core {
         public function __construct() {
 
             $dsn = \GOTEO_DB_DRIVER . ':host=' . \GOTEO_DB_HOST . ';dbname=' . \GOTEO_DB_SCHEMA;
-            
+
             if (defined('GOTEO_DB_PORT')) {
                 $dsn .= ';port=' . \GOTEO_DB_PORT;
             }
-                       
-            parent::__construct($dsn, \GOTEO_DB_USERNAME, \GOTEO_DB_PASSWORD);
-            
+
+            //If you use the UTF-8 encoding, you have to use the fourth parameter :
+            if (defined('GOTEO_DB_CHARSET') && GOTEO_DB_DRIVER == 'mysql') {
+                parent::__construct($dsn, \GOTEO_DB_USERNAME, \GOTEO_DB_PASSWORD, array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES UTF8"));
+            }
+			else {
+				parent::__construct($dsn, \GOTEO_DB_USERNAME, \GOTEO_DB_PASSWORD);
+			}
+
             $this->setAttribute(static::ATTR_ERRMODE, static::ERRMODE_EXCEPTION);
         }
 

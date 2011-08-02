@@ -7,12 +7,14 @@ namespace Goteo\Model {
     class Image extends \Goteo\Core\Model {
 
         public
-            $id,
+			$id,
             $name,
             $type,
             $tmp,
             $error,
-            $size;
+            $size,
+            $dir_originals,
+            $dir_cache;
 
         /**
          * Constructor.
@@ -20,13 +22,23 @@ namespace Goteo\Model {
          * @param type array	$file	Array $_FILES.
          */
         public function __construct ($file) {
+			$this->dir_originals = GOTEO_DATA_PATH . 'images' . DIRECTORY_SEPARATOR;
+			$this->dir_cache = GOTEO_DATA_PATH . 'cache' . DIRECTORY_SEPARATOR;
+
             if(is_array($file)) {
-                $this->name = $file['name'];
+                $this->name = self::check_filename($file['name'], $this->dir_originals);
                 $this->type = $file['type'];
                 $this->tmp = $file['tmp_name'];
                 $this->error = $file['error'];
                 $this->size = $file['size'];
             }
+            //die($this->dir_originals);
+            if(!is_dir($this->dir_originals)) {
+				mkdir($this->dir_originals);
+			}
+            if(!is_dir($this->dir_cache)) {
+				mkdir($this->dir_cache);
+			}
         }
 
         /**
@@ -61,13 +73,11 @@ namespace Goteo\Model {
                 }
 
                 if(!empty($this->tmp)) {
-                    $fp = fopen($this->tmp, "rb");
-                    $content = fread($fp, $this->size);
-                    $data[':content'] = $content;
-                    fclose($fp);
+					move_uploaded_file($this->tmp,$this->dir_originals . $this->name);
                 }
 
                 try {
+
                     // Construye SQL.
                     $query = "REPLACE INTO image (";
                     foreach($data AS $key => $row) {
@@ -88,6 +98,21 @@ namespace Goteo\Model {
     			}
             }
             return false;
+		}
+
+		/**
+		* Returns a secure name to store in file system, if the generated filename exists returns a non-existing one
+		* @param $name original name to be changed-sanitized
+		* @param $dir if specified, generated name will be changed if exists in that dir
+		*/
+		public static function check_filename($name='',$dir=null){
+			$name = preg_replace("/[^a-z0-9_~\.-]+/","-",strtolower(self::idealiza($name)));
+			if(is_dir($dir)) {
+				while ( file_exists ( "$dir/$name" )) {
+					$name = preg_replace ( "/^(.+?)(_?)(\d*)(\.[^.]+)?$/e", "'\$1_'.(\$3+1).'\$4'", $name );
+				}
+			}
+			return $name;
 		}
 
 		/**
@@ -268,61 +293,66 @@ namespace Goteo\Model {
 		}
 
 		/**
-		 * Recorta cuadrada una imagen
-         * para los avatars
-		 */
-        public function avatarCrop () {
-            require_once PEAR . 'Image/Transform.php';
-            $it =& \Image_Transform::factory('GD');
-            if (\PEAR::isError($it)) {
-                die($it->getMessage() . '<br />' . $it->getDebugInfo());
-            }
-            $this->load();
-            $src = $this->tmp;
-            $it->load($src);
-            // obtener el ancho y el alto, el lado mayor es el que recortamos
-            if ($it->img_x != $it->img_y) {
-                if ($it->img_x > $it->img_y) {
-                    $at = ( $it->img_x - $it->img_y ) / 2;
-                    $it->crop($it->img_y, $it->img_y, $at, 0);
-                } else {
-                    $at = ( $it->img_y - $it->img_x ) / 2;
-                    $it->crop($it->img_x, $it->img_x, 0, $at);
-                }
-
-                //get new content and new content size
-                $image = $it->getHandle();
-                $functionName = 'image'.$it->type;
-                $functionName($image, $this->tmp);
-                $new_content = \file_get_contents($this->tmp);
-                $new_size = \strlen($new_content);
-
-                // grabamops el contenido de nuevo
-                $sql = "UPDATE image SET content = :content, size = :size WHERE id = :id";
-                self::query($sql, array(':content' => $new_content, ':size' => $new_size, ':id' => $this->id));
-
-                return true;
-            } else {
-                return true;
-            }
-		}
-
-		/**
 		 * Muestra la imagen en pantalla.
 		 * @param type int	$width
 		 * @param type int	$height
 		 */
-        public function display ($width, $height) {
+        public function display ($width, $height, $crop) {
             require_once PEAR . 'Image/Transform.php';
             $it =& \Image_Transform::factory('GD');
             if (\PEAR::isError($it)) {
                 die($it->getMessage() . '<br />' . $it->getDebugInfo());
             }
-            $this->load();
-            $src = $this->tmp;
-            $it->load($src);
-            $it->fit($width,$height);
-            return $it->display();
+
+            $cache = $this->dir_cache . $width."x$height" . ($crop ? "c" : "") . DIRECTORY_SEPARATOR;
+            if(!is_dir($cache)) mkdir($cache);
+
+			$cache .= $this->name;
+			//comprova si existeix  catxe
+			if(!is_file($cache)) {
+				$it->load($this->dir_originals . $this->name);
+
+				if($crop) {
+					if ($width > $height) {
+
+						$f = $height / $width;
+						$new_y = round($it->img_x * $f);
+						//
+
+						if($new_y < $it->img_y) {
+							$at = round(( $it->img_y - $new_y ) / 2);
+							$it->crop($it->img_x, $new_y, 0, $at);
+							$it->img_y = $new_y;
+						}
+
+						$it->resized = false;
+						$it->scaleByX($width);
+
+					} else {
+
+						$f = $width / $height;
+						$new_x = round($it->img_y * $f);
+
+						if($new_x < $it->img_x) {
+							$at = round(( $it->img_x - $new_x ) / 2);
+							$it->crop($new_x, $it->img_y, $at, 0);
+							$it->img_x = $new_x;
+						}
+
+						$it->resized = false;
+						$it->scaleByY($height);
+
+					}
+
+				}
+				else $it->fit($width,$height);
+
+				$it->save($cache);
+            }
+
+			header("Content-type: " . $this->type);
+			readfile($cache);
+			return true;
 		}
 
 		public function isGIF () {
@@ -425,8 +455,7 @@ namespace Goteo\Model {
     	}
 
         private function getContent () {
-            $query = self::query('SELECT content FROM image WHERE id = ?', array($this->id));
-            return $query->fetchColumn(0);
+            return file_get_contents($this->dir_originals . $this->name);
     	}
 
         /*

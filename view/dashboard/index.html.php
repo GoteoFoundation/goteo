@@ -12,7 +12,7 @@ include 'view/header.html.php'; ?>
 
         <div id="sub-header">
             <div class="dashboard-header">
-                <a href="/user/<?php echo $user->id; ?>" target="_blank"><img src="/image/<?php echo $user->avatar->id; ?>/56/56" /></a>
+                <a href="/user/<?php echo $user->id; ?>" target="_blank"><img src="/image/<?php echo $user->avatar->id; ?>/56/56/1" /></a>
                 <h2><span>                    <?php if (empty($this['option'])) {
                         echo 'Mi dashboard';
                     } else {
@@ -24,7 +24,7 @@ include 'view/header.html.php'; ?>
         <?php  echo new View ('view/dashboard/menu.html.php', $this) ?>
 
         <div id="main" class="<?php echo $this['option'] ?>">
-            
+
 <?php if ($this['section'] == 'projects') echo new View ('view/dashboard/projects/selector.html.php', $this); ?>
 
             <?php if (!empty($this['message'])) : ?>

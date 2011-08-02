@@ -31,7 +31,7 @@ foreach ($this['interests'] as $value => $label) {
 $user_webs = array();
 
 foreach ($user->webs as $web) {
-        
+
     $ch = array();
 
     // a ver si es el que estamos editando o no
@@ -45,7 +45,7 @@ foreach ($user->webs as $web) {
                         'type'  => 'hidden',
                         'class' => 'inline',
                         'value' => '1'
-                    ), 
+                    ),
                     'web-' . $web->id . '-url' => array(
                         'type'      => 'textbox',
                         'required'  => true,

@@ -12,7 +12,7 @@ include 'view/header.html.php'; ?>
 
         <div id="sub-header">
             <div>
-                <h2><img src="/image/<?php echo $user->avatar->id; ?>/75/75" />
+                <h2><img src="/image/<?php echo $user->avatar->id; ?>/75/75/1" />
                     <?php echo 'Mi panel de revisor / ' . $this['menu'][$this['section']]['label']; ?><br />
                     <em><?php echo $user->name; ?></em></h2>
             </div>
@@ -21,7 +21,7 @@ include 'view/header.html.php'; ?>
         <?php  echo new View ('view/review/menu.html.php', $this) ?>
 
         <div id="main">
-            
+
 
             <?php if (!empty($this['message'])) : ?>
                 <div class="widget">

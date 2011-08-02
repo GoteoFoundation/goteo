@@ -212,6 +212,10 @@ namespace Goteo\Controller {
 
             $user = Model\User::get($id);
 
+            if (!$user instanceof Model\User)
+                throw new Redirection('/', Redirection::PERMANENT);
+                
+            
             $viewData = array();
             $viewData['user'] = $user;
 
@@ -260,7 +264,7 @@ namespace Goteo\Controller {
             $viewData['shares'] = Model\User\Interest::share($id);
 
             // proyectos que cofinancio
-            $invested = Model\User::invested($id);
+            $invested = Model\User::invested($id, true);
 
             // agrupacion de proyectos que cofinancia y proyectos suyos
             $viewData['lists'] = array();

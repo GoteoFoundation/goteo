@@ -8,7 +8,7 @@ $level = (int) $this['level'] ?: 3;
 ?>
 <h<?php echo $level ?> class="title"><?php echo Text::get('blog-coments-header'); ?></h<?php echo $level ?>>
 <div class="widget post-comments">
-    
+
 <?php if (!empty($post->comments)): ?>
 
     <div id="post-comments">
@@ -17,12 +17,12 @@ $level = (int) $this['level'] ?: 3;
 
         <div class="message<?php if ($comment->user->id == $this['owner']) echo ' owner'; ?>">
            <div class="arrow-up"></div>
-           <span class="avatar"><img src="/image/<?php echo $comment->user->avatar->id; ?>/50/50" alt="<?php echo $comment->user->name; ?>" /></span>
+           <span class="avatar"><img src="/image/<?php echo $comment->user->avatar->id; ?>/50/50/1" alt="<?php echo $comment->user->name; ?>" /></span>
            <h<?php echo $level ?> class="user"><?php echo htmlspecialchars($comment->user->name) ?></h<?php echo $level ?>>
            <div class="date"><span><?php echo $comment->date ?></span></div>
            <blockquote><?php echo $comment->text; ?></blockquote>
        </div>
-    
+
     <?php endforeach; ?>
 
     </div>
@@ -32,5 +32,5 @@ $level = (int) $this['level'] ?: 3;
     <p><?php echo Text::get('blog-comments_no_comments'); ?></p>
 
 <?php endif; ?>
-    
+
 </div>

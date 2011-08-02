@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Goteo\Core\View,
     Goteo\Library\Text,
@@ -19,7 +19,7 @@ if (isset($this['investor']) && is_object($this['investor'])) {
 ?>
 
 <div class="widget project activable<?php if (isset($this['balloon'])) echo ' balloon' ?>">
-    
+
     <?php if (isset($this['balloon'])): ?>
     <div class="balloon"><?php echo $this['balloon'] ?></div>
     <?php endif ?>
@@ -39,7 +39,7 @@ if (isset($this['investor']) && is_object($this['investor'])) {
         ?>
 
         <?php if (isset($this['investor'])) : ?>
-            <div class="investor"><img src="/image/<?php echo $investor->avatar->id ?>/43/43" alt="<?php echo $investor->name ?>" /><div class="invest">Mi aporte<br /><span class="amount"><?php echo $invest->total ?></span></div></div>
+            <div class="investor"><img src="/image/<?php echo $investor->avatar->id ?>/43/43/1" alt="<?php echo $investor->name ?>" /><div class="invest">Mi aporte<br /><span class="amount"><?php echo $invest->total ?></span></div></div>
         <?php endif; ?>
 
         <?php if (!empty($project->gallery) && (current($project->gallery) instanceof Image)): ?>
@@ -55,22 +55,22 @@ if (isset($this['investor']) && is_object($this['investor'])) {
     </div>
 
     <h<?php echo $level ?> class="title"><a href="/project/<?php echo $project->id ?>"><?php echo htmlspecialchars($project->name) ?></a></h<?php echo $level ?>>
-    
+
     <h<?php echo $level + 1 ?> class="author">Por: <a href="/user/profile/<?php echo htmlspecialchars($project->user->id) ?>"><?php echo htmlspecialchars($project->user->name) ?></a></h<?php echo $level + 1?>>
-    
+
     <div class="description"><?php echo Text::recorta($project->description, 100); ?></div>
 
     <?php echo new View('view/project/meter_hor.html.php', array('project' => $project)) ?>
-    
+
     <div class="rewards">
         <h<?php echo $level + 1 ?>><?php echo Text::get('project-rewards-header'); ?></h<?php echo $level + 1?>>
-        
+
         <ul>
            <?php $q = 1; foreach ($project->social_rewards as $social): ?>
             <li class="<?php echo $social->icon ?> activable">
                 <a href="/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$social->icon_name}: {$social->reward} al procomún") ?>" class="tipsy"><?php echo htmlspecialchars($social->reward) ?></a>
             </li>
-           <?php if ($q > 5) break; $q++; 
+           <?php if ($q > 5) break; $q++;
                endforeach ?>
            <?php if ($q < 5) foreach ($project->individual_rewards as $individual): ?>
             <li class="<?php echo $individual->icon ?> activable">
@@ -79,8 +79,8 @@ if (isset($this['investor']) && is_object($this['investor'])) {
            <?php if ($q > 5) break; $q++;
            endforeach ?>
         </ul>
-        
-        
+
+
     </div>
 
     <?php if ($this['dashboard'] === true) : // si estamos en el dashboard no hay (apoyar y el ver se abre en una ventana nueva) ?>

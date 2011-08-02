@@ -25,16 +25,16 @@ $level = (int) $this['level'] ?: 3;
 </div>
 
 <div class="widget project-messages">
-    
-    
+
+
     <div id="project-messages">
-        
+
 		<?php foreach ($project->messages as $message) : ?>
                 <div class="message<?php if ($message->user->id == $project->owner) echo ' owner'; ?>">
-                   <span class="avatar"><img src="/image/<?php echo $message->user->avatar->id; ?>/50/50" alt="" /></span>
+                   <span class="avatar"><img src="/image/<?php echo $message->user->avatar->id; ?>/50/50/1" alt="" /></span>
                    <h<?php echo $level ?> class="user"><?php echo htmlspecialchars($message->user->name); if ($message->blocked == 1) echo ' ' . Text::get('regular-looks_for'); ?></h<?php echo $level ?>>
-                   <div class="date"><span><?php echo $message->date ?></span></div>                   
-                   <blockquote><?php echo $message->message; ?></blockquote>                   
+                   <div class="date"><span><?php echo $message->date ?></span></div>
+                   <blockquote><?php echo $message->message; ?></blockquote>
                    <div class="actions">
                         <a class="" href="#" onclick="answer('<?php echo $message->id; ?>')"><?php echo Text::get('project-messages-answer_it'); ?></a>
                         <?php // si puede borrar este mensaje
@@ -42,13 +42,13 @@ $level = (int) $this['level'] ?: 3;
                                 <a href="/message/delete/<?php echo $message->id; ?>/<?php echo $project->id; ?>"><?php echo Text::get('regular-delete'); ?></a>
                         <?php endif ?>
                    </div>
-                                
+
                </div>
 
-               <?php if (!empty($message->responses)) : 
+               <?php if (!empty($message->responses)) :
                     foreach ($message->responses as $child) : ?>
                        <div class="child<?php if ($child->user->id == $project->owner) echo ' owner'; ?>">
-                           <span class="avatar"><img src="/image/<?php echo $child->user->avatar->id; ?>/40/40" /></span>
+                           <span class="avatar"><img src="/image/<?php echo $child->user->avatar->id; ?>/40/40/1" /></span>
                            <h<?php echo $level ?> class="user"><?php echo $child->user->name; ?></h<?php echo $level ?>>
                            <div class="date"><span><?php echo $child->date; ?></span></div>
                            <blockquote><?php echo $child->message; ?></blockquote>
@@ -63,6 +63,6 @@ $level = (int) $this['level'] ?: 3;
                 endif; ?>
 		<?php endforeach; ?>
     </div>
-    
-    
+
+
 </div>

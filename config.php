@@ -56,9 +56,13 @@ define('GOTEO_META_COPYRIGHT', 'Platoniq');
 define('GOTEO_DB_DRIVER', 'mysql');
 define('GOTEO_DB_HOST', 'localhost');
 define('GOTEO_DB_PORT', 3306);
+define('GOTEO_DB_CHARSET', 'UTF-8');
 define('GOTEO_DB_SCHEMA', 'goteo');
 define('GOTEO_DB_USERNAME', 'goteo');
 define('GOTEO_DB_PASSWORD', 'goteo1234');
+
+//Uploads i catxe
+define('GOTEO_DATA_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR);
 
 // Mail
 define('GOTEO_MAIL_FROM', 'noreply@goteo.org');
@@ -75,7 +79,7 @@ define('GOTEO_MAIL_SMTP_PASSWORD', 'goteo1234');
 define('GOTEO_DEFAULT_LANG', 'es');
 
 // url
-define('SITE_URL', 'http://jaume.goteo.org');
+define('SITE_URL', 'http://devgoteo.org');
 
 /****************************************************
 Paypal web_constants.php
