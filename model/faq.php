@@ -2,7 +2,8 @@
 
 namespace Goteo\Model {
 
-    use Goteo\Library\Check;
+    use Goteo\Library\Check,
+        Goteo\Library\Text;
 
     class Faq extends \Goteo\Core\Model {
 
@@ -167,10 +168,10 @@ namespace Goteo\Model {
 
         public static function sections () {
             return array(
-                'node' => 'Goteo',
-                'project' => 'Proyecto',
-                'investors' => 'Cofinanciadores',
-                'nodes' => 'Nodos'
+                'node' => Text::get('faq-main-section-header'),
+                'project' => Text::get('faq-project-section-header'),
+                'investors' => Text::get('faq-investors-section-header'),
+                'nodes' => Text::get('faq-nodes-section-header')
             );
         }
 

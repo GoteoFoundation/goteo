@@ -21,7 +21,9 @@ namespace Goteo\Library {
                 'news'      => 'Noticias',
                 'faq'       => 'Faq',
                 'post'      => 'Blog',
-                'tag'       => 'Tags'
+                'tag'       => 'Tags',
+                'criteria'  => 'Criterios de evaluación',
+                'worthcracy'=> 'Meritocrácia'
             ),
             $fields = array(
                 'promote' => array (
@@ -54,6 +56,12 @@ namespace Goteo\Library {
                     'text' => 'Texto entrada'
                 ),
                 'tag' => array (
+                    'name' => 'Nombre'
+                ),
+                'criteria' => array (
+                    'title' => 'Título'
+                ),
+                'worthcracy' => array (
                     'name' => 'Nombre'
                 )
             ),

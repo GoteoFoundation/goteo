@@ -2,7 +2,8 @@
 
 namespace Goteo\Model {
 
-    use Goteo\Library\Check;
+    use Goteo\Library\Check,
+        Goteo\Library\Text;
 
     class Criteria extends \Goteo\Core\Model {
 
@@ -155,9 +156,9 @@ namespace Goteo\Model {
 
         public static function sections () {
             return array(
-                'project' => 'Respecto al proyecto',
-                'owner' => 'Respecto al creador/equipo',
-                'reward' => 'Respecto al retorno'
+                'project' => Text::get('criteria-project-section-header'),
+                'owner' => Text::get('criteria-owner-section-header'),
+                'reward' => Text::get('criteria-reward-section-header')
             );
         }
 
