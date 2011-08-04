@@ -253,12 +253,34 @@ div.widget.blog-content-module ul.share-goteo li.facebook a:hover,
     margin: 0 0 5px 0;
 }
 #blog-content div.widget.blog-comment textarea {
-	display:block;
-	width:565px;
+	background-color: #DCEEDF;
+	border: 1px solid #2EAB58;
+	clear: right;
+	display: block;
+	float: right;
+	height: 50px;
+	margin: -1px;
+	padding: 0.3em 0;
+	resize: none;
+	width: 525px;
 }
-#blog-content div.widget.blog-comment input.button {
+
+#blog-content div.widget.blog-comment button {
 	margin: 20px 0 0 0;
 	float:right;
+	font-weight: bold;
+	margin-top: 35px;
+	padding: 5px 20px;
+}
+
+#blog-content div.widget.blog-comment a.preview{
+	color: #2EAB58;
+	font-weight: bold;
+	left: 52px;
+	position: relative;
+	text-decoration: none;
+	text-transform: uppercase;
+	top: 10px;
 }
 /* end send comment */
 /** end of blog comments **/

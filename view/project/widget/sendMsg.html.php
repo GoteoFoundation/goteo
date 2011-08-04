@@ -38,7 +38,7 @@ $level = (int) $this['level'] ?: 3;
         
          
         
-        <button class="green" type="submit"><?php echo Text::get('project-messages-send_message-button'); ?></button>
+        <button <?php echo (!empty($_SESSION['user']->id)) ? 'class="green"' : 'class="disabled" disabled="disabled"'; ?> type="submit"><?php echo Text::get('project-messages-send_message-button'); ?></button>
     </form>
 
 </div>

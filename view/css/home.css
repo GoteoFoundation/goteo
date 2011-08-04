@@ -5,8 +5,20 @@ body.home div#main div.learn {
     position: relative;
 }
 
-body.home div#main div.widget.projects .title {
-    margin-left: 8px;
+body.home div#main div.widget.projects h2.title {
+	margin-left:-47px;
+}
+body.home div#main div.widget.projects h3.title{
+	margin-left:3px;
+}
+
+body.home div#main div.widget.projects{
+	padding:15px 0 0 75px;	
+}
+
+body.home div#main div.widget.projects div.widget.project{
+	padding:0;
+	margin:0 40px 20px 0;
 }
 
 body.home div#main div.learn ul {

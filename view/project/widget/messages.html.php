@@ -6,6 +6,20 @@ $level = (int) $this['level'] ?: 3;
 
 ?>
 <script type="text/javascript">
+	jQuery(document).ready(function ($) { 
+	    //change div#preview content when textarea lost focus
+		$("#message-text").blur(function(){
+			$("#preview").html($("#message-text").val());
+		});
+		
+		//add fancybox on #a-preview click
+		$("#a-preview").fancybox({
+			'titlePosition'		: 'inside',
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none'
+		});
+	});
+
     function answer(id) {
         $('#thread').val(id);
         $('#message-text').val('<?php echo Text::get('project-messages-send_message-your_answer'); ?>').focus().select();
@@ -18,8 +32,15 @@ $level = (int) $this['level'] ?: 3;
     <div>
         <form method="post" action="/message/<?php echo $project->id; ?>">
             <input type="hidden" id="thread" name="thread" value="" />
+            <div id="bocadillo"></div>
             <textarea id="message-text" name="message" cols="50" rows="5"></textarea>
-            <button class="green" type="submit"><?php echo Text::get('project-messages-send_message-button'); ?></button>
+            <a target="_blank" id="a-preview" href="#preview" class="preview">&middot;Previsualizar</a>
+            <div style="display:none">
+                <div id="preview" style="width:400px;height:300px;overflow:auto;">
+                        
+                    </div>
+            </div>
+            <button <?php echo (!empty($_SESSION['user']->id)) ? 'class="green"' : 'class="disabled" disabled="disabled"'; ?> type="submit"><?php echo Text::get('project-messages-send_message-button'); ?></button>
         </form>
     </div>
 </div>

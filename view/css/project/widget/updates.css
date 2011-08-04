@@ -237,3 +237,36 @@ div.post-comments div.message blockquote {
 	margin: 0px 0px 10px 0px !important;
 }
 
+
+/* escribe tu comentario */
+.project-updates div.widget.blog-comment textarea {
+	background-color: #DCEEDF;
+	border: 1px solid #2EAB58;
+	clear: right;
+	display: block;
+	float: right;
+	height: 50px;
+	margin: -1px;
+	padding: 0.3em 0;
+	resize: none;
+	width: 525px;
+}
+
+.project-updates div.widget.blog-comment input.green {
+	margin: 20px 0 0 0;
+	float:right;
+	font-weight: bold;
+	margin-top: 35px;
+	padding: 5px 20px;
+}
+
+.project-updates div.widget.blog-comment a.preview{
+	color: #2EAB58;
+	font-weight: bold;
+	left: 52px;
+	position: relative;
+	text-decoration: none;
+	text-transform: uppercase;
+	top: 10px;
+}
+/* end send comment */

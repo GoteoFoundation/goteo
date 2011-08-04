@@ -50,7 +50,7 @@ include 'view/header.html.php';
                     <textarea id="message" name="message" cols="50" rows="5"><?php echo $this['data']['message'] ?></textarea>
                 </div>
 
-                <button class="green" type="submit" name="send"><?php echo Text::get('contact-send_message-button'); ?></button>
+                <button <?php echo (!empty($_SESSION['user']->id)) ? 'class="green"' : 'class="disabled" disabled="disabled"'; ?> type="submit" name="send"><?php echo Text::get('contact-send_message-button'); ?></button>
             </form>
 
         </div>

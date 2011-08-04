@@ -21,7 +21,7 @@ div#super-header {
     margin: 0 auto;
     height: 25px;
     font-size: 12px;
-    overflow: hidden;
+    overflow: hidden; 
     padding: 0 1em;
 }
 
@@ -353,7 +353,7 @@ div#sub-header-secondary > div > ul.share-goteo li.rss a{
 div#header div#about {    
     font-size: 12px;
     height: 2.2em;
-    float: right;
+    /*float: right;*/
     overflow: hidden;
     position: relative;
     z-index: 9;
@@ -373,6 +373,21 @@ div#header div#about ul li {
     line-height: 2.2em;
     height: 2.2em;
     font-size: 12px;
+}
+
+div#header div#about ul li#lang{
+	border:#fff 1px dashed;
+	background:url(bolita.png) 4px 7px no-repeat;
+	margin-left:15px;
+}
+
+div#header div#about ul li#lang.active{
+	background:url(bolita.png) 4px 7px no-repeat #808286;
+}
+
+div#header div#about ul li#lang a{
+	background: url("lang-triangulo.png") no-repeat scroll 100% bottom transparent;
+	padding-right: 10px;
 }
 
 div#header div#about ul li > *:hover {
@@ -512,7 +527,7 @@ div#header div#menu > ul > li.search fieldset {
     border: 1px solid #808184;    
     padding-right: 1.6em;
     position: relative;
-	top:-4px;
+	/*top:-4px;*/ /*bug 800x600 alineación vertical search*/
     font-size: 14px;
 }
 
@@ -596,7 +611,7 @@ div#header div#menu > ul > li.dashboard > a {
 }
 
 div#header div#menu > h2,
-div#header div#lang {
+div#header ul.lang {
     display: none;
 }
 
@@ -657,3 +672,37 @@ div#header div#menu > ul > li.dashboard > div > ul > li > a:hover {
     background-color: #78d1d1;
 }
 
+
+/* = desplegable de idiomas
+**********************************/
+/*div#header div#rightside div#about,div#header div#rightside div.lang{float:left;}
+div#header div.lang{margin-top:5px;}
+div#header div.lang ul.lang {display:none;margin:0;padding:0;}
+div#header div.lang span#lan-active{padding-left:30px;}*/
+ul.lang{
+
+	position:absolute;
+	left: 0;
+	top: 20px;
+	z-index: 1000;
+	list-style:none;
+	display:none;
+	background-color: #fff;
+	margin:0;
+	padding:0;
+	}
+ul.lang li{
+	width:80px;
+	padding:4px;
+	border:#fff 1px dashed;
+	background-color: #59595C;
+}
+ul.lang li:hover {
+	background-color: #fff;
+}
+ul.lang li>a{
+	color:#fff;
+}
+ul.lang li:hover>a {
+	color: #59595C;
+}

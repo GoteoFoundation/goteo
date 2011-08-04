@@ -19,6 +19,10 @@ extract($_POST);
 		<div class="mod-pojctopen"><?php echo Text::html('open-banner-header'); ?></div>
 	</div>
 </div>
+
+<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+
+
     <div id="main">
         <div class="login">
             <div>
