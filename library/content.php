@@ -22,6 +22,7 @@ namespace Goteo\Library {
                 'faq'       => 'Faq',
                 'post'      => 'Blog',
                 'tag'       => 'Tags',
+                'page'      => 'Páginas',
                 'criteria'  => 'Criterios de evaluación',
                 'worthcracy'=> 'Meritocrácia'
             ),
@@ -57,6 +58,10 @@ namespace Goteo\Library {
                 ),
                 'tag' => array (
                     'name' => 'Nombre'
+                ),
+                'page' => array (
+                    'name' => 'Nombre',
+                    'description' => 'Descripción'
                 ),
                 'criteria' => array (
                     'title' => 'Título'

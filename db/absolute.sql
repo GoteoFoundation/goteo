@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.7
+-- version 3.3.7deb5build0.10.10.1
 -- http://www.phpmyadmin.net
 --
--- Servidor: localhost:3306
--- Tiempo de generación: 02-08-2011 a las 13:22:13
--- Versión del servidor: 5.1.41
--- Versión de PHP: 5.3.2-1ubuntu4.9
+-- Servidor: localhost
+-- Tiempo de generación: 04-08-2011 a las 19:17:21
+-- Versión del servidor: 5.1.49
+-- Versión de PHP: 5.3.3-1ubuntu9.3
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -16,7 +16,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de datos: `beta-goteo`
+-- Base de datos: `goteo`
 --
 
 -- --------------------------------------------------------
@@ -395,6 +395,26 @@ INSERT INTO `criteria` VALUES(24, 'reward', 'Da libertad en el uso de sus result
 INSERT INTO `criteria` VALUES(25, 'reward', 'Ofrece un retorno atractivo (por original, por útil, por inspirador... )', '', 6);
 INSERT INTO `criteria` VALUES(26, 'reward', 'Cuenta con actualizaciones', '', 7);
 INSERT INTO `criteria` VALUES(27, 'reward', 'Integra a la comunidad (a los seguidores, cofinanciadores, a un grupo social)', '', 8);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `criteria_lang`
+--
+
+DROP TABLE IF EXISTS `criteria_lang`;
+CREATE TABLE `criteria_lang` (
+  `id` bigint(20) unsigned NOT NULL,
+  `lang` varchar(2) NOT NULL,
+  `title` tinytext,
+  `description` text,
+  UNIQUE KEY `id_lang` (`id`,`lang`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcar la base de datos para la tabla `criteria_lang`
+--
+
 
 -- --------------------------------------------------------
 
@@ -1160,7 +1180,7 @@ CREATE TABLE `news` (
   `order` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Noticias en la cabecera' AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Noticias en la cabecera' AUTO_INCREMENT=2 ;
 
 --
 -- Volcar la base de datos para la tabla `news`
@@ -1242,6 +1262,26 @@ INSERT INTO `page` VALUES('news', 'Noticias', 'Pagina de noticias', '/news');
 INSERT INTO `page` VALUES('service', 'Servicios', 'General de servicios', '/service');
 INSERT INTO `page` VALUES('team', 'Equipo', 'Sobre la gente detrás de Goteo', '/about/team');
 INSERT INTO `page` VALUES('workshop', 'Servicio Talleres', 'Descripción de servicio de talleres', '/service/workshop');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `page_lang`
+--
+
+DROP TABLE IF EXISTS `page_lang`;
+CREATE TABLE `page_lang` (
+  `id` varchar(50) NOT NULL,
+  `lang` varchar(2) NOT NULL,
+  `name` tinytext NOT NULL,
+  `description` text,
+  UNIQUE KEY `id_lang` (`id`,`lang`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcar la base de datos para la tabla `page_lang`
+--
+
 
 -- --------------------------------------------------------
 
@@ -1471,8 +1511,8 @@ INSERT INTO `project` VALUES('oh-oh-fase-2', 'Oh_Oh fase 2', 1, 50, 'dcuartielle
 INSERT INTO `project` VALUES('pliegos', 'PliegOS', 2, 75, 'esenabre', 'goteo', 0, 38, '2011-06-15', '2011-07-31', '2011-07-04', NULL, NULL, 'Enric Senabre Hidalgo', '46649545W', '932215515', 'Moscou 16, 1º 1ª', '08005', 'Barcelona', 'España', '', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac magna in odio congue suscipit. Ut arcu augue, tempus in facilisis eu, elementum ut risus. Pellentesque molestie mollis quam a iaculis. Nunc feugiat consectetur mauris quis blandit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed imperdiet scelerisque ante, eu rhoncus augue dictum eu. Sed imperdiet imperdiet semper. Maecenas in dolor dolor, quis ullamcorper velit. Duis ut ligula tellus, eget luctus arcu. Phasellus volutpat euismod tortor, et dignissim nulla consectetur euismod. Nulla pretium laoreet arcu, vitae consectetur nisi imperdiet a. Morbi arcu lorem, ornare condimentum pulvinar non, mattis sed tortor.\r\n\r\nVivamus sollicitudin urna ac massa iaculis consectetur. Etiam aliquet tempor quam ac tempor. Morbi dictum diam et lacus faucibus sodales. Phasellus commodo purus quam. Sed interdum luctus posuere. Suspendisse vehicula justo a mi commodo interdum. Nunc malesuada bibendum quam, id blandit dolor volutpat ut. In. ', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac magna in odio congue suscipit. Ut arcu augue, tempus in facilisis eu, elementum ut risus. Pellentesque molestie mollis quam a iaculis. Nunc feugiat consectetur mauris quis blandit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed imperdiet scelerisque ante, eu rhoncus augue dictum eu. Sed imperdiet imperdiet semper.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac magna in odio congue suscipit. Ut arcu augue, tempus in facilisis eu, elementum ut risus. Pellentesque molestie mollis quam a iaculis. Nunc feugiat consectetur mauris quis blandit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed imperdiet scelerisque ante, eu rhoncus augue dictum eu. Sed imperdiet imperdiet semper.', '- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac magna in odio congue suscipit. Ut arcu augue, tempus in facilisis eu, elementum ut risus. \r\n- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac magna in odio congue suscipit. Ut arcu augue, tempus in facilisis eu, elementum ut risus. \r\n- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac magna in odio congue suscipit. Ut arcu augue, tempus in facilisis eu, elementum ut risus. \r\n- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac magna in odio congue suscipit. Ut arcu augue, tempus in facilisis eu, elementum ut risus. ', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac magna in odio congue suscipit. Ut arcu augue, tempus in facilisis eu, elementum ut risus. Pellentesque molestie mollis quam a iaculis. Nunc feugiat consectetur mauris quis blandit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed imperdiet scelerisque ante, eu rhoncus augue dictum eu. Sed imperdiet imperdiet semper.', NULL, 'salud, humor', 'http://www.youtube.com/watch?v=ab5pnqCF0Kc', 4, 'Barcelona', 0, '', '');
 INSERT INTO `project` VALUES('robocicla', 'Robocicla', 1, 50, 'carlaboserman', 'goteo', 145, 20, '2011-05-13', '2011-07-25', '2011-07-05', '0000-00-00', '0000-00-00', '', '', '', '', '', 'Sevilla', 'España', '', 'Robocicla es una iniciativa Extremeña que mezcla arte, creatividad, reciclaje y tecnología.\r\nEs una herramienta pensada para que niñ@s, jóvenes, padres, madres y educador@s se diviertan y aprendan junt@s acerca del conocimiento y la cultura libres.\r\n\r\nA través de fichas de auto-construcción ilustradas, aprenderemos a confeccionar Robots usando tecnología reciclada.\r\nEstos Robots nos contarán cómo liberar, compartir y construir entre todos el conocimiento.\r\nEn www.robocicla.net podrás conocer experiencias de robociclaje y descargar todo el material didáctico para usarlo cuando quieras.\r\nEn los Robocicla_TALLERES aprenderemos\r\n1. Sobre la importancia de reciclar el material tecnológico, su impacto medioambiental en el mundo, y las posibilidades artísticas que nos ofrece el reciclaje.\r\n2. Desmontaje de Equipos, para separar lo que aún tiene vida útil, y lo que usaremos para construir nuestros robots. Papelera electrónica de reciclaje.\r\n3. Construiremos a Hackerina y conoceremos los principios de la Ética Hacker.\r\n4. Aprenderemos electrónica básica: incorporando leds, interruptores, y ventiladores a nuestros robots.\r\n5. Documentaremos el taller y seremos bloguers de Robocila.\r\n\r\nActualmente el equipo de robocicla trabaja en la elaboración de material didáctico para niñ@s, en forma de cuentojuegos ilustrados acerca de la historia de cada uno de los Robots, que serán publicados digital y analógicamente.\r\n\r\nNota: Mientras buscaba financiación colectiva, Robocicla empezo una gira de 20 talleres por todo el territorio extremeño promovida por el Consorcio IdenTic a través de la Red de Telecentros Extremeños', '', 'URL proyecto:www.robocicla.net\r\n\r\nSector al que va dirigido:comunidad educativa, niñ@s de todas las edades, frikis, instituciones, comunidad software libre / cultura libre', '', 'Carla Boserman // Licenciada en Bellas artes entre Sevilla y Atenas en la especialidad de Diseño Gráfico y Grabado. Mi experiencia profesional tiene que ver con la gestión creativo-cultural de proyectos de arte colaborativo, con especial atención al enfoque pedagógico y terapéutico de los proyectos.\r\nDibujo, creo y enredo. Y sobre todo, me muevo.\r\nTrabajo en la elaboración de diarios viajes ilustrados, aprendo cerámica y empiezo a formarme en el campo del arte terapia. Enamorada de Extremadura, donde he vivido y trabajado en los últimos tiempos, he podido desarrollar el proyecto La Siberia Mail Art www.siberiapostal.net haciendo de mis dibujos una herramienta de puesta de valor de un territorio y sus gentes.\r\n\r\n+ Breve CV\r\n\r\n2007 Ilustraciones/Colaboración en el proyecto Tecnopaisajes. TCS 2 Extremadura.\r\n2007 Primer premio Creativa 07 Consejería de Innovación Ciencia y Empresa Junta de Andalucía para el desarrollo del\r\nproyecto Pista Digital plataforma itinerante para la cultura. www.pistadigital.org\r\n2007 Premio INICIARTE de la Junta de Andalucía para la realización del proyecto Larache se mueve Festival entre las\r\ndos orillas. Sevilla y Larache (Marruecos).\r\n2008+2009 Conceptualización, diseño y dinamización editorial del Proyecto Robinsones Urbanos, un espacio\r\nciudadano digital y una herramienta para pacientes con Trastorno Bipolar, que cuenta con el apoyo de Ciudadanía Digital,\r\nConsejería de Innovación de la Junta de Andalucía. robinsonesurbanos.org\r\n2008 Invitada al Simposium Nomadism: Art and New Technologies. Theatre de la Villette (Paris).\r\n2008 Ilustraciones y documentación para el Taller de reciclaje del agua: Aguas Mil, CALA. Alburquerque (Badajoz).\r\n2008 Exposición de Pinturas para el evento Senegal se Mueve de la ONG AEXCRAM (Mérida)\r\n2009 Diseño de Postal para la conservación del patrimonio de Canido (Pontevedra).\r\n2009 Diseño de la Exposición: Miradas Cruzadas Sobre el Patrimonio Marroquí. Sala Diagonal 3 (Sevilla).\r\n2010 Ponencia sobre el proyecto La Siberia mail art, Escuela de Arte de Mérida.\r\n2010 Ilustraciones para el libro : Historia del encaje de bolillos en Extremadura.\r\n2010 PROCESO DE CONSTRUCCIÓN COLECTIVA - The Coffee Break 2010 (Junta de Extremadura)\r\nwww.thecooffebreak.biz\r\n2010 Taller de Creaciones Fantásticas//Reciclando Tecnología – Festival NTX (Los Santos de Maimona, Badajoz)\r\nwww.festivalntx.com/ntx2010/\r\n2010 Beca a la Creación Joven para el proyecto Taller de Creaciones Fantásticas 2.0 Robocicla.net\r\nConsejería de los jóvenes y del deporte-Junta de Extremadura. www.robocicla.net\r\n2010 Diseño Packing para el documental - La Esquina del tiempo -Galizuela/Badajoz de Carla Alonso.', '', 'cultura libre, reciclaje, software libre, pedagogía, creacion', 'http://www.youtube.com/watch?v=XNVCetMiUsY', 0, 'Sevilla', 0, '', '');
 INSERT INTO `project` VALUES('todojunto-letterpress', 'Todojunto Letterpress', 1, 52, 'todojunto', 'goteo', 25, 0, '2011-05-13', '2011-07-25', '0000-00-00', '0000-00-00', '0000-00-00', '', '', '', '', '', 'Barcelona', 'España', '', 'Todojunto cuenta actualmente con un taller de tipografía móvil que ha nacido de algunos elementos que hemos recuperado de una imprenta de barrio con la que trabajábamos en Barcelona. Todojunto Letterpress intenta poner en marcha un espacio para recuperar esta técnica de impresión, y utilizarlo como un espacio de aprendizaje y discusión sobre la tipografía en general, el diseño, y las técnicas de producción gráfica.\r\nBásicamente se nececitan mas juegos de tipografías de plomo y Madera, los muebles para guardarlas, y equipo que se pueda recuperar de otras imprentas que no lo usen mas. Hemos calculado que esta primera fase, para completar lo que ya tenemos en nuestro taller, necesita una inversión de 2000 euros, y horas de trabajo, en el proceso de clasificación, organización y limpieza de los materiales recuperados. Ofrecemos a cambio workshops, impresiones personalizadas para las personas hagan aportes económicos superiores a los 150€.\r\nTambién ofrecemos en retorno, una pequeña publicación con material pedagogico sobre la técnica, una especie de Manual/fanzine del taller de Todojunto letterpress.', '', 'URL del proyecto: www.todojunto.net\r\n\r\nSector al que va dirigido: Impresores amateurs, Estudiantes de diseño y tipografía, Profesores, interesados en la producción gráfica, artistas, Barcelona', '', 'Tenemos una parte del taller de tipos móviles en funcionamiento desde hace aproximandamente 8 meses, tiempo en el que hemos experimentado con esta técnica, somos un estudio de comunicación gráfica, esta es la dirección de nuestro sitio web www.todojunto.net\r\n\r\ntambién venimos de proyectos independintes de ilustración, comunicación y proyectos culturales:\r\n\r\nwww.jstk.org (Andrea Gómez y Ricardo Duque)\r\nwww.miuk.ws (Tiago Pina)\r\nwww.andreagomez.info (Andrea Gómez)\r\n\r\ny estamos vinculados con el proyecto de La Fanzinoteca Ambulant: www.fanzinoteca.net', '', 'Impresión, grafica, técnica, tipografías móviles, recuperación', 'http://vimeo.com/17760187', 1, 'Barcelona', 0, '', '');
-INSERT INTO `project` VALUES('tutorial-goteo', 'Tutorial Goteo', 3, 77, 'demo', 'goteo', 30, 34, '2011-07-26', '2011-07-27', '2011-07-27', NULL, NULL, 'Demo Goteo', '46649545W', '936924182', 'Moscou 16, 1º 1ª', '08005', 'Barcelona', 'España', '', 'Aquí se debe describir el proyecto con un mínimo de 80 palabras (con menos marcará error), explicándolo de modo que sea fácil de entender para cualquier persona. También hay que darle un enfoque atractivo y social, resumiendo sus características básicas. \r\n\r\nAdemás es donde linkar un vídeo en que se presente brevemente, algo que consideramos muy importante para poder difundirlo y que llegue al máximo posible de personas.\r\n\r\nEs lo primero con lo que cualquier usuario de la red se encontrará, así que se debe cuidar la redacción y evitar las faltas de ortografía. \r\n\r\nHay campos obligatorios como incluir un vídeo o subir imágenes. Esto es así porque los consideramos imprescindibles para empezar con éxito una campaña de recaudación de fondos mediante Goteo.\r\n\r\nPara este apartado y el resto de secciones del formulario de Goteo es posible utilizar código HTML, especialmente para links a páginas web y puntualmente el uso de cursivas o negritas (pero sin abusar :)\r\n\r\nOtras secciones importantes dentro del formulario del proyecto, que se solicitan cuando éste se da de alta, son las categorías y palabras clave que permiten buscarlo en la plataforma, el estado de desarrollo en que se encuentra y el alcance geográfico previsto.', 'Aquí recomendamos explicar de modo resumido qué motivos o circunstancias han llevado a idear el proyecto. Así podrá conectar con más personas motivadas por ese mismo tipo de intereses, problemáticas o gustos.', 'Aquí se debe describir brevemente el proyecto de modo conceptual, técnico o práctico. Por ejemplo detallando sus características de funcionamiento, o en qué partes consistirá. Debe ayudar a hacerse una idea sobre cómo será una vez acabado y todo lo que la gente podrá hacer con él.', 'Sección para enumerar las metas principales del proyecto, a corto y largo plazo, en todos los aspectos que se considere importante destacar. Se trata de otra oportunidad para contactar y conseguir el apoyo de gente que simpatice con esos objetivos.', 'Este apartado es muy importante para generar confianza en los cofinanciadores potenciales del proyecto, explicando la trayectoria y experiencia previa de la persona o grupo impulsor del proyecto. Qué experiencia tiene relacionada con la propuesta y con qué equipo de personas, recursos y/o infraestructuras cuenta.', NULL, 'Goteo', 'http://vimeo.com/26970224', 1, 'Barcelona', 4, 'La herramienta también permite indicar si se cuenta con recursos adicionales, a parte de los que se solicitan, para llevar a cabo el proyecto: fuentes de financiación, recursos propios o bien ya se ha hecho acopio de materiales. Puede suponer un aliciente para los potenciales cofinanciadores del proyecto.', '');
-INSERT INTO `project` VALUES('tweetometro', 'Tweetometro', 3, 81, 'demo', 'goteo', 0, 34, '2011-07-26', '2011-07-27', '2011-07-27', NULL, NULL, 'Demo Goteo', '46649545W', '936924182', 'Moscou 16, 1º 1ª', '08005', 'Barcelona', 'España', '', 'Plataforma experimental de votación viral mediante tweets, actualmente en fase alfa. Una aplicación ágil y social para llegar a acuerdos, tomar decisiones colectivamente o elegir la mejor idea presentada. Al mismo tiempo sirve para activar y promover (micro)conversaciones focalizadas en temas concretos. \r\n\r\nSe trata de una aplicación ya en desarrollo pero que aún se puede optimizar para que generalice su uso. La queremos mejorar para que cualquiera la pueda utilizar, como software libre o servicio online, y que además funcione mediante SMS. \r\n\r\nEn una fase de pruebas con alta movilización social a través de Twitter con motivo del #15M, tras  20 días de participación abierta, tanto para emitir votos positivos como negativos sobre ocho propuestas planteadas, se recopilaron un total de 1.122 votos a través del hastag #tweetometro. De estos 1.045 han sido votos positivos y 77 negativos (estos últimos ponderando a la baja los porcentajes de las diferentes propuestas).', 'Tras testear la herramienta en una votación de proyectos tecnosociales en 2009 durante las jornadas <a href="http://www.urbanlabs.net/">UrbanLabs</a>, se abrió la posibilidad de seguir experimentando con ella para generar consenso y discusión en el contexto de las movilizaciones posteriores al #15M. Creemos que se demostró su utilidad pero también que necesita diferentes mejoras, y que así pueda utilizarla más gente.', 'La plataforma de Tweetometro consiste en una interficie que muestra resultados en tiempo real de determinadas palabras clave o hashtags enviados desde Twitter. Permite comparar de manera estadística su evolución y por tanto que la popular red social se convierta en una herramienta de voto. Ofrece de momento dos tipos de visualización (termómetros y porcentajes) y un administrador básico.', 'Los objetivos actuales del proyecto son mejorar la interfície para incorporar cuentas de Twitter, ampliar los formatos de visualización, hacer más usable la página de administración, implementar la posibilidad de emitir votos por SMS y en definitiva hacer una buena herramienta de software libre fácil de usar por cualquiera. ', 'Platoniq es una organización internacional de productores culturales y desarrolladores de software, pionera en la producción y distribución de cultura copyleft. Desde el año 2001, llevamos desarrollando proyectos relacionados con la cultura libre y TICs. Hemos producido software libre como http://burnstation.net cuyo código está disponible en para las distribuciones de GNU/Linux Ubuntu y Debian. \r\nTambién hemos desarrollado entre otras plataformas que dan un servicio gratuito para la creación de canales de radio por Internet como http://open-server.org o de intercambio de conocimientos entre la ciudadanía http://bancocomun.org o un tablón de anuncios audiovisuales de ofertas y demandas http://eseoese.org. Reproducidos y utilizados por muchos colectivos y entidades ciudadanas de Europa y Latinoamérica especialmente. \r\nHemos obtenido reconocimiento internacional por nuestro trabajo con premios y menciones internacionales como en la Transmediales de Berlín, Transxitio de Mexico DF, Unesco Digital Arts Awards, etc. \r\nContamos con servidores propios y  una red de colaboradores programadores, diseñadores y creativos para el desarrollo de nuestros proyectos. \r\n\r\n\r\n\r\n', NULL, 'Twitter, consenso, ', 'http://www.youtube.com/watch?v=O69x4oyuLzI', 3, 'Barcelona', 4, ' ', '');
+INSERT INTO `project` VALUES('tutorial-goteo', 'Tutorial Goteo', 3, 77, 'demo', 'goteo', 30, 32, '2011-07-26', '2011-07-27', '2011-07-27', NULL, NULL, 'Demo Goteo', '46649545W', '936924182', 'Moscou 16, 1º 1ª', '08005', 'Barcelona', 'España', '', 'Aquí se debe describir el proyecto con un mínimo de 80 palabras (con menos marcará error), explicándolo de modo que sea fácil de entender para cualquier persona. También hay que darle un enfoque atractivo y social, resumiendo sus características básicas. \r\n\r\nAdemás es donde linkar un vídeo en que se presente brevemente, algo que consideramos muy importante para poder difundirlo y que llegue al máximo posible de personas.\r\n\r\nEs lo primero con lo que cualquier usuario de la red se encontrará, así que se debe cuidar la redacción y evitar las faltas de ortografía. \r\n\r\nHay campos obligatorios como incluir un vídeo o subir imágenes. Esto es así porque los consideramos imprescindibles para empezar con éxito una campaña de recaudación de fondos mediante Goteo.\r\n\r\nPara este apartado y el resto de secciones del formulario de Goteo es posible utilizar código HTML, especialmente para links a páginas web y puntualmente el uso de cursivas o negritas (pero sin abusar :)\r\n\r\nOtras secciones importantes dentro del formulario del proyecto, que se solicitan cuando éste se da de alta, son las categorías y palabras clave que permiten buscarlo en la plataforma, el estado de desarrollo en que se encuentra y el alcance geográfico previsto.', 'Aquí recomendamos explicar de modo resumido qué motivos o circunstancias han llevado a idear el proyecto. Así podrá conectar con más personas motivadas por ese mismo tipo de intereses, problemáticas o gustos.', 'Aquí se debe describir brevemente el proyecto de modo conceptual, técnico o práctico. Por ejemplo detallando sus características de funcionamiento, o en qué partes consistirá. Debe ayudar a hacerse una idea sobre cómo será una vez acabado y todo lo que la gente podrá hacer con él.', 'Sección para enumerar las metas principales del proyecto, a corto y largo plazo, en todos los aspectos que se considere importante destacar. Se trata de otra oportunidad para contactar y conseguir el apoyo de gente que simpatice con esos objetivos.', 'Este apartado es muy importante para generar confianza en los cofinanciadores potenciales del proyecto, explicando la trayectoria y experiencia previa de la persona o grupo impulsor del proyecto. Qué experiencia tiene relacionada con la propuesta y con qué equipo de personas, recursos y/o infraestructuras cuenta.', NULL, 'Goteo', 'http://vimeo.com/26970224', 1, 'Barcelona', 4, 'La herramienta también permite indicar si se cuenta con recursos adicionales, a parte de los que se solicitan, para llevar a cabo el proyecto: fuentes de financiación, recursos propios o bien ya se ha hecho acopio de materiales. Puede suponer un aliciente para los potenciales cofinanciadores del proyecto.', '');
+INSERT INTO `project` VALUES('tweetometro', 'Tweetometro', 3, 81, 'demo', 'goteo', 0, 32, '2011-07-26', '2011-07-27', '2011-07-27', NULL, NULL, 'Demo Goteo', '46649545W', '936924182', 'Moscou 16, 1º 1ª', '08005', 'Barcelona', 'España', '', 'Plataforma experimental de votación viral mediante tweets, actualmente en fase alfa. Una aplicación ágil y social para llegar a acuerdos, tomar decisiones colectivamente o elegir la mejor idea presentada. Al mismo tiempo sirve para activar y promover (micro)conversaciones focalizadas en temas concretos. \r\n\r\nSe trata de una aplicación ya en desarrollo pero que aún se puede optimizar para que generalice su uso. La queremos mejorar para que cualquiera la pueda utilizar, como software libre o servicio online, y que además funcione mediante SMS. \r\n\r\nEn una fase de pruebas con alta movilización social a través de Twitter con motivo del #15M, tras  20 días de participación abierta, tanto para emitir votos positivos como negativos sobre ocho propuestas planteadas, se recopilaron un total de 1.122 votos a través del hastag #tweetometro. De estos 1.045 han sido votos positivos y 77 negativos (estos últimos ponderando a la baja los porcentajes de las diferentes propuestas).', 'Tras testear la herramienta en una votación de proyectos tecnosociales en 2009 durante las jornadas <a href="http://www.urbanlabs.net/">UrbanLabs</a>, se abrió la posibilidad de seguir experimentando con ella para generar consenso y discusión en el contexto de las movilizaciones posteriores al #15M. Creemos que se demostró su utilidad pero también que necesita diferentes mejoras, y que así pueda utilizarla más gente.', 'La plataforma de Tweetometro consiste en una interficie que muestra resultados en tiempo real de determinadas palabras clave o hashtags enviados desde Twitter. Permite comparar de manera estadística su evolución y por tanto que la popular red social se convierta en una herramienta de voto. Ofrece de momento dos tipos de visualización (termómetros y porcentajes) y un administrador básico.', 'Los objetivos actuales del proyecto son mejorar la interfície para incorporar cuentas de Twitter, ampliar los formatos de visualización, hacer más usable la página de administración, implementar la posibilidad de emitir votos por SMS y en definitiva hacer una buena herramienta de software libre fácil de usar por cualquiera. ', 'Platoniq es una organización internacional de productores culturales y desarrolladores de software, pionera en la producción y distribución de cultura copyleft. Desde el año 2001, llevamos desarrollando proyectos relacionados con la cultura libre y TICs. Hemos producido software libre como http://burnstation.net cuyo código está disponible en para las distribuciones de GNU/Linux Ubuntu y Debian. \r\nTambién hemos desarrollado entre otras plataformas que dan un servicio gratuito para la creación de canales de radio por Internet como http://open-server.org o de intercambio de conocimientos entre la ciudadanía http://bancocomun.org o un tablón de anuncios audiovisuales de ofertas y demandas http://eseoese.org. Reproducidos y utilizados por muchos colectivos y entidades ciudadanas de Europa y Latinoamérica especialmente. \r\nHemos obtenido reconocimiento internacional por nuestro trabajo con premios y menciones internacionales como en la Transmediales de Berlín, Transxitio de Mexico DF, Unesco Digital Arts Awards, etc. \r\nContamos con servidores propios y  una red de colaboradores programadores, diseñadores y creativos para el desarrollo de nuestros proyectos. \r\n\r\n\r\n\r\n', NULL, 'Twitter, consenso, ', 'http://www.youtube.com/watch?v=O69x4oyuLzI', 3, 'Barcelona', 4, ' ', '');
 INSERT INTO `project` VALUES('urban-social-design-database', 'Urban Social Design Database', 1, 50, 'domenico', 'goteo', 115, 20, '2011-05-13', '2011-07-31', '2011-07-05', '0000-00-00', '0000-00-00', '', '', '', '', '', 'Madrid', 'España', '', 'Crear una base de datos digital de proyectos desarrollados por los estudiantes durante su carrera universitaria. Ofrecer un nuevo espacio de conexión y dialogo entre el mundo académico y la ciudadanía.\r\n\r\nTodo el material almacenado en la base de dados será de acceso público y distribuido con licencia del tipo Creative Commons.\r\n\r\nEl marco general del proyecto se basa sobre el concepto de Urban Social Design entendido como el diseño de ambientes, espacios y dinámicas con el fin de mejorar las relaciones sociales, generando las condiciones para la interacción y la auto-organización entre las personas y su medio ambiente. ', '', 'URL proyecto: www.archtlas.com\r\n\r\nSector al que va dirigido: estudiantes, jóvenes profesionales, ciudadanos, activadores urbanos', '', 'El proyecto esta directamente asociado a una serie de cursos on-line que (temporalmente) llamamos Urban Social Design Institute (ecosistemaurbano.tv/tag/urban-social-design/).\r\n\r\nLa plataforma web que se quiere utilizar para el proyecto ya esta funcionando desde unos meses: www.archtlas.com\r\n\r\nEl principal promotor del proyecto es la agencia Ecosistema Urbano.\r\n\r\nEcosistema Urbano es una sociedad de profesionales que entienden la ciudad como fenómeno complejo, situándose en un punto intermedio entre arquitectura, ingeniería, urbanismo y sociología. Este ámbito de interés lo denominamos “sostenibilidad urbana creativa”, desde donde intentamos transformar la realidad contemporánea a través de innovación, creatividad y sobre todo acción.\r\n\r\nSus integrantes principales han sido formados entre distintas universidades europeas (Madrid, Londres, Bruselas, Roma, Paris) y proceden de entornos urbanos diversos. Ejercen la docencia como profesores visitantes, impartiendo talleres y conferencias en las principales escuelas e instituciones internacionales (Harvard, Yale, UCLA, Cornell, Iberoamericana, RIBA, Copenague, Munich, Paris, Milán, Shanghai…).Desde 2000, su trabajo ha sido premiado nacional e internacionalmente en más de 30 ocasiones.\r\n\r\nEn 2005 recibieron el European Acknowledgement Award otorgado por la Holcim Foundation for Sustainable Construction (Ginebra, 2005). En 2006, el premio de la Architectural Association and the Environments, Ecology and Sustainability Research Cluster (Londres, 2006). En 2007 fueron nominados para el premio europeo Mies Van Der Rohe Award “Arquitecto Europeo Emergente” y galardonados como oficina emergente con el premio “AR AWARD for emerging architecture” (London) entre 400 participantes de todo el mundo. En 2008 recibieron el primer premio GENERACIÓN PRÓXIMA de la Fundación Próxima Arquía y en 2009 el Silver Award Europe de la Holcim Foundation for Sustainable Construction entre más de 500 equipos, siendo más tarde nominados como finalistas a nivel mundial.\r\n\r\nEn los últimos años su trabajo se ha difundido en más de 90 medios de 30 países (prensa nacional e internacional, programas de televisión y publicaciones especializadas) y han sido expuestos en numerosas galerías, museos e instituciones (Bienal de Venecia, "Le Sommer Environnement" en París, Spazio FMG de Milán, Seul Design Olimpics, Louisiana Museum of Modern Art de Copenague, Boston Society of Architects, Matadero Madrid, Circulo de Bellas Artes de Madrid, COAM, COAC,...). En la actualidad exponen en el Design Museum de Londres dentro de la muestra "sustainable futures"y preparan una exposición monográfica sobre su trabajo en el Deutsches Architektur Zentrum de Berlin.\r\n\r\nActualmente el equipo está involucrado en proyectos I+D sobre el futuro urbano "ciudades eco-tecno-lógicas" Proyecto CETICA, financiado por el Ministerio Industria dentro del programa CENIT. En paralelo, desarrollan una labor de difusión a través de nuevas tecnologías de la información, donde han generado una plataforma de comunicación que crea redes sociales y gestiona canales de difusión en internet sobre sostenibilidad urbana creativa (www.ecosistemaurbano.org).\r\n\r\nEn la actualidad trabajan en propuestas de transformación urbana para diferentes ciudades y sus proyectos más recientes incluyen el diseño de un espacio público de experimentación interactivo para la Expo Universal de Shanghai 2010 y la propuesta urbana Plaza Ecópolis de Rivas en la periferia de Madrid.', '', 'diseño, proyectos, base de datos, difusión, educación', '', 0, '', 0, '', '');
 
 -- --------------------------------------------------------
@@ -1672,6 +1712,9 @@ INSERT INTO `purpose` VALUES('costs-fields-main-title', 'Desglose de costes', NU
 INSERT INTO `purpose` VALUES('costs-fields-metter-title', 'Totales', NULL, 'costs');
 INSERT INTO `purpose` VALUES('costs-fields-resources-title', 'Recurso', NULL, 'costs');
 INSERT INTO `purpose` VALUES('costs-main-header', 'Proyecto/Costes', NULL, 'costs');
+INSERT INTO `purpose` VALUES('criteria-owner-section-header', 'Respecto al creador/equipo', NULL, 'review');
+INSERT INTO `purpose` VALUES('criteria-project-section-header', 'Respecto al proyecto', NULL, 'review');
+INSERT INTO `purpose` VALUES('criteria-reward-section-header', 'Respecto al retorno', NULL, 'review');
 INSERT INTO `purpose` VALUES('discover-banner-header', 'Por categoria, lugar o retorno,\r\nencuentra el proyecto con el que más te identificas', 1, 'banners');
 INSERT INTO `purpose` VALUES('discover-group-all-header', 'Proyectos en campaña', NULL, 'discover');
 INSERT INTO `purpose` VALUES('discover-group-outdate-header', 'Proyectos a punto de caducar', NULL, 'discover');
@@ -1720,6 +1763,10 @@ INSERT INTO `purpose` VALUES('error-user-password-invalid', 'Texto error-user-pa
 INSERT INTO `purpose` VALUES('error-user-wrong-password', 'Texto error-user-wrong-password', NULL, 'general');
 INSERT INTO `purpose` VALUES('explain-project-progress', 'Texto bajo el título Estado global de la información', NULL, 'general');
 INSERT INTO `purpose` VALUES('faq-ask-question', '¿No has podido resolver tu duda?\r\n Envía un mensaje con tu pregunta.', NULL, 'faq');
+INSERT INTO `purpose` VALUES('faq-investors-section-header', 'Cofinanciadores', NULL, 'faq');
+INSERT INTO `purpose` VALUES('faq-main-section-header', 'Goteo', NULL, 'faq');
+INSERT INTO `purpose` VALUES('faq-nodes-section-header', 'Nodos', NULL, 'faq');
+INSERT INTO `purpose` VALUES('faq-project-section-header', 'Proyecto', NULL, 'faq');
 INSERT INTO `purpose` VALUES('footer-header-categories', 'Categorías', NULL, 'footer');
 INSERT INTO `purpose` VALUES('footer-header-projects', 'Proyectos', NULL, 'footer');
 INSERT INTO `purpose` VALUES('footer-header-resources', 'Recursos', NULL, 'footer');
@@ -2434,7 +2481,7 @@ CREATE TABLE `support` (
   `thread` bigint(20) unsigned DEFAULT NULL COMMENT 'De la tabla message',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Colaboraciones' AUTO_INCREMENT=107 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Colaboraciones' AUTO_INCREMENT=106 ;
 
 --
 -- Volcar la base de datos para la tabla `support`
@@ -2555,11 +2602,11 @@ INSERT INTO `text` VALUES('costs-fields-metter-title', 'es', 'Visualización de 
 INSERT INTO `text` VALUES('costs-main-header', 'es', 'Aspectos económicos');
 INSERT INTO `text` VALUES('discover-banner-header', 'es', 'Por categoria, lugar o retorno,<br /><span class="red">encuentra el proyecto</span> con el que más te identificas');
 INSERT INTO `text` VALUES('discover-group-all-header', 'es', 'En campaña');
-INSERT INTO `text` VALUES('error-contact-subject-empty', 'es', 'No has puesto el asunto');
 INSERT INTO `text` VALUES('discover-group-outdate-header', 'es', 'A punto de caducar');
 INSERT INTO `text` VALUES('discover-group-popular-header', 'es', 'Más populares');
 INSERT INTO `text` VALUES('discover-group-recent-header', 'es', 'Recientes');
 INSERT INTO `text` VALUES('discover-group-success-header', 'es', 'Exitosos');
+INSERT INTO `text` VALUES('error-contact-subject-empty', 'es', 'No has puesto el asunto');
 INSERT INTO `text` VALUES('error-image-name', 'es', 'Error en el nombre del archivo');
 INSERT INTO `text` VALUES('error-image-size', 'es', 'Error en el tamaño del archivo');
 INSERT INTO `text` VALUES('error-image-size-too-large', 'es', 'La imagen es demasiado grande');
@@ -3123,6 +3170,7 @@ CREATE TABLE `user_review` (
 --
 
 INSERT INTO `user_review` VALUES('esenabre', 4, 0);
+INSERT INTO `user_review` VALUES('goteo', 3, 0);
 INSERT INTO `user_review` VALUES('olivier', 4, 0);
 
 -- --------------------------------------------------------
@@ -3344,6 +3392,49 @@ INSERT INTO `worthcracy` VALUES(3, 'Apostador', 100);
 INSERT INTO `worthcracy` VALUES(4, 'Abonado', 500);
 INSERT INTO `worthcracy` VALUES(5, 'Visionario', 1000);
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `worthcracy_lang`
+--
+
+DROP TABLE IF EXISTS `worthcracy_lang`;
+CREATE TABLE `worthcracy_lang` (
+  `id` int(2) unsigned NOT NULL,
+  `lang` varchar(2) NOT NULL,
+  `name` tinytext NOT NULL,
+  UNIQUE KEY `id_lang` (`id`,`lang`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcar la base de datos para la tabla `worthcracy_lang`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `__interest`
+--
+
+DROP TABLE IF EXISTS `__interest`;
+CREATE TABLE `__interest` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` tinytext,
+  `description` text,
+  `order` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Intereses de los usuarios' AUTO_INCREMENT=8 ;
+
+--
+-- Volcar la base de datos para la tabla `__interest`
+--
+
+INSERT INTO `__interest` VALUES(1, 'EducaciÃ³n', 'EducaciÃ³n', 5);
+INSERT INTO `__interest` VALUES(2, 'EconomÃ­a solidaria', 'EconomÃ­a solidaria', 7);
+INSERT INTO `__interest` VALUES(3, 'Empresa abierta', 'Empresa abierta', 1);
+INSERT INTO `__interest` VALUES(4, 'FormaciÃ³n tÃ©cnica', 'FormaciÃ³n tÃ©cnica', 4);
+INSERT INTO `__interest` VALUES(5, 'Desarrollo', 'Desarrollo', 6);
+INSERT INTO `__interest` VALUES(6, 'Software', 'Software', 2);
+INSERT INTO `__interest` VALUES(7, 'Hardware', 'Hardware', 3);
