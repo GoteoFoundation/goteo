@@ -159,7 +159,9 @@ jQuery(document).ready(function($) {
                     <li><a href="/user/login"><?php echo Text::get('regular-login'); ?></a></li>
                     <li><a href="/contact"><?php echo Text::get('regular-footer-contact'); ?></a></li>
                     <li><a href="/blog"><?php echo Text::get('regular-header-blog'); ?></a></li>
-                    <li><a href="/about/legal"><?php echo Text::get('regular-footer-legal'); ?></a></li>
+<!--                    <li><a href="/about/legal"><?php echo Text::get('regular-footer-legal'); ?></a></li> -->
+                    <li><a href="/legal/terms"><?php echo Text::get('regular-footer-terms'); ?></a></li>
+                    <li><a href="/legal/privacy"><?php echo Text::get('regular-footer-privacy'); ?></a></li>
                 </ul>
     
                 <div class="platoniq">
