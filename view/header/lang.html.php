@@ -1,17 +1,15 @@
 <?php
-$langs = array(
-    'es'    => 'Español',
-    'ca'    => 'Català',
-    'en'    => 'English'
-);
+use Goteo\Library\Lang;
+
+$langs = Lang::getAll(true);
 ?>
 
     <div id="lang">
-        <?php foreach ($langs as $code => $name): ?>
-            <?php if ($code === $_SESSION['lang']): ?>
-            <strong><?php echo htmlspecialchars($name) ?></strong>
+        <?php foreach ($langs as $lang): ?>
+            <?php if ($lang->id == LANG): ?>
+            <strong><?php echo htmlspecialchars($lang->short) ?></strong>
             <?php else: ?>
-            <a href="/?lang=<?php echo $code ?>"><?php echo htmlspecialchars($name) ?></a>
+            <a href="?lang=<?php echo $lang->id ?>"><?php echo htmlspecialchars($lang->short) ?></a>
             <?php endif ?>
         <?php endforeach ?>            
     </div>

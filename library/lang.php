@@ -20,7 +20,19 @@ namespace Goteo\Library {
          */
 		public static function getAll ($activeOnly = false) {
             $array = array();
-			$query = Model::query("SELECT id, name FROM lang ORDER BY id ASC");
+
+            $sql = "SELECT
+                        id, name,
+                        IFNULL(short, name) as short
+                    FROM lang
+                    ";
+            if ($activeOnly) {
+                $sql .= "WHERE active = 1
+                    ";
+            }
+            $sql .= "ORDER BY id ASC";
+
+			$query = Model::query($sql);
             foreach ( $query->fetchAll(\PDO::FETCH_CLASS) as $lang) {
                 $array[$lang->id] = $lang;
             }
@@ -48,6 +60,42 @@ namespace Goteo\Library {
 				return false;
 			}
 		}
+
+		static public function is_active ($id) {
+			$query = Model::query("SELECT id FROM lang WHERE id = :id AND active = 1", array(':id' => $id));
+            if ($query->fetchObject()->id == $id) {
+                return true;
+            } else {
+                return false;
+            }
+		}
+
+        /*
+         * Establece el idioma de visualización de la web
+         */
+		static public function set () {
+            //echo 'Session: ' . $_SESSION['lang'] . '<br />';
+            //echo 'Get: ' . $_GET['lang'] . '<br />';
+
+            // si lo estan cambiando, ponemos el que llega
+            if (isset($_GET['lang'])) {
+                // si está activo, sino default
+                if (Lang::is_active($_GET['lang'])) {
+                    $_SESSION['lang'] = $_GET['lang'];
+                } else {
+                    $_SESSION['lang'] = \GOTEO_DEFAULT_LANG;
+                }
+            } elseif (empty($_SESSION['lang'])) {
+                // si no hay uno de session ponemos el default
+                $_SESSION['lang'] = \GOTEO_DEFAULT_LANG;
+            }
+            // establecemos la constante
+            define('LANG', $_SESSION['lang']);
+
+            //echo 'New Session: ' . $_SESSION['lang'] . '<br />';
+            //echo 'Const: ' . LANG . '<br />';
+		}
+
 
 	}
 	

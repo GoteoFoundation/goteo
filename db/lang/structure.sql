@@ -4,3 +4,7 @@ CREATE TABLE IF NOT EXISTS lang (
   `active` int(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Idiomas';
+
+
+-- alters
+ALTER TABLE `lang` ADD `short` VARCHAR( 10 ) NULL;

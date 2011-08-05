@@ -5,9 +5,7 @@ namespace Goteo\Library {
 	use Goteo\Core\Model,
         Goteo\Core\Exception;
 	/*
-	 * Clase para sacar textos estáticos de la tabla text
-	 *  (por ahora utilizar gettext no nos compensa, quizás más adelante)
-	 *
+	 * Clase para sacar textos dinámicos de la tabla text
      *  @TODO, definir donde se define y se cambia la constante LANG y utilizarla en los _::get_
 	 */
     class Text {
@@ -45,7 +43,7 @@ namespace Goteo\Library {
 
         static public function get ($id) {
 
-            $lang = isset($_SESSION['translator_lang']) ? $_SESSION['translator_lang'] : \GOTEO_DEFAULT_LANG;
+            $lang = isset($_SESSION['translator_lang']) ? $_SESSION['translator_lang'] : LANG;
 
             if (\defined('GOTEO_ADMIN_NOCACHE')) {
                 $nocache = true;
