@@ -19,7 +19,7 @@ namespace Goteo\Controller {
 
         public function select ($section = '', $option = '', $id = null) {
 
-            $_SESSION['translator_lang'] = isset($_POST['lang']) ? $_POST['lang'] : GOTEO_DEFAULT_LANG;
+            $_SESSION['translator_lang'] = isset($_POST['lang']) ? $_POST['lang'] : null;
 
             if (!empty($section) && !empty($option)) {
                 return call_user_func_array ( 'static::'.$section , array($option, $id) );
@@ -32,6 +32,11 @@ namespace Goteo\Controller {
          * Gestión de páginas institucionales
          */
 		public function pages ($option = 'list', $id = null) {
+            
+            if (!isset($_SESSION['translator_lang'])) {
+                $errors[] = 'Selecciona el idioma de traducción';
+                return new View('view/translate/index.html.php');
+            }
 
             $errors = array();
 
@@ -59,6 +64,11 @@ namespace Goteo\Controller {
         
 
 		public function texts ($option = 'list', $id = null) {
+
+            if (!isset($_SESSION['translator_lang'])) {
+                $errors[] = 'Selecciona el idioma de traducción';
+                return new View('view/translate/index.html.php');
+            }
 
             $errors = array();
             
@@ -103,6 +113,11 @@ namespace Goteo\Controller {
 
         /* Contents */
 		public function contents ($option = 'list', $id = null) {
+
+            if (!isset($_SESSION['translator_lang'])) {
+                $errors[] = 'Selecciona el idioma de traducción';
+                return new View('view/translate/index.html.php');
+            }
 
             $errors = array();
 

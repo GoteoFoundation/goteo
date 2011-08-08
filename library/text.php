@@ -41,17 +41,55 @@ namespace Goteo\Library {
                 return $text;
         }
 
+        static public function getAdmin ($id) {
+
+            $lang = 'es';
+
+			// buscamos el texto en la tabla, si no está sacamos el propósito
+            $values = array(':id'=>$id, ':lang' => $lang);
+
+            $sql = "SELECT
+                        IFNULL(text.text,purpose.purpose) as `text`
+                    FROM purpose
+                    LEFT JOIN text
+                        ON text.id = purpose.text
+                        AND text.lang = :lang
+                    WHERE text.id = :id
+                    ";
+
+			$query = Model::query($sql, $values);
+            return $query->fetchObject()->text;
+		}
+
+        static public function getTrans ($id) {
+
+            $lang = $_SESSION['translator_lang'];
+
+			// buscamos el texto en la tabla, si no está sacamos el propósito
+            $values = array(':id'=>$id, ':lang' => $lang);
+
+            $sql = "SELECT
+                        IFNULL(text.text,purpose.purpose) as `text`
+                    FROM purpose
+                    LEFT JOIN text
+                        ON text.id = purpose.text
+                        AND text.lang = :lang
+                    WHERE text.id = :id
+                    ";
+
+			$query = Model::query($sql, $values);
+            return $query->fetchObject()->text;
+		}
+
         static public function get ($id) {
 
-            $lang = isset($_SESSION['translator_lang']) ? $_SESSION['translator_lang'] : LANG;
+            $lang = LANG;
 
             if (\defined('GOTEO_ADMIN_NOCACHE')) {
                 $nocache = true;
             } else {
                 $nocache = false;
             }
-            
-            $nocache = true;
 
             // si hay mas de un argumento, hay que meter el resto con
             $args = \func_get_args();
@@ -66,9 +104,19 @@ namespace Goteo\Library {
 			if (!$nocache && isset($_cache[$id][$lang]) && empty($args)) {
 				return $_cache[$id][$lang];
             }
-            
+
 			// buscamos el texto en la tabla
-			$query = Model::query("SELECT `text` FROM text WHERE id = :id AND lang = :lang", array(':id' => $id, ':lang' => $lang));
+            $values = array(':id'=>$id, ':lang' => $lang);
+
+            $sql = "SELECT
+                        IFNULL(text.text,purpose.purpose) as `text`
+                    FROM purpose
+                    LEFT JOIN text
+                        ON text.id = purpose.text
+                        AND text.lang = :lang
+                    WHERE purpose.text = :id
+                    ";
+			$query = Model::query($sql, $values);
 			if ($exist = $query->fetchObject()) {
                 $tmptxt = $_cache[$id][$lang] = $exist->text;
 
@@ -82,19 +130,10 @@ namespace Goteo\Library {
                 }
 
 			} else {
-                // si tenemos purpose, devolvemos eso
-                $texto = self::getPurpose($id);
-
-                if (strcmp($texto, $id) === 0) {
-                // sino, lo metemos en la tabla y en purpose
-//                    Model::query("REPLACE INTO text (id, lang, `text`) VALUES (:id, :lang, :text)", array(':id' => $id, ':lang' => $lang, ':text' => $id));
-                    Model::query("REPLACE INTO purpose (text, purpose) VALUES (:text, :purpose)", array(':text' => $id, ':purpose' => "Texto $id"));
-                }
+                $texto = 'Texto: ' . $id;
 			}
 
             $texto = nl2br($texto);
-            // apaño temporal para los magic quotes
-            $texto = \str_replace('\\', '', $texto);
 
             return $texto;
 		}
@@ -107,7 +146,7 @@ namespace Goteo\Library {
 				return $exist->purpose;
 			} else {
 				Model::query("REPLACE INTO purpose (text, purpose) VALUES (:text, :purpose)", array(':text' => $id, ':purpose' => "Texto $id"));
-				return $id;
+				return 'Texto: ' . $id;
 			}
 		}
 
@@ -134,7 +173,7 @@ namespace Goteo\Library {
 		/*
 		 *  Metodo para la lista de textos segun idioma
 		 */
-		public static function getAll($filters = array(), $lang = \GOTEO_DEFAULT_LANG) {
+		public static function getAll($filters = array(), $lang = null) {
             $texts = array();
 
             $values = array(':lang' => $lang);
@@ -175,7 +214,7 @@ namespace Goteo\Library {
 		}
 
 		/*
-		 *  Esto se usara para la gestión de traducciones
+		 *  Esto se usa para traducciones
 		 */
 		public static function save($data, &$errors = array()) {
 			if (!is_array($data) ||
@@ -196,8 +235,28 @@ namespace Goteo\Library {
 				$errors[] = 'Error al insertar los datos <pre>' . print_r($data, 1) . '</pre>';
 				return false;
 			}
+		}
 
+		/*
+		 *  Esto se usa para gestión de originales
+		 */
+		public static function update($data, &$errors = array()) {
+			if (!is_array($data) ||
+				empty($data['id']) ||
+				empty($data['text'])) {
+					return false;
+			}
 
+            $sql = "REPLACE `purpose` SET
+                            `purpose` = :text,
+                            `text` = :id
+                    ";
+			if (Model::query($sql, array(':text' => $data['text'], ':id' => $data['id']))) {
+				return true;
+			} else {
+				$errors[] = 'Error al insertar los datos <pre>' . print_r($data, 1) . '</pre>';
+				return false;
+			}
 		}
 
         /*

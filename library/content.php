@@ -81,7 +81,7 @@ namespace Goteo\Library {
         /*
          * Para sacar un registro
          */
-        static public function get ($table, $id, $lang = \GOTEO_DEFAULT_LANG) {
+        static public function get ($table, $id, $lang = 'original') {
 
             // buscamos el contenido para este registro de esta tabla
 			$sql = "SELECT  
@@ -116,7 +116,7 @@ namespace Goteo\Library {
 		/*
 		 *  Metodo para la lista de registros de las tablas de contenidos
 		 */
-		public static function getAll($filters = array(), $lang = \GOTEO_DEFAULT_LANG) {
+		public static function getAll($filters = array(), $lang = 'original') {
             $contents = array();
 
             /// filters:  type  //tipo de campo
@@ -223,6 +223,11 @@ namespace Goteo\Library {
 		public static function save($data, &$errors = array()) {
 
             if (empty($data)) {
+                $errors[] = "Sin datos";
+                return false;
+            }
+            if (empty($data['lang']) || $data['lang'] == 'original') {
+                $errors[] = "No se peude traducir el contenido original, seleccionar un idioma para traducir";
                 return false;
             }
 
@@ -231,6 +236,7 @@ namespace Goteo\Library {
                 // tenemos el lang en $this->lang
                 // tenemos el nombre de la tabla en $this->table
                 // tenemos los campos en self::$fields[$table] y el contenido de cada uno en $this->$field
+
                 $set = '`id` = :id, `lang` = :lang ';
                 $values = array(
                     ':id' => $data['id'],

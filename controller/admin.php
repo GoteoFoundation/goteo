@@ -90,7 +90,7 @@ namespace Goteo\Controller {
             \array_unshift($groups, 'Todas las agrupaciones');
 
  //@fixme temporal hasta pasar las agrupaciones a tabal o arreglar en el list.html.php
-            $data = Text::getAll($filters);
+            $data = Text::getAll($filters, 'original');
             foreach ($data as $key=>$item) {
                 $data[$key]->group = $groups[$item->group];
             }
@@ -134,6 +134,7 @@ namespace Goteo\Controller {
                     );
 
                     break;
+                /*
                 case 'add':
                     return new View(
                         'view/admin/edit.html.php',
@@ -167,6 +168,8 @@ namespace Goteo\Controller {
                     );
 
                     break;
+                 * 
+                 */
                 case 'edit':
 
                     // gestionar post
@@ -179,15 +182,14 @@ namespace Goteo\Controller {
 
                         $data = array(
                             'id' => $id,
-                            'text' => $_POST['text'],
-                            'lang' => \GOTEO_DEFAULT_LANG
+                            'text' => $_POST['text']
                         );
 
-                        if (Text::save($data, $errors)) {
+                        if (Text::update($data, $errors)) {
                             throw new Redirection("/admin/texts/$filter");
                         }
                     } else {
-                        $text = Text::get($id);
+                        $text = Text::getAdmin($id);
                     }
 
                     return new View(

@@ -108,7 +108,7 @@ include 'view/header.html.php' ?>
 					</div>
 					<div class="shb-img"></div>
 				</div>
-				<div class="mod-pojctopen"><?php echo Text::html('open-banner-header'); ?></div>
+				<div class="mod-pojctopen"><?php echo Text::get('open-banner-header'); ?></div>
 			</div>
         </div>
 		<ul class="sliderbanners-ctrl">

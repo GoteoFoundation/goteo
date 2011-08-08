@@ -6,8 +6,17 @@ use Goteo\Library\Text,
 
 $langs = Lang::getAll();
 
+/*
+ * Ya no hacemos esto, hay que elegir un idioma al que traducir, nos e puede traducir a español, español es el idioma original
 if (!isset ($_SESSION['translator_lang'])) {
     $_SESSION['translator_lang'] = GOTEO_DEFAULT_LANG;
+}
+ *
+ */
+if ($_SESSION['translator_lang'] == 'es') {
+    unset($_SESSION['translator_lang']);
+    unset($this['section']);
+    unset($this['option']);
 }
 
 
@@ -46,7 +55,8 @@ include 'view/header.html.php'; ?>
                 </div>
             <?php endif; ?>
 
-            <?php if (!empty($this['section']) && !empty($this['option'])) {
+            <?php
+            if (!empty($_SESSION['translator_lang']) && !empty($this['section']) && !empty($this['option'])) {
                 echo new View ('view/translate/'.$this['section'].'/'.$this['option'].'.html.php', $this);
             } else {
                 echo '<div class="widget">' . Text::get('translate-home-guide') . '</div>';

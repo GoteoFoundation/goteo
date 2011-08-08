@@ -11,15 +11,15 @@ $text = new stdClass();
 
 $text->id = $this['id'];
 $text->purpose = Text::getPurpose($this['id']);
-$text->text = Text::get($this['id']);
+$text->text = Text::getTrans($this['id']);
 
 ?>
 <div class="widget board">
     <h3 class="title">Editando el texto '<?php echo $text->id; ?>'</h3>
 
     <fieldset>
-        <legend>Propósito de este texto</legend>
-        <blockquote><?php echo $text->purpose; ?></blockquote>
+        <legend>Texto en español</legend>
+        <blockquote><?php echo htmlentities($text->purpose); ?></blockquote>
     </fieldset>
 
     <form action="/translate/texts/edit/<?php echo $text->id ?>/<?php echo $this['filter'] ?>" method="post" >
