@@ -211,6 +211,10 @@ div#sub-header > div > div.subhead-banner .sign-in-with li{
 	margin: 0 20px 0 0;
 }
 
+div#sub-header > div.clearfix{
+	min-width:915px;
+}
+
 div#sub-header > div > div.mod-pojctopen{
 	float:right;
 	width:180px;
@@ -226,11 +230,11 @@ div#sub-header > div > div.mod-pojctopen > .modpo-open{
 }
 
 div#sub-header > div > div.mod-pojctopen > .modpo-percent{
-	font: bold 24px Helvetica, Arial, Geneva, sans-serif;
+	font: bold 22px Helvetica, Arial, Geneva, sans-serif;
 	color:#1eb2b2;
 	margin: -10px 0 0;
 	border-bottom: 1px solid #a7a9ac;
-	padding: 0 0 8px 0;
+	padding:0 0 8px 7px
 }
 
 div#sub-header > div > div.mod-pojctopen > .modpo-whyopen{
@@ -376,7 +380,6 @@ div#header div#about ul li {
 }
 
 div#header div#about ul li#lang{
-	border:#fff 1px dashed;
 	background:url(bolita.png) 4px 7px no-repeat;
 	margin-left:15px;
 }
@@ -683,7 +686,7 @@ ul.lang{
 
 	position:absolute;
 	left: 0;
-	top: 20px;
+	top: 25px;
 	z-index: 1000;
 	list-style:none;
 	display:none;
@@ -692,17 +695,18 @@ ul.lang{
 	padding:0;
 	}
 ul.lang li{
-	width:80px;
-	padding:4px;
-	border:#fff 1px dashed;
-	background-color: #59595C;
+background-color: #59595C;
+padding: 4px 4px 4px 25px;
+width: 41px;
 }
 ul.lang li:hover {
-	background-color: #fff;
+	background: #808285; 
 }
 ul.lang li>a{
 	color:#fff;
+	text-decoration:none; text-transform:uppercase;
+	font-size:11px;
 }
 ul.lang li:hover>a {
-	color: #59595C;
+	color: #fff;
 }

@@ -165,7 +165,7 @@ jQuery(document).ready(function($) {
                 </ul>
     
                 <div class="platoniq">
-                   <span class="text"><?php echo Text::get('footer-platoniq-iniciative') ?></span> <span><a href="http://platoniq.net" target="_blank">Platoniq</a></span>
+                   <span class="text"><?php echo Text::get('footer-platoniq-iniciative') ?></span> <span><a href="http://www.youcoop.org" target="_blank">Platoniq</a></span>
                 </div>
     
        

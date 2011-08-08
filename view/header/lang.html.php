@@ -4,12 +4,11 @@ use Goteo\Library\Lang;
 $langs = Lang::getAll(true);
 ?>
 
-    <div id="lang">
+    <ul class="lang">
         <?php foreach ($langs as $lang): ?>
-            <?php if ($lang->id == LANG): ?>
-            <strong><?php echo htmlspecialchars($lang->short) ?></strong>
-            <?php else: ?>
+            <?php if ($lang->id == LANG) continue; ?>
+            <li >
             <a href="?lang=<?php echo $lang->id ?>"><?php echo htmlspecialchars($lang->short) ?></a>
-            <?php endif ?>
+            </li>          
         <?php endforeach ?>            
-    </div>
+    </ul>

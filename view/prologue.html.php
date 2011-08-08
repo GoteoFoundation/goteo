@@ -10,6 +10,12 @@
         <meta name="copyright" content="<?php echo GOTEO_META_COPYRIGHT ?>" />
         <meta name="robots" content="all" />
         <link rel="stylesheet" type="text/css" href="/view/css/goteo.css" />
+        <script type="text/javascript">
+        if(navigator.userAgent.indexOf('Mac') != -1)
+		{
+			document.write ('<link rel="stylesheet" type="text/css" href="/view/css/mac.css" />');
+		}
+	    </script>
         <?php if (!isset($useJQuery) || !empty($useJQuery)): ?>
         <script type="text/javascript" src="/view/js/jquery.js"></script>
         <script type="text/javascript" src="/view/js/jquery.tipsy.js"></script>
