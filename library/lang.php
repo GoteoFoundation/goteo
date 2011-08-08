@@ -11,7 +11,12 @@ namespace Goteo\Library {
     class Lang {
 		
 		static public function get ($id = \GOTEO_DEFAULT_LANG) {
-			$query = Model::query("SELECT * FROM lang WHERE id = :id", array(':id' => $id));
+            $sql = "SELECT
+                        id, name,
+                        IFNULL(short, name) as short
+                    FROM lang WHERE id = :id
+                    ";
+			$query = Model::query($sql, array(':id' => $id));
 			return $query->fetchObject();
 		}
 
