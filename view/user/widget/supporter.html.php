@@ -1,10 +1,11 @@
 <?php
 
 use Goteo\Core\View,
-    Goteo\Library\Text;
+    Goteo\Library\Text,
+    Goteo\Library\Worth;
 
 $user = $this['user'];
-$worthcracy = $this['worthcracy'];
+$worthcracy = Worth::getAll();
 $level = (int) $this['level'] ?: 4;
 
 
