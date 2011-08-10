@@ -20,16 +20,19 @@ namespace Goteo\Model {
 
             $sql = "
                 SELECT
-                    id,
-                    name,
-                    description,
+                    category.id as id,
+                    IFNULL(category_lang.name, category.name) as name,
+                    IFNULL(category_lang.description, category.description) as description,
                     (   SELECT
                             COUNT(user_interest.user)
                         FROM user_interest
                         WHERE user_interest.interest = category.id
                     ) as used,
-                    `order`
+                    category.order as `order`
                 FROM    category
+                LEFT JOIN category_lang
+                    ON  category_lang.id = category.id
+                    AND category_lang.lang = :lang
                 ORDER BY `order` ASC";
 
             $query = static::query($sql);

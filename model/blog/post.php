@@ -28,20 +28,23 @@ namespace Goteo\Model\Blog {
         public static function get ($id) {
                 $query = static::query("
                     SELECT
-                        id,
-                        blog,
-                        title,
-                        text,
-                        `image`,
-                        `media`,
-                        `date`,
-                        DATE_FORMAT(date, '%d | %m | %Y') as fecha,
-                        publish,
-                        home,
-                        footer
+                        post.id as id,
+                        post.blog as blog,
+                        IFNULL(post_lang.title, post.title) as title,
+                        IFNULL(post_lang.text, post.text) as text,
+                        post.image as `image`,
+                        post.media as `media`,
+                        post.date as `date`,
+                        DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
+                        post.publish as publish,
+                        post.home as home,
+                        post.footer as footer
                     FROM    post
-                    WHERE id = :id
-                    ", array(':id' => $id));
+                    LEFT JOIN post_lang
+                        ON  post_lang.id = post.id
+                        AND post_lang.lang = :lang
+                    WHERE post.id = :id
+                    ", array(':id' => $id, ':lang'=>\LANG));
 
                 $post = $query->fetchObject(__CLASS__);
 
@@ -76,31 +79,34 @@ namespace Goteo\Model\Blog {
 
             $sql = "
                 SELECT
-                    id,
-                    blog,
-                    title,
-                    text,
-                    `image`,
-                    `media`,
-                    DATE_FORMAT(date, '%d-%m-%Y') as date,
-                    DATE_FORMAT(date, '%d | %m | %Y') as fecha,
-                    publish,
-                    home,
-                    footer
+                    post.id as id,
+                    post.blog as blog,
+                    IFNULL(post_lang.title, post.title) as title,
+                    IFNULL(post_lang.text, post.text) as `text`,
+                    post.image as `image`,
+                    post.media as `media`,
+                    DATE_FORMAT(post.date, '%d-%m-%Y') as date,
+                    DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
+                    post.publish as publish,
+                    post.home as home,
+                    post.footer as footer
                 FROM    post
-                WHERE blog = ?
+                LEFT JOIN post_lang
+                    ON  post_lang.id = post.id
+                    AND post_lang.lang = :lang
+                WHERE post.blog = :blog
                 ";
             if ($published) {
-                $sql .= " AND publish = 1
+                $sql .= " AND post.publish = 1
                 ";
             }
-            $sql .= "ORDER BY date DESC, id DESC
+            $sql .= "ORDER BY date DESC, post.id DESC
                 ";
             if (!empty($limit)) {
                 $sql .= "LIMIT $limit";
             }
             
-            $query = static::query($sql, array($blog));
+            $query = static::query($sql, array(':blog'=>$blog, ':lang'=>\LANG));
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 // imagen
@@ -134,32 +140,35 @@ namespace Goteo\Model\Blog {
 
             $sql = "
                 SELECT
-                    id,
-                    blog,
-                    title,
-                    text,
-                    `image`,
-                    `media`,
-                    DATE_FORMAT(date, '%d-%m-%Y') as date,
-                    DATE_FORMAT(date, '%d-%m-%Y') as fecha,
-                    publish,
-                    home,
-                    footer
+                    post.id as id,
+                    post.blog as blog,
+                    IFNULL(post_lang.title, post.title) as title,
+                    IFNULL(post_lang.text, post.text) as `text`,
+                    post.image as `image`,
+                    post.media as `media`,
+                    DATE_FORMAT(post.date, '%d-%m-%Y') as date,
+                    DATE_FORMAT(post.date, '%d-%m-%Y') as fecha,
+                    post.publish as publish,
+                    post.home as home,
+                    post.footer as footer
                 FROM    post
+                LEFT JOIN post_lang
+                    ON  post_lang.id = post.id
+                    AND post_lang.lang = :lang
                 INNER JOIN post_tag
                     ON post_tag.post = post.id
                     AND post_tag.tag = :tag
-                WHERE blog = :blog
+                WHERE post.blog = :blog
                 ";
             if ($published) {
-                $sql .= " AND publish = 1
+                $sql .= " AND post.publish = 1
                 ";
             }
             $sql .= "
-                ORDER BY date DESC, id DESC
+                ORDER BY date DESC, post.id DESC
                 ";
 
-            $query = static::query($sql, array(':blog'=>$blog, ':tag'=>$tag));
+            $query = static::query($sql, array(':blog'=>$blog, ':tag'=>$tag, ':lang'=>\LANG));
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 // imagen

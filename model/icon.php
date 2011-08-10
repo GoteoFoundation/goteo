@@ -19,13 +19,16 @@ namespace Goteo\Model {
         public static function get ($id) {
                 $query = static::query("
                     SELECT
-                        id,
-                        name,
-                        description,
-                        `group`,
-                        `order`
+                        icon.id as id,
+                        IFNULL(icon_lang.name, icon.name) as name,
+                        IFNULL(icon_lang.description, icon.description) as description,
+                        icon.group as `group`,
+                        icon.group as `order`
                     FROM    icon
-                    WHERE id = :id
+                    LEFT JOIN  icon_lang
+                        ON  icon_lang.id = icon.id
+                        AND icon_lang.lang = :lang
+                    WHERE icon.id = :id
                     ", array(':id' => $id));
                 $icon = $query->fetchObject(__CLASS__);
 
@@ -41,20 +44,24 @@ namespace Goteo\Model {
 
             $sql = "
                 SELECT
-                    id,
-                    name,
-                    description,
-                    `group`
-                FROM    icon";
+                    icon.id as id,
+                    IFNULL(icon_lang.name, icon.name) as name,
+                    IFNULL(icon_lang.description, icon.description) as description,
+                    icon.group as `group`
+                FROM    icon
+                LEFT JOIN  icon_lang
+                    ON  icon_lang.id = icon.id
+                    AND icon_lang.lang = :lang
+                ";
 
             if ($group != '') {
                 // de un grupo o de todos
-                $sql .= " WHERE `group` = :group OR `group` IS NULL OR `group` = ''";
+                $sql .= " WHERE icon.group = :group OR icon.group IS NULL OR icon.group = ''";
             }
 
             $sql .= " ORDER BY `order` ASC, name ASC";
 
-            $query = static::query($sql, array(':group' => $group));
+            $query = static::query($sql, array(':group' => $group, ':lang'=>\LANG));
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $icon) {
                 if ($group == 'social') {
@@ -76,15 +83,18 @@ namespace Goteo\Model {
             $sql = "
                 SELECT
                     icon.id,
-                    icon.name
+                    IFNULL(icon_lang.name, icon.name) as name
                 FROM    icon
+                LEFT JOIN  icon_lang
+                    ON  icon_lang.id = icon.id
+                    AND icon_lang.lang = :lang
                 INNER JOIN reward
                     ON icon.id = reward.icon
                 ";
 
             if ($group != '') {
                 // de un grupo o de todos
-                $sql .= " WHERE `group` = :group OR `group` IS NULL OR `group` = ''";
+                $sql .= " WHERE icon.group = :group OR icon.group IS NULL OR icon.group = ''";
             }
 
             $sql .= "
@@ -92,7 +102,7 @@ namespace Goteo\Model {
                 ORDER BY icon.name ASC
                 ";
 
-            $query = static::query($sql, array(':group' => $group));
+            $query = static::query($sql, array(':group' => $group, ':lang'=>\LANG));
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $icon) {
                 $icons[$icon->id] = $icon;

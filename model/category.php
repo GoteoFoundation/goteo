@@ -18,12 +18,15 @@ namespace Goteo\Model {
         public static function get ($id) {
                 $query = static::query("
                     SELECT
-                        id,
-                        name,
-                        description
+                        category.id,
+                        IFNULL(category_lang.name, category.name) as name,
+                        IFNULL(category_lang.description, category.description) as description
                     FROM    category
-                    WHERE id = :id
-                    ", array(':id' => $id));
+                    LEFT JOIN category_lang
+                        ON  category_lang.id = category.id
+                        AND category_lang.lang = :lang
+                    WHERE category.id = :id
+                    ", array(':id' => $id, ':lang'=>\LANG));
                 $category = $query->fetchObject(__CLASS__);
 
                 return $category;
@@ -39,9 +42,9 @@ namespace Goteo\Model {
 
             $sql = "
                 SELECT
-                    category.id,
-                    category.name,
-                    category.description,
+                    category.id as id,
+                    IFNULL(category_lang.name, category.name) as name,
+                    IFNULL(category_lang.description, category.description) as description,
                     (   SELECT 
                             COUNT(project_category.project)
                         FROM project_category
@@ -52,12 +55,15 @@ namespace Goteo\Model {
                         FROM user_interest
                         WHERE user_interest.interest = category.id
                     ) as numUser,
-                    `order`
+                    category.order as `order`
                 FROM    category
+                LEFT JOIN category_lang
+                    ON  category_lang.id = category.id
+                    AND category_lang.lang = :lang
                 ORDER BY `order` ASC
                 ";
 
-            $query = static::query($sql);
+            $query = static::query($sql, array(':lang'=>\LANG));
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $category) {
                 $list[$category->id] = $category;
@@ -75,16 +81,21 @@ namespace Goteo\Model {
 		public static function getList () {
             $array = array ();
             try {
-                $sql = "SELECT id, name
+                $sql = "SELECT 
+                            category.id as id,
+                            IFNULL(category_lang.name, category.name) as name
                         FROM category
+                        LEFT JOIN category_lang
+                            ON  category_lang.id = category.id
+                            AND category_lang.lang = :lang
                         LEFT JOIN project_category
                             ON category.id = project_category.category
                         LEFT JOIN user_interest
                             ON category.id = user_interest.interest
-                        GROUP BY id
+                        GROUP BY category.id
                         ORDER BY name ASC";
 
-                $query = static::query($sql);
+                $query = static::query($sql, array(':lang'=>\LANG));
                 $categories = $query->fetchAll();
                 foreach ($categories as $cat) {
                     $array[$cat[0]] = $cat[1];

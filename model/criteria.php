@@ -20,14 +20,17 @@ namespace Goteo\Model {
         public static function get ($id) {
                 $query = static::query("
                     SELECT
-                        id,
-                        section,
-                        title,
-                        description,
-                        `order`
+                        criteria.id as id,
+                        criteria.section as section,
+                        IFNULL(criteria_lang.title, criteria.title) as title,
+                        IFNULL(criteria_lang.description, criteria.description) as description,
+                        criteria.order as `order`
                     FROM    criteria
-                    WHERE id = :id
-                    ", array(':id' => $id));
+                    LEFT JOIN criteria_lang
+                        ON  criteria_lang.id = criteria.id
+                        AND criteria_lang.lang = :lang
+                    WHERE criteria.id = :id
+                    ", array(':id' => $id, ':lang'=>\LANG));
                 $criteria = $query->fetchObject(__CLASS__);
 
                 return $criteria;
@@ -40,15 +43,18 @@ namespace Goteo\Model {
 
             $query = static::query("
                 SELECT
-                    id,
-                    section,
-                    title,
-                    description,
-                    `order`
+                    criteria.id as id,
+                    criteria.section as section,
+                    IFNULL(criteria_lang.title, criteria.title) as title,
+                    IFNULL(criteria_lang.description, criteria.description) as description,
+                    criteria.order as `order`
                 FROM    criteria
-                WHERE section = :section
+                LEFT JOIN criteria_lang
+                    ON  criteria_lang.id = criteria.id
+                    AND criteria_lang.lang = :lang
+                WHERE criteria.section = :section
                 ORDER BY `order` ASC, title ASC
-                ", array(':section' => $section));
+                ", array(':section' => $section, ':lang'=>\LANG));
             
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }

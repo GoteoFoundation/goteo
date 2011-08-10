@@ -19,14 +19,17 @@ namespace Goteo\Model {
         public static function get ($id) {
                 $sql = static::query("
                     SELECT
-                        id,
-                        title,
-                        description,
-                        url,
-                        `order`
-                    FROM    news
-                    WHERE id = :id
-                    ", array(':id' => $id));
+                        news.id as id,
+                        IFNULL(news_lang.title, news.title) as title,
+                        IFNULL(news_lang.description, news.description) as description,
+                        news.url as url,
+                        news.order as `order`
+                    FROM news
+                    LEFT JOIN news_lang
+                        ON  news_lang.id = news.id
+                        AND news_lang.lang = :lang
+                    WHERE news.id = :id
+                    ", array(':id' => $id, ':lang'=>\LANG));
                 $news = $sql->fetchObject(__CLASS__);
 
                 return $news;
@@ -41,14 +44,17 @@ namespace Goteo\Model {
 
             $sql = static::query("
                 SELECT
-                    id,
-                    title,
-                    description,
-                    url,
-                    `order`
-                FROM    news
+                    news.id as id,
+                    IFNULL(news_lang.title, news.title) as title,
+                    IFNULL(news_lang.description, news.description) as description,
+                    news.url as url,
+                    news.order as `order`
+                FROM news
+                LEFT JOIN news_lang
+                    ON  news_lang.id = news.id
+                    AND news_lang.lang = :lang
                 ORDER BY `order` ASC, title ASC
-                ");
+                ", array(':lang'=>\LANG));
             
             foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
                 if ($highlights) {

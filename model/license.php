@@ -19,15 +19,18 @@ namespace Goteo\Model {
         public static function get ($id) {
                 $query = static::query("
                     SELECT
-                        id,
-                        name,
-                        description,
-                        url,
-                        `group`,
-                        `order`
+                        license.id as id,
+                        IFNULL(license_lang.name, license.name) as name,
+                        IFNULL(license_lang.description, license.description) as description,
+                        license.url as url,
+                        license.group as `group`,
+                        license.order as `order`
                     FROM    license
-                    WHERE id = :id
-                    ", array(':id' => $id));
+                    LEFT JOIN license_lang
+                        ON  license_lang.id = license.id
+                        AND license_lang.lang = :lang
+                    WHERE license.id = :id
+                    ", array(':id' => $id, ':lang'=>\LANG));
                 $license = $query->fetchObject(__CLASS__);
 
                 $query = static::query("
@@ -48,19 +51,22 @@ namespace Goteo\Model {
          */
         public static function getAll ($icon = null, $group = null) {
 
-            // por ahora el grupo es 'open' o no.
+            $values = array(':lang'=>\LANG);
 
             // icon es si esta en relacion en icon_license
 
             $sql = "
                 SELECT
-                    id,
-                    name,
-                    description,
-                    url,
-                    `group`,
-                    `order`
+                    license.id as id,
+                    IFNULL(license_lang.name, license.name) as name,
+                    IFNULL(license_lang.description, license.description) as description,
+                    license.url as url,
+                    license.group as `group`,
+                    license.order as `order`
                 FROM    license
+                LEFT JOIN license_lang
+                    ON  license_lang.id = license.id
+                    AND license_lang.lang = :lang
                 ";
 
             if (!empty($icon)) {

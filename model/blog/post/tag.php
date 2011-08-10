@@ -15,12 +15,15 @@ namespace Goteo\Model\Blog\Post {
         public static function get ($id) {
                 $query = static::query("
                     SELECT
-                        id,
-                        name,
-                        blog
+                        tag.id as id,
+                        IFNULL(tag_lang.name, tag.name) as name,
+                        tag.blog as blog
                     FROM    tag
-                    WHERE id = :id
-                    ", array(':id' => $id));
+                    LEFT JOIN tag_lang
+                        ON  tag_lang.id = tag.id
+                        AND tag_lang.lang = :lang
+                    WHERE tag.id = :id
+                    ", array(':id' => $id, ':lang'=>\LANG));
 
                 return $query->fetchObject(__CLASS__);
         }
@@ -35,21 +38,24 @@ namespace Goteo\Model\Blog\Post {
 
             $sql = "
                 SELECT
-                    tag.id,
-                    tag.name
+                    tag.id as id,
+                    IFNULL(tag_lang.name, tag.name) as name
                 FROM    tag
+                LEFT JOIN tag_lang
+                    ON  tag_lang.id = tag.id
+                    AND tag_lang.lang = :lang
                 ";
             
             if (!empty($post)) {
                 $sql .= "INNER JOIN post_tag
                     ON tag.id = post_tag.tag
-                    AND post_tag.post = ?
+                    AND post_tag.post = :post
                     ";
             }
 
             $sql .= "ORDER BY tag.name ASC";
             
-            $query = static::query($sql, array($post));
+            $query = static::query($sql, array(':post'=>$post, ':lang'=>\LANG));
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $tag) {
                 $list[$tag->id] = $tag->name;
@@ -68,18 +74,21 @@ namespace Goteo\Model\Blog\Post {
 
             $sql = "
                 SELECT
-                    tag.id,
-                    tag.name,
+                    tag.id as id,
+                    IFNULL(tag_lang.name, tag.name) as name,
                     (   SELECT
                         COUNT(post_tag.post)
                         FROM post_tag
                         WHERE post_tag.tag = tag.id
                     ) as used
                 FROM    tag
+                LEFT JOIN tag_lang
+                    ON  tag_lang.id = tag.id
+                    AND tag_lang.lang = :lang
                 WHERE tag.blog = $blog
                 ORDER BY tag.name ASC";
 
-            $query = static::query($sql, array($post));
+            $query = static::query($sql, array(':lang'=>\LANG));
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $tag) {
                 $list[$tag->id] = $tag;

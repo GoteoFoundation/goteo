@@ -18,19 +18,22 @@ namespace Goteo\Library {
             $url,
             $content;
 
-        static public function get ($id, $lang = \GOTEO_DEFAULT_LANG, $node = \GOTEO_NODE) {
+        static public function get ($id, $lang = \LANG, $node = \GOTEO_NODE) {
 
             // buscamos la página para este nodo en este idioma
 			$sql = "SELECT  page.id as id,
-                            page.name as name,
-                            page.description as description,
+                            IFNULL(page_lang.name, page.name) as name,
+                            IFNULL(page_lang.description, page.description) as description,
                             page.url as url,
                             IFNULL(page_node.lang, '$lang') as lang,
                             IFNULL(page_node.node, '$node') as node,
                             IFNULL(page_node.content, '') as content
                      FROM page
+                     LEFT JOIN page_lang
+                        ON  page_lang.id = page.id
+                        AND page_lang.lang = :lang
                      LEFT JOIN page_node
-                        ON page_node.page = page.id
+                        ON  page_node.page = page.id
                         AND page_node.lang = :lang
                         AND page_node.node = :node
                      WHERE page.id = :id
@@ -53,7 +56,22 @@ namespace Goteo\Library {
             $pages = array();
 
             try {
-                $query = Model::query("SELECT id, name, description, url FROM page ORDER BY name ASC");
+
+                $values = array(':lang' => \LANG);
+
+                $sql = "SELECT
+                            page.id as id,
+                            IFNULL(page_lang.name, page.name) as name,
+                            IFNULL(page_lang.description, page.description) as description,
+                            page.url as url
+                        FROM page
+                        LEFT JOIN page_lang
+                            ON  page_lang.id = page.id
+                            AND page_lang.lang = :lang
+                        ORDER BY name ASC
+                        ";
+
+                $query = Model::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $page) {
                     $pages[] = $page;
                 }

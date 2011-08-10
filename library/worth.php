@@ -11,7 +11,18 @@ namespace Goteo\Library {
          */
 		public static function get ($id) {
 
-            $query = Model::query("SELECT name FROM worthcracy WHERE id = ?", array($id));
+            $values = array(':id'=>$id, ':lang' => \LANG);
+            $sql = "SELECT
+                        worthcracy.id as id,
+                        IFNULL(worthcracy_lang.name, worthcracy.name) as name
+                    FROM worthcracy
+                    LEFT JOIN worthcracy_lang
+                        ON  worthcracy_lang.id = worthcracy.id
+                        AND worthcracy_lang.lang = :lang
+                    WHERE worthcracy.id = :id
+                    ";
+
+            $query = Model::query($sql, $values);
             $level = $query->fetchObject();
             if (!empty($level->name))
                 return $level->name;
@@ -24,7 +35,19 @@ namespace Goteo\Library {
          */
 		public static function getAll () {
             $array = array();
-			$query = Model::query("SELECT id, name, amount FROM worthcracy ORDER BY amount ASC");
+            $values = array(':lang' => \LANG);
+            $sql = "SELECT
+                        worthcracy.id as id,
+                        IFNULL(worthcracy_lang.name, worthcracy.name) as name,
+                        worthcracy.amount as amount
+                    FROM worthcracy
+                    LEFT JOIN worthcracy_lang
+                        ON  worthcracy_lang.id = worthcracy.id
+                        AND worthcracy_lang.lang = :lang
+                    ORDER BY worthcracy.amount ASC
+                    ";
+
+            $query = Model::query($sql, $values);
             foreach ( $query->fetchAll(\PDO::FETCH_CLASS) as $worth) {
                 $array[$worth->id] = $worth;
             }
@@ -40,7 +63,18 @@ namespace Goteo\Library {
             if (!is_numeric($amount))
                 return $amount;
 
-			$query = Model::query("SELECT name, amount FROM worthcracy WHERE amount > :amount", array(':amount'=>$amount));
+            $values = array(':amount'=>$amount, ':lang' => \LANG);
+            $sql = "SELECT
+                        IFNULL(worthcracy_lang.name, worthcracy.name) as name,
+                        worthcracy.amount as amount
+                    FROM worthcracy
+                    LEFT JOIN worthcracy_lang
+                        ON  worthcracy_lang.id = worthcracy.id
+                        AND worthcracy_lang.lang = :lang
+                    WHERE worthcracy.amount > :amount
+                    ";
+
+            $query = Model::query($sql, $values);
 			$next = $query->fetchObject();
             $abit = $next->amount - $amount; //cuanto para el siguiente nivel
             
@@ -54,7 +88,20 @@ namespace Goteo\Library {
             if (!is_numeric($amount))
                 return false;
             
-            $query = Model::query("SELECT id, name FROM worthcracy WHERE amount <= ? ORDER BY amount DESC LIMIT 1", array($amount));
+            $values = array(':amount'=>$amount, ':lang' => \LANG);
+            $sql = "SELECT
+                        worthcracy.id as id,
+                        IFNULL(worthcracy_lang.name, worthcracy.name) as name
+                    FROM worthcracy
+                    LEFT JOIN worthcracy_lang
+                        ON  worthcracy_lang.id = worthcracy.id
+                        AND worthcracy_lang.lang = :lang
+                    WHERE worthcracy.amount <= :amount
+                    ORDER BY worthcracy.amount DESC
+                    LIMIT 1
+                    ";
+
+            $query = Model::query($sql, $values);
             return $query->fetchObject();
 		}
 

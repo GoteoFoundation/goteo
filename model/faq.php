@@ -21,15 +21,18 @@ namespace Goteo\Model {
         public static function get ($id) {
                 $query = static::query("
                     SELECT
-                        id,
-                        node,
-                        section,
-                        title,
-                        description,
-                        `order`
-                    FROM    faq
-                    WHERE id = :id
-                    ", array(':id' => $id));
+                        faq.id as id,
+                        faq.node as node,
+                        faq.section as section,
+                        IFNULL(faq_lang.title, faq.title) as title,
+                        IFNULL(faq_lang.description, faq.description) as description,
+                        faq.order as `order`
+                    FROM faq
+                    LEFT JOIN faq_lang
+                        ON  faq_lang.id = faq.id
+                        AND faq_lang.lang = :lang
+                    WHERE faq.id = :id
+                    ", array(':id' => $id, ':lang'=>\LANG));
                 $faq = $query->fetchObject(__CLASS__);
 
                 return $faq;
@@ -38,21 +41,23 @@ namespace Goteo\Model {
         /*
          * Lista de proyectos destacados
          */
-        public static function getAll ($section = 'node', $node = \GOTEO_NODE) {
+        public static function getAll ($section = 'node') {
 
             $query = static::query("
                 SELECT
-                    id,
-                    node,
-                    section,
-                    title,
-                    description,
-                    `order`
-                FROM    faq
-                WHERE section = :section
-                AND node = :node
+                    faq.id as id,
+                    faq.node as node,
+                    faq.section as section,
+                    IFNULL(faq_lang.title, faq.title) as title,
+                    IFNULL(faq_lang.description, faq.description) as description,
+                    faq.order as `order`
+                FROM faq
+                LEFT JOIN faq_lang
+                    ON  faq_lang.id = faq.id
+                    AND faq_lang.lang = :lang
+                WHERE faq.section = :section
                 ORDER BY `order` ASC, title ASC
-                ", array(':section' => $section, ':node' => $node));
+                ", array(':section' => $section, ':lang'=>\LANG));
             
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }

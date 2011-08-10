@@ -20,16 +20,19 @@ namespace Goteo\Model {
         public static function get ($id) {
                 $query = static::query("
                     SELECT
-                        id,
-                        title,
-                        `text`,
-                        blog,
-                        image,
-                        `media`,
-                        `order`
+                        post.id as id,
+                        IFNULL(post_lang.title, post.title) as title,
+                        IFNULL(post_lang.text, post.text) as `text`,
+                        post.blog as blog,
+                        post.image as image,
+                        post.media as `media`,
+                        post.order as `order`
                     FROM    post
-                    WHERE id = :id
-                    ", array(':id' => $id));
+                    LEFT JOIN post_lang
+                        ON  post_lang.id = post.id
+                        AND post_lang.lang = :lang
+                    WHERE post.id = :id
+                    ", array(':id' => $id, ':lang'=>\LANG));
 
                 $post = $query->fetchObject(__CLASS__);
                 
@@ -55,23 +58,28 @@ namespace Goteo\Model {
 
             $sql = "
                 SELECT
-                    id,
-                    title,
-                    `text`,
-                    blog,
-                    `media`,
-                    image,
-                    `order`,
-                    `publish`,
-                    `home`,
-                    `footer`
+                    post.id as id,
+                    post.blog as blog,
+                    IFNULL(post_lang.title, post.title) as title,
+                    IFNULL(post_lang.text, post.text) as `text`,
+                    post.image as `image`,
+                    post.media as `media`,
+                    post.order as `order`,
+                    DATE_FORMAT(post.date, '%d-%m-%Y') as date,
+                    DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
+                    post.publish as publish,
+                    post.home as home,
+                    post.footer as footer
                 FROM    post
-                WHERE   blog = $blog
-                AND     $position = 1
+                LEFT JOIN post_lang
+                    ON  post_lang.id = post.id
+                    AND post_lang.lang = :lang
+                WHERE   post.blog = $blog
+                AND     post.$position = 1
                 ORDER BY `order` ASC, title ASC
                 ";
             
-            $query = static::query($sql);
+            $query = static::query($sql, array(':lang'=>\LANG));
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 $post->media = new Media($post->media);
@@ -102,17 +110,20 @@ namespace Goteo\Model {
 
             $sql = "
                 SELECT
-                    id,
-                    title,
-                    `order`
+                    post.id as id,
+                    IFNULL(post_lang.title, post.title) as title,
+                    post.order as `order`
                 FROM    post
-                WHERE   blog = $blog
-                AND     $position = 1
-                AND     publish = 1
+                LEFT JOIN post_lang
+                    ON  post_lang.id = post.id
+                    AND post_lang.lang = :lang
+                WHERE   post.blog = $blog
+                AND     post.$position = 1
+                AND     post.publish = 1
                 ORDER BY `order` ASC, title ASC
                 ";
 
-            $query = static::query($sql);
+            $query = static::query($sql, array(':lang'=>\LANG));
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 $list[$post->id] = $post->title;

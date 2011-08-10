@@ -24,15 +24,18 @@ namespace Goteo\Model {
                         promote.node as node,
                         promote.project as project,
                         project.name as name,
-                        promote.title as title,
-                        promote.description as description,
+                        IFNULL(promote_lang.title, promote.title) as title,
+                        IFNULL(promote_lang.description, promote.description) as description,
                         promote.order as `order`
                     FROM    promote
+                    LEFT JOIN promote_lang
+                        ON promote_lang.id = promote.id
+                        AND promote_lang.lang = :lang
                     INNER JOIN project
                         ON project.id = promote.project
                     WHERE promote.project = :project
                     AND promote.node = :node
-                    ", array(':project' => $project, ':node' => $node));
+                    ", array(':project'=>$project, ':node'=>$node, ':lang'=>\LANG));
                 $promote = $query->fetchObject(__CLASS__);
 
                 return $promote;
@@ -53,15 +56,18 @@ namespace Goteo\Model {
                     promote.project as project,
                     project.name as name,
                     project.status as status,
-                    promote.title as title,
-                    promote.description as description,
+                    IFNULL(promote_lang.title, promote.title) as title,
+                    IFNULL(promote_lang.description, promote.description) as description,
                     promote.order as `order`
                 FROM    promote
+                LEFT JOIN promote_lang
+                    ON promote_lang.id = promote.id
+                    AND promote_lang.lang = :lang
                 INNER JOIN project
                     ON project.id = promote.project
                 WHERE promote.node = :node
                 ORDER BY `order` ASC, title ASC
-                ", array(':node' => $node));
+                ", array(':node' => $node, ':lang'=>\LANG));
             
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
                 $promo->description =Text::recorta($promo->description, 100, false);
