@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS purpose (
   `text` varchar(50) NOT NULL,
-  purpose tinytext NOT NULL,
+  purpose TEXT NOT NULL,
   html tinyint(1) DEFAULT NULL COMMENT 'Si el texto lleva formato html',
   `group` varchar(50) NOT NULL DEFAULT 'general' COMMENT 'Agrupacion de uso',
 PRIMARY KEY (`text`)
@@ -10,4 +10,7 @@ PRIMARY KEY (`text`)
 ALTER TABLE `purpose` ADD `html` BOOLEAN NULL COMMENT 'Si el texto lleva formato html';
 
 -- Agrupacion de usos de los textos
-ALTER TABLE `purpose` ADD `group` VARCHAR( 50 ) NOT NULL DEFAULT 'general' COMMENT 'Agrupacion de uso'
+ALTER TABLE `purpose` ADD `group` VARCHAR( 50 ) NOT NULL DEFAULT 'general' COMMENT 'Agrupacion de uso';
+
+-- Textos mas largos en el proposito
+ALTER TABLE `purpose` CHANGE `purpose` `purpose` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL 
