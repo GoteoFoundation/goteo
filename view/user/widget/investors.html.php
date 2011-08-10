@@ -2,6 +2,7 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 ?>
+<?php if(count($this['investors'])>0){	?>
 <div class="widget user-supporters">
     <h3 class="supertitle"><?php echo Text::get('profile-my_investors-header'); ?></h3>
     <div class="supporters">
@@ -15,3 +16,4 @@ use Goteo\Core\View,
     </div>
     <a class="more" href="/user/profile/<?php echo $this['user']->id ?>/investors"><?php echo Text::get('regular-see_more'); ?></a>
 </div>
+<?php }?>

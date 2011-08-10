@@ -5,7 +5,7 @@ $project = $this['project'];
 $level = (int) $this['level'] ?: 3;
 
 ?>
- <script type="text/javascript">
+<script type="text/javascript">
 	// Mark DOM as javascript-enabled
 	jQuery(document).ready(function ($) { 
 	    //change div#preview content when textarea lost focus

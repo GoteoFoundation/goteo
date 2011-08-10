@@ -11,6 +11,20 @@ $error = $this['login_error'];
 $errors = $this['errors'];
 extract($_POST);
 ?>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    $("#register_accept").click(function (event) {
+        if (this.checked) {
+            $("#register_continue").removeClass('disabled').addClass('aqua');
+            $("#register_continue").removeAttr('disabled');
+        } else {
+            $("#register_continue").removeClass('aqua').addClass('disabled');
+            $("#register_continue").attr('disabled', 'disabled');
+        }
+    });
+});
+</script>
+
 <div id="sub-header">
 	<div class="clearfix">
 		<div>
@@ -94,7 +108,10 @@ extract($_POST);
 
                     <?php if(isset($errors['password'])) { ?><p><em><?php echo $errors['password']?></em></p><?php } ?>
 
-                    <input type="submit" name="register" value="<?php echo Text::get('login-register-button'); ?>" />
+                    <input class="checkbox" id="register_accept" name="confirm" type="checkbox" value="true" />
+                    <label class="conditions" for="register_accept"><?php echo Text::html('login-register-conditions'); ?></label><br />
+
+                    <button class="disabled" disabled="disabled" id="register_continue" name="register" type="submit" value="register"><?php echo Text::get('login-register-button'); ?></button>
 
             </form>
             </div>

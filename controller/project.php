@@ -757,6 +757,29 @@ namespace Goteo\Controller {
                     $support->support = $_POST['support-' . $support->id . '-support'];
                     $support->description = $_POST['support-' . $support->id . '-description'];
                     $support->type = $_POST['support-' . $support->id . '-type'];
+
+                    if (!empty($support->thread)) {
+                        // actualizar ese mensaje
+                        $msg = Model\Message::get($support->thread);
+                        $msg->date = date('Y-m-d');
+                        $msg->message = "{$support->support}: {$support->description}";
+                        $msg->blocked = true;
+                        $msg->save();
+                    } else {
+                        // grabar nuevo mensaje
+                        $msg = new Model\Message(array(
+                            'user'    => $project->owner,
+                            'project' => $project->id,
+                            'date'    => date('Y-m-d'),
+                            'message' => "{$support->support}: {$support->description}",
+                            'blocked' => true
+                            ));
+                        if ($msg->save()) {
+                            // asignado a la colaboracion como thread inicial
+                            $support->thread = $msg->id;
+                        }
+                    }
+
                 }
                 
             }

@@ -170,6 +170,7 @@ namespace Goteo\Model {
             return array(
                 'node' => Text::get('faq-main-section-header'),
                 'project' => Text::get('faq-project-section-header'),
+                'sponsor' => Text::get('faq-sponsor-section-header'),
                 'investors' => Text::get('faq-investors-section-header'),
                 'nodes' => Text::get('faq-nodes-section-header')
             );
@@ -179,6 +180,7 @@ namespace Goteo\Model {
             return array(
                 'node' => '#808285',
                 'project' => '#20b3b2',
+                'sponsor' => '#8f8f8f',
                 'investors' => '#0c4e99',
                 'nodes' => '#8f8f8f'
             );

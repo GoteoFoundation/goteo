@@ -380,16 +380,18 @@ div#header div#about ul li {
 }
 
 div#header div#about ul li#lang{
-	background:url(bolita.png) 4px 7px no-repeat;
-	margin-left:15px;
+	background:url('bolita.png') 4px 7px no-repeat;
+	margin-left: 15px;
+    padding-right: 22px;
+    width: 24px;
 }
 
 div#header div#about ul li#lang.active{
-	background:url(bolita.png) 4px 7px no-repeat #808286;
+	background:url('bolita.png') 4px 7px no-repeat #808286;
 }
 
 div#header div#about ul li#lang a{
-	background: url("lang-triangulo.png") no-repeat scroll 100% bottom transparent;
+	background: url('lang-triangulo.png') no-repeat scroll 100% bottom transparent;
 	padding-right: 10px;
 }
 

@@ -152,7 +152,7 @@ $sfid = 'sf-project-supports';
                 'support-add' => array(
                     'type'  => 'submit',
                     'label' => Text::get('form-add-button'),
-                    'class' => 'add support-add',
+                    'class' => 'add support-add red',
                 )
             )
         )
@@ -175,7 +175,7 @@ $(function () {
 
     supports.delegate('li.element.editsupport input.ok', 'click', function (event) {
         var data = {};
-        data[this.name.substring(0, 11) + 'edit'] = '0';
+        data[this.name.substring(0, 12) + 'edit'] = '0';
         Superform.update(supports, data);
         event.preventDefault();
     });

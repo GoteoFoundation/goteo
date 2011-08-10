@@ -5,7 +5,7 @@
 			$level = (int) $this['level'] ?: 3;
 ?>
 <?php if ($allow == 1) : ?>
- <script type="text/javascript">
+<script type="text/javascript">
 	jQuery(document).ready(function ($) { 
 	    //change div#preview content when textarea lost focus
 		$("#message").blur(function(){

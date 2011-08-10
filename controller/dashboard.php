@@ -589,7 +589,8 @@ namespace Goteo\Controller {
                                             'user'    => $project->owner,
                                             'project' => $project->id,
                                             'date'    => date('Y-m-d'),
-                                            'message' => "{$support->support}: {$support->description}"
+                                            'message' => "{$support->support}: {$support->description}",
+                                            'blocked' => true
                                             ));
                                         if ($msg->save()) {
                                             // asignado a la colaboracion como thread inicial

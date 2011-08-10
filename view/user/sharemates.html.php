@@ -22,19 +22,25 @@ $worthcracy = Worth::getAll();
 
     <div class="center">
         <div class="widget user-mates">
-            <h3 class="title"><?php echo Text::get('profile-sharing_interests-header'); ?></h3>
+            <h3 class="title"><?php echo Text::get('profile-sharing_interests-header');?></h3>
             <div class="users">
                 <ul>
-                <?php foreach ($this['shares'] as $mate): ?>
-                    <li class="activable">
+                <?php 
+				$cnt = 1;
+				foreach ($this['shares'] as $mate){ ?>
+                    <li class="activable<?php if($cnt==1 or $cnt==2) echo " bordertop"?>">
                         <div class="user">
                             <div class="avatar"><a href="/user/<?php echo htmlspecialchars($mate->user) ?>"><img src="/image/<?php echo $mate->avatar->id ?>/43/43/1" /></a></div>
                             <h4><a href="/user/<?php echo htmlspecialchars($mate->user) ?>"><?php echo htmlspecialchars($mate->user) ?></a></h4>
                             <span class="projects"><?php echo Text::get('regular-projects'); ?> (<?php echo $mate->projects ?>)</span>
-                            <span class="invests"><?php echo Text::get('regular-investing'); ?> (<?php echo $mate->invests ?>)</span>
+                            <span class="invests"><?php echo Text::get('regular-investing'); ?> (<?php echo $mate->invests ?>)</span><br/>
+                            <span class="profile"><a href="/user/<?php echo htmlspecialchars($mate->user) ?>">Ver perfil</a> </span>
+                            <span class="contact"><a href="/user/profile/<?php echo htmlspecialchars($mate->user) ?>/message">Escribir mensaje</a></span>
                         </div>
                     </li>
-                <?php endforeach ?>
+                <?php 
+				$cnt ++;
+				} ?>
                 </ul>
             </div>
         </div>

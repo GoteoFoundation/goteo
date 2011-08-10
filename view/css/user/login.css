@@ -46,3 +46,11 @@ body.user-login div#main form input[type="submit"] {
 body.user-login div#main div.register form > div input {
     width: 18em;
 }
+
+body.user-login div#main div.register label.conditions {
+    font-size: 11px;
+}
+
+body.user-login div#main div.register label.conditions a:hover {
+    color: #20B3B2;
+}

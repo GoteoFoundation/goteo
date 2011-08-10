@@ -156,6 +156,9 @@ div.widget.project > .title a {
 
 div.widget.project.balloon > .title a {
     padding-top: 267px;
+	position:relative;
+	z-index:99;
+	left:-12px;
 }
 
 div.widget.project > .author {
@@ -477,4 +480,9 @@ div.widget.project div.buttons a.button {
 
 div.widget.project div.buttons .button + .button {
     float: right;
+}
+
+
+div.widget.projects div.project:hover h4.author a{
+	color:#20b3b2;
 }

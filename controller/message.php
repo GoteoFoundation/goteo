@@ -7,13 +7,14 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model,
-        Goteo\Library\Mail;
+        Goteo\Library\Mail,
+        Goteo\Library\Text;
 
     class Message extends \Goteo\Core\Controller {
 
         public function index ($project = null) {
             if (empty($project))
-                throw new Redirection('/discover', Redirection::TEMPORARY);
+                throw new Redirection('/discover', Redirection::PERMANENT);
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['message'])) {
                 $message = new Model\Message(array(
@@ -54,7 +55,7 @@ namespace Goteo\Controller {
          */
         public function direct ($project = null) {
             if (empty($project))
-                throw new Redirection('/discover', Redirection::TEMPORARY);
+                throw new Redirection('/discover', Redirection::PERMANENT);
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['message'])) {
 
@@ -65,8 +66,7 @@ namespace Goteo\Controller {
                     throw new Redirection('/', Redirection::TEMPORARY);
                 }
 
-                $msg_content = \strip_tags($_POST['message']);
-
+                $msg_content = \nl2br(\strip_tags($_POST['message']));
 
                 // sacamos el mail del usuario
 
@@ -85,7 +85,6 @@ namespace Goteo\Controller {
                 $mailHandler = new Mail();
 
                 $mailHandler->to = $project->contract_email;
-                //@TODO blind copy a comunicaciones@goteo.org
                 $mailHandler->bcc = 'comunicaciones@goteo.org';
                 $mailHandler->subject = $subject;
                 $mailHandler->content = $content;
@@ -93,6 +92,7 @@ namespace Goteo\Controller {
                 $mailHandler->html = true;
                 if ($mailHandler->send($errors)) {
                     // ok
+                    \Goteo\Library\Message::Info(Text::get('regular-message_success'));
                 } else {
                     \trace($mailHandler);
                     unset($mailHandler);
@@ -102,7 +102,63 @@ namespace Goteo\Controller {
                 unset($mailHandler);
 			}
 
-            throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
+            throw new Redirection("/project/{$project->id}/messages", Redirection::TEMPORARY);
+        }
+
+        /*
+         * Este metodo envia un mensaje personal
+         */
+        public function personal ($user = null) {
+            if (empty($user))
+                throw new Redirection('/community', Redirection::PERMANENT);
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['message'])) {
+
+                // sacamos el mail del responsable del proyecto
+                $user = Model\User::get($user);
+
+                if (!$user instanceof Model\User) {
+                    throw new Redirection('/', Redirection::TEMPORARY);
+                }
+
+                $msg_content = \nl2br(\strip_tags($_POST['message']));
+
+
+                // sacamos el mail del usuario
+
+                // el asunto
+                $subject = 'Mensaje personal de un nuevo usuario de Goteo';
+
+                // el mensaje que ha escrito el usuario
+                $content = "Hola <strong>{$user->name}</strong>, este es un mensaje enviado desde Goteo por {$_SESSION['user']->name}.
+                <br/><br/>
+                {$msg_content}
+                <br/><br/>
+                Puedes ver tu comunidad en tu perfil ".SITE_URL."/user/profile/{$user->id}/sharemates";
+
+
+
+                $mailHandler = new Mail();
+
+                $mailHandler->to = $user->email;
+                $mailHandler->bcc = 'comunicaciones@goteo.org';
+                $mailHandler->subject = $subject;
+                $mailHandler->content = $content;
+
+                $mailHandler->html = true;
+                if ($mailHandler->send($errors)) {
+                    // ok
+                    \Goteo\Library\Message::Info(Text::get('regular-message_success'));
+                } else {
+                    \trace($mailHandler);
+                    unset($mailHandler);
+                    die;
+                }
+
+                unset($mailHandler);
+			}
+
+            throw new Redirection("/user/profile/{$user->id}", Redirection::TEMPORARY);
         }
 
         /*

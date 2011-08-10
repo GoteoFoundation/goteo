@@ -107,6 +107,11 @@ namespace Goteo\Model\Project {
 
             try {
                 self::query("DELETE FROM support WHERE id = :id AND project = :project", $values);
+
+                //quitar el mensaje
+                self::query("DELETE FROM message WHERE id = ?", array($this->thread));
+
+
 				return true;
 			} catch (\PDOException $e) {
                 $errors[] = 'No se ha podido quitar la colaboracion del proyecto ' . $this->project . ' ' . $e->getMessage();

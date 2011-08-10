@@ -206,7 +206,7 @@ namespace Goteo\Controller {
          */
         public function profile ($id, $show = 'profile') {
 
-            if (!in_array($show, array('profile', 'investors', 'sharemates'))) {
+            if (!in_array($show, array('profile', 'investors', 'sharemates', 'message'))) {
                 $show = 'profile';
             }
 

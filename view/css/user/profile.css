@@ -23,6 +23,66 @@ div.widget.user-supporters h3.supertitle {
     border-bottom: 1px solid #313B96 !important;
 }
 
+div.widget.user-mates div.users h3.supertitle{border-top: 1px solid #808285;border-bottom:1px dashed #818284;padding:5px 0 5px 5px;color:#20B3B2;font-size:12px;background:none;}
+
+div.widget.user-mates div.users h3.supertitle:hover{background:#E8E9E9;}
+
 body.user-profile div#main div.discover-group div.widget.project {
     margin: 0px 0px 0px 15px;
 }
+
+
+
+/* mates que sale en la parte central
+***********************************************/
+div.center div.widget.user-mates .users ul > li{
+	border-bottom:#D5D5D6 1px solid;
+    margin-left: 14px;
+    max-width: 275px;
+}
+
+div.center div.widget.user-mates .users ul > li.bordertop{
+	border-top:#D5D5D6 1px solid;
+}
+
+div.center div.widget.user-mates .users ul > li h4{
+	margin-top:4px;
+}
+
+div.center div.widget.user-mates .users ul > li span.projects,div.center div.widget.user-mates .users ul > li span.profile{
+	display:inline-block;
+	margin-right:15px;	
+}
+
+div.center div.widget.user-mates .users ul > li span.profile, div.center div.widget.user-mates .users ul > li span.contact{	
+	display:block;
+	float:left;
+}
+
+div.center div.widget.user-mates .users ul > li span.profile a{
+	float:left;
+	background:url(plus.png) left no-repeat;
+	padding-left:15px;
+	color:#808285;
+}
+
+div.center div.widget.user-mates .users ul > li span.profile a:hover{
+	background:url(plus-hover.png) left no-repeat;
+	color:#58595B;
+}
+
+div.center div.widget.user-mates .users ul > li span.contact a{
+	background:url(contact.png) left no-repeat;
+	padding-left:15px;
+	color:#808285;	
+}
+
+div.center div.widget.user-mates .users ul > li span.contact a:hover{
+	background:url(contact-hover.png) left no-repeat;
+	color:#58595B;
+}
+
+
+/* compartiendo intereses en http://goteo.juliancanaves.es/user/profile/esenabre/sharemates
+*********************************************************************************************/
+div.center > div.widget.user-mates > h3.title{border-bottom: 1px solid #21B0B0;font-size: 12px;font-weight: normal;margin: 0 0 1em;padding: 0 2px 0.5em; background:none;}

@@ -397,7 +397,7 @@ $(function () {
         event.preventDefault();
     });
 
-    socials.delegate('li.element.social_reward input.ok', 'click', function (event) {
+    socials.delegate('li.element.editsocial_reward input.ok', 'click', function (event) {
         var data = {};
         data[this.name.substring(0, 18) + 'edit'] = '0';
         Superform.update(socials, data);

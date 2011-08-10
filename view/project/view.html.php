@@ -85,6 +85,7 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
 
         </div>
 
+<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
 
 
         <div id="main" class="threecols">
