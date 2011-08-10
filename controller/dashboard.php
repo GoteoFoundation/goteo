@@ -177,7 +177,7 @@ namespace Goteo\Controller {
 
                         /// este es el único save que se lanza desde un metodo process_
                         if ($user->save($errors)) {
-                            $message = 'Informacion de perfil actualizada'; //Text::get('user-profile-saved');
+                            $message = Text::get('user-profile-saved');
                             $user = Model\User::flush();
                         }
                     break;
@@ -206,7 +206,7 @@ namespace Goteo\Controller {
                         // actualizamos estos datos en los personales del usuario
                         if (!empty ($personalData)) {
                             if (Model\User::setPersonal($user->id, $personalData, true, $errors)) {
-                                $message = 'Datos personales actualizados'; //Text::get('user-personal-saved');
+                                $message = Text::get('user-personal-saved');
                             }
                         }
                     break;
@@ -231,8 +231,7 @@ namespace Goteo\Controller {
                                 $user->email = $_POST['user_nemail'];
                                 unset($_POST['user_nemail']);
                                 unset($_POST['user_remail']);
-                                $success[] = 'Te hemos enviado un email para que confirmes el cambio de email';
-                                //Text::get('user-email-change-sended');
+                                $success[] = Text::get('user-email-change-sended');
                             }
                         }
                         // Contraseña
@@ -267,16 +266,14 @@ namespace Goteo\Controller {
                                 unset($_POST['user_password']);
                                 unset($_POST['user_npassword']);
                                 unset($_POST['user_rpassword']);
-                                $success[] = 'Has cambiado tu contraseña';
-                                //Text::get('user-password-changed');
+                                $success[] = Text::get('user-password-changed');
                             }
                         }
                         if($user->save($errors)) {
                             // Refresca la sesión.
                             $user = Model\User::flush();
                         } else {
-                            $errors[] = 'Ha habido algun problema al guardar los datos';
-                            //Text::get('user-save-fail');
+                            $errors[] = Text::get('user-save-fail');
                         }
                     break;
                 }
@@ -319,8 +316,7 @@ namespace Goteo\Controller {
                     case 'access':
                         // si es recover, en contraseña actual tendran que poner el username
                         if ($action == 'recover') {
-                            $viewData['message'] = "Esta recuperando su contraseña, recuerde poner el nombre de usuario en el campo 'contraseña actual' para cambiarla";
-                            //Text::get('dashboard-password-recover-advice');
+                            $viewData['message'] = Text::get('dashboard-password-recover-advice');
                         }
                         break;
                 }
@@ -394,8 +390,7 @@ namespace Goteo\Controller {
 
             // tenemos proyecto de trabajo, comprobar si el proyecto esta en estado de tener blog
             if ($option == 'updates' && in_array($project->status, array(1,2,6))) {
-                $errors[] = 'Lo sentimos, aun no se pueden publicar actualizaciones en este proyecto';
-                //Text::get('dashboard-project-blog-wrongstatus');
+                $errors[] = Text::get('dashboard-project-blog-wrongstatus');
                 $action = 'none';
             } elseif ($option == 'updates') {
                 // solo cargamos el blog en la gestion de updates
@@ -412,21 +407,18 @@ namespace Goteo\Controller {
                             )
                         );
                     if (!$blog->save($errors)) {
-                        $errors[] = 'Contacte con nosotros';
-                        //Text::get('dashboard-project-blog-fail');
+                        $errors[] = Text::get('dashboard-project-blog-fail');
                         $option = 'summary';
                         $action = 'none';
                     }
                 } elseif (!$blog->active) {
-                        $errors[] = 'Lo sentimos, las actualizaciones para este proyecto estan desactivadas';
-                        //Text::get('dashboard-project-blog-inactive');
+                        $errors[] = Text::get('dashboard-project-blog-inactive');
                         $action = 'none';
                     }
 
                 // primero comprobar que tenemos blog
                 if (!$blog instanceof Model\Blog) {
-                    $errors[] = 'No se ha encontrado ningún blog para este proyecto';
-                    //Text::get('dashboard-project-updates-noblog');
+                    $errors[] = Text::get('dashboard-project-updates-noblog');
                     $option = 'summary';
                     $action = 'none';
                     break;
@@ -470,8 +462,7 @@ namespace Goteo\Controller {
                                 $filter = $_POST['filter'];
 
                                 if (empty($_POST['message'])) {
-                                    $errors[] = 'Escribe el mensaje';
-                                    //Text::get('dashboard-investors-mail-text-required');
+                                    $errors[] = Text::get('dashboard-investors-mail-text-required');
                                     break;
                                 } else {
                                     $msg_content = \strip_tags($_POST['message']);
@@ -507,8 +498,7 @@ namespace Goteo\Controller {
                                 }
 
                                 if (count($who) == 0) {
-                                    $errors[] = 'No se han encontrado destinatarios';
-                                    //Text::get('dashboard-investors-mail-nowho');
+                                    $errors[] = Text::get('dashboard-investors-mail-nowho');
                                     break;
                                 }
 
@@ -520,7 +510,6 @@ namespace Goteo\Controller {
 
                                 //asunto
                                 $subject = 'Mensaje del proyecto que cofinancias: ' . $project->name;
-                                //Text::get('dashboard-investors-mail-subject');
                                 // el mensaje que ha escrito el productor
                                 $content = "Hola <strong>%NAME%</strong>, este es un mensaje enviado desde Goteo por el productor del proyecto {$project->name}.
                                 <br/><br/>
@@ -545,11 +534,11 @@ namespace Goteo\Controller {
 
                                     $mailHandler->html = true;
                                     if ($mailHandler->send($errors)) {
-                                        $success[] = 'Mensaje enviado correctamente a ' . $data->name . ' : ' . $data->email;
-                                       //Text::get('dashboard-investors-mail-sended'); //lleva parametros
+                                        $success[] = Text::get('dashboard-investors-mail-sended', $data->name, $data->email);
+                                       
                                     } else {
-                                        $errors[] = 'Falló al enviar el mensaje a ' . $data->name . ' : ' . $data->email;
-                                        //Text::get('dashboard-investors-mail-fail'); //lleva parametros
+                                        $errors[] = Text::get('dashboard-investors-mail-fail', $data->name, $data->email);
+                                        
                                     }
 
                                     unset($mailHandler);
@@ -682,16 +671,13 @@ namespace Goteo\Controller {
                         /// este es el único save que se lanza desde un metodo process_
                         if ($post->save($errors)) {
                             if ($action == 'edit') {
-                                $success[] = 'La entrada se ha actualizado correctamente'; 
-                                ////Text::get('dashboard-project-updates-saved');
+                                $success[] = Text::get('dashboard-project-updates-saved');
                             } else {
-                                $success[] = 'Se ha añadido una nueva entrada'; 
-                                ////Text::get('dashboard-project-updates-inserted');
+                                $success[] = Text::get('dashboard-project-updates-inserted');
                             }
                             $action = $editing ? 'edit' : 'list';
                         } else {
-                            $errors[] = 'Ha habido algun problema al guardar los datos';
-                            ////Text::get('dashboard-project-updates-fail');
+                            $errors[] = Text::get('dashboard-project-updates-fail');
                         }
                         break;
                 }
@@ -715,16 +701,14 @@ namespace Goteo\Controller {
                         break;
                     case 'edit':
                         if (empty($id)) {
-                            $errors[] = 'No se ha encontrado la entrada';
-                            //Text::get('dashboard-project-updates-nopost');
+                            $errors[] = Text::get('dashboard-project-updates-nopost');
                             $action = 'list';
                             break;
                         } else {
                             $post = Model\Blog\Post::get($id);
 
                             if (!$post instanceof Model\Blog\Post) {
-                                $errors[] = 'La entrada esta corrupta, contacte con nosotros.';
-                                //Text::get('dashboard-project-updates-postcorrupt');
+                                $errors[] = Text::get('dashboard-project-updates-postcorrupt');
                                 $action = 'list';
                                 break;
                             }
@@ -734,9 +718,9 @@ namespace Goteo\Controller {
                     case 'delete':
                         $post = Model\Blog\Post::get($id);
                         if ($post->delete($id)) {
-                            $success[] = 'Entrada eliminada';
+                            $success[] = Text::get('dashboard-project-updates-deleted');
                         } else {
-                            $errors[] = 'Error al eliminar la entrada';
+                            $errors[] = Text::get('dashboard-project-updates-delete_fail');
                         }
                         $posts = Model\Blog\Post::getAll($blog->id, null, false);
                         $action = 'list';
@@ -852,27 +836,27 @@ namespace Goteo\Controller {
             // todos los textos del menu dashboard
             $menu = array(
                 'activity' => array(
-                    'label'   => 'Mi actividad',
+                    'label'   => Text::get('dashboard-menu-activity'),
                     'options' => array (
-                        'summary' => 'Resumen'
+                        'summary' => Text::get('dashboard-menu-activity-summary')
                     )
                 ),
                 'profile' => array(
-                    'label'   => 'Mi perfil',
+                    'label'   => Text::get('dashboard-menu-profile'),
                     'options' => array (
-                        'profile'  => 'Editar perfil',
-                        'personal' => 'Datos personales',
-                        'access'   => 'Datos de acceso',
-                        'public'   => 'perfil público'
+                        'profile'  => Text::get('dashboard-menu-profile-profile'),
+                        'personal' => Text::get('dashboard-menu-profile-personal'),
+                        'access'   => Text::get('dashboard-menu-profile-access'),
+                        'public'   => Text::get('dashboard-menu-profile-public')
                     )
                 ),
                 'projects' => array(
-                    'label' => 'Mis proyectos',
+                    'label' => Text::get('dashboard-menu-projects'),
                     'options' => array (
-                        'summary'  => 'Resumen',
-                        'updates'  => 'Actualizaciones',
-                        'widgets'  => 'Widgets',
-                        'supports' => 'Colaboraciones'
+                        'summary'  => Text::get('dashboard-menu-projects-summary'),
+                        'updates'  => Text::get('dashboard-menu-projects-updates'),
+                        'widgets'  => Text::get('dashboard-menu-projects-widgets'),
+                        'supports' => Text::get('dashboard-menu-projects-supports')
                     )
                 )
             );
@@ -880,8 +864,11 @@ namespace Goteo\Controller {
             /*
              * Quitados por falta de contenid/requerimientos
              *
-             * Activity: , 'wall'    => 'Mi muro'
-             * Projects: 'contract' => 'Contrato', 'rewards'  => 'Gestionar retornos', 'preview'  => 'Página pública',
+             * Activity: , 'wall'    => Text::get('dashboard-menu-activity-wall')
+             * Projects: 'contract' => Text::get('dashboard-menu-projects-contract')
+             * 'rewards'  => Text::get('dashboard-menu-projects-rewards')
+             * 'preview'  => Text::get('dashboard-menu-projects-preview')
+             * ,
              *
              */
 
@@ -889,7 +876,7 @@ namespace Goteo\Controller {
             // si tiene permiso para ir al admin
             if (ACL::check('/admin')) {
                 $menu['admin'] = array(
-                    'label'   => 'Administración',
+                    'label'   => Text::get('dashboard-menu-admin_board'),
                     'options' => array(
                         'board' => 'Ir al panel'
                     )
@@ -899,7 +886,7 @@ namespace Goteo\Controller {
             // si tiene permiso para ir a las revisiones
             if (ACL::check('/review')) {
                 $menu['review'] = array(
-                    'label'   => 'Revisión',
+                    'label'   => Text::get('dashboard-menu-review_board'),
                     'options' => array(
                         'board' => 'Ir al panel'
                     )
@@ -909,7 +896,7 @@ namespace Goteo\Controller {
             // si tiene permiso para ir a las traducciones
             if (ACL::check('/translate')) {
                 $menu['translate'] = array(
-                    'label'   => 'Traducción',
+                    'label'   => Text::get('dashboard-menu-translate_board'),
                     'options' => array(
                         'board' => 'Ir al panel'
                     )
