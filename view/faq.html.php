@@ -29,7 +29,7 @@ $go_up = Text::get('regular-go_up');
 								<li>
 									<a name="q<?php echo $question->id; ?>" />
 									<h4 style="color:<?php echo $this['colors'][$sectionId] ?>;"><?php echo $question->title; ?></h4>
-                                    <p><?php echo nl2br(Text::urlink(str_replace(array('%URL_SITE%'), array(SITE_URL), $question->description))); ?></p>
+                                    <p><?php echo $question->description; ?></p>
 									<a class="up" href="#"><?php echo $go_up; ?></a>
 								</li>
 							<?php endforeach; ?>

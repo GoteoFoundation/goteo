@@ -18,6 +18,9 @@ namespace Goteo\Controller {
 
             foreach ($sections as $id=>$name) {
                 $faqs[$id] = Model\Faq::getAll($id);
+                foreach ($faqs[$id] as $question) {
+                    $faqs[$id]->description = nl2br(str_replace(array('%URL_SITE%'), array(SITE_URL), $question->description));
+                }
             }
 
             return new View(
