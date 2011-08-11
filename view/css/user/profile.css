@@ -37,9 +37,10 @@ body.user-profile div#main div.discover-group div.widget.project {
 ***********************************************/
 div.center div.widget.user-mates .users ul > li{
 	border-bottom:#D5D5D6 1px solid;
-    margin-left: 14px;
+    margin-right: 14px;
     max-width: 275px;
 }
+
 
 div.center div.widget.user-mates .users ul > li.bordertop{
 	border-top:#D5D5D6 1px solid;
@@ -83,6 +84,39 @@ div.center div.widget.user-mates .users ul > li span.contact a:hover{
 }
 
 
-/* compartiendo intereses en http://goteo.juliancanaves.es/user/profile/esenabre/sharemates
+/* http://goteo.juliancanaves.es/user/profile/esenabre/sharemates
 *********************************************************************************************/
-div.center > div.widget.user-mates > h3.title{border-bottom: 1px solid #21B0B0;font-size: 12px;font-weight: normal;margin: 0 0 1em;padding: 0 2px 0.5em; background:none;}
+/* lista de categorías */
+div.center > div.widget.categorylist{padding-bottom:12px;}
+div.center > div.widget.categorylist ul{list-style:none;display:inline-block;margin:0;padding-left:0;}
+div.center > div.widget.categorylist ul li{display:inline-block;margin-left:0;padding-left:0;}
+div.center > div.widget.categorylist ul li a{text-decoration:none;}
+div.center > div.widget.categorylist ul li a.active{color:#19B4B2}
+
+div.center > div.widget.categorylist > h3.title{font-size: 19px;font-weight: normal;margin: 0 0 1em -23px;padding-left:35px;}
+div.center > div.widget.categorylist > div.filters{border-bottom: 1px solid #D5D5D6;border-top: 1px solid #D5D5D6;padding: 5px;}
+	div.center > div.widget.categorylist > div.filters > span{font-size:11px;}
+	div.center > div.widget.categorylist > div.filters > ul{margin-left:1em;}
+	div.center > div.widget.categorylist > div.filters > ul > li{margin-right:5px;}
+	div.center > div.widget.categorylist > div.filters > ul > li > a{display:inline-block;
+	background:url(grey-triangle-down.png) no-repeat left; padding-left:15px;font-size:11px;}
+	div.center > div.widget.categorylist > div.filters > ul > li > a.active{background:url(blue-triangle-down.png) no-repeat left;}
+
+div.center > div.widget.categorylist > div.list{padding-top:5px;}
+	div.center > div.widget.categorylist > div.list > ul{}
+	div.center > div.widget.categorylist > div.list > ul > li{margin-right:0.5em;}
+	div.center > div.widget.categorylist > div.list > ul > li > a{text-transform:uppercase;font-size:12px;}
+
+/* detalle de categorías (encabezado de categoría)*/
+div.center > div.widget.user-mates > h3.title{margin: 0 0 1em;padding: 0 2px 0.5em;font-size: 12px;font-weight: normal; background:none; border-bottom: 1px dashed #818284;border-top: 1px solid #808285;color: #20B3B2;font-size: 12px;padding: 5px 0 5px 5px;}
+
+
+
+/* http://goteo.juliancanaves.es/user/profile/fbalague/message
+***************************************************************/
+div.center div.widget.user-message{position:relative;z-index:99;}
+div.center div.widget.user-message textarea{display:block;margin-left:50px;}
+div.center div.widget.user-message #bocadillo{background:url(../bocadillo.jpg) no-repeat;position:absolute;
+width:56px;	height:51px;z-index:100;}
+div.center div.widget.user-message #a-preview{margin-left:48px}
+div.center div.widget.user-message button.green{float:right;margin-right:8px;}

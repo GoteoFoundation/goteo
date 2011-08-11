@@ -62,6 +62,9 @@ div.widget.user-mates .users ul > li h6 a {
     font-weight: normal;
 }
 
+div.widget.user-mates .users ul li div.user h4{margin-top:4px;}
+div.widget.user-mates .users ul li div.user h4 a{font-weight:bold;display:inline-block;}
+
 div.widget.user-mates .users ul > li span {
     font-size: 9px;
 }

@@ -11,7 +11,7 @@ $reward = $this['data']['reward'] ?>
     <div class="description">
         <p><?php echo htmlspecialchars($reward->description) ?></p>
         <?php if (!empty($reward->units)) : ?>
-                <?php echo "{$reward->units} u. x {$reward->amount} € = " . ($reward->units * $reward->amount) ." €<br />"; ?>
+                <?php echo "{$reward->units} u. x {$reward->amount} &euro; = " . ($reward->units * $reward->amount) ." &euro;<br />"; ?>
                 <strong><?php echo Text::get('project-rewards-individual_reward-limited'); ?></strong>
                 <?php $units = $reward->units;
                 echo Text::html('project-rewards-individual_reward-units_left', $units); ?><br />

@@ -21,8 +21,37 @@ $worthcracy = Worth::getAll();
 <div id="main">
 
     <div class="center">
-        <div class="widget user-mates">
+       
+       
+       <!-- lista de categorías -->
+        <div class="widget categorylist">
             <h3 class="title"><?php echo Text::get('profile-sharing_interests-header');?></h3>
+            <div class="filters">
+                <span>Ver por:</span>
+                <ul>
+                    <li><a href="#" class="active">Por categorías</a></li>
+                    <li class="separator">|</li>
+                    <li><a href="#">Por tags</a></li>                
+                </ul>
+            </div>
+            <div class="list">
+                <ul>
+                    <li><a href="#">Sociales</a></li>
+                    <li><a href="#">Comunicadores</a></li>                
+                    <li><a href="#" class="active">Tecnológicos</a></li>                
+                    <li><a href="#">Emprendedores</a></li>                
+                    <li><a href="#">Didácticos</a></li>            
+                    <li><a href="#">Creativos</a></li>                            
+                    <li><a href="#">Sociales</a></li>
+                    <li><a href="#">Comunicadores</a></li>                                
+                </ul>
+            </div>
+        </div>
+        <!-- fin lista de categorías -->
+        
+        <!-- detalle de categoría (cabecera de categoría) -->
+        <div class="widget user-mates">
+            <h3 class="title">Tecnológicos</h3>
             <div class="users">
                 <ul>
                 <?php 
@@ -44,6 +73,8 @@ $worthcracy = Worth::getAll();
                 </ul>
             </div>
         </div>
+        <!-- fin detalle de categoría (cabecera de categoría) -->
+        
     </div>
     <div class="side">
         <?php echo new View('view/user/widget/investors.html.php', $this) ?>

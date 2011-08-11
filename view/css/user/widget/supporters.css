@@ -79,8 +79,12 @@ div.widget.user-supporters .supporters ul li dl dt.amount {
     top: 10px;
     margin: 0;
     font-size: 9px;
-    color: #313b96;
+    color: #313B96;
 }
+
+div.widget.user-supporters .supporters ul li dl dt.projects,
+div.widget.user-supporters .supporters ul li dl dd.projects
+{color:#313B96}
 
 div.widget.user-supporters .supporters ul li dl dd.amount {
     position: absolute;
