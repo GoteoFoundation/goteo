@@ -32,13 +32,35 @@ namespace Goteo\Model\User {
         /**
          * Get all categories available
          *
-         * @param void
+         *
+         * @param user isset get all categories of a user
          * @return array
          */
-		public static function getAll () {
+		public static function getAll ($user = null) {
             $array = array ();
             try {
-                $query = static::query("SELECT id, name FROM category ORDER BY name ASC");
+                $values = array(':lang'=>\LANG);
+                $sql = "
+                    SELECT
+                        category.id as id,
+                        IFNULL(category_lang.name, category.name) as name
+                    FROM    category
+                    LEFT JOIN category_lang
+                        ON  category_lang.id = category.id
+                        AND category_lang.lang = :lang
+
+                        ";
+                if (!empty($user)) {
+                    $sql .= "INNER JOIN user_interest
+                                ON  user_interest.interest = category.id
+                                AND user_interest.user = :user
+                                ";
+                    $values[':user'] = $user;
+                }
+                $sql .= "ORDER BY name ASC
+                        ";
+
+                $query = static::query($sql, $values);
                 $interests = $query->fetchAll();
                 foreach ($interests as $int) {
                     $array[$int[0]] = $int[1];
@@ -109,10 +131,16 @@ namespace Goteo\Model\User {
 
         /*
          * Lista de usuarios que comparten intereses con el usuario
+         *
+         * Si recibimos una categoría de interés, solamente los que comparten esa categoría
+         *
          */
-        public static function share ($user) {
+        public static function share ($user, $category = null) {
              $array = array ();
             try {
+
+                $values = array(':me'=>$user);
+
                $sql = "SELECT DISTINCT(user_interest.user) as id
                         FROM user_interest
                         INNER JOIN user_interest as mine
@@ -120,7 +148,12 @@ namespace Goteo\Model\User {
                             AND mine.user = :me
                         WHERE user_interest.user != :me
                         ";
-                $query = static::query($sql, array(':me'=>$user));
+               if (!empty($category)) {
+                   $sql .= "AND user_interest.interest = :interest";
+                   $values[':interest'] = $category;
+               }
+
+                $query = static::query($sql, $values);
                 $shares = $query->fetchAll(\PDO::FETCH_ASSOC);
                 foreach ($shares as $share) {
 

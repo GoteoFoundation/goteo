@@ -38,7 +38,18 @@ namespace Goteo\Model\Project {
 		public static function getAll () {
             $array = array ();
             try {
-                $query = static::query("SELECT id, name FROM category ORDER BY name ASC");
+                $sql = "
+                    SELECT
+                        category.id as id,
+                        IFNULL(category_lang.name, category.name) as name
+                    FROM    category
+                    LEFT JOIN category_lang
+                        ON  category_lang.id = category.id
+                        AND category_lang.lang = :lang
+                    ORDER BY name ASC
+                    ";
+
+                $query = static::query($sql, array(':lang'=>\LANG));
                 $categories = $query->fetchAll();
                 foreach ($categories as $cat) {
                     $array[$cat[0]] = $cat[1];

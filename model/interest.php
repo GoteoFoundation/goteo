@@ -35,7 +35,7 @@ namespace Goteo\Model {
                     AND category_lang.lang = :lang
                 ORDER BY `order` ASC";
 
-            $query = static::query($sql);
+            $query = static::query($sql, array(':lang'=>\LANG));
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $interest) {
                 $list[$interest->id] = $interest;

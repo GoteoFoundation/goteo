@@ -29,7 +29,7 @@ namespace Goteo\Model {
                         ON  icon_lang.id = icon.id
                         AND icon_lang.lang = :lang
                     WHERE icon.id = :id
-                    ", array(':id' => $id));
+                    ", array(':id' => $id, ':lang'=>\LANG));
                 $icon = $query->fetchObject(__CLASS__);
 
                 return $icon;
@@ -39,6 +39,8 @@ namespace Goteo\Model {
          * Lista de iconos de recompensa
          */
         public static function getAll ($group = '') {
+
+            $values = array(':lang'=>\LANG);
 
             $icons = array();
 
@@ -57,11 +59,12 @@ namespace Goteo\Model {
             if ($group != '') {
                 // de un grupo o de todos
                 $sql .= " WHERE icon.group = :group OR icon.group IS NULL OR icon.group = ''";
+                $values[':group'] = $group;
             }
 
             $sql .= " ORDER BY `order` ASC, name ASC";
 
-            $query = static::query($sql, array(':group' => $group, ':lang'=>\LANG));
+            $query = static::query($sql, $values);
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $icon) {
                 if ($group == 'social') {
@@ -77,6 +80,8 @@ namespace Goteo\Model {
          * Lista de iconos que se usen en proyectos 
          */
         public static function getList ($group = '') {
+
+            $values = array(':lang'=>\LANG);
 
             $icons = array();
 
@@ -95,6 +100,7 @@ namespace Goteo\Model {
             if ($group != '') {
                 // de un grupo o de todos
                 $sql .= " WHERE icon.group = :group OR icon.group IS NULL OR icon.group = ''";
+                $values[':group'] = $group;
             }
 
             $sql .= "
@@ -102,7 +108,7 @@ namespace Goteo\Model {
                 ORDER BY icon.name ASC
                 ";
 
-            $query = static::query($sql, array(':group' => $group, ':lang'=>\LANG));
+            $query = static::query($sql, $values);
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $icon) {
                 $icons[$icon->id] = $icon;
