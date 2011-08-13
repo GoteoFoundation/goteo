@@ -41,16 +41,11 @@ namespace Goteo\Controller {
                     }
                 }
                 else {
-                    $error = true;
+                    Message::Error(Text::get('login-fail'));
                 }
             }
 
-            return new View (
-                'view/user/login.html.php',
-                array(
-                    'login_error' => !empty($error)
-                )
-            );
+            return new View ('view/user/login.html.php');
 
         }
 
@@ -72,21 +67,25 @@ namespace Goteo\Controller {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             	$errors = array();
                 if (strcmp($_POST['email'], $_POST['remail']) !== 0) {
-                    $errors['email'] = Text::get('error-register-email-confirm');
+                    $errors['remail'] = Text::get('error-register-email-confirm');
                 }
                 if(strcmp($_POST['password'], $_POST['rpassword']) !== 0) {
-                    $errors['password'] = Text::get('error-register-password-confirm');
+                    $errors['rpassword'] = Text::get('error-register-password-confirm');
                 }
+                
+                $user = new Model\User();
+                $user->name = $_POST['username'];
+                $user->email = $_POST['email'];
+                $user->password = $_POST['password'];
+                $user->save($errors);
+
                 if(empty($errors)) {
-                	$user = new Model\User();
-                	$user->name = $_POST['username'];
-                	$user->email = $_POST['email'];
-                	$user->password = $_POST['password'];
-                	$user->save($errors);
-                	if(empty($errors)) {
-                	  Message::Info(Text::get('user-register-success'));
-                	  throw new Redirection('/user/login');
-                	}
+                  Message::Info(Text::get('user-register-success'));
+                  throw new Redirection('/user/login');
+                } else {
+                    foreach ($errors as $field=>$text) {
+                        Message::Error($text);
+                    }
                 }
             }
             return new View (
@@ -204,7 +203,7 @@ namespace Goteo\Controller {
          *
          * @param string $id    Nombre de usuario
          */
-        public function profile ($id, $show = 'profile') {
+        public function profile ($id, $show = 'profile', $category = null) {
 
             if (!in_array($show, array('profile', 'investors', 'sharemates', 'message'))) {
                 $show = 'profile';
@@ -261,7 +260,11 @@ namespace Goteo\Controller {
             $viewData['investors'] = $investors;
 
             // comparten intereses
-            $viewData['shares'] = Model\User\Interest::share($id);
+            $viewData['shares'] = Model\User\Interest::share($id, $category);
+
+            if (!empty($category)) {
+                $viewData['category'] = Model\Interest::get($category);
+            }
 
             // proyectos que cofinancio
             $invested = Model\User::invested($id, true);

@@ -7,7 +7,6 @@ $bodyClass = 'user-login';
 include 'view/prologue.html.php';
 include 'view/header.html.php';
 
-$error = $this['login_error'];
 $errors = $this['errors'];
 extract($_POST);
 ?>
@@ -41,9 +40,6 @@ jQuery(document).ready(function($) {
         <div class="login">
             <div>
                 <h2><?php echo Text::get('login-access-header'); ?></h2>
-                <?php if (!empty($error)): ?>
-                <p class="error"><?php echo Text::get('login-fail'); ?></p>
-                <?php endif ?>
 
                 <form action="/user/login" method="post">
                     <input type="hidden" name="return" value="<?php echo $_GET['return']; ?>" />
@@ -80,33 +76,34 @@ jQuery(document).ready(function($) {
                     <div class="username">
                         <label for="RegisterUsername"><?php echo Text::get('login-register-username-field'); ?></label>
                         <input type="text" id="RegisterUsername" name="username" value="<?php echo htmlspecialchars($username) ?>"/>
+                    <?php if(isset($errors['username'])) { ?><em><?php echo $errors['username']?></em><?php } ?>
                     </div>
-
-                    <?php if(isset($errors['username'])) { ?><p><em><?php echo $errors['username']?></em></p><?php } ?>
 
                     <div class="email">
                         <label for="RegisterEmail"><?php echo Text::get('login-register-email-field'); ?></label>
                         <input type="text" id="RegisterEmail" name="email" value="<?php echo htmlspecialchars($email) ?>"/>
+                    <?php if(isset($errors['email'])) { ?><em><?php echo $errors['email']?></em><?php } ?>
                     </div>
 
                     <div class="remail">
                         <label for="RegisterREmail"><?php echo Text::get('login-register-confirm-field'); ?></label>
                         <input type="text" id="RegisterREmail" name="remail" value="<?php echo htmlspecialchars($remail) ?>"/>
+                    <?php if(isset($errors['remail'])) { ?><em><?php echo $errors['remail']?></em><?php } ?>
                     </div>
 
-                    <?php if(isset($errors['email'])) { ?><p><em><?php echo $errors['email']?></em></p><?php } ?>
 
                     <div class="password">
                         <label for="RegisterPassword"><?php echo Text::get('login-register-password-field'); ?></label>
                         <input type="password" id="RegisterPassword" name="password" value="<?php echo htmlspecialchars($password) ?>"/>
+                    <?php if(isset($errors['password'])) { ?><em><?php echo $errors['password']?></em><?php } ?>
                     </div>
 
                      <div class="rpassword">
                         <label for="RegisterRPassword"><?php echo Text::get('login-register-confirm_password-field'); ?></label>
                         <input type="password" id="RegisterRPassword" name="rpassword" value="<?php echo htmlspecialchars($rpassword) ?>"/>
+                    <?php if(isset($errors['rpassword'])) { ?><em><?php echo $errors['rpassword']?></em><?php } ?>
                     </div>
 
-                    <?php if(isset($errors['password'])) { ?><p><em><?php echo $errors['password']?></em></p><?php } ?>
 
                     <input class="checkbox" id="register_accept" name="confirm" type="checkbox" value="true" />
                     <label class="conditions" for="register_accept"><?php echo Text::html('login-register-conditions'); ?></label><br />

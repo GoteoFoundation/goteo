@@ -45,7 +45,7 @@ $worthcracy = Worth::getAll();
 
         <form method="post" action="/message/personal/<?php echo $user->id; ?>">
             <div id="bocadillo"></div>
-            <textarea id="message" name="message" cols="77" rows="5"></textarea>
+            <textarea id="message" name="message" cols="50" rows="5"></textarea>
 
             <a target="_blank" id="a-preview" href="#preview" class="preview">&middot;Previsualizar</a>
             <div style="display:none">
