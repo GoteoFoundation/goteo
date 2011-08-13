@@ -11,6 +11,20 @@ include 'view/header.html.php';
 
 $user = $this['user'];
 $worthcracy = Worth::getAll();
+
+$categories = Interest::getAll($user->id);
+
+$shares = array();
+if (!empty($this['category'])) {
+    $shares[$this['category']->id] = Interest::share($user->id, $this['category']->id);
+} else {
+    foreach ($categories as $catId => $catName) {
+        $shares[$catId] = Interest::share($user->id, $catId);
+    }
+}
+
+
+
 ?>
 <div id="sub-header">
     <div>
@@ -23,42 +37,42 @@ $worthcracy = Worth::getAll();
     <div class="center">
        
        
-       <!-- lista de categorías -->
+       <!-- lista de categorÃ­as -->
         <div class="widget categorylist">
             <h3 class="title"><?php echo Text::get('profile-sharing_interests-header');?></h3>
+			<!--
             <div class="filters">
                 <span>Ver por:</span>
                 <ul>
-                    <li><a href="#" class="active">Por categorías</a></li>
+                    <li><a href="#" class="active">Por categorÃ­as</a></li>
                     <li class="separator">|</li>
                     <li><a href="#">Por tags</a></li>                
                 </ul>
             </div>
+			-->
             <div class="list">
                 <ul>
-                    <li><a href="#">Sociales</a></li>
-                    <li><a href="#">Comunicadores</a></li>                
-                    <li><a href="#" class="active">Tecnológicos</a></li>                
-                    <li><a href="#">Emprendedores</a></li>                
-                    <li><a href="#">Didácticos</a></li>            
-                    <li><a href="#">Creativos</a></li>                            
-                    <li><a href="#">Sociales</a></li>
-                    <li><a href="#">Comunicadores</a></li>                                
+                    <?php foreach ($categories as $catId=>$catName) : ?>
+                    <li><a href="/user/profile/<?php echo $user->id ?>/sharemates/<?php echo $catId ?>" <?php if ($catId == $this['category']->id) echo 'class="active"'?>><?php echo $catName ?></a></li>
+                    <?php endforeach; ?>
                 </ul>
             </div>
         </div>
-        <!-- fin lista de categorías -->
+        <!-- fin lista de categorÃ­as -->
         
-        <!-- detalle de categoría (cabecera de categoría) -->
+        <!-- detalle de categorÃ­a (cabecera de categorÃ­a) -->
+        <?php foreach ($shares as $catId => $sharemates) :
+            if (count($sharemates) == 0) continue; ?>
         <div class="widget user-mates">
-            <h3 class="title">Tecnológicos</h3>
+            <h3 class="title"><?php echo $categories[$catId] ?></h3>
             <div class="users">
                 <ul>
                 <?php 
 				$cnt = 1;
-				foreach ($this['shares'] as $mate){ ?>
-                    <li class="activable<?php if($cnt==1 or $cnt==2) echo " bordertop"?>">
+				foreach ($sharemates as $mate){ ?>
+                    <li class="activable<?php if($cnt==1 || $cnt==2) echo " bordertop"?>">
                         <div class="user">
+                        	<a href="/user/<?php echo htmlspecialchars($mate->user) ?>" class="expand">&nbsp;</a>
                             <div class="avatar"><a href="/user/<?php echo htmlspecialchars($mate->user) ?>"><img src="/image/<?php echo $mate->avatar->id ?>/43/43/1" /></a></div>
                             <h4><a href="/user/<?php echo htmlspecialchars($mate->user) ?>"><?php echo htmlspecialchars($mate->user) ?></a></h4>
                             <span class="projects"><?php echo Text::get('regular-projects'); ?> (<?php echo $mate->projects ?>)</span>
@@ -72,8 +86,10 @@ $worthcracy = Worth::getAll();
 				} ?>
                 </ul>
             </div>
+        <a class="more" href="/user/profile/<?php echo $this['user']->id ?>/sharemates"><?php echo Text::get('regular-see_all'); ?></a>
         </div>
-        <!-- fin detalle de categoría (cabecera de categoría) -->
+        <?php endforeach; ?>
+        <!-- fin detalle de categorÃ­a (cabecera de categorÃ­a) -->
         
     </div>
     <div class="side">

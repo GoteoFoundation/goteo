@@ -29,7 +29,7 @@ foreach (License::getAll() as $l) {
     
     <form method="post" action="/invest/<?php echo $project->id; ?>">
 
-    <label><input type="text" id="amount" name="amount" class="amount" value="10" /><?php echo Text::get('invest-amount-tooltip') ?></label>
+    <label><input type="text" id="amount" name="amount" class="amount" value="" /><?php echo Text::get('invest-amount-tooltip') ?></label>
 </div>
 
     

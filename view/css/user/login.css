@@ -47,6 +47,10 @@ body.user-login div#main div.register form > div input {
     width: 18em;
 }
 
+body.user-login div#main div.register form > div em {
+    color: red;
+}
+
 body.user-login div#main div.register label.conditions {
     font-size: 11px;
 }

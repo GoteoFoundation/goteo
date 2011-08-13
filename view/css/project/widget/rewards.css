@@ -60,10 +60,12 @@ div.widget.project-rewards > div.individual ul li div.amount,
     position: relative;
     top: -10px;
     right: -10px;
+	text-transform:uppercase;
 }
 
 #rewards-summary > div.individual ul li div.amount {
     margin-bottom: -20px;
+	text-transform:uppercase;
 }
 
 div.widget.project-rewards > div.individual ul li div.amount span.euro,
@@ -185,6 +187,7 @@ div.widget.project-rewards > a.more {
     display: inline-block;
     float: right;
     text-decoration: none;
+	text-transform:uppercase;
 }
 
 div.widget.project-invest ul li div.license h4,

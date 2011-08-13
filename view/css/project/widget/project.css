@@ -145,12 +145,12 @@ div.widget.project > .title a {
     font-size: 14px;
     font-weight: bold;
     text-decoration: none;
-    position: absolute;
+    position: relative;
     left: 0;
     top: 0;
     right: 0;
     bottom: 0;
-    padding: 152px 12px 12px;
+    padding: 152px 12px 12px 0;
     z-index: 900;
 }
 
@@ -173,8 +173,7 @@ div.widget.project > .author a {
     text-transform: none;
 }
 
-div.widget.project > .title a:hover,
-div.widget.project > .author a:hover {
+div.widget.project > .title a:hover{
     color: #20B3B2;
 }
 
@@ -483,6 +482,6 @@ div.widget.project div.buttons .button + .button {
 }
 
 
-div.widget.projects div.project:hover h4.author a{
+h4.author:hover a{
 	color:#20b3b2;
 }

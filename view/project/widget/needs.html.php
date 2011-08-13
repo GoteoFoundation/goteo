@@ -17,7 +17,8 @@ foreach ($project->costs as $cost) {
         'name' => $cost->cost,
         'description' => $cost->description,
         'min' => $cost->required == 1 ? $cost->amount . ' &euro;' : '',
-        'opt' => $cost->amount . ' &euro;'
+        'opt' => $cost->amount . ' &euro;',
+        'req' => $cost->required
     );
 }
 
@@ -41,7 +42,7 @@ foreach ($project->costs as $cost) {
         
         <tbody>            
             <?php foreach ($list as $cost): ?>
-            <tr>
+            <tr<?php echo ($cost->req == 1) ? ' class="req"' : ' class="noreq"' ?>>
                 <th class="summary"><strong><?php echo htmlspecialchars($cost->name) ?></strong>
                 <blockquote><?php echo $cost->description ?></blockquote>
                 </th>

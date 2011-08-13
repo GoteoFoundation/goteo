@@ -147,11 +147,10 @@ div.widget.project-support div.graph > div.minimum {
 }
 
 div.widget.project-support div.graph > div.minimum > div.done {
-    background: url('support/done.png') no-repeat -9px bottom;    
+    background: url('support/done.png') no-repeat bottom;    
     position: absolute;
     bottom: 0;
     width: 100%;
-    padding-top: 9px;
     overflow: visible;
 }
 
@@ -171,7 +170,6 @@ div.widget.project-support div.graph > div.minimum > div.done strong {
 }
 
 div.widget.project-support div.buttons {
-    border-top: 1px solid #ee4843;
     padding: 1em 0 0;
     clear: both;
     position: absolute;

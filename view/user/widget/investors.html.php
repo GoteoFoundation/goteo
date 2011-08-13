@@ -1,10 +1,12 @@
 <?php
 use Goteo\Core\View,
     Goteo\Library\Text;
+
+$cuantos = count($this['investors']);
 ?>
-<?php if(count($this['investors'])>0){	?>
+<?php if($cuantos > 0){	?>
 <div class="widget user-supporters">
-    <h3 class="supertitle"><?php echo Text::get('profile-my_investors-header'); ?></h3>
+    <h3 class="supertitle"><?php echo Text::get('profile-my_investors-header') . " ($cuantos)" ?></h3>
     <div class="supporters">
         <ul>
             <?php $c=1; // limitado a 6 cofinanciadores en el lateral

@@ -91,7 +91,8 @@ div.center > div.widget.categorylist{padding-bottom:12px;}
 div.center > div.widget.categorylist ul{list-style:none;display:inline-block;margin:0;padding-left:0;}
 div.center > div.widget.categorylist ul li{display:inline-block;margin-left:0;padding-left:0;}
 div.center > div.widget.categorylist ul li a{text-decoration:none;}
-div.center > div.widget.categorylist ul li a.active{color:#19B4B2}
+div.center > div.widget.categorylist ul li a.active,
+div.center > div.widget.categorylist ul li a:hover{color:#19B4B2}
 
 div.center > div.widget.categorylist > h3.title{font-size: 19px;font-weight: normal;margin: 0 0 1em -23px;padding-left:35px;}
 div.center > div.widget.categorylist > div.filters{border-bottom: 1px solid #D5D5D6;border-top: 1px solid #D5D5D6;padding: 5px;}
@@ -115,8 +116,9 @@ div.center > div.widget.user-mates > h3.title{margin: 0 0 1em;padding: 0 2px 0.5
 /* http://goteo.juliancanaves.es/user/profile/fbalague/message
 ***************************************************************/
 div.center div.widget.user-message{position:relative;z-index:99;}
-div.center div.widget.user-message textarea{display:block;margin-left:50px;}
+div.center div.widget.user-message textarea{display:block;margin-left:50px;width:510px;}
 div.center div.widget.user-message #bocadillo{background:url(../bocadillo.jpg) no-repeat;position:absolute;
 width:56px;	height:51px;z-index:100;}
-div.center div.widget.user-message #a-preview{margin-left:48px}
-div.center div.widget.user-message button.green{float:right;margin-right:8px;}
+div.center div.widget.user-message #a-preview{color: #2EAB58;
+font-weight: bold;left: 52px;position: relative;text-decoration: none;text-transform: uppercase;top: 10px;}
+div.center div.widget.user-message button{float:right;margin-right:8px;}

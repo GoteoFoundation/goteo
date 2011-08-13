@@ -20,7 +20,5 @@ unset($_SESSION['messages']);
                 </li>
     <?php endforeach; ?>
             </ul>
-            <!--  Esto sólo debería salir con javascript! :) -->
-    <!--        <input type="button" value="Cerrar" /> -->
 		</div>
     </div>

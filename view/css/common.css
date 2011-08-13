@@ -123,6 +123,23 @@ a.button.red:hover {
     background: #e44133 url('button/red-active.png') repeat-x top;
 }
 
+/* = botones violeta
+*****************************/
+input.violet[type="submit"],
+input.violet[type="reset"],
+button.violet,
+a.button.violet {
+    background: #96238F url('button/violet.png') repeat-x top;    
+} 
+
+input.violet[type="submit"]:hover,
+input.violet[type="reset"]:hover,
+button.violet:hover,
+a.button.violet:hover {
+    background: #96238F url('button/violet-active.png') repeat-x top;
+}
+/* fin botones violeta */
+
 input.weak[type="submit"],
 input.weak[type="reset"],
 button.weak,

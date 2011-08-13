@@ -17,6 +17,8 @@ div.widget.user-mates .users ul > li {
 		
 }
 
+div.widget.user-mates .users ul > li:hover > div.user > h4 > a{color:#19B4B2;}
+
 
 
 div.widget.user-mates .users ul > li.active {
@@ -24,6 +26,13 @@ div.widget.user-mates .users ul > li.active {
 
 div.widget.user-mates .users ul > li .user {
     padding: 3px 8px 8px 57px;	
+	position:relative;
+}
+
+div.widget.user-mates .users ul > li .user > a.expand{
+	position:absolute;
+	top:0;bottom:0;left:0;right:0;
+	z-index:99;	
 }
 
 div.widget.user-mates .users ul > li .avatar {
