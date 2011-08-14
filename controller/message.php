@@ -8,6 +8,7 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Model,
         Goteo\Library\Mail,
+        Goteo\Library\Template,
         Goteo\Library\Text;
 
     class Message extends \Goteo\Core\Controller {
@@ -68,23 +69,39 @@ namespace Goteo\Controller {
 
                 $msg_content = \nl2br(\strip_tags($_POST['message']));
 
-                // sacamos el mail del usuario
+                // Obtenemos la plantilla para asunto y contenido
+                $template = Template::get(3);
 
-                // el asunto
-                $subject = 'Mensaje de un nuevo cofinanciador de tu proyecto en Goteo';
+                // Sustituimos los datos
+                // En el asunto: %PROJECTNAME% por $project->name
+                $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
 
-                // el mensaje que ha escrito el usuario
+                // En el contenido:  nombre del autor -> %OWNERNAME% por $project->contract_name
+                // el mensaje que ha escrito el productor -> %MESSAGE% por $msg_content
+                // nombre del usuario que ha aportado -> %USERNAME% por $_SESSION['user']->name
+                // nombre del proyecto -> %PROJECTNAME% por $project->name
+                // url de la plataforma -> %SITEURL% por SITE_URL
+                $search  = array('%MESSAGE%', '%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%SITEURL%');
+                $replace = array($msg_content, $project->contract_name, $_SESSION['user']->name, $project->name, SITE_URL);
+                $content = \str_replace($search, $replace, nl2br($template->text));
+                
+                /*
                 $content = "Hola <strong>{$project->contract_name}</strong>, este es un mensaje enviado desde Goteo por {$_SESSION['user']->name}.
                 <br/><br/>
                 {$msg_content}
                 <br/><br/>
                 Puedes ver los cofinanciadores de '{$project->name}' en tu Dashboard ".SITE_URL."/dashboard";
-
-
-
+                */
+// testing-------
+                echo '<pre>'.print_r($template, 1).'</pre>';
+                echo '<pre>'.print_r($subject, 1).'</pre>';
+                echo '<pre>'.print_r($content, 1).'</pre>';
+                die;
+//-----
                 $mailHandler = new Mail();
 
-                $mailHandler->to = $project->contract_email;
+//                $mailHandler->to = $project->contract_email;
+                $mailHandler->to = 'jcanaves_test_investmsg@doukeshi.org';
                 $mailHandler->bcc = 'comunicaciones@goteo.org';
                 $mailHandler->subject = $subject;
                 $mailHandler->content = $content;
@@ -124,23 +141,32 @@ namespace Goteo\Controller {
                 $msg_content = \nl2br(\strip_tags($_POST['message']));
 
 
-                // sacamos el mail del usuario
+                // Obtenemos la plantilla para asunto y contenido
+                $template = Template::get(4);
 
-                // el asunto
-                $subject = 'Mensaje personal de un nuevo usuario de Goteo';
+                // Sustituimos los datos
+                // En el asunto: %USERNAME% por $_SESSION['user']->name
+                $subject = str_replace('%USERNAME%', $_SESSION['user']->name, $template->title);
 
-                // el mensaje que ha escrito el usuario
-                $content = "Hola <strong>{$user->name}</strong>, este es un mensaje enviado desde Goteo por {$_SESSION['user']->name}.
-                <br/><br/>
-                {$msg_content}
-                <br/><br/>
-                Puedes ver tu comunidad en tu perfil ".SITE_URL."/user/profile/{$user->id}/sharemates";
+                // En el contenido:  nombre del destinatario -> %TONAME% por $user->name
+                // el mensaje que ha escrito el usuario -> %MESSAGE% por $msg_content
+                // nombre del usuario -> %USERNAME% por $_SESSION['user']->name
+                // url del perfil -> %PROFILEURL% por ".SITE_URL."/user/profile/{$user->id}/sharemates"
+                $search  = array('%MESSAGE%','%TONAME%',  '%USERNAME%', '%PROFILEURL%');
+                $replace = array($msg_content, $user->name, $_SESSION['user']->name, SITE_URL."/user/profile/{$user->id}/sharemates");
+                $content = \str_replace($search, $replace, nl2br($template->text));
 
-
+    // testin ----------------
+                echo '<pre>'.print_r($template, 1).'</pre>';
+                echo '<pre>'.print_r($subject, 1).'</pre>';
+                echo '<pre>'.print_r($content, 1).'</pre>';
+                die;
+                //--------------
 
                 $mailHandler = new Mail();
 
-                $mailHandler->to = $user->email;
+//                $mailHandler->to = $user->email;
+                $mailHandler->to = 'jcanaves_privatemsg@doukeshi.org';
                 $mailHandler->bcc = 'comunicaciones@goteo.org';
                 $mailHandler->subject = $subject;
                 $mailHandler->content = $content;

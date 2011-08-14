@@ -10,6 +10,7 @@ namespace Goteo\Controller {
         Goteo\Library\Page,
         Goteo\Library\Mail,
         Goteo\Library\Text,
+        Goteo\Library\Template,
         Goteo\Library\Listing;
 
     class Dashboard extends \Goteo\Core\Controller {
@@ -508,15 +509,26 @@ namespace Goteo\Controller {
                                 $message .= 'enviar a ' . $enviandoa  . '<br />';
                                 $message .= implode(',', $who);
 
-                                //asunto
-                                $subject = 'Mensaje del proyecto que cofinancias: ' . $project->name;
-                                // el mensaje que ha escrito el productor
-                                $content = "Hola <strong>%NAME%</strong>, este es un mensaje enviado desde Goteo por el productor del proyecto {$project->name}.
-                                <br/><br/>
-                                {$msg_content}
-                                <br/><br/>
-                                Puedes ver el proyecto en ".SITE_URL."/project/{$project->id}";
-                                //Text::get('dashboard-investors-mail-template'); // lleva parametros
+                                // Obtenemos la plantilla para asunto y contenido
+                                $template = Template::get(2);
+                                
+                                // Sustituimos los datos
+                                // En el asunto: %PROJECTNAME% por $project->name
+                                $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+
+                                // En el contenido:  (en el bucle de destinatarios) -> %NAME% por $data_name
+                                // el mensaje que ha escrito el productor -> %MESSAGE% por $msg_content
+                                // nombre del proyecto -> %PROJECTNAME% por $project->name
+                                // url del proyecto -> %PROJECTURL% por ".SITE_URL."/project/{$project->id}"
+                                $search  = array('%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%');
+                                $replace = array($msg_content, $project->name, SITE_URL."/project/".$project->id);
+                                $content = \str_replace($search, $replace, nl2br($template->text));
+                                
+/* testin
+                                echo '<pre>'.print_r($template, 1).'</pre>';
+                                echo '<pre>'.print_r($subject, 1).'</pre>';
+                                echo '<pre>'.print_r($content, 1).'</pre>';
+                                die; */
 
                                 foreach ($who as $key=>$userId) {
 
@@ -526,7 +538,8 @@ namespace Goteo\Controller {
                                     // reusamos el objeto mail
                                     $mailHandler = new Mail();
 
-                                    $mailHandler->to = $data->email;
+//                                    $mailHandler->to = $data->email;
+                                    $mailHandler->to = 'jcanaves_test_rewardmsg@doukeshi.org';
                                     //@TODO blind copy a goteo
                                     $mailHandler->bcc = 'comunicaciones@goteo.org';
                                     $mailHandler->subject = $subject;

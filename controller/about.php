@@ -6,7 +6,8 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Library\Text,
-        Goteo\Library\Mail;
+        Goteo\Library\Mail,
+        Goteo\Library\Template;
 
     class About extends \Goteo\Core\Controller {
         
@@ -45,8 +46,8 @@ namespace Goteo\Controller {
                     if(empty($_POST['message'])) {
                         $errors['message'] = Text::get('error-contact-message-empty');
                     } else {
-                        $content = \strip_tags($_POST['message']);
-                        $content = nl2br($content);
+                        $msg_content = \strip_tags($_POST['message']);
+                        $msg_content = nl2br($msg_content);
                     }
 
                     if (empty($errors)) {
@@ -56,14 +57,34 @@ namespace Goteo\Controller {
                                 'message' => $_POST['message']
                         );
 
-                        // el mensaje que ha escrito el usuario
-                        $content = 'Mensaje de contacto desde Goteo.org enviado por '. $email . '<br /><br />' . $content;
+                // Obtenemos la plantilla para asunto y contenido
+                $template = Template::get(1);
 
+                // Sustituimos los datos
+                $subject = str_replace('%SUBJECT%', $subject, $template->title);
+
+                // En el contenido:
+                $search  = array('%MESSAGE%', '%USEREMAIL%');
+                $replace = array($msg_content, $email);
+                $content = \str_replace($search, $replace, nl2br($template->text));
+
+                /*
+                $content = 'Mensaje de contacto desde Goteo.org enviado por '. $email . '<br /><br />' . $content;
+                 * 
+                 */
+
+// testing-------
+                echo '<pre>'.print_r($template, 1).'</pre>';
+                echo '<pre>'.print_r($subject, 1).'</pre>';
+                echo '<pre>'.print_r($content, 1).'</pre>';
+                die;
+//-----
 
                         $mailHandler = new Mail();
 
-                        $mailHandler->to = 'info@platoniq.net';
-                        $mailHandler->subject = 'Contacto desde Goteo.org: ' . $subject;
+//                        $mailHandler->to = 'info@platoniq.net';
+                        $mailHandler->to = 'jcanaves_contact_goteo@doukeshi.org';
+                        $mailHandler->subject = $subject;
                         $mailHandler->content = $content;
                         $mailHandler->fromName = '';
                         $mailHandler->from = $email;

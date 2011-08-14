@@ -5,6 +5,7 @@ namespace Goteo\Model {
 	use Goteo\Core\Redirection,
         Goteo\Library\Text,
         Goteo\Model\Image,
+        Goteo\Library\Template,
         Goteo\Library\Mail,
         Goteo\Library\Check,
         Goteo\Library\Message;
@@ -86,30 +87,38 @@ namespace Goteo\Model {
                     $data[':active'] = false;
 
                     // Rol por defecto.
-                    static::query('INSERT INTO user_role (user_id, role_id, node_id) VALUES (:user, :role, :node);', array(
-                        ':user' => $this->id,
-                    	':role' => 'user',
-                    	':node' => '*',
-                    ));
+                    if (!empty($this->id)) {
+                        static::query('REPLACE INTO user_role (user_id, role_id, node_id) VALUES (:user, :role, :node);', array(
+                            ':user' => $this->id,
+                            ':role' => 'user',
+                            ':node' => '*',
+                        ));
+                    }
+
+                    // Obtenemos la plantilla para asunto y contenido
+                    $template = Template::get(5);
+
+                    // Sustituimos los datos
+                    $subject = $template->title;
+
+                    // En el contenido:
+                    $search  = array('%USERNAME%', '%USERID%', '%ACTIVATEURL%');
+                    $replace = array($this->name, $this->id, SITE_URL . '/user/activate/' . $token);
+                    $content = \str_replace($search, $replace, nl2br($template->text));
+
+/*/ testing-------
+                echo '<pre>'.print_r($template, 1).'</pre>';
+                echo '<pre>'.print_r($subject, 1).'</pre>';
+                echo '<pre>'.print_r($content, 1).'</pre>';
+                die;
+//----- */
 
                     // Activación
                     $mail = new Mail();
                     $mail->to = $this->email;
                     $mail->toName = $this->name;
-                    $mail->subject = Text::get('subject-register');
-                    $url = SITE_URL . '/user/activate/' . $token;
-                    $mail->content = sprintf('
-                        Estimado(a) <strong>%1$s</strong>:<br/>
-                        <br/>
-                        Gracias por registrase en Goteo.org, su nueva cuenta ha sido creada con éxito.<br/>
-                        Para activar su cuenta y confirmar su dirección de correo electrónico, haga clic en el siguiente vínculo (o copie y pégue el enlace en la barra de dirección de su navegador):<br/>
-                        <br/>
-                        <a href="%2$s">%2$s</a><br/>
-                        <br/>
-                        Recuerde que su nombre de usuario es <strong>%3$s</strong>, una vez que active su cuenta podrá acceder y disfrutar de los servicios que le ofrecemos.<br/>
-                        <br/>
-                        Si usted no ha solicitado el registro, simplemente ignore este mensaje.
-					', $this->name, $url, $this->id);
+                    $mail->subject = $subject;
+                    $mail->content = $content;
                     $mail->html = true;
                     $mail->send($errors);
                 }
@@ -590,13 +599,32 @@ namespace Goteo\Model {
                 $token = md5(uniqid()) . '¬' . $row->email;
                 self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $row->id, ':token' => $token));
 
+                // Obtenemos la plantilla para asunto y contenido
+                $template = Template::get(6);
+
+                // Sustituimos los datos
+                $subject = $template->title;
+
+                // En el contenido:
+                $search  = array('%USERNAME%', '%USERID%', '%RECOVERURL%');
+                $replace = array($row->name, $row->id, SITE_URL . '/user/recover/' . base64_encode($token));
+                $content = \str_replace($search, $replace, nl2br($template->text));
+
+// testing-------
+                echo '<pre>'.print_r($template, 1).'</pre>';
+                echo '<pre>'.print_r($subject, 1).'</pre>';
+                echo '<pre>'.print_r($content, 1).'</pre>';
+                die;
+//-----
+
                 // Email de recuperacion
                 $mail = new Mail();
                 $mail->to = $row->email;
                 $mail->toName = $row->name;
-                $mail->subject = 'Su petición de recuperación de contraseña en Goteo';
-                $url = SITE_URL . '/user/recover/' . base64_encode($token);
-                $mail->content = sprintf('
+                $mail->subject = $subject;
+                $mail->content = $content;
+
+/* old                    sprintf('
                     Estimado(a) <strong>%1$s</strong>:<br/>
                     <br/>
                     Hemos recibido una petición para recuperar la contraseña de tu cuenta de usuario en Goteo.org<br />
@@ -608,6 +636,8 @@ namespace Goteo\Model {
                     Recuerde que su nombre de usuario es <strong>%3$s</strong>, póngalo como contraseña actual para cambiar la contraseña.<br/>
                     Hasta pronto!
                 ', $row->name, $url, $row->id);
+ *
+ */
                 $mail->html = true;
                 if ($mail->send($errors)) {
                     return true;
@@ -628,12 +658,32 @@ namespace Goteo\Model {
             if(count($tmp = explode('¬', $token)) > 1) {
                 $email = $tmp[1];
                 if(Check::mail($email)) {
+
+                    // Obtenemos la plantilla para asunto y contenido
+                    $template = Template::get(7);
+
+                    // Sustituimos los datos
+                    $subject = $template->title;
+
+                    // En el contenido:
+                    $search  = array('%USERNAME%', '%CHANGEURL%');
+                    $replace = array($this->name, SITE_URL . '/user/changeemail/' . base64_encode($token));
+                    $content = \str_replace($search, $replace, nl2br($template->text));
+
+    // testing-------
+                    echo '<pre>'.print_r($template, 1).'</pre>';
+                    echo '<pre>'.print_r($subject, 1).'</pre>';
+                    echo '<pre>'.print_r($content, 1).'</pre>';
+                    die;
+    //-----
+
+
                     $mail = new Mail();
                     $mail->to = $email;
                     $mail->toName = $this->name;
-                    $mail->subject = Text::get('subject-change-email');
-                    $url = SITE_URL . '/user/changeemail/' . base64_encode($token);
-                    $mail->content = sprintf('
+                    $mail->subject = $subject;
+                    $mail->content = $content;
+/* old                        sprintf('
                         Estimado(a) <strong>%1$s</strong>:<br/>
                         <br/>
                         Para confirmar la propiedad de su nueva dirección de correo electrónico, haga clic en el siguiente vínculo (o copie y pégue el enlace en la barra de dirección de su navegador):<br/>
@@ -642,6 +692,8 @@ namespace Goteo\Model {
                         <br/>
                         Esta proceso es necesario para confirmar la propiedad de su dirección de correo electrónico - no podrá operar con esta dirección hasta que la haya confirmado.
                     ', $this->name, $url);
+ *
+ */
                     $mail->html = true;
                     $mail->send();
                     return self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $this->id, ':token' => $token));
