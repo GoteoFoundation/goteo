@@ -11,6 +11,7 @@ namespace Goteo\Controller {
         Goteo\Library\Paypal,
         Goteo\Library\Tpv,
         Goteo\Library\Page,
+        Goteo\Library\Template,
         Goteo\Library\Blog,
         Goteo\Library\Worth;
 
@@ -238,6 +239,51 @@ namespace Goteo\Controller {
                 default:
                     throw new Redirection("/admin");
             }
+		}
+
+        /*
+         * Gestión de plantillas para emails automáticos
+         */
+		public function templates ($action = 'list', $id = null) {
+
+            $errors = array();
+
+            switch ($action) {
+                case 'edit':
+                    // si estamos editando una plantilla
+                    $template = Template::get($id);
+
+                    // si llega post, vamos a guardar los cambios
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        $template->title = $_POST['title'];
+                        $template->text  = $_POST['text'];
+                        if ($template->save($errors))
+                            throw new Redirection("/admin/templates");
+                    }
+
+
+                    // sino, mostramos para editar
+                    return new View(
+                        'view/admin/templateEdit.html.php',
+                        array(
+                            'template' => $template,
+                            'errors'=>$errors
+                        )
+                     );
+                    break;
+                case 'list':
+                    // si estamos en la lista de páginas
+                    $templates = Template::getAll();
+
+                    return new View(
+                        'view/admin/templates.html.php',
+                        array(
+                            'templates' => $templates
+                        )
+                    );
+                    break;
+            }
+
 		}
 
         /*
