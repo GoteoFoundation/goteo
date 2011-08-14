@@ -48,7 +48,7 @@ foreach ($categories as $catId => $catName) {
                     </div>
                     <h4>
                     	<a href="/user/<?php echo htmlspecialchars($mate->user) ?>">
-						<?php echo htmlspecialchars($mate->user) ?>
+						<?php echo htmlspecialchars($mate->name) ?>
                         </a>
                     </h4>
                     <span class="projects">

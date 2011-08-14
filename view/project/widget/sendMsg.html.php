@@ -21,6 +21,7 @@ $level = (int) $this['level'] ?: 3;
 		});
 	});
 </script>
+<?php if (!empty($_SESSION['user']->id)) : ?>
 <div class="widget project-message">
     
     <h<?php echo $level ?> class="title"><?php echo Text::get('project-messages-send_direct-header'); ?></h<?php echo $level ?>>
@@ -38,7 +39,8 @@ $level = (int) $this['level'] ?: 3;
         
          
         
-        <button <?php echo (!empty($_SESSION['user']->id)) ? 'class="green"' : 'class="disabled" disabled="disabled"'; ?> type="submit"><?php echo Text::get('project-messages-send_message-button'); ?></button>
+        <button class="green" type="submit"><?php echo Text::get('project-messages-send_message-button'); ?></button>
     </form>
 
 </div>
+<?php endif; ?>

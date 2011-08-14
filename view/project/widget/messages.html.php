@@ -25,7 +25,7 @@ $level = (int) $this['level'] ?: 3;
         $('#message-text').val('<?php echo Text::get('project-messages-send_message-your_answer'); ?>').focus().select();
     }
 </script>
-
+<?php if (!empty($_SESSION['user']->id)) : ?>
 <div class="widget project-message">
     <h<?php echo $level ?> class="title"><?php echo Text::get('project-messages-send_message-header'); ?></h<?php echo $level ?>>
 
@@ -40,11 +40,11 @@ $level = (int) $this['level'] ?: 3;
                         
                     </div>
             </div>
-            <button <?php echo (!empty($_SESSION['user']->id)) ? 'class="green"' : 'class="disabled" disabled="disabled"'; ?> type="submit"><?php echo Text::get('project-messages-send_message-button'); ?></button>
+            <button class="green" type="submit"><?php echo Text::get('project-messages-send_message-button'); ?></button>
         </form>
     </div>
 </div>
-
+<?php endif; ?>
 <div class="widget project-messages">
 
 

@@ -27,7 +27,15 @@ foreach ($project->costs as $cost) {
 <div class="widget project-needs">
         
     <h<?php echo $level+1 ?> class="title"><?php echo Text::get('project-view-metter-investment'); ?></h<?php echo $level+1 ?>>
-           
+    
+    <script type="text/javascript">
+	$(document).ready(function() {
+	   $("div.click").click(function() {
+		   $(this).children("blockquote").toggle();
+		   $(this).children("span.icon").toggleClass("opened");
+		});
+	 });
+	</script>
     <table width="100%">
         
         <?php foreach ($costs as $type => $list): ?>
@@ -43,8 +51,12 @@ foreach ($project->costs as $cost) {
         <tbody>            
             <?php foreach ($list as $cost): ?>
             <tr<?php echo ($cost->req == 1) ? ' class="req"' : ' class="noreq"' ?>>
-                <th class="summary"><strong><?php echo htmlspecialchars($cost->name) ?></strong>
-                <blockquote><?php echo $cost->description ?></blockquote>
+                <th class="summary">
+	                <div class="click">
+                    	<span class="icon">&nbsp;</span>
+                        <span><strong><?php echo htmlspecialchars($cost->name) ?></strong></span>
+                        <blockquote><?php echo $cost->description ?></blockquote>
+                    </div>    	            
                 </th>
                 <td class="min"><?php echo $cost->min ?></td>
                 <td class="max"><?php echo $cost->opt ?></td>

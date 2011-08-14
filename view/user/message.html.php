@@ -39,6 +39,7 @@ $worthcracy = Worth::getAll();
 
     <div class="center">
 
+    <?php if (!empty($_SESSION['user']->id)) : ?>
     <div class="widget user-message">
 
         <h3 class="title"><?php echo Text::get('user-message-send_personal-header'); ?></h3>
@@ -56,11 +57,11 @@ $worthcracy = Worth::getAll();
 
 
 
-            <button <?php echo (!empty($_SESSION['user']->id)) ? 'class="green"' : 'class="disabled" disabled="disabled"'; ?> type="submit"><?php echo Text::get('project-messages-send_message-button'); ?></button>
+            <button class="green" type="submit"><?php echo Text::get('project-messages-send_message-button'); ?></button>
         </form>
 
     </div>
-
+    <?php endif; ?>
 
         <?php echo new View('view/user/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $user->worth)) ?>
 

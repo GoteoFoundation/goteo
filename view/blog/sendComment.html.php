@@ -20,6 +20,7 @@
 		});
 	});
 </script>
+<?php if (!empty($_SESSION['user']->id)) : ?>
 <div class="widget blog-comment">
     <h<?php echo $level ?> class="title"><?php echo Text::get('blog-send_comment-header'); ?></h<?php echo $level ?>>
     <form method="post" action="/message/post/<?php echo $this['post']; ?>/<?php echo $this['project']; ?>">
@@ -31,9 +32,10 @@
                     
                 </div>
         </div>
-        <button <?php echo (!empty($_SESSION['user']->id)) ? 'class="green"' : 'class="disabled" disabled="disabled"'; ?> type="submit"><?php echo Text::get('blog-send_comment-button'); ?></button>
+        <button class="green" type="submit"><?php echo Text::get('blog-send_comment-button'); ?></button>
     </form>
 </div>
+<?php endif; ?>
 <?php else : ?>
     <p><?php echo Text::get('blog-comments_no_allowed'); ?></p>
 <?php endif; ?>

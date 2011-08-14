@@ -393,7 +393,11 @@ div#header div#about ul li#lang.active{
 div#header div#about ul li#lang a{
 	background: url('lang-triangulo.png') no-repeat scroll 100% bottom transparent;
 	padding-right: 10px;
+	cursor:default;
 }
+
+div#header div#about ul li#lang a:hover{
+	color:#fff}
 
 div#header div#about ul li > *:hover {
     color: #8ed9d8;
@@ -685,7 +689,6 @@ div#header div.lang{margin-top:5px;}
 div#header div.lang ul.lang {display:none;margin:0;padding:0;}
 div#header div.lang span#lan-active{padding-left:30px;}*/
 ul.lang{
-
 	position:absolute;
 	left: 0;
 	top: 25px;
@@ -695,20 +698,30 @@ ul.lang{
 	background-color: #fff;
 	margin:0;
 	padding:0;
-	}
+}
+	
 ul.lang li{
 background-color: #59595C;
-padding: 4px 4px 4px 25px;
-width: 41px;
+height: 15px;
+padding: 4px 0;
+position: relative;
+width: 70px;
+text-align:center;
 }
 ul.lang li:hover {
 	background: #808285; 
 }
 ul.lang li>a{
-	color:#fff;
-	text-decoration:none; text-transform:uppercase;
-	font-size:11px;
+	bottom: 0;
+	color: #FFFFFF;
+	font-size: 11px;
+	position: relative;
+	text-decoration: none;
+	text-transform: uppercase;
+	top: 0;
+	width: 100%;
+	display:block;
 }
 ul.lang li:hover>a {
-	color: #fff;
+	color: #1EB2B2;
 }
