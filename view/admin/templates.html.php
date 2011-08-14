@@ -10,7 +10,7 @@ include 'view/prologue.html.php';
 
         <div id="sub-header">
             <div>
-                <h2>Gestión de plantillas de emailsautomáticos</h2>
+                <h2>Gestión de Plantillas de emails automáticos</h2>
             </div>
 
             <div class="sub-menu">

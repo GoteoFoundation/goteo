@@ -467,6 +467,7 @@ namespace Goteo\Controller {
                                     break;
                                 } else {
                                     $msg_content = \strip_tags($_POST['message']);
+                                    $msg_content = nl2br($msg_content);
                                 }
 
                                 if (!empty($_POST['msg_all'])) {

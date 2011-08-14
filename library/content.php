@@ -25,7 +25,7 @@ namespace Goteo\Library {
                 'page'      => 'Páginas',
                 'criteria'  => 'Criterios de evaluación',
                 'worthcracy'=> 'Meritocrácia',
-                'template'  => 'Emails automáticos'
+                'template'  => 'Plantillas emails automáticos'
             ),
             $fields = array(
                 'promote' => array (
@@ -76,11 +76,11 @@ namespace Goteo\Library {
                 )
             ),
             $types = array(
-                'title'       => 'Título',
-                'name'        => 'Nombre',
                 'description' => 'Descripción',
                 'url'         => 'Enlace',
-                'text'        => 'Texto extenso'
+                'name'        => 'Nombre',
+                'text'        => 'Texto extenso',
+                'title'       => 'Título'
             );
 
         /*
@@ -138,6 +138,8 @@ namespace Goteo\Library {
 
             try {
 
+                \asort(self::$tables);
+                
                 foreach (self::$tables as $table=>$tableName) {
                     if (!self::checkLangTable($table)) continue;
                     if (!empty($filters['type']) && !isset(self::$fields[$table][$filters['type']])) continue;

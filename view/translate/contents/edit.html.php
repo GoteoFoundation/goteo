@@ -38,13 +38,13 @@ $sizes = array(
 </div>
 
 <div class="widget board">
-    <h3>Contenido original en español sin multiidioma</h3>
+    <h3>Contenido original</h3>
 
     <?php foreach (Content::$fields[$table] as $field=>$fieldName) :
         $campo = 'original_'.$field; ?>
         <label for="<?php echo 'id'.$field ?>"><?php echo $fieldName ?>:</label><br />
         <blockquote>
-            <?php echo $content->$campo; ?>
+            <?php echo nl2br(htmlentities($content->$campo)); ?>
         </blockquote>
         <br />
     <?php endforeach;  ?>

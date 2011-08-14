@@ -48,7 +48,7 @@ include 'view/prologue.html.php';
                         <li><a href="/admin/licenses">Licencias</a></li>
                         <li><a href="/admin/categories">Categorias</a></li>
                         <li><a href="/admin/tags">Tags del blog</a></li>
-                        <li><a href="/admin/templates">Emails automáticos</a></li>
+                        <li><a href="/admin/templates">Plantillas emails</a></li>
                     </ul>
                 </div>
 
