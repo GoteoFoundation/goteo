@@ -121,6 +121,8 @@ namespace Goteo\Model\Blog {
                 
                 $post->num_comments = Post\Comment::getCount($post->id);
 
+                $post->tags = Post\Tag::getAll($post->id);
+
                 // reconocimiento de enlaces y saltos de linea
                 $post->text = nl2br(Text::urlink($post->text));
 

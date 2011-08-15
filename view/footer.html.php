@@ -141,7 +141,7 @@ jQuery(document).ready(function($) {
                     <li class="facebook"><a href="<?php echo Text::get('social-account-facebook') ?>" target="_blank"><?php echo Text::get('regular-facebook') ?></a></li>
                     <li class="identica"><a href="<?php echo Text::get('social-account-identica') ?>"><?php echo Text::get('regular-identica') ?></a></li>
                     <li class="gplus"><a href="<?php echo Text::get('social-account-google') ?>"><?php echo Text::get('regular-google') ?></a></li>
-                    <li class="rss"><a href="/rss">RSS</a></li>
+                    <li class="rss"><a rel="alternate" type="application/rss+xml" title="RSS" href="/rss" target="_blank">RSS</a></li>
 
                 </ul>
             </div>

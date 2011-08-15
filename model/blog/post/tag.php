@@ -36,6 +36,8 @@ namespace Goteo\Model\Blog\Post {
 
             $list = array();
 
+            $values = array(':lang'=>\LANG);
+
             $sql = "
                 SELECT
                     tag.id as id,
@@ -51,11 +53,12 @@ namespace Goteo\Model\Blog\Post {
                     ON tag.id = post_tag.tag
                     AND post_tag.post = :post
                     ";
+                $values[':post'] = $post;
             }
 
             $sql .= "ORDER BY tag.name ASC";
             
-            $query = static::query($sql, array(':post'=>$post, ':lang'=>\LANG));
+            $query = static::query($sql, $values);
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $tag) {
                 $list[$tag->id] = $tag->name;
