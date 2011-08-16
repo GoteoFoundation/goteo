@@ -1,5 +1,7 @@
 <?php
 
+use Goteo\Library\Text;
+
 $project = $this['project'];
 $level = (int) $this['level'] ?: 3;
 
@@ -54,13 +56,13 @@ $until = mktime(0, 0, 0, date('m', $until) + 1, -1, date('Y', $until));
 ?>
 <div class="widget project-schedule">
     
-    <h<?php echo $level ?> class="title">Agenda</h<?php echo $level ?>>
+    <h<?php echo $level ?> class="title"><?php echo Text::get('costs-field-schedule'); ?></h<?php echo $level ?>>
     
     <table>
                         
         <thead class="months">
             <tr>
-                <th>Meses</th>
+                <th><?php echo Text::get('regular-months'); ?></th>
                 <?php 
                 
                 for ($d = $from; $d <= $until;) {
@@ -90,7 +92,7 @@ $until = mktime(0, 0, 0, date('m', $until) + 1, -1, date('Y', $until));
         
         <thead class="days">
             <tr>
-                <th>Días</th>
+                <th><?php echo Text::get('regular-days'); ?></th>
                 <?php 
                 for ($d = $from; $d <= $until; $d = mktime(0, 0, 0, date('m', $d), date('d', $d) + 1, date('Y', $d))) {
                     $j = date('j', $d);
@@ -108,7 +110,7 @@ $until = mktime(0, 0, 0, date('m', $until) + 1, -1, date('Y', $until));
         
         <thead class="weeks">
             <tr>
-                <th>Semanas</th>
+                <th><?php echo Text::get('regular-weeks'); ?></th>
                 <?php for ($i = 0, $d = $from; $d <= $until; $d = mktime(0, 0, 0, date('m', $d), date('d', $d) + 7, date('Y', $d))): $i++; ?>
                 <th colspan="7"><span><?php echo $i ?></span></th>
                 <?php endfor ?>
@@ -165,6 +167,7 @@ $until = mktime(0, 0, 0, date('m', $until) + 1, -1, date('Y', $until));
                     }
                     
                     $cls = 'on ' . htmlspecialchars($cost->type);
+                    $cls .= $cost->required ? ' req' : ' noreq';
 
                     echo '<td';
 

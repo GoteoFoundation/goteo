@@ -104,7 +104,17 @@ div.widget.project-schedule table tbody td.on.structure {
     padding-left: 38px;
 } 
 
+/* Coste imprescindible */
+div.widget.project-schedule table tbody td.on.req {
+    background-color: #e4c9e2;
+}
 
+/* Coste adicional */
+div.widget.project-schedule table tbody td.on.noreq {
+    background-color: #e2e2e2;
+}
+
+/*
 div.widget.project-schedule table tbody tr:nth-child(4n+1) td.on {
     background-color: #f9d3d4;
 }
@@ -116,7 +126,7 @@ div.widget.project-schedule table tbody tr:nth-child(4n+3) td.on {
 div.widget.project-schedule table tbody tr:nth-child(4n+4) td.on {
     background-color: #c7c7e4;
 }
-
+*/
 
 
 div.widget.project-schedule table tbody td span {

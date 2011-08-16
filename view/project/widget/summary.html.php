@@ -17,8 +17,49 @@ $level = (int) $this['level'] ?: 3;
 
     jQuery(document).ready(function ($) {
 
-        $(".gallery-image").first().show();
-        $(".navi-gallery-image").first().addClass('active');
+        $("#gallery-image-1").show();
+        $("#navi-gallery-image-1").addClass('active');
+
+        $(".navi-arrow").click(function (event) {
+            event.preventDefault();
+
+            /* Quitar todos los active, ocultar todos los elementos */
+            $(".navi-gallery-image").removeClass('active');
+            $(".gallery-image").hide();
+            /* Poner acctive a este, mostrar este */
+            $("#navi-gallery-image-"+this.rel).addClass('active');
+            $("#gallery-image-"+this.rel).show();
+
+            var prev;
+            var next;
+
+            if (this.id == 'gallery-navi-next') {
+                prev = parseFloat($("#gallery-navi-prev").attr('rel')) - 1;
+                next = parseFloat($("#gallery-navi-next").attr('rel')) + 1;
+            } else {
+                prev = parseFloat(this.rel) - 1;
+                next = parseFloat(this.rel);
+            }
+
+            if (prev < 1) {
+                prev = <?php echo count($project->gallery) ?>;
+            }
+
+            if (next > <?php echo count($project->gallery) ?>) {
+                next = 1;
+            }
+
+            if (next < 1) {
+                next = <?php echo count($project->gallery) ?>;
+            }
+
+            if (prev > <?php echo count($project->gallery) ?>) {
+                prev = 1;
+            }
+
+            $("#gallery-navi-prev").attr('rel', prev);
+            $("#gallery-navi-next").attr('rel', next);
+        });
 
         $(".navi-gallery-image").click(function (event) {
             event.preventDefault();
@@ -46,19 +87,21 @@ $level = (int) $this['level'] ?: 3;
 
     <?php if (!empty($project->gallery)): ?>
     <div class="gallery">
-        <?php foreach ($project->gallery as $image) : ?>
-        <div class="gallery-image" id="gallery-image-<?php echo $image->id; ?>">
+        <?php $i = 1; foreach ($project->gallery as $image) : ?>
+        <div class="gallery-image" id="gallery-image-<?php echo $i ?>">
             <img src="/image/<?php echo $image->id; ?>/580/580" alt="<?php echo $project->name; ?>" />
         </div>
-        <?php endforeach; ?>
+        <?php $i++; endforeach; ?>
         
         <!-- carrusel de imagenes -->
         <ul class="navi">
-            <?php foreach ($project->gallery as $image) : ?>
-            <li><a href="#" rel="gallery-image-<?php echo $image->id ?>" class="navi-gallery-image">
+            <li class="prev"><a href="#" id="gallery-navi-prev" rel="<?php echo count($project->gallery) ?>" class="navi-arrow">Anterior</a></li>
+            <?php $i = 1; foreach ($project->gallery as $image) : ?>
+            <li><a href="#" id="navi-gallery-image-<?php echo $i ?>" rel="gallery-image-<?php echo $i ?>" class="navi-gallery-image">
                 <?php echo htmlspecialchars($image->name) ?></a>
             </li>
-            <?php endforeach ?>
+            <?php $i++; endforeach ?>
+            <li class="next"><a href="#" id="gallery-navi-next" rel="2" class="navi-arrow">Siguiente</a></li>
         </ul>
         <!-- carrusel de imagenes -->
     </div>

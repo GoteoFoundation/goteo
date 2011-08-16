@@ -11,6 +11,18 @@ namespace Goteo\Library {
 	 */
     class Tpv {
 
+        static $langs = array(
+            'es' => '001',
+            'en' => '002',
+            'ca' => '003',
+            'fr' => '004',
+            'de' => '005',
+            'it' => '007',
+            'pt' => '009',
+            'gl' => '012',
+            'eu' => '013'
+        );
+
         /*
          * @param invest instancia del aporte: id, usuario, proyecto, cuenta, cantidad
          *
