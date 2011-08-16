@@ -158,7 +158,6 @@ div.widget.project.balloon > .title a {
     padding-top: 267px;
 	position:relative;
 	z-index:99;
-	left:-12px;
 }
 
 div.widget.project > .author {

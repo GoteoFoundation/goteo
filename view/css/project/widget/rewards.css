@@ -169,18 +169,23 @@ div.widget.project-invest ul li.product,
 div.widget.project-rewards ul li.product,
 #rewards-summary ul li.product {
     background-image: url('../../icon/m/product.png');
+	background-position: 20px 35px;
 }
+
+div.center div.widget.project-invest ul li.product, div.center div.widget.project-rewards ul li.product, div.center  #rewards-summary ul li.product{	background-position: 10px 10px;}
 
 div.widget.project-invest ul li.design,
 div.widget.project-rewards ul li.design,
 #rewards-summary ul li.design {
     background-image: url('../../icon/m/design.png');
+	background-position: 20px 35px;
 }
 
 div.widget.project-invest ul li.other,
 div.widget.project-rewards ul li.other,
 #rewards-summary ul li.other {
     background-image: url('../../icon/m/other.png');
+	background-position: 20px 35px;
 }
 
 div.widget.project-rewards > a.more {

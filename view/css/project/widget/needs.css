@@ -5,13 +5,37 @@ div.widget.project-needs table {
 div.widget.project-needs table td,
 div.widget.project-needs table th {
     padding: .5em;
-    border-bottom: 1px solid #aaaaab;
+    border-bottom: 1px dashed #C1C1C1;
 }
 
-div.widget.project-needs table blockquote {
+div.widget.project-needs table th.summary div.click{
+	margin-left:5px;
+}
+div.widget.project-needs table th.summary div.click span.icon{
+	height:10px;width:10px;
+	background:url(minusplus.png) 0 10px;
+	position:relative;right:5px;top:3px;
+	clear:left;
+}
+
+div.widget.project-needs table th.summary div.click span{
+	display:block;
+	float:left;
+	cursor:pointer;	
+	max-width:360px;
+}
+
+div.widget.project-needs table th.summary div.click span.icon.closed{
+	background:url(minusplus.png) 0 0px;
+}
+
+div.widget.project-needs table th.summary div.click blockquote{
+/*	display:none;  Desplegado por defecto */
     padding: 0;
-    margin: 0;
+    margin: 3px 0 0 0;
     font-weight: normal;
+	margin-left:10px;
+	clear:left;
 }
 
 
@@ -26,8 +50,9 @@ div.widget.project-needs table th.summary {
 
 div.widget.project-needs table *.min,
 div.widget.project-needs table *.max {
-    text-align: center;
-    padding: .5em 1.5em;
+    padding: 7px 1.5em;
+	text-align: center;
+	vertical-align: top;
 }
 
 div.widget.project-needs table *.min {
@@ -82,3 +107,10 @@ div.widget.project-needs table tfoot th.total {
 div.widget.project-needs table tfoot tr > * {
     border: none;   
 }
+
+
+div.widget.project-needs div#legend{}
+div.widget.project-needs div#legend div.min{float:left;margin-right:15px;line-height:1em;}
+div.widget.project-needs div#legend div.min span{height:10px;width:10px;border:#BB70B6 1px solid;background:#F2E5F1;display:block;float:left;margin-right:5px;}
+div.widget.project-needs div#legend div.max{float:left;line-height:1em;}
+div.widget.project-needs div#legend div.max span{height:10px;width:10px;border:#C1C1C1 1px solid;background:#F2F2F2;display:block;float:left;margin-right:5px;}

@@ -60,7 +60,7 @@ div.widget {
     margin-bottom: 1em;
 }
 
-div.widget .title  {
+div.widget .title{
     font-size: 16px;
     font-weight: bold;
     padding: 0 0 0 20px;
@@ -115,3 +115,8 @@ div#message{background: none repeat scroll 0 0 #19B4B2;color: #FFFFFF;padding: 2
 div#message div#message-content{width:940px;margin:0 auto;position:relative;}
 div#message div#message-content input.message-close{ background:url(message-close.jpg) no-repeat; width:34px;height:33px;border:none;position:absolute;top:-8px;right:0;z-index:100; cursor:pointer;}
 div#message div#message-content ul{list-style:none;margin:0;padding:0;}
+
+
+
+/*no mostrar muesca en los widgets laterales*/
+div.side div.widget .title{background:none;}

@@ -32,7 +32,7 @@ foreach ($project->costs as $cost) {
 	$(document).ready(function() {
 	   $("div.click").click(function() {
 		   $(this).children("blockquote").toggle();
-		   $(this).children("span.icon").toggleClass("opened");
+		   $(this).children("span.icon").toggleClass("closed");
 		});
 	 });
 	</script>
@@ -75,5 +75,10 @@ foreach ($project->costs as $cost) {
         </tfoot>
         
     </table>
+    
+    <div id="legend">
+    	<div class="min"><span>&nbsp;</span><?php echo Text::get('costs-field-required_cost-yes') ?></div>
+        <div class="max"><span>&nbsp;</span><?php echo Text::get('costs-field-required_cost-no') ?></div>
+    </div>
     
 </div>
