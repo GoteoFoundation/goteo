@@ -30,70 +30,9 @@ div.widget.project-summary > div {
     margin-bottom: 2em;
 }
 
-div.widget.project-summary ul.navi {
-    list-style: none;
-    height: 10px;
-    z-index: 900;
-    margin: 0px;
-    padding: 10px;
-}
-
-div.widget.project-summary ul.navi li {
-    display: block;
-    float: left;
-    width: 1em;
-    height: 1em;
-    overflow: hidden;
-    margin-right: .5em;
-}
-
-div.widget.project-summary ul.navi li > * {
-    display: block;
-    height: 100%;
-    width: 100%;
-    text-indent: 2000px;
-    line-height: 2000px;
-}
-
-div.widget.project-summary ul.navi li > a {
-    background-color: #cdcdce;
-}
-
-div.widget.project-summary ul.navi li.active > a {
-    background-color: #20b3b2;
-}
-
-div.widget.project-summary ul.navi li > a.active {
-    background-color: #808184;
-}
-
 div.widget.project-summary div.gallery div.gallery-image {
     display: none;
     text-align: center;
 }
 
-div.widget.project-summary ul.navi li.prev,
-div.widget.project-summary ul.navi li.next {
-    width: 1em;
-    height: 1em;
-	line-height: 2000px;
-	overflow: hidden;
-}
-
-
-div.widget.project-summary ul.navi li.prev a {
-	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 0;
-}
-
-div.widget.project-summary ul.navi li.prev.active a {
-	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -32px;
-}
-
-div.widget.project-summary ul.navi li.next a {
-	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -16px;
-}
-
-div.widget.project-summary ul.navi li.next.active a {
-	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -48px;
-}
 

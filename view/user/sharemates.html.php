@@ -59,7 +59,7 @@ if (!empty($this['category'])) {
 			</script>
             <div class="list">
                 <ul>
-                    <?php foreach ($categories as $catId=>$catName) : ?>
+                    <?php foreach ($categories as $catId=>$catName) : if (count($shares[$catId]) == 0) continue; ?>
                     <li><a href="#" onclick="displayCategory(<?php echo $catId ?>);" <?php if ($catId == $this['category']->id) echo 'class="active"'?>><?php echo $catName ?></a></li>
                     <?php endforeach; ?>
                 </ul>

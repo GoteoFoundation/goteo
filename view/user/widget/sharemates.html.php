@@ -14,14 +14,39 @@ foreach ($categories as $catId => $catName) {
 
 
 ?>
+<script type="text/javascript">
+function displayCategories(categoryId1,categoryId2){
+	$("div.users").css("display","none");
+	
+	var target1 = "#mates-" + categoryId1;
+	$(target1).fadeIn("slow");
+
+	if(!(categoryId2==-1)){
+		var target2 = "#mates-" + categoryId2;
+		$(target2).fadeIn("slow");
+	}
+}
+</script>
 <div class="widget user-mates">
 	<!-- categorias -->
     <h3 class="supertitle"><?php echo Text::get('profile-sharing_interests-header'); ?></h3>
-    <div class="categories">
-    <ul>
-        <?php foreach ($categories as $catId=>$catName) : ?>
-        <li><a href="#"><?php echo $catName ?></a></li>
-        <?php endforeach; ?>
+    <div class="categories">    
+    <?php $keys = array_keys($categories);?>
+    <ul>       
+        <?php 
+		$cnt = 0;
+		foreach ($categories as $catId=>$catName) {
+            if (count($shares[$catId]) == 0) continue; ?>
+            <li><a href="#" onclick="displayCategories(<?php echo $catId;?>,
+            <?php 
+			if(($cnt+1)==count($categories))echo $keys[0];
+			else echo $keys[$cnt+1];
+			$cnt++;
+			?>
+            );">
+            <?php echo $catName?></a></li>
+        <?php 	
+		} ?>
     </ul>
     </div>
     
@@ -30,14 +55,19 @@ foreach ($categories as $catId => $catName) {
     <?php
     // mostramos 2
     $muestra = 1;
-    foreach ($shares as $catId => $sharemates) :
+	
+    foreach ($shares as $catId => $sharemates) {
         if (count($sharemates) == 0) continue;
         ?>
-    <div class="users" id="mates-<?php echo $catId ?>" <?php if ($muestra >= 2) {echo ' display="none"';} else {$muestra++;} ?>>
-	    <h3 class="supertitle"><?php echo $categories[$catId] ?></h3>
+    <div class="users" id="mates-<?php echo $catId ?>" 
+	<?php if ($muestra >= 2) {echo 'style="display:none;"';} else {$muestra++;} ?>>
+	    
+        <h3 class="supertitle"><?php echo $categories[$catId] ?></h3>
+
+        <!--pintar usuarios -->
         <ul>
         <?php $c=1; // limitado a 6 sharemates en el lateral
-        foreach ($sharemates as $mate): ?>
+        foreach ($sharemates as $mate){ ?>
             <li class="activable">            	
                 <div class="user">
                 	<a href="/user/<?php echo htmlspecialchars($mate->user) ?>" class="expand">&nbsp;</a>
@@ -60,10 +90,11 @@ foreach ($categories as $catId => $catName) {
                 </div>
             </li>
         <?php if ($c>5) break; else $c++;
-        endforeach ?>
+		} ?>
+        
         </ul>
         <a class="more" href="/user/profile/<?php echo $this['user']->id ?>/sharemates/<?php echo $catId ?>"><?php echo Text::get('regular-see_more'); ?></a>
     </div>
-    <?php endforeach; ?>
+    <?php } ?>
     
 </div>

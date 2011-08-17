@@ -53,8 +53,14 @@ foreach (License::getAll() as $l) {
 </div>
 
 <div class="widget project-invest address">
-    <h<?php echo $level ?> class="beak"><?php echo Text::get('invest-address-header') ?></h<?php echo $level ?>>
+    <h<?php echo $level ?> class="beak" id="address-header"><?php echo Text::get('invest-address-header') ?></h<?php echo $level ?>>
     <table>
+        <tr id="donation-data" style="display:none;">
+            <td><label for="fullname"><?php echo Text::get('invest-address-name-field') ?></label></td>
+            <td colspan="3"><input type="text" id="fullname" name="fullname" value="<?php echo $personal->contract_name; ?>" /></td>
+            <td><label for="nif"><?php echo Text::get('invest-address-nif-field') ?></label></td>
+            <td><input type="text" id="nif" name="nif" value="<?php echo $personal->contract_nif; ?>" /></td>
+        </tr>
         <tr>
             <td><label for="address"><?php echo Text::get('invest-address-address-field') ?></label></td>
             <td colspan="3"><input type="text" id="address" name="address" value="<?php echo $personal->address; ?>" /></td>
@@ -175,6 +181,14 @@ foreach (License::getAll() as $l) {
             // Force update
             lastVal = {};
             update();
+            var resign = $('div.widget.project-invest-individual_rewards input.resign:checked').length > 0;
+            if (!resign) {
+                $("#address-header").html('<?php echo Text::get('invest-address-header') ?>');
+                $("#donation-data").hide();
+            } else {
+                $("#address-header").html('<?php echo Text::get('invest-donation-header') ?>');
+                $("#donation-data").show();
+            }
         });
 
         input.keydown(function () {        

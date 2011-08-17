@@ -10,70 +10,15 @@ $project->goal        = nl2br(Text::urlink($project->goal));
 $project->related     = nl2br(Text::urlink($project->related));
 
 $level = (int) $this['level'] ?: 3;
-
-// este javascript no tendria que estar aqui
 ?>
-    <script type="text/javascript">
-
-    jQuery(document).ready(function ($) {
-
-        $("#gallery-image-1").show();
-        $("#navi-gallery-image-1").addClass('active');
-
-        $(".navi-arrow").click(function (event) {
-            event.preventDefault();
-
-            /* Quitar todos los active, ocultar todos los elementos */
-            $(".navi-gallery-image").removeClass('active');
-            $(".gallery-image").hide();
-            /* Poner acctive a este, mostrar este */
-            $("#navi-gallery-image-"+this.rel).addClass('active');
-            $("#gallery-image-"+this.rel).show();
-
-            var prev;
-            var next;
-
-            if (this.id == 'gallery-navi-next') {
-                prev = parseFloat($("#gallery-navi-prev").attr('rel')) - 1;
-                next = parseFloat($("#gallery-navi-next").attr('rel')) + 1;
-            } else {
-                prev = parseFloat(this.rel) - 1;
-                next = parseFloat(this.rel);
-            }
-
-            if (prev < 1) {
-                prev = <?php echo count($project->gallery) ?>;
-            }
-
-            if (next > <?php echo count($project->gallery) ?>) {
-                next = 1;
-            }
-
-            if (next < 1) {
-                next = <?php echo count($project->gallery) ?>;
-            }
-
-            if (prev > <?php echo count($project->gallery) ?>) {
-                prev = 1;
-            }
-
-            $("#gallery-navi-prev").attr('rel', prev);
-            $("#gallery-navi-next").attr('rel', next);
+    <?php if (count($project->gallery) > 1) : ?>
+    <script type="text/javascript" src="/view/js/inc/navi.js"></script>
+    <script type="text/javascript" >
+        jQuery(document).ready(function ($) {
+                navi('gallery-image', '<?php echo count($project->gallery) ?>');
         });
-
-        $(".navi-gallery-image").click(function (event) {
-            event.preventDefault();
-
-            /* Quitar todos los active, ocultar todos los elementos */
-            $(".navi-gallery-image").removeClass('active');
-            $(".gallery-image").hide();
-            /* Poner acctive a este, mostrar este*/
-            $(this).addClass('active');
-            $("#"+this.rel).show();
-        });
-
-    });
     </script>
+    <?php endif; ?>
 <div class="widget project-summary">
     
     <h<?php echo $level ?>><?php echo htmlspecialchars($project->name) ?></h<?php echo $level ?>>
@@ -88,21 +33,23 @@ $level = (int) $this['level'] ?: 3;
     <?php if (!empty($project->gallery)): ?>
     <div class="gallery">
         <?php $i = 1; foreach ($project->gallery as $image) : ?>
-        <div class="gallery-image" id="gallery-image-<?php echo $i ?>">
+        <div class="gallery-image" id="gallery-image-<?php echo $i ?>"<?php if (count($project->gallery) == 1) echo ' style="display:block;"'; ?>>
             <img src="/image/<?php echo $image->id; ?>/580/580" alt="<?php echo $project->name; ?>" />
         </div>
         <?php $i++; endforeach; ?>
         
-        <!-- carrusel de imagenes -->
+        <!-- carrusel de imagenes si hay mas de una -->
+        <?php if (count($project->gallery) > 1) : ?>
         <ul class="navi">
-            <li class="prev"><a href="#" id="gallery-navi-prev" rel="<?php echo count($project->gallery) ?>" class="navi-arrow">Anterior</a></li>
+            <li class="prev"><a href="#" id="gallery-image-navi-prev" rel="<?php echo count($project->gallery) ?>" class="navi-arrow-gallery-image">Anterior</a></li>
             <?php $i = 1; foreach ($project->gallery as $image) : ?>
             <li><a href="#" id="navi-gallery-image-<?php echo $i ?>" rel="gallery-image-<?php echo $i ?>" class="navi-gallery-image">
                 <?php echo htmlspecialchars($image->name) ?></a>
             </li>
             <?php $i++; endforeach ?>
-            <li class="next"><a href="#" id="gallery-navi-next" rel="2" class="navi-arrow">Siguiente</a></li>
+            <li class="next"><a href="#" id="gallery-image-navi-next" rel="2" class="navi-arrow-gallery-image">Siguiente</a></li>
         </ul>
+    	<?php endif; ?>
         <!-- carrusel de imagenes -->
     </div>
     <?php endif ?>

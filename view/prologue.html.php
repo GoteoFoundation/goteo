@@ -38,6 +38,11 @@
             jQuery(document).ready(function ($) { 
                 $('body').addClass('js');
                 $('.tipsy').tipsy();
+                /* Rolover sobre los cuadros de color */
+                $("li").hover(
+                        function () { $(this).addClass('active') },
+                        function () { $(this).removeClass('active') }
+                );
                 $('.activable').hover(
                     function () { $(this).addClass('active') },
                     function () { $(this).removeClass('active') }

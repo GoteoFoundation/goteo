@@ -43,19 +43,6 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
 
 <?php include 'view/header.html.php' ?>
 
-    <script type="text/javascript">
-
-    jQuery(document).ready(function ($) {
-
-        /* Rolover sobre los cuadros de color */
-        $("li").hover(
-                function () { $(this).addClass('active') },
-                function () { $(this).removeClass('active') }
-        );
-
-    });
-    </script>
-
         <div id="sub-header">
             <div class="project-header">
                 <a href="/user/<?php echo $project->owner; ?>"><img src="/image/<?php echo $project->user->avatar->id; ?>/56/56/1" /></a>
@@ -183,8 +170,10 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                         break;
                     case 'home':
                     default:
+                        if (!empty($project->media->url)) {
+                            echo new View('view/project/widget/media.html.php', array('project' => $project));
+                        }
                         echo
-                            new View('view/project/widget/media.html.php', array('project' => $project)),
                             new View('view/project/widget/share.html.php', array('project' => $project)),
                             new View('view/project/widget/summary.html.php', array('project' => $project));
                         break;

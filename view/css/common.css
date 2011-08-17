@@ -256,3 +256,68 @@ ul#pagination li a:hover {
 	background:#F3F3F3;
 }
 /** end of pagination **/
+
+/** navi box&arrows **/
+ul.navi {
+    list-style: none;
+    height: 10px;
+    z-index: 900;
+    margin: 0px;
+    padding: 10px;
+}
+
+ul.navi li {
+    display: block;
+    float: left;
+    width: 1em;
+    height: 1em;
+    overflow: hidden;
+    margin-right: .5em;
+}
+
+ul.navi li > * {
+    display: block;
+    height: 100%;
+    width: 100%;
+    text-indent: 2000px;
+    line-height: 2000px;
+}
+
+ul.navi li > a {
+    background-color: #cdcdce;
+}
+
+ul.navi li.active > a,
+ul.navi li > a:hover {
+    background-color: #20b3b2;
+}
+
+ul.navi li > a.active {
+    background-color: #808184;
+}
+
+ul.navi li.prev,
+ul.navi li.next {
+    width: 1em;
+    height: 1em;
+	line-height: 2000px;
+	overflow: hidden;
+}
+
+
+ul.navi li.prev a {
+	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 0;
+}
+
+ul.navi li.prev.active a {
+	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -32px;
+}
+
+ul.navi li.next a {
+	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -16px;
+}
+
+ul.navi li.next.active a {
+	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -48px;
+}
+/** fin navi box&arrows**/
