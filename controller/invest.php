@@ -37,7 +37,7 @@ namespace Goteo\Controller {
                 }
 
                 if (empty($_POST['amount'])) {
-                    $_POST['amount'] = 10;
+                    throw new Redirection("/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
 
                 // dirección de envio para las recompensas
