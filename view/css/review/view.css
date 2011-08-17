@@ -46,8 +46,22 @@ body.review div#review-menu ul li.section ul {
     display: none;
 }
 
-body.review div#review-menu ul li.section.active {
+body.review div#review-menu ul li.section.current ul {
+    display: block;
+}
+
+body.review div#review-menu ul li.section.current {
     margin-bottom: 2.6em;
+}
+
+body.review div#review-menu ul li.section.current ul {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2.6em;
+    right: 0;
+    z-index: 0;
 }
 
 body.review div#review-menu ul li.section.active ul {
@@ -57,10 +71,13 @@ body.review div#review-menu ul li.section.active ul {
     left: 0;
     height: 2.6em;
     right: 0;
+    z-index: 9;
 }
 
 body.review div#review-menu ul li.section.active,
-body.review div#review-menu ul li.section.active ul {
+body.review div#review-menu ul li.section.active ul,
+body.review div#review-menu ul li.section.current,
+body.review div#review-menu ul li.section.current ul {
     background-color: #1db3b2;
 }
 

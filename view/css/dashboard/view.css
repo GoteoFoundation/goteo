@@ -62,8 +62,22 @@ body.dashboard div#dashboard-menu ul li.section ul {
     display: none;
 }
 
-body.dashboard div#dashboard-menu ul li.section.active {
+body.dashboard div#dashboard-menu ul li.section.current ul {
+    display: block;
+}
+
+body.dashboard div#dashboard-menu ul li.section.current {
     margin-bottom: 2.6em;
+}
+
+body.dashboard div#dashboard-menu ul li.section.current ul {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2.6em;
+    right: 0;
+    z-index: 0;
 }
 
 body.dashboard div#dashboard-menu ul li.section.active ul {
@@ -73,6 +87,7 @@ body.dashboard div#dashboard-menu ul li.section.active ul {
     left: 0;
     height: 2.6em;
     right: 0;
+    z-index: 9;
 }
 
 body.dashboard div#dashboard-menu ul li.section a.section {
@@ -81,31 +96,33 @@ body.dashboard div#dashboard-menu ul li.section a.section {
     min-width: 80px !important;
 }
 
-body.dashboard div#dashboard-menu ul li.section a.section:hover {
+body.dashboard div#dashboard-menu ul li.section.active a.section {
     color: #ffffff;
     background-color: #79d1d1;
 }
 
-body.dashboard div#dashboard-menu ul li.section.active a.section {
+body.dashboard div#dashboard-menu ul li.section.current a.section {
     color: #ffffff;
 }
 
+body.dashboard div#dashboard-menu ul li.section.current a.section,
+body.dashboard div#dashboard-menu ul li.section.current ul,
 body.dashboard div#dashboard-menu ul li.section.active a.section,
 body.dashboard div#dashboard-menu ul li.section.active ul {
     background-color: #1db3b2;
 }
 
 body.dashboard div#dashboard-menu li.option a {
-    color: #c7ecec;
+    color: #c7ecec !important;
 }
 
-body.dashboard div#dashboard-menu li.option a:hover {
-    color: #ffffff;
-    background-color: #79d1d1;
+body.dashboard div#dashboard-menu li.option.current a, 
+body.dashboard div#dashboard-menu li.option.active a {
+    color: #ffffff !important;
+    background-color: #79d1d1 !important;
 }
 
-body.dashboard div#dashboard-menu li.option.active a,
-body.dashboard div#dashboard-menu li.option.active a:hover {
+body.dashboard div#dashboard-menu li.section.current a {
     color: #ffffff;
     background-color: #1db3b2;
 }
