@@ -62,11 +62,10 @@ div.widget.project-updates > div {
     height: 285px;
 	margin: 10px  30px;
 }
-.project-updates .widget.post .image{
-	display:block;
+.project-updates .widget.post .gallery-image{
 	text-align:center;
 }
-.project-updates .widget.post .image img{
+.project-updates .widget.post .gallery-image img{
 	margin: 0 auto;
 }
 .project-updates .post .comments-num{

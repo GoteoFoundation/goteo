@@ -22,10 +22,20 @@
             $sep = ', '; endforeach; ?>
         </span>
 	<?php endif; ?>
-	<?php if (!empty($post->image)) : ?>
-		<div class="image">
-			<img src="/image/<?php echo $post->image->id; ?>/580/580" alt="Imagen"/>
-		</div>
+	<?php if (!empty($post->gallery)) : ?>
+    <div class="gallery">
+        <?php $i = 1; foreach ($post->gallery as $image) : ?>
+        <div class="gallery-image">
+            <img src="/image/<?php echo $image->id; ?>/500/285" alt="<?php echo $post->title; ?>" />
+        </div>
+        <?php $i++; endforeach; ?>
+
+        <!-- si tiene varias imágenes, carrusel
+        <ul class="navi">
+            <li> &lt; carrusel &gt; </li>
+        </ul>
+        carrusel de imagenes -->
+    </div>
 	<?php endif; ?>
 	<?php if (!empty($post->media->url)) : ?>
 		<div class="embed">

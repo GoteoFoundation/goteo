@@ -3,6 +3,7 @@
 namespace Goteo\Model {
 
     use Goteo\Model\Project\Media,
+        Goteo\Model\Image,
         Goteo\Library\Check;
 
     class Post extends \Goteo\Core\Model {
@@ -11,6 +12,8 @@ namespace Goteo\Model {
             $id,
             $title,
             $text,
+            $image,
+            $gallery = array(), // array de instancias image de post_image
             $media,
             $order;
 
@@ -36,9 +39,10 @@ namespace Goteo\Model {
 
                 $post = $query->fetchObject(__CLASS__);
                 
-                if (!empty($post->image)) {
-                    $post->image = Image::get($post->image);
-                }
+                // galeria
+                $post->gallery = Image::getAll($id, 'post');
+                $post->image = $post->gallery[0];
+                
                 $post->media = new Media($post->media);
 
                 return $post;
@@ -82,12 +86,11 @@ namespace Goteo\Model {
             $query = static::query($sql, array(':lang'=>\LANG));
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
-                $post->media = new Media($post->media);
+                // galeria
+                $post->gallery = Image::getAll($post->id, 'post');
+                $post->image = $post->gallery[0];
 
-                // imagen
-                if (!empty($post->image)) {
-                    $post->image = Image::get($post->image);
-                }
+                $post->media = new Media($post->media);
 
                 $post->type = $post->home == 1 ? 'home' : 'footer';
 
@@ -100,6 +103,7 @@ namespace Goteo\Model {
         /*
          * Entradas en portada o pie
          */
+        //@FIXME essse blog a piñon!
         public static function getList ($position = 'home', $blog = 1) {
 
             if (!in_array($position, array('home', 'footer'))) {

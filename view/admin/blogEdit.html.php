@@ -78,27 +78,17 @@ include 'view/prologue.html.php';
         );
 
 
-        $image = array(
-            'image' => array(
-                'type'  => 'hidden',
-                'value' => $post->image->id,
-            ),
-            'post-image' => array(
+        $images = array();
+        foreach ($post->gallery as $image) {
+            $images[] = array(
                 'type'  => 'html',
-                'class' => 'inline',
-                'html'  => is_object($post->image) ?
-                           $post->image . '<img src="' . htmlspecialchars($post->image->getLink(110, 110)) . '" alt="Imagen" />' :
+                'class' => 'inline gallery-image',
+                'html'  => is_object($image) ?
+                           $image . '<img src="' . htmlspecialchars($image->getLink(128, 128)) . '" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->id.'-remove" title="Quitar imagen" value="remove"></button>' :
                            ''
-            )
-        );
-
-        if (!empty($post->image) && is_object($post->image))
-            $image ["image-{$post->image->id}-remove"] = array(
-                'type'  => 'submit',
-                'label' => 'Quitar',
-                'class' => 'inline remove image-remove'
             );
 
+        }
 
     ?>
 
@@ -160,16 +150,17 @@ include 'view/prologue.html.php';
                         'class' => 'inline image_upload',
                         'title' => 'Subir una imagen',
                         'hint'  => Text::get('tooltip-updates-image_upload'),
-                    ),
-                    'iamge-current' => array(
-                        'type'  => 'group',
-                        'title' => 'Imagen actual',
-                        'class' => 'inline gallery',
-                        'children'  => $image
                     )
-
                 )
             ),
+
+            'gallery' => array(
+                'type'  => 'group',
+                'title' => Text::get('overview-field-image_gallery'),
+                'class' => 'inline',
+                'children'  => $images
+            ),
+
             'media' => array(
                 'type'      => 'textarea',
                 'title'     => 'Vídeo',

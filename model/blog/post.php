@@ -19,6 +19,7 @@ namespace Goteo\Model\Blog {
             $publish,
             $home,
             $footer,
+            $gallery = array(), // array de instancias image de post_image
             $num_comments = 0,
             $comments = array();
 
@@ -48,16 +49,14 @@ namespace Goteo\Model\Blog {
 
                 $post = $query->fetchObject(__CLASS__);
 
-                // imagen
-                if (!empty($post->image)) {
-                    $post->image = Image::get($post->image);
-                }
-
                 // video
                 if (isset($post->media)) {
                     $post->media = new Media($post->media);
                 }
 
+                // galeria
+                $post->gallery = Image::getAll($id, 'post');
+                $post->image = $post->gallery[0];
 
                 $post->comments = Post\Comment::getAll($id);
                 $post->num_comments = count($post->comments);
@@ -100,7 +99,7 @@ namespace Goteo\Model\Blog {
                 $sql .= " AND post.publish = 1
                 ";
             }
-            $sql .= "ORDER BY date DESC, post.id DESC
+            $sql .= "ORDER BY post.date DESC, post.id DESC
                 ";
             if (!empty($limit)) {
                 $sql .= "LIMIT $limit";
@@ -109,10 +108,9 @@ namespace Goteo\Model\Blog {
             $query = static::query($sql, array(':blog'=>$blog, ':lang'=>\LANG));
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
-                // imagen
-                if (!empty($post->image)) {
-                    $post->image = Image::get($post->image);
-                }
+                // galeria
+                $post->gallery = Image::getAll($post->id, 'post');
+                $post->image = $post->gallery[0];
 
                 // video
                 if (isset($post->media)) {
@@ -173,10 +171,9 @@ namespace Goteo\Model\Blog {
             $query = static::query($sql, array(':blog'=>$blog, ':tag'=>$tag, ':lang'=>\LANG));
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
-                // imagen
-                if (!empty($post->image)) {
-                    $post->image = Image::get($post->image);
-                }
+                // galeria
+                $post->gallery = Image::getAll($post->id, 'post');
+                $post->image = $post->gallery[0];
 
                 // video
                 if (isset($post->media)) {
@@ -208,24 +205,15 @@ namespace Goteo\Model\Blog {
         }
 
         public function save (&$errors = array()) {
-            if (!$this->validate($errors)) return false;
+//            if (!$this->validate($errors)) return false;
 
-            // Primero la imagenImagen
-            if (is_array($this->image) && !empty($this->image['name'])) {
-                $image = new Image($this->image);
-                if ($image->save($errors)) {
-                    $this->image = $image->id;
-                } else {
-                    $this->image = '';
-                }
-            }
+            // @TODO poner la imagen principal
 
             $fields = array(
                 'id',
                 'blog',
                 'title',
                 'text',
-                'image',
                 'media',
                 'date',
                 'allow',
@@ -246,6 +234,23 @@ namespace Goteo\Model\Blog {
                 $sql = "REPLACE INTO post SET " . $set;
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
+
+                // Luego la imagen
+                if (!empty($this->id) && is_array($this->image) && !empty($this->image['name'])) {
+                    $image = new Image($this->image);
+                    if ($image->save($errors)) {
+                        $this->gallery[] = $image;
+//                        $this->image = $image->id;
+
+                        /**
+                         * Guarda la relación NM en la tabla 'post_image'.
+                         */
+                        if(!empty($image->id)) {
+                            self::query("REPLACE post_image (post, image) VALUES (:post, :image)", array(':post' => $this->id, ':image' => $image->id));
+                        }
+                    }
+//                    else { $this->image = ''; }
+                }
 
                 // y los tags, si hay
                 if (!empty($this->id) && is_array($this->tags)) {

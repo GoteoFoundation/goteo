@@ -1867,7 +1867,11 @@ namespace Goteo\Controller {
 
                     $editing = false;
 
-                    $post = new Model\Blog\Post();
+                    if (!empty($_POST['id'])) {
+                        $post = Model\Blog\Post::get($_POST['id']);
+                    } else {
+                        $post = new Model\Blog\Post();
+                    }
                     // campos que actualizamos
                     $fields = array(
                         'id',
@@ -1893,12 +1897,16 @@ namespace Goteo\Controller {
                         $editing = true;
                     }
 
-                    // tratar si quitan la imagen
-                    if (isset($_POST['image-' . $post->image .  '-remove'])) {
-                        $image = Model\Image::get($post->image);
-                        $image->remove('post');
-                        $post->image = '';
-                        $editing = true;
+                    // tratar las imagenes que quitan
+                    foreach ($post->gallery as $key=>$image) {
+                        if (!empty($_POST["gallery-{$image->id}-remove"])) {
+                            $image->remove('post');
+                            unset($post->gallery[$key]);
+                            if ($post->image == $image->id) {
+                                $post->image = '';
+                            }
+                            $editing = true;
+                        }
                     }
 
                     if (!empty($post->media)) {
@@ -1915,6 +1923,7 @@ namespace Goteo\Controller {
                         } else {
                             $success[] = 'Se ha añadido una nueva entrada';
                             ////Text::get('dashboard-project-updates-inserted');
+                            $id = $post->id;
                         }
                         $action = $editing ? 'edit' : 'list';
                     } else {
@@ -1968,15 +1977,17 @@ namespace Goteo\Controller {
                             'post' => $post,
                             'tags' => Model\Blog\Post\Tag::getAll(),
                             'message' => $message,
-                            'errors' => $errors
+                            'errors' => $errors,
+                            'success' => $success
                         )
                     );
                     break;
                 case 'edit':
                     if (empty($id)) {
-                        $errors[] = 'No se ha encontrado la entrada';
+                        throw new Redirection('/admin/blog');
+//                        $errors[] = 'No se ha encontrado la entrada';
                         //Text::get('dashboard-project-updates-nopost');
-                        $action = 'list';
+//                        $action = 'list';
                         break;
                     } else {
                         $post = Model\Blog\Post::get($id);
@@ -1998,7 +2009,8 @@ namespace Goteo\Controller {
                             'post' => $post,
                             'tags' => Model\Blog\Post\Tag::getAll(),
                             'message' => $message,
-                            'errors' => $errors
+                            'errors' => $errors,
+                            'success' => $success
                         )
                     );
                     break;

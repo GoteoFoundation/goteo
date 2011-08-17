@@ -16,6 +16,8 @@ namespace Goteo\Model {
             $dir_originals,
             $dir_cache;
 
+        public static $types = array('user','project', 'post');
+
         /**
          * Constructor.
          *
@@ -192,14 +194,14 @@ namespace Goteo\Model {
          */
         public static function getAll ($id, $which) {
 
-            if (!\is_string($which) || !\in_array($which, array('user','project'))) {
+            if (!\is_string($which) || !\in_array($which, self::$types)) {
                 return false;
             }
 
             $gallery = array();
 
             try {
-                $sql = "SELECT image FROM {$which}_image WHERE {$which} = ?";
+                $sql = "SELECT image FROM {$which}_image WHERE {$which} = ? ORDER BY image ASC";
                 $query = self::query($sql, array($id));
                 foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $image) {
                     $gallery[] = self::get($image['image']);
@@ -228,7 +230,7 @@ namespace Goteo\Model {
 
                 // para usuarios y proyectos que tienen N imagenes
                 // por ahora post solo tiene 1
-                if (\is_string($which) && \in_array($which, array('user','project'))) {
+                if (\is_string($which) && \in_array($which, self::$types)) {
                     $sql = "DELETE FROM {$which}_image WHERE image = ?";
                     $query = self::query($sql, array($this->id));
                 }

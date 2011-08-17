@@ -68,17 +68,6 @@ namespace Goteo\Controller {
                 $replace = array($msg_content, $email);
                 $content = \str_replace($search, $replace, nl2br($template->text));
 
-                /*
-                $content = 'Mensaje de contacto desde Goteo.org enviado por '. $email . '<br /><br />' . $content;
-                 * 
-                 */
-
-// testing-------
-                echo '<pre>'.print_r($template, 1).'</pre>';
-                echo '<pre>'.print_r($subject, 1).'</pre>';
-                echo '<pre>'.print_r($content, 1).'</pre>';
-                die;
-//-----
 
                         $mailHandler = new Mail();
 

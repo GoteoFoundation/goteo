@@ -85,19 +85,6 @@ namespace Goteo\Controller {
                 $replace = array($msg_content, $project->contract_name, $_SESSION['user']->name, $project->name, SITE_URL);
                 $content = \str_replace($search, $replace, nl2br($template->text));
                 
-                /*
-                $content = "Hola <strong>{$project->contract_name}</strong>, este es un mensaje enviado desde Goteo por {$_SESSION['user']->name}.
-                <br/><br/>
-                {$msg_content}
-                <br/><br/>
-                Puedes ver los cofinanciadores de '{$project->name}' en tu Dashboard ".SITE_URL."/dashboard";
-                */
-// testing-------
-                echo '<pre>'.print_r($template, 1).'</pre>';
-                echo '<pre>'.print_r($subject, 1).'</pre>';
-                echo '<pre>'.print_r($content, 1).'</pre>';
-                die;
-//-----
                 $mailHandler = new Mail();
 
 //                $mailHandler->to = $project->contract_email;
@@ -156,12 +143,6 @@ namespace Goteo\Controller {
                 $replace = array($msg_content, $user->name, $_SESSION['user']->name, SITE_URL."/user/profile/{$user->id}/sharemates");
                 $content = \str_replace($search, $replace, nl2br($template->text));
 
-    // testin ----------------
-                echo '<pre>'.print_r($template, 1).'</pre>';
-                echo '<pre>'.print_r($subject, 1).'</pre>';
-                echo '<pre>'.print_r($content, 1).'</pre>';
-                die;
-                //--------------
 
                 $mailHandler = new Mail();
 

@@ -525,11 +525,6 @@ namespace Goteo\Controller {
                                 $replace = array($msg_content, $project->name, SITE_URL."/project/".$project->id);
                                 $content = \str_replace($search, $replace, nl2br($template->text));
                                 
-/* testin
-                                echo '<pre>'.print_r($template, 1).'</pre>';
-                                echo '<pre>'.print_r($subject, 1).'</pre>';
-                                echo '<pre>'.print_r($content, 1).'</pre>';
-                                die; */
 
                                 foreach ($who as $key=>$userId) {
 
@@ -643,7 +638,11 @@ namespace Goteo\Controller {
 
                         $editing = false;
 
-                        $post = new Model\Blog\Post();
+                        if (!empty($_POST['id'])) {
+                            $post = Model\Blog\Post::get($_POST['id']);
+                        } else {
+                            $post = new Model\Blog\Post();
+                        }
                         // campos que actualizamos
                         $fields = array(
                             'id',
@@ -667,12 +666,16 @@ namespace Goteo\Controller {
                             $editing = true;
                         }
 
-                        // tratar si quitan la imagen
-                        if (isset($_POST['image-' . $post->image .  '-remove'])) {
-                            $image = Model\Image::get($post->image);
-                            $image->remove('post');
-                            $post->image = '';
-                            $editing = true;
+                        // tratar las imagenes que quitan
+                        foreach ($post->gallery as $key=>$image) {
+                            if (!empty($_POST["gallery-{$image->id}-remove"])) {
+                                $image->remove('post');
+                                unset($post->gallery[$key]);
+                                if ($post->image == $image->id) {
+                                    $post->image = '';
+                                }
+                                $editing = true;
+                            }
                         }
 
                         if (!empty($post->media)) {
