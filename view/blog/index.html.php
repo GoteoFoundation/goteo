@@ -27,7 +27,7 @@ include 'view/header.html.php';
 ?>
 	<div id="sub-header-secondary">
 		<div class="clearfix">
-			<h2>GOTEO<span class="red">BLOG</span></h2>
+			<h2><a href="/blog">GOTEO<span class="red">BLOG</span></a></h2>
             <?php echo new View('view/header/share.html.php') ?>
 		</div>
 	</div>

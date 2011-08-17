@@ -70,6 +70,18 @@ div#sub-header-secondary > div > h2{
 	float:left;
 }
 
+div#sub-header-secondary > div > h2 a{
+	font-size:1em;
+	text-decoration:none;
+	position:relative;
+	left:12px;
+	font-weight:normal;
+}
+
+div#sub-header-secondary > div > h2 a:hover span.red{
+	text-decoration:underline;	
+}
+
 .discover div#sub-header > div{
 	margin:30px auto;
 }
@@ -174,7 +186,7 @@ div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.reached{
 
 div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.optimun{
     font: bold 14px Helvetica, Arial, Geneva, sans-serif;
-	color:#ee4843;
+	color:#96238F;
 }
 
 div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.reached .euro,
@@ -192,7 +204,7 @@ div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.reached .eu
 }
 
 div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.optimun .euro{
-	background: url('euro/red/s.png') scroll no-repeat top right;
+	background: url('euro/violet/s.png') scroll no-repeat top right;
 }
 
 div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.days{
