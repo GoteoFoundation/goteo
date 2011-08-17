@@ -40,6 +40,17 @@ namespace Goteo\Controller {
                     $_POST['amount'] = 10;
                 }
 
+                // dirección de envio para las recompensas
+                // o datoas fiscales del donativo
+                $address = array(
+                    'name'     => $_POST['fullname'],
+                    'nif'      => $_POST['nif'],
+                    'address'  => $_POST['address'],
+                    'zipcode'  => $_POST['zipcode'],
+                    'location' => $_POST['location'],
+                    'country'  => $_POST['country']
+                );
+
                 if ($projectData->owner == $_SESSION['user']->id || empty($_POST['email'])) {
                     throw new Redirection("/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
@@ -63,13 +74,6 @@ namespace Goteo\Controller {
                     }
                 }
 
-                // dirección de envio para las recompensas
-                $address = array(
-                    'address'  => $_POST['address'],
-                    'zipcode'  => $_POST['zipcode'],
-                    'location' => $_POST['location'],
-                    'country'  => $_POST['country']
-                );
                 // insertamos los datos personales del usuario si no tiene registro aun
                 Model\User::setPersonal($_SESSION['user']->id, $address, false);
 

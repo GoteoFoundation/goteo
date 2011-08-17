@@ -22,10 +22,12 @@ namespace Goteo\Model {
             $returned, //fecha en la que se ha devuelto el importe al usurio por cancelación bancaria
             $rewards = array(), //datos de las recompensas que le corresponden
             $address = array(
-                'address' => '',
-                'zipcode' => '',
+                'name' => '',
+                'nif'      => '',
+                'address'  => '',
+                'zipcode'  => '',
                 'location' => '',
-                'country' => '');  // dirección de envio del retorno
+                'country'  => '');  // dirección de envio del retorno
 
         // añadir los datos del cargo
 
@@ -259,15 +261,17 @@ namespace Goteo\Model {
 
                 // dirección
                 if (!empty($this->address)) {
-                    $sql = "REPLACE INTO invest_address (invest, user, address, zipcode, location, country)
-                        VALUES (:invest, :user, :address, :zipcode, :location, :country)";
+                    $sql = "REPLACE INTO invest_address (invest, user, address, zipcode, location, country, name, nif)
+                        VALUES (:invest, :user, :address, :zipcode, :location, :country, :name, :nif)";
                     self::query($sql, array(
                         ':invest'=>$this->id,
                         ':user'=>$this->user,
                         ':address'=>$this->address->address,
                         ':zipcode'=>$this->address->zipcode, 
                         ':location'=>$this->address->location, 
-                        ':country'=>$this->address->country
+                        ':country'=>$this->address->country,
+                        ':name'=>$this->address->name,
+                        ':nif'=>$this->address->nif
                         )
                     );
                 }
