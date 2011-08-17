@@ -37,9 +37,9 @@ foreach ($project->supports as $item) {
         
         <tbody>            
             <?php foreach ($list as $item): ?>
-            <tr>
+            <tr class="noreq">
                 <th class="summary"><strong><?php echo htmlspecialchars($item->name) ?></strong>
-                <blockquote><?php echo $item->description ?></blockquote>
+                <blockquote style="font-weight:normal;"><?php echo $item->description ?></blockquote>
                 <a class="button green" href="/project/<?php echo $project->id; ?>/messages"><?php echo Text::get('regular-collaborate'); ?></a>
                 </th>
             </tr>            
