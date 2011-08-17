@@ -56,7 +56,7 @@ div.widget.project-needs table *.max {
 }
 
 div.widget.project-needs table *.min {
-    color: red;
+    color: #96238F;
 }
 
 div.widget.project-needs table thead th.summary {
@@ -64,6 +64,15 @@ div.widget.project-needs table thead th.summary {
     font-weight: bold;
     text-transform: uppercase;
 }
+
+div.widget.project-needs table tbody{
+	background:#F5E9F4;
+	border-top:#C1C1C1 2px solid;
+	border-bottom:#C1C1C1 2px solid;
+}
+
+div.widget.project-needs table tbody tr.req{background:#F5E9F4;border-bottom:#C1C1C1 1px dashed;}
+div.widget.project-needs table tbody tr.noreq{background:#F2F2F2;border-bottom:#C1C1C1 1px dashed;}
 
 div.widget.project-needs table thead + tbody + thead th.min,
 div.widget.project-needs table thead + tbody + thead th.max {

@@ -85,11 +85,11 @@ div.widget.project div.image div.investor div.invest {
 }
 
 div.widget.project div.image div.investor div.invest span.amount {
-    color: #EE4843;
+    color: #96238f;
     font-weight: bold;
     font-size: 16px;
     line-height: 18px !important;
-    background: url("/view/css/euro/red/s.png") no-repeat right center;
+    background: url("/view/css/euro/violet/s.png") no-repeat right center;
     padding-right: 19px;
 }
 
@@ -206,9 +206,9 @@ div.widget.project div.meter h8 {
 
 
 div.widget.project div.meter div.graph {
-    background-color: #58595b;
+    background-color: #BB70B6;
     height: 8px;
-    border-right: 40px solid #58595b;
+    border-right: 40px solid #BB70B6;
     margin: 40px 5px 70px;    
     position: relative;   
 }
@@ -219,7 +219,7 @@ div.widget.project div.meter div.graph  * span {
 }
 
 div.widget.project div.meter div.graph .minimum {
-    background-color: #a7abad;
+    background-color: #96238F;
     height: 100%;
     position: absolute;
     left: 0;
@@ -227,7 +227,7 @@ div.widget.project div.meter div.graph .minimum {
 }
 
 div.widget.project div.meter div.graph .minimum .done {
-    background-color: #ee4843;
+    background-color: #20B3B2;
     height: 10px;
     position: absolute;
     left: 0;
@@ -251,13 +251,13 @@ div.widget.project div.meter div.graph .minimum .done strong {
 div.widget.project div.meter div.graph .minimum .left {
     float: right;
     height: 14px;
-    border-right: 4px solid #ee4843;
+    border-right: 4px solid #96238F;
     margin-right: -2px;
     margin-top: -6px;
 }
 
 div.widget.project div.meter div.graph .optimum {
-    border-right: 4px solid #58595B;
+    border-right: 4px solid #BB70B6;
     height: 14px;
     margin-right: -2px;
 }
@@ -273,6 +273,10 @@ div.widget.project div.meter dl * {
 
 div.widget.project div.meter dl .minimum {
     min-width: 10%;
+}
+
+div.widget.project div.meter dl .optimum {
+	color:#BB70B6;
 }
 
 div.widget.project div.meter dl .optimum,
@@ -308,7 +312,7 @@ div.widget.project div.meter dl .optimum {
 }
 
 div.widget.project div.meter dl .minimum {
-    color: #ee4843;
+    color: #96238F;
     width: 80px;        
     position: relative;
 }
@@ -344,12 +348,12 @@ div.widget.project div.meter dl span.euro {
     line-height: 2000px;
     overflow: hidden;
     display: inline-block;
-    background:  url('/view/css/euro/s.png') no-repeat center;
+    background:  url('/view/css/euro/light-violet/s.png') no-repeat center;
     margin-bottom: -1px;
 }
 
 div.widget.project div.meter dl .minimum span.euro {
-    background-image: url('/view/css/euro/red/s.png');
+    background-image: url('/view/css/euro/violet/s.png');
 }
 
 div.widget.project div.meter dl .days {

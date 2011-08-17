@@ -27,20 +27,20 @@ div.widget.project-rewards > div.social ul li.active,
 div.widget.project-invest div.individual h4.title,
 div.widget.project-rewards div.individual h4.title,
 #rewards-summary div.individual h4.title {
-    color: #ee4245 !important;
+    color: #96238F !important;
 }
 
 div.widget.project-invest > div.individual ul li,
 div.widget.project-rewards > div.individual ul li,
 #rewards-summary > div.individual ul li{
-    background-color: #f8e3e3;
+    background-color: #F5E9F4;
 	background-position: 10px 35px;
 }
 
 div.widget.project-invest > div.individual ul li.active,
 div.widget.project-rewards > div.individual ul li.active,
 #rewards-summary > div.individual ul li.active {
-    background-color: #f5c7c8;
+    background-color: #E5C8E3;
 }
 
 div.widget.project-invest > div.individual ul li span.name,
@@ -57,7 +57,7 @@ div.widget.project-rewards > div.individual ul li span.name,
 div.widget.project-rewards > div.individual ul li div.amount,
 #rewards-summary > div.individual ul li div.amount {
     text-align: right;
-    color: #EE4843;
+    color: #96238F;
     position: relative;
     top: -10px;
     right: -10px;
@@ -73,7 +73,7 @@ div.widget.project-rewards > div.individual ul li div.amount span.euro,
 #rewards-summary > div.individual ul li div.amount span.euro {
     padding: 5px 20px 5px 10px;
     margin: 0px;
-    background: url('../../euro/red/s.png') no-repeat right center;
+    background: url('../../euro/violet/s.png') no-repeat right center;
     display: inline-block;
     background-color: #e7e7e7;
     border-right: #e7e7e7 solid 5px;

@@ -554,20 +554,20 @@ div.superform li.editcost {
 
 div.superform li.cost.required_cost-yes,
 div.superform li.editcost.required_cost-yes {
-    background-color: #fce9e9 !important;
+    background-color: #f2e5f1 !important;
 }
 
 div.superform li.editcost li.required_cost-yes {
-    background-color: #fce9e9 !important;
+    background-color: #e4c9e2 !important;
 }
 
 div.superform li.cost.required_cost-no,
 div.superform li.editcost.required_cost-no {
-    background-color: #f2f2f2 !important;
+    background-color: #f3f3f3 !important;
 }
 
 div.superform li.editcost li.required_cost-no {
-    background-color: #f2f2f2 !important;
+    background-color: #e2e2e2 !important;
 }
 
 /* Imágenes gallery*/

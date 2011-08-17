@@ -194,14 +194,15 @@ body.project-edit div#main.costs div.superform li.element.cost-meter dl dt.optim
     margin-top: 20px;
     margin-left: -63px;
     top: 100%;
+	color:#BB70B6;
 }
 
 body.project-edit div#main.costs div.superform li.element.cost-meter dl dt.minimum > span {
-    color: #ed4844;
+    color: #96238F;
 }
 
 body.project-edit div#main.costs div.superform li.element.cost-meter dl dd.minimum {
-    border-bottom: 10px solid #58595B;
+    border-bottom: 10px solid #96238F;
     z-index: 900;
 }
 
@@ -219,8 +220,8 @@ body.project-edit div#main.costs div.superform li.element.cost-meter dl dd.minim
 }
 
 body.project-edit div#main.costs div.superform li.element.cost-meter dl dd.minimum > span > strong {
-    background: url("/view/css/euro/red/l.png") no-repeat right center;
-    color: #ed4844;
+    background: url("/view/css/euro/violet/l.png") no-repeat right center;
+    color: #96238F;
     padding-right: 31px;
     padding-left: 5px;
 }
@@ -235,13 +236,13 @@ body.project-edit div#main.costs div.superform li.element.cost-meter dl dd.minim
     margin-left: -5em;
     margin-right: -5px;
     z-index: 999;
-    border-left: 5px solid #ED4844;
-    border-right: 5px solid #ED4844;
+    border-left: 5px solid #96238F;
+    border-right: 5px solid #96238F;
     font-weight: bold;
 }
 
 body.project-edit div#main.costs div.superform li.element.cost-meter dl dt.optimum {
-    border-top: 10px solid grey;
+    border-top: 10px solid #BB70B6;
     margin-top: -10px;    
     z-index: 0;
 }
@@ -259,7 +260,8 @@ body.project-edit div#main.costs div.superform li.element.cost-meter dl dd.optim
 body.project-edit div#main.costs div.superform li.element.cost-meter dl dd.optimum > strong {
     margin-left: -270px;
     padding-right: 31px;
-    background: url("/view/css/euro/l.png") no-repeat right center;
+    background: url("/view/css/euro/light-violet/l.png") no-repeat right center;
+	color:#BB70B6;
 }
 
 body.project-edit div#main.costs div.superform li.element.cost-meter dl dd.optimum > span.euro {
@@ -271,7 +273,7 @@ body.project-edit div#main.costs div.superform li.element.cost-meter dl dd.optim
     width: 0;
     height: 20px;
     margin-top: -10px;
-    border-left: 10px solid grey;
+    border-left: 10px solid #BB70B6;
 }
 
     

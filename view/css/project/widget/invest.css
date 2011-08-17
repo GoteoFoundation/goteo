@@ -74,8 +74,8 @@ div.widget.project-invest.address table tr td label {
     padding-left: 10px;
 }
 div.widget.project-invest #amount {
-    background: url('/view/css/euro/red/l.png') no-repeat left center #D7D9DA;
-    color: #ee4245;
+    background: url('/view/css/euro/violet/l.png') no-repeat left center #E7E7E7;
+    color: #96238F;
     padding-left: 40px;
     width: 100px;
     height: 24px;
@@ -101,7 +101,7 @@ div.widget.project-invest #email {
     width: 350px;
 }
 div.widget.project-invest div.individual ul li label.amount {
-    color: #ee4245;
+    color: #96238f;
     font-weight: bold;
 }
 

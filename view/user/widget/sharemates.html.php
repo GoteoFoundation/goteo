@@ -21,10 +21,8 @@ function displayCategories(categoryId1,categoryId2){
 	var target1 = "#mates-" + categoryId1;
 	$(target1).fadeIn("slow");
 
-	if(!(categoryId2==-1)){
-		var target2 = "#mates-" + categoryId2;
-		$(target2).fadeIn("slow");
-	}
+	var target2 = "#mates-" + categoryId2;
+	$(target2).fadeIn("slow");
 }
 </script>
 <div class="widget user-mates">
@@ -36,7 +34,7 @@ function displayCategories(categoryId1,categoryId2){
         <?php 
 		$cnt = 0;
 		foreach ($categories as $catId=>$catName) {
-            if (count($shares[$catId]) == 0) continue; ?>
+            if (count($shares[$catId]) == 0) {$cnt++;continue;} ?>
             <li><a href="#" onclick="displayCategories(<?php echo $catId;?>,
             <?php 
 			if(($cnt+1)==count($categories))echo $keys[0];
@@ -60,7 +58,7 @@ function displayCategories(categoryId1,categoryId2){
         if (count($sharemates) == 0) continue;
         ?>
     <div class="users" id="mates-<?php echo $catId ?>" 
-	<?php if ($muestra >= 2) {echo 'style="display:none;"';} else {$muestra++;} ?>>
+	<?php if ($muestra > 2) {echo 'style="display:none;"';} else {$muestra++;} ?>>
 	    
         <h3 class="supertitle"><?php echo $categories[$catId] ?></h3>
 

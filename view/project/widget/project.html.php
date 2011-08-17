@@ -93,7 +93,7 @@ if (isset($this['investor']) && is_object($this['investor'])) {
     <?php else : // normal ?>
     <div class="buttons">
         <?php if ($project->status == 3) : // si esta en campaña se puede aportar ?>
-        <a class="button red supportit" href="/invest/<?php echo $project->id ?>"><?php echo Text::get('regular-invest_it'); ?></a>
+        <a class="button violet supportit" href="/invest/<?php echo $project->id ?>"><?php echo Text::get('regular-invest_it'); ?></a>
         <?php else : ?>
         <a class="button view" href="/project/<?php echo $project->id ?>/updates"><?php echo Text::get('regular-see_blog'); ?></a>
         <?php endif; ?>

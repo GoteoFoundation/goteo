@@ -4,7 +4,7 @@ div.widget.project-support {
 
 /* Detalle de la linea roja (y otras cosillas) en el supertitle del termometro*/
 div.widget.project-support h4.supertitle {
-    border-bottom: 1px solid #EE4843 !important;
+    border-bottom: 1px solid #96238F !important;
 }
 
 div.widget.project-support dl {
@@ -41,6 +41,10 @@ div.widget.project-support dl dd * {
     font-size: 16px;
 }
 
+div.widget.project-support dl dt.optimum{
+	color:#BB70B6;
+}
+
 div.widget.project-support dl dt.optimum,
 div.widget.project-support dl dt.minimum {
     width: 5.5em;
@@ -72,12 +76,16 @@ div.widget.project-support dl dd.minimum {
     height: 45px;
     margin-top: 0;
     padding-right: 35px;
-    background: url('../../euro/l.png') no-repeat right center;
+    background: url('../../euro/light-violet/l.png') no-repeat right center;
     display: inline-block;
 }
 
 div.widget.project-support dl dd.minimum {
-    background-image: url('../../euro/red/l.png');
+    background-image: url('../../euro/violet/l.png');
+}
+
+div.widget.project-support dl dd.optimum strong{
+	color:#BB70B6;
 }
 
 div.widget.project-support dl dd.optimum strong,
@@ -92,7 +100,7 @@ div.widget.project-support dl dd.minimum span.euro {
 
 div.widget.project-support dl dt.minimum,
 div.widget.project-support dl dd.minimum {
-    color: #ee4843;
+    color: #96238F;
 }
 
 div.widget.project-support dl dt.reached {
@@ -101,8 +109,9 @@ div.widget.project-support dl dt.reached {
 
 div.widget.project-support dl dd.reached {        
     padding-right: 20px;
-    background: url('../../euro/s.png') no-repeat right top;
+    background: url('../../euro/violet/s.png') no-repeat right top;
     display: inline-block;
+	color:#96238F;
 }
 
 div.widget.project-support dl dd.reached span.euro {
@@ -122,7 +131,7 @@ div.widget.project-support > div.meter {
 div.widget.project-support div.graph {
     width: 26px;
     overflow: visible;            
-    border-bottom: 2px solid #ee4843;
+    border-bottom: 2px solid #20B3B2;
     font-size: 0;
     margin-left: 5px;
     margin-top: 22px;

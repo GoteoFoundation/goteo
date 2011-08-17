@@ -167,7 +167,7 @@ div.side-worthcracy  ul li.done.worth-5 {
 div.widget.user-worthcracy div.worth-amount {
     display: inline;
     float:left;
-    color: #EE4843;
+    color: #95268D;
     font-weight: bold;
     font-size: 30px;
     position: relative;
@@ -175,7 +175,7 @@ div.widget.user-worthcracy div.worth-amount {
     left: 35px;
     line-height: 33px;
     padding-right: 30px;
-    background: url('/view/css/euro/red/l.png') no-repeat center right;
-    border-bottom: 1px solid #EE4843;
+    background: url('/view/css/euro/violet/l.png') no-repeat center right;
+    border-bottom: 1px solid #95268D;
 }
 
