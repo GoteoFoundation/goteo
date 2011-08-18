@@ -88,6 +88,8 @@ include 'view/prologue.html.php';
                                 <td><?php echo $reward->fulsocial ? 'Cumplido' : 'Pendiente'; ?></td>
                                 <?php if (!$reward->fulsocial) : ?>
                                 <td><a href="<?php echo "/admin/rewards/fulfill/{$reward->id}{$filter}"; ?>">[Dar por cumplido]</a></td>
+                                <?php else : ?>
+                                <td><a href="<?php echo "/admin/rewards/unfill/{$reward->id}{$filter}"; ?>">[Dar por pendiente]</a></td>
                                 <?php endif; ?>
                             </tr>
                             <?php endforeach; ?>
