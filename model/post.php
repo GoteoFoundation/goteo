@@ -186,9 +186,13 @@ namespace Goteo\Model {
         /*
          * Para quitar una entrada
          */
-        public static function delete ($id) {
+        public static function remove ($id, $from = null) {
             
-            $sql = "DELETE FROM post WHERE id = :id";
+            if (!in_array($from, array('home', 'footer'))) {
+                return false;
+            }
+
+            $sql = "UPDATE post SET `$from` = 0 WHERE id = :id";
             if (self::query($sql, array(':id'=>$id))) {
                 return true;
             } else {
@@ -225,8 +229,7 @@ namespace Goteo\Model {
          * Orden para añadirlo al final
          */
         public static function next ($type = 'home') {
-            $query = self::query('SELECT MAX(`order`) FROM post WHERE '.$type.'=1'
-                , array(':media'=>$media, ':node'=>$node));
+            $query = self::query('SELECT MAX(`order`) FROM post WHERE '.$type.'=1');
             $order = $query->fetchColumn(0);
             return ++$order;
 

@@ -54,8 +54,10 @@ namespace Goteo\Controller {
 
                     // sino, mostramos para editar
                     return new View(
-                        'view/admin/pages/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'pages',
+                            'file' => 'edit',
                             'page' => $page,
                             'errors'=>$errors
                         )
@@ -66,8 +68,10 @@ namespace Goteo\Controller {
                     $pages = Page::getAll();
 
                     return new View(
-                        'view/admin/pages/list.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'pages',
+                            'file' => 'edit',
                             'pages' => $pages
                         )
                     );
@@ -118,10 +122,10 @@ namespace Goteo\Controller {
             switch ($action) {
                 case 'list':
                     return new View(
-                        'view/admin/list.html.php',
+                        'view/admin/index.html.php',
                         array(
-                            'title' => 'Gestión de textos',
-                            'menu' => array(),
+                            'folder' => 'base',
+                            'file' => 'list',
                             'data' => $data,
                             'columns' => array(
                                 'edit' => '',
@@ -157,15 +161,10 @@ namespace Goteo\Controller {
                 /*
                 case 'add':
                     return new View(
-                        'view/admin/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
-                            'title' => "Añadiendo un nuevo texto",
-                            'menu' => array(
-                                array(
-                                    'url'=>'/admin/texts/'.$filter,
-                                    'label'=>'Textos'
-                                )
-                            ),
+                            'folder' => 'base',
+                            'file' => 'edit',
                             'data' => (object) array(),
                             'form' => array(
                                 'action' => '/admin/texts/edit/'.$filter,
@@ -209,19 +208,14 @@ namespace Goteo\Controller {
                             throw new Redirection("/admin/texts/$filter");
                         }
                     } else {
-                        $text = Text::getAdmin($id);
+                        $text = Text::getPurpose($id);
                     }
 
                     return new View(
-                        'view/admin/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
-                            'title' => "Editando el texto '$id'",
-                            'menu' => array(
-                                array(
-                                    'url'=>'/admin/texts/'.$filter,
-                                    'label'=>'Textos'
-                                )
-                            ),
+                            'folder' => 'base',
+                            'file' => 'edit',
                             'data' => (object) array (
                                 'id' => $id,
                                 'text' => $text
@@ -292,8 +286,10 @@ namespace Goteo\Controller {
 
                     // sino, mostramos para editar
                     return new View(
-                        'view/admin/templates/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'templates',
+                            'file' => 'edit',
                             'template' => $template,
                             'errors'=>$errors
                         )
@@ -304,8 +300,10 @@ namespace Goteo\Controller {
                     $templates = Template::getAll();
 
                     return new View(
-                        'view/admin/templates/list.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'templates',
+                            'file' => 'list',
                             'templates' => $templates
                         )
                     );
@@ -382,8 +380,10 @@ namespace Goteo\Controller {
             $categories = Model\Project\Category::getAll();
 
             return new View(
-                'view/admin/overview.html.php',
+                'view/admin/index.html.php',
                 array(
+                    'folder' => 'base',
+                    'file' => 'overview',
                     'projects' => $projects,
                     'filters' => $filters,
                     'status' => $status,
@@ -451,8 +451,10 @@ namespace Goteo\Controller {
                     }
                     
                     return new View(
-                        'view/admin/reviews/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'reviews',
+                            'file'   => 'edit',
                             'action' => $action,
                             'review' => $review,
                             'project'=> $project,
@@ -520,8 +522,10 @@ namespace Goteo\Controller {
 
 
                     return new View(
-                        'view/admin/reviews/report.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'reviews',
+                            'file' => 'report',
                             'review'     => $review,
                             'evaluation' => $evaluation
                         )
@@ -537,8 +541,10 @@ namespace Goteo\Controller {
             $checkers = Model\User::getAll(array('role'=>'checker'));
 
             return new View(
-                'view/admin/reviews/list.html.php',
+                'view/admin/index.html.php',
                 array(
+                    'folder' => 'reviews',
+                    'file' => 'list',
                     'message' => $message,
                     'projects' => $projects,
                     'filters' => $filters,
@@ -594,8 +600,10 @@ namespace Goteo\Controller {
                             $status = Model\Project::status();
 
                             return new View(
-                                'view/admin/promote/edit.html.php',
+                                'view/admin/index.html.php',
                                 array(
+                                    'folder' => 'promote',
+                                    'file' => 'edit',
                                     'action' => 'add',
                                     'promo' => $promo,
                                     'projects' => $projects,
@@ -606,8 +614,10 @@ namespace Goteo\Controller {
                             break;
                         case 'edit':
                             return new View(
-                                'view/admin/promote/edit.html.php',
+                                'view/admin/index.html.php',
                                 array(
+                                    'folder' => 'promote',
+                                    'file' => 'edit',
                                     'action' => 'edit',
                                     'promo' => $promo,
                                     'errors' => $errors
@@ -637,8 +647,10 @@ namespace Goteo\Controller {
                     $next = Model\Promote::next();
 
                     return new View(
-                        'view/admin/promote/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'promote',
+                            'file' => 'edit',
                             'action' => 'add',
                             'promo' => (object) array('order' => $next),
                             'projects' => $projects,
@@ -650,8 +662,10 @@ namespace Goteo\Controller {
                     $promo = Model\Promote::get($id);
 
                     return new View(
-                        'view/admin/promote/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'promote',
+                            'file' => 'edit',
                             'action' => 'edit',
                             'promo' => $promo
                         )
@@ -663,9 +677,144 @@ namespace Goteo\Controller {
             $promoted = Model\Promote::getAll();
 
             return new View(
-                'view/admin/promote/list.html.php',
+                'view/admin/index.html.php',
                 array(
+                    'folder' => 'promote',
+                    'file' => 'list',
                     'promoted' => $promoted,
+                    'errors' => $errors,
+                    'success' => $success
+                )
+            );
+        }
+
+        /*
+         * Banners
+         */
+        public function banners($action = 'list', $id = null) {
+
+            $BC = self::menu(array(
+                'section' => 'home',
+                'option' => __FUNCTION__,
+                'action' => $action,
+                'id' => $id
+            ));
+
+            define('ADMIN_BCPATH', $BC);
+
+            $errors = array();
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                // objeto
+                $banner = new Model\Banner(array(
+                    'node' => \GOTEO_NODE,
+                    'project' => $_POST['project'],
+                    'title' => $_POST['title'],
+                    'description' => $_POST['description'],
+                    'order' => $_POST['order']
+                ));
+
+				if ($banner->save($errors)) {
+                    switch ($_POST['action']) {
+                        case 'add':
+                            $success = 'Proyecto destacado correctamente';
+                            break;
+                        case 'edit':
+                            $success = 'Destacado editado correctamente';
+                            break;
+                    }
+				}
+				else {
+                    switch ($_POST['action']) {
+                        case 'add':
+                            // proyectos disponibles para promocionar y su estado
+                            $projects = Model\Banner::available();
+                            $status = Model\Banner::status();
+
+                            return new View(
+                                'view/admin/index.html.php',
+                                array(
+                                    'folder' => 'banners',
+                                    'file' => 'edit',
+                                    'action' => 'add',
+                                    'banner' => $banner,
+                                    'projects' => $projects,
+                                    'status' => $status,
+                                    'errors' => $errors
+                                )
+                            );
+                            break;
+                        case 'edit':
+                            return new View(
+                                'view/admin/index.html.php',
+                                array(
+                                    'folder' => 'banners',
+                                    'file' => 'edit',
+                                    'action' => 'edit',
+                                    'banenr' => $banner,
+                                    'errors' => $errors
+                                )
+                            );
+                            break;
+                    }
+				}
+			}
+
+            switch ($action) {
+                case 'up':
+                    Model\Banner::up($id);
+                    break;
+                case 'down':
+                    Model\Banner::down($id);
+                    break;
+                case 'remove':
+                    Model\Banner::delete($id);
+                    break;
+                case 'add':
+                    // proyectos publicados para promocionar
+                    $projects = Model\Banner::available();
+                    $status = Model\Banner::status();
+
+                    // siguiente orden
+                    $next = Model\Banner::next();
+
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'banners',
+                            'file' => 'edit',
+                            'action' => 'add',
+                            'banner' => (object) array('order' => $next),
+                            'projects' => $projects,
+                            'status' => $status
+                        )
+                    );
+                    break;
+                case 'edit':
+                    $promo = Model\Banner::get($id);
+
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'banners',
+                            'file' => 'edit',
+                            'action' => 'edit',
+                            'banner' => $banner
+                        )
+                    );
+                    break;
+            }
+
+
+            $bannered = Model\Banner::getAll();
+
+            return new View(
+                'view/admin/index.html.php',
+                array(
+                    'folder' => 'banners',
+                    'file' => 'list',
+                    'bannered' => $bannered,
                     'errors' => $errors,
                     'success' => $success
                 )
@@ -677,15 +826,6 @@ namespace Goteo\Controller {
          */
         public function faq($action = 'list', $id = null) {
 
-            $BC = self::menu(array(
-                'section' => 'contents',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
-            define('ADMIN_BCPATH', $BC);
-
             // secciones
             $sections = Model\Faq::sections();
             if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $sections)) {
@@ -693,6 +833,16 @@ namespace Goteo\Controller {
             } else {
                 $filter = 'node';
             }
+
+            $BC = self::menu(array(
+                'section' => 'contents',
+                'option' => __FUNCTION__,
+                'action' => $action,
+                'id' => $id,
+                'filter' => '?filter=' . $filter
+            ));
+
+            define('ADMIN_BCPATH', $BC);
 
             $errors = array();
 
@@ -721,8 +871,10 @@ namespace Goteo\Controller {
 				}
 				else {
                     return new View(
-                        'view/admin/faq/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'faq',
+                            'file' => 'edit',
                             'action' => $_POST['action'],
                             'faq' => $faq,
                             'filter' => $filter,
@@ -745,8 +897,10 @@ namespace Goteo\Controller {
                     $next = Model\Faq::next($filter);
 
                     return new View(
-                        'view/admin/faq/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'faq',
+                            'file' => 'edit',
                             'action' => 'add',
                             'faq' => (object) array('section' => $filter, 'order' => $next, 'cuantos' => $next),
                             'filter' => $filter,
@@ -761,8 +915,10 @@ namespace Goteo\Controller {
                     $faq->cuantos = ($cuantos -1);
 
                     return new View(
-                        'view/admin/faq/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'faq',
+                            'file' => 'edit',
                             'action' => 'edit',
                             'faq' => $faq,
                             'filter' => $filter,
@@ -778,8 +934,10 @@ namespace Goteo\Controller {
             $faqs = Model\Faq::getAll($filter);
 
             return new View(
-                'view/admin/faq/list.html.php',
+                'view/admin/index.html.php',
                 array(
+                    'folder' => 'faq',
+                    'file' => 'list',
                     'faqs' => $faqs,
                     'sections' => $sections,
                     'filter' => $filter,
@@ -794,15 +952,6 @@ namespace Goteo\Controller {
          */
         public function criteria($action = 'list', $id = null) {
 
-            $BC = self::menu(array(
-                'section' => 'contents',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
-            define('ADMIN_BCPATH', $BC);
-
             // secciones
             $sections = Model\Criteria::sections();
             if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $sections)) {
@@ -810,6 +959,16 @@ namespace Goteo\Controller {
             } else {
                 $filter = 'project';
             }
+
+            $BC = self::menu(array(
+                'section' => 'contents',
+                'option' => __FUNCTION__,
+                'action' => $action,
+                'id' => $id,
+                'filter' => '?filter=' . $filter
+            ));
+
+            define('ADMIN_BCPATH', $BC);
 
             $errors = array();
 
@@ -837,8 +996,10 @@ namespace Goteo\Controller {
 				}
 				else {
                     return new View(
-                        'view/admin/criteria/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'criteria',
+                            'file' => 'edit',
                             'action' => $_POST['action'],
                             'criteria' => $criteria,
                             'filter' => $filter,
@@ -861,8 +1022,10 @@ namespace Goteo\Controller {
                     $next = Model\Criteria::next($filter);
 
                     return new View(
-                        'view/admin/criteria/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'criteria',
+                            'file' => 'edit',
                             'action' => 'add',
                             'criteria' => (object) array('section' => $filter, 'order' => $next, 'cuantos' => $next),
                             'filter' => $filter,
@@ -877,8 +1040,10 @@ namespace Goteo\Controller {
                     $criteria->cuantos = ($cuantos -1);
 
                     return new View(
-                        'view/admin/criteria/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'criteria',
+                            'file' => 'edit',
                             'action' => 'edit',
                             'criteria' => $criteria,
                             'filter' => $filter,
@@ -894,8 +1059,10 @@ namespace Goteo\Controller {
             $criterias = Model\Criteria::getAll($filter);
 
             return new View(
-                'view/admin/criteria/list.html.php',
+                'view/admin/index.html.php',
                 array(
+                    'folder' => 'criteria',
+                    'file' => 'list',
                     'criterias' => $criterias,
                     'sections' => $sections,
                     'filter' => $filter,
@@ -910,15 +1077,6 @@ namespace Goteo\Controller {
          */
         public function icons($action = 'list', $id = null) {
 
-            $BC = self::menu(array(
-                'section' => 'contents',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
-            define('ADMIN_BCPATH', $BC);
-
             // grupos
             $groups = Model\Icon::groups();
             if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $groups)) {
@@ -926,6 +1084,16 @@ namespace Goteo\Controller {
             } else {
                 $filter = '';
             }
+
+            $BC = self::menu(array(
+                'section' => 'contents',
+                'option' => __FUNCTION__,
+                'action' => $action,
+                'id' => $id,
+                'filter' => !empty($filter) ? '?filter=' . $filter : ''
+            ));
+
+            define('ADMIN_BCPATH', $BC);
 
             $errors = array();
 
@@ -952,8 +1120,10 @@ namespace Goteo\Controller {
 				}
 				else {
                     return new View(
-                        'view/admin/icons/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'icons',
+                            'file' => 'edit',
                             'action' => $_POST['action'],
                             'icon' => $icon,
                             'filter' => $filter,
@@ -968,8 +1138,10 @@ namespace Goteo\Controller {
                 case 'add':
 /*
                     return new View(
-                        'view/admin/icons/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'icons',
+                            'file' => 'edit',
                             'action' => 'add',
                             'icon' => (object) array('group' => ''),
                             'groups' => $groups
@@ -982,8 +1154,10 @@ namespace Goteo\Controller {
                     $icon = Model\Icon::get($id);
 
                     return new View(
-                        'view/admin/icons/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'icons',
+                            'file' => 'edit',
                             'action' => 'edit',
                             'icon' => $icon,
                             'filter' => $filter,
@@ -999,8 +1173,10 @@ namespace Goteo\Controller {
             $icons = Model\Icon::getAll($filter);
 
             return new View(
-                'view/admin/icons/list.html.php',
+                'view/admin/index.html.php',
                 array(
+                    'folder' => 'icons',
+                    'file' => 'list',
                     'icons' => $icons,
                     'groups' => $groups,
                     'filter' => $filter,
@@ -1014,15 +1190,6 @@ namespace Goteo\Controller {
          * Licencias
          */
         public function licenses($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'contents',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
-            define('ADMIN_BCPATH', $BC);
 
             if (isset($_GET['filters'])) {
                 foreach (\unserialize($_GET['filters']) as $field=>$value) {
@@ -1038,6 +1205,16 @@ namespace Goteo\Controller {
                     $filters[$field] = $_GET[$field];
                 }
             }
+
+            $BC = self::menu(array(
+                'section' => 'contents',
+                'option' => __FUNCTION__,
+                'action' => $action,
+                'id' => $id,
+                'filter' => !empty($filters) ? '?filter=' . serialize($filters) : ''
+            ));
+
+            define('ADMIN_BCPATH', $BC);
 
             // agrupaciones de mas a menos abertas
             $groups = Model\License::groups();
@@ -1073,8 +1250,10 @@ namespace Goteo\Controller {
 				}
 				else {
                     return new View(
-                        'view/admin/licenses/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'licenses',
+                            'file' => 'edit',
                             'action'  => $_POST['action'],
                             'license' => $license,
                             'filters' => $filters,
@@ -1097,8 +1276,10 @@ namespace Goteo\Controller {
                     $next = Model\License::next();
 
                     return new View(
-                        'view/admin/licenses/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'licenses',
+                            'file' => 'edit',
                             'action' => 'add',
                             'license' => (object) array('order' => $next, 'icons' => array()),
                             'icons' => $icons,
@@ -1110,8 +1291,10 @@ namespace Goteo\Controller {
                     $license = Model\License::get($id);
 
                     return new View(
-                        'view/admin/licenses/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'licenses',
+                            'file' => 'edit',
                             'action' => 'edit',
                             'license' => $license,
                             'filters' => $filters,
@@ -1128,8 +1311,10 @@ namespace Goteo\Controller {
             $licenses = Model\License::getAll($filters['icon'], $filters['group']);
 
             return new View(
-                'view/admin/licenses/list.html.php',
+                'view/admin/index.html.php',
                 array(
+                    'folder' => 'licenses',
+                    'file' => 'list',
                     'licenses' => $licenses,
                     'filters'  => $filters,
                     'groups' => $groups,
@@ -1189,8 +1374,10 @@ namespace Goteo\Controller {
                     switch ($_POST['action']) {
                         case 'add':
                             return new View(
-                                'view/admin/posts/add.html.php',
+                                'view/admin/index.html.php',
                                 array(
+                                    'folder' => 'posts',
+                                    'file' => 'add',
                                     'action' => 'add',
                                     'type' => $this['type'],
                                     'post' => $post,
@@ -1218,8 +1405,10 @@ namespace Goteo\Controller {
                     $next = Model\Post::next($type);
 
                     return new View(
-                        'view/admin/posts/add.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'posts',
+                            'file' => 'add',
                             'action' => 'add',
                             'post' => (object) array('order' => $next, 'publish' => 0)
                         )
@@ -1231,8 +1420,10 @@ namespace Goteo\Controller {
                     $post = Model\Post::get($id);
 
                     return new View(
-                        'view/admin/postEdit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'posts',
+                            'file' => 'edit',
                             'action' => 'edit',
                             'post' => $post
                         )
@@ -1241,15 +1432,18 @@ namespace Goteo\Controller {
                      */
                     break;
                 case 'remove':
-                    Model\Post::delete($id);
+                    // se quita de la portada solamente
+                    Model\Post::remove($id, 'home');
                     break;
             }
 
             $posts = Model\Post::getAll('home');
 
             return new View(
-                'view/admin/posts/list.html.php',
+                'view/admin/index.html.php',
                 array(
+                    'folder' => 'posts',
+                    'file' => 'list',
                     'posts' => $posts,
                     'errors' => $errors,
                     'success' => $success
@@ -1306,8 +1500,10 @@ namespace Goteo\Controller {
                     switch ($_POST['action']) {
                         case 'add':
                             return new View(
-                                'view/admin/footer/add.html.php',
+                                'view/admin/index.html.php',
                                 array(
+                                    'folder' => 'footer',
+                                    'file' => 'add',
                                     'action' => 'add',
                                     'type' => $this['type'],
                                     'post' => $post,
@@ -1335,8 +1531,10 @@ namespace Goteo\Controller {
                     $next = Model\Post::next($type);
 
                     return new View(
-                        'view/admin/footer/add.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'footer',
+                            'file' => 'add',
                             'action' => 'add',
                             'post' => (object) array('order' => $next, 'publish' => 0)
                         )
@@ -1348,8 +1546,10 @@ namespace Goteo\Controller {
                     $post = Model\Post::get($id);
 
                     return new View(
-                        'view/admin/postEdit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'footer',
+                            'file' => 'edit',
                             'action' => 'edit',
                             'post' => $post
                         )
@@ -1358,15 +1558,17 @@ namespace Goteo\Controller {
                      */
                     break;
                 case 'remove':
-                    Model\Post::delete($id);
+                    Model\Post::remove($id, 'footer');
                     break;
             }
 
             $posts = Model\Post::getAll('footer');
 
             return new View(
-                'view/admin/footer/list.html.php',
+                'view/admin/index.html.php',
                 array(
+                    'folder' => 'footer',
+                    'file' => 'list',
                     'posts' => $posts,
                     'errors' => $errors,
                     'success' => $success
@@ -1397,15 +1599,10 @@ namespace Goteo\Controller {
             switch ($action) {
                 case 'add':
                     return new View(
-                        'view/admin/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
-                            'title' => "Añadiendo una nueva categoría",
-                            'menu' => array(
-                                array(
-                                    'url' => $url,
-                                    'label' => 'Categorías'
-                                )
-                            ),
+                            'folder' => 'base',
+                            'file' => 'edit',
                             'data' => (object) array(),
                             'form' => array(
                                 'action' => "$url/edit/",
@@ -1461,15 +1658,10 @@ namespace Goteo\Controller {
                     }
 
                     return new View(
-                        'view/admin/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
-                            'title' => "Editando una categoría",
-                            'menu' => array(
-                                array(
-                                    'url' => $url,
-                                    'label' => 'Categorias'
-                                )
-                            ),
+                            'folder' => 'base',
+                            'file' => 'edit',
                             'data' => $item,
                             'form' => array(
                                 'action' => "$url/edit/$id",
@@ -1518,15 +1710,11 @@ namespace Goteo\Controller {
             }
 
             return new View(
-                'view/admin/list.html.php',
+                'view/admin/index.html.php',
                 array(
-                    'title' => 'Gestión de categorías',
-                    'menu' => array(
-                        array(
-                            'url' => "$url/add",
-                            'label' => 'Nueva categoría'
-                        )
-                    ),
+                    'folder' => 'base',
+                    'file' => 'list',
+                    'addbutton' => 'Nueva categoría',
                     'data' => $model::getAll(),
                     'columns' => array(
                         'name' => 'Categoría',
@@ -1567,15 +1755,10 @@ namespace Goteo\Controller {
             switch ($action) {
                 case 'add':
                     return new View(
-                        'view/admin/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
-                            'title' => "Añadiendo un nuevo tag de blog",
-                            'menu' => array(
-                                array(
-                                    'url'   => $url,
-                                    'label' => 'Tags'
-                                )
-                            ),
+                            'folder' => 'base',
+                            'file' => 'edit',
                             'data' => (object) array(),
                             'form' => array(
                                 'action' => "$url/edit/",
@@ -1624,15 +1807,10 @@ namespace Goteo\Controller {
                     }
 
                     return new View(
-                        'view/admin/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
-                            'title' => "Editando un tag de blog",
-                            'menu' => array(
-                                array(
-                                    'url'   => $url,
-                                    'label' => 'Tags'
-                                )
-                            ),
+                            'folder' => 'base',
+                            'file' => 'edit',
                             'data' => $item,
                             'form' => array(
                                 'action' => "$url/edit/$id",
@@ -1668,19 +1846,11 @@ namespace Goteo\Controller {
             }
 
             return new View(
-                'view/admin/list.html.php',
+                'view/admin/index.html.php',
                 array(
-                    'title' => 'Gestión de tags para blog',
-                    'menu' => array(
-                        array(
-                            'url' => "$url/add",
-                            'label' => 'Nuevo tag'
-                        ),
-                        array (
-                            'url' => '/admin/blog',
-                            'label' => 'Gestionar Blog'
-                        )
-                    ),
+                    'folder' => 'base',
+                    'file' => 'list',
+                    'addbutton' => 'Nuevo tag',
                     'data' => $model::getList(1),
                     'columns' => array(
                         'name' => 'Tag',
@@ -1699,15 +1869,6 @@ namespace Goteo\Controller {
          */
         public function managing($action = 'list', $id = null) {
 
-            $BC = self::menu(array(
-                'section' => 'users',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
-            define('ADMIN_BCPATH', $BC);
-
             $filters = array();
             $fields = array('status', 'interest', 'role', 'name');
             foreach ($fields as $field) {
@@ -1715,6 +1876,16 @@ namespace Goteo\Controller {
                     $filters[$field] = $_GET[$field];
                 }
             }
+
+            $BC = self::menu(array(
+                'section' => 'users',
+                'option' => __FUNCTION__,
+                'action' => $action,
+                'id' => $id,
+                'filter' => !empty($filters) ? "?status={$filters['status']}&interest={$filters['interest']}" : ''
+            ));
+
+            define('ADMIN_BCPATH', $BC);
 
             $errors = array();
 
@@ -1758,8 +1929,10 @@ namespace Goteo\Controller {
             );
 
             return new View(
-                'view/admin/managing.html.php',
+                'view/admin/index.html.php',
                 array(
+                    'folder' => 'base',
+                    'file' => 'managing',
                     'users'=>$users,
                     'filters' => $filters,
                     'name' => $name,
@@ -1829,6 +2002,8 @@ namespace Goteo\Controller {
                 }
 
                  $viewData = array(
+                        'folder' => 'invests',
+                        'file' => 'add',
                         'users'         => $users,
                         'projects'      => $projects,
                         'campaigns'     => $campaigns,
@@ -1836,7 +2011,7 @@ namespace Goteo\Controller {
                     );
 
                 return new View(
-                    'view/admin/invests/add.html.php',
+                    'view/admin/index.html.php',
                     $viewData
                 );
 
@@ -1877,8 +2052,10 @@ namespace Goteo\Controller {
                 $invest = Model\Invest::get($id);
                 $project = Model\Project::get($invest->project);
                 return new View(
-                    'view/admin/invests/report.html.php',
+                    'view/admin/index.html.php',
                     array(
+                        'folder' => 'invests',
+                        'file' => 'report',
                         'invest'=>$invest,
                         'project'=>$project,
                         'details'=>$details,
@@ -1954,6 +2131,8 @@ namespace Goteo\Controller {
              $list = Model\Invest::getList($filters);
 
              $viewData = array(
+                    'folder' => 'invests',
+                    'file' => 'list',
                     'list'          => $list,
                     'filters'       => $filters,
                     'users'         => $users,
@@ -1966,7 +2145,7 @@ namespace Goteo\Controller {
                 );
 
             return new View(
-                'view/admin/invests/list.html.php',
+                'view/admin/index.html.php',
                 $viewData
             );
 
@@ -1979,15 +2158,6 @@ namespace Goteo\Controller {
          */
         public function rewards($action = 'list', $id = null) {
 
-            $BC = self::menu(array(
-                'section' => 'projects',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
-            define('ADMIN_BCPATH', $BC);
-
             $filters = array();
             $fields = array('status', 'icon');
             foreach ($fields as $field) {
@@ -1995,6 +2165,16 @@ namespace Goteo\Controller {
                     $filters[$field] = $_GET[$field];
                 }
             }
+
+            $BC = self::menu(array(
+                'section' => 'projects',
+                'option' => __FUNCTION__,
+                'action' => $action,
+                'id' => $id,
+                'filter' => !empty($filters) ? "?status={$filters['status']}&icon={$filters['icon']}" : ''
+            ));
+
+            define('ADMIN_BCPATH', $BC);
 
             $errors = array();
 
@@ -2026,8 +2206,10 @@ namespace Goteo\Controller {
             }
 
             return new View(
-                'view/admin/rewards.html.php',
+                'view/admin/index.html.php',
                 array(
+                    'folder' => 'base',
+                    'file' => 'rewards',
                     'projects'=>$projects,
                     'filters' => $filters,
                     'status' => $status,
@@ -2063,22 +2245,7 @@ namespace Goteo\Controller {
                 $action = 'list';
             }
 
-
-
-
             $url = '/admin/blog';
-
-            /*
-             * Filtro de fecha
-            $filters = array();
-            $fields = array('date');
-            foreach ($fields as $field) {
-                if (isset($_GET[$field])) {
-                    $filters[$field] = $_GET[$field];
-                }
-            }
-             * 
-             */
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     if (empty($_POST['blog'])) {
@@ -2176,8 +2343,10 @@ namespace Goteo\Controller {
                     $posts = Model\Blog\Post::getAll($blog->id, null, false);
 
                     return new View(
-                        'view/admin/blog/list.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'blog',
+                            'file' => 'list',
                             'posts' => $posts,
                             'errors' => $errors,
                             'success' => $success
@@ -2200,8 +2369,10 @@ namespace Goteo\Controller {
                     $message = 'Añadiendo una nueva entrada';
 
                     return new View(
-                        'view/admin/blog/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'blog',
+                            'file' => 'edit',
                             'action' => 'add',
                             'post' => $post,
                             'tags' => Model\Blog\Post\Tag::getAll(),
@@ -2232,8 +2403,10 @@ namespace Goteo\Controller {
                     $message = 'Editando una entrada existente';
 
                     return new View(
-                        'view/admin/blog/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
+                            'folder' => 'blog',
+                            'file' => 'edit',
                             'action' => 'edit',
                             'post' => $post,
                             'tags' => Model\Blog\Post\Tag::getAll(),
@@ -2252,7 +2425,7 @@ namespace Goteo\Controller {
          * @TODO: está a medias
          *
          *
-         */
+         *
         public function moderate($action = 'list', $id = null) {
             $filters = array();
             $fields = array('project', 'user', 'blog');
@@ -2261,6 +2434,7 @@ namespace Goteo\Controller {
                     $filters[$field] = $_GET[$field];
                 }
             }
+            
             // proyectos con mensajes
             $projects = Model\Project::published('available');
             if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $sections)) {
@@ -2268,6 +2442,17 @@ namespace Goteo\Controller {
             } else {
                 $filter = 'node';
             }
+
+
+            $BC = self::menu(array(
+                'section' => 'projects',
+                'option' => __FUNCTION__,
+                'action' => $action,
+                'id' => $id,
+                'filter' => !empty($filters) ? "?project={$filters['project']}&user={$filters['user']}&blog={$filters['blog']}" : ''
+            ));
+
+            define('ADMIN_BCPATH', $BC);
 
             //blog
 
@@ -2286,10 +2471,10 @@ namespace Goteo\Controller {
 //            $list = Model\Message::getAll($filter);
 
             return new View(
-                'view/admin/list.html.php',
+                'view/admin/index.html.php',
                 array(
-                    'title' => 'Moderación de mensajes',
-                    'menu' => array(),
+                    'folder' => 'base',
+                    'file' => 'list',
                     'data' => $list,
                     'columns' => array(
                         'user' => 'Usuario',
@@ -2302,6 +2487,8 @@ namespace Goteo\Controller {
                 )
             );
         }
+         * 
+         */
 
         /*
          *  Gestión de noticias
@@ -2325,15 +2512,10 @@ namespace Goteo\Controller {
             switch ($action) {
                 case 'add':
                     return new View(
-                        'view/admin/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
-                            'title' => "Añadiendo una nueva noticia",
-                            'menu' => array(
-                                array(
-                                    'url' => $url,
-                                    'label' => 'Noticias'
-                                )
-                            ),
+                            'folder' => 'base',
+                            'file' => 'edit',
                             'data' => (object) array('order' => $model::next()),
                             'form' => array(
                                 'action' => "$url/edit/",
@@ -2402,15 +2584,10 @@ namespace Goteo\Controller {
                     }
 
                     return new View(
-                        'view/admin/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
-                            'title' => "Editando una noticia",
-                            'menu' => array(
-                                array(
-                                    'url' => $url,
-                                    'label' => 'Noticias'
-                                )
-                            ),
+                            'folder' => 'base',
+                            'file' => 'edit',
                             'data' => $item,
                             'form' => array(
                                 'action' => "$url/edit/$id",
@@ -2470,15 +2647,11 @@ namespace Goteo\Controller {
             }
 
             return new View(
-                'view/admin/list.html.php',
+                'view/admin/index.html.php',
                 array(
-                    'title' => 'Gestión de noticias',
-                    'menu' => array(
-                        array(
-                            'url' => "$url/add",
-                            'label' => 'Nueva noticia'
-                        )
-                    ),
+                    'folder' => 'base',
+                    'file' => 'list',
+                    'addbutton' => 'Nueva noticia',
                     'data' => $model::getAll(),
                     'columns' => array(
                         'title' => 'Noticia',
@@ -2517,15 +2690,10 @@ namespace Goteo\Controller {
             switch ($action) {
                 case 'add':
                     return new View(
-                        'view/admin/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
-                            'title' => "Añadiendo un nuevo patrocinador",
-                            'menu' => array(
-                                array(
-                                    'url' => $url,
-                                    'label' => 'Patrocinadores'
-                                )
-                            ),
+                            'folder' => 'base',
+                            'file' => 'edit',
                             'data' => (object) array('order' => $model::next() ),
                             'form' => array(
                                 'action' => "$url/edit/",
@@ -2605,15 +2773,10 @@ namespace Goteo\Controller {
                     }
 
                     return new View(
-                        'view/admin/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
-                            'title' => "Editando un patrocinador",
-                            'menu' => array(
-                                array(
-                                    'url' => $url,
-                                    'label' => 'Patrocinadores'
-                                )
-                            ),
+                            'folder' => 'base',
+                            'file' => 'edit',
                             'data' => $item,
                             'form' => array(
                                 'action' => "$url/edit/$id",
@@ -2671,15 +2834,11 @@ namespace Goteo\Controller {
             }
 
             return new View(
-                'view/admin/list.html.php',
+                'view/admin/index.html.php',
                 array(
-                    'title' => 'Gestión de patrocinadores',
-                    'menu' => array(
-                        array(
-                            'url' => "$url/add",
-                            'label' => 'Nuevo patrocinador'
-                        )
-                    ),
+                    'folder' => 'base',
+                    'file' => 'list',
+                    'addbutton' => 'Nuevo patrocinador',
                     'data' => $model::getAll(),
                     'columns' => array(
                         'name' => 'Patrocinador',
@@ -2719,15 +2878,10 @@ namespace Goteo\Controller {
             switch ($action) {
                 case 'add':
                     return new View(
-                        'view/admin/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
-                            'title' => "Añadiendo una nueva campaña",
-                            'menu' => array(
-                                array(
-                                    'url'   => $url,
-                                    'label' => 'Campañas'
-                                )
-                            ),
+                            'folder' => 'base',
+                            'file' => 'edit',
                             'data' => (object) array(),
                             'form' => array(
                                 'action' => "$url/edit/",
@@ -2782,15 +2936,10 @@ namespace Goteo\Controller {
                     }
 
                     return new View(
-                        'view/admin/edit.html.php',
+                        'view/admin/index.html.php',
                         array(
-                            'title' => "Editando una campaña",
-                            'menu' => array(
-                                array(
-                                    'url'   => $url,
-                                    'label' => 'Campañas'
-                                )
-                            ),
+                            'folder' => 'base',
+                            'file' => 'edit',
                             'data' => $item,
                             'form' => array(
                                 'action' => "$url/edit/$id",
@@ -2832,15 +2981,154 @@ namespace Goteo\Controller {
             }
 
             return new View(
-                'view/admin/list.html.php',
+                'view/admin/index.html.php',
                 array(
-                    'title' => 'Gestión de caqmpañas',
-                    'menu' => array(
-                        array(
-                            'url' => "$url/add",
-                            'label' => 'Nueva campaña'
-                        )
+                    'folder' => 'base',
+                    'file' => 'list',
+                    'addbutton' => 'Nueva campaña',
+                    'data' => $model::getList(),
+                    'columns' => array(
+                        'name' => 'Campaña',
+                        'used' => 'Aportes',
+                        'edit' => '',
+                        'remove' => ''
                     ),
+                    'url' => "$url",
+                    'errors' => $errors
+                )
+            );
+        }
+
+        /*
+         *  Gestión de nodos
+         */
+        public function nodes($action = 'list', $id = null) {
+
+            $BC = self::menu(array(
+                'section' => 'sponsors',
+                'option' => __FUNCTION__,
+                'action' => $action,
+                'id' => $id
+            ));
+
+            define('ADMIN_BCPATH', $BC);
+
+            $model = 'Goteo\Model\Node';
+            $url = '/admin/nodes';
+
+            $errors = array();
+
+            switch ($action) {
+                case 'add':
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'base',
+                            'file' => 'edit',
+                            'data' => (object) array(),
+                            'form' => array(
+                                'action' => "$url/edit/",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'Añadir'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Campaña',
+                                        'name' => 'name',
+                                        'type' => 'text'
+                                    ),
+                                    'description' => array(
+                                        'label' => 'Descripción',
+                                        'name' => 'description',
+                                        'type' => 'textarea',
+                                        'properties' => 'cols="100" rows="2"'
+                                    )
+                                )
+
+                            )
+                        )
+                    );
+
+                    break;
+                case 'edit':
+
+                    // gestionar post
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
+
+                        $errors = array();
+
+                        // instancia
+                        $item = new $model(array(
+                            'id' => $_POST['id'],
+                            'name' => $_POST['name'],
+                            'description' => $_POST['description']
+                        ));
+
+                        if ($item->save($errors)) {
+                            throw new Redirection($url);
+                        }
+                    } else {
+                        $item = $model::get($id);
+                    }
+
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'base',
+                            'file' => 'edit',
+                            'data' => $item,
+                            'form' => array(
+                                'action' => "$url/edit/$id",
+                                'submit' => array(
+                                    'name' => 'update',
+                                    'label' => 'guardar'
+                                ),
+                                'fields' => array (
+                                    'id' => array(
+                                        'label' => '',
+                                        'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'name' => array(
+                                        'label' => 'Campaña',
+                                        'name' => 'name',
+                                        'type' => 'text'
+                                    ),
+                                    'description' => array(
+                                        'label' => 'Descripción',
+                                        'name' => 'description',
+                                        'type' => 'textarea',
+                                        'properties' => 'cols="100" rows="2"'
+                                    )
+                                )
+
+                            ),
+                            'errors' => $errors
+                        )
+                    );
+
+                    break;
+                case 'remove':
+                    if ($model::delete($id)) {
+                        throw new Redirection($url);
+                    }
+                    break;
+            }
+
+            return new View(
+                'view/admin/index.html.php',
+                array(
+                    'folder' => 'base',
+                    'file' => 'list',
+                    'addbutton' => 'Nuevo nodo',
                     'data' => $model::getList(),
                     'columns' => array(
                         'name' => 'Campaña',
@@ -3139,7 +3427,7 @@ namespace Goteo\Controller {
                     $action = $menu[$BC['section']]['options'][$BC['option']]['actions'][$BC['action']];
                     // si es de item , añadir el id (si viene)
                     if ($action['item'] && !empty($BC['id'])) {
-                        $path = " &gt; <strong>{$action['label']} {$BC['id']}</strong>";
+                        $path = " &gt; <strong>{$action['label']}</strong> {$BC['id']}";
                     } else {
                         $path = " &gt; <strong>{$action['label']}</strong>";
                     }
@@ -3148,7 +3436,7 @@ namespace Goteo\Controller {
                 // si el BC tiene Option, enlace a la portada de esa gestión
                 if (!empty($BC['option'])) {
                     $option = $menu[$BC['section']]['options'][$BC['option']];
-                    $path = ' &gt; <a href="/admin/'.$BC['option'].'">'.$option['label'].'</a>'.$path;
+                    $path = ' &gt; <a href="/admin/'.$BC['option'].''.$BC['filter'].'">'.$option['label'].'</a>'.$path;
                 }
 
                 // si el BC tiene section, facil, enlace al admin
@@ -3166,168 +3454,3 @@ namespace Goteo\Controller {
 	}
 
 }
-
-
-        /*
-         *  Gestión de intereses de usuarios es obsoleta
-         *  se usan las mismas categorias de proyecto
-         *
-        public function interests($action = 'list', $id = null) {
-
-            throw new Redirection('/admin/categories');
-
-            $model = 'Goteo\Model\Interest';
-            $url = '/admin/interests';
-
-            $errors = array();
-
-            switch ($action) {
-                case 'add':
-                    return new View(
-                        'view/admin/edit.html.php',
-                        array(
-                            'title' => "Añadiendo un nuevo interés de usuarios",
-                            'menu' => array(
-                                array(
-                                    'url'   => $url,
-                                    'label' => 'Intereses'
-                                )
-                            ),
-                            'data' => (object) array(),
-                            'form' => array(
-                                'action' => "$url/edit/",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => 'Añadir'
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Interés',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    ),
-                                    'description' => array(
-                                        'label' => 'Descripción',
-                                        'name' => 'description',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="2"',
-
-                                    )
-                                )
-
-                            )
-                        )
-                    );
-
-                    break;
-                case 'edit':
-
-                    // gestionar post
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
-
-                        $errors = array();
-
-                        // instancia
-                        $item = new $model(array(
-                            'id' => $_POST['id'],
-                            'name' => $_POST['name'],
-                            'description' => $_POST['description']
-                        ));
-
-                        if ($item->save($errors)) {
-                            throw new Redirection($url);
-                        }
-                    } else {
-                        $item = $model::get($id);
-                    }
-
-                    return new View(
-                        'view/admin/edit.html.php',
-                        array(
-                            'title' => "Editando un interés de usuario",
-                            'menu' => array(
-                                array(
-                                    'url'   => $url,
-                                    'label' => 'Intereses'
-                                )
-                            ),
-                            'data' => $item,
-                            'form' => array(
-                                'action' => "$url/edit/$id",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => 'guardar'
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Interés',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    ),
-                                    'description' => array(
-                                        'label' => 'Descripción',
-                                        'name' => 'description',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="2"',
-
-                                    )
-                                )
-
-                            ),
-                            'errors' => $errors
-                        )
-                    );
-
-                    break;
-                case 'up':
-                    $model::up($id);
-                    break;
-                case 'down':
-                    $model::down($id);
-                    break;
-                case 'remove':
-                    if ($model::delete($id)) {
-                        throw new Redirection($url);
-                    }
-                    break;
-            }
-
-            return new View(
-                'view/admin/list.html.php',
-                array(
-                    'title' => 'Gestión de intereses de usuarios',
-                    'menu' => array(
-                        array(
-                            'url' => "$url/add",
-                            'label' => 'Nuevo interés'
-                        )
-                    ),
-                    'data' => $model::getAll(),
-                    'columns' => array(
-                        'name' => 'Interes',
-                        'used' => 'Usuarios',
-                        'order' => 'Prioridad',
-                        'up' => '',
-                        'down' => '',
-                        'edit' => '',
-                        'remove' => ''
-                    ),
-                    'url' => "$url",
-                    'errors' => $errors
-                )
-            );
-        }
-         *
-         */
