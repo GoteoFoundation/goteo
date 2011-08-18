@@ -71,7 +71,7 @@ namespace Goteo\Controller {
                         'view/admin/index.html.php',
                         array(
                             'folder' => 'pages',
-                            'file' => 'edit',
+                            'file' => 'list',
                             'pages' => $pages
                         )
                     );
@@ -1342,6 +1342,9 @@ namespace Goteo\Controller {
             $errors = array();
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                // esto es para añadir una entrada en la portada
+                
 
                 // objeto
                 $post = new Model\Post(array(
@@ -3442,7 +3445,7 @@ namespace Goteo\Controller {
                 // si el BC tiene section, facil, enlace al admin
                 if (!empty($BC['section'])) {
                     $section = $menu[$BC['section']];
-                    $path = '<a href="/admin">'.$section['label'].'</a>' . $path;
+                    $path = '<a href="/admin#'.$BC['section'].'">'.$section['label'].'</a>' . $path;
                 }
                 return $path;
             }

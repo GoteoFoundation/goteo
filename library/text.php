@@ -140,10 +140,14 @@ namespace Goteo\Library {
 
 		static public function getPurpose ($id) {
 			// buscamos la explicación del texto en la tabla
-			$query = Model::query("SELECT purpose FROM purpose WHERE `text` = :id", array(':id' => $id));
+			$query = Model::query("SELECT purpose, html FROM purpose WHERE `text` = :id", array(':id' => $id));
 			$exist = $query->fetchObject();
 			if (!empty($exist->purpose)) {
-				return $exist->purpose;
+                if ($exist->html) {
+        			return \htmlentities($exist->purpose);
+                } else {
+    				return $exist->purpose;
+                }
 			} else {
 				Model::query("REPLACE INTO purpose (text, purpose) VALUES (:text, :purpose)", array(':text' => $id, ':purpose' => "Texto $id"));
 				return 'Texto: ' . $id;

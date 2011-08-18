@@ -66,6 +66,7 @@ body.dashboard div#dashboard-menu ul li.section.current ul {
     display: block;
 }
 
+body.dashboard div#dashboard-menu ul li.section.active,
 body.dashboard div#dashboard-menu ul li.section.current {
     margin-bottom: 2.6em;
 }

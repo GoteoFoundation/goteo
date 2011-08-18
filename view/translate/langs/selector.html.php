@@ -15,7 +15,7 @@ $actual = Lang::get($_SESSION['translator_lang']);
     No has seleccionado un idioma al que traducir. <label for="selector">Traducir a:</label>
     <?php endif; ?>
     <select id="selector" name="lang" onchange="document.getElementById('selector-form').submit();">
-        <option value="">Seleccionar idioma de traducción</option>
+        <option value="">Seleccionar idioma de traducci&oacute;n</option>
     <?php foreach ($langs as $lang) : ?>
         <option value="<?php echo $lang->id; ?>"<?php if ($lang->id == $actual->id) echo ' selected="selected"'; ?>><?php echo $lang->name; ?></option>
     <?php endforeach; ?>

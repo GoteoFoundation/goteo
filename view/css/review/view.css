@@ -50,6 +50,7 @@ body.review div#review-menu ul li.section.current ul {
     display: block;
 }
 
+body.review div#review-menu ul li.section.active, 
 body.review div#review-menu ul li.section.current {
     margin-bottom: 2.6em;
 }

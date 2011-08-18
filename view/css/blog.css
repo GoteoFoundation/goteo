@@ -66,11 +66,11 @@ div.widget.blog-content-module  .embed,
 }
 div.widget.blog-content-module  .gallery-image,
 #blog-content .post .gallery-image{
-	text-align:center;
+	text-align:left;
 }
 div.widget.blog-content-module  .gallery-image img,
 #blog-content .post .gallery-image img{
-	margin: 0 auto;
+	margin: 0 18px;
 }
 div.widget.blog-content-module .comments-num,
 #blog-content .post .comments-num{

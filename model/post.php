@@ -192,7 +192,7 @@ namespace Goteo\Model {
                 return false;
             }
 
-            $sql = "UPDATE post SET `$from` = 0 WHERE id = :id";
+            $sql = "UPDATE post SET `$from`=0, `order`=NULL WHERE id = :id";
             if (self::query($sql, array(':id'=>$id))) {
                 return true;
             } else {
@@ -202,7 +202,7 @@ namespace Goteo\Model {
         }
 
         /*
-         * Para que una pregunta salga antes  (disminuir el order)
+         * Para que salga antes  (disminuir el order)
          */
         //@FIXME essse blog a piñon!
         public static function up ($id, $type = 'home') {

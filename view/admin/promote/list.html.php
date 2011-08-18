@@ -3,7 +3,7 @@
 use Goteo\Library\Text;
 
 ?>
-<a href="/admin/promote/add">Nuevo destacado</a>
+<a href="/admin/promote/add" class="button red">Nuevo destacado</a>
 
 <div class="widget board">
     <table>

@@ -45,6 +45,7 @@ include 'view/prologue.html.php';
             <div class="center">
 
                 <?php foreach ($this['menu'] as $sCode=>$section) : ?>
+                <a name="<?php echo $sCode ?>"></a>
                 <div class="widget board collapse">
                     <h3 class="title"><?php echo $section['label'] ?></h3>
                     <ul>

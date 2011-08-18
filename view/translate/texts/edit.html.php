@@ -19,7 +19,7 @@ $text->text = Text::getTrans($this['id']);
 
     <fieldset>
         <legend>Texto en español</legend>
-        <blockquote><?php echo htmlentities($text->purpose); ?></blockquote>
+        <blockquote><?php echo $text->purpose; ?></blockquote>
     </fieldset>
 
     <form action="/translate/texts/edit/<?php echo $text->id ?>/<?php echo $this['filter'] ?>" method="post" >

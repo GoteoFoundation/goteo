@@ -75,7 +75,6 @@ div#sub-header-secondary > div > h2 a{
 	text-decoration:none;
 	position:relative;
 	left:12px;
-	font-weight:normal;
 }
 
 div#sub-header-secondary > div > h2 a:hover span.red{

@@ -26,7 +26,7 @@ use Goteo\Core\ACL,
                 </div>
             </li>
             <?php if (!empty($_SESSION['user'])): ?>            
-            <li class="dashboard"><a href="/dashboard"><span><?php echo Text::get('dashboard-menu-main'); ?> <em><?php echo $_SESSION['user']->name; ?></em></span></a>
+            <li class="dashboard"><a href="/dashboard"><span><?php echo Text::get('dashboard-menu-main'); ?></span><img src="/image/<?php echo $_SESSION['user']->avatar->id; ?>/28/28/1" /></a>
                 <div>
                     <ul>
                         <li><a href="/dashboard/activity"><span><?php echo Text::get('dashboard-menu-activity'); ?></span></a></li>

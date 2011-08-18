@@ -7,84 +7,30 @@ define('ADMIN_NOAUTOSAVE', true);
 
 $promo = $this['promo'];
 
-switch ($this['action']) {
-    case 'add':
-        $availables = array();
-
-        foreach ($this['projects'] as $project) {
-            $availables[] = array(
-                'value' => $project->id,
-                'label' => $project->name . ' ('. $this['status'][$project->status] . ')'
-            );
-        }
-
-        $project = array(
-            'title'     => 'Proyecto',
-            'class'     => 'inline',
-            'type'      => 'radios',
-            'options'   => $availables,
-            'value'     => $promo->project,
-            'hint'      => 'Seleccionar el proyecto a destacar',
-        );
-    break;
-    case 'edit':
-        $project = array (
-            'type' => 'hidden',
-            'value' => $promo->project
-        );
-    break;
-}
 ?>
 <form method="post" action="/admin/promote">
-<?php
-echo new SuperForm(array(
+    <input type="hidden" name="order" value="<?php echo $promo->order ?>" />
+    <input type="hidden" name="id" value="<?php echo $promo->id; ?>" />
 
-    'level'         => 3,
-    'method'        => 'post',
-    'hint'          => "Los proyectos destacados aparecen en la portada, en el módulo 'Destacados'",
-    'footer'        => array(
-        'save' => array(
-            'type'  => 'submit',
-            'label' => 'Guardar',
-            'class' => 'button',
-            'name'  => 'save'
-        )
-    ),
-    'elements'      => array(
-        'action' => array(
-            'type' => 'hidden',
-            'value' => $this['action']
-        ),
+<p>
+    <label for="promo-project">Proyecto:</label><br />
+    <select id="promo-project" name="project">
+        <option value="" >Seleccionar el proyecto a destacar</option>
+    <?php foreach ($this['projects'] as $project) : ?>
+        <option value="<?php echo $project->id; ?>"<?php if ($promo->project == $project->id) echo' selected="selected"';?>><?php echo $project->name . ' ('. $this['status'][$project->status] . ')'; ?></option>
+    <?php endforeach; ?>
+    </select>
+</p>
 
-        'order' => array(
-            'type' => 'hidden',
-            'value' => $promo->order
-        ),
+<p>
+    <label for="promo-name">Título:</label><span style="font-style:italic;">Máximo 20 caracteres</span><br />
+    <input type="text" name="title" id="promo-title" value="<?php echo $promo->title; ?>" size="50" maxlength="20" />
+</p>
 
-        'project' => $project,
+<p>
+    <label for="promo-description">Descripción:</label><span style="font-style:italic;">Máximo 100 caracteres</span><br />
+    <input type="text" name="description" id="promo-description" maxlength="100" value="<?php echo $promo->description; ?>" size="120" />
+</p>
 
-        'title' => array(
-            'type'      => 'textbox',
-            'required'  => true,
-            'size'      => 20,
-            'title'     => 'Título',
-            'hint'      => 'Título conceptual del proyecto destacado',
-            'errors'    => !empty($promo->title) ? array('Pon un título al proyecto destacado') : array(),
-            'value'     => $promo->title
-        ),
-
-        'description' => array(
-            'type'  => 'textbox',
-            'required'  => true,
-            'title' => 'Descripción',
-            'size' => 100,
-            'maxlength' => 100,
-            'hint'  => 'Máximo 100 caracteres',
-            'errors'    => array(),
-            'value' => $promo->description
-        )
-    )
-
-));
-?>
+    <input type="submit" name="save" value="Guardar" />
 </form>
