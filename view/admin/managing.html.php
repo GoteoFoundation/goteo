@@ -79,7 +79,8 @@ include 'view/prologue.html.php';
                 <table>
                     <thead>
                         <tr>
-                            <th>Usuario</th> <!-- view profile -->
+                            <th>Alias</th> <!-- view profile -->
+                            <th>User</th>
                             <th>Email</th>
                             <th colspan="2">Estado</th>
                             <th colspan="2">Revisor</th>
@@ -91,6 +92,7 @@ include 'view/prologue.html.php';
                         <?php foreach ($this['users'] as $user) : ?>
                         <tr>
                             <td><a href="/user/<?php echo $user->id; ?>" target="_blank" title="Preview"><?php echo $user->name; ?></a></td>
+                            <td><strong><?php echo $user->id; ?></strong></td>
                             <td><?php echo $user->email; ?></td>
                             <td><?php echo $user->active ? 'Activo' : 'Inactivo'; ?></td>
                             <?php if ($user->active) : ?>
