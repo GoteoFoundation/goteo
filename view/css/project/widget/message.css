@@ -1,5 +1,6 @@
 div.project-message{	
 	position:relative;
+	max-width:580px;
 }
 
 div.project-message div#bocadillo{

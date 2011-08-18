@@ -46,7 +46,7 @@ div#sub-header,
 div#sub-header-secondary { 
     clear: both;
     padding: 20px 0;
-    margin-bottom: 15px;
+    margin-bottom: 32px;
 }
 
 div#sub-header{
@@ -85,23 +85,27 @@ div#sub-header-secondary > div > h2 a:hover span.red{
 	margin:30px auto;
 }
 
-div#sub-header > div > div{
+div#sub-header > div > div.slides_container{
 	width:680px;
+	height:156px;
+	display:none;
 	float:left;
-	margin:18px 0 0 0;
 }
 
-div#sub-header > div > div.subhead-banner{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner{
 	margin:0px;
+	width:680px;
+	height:156px;
+	display:block;
 }
 
-div#sub-header > div > div.subhead-banner .shb-img{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-img{
 	margin:0px;
 	background: url('header/banners/test-banner-home.jpg') scroll no-repeat  0 0;
 	height:156px;
 }
 
-div#sub-header > div > div.subhead-banner .shb-info{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info{
 	margin:0px;
 	background:#FFFFFF;
 	width:335px;
@@ -114,20 +118,20 @@ div#sub-header > div > div.subhead-banner .shb-info{
 	padding:10px;
 }
 
-div#sub-header > div > div.subhead-banner .shb-info h2{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info h2{
 	font: bold 14px Helvetica, Arial, Geneva, sans-serif;
     margin: 0px;
     text-transform: uppercase;
 }
 
-div#sub-header > div > div.subhead-banner .shb-info small{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info small{
 	font: normal 11px Helvetica, Arial, Geneva, sans-serif;
     margin: 2px 0;
     color:#1eb2b2;
 	display:block;
 }
 
-div#sub-header > div > div.subhead-banner .shb-info .col-return{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .col-return{
 	border-top: 1px solid #58595B;
 	border-bottom: 1px solid #58595B;
 	margin: 0;
@@ -136,35 +140,35 @@ div#sub-header > div > div.subhead-banner .shb-info .col-return{
 	float:left;
 }
 
-div#sub-header > div > div.subhead-banner .shb-info .col-return h3{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .col-return h3{
 	font: bold 11px Helvetica, Arial, Geneva, sans-serif;
     margin: 0px;
     text-transform: uppercase;
 }
 
-div#sub-header > div > div.subhead-banner .shb-info .col-return p{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .col-return p{
     margin: 0px 0px 4px 0px;
 	font: normal 11px Helvetica, Arial, Geneva, sans-serif;
 }
 
-div#sub-header > div > div.subhead-banner .shb-info .col-return ul{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .col-return ul{
     float:left;
 	list-style:none;
 	padding:0;
 	margin:3px 0 0 0;
 }
 
-div#sub-header > div > div.subhead-banner .shb-info .col-return ul li{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .col-return ul li{
     display:inline;
 	margin:0 3px 0 0;
 	padding:0;
 }
 
-div#sub-header > div > div.subhead-banner .shb-info .col-return .license{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .col-return .license{
     float:right;
 }
 
-div#sub-header > div > div.subhead-banner .shb-info .financ-meter{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter{
     float:right;
 	width:75px;
 	font: normal 11px Helvetica, Arial, Geneva, sans-serif;
@@ -173,23 +177,23 @@ div#sub-header > div > div.subhead-banner .shb-info .financ-meter{
 	padding:0;
 }
 
-div#sub-header > div > div.subhead-banner .shb-info .financ-meter li{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter li{
 	margin:0;
 	padding:0;
 }
 
-div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.reached{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter li.reached{
     font: bold 14px Helvetica, Arial, Geneva, sans-serif;
 	color:#1eb2b2;
 }
 
-div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.optimun{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter li.optimun{
     font: bold 14px Helvetica, Arial, Geneva, sans-serif;
 	color:#96238F;
 }
 
-div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.reached .euro,
-div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.optimun .euro{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter li.reached .euro,
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter li.optimun .euro{
 	height: 16px;
 	width: 16px;
 	line-height: 2000px;
@@ -198,32 +202,41 @@ div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.optimun .eu
 	margin-bottom: -3px;
 }
 
-div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.reached .euro{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter li.reached .euro{
 	background: url('euro/blue/s.png') scroll no-repeat top right;
 }
 
-div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.optimun .euro{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter li.optimun .euro{
 	background: url('euro/violet/s.png') scroll no-repeat top right;
 }
 
-div#sub-header > div > div.subhead-banner .shb-info .financ-meter li.days{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter li.days{
 	color:#1eb2b2;
 }
 
-div#sub-header > div > div.subhead-banner .sign-in-with{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner h2.message{
+	margin:20px 0px 20px 20px;
+}
+
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .sign-in-with{
 	float:left;
 	list-style:none;
-	margin:0px;
+	margin:0px 0px 0px 20px;
 	padding:0 0 10px 0;
 }
 
-div#sub-header > div > div.subhead-banner .sign-in-with li{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .sign-in-with li{
 	display: inline;
 	margin: 0 20px 0 0;
 }
 
 div#sub-header > div.clearfix{
 	min-width:915px;
+}
+
+div#sub-header > div.clearfix > div{
+	width:680px;
+	float:left;
 }
 
 div#sub-header > div > div.mod-pojctopen{
@@ -265,42 +278,68 @@ div#sub-header > div > div > h2 .greenblue{
 .sliderbanners-ctrl {
 	max-width: 940px;
 	margin: 0 auto;
-	list-style:none;
 	padding:0px;
     display: block;
 }
 
-.sliderbanners-ctrl li {
+.sliderbanners-ctrl a.next,
+.sliderbanners-ctrl a.prev {
+    width: 16px;
+    height: 16px;
+	line-height: 2000px;
+	overflow: hidden;
+	float:left;
+	margin: 8px 0 0 0;
+/*	display: inline-block; */
+}
+
+.sliderbanners-ctrl a.prev {
+	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 0;
+}
+
+.sliderbanners-ctrl a.prev:hover {
+	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -32px;
+}
+
+.sliderbanners-ctrl a.next{
+	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -16px;
+}
+
+.sliderbanners-ctrl a.next:hover {
+	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -48px;
+}
+
+.sliderbanners-ctrl ul.paginacion {
+	margin: 8px 0 0 0;
+	list-style:none;
+	padding:0px;
+	float:left;
+
+}
+
+.sliderbanners-ctrl ul li {
 	cursor:pointer;
     display: block;
     float: left;
     overflow: hidden;
-    margin-bottom: 5px;
+	margin: 0px 4px 5px 4px;
 }
 
-.sliderbanners-ctrl li.navi > * {
-    display: block;
-    height: 100%;
-    width: 100%;
-    text-indent: 2000px;
-    line-height: 2000px;
-    margin: 0px 3px;
-}
-
-.sliderbanners-ctrl li.navi a {
+.sliderbanners-ctrl li a {
     width: 10px;
-    height: 10px;
-    margin-top: 3px;
+    height: 12px;
+    margin-top: 2px;
     background-color: #cdcdce;
     color: #cdcdce;
+	display:block;
 }
 
-.sliderbanners-ctrl li.navi a:hover {
+.sliderbanners-ctrl li a:hover {
     background-color: #20b3b2;
     color: #20b3b2;
 }
 
-.sliderbanners-ctrl li.navi.active a {
+.sliderbanners-ctrl li.current a {
     background-color: #808184 !important;
     color: #808184 !important;
 }
@@ -599,7 +638,7 @@ div#header div#menu > ul > li.dashboard {
 } 
 
 div#header div#menu > ul > li.dashboard {
-    background: transparent url('header/down-black.png') no-repeat right center;
+    background: transparent url('header/down-black.png') no-repeat right 30px;
 }
 
 div#header div#menu > ul > li.login fieldset > * {

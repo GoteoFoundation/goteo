@@ -24,6 +24,9 @@
           <script type="text/javascript" src="/view/js/jquery.mousewheel.js"></script>
           <script type="text/javascript" src="/view/js/jquery.jscrollpane.min.js"></script>
           <!-- end custom scrollbars -->
+		  <!-- sliders -->
+		  <script type="text/javascript" src="/view/js/slides.jquery.js"></script>
+		  <!-- end sliders -->
           <!-- fancybox-->   
 		  <script type="text/javascript" src="/view/js/jquery.fancybox-1.3.4.pack.js"></script>
 		  <link rel="stylesheet" type="text/css" href="/view/css/fancybox/jquery.fancybox-1.3.4.css" media="screen" />

@@ -7,6 +7,7 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Library\Text,
+        Goteo\Library\Mail,
         Goteo\Model;
 
     class Project extends \Goteo\Core\Controller {
@@ -137,19 +138,30 @@ namespace Goteo\Controller {
                 // guardamos los datos que hemos tratado y los errores de los datos
                 $project->save($errors);
 
-                // si ha ocurrido algun error de proces (como p.ej. "no se ha podido guardar loqueseaa")
-                /*
-                 * Me follo la exception de si falla el save, ya veremos como mostrar esos errors
-                 * @todo
-                if (!empty($errors))
-                    throw new \Goteo\Core\Exception(implode('. ', $errors));
-                 *
-                 */
-
                 // si estan enviando el proyecto a revisión
                 if (isset($_POST['process_preview']) && isset($_POST['finish'])) {
                     $errors = array();
                     if ($project->ready($errors)) {
+
+                        // email a los de goteo
+                        $mailHandler = new Mail();
+
+                        $mailHandler->to = 'hola@goteo.org';
+                        $mailHandler->subject = 'Proyecto ' . $project->name . ' enviado a valoración';
+                        $mailHandler->content = 'Han enviado un nuevo proyecto a revisión<br />El nombre del proyecto es: ' . $project->name;
+                        $mailHandler->fromName = "{$project->user->name}";
+                        $mailHandler->from = $project->user->email;
+
+                        $mailHandler->html = true;
+                        if ($mailHandler->send($errors)) {
+                            $message = 'Mensaje de contacto enviado correctamente.';
+                            $data = array();
+                        } else {
+                            $errors[] = 'Ha habido algún error al enviar el mensaje.';
+                        }
+
+                        unset($mailHandler);
+
                         throw new Redirection("/dashboard?ok");
                     }
                 }

@@ -170,6 +170,8 @@ div.widget.project > .author a {
     font-size: 11px;
     text-decoration: none;
     text-transform: none;
+	position:relative;
+	z-index:100;
 }
 
 div.widget.project > .title a:hover{

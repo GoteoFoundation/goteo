@@ -22,8 +22,7 @@ $widget_code_investor = '<iframe frameborder="0" height="380px" src="'.$url.'/in
                 <span class="primero">Difunde este proyecto</span>
                 <span class="segundo"><?php echo Text::get('project-spread-widget')?></span>        
               </div>
-         	  
-              <!-- meter aquí llamada a vista + código embed -->
+         	             
               <div>
 			  <?php
         
@@ -32,11 +31,12 @@ $widget_code_investor = '<iframe frameborder="0" height="380px" src="'.$url.'/in
                     'project'   => $project));
                 ?>
               </div>
+              
               <div id="widget-code">
                 <div class="wc-embed" onclick="$('#widget_code').focus();$('#widget_code').select()">CÓDIGO EMBED</div>
                 <textarea id="widget_code" onclick="this.focus();this.select()" readonly="readonly"><?php echo htmlentities($widget_code); ?></textarea>
               </div>
-              <!-- fin de meter aquí llamada a vista + código embed -->
+        
           </div>
             
           <div class="right">
@@ -45,7 +45,7 @@ $widget_code_investor = '<iframe frameborder="0" height="380px" src="'.$url.'/in
                  <span class="segundo"><?php echo Text::get('project-share-header')?></span>
 	        </div>
             
-	   	  	<!-- meter aquí llamada a vista + código embed -->  
+	 
             <div>
 				<?php
     
@@ -59,13 +59,14 @@ $widget_code_investor = '<iframe frameborder="0" height="380px" src="'.$url.'/in
             
             <div>
                 <div id="widget-code">
-                <div class="wc-embed" onclick="$('#investor_code').focus();$('#investor_code').select()">CÓDIGO EMBED</div>
-                <textarea id="investor_code" onclick="this.focus();this.select()" readonly="readonly"><?php echo htmlentities($widget_code_investor); ?></textarea>
-    		</div>          
-             <!-- fin de meter aquí llamada a vista + código embed -->
+	                <div class="wc-embed" onclick="$('#investor_code').focus();$('#investor_code').select()">CÓDIGO EMBED</div>
+              		<textarea id="investor_code" onclick="this.focus();this.select()" readonly="readonly"><?php echo htmlentities($widget_code_investor); ?></textarea>
+    			</div>          
+          
             
           </div>
           
+   		 </div>
     </div>
         
 </div>

@@ -103,9 +103,9 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
             ?>
             </div>
 
-            <?php $printSendMsg = false; //no quitar - Susanna?>
+            <?php $printSendMsg = false;?>
             <div class="center">
-                <?php
+			<?php
                 // los modulos centrales son diferentes segun el show
                 switch ($show) {
                     case 'needs':
@@ -120,6 +120,7 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                             new View('view/project/widget/sendMsg.html.php', array('project' => $project));
                         }
                         break;
+						
                     case 'supporters':
 
 						// segun el paso de aporte
@@ -136,14 +137,14 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                                         new View('view/project/widget/investMsg.html.php', array('message' => $invest, 'user' => $user)),
                                         new View('view/project/widget/invest_redirect.html.php', array('project' => $project, 'personal' => User::getPersonal($user->id)));
                                     break;
+									
                                 case 'ok':
                                     echo
-                                        new View('view/project/widget/investMsg.html.php', array('message' => $invest, 'user' => $user)),
-                                        new View('view/project/widget/spread.html.php',array('project' => $project));
-										//prueba para sacarlo del contenedor
-										$printSendMsg=true;
-										//new View('view/project/widget/sendMsg.html.php',array('project' => $project));
+                                        new View('view/project/widget/investMsg.html.php', array('message' => $invest, 'user' => $user)), new View('view/project/widget/spread.html.php',array('project' => $project));
+										//sacarlo de div#center
+										$printSendMsg=true;										
                                     break;
+									
                                 case 'fail':
                                     echo
                                         new View('view/project/widget/investMsg.html.php', array('message' => $invest, 'user' => User::get($_SESSION['user']->id))),
@@ -156,19 +157,24 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                                 new View('view/worth/legend.html.php');
                         }
                         break;
+						
                     case 'messages':
                         echo
                             new View('view/project/widget/messages.html.php', array('project' => $project));
                         break;
-                    case 'rewards':
+                   
+				    case 'rewards':
                         echo
                             new View('view/project/widget/rewards-summary.html.php', array('project' => $project));
                         break;
-                    case 'updates':
+                    
+					case 'updates':
                         echo
                             new View('view/project/widget/updates.html.php', array('project' => $project, 'blog' => $blog, 'post' => $post));
                         break;
-                    case 'home':
+                    
+					case 'home':
+					
                     default:
                         if (!empty($project->media->url)) {
                             echo new View('view/project/widget/media.html.php', array('project' => $project));
@@ -179,8 +185,7 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
                         break;
                 }
                 ?>
-
-            </div>
+             </div>
 
 			<?php
 				if($printSendMsg){
@@ -188,11 +193,7 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
 				}
             ?>
 
-
-
-
         </div>
 
         <?php include 'view/footer.html.php' ?>
-
-<?php include 'view/epilogue.html.php' ?>
+		<?php include 'view/epilogue.html.php' ?>

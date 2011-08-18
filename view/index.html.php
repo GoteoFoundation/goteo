@@ -71,52 +71,58 @@ include 'view/header.html.php' ?>
 
     });
     </script>
+		<script>
+			$(function(){
+				$('#sub-header').slides();
+			});
+		</script>
         <div id="sub-header" class="banners">
 			<div class="clearfix">
-				<!-- Módulo de texto más sign in -->
-				<!--div class="subhead-banner">
-					<h2>Red social para <span class="greenblue">cofinanciar y colaborar con</span><br /> proyectos creativos que fomentan el procomún<br /> ¿Tienes un proyecto con <span class="greenblue">adn abierto?</span></h2>
-					<ul class="sign-in-with">
-						<li>Accede con facebook</li>
-						<li>Accede con Twitter</li>
-						<li>Accede con Open ID</li>
-					</ul>
-				</div-->
-				<!-- Módulo banner imagen más resumen proyecto -->
-				<div class="subhead-banner">
-					<div class="shb-info clearfix">
-						<h2>Todojunto Letter Press Press Press</h2>
-						<small>Por: Todojunto</small>
-						<div class="col-return clearfix">
-							<h3>Retorno colectivo</h3>
-							<p>Se haran manuales de como montar imprimir con tecnicas artesanales</p>
-							<ul>
-								<li><img src="view/css/icon/s/design.png" alt="design" /></li>
-								<li><img src="view/css/icon/s/other.png" alt="other" /></li>
-								<li><img src="view/css/icon/s/money.png" alt="rewards" /></li>
-							</ul>
-							<div class="license"><img src="view/css/license/ccbync.png" alt="ccbync" /></div>
-						</div>
-						<ul class="financ-meter">
-							<li>OBTENIDO</li>
-							<li class="reached">200 <span class="euro">€</span></li>
-							<li>DE</li>
-							<li class="optimun">3000 <span class="euro">€</span></li>
-							<li>QUEDAN</li>
-							<li class="days">2 días</li>
+				<div class="slides_container">
+					<!-- Módulo de texto más sign in -->
+					<div class="subhead-banner">
+						<h2 class="message">Red social para <span class="greenblue">cofinanciar y colaborar con</span><br /> proyectos creativos que fomentan el procomún<br /> ¿Tienes un proyecto con <span class="greenblue">adn abierto?</span></h2>
+						<ul class="sign-in-with">
+							<li>Accede con facebook</li>
+							<li>Accede con Twitter</li>
+							<li>Accede con Open ID</li>
 						</ul>
 					</div>
-					<div class="shb-img"></div>
+					<!-- Módulo banner imagen más resumen proyecto -->
+					<div class="subhead-banner">
+						<div class="shb-info clearfix">
+							<h2>Todojunto Letter Press Press Press</h2>
+							<small>Por: Todojunto</small>
+							<div class="col-return clearfix">
+								<h3>Retorno colectivo</h3>
+								<p>Se haran manuales de como montar imprimir con tecnicas artesanales</p>
+								<ul>
+									<li><img src="view/css/icon/s/design.png" alt="design" /></li>
+									<li><img src="view/css/icon/s/other.png" alt="other" /></li>
+									<li><img src="view/css/icon/s/money.png" alt="rewards" /></li>
+								</ul>
+								<div class="license"><img src="view/css/license/ccbync.png" alt="ccbync" /></div>
+							</div>
+							<ul class="financ-meter">
+								<li>OBTENIDO</li>
+								<li class="reached">200 <span class="euro">€</span></li>
+								<li>DE</li>
+								<li class="optimun">3000 <span class="euro">€</span></li>
+								<li>QUEDAN</li>
+								<li class="days">2 días</li>
+							</ul>
+						</div>
+						<div class="shb-img"></div>
+					</div>
 				</div>
 				<div class="mod-pojctopen"><?php echo Text::html('open-banner-header'); ?></div>
 			</div>
+			<div class="sliderbanners-ctrl">
+				<a class="prev">prev</a>
+				<ul class="paginacion"></ul>
+				<a class="next">next</a>
+			</div>
         </div>
-		<ul class="sliderbanners-ctrl">
-			<li class="prev"><a href="#" class="a-null">Anterior</a></li>
-			<li class="navi active"><a href="#" class="a-null">&nbsp</a></li>
-			<li class="navi"><a href="#" class="a-null">&nbsp</a></li>
-			<li class="next"><a href="#" class="a-null">Siguiente</a></li>
-		</ul>
         <div id="main">
             
             <?php if (!empty($this['posts'])): ?>

@@ -10,6 +10,15 @@ div.widget.projects div.project {
     float: left;    
     padding: 0;
     width: 250px;
+	position:relative;
+	z-index:98;
+}
+
+div.widget.projects div.project a.expand{
+	position:absolute;
+	top:0;bottom:0;left:0;right:0;
+	width:100%;
+	z-index:99;
 }
 
 div.widget.projects div.project a.button{

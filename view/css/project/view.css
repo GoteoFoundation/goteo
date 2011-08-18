@@ -89,7 +89,8 @@ body.project-show div#sub-header div.categories a:hover {
     color: #20B3B2;
 }
 
-body.project-show div#sub-header {
+body.project-show div.project-menu {
+	margin:18px 0 0 0;
 }
 
 body.project-show div.project-menu div.sub-menu{
