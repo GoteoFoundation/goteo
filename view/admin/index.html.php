@@ -19,6 +19,8 @@ include 'view/prologue.html.php';
             </div>
         </div>
 
+<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+
         <div id="main">
 
             <?php if (!empty($this['errors']) || !empty($this['success'])) : ?>

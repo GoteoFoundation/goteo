@@ -113,7 +113,12 @@ namespace Goteo\Model {
                     $mail->subject = $subject;
                     $mail->content = $content;
                     $mail->html = true;
-                    $mail->send($errors);
+                    if ($mail->send($errors)) {
+                        Message::Info('Mensaje de activación enviado correctamente');
+                    } else {
+                        Message::Error('Ha habido algún error al enviar el mensaje de activación. Por favor, contáctanos a hola@goteo.org');
+                        Message::Error(implode('<br />', $errors));
+                    }
                 }
                 else {
                     $data[':id'] = $this->id;

@@ -43,6 +43,8 @@ include 'view/header.html.php'; ?>
 
         </div>
 
+<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+
         <div id="main">
             
             <div class="widget">

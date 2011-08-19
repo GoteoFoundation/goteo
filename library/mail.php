@@ -73,10 +73,10 @@ namespace Goteo\Library {
          */
 		public function validate(&$errors = array()) {
 		    if(empty($this->content)) {
-		        $errors['content'] = 'Su mensaje no tiene contenido.';
+		        $errors['content'] = 'El mensaje no tiene contenido.';
 		    }
             if(empty($this->subject)) {
-                $errors['subject'] = 'Su mensaje no tiene asunto.';
+                $errors['subject'] = 'El mensaje no tiene asunto.';
             }
             return empty($errors);
 		}
