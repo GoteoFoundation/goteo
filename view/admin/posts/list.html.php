@@ -1,12 +1,10 @@
 <?php
-
 use Goteo\Library\Text;
-
 ?>
-<a href="/admin/posts/add/home" class="button red">Nueva entrada en portada</a>
+<a href="/admin/posts/add" class="button red">Nueva entrada en portada</a>
 
 <div class="widget board">
-    <h3 class="title">Portada</h3>
+    <?php if (!empty($this['posts'])) : ?>
     <table>
         <thead>
             <tr>
@@ -31,4 +29,7 @@ use Goteo\Library\Text;
         </tbody>
 
     </table>
+    <?php else : ?>
+    <p>No se han encontrado registros</p>
+    <?php endif; ?>
 </div>

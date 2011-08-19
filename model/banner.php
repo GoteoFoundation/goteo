@@ -5,7 +5,7 @@ namespace Goteo\Model {
         \Goteo\Model\Project,
         \Goteo\Library\Check;
 
-    class Promote extends \Goteo\Core\Model {
+    class Banner extends \Goteo\Core\Model {
 
         public
             $node,
@@ -16,66 +16,55 @@ namespace Goteo\Model {
             $order;
 
         /*
-         *  Devuelve datos de un destacado
+         *  Devuelve datos de un banner de proyecto
          */
         public static function get ($project, $node = \GOTEO_NODE) {
                 $query = static::query("
                     SELECT  
-                        promote.node as node,
-                        promote.project as project,
+                        banner.node as node,
+                        banner.project as project,
                         project.name as name,
-                        IFNULL(promote_lang.title, promote.title) as title,
-                        IFNULL(promote_lang.description, promote.description) as description,
-                        promote.order as `order`
-                    FROM    promote
-                    LEFT JOIN promote_lang
-                        ON promote_lang.id = promote.id
-                        AND promote_lang.lang = :lang
+                        banner.order as `order`
+                    FROM    banner
                     INNER JOIN project
-                        ON project.id = promote.project
-                    WHERE promote.project = :project
-                    AND promote.node = :node
-                    ", array(':project'=>$project, ':node'=>$node, ':lang'=>\LANG));
-                $promote = $query->fetchObject(__CLASS__);
+                        ON project.id = banner.project
+                    WHERE banner.project = :project
+                    AND banner.node = :node
+                    ", array(':project'=>$project, ':node'=>$node));
+                $banner = $query->fetchObject(__CLASS__);
 
-                return $promote;
+                return $banner;
         }
 
         /*
-         * Lista de proyectos destacados
+         * Lista de proyectos en banners
          */
         public static function getAll ($node = \GOTEO_NODE) {
 
             // estados
             $status = Project::status();
 
-            $promos = array();
+            $banners = array();
 
             $query = static::query("
                 SELECT
-                    promote.project as project,
+                    banner.project as project,
                     project.name as name,
                     project.status as status,
-                    IFNULL(promote_lang.title, promote.title) as title,
-                    IFNULL(promote_lang.description, promote.description) as description,
-                    promote.order as `order`
-                FROM    promote
-                LEFT JOIN promote_lang
-                    ON promote_lang.id = promote.id
-                    AND promote_lang.lang = :lang
+                    banner.order as `order`
+                FROM    banner
                 INNER JOIN project
-                    ON project.id = promote.project
-                WHERE promote.node = :node
-                ORDER BY `order` ASC, title ASC
-                ", array(':node' => $node, ':lang'=>\LANG));
+                    ON project.id = banner.project
+                WHERE banner.node = :node
+                ORDER BY `order` ASC
+                ", array(':node' => $node));
             
-            foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
-                $promo->description =Text::recorta($promo->description, 100, false);
-                $promo->status = $status[$promo->status];
-                $promos[] = $promo;
+            foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $banner) {
+                $banner->status = $status[$banner->status];
+                $banners[] = $banner;
             }
 
-            return $promos;
+            return $banners;
         }
 
         /*
@@ -84,7 +73,7 @@ namespace Goteo\Model {
         public static function available ($current = null, $node = \GOTEO_NODE) {
 
             if (!empty($current)) {
-                $sqlCurr = " AND project != '$current'";
+                $sqlCurr = " AND banner.project != '$current'";
             } else {
                 $sqlCurr = "";
             }
@@ -97,7 +86,7 @@ namespace Goteo\Model {
                 FROM    project
                 WHERE status > 2
                 AND status < 6
-                AND project.id NOT IN (SELECT project FROM promote WHERE promote.node = :node{$sqlCurr} )
+                AND project.id NOT IN (SELECT project FROM banner WHERE banner.node = :node{$sqlCurr} )
                 ORDER BY name ASC
                 ", array(':node' => $node));
 
@@ -108,15 +97,11 @@ namespace Goteo\Model {
         public function validate (&$errors = array()) { 
             if (empty($this->node))
                 $errors[] = 'Falta nodo';
-                //Text::get('mandatory-promote-node');
+                //Text::get('mandatory-banner-node');
 
             if (empty($this->project))
                 $errors[] = 'Falta proyecto';
-                //Text::get('validate-promote-noproject');
-
-            if (empty($this->title))
-                $errors[] = 'Falta título';
-                //Text::get('mandatory-promote-title');
+                //Text::get('validate-banner-noproject');
 
             if (empty($errors))
                 return true;
@@ -130,8 +115,6 @@ namespace Goteo\Model {
             $fields = array(
                 'node',
                 'project',
-                'title',
-                'description',
                 'order'
                 );
 
@@ -145,7 +128,7 @@ namespace Goteo\Model {
             }
 
             try {
-                $sql = "REPLACE INTO promote SET " . $set;
+                $sql = "REPLACE INTO banner SET " . $set;
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
 
@@ -157,11 +140,11 @@ namespace Goteo\Model {
         }
 
         /*
-         * Para quitar un proyecto destacado
+         * Para quitar un proyecto banner
          */
         public static function delete ($project, $node = \GOTEO_NODE) {
             
-            $sql = "DELETE FROM promote WHERE project = :project AND node = :node";
+            $sql = "DELETE FROM banner WHERE project = :project AND node = :node";
             if (self::query($sql, array(':project'=>$project, ':node'=>$node))) {
                 return true;
             } else {
@@ -177,7 +160,7 @@ namespace Goteo\Model {
             $extra = array (
                     'node' => $node
                 );
-            return Check::reorder($project, 'up', 'promote', 'project', 'order', $extra);
+            return Check::reorder($project, 'up', 'banner', 'project', 'order', $extra);
         }
 
         /*
@@ -187,14 +170,14 @@ namespace Goteo\Model {
             $extra = array (
                     'node' => $node
                 );
-            return Check::reorder($project, 'down', 'promote', 'project', 'order', $extra);
+            return Check::reorder($project, 'down', 'banner', 'project', 'order', $extra);
         }
 
         /*
          *
          */
         public static function next ($node = \GOTEO_NODE) {
-            $query = self::query('SELECT MAX(`order`) FROM promote WHERE node = :node'
+            $query = self::query('SELECT MAX(`order`) FROM banner WHERE node = :node'
                 , array(':node'=>$node));
             $order = $query->fetchColumn(0);
             return ++$order;

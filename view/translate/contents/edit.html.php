@@ -44,7 +44,7 @@ $sizes = array(
         $campo = 'original_'.$field; ?>
         <label for="<?php echo 'id'.$field ?>"><?php echo $fieldName ?>:</label><br />
         <blockquote>
-            <?php echo nl2br(htmlentities($content->$campo)); ?>
+            <?php echo nl2br($content->$campo); ?>
         </blockquote>
         <br />
     <?php endforeach;  ?>

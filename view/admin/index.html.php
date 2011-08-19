@@ -1,7 +1,8 @@
 <?php
 
 use Goteo\Library\Text,
-    Goteo\Core\View;
+    Goteo\Core\View,
+    Goteo\Core\ACL;
 
 $bodyClass = 'admin';
 
@@ -23,8 +24,8 @@ include 'view/prologue.html.php';
             <?php if (!empty($this['errors']) || !empty($this['success'])) : ?>
                 <div class="widget">
                     <p>
-                        <?php echo implode(',', $this['errors']); ?>
-                        <?php echo implode(',', $this['success']); ?>
+                        <?php echo implode('<br />', $this['errors']); ?>
+                        <?php echo implode('<br />', $this['success']); ?>
                     </p>
                 </div>
             <?php endif; ?>
@@ -43,6 +44,12 @@ include 'view/prologue.html.php';
             else : ?>
 
             <div class="center">
+
+                <?php if (ACL::check('/translate')) : ?>
+                <div class="widget">
+                    <?php echo new View ('view/admin/selector.html.php', $this); ?>
+                </div>
+                <?php endif; ?>
 
                 <?php foreach ($this['menu'] as $sCode=>$section) : ?>
                 <a name="<?php echo $sCode ?>"></a>

@@ -4,10 +4,10 @@ use Goteo\Library\Text;
 
 ?>
 
-<a href="/admin/posts/add/footer" class="button red">Nueva entrada al pie</a>
+<a href="/admin/footer/add" class="button red">Nueva entrada al pie</a>
 
 <div class="widget board">
-    <h3 class="title">Footer</h3>
+    <?php if (!empty($this['posts'])) : ?>
     <table>
         <thead>
             <tr>
@@ -32,4 +32,7 @@ use Goteo\Library\Text;
         </tbody>
 
     </table>
+    <?php else : ?>
+    <p>No se han encontrado registros</p>
+    <?php endif; ?>
 </div>

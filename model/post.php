@@ -29,6 +29,7 @@ namespace Goteo\Model {
                         post.blog as blog,
                         post.image as image,
                         post.media as `media`,
+                        DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                         post.order as `order`
                     FROM    post
                     LEFT JOIN post_lang
@@ -173,6 +174,41 @@ namespace Goteo\Model {
 
             try {
                 $sql = "REPLACE INTO post SET " . $set;
+                self::query($sql, $values);
+                if (empty($this->id)) $this->id = self::insertId();
+
+                return true;
+            } catch(\PDOException $e) {
+                $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
+                return false;
+            }
+        }
+
+        public function update (&$errors = array()) {
+            if (!$this->id) return false;
+
+            $fields = array(
+                'order',
+                'home',
+                'footer'
+                );
+
+            $set = '';
+            $values = array(':id'=>$this->id);
+
+            foreach ($fields as $field) {
+                if (!isset ($this->$field))
+                    continue;
+                
+                if ($set != '') $set .= ", ";
+                $set .= "`$field` = :$field ";
+                $values[":$field"] = $this->$field;
+            }
+
+            if ($set == '') return false;
+
+            try {
+                $sql = "UPDATE post SET " . $set . " WHERE post.id = :id";
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
 

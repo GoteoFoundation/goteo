@@ -20,7 +20,6 @@ if (!empty($filters)) {
 $botones = array(
     'edit' => '[Editar]',
     'remove' => '[Quitar]',
-    'translate' => '[Traducir]',
     'up' => '[&uarr;]',
     'down' => '[&darr;]'
 );
@@ -63,34 +62,23 @@ $per = 100 / $cols;
     <table>
         <thead>
             <tr>
-                <?php foreach ($this['columns'] as $key=>$label) : ?>
-                    <th><?php echo $label; ?></th>
-                <?php endforeach; ?>
+                <th><!-- Editar --></th>
+                <th>Texto</th>
+                <th>Agrupación</th>
+                <th><!-- Traducir --></th>
             </tr>
         </thead>
-
         <tbody>
-        <?php foreach ($this['data'] as $item) : ?>
+            <?php foreach ($this['data'] as $item) : ?>
             <tr>
-            <?php foreach ($this['columns'] as $key=>$label) : ?>
-                <?php if ($key == 'translate') : ?>
-                    <td width="5%"><?php if ($translator) : ?><a href="/translate/contents/edit/<?php echo $this['model'].'-'.$item->id; ?>" target="_blank">[Traducir]</a><?php endif; ?>
-                    </td>
-                <?php elseif ($key == 'remove') : ?>
-                    <td width="5%"><a href="<?php echo $this['url']?>/remove/<?php echo (is_object($item)) ? $item->id : $item['id']; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Quitar]</a></td>
-                <?php elseif (in_array($key, array('edit', 'up', 'down'))) :
-                    $id = (is_object($item)) ? $item->id : $item['id'];?>
-                    <td width="5%">
-                        <a title="Registro <?php echo $id; ?>" href="<?php echo "{$this['url']}/{$key}/{$id}/{$filter}"; ?>"><?php echo $botones[$key]; ?></a>
-                    </td>
-                <?php elseif ($key == 'image') : ?>
-                    <td width="<?php echo round($per)-5; ?>%"><?php if (!empty($item->$key)) : ?><img src="/image/<?php echo (is_object($item)) ? $item->$key : $item[$key]; ?>/110/110" alt="image" /><?php endif; ?></td>
-                <?php else : ?>
-                    <td width="<?php echo round($per)-5; ?>%"><?php echo (is_object($item)) ? $item->$key : $item[$key]; ?></td>
+                <td><a href="/admin/texts/edit/<?php echo $item->id; ?>">[Editar]</a></td>
+                <td><?php echo $item->text; ?></td>
+                <td><?php echo $item->group; ?></td>
+                <?php if ($translator) : ?>
+                <td><a href="/translate/texts/edit/<?php echo $item->id; ?>" target="_blank">[Traducir]</a></td>
                 <?php endif; ?>
-            <?php endforeach; ?>
             </tr>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
         </tbody>
     </table>
     <?php else : ?>

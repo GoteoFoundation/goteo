@@ -1,5 +1,4 @@
 <?php
-
 use Goteo\Library\Text;
 
 /*
@@ -33,11 +32,11 @@ $filters = $this['filters'];
         'label' => 'Campaña:',
         'first' => 'Todas las campañas'),
 ); ?>
-<a href="/admin/accounting/invest" class="button red">Generar aportes manualmente</a>&nbsp;&nbsp;&nbsp;
+<a href="/admin/invests/add" class="button red">Generar aportes manualmente</a>&nbsp;&nbsp;&nbsp;
 <a href="/cron" target="_blank" class="button red">Ejecutar proceso cron</a>
 <div class="widget board">
     <h3 class="title">Filtros</h3>
-    <form id="filter-form" action="/admin/accounting" method="get">
+    <form id="filter-form" action="/admin/invests" method="get">
         <input type="hidden" name="filtered" value="yes" />
         <?php foreach ($the_filters as $filter=>$data) : ?>
         <div style="float:left;margin:5px;">
@@ -52,7 +51,7 @@ $filters = $this['filters'];
         <?php endforeach; ?>
     </form>
     <br clear="both" />
-    <a href="/admin/accounting">Quitar filtros</a>
+    <a href="/admin/invests">Quitar filtros</a>
 </div>
 
 <div class="widget board">

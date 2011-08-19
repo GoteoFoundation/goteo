@@ -4,10 +4,10 @@ use Goteo\Library\Text;
 
 ?>
 <div class="widget">
-    <form id="filter-form" action="/admin/accounting/invest" method="post">
+    <form id="filter-form" action="/admin/invests/add" method="post">
         <p>
             <label for="invest-amount">Importe:</label><br />
-            <input type="text" id="invest-amount" name="amount" value="5" />
+            <input type="text" id="invest-amount" name="amount" value="" />
         </p>
         <p>
             <label for="invest-user">Usuario:</label><br />

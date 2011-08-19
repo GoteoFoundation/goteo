@@ -1,9 +1,10 @@
 <?php
+use Goteo\Library\Text,
+    Goteo\Core\ACL;
 
-use Goteo\Library\Text;
+$translator = ACL::check('/translate') ? true : false;
 
 $filters = $this['filters'];
-
 ?>
 <!--            <a href="/add/?filter=<?php echo $filter; ?>" class="button red">Añadir licencia</a> -->
 
@@ -32,6 +33,7 @@ $filters = $this['filters'];
     <table>
         <thead>
             <tr>
+                <th><!-- Edit --></th>
                 <th>Nombre</th> <!-- name -->
                 <th><!-- Icon --></th>
                 <th>Tooltip</th> <!-- description -->
@@ -39,7 +41,7 @@ $filters = $this['filters'];
                 <th>Posición</th> <!-- order -->
                 <th><!-- Move up --></th>
                 <th><!-- Move down --></th>
-                <th><!-- Edit --></th>
+                <th><!-- Traducir--></th>
 <!--                                <td> Remove </td> -->
             </tr>
         </thead>
@@ -47,6 +49,7 @@ $filters = $this['filters'];
         <tbody>
             <?php foreach ($this['licenses'] as $license) : ?>
             <tr>
+                <td><a href="/admin/licenses/edit/<?php echo $license->id; ?>/?filter=<?php echo $filters['group']; ?>">[Editar]</a></td>
                 <td><?php echo $license->name; ?></td>
                 <td><img src="/view/css/license/<?php echo $license->id; ?>.png" alt="<?php echo $license->id; ?>" title="<?php echo $license->name; ?>" /></td>
                 <td><?php echo $license->description; ?></td>
@@ -54,8 +57,10 @@ $filters = $this['filters'];
                 <td><?php echo $license->order; ?></td>
                 <td><a href="/admin/licenses/up/<?php echo $license->id; ?>/?filter=<?php echo $filters['group']; ?>">[&uarr;]</a></td>
                 <td><a href="/admin/licenses/down/<?php echo $license->id; ?>/?filter=<?php echo $filters['group']; ?>">[&darr;]</a></td>
-                <td><a href="/admin/licenses/edit/<?php echo $license->id; ?>/?filter=<?php echo $filters['group']; ?>">[Editar]</a></td>
-<!--                                <td><a href="/admin/licenses/remove=<?php echo $license->id; ?>/?filter=<?php echo $filters['group']; ?>">[Quitar]</a></td>  -->
+                <?php if ($translator) : ?>
+                <td><a href="/translate/contents/edit/license-<?php echo $license->id; ?>" target="_blank">[Traducir]</a></td>
+                <?php endif; ?>
+<!--                                <td><a href="/admin/licenses/remove=<?php echo $license->id; ?>/?filter=<?php echo $filters['group']; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Quitar]</a></td>  -->
             </tr>
             <?php endforeach; ?>
         </tbody>

@@ -1,11 +1,14 @@
 <?php
 
 use Goteo\Library\Text,
-    Goteo\Library\SuperForm;
-
-define('ADMIN_NOAUTOSAVE', true);
+    Goteo\Model;
 
 $promo = $this['promo'];
+
+// proyectos disponibles
+// si tenemos ya proyecto seleccionado lo incluimos
+$projects = Model\Promote::available($promo->project);
+$status = Model\Project::status();
 
 ?>
 <form method="post" action="/admin/promote">
@@ -16,8 +19,8 @@ $promo = $this['promo'];
     <label for="promo-project">Proyecto:</label><br />
     <select id="promo-project" name="project">
         <option value="" >Seleccionar el proyecto a destacar</option>
-    <?php foreach ($this['projects'] as $project) : ?>
-        <option value="<?php echo $project->id; ?>"<?php if ($promo->project == $project->id) echo' selected="selected"';?>><?php echo $project->name . ' ('. $this['status'][$project->status] . ')'; ?></option>
+    <?php foreach ($projects as $project) : ?>
+        <option value="<?php echo $project->id; ?>"<?php if ($promo->project == $project->id) echo' selected="selected"';?>><?php echo $project->name . ' ('. $status[$project->status] . ')'; ?></option>
     <?php endforeach; ?>
     </select>
 </p>
