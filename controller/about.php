@@ -71,8 +71,7 @@ namespace Goteo\Controller {
 
                         $mailHandler = new Mail();
 
-//                        $mailHandler->to = 'info@platoniq.net';
-                        $mailHandler->to = 'jcanaves_contact_goteo@doukeshi.org';
+                        $mailHandler->to = 'info@platoniq.net';
                         $mailHandler->subject = $subject;
                         $mailHandler->content = $content;
                         $mailHandler->fromName = '';

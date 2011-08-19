@@ -88,9 +88,9 @@ namespace Goteo\Controller {
                 $mailHandler = new Mail();
 
 //                $mailHandler->to = $project->contract_email;
-                $mailHandler->to = 'jcanaves_test_investmsg@doukeshi.org';
+                $mailHandler->to = 'hola@goteo.org';
                 $mailHandler->bcc = 'comunicaciones@goteo.org';
-                $mailHandler->subject = $subject;
+                $mailHandler->subject = 'En pruebas: '.$subject;
                 $mailHandler->content = $content;
 
                 $mailHandler->html = true;
@@ -147,9 +147,9 @@ namespace Goteo\Controller {
                 $mailHandler = new Mail();
 
 //                $mailHandler->to = $user->email;
-                $mailHandler->to = 'jcanaves_privatemsg@doukeshi.org';
+                $mailHandler->to = 'hola@goteo.org';
                 $mailHandler->bcc = 'comunicaciones@goteo.org';
-                $mailHandler->subject = $subject;
+                $mailHandler->subject = 'En pruebas: '.$subject;
                 $mailHandler->content = $content;
 
                 $mailHandler->html = true;

@@ -535,10 +535,10 @@ namespace Goteo\Controller {
                                     $mailHandler = new Mail();
 
 //                                    $mailHandler->to = $data->email;
-                                    $mailHandler->to = 'jcanaves_test_rewardmsg@doukeshi.org';
+                                    $mailHandler->to = 'hola@goteo.org';
                                     //@TODO blind copy a goteo
                                     $mailHandler->bcc = 'comunicaciones@goteo.org';
-                                    $mailHandler->subject = $subject;
+                                    $mailHandler->subject = 'En pruebas: '.$subject;
                                     $mailHandler->content = str_replace('%NAME%', $data->name, $content);
 
                                     $mailHandler->html = true;
