@@ -290,6 +290,7 @@ div#sub-header > div > div > h2 .greenblue{
 	overflow: hidden;
 	float:left;
 	margin: 8px 0 0 0;
+	cursor:pointer;
 /*	display: inline-block; */
 }
 
@@ -634,11 +635,17 @@ div#header div#menu > ul > li.dashboard {
     height: 3.2em;    
     font-size: 13px;    
     position: relative;
-    margin-top: .5em;
+	
 } 
+
+div#header div#menu{
+	min-height:48px;
+}
 
 div#header div#menu > ul > li.dashboard {
     background: transparent url('header/down-black.png') no-repeat right 30px;
+	position:relative;
+	top:3px;
 }
 
 div#header div#menu > ul > li.login fieldset > * {
@@ -659,14 +666,23 @@ div#header div#menu > ul > li.login > a,
 div#header div#menu > ul > li.dashboard > a {
     padding: .5em .8em;
     font-size: 13px;
-    height: 2.2em;
-    line-height: 2.2em;
+    height: 40px;
+    line-height: 40px;
     display: inline-block;    
     color: #59595c;
 }
 
+
+
 div#header div#menu > ul > li.dashboard > a {
-    padding-right: 1.9em;
+    padding-right:30px;
+	position:relative;
+	top:-3px;
+}
+
+div#header div#menu > ul > li.dashboard > a > img{
+	position:relative;
+	left:10px; top:4px;
 }
 
 div#header div#menu > h2,

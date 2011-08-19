@@ -120,6 +120,9 @@ div.post-comments div.message .user {
     float: left;
 }
 
+div.post-comments div.message h3.user a{text-decoration:none;}
+div.post-comments div.message h3.user a:hover{color:#20B3B2;}
+
 div.post-comments div.message .date {
     float: right;
     color: #808080;
