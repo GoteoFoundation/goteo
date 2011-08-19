@@ -218,14 +218,24 @@ div#sub-header > div > div.slides_container > div.slides_control > div.subhead-b
 	margin:20px 0px 20px 20px;
 }
 
-div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .sign-in-with{
+div.subhead-banner h2.message .greenblue{
+	color:#1eb2b2;
+}
+
+div.subhead-banner .banner-button{
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
+}
+
+div.subhead-banner .sign-in-with{
 	float:left;
 	list-style:none;
 	margin:0px 0px 0px 20px;
 	padding:0 0 10px 0;
 }
 
-div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .sign-in-with li{
+.sign-in-with li{
 	display: inline;
 	margin: 0 20px 0 0;
 }
@@ -239,6 +249,7 @@ div#sub-header > div.clearfix > div{
 	float:left;
 }
 
+/* Lo del open */
 div#sub-header > div > div.mod-pojctopen{
 	float:right;
 	width:180px;
@@ -265,16 +276,16 @@ div#sub-header > div > div.mod-pojctopen > .modpo-whyopen{
 	font: bold 14px Helvetica, Arial, Geneva, sans-serif;
 	padding:6px 0 0 22px;
 }
+/* fin de lo de open */
 
+/* lo del header rojo */
 div#sub-header-secondary > div > h2 .red,
 div#sub-header > div > h2 .red{
 	color:#ee4843;
 }
+/* fin de lo del header rojo */
 
-div#sub-header > div > div > h2 .greenblue{
-	color:#1eb2b2;
-}
-
+/* controles del carrusel de banners */
 .sliderbanners-ctrl {
 	max-width: 940px;
 	margin: 0 auto;
@@ -291,7 +302,6 @@ div#sub-header > div > div > h2 .greenblue{
 	float:left;
 	margin: 8px 0 0 0;
 	cursor:pointer;
-/*	display: inline-block; */
 }
 
 .sliderbanners-ctrl a.prev {
@@ -351,7 +361,6 @@ div#sub-header > div > div > h2 .greenblue{
     height: 16px;
 	line-height: 2000px;
 	overflow: hidden;
-/*	display: inline-block; */
 }
 
 .sliderbanners-ctrl li.prev {
@@ -369,7 +378,9 @@ div#sub-header > div > div > h2 .greenblue{
 .sliderbanners-ctrl li.next:hover {
 	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -48px;
 }
+/* fin de los controlers del carrusel de banners*/
 
+/* subheader secundario  */
 div#sub-header-secondary > div > ul.share-goteo{
 	margin:20px 0 0 0;
 	padding:0px;
@@ -405,6 +416,8 @@ div#sub-header-secondary > div > ul.share-goteo li.rss a{
 	color:#f38321;
 	text-decoration:none;
 }
+/* fin subheader secundario */
+
 div#header div#about {    
     font-size: 12px;
     height: 2.2em;
@@ -454,6 +467,7 @@ div#header div#about ul li > *:hover {
     color: #8ed9d8;
 }
 
+/* fin del carrusel de micronoticias */
 div#header div#highlights {    
     font-size: 12px;
     height: 2.2em;
@@ -506,7 +520,9 @@ div#header div#highlights > ul > li > a {
     margin-left: 1em;
     white-space: nowrap;
 }
+/* fin del carrusel de micronoticias */
 
+/* menu y despelgable dashboard */
 div#header div#menu {
     background: #b5dadc url('header/background.png') repeat-x top;
     overflow: visible;
@@ -746,14 +762,9 @@ div#header div#menu > ul > li.dashboard > div > ul > li > a {
 div#header div#menu > ul > li.dashboard > div > ul > li > a:hover {
     background-color: #78d1d1;
 }
+/* fin del menu y despelgable dashboard */
 
-
-/* = desplegable de idiomas
-**********************************/
-/*div#header div#rightside div#about,div#header div#rightside div.lang{float:left;}
-div#header div.lang{margin-top:5px;}
-div#header div.lang ul.lang {display:none;margin:0;padding:0;}
-div#header div.lang span#lan-active{padding-left:30px;}*/
+/* desplegable de idiomas */
 ul.lang{
 	position:absolute;
 	left: 0;
@@ -791,3 +802,4 @@ ul.lang li>a{
 ul.lang li:hover>a {
 	color: #1EB2B2;
 }
+/* fin del desplegable de idiomas */
