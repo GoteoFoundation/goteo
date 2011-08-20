@@ -9,20 +9,24 @@ array_walk($roles, function (&$role) { $role = $role->name; });
 ?>
 <div class="widget">
     <dl>
-        <dt>Nombre de usuario</dt>
+        <dt>Nombre de usuario:</dt>
         <dd><?php echo $user->name ?></dd>
     </dl>
     <dl>
-        <dt>Login de acceso</dt>
+        <dt>Login de acceso:</dt>
         <dd><strong><?php echo $user->id ?></strong></dd>
     </dl>
     <dl>
-        <dt>Email</dt>
+        <dt>Email:</dt>
         <dd><?php echo $user->email ?></dd>
     </dl>
     <dl>
-        <dt>Roles actuales</dt>
+        <dt>Roles actuales:</dt>
         <dd><?php echo implode(', ', $roles); ?></dd>
+    </dl>
+    <dl>
+        <dt>Estado de la cuenta:</dt>
+        <dd><strong><?php echo $user->active ? 'Activa' : 'Inactiva'; ?></strong></dd>
     </dl>
 
     <p>

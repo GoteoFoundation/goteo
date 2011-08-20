@@ -14,7 +14,9 @@ namespace Goteo\Model {
 
         public
             $id = false,
+            $userid, // para el login name al registrarse
             $email,
+            $password, // para gestion de super admin
             $name,
             $location,
             $avatar = false,
@@ -77,7 +79,7 @@ namespace Goteo\Model {
                 // Nuevo usuario.
                 if(empty($this->id)) {
                     $insert = true;
-                    $data[':id'] = $this->id = static::idealiza($this->name);
+                    $data[':id'] = $this->id = static::idealiza($this->userid);
                     $data[':name'] = $this->name;
                     $data[':location'] = $this->location;
                     $data[':email'] = $this->email;
@@ -278,15 +280,19 @@ namespace Goteo\Model {
             // Nuevo usuario.
             if(empty($this->id)) {
                 // Nombre de usuario (id)
-                if(empty($this->name)) {
-                    $errors['username'] = Text::get('error-register-username');
+                if(empty($this->userid)) {
+                    $errors['userid'] = Text::get('error-register-userid');
                 }
                 else {
-                    $id = self::idealiza($this->name);
+                    $id = self::idealiza($this->userid);
                     $query = self::query('SELECT id FROM user WHERE id = ?', array($id));
                     if($query->fetchColumn()) {
-                        $errors['username'] = Text::get('error-register-user-exists');
+                        $errors['userid'] = Text::get('error-register-user-exists');
                     }
+                }
+
+                if(empty($this->name)) {
+                    $errors['username'] = Text::get('error-register-username');
                 }
 
                 // E-mail
@@ -348,6 +354,63 @@ namespace Goteo\Model {
 
             return (empty($errors['email']) && empty($errors['password']));
         }
+
+        /**
+         * Este método actualiza directamente los campos de email y contraseña de un usuario (para gestión de superadmin)
+         */
+        public function update (&$errors = array()) {
+            if(!empty($this->password)) {
+                if(!Check::password($this->password)) {
+                    $errors['password'] = Text::get('error-user-password-invalid');
+                }
+            }
+            if(!empty($this->email)) {
+                if(!Check::mail($this->email)) {
+                    $errors['email'] = Text::get('error-user-email-invalid');
+                }
+                else {
+                    $query = self::query('SELECT id FROM user WHERE email = ?', array($this->email));
+                    if($found = $query->fetchColumn()) {
+                        if($this->id !== $found) {
+                            $errors['email'] = Text::get('error-user-email-exists');
+                        }
+                    }
+                }
+            }
+
+            if (!empty($errors['email']) || !empty($errors['password'])) {
+                return false;
+            }
+
+            $set = '';
+            $values = array(':id'=>$this->id);
+
+            if (!empty($this->email)) {
+                if ($set != '') $set .= ", ";
+                $set .= "`email` = :email ";
+                $values[":email"] = $this->email;
+            }
+
+            if (!empty($this->password)) {
+                if ($set != '') $set .= ", ";
+                $set .= "`password` = :password ";
+                $values[":password"] = sha1($this->password);
+            }
+
+            if ($set == '') return false;
+
+            try {
+                $sql = "UPDATE user SET " . $set . " WHERE id = :id";
+                self::query($sql, $values);
+
+                return true;
+            } catch(\PDOException $e) {
+                $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
+                return false;
+            }
+            
+        }
+
 
         /**
          * Usuario.

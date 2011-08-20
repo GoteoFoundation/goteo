@@ -210,7 +210,6 @@ namespace Goteo\Model {
             try {
                 $sql = "UPDATE post SET " . $set . " WHERE post.id = :id";
                 self::query($sql, $values);
-                if (empty($this->id)) $this->id = self::insertId();
 
                 return true;
             } catch(\PDOException $e) {

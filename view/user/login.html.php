@@ -26,8 +26,8 @@ jQuery(document).ready(function($) {
 
 <div id="sub-header">
 	<div class="clearfix">
-		<div>
-			<h2><?php echo Text::html('login-banner-header'); ?></h2>
+		<div class="subhead-banner">
+			<h2 class="message"><?php echo Text::html('login-banner-header'); ?></h2>
 		</div>
 		<div class="mod-pojctopen"><?php echo Text::html('open-banner-header'); ?></div>
 	</div>
@@ -73,6 +73,12 @@ jQuery(document).ready(function($) {
                 <h2><?php echo Text::get('login-register-header'); ?></h2>
                 <form action="/user/register" method="post">
 
+                    <div class="userid">
+                        <label for="RegisterUserid"><?php echo Text::get('login-register-userid-field'); ?></label>
+                        <input type="text" id="RegisterUserid" name="userid" value="<?php echo htmlspecialchars($userid) ?>"/>
+                    <?php if(isset($errors['userid'])) { ?><em><?php echo $errors['userid']?></em><?php } ?>
+                    </div>
+
                     <div class="username">
                         <label for="RegisterUsername"><?php echo Text::get('login-register-username-field'); ?></label>
                         <input type="text" id="RegisterUsername" name="username" value="<?php echo htmlspecialchars($username) ?>"/>
@@ -93,7 +99,7 @@ jQuery(document).ready(function($) {
 
 
                     <div class="password">
-                        <label for="RegisterPassword"><?php echo Text::get('login-register-password-field'); ?></label>
+                        <label for="RegisterPassword"><?php echo Text::get('login-register-password-field'); ?></label> <em><?php echo Text::get('login-register-password-minlength'); ?></em>
                         <input type="password" id="RegisterPassword" name="password" value="<?php echo htmlspecialchars($password) ?>"/>
                     <?php if(isset($errors['password'])) { ?><em><?php echo $errors['password']?></em><?php } ?>
                     </div>

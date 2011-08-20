@@ -72,7 +72,7 @@ $filter = "?status={$filters['status']}&interest={$filters['interest']}";
                 <td><?php echo $user->active ? 'Activo' : 'Inactivo'; ?></td>
                 <td><?php echo $user->checker ? 'Revisor' : ''; ?></td>
                 <td><?php echo $user->translator ? 'Traductor' : ''; ?></td>
-<!--                <td><a href="/admin/users/edit/<?php echo $user->id; ?>">[Editar]</a></td> -->
+                <td><a href="/admin/users/edit/<?php echo $user->id; ?>">[Editar]</a></td>
                 <td><a href="/admin/users/impersonate/<?php echo $user->id; ?>">[Suplantar]</a></td>
             </tr>
             <?php endforeach; ?>

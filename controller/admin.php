@@ -12,6 +12,7 @@ namespace Goteo\Controller {
         Goteo\Library\Tpv,
         Goteo\Library\Page,
         Goteo\Library\Template,
+        Goteo\Library\Message,
         Goteo\Library\Blog,
         Goteo\Library\Worth;
 
@@ -1807,10 +1808,27 @@ namespace Goteo\Controller {
             switch ($action)  {
                 case 'add':
 
-                    // si llega post: creamos + mensaje + seguimos creando
+                    // si llega post: creamos
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        $errors = array();
 
-                    // para crear se usa el mismo método save del modelo, hay que montar el objeto
+                        // para crear se usa el mismo método save del modelo, hay que montar el objeto
+                        $user = new Model\User();
+                        $user->userid = $_POST['user'];
+                        $user->name = $_POST['name'];
+                        $user->email = $_POST['email'];
+                        $user->password = $_POST['password'];
+                        $user->save($errors);
 
+                        if(empty($errors)) {
+                          // mensaje de ok y volvemos a la lista de usuarios
+                          Message::Info(Text::get('user-register-success'));
+                          throw new Redirection('/admin/users');
+                        } else {
+                            // si hay algun error volvemos a poner los datos en el formulario
+                            $data = $_POST;
+                        }
+                    }
 
                     // vista de crear usuario
                     return new View(
@@ -1818,9 +1836,8 @@ namespace Goteo\Controller {
                         array(
                             'folder' => 'users',
                             'file' => 'add',
-                            'project'=>$project,
-                            'details'=>$details,
-                            'status'=>$status
+                            'data'=>$data,
+                            'errors'=>$errors
                         )
                     );
 
@@ -1829,8 +1846,23 @@ namespace Goteo\Controller {
 
                     $user = Model\User::get($id);
 
+                    // si llega post: actualizamos
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        $errors = array();
 
-                    // si llega post: actualizamos + mensaje + seguimos editando
+                        // para crear se usa el mismo método save del modelo, hay que montar el objeto
+                        $user->email = $_POST['email'];
+                        $user->password = $_POST['password'];
+
+                        if($user->update($errors)) {
+                          // mensaje de ok y volvemos a la lista de usuarios
+                          Message::Info('Datos actualizados');
+                          throw new Redirection('/admin/users');
+                        } else {
+                            // si hay algun error volvemos a poner los datos en el formulario
+                            $data = $_POST;
+                        }
+                    }
 
                     // vista de editar usuario
                     return new View(
@@ -1839,8 +1871,8 @@ namespace Goteo\Controller {
                             'folder' => 'users',
                             'file' => 'edit',
                             'user'=>$user,
-                            'errors'=>$errors,
-                            'success'=>$success
+                            'data'=>$data,
+                            'errors'=>$errors
                         )
                     );
 

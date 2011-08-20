@@ -74,6 +74,7 @@ namespace Goteo\Controller {
                 }
                 
                 $user = new Model\User();
+                $user->userid = $_POST['userid'];
                 $user->name = $_POST['username'];
                 $user->email = $_POST['email'];
                 $user->password = $_POST['password'];
