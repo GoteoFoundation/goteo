@@ -1780,9 +1780,9 @@ namespace Goteo\Controller {
         }
 
         /*
-         *  administración de nodos y usuarios (segun le permita el ACL al usuario validado)
+         *  administración de usuarios para superadmin
          */
-        public function managing($action = 'list', $id = null) {
+        public function users($action = 'list', $id = null, $subaction = '') {
 
             $filters = array();
             $fields = array('status', 'interest', 'role', 'name');
@@ -1805,59 +1805,147 @@ namespace Goteo\Controller {
             $errors = array();
 
             switch ($action)  {
-                case 'ban':
-                    $sql = "UPDATE user SET active = 0 WHERE id = ?";
-                    Model\User::query($sql, array($id));
+                case 'add':
+
+                    // si llega post: creamos + mensaje + seguimos creando
+
+                    // para crear se usa el mismo método save del modelo, hay que montar el objeto
+
+
+                    // vista de crear usuario
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'users',
+                            'file' => 'add',
+                            'project'=>$project,
+                            'details'=>$details,
+                            'status'=>$status
+                        )
+                    );
+
                     break;
-                case 'unban':
-                    $sql = "UPDATE user SET active = 1 WHERE id = ?";
-                    Model\User::query($sql, array($id));
+                case 'edit':
+
+                    $user = Model\User::get($id);
+
+
+                    // si llega post: actualizamos + mensaje + seguimos editando
+
+                    // vista de editar usuario
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'users',
+                            'file' => 'edit',
+                            'user'=>$user,
+                            'errors'=>$errors,
+                            'success'=>$success
+                        )
+                    );
+
                     break;
-                case 'checker':
-                    $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'checker')";
-                    Model\User::query($sql, array(':user'=>$id));
+                case 'manage':
+
+                    // si llega post: ejecutamos + mensaje + seguimos editando
+
+                    /* Esto hay que pasarlo a un modelo */
+                    switch ($subaction)  {
+                        case 'ban':
+                            $sql = "UPDATE user SET active = 0 WHERE id = ?";
+                            Model\User::query($sql, array($id));
+                            break;
+                        case 'unban':
+                            $sql = "UPDATE user SET active = 1 WHERE id = ?";
+                            Model\User::query($sql, array($id));
+                            break;
+                        case 'checker':
+                            $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'checker')";
+                            Model\User::query($sql, array(':user'=>$id));
+                            break;
+                        case 'nochecker':
+                            $sql = "DELETE FROM user_role WHERE role_id = 'checker' AND user_id = ?";
+                            Model\User::query($sql, array($id));
+                            break;
+                        case 'translator':
+                            $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'translator')";
+                            Model\User::query($sql, array(':user'=>$id));
+                            break;
+                        case 'notranslator':
+                            $sql = "DELETE FROM user_role WHERE role_id = 'translator' AND user_id = ?";
+                            Model\User::query($sql, array($id));
+                            break;
+                        case 'admin':
+                            $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'admin')";
+                            Model\User::query($sql, array(':user'=>$id));
+                            break;
+                        case 'noadmin':
+                            $sql = "DELETE FROM user_role WHERE role_id = 'admin' AND user_id = ?";
+                            Model\User::query($sql, array($id));
+                            break;
+                    }
+
+                    $user = Model\User::get($id);
+
+                    // vista de gestión de usuario
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'users',
+                            'file' => 'manage',
+                            'user'=>$user,
+                            'errors'=>$errors,
+                            'success'=>$success
+                        )
+                    );
+
+
                     break;
-                case 'nochecker':
-                    $sql = "DELETE FROM user_role WHERE role_id = 'checker' AND user_id = ?";
-                    Model\User::query($sql, array($id));
+                case 'impersonate':
+
+                    $user = Model\User::get($id);
+
+                    // vista de acceso a suplantación de usuario
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'users',
+                            'file'   => 'impersonate',
+                            'user'   => $user
+                        )
+                    );
+
                     break;
-                case 'translator':
-                    $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'translator')";
-                    Model\User::query($sql, array(':user'=>$id));
-                    break;
-                case 'notranslator':
-                    $sql = "DELETE FROM user_role WHERE role_id = 'translator' AND user_id = ?";
-                    Model\User::query($sql, array($id));
+                case 'list':
+                default:
+                    $users = Model\User::getAll($filters);
+                    $status = array(
+                                'active' => 'Activo',
+                                'inactive' => 'Inactivo'
+                            );
+                    $interests = Model\User\Interest::getAll();
+                    $roles = array(
+                        'admin' => 'Administrador',
+                        'checker' => 'Revisor',
+                        'translator' => 'Traductor'
+                    );
+
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'users',
+                            'file' => 'list',
+                            'users'=>$users,
+                            'filters' => $filters,
+                            'name' => $name,
+                            'status' => $status,
+                            'interests' => $interests,
+                            'roles' => $roles,
+                            'errors' => $errors
+                        )
+                    );
                     break;
             }
-
-            $users = Model\User::getAll($filters);
-            $status = array(
-                        'active' => 'Activo',
-                        'inactive' => 'Inactivo'
-                    );
-            $interests = Model\User\Interest::getAll();
-            $roles = array(
-                'admin' => 'Administrador',
-                'checker' => 'Revisor',
-                'translator' => 'Traductor'
-            );
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'base',
-                    'file' => 'managing',
-                    'users'=>$users,
-                    'filters' => $filters,
-                    'name' => $name,
-                    'status' => $status,
-                    'interests' => $interests,
-                    'roles' => $roles,
-                    'errors' => $errors
-                )
-            );
-
         }
 
         /*
@@ -3190,12 +3278,14 @@ namespace Goteo\Controller {
                 'users' => array(
                     'label'   => 'Gestión de usuarios',
                     'options' => array (
-                        'managing' => array(
+                        'users' => array(
                             'label' => 'Listado de usuarios',
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
-/*                                'edit' => array('label' => 'Editando Usuario', 'item' => true), */
-                                'manage' => array('label' => 'Gestionando Usuario', 'item' => true)
+                                'add' => array('label' => 'Creando Usuario', 'item' => true),
+                                'edit' => array('label' => 'Editando Usuario', 'item' => true),
+                                'manage' => array('label' => 'Gestionando Usuario', 'item' => true),
+                                'impersonate' => array('label' => 'Suplantando al Usuario', 'item' => true)
                             )
                         )/*,
                         'useradd' => array(

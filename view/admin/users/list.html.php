@@ -8,8 +8,10 @@ $filters = $this['filters'];
 $filter = "?status={$filters['status']}&interest={$filters['interest']}";
 
 ?>
+<a href="/admin/users/add" class="button red">Crear usuario</a>
+
 <div class="widget board">
-    <form id="filter-form" action="/admin/managing" method="get">
+    <form id="filter-form" action="/admin/users" method="get">
         <label for="status-filter">Mostrar por estado:</label>
         <select id="status-filter" name="status" onchange="document.getElementById('filter-form').submit();">
             <option value="">Todos los estados</option>
@@ -48,39 +50,30 @@ $filter = "?status={$filters['status']}&interest={$filters['interest']}";
     <table>
         <thead>
             <tr>
-                          <th>Alias</th> <!-- view profile -->
-                            <th>User</th>
+                <th></th>
+                <th>Alias</th> <!-- view profile -->
+                <th>User</th>
                 <th>Email</th>
-                <th colspan="2">Estado</th>
-                <th colspan="2">Revisor</th>
-                <th colspan="2">Traductor</th>
+                <th>Estado</th>
+                <th>Revisor</th>
+                <th>Traductor</th>
+<!--                <th></th> -->
+                <th></th>
             </tr>
         </thead>
 
         <tbody>
             <?php foreach ($this['users'] as $user) : ?>
             <tr>
+                <td><a href="/admin/users/manage/<?php echo $user->id; ?>">[Gestionar]</a></td>
                 <td><a href="/user/<?php echo $user->id; ?>" target="_blank" title="Preview"><?php echo $user->name; ?></a></td>
-                            <td><strong><?php echo $user->id; ?></strong></td>
+                <td><strong><?php echo $user->id; ?></strong></td>
                 <td><?php echo $user->email; ?></td>
                 <td><?php echo $user->active ? 'Activo' : 'Inactivo'; ?></td>
-                <?php if ($user->active) : ?>
-                <td><a href="<?php echo "/admin/managing/ban/{$user->id}{$filter}"; ?>">[Desactivar]</a></td>
-                <?php else : ?>
-                <td><a href="<?php echo "/admin/managing/unban/{$user->id}{$filter}"; ?>">[Activar]</a></td>
-                <?php endif; ?>
                 <td><?php echo $user->checker ? 'Revisor' : ''; ?></td>
-                <?php if ($user->checker) : ?>
-                <td><a href="<?php echo "/admin/managing/nochecker/{$user->id}{$filter}"; ?>">[Quitarlo de revisor]</a></td>
-                <?php else : ?>
-                <td><a href="<?php echo "/admin/managing/checker/{$user->id}{$filter}"; ?>">[Hacerlo revisor]</a></td>
-                <?php endif; ?>
                 <td><?php echo $user->translator ? 'Traductor' : ''; ?></td>
-                <?php if ($user->translator) : ?>
-                <td><a href="<?php echo "/admin/managing/notranslator/{$user->id}{$filter}"; ?>">[Quitarlo de traductor]</a></td>
-                <?php else : ?>
-                <td><a href="<?php echo "/admin/managing/translator/{$user->id}{$filter}"; ?>">[Hacerlo traductor]</a></td>
-                <?php endif; ?>
+<!--                <td><a href="/admin/users/edit/<?php echo $user->id; ?>">[Editar]</a></td> -->
+                <td><a href="/admin/users/impersonate/<?php echo $user->id; ?>">[Suplantar]</a></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

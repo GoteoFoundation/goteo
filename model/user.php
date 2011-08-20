@@ -801,15 +801,22 @@ namespace Goteo\Model {
         }
 
 		private function getRoles () {
+
+            $roles = array();
+            
 		    $query = self::query('
 		    	SELECT
-		    		role.id,
-		    		role.name
+		    		role.id as id,
+		    		role.name as name
 		    	FROM role
 		    	JOIN user_role ON role.id = user_role.role_id
 		    	WHERE user_id = ?
 		    ', array($this->id));
-		    return $query->fetchAll(\PDO::FETCH_OBJ);
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $rol) {
+                $roles[$rol->id] = $rol;
+            }
+            return $roles;
+
 		}
 
 
