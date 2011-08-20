@@ -20,6 +20,8 @@ include 'view/header.html.php'; ?>
 
         <?php  echo new View ('view/review/menu.html.php', $this) ?>
 
+<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+
         <div id="main">
 
 

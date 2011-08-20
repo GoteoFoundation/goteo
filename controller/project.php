@@ -8,6 +8,8 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Library\Text,
         Goteo\Library\Mail,
+        Goteo\Library\Template,
+        Goteo\Library\Message,
         Goteo\Model;
 
     class Project extends \Goteo\Core\Controller {
@@ -154,13 +156,44 @@ namespace Goteo\Controller {
 
                         $mailHandler->html = true;
                         if ($mailHandler->send($errors)) {
-                            $message = 'Mensaje de contacto enviado correctamente.';
-                            $data = array();
+                            Message::Info('Mensaje de solicitud de revisión enviado correctamente');
                         } else {
-                            $errors[] = 'Ha habido algún error al enviar el mensaje.';
+                            Message::Error('Ha habido algún error al enviar la solicitud de revisión');
+                            Message::Error(implode('<br />', $errors));
                         }
 
                         unset($mailHandler);
+
+                        // email al autor
+                        // Obtenemos la plantilla para asunto y contenido
+                        $template = Template::get(8);
+
+                        // Sustituimos los datos
+                        $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+
+                        // En el contenido:
+                        $search  = array('%USERENAME%', '%PROJECTNAME%');
+                        $replace = array($project->user->name, $project->name);
+                        $content = \str_replace($search, $replace, nl2br($template->text));
+
+
+                        $mailHandler = new Mail();
+
+                        $mailHandler->to = $project->user->email;
+                        $mailHandler->toName = $project->user->name;
+                        $mailHandler->subject = $subject;
+                        $mailHandler->content = $content;
+
+                        $mailHandler->html = true;
+                        if ($mailHandler->send($errors)) {
+                            Message::Info('Mensaje de confirmación de recepción enviado correctamente');
+                        } else {
+                            Message::Error('Ha habido algún error al enviar el mensaje de confirmación de recepción');
+                            Message::Error(implode('<br />', $errors));
+                        }
+
+                        unset($mailHandler);
+
 
                         throw new Redirection("/dashboard?ok");
                     }

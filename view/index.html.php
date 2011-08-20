@@ -81,12 +81,13 @@ include 'view/header.html.php' ?>
 				<div class="slides_container">
 					<!-- Módulo de texto más sign in -->
 					<div class="subhead-banner">
-						<h2 class="message">Red social para <span class="greenblue">cofinanciar y colaborar con</span><br /> proyectos creativos que fomentan el procomún<br /> ¿Tienes un proyecto con <span class="greenblue">adn abierto?</span></h2>
-						<ul class="sign-in-with">
+						<h2 class="message">Red social para <span class="greenblue">cofinanciar y colaborar con</span><br /> proyectos creativos que fomentan el procomún<br /> ¿Tienes un proyecto con <span class="greenblue">adn abierto</span>?</h2>
+                        <a href="/contact" class="button banner-button">Contáctanos</a>
+<!--						<ul class="sign-in-with">
 							<li>Accede con facebook</li>
 							<li>Accede con Twitter</li>
 							<li>Accede con Open ID</li>
-						</ul>
+						</ul> -->
 					</div>
 					<!-- Módulo banner imagen más resumen proyecto -->
 					<div class="subhead-banner">

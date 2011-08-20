@@ -46,7 +46,7 @@ if (!defined('PHPMAILER_POP3')) {
 }
 
 // Metadata
-define('GOTEO_META_TITLE', 'Goteo.org');
+define('GOTEO_META_TITLE', 'CROWDFUNDING THE COMMONS');
 define('GOTEO_META_DESCRIPTION', 'Plataforma social de financiación distribuida');
 define('GOTEO_META_KEYWORDS', 'crowdfunding, microcreditos, social, network, financiacion distribuida');
 define('GOTEO_META_AUTHOR', 'Onliners');
