@@ -17,8 +17,12 @@ $level = (int) $this['level'] ?: 3;
 
         <div class="message<?php if ($comment->user->id == $this['owner']) echo ' owner'; ?>">
            <div class="arrow-up"></div>
-           <span class="avatar"><img src="/image/<?php echo $comment->user->avatar->id; ?>/50/50/1" alt="<?php echo $comment->user->name; ?>" /></span>
-           <h<?php echo $level ?> class="user"><?php echo htmlspecialchars($comment->user->name) ?></h<?php echo $level ?>>
+           <span class="avatar">
+           <a href="/user/profile/<?php echo htmlspecialchars($comment->user->id)?>" target="_blank">
+           <img src="/image/<?php echo $comment->user->avatar->id; ?>/50/50/1" alt="<?php echo $comment->user->name; ?>" /></span></span>
+           <h<?php echo $level ?> class="user">
+		   <a href="/user/profile/<?php echo htmlspecialchars($comment->user->id)?>" target="_blank"><?php echo htmlspecialchars($comment->user->name) ?>
+           </a></h<?php echo $level ?>>
            <div class="date"><span><?php echo $comment->date ?></span></div>
            <blockquote><?php echo $comment->text; ?></blockquote>
        </div>

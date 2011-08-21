@@ -185,7 +185,7 @@ namespace Goteo\Model {
             return array(
                 'node' => '#808285',
                 'project' => '#20b3b2',
-                'sponsor' => '#8f8f8f',
+                'sponsor' => '#96238f',
                 'investors' => '#0c4e99',
                 'nodes' => '#8f8f8f'
             );

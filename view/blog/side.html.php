@@ -37,7 +37,7 @@ switch ($this['type']) {
 					<!--span class='avatar'><img src='/image/$item->user->avatar->id/50/50/1' alt='' /></span-->
 					<span class='date'>{$item->date}</span>
 					<div class='high-comment'>
-						<strong>{$item->user->name}</strong>
+						<strong><a href=\"/blog/{$item->post}\">{$item->user->name}</a></strong>
 						<p>{$text}</p>
 					</div>
 				</div>";

@@ -52,8 +52,16 @@ $level = (int) $this['level'] ?: 3;
 
 		<?php foreach ($project->messages as $message) : ?>
                 <div class="message<?php if ($message->user->id == $project->owner) echo ' owner'; ?>">
-                   <span class="avatar"><img src="/image/<?php echo $message->user->avatar->id; ?>/50/50/1" alt="" /></span>
-                   <h<?php echo $level ?> class="user"><?php echo htmlspecialchars($message->user->name); if ($message->blocked == 1) echo ' ' . Text::get('regular-looks_for'); ?></h<?php echo $level ?>>
+                   <span class="avatar">
+                   <a href="/user/profile/<?php echo htmlspecialchars($message->user->id)?>" target="_blank">
+                    <img src="/image/<?php echo $message->user->avatar->id; ?>/50/50/1" alt="" />
+                   </a>
+                  </span>
+                   <h<?php echo $level ?> class="user">
+				   <a href="/user/profile/<?php echo htmlspecialchars($message->user->id)?>" target="_blank">
+				   <?php echo htmlspecialchars($message->user->name); if ($message->blocked == 1) echo ' ' . Text::get('regular-looks_for'); ?>
+                   </a>
+                   </h<?php echo $level ?>>
                    <div class="date"><span><?php echo $message->date ?></span></div>
                    <blockquote><?php echo $message->message; ?></blockquote>
                    <div class="actions">
@@ -69,8 +77,16 @@ $level = (int) $this['level'] ?: 3;
                <?php if (!empty($message->responses)) :
                     foreach ($message->responses as $child) : ?>
                        <div class="child<?php if ($child->user->id == $project->owner) echo ' owner'; ?>">
-                           <span class="avatar"><img src="/image/<?php echo $child->user->avatar->id; ?>/40/40/1" /></span>
-                           <h<?php echo $level ?> class="user"><?php echo $child->user->name; ?></h<?php echo $level ?>>
+                           <span class="avatar">
+                           <a href="/user/profile/<?php echo htmlspecialchars($child->user->id) ?>" target="_blank">
+	                           <img src="/image/<?php echo $child->user->avatar->id; ?>/40/40/1" />
+                           </a>
+                           </span>
+                           <h<?php echo $level ?> class="user">
+						   <a href="/user/profile/<?php echo htmlspecialchars($child->user->id) ?>" target="_blank">
+						   <?php echo $child->user->name; ?>
+                           </a>
+                           </h<?php echo $level ?>>
                            <div class="date"><span><?php echo $child->date; ?></span></div>
                            <blockquote><?php echo $child->message; ?></blockquote>
                            <?php // si puede borrar este mensaje
