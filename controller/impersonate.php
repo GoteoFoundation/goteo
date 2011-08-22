@@ -5,6 +5,7 @@ namespace Goteo\Controller {
 	use Goteo\Core\Redirection,
         Goteo\Core\Error,
         Goteo\Core\View,
+        Goteo\Library\Message,
 		Goteo\Model\User;
 
 	class Impersonate extends \Goteo\Core\Controller {

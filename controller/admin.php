@@ -1891,6 +1891,14 @@ namespace Goteo\Controller {
                             $sql = "UPDATE user SET active = 1 WHERE id = ?";
                             Model\User::query($sql, array($id));
                             break;
+                        case 'show':
+                            $sql = "UPDATE user SET hide = 0 WHERE id = ?";
+                            Model\User::query($sql, array($id));
+                            break;
+                        case 'hide':
+                            $sql = "UPDATE user SET hide = 1 WHERE id = ?";
+                            Model\User::query($sql, array($id));
+                            break;
                         case 'checker':
                             $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'checker')";
                             Model\User::query($sql, array(':user'=>$id));

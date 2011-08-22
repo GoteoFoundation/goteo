@@ -873,6 +873,8 @@ namespace Goteo\Controller {
                         'summary'  => Text::get('dashboard-menu-projects-summary'),
                         'updates'  => Text::get('dashboard-menu-projects-updates'),
                         'widgets'  => Text::get('dashboard-menu-projects-widgets'),
+                        'contract' => Text::get('dashboard-menu-projects-contract'),
+                        'rewards'  => Text::get('dashboard-menu-projects-rewards'),
                         'supports' => Text::get('dashboard-menu-projects-supports')
                     )
                 )
@@ -882,8 +884,6 @@ namespace Goteo\Controller {
              * Quitados por falta de contenid/requerimientos
              *
              * Activity: , 'wall'    => Text::get('dashboard-menu-activity-wall')
-             * Projects: 'contract' => Text::get('dashboard-menu-projects-contract')
-             * 'rewards'  => Text::get('dashboard-menu-projects-rewards')
              * 'preview'  => Text::get('dashboard-menu-projects-preview')
              * ,
              *

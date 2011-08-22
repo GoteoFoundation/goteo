@@ -321,6 +321,7 @@ namespace Goteo\Model {
                 FROM    user
                 INNER JOIN invest
                     ON user.id = invest.user
+                WHERE (user.hide = 0 OR user.hide IS NULL)
                 ORDER BY user.name ASC
                 ");
 
@@ -378,6 +379,9 @@ namespace Goteo\Model {
             $sql = "
                 SELECT  DISTINCT(user) as id
                 FROM    invest
+                INNER JOIN user
+                    ON  user.id = invest.user
+                    AND (user.hide = 0 OR user.hide IS NULL)
                 WHERE   project = ?
                 AND status <> 2
                 AND (anonymous = 0 OR anonymous IS NULL)
@@ -438,6 +442,9 @@ namespace Goteo\Model {
                 INNER JOIN invest_reward
                     ON invest_reward.invest = invest.id
                     AND invest_reward.reward = ?
+                INNER JOIN user
+                    ON  user.id = invest.user
+                    AND (user.hide = 0 OR user.hide IS NULL)
                 WHERE   status <> 2
                 ";
 

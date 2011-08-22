@@ -66,7 +66,7 @@ body.project-edit div#main .status #project-score {
 body.project-edit div#main .status h3 {
     font-size: 26px;
     font-weight: normal;
-    color: #bcbdbd;
+    color: #9B9B9D;
     text-transform: uppercase;
     margin: 0 0 .6em;
 }
@@ -97,6 +97,7 @@ body.project-edit div#main .status #project-score p {
     margin-top: 0;
     width: 80%;
     font-size: 12px;
+    color: #8A8B8C;
 }
 
 body.project-edit div#main .status #project-score .meter {

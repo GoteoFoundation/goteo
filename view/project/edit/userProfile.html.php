@@ -223,7 +223,7 @@ echo new SuperForm(array(
                     'hint'      => Text::get('tooltip-user-facebook'),
                     'errors'    => !empty($errors['facebook']) ? array($errors['facebook']) : array(),
                     'ok'        => !empty($okeys['facebook']) ? array($okeys['facebook']) : array(),
-                    'value'     => $user->facebook
+                    'value'     => empty($user->facebook) ? Text::get('regular-facebook-url') : $user->facebook
                 ),
                 'user_google' => array(
                     'type'      => 'textbox',
@@ -233,7 +233,7 @@ echo new SuperForm(array(
                     'hint'      => Text::get('tooltip-user-google'),
                     'errors'    => !empty($errors['google']) ? array($errors['google']) : array(),
                     'ok'        => !empty($okeys['google']) ? array($okeys['google']) : array(),
-                    'value'     => $user->google
+                    'value'     => empty($user->google) ? Text::get('regular-google-url') : $user->google
                 ),
                 'user_twitter' => array(
                     'type'      => 'textbox',
@@ -243,7 +243,7 @@ echo new SuperForm(array(
                     'hint'      => Text::get('tooltip-user-twitter'),
                     'errors'    => !empty($errors['twitter']) ? array($errors['twitter']) : array(),
                     'ok'        => !empty($okeys['twitter']) ? array($okeys['twitter']) : array(),
-                    'value'     => $user->twitter
+                    'value'     => empty($user->twitter) ? Text::get('regular-twitter-url') : $user->twitter
                 ),
                 'user_identica' => array(
                     'type'      => 'textbox',
@@ -253,7 +253,7 @@ echo new SuperForm(array(
                     'hint'      => Text::get('tooltip-user-identica'),
                     'errors'    => !empty($errors['identica']) ? array($errors['identica']) : array(),
                     'ok'        => !empty($okeys['identica']) ? array($okeys['identica']) : array(),
-                    'value'     => $user->identica
+                    'value'     => empty($user->identica) ? Text::get('regular-identica-url') : $user->identica
                 ),
                 'user_linkedin' => array(
                     'type'      => 'textbox',
@@ -263,7 +263,7 @@ echo new SuperForm(array(
                     'hint'      => Text::get('tooltip-user-linkedin'),
                     'errors'    => !empty($errors['linkedin']) ? array($errors['linkedin']) : array(),
                     'ok'        => !empty($okeys['linkedin']) ? array($okeys['linkedin']) : array(),
-                    'value'     => $user->linkedin
+                    'value'     => empty($user->linkedin) ? Text::get('regular-linkedin-url') : $user->linkedin
                 )
             )
         ),

@@ -321,3 +321,9 @@ ul.navi li.next.active a {
 	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -48px;
 }
 /** fin navi box&arrows**/
+
+/* = caja de comentarios
+*************************/
+div.widget.blog-comment{position:relative;}
+div.widget.blog-comment button.green{float:right}
+div.widget.blog-comment div#bocadillo{background:url(bocadillo.jpg) no-repeat;position:absolute;width:56px;	height:51px;}

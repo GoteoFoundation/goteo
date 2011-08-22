@@ -146,6 +146,9 @@ namespace Goteo\Model\User {
                         INNER JOIN user_interest as mine
                             ON user_interest.interest = mine.interest
                             AND mine.user = :me
+                        INNER JOIN user
+                            ON  user.id = user_interest.user
+                            AND (user.hide = 0 OR user.hide IS NULL)
                         WHERE user_interest.user != :me
                         ";
                if (!empty($category)) {

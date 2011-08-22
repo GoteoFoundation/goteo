@@ -54,10 +54,13 @@ $filter = "?status={$filters['status']}&interest={$filters['interest']}";
                 <th>Alias</th> <!-- view profile -->
                 <th>User</th>
                 <th>Email</th>
-                <th>Estado</th>
-                <th>Revisor</th>
-                <th>Traductor</th>
-<!--                <th></th> -->
+                <th>
+                    <!-- Inactivo -->
+                    <!-- Oculto -->
+                    <!-- Revisor -->
+                    <!-- Traductor -->
+                </th>
+                <th></th>
                 <th></th>
             </tr>
         </thead>
@@ -69,9 +72,12 @@ $filter = "?status={$filters['status']}&interest={$filters['interest']}";
                 <td><a href="/user/<?php echo $user->id; ?>" target="_blank" title="Preview"><?php echo $user->name; ?></a></td>
                 <td><strong><?php echo $user->id; ?></strong></td>
                 <td><?php echo $user->email; ?></td>
-                <td><?php echo $user->active ? 'Activo' : 'Inactivo'; ?></td>
-                <td><?php echo $user->checker ? 'Revisor' : ''; ?></td>
-                <td><?php echo $user->translator ? 'Traductor' : ''; ?></td>
+                <td>
+                    <?php echo $user->active ? '' : ' Inactivo'; ?>
+                    <?php echo $user->hide ? ' Oculto' : ''; ?>
+                    <?php echo $user->checker ? ' Revisor' : ''; ?>
+                    <?php echo $user->translator ? ' Traductor' : ''; ?>
+                </td>
                 <td><a href="/admin/users/edit/<?php echo $user->id; ?>">[Editar]</a></td>
                 <td><a href="/admin/users/impersonate/<?php echo $user->id; ?>">[Suplantar]</a></td>
             </tr>

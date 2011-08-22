@@ -212,8 +212,9 @@ namespace Goteo\Controller {
 
             $user = Model\User::get($id);
 
-            if (!$user instanceof Model\User)
+            if (!$user instanceof Model\User || $user->hide) {
                 throw new Redirection('/', Redirection::PERMANENT);
+            }
                 
             
             $viewData = array();

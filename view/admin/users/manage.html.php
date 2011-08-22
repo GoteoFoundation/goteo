@@ -22,40 +22,56 @@ array_walk($roles, function (&$role) { $role = $role->name; });
     </dl>
     <dl>
         <dt>Roles actuales:</dt>
-        <dd><?php echo implode(', ', $roles); ?></dd>
+        <dd>
+            <?php echo implode(', ', $roles); ?><br />
+            <?php if (in_array('checker', array_keys($user->roles))) : ?>
+                <a href="<?php echo "/admin/users/manage/{$user->id}/nochecker"; ?>" class="button red">Quitarlo de revisor</a>
+            <?php else : ?>
+                <a href="<?php echo "/admin/users/manage/{$user->id}/checker"; ?>" class="button">Hacerlo revisor</a>
+            <?php endif; ?>
+
+            <?php if (in_array('translator', array_keys($user->roles))) : ?>
+                <a href="<?php echo "/admin/users/manage/{$user->id}/notranslator"; ?>" class="button red">Quitarlo de traductor</a>
+            <?php else : ?>
+                <a href="<?php echo "/admin/users/manage/{$user->id}/translator"; ?>" class="button">Hacerlo traductor</a>
+            <?php endif; ?>
+
+            <!--
+            <?php # if (in_array('admin', array_keys($user->roles))) : ?>
+                <a href="<?php # echo "/admin/users/manage/{$user->id}/noadmin"; ?>" class="button weak">Quitarlo de admin</a>
+            <?php # else : ?>
+                <a href="<?php # echo "/admin/users/manage/{$user->id}/admin"; ?>" class="button">Hacerlo admin</a>
+            <?php # endif; ?>
+            -->
+        </dd>
     </dl>
     <dl>
         <dt>Estado de la cuenta:</dt>
-        <dd><strong><?php echo $user->active ? 'Activa' : 'Inactiva'; ?></strong></dd>
+        <dd>
+            <strong><?php echo $user->active ? 'Activa' : 'Inactiva'; ?></strong>
+            <?php if ($user->active) : ?>
+                <a href="<?php echo "/admin/users/manage/{$user->id}/ban"; ?>" class="button">Desactivar</a>
+            <?php else : ?>
+                <a href="<?php echo "/admin/users/manage/{$user->id}/unban"; ?>" class="button red">Activar</a>
+            <?php endif; ?>
+        </dd>
     </dl>
-
-    <p>
-    <?php if ($user->active) : ?>
-        <a href="<?php echo "/admin/users/manage/{$user->id}/ban"; ?>" class="button weak">Desactivar</a>
-    <?php else : ?>
-        <a href="<?php echo "/admin/users/manage/{$user->id}/unban"; ?>" class="button">Activar</a>
-    <?php endif; ?>
-
-    <?php if (in_array('checker', array_keys($user->roles))) : ?>
-        <a href="<?php echo "/admin/users/manage/{$user->id}/nochecker"; ?>" class="button weak">Quitarlo de revisor</a>
-    <?php else : ?>
-        <a href="<?php echo "/admin/users/manage/{$user->id}/checker"; ?>" class="button">Hacerlo revisor</a>
-    <?php endif; ?>
-
-    <?php if (in_array('translator', array_keys($user->roles))) : ?>
-        <a href="<?php echo "/admin/users/manage/{$user->id}/notranslator"; ?>" class="button weak">Quitarlo de traductor</a>
-    <?php else : ?>
-        <a href="<?php echo "/admin/users/manage/{$user->id}/translator"; ?>" class="button">Hacerlo traductor</a>
-    <?php endif; ?>
-
+    <dl>
+        <dt>Visibilidad:</dt>
+        <dd>
+            <strong><?php echo $user->hide ? 'Oculto' : 'Visible'; ?></strong>
+            <?php if (!$user->hide) : ?>
+                <a href="<?php echo "/admin/users/manage/{$user->id}/hide"; ?>" class="button">Ocultar</a>
+            <?php else : ?>
+                <a href="<?php echo "/admin/users/manage/{$user->id}/show"; ?>" class="button red">Mostrar</a>
+            <?php endif; ?>
+        </dd>
+    </dl>
     <!--
-    <?php # if (in_array('admin', array_keys($user->roles))) : ?>
-        <a href="<?php # echo "/admin/users/manage/{$user->id}/noadmin"; ?>" class="button weak">Quitarlo de admin</a>
-    <?php # else : ?>
-        <a href="<?php # echo "/admin/users/manage/{$user->id}/admin"; ?>" class="button">Hacerlo admin</a>
-    <?php # endif; ?>
+    <p>
+        <a href="<?php echo "/admin/users/manage/{$user->id}/delete"; ?>" class="button weak" onclick="return confirm('Estas seguro de que quieres eliminar este usuario y todos sus registros asociados (proyectos, mensajes, aportes...)')">Eliminar</a>
+    </p>
     -->
 
-    </p>
 </div>
 

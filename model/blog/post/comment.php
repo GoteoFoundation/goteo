@@ -45,14 +45,17 @@ namespace Goteo\Model\Blog\Post {
 
             $sql = "
                 SELECT
-                    id,
-                    post,
-                    DATE_FORMAT(date, '%d | %m | %Y') as date,
-                    text,
-                    user
+                    comment.id,
+                    comment.post,
+                    DATE_FORMAT(comment.date, '%d | %m | %Y') as date,
+                    comment.text,
+                    comment.user
                 FROM    comment
-                WHERE post = ?
-                ORDER BY `date` DESC, id DESC
+                INNER JOIN user
+                    ON  user.id = comment.user
+                    AND (user.hide = 0 OR user.hide IS NULL)
+                WHERE comment.post = ?
+                ORDER BY `date` DESC, comment.id DESC
                 ";
             
             $query = static::query($sql, array($post));
@@ -78,14 +81,17 @@ namespace Goteo\Model\Blog\Post {
 
             $sql = "
                 SELECT
-                    id,
-                    post,
-                    DATE_FORMAT(date, '%d | %m | %Y') as date,
-                    text,
-                    user
+                    comment.id,
+                    comment.post,
+                    DATE_FORMAT(comment.date, '%d | %m | %Y') as date,
+                    comment.text,
+                    comment.user
                 FROM    comment
-                WHERE post IN (SELECT id FROM post WHERE blog = ?)
-                ORDER BY `date` DESC, id DESC
+                INNER JOIN user
+                    ON  user.id = comment.user
+                    AND (user.hide = 0 OR user.hide IS NULL)
+                WHERE comment.post IN (SELECT id FROM post WHERE blog = ?)
+                ORDER BY `date` DESC, comment.id DESC
                 ";
             if (!empty($limit)) {
                 $sql .= "LIMIT $limit";
@@ -112,9 +118,12 @@ namespace Goteo\Model\Blog\Post {
         public static function getCount ($post) {
                 $query = static::query("
                     SELECT
-                        COUNT(id) as cuantos
+                        COUNT(comment.id) as cuantos
                     FROM    comment
-                    WHERE post = :post
+                    INNER JOIN user
+                        ON  user.id = comment.user
+                        AND (user.hide = 0 OR user.hide IS NULL)
+                    WHERE comment.post = :post
                     ", array(':post' => $post));
 
                 $count = $query->fetchObject();

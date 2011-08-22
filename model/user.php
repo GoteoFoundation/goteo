@@ -23,7 +23,8 @@ namespace Goteo\Model {
             $about,
             $contribution,
             $keywords,
-            $active,
+            $active,  // si no activo, no puede loguear
+            $hide, // si oculto no aparece su avatar en ninguna parte (pero sus aportes cuentan)
             $facebook,
             $google,
             $twitter,
@@ -146,6 +147,10 @@ namespace Goteo\Model {
 
                     if(!is_null($this->active)) {
                         $data[':active'] = $this->active;
+                    }
+
+                    if(!is_null($this->hide)) {
+                        $data[':hide'] = $this->hide;
                     }
 
                     // Avatar
@@ -352,6 +357,14 @@ namespace Goteo\Model {
                 }
             }
 
+            if (\str_replace(Text::get('regular-facebook-url'), '', $this->facebook) == '') $this->facebook = '';
+            if (\str_replace(Text::get('regular-google-url'), '', $this->google) == '') $this->google = '';
+            if (\str_replace(Text::get('regular-twitter-url'), '', $this->twitter) == '') $this->twitter = '';
+            if (\str_replace(Text::get('regular-identica-url'), '', $this->identica) == '') $this->identica = '';
+            if (\str_replace(Text::get('regular-linkedin-url'), '', $this->linkedin) == '') $this->linkedin = '';
+
+
+
             return (empty($errors['email']) && empty($errors['password']));
         }
 
@@ -436,6 +449,7 @@ namespace Goteo\Model {
                         identica,
                         linkedin,
                         active,
+                        hide,
                         created,
                         modified
                     FROM user
@@ -525,7 +539,8 @@ namespace Goteo\Model {
                         id,
                         name,
                         email,
-                        active
+                        active,
+                        hide
                     FROM user
                     WHERE id != ''
                         $sqlFilter
