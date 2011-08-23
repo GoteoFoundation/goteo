@@ -91,7 +91,9 @@ include 'view/header.html.php' ?>
 					</div>
 					<!-- Módulo banner imagen más resumen proyecto -->
 					<div class="subhead-banner">
-						<div class="shb-info clearfix">
+                    	
+                        <a href="#meter-aqui-enlace-proyecto" class="expand">&nbsp;</a>
+						<div class="shb-info clearfix">	                       
 							<h2>Todojunto Letter Press Press Press</h2>
 							<small>Por: Todojunto</small>
 							<div class="col-return clearfix">
