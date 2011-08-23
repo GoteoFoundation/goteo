@@ -104,7 +104,7 @@ namespace Goteo\Controller {
                     'view/about/howto.html.php',
                     array(
                         'name' => $page->name,
-                        'title' => $page->description,
+                        'description' => $page->description,
                         'content' => $page->content
                     )
                  );
@@ -114,7 +114,7 @@ namespace Goteo\Controller {
                 'view/about/sample.html.php',
                 array(
                     'name' => $page->name,
-                    'title' => $page->description,
+                    'description' => $page->description,
                     'content' => $page->content
                 )
              );

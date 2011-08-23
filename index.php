@@ -56,6 +56,10 @@ session_start();
 // set Lang
 Lang::set();
 
+// cambiamos el locale
+\setlocale(\LC_TIME, 'es_ES');
+
+
 // Get URI without query string
 $uri = strtok($_SERVER['REQUEST_URI'], '?');
 

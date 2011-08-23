@@ -99,6 +99,21 @@ div#sub-header > div > div.slides_container > div.slides_control > div.subhead-b
 	display:block;
 }
 
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner > a.expand{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	display: block;
+	width: 100%;
+	left: 0;
+	right: 0;
+	z-index:100;
+}
+
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner:hover div.shb-info > h2{
+	color:#20B3B2;
+}
+
 div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-img{
 	margin:0px;
 	background: url('header/banners/test-banner-home.jpg') scroll no-repeat  0 0;
@@ -757,6 +772,10 @@ div#header div#menu > ul > li.dashboard > div > ul > li * {
 div#header div#menu > ul > li.dashboard > div > ul > li > a {
     display: block;    
     padding: .6em 1em;
+}
+
+div#header div#menu > ul > li.dashboard > div > ul > li.logout > a > span{
+	color:#F00 !important;
 }
 
 div#header div#menu > ul > li.dashboard > div > ul > li > a:hover {

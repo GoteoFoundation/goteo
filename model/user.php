@@ -433,7 +433,7 @@ namespace Goteo\Model {
          */
         public static function get ($id) {
             try {
-                $query = static::query("
+                $sql = "
                     SELECT
                         id,
                         email,
@@ -454,8 +454,14 @@ namespace Goteo\Model {
                         modified
                     FROM user
                     WHERE id = :id
-                    ", array(':id' => $id));
+                    ";
+
+                $query = static::query($sql, array(':id' => $id));
                 $user = $query->fetchObject(__CLASS__);
+
+                if (!$user instanceof  \Goteo\Model\User) {
+                    return false;
+                }
 
                 $user->roles = $user->getRoles();
                 $user->avatar = Image::get($user->avatar);

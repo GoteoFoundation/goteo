@@ -327,3 +327,8 @@ ul.navi li.next.active a {
 div.widget.blog-comment{position:relative;}
 div.widget.blog-comment button.green{float:right}
 div.widget.blog-comment div#bocadillo{background:url(bocadillo.jpg) no-repeat;position:absolute;width:56px;	height:51px;}
+
+/* = enlace para volver arriba
+*******************************/
+a.up{display:inline-block;padding-left:15px; background:url(arrow-up3.png) no-repeat left; line-height:20px;}
+a.up:hover{background:url(arrow-up.png) no-repeat left;}

@@ -265,7 +265,7 @@ namespace Goteo\Controller {
             $viewData['shares'] = Model\User\Interest::share($id, $category);
 
             if (!empty($category)) {
-                $viewData['category'] = Model\Interest::get($category);
+                $viewData['category'] = $category;
             }
 
             // proyectos que cofinancio

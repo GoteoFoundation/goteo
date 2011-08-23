@@ -17,12 +17,8 @@ foreach ($categories as $catId => $catName) {
 <script type="text/javascript">
 function displayCategories(categoryId1,categoryId2){
 	$("div.users").css("display","none");
-	
-	var target1 = "#mates-" + categoryId1;
-	$(target1).fadeIn("slow");
-
-	var target2 = "#mates-" + categoryId2;
-	$(target2).fadeIn("slow");
+	$("#mates-" + categoryId1).fadeIn("slow");
+	$("#mates-" + categoryId2).fadeIn("slow");
 }
 </script>
 <div class="widget user-mates">
@@ -41,7 +37,7 @@ function displayCategories(categoryId1,categoryId2){
 			else echo $keys[$cnt+1];
 			$cnt++;
 			?>
-            );">
+            ); return false;">
             <?php echo $catName?></a></li>
         <?php 	
 		} ?>

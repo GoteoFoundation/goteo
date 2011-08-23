@@ -19,17 +19,19 @@ $icons = Reward::icons('individual');
         ESTO ES UNA VISUALIZACIÓN DE LAS OPCIONES DE RETORNO QUE ELIGEN TUS COFINANCIADORES.<br />
         NO TIENES QUE GESTIONAR ESOS RETORNOS HASTA HABER LLEGADO AL MÍNIMO DE LA CANTIDAD DESEADA
     </div>
-    <div class="">
-        <?php $num = 1;
+    <div class="rewards">
+        <?php $num = 1; 
             foreach ($this['rewards'] as $rewardId=>$rewardData) :
                 $who = Invest::choosed($rewardData->id); ?>
-            <div style="margin: 20px;">
-                (<?php echo $num; ?>) <?php echo $rewardData->amount; ?> &euro; de aporte<br />
-                <?php echo count($who); ?> cofinanciadores<br />
-                <?php echo $icons[$rewardData->icon]; ?> <?php echo $rewardData->reward; ?><br />
-                Recompensa: <?php echo $rewardData->description; ?><br />
+            <div class="reward <?php if(($num % 4)==0)echo " last"?>">
+            	<span class="orden">(<?php echo $num; ?>)</span>
+                <span class="aporte"><span class="num"><?php echo $rewardData->amount; ?></span> <span class="euro">&nbsp;</span> de aporte</span>
+                <span class="cofinanciadores"><span class="num"><?php echo count($who); ?></span> cofinanciadores</span>
+                
+                <span class="tiporec"><?php echo $icons[$rewardData->icon]; ?> <?php echo $rewardData->reward; ?></span>
+                <span class="recompensa"><strong style="color:#666;">Recompensa:</strong><br/> <?php echo $rewardData->description; ?></span>
                 <?php if (count($who) > 0) : ?>
-                <input type="button" onclick="msgto('<?php echo $rewardData->id; ?>')" value="mensaje a ese grupo"  />
+                <a class="button green" onclick="msgto('<?php echo $rewardData->id; ?>')" >mensaje a ese grupo</a>
                 <?php endif; ?>
             </div>
         <?php ++$num;

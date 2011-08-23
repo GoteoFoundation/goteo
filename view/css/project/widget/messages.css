@@ -78,5 +78,5 @@ div.project-messages div.child .actions a:hover {
 }
 
 
-div.project-messages div.message h3.user a{text-decoration:none;}
-div.project-messages div.message h3.user a:hover{color:#20B3B2;}
+div.project-messages div.message h3.user a,div.project-messages div.child h3.user a{text-decoration:none;}
+div.project-messages div.message h3.user a:hover,div.project-messages div.child h3.user a:hover{color:#20B3B2;}
