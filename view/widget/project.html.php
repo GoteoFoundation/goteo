@@ -5,6 +5,8 @@ use Goteo\Core\View;
 
 $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
 
-<?php echo new View('view/project/widget/project.html.php', $this); ?>
+<div class="alone-project">
+    <?php echo new View('view/project/widget/project.html.php', $this); ?>
+</div>
 
 <?php include 'view/epilogue.html.php' ?>

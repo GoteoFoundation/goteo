@@ -25,6 +25,7 @@ namespace Goteo\Controller {
                 if (empty($_POST['Ds_ErrorCode'])) {
                     $invest->setTransaction($_POST['Ds_AuthorisationCode']);
                     $_POST['result'] = 'Transaccion ok';
+                    $invest->setStatus('0');
                 } else {
                     $invest->cancel($_POST['Ds_ErrorCode']);
                     $_POST['result'] = 'Fail';
@@ -39,10 +40,12 @@ namespace Goteo\Controller {
                 $logger = &\Log::singleton('file', 'logs/'.date('Ymd').'_invest.log', 'caller', $conf);
 
                 $logger->log("response: $response");
-                $logger->log('##### END TPV '.date('d/m/Y').' '.$_POST['Ds_MerchantData'].'#####');
+                $logger->log('##### END TPV ['.$id.'] '.date('d/m/Y').' '.$_POST['Ds_MerchantData'].'#####');
                 $logger->close();
 
                 @\mail( 'jcanaves@doukeshi.org', 'Comunicacion online goteo desde goteo.org/tpv/comunication', '<pre>'.print_r($_POST, 1).'</pre>');
+            } else {
+                throw new Redirection('/', Error::BAD_REQUEST);
             }
 
             

@@ -14,7 +14,8 @@ namespace Goteo\Model {
             $payment, //clave del cargo
             $transaction, // id de la transacción
             $method, // metodo de pago paypal/tpv
-            $status, //estado en el que se encuentra esta aportación: 0 pendiente, 1 cobrado (charged), 2 devuelto (returned)
+            $status, //estado en el que se encuentra esta aportación:
+                    // -1 en proceso, 0 pendiente, 1 cobrado (charged), 2 devuelto (returned)
             $anonymous, //no quiere aparecer en la lista de aportadores
             $resign, //renuncia a cualquier recompensa
             $invested, //fecha en la que se ha iniciado el aporte
@@ -22,7 +23,7 @@ namespace Goteo\Model {
             $returned, //fecha en la que se ha devuelto el importe al usurio por cancelación bancaria
             $rewards = array(), //datos de las recompensas que le corresponden
             $address = array(
-                'name' => '',
+                'name'     => '',
                 'nif'      => '',
                 'address'  => '',
                 'zipcode'  => '',
@@ -87,7 +88,7 @@ namespace Goteo\Model {
                 SELECT  *
                 FROM  invest
                 WHERE   invest.project = ?
-                AND invest.status <> 2
+                AND (invest.status = 0 OR invest.status = 1)
                 ", array($project));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $invest) {
                 // datos del usuario
@@ -364,7 +365,7 @@ namespace Goteo\Model {
                 SELECT  SUM(amount) as much
                 FROM    invest
                 WHERE   project = :project
-                AND     status <> 2
+                AND     (status = 0 OR status = 1)
                 ", array(':project' => $project));
             $got = $query->fetchObject();
             return (int) $got->much;
@@ -383,7 +384,7 @@ namespace Goteo\Model {
                     ON  user.id = invest.user
                     AND (user.hide = 0 OR user.hide IS NULL)
                 WHERE   project = ?
-                AND status <> 2
+                AND (status = 0 OR status = 1)
                 AND (anonymous = 0 OR anonymous IS NULL)
                 ORDER BY invest.id DESC
                 ";
@@ -422,7 +423,7 @@ namespace Goteo\Model {
                 FROM    invest
                 WHERE   user = :user
                 AND     project = :project
-                AND     status != 2
+                AND     (status = 0 OR status = 1)
                 ORDER BY invested DESC";
 
             $query = self::query($sql, array(':user' => $user, ':project' => $project));
@@ -445,7 +446,7 @@ namespace Goteo\Model {
                 INNER JOIN user
                     ON  user.id = invest.user
                     AND (user.hide = 0 OR user.hide IS NULL)
-                WHERE   status <> 2
+                WHERE   (status = 0 OR status = 1)
                 ";
 
             $query = self::query($sql, array($reward));
@@ -511,6 +512,29 @@ namespace Goteo\Model {
                 return false;
             }
             
+        }
+
+        /*
+         *  Cambia el estado de un aporte
+         */
+        public function setStatus ($status) {
+
+            if (!in_array($status, array('-1', '0', '1', '2'))) {
+                return false;
+            }
+
+            $values = array(
+                ':id' => $this->id,
+                ':status' => $status
+            );
+
+            $sql = "UPDATE invest SET status = :status WHERE id = :id";
+            if (self::query($sql, $values)) {
+                return true;
+            } else {
+                return false;
+            }
+
         }
 
         /*
@@ -606,9 +630,10 @@ namespace Goteo\Model {
          */
         public static function status ($id = null) {
             $array = array (
-                0=>'Pendiente de cargo',
-                1=>'Cargo ejecutado',
-                2=>'Devuelto o cancelado'
+                -1 => 'En proceso',
+                0  => 'Pendiente de cargo',
+                1  => 'Cargo ejecutado',
+                2  => 'Devuelto o cancelado'
             );
 
             if (!empty($id)) {

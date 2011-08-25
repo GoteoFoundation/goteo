@@ -27,11 +27,16 @@ $(document).ready(function(){
 	});
 });
 </script>
-<p>'<?php echo $this['page']->name; ?>'</p>
-<blockquote><?php echo $this['page']->description; ?></blockquote>
 
 <div class="widget board">
     <form method="post" action="/admin/pages/edit/<?php echo $this['page']->id; ?>">
+
+        <label for="page-name">Título:</label><br />
+        <input type="text" name="name" id="page-name" value="<?php echo $this['page']->name; ?>" />
+<br />
+        <label for="page-description">Cabecera:</label><br />
+        <textarea name="description" id="page-description" cols="60" rows="4"><?php echo $this['page']->description; ?></textarea>
+<br />
         <textarea id="richtext_content" name="content" cols="120" rows="20"><?php echo $this['page']->content; ?></textarea>
         <input type="submit" name="save" value="Guardar" />
     </form>

@@ -2,6 +2,7 @@
 namespace Goteo\Library {
 
     use Goteo\Model\Invest,
+        Goteo\Model\Project,
         Goteo\Core\Redirection;
 
     require_once 'library/tpv/wshandler.php';  // Libreria para comunicaciones con el webservice TPV y log
@@ -48,6 +49,8 @@ namespace Goteo\Library {
             */
             
 			try {
+                $project = Project::getMini($invest->project);
+
                 // preparo codigo y cantidad
                 $token  = $invest->id . rand(0,9) . rand(0,9) . rand(0,9) . rand(0,9);
                 $amount = $invest->amount * 100;
@@ -59,8 +62,8 @@ namespace Goteo\Library {
                 $currency = '978';
 //                $transactionType = 0; // cero para un pago normal
                 $transactionType = 7; //siete para iniciar un pre-autenticacion
-//                $urlMerchant = SITE_URL."/tpv/comunication";
-                $urlMerchant = "http://facturaweb.onliners-web.com/goteo/tpv.php"; // hasta pasarlo a produccion
+                $urlMerchant = SITE_URL."/tpv/comunication";
+//                $urlMerchant = "http://facturaweb.onliners-web.com/goteo/tpv.php"; // hasta pasarlo a produccion
                 $clave = TPV_ENCRYPT_KEY;
 
                 // y la firma
@@ -75,11 +78,11 @@ namespace Goteo\Library {
                     'Ds_Merchant_TransactionType'	=> $transactionType,
                     'Ds_Merchant_MerchantSignature'	=> $Firma,
                     'Ds_Merchant_MerchantUrl'		=> $urlMerchant,
-                    'Ds_Merchant_UrlOK'             => SITE_URL."/invest/confirmed/" . $invest->project,
+                    'Ds_Merchant_UrlOK'             => SITE_URL."/invest/confirmed/" . $invest->project . "/" . $invest->id,
                     'Ds_Merchant_UrlKO'             => SITE_URL."/invest/fail/" . $invest->project . "/" . $invest->id,
                     'Ds_Merchant_Currency'			=> $currency,
                     'Ds_Merchant_Order' 			=> $token,
-                    'Ds_Merchant_ProductDescription'=> "Aporte de {$invest->amount} euros al proyecto {$invest->project}",
+                    'Ds_Merchant_ProductDescription'=> "Aporte de {$invest->amount} EUR al proyecto '{$project->name}'",
                     'Ds_Merchant_Amount'			=> $amount,
                     'Ds_Merchant_ConsumerLanguage'  => '001',
                     'Ds_Merchant_MerchantData'     => 'InvestId='.$invest->id.'&User='.$_SESSION['user']->id
@@ -97,7 +100,7 @@ namespace Goteo\Library {
                 $conf = array('mode' => 0600, 'timeFormat' => '%X %x');
                 $logger = &\Log::singleton('file', 'logs/'.date('Ymd').'_invest.log', 'caller', $conf);
 
-                $logger->log('##### TPV '.date('d/m/Y').' User:'.$_SESSION['user']->id.'#####');
+                $logger->log('##### TPV ['.$invest->id.'] '.date('d/m/Y').' User:'.$_SESSION['user']->id.'#####');
 
                 $logger->log("request: $MsgStr");
                 $logger->close();

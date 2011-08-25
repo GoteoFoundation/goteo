@@ -105,7 +105,7 @@ namespace Goteo\Controller {
                 foreach ($project->invests as $key=>&$invest) {
 
                     if ($invest->status != 0) {
-                        // no nos importan los aportes cancelados ni ejecutados
+                        // no nos importan los aportes cancelados ni ejecutados ni en proceso
                         continue;
                     }
 

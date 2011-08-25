@@ -53,6 +53,8 @@ namespace Goteo\Controller {
 
                     // si llega post, vamos a guardar los cambios
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        $page->name = $_POST['name'];
+                        $page->description = $_POST['description'];
                         $page->content = $_POST['content'];
                         if ($page->save($errors)) {
                             throw new Redirection("/admin/pages");
@@ -323,7 +325,7 @@ namespace Goteo\Controller {
         /*
          *  Lista de proyectos
          */
-        public function overview($action = 'list', $id = null) {
+        public function projects($action = 'list', $id = null) {
 
             $BC = self::menu(array(
                 'section' => 'projects',
@@ -343,6 +345,42 @@ namespace Goteo\Controller {
             }
 
             $errors = array();
+
+
+            if ($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['save-dates']) && isset($_POST['id'])) {
+
+                $fields = array(
+                    'created',
+                    'updated',
+                    'published',
+                    'success',
+                    'closed'
+                    );
+
+                $set = '';
+                $values = array(':id' => $_POST['id']);
+
+                foreach ($fields as $field) {
+                    if (empty($_POST[$field])) continue;
+                    
+                    if ($set != '') $set .= ", ";
+                    $set .= "`$field` = :$field ";
+                    $values[":$field"] = $_POST[$field];
+                }
+
+                if ($set == '') {
+                    break;
+                }
+
+                try {
+                    $sql = "UPDATE project SET " . $set . " WHERE id = :id";
+                    echo $sql;
+                    Model\Project::query($sql, $values);
+                } catch(\PDOException $e) {
+                    $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
+                }
+                
+            }
 
             /*
              * switch action,
@@ -381,6 +419,26 @@ namespace Goteo\Controller {
                     $project = Model\Project::get($id);
                     $project->satisfied($errors);
                     break;
+                case 'fulfill':
+                    // marcar todos los retornos cunmplidos
+                    $project = Model\Project::get($id);
+                    $project->satisfied($errors);
+                    break;
+                case 'dates':
+                    // marcar todos los retornos cunmplidos
+                    $project = Model\Project::get($id);
+
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'projects',
+                            'file' => 'dates',
+                            'project' => $project,
+                            'filters' => $filters,
+                            'errors' => $errors
+                        )
+                    );
+                    break;
             }
 
             $projects = Model\Project::getList($filters);
@@ -390,8 +448,8 @@ namespace Goteo\Controller {
             return new View(
                 'view/admin/index.html.php',
                 array(
-                    'folder' => 'base',
-                    'file' => 'overview',
+                    'folder' => 'projects',
+                    'file' => 'list',
                     'projects' => $projects,
                     'filters' => $filters,
                     'status' => $status,
@@ -2026,7 +2084,7 @@ namespace Goteo\Controller {
                             'project'   => $_POST['project'],
                             'account'   => $userData->email,
                             'method'    => 'cash',
-                            'status'    => 1,
+                            'status'    => '1',
                             'invested'  => date('Y-m-d'),
                             'charged'   => date('Y-m-d'),
                             'anonymous' => $_POST['anonymous'],
@@ -3292,7 +3350,7 @@ namespace Goteo\Controller {
                 'projects' => array(
                     'label'   => 'Gestión de proyectos',
                     'options' => array (
-                        'overview' => array(
+                        'projects' => array(
                             'label' => 'Listado de proyectos',
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false)

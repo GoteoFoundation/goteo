@@ -6,6 +6,7 @@ namespace Goteo\Controller {
         Goteo\Core\Error,
         Goteo\Core\Redirection,
         Goteo\Model,
+        Goteo\Library\Message,
         Goteo\Library\Paypal,
         Goteo\Library\Tpv;
 
@@ -29,14 +30,12 @@ namespace Goteo\Controller {
             }
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
                 $errors = array();
                 $los_datos = $_POST;
 
-                if (empty($_POST['method'])) {
-                    $_POST['method'] = 'paypal';
-                }
-
-                if (empty($_POST['amount'])) {
+                if (empty($_POST['method']) || empty($_POST['amount'])) {
+                    Message::Error('Falta método de pago o cantidad');
                     throw new Redirection("/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
 
@@ -51,7 +50,8 @@ namespace Goteo\Controller {
                     'country'  => $_POST['country']
                 );
 
-                if ($projectData->owner == $_SESSION['user']->id || empty($_POST['email'])) {
+                if ($projectData->owner == $_SESSION['user']->id) {
+                    Message::Error('Eres el autor del proyecto, no puedes aportar personalmente a tu propio proyecto.');
                     throw new Redirection("/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
 
@@ -85,7 +85,7 @@ namespace Goteo\Controller {
                         'project' => $project,
                         'account' => $_POST['email'],
                         'method' => $_POST['method'],
-                        'status' => 0,
+                        'status' => '-1',               // aporte en proceso
                         'invested' => date('Y-m-d'),
                         'anonymous' => $_POST['anonymous'],
                         'resign' => $_POST['resign']
@@ -108,25 +108,35 @@ namespace Goteo\Controller {
                             die;
                             break;
                         case 'cash':
+                            $invest->setStatus('0');
                             // En betatest aceptamos cash para pruebas
                             throw new Redirection("/project/$project/invest/?confirm=ok");
                             break;
                     }
 
                     // si seguimos aqui es que algo ha fallado
-                    $errors[] = 'Algo ha fallado';
+                    Message::Error('algo ha fallado');
+                } else {
+                    Message::Error('Ha habido algun problema al inicializar la transacción');
                 }
-			}
+			} else {
+                Message::Error('No se han recibido los datos necesarios');
+            }
 
             throw new Redirection("/project/$project/invest");
         }
 
 
-        public function confirmed ($project = null) {
-            if (empty($project))
+        public function confirmed ($project = null, $invest = null) {
+            if (empty($project) || empty($invest)) {
+                Message::Error('Ha llegado una confirmación paypal sin proyecto o sin Id de aporte');
                 throw new Redirection('/discover', Redirection::TEMPORARY);
+            }
 
-            // no hay que hacer nada mas, aporte listo para cargar cuando sea
+            // hay que cambiarle el status a 0
+            $confirm = Model\Invest::get($invest);
+            $confirm->setStatus('0');
+
             // mandarlo a la pagina de gracias
             throw new Redirection("/project/$project/invest/?confirm=ok", Redirection::TEMPORARY);
         }

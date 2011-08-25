@@ -11,7 +11,11 @@ $project = $this['project'];
 $status = new View('view/project/edit/status.html.php', array('status' => $this['project']->status, 'progress' => $this['project']->progress));
 $steps  = new View('view/project/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'errors' => $this['project']->errors));
 
-Goteo\Library\Message::Info('El formuloario de proyecto se va grabando segun pases por cada campo');
+if (!empty($this['success'])) {
+    Goteo\Library\Message::Info($this['success']);
+} else {
+    Goteo\Library\Message::Info('El formulario de proyecto se va grabando segun pases por cada campo');
+}
 
 include 'view/prologue.html.php';
 

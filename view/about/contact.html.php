@@ -12,13 +12,14 @@ include 'view/header.html.php';
 ?>
     <div id="sub-header">
         <div>
-            <h2><?php echo $page->name; ?></h2>
+            <h2><?php echo $page->description; ?></h2>
         </div>
     </div>
 
     <div id="main">
 
         <div class="widget">
+            <h3 class="title"><?php echo $page->name; ?></h3>
             <?php echo $page->content; ?>
 
             <?php if (!empty($this['errors']) || !empty($this['message'])) : ?>

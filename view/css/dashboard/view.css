@@ -168,7 +168,12 @@ body.dashboard div#main div.status {
 
 body.dashboard div#main div.status #project-status {
     background-color: #ffffff;
-    padding: 20px 100px 62px 30px !important;
+    padding: 20px 20px 62px 30px !important;
+	widt:290px;
+}
+
+body.dashboard div#main div.status #project-status h3{
+	font-size:20px;
 }
 
 /* Lista entradas */

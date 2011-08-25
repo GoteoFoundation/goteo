@@ -430,6 +430,7 @@ namespace Goteo\Controller {
 
                     // si no está en campaña no pueden esta qui ni de coña
                     if ($project->status != 3) {
+                        Message::Info('El proyecto ya no está en campaña');
                         throw new Redirection('/project/'.$id, Redirection::TEMPORARY);
                     }
 

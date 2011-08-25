@@ -18,7 +18,7 @@ if (function_exists('ini_set')) {
 } else {
     throw new Exception("no hay ini_set");
 }
- * 
+ *
  */
 
 
@@ -46,9 +46,9 @@ if (!defined('PHPMAILER_POP3')) {
 }
 
 // Metadata
-define('GOTEO_META_TITLE', 'CROWDFUNDING THE COMMONS');
-define('GOTEO_META_DESCRIPTION', 'Plataforma social de financiación distribuida');
-define('GOTEO_META_KEYWORDS', 'crowdfunding, microcreditos, social, network, financiacion distribuida');
+define('GOTEO_META_TITLE', 'Crowdfunding the commons');
+define('GOTEO_META_DESCRIPTION', 'Red social de financiación colectiva');
+define('GOTEO_META_KEYWORDS', 'crowdfunding, procomÃn, commons, social, network, financiacion colectiva, cultural, creative commons, proyectos abiertos, open source, free software, licencias libres');
 define('GOTEO_META_AUTHOR', 'Onliners');
 define('GOTEO_META_COPYRIGHT', 'Platoniq');
 

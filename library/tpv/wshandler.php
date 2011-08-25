@@ -165,7 +165,7 @@ function call($MsgStr, $endpoint)
     $conf = array('mode' => 0600, 'timeFormat' => '%X %x');
     $logger = &Log::singleton('file', 'logs/'.date('Ymd').'_invest.log', 'caller', $conf);
 
-    $logger->log('##### TPV '.date('d/m/Y').' #####');
+    $logger->log('##### TPV call '.date('d/m/Y').' #####');
     
     $logger->log("endpoint: $endpoint");
     $logger->log("request: $MsgStr");
@@ -182,7 +182,7 @@ function call($MsgStr, $endpoint)
     //getting response from server
     $response = curl_exec($ch);
     $logger->log("response: ".trim($response));
-    $logger->log('##### END TPV '.date('d/m/Y').' #####');
+    $logger->log('##### END TPV call '.date('d/m/Y').' #####');
     $logger->close();
     
     if (curl_errno($ch)) {

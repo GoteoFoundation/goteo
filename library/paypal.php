@@ -2,6 +2,7 @@
 namespace Goteo\Library {
 
     use Goteo\Model\Invest,
+        Goteo\Model\Project,
         Goteo\Core\Redirection;
 
     require_once 'library/paypal/adaptivepayments.php';  // SDK paypal para operaciones API (minimizado)
@@ -22,6 +23,8 @@ namespace Goteo\Library {
         public static function preapproval($invest, &$errors = array()) {
             
 			try {
+                $project = Project::getMini($invest->project);
+
 
 		        /* The servername and serverport tells PayPal where the buyer
 		           should be directed back to after authorizing payment.
@@ -33,7 +36,7 @@ namespace Goteo\Library {
 		            payment has been succesfully authorized.
 		            The cancelURL is the location buyers are sent to when they hit the
 		            cancel button during authorization of payment during the PayPal flow                 */
-		           $returnURL = SITE_URL."/invest/confirmed/" . $invest->project; // a difundirlo @TODO mensaje gracias si llega desde un preapproval
+		           $returnURL = SITE_URL."/invest/confirmed/" . $invest->project . "/" . $invest->id; // a difundirlo @TODO mensaje gracias si llega desde un preapproval
 		           $cancelURL = SITE_URL."/invest/fail/" . $invest->project . "/" . $invest->id; // a la página de aportar para intentarlo de nuevo
 
                     // desde hoy hasta 11 meses
@@ -52,7 +55,7 @@ namespace Goteo\Library {
 		            resulting errors
 		            */
 		           $preapprovalRequest = new \PreapprovalRequest();
-                   $preapprovalRequest->memo = "Aporte de {$invest->amount} EUR al proyecto {$invest->project} en la plataforma Goteo";
+                   $preapprovalRequest->memo = "Aporte de {$invest->amount} EUR al proyecto '{$project->name}' en la plataforma Goteo";
 		           $preapprovalRequest->cancelUrl = $cancelURL;
 		           $preapprovalRequest->returnUrl = $returnURL;
 		           $preapprovalRequest->clientDetails = new \ClientDetailsType();
@@ -114,10 +117,12 @@ namespace Goteo\Library {
         public static function pay($invest, &$errors = array()) {
 
             try {
+                $project = Project::getMini($invest->project);
+
                 // Create request object
                 $payRequest = new \PayRequest();
                 $payRequest->actionType = "PAY";
-                $payRequest->memo = "Cargo del aporte de {$invest->amount} EUR al proyecto {$invest->project} en la plataforma Goteo";
+                $payRequest->memo = "Cargo del aporte de {$invest->amount} EUR al proyecto '{$project->name}' en la plataforma Goteo";
                 $payRequest->cancelUrl = SITE_URL.'/cron/charge_fail/' . $invest->id;
                 $payRequest->returnUrl = SITE_URL.'/cron/charge_success/' . $invest->id;
                 $payRequest->clientDetails = new \ClientDetailsType();

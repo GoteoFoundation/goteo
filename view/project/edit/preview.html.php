@@ -8,10 +8,6 @@ $project = $this['project'];
 $types   = $this['types'];
 $errors = $project->errors ?: array();
 
-if (!empty($this['success'])) {
-    $success = '<br /><br />' . implode('<br /><br />', $this['success']);
-}
-
 // miramos el pruimer paso con errores para mandarlo a ese
 $goto = 'view-step-userProfile';
 foreach ($this['steps'] as $id => $data) {
@@ -114,6 +110,6 @@ echo new SuperForm(array(
     'level'         => $this['level'],
     'method'        => 'post',
     'title'         => Text::get('preview-main-header'),
-    'hint'          => Text::get('guide-project-preview') . $success,
+    'hint'          => Text::get('guide-project-preview'),
     'elements'      => $elements
 ));

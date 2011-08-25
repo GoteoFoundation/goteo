@@ -9,7 +9,7 @@ $filter = "?status={$filters['status']}&category={$filters['category']}";
 
 ?>
 <div class="widget board">
-    <form id="filter-form" action="/admin/overview" method="get">
+    <form id="filter-form" action="/admin/projects" method="get">
         <label for="status-filter">Mostrar por estado:</label>
         <select id="status-filter" name="status" onchange="document.getElementById('filter-form').submit();">
             <option value="">Todos los estados</option>
@@ -57,11 +57,12 @@ $filter = "?status={$filters['status']}&category={$filters['category']}";
             <tr>
                 <td colspan="7"> >>> Acciones:
                     <a href="/project/edit/<?php echo $project->id; ?>" target="_blank">[Editar]</a>
-                    <?php if ($project->status == 1) : ?><a href="<?php echo "/admin/overview/review/{$project->id}{$filter}"; ?>">[A revisión]</a><?php endif; ?>
-                    <?php if ($project->status < 3) : ?><a href="<?php echo "/admin/overview/publish/{$project->id}{$filter}"; ?>">[Publicar]</a><?php endif; ?>
-                    <?php if ($project->status > 1) : ?><a href="<?php echo "/admin/overview/enable/{$project->id}{$filter}"; ?>">[Reabrir]</a><?php endif; ?>
-                    <?php if ($project->status == 4) : ?><a href="<?php echo "/admin/overview/fulfill/{$project->id}{$filter}"; ?>">[Retorno Cumplido]</a><?php endif; ?>
-                    <a href="<?php echo "/admin/overview/cancel/{$project->id}{$filter}"; ?>" onclick="return confirm('El proyecto va a quedar DESCARTADO permanentemente, ¿seguro que hacemos eso?');">[Descartar]</a>
+                    <?php if ($project->status == 1) : ?><a href="<?php echo "/admin/projects/review/{$project->id}{$filter}"; ?>">[A revisión]</a><?php endif; ?>
+                    <?php if ($project->status < 3) : ?><a href="<?php echo "/admin/projects/publish/{$project->id}{$filter}"; ?>">[Publicar]</a><?php endif; ?>
+                    <?php if ($project->status > 1) : ?><a href="<?php echo "/admin/projects/enable/{$project->id}{$filter}"; ?>">[Reabrir]</a><?php endif; ?>
+                    <?php if ($project->status == 4) : ?><a href="<?php echo "/admin/projects/fulfill/{$project->id}{$filter}"; ?>">[Retorno Cumplido]</a><?php endif; ?>
+                    <a href="<?php echo "/admin/projects/cancel/{$project->id}{$filter}"; ?>" onclick="return confirm('El proyecto va a quedar DESCARTADO permanentemente, ¿seguro que hacemos eso?');">[Descartar]</a>
+                    <a href="<?php echo "/admin/projects/dates/{$project->id}{$filter}"; ?>">[Cambiar fechas]</a>
                 </td>
             </tr>
             <tr>

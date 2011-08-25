@@ -29,7 +29,7 @@ foreach (License::getAll() as $l) {
     
     <form method="post" action="/invest/<?php echo $project->id; ?>">
 
-    <label><input type="text" id="amount" name="amount" class="amount" value="" /><?php echo Text::get('invest-amount-tooltip') ?></label>
+    <label><input type="text" id="amount" name="amount" class="amount" value="100" /><?php echo Text::get('invest-amount-tooltip') ?></label>
 </div>
 
     
@@ -75,29 +75,36 @@ foreach (License::getAll() as $l) {
             <td colspan="2"></td>
         </tr>
     </table>
+
+    <p>
+        <label><input type="checkbox" name="anonymous" value="1" /><?php echo Text::get('invest-anonymous') ?></label>
+    </p>
 </div>
 
 
 <div class="widget project-invest">
     <h<?php echo $level ?> class="beak"><?php echo Text::get('project-invest-continue') ?></h<?php echo $level ?>>
+<!--
         <fieldset>
             <legend><?php echo Text::get('invest-payment_method-header') ?></legend>
             <?php foreach ($methods as $id=>$name) : ?>
                 <label><?php echo $name; ?><input type="radio" name="method" value="<?php echo $id; ?>" checked="checked"/></label>
             <?php endforeach; ?>
         </fieldset>
-        
+-->
         <p>
             <label><?php echo Text::get('invest-payment-email') ?><br />
                 <input type="text" id="email" name="email" value="<?php echo $_SESSION['user']->email; ?>" />
             </label>
         </p>
             
-        <p>
-            <label><input type="checkbox" name="anonymous" value="1" /><?php echo Text::get('invest-anonymous') ?></label>
-        </p>
-        
-<input type="submit" value="<?php echo Text::get('invest-next_step') ?>" />
+<input type="hidden" id="paymethod"  />
+
+<button type="submit" class="weak pay-tpv" name="method"  value="tpv">TPV</button>
+<button type="submit" class="weak pay-paypal" name="method"  value="paypal">PAYPAL</button>
+<button type="submit" class="weak pay-cash" name="method"  value="cash">Ca$h</button>
+
+<!-- <input type="submit" value="" /> -->
 
 </form>
 </div>

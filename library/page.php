@@ -111,6 +111,23 @@ namespace Goteo\Library {
 
   			try {
                 $values = array(
+                    ':id' => $this->id,
+                    ':name' => $this->name,
+                    ':description' => $this->description
+                );
+
+				$sql = "UPDATE page
+                            SET name = :name,
+                                description = :description
+                            WHERE id = :id
+                        ";
+				Model::query($sql, $values);
+
+
+
+
+
+                $values = array(
                     ':page' => $this->id,
                     ':lang' => $this->lang,
                     ':node' => $this->node,
