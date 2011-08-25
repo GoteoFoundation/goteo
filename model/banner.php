@@ -1,18 +1,18 @@
 <?php
 namespace Goteo\Model {
 
-    use \Goteo\Library\Text,
-        \Goteo\Model\Project,
-        \Goteo\Library\Check;
+    use Goteo\Library\Text,
+        Goteo\Model\Project,
+        Goteo\Model\Image,
+        Goteo\Library\Check;
 
     class Banner extends \Goteo\Core\Model {
 
         public
+            $id,
             $node,
             $project,
-            $name,
-            $title,
-            $description,
+            $image,
             $order;
 
         /*
@@ -21,9 +21,11 @@ namespace Goteo\Model {
         public static function get ($project, $node = \GOTEO_NODE) {
                 $query = static::query("
                     SELECT  
+                        banner.id as id,
                         banner.node as node,
                         banner.project as project,
                         project.name as name,
+                        banner.image as image,
                         banner.order as `order`
                     FROM    banner
                     INNER JOIN project
@@ -32,6 +34,10 @@ namespace Goteo\Model {
                     AND banner.node = :node
                     ", array(':project'=>$project, ':node'=>$node));
                 $banner = $query->fetchObject(__CLASS__);
+
+                $banner->image = Image::get($banner->image);
+
+
 
                 return $banner;
         }
@@ -48,9 +54,11 @@ namespace Goteo\Model {
 
             $query = static::query("
                 SELECT
+                    banner.id as id,
                     banner.project as project,
                     project.name as name,
                     project.status as status,
+                    banner.image as image,
                     banner.order as `order`
                 FROM    banner
                 INNER JOIN project
@@ -94,13 +102,18 @@ namespace Goteo\Model {
         }
 
 
-        public function validate (&$errors = array()) { 
+        public function validate (&$errors = array()) {
+            /*
             if (empty($this->node))
                 $errors[] = 'Falta nodo';
                 //Text::get('mandatory-banner-node');
-
+*/
             if (empty($this->project))
                 $errors[] = 'Falta proyecto';
+                //Text::get('validate-banner-noproject');
+
+            if (empty($this->image))
+                $errors[] = 'Falta imagen';
                 //Text::get('validate-banner-noproject');
 
             if (empty($errors))
@@ -112,9 +125,18 @@ namespace Goteo\Model {
         public function save (&$errors = array()) {
             if (!$this->validate($errors)) return false;
 
+            // Imagen de fondo de banner
+            if (is_array($this->image) && !empty($this->image['name'])) {
+                $image = new Image($this->image);
+                if ($image->save()) {
+                    $this->image = $image->id;
+                }
+            }
+
             $fields = array(
                 'node',
                 'project',
+                'image',
                 'order'
                 );
 

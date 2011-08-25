@@ -90,33 +90,40 @@ include 'view/header.html.php' ?>
 						</ul> -->
 					</div>
 					<!-- Módulo banner imagen más resumen proyecto -->
+                    <?php foreach ($this['banners'] as $id=>$banner) : ?>
 					<div class="subhead-banner">
-                    	
-                        <a href="#meter-aqui-enlace-proyecto" class="expand">&nbsp;</a>
+                        <a href="/project/<?php echo $banner->project->id ?>" class="expand"></a>
 						<div class="shb-info clearfix">	                       
-							<h2>Todojunto Letter Press Press Press</h2>
-							<small>Por: Todojunto</small>
+							<h2><?php echo $banner->project->name ?></h2>
+							<small>Por: <?php echo $banner->project->user->name ?></small>
 							<div class="col-return clearfix">
 								<h3>Retorno colectivo</h3>
-								<p>Se haran manuales de como montar imprimir con tecnicas artesanales</p>
+								<p><?php echo current($banner->project->social_rewards)->reward ?></p>
 								<ul>
-									<li><img src="view/css/icon/s/design.png" alt="design" /></li>
-									<li><img src="view/css/icon/s/other.png" alt="other" /></li>
-									<li><img src="view/css/icon/s/money.png" alt="rewards" /></li>
+                                    <?php $c = 1; foreach ($banner->project->social_rewards as $id=>$reward) : ?>
+									<li><img src="view/css/icon/s/<?php echo $reward->icon ?>.png" alt="<?php echo $reward->icon ?>" title="<?php echo $reward->reward ?>" /></li>
+                                    <?php if ($c>4) break; else $c++; endforeach; ?>
 								</ul>
-								<div class="license"><img src="view/css/license/ccbync.png" alt="ccbync" /></div>
+								<div class="license"><?php foreach ($banner->project->social_rewards as $id=>$reward) :
+                                    if (empty($reward->license)) continue; ?>
+									<img src="view/css/license/<?php echo $reward->license ?>.png" alt="<?php echo $reward->license ?>" /></div>
+                                    <?php break; endforeach; ?>
+
 							</div>
 							<ul class="financ-meter">
 								<li>OBTENIDO</li>
-								<li class="reached">200 <span class="euro">€</span></li>
+								<li class="reached"><?php echo $banner->project->amount ?> <span class="euro">€</span></li>
 								<li>DE</li>
-								<li class="optimun">3000 <span class="euro">€</span></li>
+								<li class="optimun"><?php echo ($banner->project->amount >= $banner->project->mincost) ? $banner->project->maxcost : $banner->project->mincost; ?> <span class="euro">€</span></li>
+                                <?php if ($banner->project->days > 0) : ?>
 								<li>QUEDAN</li>
-								<li class="days">2 días</li>
+								<li class="days"><?php echo $banner->project->days ?> días</li>
+                                <?php endif; ?>
 							</ul>
 						</div>
-						<div class="shb-img"></div>
+						<div class="shb-img"><img src="/image/<?php echo $banner->image ?>/700/156/1" title="<?php echo $banner->project->name ?>" alt="<?php echo $banner->project->name ?>" /></div>
 					</div>
+                    <?php endforeach; ?>
 				</div>
 				<div class="mod-pojctopen"><?php echo Text::html('open-banner-header'); ?></div>
 			</div>

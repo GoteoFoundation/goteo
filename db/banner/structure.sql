@@ -7,3 +7,6 @@ CREATE TABLE `banner` (
  UNIQUE KEY `project_node` (`node`,`project`),
   UNIQUE KEY `id` (`id`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Proyectos en banner superior';
+
+-- alters
+ALTER TABLE `banner` ADD `image` INT( 10 ) NULL ; 

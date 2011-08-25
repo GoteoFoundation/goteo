@@ -769,15 +769,15 @@ namespace Goteo\Controller {
                     'order' => $_POST['order']
                 ));
 
+                // imagen
+                if(!empty($_FILES['image']['name'])) {
+                    $banner->image = $_FILES['image'];
+                } else {
+                    $banner->image = $_POST['prev_image'];
+                }
+
 				if ($banner->save($errors)) {
-                    switch ($_POST['action']) {
-                        case 'add':
-                            $success = 'Proyecto destacado correctamente';
-                            break;
-                        case 'edit':
-                            $success = 'Destacado editado correctamente';
-                            break;
-                    }
+                    $success[] = 'Datos guardados';
 				}
 				else {
                     switch ($_POST['action']) {
