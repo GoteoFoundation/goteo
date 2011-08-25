@@ -56,7 +56,7 @@ if (!empty($project->media->url)) {
             'title' => Text::get('overview-field-media_preview'),
             'class' => 'inline media',
             'type'  => 'html',
-            'html'  => '<div>' . (!empty($project->media) ? $project->media->getEmbedCode() : '') .'</div>'
+            'html'  => !empty($project->media) ? $project->media->getEmbedCode() : ''
     );
 } else {
     $media = array(

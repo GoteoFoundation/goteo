@@ -6,6 +6,11 @@ body.project-edit div#main.overview div.superform li.element.media > div.content
     margin-right: 270px;
 }
 
+body.project-edit div#main.overview div.superform li.element.media > div.contents iframe {
+    width: 380px !important;
+    height: 220px !important;
+}
+
 body.project-edit div#main.overview div.superform li.element.media textarea {    
     min-height: 170px;
     max-height: 170px;

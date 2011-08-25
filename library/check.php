@@ -152,10 +152,10 @@ namespace Goteo\Library {
 
 		public static function phone ($value) {
 
-			$value = str_replace(array('_', '.', ' ', '-', ','), '', $value);
+			$value = str_replace(array('_', '.', ' ', '-', ',', '+', '(', ')'), '', $value);
 
-			// si no son 9 numeros, chof
-			if (preg_match('/^\d{9}$/', $value) > 0)
+			// si no son numeros, chof
+			if (preg_match('/^\d{9,14}$/', $value) > 0)
 				return true;
 			else
 				return false;

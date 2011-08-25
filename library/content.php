@@ -25,7 +25,8 @@ namespace Goteo\Library {
                 'page'      => 'Páginas',
                 'criteria'  => 'Criterios de evaluación',
                 'worthcracy'=> 'Meritocrácia',
-                'template'  => 'Plantillas emails automáticos'
+                'template'  => 'Plantillas emails automáticos',
+                'glossary'  => 'Glosario de términos'
             ),
             $fields = array(
                 'promote' => array (
@@ -71,6 +72,10 @@ namespace Goteo\Library {
                     'name' => 'Nombre'
                 ),
                 'template' => array (
+                    'title' => 'Título',
+                    'text' => 'Contenido'
+                ),
+                'glossary' => array (
                     'title' => 'Título',
                     'text' => 'Contenido'
                 )

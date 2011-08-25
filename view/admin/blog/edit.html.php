@@ -120,7 +120,7 @@ if (!$post instanceof Model\Blog\Post) {
             ),
 
             'media' => array(
-                'type'      => 'textarea',
+                'type'      => 'textbox',
                 'title'     => 'Vídeo',
                 'class'     => 'media',
                 'hint'      => Text::get('tooltip-updates-media'),
@@ -131,7 +131,7 @@ if (!$post instanceof Model\Blog\Post) {
                         'title' => 'Vista previa',
                         'class' => 'media-preview inline',
                         'type'  => 'html',
-                        'html'  => '<div>' . (!empty($post->media) ? $post->media->getEmbedCode() : '') .'</div>'
+                        'html'  => !empty($post->media) ? $post->media->getEmbedCode() : ''
                     )
                 )
             ),
