@@ -397,17 +397,27 @@ namespace Goteo\Controller {
             $project = Model\Project::get($id);
             // los retornos ordenados por cantidad
             $project->individual_rewards = Model\Project\Reward::getAll($id, 'individual', null, null, 'amount');
+
+            // recompensas
+            foreach ($project->individual_rewards as &$reward) {
+                $reward->none = false;
+                $reward->taken = $reward->getTaken(); // cofinanciadores quehan optado por esta recompensas
+                // si controla unidades de esta recompensa, mirar si quedan
+                if ($reward->units > 0 && $reward->taken >= $reward->units) {
+                    $reward->none = true;
+                }
+            }
+
+
             // DE ESTO PASAMOS HASTA LA PUESTA EN MARCHA
             // solamente se puede ver publicamente si
             // - es el dueño
             // - es un admin con permiso
             // - es otro usuario y el proyecto esta available: en campaña, financiado, retorno cumplido o caducado (que no es desechado)
-            /*
             if (($project->status > 2) ||
                 $project->owner == $_SESSION['user']->id ||
                 ACL::check('/project/edit/todos')) {
                 // lo puede ver
-              */
 
                 $viewData = array(
                         'project' => $project,
@@ -424,9 +434,12 @@ namespace Goteo\Controller {
                 if ($show == 'invest') {
 
                     // piñon para betatesters
-                    if (!in_array($_SESSION['user']->id, array('root', 'goteo', 'olivier', 'esenabre', 'diegobus', 'pepe'))) {
+                    /*
+                    if (!in_array($_SESSION['user']->id, array('root', 'goteo', 'olivier', 'esenabre', 'diegobus', 'ivan'))) {
                         throw new Redirection('/about/beta', Redirection::TEMPORARY);
                     }
+                     * 
+                     */
 
                     // si no está en campaña no pueden esta qui ni de coña
                     if ($project->status != 3) {
@@ -454,13 +467,10 @@ namespace Goteo\Controller {
 
                 return new View('view/project/public.html.php', $viewData);
 
-            /*
             } else {
                 // no lo puede ver
                 throw new Redirection("/");
             }
-             *
-             */
         }
 
         //-----------------------------------------------

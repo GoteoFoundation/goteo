@@ -65,7 +65,7 @@ namespace Goteo\Model {
                         COUNT(invest.id)
                         FROM invest
                         WHERE invest.campaign = campaign.id
-                        AND invest.status <> 2
+                        AND (invest.status = 0 OR invest.status = 1)
                     ) as used
                 FROM    campaign
                 ORDER BY campaign.name ASC

@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Page;
 
-$pages = Page::getAll();
+$pages = Page::getAll($_SESSION['translator_lang']);
 ?>
 <h3 class="title">Traducción de páginas institucionales</h3>
 <div class="widget board">

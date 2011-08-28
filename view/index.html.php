@@ -71,7 +71,7 @@ include 'view/header.html.php' ?>
 
     });
     </script>
-		<script>
+		<script type="text/javascript">
 			$(function(){
 				$('#sub-header').slides();
 			});
@@ -90,7 +90,7 @@ include 'view/header.html.php' ?>
 						</ul> -->
 					</div>
 					<!-- Módulo banner imagen más resumen proyecto -->
-                    <?php foreach ($this['banners'] as $id=>$banner) : ?>
+                    <?php if (!empty($this['banners'])) : foreach ($this['banners'] as $id=>$banner) : ?>
 					<div class="subhead-banner">
                         <a href="/project/<?php echo $banner->project->id ?>" class="expand"></a>
 						<div class="shb-info clearfix">	                       
@@ -123,7 +123,13 @@ include 'view/header.html.php' ?>
 						</div>
 						<div class="shb-img"><img src="/image/<?php echo $banner->image ?>/700/156/1" title="<?php echo $banner->project->name ?>" alt="<?php echo $banner->project->name ?>" /></div>
 					</div>
-                    <?php endforeach; ?>
+                    <?php endforeach;
+                    else : ?>
+					<div class="subhead-banner">
+						<h2 class="message">Red social para <span class="greenblue">cofinanciar y colaborar con</span><br /> proyectos creativos que fomentan el procomún<br /> ¿Tienes un proyecto con <span class="greenblue">adn abierto</span>?</h2>
+                        <a href="/contact" class="button banner-button">Contáctanos</a>
+                    </div>
+                    <?php endif; ?>
 				</div>
 				<div class="mod-pojctopen"><?php echo Text::html('open-banner-header'); ?></div>
 			</div>

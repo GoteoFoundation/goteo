@@ -172,6 +172,6 @@ $icons = Reward::icons('individual');
     function msgto(reward) {
         document.getElementById('msg_reward-'+reward).checked = 'checked';
         document.location.href = '#message';
-        $("#message-users").focus();
+        $("#message").focus();
     }
 </script>

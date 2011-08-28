@@ -16,7 +16,8 @@ namespace Goteo\Library {
             $name,
             $description,
             $url,
-            $content;
+            $content,
+            $pendiente; // para si esta pendiente de traduccion
 
         static public function get ($id, $lang = \LANG, $node = \GOTEO_NODE) {
 
@@ -52,23 +53,28 @@ namespace Goteo\Library {
 		/*
 		 *  Metodo para la lista de páginas
 		 */
-		public static function getAll() {
+		public static function getAll($lang = \LANG, $node = \GOTEO_NODE) {
             $pages = array();
 
             try {
 
-                $values = array(':lang' => \LANG);
+                $values = array(':lang' => $lang, ':node' => $node);
 
                 $sql = "SELECT
                             page.id as id,
                             IFNULL(page_lang.name, page.name) as name,
                             IFNULL(page_lang.description, page.description) as description,
+                            IF(page_node.content IS NULL, 1, 0) as pendiente,
                             page.url as url
                         FROM page
                         LEFT JOIN page_lang
                             ON  page_lang.id = page.id
                             AND page_lang.lang = :lang
-                        ORDER BY name ASC
+                         LEFT JOIN page_node
+                            ON  page_node.page = page.id
+                            AND page_node.lang = :lang
+                            AND page_node.node = :node
+                        ORDER BY pendiente DESC, name ASC
                         ";
 
                 $query = Model::query($sql, $values);

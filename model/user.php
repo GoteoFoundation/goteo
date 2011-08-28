@@ -601,6 +601,30 @@ namespace Goteo\Model {
             return $list;
         }
 
+        /*
+         * Listado simple de los usuarios que han creado proyectos
+         */
+        public static function getOwners() {
+
+            $list = array();
+
+            $query = static::query("
+                SELECT
+                    user.id as id,
+                    user.name as name
+                FROM    user
+                INNER JOIN project
+                    ON project.owner = user.id
+                ORDER BY user.name ASC
+                ");
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $list[$item->id] = $item->name;
+            }
+
+            return $list;
+        }
+
 		/**
 		 * Validación de usuario.
 		 *
@@ -785,9 +809,9 @@ namespace Goteo\Model {
          * @return type array
          */
     	private function getSupport () {
-            $query = self::query('SELECT DISTINCT(project) FROM invest WHERE user = ? AND status <> 2 AND (anonymous = 0 OR anonymous IS NULL)', array($this->id));
+            $query = self::query('SELECT DISTINCT(project) FROM invest WHERE user = ? AND (status = 0 OR status = 1)', array($this->id));
             $projects = $query->fetchAll(\PDO::FETCH_ASSOC);
-            $query = self::query('SELECT SUM(amount), COUNT(id) FROM invest WHERE user = ? AND status <> 2', array($this->id));
+            $query = self::query('SELECT SUM(amount), COUNT(id) FROM invest WHERE user = ? AND (status = 0 OR status = 1)', array($this->id));
             $invest = $query->fetch();
             return array('projects' => $projects, 'amount' => $invest[0], 'invests' => $invest[1]);
         }
@@ -921,7 +945,7 @@ namespace Goteo\Model {
                     INNER JOIN invest
                         ON project.id = invest.project
                         AND invest.user = ?
-                        AND invest.status <> 2
+                        AND (invest.status = 0 OR invest.status = 1)
                     WHERE project.status < 7
                     ";
             if ($publicOnly) {

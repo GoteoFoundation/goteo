@@ -91,7 +91,7 @@ namespace Goteo\Controller {
                                 'text' => $_POST['text'],
                                 'lang' => $_SESSION['translator_lang']
                             ), $errors)) {
-                    throw new Redirection("/translate/texts/$filter");
+                    throw new Redirection("/translate/texts/$filter&page=".$_GET['page']);
                 }
             }
 
@@ -144,7 +144,7 @@ namespace Goteo\Controller {
                 }
 
                 if (Content::save($_POST, $errors)) {
-                    throw new Redirection("/translate/contents/$filter");
+                    throw new Redirection("/translate/contents/$filter&page=".$_GET['page']);
                 }
             }
 

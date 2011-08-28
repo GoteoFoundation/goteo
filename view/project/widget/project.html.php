@@ -31,18 +31,17 @@ if (isset($this['investor']) && is_object($this['investor'])) {
     <?php endif ?>
 
     <div class="image">
-        <?php
-     // tag de financiado cuando ha alcanzado el optimo o despues de los 80 dias
-        if ($project->status == 4 || ( $project->status == 3 && $project->amount >= $project->maxcost )) :
-            echo '<div class="tagmark red">' . Text::get('regular-gotit_mark') . '</div>';
-    // tag de en marcha cuando está en la segunda ronda o si estando en la primera ha alcanzado el mínimo
-        elseif ($project->status == 3 && ($project->round == 2 ||  ( $project->round == 1 && $project->amount >= $project->mincost ))) :
-            echo '<div class="tagmark green">' . Text::get('regular-onrun_mark') . '</div>';
-     // tag de exitoso cuando es retorno cumplido
-        elseif ($project->status == 5) :
-            echo '<div class="tagmark red">' . Text::get('regular-success_mark') . '</div>';
-        endif;
-        ?>
+        <?php switch ($project->tagmark) {
+            case 'onrun':
+                echo '<div class="tagmark green">' . Text::get('regular-onrun_mark') . '</div>';
+                break;
+            case 'gotit':
+                echo '<div class="tagmark red">' . Text::get('regular-gotit_mark') . '</div>';
+                break;
+            case 'success':
+                echo '<div class="tagmark red">' . Text::get('regular-success_mark') . '</div>';
+                break;
+        } ?>
 
         <?php if (isset($this['investor'])) : ?>
             <div class="investor"><img src="<?php echo SITE_URL ?>/image/<?php echo $investor->avatar->id ?>/43/43/1" alt="<?php echo $investor->name ?>" /><div class="invest">Mi aporte<br /><span class="amount"><?php echo $invest->total ?></span></div></div>

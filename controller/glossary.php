@@ -25,7 +25,7 @@ namespace Goteo\Controller {
             foreach ($glossary as $id=>$post) {
 
                 // tratar el texto para las entradas
-                $post->text = nl2br(str_replace(array('%URL_SITE%'), array(SITE_URL), $post->text));
+                $post->text = nl2br(str_replace(array('%SITE_URL%'), array(SITE_URL), $post->text));
                 
                 $posts[] = $post;
 

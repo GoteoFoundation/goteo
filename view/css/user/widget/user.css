@@ -51,6 +51,23 @@ div.widget.user dl dd.links ul a {
     font-size: 14px;
 }
 
+div.widget.user dl dd.message {
+    padding-left: 22px;
+    background: url('../../bocadillo/s.png') no-repeat left center;
+    text-indent: .5em;
+    text-decoration: none;
+}
+
+div.widget.user dl dd.message a {
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 14px;
+    color: #28B258;
+}
+
+div.widget.user dl dd.message a:hover {
+    text-decoration: underline;
+}
 
 div.widget.user a.button {
     margin: 1.5em 0 0;

@@ -56,4 +56,8 @@ $interests = Interest::getAll();
      </div>
     <?php endif ?>
 
+     <div class="message">
+        <p><a href="/user/profile/<?php echo $user->id ?>/message">Enviar mensaje</a></p>
+     </div>
+
 </div>

@@ -22,7 +22,7 @@ $text->text = Text::getTrans($this['id']);
         <blockquote><?php echo $text->purpose; ?></blockquote>
     </fieldset>
 
-    <form action="/translate/texts/edit/<?php echo $text->id ?>/<?php echo $this['filter'] ?>" method="post" >
+    <form action="/translate/texts/edit/<?php echo $text->id ?>/<?php echo $this['filter'] . '&page=' . $_GET['page'] ?>" method="post" >
 
         <textarea name="text" cols="120" rows="10"><?php echo $text->text; ?></textarea><br />
         <input type="submit" name="save" value="Guardar" />

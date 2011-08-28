@@ -15,7 +15,8 @@ namespace Goteo\Library {
             $lang,
             $text,
             $purpose,
-            $html;
+            $html,
+            $pendiente; // no traducido
 
         /*
          * Devuelve un texto en HTML
@@ -185,6 +186,7 @@ namespace Goteo\Library {
             $sql = "SELECT
                         purpose.text as id,
                         IFNULL(text.text,purpose.purpose) as text,
+                        IF(text.text IS NULL, 1, 0) as pendiente,
                         purpose.`group` as `group`
                     FROM purpose
                     LEFT JOIN text
@@ -204,7 +206,7 @@ namespace Goteo\Library {
                 $sql .= " AND ( text.text LIKE :text OR (text.text IS NULL AND purpose.purpose LIKE :text ))";
                 $values[':text'] = "%{$filters['text']}%";
             }
-            $sql .= " ORDER BY purpose.`group` ASC";
+            $sql .= " ORDER BY pendiente DESC, text ASC";
             
             try {
                 $query = Model::query($sql, $values);
@@ -272,7 +274,7 @@ namespace Goteo\Library {
                 'header'        => 'Cabeceras de página o sección',
                 'field'         => 'Campos y agrupaciones de campos',
                 'mandatory'     => 'Mensajes de campos obligatorios',
-                'tooltip'       => 'Consejos para rellenar el formulario de proyecto',
+                'tooltip'       => 'Consejos para rellenar el formulario',
                 'error'         => 'Errores que se muestran al usuario',
                 'explain'       => 'Explicaciones',
                 'guide'         => 'Textos de guia',

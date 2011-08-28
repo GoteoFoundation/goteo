@@ -16,13 +16,17 @@ $days       = $project->days;
 
 // PHP la pifia (y mucho) con los cálculos en coma flotante
 if ($reached >= $minimum) {
-    
-    $minimum_done = 100;
+
+    $donemax = $horizontal ? 160 : 140;
+//    $minimum_done = 100;
+    $minimum_done = min($donemax, round(($reached / $minimum) * 100));
+    $minimum_done_per = round(($reached / $minimum) * 100);
     $minimum_left = 0;
     
 } else {
     
     $minimum_done = min(100, round(($reached / $minimum) * 100));
+    $minimum_done_per = round(($reached / $minimum) * 100);
     $minimum_left = max(0, round((1 - $reached / $minimum) * 100));
     
     if ($minimum_done >= 100) {
@@ -67,7 +71,7 @@ $minimum_ratio =  min(100, round(($minimum / $optimum) * 100));
             </div>
             <div class="minimum" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($minimum_ratio) ?>%">
                 <div class="left" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($minimum_left) ?>%"><strong><?php echo number_format($minimum_left) ?>%</strong></div>
-                <div class="done" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($minimum_done) ?>%"><strong><?php echo number_format($minimum_done) ?>%</strong></div>
+                <div class="done" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($minimum_done) ?>%"><strong><?php echo number_format($minimum_done_per) ?>%</strong></div>
             </div>
         </div>
 

@@ -185,7 +185,7 @@ namespace Goteo\Model\Project {
                     FROM invest_reward
                     INNER JOIN invest
                         ON invest.id = invest_reward.invest
-                        AND invest.status <> 2
+                        AND (invest.status = 0 OR invest.status = 1)
                         AND invest.project = :project
                     WHERE invest_reward.reward = :reward
                 ";
@@ -196,7 +196,7 @@ namespace Goteo\Model\Project {
             );
 
             $query = self::query($sql, $values);
-            if ($taken = $query->fetchColumn()) {
+            if ($taken = $query->fetchColumn(0)) {
                 return $taken;
             } else {
                 return 0;

@@ -4,6 +4,7 @@ use Goteo\Library\Text,
     Goteo\Library\Page;
 
 $page = Page::get($this['id'], $_SESSION['translator_lang']);
+$original = Page::get($this['id'], \GOTEO_DEFAULT_LANG);
 
 $bodyClass = 'admin';
 
@@ -48,3 +49,8 @@ $(document).ready(function(){
     </form>
 </div>
 
+<div class="widget board">
+    <h3>Contenido original</h3>
+
+    <?php echo $original->content; ?>
+</div>

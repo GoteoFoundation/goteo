@@ -5,9 +5,23 @@ use Goteo\Library\Text,
 
 $bodyClass = 'admin';
 
+// paginacion
+require_once 'library/pagination/pagination.php';
+
 $filter = $this['filter'];
 
 $data = Content::getAll($this['filters'], $_SESSION['translator_lang']);
+
+//recolocamos los post para la paginacion
+$list = array();
+foreach ($data['pending'] as $key=>$item) {
+    $list[] = $item;
+}
+foreach ($data['ready'] as $key=>$item) {
+    $list[] = $item;
+}
+
+$pagedResults = new \Paginated($list, 20, isset($_GET['page']) ? $_GET['page'] : 1);
 
 // valores de filtro
 $types     = Content::$types; // por tipo de campo
@@ -69,31 +83,36 @@ $filters = array(
 <?php endif; ?>
 
 <!-- lista -->
-    <?php foreach ($tables as $table=>$tableName) :
-        if (!empty($data[$table])) : ?>
+<?php if (!empty($data)) : ?>
 <div class="widget board">
-    <h3 class="title">Contenidos de <?php echo $tableName ?></h3>
     <table>
         <thead>
             <tr>
                 <th></th>
-                <th>Registro</th>
-                <th>Campo</th>
                 <th>Texto</th>
+                <th>Tabla</th>
+                <th>Campo</th>
+                <th>Id</th>
             </tr>
         </thead>
 
         <tbody>
-        <?php foreach ($data[$table] as $item) : ?>
+        <?php while ($item = $pagedResults->fetchPagedRow()) : ?>
             <tr>
-                <td width="5%"><a title="Registro <?php echo $item->table.'-'.$item->id ?>" href='/translate/contents/edit/<?php echo $item->table.'-'.$item->id . $filter ?>'>[Edit]</a></td>
-                <td width="25%"><?php echo $item->id ?></td>
-                <td width="25%"><?php echo $fields[$item->table][$item->field] ?></td>
-                <td width="70%"><?php echo Text::recorta($item->value, 250) ?></td>
+                <td width="5%"><a title="Registro <?php echo $item->table.'-'.$item->id ?>" href='/translate/contents/edit/<?php echo $item->table.'-'.$item->id . $filter . '&page=' . $_GET['page'] ?>'>[Edit]</a></td>
+                <td width="50%"><?php echo Text::recorta($item->value, 250) ?></td>
+                <td width="25%"><?php echo $item->tableName ?></td>
+                <td><?php echo $item->fieldName ?></td>
+                <td><?php echo $item->id ?></td>
             </tr>
-        <?php endforeach; ?>
+        <?php endwhile; ?>
         </tbody>
     </table>
 </div>
-    <?php endif; 
-    endforeach; ?>
+    <ul id="pagination">
+        <?php   $pagedResults->setLayout(new DoubleBarLayout());
+                echo $pagedResults->fetchPagedNavigation(str_replace('?', '&', $filter)); ?>
+    </ul>
+<?php else : ?>
+<p>No se han encontrado registros</p>
+<?php endif; ?>

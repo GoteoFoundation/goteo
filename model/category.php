@@ -93,7 +93,7 @@ namespace Goteo\Model {
                         LEFT JOIN user_interest
                             ON category.id = user_interest.interest
                         GROUP BY category.id
-                        ORDER BY name ASC";
+                        ORDER BY category.order ASC";
 
                 $query = static::query($sql, array(':lang'=>\LANG));
                 $categories = $query->fetchAll();

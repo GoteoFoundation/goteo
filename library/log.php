@@ -13,9 +13,9 @@ namespace Goteo\Library {
             $id,
             $node,
             $title,
-            $subject, // sujeto del evento
-            $item,  // id del sujeto
             $type, // tipo de evento
+            $subject, // sujeto del evento
+            $item,  // id del sujeto (ambito)
             $action, // evento que ocurre  (dice que tipo de informacion encontraremos en target)
             $target, // objetivo del evento (proyecto-cantidad que aporta, tabla-registro que opera, minimo/optimo alcanzado, dias para caducar, operacion/subaccion efectuada)
             $url, // enlace

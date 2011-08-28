@@ -22,11 +22,12 @@ namespace Goteo\Library {
                 'faq'       => 'Faq',
                 'post'      => 'Blog',
                 'tag'       => 'Tags',
-                'page'      => 'Páginas',
+                'page'      => 'Páginas institucionales',
                 'criteria'  => 'Criterios de evaluación',
                 'worthcracy'=> 'Meritocrácia',
                 'template'  => 'Plantillas emails automáticos',
-                'glossary'  => 'Glosario de términos'
+                'glossary'  => 'Glosario de términos',
+                'info'      => 'Ideas de about'
             ),
             $fields = array(
                 'promote' => array (
@@ -78,6 +79,10 @@ namespace Goteo\Library {
                 'glossary' => array (
                     'title' => 'Título',
                     'text' => 'Contenido'
+                ),
+                'info' => array (
+                    'title' => 'Título',
+                    'text' => 'Contenido'
                 )
             ),
             $types = array(
@@ -127,7 +132,10 @@ namespace Goteo\Library {
 		 *  Metodo para la lista de registros de las tablas de contenidos
 		 */
 		public static function getAll($filters = array(), $lang = 'original') {
-            $contents = array();
+            $contents = array(
+                'ready' => array(),
+                'pending' => array()
+            );
 
             /// filters:  type  //tipo de campo
             //          , table //tabla o modelo o concepto
@@ -159,6 +167,7 @@ namespace Goteo\Library {
 
                     foreach (self::$fields[$table] as $field=>$fieldName) {
                         $sql .= "IFNULL({$table}_lang.$field, {$table}.$field) as $field,
+                                IF({$table}_lang.$field IS NULL, 0, 1) as {$field}ready,
                                 ";
                     }
 
@@ -175,6 +184,10 @@ namespace Goteo\Library {
                         // solo entradas de goteo en esta gestión
                         if ($table == 'post') {
                             $sql .= "AND post.blog = 1
+                                ";
+                        }
+                        if ($table == 'info') {
+                            $sql .= "AND info.node = '".\GOTEO_NODE."'
                                 ";
                         }
 
@@ -195,7 +208,7 @@ namespace Goteo\Library {
                     echo $sql . '<br /><br />';
                     var_dump($values);
                     echo '<br /><br />';
-                     * 
+                     *
                      */
                     
                     $query = Model::query($sql, $values);
@@ -206,12 +219,18 @@ namespace Goteo\Library {
 
                             $data = array(
                                 'table' => $table,
+                                'tableName' => $tableName,
                                 'id' => $content->id,
                                 'field' => $field,
+                                'fieldName' => $fieldName,
                                 'value' => $content->$field
                             );
 
-                            $contents[$table][] = (object) $data;
+                            $campoready = $field . 'ready';
+
+                            $group = $content->$campoready == 1 ? 'ready' : 'pending';
+
+                            $contents[$group][] = (object) $data;
 
                         }
 

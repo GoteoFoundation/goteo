@@ -13,10 +13,17 @@ $supporters = count($project->investors);
 
 $worthcracy = Worth::getAll();
 
+$investors = array();
+
+foreach ($project->investors as $user=>$investor) {
+    $investors[] = $investor;
+}
+
+
 // en la página de cofinanciadores, paginación de 20 en 20
 require_once 'library/pagination/pagination.php';
 
-$pagedResults = new \Paginated($project->investors, 20, isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new \Paginated($investors, 20, isset($_GET['page']) ? $_GET['page'] : 1);
 
 
 ?>

@@ -81,7 +81,9 @@ namespace Goteo\Model {
 
             $messages = array(), // mensajes de los usuarios hilos con hijos
 
-            $finishable = false; // llega al progresso mínimo para enviar a revision
+            $finishable = false, // llega al progresso mínimo para enviar a revision
+
+            $tagmark = null;  // banderolo a mostrar
 
 
 
@@ -213,18 +215,6 @@ namespace Goteo\Model {
                 $project->invested = $amount;
                 $project->amount   = $amount;
 
-                // recompensas
-                foreach ($project->individual_rewards as &$reward) {
-                    $reward->none = false;
-                    // si controla unidades de esta recompensa, mirar si quedan
-                    if ($reward->units > 0) {
-                        $reward->taken = $reward->getTaken();
-                        if ($reward->taken >= $reward->units) {
-                            $reward->none = true;
-                        }
-                    }
-                }
-
                 //mensajes
                 $project->messages = Message::getAll($project->id);
 
@@ -253,7 +243,21 @@ namespace Goteo\Model {
                     } else {
                         $project->days = 0;
                     }
+
+                    // a ver que banderolo le toca
+                    // tag de financiado cuando ha alcanzado el optimo o despues de los 80 dias
+                    if ($project->status == 4 || ( $project->status == 3 && $project->amount >= $project->maxcost )) :
+                        $project->tagmark = 'gotit';
+                    // tag de en marcha cuando está en la segunda ronda o si estando en la primera ha alcanzado el mínimo
+                    elseif ($project->status == 3 && ($project->round == 2 ||  ( $project->round == 1 && $project->amount >= $project->mincost ))) :
+                        $project->tagmark = 'onrun';
+                    // tag de exitoso cuando es retorno cumplido
+                    elseif ($project->status == 5) :
+                        $project->tagmark = 'success';
+                    endif;
+
                 }
+                
                 //-----------------------------------------------------------------
                 // Fin de verificaciones
                 //-----------------------------------------------------------------
@@ -1476,28 +1480,40 @@ namespace Goteo\Model {
         public static function getList($filters = array(), $node = \GOTEO_NODE) {
             $projects = array();
 
+            $values = array(':node' => $node);
+
             $sqlFilter = "";
             if (!empty($filters['status'])) {
-                $sqlFilter .= " AND status = " . $filters['status'];
+                $sqlFilter .= " AND status = :status";
+                $values[':status'] = $filters['status'];
+            }
+            if (!empty($filters['owner'])) {
+                $sqlFilter .= " AND owner = :owner";
+                $values[':owner'] = $filters['owner'];
+            }
+            if (!empty($filters['name'])) {
+                $sqlFilter .= " AND name LIKE :name";
+                $values[':name'] = "%{$filters['name']}%";
             }
             if (!empty($filters['category'])) {
                 $sqlFilter .= " AND id IN (
                     SELECT project
                     FROM project_category
-                    WHERE category = {$filters['category']}
+                    WHERE category = :category
                     )";
+                $values[':category'] = $filters['category'];
             }
 
             $sql = "SELECT 
                         id
                     FROM project
                     WHERE status > 0
-                        AND node = ?
+                        AND node = :node
                         $sqlFilter
                     ORDER BY name ASC
                     ";
 
-            $query = self::query($sql, array($node));
+            $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
                 $projects[] = self::get($proj['id']);
             }

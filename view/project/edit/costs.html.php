@@ -227,6 +227,7 @@ echo new SuperForm(array(
         'schedule' => array(
             'type'      => 'html',
             'class'     => 'schedule',
+            'hint'      => Text::get('tooltip-project-schedule'),
             'html'      => new View('view/project/widget/schedule.html.php', array('project' => $project))
         ),
         

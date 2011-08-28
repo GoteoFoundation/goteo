@@ -4,12 +4,17 @@ use Goteo\Library\Text;
 
 $bodyClass = 'admin';
 
+// paginacion
+require_once 'library/pagination/pagination.php';
+
 // no cache para textos
 define('GOTEO_ADMIN_NOCACHE', true);
 
 $filter = $this['filter'];
 
 $data = Text::getAll($this['filters'], $_SESSION['translator_lang']);
+
+$pagedResults = new \Paginated($data, 20, isset($_GET['page']) ? $_GET['page'] : 1);
 
 // valores de filtro
 $idfilters = Text::filters();
@@ -67,9 +72,9 @@ $filters = array(
 </div>
 <?php endif; ?>
 
+<?php if (!empty($data)) : ?>
 <!-- lista -->
 <div class="widget board">
-    <?php if (!empty($data)) : ?>
     <table>
         <thead>
             <tr>
@@ -81,17 +86,21 @@ $filters = array(
         </thead>
 
         <tbody>
-        <?php foreach ($data as $item) : ?>
+        <?php while ($item = $pagedResults->fetchPagedRow()) : ?>
             <tr>
-                <td width="5%"><a title="Registro <?php echo $item->id ?>" href='/translate/texts/edit/<?php echo $item->id . $filter ?>'>[Edit]</a></td>
-                <td width="70%"><?php echo $item->text ?></td>
+                <td width="5%"><a title="Registro <?php echo $item->id ?>" href='/translate/texts/edit/<?php echo $item->id . $filter . '&page=' . $_GET['page']?>'>[Edit]</a></td>
+                <td width="70%"><?php if ($item->pendiente == 1) echo '* '; ?><?php echo $item->text ?></td>
                 <td width="25%"><?php echo $groups[$item->group] ?></td>
                 <td></td>
             </tr>
-        <?php endforeach; ?>
+        <?php endwhile; ?>
         </tbody>
     </table>
-    <?php else : ?>
-    <p>No se han encontrado registros</p>
-    <?php endif; ?>
 </div>
+    <ul id="pagination">
+        <?php   $pagedResults->setLayout(new DoubleBarLayout());
+                echo $pagedResults->fetchPagedNavigation(str_replace('?', '&', $filter)); ?>
+    </ul>
+<?php else : ?>
+<p>No se han encontrado registros</p>
+<?php endif; ?>

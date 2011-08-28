@@ -8,7 +8,7 @@ $actual = Lang::get($_SESSION['translator_lang']);
 
 ?>
 <div id="lang-selector">
-    <form id="selector-form" name="selector_form" action="<?php echo '/translate/select/'.$this['section'].'/'.$this['option'].'/'.$this['id'].$this['filter']; ?>" method="post">
+    <form id="selector-form" name="selector_form" action="<?php echo '/translate/select/'.$this['section'].'/'.$this['option'].'/'.$this['id'].$this['filter'].'&page='.$_GET['page']; ?>" method="post">
     <?php if (!empty($actual->id)) : ?>
     Estas traduciendo al <strong><?php echo $actual->name ?></strong>. <label for="selector">Cambiar a:</label>
     <?php else : ?>

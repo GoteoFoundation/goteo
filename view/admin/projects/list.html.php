@@ -5,26 +5,53 @@ use Goteo\Library\Text;
 $filters = $this['filters'];
 
 //arrastramos los filtros
-$filter = "?status={$filters['status']}&category={$filters['category']}";
+$filter = "?status={$filters['status']}&category={$filters['category']}&owner={$filters['owner']}&name={$filters['name']}";
 
 ?>
 <div class="widget board">
     <form id="filter-form" action="/admin/projects" method="get">
-        <label for="status-filter">Mostrar por estado:</label>
-        <select id="status-filter" name="status" onchange="document.getElementById('filter-form').submit();">
-            <option value="">Todos los estados</option>
-        <?php foreach ($this['status'] as $statusId=>$statusName) : ?>
-            <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
-        <?php endforeach; ?>
-        </select>
-
-        <label for="category-filter">De la categoría:</label>
-        <select id="category-filter" name="category" onchange="document.getElementById('filter-form').submit();">
-            <option value="">Cualquier categoría</option>
-        <?php foreach ($this['categories'] as $categoryId=>$categoryName) : ?>
-            <option value="<?php echo $categoryId; ?>"<?php if ($filters['category'] == $categoryId) echo ' selected="selected"';?>><?php echo $categoryName; ?></option>
-        <?php endforeach; ?>
-        </select>
+        <table>
+            <tr>
+                <td>
+                    <label for="owner-filter">Del autor:</label><br />
+                    <select id="owner-filter" name="owner" onchange="document.getElementById('filter-form').submit();">
+                        <option value="">Cualquier autor</option>
+                    <?php foreach ($this['owners'] as $ownerId=>$ownerName) : ?>
+                        <option value="<?php echo $ownerId; ?>"<?php if ($filters['owner'] == $ownerId) echo ' selected="selected"';?>><?php echo $ownerName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </td>
+                <td>
+                    <label for="category-filter">De la categoría:</label><br />
+                    <select id="category-filter" name="category" onchange="document.getElementById('filter-form').submit();">
+                        <option value="">Cualquier categoría</option>
+                    <?php foreach ($this['categories'] as $categoryId=>$categoryName) : ?>
+                        <option value="<?php echo $categoryId; ?>"<?php if ($filters['category'] == $categoryId) echo ' selected="selected"';?>><?php echo $categoryName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="name-filter">Nombre:</label><br />
+                    <input name="name-filter" name="name" value="<?php echo $filters['name']; ?>" style="width:250px"/>
+                </td>
+                <td>
+                    <label for="status-filter">Mostrar por estado:</label><br />
+                    <select id="status-filter" name="status" onchange="document.getElementById('filter-form').submit();">
+                        <option value="">Todos los estados</option>
+                    <?php foreach ($this['status'] as $statusId=>$statusName) : ?>
+                        <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" name="filter" value="Buscar">
+                </td>
+            </tr>
+        </table>
     </form>
 </div>
 
