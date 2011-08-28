@@ -55,7 +55,7 @@ namespace Goteo\Library {
 		            resulting errors
 		            */
 		           $preapprovalRequest = new \PreapprovalRequest();
-                   $preapprovalRequest->memo = "Aporte de {$invest->amount} EUR al proyecto '{$project->name}' en la plataforma Goteo";
+                   $preapprovalRequest->memo = "Aporte de {$invest->amount} EUR al proyecto: {$project->name}";
 		           $preapprovalRequest->cancelUrl = $cancelURL;
 		           $preapprovalRequest->returnUrl = $returnURL;
 		           $preapprovalRequest->clientDetails = new \ClientDetailsType();
@@ -88,6 +88,7 @@ namespace Goteo\Library {
                         $invest->setPreapproval($token);
                         $payPalURL = PAYPAL_REDIRECT_URL.'_ap-preapproval&preapprovalkey='.$token;
                         throw new \Goteo\Core\Redirection($payPalURL, Redirection::TEMPORARY);
+                        return true;
                     } else {
                         $errors[] = 'No preapproval key obtained. <pre>' . print_r($response, 1) . '</pre>';
                         return false;

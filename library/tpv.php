@@ -82,7 +82,7 @@ namespace Goteo\Library {
                     'Ds_Merchant_UrlKO'             => SITE_URL."/invest/fail/" . $invest->project . "/" . $invest->id,
                     'Ds_Merchant_Currency'			=> $currency,
                     'Ds_Merchant_Order' 			=> $token,
-                    'Ds_Merchant_ProductDescription'=> "Aporte de {$invest->amount} EUR al proyecto '{$project->name}'",
+                    'Ds_Merchant_ProductDescription'=> "Aporte de {$invest->amount} EUR al proyecto: {$project->name}",
                     'Ds_Merchant_Amount'			=> $amount,
                     'Ds_Merchant_ConsumerLanguage'  => '001',
                     'Ds_Merchant_MerchantData'     => 'InvestId='.$invest->id.'&User='.$_SESSION['user']->id
@@ -106,8 +106,7 @@ namespace Goteo\Library {
                 $logger->close();
 
                 echo '<html><head><title>Goteo.org</title></head><body><form action="'.$urlTPV.'" method="post" id="form_tpv">'.$data.'</form><script type="text/javascript">document.getElementById("form_tpv").submit();</script></body></html>';
-
-                die;
+                return true;
 			}
 			catch(Exception $ex) {
 

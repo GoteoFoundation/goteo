@@ -47,6 +47,10 @@ if (!isset($user->webs)) {
         </dd>
         <?php endif ?>
 
+        <dt class="message">Enviar mensaje</dt>
+        <dd class="message"><a href="/user/profile/<?php echo htmlspecialchars($user->id) ?>/message">Enviar mensaje</a></dd>
+
+
     </dl>
 
     <a class="button aqua profile" href="/user/<?php echo $user->id; ?>"><?php echo Text::get('profile-widget-button'); ?></a>

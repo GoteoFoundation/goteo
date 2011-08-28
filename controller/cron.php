@@ -112,19 +112,18 @@ namespace Goteo\Controller {
                     echo 'Aporte ' . $invest->id . '<br />';
 //                    echo \trace($invest);
 
-                    $cancelIt = false;
-
                     if ($invest->method == 'paypal' && $invest->invested == date('Y-m-d')) {
                             echo 'Es de hoy.';
-                    } elseif (empty($invest->preapproval)) {
+                    } elseif ($invest->method != 'cash' && empty($invest->preapproval)) {
                         //si no tiene preaproval, cancelar
                         echo 'Sin preapproval. ';
-                        $cancelIt = true;
+                        $invest->cancel();
+                        continue;
                     }
 
-                    if ($cancelAll || $cancelIt) {
-                        $invest->cancel();
-                        echo 'Cancelado por preapproval no confirmado, falta de preapproval o por poryecto caducado.<br />';
+                    if ($cancelAll) {
+                        $invest->setStatus('0');
+                        echo 'Aporte pendiente por poryecto caducado.<br />';
                         continue;
                     }
 
@@ -181,7 +180,7 @@ function failNotice ($project) {
         SELECT  DISTINCT(user) as id
         FROM    invest
         WHERE   project = ?
-        AND status <> 2";
+        AND status = 0";
 
     $query = Model::query($sql, array($project->id));
 

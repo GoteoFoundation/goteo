@@ -59,3 +59,23 @@ div.widget.user-about > div.location p * {
     font-weight: bold;
     text-decoration: none;
 }
+
+div.widget.user-about > div.message p {
+    padding-left: 26px;
+    line-height: 22px;
+    min-height: 22px;
+    background: url("../../bocadillo/s.png") no-repeat left center;
+}
+
+div.widget.user-about > div.message p a {
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 14px;
+    color: #28B258;
+}
+
+div.widget.user-about > div.message p a:hover {
+    text-decoration: underline;
+}
+
+

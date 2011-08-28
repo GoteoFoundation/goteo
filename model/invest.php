@@ -16,7 +16,7 @@ namespace Goteo\Model {
             $method, // metodo de pago paypal/tpv
             $status, //estado en el que se encuentra esta aportación:
                     // -1 en proceso, 0 pendiente, 1 cobrado (charged), 2 devuelto (returned)
-            $anonymous, //no quiere aparecer en la lista de aportadores
+            $anonymous, //no debe aparecer su careto ni su nombre, nivel, etc... pero si aparece en la cuenta de cofinanciadores y de aportes
             $resign, //renuncia a cualquier recompensa
             $invested, //fecha en la que se ha iniciado el aporte
             $charged, //fecha en la que se ha cargado el importe del aporte a la cuenta del usuario
@@ -378,35 +378,59 @@ namespace Goteo\Model {
             $investors = array();
 
             $sql = "
-                SELECT  DISTINCT(user) as id
+                SELECT
+                    invest.user as user,
+                    user.name as name,
+                    user.avatar as avatar,
+                    user.worth as worth,
+                    invest.amount as amount,
+                    DATE_FORMAT(invest.invested, '%d/%m/%Y') as date,
+                    (SELECT
+                        COUNT(DISTINCT(project))
+                     FROM invest as invb
+                     WHERE invb.user = invest.user
+                     AND (invb.status = 0 OR invb.status = 1)
+                     ) as projects,
+                     user.hide as hide,
+                     invest.anonymous as anonymous
                 FROM    invest
                 INNER JOIN user
                     ON  user.id = invest.user
-                    AND (user.hide = 0 OR user.hide IS NULL)
                 WHERE   project = ?
-                AND (status = 0 OR status = 1)
-                AND (anonymous = 0 OR anonymous IS NULL)
+                AND (invest.status = 0 OR invest.status = 1)
                 ORDER BY invest.id DESC
                 ";
 
             $query = self::query($sql, array($project));
-            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $investor) {
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $investor) {
 
-                // para cada uno sacar: cantidad total aportada a este proyecto y fecha de último aporte
-                $support = self::supported($investor['id'], $project);
-                /* Aqui segun lo que nos haga Philipp */
-                $user = User::get($investor['id']);
+                // si el usuario es hide o el aporte es anonymo, lo ponemos como el usuario anonymous (avatar 1)
+                if ($investor->hide == 1 || $investor->anonymous == 1) {
 
-                $investors[] = (object) array(
-                    'user' => $investor['id'],
-                    'name' => $user->name,
-                    'support' => $user->support,
-                    'projects' => count($user->support['projects']),
-                    'avatar' => $user->avatar,
-                    'worth' => $user->worth,
-                    'amount' => $support->total,
-                    'date' => $support->date
-                );
+                    $investors['anonymous'] = (object) array(
+                        'user' => 'anonymous',
+                        'name' => 'Anónimo',
+                        'projects' => null,
+                        'avatar' => 1,
+                        'worth' => null,
+                        'amount' => ($investors['anonymous']->amount + $investor->amount),
+                        'date' => $investor->date
+                    );
+
+                } else {
+
+                    $investors[$investor->user] = (object) array(
+                        'user' => $investor->user,
+                        'name' => $investor->name,
+                        'projects' => $investor->projects,
+                        'avatar' => $investor->avatar,
+                        'worth' => $investor->worth,
+                        'amount' => ($investors[$investor->user]->amount + $investor->amount),
+                        'date' => $investor->date
+                    );
+
+                }
+
             }
             
             return $investors;
@@ -424,6 +448,7 @@ namespace Goteo\Model {
                 WHERE   user = :user
                 AND     project = :project
                 AND     (status = 0 OR status = 1)
+                AND     (anonymous = 0 OR anonymous IS NULL)
                 ORDER BY invested DESC";
 
             $query = self::query($sql, array(':user' => $user, ':project' => $project));
@@ -605,9 +630,7 @@ namespace Goteo\Model {
         }
 
         /*
-         * Marcar esta aportación como devuelta
-         *  si no se habia ejecutado el preapproval o no se habia confirmado
-         *  es igual que cancelada
+         * Marcar esta aportación como cancelada
          */
         public function cancel ($code = null) {
 

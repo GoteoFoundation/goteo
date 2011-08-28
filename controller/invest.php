@@ -99,13 +99,19 @@ namespace Goteo\Controller {
                     switch($_POST['method']) {
                         case 'tpv':
                             // redireccion al tpv
-                            Tpv::preapproval($invest, $errors);
-                            die;
+                            if (Tpv::preapproval($invest, $errors)) {
+                                die;
+                            } else {
+                                Message::Error('Ha fallado la pasarela del banco');
+                            }
                             break;
                         case 'paypal':
                             // Petición de preapproval y redirección a paypal
-                            Paypal::preapproval($invest, $errors);
-                            die;
+                            if (Paypal::preapproval($invest, $errors)) {
+                                die;
+                            } else {
+                                Message::Error('Ha fallado la peticion paypal, verifica que pones correctamente tu cuenta paypal');
+                            }
                             break;
                         case 'cash':
                             $invest->setStatus('0');
@@ -113,9 +119,6 @@ namespace Goteo\Controller {
                             throw new Redirection("/project/$project/invest/?confirm=ok");
                             break;
                     }
-
-                    // si seguimos aqui es que algo ha fallado
-                    Message::Error('algo ha fallado');
                 } else {
                     Message::Error('Ha habido algun problema al inicializar la transacción');
                 }
@@ -123,7 +126,8 @@ namespace Goteo\Controller {
                 Message::Error('No se han recibido los datos necesarios');
             }
 
-            throw new Redirection("/project/$project/invest");
+            throw new Redirection("/project/$project/invest/?confirm=fail");
+            //throw new Redirection("/project/$project/invest");
         }
 
 
