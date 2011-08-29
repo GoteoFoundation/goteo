@@ -337,7 +337,7 @@ namespace Goteo\Controller {
             define('ADMIN_BCPATH', $BC);
 
             $filters = array();
-            $fields = array('status', 'category');
+            $fields = array('status', 'category', 'owner', 'name');
             foreach ($fields as $field) {
                 if (isset($_GET[$field])) {
                     $filters[$field] = $_GET[$field];
@@ -415,12 +415,7 @@ namespace Goteo\Controller {
                     $project->succeed($errors);
                     break;
                 case 'fulfill':
-                    // marcar todos los retornos cunmplidos
-                    $project = Model\Project::get($id);
-                    $project->satisfied($errors);
-                    break;
-                case 'fulfill':
-                    // marcar todos los retornos cunmplidos
+                    // marcar todos los retornos cumplidos
                     $project = Model\Project::get($id);
                     $project->satisfied($errors);
                     break;
@@ -444,6 +439,7 @@ namespace Goteo\Controller {
             $projects = Model\Project::getList($filters);
             $status = Model\Project::status();
             $categories = Model\Project\Category::getAll();
+            $owners = Model\User::getOwners();
 
             return new View(
                 'view/admin/index.html.php',
@@ -454,6 +450,7 @@ namespace Goteo\Controller {
                     'filters' => $filters,
                     'status' => $status,
                     'categories' => $categories,
+                    'owners' => $owners,
                     'errors' => $errors
                 )
             );
@@ -769,15 +766,15 @@ namespace Goteo\Controller {
                     'order' => $_POST['order']
                 ));
 
+                // imagen
+                if(!empty($_FILES['image']['name'])) {
+                    $banner->image = $_FILES['image'];
+                } else {
+                    $banner->image = $_POST['prev_image'];
+                }
+
 				if ($banner->save($errors)) {
-                    switch ($_POST['action']) {
-                        case 'add':
-                            $success = 'Proyecto destacado correctamente';
-                            break;
-                        case 'edit':
-                            $success = 'Destacado editado correctamente';
-                            break;
-                    }
+                    $success[] = 'Datos guardados';
 				}
 				else {
                     switch ($_POST['action']) {
@@ -2438,6 +2435,7 @@ namespace Goteo\Controller {
                     } else {
                         $errors[] = 'No se ha podido eliminar la entrada';
                     }
+                    // no break para que continue con list
                 case 'list':
                     // lista de entradas
                     // obtenemos los datos
@@ -2573,8 +2571,6 @@ namespace Goteo\Controller {
                         $post->media = new Model\Project\Media($post->media);
                     }
 
-                    $post->tags = $_POST['tags'];
-
                     /// este es el único save que se lanza desde un metodo process_
                     if ($post->save($errors)) {
                         if ($action == 'edit') {
@@ -2602,25 +2598,10 @@ namespace Goteo\Controller {
                 case 'remove':
                     // eliminar un término
                     if (Model\Glossary::delete($id)) {
-                        unset($blog->posts[$id]);
                         $success[] = 'Término eliminado';
                     } else {
                         $errors[] = 'No se ha podido eliminar el término';
                     }
-                case 'list':
-                    // lista de términos
-                    $posts = Model\Glossary::getAll();
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'glossary',
-                            'file' => 'list',
-                            'posts' => $posts,
-                            'errors' => $errors,
-                            'success' => $success
-                        )
-                    );
                     break;
                 case 'add':
                     // nueva entrada con wisiwig
@@ -2673,6 +2654,181 @@ namespace Goteo\Controller {
                     );
                     break;
             }
+
+            // lista de términos
+            $posts = Model\Glossary::getAll();
+
+            return new View(
+                'view/admin/index.html.php',
+                array(
+                    'folder' => 'glossary',
+                    'file' => 'list',
+                    'posts' => $posts,
+                    'errors' => $errors,
+                    'success' => $success
+                )
+            );
+
+        }
+
+        /*
+         * Gestión de entradas de info
+         */
+        public function info ($action = 'list', $id = null) {
+
+            $errors = array();
+
+            $url = '/admin/info';
+
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                    $editing = false;
+
+                    if (!empty($_POST['id'])) {
+                        $post = Model\Info::get($_POST['id']);
+                    } else {
+                        $post = new Model\Info();
+                    }
+                    // campos que actualizamos
+                    $fields = array(
+                        'id',
+                        'node',
+                        'title',
+                        'text',
+                        'media',
+                        'publish',
+                        'order'
+                    );
+
+                    foreach ($fields as $field) {
+                        $post->$field = $_POST[$field];
+                    }
+
+                    // tratar la imagen y ponerla en la propiedad image
+                    if(!empty($_FILES['image_upload']['name'])) {
+                        $post->image = $_FILES['image_upload'];
+                        $editing = true;
+                    }
+
+                    // tratar las imagenes que quitan
+                    foreach ($post->gallery as $key=>$image) {
+                        if (!empty($_POST["gallery-{$image->id}-remove"])) {
+                            $image->remove('info');
+                            unset($post->gallery[$key]);
+                            if ($post->image == $image->id) {
+                                $post->image = '';
+                            }
+                            $editing = true;
+                        }
+                    }
+
+                    if (!empty($post->media)) {
+                        $post->media = new Model\Project\Media($post->media);
+                    }
+
+                    /// este es el único save que se lanza desde un metodo process_
+                    if ($post->save($errors)) {
+                        if ($action == 'edit') {
+                            $success[] = 'La entrada se ha actualizado correctamente';
+                        } else {
+                            $success[] = 'Se ha añadido una nueva entrada';
+                            $id = $post->id;
+                        }
+                        $action = $editing ? 'edit' : 'list';
+                    } else {
+                        $errors[] = 'Ha habido algun problema al guardar los datos';
+                    }
+            }
+
+            $BC = self::menu(array(
+                'section' => 'contents',
+                'option' => __FUNCTION__,
+                'action' => $action,
+                'id' => $id
+            ));
+
+            define('ADMIN_BCPATH', $BC);
+
+            switch ($action)  {
+                case 'up':
+                    Model\Info::up($id);
+                    break;
+                case 'down':
+                    Model\Info::down($id);
+                    break;
+                case 'remove':
+                    // eliminar un término
+                    if (Model\Info::delete($id)) {
+                        $success[] = 'Entrada eliminada';
+                    } else {
+                        $errors[] = 'No se ha podido eliminar la entrada';
+                    }
+                    break;
+                case 'add':
+                    // nueva entrada con wisiwig
+                    // obtenemos datos basicos
+                    $post = new Model\Info();
+
+                    $message = 'Añadiendo una nueva entrada';
+
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'info',
+                            'file' => 'edit',
+                            'action' => 'add',
+                            'post' => $post,
+                            'message' => $message,
+                            'errors' => $errors,
+                            'success' => $success
+                        )
+                    );
+                    break;
+                case 'edit':
+                    if (empty($id)) {
+                        throw new Redirection('/admin/info');
+                        break;
+                    } else {
+                        $post = Model\Info::get($id);
+
+                        if (!$post instanceof Model\Info) {
+                            $errors[] = 'La entrada esta corrupta, contacte con nosotros.';
+                            //Text::get('dashboard-project-updates-postcorrupt');
+                            $action = 'list';
+                            break;
+                        }
+                    }
+
+                    $message = 'Editando una entrada existente';
+
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'info',
+                            'file' => 'edit',
+                            'action' => 'edit',
+                            'post' => $post,
+                            'message' => $message,
+                            'errors' => $errors,
+                            'success' => $success
+                        )
+                    );
+                    break;
+            }
+
+            // lista de términos
+            $posts = Model\Info::getAll();
+
+            return new View(
+                'view/admin/index.html.php',
+                array(
+                    'folder' => 'info',
+                    'file' => 'list',
+                    'posts' => $posts,
+                    'errors' => $errors,
+                    'success' => $success
+                )
+            );
 
         }
 
@@ -3437,6 +3593,14 @@ namespace Goteo\Controller {
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'edit' => array('label' => 'Editando Término', 'item' => true),
                                 'translate' => array('label' => 'Traduciendo Término', 'item' => true)
+                            )
+                        ),
+                        'info' => array(
+                            'label' => 'Ideas about',
+                            'actions' => array(
+                                'list' => array('label' => 'Listando', 'item' => false),
+                                'edit' => array('label' => 'Editando Idea', 'item' => true),
+                                'translate' => array('label' => 'Traduciendo Idea', 'item' => true)
                             )
                         )
                     )
