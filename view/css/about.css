@@ -7,6 +7,87 @@ div.field {
     margin-top: 10px;
 }
 
+/* pagina Info */
+#about-content {
+    width:620px;
+	margin: 0 20px 0 0;
+	float:left;
+}
+#about-content h3.title {
+	margin: 0px;
+	padding: 13px 0 10px 30px;
+	background: white url('arrowH2-section.gif') scroll no-repeat  0 0;
+	height:37px;
+	font-size: 20px;
+    font-weight: bold;
+}
+#about-content div.about-page {
+    background-color: white;
+    margin-bottom: 20px;
+    margin-top: -20px;
+    padding: 10px 0px 1px;
+}
+#about-content .post {
+	margin: 0px 30px 30px 30px;
+}
+#about-content .post h4 {
+    text-transform: none !important;
+	font-size: 20px;
+    font-weight: bold;
+    color: #808285;
+    margin: 10px 0px !important;
+}
+#about-content .post .embed{
+    width: 500px;
+    height: 285px;
+	margin: 10px 0px;
+}
+#about-content .post .gallery{
+	margin-bottom: 10px !important;
+}
+#about-content .post .gallery ul{
+	margin-left: -14px !important;
+}
+#about-content .post .gallery-image{
+	text-align:left;
+}
+#about-content .post .gallery-image img{
+/*	margin: 10px 0px; */
+}
+#about-sidebar {
+    width:300px;
+	float:right;
+}
+div.widget.about-sidebar-module {
+    background-color: white;
+    line-height: 18px;
+    margin: 0 0 20px;
+}
+div.widget.about-sidebar-module .supertitle {
+    border-bottom: 1px solid #20b3b2;
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0 0 3px;
+    padding: 6px;
+    color: #58595b;
+}
+div.widget.about-sidebar-module ul {
+	padding-left: 20px;
+    list-style: decimal;
+}
+div.widget.about-sidebar-module ul li {
+    margin:0 0 5px 0;
+}
+div.widget.about-sidebar-module ul li a {
+    color: #808285;
+	text-decoration:none;
+}
+div.widget.about-sidebar-module ul li a:hover {
+	text-decoration:underline;
+}
+/* fin pagina Info*/
+
+/* Cuadro de mensaje */
 div.widget.contact-message label {
     margin-left: 1px;
 }
@@ -31,3 +112,4 @@ div.widget.contact-message .button {
     float: right;
     margin: 1em 0 0;
 }
+/* fin Cuadro de mensaje */

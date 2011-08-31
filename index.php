@@ -57,7 +57,7 @@ session_start();
 Lang::set();
 
 // cambiamos el locale
-\setlocale(\LC_TIME, 'es_ES');
+\setlocale(\LC_TIME, Lang::locale());
 
 
 // Get URI without query string

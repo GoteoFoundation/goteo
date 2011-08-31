@@ -35,7 +35,7 @@ include 'view/header.html.php';
 
             <h3 class="title"><?php echo Text::get('contact-send_message-header'); ?></h3>
 
-            <form method="post" action="/about/contact">
+            <form method="post" action="/contact">
                 <div class="field">
                     <label for="email"><?php echo Text::get('contact-email-field'); ?></label><br />
                     <input type="text" id="email" name="email" value="<?php echo $this['data']['email'] ?>"/>

@@ -34,7 +34,7 @@ $filter = "?status={$filters['status']}&category={$filters['category']}&owner={$
             <tr>
                 <td>
                     <label for="name-filter">Nombre:</label><br />
-                    <input name="name-filter" name="name" value="<?php echo $filters['name']; ?>" style="width:250px"/>
+                    <input id="name-filter" name="name" value="<?php echo $filters['name']; ?>" style="width:250px"/>
                 </td>
                 <td>
                     <label for="status-filter">Mostrar por estado:</label><br />

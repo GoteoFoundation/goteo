@@ -101,6 +101,11 @@ namespace Goteo\Library {
             //echo 'Const: ' . LANG . '<br />';
 		}
 
+		static public function locale () {
+            $sql = "SELECT locale FROM lang WHERE id = :id";
+			$query = Model::query($sql, array(':id' => \LANG));
+			return $query->fetchColumn();
+        }
 
 	}
 	

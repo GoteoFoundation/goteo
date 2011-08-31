@@ -5,6 +5,7 @@ use Goteo\Library\Text;
 $project = $this['project'];
 $level = (int) $this['level'] ?: 3;
 
+$costs = $project->costs;
 
 // @todo? Esto como que lo tendría que hacer un modelo o algo
 
@@ -17,7 +18,15 @@ $view = 'weeks';
 // Obtengo la primera y última fechas en el tiempo
 $from = $until = 0;
 
-foreach ($project->costs as $cost) {
+usort($costs,
+    function ($a, $b) {
+        if ($a->required == $b->required) return 0;
+        if ($a->required && !$b->required) return -1;
+        if ($b->required && !$a->required) return 1;
+        }
+    );
+
+foreach ($costs as $cost) {
     
     if ($cost->from && $cost->until) {
     
@@ -121,7 +130,7 @@ $until = mktime(0, 0, 0, date('m', $until) + 1, -1, date('Y', $until));
             <?php 
             $iCost = 0; 
             
-            foreach ($project->costs as $cost) if ($cost->from && $cost->until): 
+            foreach ($costs as $cost) if ($cost->from && $cost->until): 
                 
             $iCost++; 
             $cost_from = strtotime($cost->from);

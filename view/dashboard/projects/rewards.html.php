@@ -13,6 +13,8 @@ $filters = array(
 
 $icons = Reward::icons('individual');
 
+$project = $this['project'];
+
 ?>
 <div class="widget projects">
     <div class="message">
@@ -25,10 +27,10 @@ $icons = Reward::icons('individual');
                 $who = Invest::choosed($rewardData->id); ?>
             <div class="reward <?php if(($num % 4)==0)echo " last"?>">
             	<span class="orden">(<?php echo $num; ?>)</span>
-                <span class="aporte"><span class="num"><?php echo $rewardData->amount; ?></span> <span class="euro">&nbsp;</span> de aporte</span>
-                <span class="cofinanciadores"><span class="num"><?php echo count($who); ?></span> cofinanciadores</span>
+                <span class="aporte">Aportaciones de <span class="num"><?php echo $rewardData->amount; ?></span> <span class="euro">&nbsp;</span></span>
+                <span class="cofinanciadores">cofinanciadores <span class="num"><?php echo count($who); ?></span></span>
                 
-                <span class="tiporec"><?php echo $icons[$rewardData->icon]; ?> <?php echo $rewardData->reward; ?></span>
+                <span class="tiporec <?php echo $rewardData->icon ?>"><?php echo $icons[$rewardData->icon]->name; ?>: <?php echo $rewardData->reward; ?></span>
                 <span class="recompensa"><strong style="color:#666;">Recompensa:</strong><br/> <?php echo $rewardData->description; ?></span>
                 <?php if (count($who) > 0) : ?>
                 <a class="button green" onclick="msgto('<?php echo $rewardData->id; ?>')" >mensaje a ese grupo</a>
@@ -109,7 +111,9 @@ $icons = Reward::icons('individual');
                 
             <?php endforeach; ?>
 
+            <?php if ($project->amount >= $project->mincost) : ?>
             <input type="submit" name="process" value="Aplicar" class="save" onclick="return confirm('Ojo! Al marcar como cumplida no se puede desmarcar. Continuamos?')"/>
+            <?php endif; ?>
         </form>
     </div>
 

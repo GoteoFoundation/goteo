@@ -8,3 +8,4 @@ CREATE TABLE IF NOT EXISTS lang (
 
 -- alters
 ALTER TABLE `lang` ADD `short` VARCHAR( 10 ) NULL;
+ALTER TABLE `lang` ADD `locale` VARCHAR( 5 ) NULL;

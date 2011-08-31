@@ -54,15 +54,15 @@ $filter = "?status={$filters['status']}&checker={$filters['checker']}";
                         <td><?php echo $project->progress; ?></td>
                         <td><?php echo $project->score . ' / ' . $project->max; ?></td>
                         <?php if (!empty($project->review)) : ?>
-                        <td><a href="/admin/checking/edit/<?php echo $project->project; ?>/<?php echo $filter; ?>">[Editar]</a></td>
-                        <td><a href="/admin/checking/report/<?php echo $project->project; ?>" target="_blank">[Ver informe]</a></td>
+                        <td><a href="/admin/reviews/edit/<?php echo $project->project; ?>/<?php echo $filter; ?>">[Editar]</a></td>
+                        <td><a href="/admin/reviews/report/<?php echo $project->project; ?>" target="_blank">[Ver informe]</a></td>
                             <?php if ( $project->status > 0 ) : ?>
-                        <td><a href="/admin/checking/close/<?php echo $project->review; ?>/<?php echo $filter; ?>">[Cerrar]</a></td>
+                        <td><a href="/admin/reviews/close/<?php echo $project->review; ?>/<?php echo $filter; ?>">[Cerrar]</a></td>
                             <?php else : ?>
                         <td>Revisión cerrada</td>
                             <?php endif; ?>
                         <?php else : ?>
-                        <td><a href="/admin/checking/add/<?php echo $project->project; ?>/<?php echo $filter; ?>">[Iniciar revision]</a></td>
+                        <td><a href="/admin/reviews/add/<?php echo $project->project; ?>/<?php echo $filter; ?>">[Iniciar revision]</a></td>
                         <td></td>
                         <td></td>
                         <?php endif; ?>
@@ -83,13 +83,13 @@ $filter = "?status={$filters['status']}&checker={$filters['checker']}";
                 <tr>
                     <td><?php echo $checker->name; ?></td>
                     <td><?php echo $checker->score . '/' . $checker->max; ?></td>
-                    <td><?php if ($checker->ready) : ?>Listo <a href="/admin/checking/unready/<?php echo $project->review; ?>/<?php echo $filter; ?>&user=<?php echo $user; ?>">[Reabrir]</a><?php endif ?></td>
-                    <td><a href="/admin/checking/unassign/<?php echo $project->review; ?>/<?php echo $filter; ?>&user=<?php echo $user; ?>">[Desasignar]</a></td>
+                    <td><?php if ($checker->ready) : ?>Listo <a href="/admin/reviews/unready/<?php echo $project->review; ?>/<?php echo $filter; ?>&user=<?php echo $user; ?>">[Reabrir]</a><?php endif ?></td>
+                    <td><a href="/admin/reviews/unassign/<?php echo $project->review; ?>/<?php echo $filter; ?>&user=<?php echo $user; ?>">[Desasignar]</a></td>
                 </tr>
                 <?php endforeach; ?>
                 <?php if ($project->status > 0) : ?>
                 <tr>
-                    <form id="form-assign-<?php echo $project->review; ?>" action="/admin/checking/assign/<?php echo $project->review; ?>/<?php echo $filter; ?>" method="get">
+                    <form id="form-assign-<?php echo $project->review; ?>" action="/admin/reviews/assign/<?php echo $project->review; ?>/<?php echo $filter; ?>" method="get">
                     <td colspan="2">
                         <select name="user">
                             <option value="">Selecciona un nuevo revisor</option>

@@ -6,6 +6,7 @@ $project = $this['project'];
 //tratamos los saltos de linea y los links en las descripciones del proyecto
 $project->description = nl2br(Text::urlink($project->description));
 $project->about       = nl2br(Text::urlink($project->about));
+$project->motivation  = nl2br(Text::urlink($project->motivation));
 $project->goal        = nl2br(Text::urlink($project->goal));
 $project->related     = nl2br(Text::urlink($project->related));
 

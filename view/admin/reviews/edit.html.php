@@ -11,7 +11,7 @@ $review  = $this['review'];
         <?php echo $project->comment; ?>
     </p>
 
-    <form method="post" action="/admin/checking/<?php echo $this['action']; ?>/<?php echo $project->id; ?>/?filter=<?php echo $this['filter']; ?>">
+    <form method="post" action="/admin/reviews/<?php echo $this['action']; ?>/<?php echo $project->id; ?>/?filter=<?php echo $this['filter']; ?>">
 
         <input type="hidden" name="id" value="<?php echo $review->id; ?>" />
         <input type="hidden" name="project" value="<?php echo $project->id; ?>" />

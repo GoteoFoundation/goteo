@@ -1,47 +1,33 @@
-<?php
+<?php 
 use Goteo\Library\Text,
     Goteo\Core\View;
 
 $posts = $this['posts'];
-$index = $this['index'];
-
-$letters = array();
-
-$bodyClass = 'glossary';
-
-$go_up = Text::get('regular-go_up');
-
-// paginacion
-require_once 'library/pagination/pagination.php';
-
-$pagedResults = new \Paginated($posts, $this['tpp'], isset($_GET['page']) ? $_GET['page'] : 1);
 
 include 'view/prologue.html.php';
-include 'view/header.html.php'; 
+include 'view/header.html.php';
+
+$bodyClass = 'about';
+
+$go_up = Text::get('regular-go_up');
 ?>
+
 	<div id="sub-header-secondary">
 		<div class="clearfix">
-			<h2><a href="/glossary">GOTEO<span class="red">GLOSARIO</span></a></h2>
+			<h2><a href="/about">GOTEO<span class="red">INFO</span></a></h2>
             <?php echo new View('view/header/share.html.php') ?>
 		</div>
 	</div>
 
     <script type="text/javascript" src="/view/js/inc/navi.js"></script>
 
-	<div id="main" class="threecols">
-		<div id="glossary-content">
-            <h3 class="title">Glosario de términos utilizados en Goteo</h3>
-            <?php if (!empty($posts)) : ?>
-                <div class="glossary-page">
-                <?php while ($post = $pagedResults->fetchPagedRow()) : ?>
-                    <?php
-                        $leter = $post->title[0];
 
-                        if (!in_array($leter, $letters)) :
-                            $letters[] = $leter;
-                        ?>
-                        <h4 class="supertitle"><?php echo $post->title[0]; ?></h4>
-                    <?php endif; ?>
+	<div id="main" class="threecols">
+		<div id="about-content">
+            <h3 class="title">Sobre Goteo</h3>
+            <?php if (!empty($posts)) : ?>
+                <div class="about-page">
+                <?php foreach ($posts as $post) : ?>
                     <div class="post">
                         <?php if (count($post->gallery) > 1) : ?>
                         <script type="text/javascript" >
@@ -50,9 +36,14 @@ include 'view/header.html.php';
                             });
                         </script>
                         <?php endif; ?>
-                        <a name="term<?php echo $post->id  ?>"></a>
-                        <h5 class="aqua"><?php echo $post->title; ?></h5>
+                        <a name="info<?php echo $post->id  ?>"></a>
+                        <h4><?php echo $post->title; ?></h4>
                         <p><?php echo $post->text; ?></p>
+                        <?php if (!empty($post->media->url)) : ?>
+                            <div class="embed">
+                                <?php echo $post->media->getEmbedCode(); ?>
+                            </div>
+                        <?php endif; ?>
                         <?php if (!empty($post->gallery)) : ?>
                         <div class="gallery">
                             <?php $i = 1; foreach ($post->gallery as $image) : ?>
@@ -76,35 +67,25 @@ include 'view/header.html.php';
                             <!-- carrusel de imagenes -->
                         </div>
                         <?php endif; ?>
-                        <?php if (!empty($post->media->url)) : ?>
-                            <div class="embed">
-                                <?php echo $post->media->getEmbedCode(); ?>
-                            </div>
-                        <?php endif; ?>
                         <a class="up" href="#"><?php echo $go_up; ?></a>
                     </div>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
                 </div>
-                <ul id="pagination">
-                    <?php   $pagedResults->setLayout(new DoubleBarLayout());
-                            echo $pagedResults->fetchPagedNavigation(); ?>
-                </ul>
             <?php endif; ?>
 		</div>
-		<div id="glossary-sidebar">
-            <div class="widget glossary-sidebar-module">
-                <?php foreach ($index as $leter=>$list) : ?>
-                <h3 class="supertitle activable glossary-letter"><?php echo $leter; ?></h3>
-                <ul class="glossary-letter-list">
-                    <?php foreach ($list as $item) : ?>
-                    <li><a href="<?php echo $item->url; ?>"><?php echo $item->title; ?></a></li>
+		<div id="about-sidebar">
+            <div class="widget about-sidebar-module">
+                <h3 class="supertitle">Ideas fuerza</h3>
+                <ul>
+                    <?php foreach ($posts as $post) : ?>
+                    <li><a href="#info<?php echo $post->id; ?>"><?php echo $post->title; ?></a></li>
                     <?php endforeach; ?>
                 </ul>
-                <?php endforeach; ?>
             </div>
 		</div>
 
 	</div>
+    
 <?php
-    include 'view/footer.html.php';
-	include 'view/epilogue.html.php';
+include 'view/footer.html.php';
+include 'view/epilogue.html.php';

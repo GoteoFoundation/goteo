@@ -19,6 +19,7 @@ div.widget.projects div.project a.expand{
 	top:0;bottom:0;left:0;right:0;
 	width:100%;
 	z-index:99;
+    padding: 0px;
 }
 
 div.widget.projects div.project a.button{
