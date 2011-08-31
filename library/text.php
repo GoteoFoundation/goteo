@@ -144,11 +144,7 @@ namespace Goteo\Library {
 			$query = Model::query("SELECT purpose, html FROM purpose WHERE `text` = :id", array(':id' => $id));
 			$exist = $query->fetchObject();
 			if (!empty($exist->purpose)) {
-                if ($exist->html) {
-        			return \htmlentities($exist->purpose);
-                } else {
-    				return $exist->purpose;
-                }
+                return $exist->purpose;
 			} else {
 				Model::query("REPLACE INTO purpose (text, purpose) VALUES (:text, :purpose)", array(':text' => $id, ':purpose' => "Texto $id"));
 				return 'Texto: ' . $id;
@@ -253,9 +249,9 @@ namespace Goteo\Library {
 					return false;
 			}
 
-            $sql = "REPLACE `purpose` SET
-                            `purpose` = :text,
-                            `text` = :id
+            $sql = "UPDATE `purpose` SET
+                            `purpose` = :text
+                            WHERE `text` = :id
                     ";
 			if (Model::query($sql, array(':text' => $data['text'], ':id' => $data['id']))) {
 				return true;

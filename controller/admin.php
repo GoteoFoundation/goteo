@@ -1869,7 +1869,7 @@ namespace Goteo\Controller {
 
                         // para crear se usa el mismo método save del modelo, hay que montar el objeto
                         $user = new Model\User();
-                        $user->userid = $_POST['user'];
+                        $user->userid = $_POST['userid'];
                         $user->name = $_POST['name'];
                         $user->email = $_POST['email'];
                         $user->password = $_POST['password'];

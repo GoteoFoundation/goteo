@@ -36,10 +36,10 @@ $(document).ready(function(){
 </script>
 
 <div class="widget board">
-    <h3 class="title">Editando la pagina '<?php echo $page->name; ?>'</h3>
+    <h3 class="title"><?php echo $page->name; ?></h3>
 
     <fieldset>
-        <legend>Descripción de esta página</legend>
+        <legend>Descripción</legend>
         <blockquote><?php echo $page->description; ?></blockquote>
     </fieldset>
 

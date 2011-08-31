@@ -524,13 +524,20 @@ namespace Goteo\Controller {
                                 $search  = array('%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%');
                                 $replace = array($msg_content, $project->name, SITE_URL."/project/".$project->id);
                                 $content = \str_replace($search, $replace, nl2br($template->text));
-                                
+
+                                /* Mientras está en pruebas solo enviar uno*/
+                                $listo = false;
 
                                 foreach ($who as $key=>$userId) {
 
                                     //me cojo su email y lo meto en un array para enviar solo con una instancia de Mail
                                     $data = Model\User::getMini($userId);
 
+                                    if ($listo) {
+                                        $success[] = Text::get('dashboard-investors-mail-sended', $data->name, $data->email);
+                                        continue;
+                                    }
+                                    
                                     // reusamos el objeto mail
                                     $mailHandler = new Mail();
 
@@ -538,13 +545,13 @@ namespace Goteo\Controller {
                                     $mailHandler->to = 'hola@goteo.org';
                                     //@TODO blind copy a goteo
                                     $mailHandler->bcc = 'comunicaciones@goteo.org';
-                                    $mailHandler->subject = 'En pruebas: '.$subject;
+                                    $mailHandler->subject = 'En pruebas (solo llega uno): '.$subject;
                                     $mailHandler->content = str_replace('%NAME%', $data->name, $content);
 
                                     $mailHandler->html = true;
                                     if ($mailHandler->send($errors)) {
                                         $success[] = Text::get('dashboard-investors-mail-sended', $data->name, $data->email);
-                                       
+                                       $listo = true;
                                     } else {
                                         $errors[] = Text::get('dashboard-investors-mail-fail', $data->name, $data->email);
                                         

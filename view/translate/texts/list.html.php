@@ -47,7 +47,6 @@ $filters = array(
         );
 
 ?>
-<h3 class="title">Traducción de textos dinámicos</h3>
 <!-- Filtro -->
 <?php if (!empty($filters)) : ?>
 <div class="widget board">

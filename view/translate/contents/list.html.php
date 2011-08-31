@@ -9,78 +9,49 @@ $bodyClass = 'admin';
 require_once 'library/pagination/pagination.php';
 
 $filter = $this['filter'];
+$table  = $this['table'];
+$this['filters']['table'] = $table;
 
 $data = Content::getAll($this['filters'], $_SESSION['translator_lang']);
 
 //recolocamos los post para la paginacion
 $list = array();
 foreach ($data['pending'] as $key=>$item) {
+    $item->pendiente = 1;
     $list[] = $item;
 }
 foreach ($data['ready'] as $key=>$item) {
+    $item->pendiente = 0;
     $list[] = $item;
 }
 
 $pagedResults = new \Paginated($list, 20, isset($_GET['page']) ? $_GET['page'] : 1);
 
 // valores de filtro
-$types     = Content::$types; // por tipo de campo
-$tables    = Content::$tables; // por tabla
-
-//auxiliar
-$fields    = Content::$fields; // los campos
+$types = Content::$fields[$table]; // por tipo de campo
 
 // metemos el todos
 \array_unshift($types, 'Todos los tipos');
-\array_unshift($tables, 'Todas las tablas');
-
-
-$filters = array(
-            'type' => array(
-                    'label'   => 'Filtrar por tipo de contenido:',
-                    'type'    => 'select',
-                    'options' => $types,
-                    'value'   => $this['filters']['type']
-                ),
-            'table' => array(
-                    'label'   => 'Filtrar por tabla:',
-                    'type'    => 'select',
-                    'options' => $tables,
-                    'value'   => $this['filters']['table']
-                ),
-            'text' => array(
-                    'label'   => 'Buscar texto:',
-                    'type'    => 'input',
-                    'options' => null,
-                    'value'   => $this['filters']['text']
-                )
-        );
 
 ?>
-<h3 class="title">Traducción de contenidos</h3>
 <!-- Filtro -->
-<?php if (!empty($filters)) : ?>
 <div class="widget board">
-    <form id="filter-form" action="/translate/contents/list/<?php echo $filter ?>" method="get">
-        <?php foreach ($filters as $id=>$fil) : ?>
-        <?php if ($fil['type'] == 'select') : ?>
-            <label for="filter-<?php echo $id; ?>"><?php echo $fil['label']; ?></label>
-            <select id="filter-<?php echo $id; ?>" name="<?php echo $id; ?>" onchange="document.getElementById('filter-form').submit();">
-            <?php foreach ($fil['options'] as $val=>$opt) : ?>
-                <option value="<?php echo $val; ?>"<?php if ($fil['value'] == $val) echo ' selected="selected"';?>><?php echo $opt; ?></option>
-            <?php endforeach; ?>
-            </select>
-        <?php endif; ?>
-        <?php if ($fil['type'] == 'input') : ?>
-            <br />
-            <label for="filter-<?php echo $id; ?>"><?php echo $fil['label']; ?></label>
-            <input name="<?php echo $id; ?>" value="<?php echo (string) $fil['value']; ?>" />
-            <input type="submit" name="filter" value="Buscar">
-        <?php endif; ?>
+    <form id="filter-form" action="/translate/<?php echo $table ?>/list/<?php echo $filter ?>" method="get">
+        <input type="hidden" name="table" value="<?php echo $table ?>" />
+
+        <label for="filter-<?php echo $id; ?>">Filtrar por campo:</label>
+        <select id="filter-<?php echo $id; ?>" name="<?php echo $id; ?>" onchange="document.getElementById('filter-form').submit();">
+        <?php foreach ($types as $val=>$opt) : ?>
+            <option value="<?php echo $val; ?>"<?php if ($this['filters']['type'] == $val) echo ' selected="selected"';?>><?php echo $opt; ?></option>
         <?php endforeach; ?>
+        </select>
+        
+        <label for="filter-<?php echo $id; ?>">Buscar texto:</label>
+        <input name="<?php echo $id; ?>" value="<?php echo (string) $this['filters']['text']; ?>" />
+
+        <input type="submit" name="filter" value="Buscar">
     </form>
 </div>
-<?php endif; ?>
 
 <!-- lista -->
 <?php if (!empty($data)) : ?>
@@ -90,7 +61,6 @@ $filters = array(
             <tr>
                 <th></th>
                 <th>Texto</th>
-                <th>Tabla</th>
                 <th>Campo</th>
                 <th>Id</th>
             </tr>
@@ -99,9 +69,8 @@ $filters = array(
         <tbody>
         <?php while ($item = $pagedResults->fetchPagedRow()) : ?>
             <tr>
-                <td width="5%"><a title="Registro <?php echo $item->table.'-'.$item->id ?>" href='/translate/contents/edit/<?php echo $item->table.'-'.$item->id . $filter . '&page=' . $_GET['page'] ?>'>[Edit]</a></td>
-                <td width="50%"><?php echo Text::recorta($item->value, 250) ?></td>
-                <td width="25%"><?php echo $item->tableName ?></td>
+                <td width="5%"><a title="Registro <?php echo $item->id ?>" href='/translate/<?php echo $table ?>/edit/<?php echo $item->id . $filter . '&page=' . $_GET['page'] ?>'>[Edit]</a></td>
+                <td width="75%"><?php if ($item->pendiente == 1) echo '* '; ?><?php echo Text::recorta($item->value, 250) ?></td>
                 <td><?php echo $item->fieldName ?></td>
                 <td><?php echo $item->id ?></td>
             </tr>

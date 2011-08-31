@@ -15,11 +15,9 @@ $text->text = Text::getTrans($this['id']);
 
 ?>
 <div class="widget board">
-    <h3 class="title">Editando el texto '<?php echo $text->id; ?>'</h3>
-
     <fieldset>
         <legend>Texto en español</legend>
-        <blockquote><?php echo $text->purpose; ?></blockquote>
+        <blockquote><?php echo htmlentities(utf8_decode($text->purpose)); ?></blockquote>
     </fieldset>
 
     <form action="/translate/texts/edit/<?php echo $text->id ?>/<?php echo $this['filter'] . '&page=' . $_GET['page'] ?>" method="post" >

@@ -5,7 +5,8 @@ use Goteo\Library\Text,
 
 $bodyClass = 'admin';
 
-list($table, $id) = explode('-', $this['id']);
+$table = $this['table'];
+$id = $this['id'];
 
 $content = Content::get($table, $id, $_SESSION['translator_lang']);
 
@@ -18,9 +19,7 @@ $sizes = array(
 );
 ?>
 <div class="widget board">
-    <h3 class="title">Editando el registro '<?php echo $id ?>' de la tabla '<?php echo Content::$tables[$table] ?>'</h3>
-
-    <form action="/translate/contents/edit/<?php echo $text->id ?>/<?php echo $this['filter'] . '&page=' . $_GET['page'] ?>" method="post" >
+    <form action="/translate/<?php echo $table ?>/edit/<?php echo $id ?>/<?php echo $this['filter'] . '&page=' . $_GET['page'] ?>" method="post" >
         <input type="hidden" name="table" value="<?php echo $table ?>" />
         <input type="hidden" name="id" value="<?php echo $id ?>" />
         <input type="hidden" name="lang" value="<?php echo $_SESSION['translator_lang'] ?>" />

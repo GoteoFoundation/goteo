@@ -6,17 +6,11 @@ use Goteo\Library\Text,
 
 $langs = Lang::getAll();
 
-/*
- * Ya no hacemos esto, hay que elegir un idioma al que traducir, nos e puede traducir a español, español es el idioma original
-if (!isset ($_SESSION['translator_lang'])) {
-    $_SESSION['translator_lang'] = GOTEO_DEFAULT_LANG;
-}
- *
- */
+// hay que elegir un idioma al que traducir, no se puede traducir a español, español es el idioma original
 if ($_SESSION['translator_lang'] == 'es') {
     unset($_SESSION['translator_lang']);
     unset($this['section']);
-    unset($this['option']);
+    unset($this['action']);
 }
 
 
@@ -28,19 +22,10 @@ include 'view/header.html.php'; ?>
         <div id="sub-header">
             <div>
                 <h2>Panel principal de traducción</h2>
+                <?php if (defined('ADMIN_BCPATH')) : ?>
+                <blockquote><?php echo ADMIN_BCPATH; ?></blockquote>
+                <?php endif; ?>
             </div>
-
-            <div class="sub-menu">
-                <div class="admin-menu">
-                    <ul>
-                        <li class="home"><a href="/translate">Portada</a></li>
-                        <li class="checking"><a href="/translate/texts">Textos</a></li>
-                        <li class="accounting"><a href="/translate/pages">Páginas</a></li>
-                        <li class="messages"><a href="/translate/contents">Contenidos</a></li>
-                    </ul>
-                </div>
-            </div>
-
         </div>
 
 <?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
@@ -53,16 +38,33 @@ include 'view/header.html.php'; ?>
 
             <?php if (!empty($this['errors'])) : ?>
                 <div class="widget">
-                    <?php echo implode(',',$this['errors']); ?>
+                    <p>
+                        <?php echo implode('<br />', $this['errors']); ?>
+                    </p>
                 </div>
             <?php endif; ?>
 
             <?php
-            if (!empty($_SESSION['translator_lang']) && !empty($this['section']) && !empty($this['option'])) {
-                echo new View ('view/translate/'.$this['section'].'/'.$this['option'].'.html.php', $this);
-            } else {
+            if (!empty($_SESSION['translator_lang']) && !empty($this['section']) && !empty($this['action'])) :
+                echo new View ('view/translate/'.$this['section'].'/'.$this['action'].'.html.php', $this);
+            else :
+
                 echo '<div class="widget">' . Text::get('translate-home-guide') . '</div>';
-            } ?>
+
+                foreach ($this['menu'] as $sCode=>$section) : ?>
+                    <a name="<?php echo $sCode ?>"></a>
+                    <div class="widget board collapse">
+                        <h3 class="title"><?php echo $section['label'] ?></h3>
+                        <ul>
+                            <?php foreach ($section['options'] as $oCode=>$option) :
+                                echo '<li><a href="/translate/'.$oCode.'">'.$option['label'].'</a></li>
+                                    ';
+                            endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endforeach;
+
+            endif; ?>
 
         </div>
 <?php
