@@ -71,7 +71,7 @@ $per = 100 / $cols;
         <tbody>
             <?php foreach ($this['data'] as $item) : ?>
             <tr>
-                <td><a href="/admin/texts/edit/<?php echo $item->id; ?>">[Editar]</a></td>
+                <td><a href="/admin/texts/edit/<?php echo $item->id; ?>/<?php echo $filter; ?>">[Editar]</a></td>
                 <td><?php echo $item->text; ?></td>
                 <td><?php echo $item->group; ?></td>
                 <?php if ($translator) : ?>

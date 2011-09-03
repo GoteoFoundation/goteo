@@ -15,6 +15,7 @@ namespace Goteo\Model {
             $text,
             $image,
             $media,
+            $legend,
             $publish,
             $order,
             $gallery = array(); // array de instancias image de info_image
@@ -29,6 +30,7 @@ namespace Goteo\Model {
                         info.node as node,
                         IFNULL(info_lang.title, info.title) as title,
                         IFNULL(info_lang.text, info.text) as text,
+                        IFNULL(info_lang.legend, info.legend) as legend,
                         info.media as `media`,
                         info.publish as `publish`,
                         info.order as `order`
@@ -65,6 +67,7 @@ namespace Goteo\Model {
                     info.id as id,
                     IFNULL(info_lang.title, info.title) as title,
                     IFNULL(info_lang.text, info.text) as `text`,
+                    IFNULL(info_lang.legend, info.legend) as `legend`,
                     info.media as `media`,
                     info.publish as `publish`,
                     info.order as `order`
@@ -120,6 +123,7 @@ namespace Goteo\Model {
                 'title',
                 'text',
                 'media',
+                'legend',
                 'order',
                 'publish'
                 );

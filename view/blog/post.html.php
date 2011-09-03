@@ -58,6 +58,11 @@
 			<?php echo $post->media->getEmbedCode(); ?>
 		</div>
 	<?php endif; ?>
+	<?php if (!empty($post->legend)) : ?>
+		<div class="embed-legend">
+			<?php echo $post->legend; ?>
+		</div>
+	<?php endif; ?>
 	<blockquote>
         <?php echo nl2br(Text::urlink($post->text)); ?>
         <?php if ($this['show'] == 'list') : ?><div class="read_more"><a href="<?php echo $url.$post->id; ?>"><?php echo Text::get('regular-read_more') ?></a></div><?php endif ?>

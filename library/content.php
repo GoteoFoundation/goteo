@@ -57,7 +57,8 @@ namespace Goteo\Library {
                 ),
                 'post' => array (
                     'title' => 'Título',
-                    'text' => 'Texto entrada'
+                    'text' => 'Texto entrada',
+                    'legend' => 'Leyenda media'
                 ),
                 'tag' => array (
                     'name' => 'Nombre'
@@ -78,11 +79,13 @@ namespace Goteo\Library {
                 ),
                 'glossary' => array (
                     'title' => 'Título',
-                    'text' => 'Contenido'
+                    'text' => 'Contenido',
+                    'legend' => 'Leyenda media'
                 ),
                 'info' => array (
                     'title' => 'Título',
-                    'text' => 'Contenido'
+                    'text' => 'Contenido',
+                    'legend' => 'Leyenda media'
                 )
             ),
             $types = array(
@@ -90,6 +93,7 @@ namespace Goteo\Library {
                 'url'         => 'Enlace',
                 'name'        => 'Nombre',
                 'text'        => 'Texto extenso',
+                'legend'      => 'Leyenda',
                 'title'       => 'Título'
             );
 

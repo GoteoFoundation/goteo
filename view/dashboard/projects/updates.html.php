@@ -153,6 +153,11 @@ if ($this['action'] == 'none') return;
                     )
                 )
             ),
+            'legend' => array(
+                'type'      => 'textarea',
+                'title'     => 'Leyenda',
+                'value'     => $post->legend,
+            ),
             "date" => array(
                 'type'      => 'datebox',
                 'required'  => true,

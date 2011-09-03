@@ -135,6 +135,12 @@ if (!$post instanceof Model\Blog\Post) {
                     )
                 )
             ),
+            'legend' => array(
+                'type'      => 'textarea',
+                'title'     => 'Leyenda',
+                'value'     => $post->legend,
+            ),
+            
             'tags' => array(
                 'type'      => 'checkboxes',
                 'name'      => 'tags[]',

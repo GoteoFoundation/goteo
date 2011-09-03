@@ -661,6 +661,7 @@ namespace Goteo\Controller {
                             'text',
                             'image',
                             'media',
+                            'legend',
                             'date',
                             'publish',
                             'allow'

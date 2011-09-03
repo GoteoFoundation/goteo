@@ -8,3 +8,4 @@ CREATE TABLE IF NOT EXISTS `glossary` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Entradas para el glosario';
 
 -- los alters
+ALTER TABLE `glossary` ADD `legend` TEXT NULL ;

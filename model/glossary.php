@@ -14,6 +14,7 @@ namespace Goteo\Model {
             $text,
             $image,
             $media,
+            $legend,
             $gallery = array(); // array de instancias image de glossary_image
 
         /*
@@ -25,6 +26,7 @@ namespace Goteo\Model {
                         glossary.id as id,
                         IFNULL(glossary_lang.title, glossary.title) as title,
                         IFNULL(glossary_lang.text, glossary.text) as text,
+                        IFNULL(glossary_lang.legend, glossary.legend) as legend,
                         glossary.media as `media`
                     FROM    glossary
                     LEFT JOIN glossary_lang
@@ -59,6 +61,7 @@ namespace Goteo\Model {
                     glossary.id as id,
                     IFNULL(glossary_lang.title, glossary.title) as title,
                     IFNULL(glossary_lang.text, glossary.text) as `text`,
+                    IFNULL(glossary_lang.legend, glossary.legend) as `legend`,
                     glossary.media as `media`
                 FROM    glossary
                 LEFT JOIN glossary_lang
@@ -106,6 +109,7 @@ namespace Goteo\Model {
                 'id',
                 'title',
                 'text',
+                'legend',
                 'media'
                 );
 

@@ -104,6 +104,11 @@ if (!$post instanceof Model\Glossary) {
                         'html'  => !empty($post->media) ? $post->media->getEmbedCode() : ''
                     )
                 )
+            ),
+            'legend' => array(
+                'type'      => 'textarea',
+                'title'     => 'Leyenda',
+                'value'     => $post->legend,
             )
 
         )

@@ -81,6 +81,11 @@ include 'view/header.html.php';
                                 <?php echo $post->media->getEmbedCode(); ?>
                             </div>
                         <?php endif; ?>
+                        <?php if (!empty($post->legend)) : ?>
+                            <div class="embed-legend">
+                                <?php echo $post->legend; ?>
+                            </div>
+                        <?php endif; ?>
                         <a class="up" href="#"><?php echo $go_up; ?></a>
                     </div>
                 <?php endwhile; ?>

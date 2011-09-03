@@ -29,6 +29,19 @@ namespace Goteo\Controller {
             return new View('view/admin/index.html.php', array('menu'=>self::menu()));
         }
 
+        public function feed () {
+
+            $BC = self::menu(array(
+                'section' => 'feed',
+                'option' => __FUNCTION__,
+                'action' => 'list'
+            ));
+
+            define('ADMIN_BCPATH', $BC);
+
+            return new View('view/admin/feed.html.php');
+        }
+
 
         /*
          * Gestión de páginas institucionales
@@ -2363,6 +2376,7 @@ namespace Goteo\Controller {
                         'text',
                         'image',
                         'media',
+                        'legend',
                         'date',
                         'publish',
                         'home',
@@ -2540,7 +2554,8 @@ namespace Goteo\Controller {
                         'id',
                         'title',
                         'text',
-                        'media'
+                        'media',
+                        'legend'
                     );
 
                     foreach ($fields as $field) {
@@ -2694,6 +2709,7 @@ namespace Goteo\Controller {
                         'title',
                         'text',
                         'media',
+                        'legend',
                         'publish',
                         'order'
                     );
@@ -3772,6 +3788,17 @@ namespace Goteo\Controller {
                                 'edit' => array('label' => 'Editando Nodo', 'item' => true)
                             )
                         )*/
+                    )
+                ),
+                'feed' => array(
+                    'label'   => 'Portada',
+                    'options' => array (
+                        'feed' => array(
+                            'label' => 'Actividad reciente',
+                            'actions' => array(
+                                'list' => array('label' => 'Listando', 'item' => false)
+                            )
+                        )
                     )
                 )
             );

@@ -6,6 +6,11 @@ use Goteo\Library\Text,
 
 $bodyClass = 'admin';
 
+$message = '';
+if (!empty($this['errors']) || !empty($this['success'])) {
+    $message = '<div class="widget"><p>'.implode('<br />', $this['errors']).implode('<br />', $this['success']).'</p></div>';
+}
+
 include 'view/prologue.html.php';
 
     include 'view/header.html.php'; ?>
@@ -21,20 +26,13 @@ include 'view/prologue.html.php';
 
 <?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
 
+        <?php if (!empty($this['folder']) && !empty($this['file'])) : ?>
+
         <div id="main">
 
-            <?php if (!empty($this['errors']) || !empty($this['success'])) : ?>
-                <div class="widget">
-                    <p>
-                        <?php echo implode('<br />', $this['errors']); ?>
-                        <?php echo implode('<br />', $this['success']); ?>
-                    </p>
-                </div>
-            <?php endif; ?>
-
+            <?php echo $message; ?>
             
-            <?php if (!empty($this['folder']) && !empty($this['file'])) :
-
+<?php
                 if ($this['folder'] == 'base') {
                     $path = 'view/admin/'.$this['file'].'.html.php';
                 } else {
@@ -42,10 +40,15 @@ include 'view/prologue.html.php';
                 }
 
                 echo new View ($path, $this);
-                
-            else : ?>
+?>
+
+<?php   else : ?>
+
+        <div id="main">
 
             <div class="center">
+
+                <?php echo $message; ?>
 
                 <?php if (ACL::check('/translate')) : ?>
                 <div class="widget">
@@ -66,6 +69,22 @@ include 'view/prologue.html.php';
                 </div>
                 <?php endforeach; ?>
             </div>
+
+
+            <div class="side">
+                <a name="feed"></a>
+                <div class="widget feed">
+                    FEED lateral.  Arreglarlo para que salga en la columan lateral como en la pagina del usuario<br /><br />
+                    <a href="/admin/feed/<?php echo isset($_GET['feed']) ? '?feed='.$_GET['feed'] : ''; ?>">Ver más</a>
+
+                    <p>
+                        <a href="/admin/?feed=all#feed">TODO</a> <a href="/admin/?feed=admin#feed">ADMINISTRADOR</a> <a href="/admin/?feed=user#feed">USUARIO</a>
+                        <br /><br />
+                        Ver Feeds <?php echo $_GET['feed']; ?>
+                    </p>
+                </div>
+            </div>
+
 
             <?php endif; ?>
 

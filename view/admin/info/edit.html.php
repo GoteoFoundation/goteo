@@ -125,6 +125,11 @@ if (!$post instanceof Model\Info) {
                     )
                 )
             ),
+            'legend' => array(
+                'type'      => 'textarea',
+                'title'     => 'Leyenda',
+                'value'     => $post->legend,
+            ),
 
             'publish' => array(
                 'title'     => 'Publicada',

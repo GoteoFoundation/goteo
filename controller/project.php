@@ -372,6 +372,7 @@ namespace Goteo\Controller {
         public function create () {
 
             if (empty($_SESSION['user'])) {
+                Message::Info(Text::get('user-login-required'));
                 throw new Redirection("/user/login");
             }
 
@@ -431,8 +432,12 @@ namespace Goteo\Controller {
                 //tenemos que tocar esto un poquito para gestionar los pasos al aportar
                 if ($show == 'invest') {
 
+                    if (empty($_SESSION['user'])) {
+                        Message::Info(Text::get('user-login-required'));
+                        throw new Redirection("/user/login");
+                    }
                     // piñon para betatesters
-                    if (!in_array($_SESSION['user']->id, array('root', 'goteo', 'olivier', 'esenabre', 'diegobus', 'susana'))) {
+                    if (!in_array($_SESSION['user']->id, array('root', 'goteo', 'olivier', 'esenabre', 'diegobus', 'susana', 'paypal'))) {
                         throw new Redirection('/about/beta', Redirection::TEMPORARY);
                     }
 

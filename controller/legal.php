@@ -22,7 +22,7 @@ namespace Goteo\Controller {
                 'view/about/sample.html.php',
                 array(
                     'name' => $page->name,
-                    'title' => $page->description,
+                    'description' => $page->description,
                     'content' => $page->content
                 )
              );

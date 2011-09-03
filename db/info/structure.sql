@@ -11,3 +11,4 @@ CREATE TABLE IF NOT EXISTS `info` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Entradas about';
 
 -- los alters
+ALTER TABLE `info` ADD `legend` TEXT NULL ;

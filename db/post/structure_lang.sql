@@ -5,3 +5,6 @@ CREATE TABLE IF NOT EXISTS `post_lang` (
   `text` longtext NULL,
  UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- alters
+ALTER TABLE `post_lang` ADD `legend` TEXT NULL ;

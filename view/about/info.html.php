@@ -44,6 +44,11 @@ $go_up = Text::get('regular-go_up');
                                 <?php echo $post->media->getEmbedCode(); ?>
                             </div>
                         <?php endif; ?>
+                        <?php if (!empty($post->legend)) : ?>
+                            <div class="embed-legend">
+                                <?php echo $post->legend; ?>
+                            </div>
+                        <?php endif; ?>
                         <?php if (!empty($post->gallery)) : ?>
                         <div class="gallery">
                             <?php $i = 1; foreach ($post->gallery as $image) : ?>

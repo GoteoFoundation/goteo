@@ -157,6 +157,7 @@ namespace Goteo\Model {
                 'title',
                 'text',
                 'media',
+                'legend',
                 'order',
                 'publish',
                 'home',
