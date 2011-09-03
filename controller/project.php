@@ -432,12 +432,9 @@ namespace Goteo\Controller {
                 if ($show == 'invest') {
 
                     // piñon para betatesters
-                    /*
-                    if (!in_array($_SESSION['user']->id, array('root', 'goteo', 'olivier', 'esenabre', 'diegobus', 'ivan'))) {
+                    if (!in_array($_SESSION['user']->id, array('root', 'goteo', 'olivier', 'esenabre', 'diegobus', 'susana'))) {
                         throw new Redirection('/about/beta', Redirection::TEMPORARY);
                     }
-                     * 
-                     */
 
                     // si no está en campaña no pueden esta qui ni de coña
                     if ($project->status != 3) {
