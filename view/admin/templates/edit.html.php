@@ -14,7 +14,7 @@ use Goteo\Library\Text;
 
         <p>
             <label for="tpltext">Contenido:</label><br />
-            <textarea id="tpltext" name="text" cols="120" rows="20"><?php echo $this['template']->text; ?></textarea>
+            <textarea id="tpltext" name="text" cols="100" rows="20"><?php echo $this['template']->text; ?></textarea>
         </p>
 
         <input type="submit" name="save" value="Guardar" />

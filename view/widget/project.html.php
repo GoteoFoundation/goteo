@@ -3,7 +3,7 @@
 
 use Goteo\Core\View;
 
-$bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
+$bodyClass = 'project-embed'; include 'view/prologue.html.php' ?>
 
 <div class="alone-project">
     <?php echo new View('view/project/widget/project.html.php', $this); ?>

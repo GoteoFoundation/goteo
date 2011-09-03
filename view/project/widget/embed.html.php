@@ -7,7 +7,7 @@
         $url .= '/invested/'.$this['investor']->id;
     }
 
-	$widget_code = '<iframe frameborder="0" height="380px" src="'.$url.'" width="250px"></iframe>';
+	$widget_code = '<iframe frameborder="0" height="480px" src="'.$url.'" width="250px" scrolling="no"></iframe>';
 ?>
 <script type="text/javascript">
 	// Mark DOM as javascript-enabled

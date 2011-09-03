@@ -361,8 +361,6 @@ namespace Goteo\Controller {
                 $values = array(':id' => $_POST['id']);
 
                 foreach ($fields as $field) {
-                    if (empty($_POST[$field])) continue;
-                    
                     if ($set != '') $set .= ", ";
                     $set .= "`$field` = :$field ";
                     $values[":$field"] = $_POST[$field];

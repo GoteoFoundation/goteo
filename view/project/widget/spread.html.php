@@ -7,8 +7,8 @@ $project = $this['project'];
 $level = (int) $this['level'] ?: 3;
 
 $url = SITE_URL . '/widget/project/' . $project->id;
-$widget_code = '<iframe frameborder="0" height="380px" src="'.$url.'" width="250px"></iframe>';
-$widget_code_investor = '<iframe frameborder="0" height="380px" src="'.$url.'/invested/'.$user->id.'" width="250px"></iframe>';
+$widget_code = '<iframe frameborder="0" height="480px" src="'.$url.'" width="250px" scrolling="no"></iframe>';
+$widget_code_investor = '<iframe frameborder="0" height="480px" src="'.$url.'/invested/'.$user->id.'" width="250px" scrolling="no"></iframe>';
 
 ?>
 <div class="widget project-spread">

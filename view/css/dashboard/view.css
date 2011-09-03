@@ -207,7 +207,7 @@ body.dashboard div#main div.widget.projects div.reward span.aporte > span.euro{ 
 body.dashboard div#main div.widget.projects div.reward span.cofinanciadores{color:#40509F;display:block;text-transform:uppercase;margin-left:25px;font-size:9pt;line-height:22px;}
 body.dashboard div#main div.widget.projects div.reward span.tiporec{display:block;border-bottom:#8D878E 1px solid;padding-bottom:5px;margin-bottom:5px;}
 body.dashboard div#main div.widget.projects div.reward span.recompensa{color:#8D878E;}
-body.dashboard div#main div.widget.projects div.reward a.green{position:absolute;bottom:5px;left:13px;width:160px}
+body.dashboard div#main div.widget.projects div.reward a.green{bottom:5px;left:13px;width:160px}
 
 /* = gestionar retornos 
 ***************************/
@@ -239,8 +239,8 @@ body.dashboard div#invests-list div.investor div.left span.pendiente{color:#f00;
 
 /* Custom checkbox in investors list*/
 body.dashboard div#invests-list div.investor div.recompensas input[type="checkbox"]{height:16px;width:16px;float:left;position:absolute;left:0;opacity:0;margin:0;padding:0}
-body.dashboard div#invests-list div.investor div.recompensas label{float:left;line-height:16px;padding:0 0 0 30px}
-body.dashboard div#invests-list div.investor div.recompensas input + label{background:url(gr_custom-inputs.png) 0 -1px no-repeat;height:16px}
+body.dashboard div#invests-list div.investor div.recompensas label{line-height:16px;padding:0 0 0 30px}
+body.dashboard div#invests-list div.investor div.recompensas input + label{background:url(gr_custom-inputs.png) 0 -1px no-repeat;height:18px;}
 body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:checked + label{background-position:0 -81px}
 body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:hover:checked + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:focus:checked + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:checked + label:hover,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:focus:checked + label{background-position:0 -101px}
 

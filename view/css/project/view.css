@@ -26,7 +26,9 @@ body.project-show div#main {
 */
 
 body.project-show div#sub-header {
-	height:120px;
+	/*height:120px;*/
+	height:auto;
+	min-height:120px;
     padding-bottom: 0;
 	background:#faf8f8;
 }
@@ -44,12 +46,19 @@ body.project-show div#sub-header div.project-header img{
 
 body.project-show div#sub-header div.project-header h2{
 	font-size:2em;
+	max-width:700px;
+}
+
+body.project-show div#sub-header div.project-header h2 > span{
+	display: block;
+	line-height: 1em;
 }
 
 body.project-show div#sub-header div.project-by {
     color: #20B3B2;
     font-size: 12px;
     margin: 0 0 .5em;
+    padding-left: 96px;
 }
 
 body.project-show div#sub-header div.project-by a {
@@ -68,6 +77,7 @@ body.project-show div#sub-header div.categories {
     right: 10px;
     text-align: right;
     top: -15px;
+	max-width:240px;
 }
 
 body.project-show div#sub-header div.categories h3 {

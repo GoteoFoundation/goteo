@@ -20,6 +20,9 @@ if ($reached >= $minimum) {
     $donemax = $horizontal ? 160 : 140;
 //    $minimum_done = 100;
     $minimum_done = min($donemax, round(($reached / $minimum) * 100));
+    if ($reached >= $optimum) {
+        $minimum_done = max($minimum_done, 130);
+    }
     $minimum_done_per = round(($reached / $minimum) * 100);
     $minimum_left = 0;
     

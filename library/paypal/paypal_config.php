@@ -60,9 +60,9 @@ define('PROXY_PORT', '808');
 
 /***** 3token API credentials *****************/
 define('API_AUTHENTICATION_MODE','3token');
-define('API_USERNAME', 'goteo_1302553021_biz_api1.gmail.com');
-define('API_PASSWORD', '1302553034');
-define('API_SIGNATURE', 'A-D81ryvGKLufCxd6EZS-xPNHrW4AaRgutaPfjCXW6Z0Xa4na71lD.pg');
+define('API_USERNAME', 'goteo_1314917819_biz_api1.gmail.com');
+define('API_PASSWORD', '1314917863');
+define('API_SIGNATURE', 'An5ns1Kso7MWUdW4ErQKJJJ4qi4-A0jpddAN2GLAUit7Ii3-bZGjjerJ ');
 
 /**
  * Use the following setting (false) if you are testing or using SDK against live PayPal's production server

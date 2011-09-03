@@ -72,7 +72,6 @@ namespace Goteo\Library {
 		           $preapprovalRequest->requestEnvelope = new \RequestEnvelope();
 		           $preapprovalRequest->requestEnvelope->errorLanguage = "es_ES";
 		           $preapprovalRequest->senderEmail = $invest->account;
-                   $preapprovalRequest->feesPayer = "SENDER";
 
 		           $ap = new \AdaptivePayments();
 		           $response=$ap->Preapproval($preapprovalRequest);
@@ -114,16 +113,23 @@ namespace Goteo\Library {
         /*
          *  Metodo para ejecutar pago (desde cron)
          * Recibe parametro del aporte (id, cuenta, cantidad)
+         *
+         * Es un pago encadenado, la comision del 8% a Goteo y el resto al proyecto
+         *
          */
         public static function pay($invest, &$errors = array()) {
 
             try {
                 $project = Project::getMini($invest->project);
 
+                // al productor le pasamos el importe del cargo menos el 8% que se queda goteo
+                $amountPay = $invest->amount - ($invest->amount * 0.08);
+
+
                 // Create request object
                 $payRequest = new \PayRequest();
                 $payRequest->actionType = "PAY";
-                $payRequest->memo = "Cargo del aporte de {$invest->amount} EUR al proyecto '{$project->name}' en la plataforma Goteo";
+                $payRequest->memo = "Cargo del aporte de {$invest->amount} EUR del usuario '{$invest->user->name}' al proyecto '{$project->name}'";
                 $payRequest->cancelUrl = SITE_URL.'/cron/charge_fail/' . $invest->id;
                 $payRequest->returnUrl = SITE_URL.'/cron/charge_success/' . $invest->id;
                 $payRequest->clientDetails = new \ClientDetailsType();
@@ -133,16 +139,25 @@ namespace Goteo\Library {
                 $payRequest->clientDetails->ipAddress = PAYPAL_IP_ADDRESS;
                 $payRequest->currencyCode = 'EUR';
            		$payRequest->preapprovalKey = $invest->preapproval;
-                $payRequest->feesPayer = 'SENDER';
+                $payRequest->feesPayer = 'SECONDARYONLY';
+                // SENDER no vale para chained payments   (PRIMARYRECEIVER, EACHRECEIVER, SECONDARYONLY)
                 $payRequest->senderEmail = $invest->account;
                 $payRequest->requestEnvelope = new \RequestEnvelope();
                 $payRequest->requestEnvelope->errorLanguage = 'es_ES';
 
-                $receiver = new \receiver();
-                $receiver->email = PAYPAL_BUSINESS_ACCOUNT;
-                $receiver->amount = $invest->amount;
+                // Primary receiver, Goteo Business Account
+                $receiverP = new \receiver();
+                $receiverP->email = 'goteo_1314917819_biz@gmail.com';
+                $receiverP->amount = (int) $invest->amount;
+                $receiverP->primary = true;
 
-                $payRequest->receiverList = array($receiver);
+                // Receiver, Projects PayPal Account
+                $receiver = new \receiver();
+                $receiver->email = 'projec_1314918267_per@gmail.com';
+                $receiver->amount = $amountPay;
+                $receiver->primary = false;
+
+                $payRequest->receiverList = array($receiverP, $receiver);
 
                 // Create service wrapper object
                 $ap = new \AdaptivePayments();
@@ -160,18 +175,28 @@ namespace Goteo\Library {
                         $errorId = $soapFault->error->errorId;
                         $errorMsg = $soapFault->error->message;
                     }
+                    if (is_array($soapFault->payErrorList->payError)) {
+                        $errorId = $soapFault->payErrorList->payError[0]->error->errorId;
+                        $errorMsg = $soapFault->payErrorList->payError[0]->error->message;
+                    }
 
                     // tratamiento de errores
                     switch ($errorId) {
-                        case '539012':
+                        case '569013': // preapproval cancelado por el usuario desde panel paypal
+                        case '539012': // preapproval no se llegó a autorizar
                             if ($invest->cancel()) {
                                 $action = 'Aporte cancelado';
                             }
                             break;
                     }
 
-                    $errors[] = 'No se ha podido inicializar la comunicación con Paypal para la ejecución del cargo.';
-                    $errors[] = "$action $errorMsg [$errorId]";
+
+                    if (empty($errorId)) {
+                        $errors[] = 'NO es soapFault pero no es Success: <pre>' . print_r($ap, 1) . '</pre>';
+                    } else {
+                        $errors[] = "$action $errorMsg [$errorId]";
+                    }
+                    
                     return false;
                 }
 
@@ -196,7 +221,7 @@ namespace Goteo\Library {
                 $errorData->message = $ex->getMessage();
                 $fault->error = $errorData;
 
-                $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
+                $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
                 @\mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, 1) . '</pre>');
                 return false;
             }

@@ -44,7 +44,7 @@ $(document).ready(function(){
     </fieldset>
 
     <form method="post" action="/translate/pages/edit/<?php echo $page->id; ?>">
-        <textarea id="richtext_content" name="content" cols="120" rows="20"><?php echo $page->content; ?></textarea>
+        <textarea id="richtext_content" name="content" cols="100" rows="20"><?php echo $page->content; ?></textarea>
         <input type="submit" name="save" value="Guardar" />
     </form>
 </div>

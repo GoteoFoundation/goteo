@@ -40,7 +40,7 @@ if ($review->ready == 1) echo '<p>Has dado por terminada esta revisión, no pued
         <textarea class="evaluate-comment" <?php echo $disabled; ?>
                   name="<?php echo $sectionId; ?>-evaluation"
                   id="<?php echo 'evaluate-' . $sectionId . '-evaluation'; ?>"
-                  cols="120" rows="5"><?php echo $evaluation[$sectionId]['evaluation']; ?></textarea><br />
+                  cols="100" rows="5"><?php echo $evaluation[$sectionId]['evaluation']; ?></textarea><br />
         <span id="<?php echo $sectionId; ?>-evaluation-result"></span>
     </p>
     <p>
@@ -48,7 +48,7 @@ if ($review->ready == 1) echo '<p>Has dado por terminada esta revisión, no pued
         <textarea class="evaluate-comment" <?php echo $disabled; ?>
                   name="<?php echo $sectionId; ?>-recommendation"
                   id="<?php echo 'evaluate-' . $sectionId . '-recommendation'; ?>"
-                  cols="120" rows="5"><?php echo $evaluation[$sectionId]['recommendation']; ?></textarea><br />
+                  cols="100" rows="5"><?php echo $evaluation[$sectionId]['recommendation']; ?></textarea><br />
         <span id="<?php echo $sectionId; ?>-recommendation-result"></span>
     </p>
 </div>

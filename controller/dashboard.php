@@ -548,6 +548,9 @@ namespace Goteo\Controller {
                                     $mailHandler->subject = 'En pruebas (solo llega uno): '.$subject;
                                     $mailHandler->content = str_replace('%NAME%', $data->name, $content);
 
+                                    // esto tambien es pruebas
+                                    $mailHandler->content .= '<br /><br />Este email se habria enviado a:<br />'.implode(', ', $who);
+
                                     $mailHandler->html = true;
                                     if ($mailHandler->send($errors)) {
                                         $success[] = Text::get('dashboard-investors-mail-sended', $data->name, $data->email);

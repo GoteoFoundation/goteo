@@ -395,8 +395,6 @@ namespace Goteo\Controller {
 
         private function view ($id, $show, $post = null) {
             $project = Model\Project::get($id);
-            // los retornos ordenados por cantidad
-            $project->individual_rewards = Model\Project\Reward::getAll($id, 'individual', null, null, 'amount');
 
             // recompensas
             foreach ($project->individual_rewards as &$reward) {

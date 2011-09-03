@@ -5,6 +5,8 @@ use Goteo\Model\User\Interest,
 
 $user = $this['user'];
 
+$user->about = nl2br(Text::urlink($user->about));
+
 $interests = Interest::getAll();
 ?>
 

@@ -30,7 +30,7 @@ namespace Goteo\Model\Project {
             }
 		}
 
-		public static function getAll ($project, $type = 'social', $fulfilled = null, $icon = null, $order = 'id') {
+		public static function getAll ($project, $type = 'social', $fulfilled = null, $icon = null) {
             try {
                 $array = array();
 
@@ -70,11 +70,7 @@ namespace Goteo\Model\Project {
                         $sqlFilter
                         ";
 
-                if ($order == 'id') {
-                    $sql .= " ORDER BY reward.id ASC";
-                } else {
-                    $sql .= " ORDER BY reward.amount ASC, reward.id ASC";
-                }
+                $sql .= " ORDER BY reward.id ASC";
 
 				$query = self::query($sql, $values);
 				foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item ) {

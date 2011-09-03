@@ -10,6 +10,7 @@ if (!isset($user->webs)) {
     $user->webs = \Goteo\Model\User\Web::get($user->id);
 }
 
+$user->about = nl2br(Text::urlink($user->about));
 ?>
 
 <div class="widget user collapsable">
@@ -25,7 +26,7 @@ if (!isset($user->webs)) {
 
     <?php if (isset($user->about)): ?>
     <blockquote class="about">
-    <?php echo htmlspecialchars($user->about) ?>
+    <?php echo $user->about ?>
     </blockquote>
     <?php endif ?>
 

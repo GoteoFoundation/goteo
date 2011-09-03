@@ -11,11 +11,11 @@ $id = $this['id'];
 $content = Content::get($table, $id, $_SESSION['translator_lang']);
 
 $sizes = array(
-    'title'       => 'cols="120" rows="2"',
-    'name'        => 'cols="120" rows="1"',
-    'description' => 'cols="120" rows="4"',
-    'url'         => 'cols="120" rows="1"',
-    'text'        => 'cols="120" rows="10"'
+    'title'       => 'cols="100" rows="2"',
+    'name'        => 'cols="100" rows="1"',
+    'description' => 'cols="100" rows="4"',
+    'url'         => 'cols="100" rows="1"',
+    'text'        => 'cols="100" rows="10"'
 );
 ?>
 <div class="widget board">

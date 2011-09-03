@@ -37,7 +37,7 @@ $(document).ready(function(){
         <label for="page-description">Cabecera:</label><br />
         <textarea name="description" id="page-description" cols="60" rows="4"><?php echo $this['page']->description; ?></textarea>
 <br />
-        <textarea id="richtext_content" name="content" cols="120" rows="20"><?php echo $this['page']->content; ?></textarea>
+        <textarea id="richtext_content" name="content" cols="100" rows="20"><?php echo $this['page']->content; ?></textarea>
         <input type="submit" name="save" value="Guardar" />
     </form>
 </div>
