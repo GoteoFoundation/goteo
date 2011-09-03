@@ -4,6 +4,7 @@ use Goteo\Core\Resource,
     Goteo\Core\Error,
     Goteo\Core\Redirection,
     Goteo\Core\ACL,
+    Goteo\Library\Message,
     Goteo\Library\Lang;
 
 require_once 'config.php';
@@ -72,8 +73,8 @@ $uri = '/' . implode('/', $segments);
 try {
     // Check permissions on requested URI
     if (!ACL::check($uri)) {
+        Message::Info(Text::get('user-login-required'));
         throw new Redirection("/user/login/?return=".rawurlencode($uri));
-        // throw new Error(Error::FORBIDDEN);
     }
 
     // Get controller name
