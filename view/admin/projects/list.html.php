@@ -77,7 +77,7 @@ $filter = "?status={$filters['status']}&category={$filters['category']}&owner={$
                 <td><?php echo $project->user->name; ?></td>
                 <td><?php echo $this['status'][$project->status]; ?></td>
                 <td><?php if ($project->status < 3)  echo $project->progress; ?></td>
-                <td><?php if ($project->status == 3) echo $project->days; ?></td>
+                <td><?php if ($project->status == 3) echo "$project->days (round {$project->round})"; ?></td>
                 <td><?php echo $project->invested; ?></td>
                 <td><?php echo $project->mincost; ?></td>
             </tr>

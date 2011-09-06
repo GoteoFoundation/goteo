@@ -42,6 +42,15 @@ div.field {
     height: 285px;
 	margin: 10px 0px;
 }
+#about-content .post .embed-legend{
+	border-left: 2px solid #58595B;
+	color: #9B9B9D;
+	font-size: 0.9em;
+	width: 495px;
+	padding-left: 10px;
+	margin-bottom:10px;
+	font-style:oblique
+}
 #about-content .post .gallery{
 	margin-bottom: 10px !important;
 }

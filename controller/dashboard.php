@@ -15,10 +15,11 @@ namespace Goteo\Controller {
 
     class Dashboard extends \Goteo\Core\Controller {
 
-        /*
-         *  Muy guarro para poder moverse mientras desarrollamos
-         */
         public function index ($section = null) {
+
+            if ($_SESSION['user']->id == 'paypal') {
+                throw new Redirection('/paypal');
+            }
 
             $page = Page::get('dashboard');
 

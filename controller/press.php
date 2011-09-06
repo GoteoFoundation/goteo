@@ -7,15 +7,11 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Library\Text;
 
-    class Service extends \Goteo\Core\Controller {
+    class Press extends \Goteo\Core\Controller {
         
-        public function index ($id = null) {
+        public function index () {
 
-            if (empty($id)) {
-                $id = 'service';
-            }
-
-            $page = Page::get($id);
+            $page = Page::get('press');
 
             return new View(
                 'view/about/sample.html.php',

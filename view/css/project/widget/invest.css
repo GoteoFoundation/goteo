@@ -112,3 +112,24 @@ div.widget.project-invest div.individual ul li.disabled{
 div.widget.project-invest div.individual ul li.disabled label.amount {
     color: #58595b;
 }
+
+div.widget.project-invest button.pay-tpv {
+    background: url('/view/css/button/tpv.gif') no-repeat 0 0 transparent;
+    width: 178px;
+    height: 35px;
+    text-indent: 2000px;
+    padding: 3px;
+}
+
+div.widget.project-invest button.pay-paypal {
+    background: url('/view/css/button/paypal.gif') no-repeat 0 0 transparent;
+    width: 145px;
+    height: 32px;
+    text-indent: 2000px;
+    padding: 3px;
+}
+
+div.widget.project-invest button.pay-tpv:hover,
+div.widget.project-invest button.pay-paypal:hover {
+    border: 1px solid #20b2b3;
+}

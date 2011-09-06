@@ -40,6 +40,17 @@
     height: 285px;
 	margin: 10px 18px;
 }
+#glossary-content .post .embed-legend{
+	border-left: 2px solid #58595B;
+	color: #9B9B9D;
+	font-size: 0.9em;
+	margin-left: 16px;
+	width: 495px;
+	padding-left: 10px;
+	margin-bottom:10px;
+	font-style:oblique
+}
+	
 #glossary-content .post .gallery-image{
 	text-align:left;
 }

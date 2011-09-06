@@ -42,8 +42,6 @@ namespace Goteo\Controller {
                 $logger->log("response: $response");
                 $logger->log('##### END TPV ['.$id.'] '.date('d/m/Y').' '.$_POST['Ds_MerchantData'].'#####');
                 $logger->close();
-
-                @\mail( 'jcanaves@doukeshi.org', 'Comunicacion online goteo desde goteo.org/tpv/comunication', '<pre>'.print_r($_POST, 1).'</pre>');
             } else {
                 throw new Redirection('/', Error::BAD_REQUEST);
             }

@@ -4,6 +4,7 @@ namespace Goteo\Controller {
 
     use Goteo\Model,
         Goteo\Core\Error,
+        Goteo\Library\Text,
         Goteo\Library\Paypal,
         Goteo\Library\Tpv;
 
@@ -59,7 +60,7 @@ namespace Goteo\Controller {
                 }
                 // pero aqui seguimos trabajando con el numero de dias que lleva
 
-                echo 'Lleva recaudado ' . $amount . ' de ' . $project->mincost . '/' . $project->maxcost . ' en ' . $days . ' dias, le quedan '.$rest.'<br />';
+                echo $project->name . ': lleva recaudado ' . $amount . ' de ' . $project->mincost . '/' . $project->maxcost . ' en ' . $days . ' dias, le quedan '.$rest.'<br />';
 
                 //  (financiado a los 80 o cancelado si a los 40 no llega al minimo)
                 // si ha llegado a los 40 dias: mínimo-> ejecutar ; no minimo proyecto y todos los preapprovals cancelados

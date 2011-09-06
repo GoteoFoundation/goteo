@@ -44,6 +44,7 @@ jQuery(document).ready(function($) {
                 <ul class="scroll-pane">
                     <li><a href="/faq"><?php echo Text::get('regular-header-faq') ?></a></li>
                     <li><a href="/glossary">Glosario</a></li>
+                    <li><a href="/press">Prensa</a></li>
                     <?php foreach ($posts as $id=>$title) : ?>
                     <li><a href="/blog/<?php echo $id ?>"><?php echo Text::recorta($title, 50) ?></a></li>
                     <?php endforeach; ?>

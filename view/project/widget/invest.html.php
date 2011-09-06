@@ -100,9 +100,9 @@ foreach (License::getAll() as $l) {
             
 <input type="hidden" id="paymethod"  />
 
-<button type="submit" class="weak pay-tpv" name="method"  value="tpv">TPV</button>
-<button type="submit" class="weak pay-paypal" name="method"  value="paypal">PAYPAL</button>
-<button type="submit" class="weak pay-cash" name="method"  value="cash">Ca$h</button>
+<button type="submit" class="pay-tpv" name="method"  value="tpv">TPV</button>
+<button type="submit" class="pay-paypal" name="method"  value="paypal">PAYPAL</button>
+<button type="submit" class="pay-cash" name="method"  value="cash">Ca$h</button>
 
 <!-- <input type="submit" value="" /> -->
 
