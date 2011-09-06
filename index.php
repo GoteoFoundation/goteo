@@ -4,6 +4,7 @@ use Goteo\Core\Resource,
     Goteo\Core\Error,
     Goteo\Core\Redirection,
     Goteo\Core\ACL,
+    Goteo\Library\Text,
     Goteo\Library\Message,
     Goteo\Library\Lang;
 

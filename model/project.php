@@ -22,13 +22,34 @@ namespace Goteo\Model {
             $user, // owner's user information
 
             // Register contract data
-            $contract_name, // Nombre y apellidos
+            $contract_name, // Nombre y apellidos del responsable del proyecto
             $contract_nif, // Guardar sin espacios ni puntos ni guiones
+            $contract_email, // cuenta paypal
             $phone, // guardar sin espacios ni puntos
+
+            // Para marcar física o jurídica
+            $contract_entity = false, // false = física (persona)  true = jurídica (entidad)
+
+            // Para persona física
+            $contract_birthdate,
+
+            // Para entidad jurídica
+            $entity_office, // cargo del responsable dentro de la entidad
+            $entity_name,  // denomincion social de la entidad
+            $entity_cif,  // CIF de la entidad
+
+            // Campos de Domicilio: Igual para persona o entidad
             $address,
             $zipcode,
             $location, // owner's location
             $country,
+
+            // Domicilio postal
+            $post_address = null,
+            $post_zipcode = null,
+            $post_location = null,
+            $post_country = null,
+
 
             // Edit project description
             $name,
@@ -352,9 +373,9 @@ namespace Goteo\Model {
                 // fail para pasar por todo antes de devolver false
                 $fail = false;
 
-                // nif y telefono sin guiones, espacios ni puntos
+                // los nif sin guiones, espacios ni puntos
                 $this->contract_nif = str_replace(array('_', '.', ' ', '-', ',', ')', '('), '', $this->contract_nif);
-                $this->phone = str_replace(array('_', '.', ' ', '-', ',', ')', '('), '', $this->phone);
+                $this->entity_cif = str_replace(array('_', '.', ' ', '-', ',', ')', '('), '', $this->entity_cif);
 
                 // Image
                 if (is_array($this->image) && !empty($this->image['name'])) {
@@ -374,11 +395,21 @@ namespace Goteo\Model {
                 $fields = array(
                     'contract_name',
                     'contract_nif',
+                    'contract_email',
+                    'contract_entity',
+                    'contract_birthdate',
+                    'entity_office',
+                    'entity_name',
+                    'entity_cif',
                     'phone',
                     'address',
                     'zipcode',
                     'location',
                     'country',
+                    'post_address',
+                    'post_zipcode',
+                    'post_location',
+                    'post_country',
                     'name',
                     'image',
                     'description',
@@ -686,20 +717,59 @@ namespace Goteo\Model {
             $score = 0;
             // obligatorios: todos
             if (empty($this->contract_name)) {
-                $errors['userPersonal']['contract_name'] = Text::get('mandatory-project-field-contract-name');
+                $errors['userPersonal']['contract_name'] = Text::get('mandatory-project-field-contract_name');
             } else {
                  $okeys['userPersonal']['contract_name'] = 'ok';
                  ++$score;
             }
 
             if (empty($this->contract_nif)) {
-                $errors['userPersonal']['contract_nif'] = Text::get('mandatory-project-field-contract-nif');
+                $errors['userPersonal']['contract_nif'] = Text::get('mandatory-project-field-contract_nif');
             } elseif (!Check::nif($this->contract_nif)) {
-                $errors['userPersonal']['contract_nif'] = Text::get('validate-project-value-contract-nif');
+                $errors['userPersonal']['contract_nif'] = Text::get('validate-project-value-contract_nif');
             } else {
                  $okeys['userPersonal']['contract_nif'] = 'ok';
                  ++$score;
             }
+
+            if (empty($this->contract_email)) {
+                $errors['userPersonal']['contract_email'] = Text::get('mandatory-project-field-contract_email');
+            } elseif (!Check::mail($this->contract_email)) {
+                $errors['userPersonal']['contract_email'] = Text::get('validate-project-value-contract_email');
+            } else {
+                 $okeys['userPersonal']['contract_email'] = 'ok';
+            }
+
+            // Segun persona física o jurídica
+            if ($this->contract_entity) {  // JURIDICA
+                if (empty($this->entity_office)) {
+                    $errors['userPersonal']['entity_office'] = Text::get('mandatory-project-field-entity_office');
+                } else {
+                     $okeys['userPersonal']['entity_office'] = 'ok';
+                }
+
+                if (empty($this->entity_name)) {
+                    $errors['userPersonal']['entity_name'] = Text::get('mandatory-project-field-entity_name');
+                } else {
+                     $okeys['userPersonal']['entity_name'] = 'ok';
+                }
+
+                if (empty($this->entity_cif)) {
+                    $errors['userPersonal']['entity_cif'] = Text::get('mandatory-project-field-entity_cif');
+                } elseif (!Check::nif($this->entity_cif)) {
+                    $errors['userPersonal']['entity_cif'] = Text::get('validate-project-value-entity_cif');
+                } else {
+                     $okeys['userPersonal']['entity_cif'] = 'ok';
+                }
+
+            } else { // FISICA
+                if (empty($this->contract_birthdate)) {
+                    $errors['userPersonal']['contract_birthdate'] = Text::get('mandatory-project-field-contract_birthdate');
+                } else {
+                     $okeys['userPersonal']['contract_birthdate'] = 'ok';
+                }
+            }
+
 
             if (empty($this->phone)) {
                 $errors['userPersonal']['phone'] = Text::get('mandatory-project-field-phone');
