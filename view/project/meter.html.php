@@ -66,7 +66,7 @@ $minimum_ratio =  min(100, round(($minimum / $optimum) * 100));
     <div class="meter <?php echo $horizontal ? 'hor' : 'ver' ?>">
         
         <h<?php echo $level ?> class="title"><?php echo Text::get('project-view-metter-investment'); ?></h<?php echo $level ?>>
-    
+        <?php if (!empty($project->round)) : ?><h<?php echo $level ?> class="title ronda"><?php echo $project->round . Text::get('regular-round'); ?></h<?php echo $level ?>><?php endif; ?>
         <div class="graph">            
             <div class="optimum">
                  <div class="left" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($optimum_left) ?>%"></div>

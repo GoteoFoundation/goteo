@@ -244,7 +244,10 @@ namespace Goteo\Model {
                     // tiempo de campaña
                     if ($project->status == 3) {
                         $days = $project->daysActive();
-                        if ($days > 40) {
+                        if ($days > 80) {
+                            $project->round = 0;
+                            $days = 0;
+                        } elseif ($days > 40) {
                             $days = 80 - $days;
                             $project->round = 2;
                         } else {
@@ -256,13 +259,10 @@ namespace Goteo\Model {
                             // no deberia estar en campaña sino financuiado o caducado
                             $days = 0;
                         }
-
-                        if ($project->days != $days) {
-                            self::query("UPDATE project SET days = '{$days}' WHERE id = ?", array($project->id));
-                        }
-                        $project->days = $days;
+                        
                     } else {
-                        $project->days = 0;
+                        $project->round = 0;
+                        $days = 0;
                     }
 
                     // a ver que banderolo le toca
@@ -277,8 +277,15 @@ namespace Goteo\Model {
                         $project->tagmark = 'success';
                     endif;
 
+                } else {
+                    $days = 0;
                 }
                 
+                if ($project->days != $days) {
+                    self::query("UPDATE project SET days = '{$days}' WHERE id = ?", array($project->id));
+                }
+                $project->days = $days;
+
                 //-----------------------------------------------------------------
                 // Fin de verificaciones
                 //-----------------------------------------------------------------

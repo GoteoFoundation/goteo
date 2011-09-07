@@ -62,9 +62,16 @@ body.admin div#main div.widget {
     margin-bottom: 20px;
 }
 
-body.admin div#main div.center {
-    margin-bottom: 20px;
+body.admin div#main > div.center {
+    width: 620px;
+    float: left;
 }
+
+body.admin div#main > div.side {
+    float: right;
+    width: 300px;
+}
+
 
 body.admin div#main div.board ul {
     padding: 0;

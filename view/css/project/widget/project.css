@@ -220,6 +220,14 @@ div.widget.project div.meter div.graph  * span {
     display: none;
 }
 
+div.widget.project div.meter > h3.ronda{
+	color:#20B3B2;
+	position:absolute;
+	top:4px;
+	right:5px;
+	text-transform:uppercase;
+}
+
 div.widget.project div.meter div.graph .minimum {
     background-color: #96238F;
     height: 100%;

@@ -54,9 +54,12 @@ namespace Goteo\Controller {
                     if ($rest < 0)
                         $rest = 0;
 
-                    if ($project->days != $rest) {
-                        \Goteo\Core\Model::query("UPDATE project SET days = '{$rest}' WHERE id = ?", array($project->id));
-                    }
+                } else {
+                    $rest = 0;
+                }
+
+                if ($project->days != $rest) {
+                    \Goteo\Core\Model::query("UPDATE project SET days = '{$rest}' WHERE id = ?", array($project->id));
                 }
                 // pero aqui seguimos trabajando con el numero de dias que lleva
 

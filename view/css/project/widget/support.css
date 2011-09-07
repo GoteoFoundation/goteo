@@ -128,6 +128,15 @@ div.widget.project-support > div.meter {
     overflow: visible;
 }
 
+div.widget.project-support > div.meter > h3.ronda{
+	display:none;
+}
+
+body.project-show div#main > div.side > div.widget h3.title.ronda{
+	color:#20B3B2;
+	text-transform:uppercase;
+}
+
 div.widget.project-support div.graph {
     width: 26px;
     overflow: visible;            
