@@ -2,7 +2,8 @@
 
 use Goteo\Library\Text,
     Goteo\Core\View,
-    Goteo\Core\ACL;
+    Goteo\Core\ACL,
+    Goteo\Library\Feed;
 
 $bodyClass = 'admin';
 
@@ -42,8 +43,12 @@ include 'view/prologue.html.php';
                 echo new View ($path, $this);
 ?>
 
-<?php   else : ?>
+<?php   else :
 
+    // estamos en la portada, sacamos el feed
+    $feed = empty($_GET['feed']) ? 'all' : $_GET['feed'];
+    $items = Feed::getAll($feed, 'admin');
+    ?>
         <div id="main">
 
             <div class="center">
@@ -77,81 +82,30 @@ include 'view/prologue.html.php';
 					<script type="text/javascript">
                     jQuery(document).ready(function($) {
                         $('.scroll-pane').jScrollPane({showArrows: true});
+
+                        $('.hov').hover(
+                          function () {
+                            $(this).addClass($(this).attr('rel'));
+                          },
+                          function () {
+                            $(this).removeClass($(this).attr('rel'));
+                          }
+                        );
+
                     });
                     </script>
                     <h3>actividad reciente</h3>
-                    <a href="/admin/feed/<?php echo isset($_GET['feed']) ? '?feed='.$_GET['feed'] : ''; ?>">Ver feeds</a>
+                    Ver Feeds por:
 
                     <p class="categories">
-                        <a href="/admin/?feed=all#feed" class="light-blue">TODO</a> <a href="/admin/?feed=admin#feed">ADMINISTRADOR</a> <a href="/admin/?feed=user#feed" class="violet">USUARIO</a>                        <a href="/admin/?feed=all#feed">TODO</a> <a href="/admin/?feed=admin#feed">ADMINISTRADOR</a> <a href="/admin/?feed=user#feed">USUARIO</a>
-
+                        <?php foreach (Feed::$admin_types as $id=>$cat) : ?>
+                        <a href="/admin/?feed=<?php echo $id ?>#feed" <?php echo ($feed == $id) ? 'class="'.$cat['color'].'"': 'class="hov" rel="'.$cat['color'].'"' ?>><?php echo $cat['label'] ?></a>
+                        <?php endforeach; ?>
                     </p>
-                    
-                    <div class="scroll-pane">                    	
-                        <div class="subitem odd">                           
-                           <span class="datepub">Hace 2 horas</span>
-                           <div class="content-pub">
-                           Lorem Ipsum is simply <a href="#" class="blue">dummy text </a>of the printing and typesetting industry. 
-                           </div>                           
-                        </div>
-                        <div class="subitem">                           
-                           <span class="datepub">Hace 2 horas</span>
-                           <div class="content-pub">
-                           Lorem Ipsum is simply <a href="#" class="light-blue">dummy text</a> of the printing and typesetting industry. 
-                           </div>                           
-                        </div>
-                         <div class="subitem odd">                           
-                           <span class="datepub">Hace 2 horas</span>
-                           <div class="content-pub">
-                           Lorem Ipsum is simply <a href="#" class="violet">dummy text</a> of the printing and typesetting industry. 
-                           </div>                           
-                        </div>
-                         <div class="subitem">                           
-                           <span class="datepub">Hace 2 horas</span>
-                           <div class="content-pub">
-                           Lorem Ipsum is simply <a href="#" class="green">dummy text</a> of the printing and typesetting industry. 
-                           </div>                           
-                        </div>
-                        <div class="subitem odd">                           
-                           <span class="datepub">Hace 2 horas</span>
-                           <div class="content-pub">
-                           Lorem Ipsum is simply <a href="#" class="grey">dummy text</a> of the printing and typesetting industry. 
-                           </div>                           
-                        </div>
-                        <div class="subitem">                           
-                           <span class="datepub">Hace 2 horas</span>
-                           <div class="content-pub">
-                           Lorem Ipsum is simply <a href="#" class="blue">dummy text </a>of the printing and typesetting industry. 
-                           </div>                           
-                        </div>
-                        <div class="subitem odd">                           
-                           <span class="datepub">Hace 2 horas</span>
-                           <div class="content-pub">
-                           Lorem Ipsum is simply <a href="#" class="light-blue">dummy text</a> of the printing and typesetting industry. 
-                           </div>                           
-                        </div>
-                         <div class="subitem">                           
-                           <span class="datepub">Hace 2 horas</span>
-                           <div class="content-pub">
-                           Lorem Ipsum is simply <a href="#" class="violet">dummy text</a> of the printing and typesetting industry. 
-                           </div>                           
-                        </div>
-                         <div class="subitem odd">                           
-                           <span class="datepub">Hace 2 horas</span>
-                           <div class="content-pub">
-                           Lorem Ipsum is simply <a href="#" class="green">dummy text</a> of the printing and typesetting industry. 
-                           </div>                           
-                        </div>
-                        <div class="subitem">                           
-                           <span class="datepub">Hace 2 horas</span>
-                           <div class="content-pub">
-                           Lorem Ipsum is simply <a href="#" class="grey">dummy text</a> of the printing and typesetting industry. 
-                           </div>                           
-                        </div>                                                
-                    </div>
+
+                    <?php echo new View('view/admin/feed/list.html.php', array('items' => $items)); ?>
 
                     <a href="/admin/feed/<?php echo isset($_GET['feed']) ? '?feed='.$_GET['feed'] : ''; ?>" style="margin-top:10px;float:right;text-transform:uppercase">Ver más</a>
-                    
                     
                 </div>
             </div>

@@ -2,9 +2,14 @@
 
 use Goteo\Library\Text,
     Goteo\Core\View,
-    Goteo\Core\ACL;
+    Goteo\Core\ACL,
+    Goteo\Library\Feed;
 
 $bodyClass = 'admin';
+
+$feed = empty($_GET['feed']) ? 'all' : $_GET['feed'];
+
+$items = Feed::getAll($feed, 'admin');
 
 include 'view/prologue.html.php';
 
@@ -22,82 +27,31 @@ include 'view/prologue.html.php';
         <div id="main">
 
             <div class="widget feed">
-                <a name="feed"></a>
                 <script type="text/javascript">
                     jQuery(document).ready(function($) {
                         $('.scroll-pane').jScrollPane({showArrows: true});
+
+                        $('.hov').hover(
+                          function () {
+                            $(this).addClass($(this).attr('rel'));
+                          },
+                          function () {
+                            $(this).removeClass($(this).attr('rel'));
+                          }
+                        );
+
                     });
                     </script>
                     <h3 class="title">actividad reciente</h3>
-                    <a href="/admin/feed/<?php echo isset($_GET['feed']) ? '?feed='.$_GET['feed'] : ''; ?>">Ver feeds</a>
+                    Ver Feeds por:
 
                     <p class="categories">
-                        <a href="/admin/?feed=all#feed" class="light-blue">TODO</a> <a href="/admin/?feed=admin#feed">ADMINISTRADOR</a> <a href="/admin/?feed=user#feed" class="violet">USUARIO</a>                        <a href="/admin/?feed=all#feed">TODO</a> <a href="/admin/?feed=admin#feed">ADMINISTRADOR</a> <a href="/admin/?feed=user#feed">USUARIO</a>
-
+                        <?php foreach (Feed::$admin_types as $id=>$cat) : ?>
+                        <a href="/admin/feed/?feed=<?php echo $id ?>" <?php echo ($feed == $id) ? 'class="'.$cat['color'].'"': 'class="hov" rel="'.$cat['color'].'"' ?>><?php echo $cat['label'] ?></a>
+                        <?php endforeach; ?>
                     </p>
-                    
-                    <div class="scroll-pane">                    	
-                        <div class="subitem odd">                           
-                           <span class="datepub">Hace 2 horas</span>
-                           <div class="content-pub">
-                           Lorem Ipsum is simply <a href="#" class="blue">dummy text </a>of the printing and typesetting industry.   Lorem Ipsum is simply <a href="#" class="violet">dummy text</a> of the printing and typesetting industry.   Lorem Ipsum is simply <a href="#" class="violet">dummy text</a> of the printing and typesetting industry.  Lorem Ipsum is simply <a href="#" class="blue">dummy text </a>of the printing and typesetting industry.   Lorem Ipsum is simply <a href="#" class="violet">dummy text</a> of the printing and typesetting industry.   Lorem Ipsum is simply <a href="#" class="violet">dummy text</a> of the printing and typesetting industry. 
-                           </div>                           
-                        </div>
-                        <div class="subitem">                           
-                           <span class="datepub">Hace 2 horas</span>
-                           <div class="content-pub">
-                           Lorem Ipsum is simply <a href="#" class="light-blue">dummy text</a> of the printing and typesetting industry.   Lorem Ipsum is simply <a href="#" class="violet">dummy text</a> of the printing and typesetting industry.   Lorem Ipsum is simply <a href="#" class="violet">dummy text</a> of the printing and typesetting industry.  Lorem Ipsum is simply <a href="#" class="blue">dummy text </a>of the printing and typesetting industry.   Lorem Ipsum is simply <a href="#" class="violet">dummy text</a> of the printing and typesetting industry.   Lorem Ipsum is simply <a href="#" class="violet">dummy text</a> of the printing and typesetting industry. 
-                           </div>                           
-                        </div>
-                         <div class="subitem odd">                           
-                           <span class="datepub">Hace 2 horas</span>
-                           <div class="content-pub">
-                           Lorem Ipsum is simply <a href="#" class="violet">dummy text</a> of the printing and typesetting industry. 
-                           </div>                           
-                        </div>
-                         <div class="subitem">                           
-                           <span class="datepub">Hace 2 horas</span>
-                           <div class="content-pub">
-                           Lorem Ipsum is simply <a href="#" class="green">dummy text</a> of the printing and typesetting industry. 
-                           </div>                           
-                        </div>
-                        <div class="subitem odd">                           
-                           <span class="datepub">Hace 2 horas</span>
-                           <div class="content-pub">
-                           Lorem Ipsum is simply <a href="#" class="grey">dummy text</a> of the printing and typesetting industry. 
-                           </div>                           
-                        </div>
-                        <div class="subitem">                           
-                           <span class="datepub">Hace 2 horas</span>
-                           <div class="content-pub">
-                           Lorem Ipsum is simply <a href="#" class="blue">dummy text </a>of the printing and typesetting industry. 
-                           </div>                           
-                        </div>
-                        <div class="subitem odd">                           
-                           <span class="datepub">Hace 2 horas</span>
-                           <div class="content-pub">
-                           Lorem Ipsum is simply <a href="#" class="light-blue">dummy text</a> of the printing and typesetting industry. 
-                           </div>                           
-                        </div>
-                         <div class="subitem">                           
-                           <span class="datepub">Hace 2 horas</span>
-                           <div class="content-pub">
-                           Lorem Ipsum is simply <a href="#" class="violet">dummy text</a> of the printing and typesetting industry.   Lorem Ipsum is simply <a href="#" class="violet">dummy text</a> of the printing and typesetting industry.   Lorem Ipsum is simply <a href="#" class="violet">dummy text</a> of the printing and typesetting industry. 
-                           </div>                           
-                        </div>
-                         <div class="subitem odd">                           
-                           <span class="datepub">Hace 2 horas</span>
-                           <div class="content-pub">
-                           Lorem Ipsum is simply <a href="#" class="green">dummy text</a> of the printing and typesetting industry.   Lorem Ipsum is simply <a href="#" class="violet">dummy text</a> of the printing and typesetting industry.   Lorem Ipsum is simply <a href="#" class="violet">dummy text</a> of the printing and typesetting industry.   Lorem Ipsum is simply <a href="#" class="violet">dummy text</a> of the printing and typesetting industry. 
-                           </div>                           
-                        </div>
-                        <div class="subitem">                           
-                           <span class="datepub">Hace 2 horas</span>
-                           <div class="content-pub">
-                           Lorem Ipsum is simply <a href="#" class="grey">dummy text</a> of the printing and typesetting industry. 
-                           </div>                           
-                        </div>                                                
-                    </div>
+
+                    <?php echo new View('view/admin/feed/list.html.php', array('items' => $items)); ?>
 
             </div>
 

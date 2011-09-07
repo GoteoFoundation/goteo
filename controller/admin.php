@@ -32,7 +32,7 @@ namespace Goteo\Controller {
         public function feed () {
 
             $BC = self::menu(array(
-                'section' => 'feed',
+                'section' => 'home',
                 'option' => __FUNCTION__,
                 'action' => 'list'
             ));
@@ -3757,6 +3757,12 @@ namespace Goteo\Controller {
                                 'list' => array('label' => 'Ordenando', 'item' => false),
                                 'add'  => array('label' => 'Colocando Entrada en el footer', 'item' => false)
                             )
+                        ),
+                        'feed' => array(
+                            'label' => 'Actividad reciente',
+                            'actions' => array(
+                                'list' => array('label' => 'Listando', 'item' => false)
+                            )
                         )
                     )
                 ),
@@ -3788,17 +3794,6 @@ namespace Goteo\Controller {
                                 'edit' => array('label' => 'Editando Nodo', 'item' => true)
                             )
                         )*/
-                    )
-                ),
-                'feed' => array(
-                    'label'   => 'Portada',
-                    'options' => array (
-                        'feed' => array(
-                            'label' => 'Actividad reciente',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false)
-                            )
-                        )
                     )
                 )
             );
