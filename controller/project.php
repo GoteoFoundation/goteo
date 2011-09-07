@@ -565,11 +565,21 @@ namespace Goteo\Controller {
             $fields = array(
                 'contract_name',
                 'contract_nif',
+                'contract_email',
                 'phone',
+                'contract_entity',
+                'contract_birthdate',
+                'entity_office',
+                'entity_name',
+                'entity_cif',
                 'address',
                 'zipcode',
                 'location',
-                'country'
+                'country',
+                'post_address',
+                'post_zipcode',
+                'post_location',
+                'post_country'
             );
 
             $personalData = array();
@@ -579,6 +589,13 @@ namespace Goteo\Controller {
                     $project->$field = $_POST[$field];
                     $personalData[$field] = $_POST[$field];
                 }
+            }
+
+            if ($_POST['post_address-radio'] == 'same') {
+                $project->post_address = null;
+                $project->post_zipcode = null;
+                $project->post_location = null;
+                $project->post_country = null;
             }
 
             // actualizamos estos datos en los personales del usuario
