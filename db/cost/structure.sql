@@ -24,3 +24,7 @@ ALTER TABLE `cost` CHANGE `id` `id` SERIAL NOT NULL AUTO_INCREMENT;
 
 -- Costes sin tipo
 ALTER TABLE `cost` CHANGE `type` `type` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL ;
+
+-- Lonmgitud de campos de texto
+ALTER TABLE `cost` CHANGE `cost` `cost` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+CHANGE `description` `description` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ;

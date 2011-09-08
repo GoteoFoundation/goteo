@@ -108,7 +108,6 @@ foreach ($project->social_rewards as $social_reward) {
                         'title'     => Text::get('rewards-field-social_reward-reward'),
                         'type'      => 'textbox',
                         'required'  => true,
-                        'size'      => 100,
                         'class'     => 'inline',
                         'value'     => $social_reward->reward,
                         'errors'    => !empty($errors["social_reward-{$social_reward->id}-reward"]) ? array($errors["social_reward-{$social_reward->id}-reward"]) : array(),
