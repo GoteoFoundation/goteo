@@ -27,6 +27,10 @@ namespace Goteo\Controller {
                     $_POST['result'] = 'Transaccion ok';
                     $invest->setStatus('0');
                 } else {
+                    if ($_POST['Ds_ErrorCode'] == 'SIS0257') {
+                        @\mail('hola@goteo.org', 'Ojo, esta tarjeta no permite preautorizaciones', 'Intentan aportar con una tarjeta que no permite preautorizaciones<br /><pre>' . print_r($_POST, 1) . '</pre>');
+                        @\mail('goteo-tpv-fault@doukeshi.org', 'Tarjeta no permite preautorizaciones', 'Intentan aportar con una tarjeta que no permite preautorizaciones<br /><pre>' . print_r($_POST, 1) . '</pre>');
+                    }
                     $invest->cancel($_POST['Ds_ErrorCode']);
                     $_POST['result'] = 'Fail';
                 }
