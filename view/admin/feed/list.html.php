@@ -1,7 +1,14 @@
 <?php
 $items = $this['items'];
+
 ?>
 <div class="scroll-pane">
+    <?php foreach ($items as $item) : ?>
+    <div class="subitem odd">
+       <span class="datepub">Hace <?php echo $item->timeago; ?></span>
+       <div class="content-pub"><?php echo $item->html; ?></div>
+    </div>
+    <?php endforeach; ?>
     <div class="subitem odd">
        <span class="datepub">Hace 2 horas</span>
        <div class="content-pub">

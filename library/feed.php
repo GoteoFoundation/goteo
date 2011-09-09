@@ -16,9 +16,9 @@ namespace Goteo\Library {
             $scope, // ambito del evento (public, admin)
             $type, // tipo de evento  ($public_types , $admin_types)
             $timeago, // el hace tanto
-            $datetime, // fecha y hora del evento
+            $date, // fecha y hora del evento
             $html, // contenido del evento en codigo html
-            $text,  // id del texti dinamico
+            $text,  // id del texto dinamico
             $params,  // (array serializado en bd) parametros para el texto dinamico
             $user, // usuario asociado al evento
             $project, // proyecto asociado al evento
@@ -63,6 +63,23 @@ namespace Goteo\Library {
             )
         );
 
+        static public $color = array(
+            'user' => 'blue',
+            'project' => 'light-blue',
+            'blog' => 'grey',
+            'money' => 'violet',
+            'relevant' => 'red',
+            'comment' => 'green',
+            'system' => 'grey'
+        );
+
+        static public $page = array(
+            'user' => '/user/profile/',
+            'project' => '/project/',
+            'blog' => '/blog/',
+            'system' => '/admin/'
+        );
+
         /*
         public $subjects = array(
             'user' => 'el usuario', // + item
@@ -90,7 +107,7 @@ namespace Goteo\Library {
             'tried' => 'ha intentado'   // target = subaccion fallida
         );
         */
-        
+
 		/**
 		 *  Metodo para sacar los eventos
          *
@@ -101,22 +118,35 @@ namespace Goteo\Library {
 		public static function getAll($type = 'all', $scope = 'public') {
 
             $list = array();
-            return $list;
 
             try {
-                $values = array(':type' => $type, ':scope' => $scope);
+                $values = array(':scope' => $scope);
+
+                $sqlType = '';
+                if ($type != 'all') {
+                    $sqlType = " AND feed.type = :type";
+                    $values[':type'] = $type;
+                }
 
                 $sql = "SELECT
                             feed.id as id,
                             feed.title as title,
                             feed.url as url,
+                            DATE_FORMAT(feed.datetime, '%H:%i %d|%m|%Y') as date,
+                            feed.datetime as timer,
                             feed.html as html
                         FROM feed
+                        WHERE feed.scope = :scope $sqlType
                         ORDER BY datetime DESC
+                        LIMIT 999
                         ";
 
                 $query = Model::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
+
+                    //hace tanto
+                    $item->timeago = self::time_ago($item->timer);
+
                     $list[] = $item;
                 }
                 return $list;
@@ -138,21 +168,20 @@ namespace Goteo\Library {
          *
 		 */
 		public function add(&$errors = array()) {
-            return false;
 
-            /*
   			try {
                 $values = array(
-                    ':page' => $this->id,
-                    ':lang' => $this->lang,
-                    ':node' => $this->node,
-                    ':contenido' => $this->content
+                    ':title' => $this->title,
+                    ':url' => $this->url,
+                    ':scope' => !empty($this->scope) ? $this->scope : 'admin' ,
+                    ':type' => !empty($this->type) ? $this->type : 'system',
+                    ':html' => $this->html
                 );
 
-				$sql = "REPLACE INTO page_node
-                            (page, node, lang, content)
+				$sql = "INSERT INTO feed
+                            (id, title, url, scope, type, html)
                         VALUES
-                            (:page, :node, :lang, :contenido)
+                            ('', :title, :url, :scope, :type, :html)
                         ";
 				if (Model::query($sql, $values)) {
                     return true;
@@ -165,9 +194,55 @@ namespace Goteo\Library {
                 $errors[] = 'Error sql al grabar el contenido de la pagina. ' . $e->getMessage();
                 return false;
 			}
-            */
 
 		}
+        
+        /**
+         * Metodo para transformar un TIMESTAMP en un "hace tanto"
+         * 
+         * 
+         */
+        public static function time_ago($date,$granularity=1) {
+            $date = strtotime($date);
+            $difference = time() - $date;
+            $periods = array('decada' => 315360000,
+                'año' => 31536000,
+                'mes' => 2628000,
+                'semana' => 604800,
+                'dia' => 86400,
+                'hora' => 3600,
+                'minuto' => 60,
+                'segundo' => 1);
 
-	}
+            foreach ($periods as $key => $value) {
+                if ($difference >= $value) {
+                    $time = floor($difference/$value);
+                    $difference %= $value;
+                    $retval .= ($retval ? ' ' : '').$time.' ';
+                    $retval .= (($time > 1) ? $key.'s' : $key);
+                    $granularity--;
+                }
+                if ($granularity == '0') { break; }
+            }
+            return $retval;
+        }
+
+
+        /**
+         *  Genera codigo html para enlace o texto dentro de feed
+         *
+         */
+        public static function item ($type = 'system', $label = 'label', $id = null) {
+
+            // si llega id es un enlace
+            if (isset($id)) {
+                return '<a href="'.self::$page[$type].$id.'" class="'.self::$color[$type].'" target="_blank">'.$label.'</a>';
+            } else {
+                return '<span class="'.self::$color[$type].'">'.$label.'</span>';
+            }
+
+
+        }
+
+    }
 }
