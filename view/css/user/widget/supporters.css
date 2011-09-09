@@ -183,3 +183,17 @@ div.widget.user-supporters a.more  {
     text-decoration: none;
 
 }
+
+
+/* = solo widget lateral
+************************/
+div.widget.user-supporters .supporters > ul > li{height:70px}
+div.widget.user-supporters .supporters > ul > li > div.supporter h4{padding-bottom:3px;border-bottom:#D5D5D6 1px solid;overflow:hidden;margin-bottom:6px}
+div.widget.user-supporters .supporters > ul > li > div.supporter h4 > a{
+max-height: 6px;max-width: 175px;overflow: hidden;}
+div.widget.user-supporters .supporters > ul > li .avatar{left:6px}
+div.widget.user-supporters .supporters > ul > li dl dt.amount{top:34px}
+div.widget.user-supporters .supporters > ul > li dl dd.amount{top:45px}
+div.widget.user-supporters .supporters > ul > li dl dt.projects, div.widget.user-supporters .supporters > ul > li dl dd.projects{font-size:0.8em}
+div.widget.user-supporters .supporters ul li dl dd.worthcracy{margin-top:5px}
+div.widget.user-supporters .supporters ul li dl dd.date{top:70px}

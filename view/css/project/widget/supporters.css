@@ -88,7 +88,7 @@ div.widget.project-supporters .supporters ul li .avatar {
     height: 50px;
     text-align: center;
     display: block;
-/*    background: url('../../avatar/m.png');    //@FIXME revisar esto porque los avatares trasparentes o pequeños salen con este abajo*/
+
 }
 
 div.widget.project-supporters .supporters ul li .avatar img {
@@ -281,7 +281,6 @@ div.widget.project-investors .investors ul li .avatar {
     height: 50px;
     text-align: center;
     display: block;
-/*    background: url('../../avatar/m.png');    //@FIXME revisar esto porque los avatares trasparentes o pequeños salen con este abajo*/
 }
 
 div.widget.project-investors .investors ul li .avatar img {
@@ -428,3 +427,28 @@ div.widget.project-investors .investors ul li dl dd.worthcracy ul li > strong {
     background: url('../../worth/beak.png') no-repeat center top;
     padding-top: 6px;
 }
+
+
+/* rediseÃ±o
+************************/
+div.widget.project-supporters .supporters > ul > li {height:70px !important}
+div.widget.project-supporters .supporters > ul > li > div.supporter h4{padding-bottom:3px;border-bottom:#D5D5D6 1px solid;overflow:hidden;margin-bottom:6px}
+div.widget.project-supporters .supporters > ul > li > div.supporter h4 > a{
+max-height: 6px;max-width: 175px;overflow: hidden;}
+div.widget.project-supporters .supporters > ul > li .avatar{left:6px}
+div.widget.project-supporters .supporters > ul > li dl dt.amount{top:34px}
+div.widget.project-supporters .supporters > ul > li dl dd.amount{top:45px}
+div.widget.project-supporters .supporters > ul > li dl dt.projects, div.widget.project-supporters .supporters > ul > li dl dd.projects{font-size:0.8em}
+div.widget.project-supporters .supporters ul li dl dd.worthcracy{margin-top:5px}
+div.widget.project-supporters .supporters ul li dl dd.date{top:70px}
+
+div.widget.project-investors .investors ul li{height:70px}
+div.widget.project-investors .investors ul li > div.supporter h4{padding-bottom:3px;border-bottom:#D5D5D6 1px solid;overflow:hidden;margin-bottom:6px}
+div.widget.project-investors .investors ul li > div.supporter h4 > a{
+max-height: 6px;max-width: 175px;overflow: hidden;}
+div.widget.project-investors .investors ul li .avatar{left:6px}
+div.widget.project-investors .investors ul li dl dt.amount{top:34px}
+div.widget.project-investors .investors ul li dl dd.amount{top:45px}
+div.widget.project-investors .investors ul li dl dt.projects, div.widget.project-investors .investors ul li dl dd.projects{font-size:0.8em}
+div.widget.project-investors .investors ul li dl dd.worthcracy{margin-top:5px}
+div.widget.project-investors .investors ul li dl dd.date{top:70px}

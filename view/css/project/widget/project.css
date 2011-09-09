@@ -139,6 +139,8 @@ div.widget.project > .title {
 
 div.widget.project .title {
     background: none !important;
+	line-height:1em;
+	overflow:hidden;
 }
 
 div.widget.project > .title a {
@@ -162,6 +164,8 @@ div.widget.project.balloon > .title a {
 
 div.widget.project > .author {
     padding: 2px 0px 0px 12px;
+	max-height:1.2em;
+	overflow:hidden	
 }
 
 div.widget.project > .author,

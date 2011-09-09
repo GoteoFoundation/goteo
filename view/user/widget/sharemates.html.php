@@ -62,7 +62,7 @@ function displayCategories(categoryId1,categoryId2){
         <ul>
         <?php $c=1; // limitado a 6 sharemates en el lateral
         foreach ($sharemates as $mate){ ?>
-            <li class="activable">            	
+            <li class="activable<?php if(($c%2)==0)echo " nomarginright"?>">            	
                 <div class="user">
                 	<a href="/user/<?php echo htmlspecialchars($mate->user) ?>" class="expand">&nbsp;</a>
                     <div class="avatar">
@@ -72,7 +72,7 @@ function displayCategories(categoryId1,categoryId2){
                     </div>
                     <h4>
                     	<a href="/user/<?php echo htmlspecialchars($mate->user) ?>">
-						<?php echo htmlspecialchars($mate->name) ?>
+						<?php echo htmlspecialchars(Text::recorta($mate->name,20)) ?>
                         </a>
                     </h4>
                     <span class="projects">
