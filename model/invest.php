@@ -382,7 +382,6 @@ namespace Goteo\Model {
                     invest.user as user,
                     user.name as name,
                     user.avatar as avatar,
-                    user.worth as worth,
                     invest.amount as amount,
                     DATE_FORMAT(invest.invested, '%d/%m/%Y') as date,
                     (SELECT
@@ -423,8 +422,8 @@ namespace Goteo\Model {
                         'user' => $investor->user,
                         'name' => $investor->name,
                         'projects' => $investor->projects,
-                        'avatar' => $investor->avatar,
-                        'worth' => $investor->worth,
+                        'avatar' => !empty($investor->avatar) ? $investor->avatar : '1',
+                        'worth' => \Goteo\Model\User::calcWorth($investor->user),
                         'amount' => ($investors[$investor->user]->amount + $investor->amount),
                         'date' => $investor->date
                     );

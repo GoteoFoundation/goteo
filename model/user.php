@@ -969,6 +969,14 @@ namespace Goteo\Model {
             return $projects;
         }
 
+        public static function calcWorth($userId) {
+            $query = self::query('SELECT id FROM worthcracy WHERE amount <= (SELECT SUM(amount) FROM invest WHERE user = ? AND (status = 0 OR status = 1)) ORDER BY amount DESC LIMIT 1', array($userId));
+            $worth = $query->fetchColumn();
+            self::query('UPDATE user SET worth = :worth WHERE id = :id', array(':id' => $userId, ':worth' => $worth));
+
+            return $worth;
+        }
+
 
 	}
 }
