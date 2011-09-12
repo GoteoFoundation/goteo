@@ -6,6 +6,7 @@ namespace Goteo\Controller {
         Goteo\Core\Error,
         Goteo\Core\Redirection,
         Goteo\Model,
+		Goteo\Library\Feed,
         Goteo\Library\Message,
         Goteo\Library\Paypal,
         Goteo\Library\Tpv;
@@ -140,6 +141,25 @@ namespace Goteo\Controller {
             // hay que cambiarle el status a 0
             $confirm = Model\Invest::get($invest);
             $confirm->setStatus('0');
+            
+            $projectData = Model\Project::getMini($project);
+
+            /*
+             * Evento Feed
+             */
+            $log = new Feed();
+            $log->title = 'Aporte PayPal';
+            $log->url = '/admin/invests';
+            $log->type = 'money';
+            $log_text = "%s ha aportado %s al proyecto %s mediante PayPal";
+            $items = array(
+                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                Feed::item('money', $invest->amount.' &euro;'),
+                Feed::item('project', $projectData->name, $projectData->id)
+            );
+            $log->html = \vsprintf($log_text, $items);
+            $log->add($errors);
+            unset($log);
 
             // mandarlo a la pagina de gracias
             throw new Redirection("/project/$project/invest/?confirm=ok", Redirection::TEMPORARY);

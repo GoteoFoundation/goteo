@@ -2085,7 +2085,7 @@ namespace Goteo\Controller {
                 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add']) ) {
 
                     $userData = Model\User::getMini($_POST['user']);
-                    $projectData = Model\project::getMini($_POST['project']);
+                    $projectData = Model\Project::getMini($_POST['project']);
 
                     $invest = new Model\Invest(
                         array(
@@ -2106,20 +2106,25 @@ namespace Goteo\Controller {
 
                     if ($invest->save($errors)) {
                         $errors[] = 'Aporte manual creado correctamente';
+                        
+                        /*
+                         * Evento Feed
+                         */
                         $log = new Feed();
                         $log->title = 'Aporte manual';
                         $log->url = '/admin/invests';
                         $log->type = 'money';
-                        $text = "%s ha aportado %s al proyecto %s en nombre de %s";
+                        $log_text = "%s ha aportado %s al proyecto %s en nombre de %s";
                         $items = array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                             Feed::item('money', $_POST['amount'].' &euro;'),
                             Feed::item('project', $projectData->name, $projectData->id),
                             Feed::item('user', $userData->name, $userData->id)
                         );
-                        $log->html = \vsprintf($text, $items);
+                        $log->html = \vsprintf($log_text, $items);
                         $log->add($errors);
                         unset($log);
+                        
                     } else{
                         $errors[] = 'Ha fallado algo al crear el aporte manual';
                     }

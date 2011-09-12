@@ -3,7 +3,10 @@
 namespace Goteo\Controller {
 
     use Goteo\Model\Invest,
+        Goteo\Model\Project,
+        Goteo\Model\User,
         Goteo\Core\Error,
+		Goteo\Library\Feed,
         Goteo\Core\Redirection;
 
     require_once 'library/paypal/stub.php'; // sí, uso el stub de paypal
@@ -22,10 +25,16 @@ namespace Goteo\Controller {
                 
                 $invest = Invest::get($id);
 
+                $userData = User::getMini($invest->user);
+                $projectData = Project::getMini($invest->project);
+
                 if (empty($_POST['Ds_ErrorCode'])) {
                     $invest->setTransaction($_POST['Ds_AuthorisationCode']);
                     $_POST['result'] = 'Transaccion ok';
                     $invest->setStatus('0');
+
+                    $log_text = "%s ha aportado %s al proyecto %s mediante TPV";
+
                 } else {
                     if ($_POST['Ds_ErrorCode'] == 'SIS0257') {
                         @\mail('hola@goteo.org', 'Ojo, esta tarjeta no permite preautorizaciones', 'Intentan aportar con una tarjeta que no permite preautorizaciones<br /><pre>' . print_r($_POST, 1) . '</pre>');
@@ -33,7 +42,26 @@ namespace Goteo\Controller {
                     }
                     $invest->cancel($_POST['Ds_ErrorCode']);
                     $_POST['result'] = 'Fail';
+
+                    $log_text = "Ha habido un error de TPV (Codigo: {$_POST['Ds_ErrorCode']}) en el aporte de %s de %s al proyecto %s mediante TPV";
+
                 }
+
+                /*
+                 * Evento Feed
+                 */
+                $log = new Feed();
+                $log->title = 'Aporte TPV';
+                $log->url = '/admin/invests';
+                $log->type = 'money';
+                $items = array(
+                    Feed::item('user', $userData->name, $userData->id),
+                    Feed::item('money', $invest->amount.' &euro;'),
+                    Feed::item('project', $projectData->name, $projectData->id)
+                );
+                $log->html = \vsprintf($log_text, $items);
+                $log->add($errors);
+                unset($log);
 
                 $response = '';
                 foreach ($_POST as $n => $v) {

@@ -6,6 +6,7 @@ namespace Goteo\Controller {
         Goteo\Core\Error,
         Goteo\Library\Text,
         Goteo\Library\Paypal,
+		Goteo\Library\Feed,
         Goteo\Library\Tpv;
 
     class Cron extends \Goteo\Core\Controller {
@@ -136,24 +137,57 @@ namespace Goteo\Controller {
                         echo 'Ejecutando: ';
                         $errors = array();
 
+                        $doFeed = true;
+
+                        $userData = User::getMini($invest->user);
+                        $projectData = Project::getMini($invest->project);
+
                         switch ($invest->method) {
                             case 'paypal':
                                 if (Paypal::pay($invest, $errors)) {
                                     echo 'Cargo paypal correcto';
+                                    $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s el dia %s";
                                 } else {
-                                    echo 'Fallo al ejecutar cargo paypal: ' . implode('; ', $errors);
+                                    $txt_errors = implode('; ', $errors);
+                                    echo 'Fallo al ejecutar cargo paypal: ' . $txt_errors;
+                                    $log_text = "Ha fallado al ejecutar el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s de dia %s. <br />Se han dado los siguientes errores: $txt_errors";
                                 }
                                 break;
                             case 'tpv':
                                 if (Tpv::pay($invest, $errors)) {
                                     echo 'Cargo sermepa correcto';
+                                    $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s el dia %s";
                                 } else {
-                                    echo 'Fallo al ejecutar cargo sermepal: ' . implode('; ', $errors);
+                                    $txt_errors = implode('; ', $errors);
+                                    echo 'Fallo al ejecutar cargo sermepa: ' . $txt_errors;
+                                    $log_text = "Ha fallado al ejecutar el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s de dia %s <br />Se han dado los siguientes errores: $txt_errors";
                                 }
                                 break;
                             case 'cash':
                                 echo 'Aporte al contado, nada que ejecutar.';
+                                $doFeed = false;
                                 break;
+                        }
+
+                        if ($doFeed) {
+                            /*
+                             * Evento Feed
+                             */
+                            $log = new Feed();
+                            $log->title = 'Cargo ejecutado (cron)';
+                            $log->url = '/admin/invests';
+                            $log->type = 'money';
+// Ha fallado al ejecutar el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s de dia %s
+                            $items = array(
+                                Feed::item('user', $userData->name, $userData->id),
+                                Feed::item('money', $invest->amount.' &euro;'),
+                                Feed::item('system', $invest->id),
+                                Feed::item('project', $projectData->name, $projectData->id),
+                                Feed::item('system', $invest->invested)
+                            );
+                            $log->html = \vsprintf($log_text, $items);
+                            $log->add($errors);
+                            unset($log);
                         }
 
                         echo '<br />';
