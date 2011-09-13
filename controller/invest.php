@@ -154,7 +154,7 @@ namespace Goteo\Controller {
             $log_text = "%s ha aportado %s al proyecto %s mediante PayPal";
             $items = array(
                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                Feed::item('money', $invest->amount.' &euro;'),
+                Feed::item('money', $confirm->amount.' &euro;'),
                 Feed::item('project', $projectData->name, $projectData->id)
             );
             $log->html = \vsprintf($log_text, $items);

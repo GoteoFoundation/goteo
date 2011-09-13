@@ -41,13 +41,17 @@ foreach (License::getAll() as $l) {
         <ul>
             <li><label class="resign"><input class="resign" type="checkbox" name="resign" value="1" /><?php echo Text::get('invest-resign') ?></label></li>
         <?php foreach ($project->individual_rewards as $individual) : ?>
-        <li class="<?php echo $individual->icon ?>">
+        <li class="<?php echo $individual->icon ?><?php if ($individual->none) echo ' disabled' ?>">
+        <?php if ($individual->none) : ?>
+            <p style="color:red;"><?php echo Text::get('invest-reward-none') ?></p>
+        <?php else : ?>
             <label class="amount"><input type="checkbox"<?php if ($individual->none) echo ' disabled="disabled"';?> name="reward_<?php echo $individual->id; ?>" value="<?php echo $individual->amount; ?>" class="individual_reward" /><?php echo $individual->amount; ?> &euro;</label>
+        <?php endif; ?>
             <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>
             <p><?php echo htmlspecialchars($individual->description)?></p>
-            <?php if ($individual->none) : ?><p><?php echo Text::get('invest-reward-cestfini') ?></p><?php endif; ?>
         </li>
         <?php endforeach ?>
+        </ul>
     </div>
 
 </div>

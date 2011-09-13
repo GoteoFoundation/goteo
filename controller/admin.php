@@ -341,6 +341,8 @@ namespace Goteo\Controller {
          */
         public function projects($action = 'list', $id = null) {
 
+            $log_text = null;
+
             $BC = self::menu(array(
                 'section' => 'projects',
                 'option' => __FUNCTION__,
@@ -386,8 +388,11 @@ namespace Goteo\Controller {
 
                 try {
                     $sql = "UPDATE project SET " . $set . " WHERE id = :id";
-                    echo $sql;
-                    Model\Project::query($sql, $values);
+                    if (Model\Project::query($sql, $values)) {
+                        $log_text = "El admin %s ha tocado las fechas del proyecto %s";
+                    } else {
+                        $log_text = "Al admin %s le ha fallado al tocar las fechas del proyecto %s";
+                    }
                 } catch(\PDOException $e) {
                     $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
                 }
@@ -400,53 +405,91 @@ namespace Goteo\Controller {
              * redirect
              *
              */
+            if (isset($id)) {
+                $project = Model\Project::get($id);
+            }
             switch ($action) {
                 case 'review':
                     // pasar un proyecto a revision
-                    $project = Model\Project::get($id);
-                    $project->ready($errors);
+                    if ($project->ready($errors)) {
+                        $log_text = "El admin %s ha pasado el proyecto %s al estado Edición";
+                    } else {
+                        $log_text = "Al admin %s le ha fallado al pasar el proyecto %s al estado Edición";
+                    }
                     break;
                 case 'publish':
                     // poner un proyecto en campaña
-                    $project = Model\Project::get($id);
-                    $project->publish($errors);
+                    if ($project->publish($errors)) {
+                        $log_text = "El admin %s ha pasado el proyecto %s al estado Edición";
+                    } else {
+                        $log_text = "Al admin %s le ha fallado al pasar el proyecto %s al estado Edición";
+                    }
                     break;
                 case 'cancel':
                     // descartar un proyecto por malo
-                    $project = Model\Project::get($id);
-                    $project->cancel($errors);
+                    if ($project->cancel($errors)) {
+                        $log_text = "El admin %s ha pasado el proyecto %s al estado Edición";
+                    } else {
+                        $log_text = "Al admin %s le ha fallado al pasar el proyecto %s al estado Edición";
+                    }
                     break;
                 case 'enable':
                     // si no está en edición, recuperarlo
-                    $project = Model\Project::get($id);
-                    $project->enable($errors);
+                    if ($project->enable($errors)) {
+                        $log_text = "El admin %s ha pasado el proyecto %s al estado Edición";
+                    } else {
+                        $log_text = "Al admin %s le ha fallado al pasar el proyecto %s al estado Edición";
+                    }
                     break;
                 case 'complete':
                     // dar un proyecto por financiado manualmente
-                    $project = Model\Project::get($id);
-                    $project->succeed($errors);
+                    if ($project->succeed($errors)) {
+                        $log_text = "El admin %s ha pasado el proyecto %s al estado Edición";
+                    } else {
+                        $log_text = "Al admin %s le ha fallado al pasar el proyecto %s al estado Edición";
+                    }
                     break;
                 case 'fulfill':
-                    // marcar todos los retornos cumplidos
-                    $project = Model\Project::get($id);
-                    $project->satisfied($errors);
-                    break;
-                case 'dates':
-                    // marcar todos los retornos cunmplidos
-                    $project = Model\Project::get($id);
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'projects',
-                            'file' => 'dates',
-                            'project' => $project,
-                            'filters' => $filters,
-                            'errors' => $errors
-                        )
-                    );
+                    // marcar que el proyecto ha cumplido con los retornos colectivos
+                    if ($project->satisfied($errors)) {
+                        $log_text = "El admin %s ha pasado el proyecto %s al estado Edición";
+                    } else {
+                        $log_text = "Al admin %s le ha fallado al pasar el proyecto %s al estado Edición";
+                    }
                     break;
             }
+
+            if (isset($log_text)) {
+                /*
+                 * Evento Feed
+                 */
+                $log = new Feed();
+                $log->title = 'Cambio estado/fechas de un proyecto desde el admin';
+                $log->url = '/admin/projects';
+                $log->type = 'project';
+                $log_items = array(
+                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                    Feed::item('project', $project->name, $project->id)
+                );
+                $log->html = \vsprintf($log_text, $log_items);
+                $log->add($errors);
+                unset($log);
+            }
+
+            if ($action == 'dates') {
+                // cambiar fechas
+                return new View(
+                    'view/admin/index.html.php',
+                    array(
+                        'folder' => 'projects',
+                        'file' => 'dates',
+                        'project' => $project,
+                        'filters' => $filters,
+                        'errors' => $errors
+                    )
+                );
+            }
+
 
             $projects = Model\Project::getList($filters);
             $status = Model\Project::status();

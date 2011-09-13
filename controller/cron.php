@@ -22,6 +22,8 @@ namespace Goteo\Controller {
 
             foreach ($projects as &$project) {
 
+                $log_text = null;
+
 				// costes y los sumammos
 				$project->costs = Model\Project\Cost::getAll($project->id);
 
@@ -67,18 +69,40 @@ namespace Goteo\Controller {
                 echo $project->name . ': lleva recaudado ' . $amount . ' de ' . $project->mincost . '/' . $project->maxcost . ' en ' . $days . ' dias, le quedan '.$rest.'<br />';
 
                 //  (financiado a los 80 o cancelado si a los 40 no llega al minimo)
+                // porcentaje alcanzado
+                $per_amount = ($amount / $project->mincost) * 100;
+
                 // si ha llegado a los 40 dias: mínimo-> ejecutar ; no minimo proyecto y todos los preapprovals cancelados
                 if ($days >= 40) {
                     // si no ha alcanzado el mínimo, pasa a estado caducado
                     if ($amount < $project->mincost) {
+
                         echo 'No ha conseguido el minimo, cancelamos todos los aportes y lo caducamos:';
                         $cancelAll = true;
                         $errors = array();
                         if ($project->fail($errors)) {
                             echo 'Caducado.';
+                            $log_text = 'El proyecto %s ha <span class="red">caducado sin éxito</span> obteniendo %s';
                         } else {
                             echo 'Falla al caducar ' . implode(',', $errors);
+                            $log_text = 'El proyecto %s ha fallado al <span class="red">caducado sin éxito</span>, obteniendo %s';
                         }
+
+                        /*
+                         * Evento Feed
+                         */
+                        $log = new Feed();
+                        $log->title = 'proyecto caducado sin exito (cron)';
+                        $log->url = '/admin/projects';
+                        $log->type = 'project';
+                        $log_items = array(
+                            Feed::item('project', $project->name, $project->id),
+                            Feed::item('money', $amount.' &euro; ('.\number_format($per_amount, 2).'%) de aportes sobre minimo')
+                        );
+                        $log->html = \vsprintf($log_text, $log_items);
+                        $log->add($errors);
+                        unset($log);
+
                         echo '<br />';
                     } else {
                         $execute = true; // mas de 40 sin caducar es ejecutar el cargo
@@ -89,9 +113,43 @@ namespace Goteo\Controller {
                             $errors = array();
                             if ($project->succeed($errors)) {
                                 echo 'Financiado';
+                                $log_text = 'El proyecto %s ha sido <span class="red">financiado</span> obteniendo %s';
                             } else {
                                 echo 'Fallo al marcar financiado ' . implode(',', $errors);
+                                $log_text = 'El proyecto %s ha fallado al ser <span class="red">financiado</span>, obteniendo %s';
                             }
+
+                            /*
+                             * Evento Feed
+                             */
+                            $log = new Feed();
+                            $log->title = 'proyecto supera segunda ronda (cron)';
+                            $log->url = '/admin/projects';
+                            $log->type = 'project';
+                            $log_items = array(
+                                Feed::item('project', $project->name, $project->id),
+                                Feed::item('money', $amount.' &euro; ('.\number_format($per_amount, 2).'%) de aportes sobre minimo')
+                            );
+                            $log->html = \vsprintf($log_text, $log_items);
+                            $log->add($errors);
+                            unset($log);
+                            echo '<br />';
+                        } else {
+                            /*
+                             * Evento Feed
+                             */
+                            $log = new Feed();
+                            $log->title = 'proyecto supera primera ronda (cron)';
+                            $log->url = '/admin/projects';
+                            $log->type = 'project';
+                            $log_text = 'El proyecto %s <span class="red">continua en campaña</span> en segunda ronda obteniendo %s';
+                            $log_items = array(
+                                Feed::item('project', $project->name, $project->id),
+                                Feed::item('money', $amount.' &euro; ('.\number_format($per_amount, 2).'%) de aportes sobre minimo')
+                            );
+                            $log->html = \vsprintf($log_text, $log_items);
+                            $log->add($errors);
+                            unset($log);
                             echo '<br />';
                         }
                     }
@@ -139,28 +197,27 @@ namespace Goteo\Controller {
 
                         $doFeed = true;
 
-                        $userData = User::getMini($invest->user);
-                        $projectData = Project::getMini($invest->project);
+                        $userData = Model\User::getMini($invest->user);
 
                         switch ($invest->method) {
                             case 'paypal':
                                 if (Paypal::pay($invest, $errors)) {
                                     echo 'Cargo paypal correcto';
-                                    $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s el dia %s";
+                                    $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
                                 } else {
                                     $txt_errors = implode('; ', $errors);
                                     echo 'Fallo al ejecutar cargo paypal: ' . $txt_errors;
-                                    $log_text = "Ha fallado al ejecutar el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s de dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                                    $log_text = "Ha fallado al ejecutar el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
                                 }
                                 break;
                             case 'tpv':
                                 if (Tpv::pay($invest, $errors)) {
                                     echo 'Cargo sermepa correcto';
-                                    $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s el dia %s";
+                                    $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s del dia %s";
                                 } else {
                                     $txt_errors = implode('; ', $errors);
                                     echo 'Fallo al ejecutar cargo sermepa: ' . $txt_errors;
-                                    $log_text = "Ha fallado al ejecutar el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s de dia %s <br />Se han dado los siguientes errores: $txt_errors";
+                                    $log_text = "Ha fallado al ejecutar el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s del dia %s <br />Se han dado los siguientes errores: $txt_errors";
                                 }
                                 break;
                             case 'cash':
@@ -177,13 +234,12 @@ namespace Goteo\Controller {
                             $log->title = 'Cargo ejecutado (cron)';
                             $log->url = '/admin/invests';
                             $log->type = 'money';
-// Ha fallado al ejecutar el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s de dia %s
                             $items = array(
                                 Feed::item('user', $userData->name, $userData->id),
                                 Feed::item('money', $invest->amount.' &euro;'),
                                 Feed::item('system', $invest->id),
-                                Feed::item('project', $projectData->name, $projectData->id),
-                                Feed::item('system', $invest->invested)
+                                Feed::item('project', $project->name, $project->id),
+                                Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                             );
                             $log->html = \vsprintf($log_text, $items);
                             $log->add($errors);

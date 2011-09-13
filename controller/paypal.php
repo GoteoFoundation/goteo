@@ -51,8 +51,9 @@ Thank you for reviewing our App.";
             // pasarlo a campaña
             $project->publish();
 
-            // cambiar la fecha de campaña al 01/08/2011
-            $sql = "UPDATE project SET published='2001-08-01' WHERE id = :id";
+            // cambiar la fecha de campña a hace un mes
+            $dateTo = date('Y-m-d', mktime(0, 0, 0, date("m")-1, date("d"),   date("Y")));
+            $sql = "UPDATE project SET published='{$dateTo}' WHERE id = :id";
             Model\Project::query($sql, array(':id'=>'fixie-per-tothom'));
 
             // saltar a la página de aportar
@@ -60,8 +61,9 @@ Thank you for reviewing our App.";
         }
 
         public function execute () {
-            // cambiar la fecha al 24/07/2011
-            $sql = "UPDATE project SET published='2001-07-27' WHERE id = :id";
+            // cambiar la fecha a hoy menos 41 dias
+            $dateTo = date('Y-m-d', mktime(0, 0, 0, date("m"), date("d")-41,   date("Y")));
+            $sql = "UPDATE project SET published='{$dateTo}' WHERE id = :id";
             Model\Project::query($sql, array(':id'=>'fixie-per-tothom'));
 
             // ejecutar cron para 'fixie per tothom'

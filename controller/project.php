@@ -10,6 +10,7 @@ namespace Goteo\Controller {
         Goteo\Library\Mail,
         Goteo\Library\Template,
         Goteo\Library\Message,
+        Goteo\Library\Feed,
         Goteo\Model;
 
     class Project extends \Goteo\Core\Controller {
@@ -172,7 +173,7 @@ namespace Goteo\Controller {
                         $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
 
                         // En el contenido:
-                        $search  = array('%USERENAME%', '%PROJECTNAME%');
+                        $search  = array('%USERNAME%', '%PROJECTNAME%');
                         $replace = array($project->user->name, $project->name);
                         $content = \str_replace($search, $replace, nl2br($template->text));
 
@@ -194,6 +195,22 @@ namespace Goteo\Controller {
 
                         unset($mailHandler);
 
+                        /*
+                         * Evento Feed
+                         */
+                        $log = new Feed();
+                        $log->title = 'proyecto enviado a revision';
+                        $log->url = '/admin/projects';
+                        $log->type = 'project';
+                        $log_text = '%s ha inscrito el proyecto %s para <span class="red">revisión</span>, el estado global de la información es del %s';
+                        $items = array(
+                            Feed::item('user', $project->user->name, $project->user->id),
+                            Feed::item('project', $project->name, $project->id),
+                            Feed::item('relevant', $project->progress.'%')
+                        );
+                        $log->html = \vsprintf($log_text, $items);
+                        $log->add($errors);
+                        unset($log);
 
                         throw new Redirection("/dashboard?ok");
                     }

@@ -13,7 +13,12 @@ namespace Goteo\Controller {
     require_once 'library/paypal/log.php'; // sí, uso el log de paypal
     
     class Tpv extends \Goteo\Core\Controller {
-        
+
+        public static $errcode = array(
+            'SIS0257' => 'Tarjeta no permite preapproval',
+            'SIS0253' => 'Tarjeta no reconocida'
+        );
+
         public function index () {
             throw new Redirection('/', Error::BAD_REQUEST);
         }
@@ -43,7 +48,7 @@ namespace Goteo\Controller {
                     $invest->cancel($_POST['Ds_ErrorCode']);
                     $_POST['result'] = 'Fail';
 
-                    $log_text = "Ha habido un error de TPV (Codigo: {$_POST['Ds_ErrorCode']}) en el aporte de %s de %s al proyecto %s mediante TPV";
+                    $log_text = "Ha habido un error de TPV (Codigo: {$_POST['Ds_ErrorCode']}: ".self::$errcode[$_POST['Ds_ErrorCode']].") en el aporte de %s de %s al proyecto %s mediante TPV";
 
                 }
 

@@ -203,8 +203,11 @@ namespace Goteo\Library {
          * 
          */
         public static function time_ago($date,$granularity=1) {
+
+            $retval = '';
             $date = strtotime($date);
-            $difference = time() - $date;
+            $ahora = time();
+            $difference = $ahora - $date;
             $periods = array('decada' => 315360000,
                 'año' => 31536000,
                 'mes' => 2628000,
@@ -224,6 +227,7 @@ namespace Goteo\Library {
                 }
                 if ($granularity == '0') { break; }
             }
+
             return $retval;
         }
 
