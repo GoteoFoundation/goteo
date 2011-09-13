@@ -389,9 +389,9 @@ namespace Goteo\Controller {
                 try {
                     $sql = "UPDATE project SET " . $set . " WHERE id = :id";
                     if (Model\Project::query($sql, $values)) {
-                        $log_text = "El admin %s ha tocado las fechas del proyecto %s";
+                        $log_text = 'El admin %s ha <span class="red">tocado las fechas</span> del proyecto %s';
                     } else {
-                        $log_text = "Al admin %s le ha fallado al tocar las fechas del proyecto %s";
+                        $log_text = 'Al admin %s le ha <span class="red">fallado al tocar las fechas</span> del proyecto %s';
                     }
                 } catch(\PDOException $e) {
                     $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
@@ -412,49 +412,49 @@ namespace Goteo\Controller {
                 case 'review':
                     // pasar un proyecto a revision
                     if ($project->ready($errors)) {
-                        $log_text = "El admin %s ha pasado el proyecto %s al estado Edición";
+                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Revisión</span>';
                     } else {
-                        $log_text = "Al admin %s le ha fallado al pasar el proyecto %s al estado Edición";
+                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Revisión</span>';
                     }
                     break;
                 case 'publish':
                     // poner un proyecto en campaña
                     if ($project->publish($errors)) {
-                        $log_text = "El admin %s ha pasado el proyecto %s al estado Edición";
+                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">en Campaña</span>';
                     } else {
-                        $log_text = "Al admin %s le ha fallado al pasar el proyecto %s al estado Edición";
+                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">en Campaña</span>';
                     }
                     break;
                 case 'cancel':
                     // descartar un proyecto por malo
                     if ($project->cancel($errors)) {
-                        $log_text = "El admin %s ha pasado el proyecto %s al estado Edición";
+                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Descartado</span>';
                     } else {
-                        $log_text = "Al admin %s le ha fallado al pasar el proyecto %s al estado Edición";
+                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Descartado</span>';
                     }
                     break;
                 case 'enable':
                     // si no está en edición, recuperarlo
                     if ($project->enable($errors)) {
-                        $log_text = "El admin %s ha pasado el proyecto %s al estado Edición";
+                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Edición</span>';
                     } else {
-                        $log_text = "Al admin %s le ha fallado al pasar el proyecto %s al estado Edición";
+                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Edición</span>';
                     }
                     break;
                 case 'complete':
                     // dar un proyecto por financiado manualmente
                     if ($project->succeed($errors)) {
-                        $log_text = "El admin %s ha pasado el proyecto %s al estado Edición";
+                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Financiado</span>';
                     } else {
-                        $log_text = "Al admin %s le ha fallado al pasar el proyecto %s al estado Edición";
+                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Financiado</span>';
                     }
                     break;
                 case 'fulfill':
                     // marcar que el proyecto ha cumplido con los retornos colectivos
                     if ($project->satisfied($errors)) {
-                        $log_text = "El admin %s ha pasado el proyecto %s al estado Edición";
+                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Retorno cumplido</span>';
                     } else {
-                        $log_text = "Al admin %s le ha fallado al pasar el proyecto %s al estado Edición";
+                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Retorno cumplido</span>';
                     }
                     break;
             }

@@ -71,6 +71,7 @@ namespace Goteo\Controller {
                 //  (financiado a los 80 o cancelado si a los 40 no llega al minimo)
                 // porcentaje alcanzado
                 $per_amount = ($amount / $project->mincost) * 100;
+                $per_amount = \round($per_amount);
 
                 // si ha llegado a los 40 dias: mínimo-> ejecutar ; no minimo proyecto y todos los preapprovals cancelados
                 if ($days >= 40) {
@@ -172,6 +173,8 @@ namespace Goteo\Controller {
                         continue;
                     }
 
+                    $userData = Model\User::getMini($invest->user);
+
                     echo 'Aporte ' . $invest->id . '<br />';
 //                    echo \trace($invest);
 
@@ -196,8 +199,6 @@ namespace Goteo\Controller {
                         $errors = array();
 
                         $doFeed = true;
-
-                        $userData = Model\User::getMini($invest->user);
 
                         switch ($invest->method) {
                             case 'paypal':
@@ -233,7 +234,7 @@ namespace Goteo\Controller {
                             $log = new Feed();
                             $log->title = 'Cargo ejecutado (cron)';
                             $log->url = '/admin/invests';
-                            $log->type = 'money';
+                            $log->type = 'system';
                             $items = array(
                                 Feed::item('user', $userData->name, $userData->id),
                                 Feed::item('money', $invest->amount.' &euro;'),

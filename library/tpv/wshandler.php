@@ -48,7 +48,7 @@ class WSHandler {
 		
 		try {
 			
-		    $response = call($request, TPV_WEBSERVICE_URL);
+		    $response = tpvcall($request, TPV_WEBSERVICE_URL);
 		    $isFault = false;
 			if(empty($response) || trim($response) == '')
 	   		{
@@ -149,7 +149,7 @@ class WSHandler {
   * returns an associtive array containing the response from the server.
 */
 
-function call($MsgStr, $endpoint)
+function tpvcall($MsgStr, $endpoint)
 {
 
     //setting the curl parameters.

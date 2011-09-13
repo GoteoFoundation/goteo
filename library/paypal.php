@@ -3,6 +3,8 @@ namespace Goteo\Library {
 
     use Goteo\Model\Invest,
         Goteo\Model\Project,
+        Goteo\Model\User,
+        Goteo\Library\Feed,
         Goteo\Core\Redirection;
 
     require_once 'library/paypal/adaptivepayments.php';  // SDK paypal para operaciones API (minimizado)
@@ -90,6 +92,7 @@ namespace Goteo\Library {
                         return true;
                     } else {
                         $errors[] = 'No preapproval key obtained. <pre>' . print_r($response, 1) . '</pre>';
+                        @\mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No preapproval key obtained.<br /><pre>' . print_r($response, 1) . '</pre>');
                         return false;
                     }
 
@@ -121,6 +124,7 @@ namespace Goteo\Library {
 
             try {
                 $project = Project::getMini($invest->project);
+                $userData = User::getMini($invest->user);
 
                 // al productor le pasamos el importe del cargo menos el 8% que se queda goteo
                 $amountPay = $invest->amount - ($invest->amount * 0.08);
@@ -186,6 +190,26 @@ namespace Goteo\Library {
                         case '539012': // preapproval no se llegó a autorizar
                             if ($invest->cancel()) {
                                 $action = 'Aporte cancelado';
+
+                                /*
+                                 * Evento Feed
+                                 */
+                                $log = new Feed();
+                                $log->title = 'Aporte cancelado por preaproval cancelado por el usuario paypal';
+                                $log->url = '/admin/invests';
+                                $log->type = 'system';
+                                $log_text = "Se ha cancelado el aporte de %s de %s (id: %s) al proyecto %s del dia %s por preapproval cancelado";
+                                $items = array(
+                                    Feed::item('user', $userData->name, $userData->id),
+                                    Feed::item('money', $invest->amount.' &euro;'),
+                                    Feed::item('system', $invest->id),
+                                    Feed::item('project', $project->name, $project->id),
+                                    Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                                );
+                                $log->html = \vsprintf($log_text, $items);
+                                $log->add($errors);
+                                unset($log);
+
                             }
                             break;
                     }
@@ -193,6 +217,7 @@ namespace Goteo\Library {
 
                     if (empty($errorId)) {
                         $errors[] = 'NO es soapFault pero no es Success: <pre>' . print_r($ap, 1) . '</pre>';
+                        @\mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No es un soap fault pero no es un success.<br /><pre>' . print_r($ap, 1) . '</pre>');
                     } else {
                         $errors[] = "$action $errorMsg [$errorId]";
                     }
@@ -210,6 +235,7 @@ namespace Goteo\Library {
                     }
                 } else {
                     $errors[] = 'No payment key obtained. <pre>' . print_r($response, 1) . '</pre>';
+                    @\mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No payment key obtained.<br /><pre>' . print_r($response, 1) . '</pre>');
                     return false;
                 }
     
