@@ -22,12 +22,18 @@ foreach (License::getAll() as $l) {
     $licenses[$l->id] = $l;
 }
 
+$action = '/invest/' . $project->id;
+// piñon para betatesters
+if (!in_array($_SESSION['user']->id, array('root', 'goteo', 'olivier', 'esenabre', 'diegobus', 'susana', 'paypal'))) {
+    $action = '/about/beta';
+}
+
 
 ?>
 <div class="widget project-invest project-invest-amount">
     <h<?php echo $level ?> class="title"><?php echo Text::get('invest-amount') ?></h<?php echo $level ?>>
     
-    <form method="post" action="/invest/<?php echo $project->id; ?>">
+    <form method="post" action="<?php echo $action; ?>">
 
     <label><input type="text" id="amount" name="amount" class="amount" value="100" /><?php echo Text::get('invest-amount-tooltip') ?></label>
 </div>

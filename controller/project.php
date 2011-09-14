@@ -453,16 +453,14 @@ namespace Goteo\Controller {
                         Message::Info(Text::get('user-login-required'));
                         throw new Redirection("/user/login");
                     }
-                    // piñon para betatesters
-                    if (!in_array($_SESSION['user']->id, array('root', 'goteo', 'olivier', 'esenabre', 'diegobus', 'susana', 'paypal'))) {
-                        throw new Redirection('/about/beta', Redirection::TEMPORARY);
-                    }
 
                     // si no está en campaña no pueden esta qui ni de coña
                     if ($project->status != 3) {
                         Message::Info('El proyecto ya no está en campaña');
                         throw new Redirection('/project/'.$id, Redirection::TEMPORARY);
                     }
+
+                    Message::Info('En BETA, solo los betatesters pueden realizar aportes.');
 
                     $viewData['show'] = 'supporters';
                     if (isset($_GET['confirm'])) {
