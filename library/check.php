@@ -163,7 +163,7 @@ namespace Goteo\Library {
 
         public static function country() {
             //@TODO Sacar el pais de la ip ip2country de ode.google or something
-            return \utf8_encode('España');
+            return 'España';
         }
 
         /*
