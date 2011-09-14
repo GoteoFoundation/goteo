@@ -576,6 +576,7 @@ namespace Goteo\Controller {
                 'zipcode',
                 'location',
                 'country',
+                'secondary_address',
                 'post_address',
                 'post_zipcode',
                 'post_location',
@@ -591,7 +592,7 @@ namespace Goteo\Controller {
                 }
             }
 
-            if ($_POST['post_address-radio'] == 'same') {
+            if (!$_POST['secondary_address']) {
                 $project->post_address = null;
                 $project->post_zipcode = null;
                 $project->post_location = null;

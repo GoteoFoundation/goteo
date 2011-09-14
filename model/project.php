@@ -45,6 +45,7 @@ namespace Goteo\Model {
             $country,
 
             // Domicilio postal
+            $secondary_address = false, // si es diferente al domicilio fiscal
             $post_address = null,
             $post_zipcode = null,
             $post_location = null,
@@ -413,6 +414,7 @@ namespace Goteo\Model {
                     'zipcode',
                     'location',
                     'country',
+                    'secondary_address',
                     'post_address',
                     'post_zipcode',
                     'post_location',

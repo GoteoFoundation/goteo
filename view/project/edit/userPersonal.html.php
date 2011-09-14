@@ -42,7 +42,8 @@ echo new SuperForm(array(
                         /* vacio si es persona física */
                         'contract_entity-person' => array(
                             'type' => 'hidden',
-                            'name' => "post_address-same"
+                            'name' => "post_address-same",
+                            'value' => 'person'
                         ),
                     )
                 ),
@@ -228,29 +229,30 @@ echo new SuperForm(array(
             'hint'      => Text::get('tooltip-project-post_address'),
             'children'  => array(
                 'post_address-radio-same' =>  array(
-                    'name'  => 'post_address-radio',
-                    'value' => 'same',
+                    'name'  => 'secondary_address',
+                    'value' => false,
                     'type'  => 'radio',
                     'class' => 'inline',
                     'label' => Text::get('personal-field-post_address-same'),
                     'id'    => 'post_address-radio-same',
-                    'checked' => !$secondary_address ? true : false,
+                    'checked' => !$project->secondary_address ? true : false,
                     'children' => array(
                         /* Children vacio si es igual */
                         'post_address-same' => array(
                             'type' => 'hidden',
-                            'name' => "post_address-same"
+                            'name' => "post_address-same",
+                            'value' => 'same'
                         ),
                     )
                 ),
                 'post_address-radio-different' =>  array(
-                    'name'  => 'post_address-radio',
-                    'value' => 'different',
+                    'name'  => 'secondary_address',
+                    'value' => true,
                     'type'  => 'radio',
                     'class' => 'inline',
                     'label' => Text::get('personal-field-post_address-different'),
                     'id'    => 'post_address-radio-different',
-                    'checked' => $secondary_address ? true : false,
+                    'checked' => $project->secondary_address ? true : false,
                     'children' => array(
                         /* Domicilio postal (a desplegar si es diferente) */
                         'post_address' => array(
