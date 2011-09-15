@@ -82,6 +82,7 @@ jQuery(document).ready(function($) {
                 
                 <h8 class="title"><?php echo Text::get('footer-header-services') ?></h8>
                 <ul>
+                    <li><a href="/service/resources"><?php echo Text::get('footer-service-resources') ?></a></li>
                     <li><a href="/service/campaign"><?php echo Text::get('footer-service-campaign') ?></a></li>
                     <li><a href="/service/workshop"><?php echo Text::get('footer-service-workshop') ?></a></li>
                     <li><a href="/service/consulting"><?php echo Text::get('footer-service-consulting') ?></a></li>

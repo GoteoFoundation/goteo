@@ -17,7 +17,7 @@ namespace Goteo\Controller {
                 'view/community.html.php',
                 array(
                     'name' => $page->name,
-                    'title' => $page->description,
+                    'description' => $page->description,
                     'content' => $page->content,
                     'items' => $items
                 )

@@ -16,7 +16,41 @@ namespace Goteo\Controller {
 
         public static $errcode = array(
             'SIS0257' => 'Tarjeta no permite preapproval',
-            'SIS0253' => 'Tarjeta no reconocida'
+            'SIS0253' => 'Tarjeta no reconocida',
+            'SIS0051' => 'Pedido repetido',
+            'SIS0078' => 'Método de pago no disponible para su tarjeta',
+            'SIS0093' => 'Tarjeta no válida',
+            'SIS0094' => 'Error en la llamada al MPI sin controlar',
+            'SIS0218' => 'El comercio no permite preatorizacion por la entrada XML',
+            'SIS0256' => 'El comercio no puede realizar preautorizaciones',
+            'SIS0257' => 'Esta tarjeta no permite operativa de preautorizaciones',
+            'SIS0261' => 'Operación detenida por superar el control de restricciones en la entrada al SIS',
+            'SIS0270' => 'El comercio no puede realizar autorizaciones en diferido',
+            'SIS0274' => 'Tipo de operación desconocida o no permitida por esta entrada al SIS'
+        );
+
+        /*
+        (ds_response) tendrá los siguientes valores posibles:
+        0000 a 0099 Transacción autorizada para pagos y preautorizaciones
+        Cualquier otro valor (que no esté en el array) Transacción denegada
+         */
+        public static $respcode = array(
+            '0900' => 'Transacción autorizada para devoluciones y confirmaciones',
+            '9104' => 'Operación no permitida para esa tarjeta o terminal',
+            '9912' => 'Emisor no disponible',
+            '101' => 'Tarjeta caducada',
+            '102' => 'Tarjeta en excepción transitoria o bajo sospecha de fraude',
+            '104' => 'Operación no permitida para esa tarjeta o terminal',
+            '116' => 'Disponible insuficiente',
+            '118' => 'Tarjeta no registrada (Método de pago no disponible para su tarjeta)',
+            '129' => 'Código de seguridad (CVV2/CVC2) incorrecto',
+            '180' => 'Tarjeta ajena al servicio (Tarjeta no válida)',
+            '184' => 'Error en la autenticación del titular (Error en la llamada al MPI sin controlar)',
+            '190' => 'Denegación sin especificar Motivo',
+            '191' => 'Fecha de caducidad errónea',
+            '202' => 'Tarjeta en excepción transitoria o bajo sospecha de fraude con retirada de tarjeta',
+            '913' => 'Pedido repetido',
+            '912' => 'Emisor no disponible'
         );
 
         public function index () {
@@ -33,7 +67,19 @@ namespace Goteo\Controller {
                 $userData = User::getMini($invest->user);
                 $projectData = Project::getMini($invest->project);
 
-                if (empty($_POST['Ds_ErrorCode'])) {
+                // a ver si hay una respuesta chunga
+                $Cresp = (string) $_POST['Ds_Response'];
+                $respTxt = self::$respcode[$Cresp];
+                if ($_POST['Ds_Response'] > 99 && !empty($respTxt)) {
+                    
+                    @\mail('goteo-tpv-fault@doukeshi.org', 'Respuesta de Fallo', $respTxt.'<br /><pre>' . print_r($_POST, 1) . '</pre>');
+                    $invest->cancel('RESP' . $Cresp);
+                    $_POST['result'] = 'Fail';
+
+                    $log_text = "Ha habido una respuesta de Fallo de TPV (Codigo: {$Cresp}: ".$respTxt.") en el aporte de %s de %s al proyecto %s mediante TPV";
+
+                } elseif (empty($_POST['Ds_ErrorCode'])) {
+                    
                     $invest->setTransaction($_POST['Ds_AuthorisationCode']);
                     $_POST['result'] = 'Transaccion ok';
                     $invest->setStatus('0');
@@ -41,14 +87,14 @@ namespace Goteo\Controller {
                     $log_text = "%s ha aportado %s al proyecto %s mediante TPV";
 
                 } else {
-                    if ($_POST['Ds_ErrorCode'] == 'SIS0257') {
-                        @\mail('hola@goteo.org', 'Ojo, esta tarjeta no permite preautorizaciones', 'Intentan aportar con una tarjeta que no permite preautorizaciones<br /><pre>' . print_r($_POST, 1) . '</pre>');
-                        @\mail('goteo-tpv-fault@doukeshi.org', 'Tarjeta no permite preautorizaciones', 'Intentan aportar con una tarjeta que no permite preautorizaciones<br /><pre>' . print_r($_POST, 1) . '</pre>');
-                    }
+
+                    $Cerr = (string) $_POST['Ds_ErrorCode'];
+                    $errTxt = self::$errcode[$Cerr];
+                    @\mail('goteo-tpv-fault@doukeshi.org', 'Error en TPV', $errTxt.'<br /><pre>' . print_r($_POST, 1) . '</pre>');
                     $invest->cancel($_POST['Ds_ErrorCode']);
                     $_POST['result'] = 'Fail';
 
-                    $log_text = "Ha habido un error de TPV (Codigo: {$_POST['Ds_ErrorCode']}: ".self::$errcode[$_POST['Ds_ErrorCode']].") en el aporte de %s de %s al proyecto %s mediante TPV";
+                    $log_text = "Ha habido un error de TPV (Codigo: {$Cerr}: ".$errTxt.") en el aporte de %s de %s al proyecto %s mediante TPV";
 
                 }
 

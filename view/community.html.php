@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Text;
 
-$bodyClass = 'community';
+$bodyClass = 'community about';
 
 include 'view/prologue.html.php';
 include 'view/header.html.php';
@@ -9,15 +9,16 @@ include 'view/header.html.php';
 
     <div id="sub-header">
         <div>
-            <h2 style="margin-bottom:5px"><?php echo $this['name']; ?></h2>
+            <h2 style="margin-bottom:5px"><?php echo $this['description']; ?></h2>
         </div>
     </div>
 
     <div id="main">
 
-        <!--<div class="widget">
+        <div class="widget">
+            <h3 class="title"><?php echo $this['name']; ?></h3>
             <?php echo $this['content']; ?>
-        </div>-->
+        </div>
 
         <div class="widget feed">
         	<script type="text/javascript">
@@ -174,7 +175,7 @@ include 'view/header.html.php';
                                 	<img src="/image/119/24/24/1" />
                                 </a> 
                                 <a href="/user/olivier" class="username">Andres P.</a><br/>
-                                <span class="datepub">Publicado hace 2 días</span>
+                                <span class="datepub">Publicado hace 2 dï¿½as</span>
                             </div>
                             <div class="content-pub">
                             Lorem Ipsum is simply <span class="light-blue">dummy </span>text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text <span class="grey">ever</span>.
@@ -194,7 +195,7 @@ include 'view/header.html.php';
                                 	<img src="/image/119/24/24/1" />
                                 </a> 
                                 <a href="/user/olivier" class="username">Andres P.</a><br/>
-                                <span class="datepub">Publicado hace 2 días</span>
+                                <span class="datepub">Publicado hace 2 dï¿½as</span>
                             </div>
                             <div class="content-pub">
                             Lorem Ipsum is simply <span class="green">dummy </span>text of the printing and typesetting industry. Lorem Ipsum has been the <span class="grey">industry's standard dummy text ever</span>.
@@ -214,7 +215,7 @@ include 'view/header.html.php';
                                 	<img src="/image/119/24/24/1" />
                                 </a> 
                                 <a href="/user/olivier" class="username">Andres P.</a><br/>
-                                <span class="datepub">Publicado hace 2 días</span>
+                                <span class="datepub">Publicado hace 2 dï¿½as</span>
                             </div>
                             <div class="content-pub">
                             Lorem Ipsum is simply <span class="light-blue">dummy </span>text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text <span class="grey">ever</span>.
@@ -234,7 +235,7 @@ include 'view/header.html.php';
                                 	<img src="/image/119/24/24/1" />
                                 </a> 
                                 <a href="/user/olivier" class="username">Andres P.</a><br/>
-                                <span class="datepub">Publicado hace 2 días</span>
+                                <span class="datepub">Publicado hace 2 dï¿½as</span>
                             </div>
                             <div class="content-pub">
                             Lorem Ipsum is simply <span class="green">dummy </span>text of the printing and typesetting industry. Lorem Ipsum has been the <span class="grey">industry's standard dummy text ever</span>.
@@ -254,7 +255,7 @@ include 'view/header.html.php';
                                 	<img src="/image/119/24/24/1" />
                                 </a> 
                                 <a href="/user/olivier" class="username">Andres P.</a><br/>
-                                <span class="datepub">Publicado hace 2 días</span>
+                                <span class="datepub">Publicado hace 2 dï¿½as</span>
                             </div>
                             <div class="content-pub">
                             Lorem Ipsum is simply <span class="light-blue">dummy </span>text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text <span class="grey">ever</span>.
@@ -274,7 +275,7 @@ include 'view/header.html.php';
                                 	<img src="/image/119/24/24/1" />
                                 </a> 
                                 <a href="/user/olivier" class="username">Andres P.</a><br/>
-                                <span class="datepub">Publicado hace 2 días</span>
+                                <span class="datepub">Publicado hace 2 dï¿½as</span>
                             </div>
                             <div class="content-pub">
                             Lorem Ipsum is simply <span class="green">dummy </span>text of the printing and typesetting industry. Lorem Ipsum has been the <span class="grey">industry's standard dummy text ever</span>.
