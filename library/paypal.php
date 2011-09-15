@@ -14,13 +14,13 @@ namespace Goteo\Library {
 	 */
     class Paypal {
 
-        /*
-         * @param invest instancia del aporte: id, usuario, proyecto, cuenta, cantidad
+        /**
+         * @param object invest instancia del aporte: id, usuario, proyecto, cuenta, cantidad
          *
          * Método para crear un preapproval para un aporte
          * va a mandar al usuario a paypal para que confirme
          *
-         * @TODO poner límite máximo de dias para permitir mover el a porte a otro proyecto
+         * @TODO poner límite máximo de dias a lo que falte para los 40/80 dias para evitar las cancelaciones
          */
         public static function preapproval($invest, &$errors = array()) {
             
@@ -41,7 +41,7 @@ namespace Goteo\Library {
 		           $returnURL = SITE_URL."/invest/confirmed/" . $invest->project . "/" . $invest->id; // a difundirlo @TODO mensaje gracias si llega desde un preapproval
 		           $cancelURL = SITE_URL."/invest/fail/" . $invest->project . "/" . $invest->id; // a la página de aportar para intentarlo de nuevo
 
-                    // desde hoy hasta 11 meses
+                    // desde hoy hasta los dias que le falten para finalizar la ronda (mas uno porque no queremos pillarnos los dedos por ser el mismo día)
                     date_default_timezone_set('UTC');
                     $currDate = getdate();
                     $hoy = $currDate['year'].'-'.$currDate['mon'].'-'.$currDate['mday'];
@@ -70,6 +70,7 @@ namespace Goteo\Library {
 		           $preapprovalRequest->endingDate = $endDate;
 		           $preapprovalRequest->maxNumberOfPayments = 1;
 		           $preapprovalRequest->displayMaxTotalAmount = true;
+		           $preapprovalRequest->feesPayer = 'EACHRECEIVER';
 		           $preapprovalRequest->maxTotalAmountOfAllPayments = $invest->amount;
 		           $preapprovalRequest->requestEnvelope = new \RequestEnvelope();
 		           $preapprovalRequest->requestEnvelope->errorLanguage = "es_ES";
@@ -143,7 +144,8 @@ namespace Goteo\Library {
                 $payRequest->clientDetails->ipAddress = PAYPAL_IP_ADDRESS;
                 $payRequest->currencyCode = 'EUR';
            		$payRequest->preapprovalKey = $invest->preapproval;
-                $payRequest->feesPayer = 'SECONDARYONLY';
+                $payRequest->actionType = 'PAY_PRIMARY';
+                $payRequest->feesPayer = 'EACHRECEIVER';
                 // SENDER no vale para chained payments   (PRIMARYRECEIVER, EACHRECEIVER, SECONDARYONLY)
                 $payRequest->senderEmail = $invest->account;
                 $payRequest->requestEnvelope = new \RequestEnvelope();
