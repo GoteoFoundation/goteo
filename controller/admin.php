@@ -466,13 +466,22 @@ namespace Goteo\Controller {
                 $log = new Feed();
                 $log->title = 'Cambio estado/fechas de un proyecto desde el admin';
                 $log->url = '/admin/projects';
-                $log->type = 'project';
+                $log->type = 'admin';
                 $log_items = array(
                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                     Feed::item('project', $project->name, $project->id)
                 );
                 $log->html = \vsprintf($log_text, $log_items);
                 $log->add($errors);
+
+                // si es publicado, hay un evento público
+                $log->title = $project->name;
+                $log->url = '/project/'.$project->id;
+                $log->scope = 'public';
+                $log->type = 'projects';
+                $log->html = Feed::item('relevant', 'Nuevo proyecto en Goteo').', desde ahora tienes 40 dís para apoyar este proyecto';
+                $log->add($errors);
+
                 unset($log);
             }
 
