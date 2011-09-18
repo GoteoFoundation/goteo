@@ -605,6 +605,40 @@ namespace Goteo\Controller {
                                         if ($msg->save()) {
                                             // asignado a la colaboracion como thread inicial
                                             $support->thread = $msg->id;
+
+                                            /*
+                                             * Evento Feed
+                                             */
+                                            $log = new Feed();
+                                            $log->title = 'usuario pone una nueva colaboracion en su proyecto (dashboard)';
+                                            $log->url = '/admin/projects';
+                                            $log->type = 'user';
+                                            $log_text = '%s ha publicado una nueva %s en el proyecto %s, con el título "%s"';
+                                            $log_items = array(
+                                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                                Feed::item('message', 'Colaboración'),
+                                                Feed::item('project', $project->name, $project->id),
+                                                Feed::item('update', $support->support, $project->id.'/messages#message'.$msg->id)
+                                            );
+                                            $log->html = \vsprintf($log_text, $log_items);
+                                            $log->add($errors);
+
+                                            // evento público
+                                            $log->title = $_SESSION['user']->name;
+                                            $log->url = '/user/profile/'.$_SESSION['user']->id;
+                                            $log->scope = 'public';
+                                            $log->type = 'projects';
+                                            $log_text = 'Ha publicado una nueva %s en el proyecto %s, con el título "%s"';
+                                            $log_items = array(
+                                                Feed::item('message', 'Colaboración'),
+                                                Feed::item('project', $project->name, $project->id),
+                                                Feed::item('update', $support->support, $project->id.'/messages#message'.$msg->id)
+                                            );
+                                            $log->html = \vsprintf($log_text, $log_items);
+                                            $log->add($errors);
+
+                                            unset($log);
+
                                         }
                                     }
 
@@ -713,15 +747,15 @@ namespace Goteo\Controller {
                                  * Evento Feed
                                  */
                                 $log = new Feed();
-                                $log->title = 'usuario publica una novedad (dashboard)';
+                                $log->title = 'usuario publica una novedad en su proyecto (dashboard)';
                                 $log->url = '/admin/projects';
                                 $log->type = 'user';
-                                $log_text = '%s ha publicado un nuevo post en %s sobre el proyecto %s, con el título %s';
+                                $log_text = '%s ha publicado un nuevo post en %s sobre el proyecto %s, con el título "%s"';
                                 $log_items = array(
                                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                     Feed::item('blog', 'Novedades'),
                                     Feed::item('project', $project->name, $project->id),
-                                    Feed::item('update', '"'.$post->title.'"', $project->id.'/updates/'.$post->id)
+                                    Feed::item('update', $post->title, $project->id.'/updates/'.$post->id)
                                 );
                                 $log->html = \vsprintf($log_text, $log_items);
                                 $log->add($errors);

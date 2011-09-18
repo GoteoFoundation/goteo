@@ -160,6 +160,20 @@ namespace Goteo\Controller {
                 );
                 $log->html = \vsprintf($log_text, $items);
                 $log->add($errors);
+
+                // evento público
+                $log->title = $_SESSION['user']->name;
+                $log->url = '/user/profile/'.$_SESSION['user']->id;
+                $log->scope = 'public';
+                $log->type = 'community';
+                $log_text = "Ha aportado %s al proyecto %s";
+                $items = array(
+                    Feed::item('money', $confirm->amount.' &euro;'),
+                    Feed::item('project', $projectData->name, $projectData->id)
+                );
+                $log->html = \vsprintf($log_text, $items);
+                $log->add($errors);
+
                 unset($log);
             }
 

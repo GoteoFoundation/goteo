@@ -85,7 +85,7 @@ namespace Goteo\Controller {
                     $invest->setStatus('0');
 
                     $log_text = "%s ha aportado %s al proyecto %s mediante TPV";
-
+                    $doPublic = true;
                 } else {
 
                     $Cerr = (string) $_POST['Ds_ErrorCode'];
@@ -95,7 +95,7 @@ namespace Goteo\Controller {
                     $_POST['result'] = 'Fail';
 
                     $log_text = "Ha habido un error de TPV (Codigo: {$Cerr}: ".$errTxt.") en el aporte de %s de %s al proyecto %s mediante TPV";
-
+                    $doPublic = false;
                 }
 
                 /*
@@ -112,6 +112,21 @@ namespace Goteo\Controller {
                 );
                 $log->html = \vsprintf($log_text, $items);
                 $log->add($errors);
+
+                if ($doPublic) {
+                    // evento público
+                    $log->title = $userData->name;
+                    $log->url = '/user/profile/'.$userData->id;
+                    $log->scope = 'public';
+                    $log->type = 'community';
+                    $log_text = "Ha aportado %s al proyecto %s";
+                    $items = array(
+                        Feed::item('money', $confirm->amount.' &euro;'),
+                        Feed::item('project', $projectData->name, $projectData->id)
+                    );
+                    $log->html = \vsprintf($log_text, $items);
+                    $log->add($errors);
+                }
                 unset($log);
 
                 $response = '';
