@@ -1532,15 +1532,13 @@ namespace Goteo\Model {
         }
 
         /*
-         * Lista de proyectos cofinanciados
+         * Lista de proyectos en campaña (para ser revisados por el cron)
          */
-        public static function invested()
+        public static function active()
         {
             $projects = array();
             $query = self::query("SELECT project.id
                                   FROM  project
-                                  INNER JOIN invest
-                                        ON project.id = invest.project
                                   WHERE project.status = 3 OR project.status = 4
                                   GROUP BY project.id
                                   ORDER BY name ASC");

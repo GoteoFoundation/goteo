@@ -14,8 +14,8 @@ namespace Goteo\Controller {
         public function index () {
 
             // revision de proyectos: dias, conseguido y cambios de estado
-            // proyectos en campaña o financiados
-            $projects = Model\Project::invested();
+            // proyectos en campaña (y los financiados para ponerle los dias a cero...)
+            $projects = Model\Project::active();
 
 
 //            echo \trace($projects);
@@ -23,6 +23,8 @@ namespace Goteo\Controller {
             foreach ($projects as &$project) {
 
                 $log_text = null;
+                $rest = 0;
+                $round = 0;
 
 				// costes y los sumammos
 				$project->costs = Model\Project\Cost::getAll($project->id);
@@ -49,23 +51,48 @@ namespace Goteo\Controller {
 
                 // actualiza dias restantes para proyectos en campaña
                 if ($project->status == 3) {
-                    if ($days > 40)
+                    if ($days > 40) {
                         $rest = 80 - $days;
-                    else
+                        $round = 2;
+                    } else {
                         $rest = 40 - $days;
+                        $round = 1;
+                    }
 
                     if ($rest < 0)
                         $rest = 0;
-
-                } else {
-                    $rest = 0;
                 }
 
                 if ($project->days != $rest) {
                     \Goteo\Core\Model::query("UPDATE project SET days = '{$rest}' WHERE id = ?", array($project->id));
                 }
-                // pero aqui seguimos trabajando con el numero de dias que lleva
 
+                // a los 5, 3, 2, y 1 dia para finalizar ronda
+                if ($round > 0 && in_array((int) $rest, array(5, 3, 2, 1))) {
+                    /*
+                     * Evento Feed
+                     */
+                    $log = new Feed();
+                    $log->title = 'proyecto próximo a finalizar ronda (cron)';
+                    $log->url = '/admin/projects';
+                    $log->type = 'project';
+                    $log_text = 'Al proyecto %s le faltan %s para finalizar la '.$round.'ª ronda';
+                    $log_items = array(
+                        Feed::item('project', $project->name, $project->id),
+                        Feed::item('relevant', $rest.' días')
+                    );
+                    $log->html = \vsprintf($log_text, $log_items);
+                    $log->add($errors);
+
+                    // evento público
+                    $log->scope = 'public';
+                    $log->type = 'projects';
+                    $log->add($errors);
+                    
+                    unset($log);
+                }
+
+                // pero seguimos trabajando con el numero de dias que lleva
                 echo $project->name . ': lleva recaudado ' . $amount . ' de ' . $project->mincost . '/' . $project->maxcost . ' en ' . $days . ' dias, le quedan '.$rest.'<br />';
 
                 //  (financiado a los 80 o cancelado si a los 40 no llega al minimo)
@@ -83,10 +110,10 @@ namespace Goteo\Controller {
                         $errors = array();
                         if ($project->fail($errors)) {
                             echo 'Caducado.';
-                            $log_text = 'El proyecto %s ha <span class="red">caducado sin éxito</span> obteniendo %s';
+                            $log_text = 'El proyecto %s ha %s obteniendo %s';
                         } else {
                             echo 'Falla al caducar ' . implode(',', $errors);
-                            $log_text = 'El proyecto %s ha fallado al <span class="red">caducado sin éxito</span>, obteniendo %s';
+                            $log_text = 'El proyecto %s ha fallado al, %s obteniendo %s';
                         }
 
                         /*
@@ -98,6 +125,7 @@ namespace Goteo\Controller {
                         $log->type = 'project';
                         $log_items = array(
                             Feed::item('project', $project->name, $project->id),
+                            Feed::item('relevant', 'caducado sin éxito'),
                             Feed::item('money', $amount.' &euro; ('.\number_format($per_amount, 2).'%) de aportes sobre minimo')
                         );
                         $log->html = \vsprintf($log_text, $log_items);
@@ -114,10 +142,10 @@ namespace Goteo\Controller {
                             $errors = array();
                             if ($project->succeed($errors)) {
                                 echo 'Financiado';
-                                $log_text = 'El proyecto %s ha sido <span class="red">financiado</span> obteniendo %s';
+                                $log_text = 'El proyecto %s ha sido %s obteniendo %s';
                             } else {
                                 echo 'Fallo al marcar financiado ' . implode(',', $errors);
-                                $log_text = 'El proyecto %s ha fallado al ser <span class="red">financiado</span>, obteniendo %s';
+                                $log_text = 'El proyecto %s ha fallado al ser, %s obteniendo %s';
                             }
 
                             /*
@@ -129,6 +157,7 @@ namespace Goteo\Controller {
                             $log->type = 'project';
                             $log_items = array(
                                 Feed::item('project', $project->name, $project->id),
+                                Feed::item('relevant', 'financiado'),
                                 Feed::item('money', $amount.' &euro; ('.\number_format($per_amount, 2).'%) de aportes sobre minimo')
                             );
                             $log->html = \vsprintf($log_text, $log_items);
@@ -143,9 +172,10 @@ namespace Goteo\Controller {
                             $log->title = 'proyecto supera primera ronda (cron)';
                             $log->url = '/admin/projects';
                             $log->type = 'project';
-                            $log_text = 'El proyecto %s <span class="red">continua en campaña</span> en segunda ronda obteniendo %s';
+                            $log_text = 'El proyecto %s %s en segunda ronda obteniendo %s';
                             $log_items = array(
                                 Feed::item('project', $project->name, $project->id),
+                                Feed::item('relevant', 'continua en campaña'),
                                 Feed::item('money', $amount.' &euro; ('.\number_format($per_amount, 2).'%) de aportes sobre minimo')
                             );
                             $log->html = \vsprintf($log_text, $log_items);
