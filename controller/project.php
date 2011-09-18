@@ -432,7 +432,8 @@ namespace Goteo\Controller {
             // - es otro usuario y el proyecto esta available: en campaña, financiado, retorno cumplido o caducado (que no es desechado)
             if (($project->status > 2) ||
                 $project->owner == $_SESSION['user']->id ||
-                ACL::check('/project/edit/todos')) {
+                ACL::check('/project/edit/todos') ||
+                ACL::check('/project/view/todos')) {
                 // lo puede ver
 
                 $viewData = array(
