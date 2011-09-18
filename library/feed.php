@@ -70,14 +70,21 @@ namespace Goteo\Library {
             'money' => 'violet',
             'relevant' => 'red',
             'comment' => 'green',
-            'system' => 'grey'
+            'update-comment' => 'grey',
+            'message' => 'green',
+            'system' => 'grey',
+            'update' => 'grey'
         );
 
         static public $page = array(
             'user' => '/user/profile/',
             'project' => '/project/',
             'blog' => '/blog/',
-            'system' => '/admin/'
+            'comment' => '/blog/',
+            'update-comment' => '/project/',
+            'message' => '/project/',
+            'system' => '/admin/',
+            'update' => '/project/'
         );
 
         /*

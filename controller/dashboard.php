@@ -7,6 +7,7 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model,
+		Goteo\Library\Feed,
         Goteo\Library\Page,
         Goteo\Library\Mail,
         Goteo\Library\Text,
@@ -705,6 +706,35 @@ namespace Goteo\Controller {
                                 $success[] = Text::get('dashboard-project-updates-inserted');
                             }
                             $action = $editing ? 'edit' : 'list';
+
+                            // si ha marcado publish, grabamos evento de nueva novedad en proyecto
+                            if ((bool) $post->publish) {
+                                /*
+                                 * Evento Feed
+                                 */
+                                $log = new Feed();
+                                $log->title = 'usuario publica una novedad (dashboard)';
+                                $log->url = '/admin/projects';
+                                $log->type = 'user';
+                                $log_text = '%s ha publicado un nuevo post en %s sobre el proyecto %s, con el título %s';
+                                $log_items = array(
+                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('blog', 'Novedades'),
+                                    Feed::item('project', $project->name, $project->id),
+                                    Feed::item('update', '"'.$post->title.'"', $project->id.'/updates/'.$post->id)
+                                );
+                                $log->html = \vsprintf($log_text, $log_items);
+                                $log->add($errors);
+
+                                // evento público
+                                $log->title = $_SESSION['user']->name;
+                                $log->scope = 'public';
+                                $log->type = 'community';
+                                $log->add($errors);
+
+                                unset($log);
+                            }
+
                         } else {
                             $errors[] = Text::get('dashboard-project-updates-fail');
                         }

@@ -62,6 +62,7 @@ $level = (int) $this['level'] ?: 3;
 				   <?php echo htmlspecialchars($message->user->name); if ($message->blocked == 1) echo ' ' . Text::get('regular-looks_for'); ?>
                    </a>
                    </h<?php echo $level ?>>
+                   <a name="message<?php echo $message->id; ?>" />
                    <div class="date"><span><?php echo $message->date ?></span></div>
                    <blockquote><?php echo $message->message; ?></blockquote>
                    <div class="actions">
@@ -87,6 +88,7 @@ $level = (int) $this['level'] ?: 3;
 						   <?php echo $child->user->name; ?>
                            </a>
                            </h<?php echo $level ?>>
+                           <a name="message<?php echo $child->id; ?>" />
                            <div class="date"><span><?php echo $child->date; ?></span></div>
                            <blockquote><?php echo $child->message; ?></blockquote>
                            <?php // si puede borrar este mensaje

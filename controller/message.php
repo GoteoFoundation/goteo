@@ -7,6 +7,7 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model,
+		Goteo\Library\Feed,
         Goteo\Library\Mail,
         Goteo\Library\Template,
         Goteo\Library\Text;
@@ -25,10 +26,31 @@ namespace Goteo\Controller {
                     'message' => $_POST['message']
                 ));
 
-                $message->save($errors);
+                if ($message->save($errors)) {
+
+                    if (empty($_POST['thread'])) {
+                        $projectData = Model\Project::getMini($project);
+                        /*
+                         * Evento Feed
+                         */
+                        $log = new Feed();
+                        $log->title = 'usuario abre hilo en mensajes de proyecto';
+                        $log->url = '/admin/projects';
+                        $log->type = 'user';
+                        $log_text = '%s ha creado un nuevo hilo en los %s del proyecto %s';
+                        $log_items = array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('message', 'Mensajes', $projectData->id.'/messages#message'.$message->id),
+                            Feed::item('project', $projectData->name, $projectData->id)
+                        );
+                        $log->html = \vsprintf($log_text, $log_items);
+                        $log->add($errors);
+                        unset($log);
+                    }
+                }
 			}
 
-            throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
+            throw new Redirection("/project/{$project}/messages#message".$message->id, Redirection::TEMPORARY);
         }
 
         public function edit ($id, $project) {
@@ -169,7 +191,7 @@ namespace Goteo\Controller {
         }
 
         /*
-         * Metodo para publicar una enttrada en un post
+         * Metodo para publicar un comentario en un post
          */
         public function post ($post, $project = null) {
 
@@ -182,16 +204,76 @@ namespace Goteo\Controller {
                 ));
 
                 if ($comment->save($errors)) {
-                    // mensaje enviado con exito
+                    // a ver los datos del post
+                    $postData = Model\Blog\Post::get($post);
+                    /*
+                     * Evento Feed
+                     */
+                    $log = new Feed();
+                    $log->title = 'usuario escribe comentario en blog/novedades';
+                    $log->url = '/admin/projects';
+                    $log->type = 'user';
+
+                    if (!empty($project)) {
+                        $projectData = Model\Project::getMini($project);
+                        $log_text = '%s ha escrito un comentario en la entrada "%s" en las %s del proyecto %s';
+                        $log_items = array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('update-comment', $postData->title, $projectData->id.'/updates/'.$postData->id.'#comment'.$comment->id),
+                            Feed::item('blog', 'Novedades'),
+                            Feed::item('project', $projectData->name, $projectData->id)
+                        );
+                    } else {
+                        $log_text = '%s ha escrito un %s en la entrada "%s" del blog de %s';
+                        $log_items = array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('message', 'Comentario'),
+                            Feed::item('blog', $postData->title, $postData->id.'#comment'.$comment->id),
+                            Feed::item('blog', 'Goteo', '/')
+                        );
+                    }
+
+                    $log->html = \vsprintf($log_text, $log_items);
+                    $log->add($errors);
+
+                    // y el mensaje público
+                    $log->title = $_SESSION['user']->name;
+                    $log->url = '/user/profile/'.$_SESSION['user']->id;
+                    $log->scope = 'public';
+                    $log->type = 'community';
+
+                    if (!empty($project)) {
+                        $projectData = Model\Project::getMini($project);
+                        $log_text = 'Ha escrito un %s en la entrada "%s" en las %s del proyecto %s';
+                        $log_items = array(
+                            Feed::item('message', 'Comentario'),
+                            Feed::item('update-comment', $postData->title, $projectData->id.'/updates/'.$postData->id.'#comment'.$comment->id),
+                            Feed::item('blog', 'Novedades'),
+                            Feed::item('project', $projectData->name, $projectData->id)
+                        );
+                    } else {
+                        $log_text = 'Ha escrito un %s en la entrada "%s" del blog de %s';
+                        $log_items = array(
+                            Feed::item('message', 'Comentario'),
+                            Feed::item('blog', $postData->title, $postData->id.'#comment'.$comment->id),
+                            Feed::item('blog', 'Goteo', '/')
+                        );
+                    }
+
+                    $log->html = \vsprintf($log_text, $log_items);
+                    $log->add($errors);
+
+                    unset($log);
+
                 } else {
                     // error
                 }
 			}
 
             if (!empty($project)) {
-                throw new Redirection("/project/{$project}/updates/{$post}", Redirection::TEMPORARY);
+                throw new Redirection("/project/{$project}/updates/{$post}#comment".$comment->id, Redirection::TEMPORARY);
             } else {
-                throw new Redirection("/blog/{$post}", Redirection::TEMPORARY);
+                throw new Redirection("/blog/{$post}#comment".$comment->id, Redirection::TEMPORARY);
             }
         }
 
