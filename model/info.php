@@ -58,7 +58,7 @@ namespace Goteo\Model {
         /*
          * Lista de entradas por orden alfabético
          */
-        public static function getAll ($node = \GOTEO_NODE) {
+        public static function getAll ($published = false, $node = \GOTEO_NODE) {
 
             $list = array();
 
@@ -77,6 +77,11 @@ namespace Goteo\Model {
                     AND info_lang.lang = :lang
                 WHERE info.node = :node
                 ";
+
+            if ($published == true) {
+                $sql .= " AND info.publish = 1";
+            }
+
             $sql .= " ORDER BY `order` ASC
                 ";
             

@@ -38,6 +38,7 @@ include 'view/header.html.php';
     <div id="news-content">
         <?php while ($content = $pagedResults->fetchPagedRow()) : ?>
             <div class="widget news-content-module">
+                <a name="news<?php echo $content->id ?>" />
                 <h3><?php echo $content->title; ?></h3>
                 <blockquote><?php echo $content->description; ?></blockquote>
                 <a href="<?php echo $content->url; ?>"><?php echo $read_more; ?></a>

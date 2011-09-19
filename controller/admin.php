@@ -71,6 +71,24 @@ namespace Goteo\Controller {
                         $page->description = $_POST['description'];
                         $page->content = $_POST['content'];
                         if ($page->save($errors)) {
+
+                            /*
+                             * Evento Feed
+                             */
+                            $log = new Feed();
+                            $log->title = 'modificacion de página institucional (admin)';
+                            $log->url = '/admin/pages';
+                            $log->type = 'admin';
+                            $log_text = "El admin %s ha %s la página institucional %s";
+                            $log_items = array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', 'Modificado'),
+                                Feed::item('relevant', $page->name, $page->url)
+                            );
+                            $log->html = \vsprintf($log_text, $log_items);
+                            $log->add($errors);
+                            unset($log);
+
                             throw new Redirection("/admin/pages");
                         }
                     }
@@ -817,7 +835,7 @@ namespace Goteo\Controller {
                             $log_text = 'El admin %s ha %s el proyecto %s';
                             $log_items = array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', 'Destacado en portada'),
+                                Feed::item('relevant', 'Destacado en portada', '/'),
                                 Feed::item('project', $projectData->name, $projectData->id)
                             );
                             $log->html = \vsprintf($log_text, $log_items);
@@ -973,6 +991,29 @@ namespace Goteo\Controller {
 
 				if ($banner->save($errors)) {
                     $success[] = 'Datos guardados';
+
+                    if ($_POST['action'] == 'add') {
+                        $projectData = Model\Project::getMini($_POST['project']);
+
+                        /*
+                         * Evento Feed
+                         */
+                        $log = new Feed();
+                        $log->title = 'nuevo banner de proyecto destacado en portada (admin)';
+                        $log->url = '/admin/promote';
+                        $log->type = 'admin';
+                        $log_text = 'El admin %s ha %s del proyecto %s';
+                        $log_items = array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('relevant', 'Publicado un banner', '/'),
+                            Feed::item('project', $projectData->name, $projectData->id)
+                        );
+                        $log->html = \vsprintf($log_text, $log_items);
+                        $log->add($errors);
+
+                        unset($log);
+                    }
+
 				}
 				else {
                     switch ($_POST['action']) {
@@ -1013,7 +1054,28 @@ namespace Goteo\Controller {
                     Model\Banner::down($id);
                     break;
                 case 'remove':
-                    Model\Banner::delete($id);
+                    if (Model\Banner::delete($id)) {
+                        $projectData = Model\Project::getMini($id);
+
+                        /*
+                         * Evento Feed
+                         */
+                        $log = new Feed();
+                        $log->title = 'banenr de proyecto quitado portada (admin)';
+                        $log->url = '/admin/promote';
+                        $log->type = 'admin';
+                        $log_text = 'El admin %s ha %s del proyecto %s';
+                        $log_items = array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('relevant', 'Quitado el banner', '/'),
+                            Feed::item('project', $projectData->name, $projectData->id)
+                        );
+                        $log->html = \vsprintf($log_text, $log_items);
+                        $log->add($errors);
+
+                        unset($log);
+
+                    }
                     break;
                 case 'add':
                     // siguiente orden
@@ -3091,11 +3153,37 @@ namespace Goteo\Controller {
                     if ($post->save($errors)) {
                         if ($action == 'edit') {
                             $success[] = 'La entrada se ha actualizado correctamente';
+
+                            if ((bool) $post->publish) {
+                                $log_action = 'Publicado';
+                            } else {
+                                $log_action = 'Modificado';
+                            }
+
                         } else {
                             $success[] = 'Se ha añadido una nueva entrada';
                             $id = $post->id;
+                            $log_action = 'Añadido';
                         }
                         $action = $editing ? 'edit' : 'list';
+
+                        /*
+                         * Evento Feed
+                         */
+                        $log = new Feed();
+                        $log->title = 'modificacion de idea about (admin)';
+                        $log->url = '/admin/info';
+                        $log->type = 'admin';
+                        $log_text = 'El admin %s ha %s la Idea de fuerza "%s"';
+                        $log_items = array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('relevant', $log_action),
+                            Feed::item('relevant', $post->title, '/about#info'.$post->id)
+                        );
+                        $log->html = \vsprintf($log_text, $log_items);
+                        $log->add($errors);
+                        unset($log);
+
                     } else {
                         $errors[] = 'Ha habido algun problema al guardar los datos';
                     }
@@ -3118,9 +3206,28 @@ namespace Goteo\Controller {
                     Model\Info::down($id);
                     break;
                 case 'remove':
+                    $tempData = Model\Info::get($id);
                     // eliminar un término
                     if (Model\Info::delete($id)) {
                         $success[] = 'Entrada eliminada';
+
+                        /*
+                         * Evento Feed
+                         */
+                        $log = new Feed();
+                        $log->title = 'quitar de idea about (admin)';
+                        $log->url = '/admin/info';
+                        $log->type = 'admin';
+                        $log_text = 'El admin %s ha %s la Idea de fuerza "%s"';
+                        $log_items = array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('relevant', 'Eliminado'),
+                            Feed::item('relevant', $tempData->title)
+                        );
+                        $log->html = \vsprintf($log_text, $log_items);
+                        $log->add($errors);
+                        unset($log);
+
                     } else {
                         $errors[] = 'No se ha podido eliminar la entrada';
                     }
@@ -3128,7 +3235,9 @@ namespace Goteo\Controller {
                 case 'add':
                     // nueva entrada con wisiwig
                     // obtenemos datos basicos
-                    $post = new Model\Info();
+                    if (!$post instanceof Model\Info) {
+                        $post = new Model\Info();
+                    }
 
                     $message = 'Añadiendo una nueva entrada';
 
@@ -3294,7 +3403,7 @@ namespace Goteo\Controller {
                                 $log_items = array(
                                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                     Feed::item('relevant', 'Publicado'),
-                                    Feed::item('blog', $_POST['title'])
+                                    Feed::item('news', $_POST['title'], '#news'.$item->id)
                                 );
                                 $log->html = \vsprintf($log_text, $log_items);
                                 $log->add($errors);

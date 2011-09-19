@@ -12,6 +12,7 @@ $status = Model\Project::status();
 
 ?>
 <form method="post" action="/admin/banners" enctype="multipart/form-data">
+    <input type="hidden" name="action" value="<?php echo $this['action'] ?>" />
     <input type="hidden" name="order" value="<?php echo $banner->order ?>" />
     <input type="hidden" name="id" value="<?php echo $banner->id; ?>" />
 

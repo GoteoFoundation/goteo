@@ -17,7 +17,7 @@ namespace Goteo\Controller {
             if (empty($id)) {
                 $id = 'about';
 
-                $posts = Model\Info::getAll(\GOTEO_NODE);
+                $posts = Model\Info::getAll(true, \GOTEO_NODE);
 
                 return new View(
                     'view/about/info.html.php',
