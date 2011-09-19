@@ -216,11 +216,12 @@ namespace Goteo\Controller {
 
                     if (!empty($project)) {
                         $projectData = Model\Project::getMini($project);
-                        $log_text = '%s ha escrito un comentario en la entrada "%s" en las %s del proyecto %s';
+                        $log_text = '%s ha escrito un %s en la entrada "%s" en las %s del proyecto %s';
                         $log_items = array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('message', 'Comentario'),
                             Feed::item('update-comment', $postData->title, $projectData->id.'/updates/'.$postData->id.'#comment'.$comment->id),
-                            Feed::item('blog', 'Novedades'),
+                            Feed::item('update-comment', 'Novedades', $projectData->id.'/updates/'),
                             Feed::item('project', $projectData->name, $projectData->id)
                         );
                     } else {
@@ -248,7 +249,7 @@ namespace Goteo\Controller {
                         $log_items = array(
                             Feed::item('message', 'Comentario'),
                             Feed::item('update-comment', $postData->title, $projectData->id.'/updates/'.$postData->id.'#comment'.$comment->id),
-                            Feed::item('blog', 'Novedades'),
+                            Feed::item('update-comment', 'Novedades', $projectData->id.'/updates/'),
                             Feed::item('project', $projectData->name, $projectData->id)
                         );
                     } else {

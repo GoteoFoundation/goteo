@@ -548,7 +548,7 @@ namespace Goteo\Model {
                         active,
                         hide
                     FROM user
-                    WHERE id != ''
+                    WHERE id != 'root'
                         $sqlFilter
                     ORDER BY name ASC
                     ";

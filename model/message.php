@@ -58,7 +58,7 @@ namespace Goteo\Model {
                 FROM  message
                 WHERE   message.project = ?
                 AND     message.thread IS NULL
-                ORDER BY date DESC
+                ORDER BY date ASC, id ASC
                 ", array($project));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $message) {
                 // datos del usuario
@@ -71,7 +71,7 @@ namespace Goteo\Model {
                     SELECT  id
                     FROM  message
                     WHERE thread = ?
-                    ORDER BY id DESC
+                    ORDER BY date ASC, id ASC
                     ", array($message->id));
 
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $response) {

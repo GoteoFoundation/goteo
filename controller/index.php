@@ -10,11 +10,7 @@ namespace Goteo\Controller {
 
     class Index extends \Goteo\Core\Controller {
         
-        public function index ($project = null) {
-
-            if (isset($project)) {
-                die('Llega ' . $project);
-            }
+        public function index () {
 
             // hay que sacar los que van en portada de su blog (en cuanto aclaremos lo de los nodos)
             $posts    = Post::getList();

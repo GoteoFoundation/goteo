@@ -7,6 +7,7 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model,
+        Goteo\Library\Feed,
         Goteo\Library\Page,
         Goteo\Library\Mail,
         Goteo\Library\Text;
@@ -97,6 +98,25 @@ namespace Goteo\Controller {
                 if ($ready->ready($errors)) {
                     $message = 'Se ha dado por terminada tu revisión';
                     $review = Model\Review::getData($review->id);
+
+                    /*
+                     * Evento Feed
+                     */
+                    $log = new Feed();
+                    $log->title = 'revisión cerrada (revisor)';
+                    $log->url = '/review/reviews';
+                    $log->type = 'admin';
+                    $log_text = 'El revisor %s ha %s la revisión de %s';
+                    $log_items = array(
+                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                        Feed::item('relevant', 'Finalizado'),
+                        Feed::item('project', $review->name, $review->project)
+                    );
+                    $log->html = \vsprintf($log_text, $log_items);
+                    $log->add($errors);
+
+                    unset($log);
+
                 }
             }
 

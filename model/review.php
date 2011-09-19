@@ -182,7 +182,7 @@ namespace Goteo\Model {
                         ON project.id = review.project
                     INNER JOIN user
                         ON user.id = project.owner
-                    WHERE project.status = 2
+                    WHERE project.status < 3
                     AND review.status = 1
                     AND user_review.user = ?
                     ORDER BY project.name ASC
@@ -244,7 +244,6 @@ namespace Goteo\Model {
                         project.name as name,
                         user.name as owner_name,
                         user.id as owner,
-                        user_review.ready as ready,
                         project.progress as progress,
                         review.score as score,
                         review.max as max,
@@ -254,8 +253,6 @@ namespace Goteo\Model {
                         ON project.id = review.project
                     INNER JOIN user
                         ON user.id = project.owner
-                    INNER JOIN user_review
-                        ON user_review.review = review.id
                     WHERE review.id = :id
                     ", array(':id' => $id));
 

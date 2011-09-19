@@ -116,6 +116,8 @@ namespace Goteo\Controller {
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+                $log_action = null;
+
 			    $errors = array();
                 switch ($option) {
                     // perfil publico
@@ -182,6 +184,8 @@ namespace Goteo\Controller {
                         if ($user->save($errors)) {
                             $message = Text::get('user-profile-saved');
                             $user = Model\User::flush();
+
+                            $log_action = 'Modificado su información de perfil';
                         }
                     break;
                     
@@ -210,6 +214,8 @@ namespace Goteo\Controller {
                         if (!empty ($personalData)) {
                             if (Model\User::setPersonal($user->id, $personalData, true, $errors)) {
                                 $message = Text::get('user-personal-saved');
+
+                                $log_action = 'Modificado sus datos personales';
                             }
                         }
                     break;
@@ -235,6 +241,8 @@ namespace Goteo\Controller {
                                 unset($_POST['user_nemail']);
                                 unset($_POST['user_remail']);
                                 $success[] = Text::get('user-email-change-sended');
+
+                                $log_action = 'Cambiado su email';
                             }
                         }
                         // Contraseña
@@ -270,6 +278,8 @@ namespace Goteo\Controller {
                                 unset($_POST['user_npassword']);
                                 unset($_POST['user_rpassword']);
                                 $success[] = Text::get('user-password-changed');
+
+                                $log_action = 'Cambiado su contraseña';
                             }
                         }
                         if($user->save($errors)) {
@@ -280,6 +290,26 @@ namespace Goteo\Controller {
                         }
                     break;
                 }
+
+                if (!empty($log_action)) {
+                        /*
+                         * Evento Feed
+                         */
+                        $log = new Feed();
+                        $log->title = 'usuario modifica sus datos (dashboard)';
+                        $log->url = '/admin/users';
+                        $log->type = 'user';
+                        $log_text = '%s ha %s desde su dashboard';
+                        $log_items = array(
+                            Feed::item('user', $user->name, $user->id),
+                            Feed::item('relevant', $log_action)
+                        );
+                        $log->html = \vsprintf($log_text, $log_items);
+                        $log->add($errors);
+
+                        unset($log);
+                }
+
 			}
 
             $viewData = array(

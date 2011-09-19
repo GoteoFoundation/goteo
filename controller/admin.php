@@ -474,13 +474,15 @@ namespace Goteo\Controller {
                 $log->html = \vsprintf($log_text, $log_items);
                 $log->add($errors);
 
-                // si es publicado, hay un evento público
-                $log->title = $project->name;
-                $log->url = '/project/'.$project->id;
-                $log->scope = 'public';
-                $log->type = 'projects';
-                $log->html = Feed::item('relevant', 'Nuevo proyecto en Goteo').', desde ahora tienes 40 dís para apoyar este proyecto';
-                $log->add($errors);
+                if ($action == 'publish') {
+                    // si es publicado, hay un evento público
+                    $log->title = $project->name;
+                    $log->url = '/project/'.$project->id;
+                    $log->scope = 'public';
+                    $log->type = 'projects';
+                    $log->html = Feed::item('relevant', 'Nuevo proyecto en Goteo').', desde ahora tienes 40 dís para apoyar este proyecto';
+                    $log->add($errors);
+                }
 
                 unset($log);
             }
@@ -567,6 +569,25 @@ namespace Goteo\Controller {
                             switch ($action) {
                                 case 'add':
                                     $success = 'Revisión iniciada correctamente';
+
+                                    /*
+                                     * Evento Feed
+                                     */
+                                    $log = new Feed();
+                                    $log->title = 'valoración iniciada (admin)';
+                                    $log->url = '/admin/reviews';
+                                    $log->type = 'admin';
+                                    $log_text = 'El admin %s ha %s la valoración de %s';
+                                    $log_items = array(
+                                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                        Feed::item('relevant', 'Iniciado'),
+                                        Feed::item('project', $project->name, $project->id)
+                                    );
+                                    $log->html = \vsprintf($log_text, $log_items);
+                                    $log->add($errors);
+
+                                    unset($log);
+
                                     break;
                                 case 'edit':
                                     $success = 'Datos editados correctamente';
@@ -591,9 +612,31 @@ namespace Goteo\Controller {
 
                     break;
                 case 'close':
+                    // el get se hace con el id del proyecto
+                    $review = Model\Review::getData($id);
+
                     // marcamos la revision como completamente cerrada
                     if (Model\Review::close($id, $errors)) {
                         $message = 'La revisión se ha cerrado';
+
+                        /*
+                         * Evento Feed
+                         */
+                        $log = new Feed();
+                        $log->title = 'valoración finalizada (admin)';
+                        $log->url = '/admin/reviews';
+                        $log->type = 'admin';
+                        $log_text = 'El admin %s ha dado por %s la valoración de %s';
+                        $log_items = array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('relevant', 'Finalizada'),
+                            Feed::item('project', $review->name, $review->project)
+                        );
+                        $log->html = \vsprintf($log_text, $log_items);
+                        $log->add($errors);
+
+                        unset($log);
+
                     }
                     break;
                 case 'unready':
@@ -619,7 +662,31 @@ namespace Goteo\Controller {
                             'id' => $id,
                             'user' => $user
                         ));
-                        $assignation->save($errors);
+                        if ($assignation->save($errors)) {
+
+                            $userData = Model\User::getMini($user);
+                            $reviewData = Model\Review::getData($id);
+
+                            /*
+                             * Evento Feed
+                             */
+                            $log = new Feed();
+                            $log->title = 'asignar revision (admin)';
+                            $log->url = '/admin/reviews';
+                            $log->type = 'admin';
+                            $log_text = 'El admin %s ha %s a %s la revisión de %s';
+                            $log_items = array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', 'Asignado'),
+                                Feed::item('user', $userData->name, $userData->id),
+                                Feed::item('project', $reviewData->name, $reviewData->project)
+                            );
+                            $log->html = \vsprintf($log_text, $log_items);
+                            $log->add($errors);
+
+                            unset($log);
+
+                        }
                     }
                     break;
                 case 'unassign':
@@ -632,7 +699,31 @@ namespace Goteo\Controller {
                             'id' => $id,
                             'user' => $user
                         ));
-                        $assignation->remove($errors);
+                        if ($assignation->remove($errors)) {
+
+                            $userData = Model\User::getMini($user);
+                            $reviewData = Model\Review::getData($id);
+
+                            /*
+                             * Evento Feed
+                             */
+                            $log = new Feed();
+                            $log->title = 'asignar revision (admin)';
+                            $log->url = '/admin/reviews';
+                            $log->type = 'admin';
+                            $log_text = 'El admin %s ha %s a %s la revisión de %s';
+                            $log_items = array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', 'Desasignado'),
+                                Feed::item('user', $userData->name, $userData->id),
+                                Feed::item('project', $reviewData->name, $reviewData->project)
+                            );
+                            $log->html = \vsprintf($log_text, $log_items);
+                            $log->add($errors);
+
+                            unset($log);
+
+                        }
                     }
                     break;
                 case 'report':
@@ -713,6 +804,27 @@ namespace Goteo\Controller {
                     switch ($_POST['action']) {
                         case 'add':
                             $success = 'Proyecto destacado correctamente';
+
+                            $projectData = Model\Project::getMini($_POST['project']);
+
+                            /*
+                             * Evento Feed
+                             */
+                            $log = new Feed();
+                            $log->title = 'nuevo proyecto destacado en portada (admin)';
+                            $log->url = '/admin/promote';
+                            $log->type = 'admin';
+                            $log_text = 'El admin %s ha %s el proyecto %s';
+                            $log_items = array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', 'Destacado en portada'),
+                                Feed::item('project', $projectData->name, $projectData->id)
+                            );
+                            $log->html = \vsprintf($log_text, $log_items);
+                            $log->add($errors);
+
+                            unset($log);
+
                             break;
                         case 'edit':
                             $success = 'Destacado editado correctamente';
@@ -758,7 +870,29 @@ namespace Goteo\Controller {
                     Model\Promote::down($id);
                     break;
                 case 'remove':
-                    Model\Promote::delete($id);
+                    if (Model\Promote::delete($id)) {
+                        $projectData = Model\Project::getMini($id);
+
+                        /*
+                         * Evento Feed
+                         */
+                        $log = new Feed();
+                        $log->title = 'proyecto quitado portada (admin)';
+                        $log->url = '/admin/promote';
+                        $log->type = 'admin';
+                        $log_text = 'El admin %s ha %s el proyecto %s';
+                        $log_items = array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('relevant', 'Quitado de la portada'),
+                            Feed::item('project', $projectData->name, $projectData->id)
+                        );
+                        $log->html = \vsprintf($log_text, $log_items);
+                        $log->add($errors);
+
+                        unset($log);
+
+                        $success = 'Proyecto quitado correctamente';
+                    }
                     break;
                 case 'add':
                     // siguiente orden
@@ -1220,6 +1354,24 @@ namespace Goteo\Controller {
                             break;
                         case 'edit':
                             $success = 'Tipo editado correctamente';
+
+                            /*
+                             * Evento Feed
+                             */
+                            $log = new Feed();
+                            $log->title = 'modificacion de tipo de retorno/recompensa (admin)';
+                            $log->url = '/admin/icons';
+                            $log->type = 'admin';
+                            $log_text = "El admin %s ha %s el tipo de retorno/recompensa %s";
+                            $log_items = array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', 'Modificado'),
+                                Feed::item('project', $icon->name)
+                            );
+                            $log->html = \vsprintf($log_text, $log_items);
+                            $log->add($errors);
+                            unset($log);
+
                             break;
                     }
 				}
@@ -1350,6 +1502,24 @@ namespace Goteo\Controller {
                             break;
                         case 'edit':
                             $success = 'Licencia editada correctamente';
+
+                            /*
+                             * Evento Feed
+                             */
+                            $log = new Feed();
+                            $log->title = 'modificacion de licencia (admin)';
+                            $log->url = '/admin/licenses';
+                            $log->type = 'admin';
+                            $log_text = "El admin %s ha %s la licencia %s";
+                            $log_items = array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', 'Modificado'),
+                                Feed::item('project', $license->name)
+                            );
+                            $log->html = \vsprintf($log_text, $log_items);
+                            $log->add($errors);
+                            unset($log);
+
                             break;
                     }
 				}
@@ -1969,14 +2139,42 @@ namespace Goteo\Controller {
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $errors = array();
 
+                        $tocado = array();
                         // para crear se usa el mismo método save del modelo, hay que montar el objeto
-                        $user->email = $_POST['email'];
-                        $user->password = $_POST['password'];
+                        if (!empty($_POST['email'])) {
+                            $user->email = $_POST['email'];
+                            $tocado[] = 'el email';
+                        }
+                        if (!empty($_POST['password'])) {
+                            $user->password = $_POST['password'];
+                            $tocado[] = 'la contraseña';
+                        }
 
-                        if($user->update($errors)) {
-                          // mensaje de ok y volvemos a la lista de usuarios
-                          Message::Info('Datos actualizados');
-                          throw new Redirection('/admin/users');
+                        if(!empty($tocado) && $user->update($errors)) {
+
+                            /*
+                             * Evento Feed
+                             */
+                            $log = new Feed();
+                            $log->title = 'Operación sobre usuario (admin)';
+                            $log->url = '/admin/users';
+                            $log->type = 'user';
+                            $log_text = 'El admin %s ha %s del usuario %s';
+                            $log_items = array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', 'Tocado ' . implode (' y ', $tocado)),
+                                Feed::item('user', $user->name, $user->id)
+                            );
+                            $log->html = \vsprintf($log_text, $log_items);
+                            $log->add($errors);
+
+                            unset($log);
+
+
+                            // mensaje de ok y volvemos a la lista de usuarios
+                            Message::Info('Datos actualizados');
+                            throw new Redirection('/admin/users');
+                            
                         } else {
                             // si hay algun error volvemos a poner los datos en el formulario
                             $data = $_POST;
@@ -2000,51 +2198,79 @@ namespace Goteo\Controller {
 
                     // si llega post: ejecutamos + mensaje + seguimos editando
 
-                    /* Esto hay que pasarlo a un modelo */
+                    // operación y acción para el feed
+                    $sql = '';
                     switch ($subaction)  {
                         case 'ban':
-                            $sql = "UPDATE user SET active = 0 WHERE id = ?";
-                            Model\User::query($sql, array($id));
+                            $sql = "UPDATE user SET active = 0 WHERE id = :user";
+                            $log_action = 'Desactivado';
                             break;
                         case 'unban':
-                            $sql = "UPDATE user SET active = 1 WHERE id = ?";
-                            Model\User::query($sql, array($id));
+                            $sql = "UPDATE user SET active = 1 WHERE id = :user";
+                            $log_action = 'Activado';
                             break;
                         case 'show':
-                            $sql = "UPDATE user SET hide = 0 WHERE id = ?";
-                            Model\User::query($sql, array($id));
+                            $sql = "UPDATE user SET hide = 0 WHERE id = :user";
+                            $log_action = 'Mostrado';
                             break;
                         case 'hide':
-                            $sql = "UPDATE user SET hide = 1 WHERE id = ?";
-                            Model\User::query($sql, array($id));
+                            $sql = "UPDATE user SET hide = 1 WHERE id = :user";
+                            $log_action = 'Ocultado';
                             break;
                         case 'checker':
                             $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'checker')";
-                            Model\User::query($sql, array(':user'=>$id));
+                            $log_action = 'Hecho revisor';
                             break;
                         case 'nochecker':
-                            $sql = "DELETE FROM user_role WHERE role_id = 'checker' AND user_id = ?";
-                            Model\User::query($sql, array($id));
+                            $sql = "DELETE FROM user_role WHERE role_id = 'checker' AND user_id = :user";
+                            $log_action = 'Quitado de revisor';
                             break;
                         case 'translator':
                             $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'translator')";
-                            Model\User::query($sql, array(':user'=>$id));
+                            $log_action = 'Hecho traductor';
                             break;
                         case 'notranslator':
-                            $sql = "DELETE FROM user_role WHERE role_id = 'translator' AND user_id = ?";
-                            Model\User::query($sql, array($id));
+                            $sql = "DELETE FROM user_role WHERE role_id = 'translator' AND user_id = :user";
+                            $log_action = 'Quitado de traductor';
                             break;
                         case 'admin':
                             $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'admin')";
-                            Model\User::query($sql, array(':user'=>$id));
+                            $log_action = 'Hecho admin';
                             break;
                         case 'noadmin':
-                            $sql = "DELETE FROM user_role WHERE role_id = 'admin' AND user_id = ?";
-                            Model\User::query($sql, array($id));
+                            $sql = "DELETE FROM user_role WHERE role_id = 'admin' AND user_id = :user";
+                            $log_action = 'Quitado de admin';
                             break;
                     }
 
+
+                    if (!empty($sql)) {
+                        if (Model\User::query($sql, array(':user'=>$id))) {
+                            
+                            $user = Model\User::getMini($id);
+
+                            /*
+                             * Evento Feed
+                             */
+                            $log = new Feed();
+                            $log->title = 'Operación sobre usuario (admin)';
+                            $log->url = '/admin/users';
+                            $log->type = 'user';
+                            $log_text = 'El admin %s ha %s al usuario %s';
+                            $log_items = array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', $log_action),
+                                Feed::item('user', $user->name, $user->id)
+                            );
+                            $log->html = \vsprintf($log_text, $log_items);
+                            $log->add($errors);
+
+                            unset($log);
+                        }
+                    }
+
                     $user = Model\User::get($id);
+
 
                     // vista de gestión de usuario
                     return new View(
@@ -2167,13 +2393,13 @@ namespace Goteo\Controller {
                         $log->url = '/admin/invests';
                         $log->type = 'money';
                         $log_text = "%s ha aportado %s al proyecto %s en nombre de %s";
-                        $items = array(
+                        $log_items = array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                             Feed::item('money', $_POST['amount'].' &euro;'),
                             Feed::item('project', $projectData->name, $projectData->id),
                             Feed::item('user', $userData->name, $userData->id)
                         );
-                        $log->html = \vsprintf($log_text, $items);
+                        $log->html = \vsprintf($log_text, $log_items);
                         $log->add($errors);
                         unset($log);
                         
@@ -2496,6 +2722,35 @@ namespace Goteo\Controller {
                             $id = $post->id;
                         }
                         $action = $editing ? 'edit' : 'list';
+
+                        if ((bool) $post->publish) {
+                            /*
+                             * Evento Feed
+                             */
+                            $log = new Feed();
+                            $log->title = 'nueva entrada blog Goteo (admin)';
+                            $log->url = '/admin/blog';
+                            $log->type = 'admin';
+                            $log_text = 'El admin %s ha %s en el blog Goteo la entrada "%s"';
+                            $log_items = array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', 'Publicado'),
+                                Feed::item('blog', $post->title, $post->id)
+                            );
+                            $log->html = \vsprintf($log_text, $log_items);
+                            $log->add($errors);
+
+                            // evento público
+                            $log->title = $post->title;
+                            $log->url = '/blog/'.$post->id;
+                            $log->scope = 'public';
+                            $log->type = 'goteo';
+                            $log->html = Text::recorta($post->text, 250);
+                            $log->add($errors);
+
+                            unset($log);
+                        }
+
                     } else {
                         $errors[] = 'Ha habido algun problema al guardar los datos';
                         ////Text::get('dashboard-project-updates-fail');
@@ -2514,7 +2769,26 @@ namespace Goteo\Controller {
             switch ($action)  {
                 case 'remove':
                     // eliminar una entrada
+                    $tempData = Model\Blog\Post::get($id);
                     if (Model\Blog\Post::delete($id)) {
+                        /*
+                         * Evento Feed
+                         */
+                        $log = new Feed();
+                        $log->title = 'entrada quitada (admin)';
+                        $log->url = '/admin/blog';
+                        $log->type = 'admin';
+                        $log_text = 'El admin %s ha %s la entrada "%s" del blog de Goteo';
+                        $log_items = array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('relevant', 'Quitado'),
+                            Feed::item('blog', $tempData->title)
+                        );
+                        $log->html = \vsprintf($log_text, $log_items);
+                        $log->add($errors);
+
+                        unset($log);
+
                         unset($blog->posts[$id]);
                         $success[] = 'Entrada eliminada';
                     } else {
@@ -3007,6 +3281,27 @@ namespace Goteo\Controller {
                         ));
 
                         if ($item->save($errors)) {
+
+                            if (empty($_POST['id'])) {
+                                /*
+                                 * Evento Feed
+                                 */
+                                $log = new Feed();
+                                $log->title = 'nueva micronoticia (admin)';
+                                $log->url = '/admin/news';
+                                $log->type = 'admin';
+                                $log_text = 'El admin %s ha %s la micronoticia "%s"';
+                                $log_items = array(
+                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('relevant', 'Publicado'),
+                                    Feed::item('blog', $_POST['title'])
+                                );
+                                $log->html = \vsprintf($log_text, $log_items);
+                                $log->add($errors);
+
+                                unset($log);
+                            }
+
                             throw new Redirection($url);
                         }
                     } else {
@@ -3070,7 +3365,26 @@ namespace Goteo\Controller {
                     $model::down($id);
                     break;
                 case 'remove':
+                    $tempData = $model::get($id);
                     if ($model::delete($id)) {
+                        /*
+                         * Evento Feed
+                         */
+                        $log = new Feed();
+                        $log->title = 'micronoticia quitada (admin)';
+                        $log->url = '/admin/news';
+                        $log->type = 'admin';
+                        $log_text = 'El admin %s ha %s la micronoticia "%s"';
+                        $log_items = array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('relevant', 'Quitado'),
+                            Feed::item('blog', $tempData->title)
+                        );
+                        $log->html = \vsprintf($log_text, $log_items);
+                        $log->add($errors);
+
+                        unset($log);
+
                         throw new Redirection($url);
                     }
                     break;

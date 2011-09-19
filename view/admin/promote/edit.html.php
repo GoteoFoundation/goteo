@@ -12,6 +12,7 @@ $status = Model\Project::status();
 
 ?>
 <form method="post" action="/admin/promote">
+    <input type="hidden" name="action" value="<?php echo $this['action'] ?>" />
     <input type="hidden" name="order" value="<?php echo $promo->order ?>" />
     <input type="hidden" name="id" value="<?php echo $promo->id; ?>" />
 

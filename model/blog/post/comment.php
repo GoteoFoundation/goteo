@@ -55,7 +55,7 @@ namespace Goteo\Model\Blog\Post {
                     ON  user.id = comment.user
                     AND (user.hide = 0 OR user.hide IS NULL)
                 WHERE comment.post = ?
-                ORDER BY `date` DESC, comment.id DESC
+                ORDER BY comment.date ASC, comment.id ASC
                 ";
             
             $query = static::query($sql, array($post));

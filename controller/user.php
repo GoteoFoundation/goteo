@@ -6,6 +6,7 @@ namespace Goteo\Controller {
         Goteo\Core\Error,
         Goteo\Core\View,
 		Goteo\Model,
+        Goteo\Library\Feed,
         Goteo\Library\Text,
         Goteo\Library\Message,
         Goteo\library\Listing;
@@ -297,6 +298,28 @@ namespace Goteo\Controller {
                     if($user->save($errors)) {
                         Message::Info(Text::get('user-activate-success'));
                         $_SESSION['user'] = $user;
+
+                        /*
+                         * Evento Feed
+                         */
+                        $log = new Feed();
+                        $log->title = 'nuevo usuario registrado (confirmado)';
+                        $log->url = '/admin/users';
+                        $log->type = 'user';
+                        $log_text = 'Nuevo usuario en Goteo %s';
+                        $log_items = array(
+                            Feed::item('user', $user->name, $user->id)
+                        );
+                        $log->html = \vsprintf($log_text, $log_items);
+                        $log->add($errors);
+
+                        // evento público
+                        $log->scope = 'public';
+                        $log->type = 'community';
+                        $log->add($errors);
+
+                        unset($log);
+
                     }
                     else {
                         Message::Error($errors);

@@ -76,7 +76,7 @@ namespace Goteo\Controller {
                     $invest->cancel('RESP' . $Cresp);
                     $_POST['result'] = 'Fail';
 
-                    $log_text = "Ha habido una respuesta de Fallo de TPV (Codigo: {$Cresp}: ".$respTxt.") en el aporte de %s de %s al proyecto %s mediante TPV";
+                    $log_text = 'Ha habido una respuesta de <span class="red">Fallo de TPV (Codigo: {$Cresp}: '.$respTxt.')</span> en el aporte de %s de %s al proyecto %s mediante TPV';
 
                 } elseif (empty($_POST['Ds_ErrorCode'])) {
                     
@@ -94,7 +94,7 @@ namespace Goteo\Controller {
                     $invest->cancel($_POST['Ds_ErrorCode']);
                     $_POST['result'] = 'Fail';
 
-                    $log_text = "Ha habido un error de TPV (Codigo: {$Cerr}: ".$errTxt.") en el aporte de %s de %s al proyecto %s mediante TPV";
+                    $log_text = 'Ha habido un <span class="red">ERROR de TPV (Codigo: {$Cerr}: '.$errTxt.')</span> en el aporte de %s de %s al proyecto %s mediante TPV';
                     $doPublic = false;
                 }
 

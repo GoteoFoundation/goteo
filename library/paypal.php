@@ -200,7 +200,7 @@ namespace Goteo\Library {
                                 $log->title = 'Aporte cancelado por preaproval cancelado por el usuario paypal';
                                 $log->url = '/admin/invests';
                                 $log->type = 'system';
-                                $log_text = "Se ha cancelado el aporte de %s de %s (id: %s) al proyecto %s del dia %s por preapproval cancelado";
+                                $log_text = 'Se ha <span class="red">Cancelado</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s por preapproval cancelado';
                                 $items = array(
                                     Feed::item('user', $userData->name, $userData->id),
                                     Feed::item('money', $invest->amount.' &euro;'),
