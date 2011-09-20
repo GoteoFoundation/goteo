@@ -19,12 +19,21 @@ use Goteo\Core\ACL,
                     </fieldset>
                 </form>
             </li>
+            <?php if (!empty($_SESSION['user'])): ?>
             <li class="community"><a href="/community"><span><?php echo Text::get('regular-community'); ?></span></a>
                 <div>
-                    <ul>                        
+                    <ul>
+                        <li><a href="/community/activity"><span>Actividad</span></a></li>
+                        <li><a href="/community/sharemates"><span>Comunidad</span></a></li>
                     </ul>
                 </div>
             </li>
+            <?php else: ?>
+            <li class="login">
+                <a href="/community"><span><?php echo Text::get('regular-community'); ?></span></a>
+            </li>
+            <?php endif ?>
+
             <?php if (!empty($_SESSION['user'])): ?>            
             <li class="dashboard"><a href="/dashboard"><span><?php echo Text::get('dashboard-menu-main'); ?></span><img src="/image/<?php echo $_SESSION['user']->avatar->id; ?>/28/28/1" /></a>
                 <div>

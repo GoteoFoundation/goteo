@@ -27,7 +27,6 @@ $project = $this['project'];
     <?php echo new View('view/project/meter.html.php', array('project' => $project, 'level' => $level) ) ?>
     
     <div class="buttons">
-	    <?php if (!empty($project->round)) : ?><h3 class="title ronda"><?php echo $project->round . Text::get('regular-round'); ?></h3><?php endif; ?>
         <?php if ($project->status == 3) : // boton apoyar solo si esta en campaña ?>
         <a class="button violet supportit" href="/project/<?php echo $project->id; ?>/invest"><?php echo Text::get('regular-invest_it'); ?></a>
         <?php else : ?>

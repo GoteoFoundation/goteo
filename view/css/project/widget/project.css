@@ -229,7 +229,7 @@ div.widget.project div.meter > h3.ronda{
 	position:absolute;
 	top:4px;
 	right:5px;
-	text-transform:uppercase;
+    text-transform: lowercase;
 }
 
 div.widget.project div.meter div.graph .minimum {

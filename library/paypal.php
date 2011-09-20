@@ -74,7 +74,7 @@ namespace Goteo\Library {
 		           $preapprovalRequest->maxTotalAmountOfAllPayments = $invest->amount;
 		           $preapprovalRequest->requestEnvelope = new \RequestEnvelope();
 		           $preapprovalRequest->requestEnvelope->errorLanguage = "es_ES";
-		           $preapprovalRequest->senderEmail = $invest->account;
+//		           $preapprovalRequest->senderEmail = $invest->account;
 
 		           $ap = new \AdaptivePayments();
 		           $response=$ap->Preapproval($preapprovalRequest);
@@ -147,7 +147,7 @@ namespace Goteo\Library {
                 $payRequest->actionType = 'PAY_PRIMARY';
                 $payRequest->feesPayer = 'EACHRECEIVER';
                 // SENDER no vale para chained payments   (PRIMARYRECEIVER, EACHRECEIVER, SECONDARYONLY)
-                $payRequest->senderEmail = $invest->account;
+//                $payRequest->senderEmail = $invest->account;
                 $payRequest->requestEnvelope = new \RequestEnvelope();
                 $payRequest->requestEnvelope->errorLanguage = 'es_ES';
 

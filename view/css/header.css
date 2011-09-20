@@ -50,7 +50,7 @@ div#sub-header-secondary {
 }
 
 div#sub-header{
-   background-color: #faf8f8;
+    background-color: #faf8f8;
 }
 
 div#sub-header.banners{
@@ -299,6 +299,13 @@ div#sub-header > div > h2 .red{
 	color:#ee4843;
 }
 /* fin de lo del header rojo */
+
+/* lo del header verdeazulado */
+div#sub-header-secondary > div > h2 .greenblue,
+div#sub-header > div > h2 .greenblue{
+	color:#1eb2b2;
+}
+/* fin de lo del header verdeazulado */
 
 /* controles del carrusel de banners */
 .sliderbanners-ctrl {
@@ -673,11 +680,13 @@ div#header div#menu{
 	min-height:48px;
 }
 
+div#header div#menu > ul > li.community,
 div#header div#menu > ul > li.dashboard {
     background: transparent url('header/down-black.png') no-repeat right 30px;
 	position:relative;
 	top:3px;
 }
+
 
 div#header div#menu > ul > li.login fieldset > * {
     display: none;        
@@ -705,6 +714,7 @@ div#header div#menu > ul > li.dashboard > a {
 
 
 
+div#header div#menu > ul > li.community > a,
 div#header div#menu > ul > li.dashboard > a {
     padding-right:30px;
 	position:relative;
@@ -727,6 +737,7 @@ div#header div#menu > ul > li.dashboard:hover {
     background-color: #1db3b2;    
 }
 
+div#header div#menu > ul > li.community:hover,
 div#header div#menu > ul > li.dashboard:hover {
     background-image: url('header/down-white.png');
 }
@@ -741,10 +752,12 @@ div#header div#menu > ul > li.dashboard > a > span > em {
     display: none;
 }
 
+div#header div#menu > ul > li.community > div, 
 div#header div#menu > ul > li.dashboard > div {
     display: none;
 }
 
+div#header div#menu > ul > li.community:hover > div,
 div#header div#menu > ul > li.dashboard:hover > div {
     display: block;
     position: absolute;
@@ -753,6 +766,7 @@ div#header div#menu > ul > li.dashboard:hover > div {
     min-width: 100%;
 }
 
+div#header div#menu > ul > li.community > div > ul,
 div#header div#menu > ul > li.dashboard > div > ul {
     list-style: none;
     padding: 0;
@@ -760,15 +774,18 @@ div#header div#menu > ul > li.dashboard > div > ul {
     background-color: #1db3b2;
 }
 
+div#header div#menu > ul > li.community > div > ul > li,
 div#header div#menu > ul > li.dashboard > div > ul > li {
     border-top: 1px solid #a5e1e0;    
 }
 
+div#header div#menu > ul > li.community > div > ul > li *,
 div#header div#menu > ul > li.dashboard > div > ul > li * {
     color: white;
     text-transform: none;
 }
 
+div#header div#menu > ul > li.community > div > ul > li > a,
 div#header div#menu > ul > li.dashboard > div > ul > li > a {
     display: block;    
     padding: .6em 1em;
@@ -778,6 +795,7 @@ div#header div#menu > ul > li.dashboard > div > ul > li.logout > a > span{
 	color:#F00 !important;
 }
 
+div#header div#menu > ul > li.community > div > ul > li > a:hover,
 div#header div#menu > ul > li.dashboard > div > ul > li > a:hover {
     background-color: #78d1d1;
 }

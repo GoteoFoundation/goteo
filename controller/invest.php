@@ -35,8 +35,8 @@ namespace Goteo\Controller {
                 $errors = array();
                 $los_datos = $_POST;
 
-                if (empty($_POST['method']) || empty($_POST['amount'])) {
-                    Message::Error('Falta método de pago o cantidad');
+                if (empty($_POST['amount'])) {
+                    Message::Error('Tienes que poner el importe');
                     throw new Redirection("/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
 
@@ -84,7 +84,7 @@ namespace Goteo\Controller {
                         'amount' => $_POST['amount'],
                         'user' => $_SESSION['user']->id,
                         'project' => $project,
-                        'account' => $_POST['email'],
+                        'account' => $_SESSION['user']->email,
                         'method' => $_POST['method'],
                         'status' => '-1',               // aporte en proceso
                         'invested' => date('Y-m-d'),
@@ -103,7 +103,7 @@ namespace Goteo\Controller {
                             if (Tpv::preapproval($invest, $errors)) {
                                 die;
                             } else {
-                                Message::Error('Ha fallado la pasarela del banco');
+                                Message::Error('Ha fallado la pasarela del banco. ' . implode(',', $errors));
                             }
                             break;
                         case 'paypal':
@@ -111,7 +111,7 @@ namespace Goteo\Controller {
                             if (Paypal::preapproval($invest, $errors)) {
                                 die;
                             } else {
-                                Message::Error('Ha fallado la peticion paypal, verifica que pones correctamente tu cuenta paypal');
+                                Message::Error('Ha fallado la peticion paypal. ' . implode(',', $errors));
                             }
                             break;
                         case 'cash':

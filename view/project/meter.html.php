@@ -17,7 +17,7 @@ $days       = $project->days;
 // PHP la pifia (y mucho) con los cálculos en coma flotante
 if ($reached >= $minimum) {
 
-    $donemax = $horizontal ? 160 : 140;
+    $donemax = $horizontal ? 160 : 145;
 //    $minimum_done = 100;
     $minimum_done = min($donemax, round(($reached / $minimum) * 100));
     if ($reached >= $optimum) {

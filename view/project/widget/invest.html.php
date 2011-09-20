@@ -35,7 +35,7 @@ if (!in_array($_SESSION['user']->id, array('root', 'goteo', 'olivier', 'esenabre
     
     <form method="post" action="<?php echo $action; ?>">
 
-    <label><input type="text" id="amount" name="amount" class="amount" value="100" /><?php echo Text::get('invest-amount-tooltip') ?></label>
+    <label><input type="text" id="amount" name="amount" class="amount" value="" /><?php echo Text::get('invest-amount-tooltip') ?></label>
 </div>
 
     
@@ -101,18 +101,19 @@ if (!in_array($_SESSION['user']->id, array('root', 'goteo', 'olivier', 'esenabre
                 <label><?php echo $name; ?><input type="radio" name="method" value="<?php echo $id; ?>" checked="checked"/></label>
             <?php endforeach; ?>
         </fieldset>
--->
+
         <p>
             <label><?php echo Text::get('invest-payment-email') ?><br />
                 <input type="text" id="email" name="email" value="<?php echo $_SESSION['user']->email; ?>" />
             </label>
         </p>
+-->
             
 <input type="hidden" id="paymethod"  />
 
-<button type="submit" class="pay-tpv" name="method"  value="tpv">TPV</button>
-<button type="submit" class="pay-paypal" name="method"  value="paypal">PAYPAL</button>
-<button type="submit" class="pay-cash" name="method"  value="cash">Ca$h</button>
+<p><button type="submit" class="pay-tpv" name="method"  value="tpv">TPV</button></p>
+<p><button type="submit" class="pay-paypal" name="method"  value="paypal">PAYPAL</button></p>
+<p><button type="submit" class="pay-cash" name="method"  value="cash">Ca$h</button></p>
 
 <!-- <input type="submit" value="" /> -->
 

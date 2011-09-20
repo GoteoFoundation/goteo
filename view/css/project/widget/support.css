@@ -128,23 +128,24 @@ div.widget.project-support > div.meter {
     overflow: visible;
 }
 
-div.widget.project-support > div.meter > h3.ronda{
-	display:none;
-}
-
-body.project-show div#main > div.side > div.widget h3.title.ronda{
+body.project-show div#main > div.side > div.widget h3.title.ronda {
 	color:#20B3B2;
-	text-transform:uppercase;
+	position:absolute;
+	top:54px;
+	right:15px;
+    text-transform: lowercase;
 }
 
 div.widget.project-support div.graph {
+    background: url('support/over.png') no-repeat center top;
     width: 26px;
     overflow: visible;            
     border-bottom: 2px solid #20B3B2;
     font-size: 0;
     margin-left: 5px;
-    margin-top: 22px;
+/*    margin-top: 22px; */
     float: left;
+    padding-top: 22px;
 }
 
 div.widget.project-support div.graph > div.optimum,
@@ -215,7 +216,7 @@ div.widget.project-support div.tagmark {
     font-weight: bold;
     text-transform: uppercase;
     margin-left: -20px;
-    margin-top: -5px;
+    top: 10px;
     width: 235px;
     height: 20px;
     padding: 8px 30px 4px 35px;

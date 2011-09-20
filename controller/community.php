@@ -8,7 +8,12 @@ namespace Goteo\Controller {
 
     class Community extends \Goteo\Core\Controller {
 
-        public function index () {
+        public function index ($show = 'activity') {
+
+            // si show = activity -> feed
+
+            // si show = sharemates -> compartiendo intereses global
+
 
             $page = Page::get('community');
             $items = array();
@@ -17,7 +22,7 @@ namespace Goteo\Controller {
                 'view/community.html.php',
                 array(
                     'name' => $page->name,
-                    'description' => $page->description,
+                    'description' => $page->description . ' : ' . $show,
                     'content' => $page->content,
                     'items' => $items
                 )

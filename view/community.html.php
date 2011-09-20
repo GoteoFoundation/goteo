@@ -1,7 +1,12 @@
 <?php
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Library\Feed;
 
 $bodyClass = 'community about';
+
+$items_goteo     = Feed::getAll('goteo', 'public');
+$items_projects  = Feed::getAll('projects', 'public');
+$items_community = Feed::getAll('community', 'public');
 
 include 'view/prologue.html.php';
 include 'view/header.html.php';
@@ -15,11 +20,12 @@ include 'view/header.html.php';
 
     <div id="main">
 
+<!--
         <div class="widget">
             <h3 class="title"><?php echo $this['name']; ?></h3>
             <?php echo $this['content']; ?>
         </div>
-
+-->
         <div class="widget feed">
         	<script type="text/javascript">
 			jQuery(document).ready(function($) {
@@ -33,6 +39,7 @@ include 'view/header.html.php';
                 <div class="block goteo">
                    <h4>Goteo</h4>
                    <div class="item scroll-pane">
+                        <?php \trace($items_goteo); ?>
                    		<div class="subitem">
                             <div class="content-avatar">
                             	<a href="/user/olivier" class="avatar">
@@ -83,6 +90,7 @@ include 'view/header.html.php';
                 <div class="block projects">
                 	<h4>Proyectos</h4>  
                     <div class="item scroll-pane">
+                        <?php \trace($items_projects); ?>
                         <div class="subitem">
                             <div class="content-image">
                                 <a href="/user/olivier" class="image">
@@ -161,6 +169,7 @@ include 'view/header.html.php';
                 <div class="block community last">
                 	<h4>Comunidad</h4>                
                     <div class="item scroll-pane">
+                        <?php \trace($items_community); ?>
                         
                         <div class="subitem">                           
                            <span class="datepub">Publicado hace 2 horas</span>

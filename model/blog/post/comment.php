@@ -2,7 +2,8 @@
 
 namespace Goteo\Model\Blog\Post {
 
-    use Goteo\Library\Text;
+    use Goteo\Library\Text,
+        Goteo\Library\Feed;
 
     class Comment extends \Goteo\Core\Model {
 
@@ -11,7 +12,8 @@ namespace Goteo\Model\Blog\Post {
             $post,
             $date,
             $text,
-            $user;
+            $user,
+            $timeago;
 
         /*
          *  Devuelve datos de una comentario
@@ -48,6 +50,7 @@ namespace Goteo\Model\Blog\Post {
                     comment.id,
                     comment.post,
                     DATE_FORMAT(comment.date, '%d | %m | %Y') as date,
+                    comment.date as timer,
                     comment.text,
                     comment.user
                 FROM    comment
@@ -65,7 +68,11 @@ namespace Goteo\Model\Blog\Post {
 
                 // reconocimiento de enlaces y saltos de linea
                 $comment->text = nl2br(Text::urlink($comment->text));
-                
+
+                //hace tanto
+                $comment->timeago = Feed::time_ago($comment->timer);
+
+
                 $list[$comment->id] = $comment;
             }
 

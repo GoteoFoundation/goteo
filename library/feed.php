@@ -148,7 +148,7 @@ namespace Goteo\Library {
                         FROM feed
                         WHERE feed.scope = :scope $sqlType
                         ORDER BY datetime DESC
-                        LIMIT 999
+                        LIMIT 99
                         ";
 
                 $query = Model::query($sql, $values);
@@ -238,7 +238,7 @@ namespace Goteo\Library {
                 if ($granularity == '0') { break; }
             }
 
-            return $retval;
+            return empty($retval) ? 'nada' : $retval;
         }
 
 

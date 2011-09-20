@@ -63,7 +63,7 @@ $level = (int) $this['level'] ?: 3;
                    </a>
                    </h<?php echo $level ?>>
                    <a name="message<?php echo $message->id; ?>" />
-                   <div class="date"><span><?php echo $message->date ?></span></div>
+                   <div class="date"><span>Hace <?php echo $message->timeago ?></span></div>
                    <blockquote><?php echo $message->message; ?></blockquote>
                    <div class="actions">
                         <a class="" href="#" onclick="answer('<?php echo $message->id; ?>')"><?php echo Text::get('project-messages-answer_it'); ?></a>
@@ -89,7 +89,7 @@ $level = (int) $this['level'] ?: 3;
                            </a>
                            </h<?php echo $level ?>>
                            <a name="message<?php echo $child->id; ?>" />
-                           <div class="date"><span><?php echo $child->date; ?></span></div>
+                           <div class="date"><span>Hace <?php echo $child->timeago; ?></span></div>
                            <blockquote><?php echo $child->message; ?></blockquote>
                            <?php // si puede borrar este mensaje
                            if (\Goteo\Core\ACL::check("/message/delete/{$child->id}/{$project->id}")) : ?>

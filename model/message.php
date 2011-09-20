@@ -2,7 +2,8 @@
 
 namespace Goteo\Model {
 
-    use Goteo\Library\Text;
+    use Goteo\Library\Text,
+        Goteo\Library\Feed;
 
     class Message extends \Goteo\Core\Model {
 
@@ -15,7 +16,8 @@ namespace Goteo\Model {
             $message, // el texto del mensaje en si
             $responses = array(), // array de instancias mensaje que son respuesta a este
             $blocked = 0, //no se puede editar ni borrar (es un mensaje thread de colaboracion)
-            $closed = 0; // no se puede responder
+            $closed = 0, // no se puede responder
+            $timeago;
 
         /*
          *  Devuelve datos de un mensaje
@@ -34,13 +36,24 @@ namespace Goteo\Model {
                 // reconocimiento de enlaces y saltos de linea
                 $message->message = nl2br(Text::urlink($message->message));
 
+                //hace tanto
+                $message->timeago = Feed::time_ago($message->date);
+
                 if (empty($message->thread)) {
                     $query = static::query("
                         SELECT  *
                         FROM  message
                         WHERE thread = ?
                         ", array($id));
-                    $message->responses = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+
+                    foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $response) {
+
+                        //hace tanto
+                        $response->timeago = Feed::time_ago($response->date);
+
+                        $message->responses[] = $response;
+                    }
+
                 }
 
                 return $message;
@@ -66,6 +79,9 @@ namespace Goteo\Model {
                 
                 // reconocimiento de enlaces y saltos de linea
                 $message->message = nl2br(Text::urlink($message->message));
+
+                //hace tanto
+                $message->timeago = Feed::time_ago($message->date);
 
                 $query = static::query("
                     SELECT  id
