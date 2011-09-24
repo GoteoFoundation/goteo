@@ -693,7 +693,8 @@ namespace Goteo\Model {
                         email
                     FROM user
                     WHERE BINARY id = :username
-                    AND BINARY email = :email",
+                    AND BINARY email = :email
+                    AND active = 1",
 				array(
 					':username' => trim($username),
 					':email'    => trim($email)
@@ -740,6 +741,58 @@ namespace Goteo\Model {
                 if ($mail->send($errors)) {
                     return true;
                 }
+			}
+			return false;
+		}
+
+		/**
+		 * Verificacion de darse de baja
+		 *
+		 * @param string $email    Email de la cuenta
+		 * @return boolean true|false  Correctos y mail enviado
+		 */
+		public static function leaving ($email) {
+            $query = self::query("
+                    SELECT
+                        id,
+                        name,
+                        email
+                    FROM user
+                    WHERE BINARY email = :email
+                    AND active = 1
+                    AND hide = 0
+                    ",
+				array(
+					':email'    => trim($email)
+				)
+			);
+			if($row = $query->fetchObject()) {
+                // tenemos id, nombre, email
+                // genero el token
+                $token = md5(uniqid()) . '¬' . $row->email;
+                self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $row->id, ':token' => $token));
+
+                // Obtenemos la plantilla para asunto y contenido
+                $template = Template::get(9);
+
+                // Sustituimos los datos
+                $subject = $template->title;
+
+                // En el contenido:
+                $search  = array('%USERNAME%', '%URL%');
+                $replace = array($row->name, SITE_URL . '/user/leave/' . base64_encode($token));
+                $content = \str_replace($search, $replace, nl2br($template->text));
+                // Email de recuperacion
+                $mail = new Mail();
+                $mail->to = $row->email;
+                $mail->toName = $row->name;
+                $mail->subject = $subject;
+                $mail->content = $content;
+
+                $mail->html = true;
+                $mail->send($errors);
+                
+                return true;
 			}
 			return false;
 		}
@@ -975,6 +1028,23 @@ namespace Goteo\Model {
             self::query('UPDATE user SET worth = :worth WHERE id = :id', array(':id' => $userId, ':worth' => $worth));
 
             return $worth;
+        }
+
+        /**
+         * Metodo para cancelar la cuenta de usuario
+         * Nos e borra nada, se desactiva y se oculta.
+         *
+         * @param string $userId
+         * @return bool
+         */
+        public static function cancel($userId) {
+
+            if (self::query('UPDATE user SET active = 0, hide = 1 WHERE id = :id', array(':id' => $userId))) {
+                return true;
+            } else {
+                return false;
+            }
+
         }
 
 

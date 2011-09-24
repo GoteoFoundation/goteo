@@ -374,7 +374,7 @@ namespace Goteo\Model {
         /*
          * Usuarios que han aportado aun proyecto
          */
-        public static function investors ($project) {
+        public static function investors ($project, $projNum = true) {
             $investors = array();
 
             $sql = "
@@ -384,13 +384,17 @@ namespace Goteo\Model {
                     user.avatar as avatar,
                     invest.amount as amount,
                     DATE_FORMAT(invest.invested, '%d/%m/%Y') as date,
-                    (SELECT
+                    ";
+            if ($projNum) {
+                $sql .= "(SELECT
                         COUNT(DISTINCT(project))
                      FROM invest as invb
                      WHERE invb.user = invest.user
                      AND (invb.status = 0 OR invb.status = 1)
-                     ) as projects,
-                     user.hide as hide,
+                     ) as projects,";
+            }
+
+            $sql .= "user.hide as hide,
                      invest.anonymous as anonymous
                 FROM    invest
                 INNER JOIN user

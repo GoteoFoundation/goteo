@@ -7,17 +7,14 @@ use Goteo\Core\View,
 $user = $this['user'];
 
 $worthcracy = Worth::getAll();
-$level = (int) $this['level'] ?: 4;
-
-
 ?>
 <div class="supporter">
 
     <span class="avatar"><img src="/image/<?php echo $user->avatar; ?>/43/43/1" /></span>
     <?php if ($user->user != 'anonymous') : ?>
-    <h<?php echo $level ?>><a href="/user/<?php echo htmlspecialchars($user->user) ?>"><?php echo $user->name; ?></a></h<?php echo $level ?>>
+    <h4><a href="/user/<?php echo htmlspecialchars($user->user) ?>"><?php echo $user->name; ?></a></h4>
     <?php else : ?>
-    <h<?php echo $level ?> class="aqua"><?php echo Text::recorta($user->name,40); ?></h<?php echo $level ?>>
+    <h4 class="aqua"><?php echo Text::recorta($user->name,40); ?></h4>
     <?php endif; ?>
 
     <dl>

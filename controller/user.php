@@ -314,6 +314,8 @@ namespace Goteo\Controller {
                         $log->add($errors);
 
                         // evento público
+                        $log->title = $user->name;
+                        $log->url = null;
                         $log->scope = 'public';
                         $log->type = 'community';
                         $log->add($errors);
@@ -377,8 +379,7 @@ namespace Goteo\Controller {
          *
          * - Si llega un hash, verificar y darle acceso hasta su dashboard /profile/access para que la cambien
          *
-         * @param string $username  Nombre de usuario
-         * @param string $email     Email de la cuenta
+         * @param string $token     Codigo
          */
         public function recover ($token = null) {
 
@@ -417,6 +418,65 @@ namespace Goteo\Controller {
 
             return new View (
                 'view/user/recover.html.php',
+                array(
+                    'error'   => $error,
+                    'message' => $message
+                )
+            );
+
+        }
+
+        /**
+         * Darse de baja
+         * - Si no llega nada, mostrar formulario para que pongan el email de su cuenta
+         * - Si llega post es una peticion, comprobar que el email que han puesto es válido
+         *      si no es, dejarlos en el formulario y mensaje de error
+         *      si es válido, enviar email con la url y mensaje de ok
+         *
+         * - Si llega un hash, verificar y dar de baja la cuenta (desactivar y ocultar)
+         *
+         * @param string $token     Codigo
+         */
+        public function leave ($token = null) {
+
+            // si el token mola, lo doy de baja
+            if (!empty($token)) {
+                $token = base64_decode($token);
+                $parts = explode('¬', $token);
+                if(count($parts) > 1) {
+                    $query = Model\User::query('SELECT id FROM user WHERE email = ? AND token = ?', array($parts[1], $token));
+                    if($id = $query->fetchColumn()) {
+                        if(!empty($id)) {
+                            // el token coincide con el email y he obtenido una id
+                            if (Model\User::cancel($id)) {
+                                Message::Info('Te hemos dado de baja'); //Text::get
+                                throw new Redirection('/user/login');
+                            } else {
+                                Message::Error('No hemos podido darte de baja, contáctanos'); //Text::get
+                                throw new Redirection('/user/login');
+                            }
+                        }
+                    }
+                }
+
+                $error = 'El código no es válido';//Text::get('leave-token-incorrect');
+            }
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['leaving'])) {
+                $email    = $_POST['email'];
+                if (Model\User::leaving($email)) {
+                    // se pue recuperar
+                    $message = 'Te hemos enviado un email para completar el proceso. Verifica también la carpeta de correo no deseado o spam.';
+                    //Text::get('leave-email-sended');
+                }
+                else {
+                    $error = 'No hemos encontrado ninguna cuenta con este email en nuestra base de datos';
+                    //Text::get('leave-request-fail');
+                }
+            }
+
+            return new View (
+                'view/user/leave.html.php',
                 array(
                     'error'   => $error,
                     'message' => $message

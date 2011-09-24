@@ -7,6 +7,7 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model,
+        Goteo\Library\Message,
         Goteo\Library\Feed,
         Goteo\Library\Page,
         Goteo\Library\Mail,
@@ -17,17 +18,28 @@ namespace Goteo\Controller {
         /*
          *  Muy guarro para poder moverse mientras desarrollamos
          */
-        public function index ($section = null) {
+        public function index () {
 
             $page = Page::get('review');
 
             $message = \str_replace('%USER_NAME%', $_SESSION['user']->name, $page->content);
 
+            $user = $_SESSION['user'];
+
+            $reviews = Model\Review::assigned($user->id);
+            // si no hay proyectos asignados no tendria que estar aqui
+            if (count($reviews) == 0) {
+                $message = 'No tienes asignada ninguna revisión de proyectos';
+            }
+            
             return new View (
                 'view/review/index.html.php',
                 array(
                     'message' => $message,
-                    'menu'    => self::menu()
+                    'menu'    => self::menu(),
+                    'section' => 'activity',
+                    'option'  => 'summary',
+                    'reviews' => $reviews
                 )
             );
 
@@ -120,11 +132,6 @@ namespace Goteo\Controller {
                 }
             }
 
-
-
-
-
-
             if (empty($review)) {
                 $review = $reviews[0];
             }
@@ -139,7 +146,15 @@ namespace Goteo\Controller {
 
             $_SESSION['review'] = $review;
 
-            
+            if ($option == 'evaluate') {
+                //Text::get
+                if ($review->ready == 1) {
+                    Message::Info('Has dado por terminada esta revisión, no pueder realizar más cambios');
+                } else {
+                    Message::Info('Los criterios y los campos de evaluación / mejoras se guardan automáticamente al modificarse');
+                }
+            }
+
             // view data basico para esta seccion
             $viewData = array(
                     'menu'    => self::menu(),

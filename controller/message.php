@@ -240,6 +240,7 @@ namespace Goteo\Controller {
                     // y el mensaje público
                     $log->title = $_SESSION['user']->name;
                     $log->url = '/user/profile/'.$_SESSION['user']->id;
+                    $log->image = $_SESSION['user']->avatar->id;
                     $log->scope = 'public';
                     $log->type = 'community';
 

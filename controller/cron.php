@@ -85,6 +85,8 @@ namespace Goteo\Controller {
                     $log->add($errors);
 
                     // evento público
+                    $log->title = $project->name;
+                    $log->url = null;
                     $log->scope = 'public';
                     $log->type = 'projects';
                     $log->add($errors);
@@ -126,10 +128,18 @@ namespace Goteo\Controller {
                         $log_items = array(
                             Feed::item('project', $project->name, $project->id),
                             Feed::item('relevant', 'caducado sin éxito'),
-                            Feed::item('money', $amount.' &euro; ('.\number_format($per_amount, 2).'%) de aportes sobre minimo')
+                            Feed::item('money', $amount.' &euro; ('.\round($per_amount).'%) de aportes sobre minimo')
                         );
                         $log->html = \vsprintf($log_text, $log_items);
                         $log->add($errors);
+
+                        // evento público
+                        $log->title = $project->name;
+                        $log->url = null;
+                        $log->scope = 'public';
+                        $log->type = 'projects';
+                        $log->add($errors);
+
                         unset($log);
 
                         echo '<br />';
@@ -162,6 +172,14 @@ namespace Goteo\Controller {
                             );
                             $log->html = \vsprintf($log_text, $log_items);
                             $log->add($errors);
+
+                            // evento público
+                            $log->title = $project->name;
+                            $log->url = null;
+                            $log->scope = 'public';
+                            $log->type = 'projects';
+                            $log->add($errors);
+
                             unset($log);
                             echo '<br />';
                         } else {
@@ -180,6 +198,14 @@ namespace Goteo\Controller {
                             );
                             $log->html = \vsprintf($log_text, $log_items);
                             $log->add($errors);
+
+                            // evento público
+                            $log->title = $project->name;
+                            $log->url = null;
+                            $log->scope = 'public';
+                            $log->type = 'projects';
+                            $log->add($errors);
+
                             unset($log);
                             echo '<br />';
                         }

@@ -27,6 +27,30 @@ if (!$post instanceof Model\Glossary) {
     }
 
 ?>
+<script type="text/javascript" src="/view/js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	// Lanza wysiwyg contenido
+	CKEDITOR.replace('text_editor', {
+		toolbar: 'Full',
+		toolbar_Full: [
+				['Source','-'],
+				['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
+				['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+				'/',
+				['Bold','Italic','Underline','Strike'],
+				['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+				['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+				['Link','Unlink','Anchor'],
+                ['Image','Format','FontSize'],
+			  ],
+		skin: 'kama',
+		language: 'es',
+		height: '300px',
+		width: '675px'
+	});
+});
+</script>
 
 <form method="post" action="/admin/glossary/<?php echo $this['action']; ?>/<?php echo $post->id; ?>" class="project" enctype="multipart/form-data">
 

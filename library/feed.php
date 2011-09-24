@@ -12,12 +12,14 @@ namespace Goteo\Library {
         public
             $id,
             $title, // titulo entrada o nombre usuario
-            $url, // enlace del titulo
+            $url = null, // enlace del titulo
+            $image = null, // enlace del titulo
             $scope, // ambito del evento (public, admin)
             $type, // tipo de evento  ($public_types , $admin_types)
             $timeago, // el hace tanto
             $date, // fecha y hora del evento
             $html, // contenido del evento en codigo html
+            $unique = false, // si es un evento unique, no lo grabamos si ya hay un evento con esa url
             $text,  // id del texto dinamico
             $params,  // (array serializado en bd) parametros para el texto dinamico
             $user, // usuario asociado al evento
@@ -142,6 +144,7 @@ namespace Goteo\Library {
                             feed.id as id,
                             feed.title as title,
                             feed.url as url,
+                            feed.image as image,
                             DATE_FORMAT(feed.datetime, '%H:%i %d|%m|%Y') as date,
                             feed.datetime as timer,
                             feed.html as html
@@ -179,19 +182,37 @@ namespace Goteo\Library {
 		 */
 		public function add(&$errors = array()) {
 
+            if (empty($this->scope)) $this->scope = 'admin';
+            if (empty($this->type)) $this->type = 'system';
+
+
+            // primero, verificar si es unique, no duplicarlo
+            if ($this->unique === true) {
+                $query = Model::query("SELECT id FROM feed WHERE url = :url AND scope = :scope AND type = :type",
+                    array(
+                    ':url' => $this->url,
+                    ':scope' => $this->scope,
+                    ':type' => $this->type
+                ));
+                if ($query->fetchColumn(0) != false) {
+                    return true;
+                }
+            }
+
   			try {
                 $values = array(
                     ':title' => $this->title,
                     ':url' => $this->url,
+                    ':image' => $this->image,
                     ':scope' => !empty($this->scope) ? $this->scope : 'admin' ,
                     ':type' => !empty($this->type) ? $this->type : 'system',
                     ':html' => $this->html
                 );
 
 				$sql = "INSERT INTO feed
-                            (id, title, url, scope, type, html)
+                            (id, title, url, scope, type, html, image)
                         VALUES
-                            ('', :title, :url, :scope, :type, :html)
+                            ('', :title, :url, :scope, :type, :html, :image)
                         ";
 				if (Model::query($sql, $values)) {
                     return true;
@@ -257,6 +278,124 @@ namespace Goteo\Library {
 
 
         }
+
+        /**
+         *  Genera codigo html para feed público
+         *
+         *  segun tenga imagen, ebnlace, titulo, tipo de enlace
+         *
+         */
+        public static function subItem ($item) {
+
+            $content = '<div class="subitem">';
+
+           // si enlace -> título como texto del enlace
+           if (!empty($item->url)) {
+                // si imagen -> segun enlace:
+                if (!empty($item->image)) {
+
+                    if (substr($item->url, 0, 5) == '/user') {
+                        $content .= '<div class="content-avatar">
+                        <a href="'.$item->url.'" class="avatar"><img src="/image/'.$item->image.'/32/32/1" /></a>
+                        <a href="'.$item->url.'" class="username">'.$item->title.'</a><br/>
+                        <span class="datepub">Publicado hace '.$item->timeago.'</span>
+                        </div>';
+                    } else {
+                        $content .= '<div class="content-image">
+                        <a href="'.$item->url.'" class="image"><img src="/image/'.$item->image.'/90/60/1" /></a>
+                        <a href="'.$item->url.'" class="project light-blue">'.$item->title.'</a>
+                        <span class="datepub">Publicado hace '.$item->timeago.'</span>
+                        </div>';
+                    }
+                } else {
+                    // solo titulo con enlace
+                    $content .= '<div class="content-title">
+                        <h5 class="light-blue"><a href="'.$item->url.'" class="project light-blue">'.$item->title.'</a></h5>
+                        <span class="datepub">Publicado hace '.$item->timeago.'</span>
+                   </div>';
+                }
+           } else {
+               // solo el timeago
+               $content .= '<span class="datepub">Publicado hace '.$item->timeago.'</span>';
+           }
+
+           // y lo que venga en el html
+           $content .= '<div class="content-pub">'.$item->html.'</div>';
+
+           $content .= '</div>';
+
+           return $content;
+        }
+        /* MAQUETACION
+         *
+               <!-- entrada blog con autor (con imagen, titulo y enlace) -->
+                <div class="subitem">
+                    <!-- avatar y nombre del autor -->
+                    <div class="content-avatar">
+                        <a href="/user/olivier" class="avatar">
+                            <img src="/image/119/43/43/1" />
+                        </a>
+                        <a href="/user/olivier" class="username">Olivier</a><br/>
+                        <span class="datepub">Publicado hace 2 horas</span>
+                    </div>
+                    <!--  -->
+                    <div class="content-pub">
+                    <span class="blue">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</span>, when an <a class="light-blue" href="#">unknown printer</a> took a galley of type and scrambled it to make a type specimen book. It has <span class="light-blue">Twittometro</span> not only five centuries, but also the leap into electronic typesetting.
+                    </div>
+                </div>
+
+
+               <!-- item entrada blog (con titulo y enlace) -->
+                <div class="subitem">
+                    <!-- titulo y enlace -->
+                    <div class="content-title">
+                        <h5 class="light-blue">Felicitamos al proyecto Canal Alpha</h5>
+                        <span class="datepub">Publicado hace 2 horas</span>
+                   </div>
+                    <!-- // titulo y enlace -->
+                   <div class="content-pub">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy <a href="#" class="blue">text ever since the 1500s</a>, when an unknown printer took a galley of type and <span class="red">scrambled it to make a type specimen book</span>. It has <a class="violet" href="#">survived not only </a>five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It <span class="light-blue">was popularised in the 1960s</span> with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                   </div>
+                </div>
+         *
+         *
+                <!-- proyecto con imagen, titulo y enlace -->
+                <div class="subitem">
+                    <div class="content-image">
+                        <a href="/user/olivier" class="image">
+                            <img src="/image/119/90/60/1" />
+                        </a>
+                        <a href="/user/olivier" class="project light-blue">TodoJunto LetterPress</a><br/>
+                        <span class="datepub">Publicado hace 2 horas</span>
+                    </div>
+                    <div class="content-pub">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's <span class="violet">standard dummy text ever since </span>the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen.
+                    </div>
+                </div>
+
+                <!-- evento sin título ni enlace -->
+                <div class="subitem">
+                   <span class="datepub">Publicado hace 2 horas</span>
+                   <div class="content-pub">
+                   Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                   </div>
+                </div>
+         *
+         *
+                <!-- usuario con imagen, titulo y enlace -->
+                <div class="subitem">
+                    <div class="content-avatar">
+                        <a href="/user/olivier" class="avatar">
+                            <img src="/image/119/24/24/1" />
+                        </a>
+                        <a href="/user/olivier" class="username">Andres P.</a><br/>
+                        <span class="datepub">Publicado hace 2 d�as</span>
+                    </div>
+                    <div class="content-pub">
+                    Lorem Ipsum is simply <span class="light-blue">dummy </span>text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text <span class="grey">ever</span>.
+                    </div>
+                </div>
+         * 
+         */
 
     }
 }

@@ -176,6 +176,16 @@ body.dashboard div#main div.status #project-status h3{
 	font-size:20px;
 }
 
+body.dashboard div#main div#project-support h3.title.ronda {
+	color:#20B3B2;
+	position:absolute;
+	top:20px;
+	left:220px;
+    text-transform: lowercase;
+    background: none !important;
+}
+
+
 /* Lista entradas */
 body.dashboard div#main div.post {
     margin: 20px;

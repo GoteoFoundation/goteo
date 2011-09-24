@@ -27,28 +27,25 @@ namespace Goteo\Library {
 			try {
                 $project = Project::getMini($invest->project);
 
-
-		        /* The servername and serverport tells PayPal where the buyer
-		           should be directed back to after authorizing payment.
-		           In this case, its the local webserver that is running this script
-		           Using the servername and serverport, the return URL is the first
-		           portion of the URL that buyers will return to after authorizing payment                */
-
 		           /* The returnURL is the location where buyers return when a
 		            payment has been succesfully authorized.
 		            The cancelURL is the location buyers are sent to when they hit the
 		            cancel button during authorization of payment during the PayPal flow                 */
-		           $returnURL = SITE_URL."/invest/confirmed/" . $invest->project . "/" . $invest->id; // a difundirlo @TODO mensaje gracias si llega desde un preapproval
-		           $cancelURL = SITE_URL."/invest/fail/" . $invest->project . "/" . $invest->id; // a la página de aportar para intentarlo de nuevo
+                
+                    $returnURL = SITE_URL."/invest/confirmed/" . $invest->project . "/" . $invest->id; // a difundirlo @TODO mensaje gracias si llega desde un preapproval
+                    $cancelURL = SITE_URL."/invest/fail/" . $invest->project . "/" . $invest->id; // a la página de aportar para intentarlo de nuevo
 
                     // desde hoy hasta los dias que le falten para finalizar la ronda (mas uno porque no queremos pillarnos los dedos por ser el mismo día)
+                    $remain = Project::daysRemain($invest->project);
+                    $remain++;
+
                     date_default_timezone_set('UTC');
                     $currDate = getdate();
                     $hoy = $currDate['year'].'-'.$currDate['mon'].'-'.$currDate['mday'];
                     $startDate = strtotime($hoy);
                     $startDate = date('Y-m-d', mktime(date('h',$startDate),date('i',$startDate),0,date('m',$startDate),date('d',$startDate),date('Y',$startDate)));
                     $endDate = strtotime($hoy);
-                    $endDate = date('Y-m-d', mktime(0,0,0,date('m',$endDate)+11,date('d',$endDate),date('Y',$endDate)));
+                    $endDate = date('Y-m-d', mktime(0,0,0,date('m',$endDate),date('d',$endDate)+$remain,date('Y',$endDate)));
 
 
 		           /* Make the call to PayPal to get the preapproval token

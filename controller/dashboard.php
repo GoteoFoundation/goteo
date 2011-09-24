@@ -422,7 +422,7 @@ namespace Goteo\Controller {
             }
 
             // tenemos proyecto de trabajo, comprobar si el proyecto esta en estado de tener blog
-            if ($option == 'updates' && in_array($project->status, array(1,2,6))) {
+            if ($option == 'updates' && $project->status < 3) {
                 $errors[] = Text::get('dashboard-project-blog-wrongstatus');
                 $action = 'none';
             } elseif ($option == 'updates') {
@@ -656,8 +656,9 @@ namespace Goteo\Controller {
                                             // evento público
                                             $log->title = $_SESSION['user']->name;
                                             $log->url = '/user/profile/'.$_SESSION['user']->id;
+                                            $log->image = $_SESSION['user']->avatar->id;
                                             $log->scope = 'public';
-                                            $log->type = 'projects';
+                                            $log->type = 'users';
                                             $log_text = 'Ha publicado una nueva %s en el proyecto %s, con el título "%s"';
                                             $log_items = array(
                                                 Feed::item('message', 'Colaboración'),
@@ -792,6 +793,8 @@ namespace Goteo\Controller {
 
                                 // evento público
                                 $log->title = $_SESSION['user']->name;
+                                $log->url = '/user/profile/'.$_SESSION['user']->id;
+                                $log->image = $_SESSION['user']->avatar->id;
                                 $log->scope = 'public';
                                 $log->type = 'community';
                                 $log->add($errors);
@@ -979,7 +982,9 @@ namespace Goteo\Controller {
                         'summary'  => Text::get('dashboard-menu-projects-summary'),
                         'updates'  => Text::get('dashboard-menu-projects-updates'),
                         'widgets'  => Text::get('dashboard-menu-projects-widgets'),
-                        'contract' => Text::get('dashboard-menu-projects-contract'),
+/* si no lo tenemos lo van a teenr que gestionar ofline
+ *                         'contract' => Text::get('dashboard-menu-projects-contract'), 
+ */
                         'rewards'  => Text::get('dashboard-menu-projects-rewards'),
                         'supports' => Text::get('dashboard-menu-projects-supports')
                     )

@@ -3,6 +3,10 @@ body.about div#main div.widget {
     margin-bottom: 15px;
 }
 
+body.about div#sub-header {
+    min-height: 100px;
+}
+
 div.field {
     margin-top: 10px;
 }

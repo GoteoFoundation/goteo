@@ -388,15 +388,18 @@ namespace Goteo\Model {
                 // Image
                 if (is_array($this->image) && !empty($this->image['name'])) {
                     $image = new Image($this->image);
-                    $image->save();
-                    $this->gallery[] = $image;
-                    $this->image = $image->id;
+                    if ($image->save($errors)) {
+                        $this->gallery[] = $image;
+                        $this->image = $image->id;
 
-                    /**
-                     * Guarda la relación NM en la tabla 'project_image'.
-                     */
-                    if(!empty($image->id)) {
-                        self::query("REPLACE project_image (project, image) VALUES (:project, :image)", array(':project' => $this->id, ':image' => $image->id));
+                        /**
+                         * Guarda la relación NM en la tabla 'project_image'.
+                         */
+                        if(!empty($image->id)) {
+                            self::query("REPLACE project_image (project, image) VALUES (:project, :image)", array(':project' => $this->id, ':image' => $image->id));
+                        }
+                    } else {
+                        \Goteo\Library\Message::Error('Falló al subir la imagen. ' . implode(', ', $errors));
                     }
                 }
 
@@ -1427,6 +1430,11 @@ namespace Goteo\Model {
 
 
 
+        /**
+         * Metodo que devuelve los días que lleva de publicación
+         *
+         * @return numeric days active from published
+         */
         public function daysActive() {
             // días desde el published
             $sql = "
@@ -1437,6 +1445,30 @@ namespace Goteo\Model {
             $past = $query->fetchObject();
 
             return $past->days - 1;
+        }
+
+        /**
+         * Metodo que devuelve los días que quedan para finalizar la ronda actual
+         *
+         * @return numeric days remaining to go
+         */
+        public function daysRemain($id) {
+            // primero, días desde el published
+            $sql = "
+                SELECT DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') as days
+                FROM project
+                WHERE id = ?";
+            $query = self::query($sql, array($id));
+            $days = $query->fetchColumn(0);
+            $days--;
+
+            if ($days > 40) {
+                $rest = 80 - $days; //en segunda ronda
+            } else {
+                $rest = 40 - $days; // en primera ronda
+            }
+
+            return $rest;
         }
 
         /*

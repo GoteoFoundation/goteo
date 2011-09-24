@@ -9,7 +9,7 @@ $bodyClass = 'admin';
 
 $message = '';
 if (!empty($this['errors']) || !empty($this['success'])) {
-    $message = '<div class="widget"><p>'.implode('<br />', $this['errors']).implode('<br />', $this['success']).'</p></div>';
+    $message = '<div class="widget"><p>'.implode('<br />', $this['errors']).' '.implode('<br />', $this['success']).'</p></div>';
 }
 
 include 'view/prologue.html.php';

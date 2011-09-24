@@ -31,7 +31,7 @@ div.subitem > div.content-avatar > a.avatar{float:left;display:block;margin-righ
 div.subitem > div.content-avatar > a.username{float:left;display:block;clear:right;font-size:0.9em;line-height:0.9em;font-weight:bold}
 div.subitem > div.content-avatar > span.datepub{}
 div.subitem > div.content-image > a.image{float:left;height:60px;width:90px;margin-right:5px}
-div.subitem > div.content-image > a.project{float:left;display:block;clear:right;font-size:1em;line-height:1.1em;font-weight:600;margin-bottom:3px}
+div.subitem > div.content-image > a.project{display:block;clear:right;font-size:1em;line-height:1.1em;font-weight:600;margin-bottom:3px}
 
 /* solo admin widget lateral
 *****************************/

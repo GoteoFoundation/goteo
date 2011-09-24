@@ -164,6 +164,7 @@ namespace Goteo\Controller {
                 // evento público
                 $log->title = $_SESSION['user']->name;
                 $log->url = '/user/profile/'.$_SESSION['user']->id;
+                $log->image = $_SESSION['user']->avatar->id;
                 $log->scope = 'public';
                 $log->type = 'community';
                 $log_text = "Ha aportado %s al proyecto %s";

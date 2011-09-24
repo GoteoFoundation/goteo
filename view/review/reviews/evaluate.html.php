@@ -15,8 +15,6 @@ foreach ($sections as $sectionId=>$sectionName) {
 
 // si ya la ha dado por terminada no podrá tocar nada
 $disabled = $review->ready == 1 ? 'disabled' : '';
-
-if ($review->ready == 1) echo '<p>Has dado por terminada esta revisión, no pueder realizar más cambios.</p>';
 ?>
 <?php foreach ($sections as $sectionId=>$sectionName) : ?>
 <div class="widget">

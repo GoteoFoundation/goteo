@@ -11,7 +11,12 @@
 		$post->text = Text::recorta($post->text, 500);
 	}
 
-    $url = empty($this['url']) ? '/blog/' : $this['url'];
+    if (empty($this['url'])) {
+        $url = '/blog/';
+    } else {
+        $url = $this['url'];
+        $post->text = nl2br(Text::urlink($post->text));
+    }
 ?>
     <?php if (count($post->gallery) > 1) : ?>
     <script type="text/javascript" src="/view/js/inc/navi.js"></script>
@@ -64,6 +69,6 @@
 		</div>
 	<?php endif; ?>
 	<blockquote>
-        <?php echo nl2br(Text::urlink($post->text)); ?>
+        <?php echo $post->text; ?>
         <?php if ($this['show'] == 'list') : ?><div class="read_more"><a href="<?php echo $url.$post->id; ?>"><?php echo Text::get('regular-read_more') ?></a></div><?php endif ?>
     </blockquote>

@@ -30,11 +30,11 @@ foreach ($sections as $sectionId=>$sectionName) {
     </p>
     <p>
         Tu evaluación <?php echo strtolower($sectionName); ?>:<br />
-        <blockquote><?php echo $evaluation[$sectionId]['evaluation']; ?></blockquote>
+        <blockquote><?php echo nl2br($evaluation[$sectionId]['evaluation']); ?></blockquote>
     </p>
     <p>
         Las mejoras que harías <?php echo strtolower($sectionName); ?>:<br />
-        <blockquote><?php echo $evaluation[$sectionId]['recommendation']; ?></blockquote>
+        <blockquote><?php echo nl2br($evaluation[$sectionId]['recommendation']); ?></blockquote>
     </p>
 </div>
 <?php endforeach; ?>

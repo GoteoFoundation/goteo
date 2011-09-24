@@ -273,6 +273,8 @@ namespace Goteo\Model {
                 ", array($id));
                 foreach ($subquery->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User\Review') as $checker) {
 
+                    $review->ready = $checker->ready;
+
                     $cuenta = $checker->recount();
                     $checker->score = $cuenta->score;
                     $checker->max   = $cuenta->max;

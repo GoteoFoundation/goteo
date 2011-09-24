@@ -214,7 +214,7 @@ div.widget.project div.meter h8 {
 div.widget.project div.meter div.graph {
     background-color: #BB70B6;
     height: 8px;
-    border-right: 40px solid #BB70B6;
+    border-right: 40px solid #DFBDDD;
     margin: 40px 5px 70px;    
     position: relative;   
 }
@@ -264,7 +264,7 @@ div.widget.project div.meter div.graph .minimum .done strong {
 
 div.widget.project div.meter div.graph .minimum .left {
     float: right;
-    height: 14px;
+    height: 19px;
     border-right: 4px solid #96238F;
     margin-right: -2px;
     margin-top: -6px;
@@ -272,8 +272,11 @@ div.widget.project div.meter div.graph .minimum .left {
 
 div.widget.project div.meter div.graph .optimum {
     border-right: 4px solid #BB70B6;
-    height: 14px;
+    height: 19px;
     margin-right: -2px;
+    position: absolute;
+    right: 0;
+    margin-top: -6px;
 }
 
 div.widget.project div.meter dl {
@@ -396,7 +399,7 @@ div.widget.project div.rewards {
     border-top: 1px solid #d1d3d4;    
     padding: 4px 0 0 !important;
     position: relative;    
-    margin: 10px 12px 0 !important;
+    margin: 10px 12px 8px !important;
     height: 22px;
     overflow: hidden;
 }

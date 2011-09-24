@@ -88,7 +88,11 @@ if (isset($this['investor']) && is_object($this['investor'])) {
 
     </div>
 
-    <?php if ($this['dashboard'] === true) : // si estamos en el dashboard no hay (apoyar y el ver se abre en una ventana nueva) ?>
+    <?php
+    /*
+     * quitamos los botones
+     *
+    if ($this['dashboard'] === true) : // si estamos en el dashboard no hay (apoyar y el ver se abre en una ventana nueva) ?>
     <div class="buttons">
         <?php if ($this['own'] === true) : // si es propio puede ir a editarlo ?>
         <a class="button red suportit" href="<?php echo SITE_URL ?>/project/edit/<?php echo $project->id ?>"><?php echo Text::get('regular-edit'); ?></a>
@@ -104,5 +108,8 @@ if (isset($this['investor']) && is_object($this['investor'])) {
         <?php endif; ?>
         <a class="button view" href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><?php echo Text::get('regular-view_project'); ?></a>
     </div>
-    <?php endif; ?>
+    <?php endif;
+     *
+     */
+    ?>
 </div>

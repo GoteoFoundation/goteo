@@ -496,9 +496,14 @@ namespace Goteo\Controller {
                     // si es publicado, hay un evento público
                     $log->title = $project->name;
                     $log->url = '/project/'.$project->id;
+                    if (!empty($project->image)) $log->image = $project->image;
                     $log->scope = 'public';
                     $log->type = 'projects';
-                    $log->html = Feed::item('relevant', 'Nuevo proyecto en Goteo').', desde ahora tienes 40 dís para apoyar este proyecto';
+                    $log_text = '%s, desde ahora tienes 40 días para apoyar este proyecto';
+                    $log_items = array(
+                        Feed::item('relevant', 'Nuevo proyecto en Goteo')
+                    );
+                    $log->html = \vsprintf($log_text, $log_items);
                     $log->add($errors);
                 }
 
@@ -1061,7 +1066,7 @@ namespace Goteo\Controller {
                          * Evento Feed
                          */
                         $log = new Feed();
-                        $log->title = 'banenr de proyecto quitado portada (admin)';
+                        $log->title = 'banner de proyecto quitado portada (admin)';
                         $log->url = '/admin/promote';
                         $log->type = 'admin';
                         $log_text = 'El admin %s ha %s del proyecto %s';
@@ -2396,7 +2401,7 @@ namespace Goteo\Controller {
         }
 
         /*
-         *  Revisión de aportes
+         *  Gestión de aportes a proyectos
          */
         public function invests($action = 'list', $id = null) {
 
@@ -2411,7 +2416,7 @@ namespace Goteo\Controller {
 
             $errors = array();
 
-            // si estamos generando aportes cargamos la lista completa de usuarios, proyectos y campañas
+            // aportes manuales, cargamos la lista completa de usuarios, proyectos y campañas
            if ($action == 'add') {
                
                 // listado de proyectos existentes
@@ -2421,7 +2426,7 @@ namespace Goteo\Controller {
                 // campañas
                 $campaigns = Model\Campaign::getAll();
 
-                // aporte manual
+                // generar aporte manual
                 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add']) ) {
 
                     $userData = Model\User::getMini($_POST['user']);
@@ -2502,6 +2507,15 @@ namespace Goteo\Controller {
                     }
                 }
 
+                if (!empty($filters['project'])) {
+                    // si filtran proyecto, actualizamos proyecto de trabajo
+                    $_SESSION['project_admin'] = $filters['project'];
+                } else {
+                    // si no, usamos el proyecto de trabajo
+                    $filters['project'] = $_SESSION['project_admin'];
+                }
+
+
                 // tipos de aporte
                 $methods = Model\Invest::methods();
                 // estados del proyecto
@@ -2517,7 +2531,7 @@ namespace Goteo\Controller {
 
            }
 
-            /// si piden unos detalles,
+            // detalles de los aportes del proyecto
             if ($action == 'report') {
                 $invest = Model\Invest::get($id);
                 $project = Model\Project::get($invest->project);
@@ -2534,31 +2548,8 @@ namespace Goteo\Controller {
                 );
             }
 
-
-
-            if ($action == 'execute') {
-                $invest = Model\Invest::get($id);
-                
-                switch ($invest->method) {
-                    case 'paypal':
-                        if (Paypal::pay($invest, $errors)) {
-                            $errors[] = 'Cargo paypal correcto';
-                        } else {
-                            $errors[] = 'Fallo al ejecutar cargo paypal: ' . implode('; ', $errors);
-                        }
-                        break;
-                    case 'tpv':
-                        if (Tpv::pay($invest, $errors)) {
-                            $errors[] = 'Cargo sermepa correcto';
-                        } else {
-                            $errors[] = 'Fallo al ejecutar cargo sermepal: ' . implode('; ', $errors);
-                        }
-                        break;
-                }
-
-            }
-
-            if ($action == 'return') {
+            // cancelar aporte antes de ejecución, solo aportes no cargados
+            if ($action == 'cancel') {
                 $invest = Model\Invest::get($id);
 
                 switch ($invest->method) {
@@ -2602,6 +2593,162 @@ namespace Goteo\Controller {
 
              $viewData = array(
                     'folder' => 'invests',
+                    'file' => 'list',
+                    'list'          => $list,
+                    'filters'       => $filters,
+                    'users'         => $users,
+                    'projects'      => $projects,
+                    'campaigns'     => $campaigns,
+                    'methods'       => $methods,
+                    'status'        => $status,
+                    'investStatus'  => $investStatus,
+                    'errors'        => $errors
+                );
+
+            return new View(
+                'view/admin/index.html.php',
+                $viewData
+            );
+
+        }
+
+        /*
+         *  Gestión transacciones (tpv/paypal)
+         */
+        public function accounts($action = 'list', $id = null) {
+
+            $BC = self::menu(array(
+                'section' => 'accounting',
+                'option' => __FUNCTION__,
+                'action' => $action,
+                'id' => $id
+            ));
+
+            define('ADMIN_BCPATH', $BC);
+
+            $errors = array();
+
+            // cargamos los filtros
+            $filters = array();
+            $fields = array('methods', 'status', 'investStatus', 'projects', 'users', 'campaigns');
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    if (\is_numeric($_GET[$field])) {
+                        $filters[$field] = (int) $_GET[$field];
+                    } else {
+                        $filters[$field] = (string) $_GET[$field];
+                    }
+                }
+            }
+
+            if (!empty($filters['project'])) {
+                // si filtran proyecto, actualizamos proyecto de trabajo
+                $_SESSION['project_admin'] = $filters['project'];
+            } else {
+                // si no, usamos el proyecto de trabajo
+                $filters['project'] = $_SESSION['project_admin'];
+            }
+
+
+            // tipos de aporte
+            $methods = Model\Invest::methods();
+            // estados del proyecto
+            $status = Model\Project::status();
+            // estados de aporte
+            $investStatus = Model\Invest::status();
+            // listado de proyectos
+            $projects = Model\Invest::projects();
+            // usuarios cofinanciadores
+            $users = Model\Invest::users();
+            // campañas que tienen aportes
+            $campaigns = Model\Invest::campaigns();
+
+
+            /// detalles de una transaccion
+            if ($action == 'report') {
+                $invest = Model\Invest::get($id);
+                $project = Model\Project::get($invest->project);
+                return new View(
+                    'view/admin/index.html.php',
+                    array(
+                        'folder' => 'accounts',
+                        'file' => 'report',
+                        'invest'=>$invest,
+                        'project'=>$project,
+                        'details'=>$details,
+                        'status'=>$status
+                    )
+                );
+            }
+
+            // si esta pendiente, ejecutar el cargo ahora (como si fuera final de ronda), deja pendiente el pago secundario
+            if ($action == 'execute') {
+                $invest = Model\Invest::get($id);
+
+                switch ($invest->method) {
+                    case 'paypal':
+                        if (Paypal::pay($invest, $errors)) {
+                            $errors[] = 'Cargo paypal correcto';
+                        } else {
+                            $errors[] = 'Fallo al ejecutar cargo paypal: ' . implode('; ', $errors);
+                        }
+                        break;
+                    case 'tpv':
+                        if (Tpv::pay($invest, $errors)) {
+                            $errors[] = 'Cargo sermepa correcto';
+                        } else {
+                            $errors[] = 'Fallo al ejecutar cargo sermepal: ' . implode('; ', $errors);
+                        }
+                        break;
+                }
+
+            }
+
+            // devolver un cargo ejecutado o un pago ya efectuado
+            if ($action == 'return') {
+                $invest = Model\Invest::get($id);
+
+                switch ($invest->method) {
+                    case 'paypal':
+                        if (Paypal::cancelPreapproval($invest, $errors)) {
+                            $errors[] = 'Preaproval paypal cancelado, aporte cancelado.';
+                        } else {
+                            $errors[] = 'Fallo al cancelar el preapproval en paypal: ' . implode('; ', $errors);
+                            if ($invest->cancel()) {
+                                $errors[] = 'Aporte cancelado';
+                            } else{
+                                $errors[] = 'Fallo al cancelar el aporte';
+                            }
+                        }
+                        break;
+                    case 'tpv':
+                        if (Tpv::cancelPreapproval($invest, $errors)) {
+                            $errors[] = 'Transacción sermepa cancelada, aporte cancelado.';
+                        } else {
+                            $errors[] = 'Fallo al cancelar la transaccion sermepa: ' . implode('; ', $errors);
+                            if ($invest->cancel()) {
+                                $errors[] = 'Aporte cancelado';
+                            } else{
+                                $errors[] = 'Fallo al cancelar el aporte';
+                            }
+                        }
+                        break;
+                    case 'cash':
+                        if ($invest->cancel()) {
+                            $errors[] = 'Aporte cancelado';
+                        } else{
+                            $errors[] = 'Fallo al cancelar el aporte';
+                        }
+                        break;
+                }
+
+            }
+
+            // listado de aportes
+             $list = Model\Invest::getList($filters);
+
+             $viewData = array(
+                    'folder' => 'accounts',
                     'file' => 'list',
                     'list'          => $list,
                     'filters'       => $filters,
@@ -2803,8 +2950,10 @@ namespace Goteo\Controller {
                             $log->add($errors);
 
                             // evento público
+                            $log->unique = true;
                             $log->title = $post->title;
                             $log->url = '/blog/'.$post->id;
+                            $log->image = $post->gallery[0]->id;
                             $log->scope = 'public';
                             $log->type = 'goteo';
                             $log->html = Text::recorta($post->text, 250);
@@ -4170,15 +4319,23 @@ namespace Goteo\Controller {
                     )
                 ),
                 'accounting' => array(
-                    'label'   => 'Gestión de transferencias bancarias',
+                    'label'   => 'Gestión de aportes y transacciones',
                     'options' => array (
                         'invests' => array(
                             'label' => 'Aportes a Proyectos',
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'add'  => array('label' => 'Aporte manual', 'item' => false),
-                                'report' => array('label' => 'Verificando Aporte', 'item' => true),
-                                'execute' => array('label' => 'Ejecución manual', 'item' => true)
+                                'report' => array('label' => 'Informe de aportes del proyecto', 'item' => true),
+                                'cancel' => array('label' => 'Cancelando aporte', 'item' => true)
+                            )
+                        ),
+                        'accounts' => array(
+                            'label' => 'Transacciones económicas',
+                            'actions' => array(
+                                'list' => array('label' => 'Listando', 'item' => false),
+                                'report' => array('label' => 'Detalles de la transacción', 'item' => true),
+                                'execute' => array('label' => 'Ejecución del cargo ahora mismo', 'item' => true)
                             )
                         )/*,
                         'donations' => array(

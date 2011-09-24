@@ -184,6 +184,52 @@ namespace Goteo\Model\User {
             }
         }
 
+        /*
+         * Lista de usuarios de la comunidad que comparten un interés
+         *
+         */
+        public static function shareAll ($category) {
+             $array = array ();
+            try {
+
+                $values = array(':interest'=>$category);
+
+               $sql = "SELECT DISTINCT(user_interest.user) as id
+                        FROM user_interest
+                        INNER JOIN user
+                            ON  user.id = user_interest.user
+                            AND (user.hide = 0 OR user.hide IS NULL)
+                        WHERE user_interest.interest = :interest
+                        ";
+
+                $query = static::query($sql, $values);
+                $shares = $query->fetchAll(\PDO::FETCH_ASSOC);
+                foreach ($shares as $share) {
+
+                    // nombre i avatar
+                    $user = \Goteo\Model\User::get($share['id']);
+                    if (empty($user->avatar)) $user->avatar = (object) array('id'=>1);
+                    // meritocracia
+                    $support = (object) $user->support;
+                    // proyectos publicados
+                    $query = self::query('SELECT COUNT(id) FROM project WHERE owner = ? AND status > 2', array($share['id']));
+                    $projects = $query->fetchColumn(0);
+
+                    $array[] = (object) array(
+                        'user' => $share['id'],
+                        'avatar' => $user->avatar,
+                        'name' => $user->name,
+                        'projects' => $projects,
+                        'invests' => $support->invests
+                    );
+                }
+
+                return $array;
+            } catch(\PDOException $e) {
+				throw new \Goteo\Core\Exception($e->getMessage());
+            }
+        }
+
 	}
     
 }
