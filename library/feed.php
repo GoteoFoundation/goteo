@@ -92,34 +92,6 @@ namespace Goteo\Library {
             'update' => '/project/'
         );
 
-        /*
-        public $subjects = array(
-            'user' => 'el usuario', // + item
-            'project' => 'el proyecto', // + item
-            'blog' => 'el blog', // + item
-            'transaction' => 'la transaccion', // + item
-            'campaign' => 'la campaña', // + item
-            'node' => 'el nodo' // + item
-        );
-
-        public $action = array(
-            'register' => 'se ha registrado',   // no mas target
-            'publish' => 'ha publicado',        // target = un post
-            'reach' => 'ha alcanzado',          // target = minimum/optimum
-            'expire' => 'caduca en',   //
-            'invest' => 'ha aportado',   //
-            'message' => 'ha escrito',   // target = message
-            'comment' => 'ha comentado',   // target = comment
-            'insert' => 'ha hecho nuevo',   // target = tabla ¬ registro
-            'update' => 'ha modificado',   // target = tabla ¬ registro
-            'delete' => 'ha borrado',   // target = tabla ¬ registro
-            'translate' => 'ha traducido',   // target = tabla ¬ registro
-            'execute' => 'ha ejecutado',   // target = operacion (cargo, cancelacion, rollback, fail)
-            'made' => 'ha hecho',   // target = subaccion exitosa
-            'tried' => 'ha intentado'   // target = subaccion fallida
-        );
-        */
-
 		/**
 		 *  Metodo para sacar los eventos
          *

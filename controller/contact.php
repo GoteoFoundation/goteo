@@ -55,9 +55,9 @@ namespace Goteo\Controller {
                 $subject = str_replace('%SUBJECT%', $subject, $template->title);
 
                 // En el contenido:
-                $search  = array('%MESSAGE%', '%USEREMAIL%');
-                $replace = array($msg_content, $email);
-                $content = \str_replace($search, $replace, nl2br($template->text));
+                $search  = array('%TONAME%', '%MESSAGE%', '%USEREMAIL%');
+                $replace = array('Goteo', $msg_content, $email);
+                $content = \str_replace($search, $replace, $template->text);
 
 
                         $mailHandler = new Mail();

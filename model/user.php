@@ -107,7 +107,7 @@ namespace Goteo\Model {
                     // En el contenido:
                     $search  = array('%USERNAME%', '%USERID%', '%ACTIVATEURL%');
                     $replace = array($this->name, $this->id, SITE_URL . '/user/activate/' . $token);
-                    $content = \str_replace($search, $replace, nl2br($template->text));
+                    $content = \str_replace($search, $replace, $template->text);
 
                     // Activación
                     $mail = new Mail();
@@ -715,7 +715,7 @@ namespace Goteo\Model {
                 // En el contenido:
                 $search  = array('%USERNAME%', '%USERID%', '%RECOVERURL%');
                 $replace = array($row->name, $row->id, SITE_URL . '/user/recover/' . base64_encode($token));
-                $content = \str_replace($search, $replace, nl2br($template->text));
+                $content = \str_replace($search, $replace, $template->text);
                 // Email de recuperacion
                 $mail = new Mail();
                 $mail->to = $row->email;
@@ -781,7 +781,7 @@ namespace Goteo\Model {
                 // En el contenido:
                 $search  = array('%USERNAME%', '%URL%');
                 $replace = array($row->name, SITE_URL . '/user/leave/' . base64_encode($token));
-                $content = \str_replace($search, $replace, nl2br($template->text));
+                $content = \str_replace($search, $replace, $template->text);
                 // Email de recuperacion
                 $mail = new Mail();
                 $mail->to = $row->email;
@@ -819,7 +819,7 @@ namespace Goteo\Model {
                     // En el contenido:
                     $search  = array('%USERNAME%', '%CHANGEURL%');
                     $replace = array($this->name, SITE_URL . '/user/changeemail/' . base64_encode($token));
-                    $content = \str_replace($search, $replace, nl2br($template->text));
+                    $content = \str_replace($search, $replace, $template->text);
 
 
 

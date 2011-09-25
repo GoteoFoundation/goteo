@@ -7,6 +7,7 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Model,
 		Goteo\Library\Feed,
+		Goteo\Library\Text,
         Goteo\Library\Message,
         Goteo\Library\Paypal,
         Goteo\Library\Tpv;

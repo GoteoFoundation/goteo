@@ -555,7 +555,7 @@ namespace Goteo\Controller {
                                 // url del proyecto -> %PROJECTURL% por ".SITE_URL."/project/{$project->id}"
                                 $search  = array('%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%');
                                 $replace = array($msg_content, $project->name, SITE_URL."/project/".$project->id);
-                                $content = \str_replace($search, $replace, nl2br($template->text));
+                                $content = \str_replace($search, $replace, $template->text);
 
                                 /* Mientras está en pruebas solo enviar uno*/
                                 $listo = false;

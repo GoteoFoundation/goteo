@@ -141,7 +141,7 @@ namespace Goteo\Controller {
                 // url de la plataforma -> %SITEURL% por SITE_URL
                 $search  = array('%MESSAGE%', '%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%SITEURL%');
                 $replace = array($msg_content, $project->contract_name, $_SESSION['user']->name, $project->name, SITE_URL);
-                $content = \str_replace($search, $replace, nl2br($template->text));
+                $content = \str_replace($search, $replace, $template->text);
                 
                 $mailHandler = new Mail();
 
@@ -199,7 +199,7 @@ namespace Goteo\Controller {
                 // url del perfil -> %PROFILEURL% por ".SITE_URL."/user/profile/{$user->id}/sharemates"
                 $search  = array('%MESSAGE%','%TONAME%',  '%USERNAME%', '%PROFILEURL%');
                 $replace = array($msg_content, $user->name, $_SESSION['user']->name, SITE_URL."/user/profile/{$user->id}/sharemates");
-                $content = \str_replace($search, $replace, nl2br($template->text));
+                $content = \str_replace($search, $replace, $template->text);
 
 
                 $mailHandler = new Mail();

@@ -175,7 +175,7 @@ namespace Goteo\Controller {
                         // En el contenido:
                         $search  = array('%USERNAME%', '%PROJECTNAME%');
                         $replace = array($project->user->name, $project->name);
-                        $content = \str_replace($search, $replace, nl2br($template->text));
+                        $content = \str_replace($search, $replace, $template->text);
 
 
                         $mailHandler = new Mail();

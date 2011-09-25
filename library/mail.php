@@ -117,6 +117,9 @@ namespace Goteo\Library {
                         $mail->IsHTML(true);
                         $mail->Body    = $this->bodyHTML();
                         $mail->AltBody = $this->bodyText();
+
+                        // incrustar el logo de goteo
+                        $mail->AddEmbeddedImage(GOTEO_PATH . '/goteo_logo.png', 'logo', 'Goteo', 'base64', 'image/png');
                     }
                     else {
                         $mail->IsHTML(false);
@@ -146,14 +149,35 @@ namespace Goteo\Library {
 
         /**
          * Cuerpo del texto en HTML para los clientes de correo con formato habilitado.
+         *
+         * Se mete el contenido alrededor del diseño de email de Diego
+         *
          */
         private function bodyHTML() {
-            return new View (
-                'view/email/default.html.php',
-                array(
-                    'content' => $this->content
-                )
+
+            $viewData = array('content' => $this->content);
+
+            // grabamos el contenido en la tabla de envios
+            $sql = "INSERT INTO mail (id, email, html) VALUES ('', :email, :html)";
+            $values = array (
+                ':email' => $this->to,
+                ':html' => str_replace('cid:goteo', SITE_URL.'/goteo_logo.png', $this->content)
             );
+            $query = Model::query($sql, $values);
+
+            $sendId = Model::insertId();
+
+            if (!empty($sendId)) {
+                // token para el sinoves
+                $token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
+                $viewData['sinoves'] = \SITE_URL . '/mail/' . base64_encode($token) . '/?email=' . $this->to;
+            } else {
+                $viewData['sinoves'] = \SITE_URL . '/contact';
+            }
+
+            $viewData['baja'] = \SITE_URL . '/user/leave/?email=' . $this->to;
+
+            return new View ('view/email/goteo.html.php', $viewData);
         }
 
         /**

@@ -324,7 +324,8 @@ namespace Goteo\Library {
                 'review' => 'Panel revisor',
                 'translate' => 'Panel traductor',
                 'menu' => 'Menu superior',
-                'feed' => 'Eventos recientes'
+                'feed' => 'Eventos recientes',
+                'mailer' => 'Emails automaticos'
             );
 
             \asort($groups);
