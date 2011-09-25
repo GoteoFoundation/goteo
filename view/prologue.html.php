@@ -10,7 +10,12 @@
         <meta name="author" content="<?php echo GOTEO_META_AUTHOR ?>" />
         <meta name="copyright" content="<?php echo GOTEO_META_COPYRIGHT ?>" />
         <meta name="robots" content="all" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
         <link rel="stylesheet" type="text/css" href="/view/css/goteo.css" />
+      <!--[if IE]>
+      <link href="/view/css/ie.css" media="screen" rel="stylesheet" type="text/css" />
+      <![endif]-->
+
         <script type="text/javascript">
         if(navigator.userAgent.indexOf('Mac') != -1)
 		{

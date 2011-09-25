@@ -1,0 +1,13 @@
+div#ie_warning {
+    display: block !important;
+    background-color: yellow;
+    border: 3px solid black;
+    width: 750px;
+    margin: 0px auto;
+    padding: 10px;
+}
+
+div#ie_warning a {
+    text-decoration: underline;
+    color: blue;
+}

@@ -63,7 +63,7 @@ $until = mktime(0, 0, 0, date('m', $until) + 1, -1, date('Y', $until));
 
 
 ?>
-<div class="widget project-schedule">
+<div class="widget project-schedule" style="overflow:visible;max-width:100%;">
     
     <h<?php echo $level ?> class="title"><?php echo Text::get('costs-field-schedule'); ?></h<?php echo $level ?>>
     
