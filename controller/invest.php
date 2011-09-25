@@ -167,12 +167,9 @@ namespace Goteo\Controller {
                 $log->image = $_SESSION['user']->avatar->id;
                 $log->scope = 'public';
                 $log->type = 'community';
-                $log_text = "Ha aportado %s al proyecto %s";
-                $items = array(
-                    Feed::item('money', $confirm->amount.' &euro;'),
-                    Feed::item('project', $projectData->name, $projectData->id)
-                );
-                $log->html = \vsprintf($log_text, $items);
+                $log->html = Text::html('feed-invest',
+                                    Feed::item('money', $confirm->amount.' &euro;'),
+                                    Feed::item('project', $projectData->name, $projectData->id));
                 $log->add($errors);
 
                 unset($log);

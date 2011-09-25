@@ -658,14 +658,11 @@ namespace Goteo\Controller {
                                             $log->url = '/user/profile/'.$_SESSION['user']->id;
                                             $log->image = $_SESSION['user']->avatar->id;
                                             $log->scope = 'public';
-                                            $log->type = 'users';
-                                            $log_text = 'Ha publicado una nueva %s en el proyecto %s, con el título "%s"';
-                                            $log_items = array(
-                                                Feed::item('message', 'Colaboración'),
-                                                Feed::item('project', $project->name, $project->id),
-                                                Feed::item('update', $support->support, $project->id.'/messages#message'.$msg->id)
-                                            );
-                                            $log->html = \vsprintf($log_text, $log_items);
+                                            $log->type = 'community';
+                                            $log->html = Text::html('feed-new_support',
+                                                            Feed::item('project', $project->name, $project->id),
+                                                            Feed::item('update', $support->support, $project->id.'/messages#message'.$msg->id)
+                                                            );
                                             $log->add($errors);
 
                                             unset($log);
@@ -784,7 +781,7 @@ namespace Goteo\Controller {
                                 $log_text = '%s ha publicado un nuevo post en %s sobre el proyecto %s, con el título "%s"';
                                 $log_items = array(
                                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                    Feed::item('blog', 'Novedades'),
+                                    Feed::item('blog', Text::get('project-menu-updates')),
                                     Feed::item('project', $project->name, $project->id),
                                     Feed::item('update', $post->title, $project->id.'/updates/'.$post->id)
                                 );
@@ -797,6 +794,11 @@ namespace Goteo\Controller {
                                 $log->image = $_SESSION['user']->avatar->id;
                                 $log->scope = 'public';
                                 $log->type = 'community';
+                                $log->html = Text::html('feed-new_update',
+                                                Feed::item('blog', Text::get('project-menu-updates')),
+                                                Feed::item('project', $project->name, $project->id),
+                                                Feed::item('update', $post->title, $project->id.'/updates/'.$post->id)
+                                                );
                                 $log->add($errors);
 
                                 unset($log);

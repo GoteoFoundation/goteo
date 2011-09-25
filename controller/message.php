@@ -28,25 +28,61 @@ namespace Goteo\Controller {
 
                 if ($message->save($errors)) {
 
+                    $projectData = Model\Project::getMini($project);
+                    /*
+                     * Evento Feed
+                     */
+                    $log = new Feed();
+                    $log->title = 'usuario escribe mensaje/respuesta en Mensajes del proyecto';
+                    $log->url = '/admin/projects';
+                    $log->type = 'user';
+
                     if (empty($_POST['thread'])) {
-                        $projectData = Model\Project::getMini($project);
-                        /*
-                         * Evento Feed
-                         */
-                        $log = new Feed();
-                        $log->title = 'usuario abre hilo en mensajes de proyecto';
-                        $log->url = '/admin/projects';
-                        $log->type = 'user';
-                        $log_text = '%s ha creado un nuevo hilo en los %s del proyecto %s';
+                        // nuevo hilo
+                        $log_text = '%s ha creado un tema en %s del proyecto %s';
                         $log_items = array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('message', 'Mensajes', $projectData->id.'/messages#message'.$message->id),
+                            Feed::item('message', Text::get('project-menu-messages'), $projectData->id.'/messages#message'.$message->id),
                             Feed::item('project', $projectData->name, $projectData->id)
                         );
                         $log->html = \vsprintf($log_text, $log_items);
-                        $log->add($errors);
-                        unset($log);
+                    } else {
+                        // respuesta
+                        $log_text = '%s ha respondido en %s del proyecto %s';
+                        $log_items = array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('message', Text::get('project-menu-messages'), $projectData->id.'/messages#message'.$message->id),
+                            Feed::item('project', $projectData->name, $projectData->id)
+                        );
+                        $log->html = \vsprintf($log_text, $log_items);
                     }
+
+                    $log->add($errors);
+
+                    // y el mensaje público
+                    $log->title = $_SESSION['user']->name;
+                    $log->url = '/user/profile/'.$_SESSION['user']->id;
+                    $log->image = $_SESSION['user']->avatar->id;
+                    $log->scope = 'public';
+                    $log->type = 'community';
+
+                    if (empty($_POST['thread'])) {
+                        $log->html = Text::html('feed-messages-new_thread',
+                                            Feed::item('message', Text::get('project-menu-messages'), $projectData->id.'/messages#message'.$message->id),
+                                            Feed::item('project', $projectData->name, $projectData->id)
+                                            );
+                    } else {
+                        $log->html = Text::html('feed-messages-response',
+                                            Feed::item('message', Text::get('project-menu-messages'), $projectData->id.'/messages#message'.$message->id),
+                                            Feed::item('project', $projectData->name, $projectData->id)
+                                            );
+                    }
+
+                    $log->add($errors);
+
+                    unset($log);
+
+
                 }
 			}
 
@@ -246,23 +282,18 @@ namespace Goteo\Controller {
 
                     if (!empty($project)) {
                         $projectData = Model\Project::getMini($project);
-                        $log_text = 'Ha escrito un %s en la entrada "%s" en las %s del proyecto %s';
-                        $log_items = array(
-                            Feed::item('message', 'Comentario'),
-                            Feed::item('update-comment', $postData->title, $projectData->id.'/updates/'.$postData->id.'#comment'.$comment->id),
-                            Feed::item('update-comment', 'Novedades', $projectData->id.'/updates/'),
-                            Feed::item('project', $projectData->name, $projectData->id)
-                        );
+                        $log->html = Text::html('feed-updates-comment',
+                                            Feed::item('update-comment', $postData->title, $projectData->id.'/updates/'.$postData->id.'#comment'.$comment->id),
+                                            Feed::item('update-comment', 'Novedades', $projectData->id.'/updates/'),
+                                            Feed::item('project', $projectData->name, $projectData->id)
+                                            );
                     } else {
-                        $log_text = 'Ha escrito un %s en la entrada "%s" del blog de %s';
-                        $log_items = array(
-                            Feed::item('message', 'Comentario'),
-                            Feed::item('blog', $postData->title, $postData->id.'#comment'.$comment->id),
-                            Feed::item('blog', 'Goteo', '/')
-                        );
+                        $log->html = Text::html('feed-blog-comment',
+                                            Feed::item('blog', $postData->title, $postData->id.'#comment'.$comment->id),
+                                            Feed::item('blog', 'Goteo', '/')
+                                            );
                     }
 
-                    $log->html = \vsprintf($log_text, $log_items);
                     $log->add($errors);
 
                     unset($log);

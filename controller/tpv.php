@@ -7,6 +7,7 @@ namespace Goteo\Controller {
         Goteo\Model\User,
         Goteo\Core\Error,
 		Goteo\Library\Feed,
+		Goteo\Library\Text,
         Goteo\Core\Redirection;
 
     require_once 'library/paypal/stub.php'; // sí, uso el stub de paypal
@@ -76,7 +77,7 @@ namespace Goteo\Controller {
                     $invest->cancel('RESP' . $Cresp);
                     $_POST['result'] = 'Fail';
 
-                    $log_text = 'Ha habido una respuesta de <span class="red">Fallo de TPV (Codigo: {$Cresp}: '.$respTxt.')</span> en el aporte de %s de %s al proyecto %s mediante TPV';
+                    $log_text = 'Ha habido una respuesta de <span class="red">Fallo de TPV (Codigo: '.$Cresp.': '.$respTxt.')</span> en el aporte de %s de %s al proyecto %s mediante TPV';
 
                 } elseif (empty($_POST['Ds_ErrorCode'])) {
                     
@@ -94,7 +95,7 @@ namespace Goteo\Controller {
                     $invest->cancel($_POST['Ds_ErrorCode']);
                     $_POST['result'] = 'Fail';
 
-                    $log_text = 'Ha habido un <span class="red">ERROR de TPV (Codigo: {$Cerr}: '.$errTxt.')</span> en el aporte de %s de %s al proyecto %s mediante TPV';
+                    $log_text = 'Ha habido un <span class="red">ERROR de TPV (Codigo: '.$Cerr.': '.$errTxt.')</span> en el aporte de %s de %s al proyecto %s mediante TPV';
                     $doPublic = false;
                 }
 
@@ -105,12 +106,12 @@ namespace Goteo\Controller {
                 $log->title = 'Aporte TPV';
                 $log->url = '/admin/invests';
                 $log->type = 'money';
-                $items = array(
+                $log_items = array(
                     Feed::item('user', $userData->name, $userData->id),
                     Feed::item('money', $invest->amount.' &euro;'),
                     Feed::item('project', $projectData->name, $projectData->id)
                 );
-                $log->html = \vsprintf($log_text, $items);
+                $log->html = \vsprintf($log_text, $log_items);
                 $log->add($errors);
 
                 if ($doPublic) {
@@ -120,12 +121,10 @@ namespace Goteo\Controller {
                     $log->image = $_SESSION['user']->avatar->id;
                     $log->scope = 'public';
                     $log->type = 'community';
-                    $log_text = "Ha aportado %s al proyecto %s";
-                    $items = array(
-                        Feed::item('money', $confirm->amount.' &euro;'),
-                        Feed::item('project', $projectData->name, $projectData->id)
-                    );
-                    $log->html = \vsprintf($log_text, $items);
+
+                    $log->html = Text::html('feed-invest', 
+                                        Feed::item('money', $invest->amount.' &euro;'),
+                                        Feed::item('project', $projectData->name, $projectData->id));
                     $log->add($errors);
                 }
                 unset($log);

@@ -280,7 +280,8 @@ namespace Goteo\Library {
                 'validate'      => 'Validaciones de campos',
                 'regular'       => 'De uso común',
                 'button'        => 'Genéricos para botones',
-                'subject'       => 'Asuntos para emails automáticos'
+                'subject'       => 'Asuntos para emails automáticos',
+                'feed'          => 'Eventos'
             );
 
             \asort($filters);
@@ -321,7 +322,9 @@ namespace Goteo\Library {
                 'footer' => 'Footer',
                 'social' => 'Cuentas de redes sociales',
                 'review' => 'Panel revisor',
-                'translate' => 'Panel traductor'
+                'translate' => 'Panel traductor',
+                'menu' => 'Menu superior',
+                'feed' => 'Eventos recientes'
             );
 
             \asort($groups);

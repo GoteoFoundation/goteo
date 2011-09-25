@@ -83,12 +83,12 @@ $level = (int) $this['level'] ?: 3;
 	                           <img src="/image/<?php echo $child->user->avatar->id; ?>/40/40/1" />
                            </a>
                            </span>
+                           <a name="message<?php echo $child->id; ?>" />
                            <h<?php echo $level ?> class="user">
 						   <a href="/user/profile/<?php echo htmlspecialchars($child->user->id) ?>" target="_blank">
 						   <?php echo $child->user->name; ?>
                            </a>
                            </h<?php echo $level ?>>
-                           <a name="message<?php echo $child->id; ?>" />
                            <div class="date"><span>Hace <?php echo $child->timeago; ?></span></div>
                            <blockquote><?php echo $child->message; ?></blockquote>
                            <?php // si puede borrar este mensaje

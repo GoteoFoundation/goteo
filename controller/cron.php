@@ -76,12 +76,11 @@ namespace Goteo\Controller {
                     $log->title = 'proyecto próximo a finalizar ronda (cron)';
                     $log->url = '/admin/projects';
                     $log->type = 'project';
-                    $log_text = 'Al proyecto %s le faltan %s para finalizar la '.$round.'ª ronda';
-                    $log_items = array(
-                        Feed::item('project', $project->name, $project->id),
-                        Feed::item('relevant', $rest.' días')
-                    );
-                    $log->html = \vsprintf($log_text, $log_items);
+                    $log->html = Text::html('feed-project_runout',
+                                    Feed::item('project', $project->name, $project->id),
+                                    $rest,
+                                    $round
+                                    );
                     $log->add($errors);
 
                     // evento público
@@ -138,6 +137,11 @@ namespace Goteo\Controller {
                         $log->url = null;
                         $log->scope = 'public';
                         $log->type = 'projects';
+                        $log->html = Text::html('feed-project_fail',
+                                        Feed::item('project', $project->name, $project->id),
+                                        $amount,
+                                        \round($per_amount)
+                                        );
                         $log->add($errors);
 
                         unset($log);
@@ -168,7 +172,7 @@ namespace Goteo\Controller {
                             $log_items = array(
                                 Feed::item('project', $project->name, $project->id),
                                 Feed::item('relevant', 'financiado'),
-                                Feed::item('money', $amount.' &euro; ('.\number_format($per_amount, 2).'%) de aportes sobre minimo')
+                                Feed::item('money', $amount.' &euro; ('.\round($per_amount).'%) de aportes sobre minimo')
                             );
                             $log->html = \vsprintf($log_text, $log_items);
                             $log->add($errors);
@@ -178,6 +182,11 @@ namespace Goteo\Controller {
                             $log->url = null;
                             $log->scope = 'public';
                             $log->type = 'projects';
+                            $log->html = Text::html('feed-project_finish',
+                                            Feed::item('project', $project->name, $project->id),
+                                            $amount,
+                                            \round($per_amount)
+                                            );
                             $log->add($errors);
 
                             unset($log);
@@ -204,6 +213,11 @@ namespace Goteo\Controller {
                             $log->url = null;
                             $log->scope = 'public';
                             $log->type = 'projects';
+                            $log->html = Text::html('feed-project_goon',
+                                            Feed::item('project', $project->name, $project->id),
+                                            $amount,
+                                            \round($per_amount)
+                                            );
                             $log->add($errors);
 
                             unset($log);

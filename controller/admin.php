@@ -499,11 +499,7 @@ namespace Goteo\Controller {
                     if (!empty($project->image)) $log->image = $project->image;
                     $log->scope = 'public';
                     $log->type = 'projects';
-                    $log_text = '%s, desde ahora tienes 40 días para apoyar este proyecto';
-                    $log_items = array(
-                        Feed::item('relevant', 'Nuevo proyecto en Goteo')
-                    );
-                    $log->html = \vsprintf($log_text, $log_items);
+                    $log->html = Text::html('feed-new_project');
                     $log->add($errors);
                 }
 

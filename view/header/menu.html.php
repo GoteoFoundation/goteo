@@ -20,17 +20,17 @@ use Goteo\Core\ACL,
                 </form>
             </li>
             <?php if (!empty($_SESSION['user'])): ?>
-            <li class="community"><a href="/community"><span><?php echo Text::get('regular-community'); ?></span></a>
+            <li class="community"><a href="/community"><span><?php echo Text::get('community-menu-main'); ?></span></a>
                 <div>
                     <ul>
-                        <li><a href="/community/activity"><span>Actividad</span></a></li>
-                        <li><a href="/community/sharemates"><span>Comunidad</span></a></li>
+                        <li><a href="/community/activity"><span><?php echo Text::get('community-menu-activity'); ?></span></a></li>
+                        <li><a href="/community/sharemates"><span><?php echo Text::get('community-menu-sharemates'); ?></span></a></li>
                     </ul>
                 </div>
             </li>
             <?php else: ?>
             <li class="login">
-                <a href="/community"><span><?php echo Text::get('regular-community'); ?></span></a>
+                <a href="/community"><span><?php echo Text::get('community-menu-main'); ?></span></a>
             </li>
             <?php endif ?>
 

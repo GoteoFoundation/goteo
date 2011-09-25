@@ -306,11 +306,7 @@ namespace Goteo\Controller {
                         $log->title = 'nuevo usuario registrado (confirmado)';
                         $log->url = '/admin/users';
                         $log->type = 'user';
-                        $log_text = 'Nuevo usuario en Goteo %s';
-                        $log_items = array(
-                            Feed::item('user', $user->name, $user->id)
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
+                        $log->html = Text::html('feed-new_user', Feed::item('user', $user->name, $user->id));
                         $log->add($errors);
 
                         // evento público

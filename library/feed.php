@@ -184,6 +184,7 @@ namespace Goteo\Library {
 
             if (empty($this->scope)) $this->scope = 'admin';
             if (empty($this->type)) $this->type = 'system';
+            if (empty($this->html)) return false;
 
 
             // primero, verificar si es unique, no duplicarlo
