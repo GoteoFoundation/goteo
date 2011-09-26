@@ -791,7 +791,7 @@ namespace Goteo\Model {
 
                 $mail->html = true;
                 $mail->send($errors);
-                
+
                 return true;
 			}
 			return false;
@@ -841,6 +841,7 @@ namespace Goteo\Model {
  */
                     $mail->html = true;
                     $mail->send();
+
                     return self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $this->id, ':token' => $token));
                 }
             }
