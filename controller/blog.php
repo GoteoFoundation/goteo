@@ -3,6 +3,8 @@
 namespace Goteo\Controller {
 
     use Goteo\Core\View,
+        Goteo\Library\Text,
+        Goteo\Library\Message,
         Goteo\Model;
 
     class Blog extends \Goteo\Core\Controller {
@@ -11,6 +13,10 @@ namespace Goteo\Controller {
 
             if (!empty($post)) {
                 $show = 'post';
+                // -- Mensaje azul molesto para usuarios no registrados
+                if (empty($_SESSION['user'])) {
+                    Message::Info(Text::get('user-login-required'));
+                }
             } else {
                 $show = 'list';
             }

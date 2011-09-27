@@ -203,12 +203,12 @@ namespace Goteo\Controller {
                         $log->url = '/admin/projects';
                         $log->type = 'project';
                         $log_text = '%s ha inscrito el proyecto %s para <span class="red">revisión</span>, el estado global de la información es del %s';
-                        $items = array(
+                        $log_items = array(
                             Feed::item('user', $project->user->name, $project->user->id),
                             Feed::item('project', $project->name, $project->id),
                             Feed::item('relevant', $project->progress.'%')
                         );
-                        $log->html = \vsprintf($log_text, $items);
+                        $log->html = \vsprintf($log_text, $log_items);
                         $log->add($errors);
                         unset($log);
 
@@ -389,7 +389,8 @@ namespace Goteo\Controller {
         public function create () {
 
             if (empty($_SESSION['user'])) {
-                Message::Info(Text::get('user-login-required'));
+                $_SESSION['jumpto'] = SITE_URL . '/project/create';
+                Message::Info(Text::get('user-login-required-to_create'));
                 throw new Redirection("/user/login");
             }
 
@@ -404,6 +405,23 @@ namespace Goteo\Controller {
                 // permisos para editarlo y borrarlo
                 ACL::allow('/project/edit/'.$project->id, '*', 'user', $_SESSION['user']->id);
                 ACL::allow('/project/delete/'.$project->id, '*', 'user', $_SESSION['user']->id);
+
+                    /*
+                     * Evento Feed
+                     */
+                    $log = new Feed();
+                    $log->title = 'usuario crea nuevo proyecto';
+                    $log->url = 'admin/projects';
+                    $log->type = 'project';
+                    $log_text = '%s ha creado un nuevo proyecto, %s';
+                    $log_items = array(
+                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                        Feed::item('project', $project->name, $project->id)
+                    );
+                    $log->html = \vsprintf($log_text, $log_items);
+                    $log->add($errors);
+                    unset($log);
+
 
                 throw new Redirection("/project/edit/{$project->id}");
             }
@@ -447,13 +465,30 @@ namespace Goteo\Controller {
                     $viewData['non-economic'] = true;
                 }
 
-                //tenemos que tocar esto un poquito para gestionar los pasos al aportar
-                if ($show == 'invest') {
+                // -- ojo a los usuarios publicos
+                if (empty($_SESSION['user'])) {
 
-                    if (empty($_SESSION['user'])) {
-                        Message::Info(Text::get('user-login-required'));
+                    // -- ocultamos los cofinanciadores a los usuarios públicos --
+                    if ($show == 'supporters') {
+                        Message::Info(Text::get('user-login-required-to_see-supporters'));
+                        throw new Redirection('/project/' .  $id);
+                    }
+
+                    // --- loguearse para aportar
+                    if ($show == 'invest') {
+                        $_SESSION['jumpto'] = SITE_URL . '/project/' .  $id . '/invest';
+                        Message::Info(Text::get('user-login-required-to_invest'));
                         throw new Redirection("/user/login");
                     }
+
+                    // -- Mensaje azul molesto para usuarios no registrados
+                    if ($show == 'messages' || $show == 'updates') {
+                        Message::Info(Text::get('user-login-required'));
+                    }
+                }
+
+                //tenemos que tocar esto un poquito para gestionar los pasos al aportar
+                if ($show == 'invest') {
 
                     // si no está en campaña no pueden esta qui ni de coña
                     if ($project->status != 3) {

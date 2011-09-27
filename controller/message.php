@@ -134,13 +134,15 @@ namespace Goteo\Controller {
                 // En el asunto: %PROJECTNAME% por $project->name
                 $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
 
+                $response_url = SITE_URL . '/user/profile/' . $_SESSION['user']->id . '/message';
+
                 // En el contenido:  nombre del autor -> %OWNERNAME% por $project->contract_name
                 // el mensaje que ha escrito el productor -> %MESSAGE% por $msg_content
                 // nombre del usuario que ha aportado -> %USERNAME% por $_SESSION['user']->name
                 // nombre del proyecto -> %PROJECTNAME% por $project->name
                 // url de la plataforma -> %SITEURL% por SITE_URL
-                $search  = array('%MESSAGE%', '%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%SITEURL%');
-                $replace = array($msg_content, $project->contract_name, $_SESSION['user']->name, $project->name, SITE_URL);
+                $search  = array('%MESSAGE%', '%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%SITEURL%', '%RESPONSEURL%');
+                $replace = array($msg_content, $project->contract_name, $_SESSION['user']->name, $project->name, SITE_URL, $response_url);
                 $content = \str_replace($search, $replace, $template->text);
                 
                 $mailHandler = new Mail();
@@ -193,12 +195,14 @@ namespace Goteo\Controller {
                 // En el asunto: %USERNAME% por $_SESSION['user']->name
                 $subject = str_replace('%USERNAME%', $_SESSION['user']->name, $template->title);
 
+                $response_url = SITE_URL . '/user/profile/' . $_SESSION['user']->id . '/message';
+                $profile_url = SITE_URL."/user/profile/{$user->id}/sharemates";
                 // En el contenido:  nombre del destinatario -> %TONAME% por $user->name
                 // el mensaje que ha escrito el usuario -> %MESSAGE% por $msg_content
                 // nombre del usuario -> %USERNAME% por $_SESSION['user']->name
                 // url del perfil -> %PROFILEURL% por ".SITE_URL."/user/profile/{$user->id}/sharemates"
-                $search  = array('%MESSAGE%','%TONAME%',  '%USERNAME%', '%PROFILEURL%');
-                $replace = array($msg_content, $user->name, $_SESSION['user']->name, SITE_URL."/user/profile/{$user->id}/sharemates");
+                $search  = array('%MESSAGE%','%TONAME%',  '%USERNAME%', '%PROFILEURL%', '%RESPONSEURL%');
+                $replace = array($msg_content, $user->name, $_SESSION['user']->name, $profile_url, $response_url);
                 $content = \str_replace($search, $replace, $template->text);
 
 

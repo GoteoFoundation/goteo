@@ -25,7 +25,7 @@ $level = (int) $this['level'] ?: 3;
         $('#message-text').val('<?php echo Text::get('project-messages-send_message-your_answer'); ?>').focus().select();
     }
 </script>
-<?php if (!empty($_SESSION['user']->id)) : ?>
+<?php if (!empty($_SESSION['user'])) : ?>
 <div class="widget project-message">
     <h<?php echo $level ?> class="title"><?php echo Text::get('project-messages-send_message-header'); ?></h<?php echo $level ?>>
 
@@ -62,11 +62,13 @@ $level = (int) $this['level'] ?: 3;
 				   <?php echo htmlspecialchars($message->user->name); if ($message->blocked == 1) echo ' ' . Text::get('regular-looks_for'); ?>
                    </a>
                    </h<?php echo $level ?>>
-                   <a name="message<?php echo $message->id; ?>" />
+                   <a name="message<?php echo $message->id; ?>"></a>
                    <div class="date"><span>Hace <?php echo $message->timeago ?></span></div>
                    <blockquote><?php echo $message->message; ?></blockquote>
                    <div class="actions">
+                        <?php if (!empty($_SESSION['user'])) : ?>
                         <a class="" href="#" onclick="answer('<?php echo $message->id; ?>')"><?php echo Text::get('project-messages-answer_it'); ?></a>
+                        <?php endif; ?>
                         <?php // si puede borrar este mensaje
                         if (\Goteo\Core\ACL::check("/message/delete/{$message->id}/{$project->id}")) : ?>
                                 <a href="/message/delete/<?php echo $message->id; ?>/<?php echo $project->id; ?>"><?php echo Text::get('regular-delete'); ?></a>

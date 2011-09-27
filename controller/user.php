@@ -35,8 +35,10 @@ namespace Goteo\Controller {
                 $password = $_POST['password'];
                 if (false !== ($user = (\Goteo\Model\User::login($username, $password)))) {
                     $_SESSION['user'] = $user;
-                    if (!empty($_POST['return'])) {
-                        throw new Redirection($_POST['return']);
+                    if (!empty($_POST['return']) || !empty($_SESSION['jumpto'])) {
+                        $jumpto = !empty($_POST['return']) ? $_POST['return'] : $_SESSION['jumpto'];
+                        unset($_SESSION['jumpto']);
+                        throw new Redirection($jumpto);
                     } else {
                         throw new Redirection('/dashboard');
                     }
@@ -216,7 +218,32 @@ namespace Goteo\Controller {
             if (!$user instanceof Model\User || $user->hide) {
                 throw new Redirection('/', Redirection::PERMANENT);
             }
-                
+
+            //--- para usuarios públicos---
+            if (empty($_SESSION['user'])) {
+                // a menos que este perfil sea de un impulsor, no pueden verlo
+                $owners = Model\User::getOwners() ;
+                if (!isset($owners[$id])) {
+                    $_SESSION['jumpto'] = SITE_URL . '/user/profile/' .  $id . '/' . $show;
+                    Message::Info(Text::get('user-login-required-to_see'));
+                    throw new Redirection("/user/login");
+                }
+
+                // la subpágina de mensaje también está restringida
+                if ($show == 'message') {
+                    $_SESSION['jumpto'] = SITE_URL . '/user/profile/' .  $id . '/message';
+                    Message::Info(Text::get('user-login-required-to_message'));
+                    throw new Redirection("/user/login");
+                }
+
+                // subpágina de cofinanciadores
+                if ($show == 'investors') {
+                    Message::Info(Text::get('user-login-required-to_see-supporters'));
+                    throw new Redirection('/user/profile/' .  $id);
+                }
+
+            }
+            //--- el resto pueden seguir ---
             
             $viewData = array();
             $viewData['user'] = $user;
@@ -448,7 +475,7 @@ namespace Goteo\Controller {
                                 Message::Info('Te hemos dado de baja'); //Text::get
                                 throw new Redirection('/user/login');
                             } else {
-                                Message::Error('No hemos podido darte de baja, contáctanos'); //Text::get
+                                Message::Error('No hemos podido darte de baja. Por favor, contáctanos a hola@goteo.org'); //Text::get
                                 throw new Redirection('/user/login');
                             }
                         }

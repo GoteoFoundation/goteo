@@ -23,10 +23,6 @@ foreach (License::getAll() as $l) {
 }
 
 $action = '/invest/' . $project->id;
-// piñon para betatesters
-if (!in_array($_SESSION['user']->id, array('root', 'goteo', 'olivier', 'esenabre', 'diegobus', 'susana', 'paypal'))) {
-    $action = '/about/beta';
-}
 
 
 ?>

@@ -20,7 +20,7 @@
 		});
 	});
 </script>
-<?php if (!empty($_SESSION['user']->id)) : ?>
+<?php if (!empty($_SESSION['user'])) : ?>
 <div class="widget blog-comment">
     <h<?php echo $level ?> class="title"><?php echo Text::get('blog-send_comment-header'); ?></h<?php echo $level ?>>
     <form method="post" action="/message/post/<?php echo $this['post']; ?>/<?php echo $this['project']; ?>">

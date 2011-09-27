@@ -1,4 +1,6 @@
 <?php
+// --- los usuarios publicos no pueden ver los cuadros de cofinanciadores
+if (empty ($_SESSION['user'])) return '';
 
 use Goteo\Core\View,
     Goteo\Library\Text,

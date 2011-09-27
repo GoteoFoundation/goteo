@@ -325,7 +325,8 @@ namespace Goteo\Library {
                 'translate' => 'Panel traductor',
                 'menu' => 'Menu superior',
                 'feed' => 'Eventos recientes',
-                'mailer' => 'Emails automaticos'
+                'mailer' => 'Emails automaticos',
+                'bluead' => 'Avisos azules'
             );
 
             \asort($groups);
