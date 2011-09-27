@@ -14,26 +14,26 @@ $filters = $this['filters'];
 <!-- filtros -->
 <?php $the_filters = array(
     'projects' => array (
-        'label' => 'Proyecto:',
+        'label' => 'Proyecto',
         'first' => 'Todos los proyectos'),
     'users' => array (
-        'label' => 'Usuario:',
+        'label' => 'Usuario',
         'first' => 'Todos los usuarios'),
     'methods' => array (
-        'label' => 'Tipo de aporte',
+        'label' => 'Método de pago',
         'first' => 'Todos los tipos'),
-    'status' => array (
-        'label' => 'Estado de proyecto:',
-        'first' => 'Todos los estados'),
     'investStatus' => array (
-        'label' => 'Estado de aporte:',
+        'label' => 'Estado del aporte',
         'first' => 'Todos los estados'),
     'campaigns' => array (
-        'label' => 'Campaña:',
+        'label' => 'Campaña',
         'first' => 'Todas las campañas'),
 ); ?>
-<a href="/cron/execute" target="_blank" class="button red">Ejecutar cargos</a>
-<a href="/cron/verify" target="_blank" class="button red">Verificar preapprovals</a>
+<a href="/cron/execute" target="_blank" class="button red">Ejecutar cargos</a>&nbsp;&nbsp;&nbsp;
+<a href="/cron/verify" target="_blank" class="button red">Verificar preapprovals</a>&nbsp;&nbsp;&nbsp;
+<?php if (!empty($filters['projects'])) : ?>
+    <a href="/cron/dopay/<?php echo $filters['projects'] ?>" target="_blank" class="button red">Realizar pagos secundarios al proyecto filtrado</a>
+<?php endif ?>
 <div class="widget board">
     <h3 class="title">Filtros</h3>
     <form id="filter-form" action="/admin/accounts" method="get">
@@ -55,8 +55,8 @@ $filters = $this['filters'];
 </div>
 
 <div class="widget board">
-<?php if (!isset($_GET['filtered'])) : ?>
-    <p>Actualmente hay <?php echo count($this['list']) ?> aportes en el sistema, mejor poner algún filtro.</p>
+<?php if (!isset($filters['projects'])) : ?>
+    <p>Selecciona un proyecto</p>
 <?php elseif (!empty($this['list'])) : ?>
     <table width="100%">
         <thead>
@@ -101,6 +101,6 @@ $filters = $this['filters'];
 
     </table>
 <?php else : ?>
-    <p>No hay aportes que cumplan con los filtros.</p>
+    <p>No hay transacciones que cumplan con los filtros.</p>
 <?php endif;?>
 </div>

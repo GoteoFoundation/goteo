@@ -54,7 +54,7 @@ namespace Goteo\Model {
 				$invest->rewards = $query->fetchAll(\PDO::FETCH_CLASS);
 
 				$query = static::query("
-                    SELECT  address, zipcode, location, country
+                    SELECT  address, zipcode, location, country, name, nif
                     FROM  invest_address
                     WHERE   invest_address.invest = ?
                     ", array($id));
@@ -128,7 +128,7 @@ namespace Goteo\Model {
 
             /*
              * Estos son los filtros
-            $fields = array('method', 'status', 'investStatus', 'project', 'user', 'campaign');
+            $fields = array('method', 'status', 'investStatus', 'project', 'user', 'campaign', 'types');
              */
 
             $list = array();
@@ -151,6 +151,22 @@ namespace Goteo\Model {
             }
             if (!empty($filters['campaigns'])) {
                 $sqlFilter .= " AND invest.campaign = '{$filters['campaigns']}'";
+            }
+            if (!empty($filters['types'])) {
+                switch ($filters['types']) {
+                    case 'donative':
+                        $sqlFilter .= " AND invest.resign = 1";
+                        break;
+                    case 'anonymous':
+                        $sqlFilter .= " AND invest.anonymous = 1";
+                        break;
+                    case 'manual':
+                        $sqlFilter .= " AND invest.admin IS NOT NULL";
+                        break;
+                    case 'campaign':
+                        $sqlFilter .= " AND invest.campaign IS NOT NULL";
+                        break;
+                }
             }
 
             $sql = "SELECT
@@ -311,20 +327,27 @@ namespace Goteo\Model {
         /*
          * Lista de usuarios que han aportado a algo
          */
-        public static function users () {
+        public static function users ($all = false) {
 
             $list = array();
 
-            $query = static::query("
+            $sql = "
                 SELECT
                     user.id as id,
                     user.name as name
                 FROM    user
                 INNER JOIN invest
                     ON user.id = invest.user
-                WHERE (user.hide = 0 OR user.hide IS NULL)
-                ORDER BY user.name ASC
-                ");
+                ";
+            
+            if (!$all) {
+                $sql .= "WHERE (user.hide = 0 OR user.hide IS NULL)
+                    ";
+            }
+                $sql .= "ORDER BY user.name ASC
+                ";
+
+            $query = static::query($sql);
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
                 $list[$item->id] = $item->name;
@@ -374,7 +397,7 @@ namespace Goteo\Model {
         /*
          * Usuarios que han aportado aun proyecto
          */
-        public static function investors ($project, $projNum = true) {
+        public static function investors ($project, $projNum = true, $showall = false) {
             $investors = array();
 
             $sql = "
@@ -408,7 +431,7 @@ namespace Goteo\Model {
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $investor) {
 
                 // si el usuario es hide o el aporte es anonymo, lo ponemos como el usuario anonymous (avatar 1)
-                if ($investor->hide == 1 || $investor->anonymous == 1) {
+                if (!$showall && ($investor->hide == 1 || $investor->anonymous == 1)) {
 
                     $investors['anonymous'] = (object) array(
                         'user' => 'anonymous',
@@ -659,7 +682,7 @@ namespace Goteo\Model {
                 -1 => 'En proceso',
                 0  => 'Pendiente de cargo',
                 1  => 'Cargo ejecutado',
-                2  => 'Devuelto o cancelado'
+                2  => 'Cancelado'
             );
 
             if (!empty($id)) {

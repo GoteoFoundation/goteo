@@ -21,7 +21,7 @@ uasort($investors,
             <?php $c=1; foreach ($investors as $user => $investor):
                 if ($user == 'anonymous') continue; ?>
             <li class="activable"><?php echo new View('view/user/widget/supporter.html.php', array('user' => $investor)) ?></li>
-            <?php if ($c=>10) break; else $c++; endforeach; ?>
+            <?php if ($c>=10) break; else $c++; endforeach; ?>
         </ul>
     </div>
     

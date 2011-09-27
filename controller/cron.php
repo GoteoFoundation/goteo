@@ -3,6 +3,7 @@
 namespace Goteo\Controller {
 
     use Goteo\Model,
+        Goteo\Core\Redirection,
         Goteo\Core\Error,
         Goteo\Library\Text,
         Goteo\Library\Paypal,
@@ -12,7 +13,13 @@ namespace Goteo\Controller {
     class Cron extends \Goteo\Core\Controller {
         
         public function index () {
+            throw new Redirection('/cron/execute');
+        }
 
+        /*
+         *  Proceso que ejecuta los cargos, cambia estados, lanza eventos de cambio de ronda
+         */
+        public function execute () {
             // revision de proyectos: dias, conseguido y cambios de estado
             // proyectos en campaña (y los financiados para ponerle los dias a cero...)
             $projects = Model\Project::active();
@@ -227,21 +234,16 @@ namespace Goteo\Controller {
                 }
 
 
-                // tratamiento de aportes
+                // tratamiento de aportes, todos sus aportes
                 $query = \Goteo\Core\Model::query("
                     SELECT  *
                     FROM  invest
-                    WHERE   invest.project = ?
+                    WHERE   invest.status = 0
+                    AND     invest.project = ?
                     ", array($project->id));
                 $project->invests = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
 
-                // para cada uno sacar todos sus aportes
                 foreach ($project->invests as $key=>&$invest) {
-
-                    if ($invest->status != 0) {
-                        // no nos importan los aportes cancelados ni ejecutados ni en proceso
-                        continue;
-                    }
 
                     $userData = Model\User::getMini($invest->user);
 
@@ -292,6 +294,7 @@ namespace Goteo\Controller {
                                 }
                                 break;
                             case 'cash':
+                                $invest->setStatus('1');
                                 echo 'Aporte al contado, nada que ejecutar.';
                                 $doFeed = false;
                                 break;
@@ -326,6 +329,81 @@ namespace Goteo\Controller {
             }
 
         }
+
+
+        /*
+         *  Proceso que verifica si los preapprovals han sido coancelados
+         *   Solamente trata transacciones paypal pendientes de proyectos en campaña
+         *
+         */
+        public function verify () {
+            // proyectos en campaña (y los financiados por si se ha quedado alguno descolgado)
+            $projects = Model\Project::active();
+
+            foreach ($projects as &$project) {
+                $query = Model\Project::query("
+                    SELECT  *
+                    FROM  invest
+                    WHERE   invest.status = 0
+                    AND     invest.method = 'paypal'
+                    AND     invest.project = ?
+                    ", array($project->id));
+                $project->invests = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
+
+                echo "Proyecto: {$project->name} <br />Aportes pendientes: " . count($project->invests) . "<br />";
+
+                foreach ($project->invests as $key=>&$invest) {
+
+                    $details = null;
+                    $errors = array();
+
+                    echo 'Aporte ' . $invest->id . '<br />';
+
+                    if ($invest->invested == date('Y-m-d')) {
+                            // es de hoy, no lo tratamos
+                            echo 'Es de hoy<br />';
+                    } elseif (empty($invest->preapproval)) {
+                        // no tiene preaproval, cancelar
+                        echo 'No tiene preapproval<br />';
+                        $invest->cancel();
+                    } else {
+                        // comprobar si está cancelado por el usuario
+                        if ($details = Paypal::preapprovalDetails($invest->preapproval, $errors)) {
+//                            echo \trace($details);
+                            switch ($details->status) {
+                                case 'ACTIVE':
+                                    echo 'Sigue activo<br />';
+                                    break;
+                                case 'CANCELED':
+                                    echo 'Preapproval cancelado<br />';
+                                    $invest->cancel();
+                                    break;
+                                case 'DEACTIVED':
+                                    echo 'Ojo! Desactivado!<br />';
+                                    break;
+                            }
+                        } else {
+                            echo 'Errores:<br />' . implode('<br />', $errors);
+                        }
+                    }
+
+                    echo 'Aporte revisado<hr />';
+                }
+                
+                echo 'Proyecto revisado<hr />';
+            }
+        }
+
+        /*
+         * Realiza los pagos secundarios al proyecto
+         * Tiene que haber 
+         */
+        public function dopay ($project) {
+            die('no programado');
+            throw new Redirection('/cron/execute');
+        }
+
+
 
     }
     

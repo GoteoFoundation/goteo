@@ -762,6 +762,7 @@ namespace Goteo\Controller {
 
                         /// este es el único save que se lanza desde un metodo process_
                         if ($post->save($errors)) {
+                            $id = $post->id;
                             if ($action == 'edit') {
                                 $success[] = Text::get('dashboard-project-updates-saved');
                             } else {
@@ -793,7 +794,7 @@ namespace Goteo\Controller {
                                 $log->url = '/user/profile/'.$_SESSION['user']->id;
                                 $log->image = $_SESSION['user']->avatar->id;
                                 $log->scope = 'public';
-                                $log->type = 'community';
+                                $log->type = 'projects';
                                 $log->html = Text::html('feed-new_update',
                                                 Feed::item('blog', Text::get('project-menu-updates')),
                                                 Feed::item('project', $project->name, $project->id),

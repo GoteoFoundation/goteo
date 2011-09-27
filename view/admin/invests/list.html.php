@@ -14,25 +14,31 @@ $filters = $this['filters'];
 <!-- filtros -->
 <?php $the_filters = array(
     'projects' => array (
-        'label' => 'Proyecto:',
+        'label' => 'Proyecto',
         'first' => 'Todos los proyectos'),
     'users' => array (
-        'label' => 'Usuario:',
+        'label' => 'Usuario',
         'first' => 'Todos los usuarios'),
     'methods' => array (
-        'label' => 'Tipo de aporte',
-        'first' => 'Todos los tipos'),
+        'label' => 'Método de pago',
+        'first' => 'Todos los métodos'),
     'status' => array (
-        'label' => 'Estado de proyecto:',
+        'label' => 'Estado de proyecto',
         'first' => 'Todos los estados'),
     'investStatus' => array (
-        'label' => 'Estado de aporte:',
+        'label' => 'Estado de aporte',
         'first' => 'Todos los estados'),
     'campaigns' => array (
-        'label' => 'Campaña:',
-        'first' => 'Todas las campañas'),
+        'label' => 'Convocatoria',
+        'first' => 'Todas las convocatorias'),
+    'types' => array (
+        'label' => 'Extra',
+        'first' => 'Todos')
 ); ?>
 <a href="/admin/invests/add" class="button red">Generar aportes manualmente</a>&nbsp;&nbsp;&nbsp;
+<?php if (!empty($filters['projects'])) : ?>
+    <a href="/admin/invests/report/<?php echo $filters['projects'] ?>" class="button red">Informe del proyecto filtrado</a>
+<?php endif ?>
 <div class="widget board">
     <h3 class="title">Filtros</h3>
     <form id="filter-form" action="/admin/invests" method="get">
@@ -54,46 +60,44 @@ $filters = $this['filters'];
 </div>
 
 <div class="widget board">
-<?php if (!isset($_GET['filtered'])) : ?>
-    <p>Actualmente hay <?php echo count($this['list']) ?> aportes en el sistema, mejor poner algún filtro.</p>
+<?php if (empty($filters)) : ?>
+    <p>Filtra algun criterio</p>
 <?php elseif (!empty($this['list'])) : ?>
     <table width="100%">
         <thead>
             <tr>
+                <th></th>
                 <th>Aporte ID</th>
+                <th>Fecha</th>
                 <th>Cofinanciador</th>
                 <th>Proyecto</th>
                 <th>Estado</th>
                 <th>Metodo</th>
                 <th>Estado aporte</th>
                 <th>Importe</th>
-                <th>Campaña</th>
-                <th>Aportado</th>
-                <th>Cargado</th>
-                <th>Devuelto</th>
-                <th>Anónimo</th>
-                <th>Donativo</th>
-                <th>Manual</th>
+                <th>Extra</th>
             </tr>
         </thead>
 
         <tbody>
             <?php foreach ($this['list'] as $invest) : ?>
             <tr>
+                <td><a href="/admin/invests/details/<?php echo $invest->id ?>">[Detalles]</a></td>
                 <td><?php echo $invest->id ?></td>
+                <td><?php echo $invest->invested ?></td>
                 <td><?php echo $this['users'][$invest->user] ?></td>
-                <td><?php echo $this['projects'][$invest->project] ?></td>
+                <td><?php echo $this['projects'][$invest->project]; if (!empty($invest->campaign)) echo '<br />('.$this['campaigns'][$invest->campaign].')'; ?></td>
                 <td><?php echo $this['status'][$invest->status] ?></td>
                 <td><?php echo $this['methods'][$invest->method] ?></td>
                 <td><?php echo $this['investStatus'][$invest->investStatus] ?></td>
                 <td><?php echo $invest->amount ?></td>
-                <td><?php echo $this['campaigns'][$invest->campaign] ?></td>
-                <td><?php echo $invest->invested ?></td>
                 <td><?php echo $invest->charged ?></td>
                 <td><?php echo $invest->returned ?></td>
-                <td><?php if ($invest->anonymous == 1)  echo 'Anónimo' ?></td>
-                <td><?php if ($invest->resign == 1)  echo 'Donativo' ?></td>
-                <td><?php echo $invest->admin ?></td>
+                <td>
+                    <?php if ($invest->anonymous == 1)  echo 'Anónimo ' ?>
+                    <?php if ($invest->resign == 1)  echo 'Donativo ' ?>
+                    <?php if (!empty($invest->admin)) echo 'Manual' ?>
+                </td>
             </tr>
             <?php endforeach; ?>
         </tbody>
