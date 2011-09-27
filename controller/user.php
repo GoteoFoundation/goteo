@@ -422,7 +422,7 @@ namespace Goteo\Controller {
                     }
                 }
 
-                $error = 'El código de recuperación no es válido';//Text::get('recover-token-incorrect');
+                $error = Text::get('recover-token-incorrect');
             }
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['recover'])) {
@@ -430,12 +430,10 @@ namespace Goteo\Controller {
                 $email    = $_POST['email'];
                 if (Model\User::recover($username, $email)) {
                     // se pue recuperar
-                    $message = 'Te hemos enviado un email para recuperar tu cuenta. Verifica también la carpeta de correo no deseado o spam.';
-                    //Text::get('recover-email-sended');
+                    $message = Text::get('recover-email-sended');
                 }
                 else {
-                    $error = 'No se puede recuperar ninguna cuenta con estos datos';
-                    //Text::get('recover-request-fail');
+                    $error = Text::get('recover-request-fail');
                 }
             }
 
@@ -472,29 +470,27 @@ namespace Goteo\Controller {
                         if(!empty($id)) {
                             // el token coincide con el email y he obtenido una id
                             if (Model\User::cancel($id)) {
-                                Message::Info('Te hemos dado de baja'); //Text::get
+                                Message::Info(Text::get('leave-process-completed'));
                                 throw new Redirection('/user/login');
                             } else {
-                                Message::Error('No hemos podido darte de baja. Por favor, contáctanos a hola@goteo.org'); //Text::get
+                                Message::Error(Text::get('leave-process-fail'));
                                 throw new Redirection('/user/login');
                             }
                         }
                     }
                 }
 
-                $error = 'El código no es válido';//Text::get('leave-token-incorrect');
+                $error = Text::get('leave-token-incorrect');
             }
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['leaving'])) {
                 $email    = $_POST['email'];
                 if (Model\User::leaving($email)) {
                     // se pue recuperar
-                    $message = 'Te hemos enviado un email para completar el proceso. Verifica también la carpeta de correo no deseado o spam.';
-                    //Text::get('leave-email-sended');
+                    $message = Text::get('leave-email-sended');
                 }
                 else {
-                    $error = 'No hemos encontrado ninguna cuenta con este email en nuestra base de datos';
-                    //Text::get('leave-request-fail');
+                    $error = Text::get('leave-request-fail');
                 }
             }
 

@@ -28,7 +28,7 @@ if (!isset($_POST['email']) && isset($_GET['email'])) {
 
             <div>
 
-                <h2>Cancelar la cuenta<?php # echo //Text::get('login-leave-header'); ?></h2>
+                <h2><?php echo Text::get('login-leave-header'); ?></h2>
 
                 <?php if (!empty($error)): ?>
                 <p class="error"><?php echo $error; ?></p>
@@ -43,7 +43,7 @@ if (!isset($_POST['email']) && isset($_GET['email'])) {
                         <input type="text" name="email" value="<?php echo $email?>" /></label>
                     </div>
 
-                    <input type="submit" name="leaving" value="Dar de baja<?php # echo //Text::get('login-leave-button'); ?>" />
+                    <input type="submit" name="leaving" value="<?php echo Text::get('login-leave-button'); ?>" />
 
                 </form>
 
