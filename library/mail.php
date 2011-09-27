@@ -130,8 +130,8 @@ namespace Goteo\Library {
                     if ($mail->Send()) {
 
                         // copia a goteo.org para preubas
-                        $mail->subject = 'Copia para verificaciones de : ' . $mail->subject . ' - Para: ' . str_replace('@', '_', $mail->to);
-                        $mail->to = 'olivierschulbaum@platoniq.net';
+                        $mail->subject = 'Copia para verificaciones de : ' . $mail->subject . ' - Para: ' . str_replace('@', '_', $this->to);
+                        $mail->AddAddress('olivierschulbaum@platoniq.net', 'Olivier');
                         $mail->send();
 
                         return true;
