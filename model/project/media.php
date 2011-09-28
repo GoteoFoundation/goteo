@@ -48,6 +48,17 @@ namespace Goteo\Model\Project {
 
         }
 
+        protected static function getBlipCode ($id, $https = false) {
+
+            return '<iframe src="'
+                    . ($https ? 'https' : 'http') . '://blip.tv/play/'
+                    .$id.'.html" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+                <embed type="application/x-shockwave-flash" src="'
+                    . ($https ? 'https' : 'http') . '://a.blip.tv/api.swf#'
+                    .$id.'" style="display:none"></embed>';
+
+        }
+
         public function getEmbedCode () {
 
             $code = '';
@@ -87,8 +98,13 @@ namespace Goteo\Model\Project {
                         break;
 
                      case (preg_match('#^(http(?<https>s)?://)?(?:www\.)?prezi.com/(?<slide>\w+)/#', $this->url, $pz)):
-                        // URL de Slideshare
+                        // URL de Prezi
                         $code = static::getPreziCode($pz['slide']);
+                        break;
+
+                     case (preg_match('#^(http(?<https>s)?://)?(?:www\.)?blip.tv/play/(?<video>\w+).html#', $this->url, $bp)):
+                        // URL de Blip.tv
+                        $code = static::getBlipCode($bp['video']);
                         break;
 
                     default:

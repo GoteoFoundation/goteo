@@ -1,4 +1,6 @@
 <?php
+use Goteo\Library\Text;
+
 $items = $this['items'];
 
 ?>
@@ -7,7 +9,7 @@ $items = $this['items'];
         $odd = !$odd ? true : false;
         ?>
     <div class="subitem<?php if ($odd) echo ' odd';?>">
-       <span class="datepub">Hace <?php echo $item->timeago; ?></span>
+       <span class="datepub"><?php echo Text::get('feed-timeago', $item->timeago); ?></span>
        <div class="content-pub"><?php echo $item->html; ?></div>
     </div>
     <?php endforeach; ?>

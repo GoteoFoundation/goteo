@@ -1,7 +1,8 @@
 <?php
 use Goteo\Core\View,
- Goteo\Model\Project\Reward,
- Goteo\Model\Invest;
+    Goteo\Library\Text,
+    Goteo\Model\Project\Reward,
+    Goteo\Model\Invest;
 
 $filters = array(
     'date'      => 'Fecha',
@@ -26,12 +27,13 @@ $project = $this['project'];
             foreach ($this['rewards'] as $rewardId=>$rewardData) :
                 $who = Invest::choosed($rewardData->id); ?>
             <div class="reward <?php if(($num % 4)==0)echo " last"?>">
-            	<span class="orden">(<?php echo $num; ?>)</span>
+            	<div class="orden"><?php echo $num; ?></div>
                 <span class="aporte">Aportaciones de <span class="num"><?php echo $rewardData->amount; ?></span> <span class="euro">&nbsp;</span></span>
                 <span class="cofinanciadores">cofinanciadores <span class="num"><?php echo count($who); ?></span></span>
-                
-                <span class="tiporec <?php echo $rewardData->icon ?>"><?php echo $icons[$rewardData->icon]->name; ?>: <?php echo $rewardData->reward; ?></span>
-                <span class="recompensa"><strong style="color:#666;">Recompensa:</strong><br/> <?php echo $rewardData->description; ?></span>
+                <div class="contenedorrecompensa">
+                	<div class="tiporec"><ul><li class="<?php echo $rewardData->icon; ?>"><?php echo Text::recorta($rewardData->reward, 40); ?></li></ul></div>
+                	<span class="recompensa"><strong style="color:#666;">Recompensa:</strong><br/> <?php echo Text::recorta($rewardData->description, 100); ?></span>
+                </div>
                 <?php if (count($who) > 0) : ?>
                 <a class="button green" onclick="msgto('<?php echo $rewardData->id; ?>')" >mensaje a ese grupo</a>
                 <?php endif; ?>
@@ -93,7 +95,7 @@ $project = $this['project'];
                                 if ($reward->fulfilled != 1) $cumplida = false;
                                 ?>
                         <input type="checkbox"  id="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>" name="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>" value="1" <?php if ($reward->fulfilled == 1) echo ' checked="checked" disabled';?>  />
-                        <label for="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>"><?php echo $reward->reward; ?></label>
+                        <label for="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>"><?php echo Text::recorta($reward->reward, 40); ?></label>
                         <?php endforeach; ?>
 
                     </div>
@@ -137,7 +139,7 @@ $project = $this['project'];
                     Por retornos: <br />
                     <?php foreach ($this['rewards'] as $rewardId => $rewardData) : ?>
                         <input type="checkbox" id="msg_reward-<?php echo $rewardId; ?>" name="msg_reward-<?php echo $rewardId; ?>" value="1" />
-                        <label for="msg_reward-<?php echo $rewardId; ?>"><?php echo $rewardData->amount; ?> &euro; (<?php echo $rewardData->reward; ?>)</label>
+                        <label for="msg_reward-<?php echo $rewardId; ?>"><?php echo $rewardData->amount; ?> &euro; (<?php echo Text::recorta($rewardData->reward, 40); ?>)</label>
                     <?php endforeach; ?>
         
                 </p>

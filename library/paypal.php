@@ -144,18 +144,18 @@ namespace Goteo\Library {
                 $payRequest->actionType = 'PAY_PRIMARY';
                 $payRequest->feesPayer = 'EACHRECEIVER';
                 // SENDER no vale para chained payments   (PRIMARYRECEIVER, EACHRECEIVER, SECONDARYONLY)
-//                $payRequest->senderEmail = $invest->account;
                 $payRequest->requestEnvelope = new \RequestEnvelope();
                 $payRequest->requestEnvelope->errorLanguage = 'es_ES';
 
                 // Primary receiver, Goteo Business Account
                 $receiverP = new \receiver();
-                $receiverP->email = 'goteo_1314917819_biz@gmail.com';
+                $receiverP->email = PAYPAL_BUSINESS_ACCOUNT; // tocar en config para poner en real
                 $receiverP->amount = (int) $invest->amount;
                 $receiverP->primary = true;
 
                 // Receiver, Projects PayPal Account
                 $receiver = new \receiver();
+//                $receiver->email = $invest->account;   <--- hasta poner en real
                 $receiver->email = 'projec_1314918267_per@gmail.com';
                 $receiver->amount = $amountPay;
                 $receiver->primary = false;
@@ -238,6 +238,112 @@ namespace Goteo\Library {
                     return false;
                 }
     
+            }
+            catch (Exception $e) {
+                $fault = new \FaultMessage();
+                $errorData = new \ErrorData();
+                $errorData->errorId = $ex->getFile() ;
+                $errorData->message = $ex->getMessage();
+                $fault->error = $errorData;
+
+                $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
+                @\mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, 1) . '</pre>');
+                return false;
+            }
+
+        }
+
+
+        /*
+         *  Metodo para ejecutar pago secundario (desde cron/dopay)
+         * Recibe parametro del aporte (id, cuenta, cantidad)
+         */
+        public static function doPay($invest, &$errors = array()) {
+
+            try {
+                $project = Project::getMini($invest->project);
+                $userData = User::getMini($invest->user);
+
+                // Create request object
+                $payRequest = new \ExecutePaymentRequest();
+           		$payRequest->payKey = $invest->payment;
+
+                // Create service wrapper object
+                $ap = new \AdaptivePayments();
+
+                // invoke business method on service wrapper passing in appropriate request params
+                $response = $ap->ExecutePayment($payRequest);
+
+                // Check response
+                if(strtoupper($ap->isSuccess) == 'FAILURE') {
+                    $soapFault = $ap->getLastError();
+                    if(is_array($soapFault->error)) {
+                        $errorId = $soapFault->error[0]->errorId;
+                        $errorMsg = $soapFault->error[0]->message;
+                    } else {
+                        $errorId = $soapFault->error->errorId;
+                        $errorMsg = $soapFault->error->message;
+                    }
+                    if (is_array($soapFault->payErrorList->payError)) {
+                        $errorId = $soapFault->payErrorList->payError[0]->error->errorId;
+                        $errorMsg = $soapFault->payErrorList->payError[0]->error->message;
+                    }
+
+                    // tratamiento de errores
+                    switch ($errorId) {
+                        case '569013': // preapproval cancelado por el usuario desde panel paypal
+                        case '539012': // preapproval no se llegó a autorizar
+                            if ($invest->cancel()) {
+                                $action = 'Aporte cancelado';
+
+                                /*
+                                 * Evento Feed
+                                 */
+                                $log = new Feed();
+                                $log->title = 'Aporte cancelado por preaproval cancelado por el usuario paypal';
+                                $log->url = '/admin/invests';
+                                $log->type = 'system';
+                                $log_text = 'Se ha <span class="red">Cancelado</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s por preapproval cancelado';
+                                $items = array(
+                                    Feed::item('user', $userData->name, $userData->id),
+                                    Feed::item('money', $invest->amount.' &euro;'),
+                                    Feed::item('system', $invest->id),
+                                    Feed::item('project', $project->name, $project->id),
+                                    Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                                );
+                                $log->html = \vsprintf($log_text, $items);
+                                $log->add($errors);
+                                unset($log);
+
+                            }
+                            break;
+                    }
+
+
+                    if (empty($errorId)) {
+                        $errors[] = 'NO es soapFault pero no es Success: <pre>' . print_r($ap, 1) . '</pre>';
+                        @\mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No es un soap fault pero no es un success.<br /><pre>' . print_r($ap, 1) . '</pre>');
+                    } else {
+                        $errors[] = "$action $errorMsg [$errorId]";
+                    }
+
+                    return false;
+                }
+
+                // verificar el campo paymentExecStatus
+                if (!empty($response->paymentExecStatus) && $response->paymentExecStatus == 'COMPLETED') {
+                    if ($invest->setStatus('3')) {
+                        return true;
+                    } else {
+                        $errors[] = "Obtenido estatus de ejecución {$response->paymentExecStatus} pero no se ha actualizado el registro de aporte id {$invest->id}.";
+                        return false;
+                    }
+                } else {
+                    $errors[] = 'No se ha completado el pago. <pre>' . print_r($response, 1) . '</pre>';
+                    @\mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No payment exec status completed.<br /><pre>' . print_r($response, 1) . '</pre>');
+                    return false;
+                }
+
             }
             catch (Exception $e) {
                 $fault = new \FaultMessage();

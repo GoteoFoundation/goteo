@@ -570,7 +570,7 @@ namespace Goteo\Model {
          */
         public function setStatus ($status) {
 
-            if (!in_array($status, array('-1', '0', '1', '2'))) {
+            if (!in_array($status, array('-1', '0', '1', '2', '3'))) {
                 return false;
             }
 
@@ -658,13 +658,9 @@ namespace Goteo\Model {
         /*
          * Marcar esta aportación como cancelada
          */
-        public function cancel ($code = null) {
+        public function cancel () {
 
-            $sql = "UPDATE invest SET status = 2";
-            if (!empty($code)) {
-                $sql .= ", transaction = '$code'";
-            }
-            $sql .= " WHERE id = ?";
+            $sql = "UPDATE invest SET status = 2 WHERE id = ?";
             
             if (self::query($sql, array($this->id))) {
                 return true;
@@ -682,7 +678,8 @@ namespace Goteo\Model {
                 -1 => 'En proceso',
                 0  => 'Pendiente de cargo',
                 1  => 'Cargo ejecutado',
-                2  => 'Cancelado'
+                2  => 'Cancelado',
+                3  => 'Pagado al proyecto'
             );
 
             if (!empty($id)) {

@@ -2796,7 +2796,8 @@ namespace Goteo\Controller {
                         'invest'=>$invest,
                         'project'=>$project,
                         'details'=>$details,
-                        'status'=>$status
+                        'status'=>$status,
+                        'investStatus'=>$investStatus
                     )
                 );
             }
@@ -3084,6 +3085,9 @@ namespace Goteo\Controller {
                             $log->add($errors);
 
                             unset($log);
+                        } else {
+                            //sino lo quitamos
+                            \Goteo\Core\Model::query("DELETE FROM feed WHERE url = '/blog/{$post->id}' AND scope = 'public' AND type = 'goteo'");
                         }
 
                     } else {

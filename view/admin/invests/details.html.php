@@ -13,20 +13,19 @@ $user = $this['user'];
         <strong>Proyecto:</strong> <?php echo $project->name ?> (<?php echo $this['status'][$project->status] ?>)
         <strong>Usuario: </strong><?php echo $user->name ?> [<?php echo $user->email ?>]
     </p>
+    <?php if ($invest->status < 1) : ?>
     <h3>Operaciones</h3>
     <p>
-        <?php if ($invest->status == 0) : ?>
-            <a href="/admin/invests/cancel/<?php echo $invest->id ?>"
-                onclick="return confirm('¿Estás seguro de querer cancelar este aporte y su preapproval?');"
-                class="button red">Cancelar este aporte</a>&nbsp;&nbsp;&nbsp;
-        <?php endif; ?>
+        <a href="/admin/invests/cancel/<?php echo $invest->id ?>"
+            onclick="return confirm('¿Estás seguro de querer cancelar este aporte y su preapproval?');"
+            class="button red">Cancelar este aporte</a>&nbsp;&nbsp;&nbsp;
 
-        <?php if ($invest->status == 1) : ?>
-           <a href="/admin/invests/execute/<?php echo $invest->id ?>"
-                onclick="return confirm('¿Seguro que quieres ejecutar ahora? ¿No quieres esperar a la ejecución automática al final de la ronda? ?');"
-                class="button red">Ejecutar cargo ahora</a>
-        <?php endif; ?>
+       <a href="/admin/invests/execute/<?php echo $invest->id ?>"
+            onclick="return confirm('¿Seguro que quieres ejecutar ahora? ¿No quieres esperar a la ejecución automática al final de la ronda? ?');"
+            class="button red">Ejecutar cargo ahora</a>
     </p>
+    <?php endif; ?>
+
     <h3>Detalles del aporte</h3>
     <dl>
         <dt>Cantidad aportada:</dt>
@@ -79,17 +78,16 @@ $user = $this['user'];
                     echo 'Preapproval: '.$invest->preapproval . '   ';
                 
                 if (!empty($invest->payment)) 
-                    echo 'Payment: '.$invest->payment . '   ';
+                    echo 'Cargo: '.$invest->payment . '   ';
 
                 if (!empty($invest->transaction))
-                    echo 'Transaction: '.$invest->transaction . '   ';
+                    echo 'Devolución: '.$invest->transaction . '   ';
             ?>
         </dd>
     </dl>
 
     <?php if (!empty($invest->rewards)) : ?>
     <dl>
-        <?php echo \trace($invest->rewards) ?>
         <dt>Recompensas elegidas:</dt>
         <dd>
             <?php echo implode(', ', $investData->rewards); ?>

@@ -233,8 +233,29 @@ namespace Goteo\Controller {
                     }
                 }
 
+                // a ver si tiene cuenta paypal
+                $projectAccount = Model\Project\Account::get($project->id)->paypal;
 
-                // tratamiento de aportes, todos sus aportes
+                if (empty($projectAccount)) {
+                    /*
+                     * Evento Feed
+                     */
+                    $log = new Feed();
+                    $log->title = 'proyecto sin cuenta paypal (cron)';
+                    $log->url = '/admin/projects';
+                    $log->type = 'project';
+                    $log_text = 'El proyecto %s aun no ha puesto su %s !!!';
+                    $log_items = array(
+                        Feed::item('project', $project->name, $project->id),
+                        Feed::item('relevant', 'cuenta PayPal')
+                    );
+                    $log->html = \vsprintf($log_text, $log_items);
+                    $log->add($errors);
+
+                    unset($log);
+                }
+
+                // tratamiento de aportes penddientes
                 $query = \Goteo\Core\Model::query("
                     SELECT  *
                     FROM  invest
@@ -267,6 +288,10 @@ namespace Goteo\Controller {
 
                     // si hay que ejecutar
                     if ($execute && empty($invest->payment)) {
+
+                        // si tiene cuenta, claro...
+                        if (empty($projectAccount)) break;
+
                         echo 'Ejecutando: ';
                         $errors = array();
 
@@ -274,6 +299,7 @@ namespace Goteo\Controller {
 
                         switch ($invest->method) {
                             case 'paypal':
+                                $invest->account = $projectAccount;
                                 if (Paypal::pay($invest, $errors)) {
                                     echo 'Cargo paypal correcto';
                                     $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
@@ -396,11 +422,42 @@ namespace Goteo\Controller {
 
         /*
          * Realiza los pagos secundarios al proyecto
-         * Tiene que haber 
+         *
+         * Esto son los aportes de tipo paypal, ejecutados (status 1), que tengan payment code
+         *
          */
         public function dopay ($project) {
-            die('no programado');
-            throw new Redirection('/cron/execute');
+
+            // necesitamos la cuenta del proyecto y que sea la misma que cuando el preapproval
+            $projectAccount = Model\Project\Account::get($project)->paypal;
+
+            if (empty($projectAccount)) {
+                die('El proyecto no tiene la cuenta PayPal!!');
+            }
+
+            // tratamiento de aportes pendientes
+            $query = Model\Project::query("
+                SELECT  *
+                FROM  invest
+                WHERE   invest.status = 1
+                AND     invest.method = 'paypal'
+                AND     invest.payment IS NOT NULL
+                AND     invest.project = ?
+                ", array($project->id));
+            $project->invests = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
+
+            foreach ($project->invests as $key=>$invest) {
+                $errors = array();
+
+                if (Paypal::doPay($invest, $errors)) {
+                    echo 'Aporte (id: '.$invest->id.') pagado al proyecto. Ver los detalles en la <a href="/admin/accounts/details/'.$invest->id.'">gestion de transacciones</a><br />';
+                } else {
+                    echo 'Fallo al pagar al proyecto el aporte (id: '.$invest->id.'). Ver los detalles en la <a href="/admin/accounts/details/'.$invest->id.'">gestion de transacciones</a><br />' . implode('<br />', $errors);
+                }
+                echo '<hr />';
+            }
+
+
         }
 
 

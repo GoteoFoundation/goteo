@@ -2,6 +2,7 @@
 namespace Goteo\Library {
 
 	use Goteo\Core\Model,
+        Goteo\Model\Blog\Post,
         Goteo\Library\Text;
 
 	/*
@@ -131,6 +132,22 @@ namespace Goteo\Library {
 
                     //hace tanto
                     $item->timeago = self::time_ago($item->timer);
+
+                    // si es la columan goteo, vamos a cambiar el html por el del post traducido
+                    if ($type == 'goteo') {
+                        // primero sacamos la id del post de la url
+                        $matches = array();
+                        
+                        \preg_match('(\d+)', $item->url, $matches);
+                        if (!empty($matches[0])) {
+                            //  luego hacemos get del post
+                            $post = Post::get($matches[0]);
+
+                            // y substituimos el $item->html por el $post->html
+                            $item->html = Text::recorta($post->text, 250);
+                        }
+                    }
+
 
                     $list[] = $item;
                 }

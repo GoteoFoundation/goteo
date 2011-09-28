@@ -1,6 +1,8 @@
 <?php
 
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Library\Paypal,
+    Goteo\Library\Tpv;
 
 $invest = $this['invest'];
 $project = $this['project'];
@@ -13,14 +15,14 @@ $user = $this['user'];
         <strong>Proyecto:</strong> <?php echo $project->name ?> (<?php echo $this['status'][$project->status] ?>)
         <strong>Usuario: </strong><?php echo $user->name ?> [<?php echo $user->email ?>]
     </p>
+    <?php /* if ($invest->status == 1) : ?>
     <h3>Operaciones</h3>
     <p>
-        <?php if ($invest->status == 1) : ?>
             <a href="/admin/invests/return/<?php echo $invest->id ?>"
                 onclick="return confirm('¿Estás seguro de querer echar atrás toda la transacción?');"
                 class="button red">Devolver el dinero</a>
-        <?php endif; ?>
     </p>
+    <?php endif; */ ?>
     <h3>Detalles del aporte</h3>
     <dl>
         <dt>Cantidad aportada:</dt>
@@ -58,31 +60,50 @@ $user = $this['user'];
     <dl>
         <dt>Códigos de seguimiento: <a href="/admin/invests/details/<?php echo $invest->id ?>">Ir al aporte</a></dt>
         <dd><?php
-                if (!empty($invest->preapproval))
+                if (!empty($invest->preapproval)) {
                     echo 'Preapproval: '.$invest->preapproval . '   ';
+                }
 
-                if (!empty($invest->payment))
-                    echo 'Payment: '.$invest->payment . '   ';
+                if (!empty($invest->payment)) {
+                    echo 'Cargo: '.$invest->payment . '   ';
+                }
 
-                if (!empty($invest->transaction))
-                    echo 'Transaction: '.$invest->transaction . '   ';
+                if (!empty($invest->transaction)) {
+                    echo 'Devolución: '.$invest->transaction . '   ';
+                }
             ?>
         </dd>
     </dl>
 
-    <dl>
-        <dt>Detalles del preapproval: </dt>
-        <dd>Peticion paypal/tpv</dd>
-    </dl>
+    <?php if ($invest->method == 'paypal') : ?>
+        <?php if (!empty($invest->preapproval)) :
+            $details = Paypal::preapprovalDetails($invest->preapproval);
+            ?>
+        <dl>
+            <dt>Detalles del preapproval: </dt>
+            <dd><?php echo \trace($details); ?></dd>
+        </dl>
+        <?php endif ?>
 
-    <dl>
-        <dt>Detalles del cargo: </dt>
-        <dd>Peticion paypal/tpv</dd>
-    </dl>
+        <?php if (!empty($invest->payment)) :
+            $details = Paypal::paymentDetails($invest->payment);
+            ?>
+        <dl>
+            <dt>Detalles del cargo: </dt>
+            <dd><?php echo \trace($details); ?></dd>
+        </dl>
+        <?php endif ?>
 
-    <dl>
-        <dt>Detalles de la transaccion: </dt>
-        <dd>Peticion paypal/tpv</dd>
-    </dl>
+        <?php if (!empty($invest->transaction)) : ?>
+        <dl>
+            <dt>Detalles de la devolución: </dt>
+            <dd>Hay que ir al panel de paypal para ver los detalles de una devolución</dd>
+        </dl>
+        <?php endif ?>
+    <?php elseif ($invest->method == 'tpv') : ?>
+        <p>Hay que ir al panel del banco para ver los detalles de los aportes mediante TPV.</p>
+    <?php else : ?>
+        <p>No hay nada que hacer con los aportes manuales.</p>
+    <?php endif ?>
 
 </div>

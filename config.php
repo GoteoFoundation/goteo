@@ -99,7 +99,8 @@ define('PAYPAL_REDIRECT_URL', 'https://www.sandbox.paypal.com/webscr&cmd=');
 define('PAYPAL_DEVELOPER_PORTAL', 'https://developer.paypal.com');
 define('PAYPAL_DEVICE_ID', 'goteo.org');
 define('PAYPAL_APPLICATION_ID', 'APP-80W284485P519543T');
-define('PAYPAL_BUSINESS_ACCOUNT', 'goteo_1302553021_biz@gmail.com');
+//define('PAYPAL_BUSINESS_ACCOUNT', 'paypal@goteo.org');
+define('PAYPAL_BUSINESS_ACCOUNT', 'goteo_1314917819_biz@gmail.com');
 define('PAYPAL_IP_ADDRESS', '127.0.0.1');
 
 /****************************************************

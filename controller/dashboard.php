@@ -600,6 +600,38 @@ namespace Goteo\Controller {
                         }
                         // fin segun action
                     break;
+
+                    // contrato
+                    case 'contract':
+                        if ($action == 'save') {
+                            $accounts = Model\Project\Account::get($project->id);
+                            $accounts->bank = $_POST['bank'];
+                            $accounts->paypal = $_POST['paypal'];
+                            if ($accounts->save($errors)) {
+
+                                $success[] = 'Cuentas actualizadas';
+
+                                /*
+                                 * Evento Feed
+                                 */
+                                $log = new Feed();
+                                $log->title = 'usuario cambia las cuentas de su proyecto (dashboard)';
+                                $log->url = '/admin/projects';
+                                $log->type = 'user';
+                                $log_text = '%s ha modificado la cuenta bancaria/paypal del proyecto %s';
+                                $log_items = array(
+                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('project', $project->name, $project->id)
+                                );
+                                $log->html = \vsprintf($log_text, $log_items);
+                                $log->add($errors);
+
+                                unset($log);
+                            }
+                        }
+                        break;
+
+                    // colaboraciones
                     case 'supports':
                         if ($action == 'save') {
                             // tratar colaboraciones existentes
@@ -985,9 +1017,7 @@ namespace Goteo\Controller {
                         'summary'  => Text::get('dashboard-menu-projects-summary'),
                         'updates'  => Text::get('dashboard-menu-projects-updates'),
                         'widgets'  => Text::get('dashboard-menu-projects-widgets'),
-/* si no lo tenemos lo van a teenr que gestionar ofline
- *                         'contract' => Text::get('dashboard-menu-projects-contract'), 
- */
+                        'contract' => Text::get('dashboard-menu-projects-contract'), 
                         'rewards'  => Text::get('dashboard-menu-projects-rewards'),
                         'supports' => Text::get('dashboard-menu-projects-supports')
                     )
