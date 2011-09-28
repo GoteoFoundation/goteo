@@ -389,7 +389,7 @@ namespace Goteo\Controller {
         public function create () {
 
             if (empty($_SESSION['user'])) {
-                $_SESSION['jumpto'] = SITE_URL . '/project/create';
+                $_SESSION['jumpto'] = '/project/create';
                 Message::Info(Text::get('user-login-required-to_create'));
                 throw new Redirection("/user/login");
             }
@@ -476,13 +476,14 @@ namespace Goteo\Controller {
 
                     // --- loguearse para aportar
                     if ($show == 'invest') {
-                        $_SESSION['jumpto'] = SITE_URL . '/project/' .  $id . '/invest';
+                        $_SESSION['jumpto'] = '/project/' .  $id . '/invest';
                         Message::Info(Text::get('user-login-required-to_invest'));
                         throw new Redirection("/user/login");
                     }
 
                     // -- Mensaje azul molesto para usuarios no registrados
                     if ($show == 'messages' || $show == 'updates') {
+                        $_SESSION['jumpto'] = '/project/' .  $id . '/'.$show;
                         Message::Info(Text::get('user-login-required'));
                     }
                 }

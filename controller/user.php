@@ -35,8 +35,10 @@ namespace Goteo\Controller {
                 $password = $_POST['password'];
                 if (false !== ($user = (\Goteo\Model\User::login($username, $password)))) {
                     $_SESSION['user'] = $user;
-                    if (!empty($_POST['return']) || !empty($_SESSION['jumpto'])) {
-                        $jumpto = !empty($_POST['return']) ? $_POST['return'] : $_SESSION['jumpto'];
+                    if (!empty($_POST['return'])) {
+                        throw new Redirection($_POST['return']);
+                    } elseif (!empty($_SESSION['jumpto'])) {
+                        $jumpto = $_SESSION['jumpto'];
                         unset($_SESSION['jumpto']);
                         throw new Redirection($jumpto);
                     } else {
@@ -224,14 +226,14 @@ namespace Goteo\Controller {
                 // a menos que este perfil sea de un impulsor, no pueden verlo
                 $owners = Model\User::getOwners() ;
                 if (!isset($owners[$id])) {
-                    $_SESSION['jumpto'] = SITE_URL . '/user/profile/' .  $id . '/' . $show;
+                    $_SESSION['jumpto'] = '/user/profile/' .  $id . '/' . $show;
                     Message::Info(Text::get('user-login-required-to_see'));
                     throw new Redirection("/user/login");
                 }
 
                 // la subpágina de mensaje también está restringida
                 if ($show == 'message') {
-                    $_SESSION['jumpto'] = SITE_URL . '/user/profile/' .  $id . '/message';
+                    $_SESSION['jumpto'] = '/user/profile/' .  $id . '/message';
                     Message::Info(Text::get('user-login-required-to_message'));
                     throw new Redirection("/user/login");
                 }

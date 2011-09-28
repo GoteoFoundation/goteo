@@ -204,35 +204,45 @@ namespace Goteo\Library {
         /**
          * Metodo para transformar un TIMESTAMP en un "hace tanto"
          * 
-         * 
+         * Los periodos vienen de un texto tipo singular-plural_sg-pl_id-sg-pl_...
+         * en mismo orden y cantidad que los per_id
          */
         public static function time_ago($date,$granularity=1) {
+
+            $per_id = array('sec', 'min', 'hour', 'day', 'week', 'month', 'year', 'dec');
+
+            $per_txt = array();
+            foreach (\explode('_', Text::get('feed-timeago-periods')) as $key=>$grptxt) {
+                $per_txt[$per_id[$key]] = \explode('-', $grptxt);
+            }
+
+            $justnow = Text::get('feed-timeago-justnow');
 
             $retval = '';
             $date = strtotime($date);
             $ahora = time();
             $difference = $ahora - $date;
-            $periods = array('decada' => 315360000,
-                'año' => 31536000,
-                'mes' => 2628000,
-                'semana' => 604800,
-                'dia' => 86400,
-                'hora' => 3600,
-                'minuto' => 60,
-                'segundo' => 1);
+            $periods = array('dec' => 315360000,
+                'year' => 31536000,
+                'month' => 2628000,
+                'week' => 604800,
+                'day' => 86400,
+                'hour' => 3600,
+                'min' => 60,
+                'sec' => 1);
 
             foreach ($periods as $key => $value) {
                 if ($difference >= $value) {
                     $time = floor($difference/$value);
                     $difference %= $value;
                     $retval .= ($retval ? ' ' : '').$time.' ';
-                    $retval .= (($time > 1) ? $key.'s' : $key);
+                    $retval .= (($time > 1) ? $per_txt[$key][1] : $per_txt[$key][0]);
                     $granularity--;
                 }
                 if ($granularity == '0') { break; }
             }
 
-            return empty($retval) ? 'nada' : $retval;
+            return empty($retval) ? $justnow : $retval;
         }
 
 
@@ -260,6 +270,8 @@ namespace Goteo\Library {
          */
         public static function subItem ($item) {
 
+            $pub_timeago = Text::get('feed-timeago-published', $item->timeago);
+
             $content = '<div class="subitem">';
 
            // si enlace -> título como texto del enlace
@@ -271,25 +283,25 @@ namespace Goteo\Library {
                         $content .= '<div class="content-avatar">
                         <a href="'.$item->url.'" class="avatar"><img src="/image/'.$item->image.'/32/32/1" /></a>
                         <a href="'.$item->url.'" class="username">'.$item->title.'</a><br/>
-                        <span class="datepub">Publicado hace '.$item->timeago.'</span>
+                        <span class="datepub">'.$pub_timeago.'</span>
                         </div>';
                     } else {
                         $content .= '<div class="content-image">
                         <a href="'.$item->url.'" class="image"><img src="/image/'.$item->image.'/90/60/1" /></a>
                         <a href="'.$item->url.'" class="project light-blue">'.$item->title.'</a>
-                        <span class="datepub">Publicado hace '.$item->timeago.'</span>
+                        <span class="datepub">'.$pub_timeago.'</span>
                         </div>';
                     }
                 } else {
                     // solo titulo con enlace
                     $content .= '<div class="content-title">
                         <h5 class="light-blue"><a href="'.$item->url.'" class="project light-blue">'.$item->title.'</a></h5>
-                        <span class="datepub">Publicado hace '.$item->timeago.'</span>
+                        <span class="datepub">'.$pub_timeago.'</span>
                    </div>';
                 }
            } else {
                // solo el timeago
-               $content .= '<span class="datepub">Publicado hace '.$item->timeago.'</span>';
+               $content .= '<span class="datepub">'.$pub_timeago.'</span>';
            }
 
            // y lo que venga en el html
