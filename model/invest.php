@@ -60,6 +60,15 @@ namespace Goteo\Model {
                     ", array($id));
 				$invest->address = $query->fetchObject();
 
+                // si no tiene dirección, sacamos la dirección del usuario
+                if (empty($invest->address)) {
+                    $usr_address = User::getPersonal($invest->user);
+                    $usr_address->name = $usr_address->contract_name;
+                    $usr_address->nif = $usr_address->contract_nif;
+
+                    $invest->address = $usr_address;
+                }
+                
                 return $invest;
         }
 
@@ -109,7 +118,14 @@ namespace Goteo\Model {
                     WHERE   invest_address.invest = ?
                     ", array($invest->id));
 				$invest->address = $query->fetchObject();
-                
+
+                // si no tiene dirección, sacamos la dirección del usuario
+                if (empty($invest->address)) {
+                    $usr_address = User::getPersonal($invest->user->id);
+
+                    $invest->address = $usr_address;
+                }
+
                 $invests[$invest->id] = $invest;
             }
 

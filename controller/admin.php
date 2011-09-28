@@ -495,7 +495,7 @@ namespace Goteo\Controller {
                     // si es publicado, hay un evento público
                     $log->title = $project->name;
                     $log->url = '/project/'.$project->id;
-                    if (!empty($project->image)) $log->image = $project->image;
+                    $log->image = $project->gallery[0]->id;
                     $log->scope = 'public';
                     $log->type = 'projects';
                     $log->html = Text::html('feed-new_project');
@@ -2560,7 +2560,7 @@ namespace Goteo\Controller {
                 );
             }
 
-            if (in_array($action, array('details', 'canmcel', 'execute')) ) {
+            if (in_array($action, array('details', 'cancel', 'execute')) ) {
                 $invest = Model\Invest::get($id);
                 $project = Model\Project::get($invest->project);
                 $userData = Model\User::get($invest->user);
