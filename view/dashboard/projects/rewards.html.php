@@ -30,8 +30,8 @@ $project = $this['project'];
             	<div class="orden"><?php echo $num; ?></div>
                 <span class="aporte">Aportaciones de <span class="num"><?php echo $rewardData->amount; ?></span> <span class="euro">&nbsp;</span></span>
                 <span class="cofinanciadores">cofinanciadores <span class="num"><?php echo count($who); ?></span></span>
-                <div class="contenedorrecompensa">
-                	<div class="tiporec"><ul><li class="<?php echo $rewardData->icon; ?>"><?php echo Text::recorta($rewardData->reward, 40); ?></li></ul></div>
+                <div class="tiporec"><ul><li class="<?php echo $rewardData->icon; ?>"><?php echo Text::recorta($rewardData->reward, 40); ?></li></ul></div>
+                <div class="contenedorrecompensa">	
                 	<span class="recompensa"><strong style="color:#666;">Recompensa:</strong><br/> <?php echo Text::recorta($rewardData->description, 100); ?></span>
                 </div>
                 <?php if (count($who) > 0) : ?>
@@ -72,7 +72,16 @@ $project = $this['project'];
         <form name="invests_form" action="<?php echo '/dashboard/'.$this['section'].'/'.$this['option'].'/process'; ?>" method="post">
             <input type="hidden" name="filter" value="<?php echo $this['filter']; ?>" />
             <?php foreach ($this['invests'] as $investId=>$investData) :
-                $address = $investData->address; ?>
+                $address = $investData->address;
+                $cumplida = true; //si nos encontramos una sola no cumplida, pasa a false
+                $estilo = "disabled";
+                foreach ($investData->rewards as $reward) {
+                    if ($reward->fulfilled != 1) {
+                        $estilo = "";
+                        $cumplida = false;
+                    }
+                }
+                ?>
                 
                 <div class="investor">
 
@@ -86,22 +95,23 @@ $project = $this['project'];
 						<span class="amount"><?php echo $investData->amount; ?> &euro;</span>
                         <span class="date">22/08/2011</span>
                     </div>
-					
                    
                     <div class="left recompensas"  style="width:200px;">
-                     	<span style="margin-bottom:2px;">Recompensas esperadas: </span>
-                        <?php $cumplida = true; //si nos encontramos una sola no cumplida, pasa a false
-                            foreach ($investData->rewards as $reward) :
-                                if ($reward->fulfilled != 1) $cumplida = false;
-                                ?>
+                     	<span style="margin-bottom:2px;" class="<?php echo $estilo;?>"><strong>Recompensas esperadas:</strong></span>
+                        <?php foreach ($investData->rewards as $reward) : ?>
+                        <div style="width: 200px; overflow: hidden; height: 18px;" class="<?php echo $estilo;?>">
                         <input type="checkbox"  id="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>" name="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>" value="1" <?php if ($reward->fulfilled == 1) echo ' checked="checked" disabled';?>  />
                         <label for="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>"><?php echo Text::recorta($reward->reward, 40); ?></label>
+                        </div>
                         <?php endforeach; ?>
 
                     </div>
                     
 					<div class="left" style="width:200px;padding-right:30px;">
-                    Direccion: <?php echo $address->address; ?>, <?php echo $address->location; ?>, <?php echo $address->zipcode; ?> <?php echo $address->country; ?>
+						<span style="margin-bottom:2px;" class="<?php echo $estilo;?>"><strong>Direcci&oacute;n de entrega: </strong></span>
+						<span class="<?php echo $estilo;?>">
+                    	<?php echo $address->address; ?>, <?php echo $address->location; ?>, <?php echo $address->zipcode; ?> <?php echo $address->country; ?>
+                    	</span>
                     </div>
                     
                     <div class="left">

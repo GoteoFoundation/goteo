@@ -5,6 +5,30 @@ use Goteo\Library\Text,
     Goteo\Core\ACL,
     Goteo\Library\Feed;
 
+$allowed_contents = array(
+    'base',
+    'blog',
+    'texts',
+    'faq',
+    'pages',
+    'licenses',
+    'icons',
+    'tags',
+    'criteria',
+    'templates',
+    'glossary',
+    'info'
+);
+
+// piñoncete para Diego
+if ($_SESSION['user']->id == 'diegobus'
+    && !empty($this['folder'])
+    && !in_array($this['folder'], $allowed_contents)) {
+
+    header('Location: /admin/');
+}
+
+
 $bodyClass = 'admin';
 
 $message = '';
@@ -61,7 +85,10 @@ include 'view/prologue.html.php';
                 </div>
                 <?php endif; ?>
 
-                <?php foreach ($this['menu'] as $sCode=>$section) : ?>
+                <?php foreach ($this['menu'] as $sCode=>$section) :
+                    // piñoncete para Diego
+                    if ($_SESSION['user']->id == 'diegobus' && $sCode != 'contents') continue;
+                    ?>
                 <a name="<?php echo $sCode ?>"></a>
                 <div class="widget board collapse">
                     <h3 class="title"><?php echo $section['label'] ?></h3>

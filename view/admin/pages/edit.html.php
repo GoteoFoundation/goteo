@@ -31,7 +31,7 @@ $(document).ready(function(){
 <div class="widget board">
     <form method="post" action="/admin/pages/edit/<?php echo $this['page']->id; ?>">
 
-        <label for="page-name">Título:</label><br />
+        <label for="page-name">T&iacute;tulo:</label><br />
         <input type="text" name="name" id="page-name" value="<?php echo $this['page']->name; ?>" />
 <br />
         <label for="page-description">Cabecera:</label><br />

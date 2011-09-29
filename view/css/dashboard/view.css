@@ -208,16 +208,27 @@ body.dashboard div#main div.widget.projects div.message{background:url("/view/cs
 /* = recompensas
 ***************************/
 body.dashboard div#main div.widget.projects div.rewards{height:auto;overflow:auto;margin-top:10px;}
-body.dashboard div#main div.widget.projects div.reward{background:#E4C9E2;width:197px;min-height:175px;padding:10px;margin-right:10px;float:left;position:relative;margin-bottom:10px;}
+body.dashboard div#main div.widget.projects div.reward{background:#E4C9E2;width:197px;min-height:175px;padding:10px;margin-right:10px;float:left;position:relative;margin-bottom:10px;height:190px;}
 body.dashboard div#main div.widget.projects div.reward.last{margin-right:0;}
-body.dashboard div#main div.widget.projects div.reward span.orden{color:#fff;display:inline-block;font-weight:bold;font-size:13pt;}
-body.dashboard div#main div.widget.projects div.reward span.aporte{color: #96238F;display: inline-block;font-size: 9pt;text-transform: uppercase;line-height:22px;}
+body.dashboard div#main div.widget.projects div.reward div.orden{color:#fff;display:inline-block;font-weight:bold;font-size:13pt;background-color:#e7e7e7;border:2px solid #a7a9ac;color:#a7a9ac;width:20px;text-align:center;}
+body.dashboard div#main div.widget.projects div.reward span.aporte{color: #96238F;display: inline-block;font-size: 8pt;text-transform: uppercase;line-height:22px;}
 body.dashboard div#main div.widget.projects div.reward span.num{font-size:12pt;}
 body.dashboard div#main div.widget.projects div.reward span.aporte > span.euro{ background:url(../euro/violet/m.png) no-repeat; height:20px; width:20px;display:inline-block;}
-body.dashboard div#main div.widget.projects div.reward span.cofinanciadores{color:#40509F;display:block;text-transform:uppercase;margin-left:25px;font-size:9pt;line-height:22px;}
-body.dashboard div#main div.widget.projects div.reward span.tiporec{display:block;border-bottom:#8D878E 1px solid;padding-bottom:5px;margin-bottom:5px;}
-body.dashboard div#main div.widget.projects div.reward span.recompensa{color:#8D878E;}
-body.dashboard div#main div.widget.projects div.reward a.green{bottom:5px;left:13px;width:160px}
+body.dashboard div#main div.widget.projects div.reward span.cofinanciadores{color:#40509F;display:block;text-transform:uppercase;margin-left:29px;font-size:8pt;line-height:20px;}
+body.dashboard div#main div.widget.projects div.reward div.tiporec{display:block;border-bottom:#8D878E 1px solid;margin-bottom:5px;}
+body.dashboard div#main div.widget.projects div.reward ul { list-style: none outside none; padding:0px; margin: 0px 0px 3px 0px; float:none; font-size:12px; }
+body.dashboard div#main div.widget.projects div.reward div.tiporec ul li { background:none no-repeat scroll 0px 0px transparent; padding: 0px 0px 0px 29px; min-height: 34px; }
+body.dashboard div#main div.widget.projects div.reward div.tiporec ul li.file { background-image: url('../icon/s/file.png'); }
+body.dashboard div#main div.widget.projects div.reward div.tiporec ul li.money { background-image: url('../icon/s/money.png'); }
+body.dashboard div#main div.widget.projects div.reward div.tiporec ul li.code { background-image: url('../icon/s/code.png'); }
+body.dashboard div#main div.widget.projects div.reward div.tiporec ul li.service { background-image: url('../icon/s/service.png'); }
+body.dashboard div#main div.widget.projects div.reward div.tiporec ul li.manual { background-image: url('../icon/s/manual.png'); }
+body.dashboard div#main div.widget.projects div.reward div.tiporec ul li.product { background-image: url('../icon/s/product.png'); }
+body.dashboard div#main div.widget.projects div.reward div.tiporec ul li.design { background-image: url('../icon/s/design.png'); }
+body.dashboard div#main div.widget.projects div.reward div.tiporec ul li.other { background-image: url('../icon/s/other.png'); }
+body.dashboard div#main div.widget.projects div.reward span.recompensa{color:#8D878E;font-size:12px;}
+body.dashboard div#main div.widget.projects div.reward a.green{bottom:5px;left:13px;width:160px;padding: 0.3em 1.3em;}
+body.dashboard div#main div.widget.projects div.reward div.contenedorrecompensa{height:67px; overflow:hidden;}
 
 /* = gestionar retornos 
 ***************************/
@@ -232,9 +243,9 @@ body.dashboard div.widget.projects div.filters ul li a{text-decoration:none;font
 body.dashboard div.widget.projects div.filters ul li.current a{background:url(../arrow-down.png) no-repeat left;padding-left:15px;}
 body.dashboard div.widget.projects div.filters ul li a:hover{color:#20B3B2;}
 
-
-body.dashboard div#invests-list div.investor{border-bottom:#C1C1C1 1px solid;margin:20px 20px 20px 80px;height:auto;overflow:auto;padding-bottom:10px;margin-bottom:10px;}
-body.dashboard div#invests-list div.investor div.left{float:left;margin-right:10px;font-size:9pt;}
+.disabled{color:#cccccc;}
+body.dashboard div#invests-list div.investor{border-bottom:#C1C1C1 1px solid;margin:20px 20px 20px 20px;height:auto;overflow:auto;padding-bottom:10px;margin-bottom:10px;}
+body.dashboard div#invests-list div.investor div.left{float:left;margin-right:10px;font-size:8pt;}
 
 body.dashboard div#invests-list div.investor div.left span{display:block;}
 body.dashboard div#invests-list div.investor div.left span.username{margin-bottom:2px}
@@ -249,7 +260,7 @@ body.dashboard div#invests-list div.investor div.left span.pendiente{color:#f00;
 
 /* Custom checkbox in investors list*/
 body.dashboard div#invests-list div.investor div.recompensas input[type="checkbox"]{height:16px;width:16px;float:left;position:absolute;left:0;opacity:0;margin:0;padding:0}
-body.dashboard div#invests-list div.investor div.recompensas label{line-height:16px;padding:0 0 0 30px}
+body.dashboard div#invests-list div.investor div.recompensas label{line-height:16px;padding:0 0 0 20px}
 body.dashboard div#invests-list div.investor div.recompensas input + label{background:url(gr_custom-inputs.png) 0 -1px no-repeat;height:18px;}
 body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:checked + label{background-position:0 -81px}
 body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:hover:checked + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:focus:checked + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:checked + label:hover,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:focus:checked + label{background-position:0 -101px}
@@ -266,7 +277,7 @@ input[type=checkbox]:disabled:checked + label,input[type=checkbox]:hover:disable
 
 /* Custom checkbox in comment box*/
 body.dashboard div#colective-messages input[type="checkbox"]{height:16px;width:16px;float:left;position:absolute;left:0;opacity:0;margin:0;padding:0}
-body.dashboard div#colective-messages label{float:left;line-height:16px;padding:0 0 0 25px; margin-right:45px;}
+body.dashboard div#colective-messages label{float:left;line-height:16px;padding:0 0 0 20px; margin-right:45px; }
 body.dashboard div#colective-messages input + label{background:url(gr_custom-inputs2.png) 0 -1px no-repeat;height:16px}
 body.dashboard div#colective-messages input[type=checkbox]:checked + label{background-position:0 -81px}
 body.dashboard div#colective-messages input[type=checkbox]:hover:checked + label,body.dashboard div#colective-messages input[type=checkbox]:focus:checked + label,body.dashboard div#colective-messages input[type=checkbox]:checked + label:hover,body.dashboard div#colective-messages input[type=checkbox]:focus:checked + label{background-position:0 -101px}
@@ -284,7 +295,7 @@ input[type=checkbox]:disabled:checked + label,input[type=checkbox]:hover:disable
 body.dashboard div#colective-messages  div#checks{height:auto;overflow:auto;margin: 0 0 25px 25px;}
 body.dashboard div#colective-messages  div#comment{width:657px;margin-left:20px;}
 
-body.dashboard div#colective-messages  div#checks p{height: auto;line-height: 20px;margin-bottom: 3px;overflow: auto;}
+body.dashboard div#colective-messages  div#checks p{height: auto;line-height: 20px;margin-bottom: 3px;overflow: auto;font-size:8pt;}
 
 /*comment box*/
 body.dashboard div#colective-messages div#bocadillo{background: url(../bocadillo.jpg) no-repeat scroll 0 0 transparent;height: 51px;position: absolute;width: 56px;}

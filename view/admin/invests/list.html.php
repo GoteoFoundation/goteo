@@ -49,7 +49,7 @@ $filters = $this['filters'];
             <select id="<?php echo $filter ?>-filter" name="<?php echo $filter ?>" onchange="document.getElementById('filter-form').submit();">
                 <option value="<?php if ($filter == 'investStatus') echo 'all' ?>"<?php if ($filter == 'investStatus' && $filters[$filter] == 'all') echo ' selected="selected"'?>><?php echo $data['first'] ?></option>
             <?php foreach ($this[$filter] as $itemId=>$itemName) : ?>
-                <option value="<?php echo $itemId; ?>"<?php if ($filters[$filter] === $itemId) echo ' selected="selected"';?>><?php echo $itemName; ?></option>
+                <option value="<?php echo $itemId; ?>"<?php if ($filters[$filter] === (string) $itemId) echo ' selected="selected"';?>><?php echo $itemName; ?></option>
             <?php endforeach; ?>
             </select>
         </div>

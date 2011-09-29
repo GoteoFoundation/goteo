@@ -267,6 +267,7 @@ namespace Goteo\Library {
                 // Create request object
                 $payRequest = new \ExecutePaymentRequest();
            		$payRequest->payKey = $invest->payment;
+           		$payRequest->requestEnvelope = 'SOAP';
 
                 // Create service wrapper object
                 $ap = new \AdaptivePayments();

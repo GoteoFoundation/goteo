@@ -2493,17 +2493,15 @@ namespace Goteo\Controller {
 
            } else {
 
+               if (!isset($_GET['investStatus'])) {
+                   $_GET['investStatus'] = 'all';
+               }
+
                // sino, cargamos los filtros
                 $filters = array();
                 $fields = array('methods', 'status', 'investStatus', 'projects', 'users', 'campaigns', 'types');
                 foreach ($fields as $field) {
-                    if (isset($_GET[$field])) {
-                        if (\is_numeric($_GET[$field])) {
-                            $filters[$field] = (int) $_GET[$field];
-                        } else {
-                            $filters[$field] = (string) $_GET[$field];
-                        }
-                    }
+                    $filters[$field] = (string) $_GET[$field];
                 }
 
                 /*
@@ -2745,17 +2743,15 @@ namespace Goteo\Controller {
 
             $errors = array();
 
+            if (!isset($_GET['investStatus'])) {
+               $_GET['investStatus'] = 'all';
+            }
+
             // cargamos los filtros
             $filters = array();
             $fields = array('methods', 'investStatus', 'projects', 'users', 'campaigns');
             foreach ($fields as $field) {
-                if (!empty($_GET[$field])) {
-                    if (\is_numeric($_GET[$field])) {
-                        $filters[$field] = (int) $_GET[$field];
-                    } else {
-                        $filters[$field] = (string) $_GET[$field];
-                    }
-                }
+                $filters[$field] = (string) $_GET[$field];
             }
 
             /*
@@ -2788,6 +2784,7 @@ namespace Goteo\Controller {
             if ($action == 'details') {
                 $invest = Model\Invest::get($id);
                 $project = Model\Project::get($invest->project);
+                $userData = Model\User::get($invest->user);
                 return new View(
                     'view/admin/index.html.php',
                     array(
@@ -2795,6 +2792,7 @@ namespace Goteo\Controller {
                         'file' => 'details',
                         'invest'=>$invest,
                         'project'=>$project,
+                        'user'=>$userData,
                         'details'=>$details,
                         'status'=>$status,
                         'investStatus'=>$investStatus

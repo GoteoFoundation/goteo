@@ -223,14 +223,6 @@ namespace Goteo\Controller {
 
             //--- para usuarios públicos---
             if (empty($_SESSION['user'])) {
-                // a menos que este perfil sea de un impulsor, no pueden verlo
-                $owners = Model\User::getOwners() ;
-                if (!isset($owners[$id])) {
-                    $_SESSION['jumpto'] = '/user/profile/' .  $id . '/' . $show;
-                    Message::Info(Text::get('user-login-required-to_see'));
-                    throw new Redirection("/user/login");
-                }
-
                 // la subpágina de mensaje también está restringida
                 if ($show == 'message') {
                     $_SESSION['jumpto'] = '/user/profile/' .  $id . '/message';
@@ -238,11 +230,22 @@ namespace Goteo\Controller {
                     throw new Redirection("/user/login");
                 }
 
+
+                // a menos que este perfil sea de un impulsor, no pueden verlo
+//                $owners = Model\User::getOwners() ;
+//                if (!isset($owners[$id])) {
+                    $_SESSION['jumpto'] = '/user/profile/' .  $id . '/' . $show;
+                    Message::Info(Text::get('user-login-required-to_see'));
+                    throw new Redirection("/user/login");
+//                }
+
+                /*
                 // subpágina de cofinanciadores
                 if ($show == 'investors') {
                     Message::Info(Text::get('user-login-required-to_see-supporters'));
                     throw new Redirection('/user/profile/' .  $id);
                 }
+                */
 
             }
             //--- el resto pueden seguir ---

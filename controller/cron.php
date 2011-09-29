@@ -334,14 +334,14 @@ namespace Goteo\Controller {
                             $log->title = 'Cargo ejecutado (cron)';
                             $log->url = '/admin/invests';
                             $log->type = 'system';
-                            $items = array(
+                            $log_items = array(
                                 Feed::item('user', $userData->name, $userData->id),
                                 Feed::item('money', $invest->amount.' &euro;'),
                                 Feed::item('system', $invest->id),
                                 Feed::item('project', $project->name, $project->id),
                                 Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                             );
-                            $log->html = \vsprintf($log_text, $items);
+                            $log->html = \vsprintf($log_text, $log_items);
                             $log->add($errors);
                             unset($log);
                         }
@@ -384,17 +384,25 @@ namespace Goteo\Controller {
                     $errors = array();
 
                     echo 'Aporte ' . $invest->id . '<br />';
-
+/*
+ * Aunque sea de hoy, como lo que miramos es que siga activo podemos tratarlo, no?
                     if ($invest->invested == date('Y-m-d')) {
                             // es de hoy, no lo tratamos
                             echo 'Es de hoy<br />';
-                    } elseif (empty($invest->preapproval)) {
+                    } else
+  */
+                    if (empty($invest->preapproval)) {
                         // no tiene preaproval, cancelar
                         echo 'No tiene preapproval<br />';
                         $invest->cancel();
                     } else {
                         // comprobar si está cancelado por el usuario
                         if ($details = Paypal::preapprovalDetails($invest->preapproval, $errors)) {
+
+                            // actualizar la cuenta de paypal que se validó para aprobar
+                            $invest->setAccount($details->senderEmail);
+
+
 //                            echo \trace($details);
                             switch ($details->status) {
                                 case 'ACTIVE':
@@ -428,10 +436,12 @@ namespace Goteo\Controller {
          */
         public function dopay ($project) {
 
-            // necesitamos la cuenta del proyecto y que sea la misma que cuando el preapproval
-            $projectAccount = Model\Project\Account::get($project)->paypal;
+            $projectData = Model\Project::getMini($project);
 
-            if (empty($projectAccount)) {
+            // necesitamos la cuenta del proyecto y que sea la misma que cuando el preapproval
+            $projectAccount = Model\Project\Account::get($project);
+
+            if (empty($projectAccount->paypal)) {
                 die('El proyecto no tiene la cuenta PayPal!!');
             }
 
@@ -441,16 +451,40 @@ namespace Goteo\Controller {
                 FROM  invest
                 WHERE   invest.status = 1
                 AND     invest.method = 'paypal'
-                AND     invest.payment IS NOT NULL
                 AND     invest.project = ?
-                ", array($project->id));
-            $project->invests = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
+                ", array($project));
+            $invests = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
 
-            foreach ($project->invests as $key=>$invest) {
+            echo 'Vamos a tratar ' . count($invests) . ' aportes<br />';
+
+            foreach ($invests as $key=>$invest) {
                 $errors = array();
+
+                $userData = Model\User::getMini($invest->user);
+                echo 'Tratando: Aporte (id: '.$invest->id.') de '.$userData->name.'<br />';
 
                 if (Paypal::doPay($invest, $errors)) {
                     echo 'Aporte (id: '.$invest->id.') pagado al proyecto. Ver los detalles en la <a href="/admin/accounts/details/'.$invest->id.'">gestion de transacciones</a><br />';
+
+                    /*
+                     * Evento Feed
+                     */
+                    $log = new Feed();
+                    $log->title = 'Pago al proyecto encadenado-secundario (cron)';
+                    $log->url = '/admin/accounts';
+                    $log->type = 'system';
+                    $log_text = "Se ha realizado el pago de %s PayPal al proyecto %s por el aporte de %s (id: %s) del dia %s";
+                    $log_items = array(
+                        Feed::item('money', $invest->amount.' &euro;'),
+                        Feed::item('project', $projectData->name, $project),
+                        Feed::item('user', $userData->name, $userData->id),
+                        Feed::item('system', $invest->id),
+                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                    );
+                    $log->html = \vsprintf($log_text, $log_items);
+                    $log->add($errors);
+                    unset($log);
+
                 } else {
                     echo 'Fallo al pagar al proyecto el aporte (id: '.$invest->id.'). Ver los detalles en la <a href="/admin/accounts/details/'.$invest->id.'">gestion de transacciones</a><br />' . implode('<br />', $errors);
                 }

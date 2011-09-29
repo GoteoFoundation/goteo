@@ -544,6 +544,25 @@ namespace Goteo\Model {
         }
 
         /*
+         *  Actualiza el mail de la cuenta utilizada al registro del aporte
+         */
+        public function setAccount ($account) {
+
+            $values = array(
+                ':id' => $this->id,
+                ':account' => $account
+            );
+
+            $sql = "UPDATE invest SET account = :account WHERE id = :id";
+            if (self::query($sql, $values)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+        /*
          * Marcar una recompensa como cumplida (o desmarcarla)
          */
         public static function setFulfilled ($invest, $reward, $value = '1') {
