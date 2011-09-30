@@ -126,7 +126,7 @@ namespace Goteo\Model\Blog {
                 $post->tags = Post\Tag::getAll($post->id);
 
                 // reconocimiento de enlaces y saltos de linea
-                $post->text = nl2br(Text::urlink($post->text));
+//                $post->text = nl2br(Text::urlink($post->text));
 
                 $list[$post->id] = $post;
             }

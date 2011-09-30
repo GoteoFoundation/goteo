@@ -103,7 +103,7 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
             ?>
             </div>
 
-            <?php $printSendMsg = false;?>
+            <?php $printSendMsg = false; ?>
             <div class="center">
 			<?php
                 // los modulos centrales son diferentes segun el show

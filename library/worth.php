@@ -31,6 +31,24 @@ namespace Goteo\Library {
 		}
 
         /*
+         * Devuelve datos apra gestionar
+         */
+		public static function getAdmin ($id) {
+
+            $values = array(':id'=>$id);
+            $sql = "SELECT
+                        worthcracy.id as id,
+                        worthcracy.name as name,
+                        worthcracy.amount as amount
+                    FROM worthcracy
+                    WHERE worthcracy.id = :id
+                    ";
+
+            $query = Model::query($sql, $values);
+            return $query->fetchObject();
+		}
+
+        /*
          * Devuelve los niveles de meritocracia
          */
 		public static function getAll () {
@@ -53,6 +71,43 @@ namespace Goteo\Library {
             }
             return $array;
 		}
+
+		/*
+		 *  Esto se usa para actualizar datos en cualquier tabla de contenido
+		 */
+		public static function save($data, &$errors = array()) {
+
+            if (empty($data)) {
+                $errors[] = "Sin datos";
+                return false;
+            }
+            if (empty($data['name']) || empty($data['amount']) || empty($data['id'])) {
+                $errors[] = "No se guardar sin nombre y cantidad";
+                return false;
+            }
+
+  			try {
+                $values = array(
+                    ':id' => $data['id'],
+                    ':name' => $data['name'],
+                    ':amount' => $data['amount']
+                );
+
+				$sql = "REPLACE INTO worthcracy SET `id` = :id, `name` = :name, `amount` = :amount ";
+				if (Model::query($sql, $values)) {
+                    return true;
+                } else {
+                    $errors[] = "Ha fallado $sql con <pre>" . print_r($values, 1) . "</pre>";
+                    return false;
+                }
+
+			} catch(\PDOException $e) {
+                $errors[] = 'Error sql al grabar el nivel de meritocracia. ' . $e->getMessage();
+                return false;
+			}
+
+		}
+
 
         /*
          * Devuelve el importe para el siguiente nivel

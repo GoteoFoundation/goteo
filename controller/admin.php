@@ -4274,6 +4274,97 @@ namespace Goteo\Controller {
 
 
         /*
+         * Niveles de meritocracia
+         */
+        public function worth($action = 'list', $id = null) {
+
+            $BC = self::menu(array(
+                'section' => 'users',
+                'option' => __FUNCTION__,
+                'action' => $action,
+                'id' => $id
+            ));
+
+            define('ADMIN_BCPATH', $BC);
+
+            $errors = array();
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && $action == 'edit') {
+
+                // instancia
+                $data = array(
+                    'id' => $_POST['id'],
+                    'name' => $_POST['name'],
+                    'amount' => $_POST['amount']
+                );
+
+				if (Worth::save($data, $errors)) {
+                    $action = 'list';
+                    $success[] = 'Nivel de meritocracia modificado';
+
+                    /*
+                     * Evento Feed
+                     */
+                    $log = new Feed();
+                    $log->title = 'modificacion de meritocracia (admin)';
+                    $log->url = '/admin/worth';
+                    $log->type = 'admin';
+                    $log_text = "El admin %s ha %s el nivel de meritocrácia %s";
+                    $log_items = array(
+                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                        Feed::item('relevant', 'Modificado'),
+                        Feed::item('project', $icon->name)
+                    );
+                    $log->html = \vsprintf($log_text, $log_items);
+                    $log->add($errors);
+                    unset($log);
+				}
+				else {
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'worth',
+                            'file' => 'edit',
+                            'action' => 'edit',
+                            'worth' => (object) $data,
+                            'errors' => $errors
+                        )
+                    );
+				}
+			}
+
+            switch ($action) {
+                case 'edit':
+                    $worth = Worth::getAdmin($id);
+
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'worth',
+                            'file' => 'edit',
+                            'action' => 'edit',
+                            'worth' => $worth
+                        )
+                    );
+                    break;
+            }
+
+            $worthcracy = Worth::getAll();
+
+            return new View(
+                'view/admin/index.html.php',
+                array(
+                    'folder' => 'worth',
+                    'file' => 'list',
+                    'worthcracy' => $worthcracy,
+                    'errors' => $errors,
+                    'success' => $success
+                )
+            );
+        }
+
+
+        /*
          * Menu de secciones, opciones, acciones y config para el panel Admin
          *
          */
@@ -4427,6 +4518,13 @@ namespace Goteo\Controller {
                                 'edit' => array('label' => 'Editando Usuario', 'item' => true),
                                 'manage' => array('label' => 'Gestionando Usuario', 'item' => true),
                                 'impersonate' => array('label' => 'Suplantando al Usuario', 'item' => true)
+                            )
+                        ),
+                        'worth' => array(
+                            'label' => 'Niveles de meritocracia',
+                            'actions' => array(
+                                'list' => array('label' => 'Listando', 'item' => false),
+                                'edit' => array('label' => 'Editando Nivel', 'item' => true)
                             )
                         )/*,
                         'useradd' => array(

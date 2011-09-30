@@ -2,7 +2,7 @@
 use Goteo\Library\Text,
     Goteo\Core\View;
 
-$bodyClass = 'community about user-profile';
+$bodyClass = 'community about';
 
 include 'view/prologue.html.php';
 include 'view/header.html.php';

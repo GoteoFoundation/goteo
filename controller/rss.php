@@ -37,6 +37,7 @@ namespace Goteo\Controller {
                 'posts' => $blog->posts
             );
 
+            \header("Content-Type: application/rss+xml");
             echo Library\Rss::get($config, $data, $_GET['format']);
 
             // le preparamos los datos y se los pasamos
