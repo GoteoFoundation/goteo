@@ -52,7 +52,7 @@ $shares     = $this['shares'];
                     foreach ($sharemates as $mate) :
                         if (empty($this['category']) && $cnt > 6) break;
                     ?>
-                        <li class="<?php if($cnt < 4) echo " bordertop"?>">
+                        <li class="<?php if($cnt < 3) echo " bordertop"?>">
                             <div class="user">
                                 <a href="/user/<?php echo htmlspecialchars($mate->user) ?>" class="expand">&nbsp;</a>
                                 <div class="avatar"><a href="/user/<?php echo htmlspecialchars($mate->user) ?>"><img src="/image/<?php echo $mate->avatar->id ?>/43/43/1" /></a></div>

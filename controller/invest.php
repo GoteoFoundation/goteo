@@ -8,6 +8,8 @@ namespace Goteo\Controller {
         Goteo\Model,
 		Goteo\Library\Feed,
 		Goteo\Library\Text,
+        Goteo\Library\Mail,
+        Goteo\Library\Template,
         Goteo\Library\Message,
         Goteo\Library\Paypal,
         Goteo\Library\Tpv;
@@ -118,7 +120,7 @@ namespace Goteo\Controller {
                         case 'cash':
                             $invest->setStatus('0');
                             // En betatest aceptamos cash para pruebas
-                            throw new Redirection("/project/$project/invest/?confirm=ok");
+                            throw new Redirection("/invest/confirmed/{$project}/{$invest->id}");
                             break;
                     }
                 } else {
@@ -135,16 +137,59 @@ namespace Goteo\Controller {
 
         public function confirmed ($project = null, $invest = null) {
             if (empty($project) || empty($invest)) {
-                Message::Error('Ha llegado una confirmación paypal sin proyecto o sin Id de aporte');
+                Message::Error('Ha llegado una confirmación sin proyecto o sin Id de aporte');
                 throw new Redirection('/discover', Redirection::TEMPORARY);
             }
 
-            // hay que cambiarle el status a 0
             $confirm = Model\Invest::get($invest);
-            $confirm->setStatus('0');
+            $projectData = Model\Project::getMini($project);
+
+            // email de agradecimiento al cofinanciador
+            // primero monto el texto de recompensas
+            if ($confirm->resign) {
+                $txt_rewars = Text::get('invest-resign');
+            } else {
+                $rewards = $confirm->rewards;
+                array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
+                $txt_rewards = implode(', ', $rewards);
+            }
+            // Obtenemos la plantilla para asunto y contenido
+            $template = Template::get(10);
+
+            // Sustituimos los datos
+            $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
+
+            // En el contenido:
+            $search  = array('%USERNAME%', '%PROJECTNAME%', '%AMOUNT%', '%REWARDS%');
+            $replace = array($_SESSION['user']->name, $projectData->name, $confirm->amount, $txt_rewards);
+            $content = \str_replace($search, $replace, $template->text);
+
+            $mailHandler = new Mail();
+
+//            $mailHandler->to = $_SESSION['user']->email;
+            $mailHandler->to = 'hola@goteo.org';
+            $mailHandler->toName = $_SESSION['user']->name;
+            $mailHandler->subject = 'En pruebas: '. $subject;
+            $mailHandler->content = $content;
+
+            $mailHandler->html = true;
+            if ($mailHandler->send($errors)) {
+                Message::Info('Mensaje de agradecimiento enviado correctamente');
+            } else {
+                Message::Error('Ha habido algún error al enviar el mensaje de agradecimiento');
+                Message::Error(implode('<br />', $errors));
+            }
+
+            unset($mailHandler);
+            
+
+
+
 
             if ($confirm->method == 'paypal') {
-                $projectData = Model\Project::getMini($project);
+
+                // hay que cambiarle el status a 0
+                $confirm->setStatus('0');
 
                 /*
                  * Evento Feed

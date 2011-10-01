@@ -967,6 +967,59 @@ namespace Goteo\Model {
 
         }
 
+        /**
+         * Preferencias de notificacion
+         *
+         * @return type array
+         */
+        public static function getPreferences ($id) {
+            $query = self::query('SELECT
+                                      updates,
+                                      threads,
+                                      rounds,
+                                      selfproj,
+                                      anymail
+                                  FROM user_prefer
+                                  WHERE user = ?'
+                , array($id));
+
+            $data = $query->fetchObject();
+            return $data;
+        }
+
+        /**
+         * Actualizar las preferencias de notificación
+         *
+         * @return type booblean
+         */
+        public static function setPreferences ($user, $data = array(), &$errors = array()) {
+
+            $values = array();
+            $set = '';
+
+            foreach ($data as $key=>$value) {
+                $values[":$key"] = $value;
+                if ($set != '') $set .= ', ';
+                $set .= "$key = :$key";
+            }
+
+            if (!empty($values) && $set != '') {
+                    $values[':user'] = $user;
+                    $sql = "REPLACE INTO user_prefer SET user = :user, " . $set;
+
+                try {
+                    self::query($sql, $values);
+                    return true;
+
+                } catch (\PDOException $e) {
+                    $errors[] = "FALLO al gestionar las preferencias de notificación " . $e->getMessage();
+                    return false;
+                }
+            }
+
+
+        }
+
 		private function getRoles () {
 
             $roles = array();

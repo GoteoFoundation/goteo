@@ -289,6 +289,35 @@ namespace Goteo\Controller {
                             $errors[] = Text::get('user-save-fail');
                         }
                     break;
+
+                    // preferencias de notificación
+                    case 'preferences':
+                        // campos de preferencias
+                        $fields = array(
+                            'updates',
+                            'threads',
+                            'rounds',
+                            'selfproj',
+                            'anymail'
+                        );
+
+                        $preferences = array();
+
+                        foreach ($fields as $field) {
+                            if (isset($_POST[$field])) {
+                                $preferences[$field] = $_POST[$field];
+                            }
+                        }
+
+                        // actualizamos estos datos en los personales del usuario
+                        if (!empty ($preferences)) {
+                            if (Model\User::setPreferences($user->id, $preferences, $errors)) {
+                                $message = 'Tus preferencias de notificación se han guardado correctmente'; //Text::get('user-preferences-saved');
+                                $log_action = 'Modificado las preferencias de notificación';
+                            }
+                        }
+                    break;
+
                 }
 
                 if (!empty($log_action)) {
@@ -296,7 +325,7 @@ namespace Goteo\Controller {
                          * Evento Feed
                          */
                         $log = new Feed();
-                        $log->title = 'usuario modifica sus datos (dashboard)';
+                        $log->title = 'usuario modifica sus preferencias (dashboard)';
                         $log->url = '/admin/users';
                         $log->type = 'user';
                         $log_text = '%s ha %s desde su dashboard';
@@ -345,6 +374,9 @@ namespace Goteo\Controller {
                         break;
                     case 'personal':
                         $viewData['personal'] = Model\User::getPersonal($user->id);
+                        break;
+                    case 'preferences':
+                        $viewData['preferences'] = Model\User::getPreferences($user->id);
                         break;
                     case 'access':
                         // si es recover, en contraseña actual tendran que poner el username
@@ -1008,6 +1040,7 @@ namespace Goteo\Controller {
                         'profile'  => Text::get('dashboard-menu-profile-profile'),
                         'personal' => Text::get('dashboard-menu-profile-personal'),
                         'access'   => Text::get('dashboard-menu-profile-access'),
+                        'preferences' => 'Preferencias', //Text::get('dashboard-menu-profile-preferences'),
                         'public'   => Text::get('dashboard-menu-profile-public')
                     )
                 ),
