@@ -22,11 +22,11 @@ div.widget.project-collaborations ul li > p {
 }
 
 div.widget.project-collaborations ul li.task {
-    background-image: url('../../icon/m/task.png');
+    background-image: url('/view/css/icon/m/task.png');
 }
 
 div.widget.project-collaborations ul li.lend {
-    background-image: url('../../icon/m/lend.png');
+    background-image: url('/view/css/icon/m/lend.png');
 }
 
 div.widget.project-collaborations > a.more {

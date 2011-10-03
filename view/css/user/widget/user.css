@@ -33,7 +33,7 @@ div.widget.user dl dd {
 
 div.widget.user dl dd.location {
     padding-left: 15px;
-    background: url('../../location/s.png') no-repeat left center;
+    background: url('/view/css/location/s.png') no-repeat left center;
     text-indent: .5em;
     text-decoration: none;
 }
@@ -53,7 +53,7 @@ div.widget.user dl dd.links ul a {
 
 div.widget.user dl dd.message {
     padding-left: 22px;
-    background: url('../../bocadillo/s.png') no-repeat left center;
+    background: url('/view/css/bocadillo/s.png') no-repeat left center;
     text-indent: .5em;
     text-decoration: none;
 }

@@ -50,7 +50,7 @@ div.widget.user-about > div.location p {
     padding-left: 24px;
     line-height: 20px;
     min-height: 22px;
-    background: url("../../location/m.png") no-repeat left center;        
+    background: url("/view/css/location/m.png") no-repeat left center;        
 }
 
 div.widget.user-about > div.location p,
@@ -64,7 +64,7 @@ div.widget.user-about > div.message p {
     padding-left: 26px;
     line-height: 22px;
     min-height: 22px;
-    background: url("../../bocadillo/s.png") no-repeat left center;
+    background: url("/view/css/bocadillo/s.png") no-repeat left center;
 }
 
 div.widget.user-about > div.message p a {

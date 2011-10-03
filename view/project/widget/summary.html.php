@@ -12,13 +12,17 @@ $project->related     = nl2br(Text::urlink($project->related));
 
 $level = (int) $this['level'] ?: 3;
 ?>
-    <?php if (count($project->gallery) > 1) : ?>
-    <script type="text/javascript" src="/view/js/inc/navi.js"></script>
-    <script type="text/javascript" >
-        jQuery(document).ready(function ($) {
-                navi('gallery-image', '<?php echo count($project->gallery) ?>');
-        });
-    </script>
+    <?php  if (count($project->gallery) > 1) : ?>
+		<script>
+			$(function(){
+				$('#prjct-gallery').slides({
+					container: 'prjct-gallery-container',
+					paginationClass: 'slderpag',
+					generatePagination: false,
+					play: 0
+				});
+			});
+		</script>
     <?php endif; ?>
 <div class="widget project-summary">
     
@@ -32,27 +36,28 @@ $level = (int) $this['level'] ?: 3;
     <?php endif ?>
 
     <?php if (!empty($project->gallery)): ?>
-    <div class="gallery">
-        <?php $i = 1; foreach ($project->gallery as $image) : ?>
-        <div class="gallery-image" id="gallery-image-<?php echo $i ?>"<?php if (count($project->gallery) == 1) echo ' style="display:block;"'; ?>>
-            <img src="/image/<?php echo $image->id; ?>/580/580" alt="<?php echo $project->name; ?>" />
-        </div>
-        <?php $i++; endforeach; ?>
-        
-        <!-- carrusel de imagenes si hay mas de una -->
-        <?php if (count($project->gallery) > 1) : ?>
-        <ul class="navi">
-            <li class="prev"><a href="#" id="gallery-image-navi-prev" rel="<?php echo count($project->gallery) ?>" class="navi-arrow-gallery-image">Anterior</a></li>
-            <?php $i = 1; foreach ($project->gallery as $image) : ?>
-            <li><a href="#" id="navi-gallery-image-<?php echo $i ?>" rel="gallery-image-<?php echo $i ?>" class="navi-gallery-image">
-                <?php echo htmlspecialchars($image->name) ?></a>
-            </li>
-            <?php $i++; endforeach ?>
-            <li class="next"><a href="#" id="gallery-image-navi-next" rel="2" class="navi-arrow-gallery-image">Siguiente</a></li>
-        </ul>
-    	<?php endif; ?>
-        <!-- carrusel de imagenes -->
-    </div>
+	<div id="prjct-gallery">
+		<div class="prjct-gallery-container">
+			<?php $i = 1; foreach ($project->gallery as $image) : ?>
+			<div class="gallery-image" id="gallery-image-<?php echo $i ?>"<?php if (count($project->gallery) == 1) echo ' style="display:block;"'; ?>>
+				<img src="/image/<?php echo $image->id; ?>/580/580" alt="<?php echo $project->name; ?>" />
+			</div>
+			<?php $i++; endforeach; ?>
+		</div>
+		<!-- carrusel de imagenes si hay mas de una -->
+		<?php if (count($project->gallery) > 1) : ?>
+			<a class="prev">prev</a>
+				<ul class="slderpag">
+					<?php $i = 1; foreach ($project->gallery as $image) : ?>
+					<li><a href="#" id="navi-gallery-image-<?php echo $i ?>" rel="gallery-image-<?php echo $i ?>" class="navi-gallery-image">
+					<?php echo htmlspecialchars($image->name) ?></a>
+					</li>
+					<?php $i++; endforeach ?>
+				</ul>
+			<a class="next">next</a>
+		<?php endif; ?>
+		<!-- carrusel de imagenes -->
+	</div>
     <?php endif ?>
 
 

@@ -56,7 +56,8 @@ div.widget.blog-content-module  blockquote,
 	color: #58595B;
 	padding: 0 0 20px 0;
 	border-bottom: 1px solid #CABCBF;
-	margin: 18px 18px 12px 18px;
+	margin: 10px 18px 12px 18px;
+	float:left;
 }
 div.widget.blog-content-module  .embed,
 #blog-content .post .embed{
@@ -73,17 +74,100 @@ div.widget.blog-content-module  .embed-legend,
 	margin-left: 16px;
 	width: 495px;
 	padding-left: 10px;
+	margin-top:10px;
 	margin-bottom:10px;
-	font-style:oblique
+	font-style:oblique;
+	float:left;
 }
-
-div.widget.blog-content-module  .gallery-image,
-#blog-content .post .gallery-image{
+div.widget.blog-content-module  .post-gallery-container,
+#blog-content .post .post-gallery-container{
+	width:580px;
+	height:300px;
+	display:none;
+}
+div.widget.blog-content-module .post-gallery-container  .gallery-image,
+#blog-content .post .post-gallery-container .gallery-image{
 	text-align:left;
+	width:580px;
+	height:300px;
+	display:block;
 }
 div.widget.blog-content-module  .gallery-image img,
 #blog-content .post .gallery-image img{
 	margin: 0 18px;
+}
+div.widget.blog-content-module div.post-gallery  ul.slderpag,
+#blog-content .post div.post-gallery  ul.slderpag {
+    margin: 8px 0 0 0;
+	list-style:none;
+	padding:0px;
+	float:left;
+	height:auto;
+}
+
+div.widget.blog-content-module div.post-gallery  ul.slderpag li,
+#blog-content .post div.post-gallery  ul.slderpag li{
+    cursor:pointer;
+    display: block;
+    float: left;
+    overflow: hidden;
+	margin: 0px 4px 5px 4px;
+}
+
+div.widget.blog-content-module div.post-gallery  ul.slderpag li a,
+#blog-content .post div.post-gallery  ul.slderpag li a{
+    width: 12px;
+    height: 12px;
+    margin-top: 2px;
+    background-color: #cdcdce;
+    color: #cdcdce;
+	display:block;
+}
+
+div.widget.blog-content-module div.post-gallery  ul.slderpag li a:hover,
+#blog-content .post div.post-gallery  ul.slderpag li a:hover{
+    background-color: #20b3b2;
+    color: #20b3b2;
+}
+
+div.widget.blog-content-module div.post-gallery  ul.slderpag li.current a,
+#blog-content .post div.post-gallery  ul.slderpag li.current a{
+    background-color: #808184 !important;
+    color: #808184 !important;
+}
+
+div.widget.blog-content-module div.post-gallery  a.next,
+#blog-content .post div.post-gallery  a.next,
+div.widget.blog-content-module div.post-gallery  a.prev,
+#blog-content .post div.post-gallery  a.prev{
+    width: 16px;
+    height: 16px;
+	line-height: 2000px;
+	overflow: hidden;
+	float:left;
+	margin: 8px 0 0 0;
+	cursor:pointer;
+/*	display: inline-block; */
+}
+
+div.widget.blog-content-module div.post-gallery  a.prev,
+#blog-content .post div.post-gallery  a.prev{
+	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 0;
+}
+
+div.widget.blog-content-module div.post-gallery  a.prev:hover,
+#blog-content .post div.post-gallery  a.prev:hover{
+	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -32px;
+}
+
+div.widget.blog-content-module div.post-gallery  a.next,
+#blog-content .post div.post-gallery  a.next{
+	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -16px;
+}
+
+div.widget.blog-content-module div.post-gallery  a.next:hover,
+#blog-content .post div.post-gallery  a.next:hover{
+	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -48px;
 }
 div.widget.blog-content-module .comments-num,
 #blog-content .post .comments-num{
@@ -122,7 +206,7 @@ div.post-comments div.message .avatar {
     display: block;
     width: 50px;
     height: 50px;
-/*    background: url('../../avatar/s.png');    //@FIXME revisar esto porque los avatares trasparentes o pequeños salen con este abajo*/
+/*    background: url('/view/css/avatar/s.png');    //@FIXME revisar esto porque los avatares trasparentes o pequeños salen con este abajo*/
 }
 
 div.post-comments div.message .user {

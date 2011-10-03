@@ -19,12 +19,16 @@
     }
 ?>
     <?php if (count($post->gallery) > 1) : ?>
-    <script type="text/javascript" src="/view/js/inc/navi.js"></script>
-    <script type="text/javascript" >
-        jQuery(document).ready(function ($) {
-                navi('gallery-post<?php echo $post->id; ?>', '<?php echo count($post->gallery) ?>');
-        });
-    </script>
+		<script type="text/javascript" >
+			$(function(){
+				$('#post-gallery').slides({
+					container: 'post-gallery-container',
+					paginationClass: 'slderpag',
+					generatePagination: false,
+					play: 0
+				});
+			});
+		</script>
     <?php endif; ?>
 	<h<?php echo $level + 1?>><a href="<?php echo $url.$post->id; ?>"><?php echo $post->title; ?></a></h<?php echo $level + 1?>>
 	<span class="date"><?php echo $post->fecha; ?></span>
@@ -36,27 +40,28 @@
         </span>
 	<?php endif; ?>
 	<?php if (!empty($post->gallery)) : ?>
-    <div class="gallery">
-        <?php $i = 1; foreach ($post->gallery as $image) : ?>
-        <div class="gallery-image gallery-post<?php echo $post->id ?>" id="gallery-post<?php echo $post->id ?>-<?php echo $i ?>">
-            <img src="/image/<?php echo $image->id; ?>/500/285" alt="<?php echo $post->title; ?>" />
-        </div>
-        <?php $i++; endforeach; ?>
-
-        <!-- carrusel de imagenes si hay mas de una -->
-        <?php if (count($post->gallery) > 1) : ?>
-        <ul class="navi">
-            <li class="prev"><a href="#" id="gallery-post<?php echo $post->id ?>-navi-prev" rel="<?php echo count($post->gallery) ?>" class="navi-arrow-gallery-post<?php echo $post->id ?>">Anterior</a></li>
-            <?php $i = 1; foreach ($post->gallery as $image) : ?>
-            <li><a href="#" id="navi-gallery-post<?php echo $post->id ?>-<?php echo $i ?>" rel="gallery-post<?php echo $post->id ?>-<?php echo $i ?>" class="navi-gallery-post<?php echo $post->id ?>">
-                <?php echo htmlspecialchars($image->name) ?></a>
-            </li>
-            <?php $i++; endforeach ?>
-            <li class="next"><a href="#" id="gallery-post<?php echo $post->id ?>-navi-next" rel="2" class="navi-arrow-gallery-post<?php echo $post->id ?>">Siguiente</a></li>
-        </ul>
-    	<?php endif; ?>
-        <!-- carrusel de imagenes -->
-    </div>
+		<div class="post-gallery">
+			<div class="post-gallery-container">
+				<?php $i = 1; foreach ($post->gallery as $image) : ?>
+				<div class="gallery-image gallery-post<?php echo $post->id ?>" id="gallery-post<?php echo $post->id ?>-<?php echo $i ?>">
+					<img src="/image/<?php echo $image->id; ?>/500/285" alt="<?php echo $post->title; ?>" />
+				</div>
+				<?php $i++; endforeach; ?>
+			</div>
+			<!-- carrusel de imagenes si hay mas de una -->
+				<?php if (count($post->gallery) > 1) : ?>
+					<a class="prev">prev</a>
+						<ul class="slderpag">
+							<?php $i = 1; foreach ($post->gallery as $image) : ?>
+							<li><a href="#" id="navi-gallery-post<?php echo $post->id ?>-<?php echo $i ?>" rel="gallery-post<?php echo $post->id ?>-<?php echo $i ?>" class="navi-gallery-post<?php echo $post->id ?>">
+						<?php echo htmlspecialchars($image->name) ?></a>
+							</li>
+							<?php $i++; endforeach ?>
+						</ul>
+					<a class="next">next</a>
+				<?php endif; ?>
+			<!-- carrusel de imagenes -->
+		</div>
 	<?php endif; ?>
 	<?php if (!empty($post->media->url)) : ?>
 		<div class="embed">

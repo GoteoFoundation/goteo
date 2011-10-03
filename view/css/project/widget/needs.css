@@ -106,7 +106,7 @@ div.widget.project-needs table thead.material th.summary {
 }
 
 div.widget.project-needs table thead.lend th.summary {
-    background-image: url('../../icon/m/lend.png');
+    background-image: url('/view/css/icon/m/lend.png');
 }
 
 div.widget.project-needs table tfoot th.total {

@@ -27,7 +27,7 @@ div.widget.projects div.project a.button{
 }
 
 div.widget.projects div.project div.balloon {
-    background: #cae4e6 url('../../balloonbeak.png') no-repeat bottom left;
+    background: #cae4e6 url('/view/css/balloonbeak.png') no-repeat bottom left;
     border-bottom: 15px solid white;
     height: 76px;
 }
