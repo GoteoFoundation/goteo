@@ -30,7 +30,7 @@
     text-transform: none !important;
 }
 #glossary-content .post {
-	margin: 0px 30px 20px 30px;
+	margin: 0px 30px 30px;
 }
 #glossary-content .post p{
 	margin-top: 20px;
@@ -52,82 +52,6 @@
 }
 
 /* Gallery */
-#glossary-content .post .post-gallery-container{
-	width:580px;
-	height:300px;
-	display:none;
-}
-#glossary-content .post .post-gallery-container .gallery-image{
-	text-align:left;
-	width:580px;
-	height:300px;
-	display:block;
-}
-#glossary-content .post .gallery-image img{
-	margin: 0 18px;
-}
-#glossary-content .post div.post-gallery  ul.slderpag {
-    margin: 8px 0 0 0;
-	list-style:none;
-	padding:0px;
-	float:left;
-	height:auto;
-}
-
-#glossary-content .post div.post-gallery  ul.slderpag li{
-    cursor:pointer;
-    display: block;
-    float: left;
-    overflow: hidden;
-	margin: 0px 4px 5px 4px;
-}
-
-#glossary-content .post div.post-gallery  ul.slderpag li a{
-    width: 12px;
-    height: 12px;
-    margin-top: 2px;
-    background-color: #cdcdce;
-    color: #cdcdce;
-	display:block;
-}
-
-#glossary-content .post div.post-gallery  ul.slderpag li a:hover{
-    background-color: #20b3b2;
-    color: #20b3b2;
-}
-
-#glossary-content .post div.post-gallery  ul.slderpag li.current a{
-    background-color: #808184 !important;
-    color: #808184 !important;
-}
-
-#glossary-content .post div.post-gallery  a.next,
-#glossary-content .post div.post-gallery  a.prev{
-    width: 16px;
-    height: 16px;
-	line-height: 2000px;
-	overflow: hidden;
-	float:left;
-	margin: 8px 0 0 0;
-	cursor:pointer;
-/*	display: inline-block; */
-}
-
-#glossary-content .post div.post-gallery  a.prev{
-	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 0;
-}
-
-#glossary-content .post div.post-gallery  a.prev:hover{
-	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -32px;
-}
-
-#glossary-content .post div.post-gallery  a.next{
-	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -16px;
-}
-
-#glossary-content .post div.post-gallery  a.next:hover{
-	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -48px;
-}
 /*
 #glossary-content .post .gallery-image{
 	text-align:left;

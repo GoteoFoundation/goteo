@@ -29,7 +29,7 @@ $go_up = Text::get('regular-go_up');
                         <?php if (count($post->gallery) > 1) : ?>
                         <script type="text/javascript" >
                             $(function(){
-                                $('#post-gallery').slides({
+                                $('#post-gallery<?php echo $post->id ?>').slides({
                                     container: 'post-gallery-container',
                                     paginationClass: 'slderpag',
                                     generatePagination: false,
@@ -52,7 +52,7 @@ $go_up = Text::get('regular-go_up');
                             </div>
                         <?php endif; ?>
                         <?php if (!empty($post->gallery)) : ?>
-                		<div class="post-gallery">
+                		<div id="post-gallery<?php echo $post->id ?>" class="post-gallery">
                             <div class="post-gallery-container">
                                 <?php $i = 1; foreach ($post->gallery as $image) : ?>
                                 <div class="gallery-image gallery-post<?php echo $post->id ?>" id="gallery-post<?php echo $post->id ?>-<?php echo $i ?>">
@@ -75,8 +75,8 @@ $go_up = Text::get('regular-go_up');
                             <!-- carrusel de imagenes -->
                         </div>
                         <?php endif; ?>
-                        <a class="up" href="#"><?php echo $go_up; ?></a>
                     </div>
+                    <a class="up" href="#"><?php echo $go_up; ?></a>
                 <?php endforeach; ?>
                 </div>
             <?php endif; ?>

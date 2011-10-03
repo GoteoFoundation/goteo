@@ -44,7 +44,7 @@ include 'view/header.html.php';
                         <?php if (count($post->gallery) > 1) : ?>
                         <script type="text/javascript" >
                             $(function(){
-                                $('#post-gallery').slides({
+                                $('#post-gallery<?php echo $post->id ?>').slides({
                                     container: 'post-gallery-container',
                                     paginationClass: 'slderpag',
                                     generatePagination: false,
@@ -56,8 +56,18 @@ include 'view/header.html.php';
                         <a name="term<?php echo $post->id  ?>"></a>
                         <h5 class="aqua"><?php echo $post->title; ?></h5>
                         <p><?php echo $post->text; ?></p>
+                        <?php if (!empty($post->media->url)) : ?>
+                            <div class="embed">
+                                <?php echo $post->media->getEmbedCode(); ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php if (!empty($post->legend)) : ?>
+                            <div class="embed-legend">
+                                <?php echo $post->legend; ?>
+                            </div>
+                        <?php endif; ?>
                         <?php if (!empty($post->gallery)) : ?>
-                        <div class="post-gallery">
+                        <div id="post-gallery<?php echo $post->id ?>" class="post-gallery">
                             <div class="post-gallery-container">
                                 <?php $i = 1; foreach ($post->gallery as $image) : ?>
                                 <div class="gallery-image gallery-post<?php echo $post->id ?>" id="gallery-post<?php echo $post->id ?>-<?php echo $i ?>">
@@ -80,18 +90,8 @@ include 'view/header.html.php';
                             <!-- carrusel de imagenes -->
                         </div>
                         <?php endif; ?>
-                        <?php if (!empty($post->media->url)) : ?>
-                            <div class="embed">
-                                <?php echo $post->media->getEmbedCode(); ?>
-                            </div>
-                        <?php endif; ?>
-                        <?php if (!empty($post->legend)) : ?>
-                            <div class="embed-legend">
-                                <?php echo $post->legend; ?>
-                            </div>
-                        <?php endif; ?>
-                        <a class="up" href="#"><?php echo $go_up; ?></a>
                     </div>
+                    <a class="up" href="#"><?php echo $go_up; ?></a>
                 <?php endwhile; ?>
                 </div>
                 <ul id="pagination">

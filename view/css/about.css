@@ -56,85 +56,7 @@ div.field {
 	font-style:oblique
 }
 
-/* Gallery */
-#about-content .post .post-gallery-container{
-	width:580px;
-	height:300px;
-	display:none;
-}
-#about-content .post .post-gallery-container .gallery-image{
-	text-align:left;
-	width:580px;
-	height:300px;
-	display:block;
-}
-#about-content .post .gallery-image img{
-	margin: 0 18px;
-}
-#about-content .post div.post-gallery  ul.slderpag {
-    margin: 8px 0 0 0;
-	list-style:none;
-	padding:0px;
-	float:left;
-	height:auto;
-}
-
-#about-content .post div.post-gallery  ul.slderpag li{
-    cursor:pointer;
-    display: block;
-    float: left;
-    overflow: hidden;
-	margin: 0px 4px 5px 4px;
-}
-
-#about-content .post div.post-gallery  ul.slderpag li a{
-    width: 12px;
-    height: 12px;
-    margin-top: 2px;
-    background-color: #cdcdce;
-    color: #cdcdce;
-	display:block;
-}
-
-#about-content .post div.post-gallery  ul.slderpag li a:hover{
-    background-color: #20b3b2;
-    color: #20b3b2;
-}
-
-#about-content .post div.post-gallery  ul.slderpag li.current a{
-    background-color: #808184 !important;
-    color: #808184 !important;
-}
-
-#about-content .post div.post-gallery  a.next,
-#about-content .post div.post-gallery  a.prev{
-    width: 16px;
-    height: 16px;
-	line-height: 2000px;
-	overflow: hidden;
-	float:left;
-	margin: 8px 0 0 0;
-	cursor:pointer;
-/*	display: inline-block; */
-}
-
-#about-content .post div.post-gallery  a.prev{
-	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 0;
-}
-
-#about-content .post div.post-gallery  a.prev:hover{
-	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -32px;
-}
-
-#about-content .post div.post-gallery  a.next{
-	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -16px;
-}
-
-#about-content .post div.post-gallery  a.next:hover{
-	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -48px;
-}
-
-/*
+/* Gallery 
 #about-content .post .gallery{
 	margin-bottom: 10px !important;
 }
@@ -142,12 +64,13 @@ div.field {
 	margin-left: -14px !important;
 }
 #about-content .post .gallery-image{
-	text-align:left;
+	text-align:left !important;
 }
 #about-content .post .gallery-image img{
-	// margin: 10px 0px;
+	margin: 10px 0px !important;
 }
 */
+
 #about-sidebar {
     width:300px;
 	float:right;

@@ -79,25 +79,22 @@ div.widget.blog-content-module  .embed-legend,
 	font-style:oblique;
 	float:left;
 }
-div.widget.blog-content-module  .post-gallery-container,
-#blog-content .post .post-gallery-container{
+/* Estilos galeria */
+div.post-gallery-container{
 	width:580px;
 	height:300px;
 	display:none;
 }
-div.widget.blog-content-module .post-gallery-container  .gallery-image,
-#blog-content .post .post-gallery-container .gallery-image{
+div.post-gallery-container .gallery-image{
 	text-align:left;
 	width:580px;
 	height:300px;
 	display:block;
 }
-div.widget.blog-content-module  .gallery-image img,
-#blog-content .post .gallery-image img{
+div.gallery-image img {
 	margin: 0 18px;
 }
-div.widget.blog-content-module div.post-gallery  ul.slderpag,
-#blog-content .post div.post-gallery  ul.slderpag {
+div.post-gallery  ul.slderpag {
     margin: 8px 0 0 0;
 	list-style:none;
 	padding:0px;
@@ -105,8 +102,7 @@ div.widget.blog-content-module div.post-gallery  ul.slderpag,
 	height:auto;
 }
 
-div.widget.blog-content-module div.post-gallery  ul.slderpag li,
-#blog-content .post div.post-gallery  ul.slderpag li{
+div.post-gallery  ul.slderpag li{
     cursor:pointer;
     display: block;
     float: left;
@@ -114,8 +110,7 @@ div.widget.blog-content-module div.post-gallery  ul.slderpag li,
 	margin: 0px 4px 5px 4px;
 }
 
-div.widget.blog-content-module div.post-gallery  ul.slderpag li a,
-#blog-content .post div.post-gallery  ul.slderpag li a{
+div.post-gallery  ul.slderpag li a{
     width: 12px;
     height: 12px;
     margin-top: 2px;
@@ -124,21 +119,18 @@ div.widget.blog-content-module div.post-gallery  ul.slderpag li a,
 	display:block;
 }
 
-div.widget.blog-content-module div.post-gallery  ul.slderpag li a:hover,
-#blog-content .post div.post-gallery  ul.slderpag li a:hover{
+div.post-gallery  ul.slderpag li a:hover{
     background-color: #20b3b2;
     color: #20b3b2;
 }
 
-div.widget.blog-content-module div.post-gallery  ul.slderpag li.current a,
-#blog-content .post div.post-gallery  ul.slderpag li.current a{
+div.post-gallery  ul.slderpag li.current a{
     background-color: #808184 !important;
     color: #808184 !important;
 }
 
-div.widget.blog-content-module div.post-gallery  a.next,
-#blog-content .post div.post-gallery  a.next,
-div.widget.blog-content-module div.post-gallery  a.prev,
+div.post-gallery  a.next,
+div.post-gallery  a.prev,
 #blog-content .post div.post-gallery  a.prev{
     width: 16px;
     height: 16px;
@@ -147,32 +139,28 @@ div.widget.blog-content-module div.post-gallery  a.prev,
 	float:left;
 	margin: 8px 0 0 0;
 	cursor:pointer;
-/*	display: inline-block; */
 }
 
-div.widget.blog-content-module div.post-gallery  a.prev,
-#blog-content .post div.post-gallery  a.prev{
-	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 0;
+div.post-gallery  a.prev{
+	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 0;
 }
 
-div.widget.blog-content-module div.post-gallery  a.prev:hover,
-#blog-content .post div.post-gallery  a.prev:hover{
-	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -32px;
+div.post-gallery  a.prev:hover {
+	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -32px;
 }
 
-div.widget.blog-content-module div.post-gallery  a.next,
-#blog-content .post div.post-gallery  a.next{
-	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -16px;
+div.post-gallery  a.next{
+	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -16px;
 }
 
-div.widget.blog-content-module div.post-gallery  a.next:hover,
-#blog-content .post div.post-gallery  a.next:hover{
-	background: url('small_arrowslider-sprt.png') scroll no-repeat 0 -48px;
+div.post-gallery  a.next:hover{
+	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -48px;
 }
+/* Fin galeria */
 div.widget.blog-content-module .comments-num,
 #blog-content .post .comments-num{
 	float:left;
-	background: transparent url('ico-blogcomment.png') scroll no-repeat  0 0;
+	background: transparent url('/view/css/ico-blogcomment.png') scroll no-repeat  0 0;
 	padding: 0 0 0 26px;
 	height:24px;
 	margin: 0 0 0 20px;
