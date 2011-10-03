@@ -39,8 +39,8 @@
             $sep = ', '; endforeach; ?>
         </span>
 	<?php endif; ?>
-	<?php if (!empty($post->gallery)) : ?>
-    <div id="post-gallery<?php echo $post->id ?>" class="post-gallery">
+	<?php if (count($post->gallery) > 1) : ?>
+        <div id="post-gallery<?php echo $post->id ?>" class="post-gallery">
 			<div class="post-gallery-container">
 				<?php $i = 1; foreach ($post->gallery as $image) : ?>
 				<div class="gallery-image gallery-post<?php echo $post->id ?>" id="gallery-post<?php echo $post->id ?>-<?php echo $i ?>">
@@ -49,19 +49,21 @@
 				<?php $i++; endforeach; ?>
 			</div>
 			<!-- carrusel de imagenes si hay mas de una -->
-				<?php if (count($post->gallery) > 1) : ?>
-					<a class="prev">prev</a>
-						<ul class="slderpag">
-							<?php $i = 1; foreach ($post->gallery as $image) : ?>
-							<li><a href="#" id="navi-gallery-post<?php echo $post->id ?>-<?php echo $i ?>" rel="gallery-post<?php echo $post->id ?>-<?php echo $i ?>" class="navi-gallery-post<?php echo $post->id ?>">
-						<?php echo htmlspecialchars($image->name) ?></a>
-							</li>
-							<?php $i++; endforeach ?>
-						</ul>
-					<a class="next">next</a>
-				<?php endif; ?>
+                <a class="prev">prev</a>
+                    <ul class="slderpag">
+                        <?php $i = 1; foreach ($post->gallery as $image) : ?>
+                        <li><a href="#" id="navi-gallery-post<?php echo $post->id ?>-<?php echo $i ?>" rel="gallery-post<?php echo $post->id ?>-<?php echo $i ?>" class="navi-gallery-post<?php echo $post->id ?>">
+                    <?php echo htmlspecialchars($image->name) ?></a>
+                        </li>
+                        <?php $i++; endforeach ?>
+                    </ul>
+                <a class="next">next</a>
 			<!-- carrusel de imagenes -->
 		</div>
+	<?php else : ?>
+        <div class="gallery-image gallery-post<?php echo $post->id ?>" id="gallery-post<?php echo $post->id ?>-<?php echo $i ?>">
+            <img src="/image/<?php echo $post->image->id; ?>/500/285" alt="<?php echo $post->title; ?>" />
+        </div>
 	<?php endif; ?>
 	<?php if (!empty($post->media->url)) : ?>
 		<div class="embed">

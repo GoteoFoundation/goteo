@@ -21,7 +21,7 @@ div.widget.blog-content-module h4,
 }
 div.widget.blog-content-module h4 a,
 #blog-content .post h4 a {
-    font: normal 20px Helvetica, Arial, Geneva, sans-serif;
+    font: normal 20px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;
 	margin: 0 0 5px 0;
 	text-transform:none;
 	color:#535353;
@@ -34,50 +34,51 @@ div.widget.blog-content-module h4 a:hover,
 div.widget.blog-content-module .date,
 #blog-content .post  .date{
     display:block;
-	color:#cabcbf;
-	margin: 0 0 5px 0;
+	color: #808285;
+	margin: 10px 0 0;
+	font-size: 11px;
 }
 div.widget.blog-content-module .categories,
 #blog-content .post .categories{
     display:block;
-	margin: 0 0 8px 0;
+	margin: 0 0 8px;
 }
 div.widget.blog-content-module .categories a,
 #blog-content .post .categories a {
 	color:#808285;
     text-decoration: none;
+	font-size: 11px;
 }
 div.widget.blog-content-module .categories a:hover,
 #blog-content .post .categories a:hover {
-	text-decoration: underline;
+	color:#20B3B2
 }
 div.widget.blog-content-module  blockquote,
 #blog-content .post blockquote{
 	color: #58595B;
-	padding: 0 0 20px 0;
+	padding: 0 0 8px;
 	border-bottom: 1px solid #CABCBF;
-	margin: 10px 18px 12px 18px;
-	float:left;
+	margin: 8px 0 16px;
+	font-size: 12px;
+	line-height: 18px;
 }
 div.widget.blog-content-module  .embed,
 #blog-content .post .embed{
     width: 500px;
     height: 285px;
-	margin: 10px  18px;
+	margin: 18px 18px 10px 0;
 }
 
 div.widget.blog-content-module  .embed-legend,
 #blog-content .post .embed-legend{
-	border-left: 2px solid #58595B;
+	border-left: 2px solid silver;
 	color: #9B9B9D;
 	font-size: 0.9em;
-	margin-left: 16px;
+	margin-left: 0;
 	width: 495px;
 	padding-left: 10px;
-	margin-top:10px;
-	margin-bottom:10px;
-	font-style:oblique;
-	float:left;
+	margin-bottom: 18px;
+	font-style:oblique
 }
 /* Estilos galeria */
 div.post-gallery-container{
@@ -92,7 +93,7 @@ div.post-gallery-container .gallery-image{
 	display:block;
 }
 div.gallery-image img {
-	margin: 0 18px;
+	margin: 8px 18px 8px 0;
 }
 div.post-gallery  ul.slderpag {
     margin: 8px 0 0 0;
@@ -163,7 +164,8 @@ div.widget.blog-content-module .comments-num,
 	background: transparent url('/view/css/ico-blogcomment.png') scroll no-repeat  0 0;
 	padding: 0 0 0 26px;
 	height:24px;
-	margin: 0 0 0 20px;
+	margin: 0;
+	line-height: 24px;
 }
 div.widget.blog-content-module .comments-num a,
 #blog-content .post .comments-num a {
@@ -194,7 +196,6 @@ div.post-comments div.message .avatar {
     display: block;
     width: 50px;
     height: 50px;
-/*    background: url('/view/css/avatar/s.png');    //@FIXME revisar esto porque los avatares trasparentes o pequeños salen con este abajo*/
 }
 
 div.post-comments div.message .user {
@@ -223,7 +224,7 @@ div.post-comments div.message blockquote {
 /** share goteo **/
 div.widget.blog-content-module ul.share-goteo,
 #blog-content .post ul.share-goteo {
-	margin: 0 20px  0 0;
+	margin: 0;
 	padding:0px;
 	list-style:none;
 	float:right;
@@ -243,12 +244,15 @@ div.widget.blog-content-module ul.share-goteo li.rss a,
 	height:20px;
 	float:left;
 	padding: 0 0 0 25px;
+	font-size: 11px;
+	line-height: 20px;
 }
 div.widget.blog-content-module ul.share-goteo li.sharetext,
 #blog-content .post ul.share-goteo li.sharetext{
 	height:20px;
 	float:left;
-	color:#cabcbf;
+	color: #808285;
+	font-size: 11px;
 }
 div.widget.blog-content-module ul.share-goteo li.twitter a,
 #blog-content .post ul.share-goteo li.twitter a{
@@ -376,26 +380,29 @@ div.widget.blog-content-module ul.share-goteo li.facebook a:hover,
 div.widget.blog-sidebar-module h3.title {
     border-bottom: 1px solid #20b3b2;
 	color: #000000;
-    font: normal 15px Helvetica,Arial,Geneva,sans-serif;
+    font: normal 15px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;
     margin: 0 0 1em;
     padding: 0 2px 0.2em;
 }
 div.widget.blog-sidebar-module ul#blog-side-posts{
-    margin:0 25px 25px 25px;
+    margin: 0 0 25px 16px;
 	padding: 0;
 }
 div.widget.blog-sidebar-module ul#blog-side-posts li{
     margin:0 0 10px 0;
+	list-style-position: outside;
 }
 div.widget.blog-sidebar-module ul#blog-side-posts li a{
 	text-decoration:none;
+	color: #58595B;
+	font-size: 12px;
 }
 div.widget.blog-sidebar-module ul#blog-side-posts li a:hover{
 	text-decoration:underline;
 }
 div.widget.blog-sidebar-module ul#blog-side-tags,
 div.widget.blog-sidebar-module ul#blog-side-comments{
-    margin:0 10px 25px 10px;
+    margin: 0 10px 25px 0;
 	padding: 0;
 	list-style:none;
 }
