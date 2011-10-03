@@ -167,7 +167,7 @@ namespace Goteo\Controller {
             $mailHandler = new Mail();
 
 //            $mailHandler->to = $_SESSION['user']->email;
-            $mailHandler->to = 'hola@goteo.org';
+            $mailHandler->to = \GOTEO_TMPMAIL;
             $mailHandler->toName = $_SESSION['user']->name;
             $mailHandler->subject = 'En pruebas: '. $subject;
             $mailHandler->content = $content;

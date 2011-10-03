@@ -3,7 +3,6 @@ CREATE TABLE IF NOT EXISTS `user_prefer` (
   `updates` int(1) NOT NULL DEFAULT 0,
   `threads` int(1) NOT NULL DEFAULT 0,
   `rounds` int(1) NOT NULL DEFAULT 0,
-  `selfproj` int(1) NOT NULL DEFAULT 0,
-  `anymail` int(1) NOT NULL DEFAULT 0,
+  `mailing` int(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`user`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Preferencias de notificación de usuario';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Preferencias de notificaciï¿½n de usuario';

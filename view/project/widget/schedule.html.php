@@ -1,7 +1,6 @@
 <?php
 
-use Goteo\Library\Text,
-    Goteo\Core\View;
+use Goteo\Library\Text;
 
 $project = $this['project'];
 $level = (int) $this['level'] ?: 3;
@@ -62,20 +61,9 @@ $from = mktime(0, 0, 0, date('m', $from), 1, date('Y', $from));
 // Pongo $until al últim día del mes
 $until = mktime(0, 0, 0, date('m', $until) + 1, -1, date('Y', $until));
 
+
 ?>
-<?php /* if (!isset($this['fullwidth'])) : ?>
-<script type="text/javascript">
-	jQuery(document).ready(function ($) {
-		//add fancybox on #a-fullschedule click
-		$("#a-fullschedule").fancybox({
-			'titlePosition'		: 'inside',
-			'transitionIn'		: 'none',
-			'transitionOut'		: 'none'
-		});
-	});
-</script>
-<?php endif; */ ?>
-<div class="widget project-schedule" <?php # if (isset($this['fullwidth'])) echo 'style="width:100%;"'; ?>>
+<div class="widget project-schedule">
     
     <h<?php echo $level ?> class="title"><?php echo Text::get('costs-field-schedule'); ?></h<?php echo $level ?>>
     
@@ -238,17 +226,6 @@ $until = mktime(0, 0, 0, date('m', $until) + 1, -1, date('Y', $until));
         </tbody>
         
     </table>
-
+    
 </div>
-<?php endif
-
-/*
-        <a target="_blank" id="a-fullschedule" href="#" class="more"><?php echo Text::get('regular-see_more'); ?></a>
-        <div style="display:none">
-            <?php echo new View('view/project/widget/schedule.html.php', array('project' => $project, 'fullwidth' => true)) ?>
-        </div>
-
- *
- */
-
-?>
+<?php endif ?>

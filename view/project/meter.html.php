@@ -4,6 +4,7 @@ use Goteo\Library\Text;
 $level = (int) $this['level'] ?: 3;
 
 $horizontal = !empty($this['horizontal']);
+$horizontal = !empty($this['big']);
 
 $project = $this['project'];
 
@@ -63,7 +64,7 @@ $minimum_ratio =  min(100, round(($minimum / $optimum) * 100));
 
 ?>        
     
-    <div class="meter <?php echo $horizontal ? 'hor' : 'ver' ?>">
+    <div class="meter <?php echo $horizontal ? 'hor' : 'ver'; echo $big ? ' big' : '' ?>">
         
         <h<?php echo $level ?> class="title"><?php echo Text::get('project-view-metter-investment'); ?></h<?php echo $level ?>>
         <?php if (!empty($project->round)) : ?><h<?php echo $level ?> class="title ronda"><?php echo $project->round . Text::get('regular-round'); ?></h<?php echo $level ?>><?php endif; ?>

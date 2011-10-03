@@ -149,7 +149,8 @@ namespace Goteo\Controller {
                         // email a los de goteo
                         $mailHandler = new Mail();
 
-                        $mailHandler->to = 'hola@goteo.org';
+//                        $mailHandler->to = \GOTEO_MAIL;
+                        $mailHandler->to = \GOTEO_TMPMAIL;
                         $mailHandler->subject = 'Proyecto ' . $project->name . ' enviado a valoración';
                         $mailHandler->content = '<p>Han enviado un nuevo proyecto a revisión</p><p>El nombre del proyecto es: <span class="message-highlight-blue">'.$project->name.'</span> <br />y se puede ver en <span class="message-highlight-blue"><a href="'.SITE_URL.'/projects/'.$project->id.'">'.SITE_URL.'/projects/'.$project->id.'</a></span></p>';
                         $mailHandler->fromName = "{$project->user->name}";

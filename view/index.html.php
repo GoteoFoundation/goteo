@@ -10,67 +10,6 @@ $bodyClass = 'home';
 include 'view/prologue.html.php';
 include 'view/header.html.php' ?>
 
-    <script type="text/javascript">
-
-    jQuery(document).ready(function ($) {
-
-        $("#home-post-1").show();
-        $("#navi-home-post-1").addClass('active');
-
-        $(".navi-arrow").click(function (event) {
-            event.preventDefault();
-
-            /* Quitar todos los active, ocultar todos los elementos */
-            $(".navi-home-post").removeClass('active');
-            $(".post").hide();
-            /* Poner acctive a este, mostrar este */
-            $("#navi-home-post-"+this.rel).addClass('active');
-            $("#home-post-"+this.rel).show();
-
-            var prev;
-            var next;
-
-            if (this.id == 'home-navi-next') {
-                prev = parseFloat($("#home-navi-prev").attr('rel')) - 1;
-                next = parseFloat($("#home-navi-next").attr('rel')) + 1;
-            } else {
-                prev = parseFloat(this.rel) - 1;
-                next = parseFloat(this.rel);
-            }
-
-            if (prev < 1) {
-                prev = <?php echo count($this['posts']) ?>;
-            }
-
-            if (next > <?php echo count($this['posts']) ?>) {
-                next = 1;
-            }
-
-            if (next < 1) {
-                next = <?php echo count($this['posts']) ?>;
-            }
-
-            if (prev > <?php echo count($this['posts']) ?>) {
-                prev = 1;
-            }
-
-            $("#home-navi-prev").attr('rel', prev);
-            $("#home-navi-next").attr('rel', next);
-        });
-
-        $(".navi-home-post").click(function (event) {
-            event.preventDefault();
-
-            /* Quitar todos los active, ocultar todos los elementos */
-            $(".navi-home-post").removeClass('active');
-            $(".post").hide();
-            /* Poner acctive a este, mostrar este*/
-            $(this).addClass('active');
-            $("#"+this.rel).show();
-        });
-
-    });
-    </script>
 		<script type="text/javascript">
 			$(function(){
 				$('#sub-header').slides();
@@ -142,41 +81,51 @@ include 'view/header.html.php' ?>
         <div id="main">
             
             <?php if (!empty($this['posts'])): ?>
-            
-            <div class="widget learn">
-                
-            <h2 class="title"><?php echo Text::get('home-posts-header'); ?></h2>
-            
-                <?php $i = 1; foreach ($this['posts'] as $post) : ?>
-                <div class="post" id="home-post-<?php echo $i; ?>">
-                    <h3><?php echo $post->title; ?></h3>
-                    <?php if (!empty($post->media->url)) : ?>
-                        <div class="embed">
-                            <?php echo $post->media->getEmbedCode(); ?>
-                        </div>
-                    <?php elseif (!empty($post->image)) : ?>
-                        <div class="image">
-                            <img src="/image/<?php echo $post->image->id; ?>/500/285" alt="Imagen"/>
-                        </div>
-                    <?php endif; ?>
-                    
-                    <div class="description">
+            <script>
+				$(function(){
+					$('#learn').slides({
+						container: 'slder_container',
+						paginationClass: 'slderpag',
+						generatePagination: false,
+						play: 0
+					});
+				});
+			</script>
+            <div id="learn" class="widget learn">  
+				<h2 class="title"><?php echo Text::get('home-posts-header'); ?></h2>
+				<div class="slder_container">
+					
+					<?php $i = 1; foreach ($this['posts'] as $post) : ?>
+					<div class="slder_slide">
+						<div class="post" id="home-post-<?php echo $i; ?>" style="display:block;">
+							<?php if (!empty($post->media->url)) : ?>
+								<div class="embed">
+									<?php echo $post->media->getEmbedCode(); ?>
+								</div>
+							<?php elseif (!empty($post->image)) : ?>
+								<div class="image">
+									<img src="/image/<?php echo $post->image->id; ?>/500/285" alt="Imagen"/>
+								</div>
+							<?php endif; ?>
+							<h3><?php echo $post->title; ?></h3>
+							<div class="description">
                         <?php echo Text::recorta($post->text, 600) ?>
-                    </div>
+							</div>
 
-                    <div class="read_more"><a href="/blog/<?php echo $post->id; ?>"><?php echo Text::get('regular-read_more') ?></a></div>
-                </div>                
-                <?php $i++; endforeach; ?>
-               
-                <ul>
-        			<li class="prev"><a href="#" id="home-navi-prev" rel="<?php echo count($this['posts']) ?>" class="navi-arrow">Anterior</a></li>
-                    <?php $i = 1; foreach ($this['posts'] as $post) : ?>
-                    <li class="navi"><a href="#" id="navi-home-post-<?php echo $i ?>" rel="home-post-<?php echo $i ?>" class="tipsy navi-home-post" title="<?php echo htmlspecialchars($post->title) ?>">
+							<div class="read_more"><a href="/blog/<?php echo $post->id; ?>"><?php echo Text::get('regular-read_more') ?></a></div>
+						</div>    
+					</div>
+					<?php $i++; endforeach; ?>
+				</div>
+				<a class="prev">prev</a>
+				<ul class="slderpag">
+					<?php $i = 1; foreach ($this['posts'] as $post) : ?>
+                    <li><a href="#" id="navi-home-post-<?php echo $i ?>" rel="home-post-<?php echo $i ?>" class="tipsy navi-home-post" title="<?php echo htmlspecialchars($post->title) ?>">
                         <?php echo htmlspecialchars($post->title) ?></a>
                     </li>
                     <?php $i++; endforeach ?>
-        			<li class="next"><a href="#" id="home-navi-next" rel="2" class="navi-arrow">Siguiente</a></li>
-                </ul>
+				</ul>
+				<a class="next">next</a>
 
             </div>
             

@@ -119,7 +119,7 @@ namespace Goteo\Model {
                     if ($mail->send($errors)) {
                         Message::Info('Mensaje de activación enviado correctamente');
                     } else {
-                        Message::Error('Ha habido algún error al enviar el mensaje de activación. Por favor, contáctanos a hola@goteo.org');
+                        Message::Error('Ha habido algún error al enviar el mensaje de activación. Por favor, contáctanos a ' . GOTEO_MAIL);
                         Message::Error(implode('<br />', $errors));
                     }
                 }
@@ -977,8 +977,7 @@ namespace Goteo\Model {
                                       updates,
                                       threads,
                                       rounds,
-                                      selfproj,
-                                      anymail
+                                      mailing
                                   FROM user_prefer
                                   WHERE user = ?'
                 , array($id));

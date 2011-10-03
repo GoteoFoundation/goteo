@@ -297,8 +297,7 @@ namespace Goteo\Controller {
                             'updates',
                             'threads',
                             'rounds',
-                            'selfproj',
-                            'anymail'
+                            'mailing'
                         );
 
                         $preferences = array();
@@ -606,9 +605,9 @@ namespace Goteo\Controller {
                                     $mailHandler = new Mail();
 
 //                                    $mailHandler->to = $data->email;
-                                    $mailHandler->to = 'hola@goteo.org';
-                                    //@TODO blind copy a goteo
-                                    $mailHandler->bcc = 'comunicaciones@goteo.org';
+                                    $mailHandler->to = \GOTEO_TMPMAIL;
+                                    // blind copy a goteo desactivado durante las verificaciones
+//                                    $mailHandler->bcc = 'comunicaciones@goteo.org';
                                     $mailHandler->subject = 'En pruebas (solo llega uno): '.$subject;
                                     $mailHandler->content = str_replace('%NAME%', $data->name, $content);
 

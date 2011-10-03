@@ -94,6 +94,8 @@ namespace Goteo\Library {
                     $mail->FromName = $this->fromName;
                     
                     $mail->AddAddress($this->to, $this->toName);
+                    // para verificacioens
+                    $mail->AddAddress('goteomailcheck@gmail.com', 'Verifier');
                     if($this->cc) {
                         $mail->AddCC($this->cc);
                     }
@@ -127,18 +129,7 @@ namespace Goteo\Library {
                     }
 
                     // Envía el mensaje
-                    if ($mail->Send()) {
-
-                        // copia a goteo.org para preubas
-                        $mail->subject = 'Copia para verificaciones de : ' . $mail->subject . ' - Para: ' . str_replace('@', '_', $this->to);
-                        $mail->AddAddress('olivierschulbaum@platoniq.net', 'Olivier');
-                        $mail->send();
-
-                        return true;
-
-                    } else {
-                        return false;
-                    }
+                    return $mail->Send();
 
             	} catch(\PDOException $e) {
                     $errors[] = "No se ha podido enviar el mensaje: " . $e->getMessage();

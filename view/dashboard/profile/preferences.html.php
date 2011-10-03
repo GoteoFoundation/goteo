@@ -67,23 +67,14 @@ echo new SuperForm(array(
             'errors'    => array(),
             'value'     => (int) $preferences->rounds
         ),
-        'selfproj' => array(
-            'title'     => 'Bloquear notificaciones de seguimiento de mis proyectos',
+        'mailing' => array(
+            'title'     => 'Bloquear el envio de newsletter',
             'type'      => 'slider',
             'options'   => $allow,
             'class'     => 'currently cols_' . count($allow),
-            'hint'      => Text::get('tooltip-preferences-selfproj'),
+            'hint'      => Text::get('tooltip-preferences-mailing'),
             'errors'    => array(),
-            'value'     => (int) $preferences->selfproj
-        ),
-        'anymail' => array(
-            'title'     => 'Bloquear todas las notificaciones que no sean exclusivamente para mi',
-            'type'      => 'slider',
-            'options'   => $allow,
-            'class'     => 'currently cols_' . count($allow),
-            'hint'      => Text::get('tooltip-preferences-anymail'),
-            'errors'    => array(),
-            'value'     => (int) $preferences->anymail
+            'value'     => (int) $preferences->mailing
         )
 
     )
