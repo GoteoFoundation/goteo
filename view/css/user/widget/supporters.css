@@ -23,7 +23,6 @@ div.widget.user-supporters .supporters ul li .avatar {
     height: 50px;
     text-align: center;
     display: block;
-/*    background: url('/view/css/avatar/m.png');    //@FIXME revisar esto porque los avatares trasparentes o pequeños salen con este abajo*/
 }
 
 div.widget.user-supporters .supporters ul li .avatar img {

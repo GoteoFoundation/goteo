@@ -7,7 +7,7 @@ $posts = $this['posts'];
 include 'view/prologue.html.php';
 include 'view/header.html.php';
 
-$bodyClass = 'about blog';
+$bodyClass = 'about';
 
 $go_up = Text::get('regular-go_up');
 ?>
@@ -72,7 +72,7 @@ $go_up = Text::get('regular-go_up');
                                 <a class="next">next</a>
                             <!-- carrusel de imagenes -->
                         </div>
-                        <?php else : ?>
+                        <?php elseif (!empty($post->image)) : ?>
                             <div class="gallery-image gallery-post<?php echo $post->id ?>" id="gallery-post<?php echo $post->id ?>-<?php echo $i ?>">
                                 <img src="/image/<?php echo $post->image->id; ?>/500/285" alt="<?php echo $post->title; ?>" />
                             </div>

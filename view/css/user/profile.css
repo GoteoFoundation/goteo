@@ -87,9 +87,7 @@ div.center div.widget.user-mates .users ul > li span.contact a:hover{
 }
 
 
-/* http://goteo.juliancanaves.es/user/profile/esenabre/sharemates
-*********************************************************************************************/
-/* lista de categor�as */
+/* lista de categorías */
 div.center > div.widget.categorylist{padding-bottom:12px;}
 div.center > div.widget.categorylist ul{list-style:none;display:inline-block;margin:0;padding-left:0;}
 div.center > div.widget.categorylist ul li{display:inline-block;margin-left:0;padding-left:0;}
@@ -111,13 +109,11 @@ div.center > div.widget.categorylist > div.list{padding-top:5px;}
 	div.center > div.widget.categorylist > div.list > ul > li{margin-right:0.5em;}
 	div.center > div.widget.categorylist > div.list > ul > li > a{text-transform:uppercase;font-size:12px;}
 
-/* detalle de categor�as (encabezado de categor�a)*/
+/* detalle de categorías (encabezado de categoría)*/
 div.center > div.widget.user-mates > h3.title{margin: 0 0 1em;padding: 0 2px 0.5em;font-size: 12px;font-weight: normal; background:none; border-bottom: 1px dashed #818284;border-top: 1px solid #808285;color: #20B3B2;font-size: 12px;padding: 5px 0 5px 5px;}
 
 
 
-/* http://goteo.juliancanaves.es/user/profile/fbalague/message
-***************************************************************/
 div.center div.widget.user-message{position:relative;z-index:99;}
 div.center div.widget.user-message textarea{display:block;margin-left:50px;width:510px;}
 div.center div.widget.user-message #bocadillo{background:url(../bocadillo.jpg) no-repeat;position:absolute;

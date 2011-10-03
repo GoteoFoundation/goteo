@@ -81,7 +81,7 @@ include 'view/header.html.php' ?>
         <div id="main">
             
             <?php if (!empty($this['posts'])): ?>
-            <script>
+            <script type="text/javascript">
 				$(function(){
 					$('#learn').slides({
 						container: 'slder_container',
@@ -91,7 +91,7 @@ include 'view/header.html.php' ?>
 					});
 				});
 			</script>
-            <div id="learn" class="widget learn">  
+            <div id="learn" class="widget learn">
 				<h2 class="title"><?php echo Text::get('home-posts-header'); ?></h2>
 				<div class="slder_container">
 					

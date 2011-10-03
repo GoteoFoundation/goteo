@@ -42,7 +42,7 @@ body.project-show div#sub-header div.project-header{
 
 body.project-show div#sub-header div.project-header img{
     float: left;
-	margin: 6px 20px 0 20px;
+	margin: 2px 20px 0 0;
 }
 
 body.project-show div#sub-header div.project-header h2{
@@ -59,7 +59,7 @@ body.project-show div#sub-header div.project-by {
     color: #20B3B2;
     font-size: 12px;
     margin: 0 0 .5em;
-    padding-left: 96px;
+    padding-left: 76px;
 }
 
 body.project-show div#sub-header div.project-by a {
@@ -77,8 +77,8 @@ body.project-show div#sub-header div.categories {
 	position: absolute;
     right: 10px;
     text-align: right;
-    top: -15px;
 	max-width:240px;
+	top: 0;
 }
 
 body.project-show div#sub-header div.categories h3 {

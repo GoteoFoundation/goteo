@@ -103,10 +103,12 @@ body.user-profile div#sub-header h2 em {
 /* read more */
 div.read_more {
     text-align: right;
+	margin-top: 16px;
 }
 div.read_more a {
     text-decoration: none;
     text-transform: uppercase;
+	font-size: 12px;
 }
 div.read_more a:hover {
     color: #20B3B2;

@@ -1,5 +1,5 @@
 * {
-    font-family: Helvetica, Arial, Geneva, sans-serif;
+    font-family: "Liberation Sans", Helvetica, "Helvetica Neue", Arial, Geneva, sans-serif;
 }
 
 html {
@@ -13,12 +13,17 @@ html, body {
     background-color: #e7e7e7;
 }
 
+
 body {
-    min-width: 780px;
+	min-width: 780px;
+    min-height: 100%;    
+    margin: 0 auto;
+    top: 0;
+    position: relative;
 }
 
 body, td, th, a, a:link, a:visited, a:active, a:hover, input, textarea, button {    
-    font-size: 13px;
+    font-size: 12px;
     color: #58595b;
 }
 
@@ -28,13 +33,6 @@ img {
 
 input, textarea, button {
     font-size: 14px;
-}
-
-body {
-    min-height: 100%;    
-    margin: 0 auto;
-    top: 0;
-    position: relative;
 }
 
 h1 {

@@ -13,7 +13,7 @@ $project->related     = nl2br(Text::urlink($project->related));
 $level = (int) $this['level'] ?: 3;
 ?>
     <?php  if (count($project->gallery) > 1) : ?>
-		<script>
+		<script type="text/javascript" >
 			$(function(){
 				$('#prjct-gallery').slides({
 					container: 'prjct-gallery-container',
@@ -35,30 +35,32 @@ $level = (int) $this['level'] ?: 3;
     </div>    
     <?php endif ?>
 
-    <?php if (!empty($project->gallery)): ?>
+    <?php if (count($project->gallery) > 1): ?>
 	<div id="prjct-gallery">
 		<div class="prjct-gallery-container">
 			<?php $i = 1; foreach ($project->gallery as $image) : ?>
-			<div class="gallery-image" id="gallery-image-<?php echo $i ?>"<?php if (count($project->gallery) == 1) echo ' style="display:block;"'; ?>>
+			<div class="gallery-image" id="gallery-image-<?php echo $i ?>">
 				<img src="/image/<?php echo $image->id; ?>/580/580" alt="<?php echo $project->name; ?>" />
 			</div>
 			<?php $i++; endforeach; ?>
 		</div>
 		<!-- carrusel de imagenes si hay mas de una -->
-		<?php if (count($project->gallery) > 1) : ?>
-			<a class="prev">prev</a>
-				<ul class="slderpag">
-					<?php $i = 1; foreach ($project->gallery as $image) : ?>
-					<li><a href="#" id="navi-gallery-image-<?php echo $i ?>" rel="gallery-image-<?php echo $i ?>" class="navi-gallery-image">
-					<?php echo htmlspecialchars($image->name) ?></a>
-					</li>
-					<?php $i++; endforeach ?>
-				</ul>
-			<a class="next">next</a>
-		<?php endif; ?>
+        <a class="prev">prev</a>
+            <ul class="slderpag">
+                <?php $i = 1; foreach ($project->gallery as $image) : ?>
+                <li><a href="#" id="navi-gallery-image-<?php echo $i ?>" rel="gallery-image-<?php echo $i ?>" class="navi-gallery-image">
+                <?php echo htmlspecialchars($image->name) ?></a>
+                </li>
+                <?php $i++; endforeach ?>
+            </ul>
+        <a class="next">next</a>
 		<!-- carrusel de imagenes -->
 	</div>
-    <?php endif ?>
+    <?php elseif (!empty($project->gallery)) : ?>
+        <div class="gallery-image" id="gallery-image-<?php echo $i ?>"style="display:block;">
+            <img src="/image/<?php echo $project->gallery[0]->id; ?>/580/580" alt="<?php echo $project->name; ?>" />
+        </div>
+    <?php endif; ?>
 
 
 

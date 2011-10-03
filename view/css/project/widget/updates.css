@@ -75,6 +75,12 @@ div.widget.project-updates > div {
 	font-style:oblique
 }
 
+.project-updates .widget.post .gallery-image{
+	text-align:left;
+}
+.project-updates .widget.post .gallery-image img{
+	margin: 0 18px;
+}
 .project-updates .post .comments-num{
 	float:left;
 	background: transparent url('/view/css/ico-blogcomment.png') scroll no-repeat  0 0;
@@ -110,7 +116,6 @@ div.post-comments div.message .avatar {
     display: block;
     width: 50px;
     height: 50px;
-/*    background: url('/view/css/avatar/s.png');    //@FIXME revisar esto porque los avatares trasparentes o pequeños salen con este abajo*/
 }
 
 div.post-comments div.message .user {

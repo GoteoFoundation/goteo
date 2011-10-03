@@ -53,7 +53,7 @@ div#subfooter a:hover{
 /*hijos de footer*/
 div#footer div.block{
 	float:left;
-	width:148px;
+	width: 155px;
 	height: 142px;
 	padding-left:15px;	
 	border-left:#ebe9ea 2px solid;	
@@ -178,7 +178,7 @@ div#footer .horizontal-only
 
 /*particular de social*/
 div#footer div.social{
-	width:108px !important; /*+15 left padding = w 125*/
+	width:109px !important;
 }
 
 div#footer div.social ul{

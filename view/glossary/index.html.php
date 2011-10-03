@@ -7,7 +7,7 @@ $index = $this['index'];
 
 $letters = array();
 
-$bodyClass = 'glossary blog';
+$bodyClass = 'glossary';
 
 $go_up = Text::get('regular-go_up');
 
@@ -87,7 +87,7 @@ include 'view/header.html.php';
                                 <a class="next">next</a>
                             <!-- carrusel de imagenes -->
                         </div>
-                        <?php else : ?>
+                        <?php elseif (!empty($post->image)) : ?>
                             <div class="gallery-image gallery-post<?php echo $post->id ?>" id="gallery-post<?php echo $post->id ?>-<?php echo $i ?>">
                                 <img src="/image/<?php echo $post->image->id; ?>/500/285" alt="<?php echo $post->title; ?>" />
                             </div>
