@@ -4274,6 +4274,98 @@ namespace Goteo\Controller {
 
 
         /*
+         * Comunicaciones con los usuarios mediante mailing
+         */
+        public function mailing($action = 'list', $id = null) {
+
+            $BC = self::menu(array(
+                'section' => 'users',
+                'option' => __FUNCTION__,
+                'action' => $action,
+                'id' => $id
+            ));
+
+            define('ADMIN_BCPATH', $BC);
+
+            $errors = array();
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                switch ($action) {
+                    case 'edit':
+                        // Han elegido filtros, cargamos los destiantarios
+
+                        // si no hay destinatarios, salta a la lista con mensaje de error
+                        return new View(
+                            'view/admin/index.html.php',
+                            array(
+                                'folder' => 'mailing',
+                                'file' => 'list',
+                                'users' => $users,
+                                'errors' => array('No se han encontrado destinatarios con esos criterios')
+                            )
+                        );
+
+                        // si hay, mostramos el formulario de envio
+                        return new View(
+                            'view/admin/index.html.php',
+                            array(
+                                'folder' => 'mailing',
+                                'file' => 'edit',
+                                'users' => $users,
+                                'errors' => $errors
+                            )
+                        );
+
+                        break;
+                    case 'send':
+                        // Enviando contenido recibido a destinatarios recibidos
+
+                        $data = array('content' => '', 'receivers' => array('mail1', 'mail2', 'mail3'));
+
+                        /*
+                         * Evento Feed
+                         *
+                        $log = new Feed();
+                        $log->title = 'mailing a usuarios (admin)';
+                        $log->url = '/admin/mailing';
+                        $log->type = 'admin';
+                        $log_text = "El admin %s ha %s una comunicación a usuarios";
+                        $log_items = array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('relevant', 'Enviado')
+                        );
+                        $log->html = \vsprintf($log_text, $log_items);
+                        $log->add($errors);
+                        unset($log);
+*/
+                        return new View(
+                            'view/admin/index.html.php',
+                            array(
+                                'folder' => 'mailing',
+                                'file' => 'send',
+                                'data' => $data,
+                                'errors' => $errors,
+                                'success' => $success
+                            )
+                        );
+
+                        break;
+                }
+			}
+
+            return new View(
+                'view/admin/index.html.php',
+                array(
+                    'folder' => 'mailing',
+                    'file' => 'list',
+                    'errors' => $errors,
+                    'success' => $success
+                )
+            );
+        }
+
+        /*
          * Niveles de meritocracia
          */
         public function worth($action = 'list', $id = null) {
@@ -4525,6 +4617,14 @@ namespace Goteo\Controller {
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'edit' => array('label' => 'Editando Nivel', 'item' => true)
+                            )
+                        ),
+                        'mailing' => array(
+                            'label' => 'Comunicaciones',
+                            'actions' => array(
+                                'list' => array('label' => 'Seleccionando destinatarios', 'item' => false),
+                                'edit' => array('label' => 'Escribiendo contenido', 'item' => false),
+                                'send' => array('label' => 'Comunicación enviada', 'item' => false)
                             )
                         )/*,
                         'useradd' => array(
