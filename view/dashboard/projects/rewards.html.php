@@ -89,17 +89,17 @@ $project = $this['project'];
                         <a href="/user/<?php echo $investData->user->id; ?>"><img src="/image/<?php echo $investData->user->avatar->id; ?>/45/45/1" /></a>
                     </div>
                     
-                    <div class="left" style="width:200px;">
+                    <div class="left" style="width:120px;">
 						<span class="username"><a href="/user/<?php echo $investData->user->id; ?>"><?php echo $investData->user->name; ?></a></span>
                         <label class="amount">Aporta</label>
 						<span class="amount"><?php echo $investData->amount; ?> &euro;</span>
                         <span class="date">22/08/2011</span>
                     </div>
                    
-                    <div class="left recompensas"  style="width:200px;">
+                    <div class="left recompensas"  style="width:280px;">
                      	<span style="margin-bottom:2px;" class="<?php echo $estilo;?>"><strong>Recompensas esperadas:</strong></span>
                         <?php foreach ($investData->rewards as $reward) : ?>
-                        <div style="width: 200px; overflow: hidden; height: 18px;" class="<?php echo $estilo;?>">
+                        <div style="width: 250px; overflow: hidden; height: 18px;" class="<?php echo $estilo;?>">
                         <input type="checkbox"  id="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>" name="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>" value="1" <?php if ($reward->fulfilled == 1) echo ' checked="checked" disabled';?>  />
                         <label for="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>"><?php echo Text::recorta($reward->reward, 40); ?></label>
                         </div>

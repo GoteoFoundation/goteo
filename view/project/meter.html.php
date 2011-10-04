@@ -4,7 +4,7 @@ use Goteo\Library\Text;
 $level = (int) $this['level'] ?: 3;
 
 $horizontal = !empty($this['horizontal']);
-$horizontal = !empty($this['big']);
+$big = !empty($this['big']);
 
 $project = $this['project'];
 
@@ -19,6 +19,10 @@ $days       = $project->days;
 if ($reached >= $minimum) {
 
     $donemax = $horizontal ? 125 : 145;
+    
+    if (($horizontal) && ($big)) {
+    	$donemax = 117;
+    }
 //    $minimum_done = 100;
     $minimum_done = min($donemax, round(($reached / $minimum) * 100));
     if ($reached >= $optimum) {
@@ -63,7 +67,6 @@ $optimum_left = 100 - $optimum_done;
 $minimum_ratio =  min(100, round(($minimum / $optimum) * 100));
 
 ?>        
-    
     <div class="meter <?php echo $horizontal ? 'hor' : 'ver'; echo $big ? ' big' : '' ?>">
         
         <h<?php echo $level ?> class="title"><?php echo Text::get('project-view-metter-investment'); ?></h<?php echo $level ?>>
@@ -74,7 +77,7 @@ $minimum_ratio =  min(100, round(($minimum / $optimum) * 100));
                  <div class="done" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($optimum_done) ?>%"></div>
             </div>
             <div class="minimum" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($minimum_ratio) ?>%">
-                <div class="left" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($minimum_left) ?>%"><strong><?php echo number_format($minimum_left) ?>%</strong></div>
+                <div class="left" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($minimum_left) ?>%"><!-- <strong><?php echo number_format($minimum_left) ?>%</strong> --></div>
                 <div class="done" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($minimum_done) ?>%"><strong><?php echo number_format($minimum_done_per) ?>%</strong></div>
             </div>
         </div>

@@ -9,8 +9,8 @@ body.dashboard div#main div.status {
 
 body.dashboard #project-status {
     background-color: #ffffff;
-    padding: 20px 20px 62px 30px !important;
-	widt:290px;
+    padding: 20px 20px 30px 30px !important;
+	width:290px;
 }
 
 body.dashboard div#main div.status #project-status h3{
@@ -30,15 +30,16 @@ body.dashboard div#meter-big {
 }
 */
 body.dashboard div#meter-big {
-     height: 100%;
+     height: 200px;
+     position: relative;
 }
 
 
 body.dashboard div#meter-big h3.title.ronda {
 	color:#20B3B2;
-/*	position:absolute;   <---- recolocar esto */
-/*	top:20px; */
-/* 	right: 20px;*/ 
+	position:absolute;
+	top:20px;
+	right: 20px; 
     text-transform: lowercase;
     background: none !important;
 }
@@ -85,17 +86,18 @@ body.dashboard div#meter-big div.graph .minimum .done {
 
 /* Cambiar el marcador por uno grande con el strong del % dentro */
 body.dashboard div#meter-big div.graph .minimum .done strong {
-    background: url("/view/css/project/marker.png") no-repeat;
+    background: url("marker.png") no-repeat;
     display: block;
-    height: 16px;
-    line-height: 2000px;
-    margin-right: -10px;
-    margin-top: -4px;
+    height: 21px;
+    margin-right: -13px;
+    margin-top: -11px;
     overflow: hidden;
     position: absolute;
     right: 0;
-    text-indent: 2000px;
-    width: 17px;
+    width: 25px;
+    color: #ffffff;
+    font-size: 9px;
+    text-align: center;
 }
 
 body.dashboard div#meter-big div.graph .minimum .left {
@@ -190,9 +192,50 @@ body.dashboard div#meter-big dl dd.minimum > * {
     top: -25px;
 }
 
-body.dashboard div#meter-big dl .reached,
+/* Estilos de Obtenido, cofinanciadores, dias */
+body.dashboard div#meter-big dl .reached {
+	position: absolute;
+	top:55px;
+	padding: .8em 0;
+    font-size: 12px;
+    line-height: 1.5em;
+    font-weight: bold;
+}
+
+body.dashboard div#meter-big dl dt.reached {
+	margin-top: 6px;
+	text-transform: uppercase;
+}
+
+body.dashboard div#meter-big dl dd.reached {
+	left: 70px;
+	color: #96238F;
+	font-size: 16px;
+}
+
+body.dashboard div#meter-big dl .reached span.euro {
+    background-image: url('/view/css/euro/violet/s.png');
+}
+
 body.dashboard div#meter-big dl .supporters {
-    /* Estilos de Obtenido, cofinanciadores, dias */
+    position: absolute;
+	top:55px;
+	padding: .8em 0;
+    font-size: 12px;
+    line-height: 1.5em;
+    font-weight: bold;
+    color: #1b5b9e;
+    left: 420px;
+}
+
+body.dashboard div#meter-big dl dt.supporters {
+	margin-top: 6px;
+	text-transform: uppercase;	
+}
+
+body.dashboard div#meter-big dl dd.supporters {
+	font-size: 16px;
+	left: 545px;	
 }
 
 body.dashboard div#meter-big dl span.euro {
@@ -211,22 +254,40 @@ body.dashboard div#meter-big dl .minimum span.euro {
 
 body.dashboard div#meter-big dl .days {
     position: absolute;
-    border-top: 1px solid #d1d3d4;
     top: 55px;
     padding: .8em 0;
     font-size: 12px;
     line-height: 1.5em;
     font-weight: bold;
+    left: 215px;
 }
 
 body.dashboard div#meter-big dl dt.days {
-    width: 70px;
+    margin-top: 6px;
     text-transform: uppercase;
 }
 
 body.dashboard div#meter-big dl dd.days {
-    left: 70px;
-    right: -40px;
-    color: #ee4843;
+    left: 275px;
+    font-size: 16px;
+}
+
+body.dashboard div#meter-big div.keepiton {
+    background-color: #19B5B3;
+    border-radius: 3px 3px 3px 3px;
+    bottom: 20px;
+    color: #FFFFFF;
+    cursor: default;
+    display: inline-block;
+    font-size: 0.8em;
     font-weight: bold;
+    left: 0;
+    overflow: visible;
+    padding: 3px;
+    position: absolute;
+    text-align: center;
+    text-transform: uppercase;
+    width: 120px;
+    z-index: 899;
+    left:20px;
 }
