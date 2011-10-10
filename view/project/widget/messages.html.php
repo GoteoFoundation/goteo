@@ -54,7 +54,7 @@ $level = (int) $this['level'] ?: 3;
                 <div class="message<?php if ($message->user->id == $project->owner) echo ' owner'; ?>">
                    <span class="avatar">
                    <a href="/user/profile/<?php echo htmlspecialchars($message->user->id)?>" target="_blank">
-                    <img src="/image/<?php echo $message->user->avatar->id; ?>/50/50/1" alt="" />
+                    <img src="<?php echo SRC_URL ?>/image/<?php echo $message->user->avatar->id; ?>/50/50/1" alt="" />
                    </a>
                   </span>
                    <h<?php echo $level ?> class="user">
@@ -82,7 +82,7 @@ $level = (int) $this['level'] ?: 3;
                        <div class="child<?php if ($child->user->id == $project->owner) echo ' owner'; ?>">
                            <span class="avatar">
                            <a href="/user/profile/<?php echo htmlspecialchars($child->user->id) ?>" target="_blank">
-	                           <img src="/image/<?php echo $child->user->avatar->id; ?>/40/40/1" />
+	                           <img src="<?php echo SRC_URL ?>/image/<?php echo $child->user->avatar->id; ?>/40/40/1" />
                            </a>
                            </span>
                            <a name="message<?php echo $child->id; ?>" />

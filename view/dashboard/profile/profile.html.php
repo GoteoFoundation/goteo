@@ -153,7 +153,7 @@ $sfid = 'sf-project-profile';
                     'type'  => 'html',
                     'class' => 'inline avatar-image',
                     'html'  => is_object($user->avatar) &&  $user->avatar->id != 1 ?
-                               $user->avatar . '<img src="/image/' . $user->avatar->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->id.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               $user->avatar . '<img src="<?php echo SRC_URL ?>/image/' . $user->avatar->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->id.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
 

@@ -67,7 +67,7 @@ function displayCategories(categoryId1,categoryId2){
                 	<a href="/user/<?php echo htmlspecialchars($mate->user) ?>" class="expand">&nbsp;</a>
                     <div class="avatar">
                         <a href="/user/<?php echo htmlspecialchars($mate->user) ?>">
-                            <img src="/image/<?php echo $mate->avatar->id ?>/43/43/1" />
+                            <img src="<?php echo SRC_URL ?>/image/<?php echo $mate->avatar->id ?>/43/43/1" />
                         </a>
                     </div>
                     <h4>

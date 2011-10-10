@@ -26,7 +26,7 @@ $pagedResults = new \Paginated($the_investors, 20, isset($_GET['page']) ? $_GET[
 ?>
 <div id="sub-header">
     <div>
-        <h2><a href="/user/<?php echo $user->id; ?>"><img src="/image/<?php echo $user->avatar->id; ?>/75/75/1" /></a> <?php echo Text::get('profile-name-header'); ?> <br /><em><?php echo $user->name; ?></em></h2>
+        <h2><a href="/user/<?php echo $user->id; ?>"><img src="<?php echo SRC_URL ?>/image/<?php echo $user->avatar->id; ?>/75/75/1" /></a> <?php echo Text::get('profile-name-header'); ?> <br /><em><?php echo $user->name; ?></em></h2>
     </div>
 </div>
 

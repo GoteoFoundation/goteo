@@ -21,7 +21,7 @@ $user->about = nl2br(Text::urlink($user->about));
     <?php echo htmlspecialchars($user->name) ?></h<?php echo $level + 1 ?>>
 
     <div class="image">
-        <?php if (!empty($user->avatar)): ?><img alt="<?php echo htmlspecialchars($user->name) ?>" src="/image/<?php echo $user->avatar->id; ?>/80/80/1" /><?php endif ?>
+        <?php if (!empty($user->avatar)): ?><img alt="<?php echo htmlspecialchars($user->name) ?>" src="<?php echo SRC_URL ?>/image/<?php echo $user->avatar->id; ?>/80/80/1" /><?php endif ?>
     </div>
 
     <?php if (isset($user->about)): ?>

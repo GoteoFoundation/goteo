@@ -298,13 +298,13 @@ namespace Goteo\Library {
 
                     if (substr($item->url, 0, 5) == '/user') {
                         $content .= '<div class="content-avatar">
-                        <a href="'.$item->url.'" class="avatar"><img src="/image/'.$item->image.'/32/32/1" /></a>
+                        <a href="'.$item->url.'" class="avatar"><img src="<?php echo SRC_URL ?>/image/'.$item->image.'/32/32/1" /></a>
                         <a href="'.$item->url.'" class="username">'.$item->title.'</a><br/>
                         <span class="datepub">'.$pub_timeago.'</span>
                         </div>';
                     } else {
                         $content .= '<div class="content-image">
-                        <a href="'.$item->url.'" class="image"><img src="/image/'.$item->image.'/90/60/1" /></a>
+                        <a href="'.$item->url.'" class="image"><img src="<?php echo SRC_URL ?>/image/'.$item->image.'/90/60/1" /></a>
                         <a href="'.$item->url.'" class="project light-blue">'.$item->title.'</a>
                         <span class="datepub">'.$pub_timeago.'</span>
                         </div>';
@@ -335,7 +335,7 @@ namespace Goteo\Library {
                     <!-- avatar y nombre del autor -->
                     <div class="content-avatar">
                         <a href="/user/olivier" class="avatar">
-                            <img src="/image/119/43/43/1" />
+                            <img src="<?php echo SRC_URL ?>/image/119/43/43/1" />
                         </a>
                         <a href="/user/olivier" class="username">Olivier</a><br/>
                         <span class="datepub">Publicado hace 2 horas</span>
@@ -364,7 +364,7 @@ namespace Goteo\Library {
                 <div class="subitem">
                     <div class="content-image">
                         <a href="/user/olivier" class="image">
-                            <img src="/image/119/90/60/1" />
+                            <img src="<?php echo SRC_URL ?>/image/119/90/60/1" />
                         </a>
                         <a href="/user/olivier" class="project light-blue">TodoJunto LetterPress</a><br/>
                         <span class="datepub">Publicado hace 2 horas</span>
@@ -387,7 +387,7 @@ namespace Goteo\Library {
                 <div class="subitem">
                     <div class="content-avatar">
                         <a href="/user/olivier" class="avatar">
-                            <img src="/image/119/24/24/1" />
+                            <img src="<?php echo SRC_URL ?>/image/119/24/24/1" />
                         </a>
                         <a href="/user/olivier" class="username">Andres P.</a><br/>
                         <span class="datepub">Publicado hace 2 d�as</span>

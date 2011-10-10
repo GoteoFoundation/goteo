@@ -32,7 +32,7 @@ $status = Model\Project::status();
     <?php if (!empty($banner->image)) : ?>
         <br />
         <input type="hidden" name="prev_image" value="<?php echo $banner->image->id ?>" />
-        <img src="/image/<?php echo $banner->image->id ?>/700/156/1" title="Fondo album" alt="falla imagen"/>
+        <img src="<?php echo SRC_URL ?>/image/<?php echo $banner->image->id ?>/700/156/1" title="Fondo album" alt="falla imagen"/>
     <?php endif; ?>
 </p>
 

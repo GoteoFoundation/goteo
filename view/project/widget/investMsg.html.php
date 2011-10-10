@@ -29,7 +29,7 @@ $level = (int) $this['level'] ?: 3;
 
 ?>
 <div class="widget invest-message">
-    <h2><img src="/image/<?php echo $user->avatar->id; ?>/50/50/1" /><span><?php echo $title; ?></span><br />
+    <h2><img src="<?php echo SRC_URL ?>/image/<?php echo $user->avatar->id; ?>/50/50/1" /><span><?php echo $title; ?></span><br />
     <span class="message"><?php echo $message; ?></span></h2>
 
 

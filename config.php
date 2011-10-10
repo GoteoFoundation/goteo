@@ -82,6 +82,7 @@ define('GOTEO_DEFAULT_LANG', 'es');
 
 // url
 define('SITE_URL', 'http://devgoteo.org');
+define('SRC_URL', 'http://resources.devgoteo.org');
 
 /****************************************************
 Paypal web_constants.php

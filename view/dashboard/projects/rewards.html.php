@@ -86,7 +86,7 @@ $project = $this['project'];
                 <div class="investor">
 
                 	<div class="left">
-                        <a href="/user/<?php echo $investData->user->id; ?>"><img src="/image/<?php echo $investData->user->avatar->id; ?>/45/45/1" /></a>
+                        <a href="/user/<?php echo $investData->user->id; ?>"><img src="<?php echo SRC_URL ?>/image/<?php echo $investData->user->avatar->id; ?>/45/45/1" /></a>
                     </div>
                     
                     <div class="left" style="width:120px;">

@@ -60,7 +60,7 @@ include 'view/header.html.php' ?>
                                 <?php endif; ?>
 							</ul>
 						</div>
-						<div class="shb-img"><img src="/image/<?php echo $banner->image ?>/700/156/1" title="<?php echo $banner->project->name ?>" alt="<?php echo $banner->project->name ?>" /></div>
+						<div class="shb-img"><img src="<?php echo SRC_URL ?>/image/<?php echo $banner->image ?>/700/156/1" title="<?php echo $banner->project->name ?>" alt="<?php echo $banner->project->name ?>" /></div>
 					</div>
                     <?php endforeach;
                     else : ?>
@@ -104,7 +104,7 @@ include 'view/header.html.php' ?>
 								</div>
 							<?php elseif (!empty($post->image)) : ?>
 								<div class="image">
-									<img src="/image/<?php echo $post->image->id; ?>/500/285" alt="Imagen"/>
+									<img src="<?php echo SRC_URL ?>/image/<?php echo $post->image->id; ?>/500/285" alt="Imagen"/>
 								</div>
 							<?php endif; ?>
 							<h3><?php echo $post->title; ?></h3>
