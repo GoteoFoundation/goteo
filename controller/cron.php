@@ -6,8 +6,10 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\Error,
         Goteo\Library\Text,
-        Goteo\Library\Paypal,
 		Goteo\Library\Feed,
+		Goteo\Library\Template,
+		Goteo\Library\Mail,
+        Goteo\Library\Paypal,
         Goteo\Library\Tpv;
 
     class Cron extends \Goteo\Core\Controller {
@@ -100,14 +102,43 @@ namespace Goteo\Controller {
                     unset($log);
                 }
 
+                // porcentaje alcanzado
+                $per_amount = \round(($amount / $project->mincost) * 100);
+
                 // pero seguimos trabajando con el numero de dias que lleva
-                echo $project->name . ': lleva recaudado ' . $amount . ' de ' . $project->mincost . '/' . $project->maxcost . ' en ' . $days . ' dias, le quedan '.$rest.'<br />';
+                echo $project->name . ': lleva recaudado ' . $amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . ' en ' . $days . ' dias, le quedan '.$rest.'<br />';
+
+                // mail al autor a cuando quedan 8 dias, cuando queda 1 día y cuando quedan 20 días
+                if ($round == 1 && $rest == 20) {
+                    echo 'Email de 20 días en campaña ';
+                    if (self::toOwner('20_days', $project)) {
+                        echo 'OK';
+                    } else {
+                        echo 'ERROR';
+                    }
+                    echo '<br />';
+                }
+                if ($round == 1 && $rest == 8) {
+                    echo 'Email de 8 días para fallar ';
+                    if (self::toOwner('8_days', $project)) {
+                        echo 'OK';
+                    } else {
+                        echo 'ERROR';
+                    }
+                    echo '<br />';
+                }
+                if ($round == 1 && $rest == 1 && $per_amount > 70) {
+                    echo 'Email de 1 día para fallar ';
+                    if (self::toOwner('1_day', $project)) {
+                        echo 'OK';
+                    } else {
+                        echo 'ERROR';
+                    }
+                    echo '<br />';
+                }
+
 
                 //  (financiado a los 80 o cancelado si a los 40 no llega al minimo)
-                // porcentaje alcanzado
-                $per_amount = ($amount / $project->mincost) * 100;
-                $per_amount = \round($per_amount);
-
                 // si ha llegado a los 40 dias: mínimo-> ejecutar ; no minimo proyecto y todos los preapprovals cancelados
                 if ($days >= 40) {
                     // si no ha alcanzado el mínimo, pasa a estado caducado
@@ -123,7 +154,8 @@ namespace Goteo\Controller {
                             echo 'Falla al caducar ' . implode(',', $errors);
                             $log_text = 'El proyecto %s ha fallado al, %s obteniendo %s';
                         }
-
+                        echo '<br />';
+                        
                         /*
                          * Evento Feed
                          */
@@ -153,12 +185,27 @@ namespace Goteo\Controller {
 
                         unset($log);
 
+                        echo 'Email de proyecto fallido al autor ';
+                        if (self::toOwner('fail', $project)) {
+                            echo 'OK';
+                        } else {
+                            echo 'ERROR';
+                        }
                         echo '<br />';
+                        echo 'Email de proyecto fallido a los inversores ';
+                        if (self::toInvestors('fail', $project)) {
+                            echo 'OK';
+                        } else {
+                            echo 'ERROR';
+                        }
+                        echo '<br />';
+                        
+                        echo '<hr />';
                     } else {
-                        $execute = true; // mas de 40 sin caducar es ejecutar el cargo
-
                         // tiene hasta 80 días para conseguir el óptimo (o más)
                         if ($days >= 80) {
+                            $execute = true; // ejecutar los cargos de la segunda ronda
+
                             echo 'Ha llegado a los 80 días: ';
                             $errors = array();
                             if ($project->succeed($errors)) {
@@ -168,6 +215,7 @@ namespace Goteo\Controller {
                                 echo 'Fallo al marcar financiado ' . implode(',', $errors);
                                 $log_text = 'El proyecto %s ha fallado al ser, %s obteniendo %s';
                             }
+                            echo '<br />';
 
                             /*
                              * Evento Feed
@@ -197,8 +245,39 @@ namespace Goteo\Controller {
                             $log->add($errors);
 
                             unset($log);
+
+                            echo 'Email de proyecto final segunda ronda al autor ';
+                            if (self::toOwner('r2_pass', $project)) {
+                                echo 'OK';
+                            } else {
+                                echo 'ERROR';
+                            }
                             echo '<br />';
-                        } else {
+                            echo 'Email de proyecto final segunda ronda a los inversores ';
+                            if (self::toInvestors('r2_pass', $project)) {
+                                echo 'OK';
+                            } else {
+                                echo 'ERROR';
+                            }
+                            echo '<br />';
+                            
+                            echo '<hr />';
+                        } elseif (empty($project->passed)) {
+                            $execute = true; // ejecutar los cargos de la primera ronda
+
+                            echo 'El proyecto supera la primera ronda';
+
+                            if ($project->passed()) {
+                                echo ', fecha marcada';
+                            } else {
+                                echo ', fallo al marcar fecha';
+                            }
+
+                            echo '<br />';
+
+
+
+
                             /*
                              * Evento Feed
                              */
@@ -228,7 +307,24 @@ namespace Goteo\Controller {
                             $log->add($errors);
 
                             unset($log);
+
+                            echo 'Email de proyecto pasa a segunda ronda al autor ';
+                            if (self::toOwner('r1_pass', $project)) {
+                                echo 'OK';
+                            } else {
+                                echo 'ERROR';
+                            }
                             echo '<br />';
+                            
+                            echo 'Email de proyecto pasa a segunda ronda a los inversores ';
+                            if (self::toInvestors('r1_pass', $project)) {
+                                echo 'OK';
+                            } else {
+                                echo 'ERROR';
+                            }
+                            echo '<br />';
+                            
+                            echo '<hr />';
                         }
                     }
                 }
@@ -282,7 +378,7 @@ namespace Goteo\Controller {
 
                     if ($cancelAll) {
                         $invest->setStatus('0');
-                        echo 'Aporte pendiente por poryecto caducado.<br />';
+                        echo 'Aporte pendiente por proyecto caducado.<br />';
                         continue;
                     }
 
@@ -494,59 +590,371 @@ namespace Goteo\Controller {
 
         }
 
+        /**
+         * Al autor del proyecto
+         *
+         * @param $type string
+         * @param $project Object
+         * @return bool
+         */
+        static private function toOwner ($type, $project) {
+            $tpl = null;
+            /// tipo de envio
+            switch ($type) {
+                case '8_days': // template 13, cuando faltan 8 días y no ha conseguido el mínimo
+                    $tpl = 13;
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%');
+                    $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/widgets');
+                    break;
 
+                case '1_day': // template 14, cuando falta un día, no minimo pero si 70%
+                    $tpl = 14;
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%');
+                    $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/widgets');
+                    break;
+
+                case '20_days': // template 19, 20 días de campaña
+                    $tpl = 19;
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%');
+                    $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/widgets');
+                    break;
+
+                case 'r1_pass': // template 20, proyecto supera la primera ronda
+                    $tpl = 20;
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%');
+                    $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/widgets');
+                    break;
+
+                case 'fail': // template 21, caduca sin conseguir el mínimo
+                    $tpl = 21;
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%SUMMARYURL%');
+                    $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/summary');
+                    break;
+
+                case 'r2_pass': // template 22, finaliza segunda ronda
+                    $tpl = 22;
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%REWARDSURL%');
+                    $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/rewards');
+                    break;
+
+                case 'no_updates': // template 23, 3 meses sin novedades
+                    $tpl = 23;
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%UPDATESURL%');
+                    $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/updates');
+                    break;
+
+                case 'no_activity': // template 24, 3 meses sin actividad (no mensajes ni comentarios)
+                    $tpl = 24;
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%UPDATESURL%');
+                    $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/updates');
+                    break;
+
+                case '2m_after': // template 25, dos meses despues de financiado
+                    $tpl = 25;
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%REWARDSURL%');
+                    $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/rewards');
+                    break;
+            }
+
+            if (!empty($tpl)) {
+                // Obtenemos la plantilla para asunto y contenido
+                $template = Template::get($tpl);
+                // Sustituimos los datos
+                $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+                $content = \str_replace($search, $replace, $template->text);
+                // iniciamos mail
+                $mailHandler = new Mail();
+                $mailHandler->to = $project->user->email;
+                // blind copy a goteo desactivado durante las verificaciones
+    //              $mailHandler->bcc = 'comunicaciones@goteo.org';
+                $mailHandler->subject = 'En pruebas: '.$subject;
+                $mailHandler->content = $content;
+                $mailHandler->html = true;
+                $mailHandler->template = $template->id;
+                return $mailHandler->send();
+            }
+
+            return false;
+        }
+
+        /* A los cofinanciadores */
+        static private function toInvestors ($type, $project) {
+
+            // notificación
+            $notif = $type == 'update' ? 'updates' : 'rounds';
+
+            $anyfail = false;
+            $tpl = null;
+
+            // para cada inversor que no tenga bloqueado esta notificacion
+            $sql = "
+                SELECT
+                    invest.user as id,
+                    user.name as name,
+                    user.email as email
+                FROM  invest
+                INNER JOIN user
+                    ON user.id = invest.user
+                    AND user.active = 1
+                LEFT JOIN user_prefer
+                    ON user_prefer.user = invest.user
+                WHERE   invest.project = ?
+                AND (invest.status = 0 OR invest.status = 1 OR invest.status = 2 )
+                AND (user_prefer.{$notif} = 0 OR user_prefer.{$notif} IS NULL)
+                ";
+            if ($query = \Goteo\Core\Model::query($sql, array($project->id))) {
+                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $investor) {
+                    /// tipo de envio
+                    switch ($type) {
+                        case 'r1_pass': // template 15, proyecto supera la primera ronda
+                                $tpl = 15;
+                                $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%');
+                                $replace = array($investor->name, $project->name, SITE_URL . '/project/' . $project->id);
+                            break;
+
+                        case 'fail': // template 17, caduca sin conseguir el mínimo
+                                $tpl = 17;
+                                $search  = array('%USERNAME%', '%PROJECTNAME%', '%DISCOVERURL%');
+                                $replace = array($investor->name, $project->name, SITE_URL . '/discover');
+                            break;
+
+                        case 'r2_pass': // template 16, finaliza segunda ronda
+                                $tpl = 16;
+                                $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%');
+                                $replace = array($investor->name, $project->name, SITE_URL . '/project/' . $project->id);
+                            break;
+
+                        case 'update': // template 18, publica novedad
+                                $tpl = 18;
+                                $search  = array('%USERNAME%', '%PROJECTNAME%', '%UPDATEURL%');
+                                $replace = array($investor->name, $project->name, SITE_URL.'/project/'.$project->id.'/updates');
+                            break;
+                    }
+
+                    if (!empty($tpl)) {
+                        // Obtenemos la plantilla para asunto y contenido
+                        $template = Template::get($tpl);
+                        // Sustituimos los datos
+                        $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+                        $content = \str_replace($search, $replace, $template->text);
+                        // iniciamos mail
+                        $mailHandler = new Mail();
+                        $mailHandler->to = $project->user->email;
+                        // blind copy a goteo desactivado durante las verificaciones
+            //              $mailHandler->bcc = 'comunicaciones@goteo.org';
+                        $mailHandler->subject = 'En pruebas: '.$subject;
+                        $mailHandler->content = $content;
+                        $mailHandler->html = true;
+                        $mailHandler->template = $template->id;
+                        if ($mailHandler->send()) {
+
+                        } else {
+                            $anyfail = true;
+                        }
+                        unset($mailHandler);
+                    }
+                }
+                // fin bucle inversores
+            } else {
+                echo '<p>'.str_replace('?', $project->id, $sql).'</p>';
+                $anyfail = true;
+            }
+            
+            if ($anyfail)
+                return false;
+            else
+                return true;
+
+        }
+
+
+        /**
+         *  Proceso para enviar avisos a los autores segun
+         *  - Que lleven 3 meses sin publicar actualizaciones, envia cada mes
+         *  - Que lleven 3 meses sin decir nada (?), envia cada 15 dias
+         *  - Que hayan pasado dos meses desde que se dio por financiado, cada 15 dias
+         *
+         *  teiene en cuenta que se envía cada tantos días
+         */
+        
+        public function daily () {
+
+            // proyectos en campaña o financiados
+            $projects = Model\Project::active();
+
+            // para cada uno,
+            foreach ($projects as $project) {
+
+//                echo \trace($project->user);
+//                continue;
+                echo 'Proyecto: ' . $project->name . '<br /><br />';
+
+                // mirar el tiempo desde la última actualización,
+                $sql = "
+                    SELECT
+                        DATE_FORMAT(
+                            from_unixtime(unix_timestamp(now()) - unix_timestamp(date))
+                            , '%j'
+                        ) as days
+                    FROM post
+                    INNER JOIN blog
+                        ON  post.blog = blog.id
+                        AND blog.type = 'project'
+                        AND blog.owner = :project
+                    WHERE post.publish = 1
+                    ORDER BY post.date DESC
+                    LIMIT 1";
+//                echo str_replace(':project', "'{$project->id}'", $sql) . '<br />';
+                $query = Model\Project::query($sql, array(':project' => $project->id));
+                $lastupdate = $query->fetchColumn(0);
+                // si hace más de 3 meses, o nunca a posteado
+                echo 'Ultima novedad hace ' . $lastupdate . ' dias<br />';
+                if ((int) $lastupdate > 90 || $lastupdate === false) {
+                    if ($lastupdate === false) echo 'NEVER! ';
+                    echo 'Eso es hace mas de 3 meses<br />';
+                    // mirar el ultimo mensaje al email del autor con la plantilla 23
+                    $sql = "
+                        SELECT
+                            DATE_FORMAT(
+                                from_unixtime(unix_timestamp(now()) - unix_timestamp(date))
+                                , '%j'
+                            ) as days
+                        FROM mail
+                        WHERE mail.email = :email
+                        AND mail.template = 23
+                        ORDER BY mail.date DESC
+                        LIMIT 1";
+//                    echo str_replace(':email', "'{$project->user->email}'", $sql) . '<br />';
+                    $query = Model\Project::query($sql, array(':email' => $project->user->email));
+                    $lastsend = $query->fetchColumn(0);
+                    // si hace más de un mes o nunca se le envió
+                    echo 'Se le envió hace ' . $lastsend . ' dias<br />';
+                    if ($lastsend > 30 || $lastsend === false) {
+                        // enviar email no_updates
+                        if (self::toOwner('no_updates', $project)) {
+                            echo 'enviado no_updates<br />';
+                        } else {
+                            echo 'fallo al enviar no_updates<br />';
+                        }
+                    }
+                }
+
+                
+                // mirar el tiempo desde su último mensaje o comentario en su proyecto
+                $sql = "
+                    SELECT
+                        IF (comment.date < message.date,
+                            DATE_FORMAT(
+                                from_unixtime(unix_timestamp(now()) - unix_timestamp(comment.date))
+                                , '%j'
+                            ),
+                            DATE_FORMAT(
+                                from_unixtime(unix_timestamp(now()) - unix_timestamp(message.date))
+                                , '%j'
+                            )
+                        ) as days
+                    FROM message, `comment`
+                    WHERE message.project = :project
+                    AND comment.user = :owner
+                    AND comment.post IN (
+                        SELECT post.id
+                        FROM post
+                        INNER JOIN blog
+                            ON  post.blog = blog.id
+                            AND blog.type = 'project'
+                            AND blog.owner = :project
+                        WHERE post.publish = 1
+                    )
+                    LIMIT 1";
+//                echo str_replace(array(':project', ':owner'), array("'{$project->id}'", "'{$project->owner}'"), $sql) . '<br />';
+                $query = Model\Project::query($sql, array(':project' => $project->id, ':owner' => $project->owner));
+                $lastactivity = $query->fetchColumn(0);
+                // si hace más de 3 meses, o nunca ha dicho nada
+                echo 'Ultima actividad hace ' . (string) $lastactivity . ' dias<br />';
+                if ((int) $lastactivity > 90 || $lastactivity === false) {
+                    if ($lastactivity === false) echo 'NEVER! ';
+                    echo 'Eso es hace mas de 3 meses<br />';
+                    // mirar el ultimo mensaje al email del autor con la plantilla 24
+                    $sql = "
+                        SELECT
+                            DATE_FORMAT(
+                                from_unixtime(unix_timestamp(now()) - unix_timestamp(date))
+                                , '%j'
+                            ) as days
+                        FROM mail
+                        WHERE mail.email = :email
+                        AND mail.template = 24
+                        ORDER BY mail.date DESC
+                        LIMIT 1";
+//                    echo str_replace(':email', "'{$project->user->email}'", $sql) . '<br />';
+                    $query = Model\Project::query($sql, array(':email' => $project->user->email));
+                    $lastsend = $query->fetchColumn(0);
+                    // si hace más de 15 días o nunca se le envió
+                    echo 'Se le envió hace ' . $lastsend . ' dias<br />';
+                    if ($lastsend > 15 || $lastsend === false) {
+                        // enviar email no_activity
+                        if (self::toOwner('no_activity', $project)) {
+                            echo 'enviado no_activity<br />';
+                        } else {
+                            echo 'fallo al enviar no_activity<br />';
+                        }
+                    }
+                }
+
+                // mirar el tiempo desde la fecha success
+                $sql = "
+                    SELECT
+                        DATE_FORMAT(
+                            from_unixtime(unix_timestamp(now()) - unix_timestamp(success))
+                            , '%j'
+                        ) as days
+                    FROM project
+                    WHERE id = :project
+                    AND success != '0000-00-00'
+                    ";
+//                echo str_replace(':project', "'{$project->id}'", $sql) . '<br />';
+                $query = Model\Project::query($sql, array(':project' => $project->id));
+                echo 'Financiado hace ' . $lastsuccess . ' dias<br />';
+                if ($lastsuccess = $query->fetchColumn(0)) {
+                    // si hace más de 2 meses
+                    if ((int) $lastsuccess > 60) {
+                        echo 'Hace mas de dos meses<br />';
+                        // mirar el ultimo mensaje al email del autor con la plantilla 25
+                        $sql = "
+                            SELECT
+                                DATE_FORMAT(
+                                    from_unixtime(unix_timestamp(now()) - unix_timestamp(date))
+                                    , '%j'
+                                ) as days
+                            FROM mail
+                            WHERE mail.email = :email
+                            AND mail.template = 25
+                            ORDER BY mail.date DESC
+                            LIMIT 1";
+//                        echo str_replace(':email', "'{$project->user->email}'", $sql) . '<br />';
+                        $query = Model\Project::query($sql, array(':email' => $project->user->email));
+                        $lastsend = $query->fetchColumn(0);
+                        // si hace más de 15 días o nunca se le envió
+                        echo 'Se le envió hace ' . (string) $lastsend . ' dias<br />';
+                        if ($lastsend > 15 || $lastsend === false) {
+                            // enviar email 2m_after
+                            if (self::toOwner('2m_after', $project)) {
+                                echo 'enviado 2m_after<br />';
+                            } else {
+                                echo 'fallo al enviar 2m_after<br />';
+                            }
+                        }
+                    }
+                }
+
+
+                // siguiente proyecto
+                echo '<hr />';
+
+            }
+
+        }
 
     }
     
 }
-
-
-/*
- * Mensaje a los cofinanciadores de un proyecto si este falla
- *
-function failNotice ($project) {
-
-    echo "Mensaje a los cofinanciadores de un proyecto fallido '{$project}'<br />";
-
-    $project = Model\Project::get($project);
-
-    $sql = "
-        SELECT  DISTINCT(user) as id
-        FROM    invest
-        WHERE   project = ?
-        AND status = 0";
-
-    $query = Model::query($sql, array($project->id));
-
-    while ($row = $query->fetchObject()) {
-        echo "Cofinanciador: {$row->id}<br />";
-
-        continue;
-        
-        // Email de recuperacion
-        $mail = new Mail();
-        $mail->to = $row->email;
-        $mail->toName = $row->name;
-        $mail->subject = 'El proyecto ';
-        $url = SITE_URL . '/user/recover/' . base64_encode($token);
-        $mail->content = sprintf('
-            Estimado(a) <strong>%1$s</strong>:<br/>
-            <br/>
-            Hemos recibido una petición para recuperar la contraseña de tu cuenta de usuario en Goteo.org<br />
-            Si no has solicitado esta recuperación de contraseña, ignora este mensaje<br />
-            Para acceder a tu cuenta y cambiar la contraseña (utilice su nombre de usuario como contraseña actual), utiliza el siguiente enlace. Si no puedes hacer click, copialo y pegalo en el navegador.
-            <br/>
-            <a href="%2$s">%2$s</a><br/>
-            <br/>
-            Recuerde que su nombre de usuario es <strong>%3$s</strong>, póngalo como contraseña actual para cambiar la contraseña.<br/>
-            Hasta pronto!
-        ', $row->name, $url, $row->id);
-        $mail->html = true;
-        if ($mail->send($errors)) {
-            return true;
-        }
-    }
-    return false;
-}
- * 
-*/

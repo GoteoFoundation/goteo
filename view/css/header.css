@@ -633,7 +633,7 @@ div#header div#menu > ul > li.search fieldset {
     padding: 0 1.5em 0 0;
     border: 1px solid #808184;
     position: relative;
-	/*top:-4px;*/ /*bug 800x600 alineaciÃƒÂ³n vertical search*/
+	/*top:-4px;*/ /*bug 800x600 alineación vertical search*/
     font-size: 11px;
 }
 

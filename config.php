@@ -76,7 +76,6 @@ define('GOTEO_MAIL_SMTP_USERNAME', 'hola@goteo.org');
 define('GOTEO_MAIL_SMTP_PASSWORD', 'goteo1234');
 
 define('GOTEO_MAIL', 'hola_goteo@doukeshi.org');
-define('GOTEO_TMPMAIL', 'olivier_goteo@doukeshi.org');
 
 // Language
 define('GOTEO_DEFAULT_LANG', 'es');

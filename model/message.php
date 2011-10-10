@@ -31,7 +31,7 @@ namespace Goteo\Model {
                 $message = $query->fetchObject(__CLASS__);
                 
                 // datos del usuario
-                $message->user = User::get($message->user);
+                $message->user = User::getMini($message->user);
 
                 // reconocimiento de enlaces y saltos de linea
                 $message->message = nl2br(Text::urlink($message->message));
@@ -75,7 +75,7 @@ namespace Goteo\Model {
                 ", array($project));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $message) {
                 // datos del usuario
-                $message->user = User::get($message->user);
+                $message->user = User::getMini($message->user);
                 
                 // reconocimiento de enlaces y saltos de linea
                 $message->message = nl2br(Text::urlink($message->message));

@@ -29,6 +29,7 @@ namespace Goteo\Controller {
                 if ($message->save($errors)) {
 
                     $projectData = Model\Project::getMini($project);
+                    
                     /*
                      * Evento Feed
                      */
@@ -82,6 +83,46 @@ namespace Goteo\Controller {
 
                     unset($log);
 
+                    if (!empty($_POST['thread'])) {
+                        // aqui el owner es el autor del mensaje thread
+                        $thread = Model\Message::get($_POST['thread']);
+
+                        // Si no tiene estas notiicaciones bloqueadas en sus preferencias
+                        $sql = "
+                            SELECT user_prefer.threads
+                            FROM user_prefer
+                            WHERE user = :user
+                            ";
+                        $query = Model\Project::query($sql, array(':user' => $thread->user->id));
+                        $spam = $query->fetchColumn(0);
+                        if (!$spam) {
+                            // Mail al autor del thread
+                            // Obtenemos la plantilla para asunto y contenido
+                            $template = Template::get(12);
+
+                            // Sustituimos los datos
+                            $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
+
+                            $response_url = SITE_URL . '/user/profile/' . $_SESSION['user']->id . '/message';
+                            $project_url = SITE_URL . '/project/' . $projectData->id . '/messages';
+
+                            $search  = array('%MESSAGE%', '%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%RESPONSEURL%');
+                            $replace = array($_POST['message'], $thread->user->name, $_SESSION['user']->name, $projectData->name, $project_url, $response_url);
+                            $content = \str_replace($search, $replace, $template->text);
+
+                            $mailHandler = new Mail();
+
+                            $mailHandler->to = $thread->user->email;
+                            $mailHandler->subject = 'En pruebas: '.$subject;
+                            $mailHandler->content = $content;
+                            $mailHandler->html = true;
+                            $mailHandler->template = $template->id;
+                            $mailHandler->send($errors);
+
+                            unset($mailHandler);
+                        }
+                    }
+
 
                 }
 			}
@@ -119,7 +160,8 @@ namespace Goteo\Controller {
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['message'])) {
 
                 // sacamos el mail del responsable del proyecto
-                $project = Model\Project::get($project);
+                $project = Model\Project::getMini($project);
+                $ownerData = Model\User::getMini($project->owner);
 
                 if (!$project instanceof Model\Project) {
                     throw new Redirection('/', Redirection::TEMPORARY);
@@ -142,26 +184,24 @@ namespace Goteo\Controller {
                 // nombre del proyecto -> %PROJECTNAME% por $project->name
                 // url de la plataforma -> %SITEURL% por SITE_URL
                 $search  = array('%MESSAGE%', '%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%SITEURL%', '%RESPONSEURL%');
-                $replace = array($msg_content, $project->contract_name, $_SESSION['user']->name, $project->name, SITE_URL, $response_url);
+                $replace = array($msg_content, $ownerData->name, $_SESSION['user']->name, $project->name, SITE_URL, $response_url);
                 $content = \str_replace($search, $replace, $template->text);
                 
                 $mailHandler = new Mail();
 
-//                $mailHandler->to = $project->contract_email;
-                $mailHandler->to = \GOTEO_TMPMAIL;
+                $mailHandler->to = $ownerData->email;
                 // blind copy a goteo desactivado durante las verificaciones
 //              $mailHandler->bcc = 'comunicaciones@goteo.org';
                 $mailHandler->subject = 'En pruebas: '.$subject;
                 $mailHandler->content = $content;
-
                 $mailHandler->html = true;
+                $mailHandler->template = $template->id;
                 if ($mailHandler->send($errors)) {
                     // ok
                     \Goteo\Library\Message::Info(Text::get('regular-message_success'));
                 } else {
                     \trace($mailHandler);
                     unset($mailHandler);
-                    die;
                 }
 
                 unset($mailHandler);
@@ -209,21 +249,19 @@ namespace Goteo\Controller {
 
                 $mailHandler = new Mail();
 
-//                $mailHandler->to = $user->email;
-                $mailHandler->to = \GOTEO_TMPMAIL;
+                $mailHandler->to = $user->email;
                 // blind copy a goteo desactivado durante las verificaciones
 //                $mailHandler->bcc = 'comunicaciones@goteo.org';
                 $mailHandler->subject = 'En pruebas: '.$subject;
                 $mailHandler->content = $content;
-
                 $mailHandler->html = true;
+                $mailHandler->template = $template->id;
                 if ($mailHandler->send($errors)) {
                     // ok
                     \Goteo\Library\Message::Info(Text::get('regular-message_success'));
                 } else {
                     \trace($mailHandler);
                     unset($mailHandler);
-                    die;
                 }
 
                 unset($mailHandler);

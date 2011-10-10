@@ -93,6 +93,7 @@ namespace Goteo\Model {
             $investors = array(), // usuarios que han invertido
 
             $round = 0, // para ver si ya está en la fase de los 40 a los 80
+            $passed = null, // para ver si hemos hecho los eventos de paso a segunda ronda
 
             $errors = array(), // para los fallos en los datos
             $okeys  = array(), // para los campos que estan ok
@@ -1284,6 +1285,21 @@ namespace Goteo\Model {
 			try {
 				$sql = "UPDATE project SET status = :status, success = :success WHERE id = :id";
 				self::query($sql, array(':status'=>4, ':success'=>date('Y-m-d'), ':id'=>$this->id));
+                return true;
+            } catch (\PDOException $e) {
+                $errors[] = 'Fallo al dar por financiado el proyecto. ' . $e->getMessage();
+                //Text::get('send-project-success-fail');
+                return false;
+            }
+        }
+
+        /*
+         * Marcamos la fecha del paso a segunda ronda
+         */
+        public function passed(&$errors = array()) {
+			try {
+				$sql = "UPDATE project SET passed = :passed WHERE id = :id";
+				self::query($sql, array(':passed'=>date('Y-m-d'), ':id'=>$this->id));
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al dar por financiado el proyecto. ' . $e->getMessage();

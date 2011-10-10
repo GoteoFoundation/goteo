@@ -1,42 +1,69 @@
 <?php
-
 use Goteo\Library\Text;
+
+$filters = $_SESSION['mailing']['filters'];
 
 ?>
 <div class="widget board">
     <form id="filter-form" action="/admin/mailing/edit" method="post">
-        <label for="status-filter">Mostrar por estado:</label>
-        <select id="status-filter" name="status" onchange="document.getElementById('filter-form').submit();">
-            <option value="">Todos los estados</option>
-        <?php foreach ($this['status'] as $statusId=>$statusName) : ?>
-            <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
-        <?php endforeach; ?>
-        </select>
 
-        <label for="interest-filter">Mostrar usuarios interesados en:</label>
-        <select id="interest-filter" name="interest" onchange="document.getElementById('filter-form').submit();">
-            <option value="">Cualquier interés</option>
-        <?php foreach ($this['interests'] as $interestId=>$interestName) : ?>
-            <option value="<?php echo $interestId; ?>"<?php if ($filters['interest'] == $interestId) echo ' selected="selected"';?>><?php echo $interestName; ?></option>
-        <?php endforeach; ?>
-        </select>
+        <table>
+            <tr>
+                <td>
+                    <label for="type-filter">A los</label><br />
+                    <select id="type-filter" name="type">
+                    <?php foreach ($this['types'] as $typeId=>$typeName) : ?>
+                        <option value="<?php echo $typeId; ?>"<?php if ($filters['type'] == $typeId) echo ' selected="selected"';?>><?php echo $typeName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </td>
+                <td>
+                    <label for="project-filter">De proyectos que el nombre contenga</label><br />
+                    <input id="project-filter" name="project" value="<?php echo $filters['project']?>" style="width:300px;" />
+                </td>
+                <td>
+                    <label for="status-filter">En estado</label><br />
+                    <select id="status-filter" name="status">
+                        <option value="">Cualquier estado</option>
+                    <?php foreach ($this['status'] as $statusId=>$statusName) : ?>
+                        <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="interest-filter">Interesados en fin</label><br />
+                    <select id="interest-filter" name="interest">
+                        <option value="">Cualquiera</option>
+                    <?php foreach ($this['interests'] as $interestId=>$interestName) : ?>
+                        <option value="<?php echo $interestId; ?>"<?php if ($filters['interest'] == $interestId) echo ' selected="selected"';?>><?php echo $interestName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </td>
+                <td>
+                    <label for="name-filter">Que el nombre o email contenga</label><br />
+                    <input id="name-filter" name="name" value="<?php echo $filters['name']?>" style="width:300px;" />
+                </td>
+                <td>
+                    <label for="role-filter">Que sean</label><br />
+                    <select id="role-filter" name="role">
+                        <option value="">Cualquiera</option>
+                    <?php foreach ($this['roles'] as $roleId=>$roleName) : ?>
+                        <option value="<?php echo $roleId; ?>"<?php if ($filters['role'] == $roleId) echo ' selected="selected"';?>><?php echo $roleName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3"><input type="submit" name="select" value="Buscar destinatarios"></td>
+            </tr>
+        </table>
 
 
-        <label for="role-filter">Mostrar usuarios con rol:</label>
-        <select id="role-filter" name="role" onchange="document.getElementById('filter-form').submit();">
-            <option value="">Cualquier rol</option>
-        <?php foreach ($this['roles'] as $roleId=>$roleName) : ?>
-            <option value="<?php echo $roleId; ?>"<?php if ($filters['role'] == $roleId) echo ' selected="selected"';?>><?php echo $roleName; ?></option>
-        <?php endforeach; ?>
-        </select>
 
-        <br />
-        <!--
-        <label for="name-filter">Por nombre o email:</label>
-        <input id="name-filter" name="name" value="<?php echo $filters['name']; ?>" />
-        -->
 
-        <input type="submit" name="select" value="Nueva comunicación">
+        
 
     </form>
 </div>

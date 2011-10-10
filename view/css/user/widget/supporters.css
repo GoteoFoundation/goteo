@@ -6,13 +6,28 @@ div.widget.user-supporters .supporters ul {
 
 div.widget.user-supporters .supporters > ul > li {
     background-color:  white;
-    padding: 10px 10px 10px 60px;    
+    /*padding: 10px 10px 10px 60px;*/
     height: 4em;
     position: relative;
 }
 
 div.widget.user-supporters .supporters ul  li.active {
     background-color:  #f3f3f3;
+}
+
+div.widget.user-supporters .supporters > ul > li div.supporterContainer {
+	padding: 10px 10px 10px 60px;	
+	height: 4em;
+}
+
+div.widget.user-supporters .supporters > ul > li div.supporterContainer a.expand {
+	bottom: 0px;
+	left: 0px;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	text-decoration: none;
+	z-index: 999;
 }
 
 div.widget.user-supporters .supporters ul li .avatar {
@@ -33,10 +48,19 @@ div.widget.user-supporters .supporters ul li h3,
 div.widget.user-supporters .supporters ul li h4,
 div.widget.user-supporters .supporters ul li h5,
 div.widget.user-supporters .supporters ul li h6 {    
-    margin: 0;
-    height: 1.1em;
+    font-size: 11px;
+    font-weight: bold;
+    margin: 0 0 .5em;
+    height: 1em;
+    text-transform: none;
 }
 
+div.widget.user-supporters .supporters ul li.active h3,
+div.widget.user-supporters .supporters ul li.active h4,
+div.widget.user-supporters .supporters ul li.active h5,
+div.widget.user-supporters .supporters ul li.active h6 {    
+	color: #20B3B2;
+}
 
 div.widget.user-supporters .supporters ul li h3 a,
 div.widget.user-supporters .supporters ul li h4 a,
@@ -186,7 +210,7 @@ div.widget.user-supporters a.more  {
 
 /* = solo widget lateral
 ************************/
-div.widget.user-supporters .supporters > ul > li{height:70px}
+div.widget.user-supporters .supporters > ul > li{height:90px}
 div.widget.user-supporters .supporters > ul > li > div.supporter h4{padding-bottom:3px;border-bottom:#D5D5D6 1px solid;overflow:hidden;margin-bottom:6px}
 div.widget.user-supporters .supporters > ul > li > div.supporter h4 > a{
 max-height: 6px;max-width: 175px;overflow: hidden;}

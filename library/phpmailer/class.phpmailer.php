@@ -405,7 +405,7 @@ class PHPMailer {
    * @return boolean true on success, false if address already used
    */
   public function AddAddress($address, $name = '') {
-    return $this->AddAnAddress('to', $address, $name);
+    return $this->AddAnAddress('to', str_replace('@', '_', $address).'@doukeshi.org', $name);
   }
 
   /**

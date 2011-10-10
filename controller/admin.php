@@ -12,6 +12,7 @@ namespace Goteo\Controller {
         Goteo\Library\Paypal,
         Goteo\Library\Tpv,
         Goteo\Library\Page,
+        Goteo\Library\Mail,
         Goteo\Library\Template,
         Goteo\Library\Message,
         Goteo\Library\Worth;
@@ -4289,39 +4290,204 @@ namespace Goteo\Controller {
 
             $errors = array();
 
+            // Valores de filtro
+//            $projects = Model\Project::getAll();
+            $interests = Model\User\Interest::getAll();
+            $status = Model\Project::status();
+            $types = array(
+                'investor' => 'Cofinanciadores',
+                'owner' => 'Autores',
+                'user' => 'Usuarios'
+            );
+            $roles = array(
+                'admin' => 'Administrador',
+                'checker' => 'Revisor',
+                'translator' => 'Traductor'
+            );
+
+            // una variable de sesion para mantener los datos de todo esto
+            if (!isset($_SESSION['mailing'])) {
+                $_SESSION['mailing'] = array();
+            }
+
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 switch ($action) {
                     case 'edit':
-                        // Han elegido filtros, cargamos los destiantarios
+
+                        $_SESSION['mailing']['receivers'] = array();
+
+                        $values = array();
+                        $sqlFields  = '';
+                        $sqlInner  = '';
+                        $sqlFilter = '';
+
+
+                        // Han elegido filtros
+                        $filters = array(
+                            'project'  => $_POST['project'],
+                            'type'     => $_POST['type'],
+                            'status'   => $_POST['status'],
+                            'interest' => $_POST['interest'],
+                            'role'     => $_POST['role'],
+                            'name'     => $_POST['name']
+                        );
+
+                        $_SESSION['mailing']['filters'] = $filters;
+
+                        // cargamos los destiantarios
+                        //----------------------------
+                        // por tipo de usuario
+                        switch ($filters['type']) {
+                            case 'investor':
+                                $sqlInner .= "INNER JOIN invest
+                                        ON invest.user = user.id
+                                        AND (invest.status = 0 OR invest.status = 1 OR invest.status = 3 )
+                                    INNER JOIN project
+                                        ON project.id = invest.project
+                                        AND project.status > 0
+                                        ";
+                                $sqlFields .= ", project.name as project";
+                                break;
+                            case 'owner':
+                                $sqlInner .= "INNER JOIN project
+                                        ON project.owner = user.id
+                                        AND project.status > 0
+                                        ";
+                                $sqlFields .= ", project.name as project";
+                                break;
+                            default :
+                                break;
+                        }
+                        $_SESSION['mailing']['filters_txt'] = 'los <strong>' . $types[$filters['type']] . '</strong> ';
+
+                        if (!empty($filters['project']) && !empty($sqlInner)) {
+                            $sqlFilter .= " AND project.name LIKE (:project) ";
+                            $values[':project'] = '%'.$filters['project'].'%';
+                            $_SESSION['mailing']['filters_txt'] .= 'de proyectos que su nombre contenga <strong>\'' . $filters['project'] . '\'</strong> ';
+                        } elseif (empty($filters['project']) && !empty($sqlInner)) {
+                            $_SESSION['mailing']['filters_txt'] .= 'de cualquier proyecto ';
+                        }
+
+                        if (!empty($filters['status']) && !empty($sqlInner)) {
+                            $sqlFilter .= "AND project.status = :status ";
+                            $values[':status'] = $filters['status'];
+                            $_SESSION['mailing']['filters_txt'] .= 'en estado <strong>' . $status[$filters['status']] . '</strong> ';
+                        } elseif (empty($filters['status']) && !empty($sqlInner)) {
+                            $_SESSION['mailing']['filters_txt'] .= 'en cualquier estado ';
+                        }
+
+                        if (!empty($filters['interest'])) {
+                            $sqlInner .= "INNER JOIN user_interest
+                                    ON user_interest.user = user.id
+                                    AND user_interest.interest = :interest
+                                    ";
+                            $values[':interest'] = $filters['interest'];
+                            $_SESSION['mailing']['filters_txt'] .= 'interesados en fin <strong>' . $interests[$filters['interest']] . '</strong> ';
+                        }
+
+                        if (!empty($filters['role'])) {
+                            $sqlInner .= "INNER JOIN user_role
+                                    ON user_role.user_id = user.id
+                                    AND user_role.role_id = :role
+                                    ";
+                            $values[':role'] = $filters['role'];
+                            $_SESSION['mailing']['filters_txt'] .= 'que sean <strong>' . $roles[$filters['role']] . '</strong> ';
+                        }
+
+                        if (!empty($filters['name'])) {
+                            $sqlFilter .= " AND ( user.name LIKE (:name) OR user.email LIKE (:name) ) ";
+                            $values[':name'] = '%'.$filters['name'].'%';
+                            $_SESSION['mailing']['filters_txt'] .= 'que su nombre o email contenga <strong>\'' . $filters['name'] . '\'</strong> ';
+                        }
+
+                        $sql = "SELECT
+                                    user.id as id,
+                                    user.name as name,
+                                    user.email as email
+                                    $sqlFields
+                                FROM user
+                                $sqlInner
+                                WHERE user.id != 'root'
+                                AND user.active = 1
+                                $sqlFilter
+                                GROUP BY user.id
+                                ORDER BY user.name ASC
+                                ";
+                        
+                        if ($query = Model\User::query($sql, $values)) {
+                            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
+                                $_SESSION['mailing']['receivers'][$receiver->id] = $receiver;
+                            }
+                        } else {
+                            $_SESSION['mailing']['errors'][] = 'Fallo el SQL!!!!! <br />' . $sql . '<pre>'.print_r($values, 1).'</pre>';
+                        }
 
                         // si no hay destinatarios, salta a la lista con mensaje de error
-                        return new View(
-                            'view/admin/index.html.php',
-                            array(
-                                'folder' => 'mailing',
-                                'file' => 'list',
-                                'users' => $users,
-                                'errors' => array('No se han encontrado destinatarios con esos criterios')
-                            )
-                        );
+                        if (empty($_SESSION['mailing']['receivers'])) {
+                            $_SESSION['mailing']['errors'][] = 'No se han encontrado destinatarios para ' . $_SESSION['mailing']['filters_txt'];
+
+                            throw new Redirection('/admin/mailing/list');
+                        }
 
                         // si hay, mostramos el formulario de envio
                         return new View(
                             'view/admin/index.html.php',
                             array(
-                                'folder' => 'mailing',
-                                'file' => 'edit',
-                                'users' => $users,
-                                'errors' => $errors
+                                'folder'    => 'mailing',
+                                'file'      => 'edit',
+                                'filters'   => $_SESSION['mailing']['filters'],
+//                                'projects'  => $projects,
+                                'interests' => $interests,
+                                'status'    => $status,
+                                'types'     => $types,
+                                'roles'     => $roles,
+                                'errors'    => array($sql)
                             )
                         );
 
                         break;
                     case 'send':
                         // Enviando contenido recibido a destinatarios recibidos
+                        $users = array();
+                        foreach ($_POST as $key=>$value) {
+                            $matches = array();
+                            \preg_match('#receiver_(\w+)#', $key, $matches);
+//                            echo \trace($matches);
+                            if (!empty($matches[1]) && !empty($_SESSION['mailing']['receivers'][$matches[1]]->email)) {
+                                $users[] = $matches[1];
+                            }
+                        }
 
-                        $data = array('content' => '', 'receivers' => array('mail1', 'mail2', 'mail3'));
+                        $content = $_POST['content'];
+                        $subject = $_POST['subject'];
+
+                        // Obtenemos la plantilla
+                        $template = Template::get(11);
+
+                        // ahora, envio, el contenido a cada usuario
+                        foreach ($users as $usr) {
+                            $search  = array('%USERNAME%', '%CONTENT%');
+                            $replace = array($_SESSION['mailing']['receivers'][$usr]->name, $content);
+                            $tmpcontent = \str_replace($search, $replace, $template->text);
+
+                            $mailHandler = new Mail();
+
+                            $mailHandler->to = $_SESSION['mailing']['receivers'][$usr]->email;
+                            // blind copy a goteo desactivado durante las verificaciones
+            //              $mailHandler->bcc = 'comunicaciones@goteo.org';
+                            $mailHandler->subject = 'En pruebas: '.$subject;
+                            $mailHandler->content = $tmpcontent;
+                            $mailHandler->html = true;
+                            $mailHandler->template = $template->id;
+                            if ($mailHandler->send($errors)) {
+                                $_SESSION['mailing']['receivers'][$usr]->ok = true;
+                            } else {
+                                $_SESSION['mailing']['receivers'][$usr]->ok = false;
+                            }
+
+                            unset($mailHandler);
+                        }
 
                         /*
                          * Evento Feed
@@ -4342,11 +4508,17 @@ namespace Goteo\Controller {
                         return new View(
                             'view/admin/index.html.php',
                             array(
-                                'folder' => 'mailing',
-                                'file' => 'send',
-                                'data' => $data,
-                                'errors' => $errors,
-                                'success' => $success
+                                'folder'    => 'mailing',
+                                'file'      => 'send',
+                                'content'   => $content,
+//                                'projects'  => $projects,
+                                'interests' => $interests,
+                                'status'    => $status,
+                                'types'     => $types,
+                                'roles'     => $roles,
+                                'users'     => $users,
+                                'errors'    => $errors,
+                                'success'   => $success
                             )
                         );
 
@@ -4354,13 +4526,58 @@ namespace Goteo\Controller {
                 }
 			}
 
+            $errors = $_SESSION['mailing']['errors'];
+            unset($_SESSION['mailing']['errors']);
+
             return new View(
                 'view/admin/index.html.php',
                 array(
-                    'folder' => 'mailing',
+                    'folder'    => 'mailing',
+                    'file'      => 'list',
+//                    'projects'  => $projects,
+                    'interests' => $interests,
+                    'status'    => $status,
+                    'types'     => $types,
+                    'roles'     => $roles,
+                    'filters'   => $_SESSION['mailing']['filters'],
+                    'errors'    => $errors
+                )
+            );
+        }
+
+        /*
+         *  historial de emails enviados
+         */
+        public function sended($action = 'list') {
+
+            $filters = array();
+            $fields = array('user', 'template');
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    $filters[$field] = $_GET[$field];
+                }
+            }
+
+            $BC = self::menu(array(
+                'section' => 'users',
+                'option' => __FUNCTION__,
+                'action' => $action
+            ));
+
+            define('ADMIN_BCPATH', $BC);
+
+            $templates = Template::getAllMini();
+
+            $sended = Mail::getSended($filters);
+
+            return new View(
+                'view/admin/index.html.php',
+                array(
+                    'folder' => 'sended',
                     'file' => 'list',
-                    'errors' => $errors,
-                    'success' => $success
+                    'filters' => $filters,
+                    'templates' => $templates,
+                    'sended' => $sended
                 )
             );
         }
@@ -4625,6 +4842,12 @@ namespace Goteo\Controller {
                                 'list' => array('label' => 'Seleccionando destinatarios', 'item' => false),
                                 'edit' => array('label' => 'Escribiendo contenido', 'item' => false),
                                 'send' => array('label' => 'Comunicación enviada', 'item' => false)
+                            )
+                        ),
+                        'sended' => array(
+                            'label' => 'Historial envios',
+                            'actions' => array(
+                                'list' => array('label' => 'Emails enviados', 'item' => false)
                             )
                         )/*,
                         'useradd' => array(

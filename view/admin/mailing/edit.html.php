@@ -3,10 +3,16 @@
 use Goteo\Library\Text;
 
 // lista de destinatarios segun filtros recibidos, todos marcados por defecto
-
 ?>
 <div class="widget">
+    <p><?php echo 'Vamos a comunicarnos con ' . $_SESSION['mailing']['filters_txt']; ?></p>
     <form action="/admin/mailing/send" method="post">
+    <dl>
+        <dt>Asunto:</dt>
+        <dd>
+            <input name="subject" value="<?php echo $_SESSION['mailing']['subject']?>" style="width:300px;"/>
+        </dd>
+    </dl>
     <dl>
         <dt>Contenido:</dt>
         <dd>
@@ -17,9 +23,16 @@ use Goteo\Library\Text;
         <dt>Lista destinatarios:</dt>
         <dd>
             <ul>
-                <li><input type="checkbox" name="user-1" id="user-1"><label for="user-1">User name</label></li>
-                <li><input type="checkbox" name="user-2" id="user-2"><label for="user-2">User name</label></li>
-                <li><input type="checkbox" name="user-3" id="user-3"><label for="user-3">User name</label></li>
+                <?php foreach ($_SESSION['mailing']['receivers'] as $usrid=>$usr) : ?>
+                <li>
+                    <input type="checkbox"
+                           name="receiver_<?php echo $usr->id; ?>"
+                           id="receiver_<?php echo $usr->id; ?>"
+                           value="1"
+                           checked="checked" />
+                    <label for="receiver_<?php echo $usr->id; ?>"><?php echo $usr->name.' ['.$usr->email.']'; if (!empty($usr->project)) echo ' Proyecto: <strong>'.$usr->project.'</strong>'; ?></label>
+                </li>
+                <?php endforeach; ?>
             </ul>
         </dd>
     </dl>

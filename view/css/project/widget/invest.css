@@ -133,3 +133,84 @@ div.widget.project-invest button.pay-tpv:hover,
 div.widget.project-invest button.pay-paypal:hover {
     border: 1px solid #20b2b3;
 }
+
+div.widget.project-invest div.individual ul li {
+	padding: 0px;
+}
+
+div.widget.project-invest div.individual ul li label.resign{
+	padding: 10px 10px 10px 65px;
+	display: block;
+	cursor: pointer;
+}
+
+div.widget.project-invest div.individual ul li label.amount{
+	padding: 10px 10px 10px 65px;
+	display: block;
+	cursor: pointer;
+}
+
+div.widget.project-invest div.individual ul li label.amount p{
+	color: #58595B;
+	font-weight: normal;
+	font-size: 13px;
+}
+
+div.widget.project-invest div.individual ul li.disabled label.amount h5 {
+	color: #58595B;	
+}
+
+div.widget.project-invest div.individual ul li label.amount h1,
+div.widget.project-invest div.individual ul li label.amount h2,
+div.widget.project-invest div.individual ul li label.amount h3,
+div.widget.project-invest div.individual ul li label.amount h4,
+div.widget.project-invest div.individual ul li label.amount h5,
+div.widget.project-invest div.individual ul li label.amount h6,
+div.widget.project-invest div.individual ul li label.amount h7,
+div.widget.project-invest div.individual ul li label.amount h8 {
+	color: #000000;
+	font-weight: normal;
+	font-size: 13px;
+}
+
+div.widget.project-invest div.individual ul li input[type="checkbox"] {
+	opacity: 0;
+}
+
+div.widget.project-invest div.individual ul li label input[type="checkbox"] + span.chkbox {
+	display: block;
+	width:12px;
+	height:12px;
+	background: url("checkbox.png") no-repeat scroll 0 0px transparent;
+	position: absolute;
+	margin-top: -15px;
+}
+
+div.widget.project-invest div.individual ul li label input[type="checkbox"]:checked + span.chkbox {
+	background-position: 0 -13px;
+}
+
+div.widget.project-invest div.individual ul li.disabled label input[type="checkbox"] + span.chkbox {
+	background: url("checkbox_disabled.png") no-repeat scroll 0 0px transparent;
+}
+
+div.widget.project-invest p label input[type="checkbox"] {
+	opacity: 0;
+}
+
+div.widget.project-invest p label {
+	cursor: pointer;	
+}
+
+div.widget.project-invest p label input[type="checkbox"] + span.chkbox {
+	display: block;
+	width:12px;
+	height:12px;
+	background: url("checkbox_disabled.png") no-repeat scroll 0 0px transparent;
+	position: absolute;
+	margin-top: -15px;
+}
+
+div.widget.project-invest p label input[type="checkbox"]:checked + span.chkbox {
+	background-position: 0 -13px;
+}

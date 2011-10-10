@@ -67,13 +67,16 @@ div.widget.project-supporters .supporters ul {
 
 div.widget.project-supporters .supporters > ul > li {
     background-color:  white;
-    padding: 10px 10px 10px 70px;
+    /*padding: 10px 10px 10px 70px;*/
     float: left;
     margin: 20px 0 0 20px;
-    min-width: 220px;
     height: 4.5em;
     position: relative;
-        
+}
+
+div.widget.project-supporters .supporters > ul > li div.supporterContainer {
+	padding: 10px 10px 10px 70px;
+	min-width: 220px;
 }
 
 div.widget.project-supporters .supporters ul li.active {
@@ -88,7 +91,16 @@ div.widget.project-supporters .supporters ul li .avatar {
     height: 50px;
     text-align: center;
     display: block;
+}
 
+div.widget.project-supporters .supporters ul li div.supporterContainer a.expand {
+	bottom: 0px;
+	left: 0px;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	text-decoration: none;
+	z-index: 999;
 }
 
 div.widget.project-supporters .supporters ul li .avatar img {
@@ -99,10 +111,18 @@ div.widget.project-supporters .supporters ul li h3,
 div.widget.project-supporters .supporters ul li h4,
 div.widget.project-supporters .supporters ul li h5,
 div.widget.project-supporters .supporters ul li h6 {
-    font-size: 14px;
+    font-size: 11px;
     font-weight: bold;
     margin: 0 0 .5em;
     height: 1em;
+    text-transform: none;
+}
+
+div.widget.project-supporters .supporters ul li.active h3,
+div.widget.project-supporters .supporters ul li.active h4,
+div.widget.project-supporters .supporters ul li.active h5,
+div.widget.project-supporters .supporters ul li.active h6 {
+	color: #20B3B2;
 }
 
 div.widget.project-supporters .supporters ul li h3 a,
@@ -264,7 +284,7 @@ div.widget.project-investors .investors ul {
 /* Estilos copiados de user-supporter */
 div.widget.project-investors .investors > ul > li {
     background-color:  white;
-    padding: 10px 10px 10px 60px;
+    /*padding: 10px 10px 10px 60px;*/
     height: 4.5em;
     position: relative;
 }
@@ -287,13 +307,40 @@ div.widget.project-investors .investors ul li .avatar img {
     background-color: white;
 }
 
+div.widget.project-investors .investors > ul > li div.supporterContainer {
+	padding: 10px 10px 10px 60px;
+	/*min-width: 220px;*/
+}
+
+div.widget.project-investors .investors ul li.active {
+    background-color:  #f3f3f3;
+}
+
+div.widget.project-investors .investors ul li div.supporterContainer a.expand {
+	bottom: 0px;
+	left: 0px;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	text-decoration: none;
+	z-index: 999;
+}
+
 
 div.widget.project-investors .investors ul li h3,
 div.widget.project-investors .investors ul li h4,
 div.widget.project-investors .investors ul li h5,
 div.widget.project-investors .investors ul li h6 {
+	font-size: 11px !important;
     margin: 0 0 .5em;
     height: 1em;
+}
+
+div.widget.project-investors .investors ul li.active h3,
+div.widget.project-investors .investors ul li.active h4,
+div.widget.project-investors .investors ul li.active h5,
+div.widget.project-investors .investors ul li.active h6 {
+	color: #20B3B2;
 }
 
 div.widget.project-investors .investors ul li h3 a,
@@ -431,7 +478,7 @@ div.widget.project-investors .investors ul li dl dd.worthcracy ul li > strong {
 
 /* rediseño
 ************************/
-div.widget.project-supporters .supporters > ul > li {height:70px !important}
+div.widget.project-supporters .supporters > ul > li {height:90px !important}
 div.widget.project-supporters .supporters > ul > li > div.supporter h4{padding-bottom:3px;border-bottom:#D5D5D6 1px solid;overflow:hidden;margin-bottom:6px}
 div.widget.project-supporters .supporters > ul > li > div.supporter h4 > a{
 max-height: 6px;max-width: 175px;overflow: hidden;}
@@ -442,7 +489,7 @@ div.widget.project-supporters .supporters > ul > li dl dt.projects, div.widget.p
 div.widget.project-supporters .supporters ul li dl dd.worthcracy{margin-top:5px}
 div.widget.project-supporters .supporters ul li dl dd.date{top:70px}
 
-div.widget.project-investors .investors ul li{height:70px}
+div.widget.project-investors .investors ul li{height:90px}
 div.widget.project-investors .investors ul li > div.supporter h4{padding-bottom:3px;border-bottom:#D5D5D6 1px solid;overflow:hidden;margin-bottom:6px}
 div.widget.project-investors .investors ul li > div.supporter h4 > a{
 max-height: 6px;max-width: 175px;overflow: hidden;}

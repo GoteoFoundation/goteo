@@ -116,6 +116,7 @@ namespace Goteo\Model {
                     $mail->subject = $subject;
                     $mail->content = $content;
                     $mail->html = true;
+                    $mail->template = $template->id;
                     if ($mail->send($errors)) {
                         Message::Info('Mensaje de activación enviado correctamente');
                     } else {
@@ -722,22 +723,8 @@ namespace Goteo\Model {
                 $mail->toName = $row->name;
                 $mail->subject = $subject;
                 $mail->content = $content;
-
-/* old                    sprintf('
-                    Estimado(a) <strong>%1$s</strong>:<br/>
-                    <br/>
-                    Hemos recibido una petición para recuperar la contraseña de tu cuenta de usuario en Goteo.org<br />
-                    Si no has solicitado esta recuperación de contraseña, ignora este mensaje<br />
-                    Para acceder a tu cuenta y cambiar la contraseña (utilice su nombre de usuario como contraseña actual), utiliza el siguiente enlace. Si no puedes hacer click, copialo y pegalo en el navegador.
-                    <br/>
-                    <a href="%2$s">%2$s</a><br/>
-                    <br/>
-                    Recuerde que su nombre de usuario es <strong>%3$s</strong>, póngalo como contraseña actual para cambiar la contraseña.<br/>
-                    Hasta pronto!
-                ', $row->name, $url, $row->id);
- *
- */
                 $mail->html = true;
+                $mail->template = $template->id;
                 if ($mail->send($errors)) {
                     return true;
                 }
@@ -788,8 +775,8 @@ namespace Goteo\Model {
                 $mail->toName = $row->name;
                 $mail->subject = $subject;
                 $mail->content = $content;
-
                 $mail->html = true;
+                $mail->template = $template->id;
                 $mail->send($errors);
 
                 return true;
@@ -828,18 +815,8 @@ namespace Goteo\Model {
                     $mail->toName = $this->name;
                     $mail->subject = $subject;
                     $mail->content = $content;
-/* old                        sprintf('
-                        Estimado(a) <strong>%1$s</strong>:<br/>
-                        <br/>
-                        Para confirmar la propiedad de su nueva dirección de correo electrónico, haga clic en el siguiente vínculo (o copie y pégue el enlace en la barra de dirección de su navegador):<br/>
-                        <br/>
-                        <a href="%2$s">%2$s</a><br/>
-                        <br/>
-                        Esta proceso es necesario para confirmar la propiedad de su dirección de correo electrónico - no podrá operar con esta dirección hasta que la haya confirmado.
-                    ', $this->name, $url);
- *
- */
                     $mail->html = true;
+                    $mail->template = $template->id;
                     $mail->send();
 
                     return self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $this->id, ':token' => $token));

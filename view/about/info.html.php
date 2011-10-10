@@ -85,7 +85,7 @@ $go_up = Text::get('regular-go_up');
 		</div>
 		<div id="about-sidebar">
             <div class="widget about-sidebar-module">
-                <h3 class="supertitle">Ideas fuerza</h3>
+                <h3 class="supertitle"><?php echo Text::get('header-about-side'); ?></h3>
                 <ul>
                     <?php foreach ($posts as $post) : ?>
                     <li><a href="#info<?php echo $post->id; ?>"><?php echo $post->title; ?></a></li>

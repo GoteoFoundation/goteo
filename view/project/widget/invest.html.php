@@ -41,16 +41,20 @@ $action = '/invest/' . $project->id;
     <div class="individual">
         <h<?php echo $level+1 ?> class="title"><?php echo Text::get('project-rewards-individual_reward-title'); ?></h<?php echo $level+1 ?>>
         <ul>
-            <li><label class="resign"><input class="resign" type="checkbox" name="resign" value="1" /><?php echo Text::get('invest-resign') ?></label></li>
+            <li><label class="resign"><input class="resign" type="checkbox" name="resign" value="1" /><span class="chkbox"></span><?php echo Text::get('invest-resign') ?></label></li>
         <?php foreach ($project->individual_rewards as $individual) : ?>
         <li class="<?php echo $individual->icon ?><?php if ($individual->none) echo ' disabled' ?>">
         <?php if ($individual->none) : ?>
             <p style="color:red;"><?php echo Text::get('invest-reward-none') ?></p>
-        <?php else : ?>
-            <label class="amount"><input type="checkbox"<?php if ($individual->none) echo ' disabled="disabled"';?> name="reward_<?php echo $individual->id; ?>" value="<?php echo $individual->amount; ?>" class="individual_reward" /><?php echo $individual->amount; ?> &euro;</label>
-        <?php endif; ?>
-            <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>
+            <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>>
             <p><?php echo htmlspecialchars($individual->description)?></p>
+        <?php else : ?>
+            <label class="amount" for="reward_<?php echo $individual->id; ?>"><input type="checkbox"<?php if ($individual->none) echo ' disabled="disabled"';?> name="reward_<?php echo $individual->id; ?>" id="reward_<?php echo $individual->id; ?>" value="<?php echo $individual->amount; ?>" class="individual_reward" /><span class="chkbox"></span><?php echo $individual->amount; ?> &euro;
+        	<h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>>
+            <p><?php echo htmlspecialchars($individual->description)?></p>
+            </label>
+        <?php endif; ?>
+            
         </li>
         <?php endforeach ?>
         </ul>
@@ -83,7 +87,7 @@ $action = '/invest/' . $project->id;
     </table>
 
     <p>
-        <label><input type="checkbox" name="anonymous" value="1" /><?php echo Text::get('invest-anonymous') ?></label>
+        <label><input type="checkbox" name="anonymous" value="1" /><span class="chkbox"></span><?php echo Text::get('invest-anonymous') ?></label>
     </p>
 </div>
 

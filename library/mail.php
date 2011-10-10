@@ -20,7 +20,8 @@ namespace Goteo\Library {
             $reply = false,
             $replyName,
             $attachments = array(),
-            $html = true;
+            $html = true,
+            $template = null;
 
         /**
          * Constructor.
@@ -94,8 +95,6 @@ namespace Goteo\Library {
                     $mail->FromName = $this->fromName;
                     
                     $mail->AddAddress($this->to, $this->toName);
-                    // para verificacioens
-                    $mail->AddAddress('goteomailcheck@gmail.com', 'Verifier');
                     if($this->cc) {
                         $mail->AddCC($this->cc);
                     }
@@ -160,10 +159,11 @@ namespace Goteo\Library {
             $viewData = array('content' => $this->content);
 
             // grabamos el contenido en la tabla de envios
-            $sql = "INSERT INTO mail (id, email, html) VALUES ('', :email, :html)";
+            $sql = "INSERT INTO mail (id, email, html, template) VALUES ('', :email, :html, :template)";
             $values = array (
                 ':email' => $this->to,
-                ':html' => str_replace('cid:goteo', SITE_URL.'/goteo_logo.png', $this->content)
+                ':html' => str_replace('cid:logo', SITE_URL.'/goteo_logo.png', $this->content),
+                ':template' => $this->template
             );
             $query = Model::query($sql, $values);
 
@@ -214,6 +214,45 @@ namespace Goteo\Library {
                 'encoding' => $encoding,
                 'type' => $name
             );
+        }
+
+
+        /**
+         *
+         * @param array $filters    user (nombre o email),  template
+         */
+        public function getSended($filters = array()) {
+
+            $values = array();
+            $sqlFilter = '';
+            $and = " WHERE";
+
+            if (!empty($filters['user'])) {
+                $sqlFilter .= $and . " ( user.id LIKE :user OR user.name LIKE :user OR user.email LIKE :user  OR mail.email LIKE :user )";
+                $and = " AND";
+                $values[':user'] = "%{$filters['user']}%";
+            }
+
+            if (!empty($filters['template'])) {
+                $sqlFilter .= $and . " mail.template = :template";
+                $and = " AND";
+                $values[':template'] = $filters['template'];
+            }
+
+            $sql = "SELECT
+                        mail.id as id,
+                        user.name as user,
+                        mail.email as email,
+                        mail.template as template,
+                        DATE_FORMAT(mail.date, '%d/%m/%Y %H:%i') as date
+                    FROM mail
+                    LEFT JOIN user
+                        ON user.email = mail.email
+                    $sqlFilter
+                    ORDER BY mail.date DESC";
+            $query = Model::query($sql, $values);
+            return $query->fetchAll(\PDO::FETCH_OBJ);
+            
         }
 
 	}

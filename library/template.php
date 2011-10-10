@@ -74,6 +74,30 @@ namespace Goteo\Library {
             }
 		}
 
+		/*
+		 *  Lista de plantillas para filtro
+		 */
+		public static function getAllMini() {
+            $templates = array();
+
+            try {
+                $sql = "SELECT
+                            template.id as id,
+                            template.name as name
+                        FROM template
+                        ORDER BY name ASC
+                        ";
+
+                $query = Model::query($sql);
+                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $template) {
+                    $templates[$template->id] = $template->name;
+                }
+                return $templates;
+            } catch (\PDOException $e) {
+                throw new Exception('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
+            }
+		}
+
         public function validate(&$errors = array()) {
 
             $allok = true;
