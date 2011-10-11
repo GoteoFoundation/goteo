@@ -54,6 +54,7 @@ namespace Goteo\Model {
 
             // Edit project description
             $name,
+            $lang = 'es',
             $image,
             $gallery = array(), // array de instancias image de project_image
             $description,
@@ -139,6 +140,7 @@ namespace Goteo\Model {
             $values = array(
                 ':id'   => md5($user.'-'.$num),
                 ':name' => "Mi proyecto $num",
+                ':lang' => 'es',
                 ':status'   => 1,
                 ':progress' => 0,
                 ':owner' => $user,
@@ -351,6 +353,9 @@ namespace Goteo\Model {
                 $errors[] = 'El proyecto no tiene id';
                 //Text::get('validate-project-noid');
 
+            if (empty($this->lang))
+                $this->lang = 'es';
+
             if (empty($this->status))
                 $this->status = 1;
             
@@ -424,6 +429,7 @@ namespace Goteo\Model {
                     'post_location',
                     'post_country',
                     'name',
+                    'lang',
                     'image',
                     'description',
                     'motivation',
@@ -825,11 +831,18 @@ namespace Goteo\Model {
 
             /***************** Revisión de campos del paso 3, DESCRIPCION *****************/
             $score = 0;
-            // obligatorios: nombre, imagen, descripcion, about, motivation, categorias, video, localización
+            // obligatorios: nombre, idioma, imagen, descripcion, about, motivation, categorias, video, localización
             if (empty($this->name)) {
                 $errors['overview']['name'] = Text::get('mandatory-project-field-name');
             } else {
                  $okeys['overview']['name'] = 'ok';
+                 ++$score;
+            }
+
+            if (empty($this->lang)) {
+                $errors['overview']['lang'] = Text::get('mandatory-project-field-lang');
+            } else {
+                 $okeys['overview']['lang'] = 'ok';
                  ++$score;
             }
 
@@ -868,9 +881,6 @@ namespace Goteo\Model {
             } else {
                  $okeys['overview']['motivation'] = 'ok';
                  ++$score;
-                 if (\strlen($this->motivation) > 2000) {
-                     $errors['overview']['motivation'] = Text::get('validate-project-field-motivation');
-                 }
             }
 
             if (!empty($this->goal))  {

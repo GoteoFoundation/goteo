@@ -2,11 +2,20 @@
 
 use Goteo\Core\View,
     Goteo\Library\Text,
+    Goteo\Library\Lang,
     Goteo\Library\SuperForm;
 
 $project = $this['project'];
 $errors = $project->errors[$this['step']] ?: array();
 $okeys  = $project->okeys[$this['step']] ?: array();
+
+$langs = array();
+foreach (Lang::getAll(true) as $lang) {
+    $langs[] = array(
+        'value'     => $lang->id,
+        'label'     => $lang->name
+        );
+}
 
 $images = array();
 foreach ($project->gallery as $image) {
@@ -90,6 +99,18 @@ $superform = array(
             'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array()
         ),
         
+        'lang' => array(
+            'title'     => Text::get('overview-field-lang'),
+            'type'      => 'select',
+            'required'  => true,
+            'options'   => $langs,
+            'class'     => 'lang',
+            'hint'      => Text::get('tooltip-project-lang'),
+            'errors'    => !empty($errors['lang']) ? array($errors['lang']) : array(),
+            'ok'        => !empty($okeys['lang']) ? array($okeys['lang']) : array(),
+            'value'     => $project->lang
+        ),
+
         'images' => array(        
             'title'     => Text::get('overview-fields-images-title'),
             'type'      => 'group',

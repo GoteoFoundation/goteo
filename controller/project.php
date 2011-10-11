@@ -673,6 +673,7 @@ namespace Goteo\Controller {
             // image, media y category  van aparte
             $fields = array(
                 'name',
+                'lang',
                 'description',
                 'motivation',
                 'about',
