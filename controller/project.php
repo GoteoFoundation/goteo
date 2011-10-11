@@ -150,12 +150,13 @@ namespace Goteo\Controller {
                         $mailHandler = new Mail();
 
                         $mailHandler->to = \GOTEO_MAIL;
+                        $mailHandler->toName = 'Revisor de proyectos';
                         $mailHandler->subject = 'Proyecto ' . $project->name . ' enviado a valoración';
                         $mailHandler->content = '<p>Han enviado un nuevo proyecto a revisión</p><p>El nombre del proyecto es: <span class="message-highlight-blue">'.$project->name.'</span> <br />y se puede ver en <span class="message-highlight-blue"><a href="'.SITE_URL.'/project/'.$project->id.'">'.SITE_URL.'/project/'.$project->id.'</a></span></p>';
                         $mailHandler->fromName = "{$project->user->name}";
                         $mailHandler->from = $project->user->email;
                         $mailHandler->html = true;
-                        $mailHandler->template = $template->id; 
+                        $mailHandler->template = 0;
                         if ($mailHandler->send($errors)) {
                             Message::Info('Mensaje de solicitud de revisión enviado correctamente');
                         } else {

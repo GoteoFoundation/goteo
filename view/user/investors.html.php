@@ -30,6 +30,8 @@ $pagedResults = new \Paginated($the_investors, 20, isset($_GET['page']) ? $_GET[
     </div>
 </div>
 
+<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+
 <div id="main">
 
     <div class="center">

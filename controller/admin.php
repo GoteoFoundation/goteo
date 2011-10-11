@@ -4474,9 +4474,10 @@ namespace Goteo\Controller {
                             $mailHandler = new Mail();
 
                             $mailHandler->to = $_SESSION['mailing']['receivers'][$usr]->email;
+                            $mailHandler->toName = $_SESSION['mailing']['receivers'][$usr]->name;
                             // blind copy a goteo desactivado durante las verificaciones
             //              $mailHandler->bcc = 'comunicaciones@goteo.org';
-                            $mailHandler->subject = 'En pruebas: '.$subject;
+                            $mailHandler->subject = $subject;
                             $mailHandler->content = $tmpcontent;
                             $mailHandler->html = true;
                             $mailHandler->template = $template->id;

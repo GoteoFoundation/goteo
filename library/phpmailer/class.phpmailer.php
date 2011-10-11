@@ -542,7 +542,7 @@ class PHPMailer {
    * variable to view description of the error.
    * @return bool
    */
-  public function Send() {
+  public function Send(&$errors = array()) {
     try {
       if ((count($this->to) + count($this->cc) + count($this->bcc)) < 1) {
         throw new phpmailerException($this->Lang('provide_address'), self::STOP_CRITICAL);
@@ -583,7 +583,7 @@ class PHPMailer {
       if ($this->exceptions) {
         throw $e;
       }
-      echo $e->getMessage()."\n";
+      $errors[] = $e->getMessage()."\n";
       return false;
     }
   }

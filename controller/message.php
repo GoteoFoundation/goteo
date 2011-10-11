@@ -113,7 +113,8 @@ namespace Goteo\Controller {
                             $mailHandler = new Mail();
 
                             $mailHandler->to = $thread->user->email;
-                            $mailHandler->subject = 'En pruebas: '.$subject;
+                            $mailHandler->toName = $thread->user->name;
+                            $mailHandler->subject = $subject;
                             $mailHandler->content = $content;
                             $mailHandler->html = true;
                             $mailHandler->template = $template->id;
@@ -163,10 +164,6 @@ namespace Goteo\Controller {
                 $project = Model\Project::getMini($project);
                 $ownerData = Model\User::getMini($project->owner);
 
-                if (!$project instanceof Model\Project) {
-                    throw new Redirection('/', Redirection::TEMPORARY);
-                }
-
                 $msg_content = \nl2br(\strip_tags($_POST['message']));
 
                 // Obtenemos la plantilla para asunto y contenido
@@ -190,9 +187,10 @@ namespace Goteo\Controller {
                 $mailHandler = new Mail();
 
                 $mailHandler->to = $ownerData->email;
+                $mailHandler->toName = $ownerData->name;
                 // blind copy a goteo desactivado durante las verificaciones
 //              $mailHandler->bcc = 'comunicaciones@goteo.org';
-                $mailHandler->subject = 'En pruebas: '.$subject;
+                $mailHandler->subject = $subject;
                 $mailHandler->content = $content;
                 $mailHandler->html = true;
                 $mailHandler->template = $template->id;
@@ -200,8 +198,7 @@ namespace Goteo\Controller {
                     // ok
                     \Goteo\Library\Message::Info(Text::get('regular-message_success'));
                 } else {
-                    \trace($mailHandler);
-                    unset($mailHandler);
+                    \Goteo\Library\Message::Info(Text::get('regular-message_fail') . '<br />' . implode(', ', $errors));
                 }
 
                 unset($mailHandler);
@@ -250,9 +247,10 @@ namespace Goteo\Controller {
                 $mailHandler = new Mail();
 
                 $mailHandler->to = $user->email;
+                $mailHandler->toName = $user->name;
                 // blind copy a goteo desactivado durante las verificaciones
 //                $mailHandler->bcc = 'comunicaciones@goteo.org';
-                $mailHandler->subject = 'En pruebas: '.$subject;
+                $mailHandler->subject = $subject;
                 $mailHandler->content = $content;
                 $mailHandler->html = true;
                 $mailHandler->template = $template->id;
@@ -260,8 +258,7 @@ namespace Goteo\Controller {
                     // ok
                     \Goteo\Library\Message::Info(Text::get('regular-message_success'));
                 } else {
-                    \trace($mailHandler);
-                    unset($mailHandler);
+                    \Goteo\Library\Message::Info(Text::get('regular-message_fail') . '<br />' . implode(', ', $errors));
                 }
 
                 unset($mailHandler);

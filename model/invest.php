@@ -97,7 +97,7 @@ namespace Goteo\Model {
                 SELECT  *
                 FROM  invest
                 WHERE   invest.project = ?
-                AND (invest.status = 0 OR invest.status = 1)
+                AND (invest.status = 0 OR invest.status = 1 OR invest.status = 3)
                 ", array($project));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $invest) {
                 // datos del usuario
@@ -429,7 +429,7 @@ namespace Goteo\Model {
                         COUNT(DISTINCT(project))
                      FROM invest as invb
                      WHERE invb.user = invest.user
-                     AND (invb.status = 0 OR invb.status = 1)
+                     AND (invb.status = 0 OR invb.status = 1 OR invb.status = 3)
                      ) as projects,";
             }
 
@@ -439,7 +439,7 @@ namespace Goteo\Model {
                 INNER JOIN user
                     ON  user.id = invest.user
                 WHERE   project = ?
-                AND (invest.status = 0 OR invest.status = 1)
+                AND (invest.status = 0 OR invest.status = 1 OR invest.status = 3)
                 ORDER BY invest.id DESC
                 ";
 
@@ -489,7 +489,7 @@ namespace Goteo\Model {
                 FROM    invest
                 WHERE   user = :user
                 AND     project = :project
-                AND     (status = 0 OR status = 1)
+                AND     (status = 0 OR status = 1 OR status = 3)
                 AND     (anonymous = 0 OR anonymous IS NULL)
                 ORDER BY invested DESC";
 
@@ -513,7 +513,7 @@ namespace Goteo\Model {
                 INNER JOIN user
                     ON  user.id = invest.user
                     AND (user.hide = 0 OR user.hide IS NULL)
-                WHERE   (status = 0 OR status = 1)
+                WHERE   (status = 0 OR status = 1 OR status = 3)
                 ";
 
             $query = self::query($sql, array($reward));

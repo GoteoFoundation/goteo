@@ -40,13 +40,13 @@ include 'view/header.html.php'; ?>
 
             <?php if (!empty($this['errors'])) : ?>
                 <div class="widget">
-                    <?php echo implode(',',$this['errors']); ?>
+                    <p><?php echo implode('<br />',$this['errors']); ?></p>
                 </div>
             <?php endif; ?>
 
             <?php if (!empty($this['success'])) : ?>
                 <div class="widget">
-                    <?php echo implode(',',$this['success']); ?>
+                    <p><?php echo implode('<br />',$this['success']); ?></p>
                 </div>
             <?php endif; ?>
 

@@ -191,7 +191,7 @@ color:#20B3B2;
 
 </div>
 
-<div class="footer-bar"><span class="footer-element"><?php echo Text::get('footer-platoniq-iniciative') ?> <strong><a href="http://platoniq.org">Platoniq</a></strong></span></div>
+<div class="footer-bar"><span class="footer-element"><?php echo Text::get('footer-platoniq-iniciative') ?> <strong><a href="http://platoniq.net">Platoniq</a></strong></span></div>
 
 </body>
 </html>

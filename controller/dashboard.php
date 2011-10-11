@@ -7,6 +7,7 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model,
+		Goteo\Library\Message,
 		Goteo\Library\Feed,
         Goteo\Library\Page,
         Goteo\Library\Mail,
@@ -84,7 +85,6 @@ namespace Goteo\Controller {
                 'view/dashboard/index.html.php',
                 array(
                     'menu'    => self::menu(),
-                    'message' => $message,
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action,
@@ -182,7 +182,7 @@ namespace Goteo\Controller {
 
                         /// este es el único save que se lanza desde un metodo process_
                         if ($user->save($errors)) {
-                            $message = Text::get('user-profile-saved');
+                            Message::Info(Text::get('user-profile-saved'));
                             $user = Model\User::flush();
 
                             $log_action = 'Modificado su información de perfil';
@@ -213,7 +213,7 @@ namespace Goteo\Controller {
                         // actualizamos estos datos en los personales del usuario
                         if (!empty ($personalData)) {
                             if (Model\User::setPersonal($user->id, $personalData, true, $errors)) {
-                                $message = Text::get('user-personal-saved');
+                                Message::Info(Text::get('user-personal-saved'));
 
                                 $log_action = 'Modificado sus datos personales';
                             }
@@ -311,7 +311,7 @@ namespace Goteo\Controller {
                         // actualizamos estos datos en los personales del usuario
                         if (!empty ($preferences)) {
                             if (Model\User::setPreferences($user->id, $preferences, $errors)) {
-                                $message = 'Tus preferencias de notificación se han guardado correctmente'; //Text::get('user-preferences-saved');
+                                Message::Info('Tus preferencias de notificación se han guardado correctmente'); //Text::get('user-preferences-saved');
                                 $log_action = 'Modificado las preferencias de notificación';
                             }
                         }
@@ -342,7 +342,6 @@ namespace Goteo\Controller {
 
             $viewData = array(
                     'menu'    => self::menu(),
-                    'message' => $message,
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action,
@@ -536,7 +535,7 @@ namespace Goteo\Controller {
                                 if (!empty($_POST['msg_all'])) {
                                     // si a todos
                                     $who = array();
-                                    foreach (Model\Invest::investors($project->id) as $investor) {
+                                    foreach (Model\Invest::investors($project->id, false, true) as $investor) {
                                         if (!in_array($investor->user, $who)) {
                                             $who[] = $investor->user;
                                         }
@@ -569,9 +568,8 @@ namespace Goteo\Controller {
 
                                 // obtener contenido
                                 // segun destinatarios
-                                $enviandoa = !empty($msg_all) ? 'todos' : 'algunos';
-                                $message .= 'enviar a ' . $enviandoa  . '<br />';
-                                $message .= implode(',', $who);
+                                $enviandoa = !empty($msg_all) ? 'todos' : 'algunos de';
+                                Message::Info('Enviado a ' . $enviandoa . ' tus cofinanciadores:') ;
 
                                 // Obtenemos la plantilla para asunto y contenido
                                 $template = Template::get(2);
@@ -589,26 +587,26 @@ namespace Goteo\Controller {
                                 $content = \str_replace($search, $replace, $template->text);
 
                                 foreach ($who as $key=>$userId) {
-
+                                    $errors = array();
                                     //me cojo su email y lo meto en un array para enviar solo con una instancia de Mail
                                     $data = Model\User::getMini($userId);
 
                                     // iniciamos el objeto mail
                                     $mailHandler = new Mail();
-
                                     $mailHandler->to = $data->email;
+                                    $mailHandler->toName = $data->name;
                                     // blind copy a goteo desactivado durante las verificaciones
 //                                    $mailHandler->bcc = 'comunicaciones@goteo.org';
-                                    $mailHandler->subject = 'En pruebas (solo llega uno): '.$subject;
+                                    $mailHandler->subject = $subject;
                                     $mailHandler->content = str_replace('%NAME%', $data->name, $content);
                                     // esto tambien es pruebas
-                                    $mailHandler->content .= '<br /><br />Este email se habria enviado a:<br />'.implode(', ', $who);
                                     $mailHandler->html = true;
                                     $mailHandler->template = $template->id;
                                     if ($mailHandler->send($errors)) {
-                                        $success[] = Text::get('dashboard-investors-mail-sended', $data->name, $data->email);
+                                        Message::Info(Text::get('dashboard-investors-mail-sended', $data->name, $data->email));
                                     } else {
-                                        $errors[] = Text::get('dashboard-investors-mail-fail', $data->name, $data->email);
+                                        Message::Error(Text::get('dashboard-investors-mail-fail', $data->name, $data->email) . ' por esto: '. implode (', ', $errors));
+
                                     }
 
                                     unset($mailHandler);
@@ -919,7 +917,6 @@ namespace Goteo\Controller {
             // view data basico para esta seccion
             $viewData = array(
                     'menu'    => self::menu(),
-                    'message' => $message,
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action,

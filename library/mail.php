@@ -73,6 +73,9 @@ namespace Goteo\Library {
          * @param type array	$errors
          */
 		public function validate(&$errors = array()) {
+		    if(empty($this->to)) {
+		        $errors['email'] = 'El mensaje no tiene destinatario.';
+		    }
 		    if(empty($this->content)) {
 		        $errors['content'] = 'El mensaje no tiene contenido.';
 		    }
@@ -128,7 +131,12 @@ namespace Goteo\Library {
                     }
 
                     // Envía el mensaje
-                    return $mail->Send();
+                    if ($mail->Send($errors)) {
+                        return true;
+                    } else {
+                        $errors[] = 'Fallo del servidor de correo interno';
+                        return false;
+                    }
 
             	} catch(\PDOException $e) {
                     $errors[] = "No se ha podido enviar el mensaje: " . $e->getMessage();

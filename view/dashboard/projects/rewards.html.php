@@ -16,6 +16,15 @@ $icons = Reward::icons('individual');
 
 $project = $this['project'];
 
+$rewards = $this['rewards'];
+
+uasort($rewards,
+    function ($a, $b) {
+        if ($a->amount == $b->amount) return 0;
+        return ($a->amount > $b->amount) ? 1 : -1;
+        }
+    );
+
 ?>
 <div class="widget projects">
     <div class="message">
@@ -24,7 +33,7 @@ $project = $this['project'];
     </div>
     <div class="rewards">
         <?php $num = 1; 
-            foreach ($this['rewards'] as $rewardId=>$rewardData) :
+            foreach ($rewards as $rewardId=>$rewardData) :
                 $who = Invest::choosed($rewardData->id); ?>
             <div class="reward <?php if(($num % 4)==0)echo " last"?>">
             	<div class="orden"><?php echo $num; ?></div>
@@ -45,6 +54,8 @@ $project = $this['project'];
 
 <div class="widget projects">
     <h2 class="title">Gestionar retornos</h2>
+    <?php
+    /*
     <div class="filters">
         <form id="invests-filter-form" name="filter_form" action="<?php echo '/dashboard/'.$this['section'].'/'.$this['option'].'/filter'; ?>" method="post">
         <label id="invests-filter">Ver por: </label>
@@ -67,6 +78,8 @@ $project = $this['project'];
         <!-- un boton para aplicar filtro si no tiene javascript -->
         </form>
     </div>
+    */
+    ?>
     
     <div id="invests-list">
         <form name="invests_form" action="<?php echo '/dashboard/'.$this['section'].'/'.$this['option'].'/process'; ?>" method="post">
@@ -147,7 +160,7 @@ $project = $this['project'];
         
                 <p>
                     Por retornos: <br />
-                    <?php foreach ($this['rewards'] as $rewardId => $rewardData) : ?>
+                    <?php foreach ($rewards as $rewardId => $rewardData) : ?>
                         <input type="checkbox" id="msg_reward-<?php echo $rewardId; ?>" name="msg_reward-<?php echo $rewardId; ?>" value="1" />
                         <label for="msg_reward-<?php echo $rewardId; ?>"><?php echo $rewardData->amount; ?> &euro; (<?php echo Text::recorta($rewardData->reward, 40); ?>)</label>
                     <?php endforeach; ?>

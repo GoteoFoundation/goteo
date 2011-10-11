@@ -665,9 +665,10 @@ namespace Goteo\Controller {
                 // iniciamos mail
                 $mailHandler = new Mail();
                 $mailHandler->to = $project->user->email;
+                $mailHandler->toName = $project->user->name;
                 // blind copy a goteo desactivado durante las verificaciones
     //              $mailHandler->bcc = 'comunicaciones@goteo.org';
-                $mailHandler->subject = 'En pruebas: '.$subject;
+                $mailHandler->subject = $subject;
                 $mailHandler->content = $content;
                 $mailHandler->html = true;
                 $mailHandler->template = $template->id;
@@ -740,9 +741,10 @@ namespace Goteo\Controller {
                         // iniciamos mail
                         $mailHandler = new Mail();
                         $mailHandler->to = $project->user->email;
+                        $mailHandler->toName = $project->user->name;
                         // blind copy a goteo desactivado durante las verificaciones
             //              $mailHandler->bcc = 'comunicaciones@goteo.org';
-                        $mailHandler->subject = 'En pruebas: '.$subject;
+                        $mailHandler->subject = $subject;
                         $mailHandler->content = $content;
                         $mailHandler->html = true;
                         $mailHandler->template = $template->id;
