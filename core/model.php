@@ -124,8 +124,7 @@ namespace Goteo\Core {
             $id = strtr($id, $table);
 
             // Separadores
-			$id = preg_replace("/[\s\,\;\_\/\-]+/i", "-", $id);
-			$id = preg_replace("/[^a-z0-9\.\-\+]/", "", $id);
+			$id = preg_replace("/[\s\,\(\)\[\]\:\;\.\_\/\-\+]+/", "-", $id);
 			$id = substr($id, 0, 50);
 
 			return $id;
