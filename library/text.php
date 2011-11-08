@@ -281,7 +281,8 @@ namespace Goteo\Library {
                 'regular'       => 'De uso común',
                 'button'        => 'Genéricos para botones',
                 'subject'       => 'Asuntos para emails automáticos',
-                'feed'          => 'Eventos'
+                'feed'          => 'Eventos',
+                'mark'          => 'Banderolos'
             );
 
             \asort($filters);
@@ -326,7 +327,8 @@ namespace Goteo\Library {
                 'menu' => 'Menu superior',
                 'feed' => 'Eventos recientes',
                 'mailer' => 'Emails automaticos',
-                'bluead' => 'Avisos azules'
+                'bluead' => 'Avisos azules',
+                'error' => 'Errores catastroficos'
             );
 
             \asort($groups);

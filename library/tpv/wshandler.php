@@ -2,7 +2,7 @@
 /****************************************************
 wshandler.php
 
-This file contains methods to make calls to Sermepa webservice
+This file contains methods to make calls to Ceca "webservice"
 
 Called by /library/tpv.php
 
@@ -42,13 +42,13 @@ class WSHandler {
    	/*
    	 * Calls the actual WEB Service and returns the response.
    	 */
-   	function callWebService($request) {
+   	function callWebService($data, $url) {
 		
 		$response = null;
 		
 		try {
 			
-		    $response = tpvcall($request, TPV_WEBSERVICE_URL);
+		    $response = tpvcall($data, $url);
 		    $isFault = false;
 			if(empty($response) || trim($response) == '')
 	   		{
@@ -69,8 +69,6 @@ class WSHandler {
 		   		$isFault = false;
 		   	
 		   		$this->isSuccess = 'Success' ;
-//   no tendria que dar un fault soap
-//              $response = SoapEncoder::Decode($response, $isFault);
 				if($isFault)
 		        {
 		        	$this->isSuccess = 'Failure' ;
@@ -149,17 +147,25 @@ class WSHandler {
   * returns an associtive array containing the response from the server.
 */
 
-function tpvcall($MsgStr, $endpoint)
+function tpvcall($data, $endpoint)
 {
-
     //setting the curl parameters.
     $ch = curl_init();
+    //For Debugging
+//    curl_setopt($ch, CURLOPT_HEADER, true);
+//    curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+//    curl_setopt($ch, CURLOPT_VERBOSE, true);
     curl_setopt($ch, CURLOPT_URL,$endpoint);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //no se exactamente para que es, está en los ejemplos
-    /// pasamos el xml como 'entrada' con urlencoded
-    curl_setopt($ch,CURLOPT_POSTFIELDS, 'entrada='. rawurlencode($MsgStr));
-    
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); //no se exactamente para que es, está en los ejemplos
+    curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
+
+    // tiene que ser    application/x-www-form-urlencoded
+    $the_data = array();
+    foreach ($data as $key=>$value) {
+        $the_data[] = $key.'='.$value;
+    }
+    curl_setopt($ch, CURLOPT_POSTFIELDS, implode('&', $the_data)); // datos clave=>valor del POST
 
     //setting the MsgStr as POST FIELD to curl
     $conf = array('mode' => 0600, 'timeFormat' => '%X %x');
@@ -168,7 +174,7 @@ function tpvcall($MsgStr, $endpoint)
     $logger->log('##### TPV call '.date('d/m/Y').' #####');
     
     $logger->log("endpoint: $endpoint");
-    $logger->log("request: $MsgStr");
+    $logger->log("request: " . implode(' ', $the_data));
 
     
     if(isset($_SESSION['curl_error_no'])) {
@@ -181,7 +187,10 @@ function tpvcall($MsgStr, $endpoint)
    
     //getting response from server
     $response = curl_exec($ch);
-    $logger->log("response: ".trim($response));
+
+//    \trace(curl_getinfo($ch));
+
+    $logger->log("response: ".trim(htmlentities($response)));
     $logger->log('##### END TPV call '.date('d/m/Y').' #####');
     $logger->close();
     

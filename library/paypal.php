@@ -39,6 +39,9 @@ namespace Goteo\Library {
                     $remain = Project::daysRemain($invest->project);
                     $remain++;
 
+                    // aun amplio el remain 5 dias por lo que pueda pasar
+                    $remain+=5;
+
                     date_default_timezone_set('UTC');
                     $currDate = getdate();
                     $hoy = $currDate['year'].'-'.$currDate['mon'].'-'.$currDate['mday'];
@@ -71,14 +74,15 @@ namespace Goteo\Library {
 		           $preapprovalRequest->maxTotalAmountOfAllPayments = $invest->amount;
 		           $preapprovalRequest->requestEnvelope = new \RequestEnvelope();
 		           $preapprovalRequest->requestEnvelope->errorLanguage = "es_ES";
-//		           $preapprovalRequest->senderEmail = $invest->account;
 
 		           $ap = new \AdaptivePayments();
 		           $response=$ap->Preapproval($preapprovalRequest);
 
 		           if(strtoupper($ap->isSuccess) == 'FAILURE') {
                        $errors[] = 'No se ha podido iniciar la comunicación con paypal para procesar la preaprovación del cargo. ' . $ap->getLastError();
-                       return false;
+//                       die(\trace($ap));
+                        @\mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' ap->success = FAILURE.<br /><pre>' . print_r($ap, 1) . '</pre><pre>' . print_r($response, 1) . '</pre>');
+                        return false;
 					}
 
                     // Guardar el codigo de preaproval en el registro de aporte y mandarlo a paypal
@@ -132,8 +136,8 @@ namespace Goteo\Library {
                 $payRequest = new \PayRequest();
                 $payRequest->actionType = "PAY";
                 $payRequest->memo = "Cargo del aporte de {$invest->amount} EUR del usuario '{$invest->user->name}' al proyecto '{$project->name}'";
-                $payRequest->cancelUrl = SITE_URL.'/cron/charge_fail/' . $invest->id;
-                $payRequest->returnUrl = SITE_URL.'/cron/charge_success/' . $invest->id;
+                $payRequest->cancelUrl = SITE_URL.'/invest/charge/fail/' . $invest->id;
+                $payRequest->returnUrl = SITE_URL.'/invest/charge/success/' . $invest->id;
                 $payRequest->clientDetails = new \ClientDetailsType();
 		        $payRequest->clientDetails->customerId = $invest->user->id;
                 $payRequest->clientDetails->applicationId = PAYPAL_APPLICATION_ID;
@@ -155,8 +159,7 @@ namespace Goteo\Library {
 
                 // Receiver, Projects PayPal Account
                 $receiver = new \receiver();
-//                $receiver->email = $invest->account;   <--- hasta poner en real
-                $receiver->email = 'projec_1314918267_per@gmail.com';
+                $receiver->email = $invest->account;
                 $receiver->amount = $amountPay;
                 $receiver->primary = false;
 
@@ -438,18 +441,24 @@ namespace Goteo\Library {
          */
         public static function cancelPreapproval ($invest, &$errors = array()) {
             try {
+                if (empty($invest->preapproval)) {
+                    $invest->cancel();
+                    return true;
+                }
+
                 $CPRequest = new \CancelPreapprovalRequest();
 
                 $CPRequest->requestEnvelope = new \RequestEnvelope();
                 $CPRequest->requestEnvelope->errorLanguage = "es_ES";
-                $CPRequest->preapprovalKey = $invest->code;
+                $CPRequest->preapprovalKey = $invest->preapproval;
 
                 $ap = new \AdaptivePayments();
                 $response = $ap->CancelPreapproval($CPRequest);
 
 
                 if(strtoupper($ap->isSuccess) == 'FAILURE') {
-                    $errors[] = 'Preapproval cancel faild. <pre>' . print_r($ap->getLastError(), 1) . '</pre>';
+                    $errors[] = 'Preapproval cancel failed.' . $ap->getLastError();
+                    @\mail('goteo-paypal-API-fault@doukeshi.org', 'Fallo al cancelar preapproval Paypal API', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($ap->getLastError(), 1) . '</pre>');
                     return false;
                 } else {
                     $invest->cancel();

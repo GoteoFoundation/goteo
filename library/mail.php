@@ -127,7 +127,7 @@ namespace Goteo\Library {
                     }
                     else {
                         $mail->IsHTML(false);
-                        $mail->Body    = $this->bodyText();
+                        $mail->Body    = $this->bodyHTML(true);
                     }
 
                     // Envía el mensaje
@@ -162,7 +162,7 @@ namespace Goteo\Library {
          * Se mete el contenido alrededor del diseño de email de Diego
          *
          */
-        private function bodyHTML() {
+        private function bodyHTML($plain = false) {
 
             $viewData = array('content' => $this->content);
 
@@ -187,7 +187,13 @@ namespace Goteo\Library {
 
             $viewData['baja'] = \SITE_URL . '/user/leave/?email=' . $this->to;
 
-            return new View ('view/email/goteo.html.php', $viewData);
+            if ($plain) {
+                return strip_tags($this->content) . '
+
+                ' . $viewData['sinoves'];
+            } else {
+                return new View ('view/email/goteo.html.php', $viewData);
+            }
         }
 
         /**

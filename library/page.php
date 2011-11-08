@@ -28,7 +28,7 @@ namespace Goteo\Library {
                             page.url as url,
                             IFNULL(page_node.lang, '$lang') as lang,
                             IFNULL(page_node.node, '$node') as node,
-                            IFNULL(page_node.content, '') as content
+                            IFNULL(page_node.content, original.content) as content
                      FROM page
                      LEFT JOIN page_lang
                         ON  page_lang.id = page.id
@@ -37,6 +37,10 @@ namespace Goteo\Library {
                         ON  page_node.page = page.id
                         AND page_node.lang = :lang
                         AND page_node.node = :node
+                     LEFT JOIN page_node as original
+                        ON  original.page = page.id
+                        AND original.node = :node
+                        AND original.lang = 'es'
                      WHERE page.id = :id
                 ";
 

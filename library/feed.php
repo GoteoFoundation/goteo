@@ -299,7 +299,7 @@ namespace Goteo\Library {
                     if (substr($item->url, 0, 5) == '/user') {
                         $content .= '<div class="content-avatar">
                         <a href="'.$item->url.'" class="avatar"><img src="'.SRC_URL.'/image/'.$item->image.'/32/32/1" /></a>
-                        <a href="'.$item->url.'" class="username">'.$item->title.'</a><br/>
+                        <a href="'.$item->url.'" class="username">'.$item->title.'</a>
                         <span class="datepub">'.$pub_timeago.'</span>
                         </div>';
                     } else {
