@@ -81,13 +81,11 @@ namespace Goteo\Controller {
                 // insertamos los datos personales del usuario si no tiene registro aun
                 Model\User::setPersonal($_SESSION['user']->id, $address, false);
 
-                // @TODO, cuenta paypal del usuario o su email
                 $invest = new Model\Invest(
                     array(
                         'amount' => $_POST['amount'],
                         'user' => $_SESSION['user']->id,
                         'project' => $project,
-                        'account' => $_SESSION['user']->email,
                         'method' => $_POST['method'],
                         'status' => '-1',               // aporte en proceso
                         'invested' => date('Y-m-d'),
@@ -160,8 +158,8 @@ namespace Goteo\Controller {
             $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
 
             // En el contenido:
-            $search  = array('%USERNAME%', '%PROJECTNAME%', '%AMOUNT%', '%REWARDS%');
-            $replace = array($_SESSION['user']->name, $projectData->name, $confirm->amount, $txt_rewards);
+            $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%');
+            $replace = array($_SESSION['user']->name, $projectData->name, SITE_URL.'/project/'.$projectData->id, $confirm->amount, $txt_rewards);
             $content = \str_replace($search, $replace, $template->text);
 
             $mailHandler = new Mail();
@@ -206,16 +204,18 @@ namespace Goteo\Controller {
                 $log->html = \vsprintf($log_text, $items);
                 $log->add($errors);
 
-                // evento público
-                $log->title = $_SESSION['user']->name;
-                $log->url = '/user/profile/'.$_SESSION['user']->id;
-                $log->image = $_SESSION['user']->avatar->id;
-                $log->scope = 'public';
-                $log->type = 'community';
-                $log->html = Text::html('feed-invest',
-                                    Feed::item('money', $confirm->amount.' &euro;'),
-                                    Feed::item('project', $projectData->name, $projectData->id));
-                $log->add($errors);
+                if (!$invest->anonymous) {
+                    // evento público
+                    $log->title = $_SESSION['user']->name;
+                    $log->url = '/user/profile/'.$_SESSION['user']->id;
+                    $log->image = $_SESSION['user']->avatar->id;
+                    $log->scope = 'public';
+                    $log->type = 'community';
+                    $log->html = Text::html('feed-invest',
+                                        Feed::item('money', $confirm->amount.' &euro;'),
+                                        Feed::item('project', $projectData->name, $projectData->id));
+                    $log->add($errors);
+                }
 
                 unset($log);
             }
@@ -241,6 +241,15 @@ namespace Goteo\Controller {
 
             // mandarlo a la pagina de aportar para que lo intente de nuevo
             throw new Redirection("/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
+        }
+
+        // resultado del cargo
+        public function charge ($result = null, $id = null) {
+            if (empty($id) || !\in_array($result, array('fail', 'success'))) {
+                die;
+            }
+            // de cualquier manera no hacemos nada porque esto no lo ve ningun usuario
+            die;
         }
 
 

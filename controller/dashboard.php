@@ -23,18 +23,7 @@ namespace Goteo\Controller {
                 throw new Redirection('/paypal');
             }
 
-            $page = Page::get('dashboard');
-
-            $message = \str_replace('%USER_NAME%', $_SESSION['user']->name, $page->content);
-
-            return new View (
-                'view/dashboard/index.html.php',
-                array(
-                    'message' => $message,
-                    'menu'    => self::menu()
-                )
-            );
-
+            throw new Redirection('/dashboard/activity');
         }
 
         /*
@@ -80,6 +69,12 @@ namespace Goteo\Controller {
                 }
             }
 
+            if ($option == 'summary') {
+                $page = Page::get('dashboard');
+                $message = \str_replace('%USER_NAME%', $_SESSION['user']->name, $page->content);
+            } else {
+                $message = null;
+            }
 
             return new View (
                 'view/dashboard/index.html.php',
@@ -88,6 +83,7 @@ namespace Goteo\Controller {
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action,
+                    'message' => $message,
                     'lists'   => $lists,
                     'status'  => $status,
                     'errors'  => $errors,
@@ -185,7 +181,7 @@ namespace Goteo\Controller {
                             Message::Info(Text::get('user-profile-saved'));
                             $user = Model\User::flush();
 
-                            $log_action = 'Modificado su información de perfil';
+//                            $log_action = 'Modificado su información de perfil'; //feed admin
                         }
                     break;
                     
@@ -215,7 +211,7 @@ namespace Goteo\Controller {
                             if (Model\User::setPersonal($user->id, $personalData, true, $errors)) {
                                 Message::Info(Text::get('user-personal-saved'));
 
-                                $log_action = 'Modificado sus datos personales';
+                                $log_action = 'Modificado sus datos personales'; //feed admin
                             }
                         }
                     break;
@@ -242,7 +238,7 @@ namespace Goteo\Controller {
                                 unset($_POST['user_remail']);
                                 $success[] = Text::get('user-email-change-sended');
 
-                                $log_action = 'Cambiado su email';
+                                $log_action = 'Cambiado su email'; //feed admin
                             }
                         }
                         // Contraseña
@@ -279,7 +275,7 @@ namespace Goteo\Controller {
                                 unset($_POST['user_rpassword']);
                                 $success[] = Text::get('user-password-changed');
 
-                                $log_action = 'Cambiado su contraseña';
+                                $log_action = 'Cambiado su contraseña'; //feed admin
                             }
                         }
                         if($user->save($errors)) {
@@ -311,8 +307,8 @@ namespace Goteo\Controller {
                         // actualizamos estos datos en los personales del usuario
                         if (!empty ($preferences)) {
                             if (Model\User::setPreferences($user->id, $preferences, $errors)) {
-                                Message::Info('Tus preferencias de notificación se han guardado correctmente'); //Text::get('user-preferences-saved');
-                                $log_action = 'Modificado las preferencias de notificación';
+                                Message::Info(Text::get('user-prefer-saved'));
+                                $log_action = 'Modificado las preferencias de notificación'; //feed admin
                             }
                         }
                     break;
@@ -324,7 +320,7 @@ namespace Goteo\Controller {
                          * Evento Feed
                          */
                         $log = new Feed();
-                        $log->title = 'usuario modifica sus preferencias (dashboard)';
+                        $log->title = 'usuario '.$log_action.' (dashboard)';
                         $log->url = '/admin/users';
                         $log->type = 'user';
                         $log_text = '%s ha %s desde su dashboard';
@@ -702,18 +698,19 @@ namespace Goteo\Controller {
                                             $log->html = \vsprintf($log_text, $log_items);
                                             $log->add($errors);
 
-                                            // evento público
-                                            $log->title = $_SESSION['user']->name;
-                                            $log->url = '/user/profile/'.$_SESSION['user']->id;
-                                            $log->image = $_SESSION['user']->avatar->id;
-                                            $log->scope = 'public';
-                                            $log->type = 'community';
-                                            $log->html = Text::html('feed-new_support',
-                                                            Feed::item('project', $project->name, $project->id),
-                                                            Feed::item('update', $support->support, $project->id.'/messages#message'.$msg->id)
-                                                            );
-                                            $log->add($errors);
-
+                                            // evento público, si el proyecto es público
+                                            if ($project->status > 2) {
+                                                $log->title = $_SESSION['user']->name;
+                                                $log->url = '/user/profile/'.$_SESSION['user']->id;
+                                                $log->image = $_SESSION['user']->avatar->id;
+                                                $log->scope = 'public';
+                                                $log->type = 'community';
+                                                $log->html = Text::html('feed-new_support',
+                                                                Feed::item('project', $project->name, $project->id),
+                                                                Feed::item('update', $support->support, $project->id.'/messages#message'.$msg->id)
+                                                                );
+                                                $log->add($errors);
+                                            }
                                             unset($log);
 
                                         }
@@ -930,7 +927,7 @@ namespace Goteo\Controller {
                 // gestionar retornos
                 case 'rewards':
                     // recompensas ofrecidas
-                    $viewData['rewards'] = Model\Project\Reward::getAll($_SESSION['project']->id, 'individual');
+                    $viewData['rewards'] = Model\Project\Reward::getAll($_SESSION['project']->id, 'individual', LANG);
                     // aportes para este proyecto
                     $viewData['invests'] = Model\Invest::getAll($_SESSION['project']->id);
                     // ver por (esto son orden y filtros)
@@ -966,6 +963,259 @@ namespace Goteo\Controller {
                     $viewData['posts'] = $posts;
                     $viewData['post'] = $post;
                     break;
+            }
+
+            $viewData['project'] = $project;
+
+            return new View ('view/dashboard/index.html.php', $viewData);
+        }
+
+        /*
+         * Seccion, Mis traducciones
+         * Opciones:
+         *      'profile'  <-- ojo, con esto se traduce la informacion del usuario
+         *      'overview'
+         *      'costs'
+         *      'rewards'
+         *      'supports'
+         *      'updates'
+         *
+         */
+        public function translates ($option = 'overview', $action = 'list', $id = null) {
+
+            $user    = $_SESSION['user'];
+
+            $errors = array();
+
+            $langs = \Goteo\Library\Lang::getAll();
+            
+            if ($action == 'select' && !empty($_POST['lang'])) {
+                $_SESSION['translate_project_lang'] = $_POST['lang'];
+            } elseif (empty($_SESSION['translate_project_lang'])) {
+                $_SESSION['translate_project_lang'] = 'en';
+            }
+
+            $projects = Model\User\Translate::getMine($user->id, $_SESSION['translate_project_lang']);
+
+            if ($action == 'select' && !empty($_POST['project'])) {
+                // otro proyecto de trabajo
+                $project = Model\Project::get($_POST['project'], $_SESSION['translate_project_lang']);
+            } elseif (!empty($_SESSION['translate_project']->id)) {
+                // si tenemos ya proyecto, mantener los datos actualizados
+                $project = Model\Project::get($_SESSION['translate_project']->id, $_SESSION['translate_project_lang']);
+            } elseif (!empty($projects)) {
+                $project = $projects[0];
+            }
+
+            // aqui necesito tener un proyecto de trabajo,
+            // si no hay ninguno ccoge el último
+            if (!empty($project)) {
+                $_SESSION['translate_project'] = $project;
+                $project->lang_name = $langs[$project->lang]->name;
+                unset($langs[$project->lang]);
+            } else {
+                $option = 'profile';
+                unset($langs['es']);
+            }
+
+
+            if ($option == 'updates') {
+                // sus novedades
+                $blog = Model\Blog::get($project->id);
+                if ($action != 'edit') {
+                    $action = 'list';
+                }
+            }
+
+
+            // tratar lo que llega por post
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                switch ($option) {
+                    case 'profile':
+                        if ($action == 'save') {
+                            $user = Model\User::get($_POST['id'], $_SESSION['translate_project_lang']);
+                            $user->about_lang = $_POST['about'];
+                            $user->keywords_lang = $_POST['keywords'];
+                            $user->contribution_lang = $_POST['contribution'];
+                            $user->lang = $_SESSION['translate_project_lang'];
+                            $user->saveLang($errors);
+                        }
+                    break;
+
+                    case 'overview':
+                        if ($action == 'save') {
+                            $project->description_lang = $_POST['description'];
+                            $project->motivation_lang = $_POST['motivation'];
+                            $project->video_lang = $_POST['video'];
+                            $project->about_lang = $_POST['about'];
+                            $project->goal_lang = $_POST['goal'];
+                            $project->related_lang = $_POST['related'];
+                            $project->keywords_lang = $_POST['keywords'];
+                            $project->media_lang = $_POST['media'];
+                            $project->subtitle_lang = $_POST['subtitle'];
+                            $project->lang_lang = $_SESSION['translate_project_lang'];
+                            $project->saveLang($errors);
+                        }
+                    break;
+
+                    case 'costs':
+                        if ($action == 'save') {
+                            foreach ($project->costs as $key => $cost) {
+                                if (isset($_POST['cost-' . $cost->id . '-cost'])) {
+                                    $cost->cost_lang = $_POST['cost-' . $cost->id . '-cost'];
+                                    $cost->description_lang = $_POST['cost-' . $cost->id .'-description'];
+                                    $cost->lang = $_SESSION['translate_project_lang'];
+                                    $cost->saveLang($errors);
+                                }
+                            }
+                        }
+                    break;
+
+                    case 'rewards':
+                        if ($action == 'save') {
+                            foreach ($project->social_rewards as $k => $reward) {
+                                if (isset($_POST['social_reward-' . $reward->id . '-reward'])) {
+                                    $reward->reward_lang = $_POST['social_reward-' . $reward->id . '-reward'];
+                                    $reward->description_lang = $_POST['social_reward-' . $reward->id . '-description'];
+                                    $reward->lang = $_SESSION['translate_project_lang'];
+                                    $reward->saveLang($errors);
+                                }
+                            }
+                            foreach ($project->individual_rewards as $k => $reward) {
+                                if (isset($_POST['individual_reward-' . $reward->id .'-reward'])) {
+                                    $reward->reward_lang = $_POST['individual_reward-' . $reward->id .'-reward'];
+                                    $reward->description_lang = $_POST['individual_reward-' . $reward->id . '-description'];
+                                    $reward->lang = $_SESSION['translate_project_lang'];
+                                    $reward->saveLang($errors);
+                                }
+
+                            }
+                        }
+                    break;
+
+                    case 'supports':
+                        if ($action == 'save') {
+                            // tratar colaboraciones existentes
+                            foreach ($project->supports as $key => $support) {
+                                if (isset($_POST['support-' . $support->id . '-support'])) {
+                                    // guardamos los datos traducidos
+                                    $support->support_lang = $_POST['support-' . $support->id . '-support'];
+                                    $support->description_lang = $_POST['support-' . $support->id . '-description'];
+                                    $support->lang = $_SESSION['translate_project_lang'];
+                                    $support->saveLang($errors);
+                                    
+                                    // actualizar el Mensaje correspondiente, solamente actualizar
+                                    $msg = Model\Message::get($support->thread);
+                                    $msg->message_lang = "{$support->support_lang}: {$support->description_lang}";
+                                    $msg->lang = $_SESSION['translate_project_lang'];
+                                    $msg->saveLang($errors);
+                                }
+                            }
+                        }
+                    break;
+
+                    case 'updates':
+                        if (empty($_POST['blog']) || empty($_POST['id'])) {
+                            break;
+                        }
+
+                        $post = Model\Blog\Post::get($_POST['id']);
+
+                        $post->title_lang = $_POST['title'];
+                        $post->text_lang = $_POST['text'];
+                        $post->media_lang = $_POST['media'];
+                        $post->legend_lang = $_POST['legend'];
+                        $post->lang = $_SESSION['translate_project_lang'];
+                        $post->saveLang($errors);
+
+                        $action = 'edit';
+                    break;
+                }
+            }
+
+            // view data basico para esta seccion
+            $viewData = array(
+                    'menu'    => self::menu(),
+                    'section' => __FUNCTION__,
+                    'option'  => $option,
+                    'action'  => $action,
+                    'langs'=> $langs,
+                    'projects'=> $projects,
+                    'errors'  => $errors,
+                    'success' => $success
+                );
+
+
+            switch ($option) {
+                case 'profile':
+                    if ($action == 'own') {
+                        $viewData['user'] = Model\User::get($user->id, $_SESSION['translate_project_lang']);
+                        $viewData['ownprofile'] = true;
+                        break;
+                    }
+
+                    if ($project instanceof \Goteo\Model\Project) {
+                        $viewData['user'] = Model\User::get($project->owner, $_SESSION['translate_project_lang']);
+                    } else {
+                        $viewData['user'] = Model\User::get($user->id, $_SESSION['translate_project_lang']);
+                        $viewData['noowner'] = true;
+                    }
+                break;
+
+                case 'overview':
+                break;
+
+                case 'costs':
+                    if ($_POST) {
+                        foreach ($_POST as $k => $v) {
+                            if (!empty($v) && preg_match('/cost-(\d+)-edit/', $k, $r)) {
+                                $viewData[$k] = true;
+                            }
+                        }
+                    }
+                break;
+
+                case 'rewards':
+                    if ($_POST) {
+                        foreach ($_POST as $k => $v) {
+                            if (!empty($v) && preg_match('/((social)|(individual))_reward-(\d+)-edit/', $k)) {
+                                $viewData[$k] = true;
+                                break;
+                            }
+                        }
+                    }
+
+
+                break;
+
+                case 'supports':
+                    if ($_POST) {
+                        foreach ($_POST as $k => $v) {
+                            if (!empty($v) && preg_match('/support-(\d+)-edit/', $k, $r)) {
+                                $viewData[$k] = true;
+                                break;
+                            }
+                        }
+                    }
+                break;
+
+                // publicar actualizaciones
+                case 'updates':
+
+                    $viewData['blog'] = $blog;
+
+                    if ($action == 'edit') {
+                        $post = Model\Blog\Post::get($id, $_SESSION['translate_project_lang']);
+                        $viewData['post'] = $post;
+                    } else {
+                        $posts = array();
+                        foreach ($blog->posts as $post) {
+                            $posts[] = Model\Blog\Post::get($post->id, $_SESSION['translate_project_lang']);
+                        }
+                        $viewData['posts'] = $posts;
+                    }
+                break;
             }
 
             $viewData['project'] = $project;
@@ -1024,7 +1274,7 @@ namespace Goteo\Controller {
                         'profile'  => Text::get('dashboard-menu-profile-profile'),
                         'personal' => Text::get('dashboard-menu-profile-personal'),
                         'access'   => Text::get('dashboard-menu-profile-access'),
-                        'preferences' => 'Preferencias', //Text::get('dashboard-menu-profile-preferences'),
+                        'preferences' => Text::get('dashboard-menu-profile-preferences'),
                         'public'   => Text::get('dashboard-menu-profile-public')
                     )
                 ),
@@ -1050,13 +1300,35 @@ namespace Goteo\Controller {
              *
              */
 
+            // si tiene algun proyecto para traducir
+            $translates = Model\User\Translate::query("SELECT COUNT(project) FROM user_translate WHERE user = ?", array($_SESSION['user']->id));
+            if ($translates->fetchColumn(0) > 0) {
+                $menu['translates'] = array(
+                    'label' => Text::get('dashboard-menu-translates'),
+                    'options' => array (
+                        'profile'  => Text::get('step-1'),
+                        'overview' => Text::get('step-3'),
+                        'costs'    => Text::get('step-4'),
+                        'rewards'  => Text::get('step-5'),
+                        'supports' => Text::get('step-6'),
+                        'updates'  => Text::get('project-menu-updates')
+                    )
+                );
+            } else {
+                $menu['translates'] = array(
+                    'label' => Text::get('dashboard-menu-translates'),
+                    'options' => array (
+                        'profile'  => Text::get('step-1')
+                    )
+                );
+            }
 
             // si tiene permiso para ir al admin
             if (ACL::check('/admin')) {
                 $menu['admin'] = array(
                     'label'   => Text::get('dashboard-menu-admin_board'),
                     'options' => array(
-                        'board' => 'Ir al panel'
+                        'board' => Text::get('dashboard-menu-admin_board')
                     )
                 );
             }
@@ -1066,7 +1338,7 @@ namespace Goteo\Controller {
                 $menu['review'] = array(
                     'label'   => Text::get('dashboard-menu-review_board'),
                     'options' => array(
-                        'board' => 'Ir al panel'
+                        'board' => Text::get('dashboard-menu-review_board')
                     )
                 );
             }
@@ -1076,7 +1348,7 @@ namespace Goteo\Controller {
                 $menu['translate'] = array(
                     'label'   => Text::get('dashboard-menu-translate_board'),
                     'options' => array(
-                        'board' => 'Ir al panel'
+                        'board' => Text::get('dashboard-menu-translate_board')
                     )
                 );
             }

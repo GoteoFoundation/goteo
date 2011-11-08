@@ -32,6 +32,10 @@ namespace Goteo\Controller {
                 }
             }
 
+            if (isset($post) && !isset($blog->posts[$post])) {
+                throw new \Goteo\Core\Redirection('/blog');
+            }
+
             // segun eso montamos la vista
             return new View(
                 'view/blog/index.html.php',

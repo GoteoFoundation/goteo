@@ -26,7 +26,7 @@ namespace Goteo\Controller {
         }
 
         public function raw ($id) {
-            $project = Model\Project::get($id);
+            $project = Model\Project::get($id, LANG);
             $project->check();
             \trace($project);
             die;
@@ -315,7 +315,7 @@ namespace Goteo\Controller {
                     $viewData['stypes'] = Model\Project\Reward::icons('social');
                     $viewData['itypes'] = Model\Project\Reward::icons('individual');
                     $viewData['licenses'] = Model\Project\Reward::licenses();                                                                                
-                    $viewData['types'] = Model\Project\Support::types();            
+//                    $viewData['types'] = Model\Project\Support::types();
                     
                     if ($_POST) {
                         foreach ($_POST as $k => $v) {
@@ -431,7 +431,7 @@ namespace Goteo\Controller {
         }
 
         private function view ($id, $show, $post = null) {
-            $project = Model\Project::get($id);
+            $project = Model\Project::get($id, LANG);
 
             // recompensas
             foreach ($project->individual_rewards as &$reward) {
@@ -444,7 +444,6 @@ namespace Goteo\Controller {
             }
 
 
-            // DE ESTO PASAMOS HASTA LA PUESTA EN MARCHA
             // solamente se puede ver publicamente si
             // - es el dueño
             // - es un admin con permiso
@@ -498,7 +497,6 @@ namespace Goteo\Controller {
                         throw new Redirection('/project/'.$id, Redirection::TEMPORARY);
                     }
 
-                    Message::Info('En BETA, solo los betatesters pueden realizar aportes.');
 
                     $viewData['show'] = 'supporters';
                     if (isset($_GET['confirm'])) {
@@ -673,9 +671,10 @@ namespace Goteo\Controller {
             // image, media y category  van aparte
             $fields = array(
                 'name',
-                'lang',
+                'subtitle',
                 'description',
                 'motivation',
+                'video',
                 'about',
                 'goal',
                 'related',
@@ -708,6 +707,10 @@ namespace Goteo\Controller {
             // Media
             if (!empty($project->media)) {
                 $project->media = new Model\Project\Media($project->media);
+            }
+            // Video de motivación
+            if (!empty($project->video)) {
+                $project->video = new Model\Project\Media($project->video);
             }
 
             //categorias

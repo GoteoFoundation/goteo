@@ -31,7 +31,7 @@ namespace Goteo\Controller {
         public function login () {
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['login'])) {
-                $username = $_POST['username'];
+                $username = \strtolower($_POST['username']);
                 $password = $_POST['password'];
                 if (false !== ($user = (\Goteo\Model\User::login($username, $password)))) {
                     $_SESSION['user'] = $user;
@@ -70,6 +70,11 @@ namespace Goteo\Controller {
          */
         public function register () {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                foreach ($_POST as $key=>$value) {
+                    $_POST[$key] = trim($value);
+                }
+
             	$errors = array();
                 if (strcmp($_POST['email'], $_POST['remail']) !== 0) {
                     $errors['remail'] = Text::get('error-register-email-confirm');
@@ -215,7 +220,7 @@ namespace Goteo\Controller {
                 $show = 'profile';
             }
 
-            $user = Model\User::get($id);
+            $user = Model\User::get($id, LANG);
 
             if (!$user instanceof Model\User || $user->hide) {
                 throw new Redirection('/', Redirection::PERMANENT);
@@ -296,6 +301,9 @@ namespace Goteo\Controller {
 
             // comparten intereses
             $viewData['shares'] = Model\User\Interest::share($id, $category);
+            if (empty($viewData['shares'])) {
+                $show = 'profile';
+            }
 
             if (!empty($category)) {
                 $viewData['category'] = $category;

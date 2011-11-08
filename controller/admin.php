@@ -381,38 +381,53 @@ namespace Goteo\Controller {
             $errors = array();
 
 
-            if ($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['save-dates']) && isset($_POST['id'])) {
+            if ($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['id'])) {
 
-                $fields = array(
-                    'created',
-                    'updated',
-                    'published',
-                    'success',
-                    'closed'
-                    );
+                if (isset($_POST['save-dates'])) {
+                    $fields = array(
+                        'created',
+                        'updated',
+                        'published',
+                        'success',
+                        'closed',
+                        'passed'
+                        );
 
-                $set = '';
-                $values = array(':id' => $_POST['id']);
+                    $set = '';
+                    $values = array(':id' => $_POST['id']);
 
-                foreach ($fields as $field) {
-                    if ($set != '') $set .= ", ";
-                    $set .= "`$field` = :$field ";
-                    $values[":$field"] = $_POST[$field];
-                }
-
-                if ($set == '') {
-                    break;
-                }
-
-                try {
-                    $sql = "UPDATE project SET " . $set . " WHERE id = :id";
-                    if (Model\Project::query($sql, $values)) {
-                        $log_text = 'El admin %s ha <span class="red">tocado las fechas</span> del proyecto %s';
-                    } else {
-                        $log_text = 'Al admin %s le ha <span class="red">fallado al tocar las fechas</span> del proyecto %s';
+                    foreach ($fields as $field) {
+                        if ($set != '') $set .= ", ";
+                        $set .= "`$field` = :$field ";
+                        if (empty($_POST[$field]) || $_POST[$field] == '0000-00-00')
+                            $_POST[$field] = null;
+                        
+                        $values[":$field"] = $_POST[$field];
                     }
-                } catch(\PDOException $e) {
-                    $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
+
+                    if ($set == '') {
+                        break;
+                    }
+
+                    try {
+                        $sql = "UPDATE project SET " . $set . " WHERE id = :id";
+                        if (Model\Project::query($sql, $values)) {
+                            $log_text = 'El admin %s ha <span class="red">tocado las fechas</span> del proyecto %s';
+                        } else {
+                            $log_text = 'Al admin %s le ha <span class="red">fallado al tocar las fechas</span> del proyecto %s';
+                        }
+                    } catch(\PDOException $e) {
+                        $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
+                    }
+                } elseif (isset($_POST['save-accounts'])) {
+
+                    $accounts = Model\Project\Account::get($_POST['id']);
+                    $accounts->bank = $_POST['bank'];
+                    $accounts->paypal = $_POST['paypal'];
+                    if ($accounts->save($errors)) {
+                        $errors[] = 'Se han actualizado las cuentas del proyecto '.$_POST['id'];
+                    }
+
                 }
                 
             }
@@ -520,6 +535,24 @@ namespace Goteo\Controller {
                 );
             }
 
+            if ($action == 'accounts') {
+
+                $accounts = Model\Project\Account::get($project->id);
+
+                // cambiar fechas
+                return new View(
+                    'view/admin/index.html.php',
+                    array(
+                        'folder' => 'projects',
+                        'file' => 'accounts',
+                        'project' => $project,
+                        'accounts' => $accounts,
+                        'filters' => $filters,
+                        'errors' => $errors
+                    )
+                );
+            }
+
 
             $projects = Model\Project::getList($filters);
             $status = Model\Project::status();
@@ -565,7 +598,8 @@ namespace Goteo\Controller {
 
             $filter = "?status={$filters['status']}&checker={$filters['checker']}";
 
-            $errors = array();
+            $success = array();
+            $errors  = array();
 
             switch ($action) {
                 case 'add':
@@ -587,7 +621,7 @@ namespace Goteo\Controller {
                         if ($review->save($errors)) {
                             switch ($action) {
                                 case 'add':
-                                    $success = 'Revisión iniciada correctamente';
+                                    $success[] = 'Revisión iniciada correctamente';
 
                                     /*
                                      * Evento Feed
@@ -609,7 +643,7 @@ namespace Goteo\Controller {
 
                                     break;
                                 case 'edit':
-                                    $success = 'Datos editados correctamente';
+                                    $success[] = 'Datos editados correctamente';
                                     break;
                             }
                             
@@ -625,6 +659,7 @@ namespace Goteo\Controller {
                             'action' => $action,
                             'review' => $review,
                             'project'=> $project,
+                            'success'=> $success,
                             'errors' => $errors
                         )
                     );
@@ -793,9 +828,245 @@ namespace Goteo\Controller {
         }
 
         /*
+         *  Traducciones de proyectos
+         */
+        public function translates($action = 'list', $id = null) {
+
+            $BC = self::menu(array(
+                'section' => 'projects',
+                'option' => __FUNCTION__,
+                'action' => $action,
+                'id' => $id
+            ));
+
+            define('ADMIN_BCPATH', $BC);
+
+            $filters = array();
+            $fields = array('owner', 'translator');
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    $filters[$field] = $_GET[$field];
+                }
+            }
+
+            $filter = "?owner={$filters['owner']}&translator={$filters['translator']}";
+
+            $success = array();
+            $errors  = array();
+
+            switch ($action) {
+                case 'add':
+                    // proyectos que están más allá de edición y con traducción deshabilitada
+                    $availables = Model\User\Translate::getAvailables();
+                case 'edit':
+                case 'assign':
+                case 'unassign':
+                case 'send':
+
+                    // a ver si tenemos proyecto
+                    if (empty($id) && !empty($_POST['project'])) {
+                        $id = $_POST['project'];
+                    }
+
+                    if (!empty($id)) {
+                        $project = Model\Project::getMini($id);
+                    } elseif ($action != 'add') {
+                        Message::Error('No hay proyecto sobre el que operar');
+                        throw new Redirection('/admin/translates');
+                    }
+
+                    // asignar o desasignar
+                    // la id de revision llega en $id
+                    // la id del usuario llega por get
+                    $user = $_GET['user'];
+                    if (!empty($user)) {
+                        $userData = Model\User::getMini($user);
+
+                        $assignation = new Model\User\Translate(array(
+                            'id' => $project->id,
+                            'user' => $user
+                        ));
+
+                        switch ($action) {
+                            case 'assign': // se la ponemos
+                                $assignation->save($errors);
+                                $what = 'Asignado';
+                                break;
+                            case 'unassign': // se la quitamos
+                                $assignation->remove($errors);
+                                $what = 'Desasignado';
+                                break;
+                        }
+
+                        if (empty($errors)) {
+                            /*
+                             * Evento Feed
+                             */
+                            $log = new Feed();
+                            $log->title = $what . ' traduccion (admin)';
+                            $log->url = '/admin/reviews';
+                            $log->type = 'admin';
+                            $log_text = 'El admin %s ha %s a %s la traducción del proyecto %s';
+                            $log_items = array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', $what),
+                                Feed::item('user', $userData->name, $userData->id),
+                                Feed::item('project', $project->name, $project->id)
+                            );
+                            $log->html = \vsprintf($log_text, $log_items);
+                            $log->add($errors);
+
+                            unset($log);
+
+                        }
+
+                        $action = 'edit';
+                    }
+                    // fin asignar o desasignar
+
+                    // añadir o actualizar
+                    // se guarda el idioma original y si la traducción está abierta o cerrada
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
+
+                        echo \trace($_POST);
+
+                        // ponemos los datos que llegan
+                        $sql = "UPDATE project SET lang = :lang, translate = 1 WHERE id = :id";
+                        if (Model\Project::query($sql, array(':lang'=>$_POST['lang'], ':id'=>$id))) {
+                            $success[] = ($action == 'add') ? 'El proyecto '.$project->name.' se ha habilitado para traducir' : 'Datos de traducción actualizados';
+
+                            if ($action == 'add') {
+                                /*
+                                 * Evento Feed
+                                 */
+                                $log = new Feed();
+                                $log->title = 'proyecto habilitado para traducirse (admin)';
+                                $log->url = '/admin/translates';
+                                $log->type = 'admin';
+                                $log_text = 'El admin %s ha %s la traducción del proyecto %s';
+                                $log_items = array(
+                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('relevant', 'Habilitado'),
+                                    Feed::item('project', $project->name, $project->id)
+                                );
+                                $log->html = \vsprintf($log_text, $log_items);
+                                $log->add($errors);
+
+                                unset($log);
+
+                                $action = 'edit';
+                            }
+                        } else {
+                            $errors[] = 'Ha fallado al habilitar la traducción del proyecto ' . $project->name;
+                        }
+                    }
+
+                    if ($action == 'send') {
+                        // Informar al autor de que la traduccion está habilitada
+                        // Obtenemos la plantilla para asunto y contenido
+                        $template = Template::get(26);
+                        // Sustituimos los datos
+                        $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+                        $search  = array('%OWNERNAME%', '%PROJECTNAME%', '%SITEURL%');
+                        $replace = array($project->user->name, $project->name, SITE_URL);
+                        $content = \str_replace($search, $replace, $template->text);
+                        // iniciamos mail
+                        $mailHandler = new Mail();
+                        $mailHandler->to = $project->user->email;
+                        $mailHandler->toName = $project->user->name;
+                        // blind copy a goteo desactivado durante las verificaciones
+            //              $mailHandler->bcc = 'comunicaciones@goteo.org';
+                        $mailHandler->subject = $subject;
+                        $mailHandler->content = $content;
+                        $mailHandler->html = true;
+                        $mailHandler->template = $template->id;
+                        if ($mailHandler->send()) {
+                            $success[] = 'Se ha enviado un email a <strong>'.$project->user->name.'</strong> a la dirección <strong>'.$project->user->email.'</strong>';
+                        } else {
+                            $errors[] = 'Ha fallado informar a <strong>'.$project->user->name.'</strong> de la posibilidad de traducción de su proyecto';
+                        }
+                        unset($mailHandler);
+                        $action = 'edit';
+                    }
+
+
+                    $project->translators = Model\User\Translate::translators($id);
+                    $translators = Model\User::getAll(array('role'=>'translator'));
+                    // añadimos al dueño del proyecto en el array de traductores
+                    array_unshift($translators, $project->user);
+
+
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'translates',
+                            'file'   => 'edit',
+                            'action' => $action,
+                            'filters' => $filters,
+                            'availables' => $availables,
+                            'translators' => $translators,
+                            'project'=> $project,
+                            'success' => $success,
+                            'errors' => $errors
+                        )
+                    );
+
+                    break;
+                case 'close':
+                    // la sentencia aqui mismo
+                    // el campo translate del proyecto $id a false
+                    $sql = "UPDATE project SET translate = 0 WHERE id = :id";
+                    if (Model\Project::query($sql, array(':id'=>$id))) {
+                        $success[] = 'La traducción del proyecto '.$project->name.' se ha finalizado';
+
+                        Model\Project::query("DELETE FROM user_translate WHERE project = :id", array(':id'=>$id));
+
+                        /*
+                         * Evento Feed
+                         */
+                        $log = new Feed();
+                        $log->title = 'traducción finalizada (admin)';
+                        $log->url = '/admin/translates';
+                        $log->type = 'admin';
+                        $log_text = 'El admin %s ha dado por %s la traducción de %s';
+                        $log_items = array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('relevant', 'Finalizada'),
+                            Feed::item('project', $project->name, $project->id)
+                        );
+                        $log->html = \vsprintf($log_text, $log_items);
+                        $log->add($errors);
+
+                        unset($log);
+                    } else {
+                        $errors[] = 'Falló al finalizar la traducción';
+                    }
+                    break;
+            }
+
+            $projects = Model\Project::getTranslates($filters);
+            $owners = Model\User::getOwners();
+            $translators = Model\User::getAll(array('role'=>'translator'));
+
+            return new View(
+                'view/admin/index.html.php',
+                array(
+                    'folder' => 'translates',
+                    'file' => 'list',
+                    'projects' => $projects,
+                    'filters' => $filters,
+                    'owners' => $owners,
+                    'translators' => $translators,
+                    'success' => $success,
+                    'errors' => $errors
+                )
+            );
+        }
+
+        /*
          * proyectos destacados
          */
-        public function promote($action = 'list', $id = null) {
+        public function promote($action = 'list', $id = null, $flag = null) {
 
             $BC = self::menu(array(
                 'section' => 'home',
@@ -812,17 +1083,19 @@ namespace Goteo\Controller {
 
                 // objeto
                 $promo = new Model\Promote(array(
+                    'id' => $id,
                     'node' => \GOTEO_NODE,
                     'project' => $_POST['project'],
                     'title' => $_POST['title'],
                     'description' => $_POST['description'],
-                    'order' => $_POST['order']
+                    'order' => $_POST['order'],
+                    'active' => $_POST['active']
                 ));
 
 				if ($promo->save($errors)) {
                     switch ($_POST['action']) {
                         case 'add':
-                            $success = 'Proyecto destacado correctamente';
+                            $success[] = 'Proyecto destacado correctamente';
 
                             $projectData = Model\Project::getMini($_POST['project']);
 
@@ -846,7 +1119,7 @@ namespace Goteo\Controller {
 
                             break;
                         case 'edit':
-                            $success = 'Destacado editado correctamente';
+                            $success[] = 'Destacado actualizado correctamente';
                             break;
                     }
 				}
@@ -882,6 +1155,20 @@ namespace Goteo\Controller {
 			}
 
             switch ($action) {
+                case 'active':
+                    $set = $flag == 'on' ? true : false;
+                    Model\Promote::setActive($id, $set);
+                    /*
+                    {
+                        $res = ($set) ? 'publicado' : 'oculto';
+                        $success[] = "El proyecto ahora está " . $res;
+                    } else {
+                        $res = ($set) ? 'publicar' : 'ocultar';
+                        $errors[] = "Falló al " . $res . " el proyecto";
+                    }
+                     *
+                     */
+                    break;
                 case 'up':
                     Model\Promote::up($id);
                     break;
@@ -910,7 +1197,7 @@ namespace Goteo\Controller {
 
                         unset($log);
 
-                        $success = 'Proyecto quitado correctamente';
+                        $success[] = 'Proyecto quitado correctamente';
                     }
                     break;
                 case 'add':
@@ -2364,6 +2651,43 @@ namespace Goteo\Controller {
                     );
 
                     break;
+                case 'send':
+                    // obtenemos los usuarios que siguen teniendo su email como contraseña
+                    $workshoppers = Model\User::getWorkshoppers();
+
+                    if (empty($workshoppers)) {
+                        $errors[] = 'Ningún usuario tiene su email como contraseña, podemos cambiar la funcionalidad de este botón!';
+                    } else {
+
+                        // Obtenemos la plantilla para asunto y contenido
+                        $template = Template::get(27);
+
+                        foreach ($workshoppers as $fellow) {
+                            $err = array();
+                            // iniciamos mail
+                            $mailHandler = new Mail();
+                            $mailHandler->to = $fellow->email;
+                            $mailHandler->toName = $fellow->name;
+                            // blind copy a goteo desactivado durante las verificaciones
+                //              $mailHandler->bcc = 'comunicaciones@goteo.org';
+                            $mailHandler->subject = $template->title;
+                            // substituimos los datos
+                            $search  = array('%USERNAME%', '%USERID%', '%USEREMAIL%', '%SITEURL%');
+                            $replace = array($fellow->name, $fellow->id, $fellow->email, SITE_URL);
+                            $mailHandler->content = \str_replace($search, $replace, $template->text);
+                            $mailHandler->html = true;
+                            $mailHandler->template = $template->id;
+                            if ($mailHandler->send($err)) {
+                                $errors[] = 'Se ha enviado OK! a <strong>'.$fellow->name.'</strong> a la dirección <strong>'.$fellow->email.'</strong>';
+                            } else {
+                                $errors[] = 'Ha FALLADO! al enviar a <strong>'.$fellow->name.'</strong>. Ha dado este error: '. implode(',', $err);
+                            }
+                            unset($mailHandler);
+                        }
+
+
+                    }
+
                 case 'list':
                 default:
                     $users = Model\User::getAll($filters);
@@ -2567,13 +2891,21 @@ namespace Goteo\Controller {
 
             // cancelar aporte antes de ejecución, solo aportes no cargados
             if ($action == 'cancel') {
+
+                if ($project->status > 3 && $project->status < 6) {
+                    $errors[] = 'No debería poderse cancelar un aporte cuando el proyecto ya está financiado. Si es imprescindible, hacerlo desde el panel de paypal o tpv';
+                    break;
+                }
+
                 switch ($invest->method) {
                     case 'paypal':
-                        if (Paypal::cancelPreapproval($invest, $errors)) {
+                        $err = array();
+                        if (Paypal::cancelPreapproval($invest, $err)) {
                             $errors[] = 'Preaproval paypal cancelado.';
                             $log_text = "El admin %s ha cancelado aporte y preapproval de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
                         } else {
-                            $errors[] = 'Fallo al cancelar el preapproval en paypal: ' . implode('; ', $errors);
+                            $txt_errors = implode('; ', $err);
+                            $errors[] = 'Fallo al cancelar el preapproval en paypal: ' . $txt_errors;
                             $log_text = "El admin %s ha fallado al cancelar el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
                             if ($invest->cancel()) {
                                 $errors[] = 'Aporte cancelado';
@@ -2583,17 +2915,15 @@ namespace Goteo\Controller {
                         }
                         break;
                     case 'tpv':
-                        if (Tpv::cancelPreapproval($invest, $errors)) {
-                            $errors[] = 'Transacción sermepa cancelada.';
-                            $log_text = "El admin %s ha cancelado aporte y preapproval de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s";
+                        $err = array();
+                        if (Tpv::cancelPreapproval($invest, $err)) {
+                            $txt_errors = implode('; ', $err);
+                            $errors[] = 'Aporte cancelado correctamente. ' . $txt_errors;
+                            $log_text = "El admin %s ha anulado el cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s";
                         } else {
-                            $errors[] = 'Fallo al cancelar la transaccion sermepa: ' . implode('; ', $errors);
-                            $log_text = "El admin %s ha fallado al cancelar el aporte y preapproval de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
-                            if ($invest->cancel()) {
-                                $errors[] = 'Aporte cancelado';
-                            } else{
-                                $errors[] = 'Fallo al cancelar el aporte';
-                            }
+                            $txt_errors = implode('; ', $err);
+                            $errors[] = 'Fallo en la operación. ' . $txt_errors;
+                            $log_text = "El admin %s ha fallado al solicitar la cancelación del cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
                         }
                         break;
                     case 'cash':
@@ -2601,7 +2931,7 @@ namespace Goteo\Controller {
                             $log_text = "El admin %s ha cancelado aporte manual de %s de %s (id: %s) al proyecto %s del dia %s";
                             $errors[] = 'Aporte cancelado';
                         } else{
-                            $log_text = "El admin %s ha fallado al cancelar el aporte manual de %s de %s (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                            $log_text = "El admin %s ha fallado al cancelar el aporte manual de %s de %s (id: %s) al proyecto %s del dia %s. ";
                             $errors[] = 'Fallo al cancelar el aporte';
                         }
                         break;
@@ -2628,12 +2958,42 @@ namespace Goteo\Controller {
             }
 
             // ejecutar cargo ahora!!, solo aportes no ejecutados
-            if ($action == 'execute') {
+            // si esta pendiente, ejecutar el cargo ahora (como si fuera final de ronda), deja pendiente el pago secundario
+            if ($action == 'execute' && $invest->status == 0) {
                 switch ($invest->method) {
                     case 'paypal':
+                        // a ver si tiene cuenta paypal
+                        $projectAccount = Model\Project\Account::get($invest->project);
+
+                        if (empty($projectAccount->paypal)) {
+                            $errors[] = 'El proyecto no tiene cuenta paypal!!, ponersela en la seccion Contrato del dashboard del autor';
+                            $log_text = null;
+                            // Erroraco!
+                            /*
+                             * Evento Feed
+                             */
+                            $log = new Feed();
+                            $log->title = 'proyecto sin cuenta paypal (admin)';
+                            $log->url = '/admin/projects';
+                            $log->type = 'project';
+                            $log_text = 'El proyecto %s aun no ha puesto su %s !!!';
+                            $log_items = array(
+                                Feed::item('project', $project->name, $project->id),
+                                Feed::item('relevant', 'cuenta PayPal')
+                            );
+                            $log->html = \vsprintf($log_text, $log_items);
+                            $log->add($errors);
+
+                            unset($log);
+                            
+                            break;
+                        }
+
+                        $invest->account = $projectAccount->paypal;
                         if (Paypal::pay($invest, $errors)) {
                             $errors[] = 'Cargo paypal correcto';
                             $log_text = "El admin %s ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
+                            $invest->status = 1;
                         } else {
                             $txt_errors = implode('; ', $errors);
                             $errors[] = 'Fallo al ejecutar cargo paypal: ' . $txt_errors;
@@ -2644,6 +3004,7 @@ namespace Goteo\Controller {
                         if (Tpv::pay($invest, $errors)) {
                             $errors[] = 'Cargo sermepa correcto';
                             $log_text = "El admin %s ha ejecutado el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s del dia %s";
+                            $invest->status = 1;
                         } else {
                             $txt_errors = implode('; ', $errors);
                             $errors[] = 'Fallo al ejecutar cargo sermepa: ' . $txt_errors;
@@ -2654,33 +3015,39 @@ namespace Goteo\Controller {
                         $invest->setStatus('1');
                         $errors[] = 'Aporte al contado, nada que ejecutar.';
                         $log_text = "El admin %s ha dado por ejecutado el aporte manual a nombre de %s por la cantidad de %s (id: %s) al proyecto %s del dia %s";
+                        $invest->status = 1;
                         break;
                 }
 
-                /*
-                 * Evento Feed
-                 */
-                $log = new Feed();
-                $log->title = 'Cargo ejecutado (admin)';
-                $log->url = '/admin/invests';
-                $log->type = 'system';
-                $log_items = array(
-                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                    Feed::item('user', $userData->name, $userData->id),
-                    Feed::item('money', $invest->amount.' &euro;'),
-                    Feed::item('system', $invest->id),
-                    Feed::item('project', $project->name, $project->id),
-                    Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
-                );
-                $log->html = \vsprintf($log_text, $log_items);
-                $log->add($errors);
-                unset($log);
+                if (!empty($log_text)) {
+                    /*
+                     * Evento Feed
+                     */
+                    $log = new Feed();
+                    $log->title = 'Cargo ejecutado (admin)';
+                    $log->url = '/admin/invests';
+                    $log->type = 'system';
+                    $log_items = array(
+                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                        Feed::item('user', $userData->name, $userData->id),
+                        Feed::item('money', $invest->amount.' &euro;'),
+                        Feed::item('system', $invest->id),
+                        Feed::item('project', $project->name, $project->id),
+                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                    );
+                    $log->html = \vsprintf($log_text, $log_items);
+                    $log->add($errors);
+                    unset($log);
+                }
             }
 
 
 
             // detalles del aporte
-            if (in_array($action, array('details', 'canmcel', 'execute')) ) {
+            if (in_array($action, array('details', 'cancel', 'execute')) ) {
+
+                $invest = Model\Invest::get($id);
+
                 return new View(
                     'view/admin/index.html.php',
                     array(
@@ -2744,6 +3111,17 @@ namespace Goteo\Controller {
 
             $errors = array();
 
+            // visor de logs
+            if ($action == 'viewer') {
+                return new View(
+                    'view/admin/index.html.php',
+                    array(
+                        'folder' => 'accounts',
+                        'file' => 'viewer'
+                    )
+                );
+            }
+
             if (!isset($_GET['investStatus'])) {
                $_GET['investStatus'] = 'all';
             }
@@ -2801,30 +3179,8 @@ namespace Goteo\Controller {
                 );
             }
 
-            // si esta pendiente, ejecutar el cargo ahora (como si fuera final de ronda), deja pendiente el pago secundario
-            if ($action == 'execute') {
-                $invest = Model\Invest::get($id);
-
-                switch ($invest->method) {
-                    case 'paypal':
-                        if (Paypal::pay($invest, $errors)) {
-                            $errors[] = 'Cargo paypal correcto';
-                        } else {
-                            $errors[] = 'Fallo al ejecutar cargo paypal: ' . implode('; ', $errors);
-                        }
-                        break;
-                    case 'tpv':
-                        if (Tpv::pay($invest, $errors)) {
-                            $errors[] = 'Cargo sermepa correcto';
-                        } else {
-                            $errors[] = 'Fallo al ejecutar cargo sermepal: ' . implode('; ', $errors);
-                        }
-                        break;
-                }
-
-            }
-
             // devolver un cargo ejecutado o un pago ya efectuado
+            /*
             if ($action == 'return') {
                 $invest = Model\Invest::get($id);
 
@@ -2863,6 +3219,8 @@ namespace Goteo\Controller {
                 }
 
             }
+             * 
+             */
 
             // listado de aportes
             if (!empty($filters)) {
@@ -2933,7 +3291,7 @@ namespace Goteo\Controller {
             $projects = Model\Project::published('success');
 
             foreach ($projects as $kay=>&$project) {
-                $project->social_rewards = Model\Project\Reward::getAll($project->id, 'social', $filters['status'], $filters['icon']);
+                $project->social_rewards = Model\Project\Reward::getAll($project->id, 'social', LANG, $filters['status'], $filters['icon']);
             }
 
             $status = array(
@@ -4342,7 +4700,7 @@ namespace Goteo\Controller {
                             case 'investor':
                                 $sqlInner .= "INNER JOIN invest
                                         ON invest.user = user.id
-                                        AND (invest.status = 0 OR invest.status = 1 OR invest.status = 3 )
+                                        AND (invest.status = 0 OR invest.status = 1 OR invest.status = 3 OR invest.status = 4)
                                     INNER JOIN project
                                         ON project.id = invest.project
                                         AND project.status > 0
@@ -4459,7 +4817,7 @@ namespace Goteo\Controller {
                             }
                         }
 
-                        $content = $_POST['content'];
+                        $content = nl2br($_POST['content']);
                         $subject = $_POST['subject'];
 
                         // Obtenemos la plantilla
@@ -4467,9 +4825,22 @@ namespace Goteo\Controller {
 
                         // ahora, envio, el contenido a cada usuario
                         foreach ($users as $usr) {
-                            $search  = array('%USERNAME%', '%CONTENT%');
-                            $replace = array($_SESSION['mailing']['receivers'][$usr]->name, $content);
+
                             $tmpcontent = \str_replace($search, $replace, $template->text);
+                            $tmpcontent = \str_replace(
+                                array('%USERID%', '%USEREMAIL%', '%USERNAME%', '%SITEURL%'),
+                                array(
+                                    $usr,
+                                    $_SESSION['mailing']['receivers'][$usr]->email,
+                                    $_SESSION['mailing']['receivers'][$usr]->name,
+                                    SITE_URL
+                                ),
+                                $content);
+
+
+                            $search  = array('%USERNAME%', '%CONTENT%');
+                            $replace = array($_SESSION['mailing']['receivers'][$usr]->name, $tmpcontent);
+                            $thecontent = \str_replace($search, $replace, $template->text);
 
                             $mailHandler = new Mail();
 
@@ -4478,7 +4849,7 @@ namespace Goteo\Controller {
                             // blind copy a goteo desactivado durante las verificaciones
             //              $mailHandler->bcc = 'comunicaciones@goteo.org';
                             $mailHandler->subject = $subject;
-                            $mailHandler->content = $tmpcontent;
+                            $mailHandler->content = $thecontent;
                             $mailHandler->html = true;
                             $mailHandler->template = $template->id;
                             if ($mailHandler->send($errors)) {
@@ -4797,16 +5168,26 @@ namespace Goteo\Controller {
                         'projects' => array(
                             'label' => 'Listado de proyectos',
                             'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false)
+                                'list' => array('label' => 'Listando', 'item' => false),
+                                'dates' => array('label' => 'Cambiando las fechas del proyecto ', 'item' => true),
+                                'accounts' => array('label' => 'Gestionando las cuentas del proyecto ', 'item' => true)
                             )
                         ),
                         'reviews' => array(
-                            'label' => 'Revisión de proyectos',
+                            'label' => 'Revisiones',
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'add'  => array('label' => 'Iniciando briefing', 'item' => false),
                                 'edit' => array('label' => 'Editando briefing', 'item' => true),
                                 'report' => array('label' => 'Informe', 'item' => true)
+                            )
+                        ),
+                        'translates' => array(
+                            'label' => 'Traducciones',
+                            'actions' => array(
+                                'list' => array('label' => 'Listando', 'item' => false),
+                                'add'  => array('label' => 'Habilitando traducción', 'item' => false),
+                                'edit' => array('label' => 'Asignando traducción', 'item' => true)
                             )
                         ),
                         'rewards' => array(
@@ -4875,6 +5256,7 @@ namespace Goteo\Controller {
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'add'  => array('label' => 'Aporte manual', 'item' => false),
                                 'details' => array('label' => 'Detalles del aporte', 'item' => true),
+                                'execute' => array('label' => 'Ejecución del cargo ahora mismo', 'item' => true),
                                 'cancel' => array('label' => 'Cancelando aporte', 'item' => true),
                                 'report' => array('label' => 'Informe de proyecto', 'item' => true)
                             )
@@ -4884,7 +5266,7 @@ namespace Goteo\Controller {
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'details' => array('label' => 'Detalles de la transacción', 'item' => true),
-                                'execute' => array('label' => 'Ejecución del cargo ahora mismo', 'item' => true)
+                                'viewer' => array('label' => 'Viendo logs', 'item' => false)
                             )
                         )/*,
                         'credits' => array(

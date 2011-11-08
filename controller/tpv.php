@@ -16,42 +16,105 @@ namespace Goteo\Controller {
     class Tpv extends \Goteo\Core\Controller {
 
         public static $errcode = array(
-            'SIS0257' => 'Tarjeta no permite preapproval',
-            'SIS0253' => 'Tarjeta no reconocida',
-            'SIS0051' => 'Pedido repetido',
-            'SIS0078' => 'Método de pago no disponible para su tarjeta',
-            'SIS0093' => 'Tarjeta no válida',
-            'SIS0094' => 'Error en la llamada al MPI sin controlar',
-            'SIS0218' => 'El comercio no permite preatorizacion por la entrada XML',
-            'SIS0256' => 'El comercio no puede realizar preautorizaciones',
-            'SIS0257' => 'Esta tarjeta no permite operativa de preautorizaciones',
-            'SIS0261' => 'Operación detenida por superar el control de restricciones en la entrada al SIS',
-            'SIS0270' => 'El comercio no puede realizar autorizaciones en diferido',
-            'SIS0274' => 'Tipo de operación desconocida o no permitida por esta entrada al SIS'
-        );
-
-        /*
-        (ds_response) tendrá los siguientes valores posibles:
-        0000 a 0099 Transacción autorizada para pagos y preautorizaciones
-        Cualquier otro valor (que no esté en el array) Transacción denegada
-         */
-        public static $respcode = array(
-            '0900' => 'Transacción autorizada para devoluciones y confirmaciones',
-            '9104' => 'Operación no permitida para esa tarjeta o terminal',
-            '9912' => 'Emisor no disponible',
+            '0' => 'Operación aprobada',
+            '1' => 'COMUNICACION ON-LINE INCORRECTA',
+            '2' => 'ERROR AL CALCULAR FIRMA',
+            '5' => 'ERROR. Error en el SELECT COMERCIOS <%d>',
+            '6' => 'ERROR. Faltan campos obligatorios',
+            '7' => 'ERROR. MerchantID inexistente <%d>',
+            '9' => 'ERROR. No se pudo conectar a ORACLE <%d>',
+            '10' => 'ERROR. Tarjeta errónea',
+            '12' => 'FIRMA: %s-%s',
+            '13' => 'OPERACION INCORRECTA',
+            '14' => 'ERROR. Error en el SELECT OPERACIONES <%d>',
+            '15' => 'ERROR. Operación inexistente <%d>',
+            '16' => 'ERROR. Operación ya anulada <%d>',
+            '17' => 'ERROR AL OBTENER CLAVE',
+            '18' => 'ERROR. El ETILL no acepta el pedido',
+            '19' => 'ERROR. Datos no numéricos',
+            '20' => 'ERROR. Datos no alfa-numéricos',
+            '21' => 'ERROR en el calculo del MAC',
+            '22' => 'ERROR en el calculo del MAC [%s - %s][cadena:%s]',
+            '23' => 'ERROR. Usuario o password no valido.',
+            '24' => 'ERROR. Tipo de moneda no valido. La operación debe realizarse en Euros.',
+            '25' => 'ERROR. Importe no Integer.',
+            '26' => 'ERROR. Operación no realizable 100.',
+            '27' => 'ERROR. Formato CVV2/CVC2 no valido.',
+            '28' => 'ERROR. Debe especificar el CVV2/CVC2 de su tarjeta.',
+            '29' => 'ERROR. CVV2 no Integer.',
+            '30' => 'ERROR. En estos momentos no es posible continuar sin cvc2/cvv2',
+            '31' => 'ERROR. ERROR en la operatoria del comercio.',
+            '32' => 'ERROR. Tipo de moneda no valido. La operación debe realizarse en Euros.',
+            '33' => 'ERROR. El comercio solo puede realizar pagos en Euros',
+            '34' => 'ERROR. Moneda o conversión no valida para esta tarjeta.[%d]',
+            '35' => 'ERROR. Moneda o conversión no valida.[%d]',
+            '36' => 'ERROR. Conversión a Euros no válida [%s][%s].',
+            '37' => 'ERROR. El comercio no dispone de esta opción.',
+            '38' => 'ERROR. Respuesta Errónea del Gestor de operaciones. [%d][%s].',
+            '39' => 'ERROR. No es posible continuar con la preautorizacion.',
+            '40' => 'ERROR. Error de comunicaciones Lu´s. No es posible finalizar la operación.',
+            '41' => 'ERROR. TimeOut SEP. No es posible finalizar la operación.',
+            '42' => 'ERROR. SEP devuelve un 20 ERROR. No es posible finalizar la operación.',
+            '43' => 'ERROR. Error inesperado. No es posible finalizar la operación [%d].',
+            '44' => 'ERROR. Respuesta Errónea de SEP. No es posible finalizar la operación.',
+            '45' => 'ERROR. No es posible continuar con la preautorización.',
+            '46' => 'ERROR. Error en el proceso de Autentificación. No retroceda en el navegador. Debe volver al comercio y reintentar el pago.',
+            '47' => 'ERROR. Entidad no disponible. Inténtelo dentro de unos minutos',
+            '48' => 'ERROR. Error en el proceso de Autentificación. Respuesta PAREQ no valida [%d]. No retroceda en el navegador. Debe volver al comercio y reintentar el pago.',
+            '49' => 'ERROR. Error en el proceso de Autentificación. Respuesta PAREQ de su entidad no valida: %s,TXSTATUS',
+            '50' => 'ERROR. Fallo en el proceso de Autentificación. Es necesario una identificación positiva para finalizar el proceso de compra: %s,TXSTATUS',
+            '51' => 'ERROR. Fallo en el proceso de Autentificación. El comercio no acepta pagos no seguros: %s. Póngase en contacto con la entidad emisora de su tarjeta.,TXSTATUS',
+            '52' => 'ERROR. En estos momentos no es posible iniciar un pago seguro',
+            '53' => 'ERROR. Comercio seguro. Su tarjeta no admite autentificación y no puede operar en este comercio [%s]. Póngase en contacto con la entidad emisora de su tarjeta.',
+            '54' => 'ERROR. No es posible iniciar un pago seguro y el importe supera el máximo permitido (%f <= %s). [Resultado: %s]',
+            '55' => 'ERROR. En este momento no es posible iniciar un pago seguro. [Resultado: %s]',
+            '56' => 'ERROR. No es posible iniciar un pago seguro y el importe supera el máximo permitido (%f <= %s). [Resultado: %s]',
+            '57' => 'ERROR. En este momento no es posible iniciar un pago seguro y el importe supera el máximo permitido (%f <= %s). [Resultado: %s]',
+            '58' => 'ERROR. En este momento no es posible iniciar un pago seguro. [Resultado: %s]',
+            '59' => 'ERROR. El comercio tiene un filtro que no permite esta operación.',
+            '60' => 'ERROR. El Comercio solo admite pago seguro. Necesita autentificarse para continuar.',
+            '61' => 'ERROR. Operación segura no permitida. Importe (%14.2f) mayor del limite establecido (%14.2f).',
+            '62' => 'ERROR. El comercio tiene un filtro que no permite esta operación.(Filtro2:%d)',
+            '63' => 'ERROR. El comercio no acepta pagos Visa no autentificados. Póngase en contacto con su entidad para activar este tipo de pago.',
+            '64' => 'ERROR. El comercio no acepta pagos MasterCard no autentificado. Póngase en contacto con su entidad para activar este tipo de pago.',
+            '65' => 'ERROR. El comercio no acepta pagos no autentificados. Póngase en contacto con su entidad para activar este tipo de pago.',
+            '66' => 'ERROR. Error de proceso. El comercio no acepta pagos no autentificados. Póngase en contacto con su entidad para activar este tipo de pago.',
+            '67' => 'ERROR. Operación segura no autorizada. Importe (%14.2f) mayor del limite establecido (%14.2f).',
+            '68' => 'ERROR. Respuesta Errónea del Gestor de operaciones. Operación anulada [%s].Gestor: [%d][%s].',
+            '69' => 'ERROR. Operatoria UCAF no valida. Póngase en contacto con su comercio o caja.',
+            '100' => 'Tarjeta no válida (en negativos)',
             '101' => 'Tarjeta caducada',
-            '102' => 'Tarjeta en excepción transitoria o bajo sospecha de fraude',
-            '104' => 'Operación no permitida para esa tarjeta o terminal',
-            '116' => 'Disponible insuficiente',
-            '118' => 'Tarjeta no registrada (Método de pago no disponible para su tarjeta)',
-            '129' => 'Código de seguridad (CVV2/CVC2) incorrecto',
-            '180' => 'Tarjeta ajena al servicio (Tarjeta no válida)',
-            '184' => 'Error en la autenticación del titular (Error en la llamada al MPI sin controlar)',
-            '190' => 'Denegación sin especificar Motivo',
-            '191' => 'Fecha de caducidad errónea',
-            '202' => 'Tarjeta en excepción transitoria o bajo sospecha de fraude con retirada de tarjeta',
-            '913' => 'Pedido repetido',
-            '912' => 'Emisor no disponible'
+            '104' => 'Tarjeta no válida (electrón)',
+            '106' => 'Tarjeta no válida (reintentos de PIN)',
+            '111' => 'Número de tarjeta mal tecleado (check)',
+            '112' => 'Tarjeta no válida (se exige PIN)',
+            '114' => 'No admitida la forma de pago solicitada',
+            '116' => 'Saldo insuficiente',
+            '118' => 'Tarjeta no válida (no existente en ficheros)',
+            '120' => 'Tarjeta no válida en este comercio',
+            '121' => 'Disponible sobrepasado',
+            '123' => 'Número máximo de operaciones superado',
+            '125' => 'La tarjeta todavía no es operativa',
+            '180' => 'Tarjeta no soportada por el sistema',
+            '190' => 'Operación no realizable (resto de casos)',
+            '400' => 'Anulación aceptada',
+            '480' => 'Anulación por TO aceptada sin encontrar la operación original',
+            '900' => 'Devolución aceptada',
+            '904' => 'Operación no realizable (error de formato)',
+            '908' => 'Tarjeta desconocida',
+            '909' => 'Operación no realizable (error de sistema)',
+            '912' => 'Su entidad no está disponible',
+            '913' => 'Operación no realizable (clave duplicada)',
+            '914' => 'No existe la operación a anular',
+            '930' => 'Operación no realizable (caja merchant no válida)',
+            '931' => 'Operación no realizable (comercio no dado de alta)',
+            '932' => 'Operación no realizable (bin merchant no existe)',
+            '933' => 'Operación no realizable (sector desconocido)',
+            '940' => 'Ya recibida una anulación',
+            '944' => 'Operación no realizable (sesión no válida)',
+            '948' => 'Operación no realizable (fecha/hora inválida)',
+            '950' => 'Devolución no aceptada',
+            '999' => 'Operación no realizable (resto de casos)'
         );
 
         public function index () {
@@ -60,42 +123,48 @@ namespace Goteo\Controller {
         
 
         public function comunication () {
-            if (isset($_POST['Ds_Order'])) {
-                $_POST['invest'] = $id = \substr($_POST['Ds_Order'], 0, -4);
+            if (isset($_POST['Num_operacion'])) {
+                $_POST['invest'] = $id = \substr($_POST['Num_operacion'], 0, -4);
                 
                 $invest = Invest::get($id);
 
                 $userData = User::getMini($invest->user);
                 $projectData = Project::getMini($invest->project);
 
-                // a ver si hay una respuesta chunga
-                $Cresp = (string) $_POST['Ds_Response'];
-                $respTxt = self::$respcode[$Cresp];
-                if ($_POST['Ds_Response'] > 99 && !empty($respTxt)) {
-                    
-                    @\mail('goteo-tpv-fault@doukeshi.org', 'Respuesta de Fallo', $respTxt.'<br /><pre>' . print_r($_POST, 1) . '</pre>');
-                    $invest->cancel('RESP' . $Cresp);
-                    $_POST['result'] = 'Fail';
+                $response = '';
+                foreach ($_POST as $n => $v) {
+                    $response .= "{$n}:'{$v}'; ";
+                }
 
-                    $log_text = 'Ha habido una respuesta de <span class="red">Fallo de TPV (Codigo: '.$Cresp.': '.$respTxt.')</span> en el aporte de %s de %s al proyecto %s mediante TPV';
+                $conf = array('mode' => 0600, 'timeFormat' => '%X %x');
+                $logger = &\Log::singleton('file', 'logs/'.date('Ymd').'_invest.log', 'caller', $conf);
 
-                } elseif (empty($_POST['Ds_ErrorCode'])) {
-                    
-                    $invest->setTransaction($_POST['Ds_AuthorisationCode']);
+                $logger->log("response: $response");
+                $logger->log('##### END TPV ['.$id.'] '.date('d/m/Y').' '.$_POST['Ds_MerchantData'].'#####');
+                $logger->close();
+
+
+                if (!empty($_POST['Referencia'])) {
+                    $invest->setPayment($_POST['Referencia']);
+                    $invest->setTransaction($_POST['Num_aut']);
                     $_POST['result'] = 'Transaccion ok';
-                    $invest->setStatus('0');
 
                     $log_text = "%s ha aportado %s al proyecto %s mediante TPV";
-                    $doPublic = true;
+                    if (!$invest->anonymous) {
+                        $doPublic = true;
+                    }
+
+                    echo '$*$OKY$*$';
+                    
                 } else {
 
-                    $Cerr = (string) $_POST['Ds_ErrorCode'];
+                    $Cerr = (string) $_POST['Codigo_error'];
                     $errTxt = self::$errcode[$Cerr];
-                    @\mail('goteo-tpv-fault@doukeshi.org', 'Error en TPV', $errTxt.'<br /><pre>' . print_r($_POST, 1) . '</pre>');
-                    $invest->cancel($_POST['Ds_ErrorCode']);
+                    @\mail('goteo-tpv-fault@doukeshi.org', 'Error en TPV', 'Codigo error: '.$Cerr.' '.$errTxt.'<br /><pre>' . print_r($_POST, 1) . '</pre>');
+                    $invest->cancel('ERR '.$Cerr);
                     $_POST['result'] = 'Fail';
 
-                    $log_text = 'Ha habido un <span class="red">ERROR de TPV (Codigo: '.$Cerr.': '.$errTxt.')</span> en el aporte de %s de %s al proyecto %s mediante TPV';
+                    $log_text = 'Ha habido un <span class="red">ERROR de TPV (Codigo: '.$Cerr.' '.$errTxt.')</span> en el aporte de %s de %s al proyecto %s mediante TPV';
                     $doPublic = false;
                 }
 
@@ -118,7 +187,7 @@ namespace Goteo\Controller {
                     // evento público
                     $log->title = $userData->name;
                     $log->url = '/user/profile/'.$userData->id;
-                    $log->image = $_SESSION['user']->avatar->id;
+                    $log->image = $userData->avatar->id;
                     $log->scope = 'public';
                     $log->type = 'community';
 
@@ -128,28 +197,25 @@ namespace Goteo\Controller {
                     $log->add($errors);
                 }
                 unset($log);
-
-                $response = '';
-                foreach ($_POST as $n => $v) {
-                    $response .= "{$n}:'{$v}'; ";
-                }
-
-                $conf = array('mode' => 0600, 'timeFormat' => '%X %x');
-                $logger = &\Log::singleton('file', 'logs/'.date('Ymd').'_invest.log', 'caller', $conf);
-
-                $logger->log("response: $response");
-                $logger->log('##### END TPV ['.$id.'] '.date('d/m/Y').' '.$_POST['Ds_MerchantData'].'#####');
-                $logger->close();
             } else {
-                throw new Redirection('/', Error::BAD_REQUEST);
+                echo 'Se esperaban recibir datos de comunicación online del TPV.';
+                @\mail('goteo-tpv-fault@doukeshi.org', 'Comunicacion online sin datos', 'Este GET<pre>' . print_r($_GET, 1) . '</pre> y este POST:<pre>' . print_r($_POST, 1) . '</pre>');
+//                throw new Redirection('/', Error::BAD_REQUEST);
             }
 
-            
+            die;
         }
 
         public function simulacrum () {
             echo 'Simulacrum<br />';
-            echo \trace($_POST);
+            @\mail('julian.canaves@gmail.com', 'Test request', 'Recibido este POST:<pre>' . print_r($_POST, 1) . '</pre>');
+            die;
+        }
+
+        public function test () {
+            $string = 'g o-t+e/o.org';
+            echo $string . ' -> ';
+            echo \Goteo\Core\Model::idealiza($string);
             die;
         }
 
