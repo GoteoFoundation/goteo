@@ -47,7 +47,7 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
             <div class="project-header">
                 <a href="/user/<?php echo $project->owner; ?>"><img src="<?php echo SRC_URL ?>/image/<?php echo $project->user->avatar->id; ?>/56/56/1" /></a>
                 <h2><span><?php echo htmlspecialchars($project->name . $project->subtitle) ?></span></h2>
-                <div class="project-by"><a href="/user/<?php echo $project->owner; ?>">Por: <?php echo $project->user->name; ?></a></div>
+                <div class="project-by"><a href="/user/<?php echo $project->owner; ?>"><?php echo Text::get('regular-by') ?> <?php echo $project->user->name; ?></a></div>
                 <br clear="both" />
 
                 <div class="categories"><h3><?php echo Text::get('project-view-categories-title'); ?></h3>

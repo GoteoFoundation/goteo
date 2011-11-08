@@ -43,8 +43,8 @@ jQuery(document).ready(function($) {
                 <h8 class="title"><?php echo Text::get('footer-header-resources') ?></h8>
                 <ul class="scroll-pane">
                     <li><a href="/faq"><?php echo Text::get('regular-header-faq') ?></a></li>
-                    <li><a href="/glossary">Glosario</a></li>
-                    <li><a href="/press">Prensa</a></li>
+                    <li><a href="/glossary"><?php echo Text::get('footer-resources-glossary') ?></a></li>
+                    <li><a href="/press"><?php echo Text::get('footer-resources-press') ?></a></li>
                     <?php foreach ($posts as $id=>$title) : ?>
                     <li><a href="/blog/<?php echo $id ?>"><?php echo Text::recorta($title, 50) ?></a></li>
                     <?php endforeach; ?>

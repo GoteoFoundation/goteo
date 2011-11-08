@@ -71,7 +71,7 @@ if (isset($this['investor']) && is_object($this['investor'])) {
 
     <h<?php echo $level ?> class="title"><a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><?php echo htmlspecialchars(Text::recorta($project->name,50)) ?></a></h<?php echo $level ?>>
 
-    <h<?php echo $level + 1 ?> class="author">Por: <a href="<?php echo SITE_URL ?>/user/profile/<?php echo htmlspecialchars($project->user->id) ?>"<?php echo $blank; ?>><?php echo htmlspecialchars(Text::recorta($project->user->name,40)) ?></a></h<?php echo $level + 1?>>
+    <h<?php echo $level + 1 ?> class="author"><?php echo Text::get('regular-by')?> <a href="<?php echo SITE_URL ?>/user/profile/<?php echo htmlspecialchars($project->user->id) ?>"<?php echo $blank; ?>><?php echo htmlspecialchars(Text::recorta($project->user->name,40)) ?></a></h<?php echo $level + 1?>>
 
     <div class="description"><?php echo Text::recorta($project->description, 100); ?></div>
 
@@ -83,7 +83,7 @@ if (isset($this['investor']) && is_object($this['investor'])) {
         <ul>
            <?php $q = 1; foreach ($project->social_rewards as $social): ?>
             <li class="<?php echo $social->icon ?> activable">
-                <a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$social->icon_name}: {$social->reward} al procomún") ?>" class="tipsy"><?php echo htmlspecialchars($social->reward) ?></a>
+                <a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$social->icon_name}: {$social->reward} al procomï¿½n") ?>" class="tipsy"><?php echo htmlspecialchars($social->reward) ?></a>
             </li>
            <?php if ($q >= 5) break; $q++;
                endforeach ?>
@@ -111,7 +111,7 @@ if (isset($this['investor']) && is_object($this['investor'])) {
     </div>
     <?php else : // normal ?>
     <div class="buttons">
-        <?php if ($project->status == 3) : // si esta en campaña se puede aportar ?>
+        <?php if ($project->status == 3) : // si esta en campaï¿½a se puede aportar ?>
         <a class="button violet supportit" href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>/invest"<?php echo $blank; ?>><?php echo Text::get('regular-invest_it'); ?></a>
         <?php else : ?>
         <a class="button view" href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>/updates"<?php echo $blank; ?>><?php echo Text::get('regular-see_blog'); ?></a>

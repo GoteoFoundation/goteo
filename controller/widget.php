@@ -10,7 +10,7 @@ namespace Goteo\Controller {
         
         public function project ($id) {
 
-            $project  = Project::get($id);
+            $project  = Project::get($id, LANG);
 
             if (! $project instanceof  Project) {
                 throw new Redirection('/', Redirection::TEMPORARY);

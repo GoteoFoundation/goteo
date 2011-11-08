@@ -116,7 +116,6 @@ div#sub-header > div > div.slides_container > div.slides_control > div.subhead-b
 
 div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-img{
 	margin:0px;
-/*	background: url('header/banners/test-banner-home.jpg') scroll no-repeat  0 0; */
 	height:156px;
 }
 
@@ -186,44 +185,38 @@ div#sub-header > div > div.slides_container > div.slides_control > div.subhead-b
 div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter{
     float:right;
 	width:75px;
-	font: normal 11px Helvetica, Arial, Geneva, sans-serif;
+	font-size: 11px;
+    font-weight: normal;
 	list-style:none;
-	margin:0 0 0 20px;
+	margin: -11px 0 0 20px;
 	padding:0;
 }
 
 div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter li{
 	margin:0;
 	padding:0;
+    text-transform: uppercase;
 }
 
 div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter li.reached{
-    font: bold 14px Helvetica, Arial, Geneva, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
 	color:#1eb2b2;
 }
 
 div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter li.optimun{
-    font: bold 14px Helvetica, Arial, Geneva, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
 	color:#96238F;
+    margin-bottom: 3px;
 }
 
-div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter li.reached .euro,
-div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter li.optimun .euro{
-	height: 16px;
-	width: 16px;
-	line-height: 2000px;
-	overflow: hidden;
-	display: inline-block;
-	margin-bottom: -3px;
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter li.reached img,
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter li.optimun img{
+    position: relative;
+	bottom: -3px;
 }
 
-div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter li.reached .euro{
-	background: url('euro/blue/s.png') scroll no-repeat top right;
-}
-
-div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter li.optimun .euro{
-	background: url('euro/violet/s.png') scroll no-repeat top right;
-}
 
 div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter li.days{
 	color:#1eb2b2;

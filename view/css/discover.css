@@ -3,9 +3,13 @@ body.discover div#main div.widget {
     margin-bottom: 30px;
 }
 
+body.discover div#main div.searcher {
+	background-color: transparent;	
+}
+
 /* Buscador */
 div.searcher form {
-	padding-left:75px !important;
+	/*padding-left:75px !important;*/
 }
 
 .searcher .text-filter{
@@ -14,65 +18,77 @@ div.searcher form {
 }
 
 .searcher .text-filter label{
-	color: #FFFFFF;
+	/*color: #FFFFFF;*/
 	font-weight: bold;
-	padding: 5px 90px 6px 15px;
-	text-transform:capitalize;
-	background:url('triangulo-lateral.png') right no-repeat #656566;
+	/*padding: 5px 90px 6px 15px;*/
+	text-transform:uppercase;
+	/*background:url('triangulo-lateral.png') right no-repeat #656566;*/
+	font-size: 14px;
+	float: left;
+	padding-top: 7px;
 }
 
 .searcher #text-query {
-	background-color:#8f8f8f;
-	color:#ffffff;
+	/*background-color:#8f8f8f;
+	color:#ffffff;*/
+	background-color: #ffffff;
+	border: 1px solid #808184;
+	color: #808184;
 	padding: 6px 5px 6px 15px;
-	border:none;
-	width: 415px;
+	/*border:none;*/
+	width: 620px;
     margin-left: 31px;
-    font-size: 0.9em;
+    /*font-size: 0.9em;*/
+    font-size: 14px;
+    float: right;
 }
 
+/*
 .searcher input[type="text"]:focus {
 	background-color:#e7e7e7 !important;
     color: #656566 !important;
 }
-
+*/
 
 .searcher .filter{
 	float:left;
-	width:200px;
+	width:238px;
 	margin-right:35px;
 	position:relative;
     margin-bottom: 10px;
 }
 
 .searcher .filter label{
-	color: #FFFFFF;
+	color: #58595B;
 	display: block;
 	font-weight: bold;
-	padding: 5px 5px 6px 15px;
-	text-transform:capitalize;
-	background:url('triangulo.png') right no-repeat #656566;
+	padding: 5px 5px 6px 0px;
+	text-transform: uppercase;
+	border-bottom: 1px solid #58595B;
+	font-size: 14px;
+	/*background:url('triangulo.png') right no-repeat #656566;*/
 }
 
 .searcher .filter select{
-	color:#8F8F8F;
+	color:#58595B;
 	border:none;
 	width:100%;	
 	margin-top:10px;
     font-size: 0.9em;
+    background-color: #e7e7e7
 }
 
 .searcher .filter select option{
-	color:#8F8F8F;	
+	color:#58595B;	
 }
 
 .searcher .filter select option[selected="selected"] {
-	color:#656566;
-	background-color:#e7e7e7;
+	color:#58595B;
+	background-color:#d5d5d6;
 }
 
 .searcher .filter select option.all{
-	color:#656566;
+	color:#58595B;
     font-size: 1em;
     font-weight: bold;
 }

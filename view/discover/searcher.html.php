@@ -12,13 +12,11 @@ $rewards = Icon::getList(); // iconos que se usan en proyectos
 $params = $this['params'];
 ?>
 <div class="widget searcher">
-    <h2 class="title"><?php echo Text::get('discover-searcher-header'); ?></h2>
-
     <form method="post" action="/discover/results">
-
         <div class="text-filter">
             <label for="text-query"><?php echo Text::get('discover-searcher-bycontent-header'); ?></label>
                 <input type="text" id="text-query" name="query" size="48" value="<?php echo $params['query']; ?>" />
+                <br clear="all" />
         </div>
 
         <div class="filter">
@@ -29,7 +27,6 @@ $params = $this['params'];
                     <option value="<?php echo $id; ?>"<?php if (in_array("'{$id}'", $params['category'])) echo ' selected="selected"'; ?>><?php echo $name; ?></option>
                 <?php endforeach; ?>
                 </select>
-            </label>
         </div>
 
         <div class="filter">
@@ -40,7 +37,6 @@ $params = $this['params'];
                     <option value="<?php echo $id; ?>"<?php if (in_array("'{$id}'", $params['location'])) echo ' selected="selected"'; ?>><?php echo $name; ?></option>
                 <?php endforeach; ?>
                 </select>
-            </label>
         </div>
 
         <div class="filter">
@@ -51,7 +47,6 @@ $params = $this['params'];
                     <option value="<?php echo $id; ?>"<?php if (in_array("'{$id}'", $params['reward'])) echo ' selected="selected"'; ?>><?php echo $reward->name; ?></option>
                 <?php endforeach; ?>
                 </select>
-            </label>
         </div>
 
         <div style="float:left">
