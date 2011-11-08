@@ -32,7 +32,7 @@ $translator = ACL::check('/translate') ? true : false;
                 <td><a href="/admin/info/up/<?php echo $post->id ?>">[&uarr;]</a></td>
                 <td><a href="/admin/info/down/<?php echo $post->id ?>">[&darr;]</a></td>
                 <?php if ($translator) : ?>
-                <td><a href="/translate/contents/edit/info-<?php echo $post->id; ?>" target="_blank">[Traducir]</a></td>
+                <td><a href="/translate/info/edit/<?php echo $post->id; ?>" target="_blank">[Traducir]</a></td>
                 <?php endif; ?>
                 <td><a href="/admin/info/remove/<?php echo $post->id; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Quitar]</a></td>
             </tr>

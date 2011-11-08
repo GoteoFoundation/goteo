@@ -41,7 +41,7 @@ $translator = ACL::check('/translate') ? true : false;
                 <td><a href="/admin/criteria/up/<?php echo $criteria->id; ?>/?filter=<?php echo $this['filter']; ?>">[&uarr;]</a></td>
                 <td><a href="/admin/criteria/down/<?php echo $criteria->id; ?>/?filter=<?php echo $this['filter']; ?>">[&darr;]</a></td>
                 <?php if ($translator) : ?>
-                <td><a href="/translate/contents/edit/criteria-<?php echo $criteria->id; ?>" target="_blank">[Traducir]</a></td>
+                <td><a href="/translate/criteria/edit/<?php echo $criteria->id; ?>" target="_blank">[Traducir]</a></td>
                 <?php endif; ?>
                 <td><a href="/admin/criteria/remove/<?php echo $criteria->id; ?>/?filter=<?php echo $this['filter']; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Quitar]</a></td>
             </tr>

@@ -24,7 +24,7 @@ $translator = ACL::check('/translate') ? true : false;
                 <td><a href="/admin/glossary/edit/<?php echo $post->id; ?>">[Editar]</a></td>
                 <td><?php echo $post->title; ?></td>
                 <?php if ($translator) : ?>
-                <td><a href="/translate/contents/edit/glossary-<?php echo $post->id; ?>" target="_blank">[Traducir]</a></td>
+                <td><a href="/translate/glossary/edit/<?php echo $post->id; ?>" target="_blank">[Traducir]</a></td>
                 <?php endif; ?>
                 <td><a href="/admin/glossary/remove/<?php echo $post->id; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Quitar]</a></td>
             </tr>

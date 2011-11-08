@@ -58,7 +58,7 @@ $filters = $this['filters'];
                 <td><a href="/admin/licenses/up/<?php echo $license->id; ?>/?filter=<?php echo $filters['group']; ?>">[&uarr;]</a></td>
                 <td><a href="/admin/licenses/down/<?php echo $license->id; ?>/?filter=<?php echo $filters['group']; ?>">[&darr;]</a></td>
                 <?php if ($translator) : ?>
-                <td><a href="/translate/contents/edit/license-<?php echo $license->id; ?>" target="_blank">[Traducir]</a></td>
+                <td><a href="/translate/license/edit/<?php echo $license->id; ?>" target="_blank">[Traducir]</a></td>
                 <?php endif; ?>
 <!--                                <td><a href="/admin/licenses/remove=<?php echo $license->id; ?>/?filter=<?php echo $filters['group']; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Quitar]</a></td>  -->
             </tr>

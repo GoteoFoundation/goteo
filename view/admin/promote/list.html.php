@@ -40,7 +40,7 @@ $translator = ACL::check('/translate') ? true : false;
                 <a href="/admin/promote/active/<?php echo $promo->id; ?>/on">[Mostrar]</a>
                 <?php endif; ?></td>
                 <?php if ($translator) : ?>
-                <td><a href="/translate/contents/edit/promote-<?php echo $promo->id; ?>" target="_blank">[Traducir]</a></td>
+                <td><a href="/translate/promote/edit/<?php echo $promo->id; ?>" target="_blank">[Traducir]</a></td>
                 <?php endif; ?>
                 <td><a href="/admin/promote/remove/<?php echo $promo->project; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Quitar]</a></td>
             </tr>
