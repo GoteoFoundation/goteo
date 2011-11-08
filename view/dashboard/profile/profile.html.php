@@ -4,6 +4,8 @@ use Goteo\Library\Text,
     Goteo\Library\SuperForm,
     Goteo\Core\View;
 
+define('ADMIN_NOAUTOSAVE', true);
+
 $user   = $this['user'];
 $errors = $this['errors'];
 $this['level'] = 3;

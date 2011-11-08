@@ -13,14 +13,23 @@ $project = $this['project'];
     <h<?php echo $level + 1 ?> class="supertitle"><?php echo Text::get('project-support-supertitle'); ?></h<?php echo $level + 1 ?>>
     
     <?php switch ($project->tagmark) {
-        case 'onrun':
+        case 'onrun': // "en marcha"
             echo '<div class="tagmark green">' . Text::get('regular-onrun_mark') . '</div>';
             break;
-        case 'gotit':
-            echo '<div class="tagmark red">' . Text::get('regular-gotit_mark') . '</div>';
+        case 'keepiton': // "aun puedes"
+            echo '<div class="tagmark green"><span class="small">' . Text::get('regular-keepiton_mark') . '</span></div>';
             break;
-        case 'success':
+        case 'onrun-keepiton': // "en marcha" y "aun puedes"
+            echo '<div class="tagmark green twolines"><span class="small"><strong>' . Text::get('regular-onrun_mark') . '</strong><br />' . Text::get('regular-keepiton_mark') . '</span></div>';
+            break;
+        case 'gotit': // "financiado"
+            echo '<div class="tagmark violet">' . Text::get('regular-gotit_mark') . '</div>';
+            break;
+        case 'success': // "exitoso"
             echo '<div class="tagmark red">' . Text::get('regular-success_mark') . '</div>';
+            break;
+        case 'fail': // "caducado"
+            echo '<div class="tagmark grey">' . Text::get('regular-fail_mark') . '</div>';
             break;
     } ?>
 

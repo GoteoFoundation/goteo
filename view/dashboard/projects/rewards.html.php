@@ -26,7 +26,7 @@ uasort($rewards,
     );
 
 ?>
-<div class="widget projects">
+<div class="widget gestrew">
     <div class="message">
         ESTO ES UNA VISUALIZACIÓN DE LAS OPCIONES DE RETORNO QUE ELIGEN TUS COFINANCIADORES.<br />
         NO TIENES QUE GESTIONAR ESOS RETORNOS HASTA HABER LLEGADO AL MÍNIMO DE LA CANTIDAD DESEADA
@@ -52,7 +52,7 @@ uasort($rewards,
     </div>
 </div>
 
-<div class="widget projects">
+<div class="widget gestrew">
     <h2 class="title">Gestionar retornos</h2>
     <?php
     /*
@@ -85,6 +85,9 @@ uasort($rewards,
         <form name="invests_form" action="<?php echo '/dashboard/'.$this['section'].'/'.$this['option'].'/process'; ?>" method="post">
             <input type="hidden" name="filter" value="<?php echo $this['filter']; ?>" />
             <?php foreach ($this['invests'] as $investId=>$investData) :
+
+                if (empty($investData->rewards)) continue;
+
                 $address = $investData->address;
                 $cumplida = true; //si nos encontramos una sola no cumplida, pasa a false
                 $estilo = "disabled";

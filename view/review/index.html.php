@@ -8,13 +8,21 @@ $bodyClass = 'review';
 $user = $_SESSION['user'];
 
 include 'view/prologue.html.php';
-include 'view/header.html.php'; ?>
+include 'view/header.html.php';
+
+/*
+ *
+ <img src="<?php echo SRC_URL ?>/image/<?php echo $user->avatar->id; ?>/75/75/1" /><br />
+                    <em><?php echo $user->name; ?></em>
+ *
+ */
+
+?>
 
         <div id="sub-header">
             <div>
-                <h2><img src="<?php echo SRC_URL ?>/image/<?php echo $user->avatar->id; ?>/75/75/1" />
-                    <?php echo 'Mi panel de revisor / ' . $this['menu'][$this['section']]['label']; ?><br />
-                    <em><?php echo $user->name; ?></em></h2>
+                <h2>
+                    <?php echo 'Mi panel de revisor / ' . $this['menu'][$this['section']]['label']; ?></h2>
             </div>
         </div>
 

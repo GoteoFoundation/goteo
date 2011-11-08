@@ -1,13 +1,6 @@
 <?php
 use Goteo\Library\Text;
 
-/*
- * TODO
- *
-    <a href="/admin/accounting/details/<?php echo $invest->id; ?>">[Detalles]</a>
-    <a href="/admin/accounting/execute/<?php echo $invest->id; ?>">[Ejecutar]</a>
- */
-
 $filters = $this['filters'];
 
 ?>
@@ -29,10 +22,12 @@ $filters = $this['filters'];
         'label' => 'Campaña',
         'first' => 'Todas las campañas'),
 ); ?>
+<a href="http://ppcalc.com/es" target="_blank" class="button">Calculadora PayPal</a>&nbsp;&nbsp;&nbsp;
 <a href="/cron/execute" target="_blank" class="button red">Ejecutar cargos</a>&nbsp;&nbsp;&nbsp;
 <a href="/cron/verify" target="_blank" class="button red">Verificar preapprovals</a>&nbsp;&nbsp;&nbsp;
+<a href="/admin/accounts/viewer" class="button">Visor de logs</a>&nbsp;&nbsp;&nbsp;
 <?php if (!empty($filters['projects'])) : ?>
-    <a href="/cron/dopay/<?php echo $filters['projects'] ?>" target="_blank" class="button red">Realizar pagos secundarios al proyecto filtrado</a>
+    <a href="/admin/invests/report/<?php echo $filters['projects'] ?>" class="button red" target="_blank">Informe del proyecto filtrado</a>
 <?php endif ?>
 <div class="widget board">
     <h3 class="title">Filtros</h3>

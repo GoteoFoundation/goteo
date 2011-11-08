@@ -90,6 +90,9 @@ $filter = "?status={$filters['status']}&category={$filters['category']}&owner={$
                     <?php if ($project->status == 4) : ?><a href="<?php echo "/admin/projects/fulfill/{$project->id}{$filter}"; ?>">[Retorno Cumplido]</a><?php endif; ?>
                     <a href="<?php echo "/admin/projects/cancel/{$project->id}{$filter}"; ?>" onclick="return confirm('El proyecto va a quedar DESCARTADO permanentemente, ¿seguro que hacemos eso?');">[Descartar]</a>
                     <a href="<?php echo "/admin/projects/dates/{$project->id}{$filter}"; ?>">[Cambiar fechas]</a>
+                    <a href="<?php echo "/admin/projects/accounts/{$project->id}{$filter}"; ?>">[Cuentas]</a>
+                    <?php if ($project->translate) : ?><a href="<?php echo "/admin/translates/edit/{$project->id}"; ?>">[Ir a traducción]</a>
+                    <?php else : ?><a href="<?php echo "/admin/translates/add/?project={$project->id}"; ?>">[Habilitar traducción]</a><?php endif; ?>
                 </td>
             </tr>
             <tr>

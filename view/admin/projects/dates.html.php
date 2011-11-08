@@ -29,7 +29,7 @@ $filter = "?status={$filters['status']}&category={$filters['category']}";
         'level'         => 3,
         'method'        => 'post',
         'title'         => '',
-        'hint'          => 'Esto solo en caso de testeo',
+        'hint'          => 'Cambiar las fechas solamente si se conocen los efectos colaterales',
         'class'         => 'aqua',
         'footer'        => array(
             'view-step-preview' => array(
@@ -60,24 +60,27 @@ $filter = "?status={$filters['status']}&category={$filters['category']}";
             ),
             'published' => array(
                 'type'      => 'datebox',
-                'required'  => true,
                 'title'     => 'Fecha de inicio de campaña',
                 'size'      => 8,
                 'value'     => !empty($project->published) ? $project->published : null
             ),
             'success' => array(
                 'type'      => 'datebox',
-                'required'  => true,
                 'title'     => 'Fecha de éxito',
                 'size'      => 8,
                 'value'     => !empty($project->success) ? $project->success : null
             ),
             'closed' => array(
                 'type'      => 'datebox',
-                'required'  => true,
                 'title'     => 'Fecha de cierre',
                 'size'      => 8,
                 'value'     => !empty($project->closed) ? $project->closed : null
+            ),
+            'passed' => array(
+                'type'      => 'datebox',
+                'title'     => 'Fecha de paso a segunda ronda',
+                'size'      => 8,
+                'value'     => !empty($project->passed) ? $project->passed : null
             )
 
         )

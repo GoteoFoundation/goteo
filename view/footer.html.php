@@ -97,8 +97,8 @@ jQuery(document).ready(function($) {
                 <ul>
                     <li class="twitter"><a href="<?php echo Text::get('social-account-twitter') ?>" target="_blank"><?php echo Text::get('regular-twitter') ?></a></li>
                     <li class="facebook"><a href="<?php echo Text::get('social-account-facebook') ?>" target="_blank"><?php echo Text::get('regular-facebook') ?></a></li>
-                    <li class="identica"><a href="<?php echo Text::get('social-account-identica') ?>"><?php echo Text::get('regular-identica') ?></a></li>
-                    <li class="gplus"><a href="<?php echo Text::get('social-account-google') ?>"><?php echo Text::get('regular-google') ?></a></li>
+                    <li class="identica"><a href="<?php echo Text::get('social-account-identica') ?>" target="_blank"><?php echo Text::get('regular-identica') ?></a></li>
+                    <li class="gplus"><a href="<?php echo Text::get('social-account-google') ?>" target="_blank"><?php echo Text::get('regular-google') ?></a></li>
                     <li class="rss"><a rel="alternate" type="application/rss+xml" title="RSS" href="/rss" target="_blank">RSS</a></li>
 
                 </ul>
@@ -116,14 +116,16 @@ jQuery(document).ready(function($) {
                     <li><a href="/about"><?php echo Text::get('regular-header-about'); ?></a></li>
                     <li><a href="/user/login"><?php echo Text::get('regular-login'); ?></a></li>
                     <li><a href="/contact"><?php echo Text::get('regular-footer-contact'); ?></a></li>
-                    <li><a href="/blog"><?php echo Text::get('regular-header-blog'); ?></a></li>
+<!--                    <li><a href="/blog"><?php echo Text::get('regular-header-blog'); ?></a></li> -->
 <!--                    <li><a href="/about/legal"><?php echo Text::get('regular-footer-legal'); ?></a></li> -->
                     <li><a href="/legal/terms"><?php echo Text::get('regular-footer-terms'); ?></a></li>
                     <li><a href="/legal/privacy"><?php echo Text::get('regular-footer-privacy'); ?></a></li>
                 </ul>
     
                 <div class="platoniq">
-                   <span class="text"><?php echo Text::get('footer-platoniq-iniciative') ?></span> <span><a href="http://www.youcoop.org" target="_blank">Platoniq</a></span>
+                   <span class="text"><a href="http://onliners-web.com" class="poweredby" target="_blank"><?php echo Text::get('footer-platoniq-iniciative') ?></a></span>
+                   <span class="logo"><a href="http://fuentesabiertas.org" target="_blank" class="foundation">FFA</a></span>
+                   <span class="logo"><a href="http://www.youcoop.org" target="_blank" class="growby">Platoniq</a></span>
                 </div>
     
        

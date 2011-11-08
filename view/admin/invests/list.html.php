@@ -1,13 +1,6 @@
 <?php
 use Goteo\Library\Text;
 
-/*
- * TODO
- *
-    <a href="/admin/accounting/details/<?php echo $invest->id; ?>">[Detalles]</a>
-    <a href="/admin/accounting/execute/<?php echo $invest->id; ?>">[Ejecutar]</a>
- */
-
 $filters = $this['filters'];
 
 ?>
@@ -37,7 +30,7 @@ $filters = $this['filters'];
 ); ?>
 <a href="/admin/invests/add" class="button red">Generar aportes manualmente</a>&nbsp;&nbsp;&nbsp;
 <?php if (!empty($filters['projects'])) : ?>
-    <a href="/admin/invests/report/<?php echo $filters['projects'] ?>" class="button red">Informe del proyecto filtrado</a>
+    <a href="/cron/dopay/<?php echo $filters['projects'] ?>" target="_blank" class="button red">Realizar pagos secundarios al proyecto filtrado</a>
 <?php endif ?>
 <div class="widget board">
     <h3 class="title">Filtros</h3>

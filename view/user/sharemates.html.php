@@ -15,6 +15,10 @@ $worthcracy = Worth::getAll();
 
 $categories = Interest::getAll($user->id);
 
+if (empty($categories)) {
+    throw new Redirection('/user/profile/' . $this['user']->id);
+}
+
 $shares = array();
 /* if (!empty($this['category'])) {
     $shares[$this['category']->id] = Interest::share($user->id, $this['category']->id);
@@ -26,7 +30,7 @@ $shares = array();
     }
 //}
 
-if (count($shares) == 0) {
+if (empty($shares)) {
     throw new Redirection('/user/profile/' . $this['user']->id);
 }
 

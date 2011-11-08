@@ -1,7 +1,7 @@
 <?php
 	use Goteo\Core\View;
 
-	$url = SITE_URL . '/widget/project/' . $this['project']->id;
+	$url = SITE_URL . '/widget/project/' . $this['project']->id . '?lang=' . LANG;
 
     if (isset($this['investor']) && is_object($this['investor'])) {
         $url .= '/invested/'.$this['investor']->id;

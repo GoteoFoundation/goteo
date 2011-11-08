@@ -4,7 +4,7 @@
 	use Goteo\Library\Text,
 		Goteo\Model\Blog\Post;
 
-    $post = Post::get($this['post']);
+    $post = Post::get($this['post'], LANG);
     $level = (int) $this['level'] ?: 3;
     
 	if ($this['show'] == 'list') {
@@ -65,11 +65,11 @@
             <img src="<?php echo SRC_URL ?>/image/<?php echo $post->image->id; ?>/500/285" alt="<?php echo $post->title; ?>" />
         </div>
 	<?php endif; ?>
-	<?php if (!empty($post->media->url)) : ?>
-		<div class="embed">
-			<?php echo $post->media->getEmbedCode(); ?>
-		</div>
-	<?php endif; ?>
+	<?php if (!empty($post->media->url)) :
+            $embed = $post->media->getEmbedCode();
+            if (!empty($embed))  : ?>
+		<div class="embed"><?php echo $embed; ?></div>
+	<?php endif; endif; ?>
 	<?php if (!empty($post->legend)) : ?>
 		<div class="embed-legend">
 			<?php echo $post->legend; ?>

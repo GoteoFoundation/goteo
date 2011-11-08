@@ -20,7 +20,7 @@ if (!$post instanceof Model\Blog\Post) {
         $tags[] =  array(
             'value'     => $value,
             'label'     => $label,
-            'checked'   => in_array($value, $post->tags)
+            'checked'   => isset($post->tags[$value])
             );
     }
 

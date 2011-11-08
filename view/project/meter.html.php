@@ -17,17 +17,7 @@ $days       = $project->days;
 
 // PHP la pifia (y mucho) con los cálculos en coma flotante
 if ($reached >= $minimum) {
-
-    $donemax = $horizontal ? 125 : 145;
-    
-    if (($horizontal) && ($big)) {
-    	$donemax = 117;
-    }
-//    $minimum_done = 100;
-    $minimum_done = min($donemax, round(($reached / $minimum) * 100));
-    if ($reached >= $optimum) {
-        $minimum_done = max($minimum_done, $donemax);
-    }
+    $minimum_done = round(($reached / $minimum) * 100);
     $minimum_done_per = round(($reached / $minimum) * 100);
     $minimum_left = 0;
     
@@ -100,10 +90,10 @@ $minimum_ratio =  min(100, round(($minimum / $optimum) * 100));
 
         </dl>
 
-    <?php
+    <?php /*
     // si en estado 3 ha alcanzado el optimo o segunda ronda, "aun puedes seguir aportando" junto al quedan tantos días
     if ($project->status == 3 && ($project->round == 2  || $project->amount >= $project->maxcost || ($project->round == 1  && $project->amount >= $project->mincost) )) : ?>
         <div class="keepiton"><?php echo Text::get('regular-keepiton') ?></div>
-    <?php endif;?>
+    <?php endif; */ ?>
 
     </div> 

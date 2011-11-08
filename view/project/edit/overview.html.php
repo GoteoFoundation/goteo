@@ -2,20 +2,11 @@
 
 use Goteo\Core\View,
     Goteo\Library\Text,
-    Goteo\Library\Lang,
     Goteo\Library\SuperForm;
 
 $project = $this['project'];
 $errors = $project->errors[$this['step']] ?: array();
 $okeys  = $project->okeys[$this['step']] ?: array();
-
-$langs = array();
-foreach (Lang::getAll(true) as $lang) {
-    $langs[] = array(
-        'value'     => $lang->id,
-        'label'     => $lang->name
-        );
-}
 
 $images = array();
 foreach ($project->gallery as $image) {
@@ -58,7 +49,7 @@ foreach ($this['scope'] as $value => $label) {
         );
 }
 
-
+// media del proyecto
 if (!empty($project->media->url)) {
     $media = array(
             'type'  => 'media',
@@ -72,9 +63,24 @@ if (!empty($project->media->url)) {
         'type'  => 'hidden',
         'class' => 'inline'
     );
-
-
 }
+
+// video de motivacion
+if (!empty($project->video->url)) {
+    $video = array(
+            'type'  => 'media',
+            'title' => Text::get('overview-field-media_preview'),
+            'class' => 'inline media',
+            'type'  => 'html',
+            'html'  => !empty($project->video) ? $project->video->getEmbedCode() : ''
+    );
+} else {
+    $video = array(
+        'type'  => 'hidden',
+        'class' => 'inline'
+    );
+}
+
 
 $superform = array(
     'level'         => $this['level'],
@@ -99,16 +105,14 @@ $superform = array(
             'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array()
         ),
         
-        'lang' => array(
-            'title'     => Text::get('overview-field-lang'),
-            'type'      => 'select',
-            'required'  => true,
-            'options'   => $langs,
-            'class'     => 'lang',
-            'hint'      => Text::get('tooltip-project-lang'),
-            'errors'    => !empty($errors['lang']) ? array($errors['lang']) : array(),
-            'ok'        => !empty($okeys['lang']) ? array($okeys['lang']) : array(),
-            'value'     => $project->lang
+        'subtitle' => array(
+            'type'      => 'textbox',
+            'title'     => Text::get('overview-field-subtitle'),
+            'required'  => false,
+            'value'     => $project->subtitle,
+            'hint'      => Text::get('tooltip-project-subtitle'),
+            'errors'    => !empty($errors['subtitle']) ? array($errors['subtitle']) : array(),
+            'ok'        => !empty($okeys['subtitle']) ? array($okeys['subtitle']) : array()
         ),
 
         'images' => array(        
@@ -164,6 +168,27 @@ $superform = array(
                     'ok'        => !empty($okeys['motivation']) ? array($okeys['motivation']) : array(),
                     'value'     => $project->motivation
                 ),
+                // video motivacion
+                'video' => array(
+                    'type'      => 'textbox',
+                    'required'  => false,
+                    'title'     => Text::get('overview-field-video'),
+                    'hint'      => Text::get('tooltip-project-video'),
+                    'errors'    => !empty($errors['video']) ? array($errors['video']) : array(),
+                    'ok'        => !empty($okeys['video']) ? array($okeys['video']) : array(),
+                    'value'     => (string) $project->video
+                ),
+
+                'video-upload' => array(
+                    'name' => "upload",
+                    'type'  => 'submit',
+                    'label' => Text::get('form-upload-button'),
+                    'class' => 'inline media-upload'
+                ),
+
+                'video-preview' => $video
+                ,
+                // fin video motivacion
                 'goal' => array(
                     'type'      => 'textarea',
                     'title'     => Text::get('overview-field-goal'),

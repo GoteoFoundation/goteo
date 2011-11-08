@@ -13,7 +13,7 @@ $show    = $this['show'];
 $invest  = $this['invest'];
 $post    = $this['post'];
 
-$owner   = User::get($project->owner);
+$owner   = User::get($project->owner, LANG);
 $user    = $_SESSION['user'];
 
 $categories = Category::getNames($project->id);
@@ -46,7 +46,7 @@ $bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
         <div id="sub-header">
             <div class="project-header">
                 <a href="/user/<?php echo $project->owner; ?>"><img src="<?php echo SRC_URL ?>/image/<?php echo $project->user->avatar->id; ?>/56/56/1" /></a>
-                <h2><span><?php echo htmlspecialchars($project->name) ?></span></h2>
+                <h2><span><?php echo htmlspecialchars($project->name . $project->subtitle) ?></span></h2>
                 <div class="project-by"><a href="/user/<?php echo $project->owner; ?>">Por: <?php echo $project->user->name; ?></a></div>
                 <br clear="both" />
 

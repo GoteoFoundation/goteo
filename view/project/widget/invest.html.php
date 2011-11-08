@@ -11,9 +11,6 @@ $personal = $this['personal'];
 
 $level = (int) $this['level'] ?: 3;
 
-$methods = Invest::methods();
-//unset($methods['cash']);  <-- solo en beta aceptamos aportes manuales
-
 $worthcracy = Worth::getAll();
 
 $licenses = array();
@@ -45,9 +42,11 @@ $action = '/invest/' . $project->id;
         <?php foreach ($project->individual_rewards as $individual) : ?>
         <li class="<?php echo $individual->icon ?><?php if ($individual->none) echo ' disabled' ?>">
         <?php if ($individual->none) : ?>
-            <p style="color:red;"><?php echo Text::get('invest-reward-none') ?></p>
-            <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>>
-            <p><?php echo htmlspecialchars($individual->description)?></p>
+            <label class="amount">
+                <span style="color:red;"><?php echo Text::get('invest-reward-none') ?></span>
+                <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>>
+                <p><?php echo htmlspecialchars($individual->description)?></p>
+            </label>
         <?php else : ?>
             <label class="amount" for="reward_<?php echo $individual->id; ?>"><input type="checkbox"<?php if ($individual->none) echo ' disabled="disabled"';?> name="reward_<?php echo $individual->id; ?>" id="reward_<?php echo $individual->id; ?>" value="<?php echo $individual->amount; ?>" class="individual_reward" /><span class="chkbox"></span><?php echo $individual->amount; ?> &euro;
         	<h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>>
@@ -94,20 +93,6 @@ $action = '/invest/' . $project->id;
 
 <div class="widget project-invest">
     <h<?php echo $level ?> class="beak"><?php echo Text::get('project-invest-continue') ?></h<?php echo $level ?>>
-<!--
-        <fieldset>
-            <legend><?php echo Text::get('invest-payment_method-header') ?></legend>
-            <?php foreach ($methods as $id=>$name) : ?>
-                <label><?php echo $name; ?><input type="radio" name="method" value="<?php echo $id; ?>" checked="checked"/></label>
-            <?php endforeach; ?>
-        </fieldset>
-
-        <p>
-            <label><?php echo Text::get('invest-payment-email') ?><br />
-                <input type="text" id="email" name="email" value="<?php echo $_SESSION['user']->email; ?>" />
-            </label>
-        </p>
--->
             
 <input type="hidden" id="paymethod"  />
 

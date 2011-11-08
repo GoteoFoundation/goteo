@@ -41,11 +41,11 @@ $go_up = Text::get('regular-go_up');
                         <a name="info<?php echo $post->id  ?>"></a>
                         <h4><?php echo $post->title; ?></h4>
                         <p><?php echo $post->text; ?></p>
-                        <?php if (!empty($post->media->url)) : ?>
-                            <div class="embed">
-                                <?php echo $post->media->getEmbedCode(); ?>
-                            </div>
-                        <?php endif; ?>
+                        <?php if (!empty($post->media->url)) :
+                                $embed = $post->media->getEmbedCode();
+                                if (!empty($embed))  : ?>
+                            <div class="embed"><?php echo $embed; ?></div>
+                        <?php endif; endif; ?>
                         <?php if (!empty($post->legend)) : ?>
                             <div class="embed-legend">
                                 <?php echo $post->legend; ?>

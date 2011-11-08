@@ -32,14 +32,24 @@ if (isset($this['investor']) && is_object($this['investor'])) {
 
     <div class="image">
         <?php switch ($project->tagmark) {
-            case 'onrun':
+            case 'onrun': // "en marcha"
                 echo '<div class="tagmark green">' . Text::get('regular-onrun_mark') . '</div>';
                 break;
-            case 'gotit':
-                echo '<div class="tagmark red">' . Text::get('regular-gotit_mark') . '</div>';
+            case 'keepiton': // "aun puedes"
+                echo '<div class="tagmark green"><span class="small">' . Text::get('regular-keepiton_mark') . '</span></div>';
                 break;
-            case 'success':
+            case 'onrun-keepiton': // "en marcha" y "aun puedes"
+//                echo '<div class="tagmark green">' . Text::get('regular-onrun_mark') . '</div>';
+                  echo '<div class="tagmark green twolines"><span class="small"><strong>' . Text::get('regular-onrun_mark') . '</strong><br />' . Text::get('regular-keepiton_mark') . '</span></div>';
+                break;
+            case 'gotit': // "financiado"
+                echo '<div class="tagmark violet">' . Text::get('regular-gotit_mark') . '</div>';
+                break;
+            case 'success': // "exitoso"
                 echo '<div class="tagmark red">' . Text::get('regular-success_mark') . '</div>';
+                break;
+            case 'fail': // "caducado"
+                echo '<div class="tagmark grey">' . Text::get('regular-fail_mark') . '</div>';
                 break;
         } ?>
 
@@ -73,15 +83,15 @@ if (isset($this['investor']) && is_object($this['investor'])) {
         <ul>
            <?php $q = 1; foreach ($project->social_rewards as $social): ?>
             <li class="<?php echo $social->icon ?> activable">
-                <a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$social->icon_name}: {$social->reward} al procomÃºn") ?>" class="tipsy"><?php echo htmlspecialchars($social->reward) ?></a>
+                <a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$social->icon_name}: {$social->reward} al procomún") ?>" class="tipsy"><?php echo htmlspecialchars($social->reward) ?></a>
             </li>
-           <?php if ($q > 5) break; $q++;
+           <?php if ($q >= 5) break; $q++;
                endforeach ?>
            <?php if ($q < 5) foreach ($project->individual_rewards as $individual): ?>
             <li class="<?php echo $individual->icon ?> activable">
                 <a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$individual->icon_name}: {$individual->reward} aportando {$individual->amount}") ?> &euro;" class="tipsy"><?php echo htmlspecialchars($individual->reward) ?></a>
             </li>
-           <?php if ($q > 5) break; $q++;
+           <?php if ($q >= 5) break; $q++;
            endforeach ?>
         </ul>
 
@@ -101,7 +111,7 @@ if (isset($this['investor']) && is_object($this['investor'])) {
     </div>
     <?php else : // normal ?>
     <div class="buttons">
-        <?php if ($project->status == 3) : // si esta en campaÃ±a se puede aportar ?>
+        <?php if ($project->status == 3) : // si esta en campaña se puede aportar ?>
         <a class="button violet supportit" href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>/invest"<?php echo $blank; ?>><?php echo Text::get('regular-invest_it'); ?></a>
         <?php else : ?>
         <a class="button view" href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>/updates"<?php echo $blank; ?>><?php echo Text::get('regular-see_blog'); ?></a>

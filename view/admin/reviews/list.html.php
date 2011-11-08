@@ -64,8 +64,11 @@ $filter = "?status={$filters['status']}&checker={$filters['checker']}";
                         <?php else : ?>
                         <td><a href="/admin/reviews/add/<?php echo $project->project; ?>/<?php echo $filter; ?>">[Iniciar revision]</a></td>
                         <td></td>
-                        <td></td>
                         <?php endif; ?>
+                        <td><?php if ($project->translate) : ?><a href="<?php echo "/admin/translates/edit/{$project->project}"; ?>">[Ir a traducción]</a>
+                        <?php else : ?><a href="<?php echo "/admin/translates/add/?project={$project->project}"; ?>">[Habilitar traducción]</a><?php endif; ?></td>
+
+
                     </tr>
                 </tbody>
 

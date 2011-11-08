@@ -66,6 +66,22 @@ if ($this['action'] == 'none') return;
 
         }
 
+        if (!empty($post->media->url)) {
+            $media = array(
+                    'type'  => 'media',
+                    'title' => Text::get('overview-field-media_preview'),
+                    'class' => 'inline media',
+                    'type'  => 'html',
+                    'html'  => !empty($post->media) ? $post->media->getEmbedCode() : ''
+            );
+        } else {
+            $media = array(
+                'type'  => 'hidden',
+                'class' => 'inline'
+            );
+
+
+        }
     ?>
 
     <form method="post" action="/dashboard/projects/updates/<?php echo $this['action']; ?>/<?php echo $post->id; ?>" class="project" enctype="multipart/form-data">
@@ -138,21 +154,23 @@ if ($this['action'] == 'none') return;
             ),
 
             'media' => array(
-                'type'      => 'textarea',
+                'type'      => 'textbox',
                 'title'     => 'Vídeo',
                 'class'     => 'media',
                 'hint'      => Text::get('tooltip-updates-media'),
                 'errors'    => !empty($errors['media']) ? array($errors['media']) : array(),
-                'value'     => (string) $post->media,
-                'children'  => array(
-                    'media-preview' => array(
-                        'title' => 'Vista previa',
-                        'class' => 'media-preview inline',
-                        'type'  => 'html',
-                        'html'  => '<div>' . (!empty($post->media) ? $post->media->getEmbedCode() : '') .'</div>'
-                    )
-                )
+                'value'     => (string) $post->media
             ),
+            
+            'media-upload' => array(
+                'name' => "upload",
+                'type'  => 'submit',
+                'label' => Text::get('form-upload-button'),
+                'class' => 'inline media-upload'
+            ),
+
+            'media-preview' => $media,
+
             'legend' => array(
                 'type'      => 'textarea',
                 'title'     => 'Leyenda',

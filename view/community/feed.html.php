@@ -17,7 +17,7 @@ $items = $this['items'];
 
         <div class="block goteo">
            <h4>Goteo</h4>
-           <div class="item scroll-pane" style="height:600px;">
+           <div class="item scroll-pane" style="height:800px;">
                <?php foreach ($items['goteo'] as $item) : 
                    echo Feed::subItem($item);
                 endforeach; ?>
@@ -26,7 +26,7 @@ $items = $this['items'];
 
         <div class="block projects">
             <h4>Proyectos</h4>
-            <div class="item scroll-pane" style="height:600px;">
+            <div class="item scroll-pane" style="height:800px;">
                <?php foreach ($items['projects'] as $item) :
                    echo Feed::subItem($item);
                 endforeach; ?>
@@ -34,7 +34,7 @@ $items = $this['items'];
         </div>
         <div class="block community last">
             <h4>Comunidad</h4>
-            <div class="item scroll-pane" style="height:600px;">
+            <div class="item scroll-pane" style="height:800px;">
                <?php foreach ($items['community'] as $item) :
                    echo Feed::subItem($item);
                 endforeach; ?>

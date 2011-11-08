@@ -19,15 +19,12 @@ include 'view/header.html.php' ?>
 			<div class="clearfix">
 				<div class="slides_container">
 					<!-- Módulo de texto más sign in -->
-					<div class="subhead-banner">
-						<h2 class="message">Red social para <span class="greenblue">cofinanciar y colaborar con</span><br /> proyectos creativos que fomentan el procomún<br /> ¿Tienes un proyecto con <span class="greenblue">adn abierto</span>?</h2>
-                        <a href="/contact" class="button banner-button">Contáctanos</a>
+					<div class="subhead-banner"><?php echo Text::html('main-banner-header'); ?></div>
 <!--						<ul class="sign-in-with">
 							<li>Accede con facebook</li>
 							<li>Accede con Twitter</li>
 							<li>Accede con Open ID</li>
 						</ul> -->
-					</div>
 					<!-- Módulo banner imagen más resumen proyecto -->
                     <?php if (!empty($this['banners'])) : foreach ($this['banners'] as $id=>$banner) : ?>
 					<div class="subhead-banner">
@@ -40,12 +37,12 @@ include 'view/header.html.php' ?>
 								<p><?php echo current($banner->project->social_rewards)->reward ?></p>
 								<ul>
                                     <?php $c = 1; foreach ($banner->project->social_rewards as $id=>$reward) : ?>
-									<li><img src="view/css/icon/s/<?php echo $reward->icon ?>.png" alt="<?php echo $reward->icon ?>" title="<?php echo $reward->reward ?>" /></li>
+									<li><img src="<?php echo SRC_URL ?>/view/css/icon/s/<?php echo $reward->icon ?>.png" alt="<?php echo $reward->icon ?>" title="<?php echo $reward->reward ?>" /></li>
                                     <?php if ($c>4) break; else $c++; endforeach; ?>
 								</ul>
 								<div class="license"><?php foreach ($banner->project->social_rewards as $id=>$reward) :
                                     if (empty($reward->license)) continue; ?>
-									<img src="view/css/license/<?php echo $reward->license ?>.png" alt="<?php echo $reward->license ?>" /></div>
+									<img src="<?php echo SRC_URL ?>/view/css/license/<?php echo $reward->license ?>.png" alt="<?php echo $reward->license ?>" /></div>
                                     <?php break; endforeach; ?>
 
 							</div>
@@ -64,10 +61,7 @@ include 'view/header.html.php' ?>
 					</div>
                     <?php endforeach;
                     else : ?>
-					<div class="subhead-banner">
-						<h2 class="message">Red social para <span class="greenblue">cofinanciar y colaborar con</span><br /> proyectos creativos que fomentan el procomún<br /> ¿Tienes un proyecto con <span class="greenblue">adn abierto</span>?</h2>
-                        <a href="/contact" class="button banner-button">Contáctanos</a>
-                    </div>
+					<div class="subhead-banner"><?php echo Text::html('main-banner-header'); ?></div>
                     <?php endif; ?>
 				</div>
 				<div class="mod-pojctopen"><?php echo Text::html('open-banner-header'); ?></div>
@@ -93,12 +87,12 @@ include 'view/header.html.php' ?>
 			</script>
             <div id="learn" class="widget learn">
 				<h2 class="title"><?php echo Text::get('home-posts-header'); ?></h2>
-				<div class="slder_container">
+				<div class="slder_container"<?php if (count($this['posts'])==1) echo ' style="display:block;"'; ?>>
 					
 					<?php $i = 1; foreach ($this['posts'] as $post) : ?>
 					<div class="slder_slide">
 						<div class="post" id="home-post-<?php echo $i; ?>" style="display:block;">
-							<?php if (!empty($post->media->url)) : ?>
+							<?php  if (!empty($post->media->url)) : ?>
 								<div class="embed">
 									<?php echo $post->media->getEmbedCode(); ?>
 								</div>
@@ -129,8 +123,9 @@ include 'view/header.html.php' ?>
 
             </div>
             
-            <?php endif ?>
+            <?php endif; ?>
             
+            <?php if (!empty($this['promotes'])): ?>
             <div class="widget projects">
                 
                 <h2 class="title"><?php echo Text::get('home-promotes-header'); ?></h2>
@@ -146,6 +141,7 @@ include 'view/header.html.php' ?>
                 <?php endforeach ?>
 
             </div>
+            <?php endif; ?>
 
         </div>
 

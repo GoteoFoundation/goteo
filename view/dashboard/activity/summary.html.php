@@ -16,11 +16,10 @@ $support = $user->support;
     jQuery(document).ready(function ($) {
 
         /* todo esto para cada lista de proyectos (flechitas navegacion) */
-        <?php foreach ($this['lists'] as $type=>$list) :
-            if(array_empty($list)) continue; ?>
-            $("#discover-group-<?php echo $type ?>-1").show();
-            $("#navi-discover-group-<?php echo $type ?>-1").addClass('active');
-        <?php endforeach; ?>
+            $("#discover-group-my_projects-1").show();
+            $("#navi-discover-group-my_projects-1").addClass('active');
+            $("#discover-group-invest_on-1").show();
+            $("#navi-discover-group-invest_on-1").addClass('active');
 
         $(".discover-arrow").click(function (event) {
             event.preventDefault();
@@ -46,22 +45,18 @@ $support = $user->support;
 
     });
 </script>
-<?php foreach ($this['lists'] as $type=>$list) :
-    if (array_empty($list))
-        continue;
-    ?>
+<!-- mis proyectos -->
+<?php if (!empty($this['lists']['my_projects'])) : ?>
     <div class="widget projects">
-        <h2 class="title"><?php echo Text::get('profile-'.$type.'-header'); ?></h2>
-        <?php foreach ($list as $group=>$projects) : ?>
-            <div class="discover-group discover-group-<?php echo $type ?>" id="discover-group-<?php echo $type ?>-<?php echo $group ?>">
+        <h2 class="title"><?php echo Text::get('profile-my_projects-header'); ?></h2>
+        <?php foreach ($this['lists']['my_projects'] as $group=>$projects) : ?>
+            <div class="discover-group discover-group-my_projects" id="discover-group-my_projects-<?php echo $group ?>">
 
                 <div class="discover-arrow-left">
-                    <a class="discover-arrow" href="#<?php echo $type; ?>" rev="<?php echo $type ?>" rel="<?php echo $type.'-'.$projects['prev'] ?>">&nbsp;</a>
+                    <a class="discover-arrow" href="#my_projects" rev="my_projects" rel="<?php echo 'my_projects-'.$projects['prev'] ?>">&nbsp;</a>
                 </div>
 
                 <?php foreach ($projects['items'] as $project) :
-                    
-                    if ($type == 'my_projects')  {
                         echo new View('view/project/widget/project.html.php', array(
                             'project'   => $project,
                             'balloon' => '<h4>' . htmlspecialchars($this['status'][$project->status]) . '</h4>' .
@@ -69,17 +64,10 @@ $support = $user->support;
                             'dashboard' => true,
                             'own'       => true
                         ));                    
-                    } else {
-                        echo new View('view/project/widget/project.html.php', array(
-                            'project' => $project,
-                            'investor'  => $user
-                        ));
-                    }
-
                 endforeach; ?>
 
                 <div class="discover-arrow-right">
-                    <a class="discover-arrow" href="#<?php echo $type; ?>" rev="<?php echo $type ?>" rel="<?php echo $type.'-'.$projects['next'] ?>">&nbsp;</a>
+                    <a class="discover-arrow" href="#my_projects" rev="my_projects" rel="<?php echo 'my_projects-'.$projects['next'] ?>">&nbsp;</a>
                 </div>
 
             </div>
@@ -90,14 +78,73 @@ $support = $user->support;
         <div class="navi-bar">
             <ul class="navi">
                 <?php foreach (array_keys($list) as $group) : ?>
-                <li><a id="navi-discover-group-<?php echo $type.'-'.$group ?>" href="#<?php echo $type; ?>" rev="<?php echo $type ?>" rel="<?php echo "{$type}-{$group}" ?>" class="navi-discover-group navi-discover-group-<?php echo $type ?>"><?php echo $group ?></a></li>
+                <li><a id="navi-discover-group-<?php echo 'my_projects-'.$group ?>" href="#my_projects" rev="my_projects" rel="<?php echo "my_projects-{$group}" ?>" class="navi-discover-group navi-discover-group-my_projects"><?php echo $group ?></a></li>
                 <?php endforeach ?>
             </ul>
         </div>
 
     </div>
+<?php endif; ?>
 
-<?php endforeach; ?>
+<!-- Proyectos que cofinancio -->
+<?php if (!empty($this['lists']['invest_on'])) : ?>
+    <div class="widget projects">
+        <h2 class="title"><?php echo Text::get('profile-invest_on-header'); ?></h2>
+        <?php foreach ($this['lists']['invest_on'] as $group=>$projects) : ?>
+            <div class="discover-group discover-group-invest_on" id="discover-group-invest_on-<?php echo $group ?>">
+
+                <div class="discover-arrow-left">
+                    <a class="discover-arrow" href="#invest_on" rev="invest_on" rel="<?php echo 'invest_on-'.$projects['prev'] ?>">&nbsp;</a>
+                </div>
+
+                <?php foreach ($projects['items'] as $project) :
+
+$url = SITE_URL . '/widget/project/' . $project->id;
+$url_regular = $url . '?lang=' . LANG;
+$url_invest = $url.'/invested/'.$user->id . '/?lang=' . LANG;
+$widget_code = '<iframe frameborder="0" height="480px" src="'.$url_regular.'" width="250px" scrolling="no"></iframe>';
+$widget_code_investor = '<iframe frameborder="0" height="480px" src="'.$url_invest.'" width="250px" scrolling="no"></iframe>';
+
+                    ?>
+                <div style="float:left;">
+                      <?php  echo new View('view/project/widget/project.html.php', array(
+                            'project' => $project,
+                            'investor'  => $user
+                        )); ?>
+                <br clear="both"/>
+                <?php if ($project->status > 2) : ?>
+                      <div id="widget-code" style="float:none;width:250px;margin-left:25px;">
+                        <div class="wc-embed" onclick="$('#widget_code').focus();$('#widget_code').select()">CÓDIGO DIFUSIÓN SIMPLE</div>
+                        <textarea id="widget_code" style="width:230px;margin:0 0 10px;" onclick="this.focus();this.select()" readonly="readonly"><?php echo htmlentities($widget_code); ?></textarea>
+                      </div>
+
+                      <div id="widget-code" style="float:none;width:250px;margin-left:25px;">
+                        <div class="wc-embed" onclick="$('#investor_code').focus();$('#investor_code').select()">CÓDIGO CON IMAGEN DE COFINANCIADOR</div>
+                        <textarea id="investor_code" style="width:230px;margin:0 0 10px;" onclick="this.focus();this.select()" readonly="readonly"><?php echo htmlentities($widget_code_investor); ?></textarea>
+                      </div>
+                <?php endif; ?>
+                </div>
+                <?php endforeach; ?>
+
+                <div class="discover-arrow-right">
+                    <a class="discover-arrow" href="#invest_on" rev="<?php echo $type ?>" rel="<?php echo 'invest_on-'.$projects['next'] ?>">&nbsp;</a>
+                </div>
+
+            </div>
+        <?php endforeach; ?>
+
+
+        <!-- carrusel de cuadritos -->
+        <div class="navi-bar">
+            <ul class="navi">
+                <?php foreach (array_keys($list) as $group) : ?>
+                <li><a id="navi-discover-group-<?php echo 'invest_on-'.$group ?>" href="#invest_on" rev="invest_on" rel="<?php echo "invest_on-{$group}" ?>" class="navi-discover-group navi-discover-group-invest_on"><?php echo $group ?></a></li>
+                <?php endforeach ?>
+            </ul>
+        </div>
+
+    </div>
+<?php endif; ?>
 
 <!-- nivel de meritocracia -->
 <?php echo new View('view/user/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $user->worth, 'amount' => $support['amount'])) ?>

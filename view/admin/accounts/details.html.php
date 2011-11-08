@@ -23,7 +23,7 @@ $user = $this['user'];
                 class="button red">Devolver el dinero</a>
     </p>
     <?php endif; */ ?>
-    <h3>Detalles del aporte</h3>
+    <h3>Detalles de la transaccion</h3>
     <dl>
         <dt>Cantidad aportada:</dt>
         <dd><?php echo $invest->amount ?> &euro;
@@ -36,7 +36,7 @@ $user = $this['user'];
 
     <dl>
         <dt>Estado:</dt>
-        <dd><?php echo $this['investStatus'][$invest->status] ?></dd>
+        <dd><?php echo $this['investStatus'][$invest->status]; if ($invest->status < 0) echo ' <span style="font-weight:bold; color:red;">OJO! que este aporte no fue confirmado.<span>'; ?></dd>
     </dl>
 
     <dl>
@@ -67,10 +67,6 @@ $user = $this['user'];
                 if (!empty($invest->payment)) {
                     echo 'Cargo: '.$invest->payment . '   ';
                 }
-
-                if (!empty($invest->transaction)) {
-                    echo 'Devolución: '.$invest->transaction . '   ';
-                }
             ?>
         </dd>
     </dl>
@@ -80,7 +76,7 @@ $user = $this['user'];
             $details = Paypal::preapprovalDetails($invest->preapproval);
             ?>
         <dl>
-            <dt>Detalles del preapproval: </dt>
+            <dt><strong>Detalles del preapproval:</strong></dt>
             <dd><?php echo \trace($details); ?></dd>
         </dl>
         <?php endif ?>
@@ -89,14 +85,14 @@ $user = $this['user'];
             $details = Paypal::paymentDetails($invest->payment);
             ?>
         <dl>
-            <dt>Detalles del cargo: </dt>
+            <dt><strong>Detalles del cargo:</strong></dt>
             <dd><?php echo \trace($details); ?></dd>
         </dl>
         <?php endif ?>
 
         <?php if (!empty($invest->transaction)) : ?>
         <dl>
-            <dt>Detalles de la devolución: </dt>
+            <dt><strong>Detalles de la devolución:</strong></dt>
             <dd>Hay que ir al panel de paypal para ver los detalles de una devolución</dd>
         </dl>
         <?php endif ?>

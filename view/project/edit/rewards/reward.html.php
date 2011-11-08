@@ -22,7 +22,6 @@ $reward = $this['data']['reward'] ?>
     
     <input type="submit" class="edit" name="<?php echo $reward->type ?>_reward-<?php echo $reward->id ?>-edit" value="<?php echo Text::get('form-edit-button') ?>" />
     <input type="submit" class="remove weak" name="<?php echo $reward->type ?>_reward-<?php echo $reward->id ?>-remove" value="<?php echo Text::get('form-remove-button') ?>" />
-    
 </div>
 
     
