@@ -11,31 +11,34 @@
         <meta name="copyright" content="<?php echo GOTEO_META_COPYRIGHT ?>" />
         <meta name="robots" content="all" />
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-        <link rel="stylesheet" type="text/css" href="/view/css/goteo.css" />
+        <meta property="og:title" content="Goteo.org" />
+        <meta property="og:description" content="<?php echo GOTEO_META_DESCRIPTION ?>" />
+        <meta property="og:image" content="<?php echo SITE_URL ?>/goteo_logo.png" />
+        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/goteo.css" />
       <!--[if IE]>
-      <link href="/view/css/ie.css" media="screen" rel="stylesheet" type="text/css" />
+      <link href="<?php echo SRC_URL ?>/view/css/ie.css" media="screen" rel="stylesheet" type="text/css" />
       <![endif]-->
 
         <script type="text/javascript">
         if(navigator.userAgent.indexOf('Mac') != -1)
 		{
-			document.write ('<link rel="stylesheet" type="text/css" href="/view/css/mac.css" />');
+			document.write ('<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/mac.css" />');
 		}
 	    </script>
         <?php if (!isset($useJQuery) || !empty($useJQuery)): ?>
-        <script type="text/javascript" src="/view/js/jquery-1.6.4.min.js"></script>
-        <script type="text/javascript" src="/view/js/jquery.tipsy.js"></script>
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery-1.6.4.min.js"></script>
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.tipsy.min.js"></script>
           <!-- custom scrollbars -->
-          <link type="text/css" href="/view/css/jquery.jscrollpane.css" rel="stylesheet" media="all" />
-          <script type="text/javascript" src="/view/js/jquery.mousewheel.js"></script>
-          <script type="text/javascript" src="/view/js/jquery.jscrollpane.min.js"></script>
+          <link type="text/css" href="<?php echo SRC_URL ?>/view/css/jquery.jscrollpane.min.css" rel="stylesheet" media="all" />
+          <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.mousewheel.min.js"></script>
+          <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.jscrollpane.min.js"></script>
           <!-- end custom scrollbars -->
 		  <!-- sliders -->
-		  <script type="text/javascript" src="/view/js/slides.jquery.js"></script>
+		  <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.slides.min.js"></script>
 		  <!-- end sliders -->
           <!-- fancybox-->   
-		  <script type="text/javascript" src="/view/js/jquery.fancybox-1.3.4.pack.js"></script>
-		  <link rel="stylesheet" type="text/css" href="/view/css/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+		  <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.fancybox.min.js"></script>
+		  <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/fancybox/jquery.fancybox.min.css" media="screen" />
           <!-- end custom fancybox-->          
         <?php endif ?>
     </head>
