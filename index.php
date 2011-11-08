@@ -75,7 +75,13 @@ try {
     // Check permissions on requested URI
     if (!ACL::check($uri)) {
         Message::Info(Text::get('user-login-required-access'));
-        throw new Redirection("/user/login/?return=".rawurlencode($uri));
+
+        //si es un cron (ejecutandose) con los parámetros adecuados, no redireccionamos
+        if (strpos($uri, 'cron') !== false && strcmp($_GET[md5(CRON_PARAM)], md5(CRON_VALUE)) === 0) {
+            // proceed
+        } else {
+            throw new Redirection("/user/login/?return=".rawurlencode($uri));
+        }
     }
 
     // Get controller name
