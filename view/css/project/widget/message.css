@@ -4,20 +4,19 @@ div.project-message{
 }
 
 div.project-message div#bocadillo{
-	background:url(/view/css/bocadillo.jpg) no-repeat;
+	background:url('/view/css/bocadillo.jpg') no-repeat;
 	position:absolute;
 	width:56px;
 	height:51px;
 }
-
+/*
 div.project-message h3.title{
 	font-size: 20px;
 	font-weight: bold;
 	line-height: 19px;
 	padding-bottom:5px;
 	margin-bottom:12px;
-}
-
+}*/
 div.project-message button{
 	float:right;
 	padding:5px 20px;

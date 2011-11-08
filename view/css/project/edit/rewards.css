@@ -276,6 +276,11 @@ body.project-edit div#main.rewards div.superform li.element.editsocial_reward li
     background-image: url('/view/css/license/gpl.png');
 }
 
+body.project-edit div#main.rewards div.superform li.element.reward div.license_gpl2 ,
+body.project-edit div#main.rewards div.superform li.element.editsocial_reward li.license_gpl2 div.contents {
+    background-image: url('/view/css/license/gpl2.png');
+}
+
 body.project-edit div#main.rewards div.superform li.element.reward div.license_lgpl ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward li.license_lgpl div.contents {
     background-image: url('/view/css/license/lgpl.png');

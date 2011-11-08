@@ -1,12 +1,15 @@
-body.project-edit div#main.overview div.superform li.element.media {
+body.project-edit div#main.overview div.superform li.element.media,
+body.project-edit div#main.updates div.superform li.element.media {
     position: relative;
 }
 
-body.project-edit div#main.overview div.superform li.element.media > div.contents {
+body.project-edit div#main.overview div.superform li.element.media > div.contents,
+body.project-edit div#main.updates div.superform li.element.media > div.contents {
     margin-right: 270px;
 }
 
-body.project-edit div#main.overview div.superform li.element.media > div.contents iframe {
+body.project-edit div#main.overview div.superform li.element.media > div.contents iframe,
+body.project-edit div#main.updates div.superform li.element.media > div.contents iframe {
     width: 380px !important;
     height: 220px !important;
 }

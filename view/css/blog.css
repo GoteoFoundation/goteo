@@ -81,6 +81,9 @@ div.widget.blog-content-module  .embed-legend,
 	font-style:oblique
 }
 /* Estilos galeria */
+div.post-gallery{
+	margin-bottom:30px;
+}
 div.post-gallery-container{
 	width:580px;
 	height:300px;

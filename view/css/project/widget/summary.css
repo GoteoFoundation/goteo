@@ -110,4 +110,17 @@ div.widget.project-summary div#prjct-gallery  a.next:hover {
 	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -48px;
 }
 
+/* Video motivacional */
+div.widget.project-summary div.project-motivation-video {
+    margin-left: -20px;
+    padding: 0;
+    width: 620px !important;
+    height: 380px;
+}
 
+div.widget.project-media > iframe,
+div.widget.project-media > object,
+div.widget.project-media > embed {
+    width: 580px !important;
+    height: 380px !important;
+}

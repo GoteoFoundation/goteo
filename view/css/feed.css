@@ -19,17 +19,17 @@ div.feed  div.block > div.item{height:350px;}
 div.feed  div.block > div.item div.subitem{width:260px}
 div.subitem > div{height:auto;overflow:auto}
 div.feed  div.block > h4{color:#59595C; padding-bottom:5px;border-bottom:#E95C5C 1px solid;max-width:265px;margin-bottom:5px;}
-div.subitem h5{text-transform:none;font-size:1em;margin-bottom:3px;}
-span.datepub{float:left;display:block;clear:right;color:#A7A8AC;font-size:0.7em;line-height:0.8em;margin-bottom:2px}
+div.subitem h5{text-transform:none;margin-bottom:3px;}
+div.subitem h5 a{font-size:1.1em;}
+span.datepub{float:left;display:block;clear:right;color:#A7A8AC;font-size:0.9em;margin-bottom:2px}
 div.content-avatar{}
 div.content-title{height:auto;overflow:hidden !important}
 div.content-image{height:auto;overflow:hidden !important}
-div.content-pub{clear:both;margin-top:2px;color:#59595C;font-size:0.8em;}
+div.content-pub{clear:both;margin-top:2px;color:#59595C;font-size:0.9em;}
 div.content-pub a{font-size:1em}
 div.subitem > div.content-avatar{margin-bottom:0;overflow:hidden;}
 div.subitem > div.content-avatar > a.avatar{float:left;display:block;margin-right:5px;}
-div.subitem > div.content-avatar > a.username{float:left;display:block;clear:right;font-size:0.9em;line-height:0.9em;font-weight:bold}
-div.subitem > div.content-avatar > span.datepub{}
+div.subitem > div.content-avatar > a.username{display:block;clear:right;font-size:1.1em;line-height:1.1em;font-weight:bold}
 div.subitem > div.content-image > a.image{float:left;height:60px;width:90px;margin-right:5px}
 div.subitem > div.content-image > a.project{display:block;clear:right;font-size:1em;line-height:1.1em;font-weight:600;margin-bottom:3px}
 
@@ -50,8 +50,8 @@ body.admin div#main > div.side > div.widget.feed div.subitem span.datepub{margin
 body.admin div#main > div.widget.feed{padding-left:100px;padding-right:100px}
 body.admin div#main > div.widget.feed > h3.title{margin-left:-100px;margin-bottom:25px}
 body.admin div#main > div.widget.feed > p.categories > a{margin-right:15px;font-size:12px !important;text-transform:uppercase;}
-body.admin div#main > div.widget.feed > div.scroll-pane{height:215px}
+body.admin div#main > div.widget.feed > div.scroll-pane{height:800px}
 body.admin div#main > div.widget.feed div.subitem{padding-left:5px}
-body.admin div#main > div.widget.feed div.subitem > span.datepub{float:left;width:80px;margin-right:10px;clear:none;line-height:1.2em}
+body.admin div#main > div.widget.feed div.subitem > span.datepub{float:left;width:100px;margin-right:10px;clear:none;line-height:1.2em}
 body.admin div#main > div.widget.feed div.subitem > div.content-pub{float:left;width:600px;clear:none;margin-top:0;}
 

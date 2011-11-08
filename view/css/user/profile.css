@@ -65,24 +65,24 @@ div.center div.widget.user-mates .users ul > li span.profile, div.center div.wid
 
 div.center div.widget.user-mates .users ul > li span.profile a{
 	float:left;
-	background:url(plus.png) left no-repeat;
+	background:url('/view/css/user/plus.png') left no-repeat;
 	padding-left:15px;
 	color:#808285;
 }
 
 div.center div.widget.user-mates .users ul > li span.profile a:hover{
-	background:url(plus-hover.png) left no-repeat;
+	background:url('/view/css/user/plus-hover.png') left no-repeat;
 	color:#58595B;
 }
 
 div.center div.widget.user-mates .users ul > li span.contact a{
-	background:url(contact.png) left no-repeat;
+	background:url('/view/css/user/contact.png') left no-repeat;
 	padding-left:15px;
 	color:#808285;	
 }
 
 div.center div.widget.user-mates .users ul > li span.contact a:hover{
-	background:url(contact-hover.png) left no-repeat;
+	background:url('/view/css/user/contact-hover.png') left no-repeat;
 	color:#58595B;
 }
 
@@ -101,8 +101,8 @@ div.center > div.widget.categorylist > div.filters{border-bottom: 1px solid #D5D
 	div.center > div.widget.categorylist > div.filters > ul{margin-left:1em;}
 	div.center > div.widget.categorylist > div.filters > ul > li{margin-right:5px;}
 	div.center > div.widget.categorylist > div.filters > ul > li > a{display:inline-block;
-	background:url(grey-triangle-down.png) no-repeat left; padding-left:15px;font-size:11px;}
-	div.center > div.widget.categorylist > div.filters > ul > li > a.active{background:url(blue-triangle-down.png) no-repeat left;}
+	background:url('/view/css/user/grey-triangle-down.png') no-repeat left; padding-left:15px;font-size:11px;}
+	div.center > div.widget.categorylist > div.filters > ul > li > a.active{background:url('/view/css/user/blue-triangle-down.png') no-repeat left;}
 
 div.center > div.widget.categorylist > div.list{padding-top:5px;}
 	div.center > div.widget.categorylist > div.list > ul{}
@@ -116,7 +116,7 @@ div.center > div.widget.user-mates > h3.title{margin: 0 0 1em;padding: 0 2px 0.5
 
 div.center div.widget.user-message{position:relative;z-index:99;}
 div.center div.widget.user-message textarea{display:block;margin-left:50px;width:510px;}
-div.center div.widget.user-message #bocadillo{background:url(../bocadillo.jpg) no-repeat;position:absolute;
+div.center div.widget.user-message #bocadillo{background:url('/view/css/bocadillo.jpg') no-repeat;position:absolute;
 width:56px;	height:51px;z-index:100;}
 div.center div.widget.user-message #a-preview{color: #2EAB58;
 font-weight: bold;left: 52px;position: relative;text-decoration: none;text-transform: uppercase;top: 10px;}

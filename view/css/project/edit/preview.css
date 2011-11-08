@@ -42,6 +42,14 @@ body.project-edit div#main div.project-preview div.widget.project-media {
     margin-right: 20px;
 }
 
+/* video motivacion */
+body.project-edit div#main div.project-preview div.project-motivation-video {
+    padding: 0;
+    margin-left: -20px;
+    max-width: 620px;
+    height: 380px;
+}
+
 /* Some hacks to the superform styles :S */
 body.project-edit div#main.preview div.superform > div.hint {
     padding-right: 0;

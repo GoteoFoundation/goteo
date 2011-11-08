@@ -13,7 +13,7 @@ div.widget.project-needs table th.summary div.click{
 }
 div.widget.project-needs table th.summary div.click span.icon{
 	height:10px;width:10px;
-	background:url(minusplus.png) 0 10px;
+	background:url('/view/css/project/widget/minusplus.png') 0 10px;
 	position:relative;right:5px;top:3px;
 	clear:left;
 }
@@ -26,7 +26,7 @@ div.widget.project-needs table th.summary div.click span{
 }
 
 div.widget.project-needs table th.summary div.click span.icon.closed{
-	background:url(minusplus.png) 0 0px;
+	background:url('/view/css/project/widget/minusplus.png') 0 0px;
 }
 
 div.widget.project-needs table th.summary div.click blockquote{

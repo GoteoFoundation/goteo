@@ -27,7 +27,7 @@ div#footer {
 div#sub-footer{
 	width:100%;
     margin: 0;
-	height:25px;
+	height:30px;
     font-size: 12px;
     overflow: hidden;
     background-color: #58595B;
@@ -301,15 +301,6 @@ div#sub-footer ul li a{
 	color:#fff;
 }
 
-div#footer .platoniq{
-	float:right;
-	font-size:11px;
-}
-
-div#footer .platoniq a{
-	display:block;
-	background:url('platoniq.png');
-}
 div#sub-footer + * {
     font-size: 12px;
     border-top: 2.2em solid #59595c;
@@ -317,7 +308,7 @@ div#sub-footer + * {
 }
 
 div#sub-footer ul {
-    margin-top: 5px;
+    margin-top: 8px;
     list-style: none;
 }
 
@@ -331,7 +322,8 @@ div#sub-footer a:hover {
 }
 
 div#sub-footer div.platoniq {
-    padding-top: 0;
+    padding: 0;
+    margin: 0;
     border-width: 0;
     min-width: 0 !important;
 	position:relative;
@@ -342,25 +334,58 @@ div#sub-footer div.platoniq span.text{
 	margin-right:15px;
 }
 
-/*div#sub-footer div.platoniq * {
-    text-transform: lowercase;
-    font-size: 11px;
-}
-*/
-div#sub-footer div.platoniq a {
+div#sub-footer div.platoniq span.logo {
     display: inline-block;
-    width: 60px;
-    height: 17px;
-    background: url('platoniq.png') no-repeat;
+    float: left;
+}
+
+div#sub-footer div.platoniq a.foundation {
+    display: inline-block;
+    width: 120px;
+    height: 30px;
+	background: url('/view/css/logoFFA.png') no-repeat 0px 5px transparent;
     text-indent: 2000px;
     line-height: 2000px;
     overflow: hidden;
 	position:relative;
-	top:5px;
 }
 
-div#sub-footer div.platoniq a:hover{
-	background: url('platoniq2.png') no-repeat;
+div#sub-footer div.platoniq a.foundation:hover{
+	background: url('/view/css/logoFFA2.png') no-repeat 0px 5px transparent;
+}
+
+div#sub-footer div.platoniq a.growby {
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+    background: url('/view/css/platoniq.png') no-repeat 0px 8px transparent;
+    text-indent: 2000px;
+    line-height: 2000px;
+    overflow: hidden;
+	position:relative;
+}
+
+div#sub-footer div.platoniq a.growby:hover{
+	background: url('/view/css/platoniq2.png') no-repeat 0px 8px transparent;
+}
+
+div#sub-footer div.platoniq a.poweredby {
+    display: inline-block;
+    height: 30px;
+    font-size: 12px !important;
+    color: #FFF;
+	text-decoration: none;
+    cursor: default;
+    position: absolute;
+    top: 8px;
+    right: 100px;
+    width: 100%;
+}
+
+div#sub-footer div.platoniq a.poweredby:hover{
+    color: #FFF !important;
+	text-decoration: none;
+    cursor: default;
 }
 
 /* Sponsors */

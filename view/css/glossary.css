@@ -6,7 +6,7 @@
 #glossary-content h3.title {
 	margin: 0px;
 	padding: 13px 0 10px 30px;
-	background: white url('arrowH2-section.gif') scroll no-repeat  0 0;
+	background: white url('arrowH2-section.gif') no-repeat scroll -5px -2px;
 	height:37px;
 	font-size: 20px;
     font-weight: normal;

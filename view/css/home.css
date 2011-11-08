@@ -1,7 +1,7 @@
 @import url("project/widget/projects.css");
 
 body.home div#main div.learn {    
-    margin-bottom: 15px;
+    margin-bottom: 16px;
     position: relative;
 }
 
@@ -18,7 +18,7 @@ body.home div#main div.widget.projects{
 
 body.home div#main div.widget.projects div.widget.project{
 	padding:0;
-	margin:0 40px 20px 0;
+	margin: 0 40px 42px 0;
 }
 
 body.home div#main div.learn ul.slderpag {
@@ -104,7 +104,7 @@ body.home div#main div.learn  div.slder_container div.slder_slide . div.post {
 }
 
 body.home div#main div.learn div.slder_container div.slder_slide div.post div.read_more{
-    bottom: 0px;
+    bottom: 10px;
     right: 20px;
     position: absolute;
 }
@@ -114,6 +114,8 @@ body.home div#main div.learn div.slder_container div.slder_slide div.post div.de
 	float: left;
     margin: 0 0 10px 20px;
     width: 380px;
+	line-height: 18px;
+	text-transform:none;
 }
 
 body.home div#main div.learn div.slder_container div.slder_slide div.post div.embed,

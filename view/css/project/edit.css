@@ -183,4 +183,4 @@ body.project-edit div.superform li.element#footer li#buttons button {
 /* = lista de errores
 ************************************************/
 ul.sf-footer-errors{}
-ul.sf-footer-errors li{ list-style-image:url(bg-li-error.png);}
+ul.sf-footer-errors li{ list-style-image:url('/view/css/project/bg-li-error.png');}

@@ -5,8 +5,8 @@
 }
 #faq-content h2 {
 	margin: 0px;
-	padding: 13px 0 0 30px;
-	background: white url('arrowH2-section.gif') scroll no-repeat  0 0;
+	padding: 13px 0 0 20px;
+	background: white url('arrowH2-section.gif') no-repeat scroll -5px -2px;
 	height:37px;
 	font: bold 18px Helvetica, Arial, Geneva, sans-serif;
 }
@@ -52,7 +52,7 @@ div.widget.faq-sidebar-module .supertitle.ask {
 	margin-bottom: 12px;
 }
 div.widget.faq-sidebar-module ol {
-    margin-left:20px;
+    margin-left: 20px;
 	padding-left:0px;
 }
 div.widget.faq-sidebar-module ol li {

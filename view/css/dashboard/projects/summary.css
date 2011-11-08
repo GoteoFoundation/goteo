@@ -84,6 +84,10 @@ body.dashboard div#meter-big div.graph .minimum .done {
     top: -2px;
 }
 
+body.dashboard div#meter-big div.graph .minimum .done {
+    max-width: 580px;
+}
+
 /* Cambiar el marcador por uno grande con el strong del % dentro */
 body.dashboard div#meter-big div.graph .minimum .done strong {
     background: url("marker.png") no-repeat;

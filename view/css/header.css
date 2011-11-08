@@ -1,7 +1,6 @@
 /**
  * Header
  */
-  
 div#header,
 div#super-header {
     position: relative;
@@ -50,7 +49,7 @@ div#sub-header-secondary {
 }
 
 div#sub-header{
-    background-color: #faf8f8;
+   background-color: #faf8f8;
 }
 
 div#sub-header.banners{
@@ -76,7 +75,6 @@ div#sub-header-secondary > div > h2 a{
 	font-size:1em;
 	text-decoration:none;
 	position:relative;
-	left: 12px;
 }
 
 div#sub-header-secondary > div > h2 a:hover span.red{
@@ -273,7 +271,7 @@ div#sub-header > div > div.mod-pojctopen{
 }
 
 div#sub-header.banners > div > div.mod-pojctopen{
-	margin-right: 20px;
+	margin-right: 32px;
 	margin-top: 16px;
 	margin-left: 0;
 }
@@ -633,7 +631,6 @@ div#header div#menu > ul > li.search fieldset {
     padding: 0 1.5em 0 0;
     border: 1px solid #808184;
     position: relative;
-	/*top:-4px;*/ /*bug 800x600 alineación vertical search*/
     font-size: 11px;
 }
 

@@ -60,11 +60,11 @@ div.widget.project-support dl dt.minimum {
 
 
 div.widget.project-support dl dt.optimum {
-    background-image: url('support/here-optimum.png');
+    background-image: url('/view/css/project/widget/support/here-optimum.png');
 }
 
 div.widget.project-support dl dt.minimum {
-    background-image: url('support/here-minimum.png');
+    background-image: url('/view/css/project/widget/support/here-minimum.png');
     clear: left;
 }
 
@@ -137,7 +137,7 @@ body.project-show div#main > div.side > div.widget h3.title.ronda {
 }
 
 div.widget.project-support div.graph {
-    background: url('support/over.png') no-repeat center top;
+    background: url('/view/css/project/widget/support/over.png') no-repeat center top;
     width: 26px;
     overflow: visible;            
     border-bottom: 2px solid #20B3B2;
@@ -155,26 +155,30 @@ div.widget.project-support div.graph > div.minimum {
 }
 
 div.widget.project-support div.graph > div.optimum {
-    background: url('support/optimum.png') no-repeat center top;
+    background: url('/view/css/project/widget/support/optimum.png') no-repeat center top;
     height: 45px;
 }
 
 div.widget.project-support div.graph > div.minimum {    
-    background: url('support/minimum.png') no-repeat center top;    
+    background: url('/view/css/project/widget/support/minimum.png') no-repeat center top;
     position: relative;    
     min-height: 145px !important;
 }
 
 div.widget.project-support div.graph > div.minimum > div.done {
-    background: url('support/done.png') no-repeat bottom;    
+    background: url('/view/css/project/widget/support/done.png') no-repeat bottom;
     position: absolute;
     bottom: 0;
     width: 100%;
     overflow: visible;
 }
 
+div.widget.project-support div.meter.ver div.graph .minimum .done {
+    max-height: 212px;
+}
+
 div.widget.project-support div.graph > div.minimum > div.done strong {
-    background: url('support/marker.png') no-repeat center center;
+    background: url('/view/css/project/widget/support/marker.png') no-repeat center center;
     display: block;
     width: 29px;  
     padding: 0 8px 0 0;
@@ -216,37 +220,35 @@ div.widget.project-support div.tagmark {
     font-weight: bold;
     text-transform: uppercase;
     margin-left: -20px;
-    top: 10px;
+    top: 0px;
     width: 235px;
-    height: 20px;
-    padding: 8px 30px 4px 35px;
+    height: 40px;
+    padding: 10px 30px 0px 35px;
 }
 
 div.widget.project-support div.tagmark.green {
-    background:url('/view/css/project/long_tagmark_green.png') left no-repeat;
+    background:url('/view/css/project/long_tagmark_green.png') left top no-repeat;
 }
 
 div.widget.project-support div.tagmark.red {
-    background:url('/view/css/project/long_tagmark_red.png') left no-repeat;
+    background:url('/view/css/project/long_tagmark_red.png') left top no-repeat;
 }
 
-div.widget.project-support div.keepiton {
-    position: absolute;
-    z-index: 9999;
-    display: block;
-    text-align: center;
-    font-size: 0.8em;
-    font-weight: bold;
-    text-transform: uppercase;
-    overflow: visible;
-    background-color: #19b5b3;
-    color: #ffffff;
-    border-radius: 2px 4px;
-    width: 120px;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    padding: 3px;
-    right: 20px;
-    bottom: 20px;
-    cursor: default;
+div.widget.project-support div.tagmark.violet {
+    background:url('/view/css/project/long_tagmark_violet.png') left top no-repeat;
+}
+
+div.widget.project-support div.tagmark.grey {
+    background:url('/view/css/project/long_tagmark_grey.png') left top no-repeat;
+}
+
+/* tipografia pequeña para que quepa todo */
+div.widget.project-support div.tagmark span.small {
+    font-size: 0.9em !important;
+    font-weight: normal !important;
+}
+
+/* Dos lineas para el en marcha y aun puedes */
+div.widget.project-support div.tagmark.twolines {
+    padding-top: 3px !important;
 }

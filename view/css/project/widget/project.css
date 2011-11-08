@@ -45,17 +45,36 @@ div.widget.project div.image div.tagmark {
     font-weight: bold;
     text-transform: uppercase;
     margin-top: 8px;
-    width: 190px;
-    height: 20px;
-    padding: 8px 30px 4px 35px;
+    width: 226px;
+    height: 40px;
+    padding: 12px 0px 0px 27px;
 }
 
 div.widget.project div.image div.tagmark.green {
-    background:url('/view/css/project/tagmark_green.png') left no-repeat;
+    background:url('/view/css/project/tagmark_green.png') 0 0 no-repeat;
 }
 
 div.widget.project div.image div.tagmark.red {
-    background:url('/view/css/project/tagmark_red.png') left no-repeat;
+    background:url('/view/css/project/tagmark_red.png') 0 0 no-repeat;
+}
+
+div.widget.project div.image div.tagmark.violet {
+    background:url('/view/css/project/tagmark_violet.png') 0 0 no-repeat;
+}
+
+div.widget.project div.image div.tagmark.grey {
+    background:url('/view/css/project/tagmark_grey.png') 0 0 no-repeat;
+}
+
+/* tipografia pequeña para que quepa todo */
+div.widget.project div.image div.tagmark span.small {
+    font-size: 0.7em !important;
+    font-weight: normal !important;
+}
+
+/* Dos lineas para el en marcha y aun puedes */
+div.widget.project div.image div.tagmark.twolines {
+    padding-top: 6px !important;
 }
 
 div.widget.project div.image div.investor {
@@ -109,7 +128,7 @@ div.widget.project div.image div.categories {
     right: 0;    
     left: 0;
 }
-
+/*
 div.widget.project div.keepiton {
     position: absolute;
     z-index: 899;
@@ -130,7 +149,7 @@ div.widget.project div.keepiton {
     left: 0;
     cursor: default;
 }
-
+*/
 div.widget.project > .title {    
     font-size: 14px !important;
     height: 2em;
@@ -247,6 +266,10 @@ div.widget.project div.meter div.graph .minimum .done {
     position: absolute;
     left: 0;
     top: -2px;
+}
+
+div.widget.project div.meter.hor div.graph .minimum .done {
+    max-width: 215px;
 }
 
 div.widget.project div.meter div.graph .minimum .done strong {

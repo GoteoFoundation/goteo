@@ -1,6 +1,6 @@
 body.discover div#main div.widget {
     overflow: hidden;
-    margin-bottom: 15px;
+    margin-bottom: 30px;
 }
 
 /* Buscador */
@@ -137,6 +137,7 @@ div.navi-bar ul.navi li > a.active {
 div.navi-bar {
     clear: both;
     display: block;
+	height: 30px;
 }
 
 div.navi-bar a.all{
@@ -144,7 +145,7 @@ div.navi-bar a.all{
     text-transform: uppercase;
     position:relative;
     top: -20px;
-    right: -775px;
+    right: -825px;
 }
 
 div.navi-bar a.all:hover{
@@ -153,7 +154,7 @@ div.navi-bar a.all:hover{
 
 a.discover-arrow {
     position:relative;
-    top: 150px;
+    top: 200px;
     color: white;
     line-height: 24px;
     text-indent: 24px;
