@@ -47,9 +47,9 @@ if (!defined('PHPMAILER_POP3')) {
 
 // Metadata
 define('GOTEO_META_TITLE', 'Crowdfunding the commons');
-define('GOTEO_META_DESCRIPTION', 'Red social de financiación colectiva');
-define('GOTEO_META_KEYWORDS', 'crowdfunding, procomÃn, commons, social, network, financiacion colectiva, cultural, creative commons, proyectos abiertos, open source, free software, licencias libres');
-define('GOTEO_META_AUTHOR', 'Onliners');
+define('GOTEO_META_DESCRIPTION', utf8_encode('Red social de financiación colectiva'));
+define('GOTEO_META_KEYWORDS', utf8_encode('crowdfunding, procomún, commons, social, network, financiacion colectiva, cultural, creative commons, proyectos abiertos, open source, free software, licencias libres'));
+define('GOTEO_META_AUTHOR', 'Onliners Web Development');
 define('GOTEO_META_COPYRIGHT', 'Platoniq');
 
 // Database
@@ -84,6 +84,11 @@ define('GOTEO_DEFAULT_LANG', 'es');
 define('SITE_URL', 'http://devgoteo.org');
 define('SRC_URL', 'http://resources.devgoteo.org');
 
+// Cron params
+define('CRON_PARAM', '4dTJYNfPovGqyMt');
+define('CRON_VALUE', 'HsIv6aG36ek2s7Q');
+
+
 /****************************************************
 Paypal web_constants.php
 
@@ -102,19 +107,21 @@ define('PAYPAL_REDIRECT_URL', 'https://www.sandbox.paypal.com/webscr&cmd=');
 define('PAYPAL_DEVELOPER_PORTAL', 'https://developer.paypal.com');
 define('PAYPAL_DEVICE_ID', 'goteo.org');
 define('PAYPAL_APPLICATION_ID', 'APP-80W284485P519543T');
-//define('PAYPAL_BUSINESS_ACCOUNT', 'paypal@goteo.org');
 define('PAYPAL_BUSINESS_ACCOUNT', 'goteo_1314917819_biz@gmail.com');
 define('PAYPAL_IP_ADDRESS', '127.0.0.1');
 
 /****************************************************
 TPV constants
 ****************************************************/
-define('TPV_MERCHANT_CODE', '58857178'); // AMASTE COMUNICACION SL
-//define('TPV_REDIRECT_URL', SITE_URL . '/tpv/simulacrum'); // desarrollo
-define('TPV_REDIRECT_URL', 'https://sis-t.sermepa.es:25443/sis/realizarPago'); // entorno test
-////////////////////define('TPV_REDIRECT_URL', 'https://sis.sermepa.es/sis/realizarPago'); // entorno real
-define('TPV_ENCRYPT_KEY', 'qwertyasdf0123456789'); // clave test
-/////////////////define('TPV_ENCRYPT_KEY', 'dso8uycgno97syeoi8i6'); // clave real (aun es falsa)
-define('TPV_WEBSERVICE_URL', 'https://sis-t.sermepa.es:25443/sis/operaciones'); //pruebas
-//define('TPV_WEBSERVICE_URL', 'https://sis.sermepa.es/sis/operaciones'); //real
+/////////// SERMEPA
+/*
+define('TPV_MERCHANT_CODE', '');
+define('TPV_REDIRECT_URL', 'https://sis-t.sermepa.es:25443/sis/realizarPago');
+define('TPV_ENCRYPT_KEY', 'qwertyasdf0123456789');
+define('TPV_WEBSERVICE_URL', 'https://sis-t.sermepa.es:25443/sis/operaciones');
+*/
 
+/////////// CECA
+define('TPV_MERCHANT_CODE', '');
+define('TPV_REDIRECT_URL', 'http://tpv.ceca.es:8000/cgi-bin/tpv');
+define('TPV_ENCRYPT_KEY', '42353028');
