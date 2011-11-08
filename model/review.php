@@ -108,6 +108,7 @@ namespace Goteo\Model {
             $sql = "SELECT
                         project.id as project,
                         project.name as name,
+                        project.translate as translate,
                         user.name as owner,
                         review.id as review,
                         review.status as status,

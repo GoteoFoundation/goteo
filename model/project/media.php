@@ -99,12 +99,12 @@ namespace Goteo\Model\Project {
 
                      case (preg_match('#^(http(?<https>s)?://)?(?:www\.)?prezi.com/(?<slide>\w+)/#', $this->url, $pz)):
                         // URL de Prezi
-                        $code = static::getPreziCode($pz['slide']);
+                        $code = static::getPreziCode($pz['slide'], !empty($vm['https']));
                         break;
 
                      case (preg_match('#^(http(?<https>s)?://)?(?:www\.)?blip.tv/play/(?<video>\w+).html#', $this->url, $bp)):
                         // URL de Blip.tv
-                        $code = static::getBlipCode($bp['video']);
+                        $code = static::getBlipCode($bp['video'], !empty($vm['https']));
                         break;
 
                     default:

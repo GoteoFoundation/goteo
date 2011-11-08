@@ -72,18 +72,23 @@ namespace Goteo\Model\Project {
             try {
                 $sqlFilter = "";
                 if (!empty($project)) {
-                    $sqlFilter = " WHERE id IN (SELECT category FROM project_category WHERE project = '$project')";
+                    $sqlFilter = " WHERE category.id IN (SELECT category FROM project_category WHERE project = '$project')";
                 }
 
-                $sql = "SELECT id, name
+                $sql = "SELECT 
+                            category.id,
+                            IFNULL(category_lang.name, category.name) as name
                         FROM category
+                        LEFT JOIN category_lang
+                            ON  category_lang.id = category.id
+                            AND category_lang.lang = :lang
                         $sqlFilter
                         ORDER BY `order` ASC
                         ";
                 if (!empty($limit)) {
                     $sql .= "LIMIT $limit";
                 }
-                $query = static::query($sql);
+                $query = static::query($sql, array(':lang'=>\LANG));
                 $categories = $query->fetchAll();
                 foreach ($categories as $cat) {
                     $array[$cat[0]] = $cat[1];

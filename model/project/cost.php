@@ -26,10 +26,29 @@ namespace Goteo\Model\Project {
             }
 		}
 
-		public static function getAll ($project) {
+		public static function getAll ($project, $lang = null) {
             try {
                 $array = array();
-				$query = self::query("SELECT * FROM cost WHERE project = ? ORDER BY id ASC", array($project));
+
+                $sql = "
+                    SELECT
+                        cost.id as id,
+                        cost.project as project,
+                        IFNULL(cost_lang.cost, cost.cost) as cost,
+                        IFNULL(cost_lang.description, cost.description) as description,
+                        cost.type as type,
+                        cost.amount as amount,
+                        cost.required as required,
+                        cost.from as `from`,
+                        cost.until as `until`
+                    FROM cost
+                    LEFT JOIN cost_lang
+                        ON  cost_lang.id = cost.id
+                        AND cost_lang.lang = :lang
+                    WHERE cost.project = :project
+                    ORDER BY cost.id ASC";
+
+				$query = self::query($sql, array(':project'=>$project,':lang'=>$lang));
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
                     $array[$item->id] = $item;
                 }
@@ -95,6 +114,35 @@ namespace Goteo\Model\Project {
 				$sql = "REPLACE INTO cost SET " . $set;
 				self::query($sql, $values);
             	if (empty($this->id)) $this->id = self::insertId();
+				return true;
+			} catch(\PDOException $e) {
+                $errors[] = "El coste {$this->cost} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
+                return false;
+			}
+		}
+
+		public function saveLang (&$errors = array()) {
+
+			$fields = array(
+				'id'=>'id',
+				'lang'=>'lang',
+				'cost'=>'cost_lang',
+				'description'=>'description_lang'
+				);
+
+			$set = '';
+			$values = array();
+
+			foreach ($fields as $field=>$ffield) {
+				if ($set != '') $set .= ", ";
+				$set .= "`$field` = :$field ";
+				$values[":$field"] = $this->$ffield;
+			}
+
+			try {
+				$sql = "REPLACE INTO cost_lang SET " . $set;
+				self::query($sql, $values);
+            	
 				return true;
 			} catch(\PDOException $e) {
                 $errors[] = "El coste {$this->cost} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();

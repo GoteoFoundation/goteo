@@ -62,17 +62,28 @@ namespace Goteo\Model {
         /*
          * Lista de hilos de un proyecto
          */
-        public static function getAll ($project) {
+        public static function getAll ($project, $lang = null) {
 
             $messages = array();
 
             $query = static::query("
-                SELECT  *
+                SELECT
+                    message.id as id,
+                    message.user as user,
+                    message.project as project,
+                    message.thread as thread,
+                    message.date as date,
+                    IFNULL(message_lang.message, message.message) as message,
+                    message.blocked as blocked,
+                    message.closed as closed
                 FROM  message
-                WHERE   message.project = ?
+                LEFT JOIN message_lang
+                    ON  message_lang.id = message.id
+                    AND message_lang.lang = :lang
+                WHERE   message.project = :project
                 AND     message.thread IS NULL
                 ORDER BY date ASC, id ASC
-                ", array($project));
+                ", array(':project'=>$project, ':lang'=>$lang));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $message) {
                 // datos del usuario
                 $message->user = User::getMini($message->user);
@@ -155,6 +166,35 @@ namespace Goteo\Model {
                 $sql = "REPLACE INTO message SET " . $set;
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
+
+                return true;
+            } catch(\PDOException $e) {
+                $errors[] = "El mensaje no se ha grabado correctamente. Por favor, inténtelo de nuevo." . $e->getMessage();
+                return false;
+            }
+        }
+
+        public function saveLang (&$errors = array()) {
+            $fields = array(
+                'id'=>'id',
+                'lang'=>'lang',
+                'message'=>'message_lang'
+                );
+
+            $set = '';
+            $values = array();
+
+            foreach ($fields as $field=>$ffield) {
+                if (!empty($this->$ffield)) {
+                    if ($set != '') $set .= ", ";
+                    $set .= "`$field` = :$field ";
+                    $values[":$field"] = $this->$ffield;
+                }
+            }
+
+            try {
+                $sql = "REPLACE INTO message_lang SET " . $set;
+                self::query($sql, $values);
 
                 return true;
             } catch(\PDOException $e) {

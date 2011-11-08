@@ -20,6 +20,7 @@ namespace Goteo\Model\Blog {
             $publish,
             $home,
             $footer,
+            $tags = array(),
             $gallery = array(), // array de instancias image de post_image
             $num_comments = 0,
             $comments = array();
@@ -27,7 +28,7 @@ namespace Goteo\Model\Blog {
         /*
          *  Devuelve datos de una entrada
          */
-        public static function get ($id) {
+        public static function get ($id, $lang = null) {
                 $query = static::query("
                     SELECT
                         post.id as id,
@@ -36,7 +37,7 @@ namespace Goteo\Model\Blog {
                         IFNULL(post_lang.text, post.text) as text,
                         IFNULL(post_lang.legend, post.legend) as legend,
                         post.image as `image`,
-                        post.media as `media`,
+                        IFNULL(post_lang.media, post.media) as `media`,
                         post.date as `date`,
                         DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                         post.allow as allow,
@@ -48,7 +49,7 @@ namespace Goteo\Model\Blog {
                         ON  post_lang.id = post.id
                         AND post_lang.lang = :lang
                     WHERE post.id = :id
-                    ", array(':id' => $id, ':lang'=>\LANG));
+                    ", array(':id' => $id, ':lang'=>$lang));
 
                 $post = $query->fetchObject(__CLASS__);
 
@@ -87,7 +88,7 @@ namespace Goteo\Model\Blog {
                     IFNULL(post_lang.text, post.text) as `text`,
                     IFNULL(post_lang.legend, post.legend) as `legend`,
                     post.image as `image`,
-                    post.media as `media`,
+                    IFNULL(post_lang.media, post.media) as `media`,
                     DATE_FORMAT(post.date, '%d-%m-%Y') as date,
                     DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                     post.publish as publish,
@@ -117,7 +118,7 @@ namespace Goteo\Model\Blog {
                 $post->image = $post->gallery[0];
 
                 // video
-                if (isset($post->media)) {
+                if (!empty($post->media)) {
                     $post->media = new Media($post->media);
                 }
                 
@@ -273,6 +274,36 @@ namespace Goteo\Model\Blog {
                     }
                 }
 
+                return true;
+            } catch(\PDOException $e) {
+                $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
+                return false;
+            }
+        }
+
+        public function saveLang (&$errors = array()) {
+
+            $fields = array(
+                'id'=>'id',
+                'lang'=>'lang',
+                'title'=>'title_lang',
+                'text'=>'text_lang',
+                'media'=>'media_lang',
+                'legend'=>'legend_lang'
+                );
+
+            $values = array();
+
+            foreach ($fields as $field=>$ffield) {
+                if ($set != '') $set .= ", ";
+                $set .= "`$field` = :$field ";
+                $values[":$field"] = $this->$ffield;
+            }
+
+            try {
+                $sql = "REPLACE INTO post_lang SET " . $set;
+                self::query($sql, $values);
+                
                 return true;
             } catch(\PDOException $e) {
                 $errors[] = "No se ha guardado correctamente. " . $e->getMessage();

@@ -115,7 +115,7 @@ namespace Goteo\Model {
                     $mail->toName = $this->name;
                     $mail->subject = $subject;
                     $mail->content = $content;
-                    $mail->html = true;
+                    $mail->html = false;
                     $mail->template = $template->id;
                     if ($mail->send($errors)) {
                         Message::Info('Mensaje de activación enviado correctamente');
@@ -276,6 +276,36 @@ namespace Goteo\Model {
             return false;
         }
 
+		public function saveLang (&$errors = array()) {
+
+			$fields = array(
+				'id'=>'id',
+				'lang'=>'lang',
+				'about'=>'about_lang',
+				'keywords'=>'keywords_lang',
+				'contribution'=>'contribution_lang'
+				);
+
+			$set = '';
+			$values = array();
+
+			foreach ($fields as $field=>$ffield) {
+				if ($set != '') $set .= ", ";
+				$set .= "`$field` = :$field ";
+				$values[":$field"] = $this->$ffield;
+			}
+
+			try {
+				$sql = "REPLACE INTO user_lang SET " . $set;
+				self::query($sql, $values);
+            	
+				return true;
+			} catch(\PDOException $e) {
+                $errors[] = "El usuario {$this->id} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
+                return false;
+			}
+		}
+
         /**
          * Validación de datos de usuario.
          *
@@ -432,36 +462,41 @@ namespace Goteo\Model {
          * @param string $id    Nombre de usuario
          * @return obj|false    Objeto de usuario, en caso contrario devolverÃ¡ 'false'.
          */
-        public static function get ($id) {
+        public static function get ($id, $lang = null) {
             try {
+                if (!$lang == 'es') $lang = null;
+
                 $sql = "
                     SELECT
-                        id,
-                        email,
-                        name,
-                        location,
-                        avatar,
-                        about,
-                        contribution,
-                        keywords,
-                        facebook,
-                        google,
-                        twitter,
-                        identica,
-                        linkedin,
-                        active,
-                        hide,
-                        created,
-                        modified
+                        user.id as id,
+                        user.email as email,
+                        user.name as name,
+                        user.location as location,
+                        user.avatar as avatar,
+                        IFNULL(user_lang.about, user.about) as about,
+                        IFNULL(user_lang.contribution, user.contribution) as contribution,
+                        IFNULL(user_lang.keywords, user.keywords) as keywords,
+                        user.facebook as facebook,
+                        user.google as google,
+                        user.twitter as twitter,
+                        user.identica as identica,
+                        user.linkedin as linkedin,
+                        user.active as active,
+                        user.hide as hide,
+                        user.created as created,
+                        user.modified as modified
                     FROM user
-                    WHERE id = :id
+                    LEFT JOIN user_lang
+                        ON  user_lang.id = user.id
+                        AND user_lang.lang = :lang
+                    WHERE user.id = :id
                     ";
 
-                $query = static::query($sql, array(':id' => $id));
+                $query = static::query($sql, array(':id' => $id, ':lang' => $lang));
                 $user = $query->fetchObject(__CLASS__);
 
                 if (!$user instanceof  \Goteo\Model\User) {
-                    return false;
+                    throw new \Goteo\Core\Error('404', Text::html('fatal-error-user'));
                 }
 
                 $user->roles = $user->getRoles();
@@ -626,12 +661,36 @@ namespace Goteo\Model {
             return $list;
         }
 
+        /*
+         * Listado id-nombre-email de los usuarios que siguen teniendo su email como contraseña
+         */
+        public static function getWorkshoppers() {
+
+            $list = array();
+
+            $query = static::query("
+                SELECT
+                    user.id as id,
+                    user.name as name,
+                    user.email as email
+                FROM    user
+                WHERE BINARY password = SHA1(user.email)
+                ORDER BY user.name ASC
+                ");
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $list[] = $item;
+            }
+
+            return $list;
+        }
+
 		/**
 		 * Validación de usuario.
 		 *
 		 * @param string $username Nombre de usuario
-		 * @param string $password ContraseÃ±a
-		 * @return obj|false Objeto del usuario, en caso contrario devolverÃ¡ 'false'.
+		 * @param string $password Contraseña
+		 * @return obj|false Objeto del usuario, en caso contrario devolverá 'false'.
 		 */
 		public static function login ($username, $password) {
             $query = self::query("
@@ -840,9 +899,9 @@ namespace Goteo\Model {
          * @return type array
          */
     	private function getSupport () {
-            $query = self::query('SELECT DISTINCT(project) FROM invest WHERE user = ? AND (status = 0 OR status = 1)', array($this->id));
+            $query = self::query('SELECT DISTINCT(project) FROM invest WHERE user = ? AND (status = 0 OR status = 1 OR status = 3 OR status = 4)', array($this->id));
             $projects = $query->fetchAll(\PDO::FETCH_ASSOC);
-            $query = self::query('SELECT SUM(amount), COUNT(id) FROM invest WHERE user = ? AND (status = 0 OR status = 1)', array($this->id));
+            $query = self::query('SELECT SUM(amount), COUNT(id) FROM invest WHERE user = ? AND (status = 0 OR status = 1 OR status = 3 OR status = 4)', array($this->id));
             $invest = $query->fetch();
             return array('projects' => $projects, 'amount' => $invest[0], 'invests' => $invest[1]);
         }

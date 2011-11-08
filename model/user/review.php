@@ -174,8 +174,8 @@ namespace Goteo\Model\User {
         public static function is_legal ($user, $review) {
             $sql = "SELECT user, review FROM user_review WHERE user = :user AND review = :review";
             $values = array(
-                'user' => $user,
-                'review' => $review
+                ':user' => $user,
+                ':review' => $review
             );
             $query = static::query($sql, $values);
             $legal = $query->fetchObject();

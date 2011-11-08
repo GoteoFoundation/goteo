@@ -21,10 +21,25 @@ namespace Goteo\Model\Project {
             }
 		}
 
-		public static function getAll ($project) {
+		public static function getAll ($project, $lang = null) {
             try {
                 $array = array();
-				$query = self::query("SELECT * FROM support WHERE project = ? ORDER BY id ASC", array($project));
+                $sql = "SELECT
+                            support.id as id,
+                            support.project as project,
+                            support.type as type,
+                            IFNULL(support_lang.support, support.support) as support,
+                            IFNULL(support_lang.description, support.description) as description,
+                            support.thread as thread
+                        FROM support
+                        LEFT JOIN support_lang
+                            ON  support_lang.id = support.id
+                            AND support_lang.lang = :lang
+                        WHERE support.project = :project
+                        ORDER BY support.id ASC
+                        ";
+
+				$query = self::query($sql, array(':project'=>$project, ':lang'=>$lang));
 				foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item ) {
                     $array[$item->id] = $item;
                 }
@@ -84,6 +99,34 @@ namespace Goteo\Model\Project {
 				$sql = "REPLACE INTO support SET " . $set;
 				self::query($sql, $values);
     			if (empty($this->id)) $this->id = self::insertId();
+				return true;
+			} catch(\PDOException $e) {
+				$errors[] = "La colaboración {$data['support']} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
+                return false;
+			}
+		}
+
+		public function saveLang (&$errors = array()) {
+			$fields = array(
+				'id'=>'id',
+				'lang'=>'lang',
+				'support'=>'support_lang',
+				'description'=>'description_lang'
+				);
+
+			$set = '';
+			$values = array();
+
+			foreach ($fields as $field=>$ffield) {
+				if ($set != '') $set .= ", ";
+				$set .= "$field = :$field ";
+				$values[":$field"] = $this->$ffield;
+			}
+
+			try {
+				$sql = "REPLACE INTO support_lang SET " . $set;
+				self::query($sql, $values);
+    			
 				return true;
 			} catch(\PDOException $e) {
 				$errors[] = "La colaboración {$data['support']} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();

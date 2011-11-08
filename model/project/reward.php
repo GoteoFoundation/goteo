@@ -30,30 +30,31 @@ namespace Goteo\Model\Project {
             }
 		}
 
-		public static function getAll ($project, $type = 'social', $fulfilled = null, $icon = null) {
+		public static function getAll ($project, $type = 'social', $lang = null, $fulfilled = null, $icon = null) {
             try {
                 $array = array();
 
                 $values = array(
                     ':project' => $project,
-                    ':type' => $type
+                    ':type' => $type,
+                    ':lang' => $lang
                 );
 
                 $sqlFilter = "";
                 if (!empty($fulfilled)) {
-                    $sqlFilter .= "    AND fulsocial = :fulfilled";
+                    $sqlFilter .= "    AND reward.fulsocial = :fulfilled";
                     $values[':fulfilled'] = $fulfilled == 'ok' ? 1 : 0;
                 }
                 if (!empty($icon)) {
-                    $sqlFilter .= "    AND icon = :icon";
+                    $sqlFilter .= "    AND reward.icon = :icon";
                     $values[':icon'] = $icon;
                 }
 
                 $sql = "SELECT
                             reward.id as id,
                             reward.project as project,
-                            reward.reward as reward,
-                            reward.description as description,
+                            IFNULL(reward_lang.reward, reward.reward) as reward,
+                            IFNULL(reward_lang.description, reward.description) as description,
                             reward.type as type,
                             reward.icon as icon,
                             reward.other as other,
@@ -65,6 +66,9 @@ namespace Goteo\Model\Project {
                         FROM    reward
                         LEFT JOIN icon
                             ON icon.id = reward.icon
+                        LEFT JOIN reward_lang
+                            ON  reward_lang.id = reward.id
+                            AND reward_lang.lang = :lang
                         WHERE   project = :project
                             AND type= :type
                         $sqlFilter
@@ -137,6 +141,35 @@ namespace Goteo\Model\Project {
 				$sql = "REPLACE INTO reward SET " . $set;
 				self::query($sql, $values);
             	if (empty($this->id)) $this->id = self::insertId();
+        		return true;
+			} catch(\PDOException $e) {
+				$errors[] = "El retorno {$this->reward} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
+                return false;
+			}
+		}
+
+		public function saveLang (&$errors = array()) {
+
+			$fields = array(
+				'id'=>'id',
+				'lang'=>'lang',
+				'reward'=>'reward_lang',
+				'description'=>'description_lang'
+				);
+
+			$set = '';
+			$values = array();
+
+			foreach ($fields as $field=>$ffield) {
+				if ($set != '') $set .= ", ";
+				$set .= "$field = :$field ";
+				$values[":$field"] = $this->$ffield;
+			}
+
+			try {
+				$sql = "REPLACE INTO reward_lang SET " . $set;
+				self::query($sql, $values);
+            	
         		return true;
 			} catch(\PDOException $e) {
 				$errors[] = "El retorno {$this->reward} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();

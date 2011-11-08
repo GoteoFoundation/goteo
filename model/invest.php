@@ -97,7 +97,7 @@ namespace Goteo\Model {
                 SELECT  *
                 FROM  invest
                 WHERE   invest.project = ?
-                AND (invest.status = 0 OR invest.status = 1 OR invest.status = 3)
+                AND (invest.status = 0 OR invest.status = 1 OR invest.status = 3 OR invest.status = 4)
                 ", array($project));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $invest) {
                 // datos del usuario
@@ -237,10 +237,6 @@ namespace Goteo\Model {
                 $errors[] = 'Falta proyecto';
                 //Text::get('mandatory-invest-project');
 
-            if (empty($this->account))
-                $errors[] = 'Falta cuenta paypal o email';
-                //Text::get('mandatory-invest-account');
-
             if (empty($errors))
                 return true;
             else
@@ -254,7 +250,6 @@ namespace Goteo\Model {
                 'id',
                 'user',
                 'project',
-                'account',
                 'amount',
                 'preapproval',
                 'payment',
@@ -404,7 +399,7 @@ namespace Goteo\Model {
                 SELECT  SUM(amount) as much
                 FROM    invest
                 WHERE   project = :project
-                AND     (status = 0 OR status = 1)
+                AND     (invest.status = 0 OR invest.status = 1 OR invest.status = 3 OR invest.status = 4)
                 ", array(':project' => $project));
             $got = $query->fetchObject();
             return (int) $got->much;
@@ -429,7 +424,7 @@ namespace Goteo\Model {
                         COUNT(DISTINCT(project))
                      FROM invest as invb
                      WHERE invb.user = invest.user
-                     AND (invb.status = 0 OR invb.status = 1 OR invb.status = 3)
+                     AND (invb.status = 0 OR invb.status = 1 OR invb.status = 3 OR invb.status = 4)
                      ) as projects,";
             }
 
@@ -439,7 +434,7 @@ namespace Goteo\Model {
                 INNER JOIN user
                     ON  user.id = invest.user
                 WHERE   project = ?
-                AND (invest.status = 0 OR invest.status = 1 OR invest.status = 3)
+                AND (invest.status = 0 OR invest.status = 1 OR invest.status = 3 OR invest.status = 4)
                 ORDER BY invest.id DESC
                 ";
 
@@ -489,7 +484,7 @@ namespace Goteo\Model {
                 FROM    invest
                 WHERE   user = :user
                 AND     project = :project
-                AND     (status = 0 OR status = 1 OR status = 3)
+                AND     (invest.status = 0 OR invest.status = 1 OR invest.status = 3 OR invest.status = 4)
                 AND     (anonymous = 0 OR anonymous IS NULL)
                 ORDER BY invested DESC";
 
@@ -513,7 +508,7 @@ namespace Goteo\Model {
                 INNER JOIN user
                     ON  user.id = invest.user
                     AND (user.hide = 0 OR user.hide IS NULL)
-                WHERE   (status = 0 OR status = 1 OR status = 3)
+                WHERE   (invest.status = 0 OR invest.status = 1 OR invest.status = 3 OR invest.status = 4)
                 ";
 
             $query = self::query($sql, array($reward));
@@ -605,7 +600,7 @@ namespace Goteo\Model {
          */
         public function setStatus ($status) {
 
-            if (!in_array($status, array('-1', '0', '1', '2', '3'))) {
+            if (!in_array($status, array('-1', '0', '1', '2', '3', '4'))) {
                 return false;
             }
 
@@ -695,9 +690,17 @@ namespace Goteo\Model {
          */
         public function cancel () {
 
-            $sql = "UPDATE invest SET status = 2 WHERE id = ?";
+            $values = array(
+                ':id' => $this->id,
+                ':returned' => date('Y-m-d')
+            );
+
+            $sql = "UPDATE invest SET
+                        returned = :returned,
+                        status = 2
+                    WHERE id = :id";
             
-            if (self::query($sql, array($this->id))) {
+            if (self::query($sql, $values)) {
                 return true;
             } else {
                 return false;
@@ -714,7 +717,8 @@ namespace Goteo\Model {
                 0  => 'Pendiente de cargo',
                 1  => 'Cargo ejecutado',
                 2  => 'Cancelado',
-                3  => 'Pagado al proyecto'
+                3  => 'Pagado al proyecto',
+                4  => 'Caducado'
             );
 
             if (!empty($id)) {

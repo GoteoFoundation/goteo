@@ -8,12 +8,14 @@ namespace Goteo\Model {
     class Promote extends \Goteo\Core\Model {
 
         public
+            $id,
             $node,
             $project,
             $name,
             $title,
             $description,
-            $order;
+            $order,
+            $active;
 
         /*
          *  Devuelve datos de un destacado
@@ -21,12 +23,14 @@ namespace Goteo\Model {
         public static function get ($project, $node = \GOTEO_NODE) {
                 $query = static::query("
                     SELECT  
+                        promote.id as id,
                         promote.node as node,
                         promote.project as project,
                         project.name as name,
                         IFNULL(promote_lang.title, promote.title) as title,
                         IFNULL(promote_lang.description, promote.description) as description,
-                        promote.order as `order`
+                        promote.order as `order`,
+                        promote.active as `active`
                     FROM    promote
                     LEFT JOIN promote_lang
                         ON promote_lang.id = promote.id
@@ -44,21 +48,25 @@ namespace Goteo\Model {
         /*
          * Lista de proyectos destacados
          */
-        public static function getAll ($node = \GOTEO_NODE) {
+        public static function getAll ($activeonly = false, $node = \GOTEO_NODE) {
 
             // estados
             $status = Project::status();
 
             $promos = array();
 
+            $sqlFilter = ($activeonly) ? " AND promote.active = 1" : '';
+
             $query = static::query("
                 SELECT
+                    promote.id as id,
                     promote.project as project,
                     project.name as name,
                     project.status as status,
                     IFNULL(promote_lang.title, promote.title) as title,
                     IFNULL(promote_lang.description, promote.description) as description,
-                    promote.order as `order`
+                    promote.order as `order`,
+                    promote.active as `active`
                 FROM    promote
                 LEFT JOIN promote_lang
                     ON promote_lang.id = promote.id
@@ -66,6 +74,7 @@ namespace Goteo\Model {
                 INNER JOIN project
                     ON project.id = promote.project
                 WHERE promote.node = :node
+                $sqlFilter
                 ORDER BY `order` ASC, title ASC
                 ", array(':node' => $node, ':lang'=>\LANG));
             
@@ -96,7 +105,6 @@ namespace Goteo\Model {
                     project.status as status
                 FROM    project
                 WHERE status > 2
-                AND status < 6
                 AND project.id NOT IN (SELECT project FROM promote WHERE promote.node = :node{$sqlCurr} )
                 ORDER BY name ASC
                 ", array(':node' => $node));
@@ -110,8 +118,8 @@ namespace Goteo\Model {
                 $errors[] = 'Falta nodo';
                 //Text::get('mandatory-promote-node');
 
-            if (empty($this->project))
-                $errors[] = 'Falta proyecto';
+            if ($this->active && empty($this->project))
+                $errors[] = 'Se muestra y no tiene proyecto';
                 //Text::get('validate-promote-noproject');
 
             if (empty($this->title))
@@ -128,11 +136,13 @@ namespace Goteo\Model {
             if (!$this->validate($errors)) return false;
 
             $fields = array(
+                'id',
                 'node',
                 'project',
                 'title',
                 'description',
-                'order'
+                'order',
+                'active'
                 );
 
             $set = '';
@@ -163,6 +173,19 @@ namespace Goteo\Model {
             
             $sql = "DELETE FROM promote WHERE project = :project AND node = :node";
             if (self::query($sql, array(':project'=>$project, ':node'=>$node))) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+        /* Para activar/desactivar un destacado
+         */
+        public static function setActive ($id, $active = false) {
+
+            $sql = "UPDATE promote SET active = :active WHERE id = :id";
+            if (self::query($sql, array(':id'=>$id, ':active'=>$active))) {
                 return true;
             } else {
                 return false;

@@ -54,11 +54,13 @@ namespace Goteo\Model {
 
             // Edit project description
             $name,
+            $subtitle,
             $lang = 'es',
             $image,
             $gallery = array(), // array de instancias image de project_image
             $description,
              $motivation,
+                $video,   // video de motivacion
              $about,
              $goal,
              $related,
@@ -68,6 +70,8 @@ namespace Goteo\Model {
             $currently, // Current development status of the project
             $project_location, // project execution location
             $scope,  // ambito de alcance
+
+            $translate,  // si se puede traducir (bool)
 
             // costs
             $costs = array(),  // project\cost instances with type
@@ -192,15 +196,49 @@ namespace Goteo\Model {
         /*
          *  Cargamos los datos del proyecto
          */
-        public static function get($id) {
+        public static function get($id, $lang = null) {
 
             try {
 				// metemos los datos del proyecto en la instancia
 				$query = self::query("SELECT * FROM project WHERE id = ?", array($id));
 				$project = $query->fetchObject(__CLASS__);
 
+                if (!$project instanceof \Goteo\Model\Project) {
+                    throw new \Goteo\Core\Error('404', Text::html('fatal-error-project'));
+                }
+
+                // si recibimos lang y no es el idioma original del proyecto, ponemos la traducción y mantenemos para el resto de contenido
+                if ($lang == $project->lang) {
+                    $lang = null;
+                } elseif (!empty($lang)) {
+                    $sql = "
+                        SELECT
+                            IFNULL(project_lang.description, project.description) as description,
+                            IFNULL(project_lang.motivation, project.motivation) as motivation,
+                            IFNULL(project_lang.video, project.video) as video,
+                            IFNULL(project_lang.about, project.about) as about,
+                            IFNULL(project_lang.goal, project.goal) as goal,
+                            IFNULL(project_lang.related, project.related) as related,
+                            IFNULL(project_lang.keywords, project.keywords) as keywords,
+                            IFNULL(project_lang.media, project.media) as media,
+                            IFNULL(project_lang.subtitle, project.subtitle) as subtitle
+                        FROM project
+                        LEFT JOIN project_lang
+                            ON  project_lang.id = project.id
+                            AND project_lang.lang = :lang
+                        WHERE project.id = :id
+                        ";
+                    $query = self::query($sql, array(':id'=>$id, ':lang'=>$lang));
+                    foreach ($query->fetch(\PDO::FETCH_ASSOC) as $field=>$value) {
+                        $project->$field = $value;
+                    }
+                }
+
                 if (isset($project->media)) {
                     $project->media = new Project\Media($project->media);
+                }
+                if (isset($project->video)) {
+                    $project->video = new Project\Media($project->video);
                 }
 
                 // owner
@@ -216,17 +254,17 @@ namespace Goteo\Model {
                 $project->categories = Project\Category::get($id);
 
 				// costes y los sumammos
-				$project->costs = Project\Cost::getAll($id);
+				$project->costs = Project\Cost::getAll($id, $lang);
 
                 $project->minmax();
 
 				// retornos colectivos
-				$project->social_rewards = Project\Reward::getAll($id, 'social');
+				$project->social_rewards = Project\Reward::getAll($id, 'social', $lang);
 				// retornos individuales
-				$project->individual_rewards = Project\Reward::getAll($id, 'individual');
+				$project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
 
 				// colaboraciones
-				$project->supports = Project\Support::getAll($id);
+				$project->supports = Project\Support::getAll($id, $lang);
 
                 //-----------------------------------------------------------------
                 // Diferentes verificaciones segun el estado del proyecto
@@ -241,7 +279,7 @@ namespace Goteo\Model {
                 $project->amount   = $amount;
 
                 //mensajes
-                $project->messages = Message::getAll($project->id);
+                $project->messages = Message::getAll($project->id, $lang);
 
                 //para proyectos en campaña o posterior
                 if ($project->status > 2) {
@@ -270,15 +308,24 @@ namespace Goteo\Model {
                     }
 
                     // a ver que banderolo le toca
-                    // tag de financiado cuando ha alcanzado el optimo o despues de los 80 dias
-                    if ($project->status == 4 || ( $project->status == 3 && $project->amount >= $project->maxcost )) :
+                    // "financiado" al final de de los 80 dias
+                    if ($project->status == 4) :
                         $project->tagmark = 'gotit';
-                    // tag de en marcha cuando está en la segunda ronda o si estando en la primera ha alcanzado el mínimo
-                    elseif ($project->status == 3 && ($project->round == 2 ||  ( $project->round == 1 && $project->amount >= $project->mincost ))) :
+                    // "en marcha" cuando llega al optimo en primera o segunda ronda
+                    elseif ($project->status == 3 && $project->amount >= $project->maxcost) :
                         $project->tagmark = 'onrun';
+                    // "en marcha" y "aun puedes" cuando está en la segunda ronda
+                    elseif ($project->status == 3 && $project->round == 2) :
+                        $project->tagmark = 'onrun-keepiton';
+                    // Obtiene el mínimo durante la primera ronda, "aun puedes seguir aportando"
+                    elseif ($project->status == 3 && $project->round == 1 && $project->amount >= $project->mincost ) :
+                        $project->tagmark = 'keepiton';
                     // tag de exitoso cuando es retorno cumplido
                     elseif ($project->status == 5) :
                         $project->tagmark = 'success';
+                    // tag de caducado
+                    elseif ($project->status == 6) :
+                        $project->tagmark = 'fail';
                     endif;
 
                 } else {
@@ -308,7 +355,7 @@ namespace Goteo\Model {
 
             try {
 				// metemos los datos del proyecto en la instancia
-				$query = self::query("SELECT id, name, owner, comment FROM project WHERE id = ?", array($id));
+				$query = self::query("SELECT id, name, owner, comment, lang FROM project WHERE id = ?", array($id));
 				$project = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
 
                 // owner
@@ -429,10 +476,11 @@ namespace Goteo\Model {
                     'post_location',
                     'post_country',
                     'name',
-                    'lang',
+                    'subtitle',
                     'image',
                     'description',
                     'motivation',
+                    'video',
                     'about',
                     'goal',
                     'related',
@@ -617,6 +665,47 @@ namespace Goteo\Model {
 
         }
 
+        public function saveLang (&$errors = array()) {
+
+  			try {
+                $fields = array(
+                    'id'=>'id',
+                    'lang'=>'lang_lang',
+                    'subtitle'=>'subtitle_lang',
+                    'description'=>'description_lang',
+                    'motivation'=>'motivation_lang',
+                    'video'=>'video_lang',
+                    'about'=>'about_lang',
+                    'goal'=>'goal_lang',
+                    'related'=>'related_lang',
+                    'keywords'=>'keywords_lang',
+                    'media'=>'media_lang'
+                    );
+
+                $set = '';
+                $values = array();
+
+                foreach ($fields as $field=>$ffield) {
+                    if ($set != '') $set .= ', ';
+                    $set .= "$field = :$field";
+                    $values[":$field"] = $this->$ffield;
+                }
+
+				$sql = "REPLACE INTO project_lang SET " . $set;
+				if (self::query($sql, $values)) {
+                    return true;
+                } else {
+                    $errors[] = $sql . '<pre>' . print_r($values, 1) . '</pre>';
+                    return false;
+                }
+			} catch(\PDOException $e) {
+                $errors[] = 'Error sql al grabar el proyecto.' . $e->getMessage();
+                //Text::get('save-project-fail');
+                return false;
+			}
+
+        }
+
         /*
          * comprueba errores de datos y actualiza la puntuación
          */
@@ -653,7 +742,7 @@ namespace Goteo\Model {
                 ++$score;
             }
 
-            if(!empty($this->user->avatar)) {
+            if(!empty($this->user->avatar) && $this->user->avatar->id != 1) {
                 $okeys['userProfile']['avatar'] = 'ok';
                 $score+=2;
             }
@@ -672,6 +761,11 @@ namespace Goteo\Model {
                 }
             }
 
+            if (!empty($this->user->interests)) {
+                $okeys['userProfile']['interests'] = 'ok';
+                ++$score;
+            }
+
             if (!empty($this->user->keywords)) {
                 $okeys['userProfile']['keywords'] = 'ok';
                 ++$score;
@@ -679,11 +773,6 @@ namespace Goteo\Model {
 
             if (!empty($this->user->contribution)) {
                 $okeys['userProfile']['contribution'] = 'ok';
-                ++$score;
-            }
-
-            if (!empty($this->user->interests)) {
-                $okeys['userProfile']['interests'] = 'ok';
                 ++$score;
             }
 
@@ -729,7 +818,7 @@ namespace Goteo\Model {
             }
 
             //puntos
-            $this->setScore($score, 19);
+            $this->setScore($score, 14);
             /***************** FIN Revisión del paso 1, PERFIL *****************/
 
             /***************** Revisión de campos del paso 2,DATOS PERSONALES *****************/
@@ -831,7 +920,7 @@ namespace Goteo\Model {
 
             /***************** Revisión de campos del paso 3, DESCRIPCION *****************/
             $score = 0;
-            // obligatorios: nombre, idioma, imagen, descripcion, about, motivation, categorias, video, localización
+            // obligatorios: nombre, subtitulo, imagen, descripcion, about, motivation, categorias, video, localización
             if (empty($this->name)) {
                 $errors['overview']['name'] = Text::get('mandatory-project-field-name');
             } else {
@@ -839,11 +928,8 @@ namespace Goteo\Model {
                  ++$score;
             }
 
-            if (empty($this->lang)) {
-                $errors['overview']['lang'] = Text::get('mandatory-project-field-lang');
-            } else {
-                 $okeys['overview']['lang'] = 'ok';
-                 ++$score;
+            if (!empty($this->subtitle)) {
+                 $okeys['overview']['subtitle'] = 'ok';
             }
 
             if (empty($this->gallery)) {
@@ -929,7 +1015,7 @@ namespace Goteo\Model {
 //                 $okeys['overview']['scope'] = 'ok';
             }
 
-            $this->setScore($score, 18);
+            $this->setScore($score, 16);
             /***************** FIN Revisión del paso 3, DESCRIPCION *****************/
 
             /***************** Revisión de campos del paso 4, COSTES *****************/
@@ -1014,7 +1100,7 @@ namespace Goteo\Model {
              * 
              */
 
-            $this->setScore($score, 7);
+            $this->setScore($score, 6);
             /***************** FIN Revisión del paso 4, COSTES *****************/
 
             /***************** Revisión de campos del paso 5, RETORNOS *****************/
@@ -1124,7 +1210,7 @@ namespace Goteo\Model {
             }
 
             $score = $score + $scoreName + $scoreDesc + $scoreAmount;
-            $this->setScore($score, 12);
+            $this->setScore($score, 11);
             /***************** FIN Revisión del paso 5, RETORNOS *****************/
 
             /***************** Revisión de campos del paso 6, COLABORACIONES *****************/
@@ -1171,11 +1257,12 @@ namespace Goteo\Model {
             // Cálculo del % de progreso
             $progress = 100 * $this->score / $this->max;
             $progress = round($progress, 0);
+            
             if ($progress > 100) $progress = 100;
             if ($progress < 0)   $progress = 0;
 
             if ($this->status == 1 && 
-                $progress > 60 &&
+                $progress > 80 &&
                 \array_empty($this->errors)
                 ) {
                 $this->finishable = true;
@@ -1227,7 +1314,7 @@ namespace Goteo\Model {
          */
         public function publish(&$errors = array()) {
 			try {
-				$sql = "UPDATE project SET status = :status, published = :published WHERE id = :id";
+				$sql = "UPDATE project SET passed = NULL, status = :status, published = :published WHERE id = :id";
 				self::query($sql, array(':status'=>3, ':published'=>date('Y-m-d'), ':id'=>$this->id));
 
                 // borramos mensajes anteriores que sean de colaboraciones
@@ -1386,6 +1473,8 @@ namespace Goteo\Model {
                             self::query("UPDATE reward SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE support SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project_image SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE project_account SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             // borro los permisos, el dashboard los creará de nuevo
                             self::query("DELETE FROM acl WHERE url like ?", array('%'.$this->id.'%'));
@@ -1651,6 +1740,48 @@ namespace Goteo\Model {
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
                 $projects[] = self::get($proj['id']);
+            }
+            return $projects;
+        }
+
+        /**
+         * Saca una lista de proyectos disponibles para traducir
+         *
+         * @param array filters
+         * @param string node id
+         * @return array of project instances
+         */
+        public static function getTranslates($filters = array(), $node = \GOTEO_NODE) {
+            $projects = array();
+
+            $values = array(':node' => $node);
+
+            $sqlFilter = "";
+            if (!empty($filters['owner'])) {
+                $sqlFilter .= " AND owner = :owner";
+                $values[':owner'] = $filters['owner'];
+            }
+            if (!empty($filters['translator'])) {
+                $sqlFilter .= " AND id IN (
+                    SELECT project
+                    FROM user_translate
+                    WHERE user = :translator
+                    )";
+                $values[':translator'] = $filters['translator'];
+            }
+
+            $sql = "SELECT
+                        id
+                    FROM project
+                    WHERE translate = 1
+                    AND node = :node
+                        $sqlFilter
+                    ORDER BY name ASC
+                    ";
+
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
+                $projects[] = self::getMini($proj['id']);
             }
             return $projects;
         }
