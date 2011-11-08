@@ -12,3 +12,5 @@ CREATE TABLE `promote` (
 -- alter
 ALTER TABLE `promote` ADD `id` SERIAL NOT NULL FIRST ;
 ALTER TABLE `promote` ADD PRIMARY KEY ( `id` ) ;
+
+ALTER TABLE `promote` ADD `active` INT(1) NOT NULL DEFAULT '0' ;

@@ -8,6 +8,9 @@ CREATE TABLE IF NOT EXISTS `project_lang` (
 `related` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci ,
 `keywords` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_ci ,
 `media` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci ,
-`resource` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci ,
+`subtitle` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_ci ,
  UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+-- video motivacion
+ALTER TABLE `project_lang` ADD `video` VARCHAR( 256 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL AFTER `motivation` ;

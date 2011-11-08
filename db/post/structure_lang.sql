@@ -8,3 +8,4 @@ CREATE TABLE IF NOT EXISTS `post_lang` (
 
 -- alters
 ALTER TABLE `post_lang` ADD `legend` TEXT NULL ;
+ALTER TABLE `post_lang` ADD `media` TINYTEXT NULL ;
