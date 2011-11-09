@@ -663,7 +663,6 @@ namespace Goteo\Model {
 
         /*
          * Listado id-nombre-email de los usuarios que siguen teniendo su email como contraseña
-         */
         public static function getWorkshoppers() {
 
             $list = array();
@@ -684,6 +683,7 @@ namespace Goteo\Model {
 
             return $list;
         }
+         */
 
 		/**
 		 * Validación de usuario.

@@ -2651,6 +2651,7 @@ namespace Goteo\Controller {
                     );
 
                     break;
+                /*
                 case 'send':
                     // obtenemos los usuarios que siguen teniendo su email como contraseña
                     $workshoppers = Model\User::getWorkshoppers();
@@ -2687,7 +2688,8 @@ namespace Goteo\Controller {
 
 
                     }
-
+*/
+                
                 case 'list':
                 default:
                     $users = Model\User::getAll($filters);
@@ -4688,7 +4690,8 @@ namespace Goteo\Controller {
                             'status'   => $_POST['status'],
                             'interest' => $_POST['interest'],
                             'role'     => $_POST['role'],
-                            'name'     => $_POST['name']
+                            'name'     => $_POST['name'],
+                            'workshopper' => $_POST['workshopper']
                         );
 
                         $_SESSION['mailing']['filters'] = $filters;
@@ -4759,6 +4762,11 @@ namespace Goteo\Controller {
                             $_SESSION['mailing']['filters_txt'] .= 'que su nombre o email contenga <strong>\'' . $filters['name'] . '\'</strong> ';
                         }
 
+                        if (!empty($filters['workshopper'])) {
+                            $sqlFilter .= " AND user.password = SHA1(user.email) ";
+                            $_SESSION['mailing']['filters_txt'] .= 'que su contraseña sea igual que su email ';
+                        }
+
                         $sql = "SELECT
                                     user.id as id,
                                     user.name as name,
@@ -4799,8 +4807,7 @@ namespace Goteo\Controller {
                                 'interests' => $interests,
                                 'status'    => $status,
                                 'types'     => $types,
-                                'roles'     => $roles,
-                                'errors'    => array($sql)
+                                'roles'     => $roles
                             )
                         );
 
@@ -4817,16 +4824,13 @@ namespace Goteo\Controller {
                             }
                         }
 
-                        $content = nl2br($_POST['content']);
+//                        $content = nl2br($_POST['content']);
+                        $content = $_POST['content'];
                         $subject = $_POST['subject'];
-
-                        // Obtenemos la plantilla
-                        $template = Template::get(11);
 
                         // ahora, envio, el contenido a cada usuario
                         foreach ($users as $usr) {
 
-                            $tmpcontent = \str_replace($search, $replace, $template->text);
                             $tmpcontent = \str_replace(
                                 array('%USERID%', '%USEREMAIL%', '%USERNAME%', '%SITEURL%'),
                                 array(
@@ -4838,10 +4842,6 @@ namespace Goteo\Controller {
                                 $content);
 
 
-                            $search  = array('%USERNAME%', '%CONTENT%');
-                            $replace = array($_SESSION['mailing']['receivers'][$usr]->name, $tmpcontent);
-                            $thecontent = \str_replace($search, $replace, $template->text);
-
                             $mailHandler = new Mail();
 
                             $mailHandler->to = $_SESSION['mailing']['receivers'][$usr]->email;
@@ -4849,9 +4849,9 @@ namespace Goteo\Controller {
                             // blind copy a goteo desactivado durante las verificaciones
             //              $mailHandler->bcc = 'comunicaciones@goteo.org';
                             $mailHandler->subject = $subject;
-                            $mailHandler->content = $thecontent;
+                            $mailHandler->content = '<br />'.$tmpcontent.'<br />';
                             $mailHandler->html = true;
-                            $mailHandler->template = $template->id;
+                            $mailHandler->template = 11;
                             if ($mailHandler->send($errors)) {
                                 $_SESSION['mailing']['receivers'][$usr]->ok = true;
                             } else {

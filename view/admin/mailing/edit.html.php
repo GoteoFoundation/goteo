@@ -1,22 +1,68 @@
 <?php
 
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Library\Template;
 
+//$templates = Template::getAllMini();
+$templates = array(
+    '11' => 'Base',
+    '27' => 'Aviso a los talleristas'
+);
 // lista de destinatarios segun filtros recibidos, todos marcados por defecto
 ?>
+<script type="text/javascript">
+jQuery(document).ready(function ($) {
+
+    $('#template_load').click(function () {
+       if (confirm('El asunto y el contenido actual se substiruira por el que hay en la plantilla. Seguimos?')) {
+
+           if ($('#template').val() == '0') {
+            $('#mail_subject').val('');
+            $('#mail_content').html('');
+           }
+            content = $.ajax({async: false, url: '<?php echo SITE_URL; ?>/ws/get_template_content/'+$('#template').val()}).responseText;
+            var arr = content.split('#$#$#');
+            $('#mail_subject').val(arr[0]);
+            $('#mail_content').val(arr[1]);
+        }
+    });
+
+});
+</script>
+<div class="widget">
+    <p>Las siguientes variables se sustituir&aacute;n en el contenido:</p>
+    <ul>
+        <li><strong>%USERID%</strong> Para el id de acceso del destinatario</li>
+        <li><strong>%USEREMAIL%</strong> Para el email del destinatario</li>
+        <li><strong>%USERNAME%</strong> Para el nombre del destinatario</li>
+        <li><strong>%SITEURL%</strong> Para la url de esta plataforma (<?php echo SITE_URL ?>)</li>
+    </ul>
+</div>
 <div class="widget">
     <p><?php echo 'Vamos a comunicarnos con ' . $_SESSION['mailing']['filters_txt']; ?></p>
     <form action="/admin/mailing/send" method="post">
     <dl>
-        <dt>Asunto:</dt>
+        <dt>Seleccionar plantilla:</dt>
         <dd>
-            <input name="subject" value="<?php echo $_SESSION['mailing']['subject']?>" style="width:300px;"/>
+            <select id="template" name="template" >
+                <option value="0">Sin plantilla</option>
+            <?php foreach ($templates as $templateId=>$templateName) : ?>
+                <option value="<?php echo $templateId; ?>"><?php echo $templateName; ?></option>
+            <?php endforeach; ?>
+            </select>
+            <input type="button" id="template_load" value="Cargar" />
         </dd>
     </dl>
     <dl>
-        <dt>Contenido:</dt>
+        <dt>Asunto:</dt>
         <dd>
-            <textarea name="content" cols="100" rows="5"></textarea>
+            <input id="mail_subject" name="subject" value="<?php echo $_SESSION['mailing']['subject']?>" style="width:500px;"/>
+        </dd>
+    </dl>
+    <dl>
+        <dt>Contenido: (en c&oacute;digo html; los saltos de linea deben ser con &lt;br /&gt;)</dt>
+        <dd>
+            <textarea id="mail_content" name="content" cols="100" rows="10"></textarea>
         </dd>
     </dl>
     <dl>

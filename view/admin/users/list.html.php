@@ -8,8 +8,7 @@ $filters = $this['filters'];
 $filter = "?status={$filters['status']}&interest={$filters['interest']}";
 
 ?>
-<a href="/admin/users/add" class="button red">Crear usuario</a>&nbsp;&nbsp;&nbsp;
-<a href="/admin/users/send" class="button green" onclick="return confirm('Se va a enviar un email a los usuarios que aun tengan su dirección de correo como contraseña, ok?')">Email talleristas</a>
+<a href="/admin/users/add" class="button red">Crear usuario</a>
 
 <div class="widget board">
     <form id="filter-form" action="/admin/users" method="get">

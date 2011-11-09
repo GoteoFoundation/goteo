@@ -54,6 +54,10 @@ $filters = $_SESSION['mailing']['filters'];
                     <?php endforeach; ?>
                     </select>
                 </td>
+                <td>
+                    <label for="work-filter">Talleristas</label><br />
+                    <input type="checkbox" id="work-filter" name="workshopper" value="1" <?php if (!empty($filters['workshopper'])) echo 'checked="checked"';?> />
+                </td>
             </tr>
             <tr>
                 <td colspan="3"><input type="submit" name="select" value="Buscar destinatarios"></td>
