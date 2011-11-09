@@ -10,6 +10,8 @@ $worthcracy = Worth::getAll();
 $user = $_SESSION['user'];
 
 $support = $user->support;
+
+$lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 ?>
 <script type="text/javascript">
 
@@ -100,8 +102,8 @@ $support = $user->support;
                 <?php foreach ($projects['items'] as $project) :
 
 $url = SITE_URL . '/widget/project/' . $project->id;
-$url_regular = $url . '?lang=' . LANG;
-$url_invest = $url.'/invested/'.$user->id . '/?lang=' . LANG;
+$url_regular = $url . $lsuf;
+$url_invest = $url.'/invested/'.$user->id.'/'.$lsuf;
 $widget_code = '<iframe frameborder="0" height="480px" src="'.$url_regular.'" width="250px" scrolling="no"></iframe>';
 $widget_code_investor = '<iframe frameborder="0" height="480px" src="'.$url_invest.'" width="250px" scrolling="no"></iframe>';
 

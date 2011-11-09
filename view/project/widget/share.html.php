@@ -7,7 +7,10 @@ $level = (int) $this['level'] ?: 3;
 
 $share_title = $project->name;
 
-$share_url = SITE_URL . '/project/' . $project->id . '?lang=' . LANG;
+$share_url = SITE_URL . '/project/' . $project->id;
+if (LANG != 'es')
+    $share_url .= '?lang=' . LANG;
+
 $facebook_url = 'http://facebook.com/sharer.php?u=' . rawurlencode($share_url) . '&t=' . rawurlencode($share_title);
 $twitter_url = 'http://twitter.com/home?status=' . rawurlencode($share_title . ': ' . $share_url . ' #Goteo');
 

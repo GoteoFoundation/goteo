@@ -57,7 +57,7 @@ $level = (int) $this['level'] ?: 3;
             <?php while ($post = $pagedResults->fetchPagedRow()) :
                 
                     $share_title = $post->title;
-                    $share_url = $this['show'] == SITE_URL . '/project/'.$project->id.'/updates/' . $post->id;
+                    $share_url = SITE_URL . '/project/'.$project->id.'/updates/' . $post->id;
                     $facebook_url = 'http://facebook.com/sharer.php?u=' . rawurlencode($share_url) . '&t=' . rawurlencode($share_title);
                     $twitter_url = 'http://twitter.com/home?status=' . rawurlencode($share_title . ': ' . $share_url . ' #Goteo');
                 ?>
@@ -66,7 +66,7 @@ $level = (int) $this['level'] ?: 3;
 					<ul class="share-goteo">
 						<li class="sharetext"><?php echo Text::get('regular-share_this'); ?></li>
 						<li class="twitter"><a href="<?php echo htmlspecialchars($twitter_url) ?>" target="_blank"><?php echo Text::get('regular-twitter'); ?></a></li>
-						<li class="facebook"><a href="<?php echo htmlspecialchars($facebook_url) ?>" target="_blank"><?php echo Text::get('regular-share-facebook'); ?></a></li>
+						<li class="facebook"><a href="<?php echo htmlspecialchars($facebook_url) ?>" target="_blank"><?php echo Text::get('regular-facebook'); ?></a></li>
 					</ul>
 					<div class="comments-num"><a href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>"><?php echo $post->num_comments > 0 ? $post->num_comments . ' ' .Text::get('blog-comments') : Text::get('blog-no_comments'); ?></a></div>
                 </div>

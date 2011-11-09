@@ -41,7 +41,7 @@ include 'view/header.html.php';
 					<?php while ($post = $pagedResults->fetchPagedRow()) :
 
                             $share_title = $post->title;
-                            $share_url = $this['show'] == SITE_URL . '/blog/' . $post->id;
+                            $share_url = SITE_URL . '/blog/' . $post->id;
                             $facebook_url = 'http://facebook.com/sharer.php?u=' . rawurlencode($share_url . '&t=' . rawurlencode($share_title));
                             $twitter_url = 'http://twitter.com/home?status=' . rawurlencode($share_title . ': ' . $share_url . ' #Goteo');
 

@@ -8,6 +8,7 @@ $errors = $this['errors'];
 
 $original = \Goteo\Model\Project::get($project->id);
 
+// media del proyecto
 if (!empty($project->media->url)) {
     $media = array(
             'type'  => 'media',
@@ -21,9 +22,25 @@ if (!empty($project->media->url)) {
         'type'  => 'hidden',
         'class' => 'inline'
     );
-
-
 }
+
+// video de motivacion
+if (!empty($project->video->url)) {
+    $video = array(
+            'type'  => 'media',
+            'title' => Text::get('overview-field-media_preview'),
+            'class' => 'inline media',
+            'type'  => 'html',
+            'html'  => !empty($project->video) ? $project->video->getEmbedCode() : ''
+    );
+} else {
+    $video = array(
+        'type'  => 'hidden',
+        'class' => 'inline'
+    );
+}
+
+
 
 ?>
 
@@ -122,6 +139,31 @@ if (!empty($project->media->url)) {
                     'ok'        => array(),
                     'value'     => $project->motivation
                 ),
+                // video motivacion
+                'video-orig' => array(
+                    'type'      => 'html',
+                    'title'     => Text::get('overview-field-video'),
+                    'html'     => (string) $original->video->url
+                ),
+
+                'video' => array(
+                    'type'      => 'textbox',
+                    'hint'      => Text::get('tooltip-project-video'),
+                    'errors'    => array(),
+                    'ok'        => array(),
+                    'value'     => (string) $project->video
+                ),
+
+                'video-upload' => array(
+                    'name' => "upload",
+                    'type'  => 'submit',
+                    'label' => Text::get('form-upload-button'),
+                    'class' => 'inline media-upload'
+                ),
+
+                'video-preview' => $video
+                ,
+                // fin video motivacion
                 'goal-orig' => array(
                     'type'      => 'html',
                     'title'     => Text::get('overview-field-goal'),

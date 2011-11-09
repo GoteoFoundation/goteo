@@ -2,7 +2,9 @@
 	use Goteo\Core\View,
         Goteo\Library\Text;
 
-	$url = SITE_URL . '/widget/project/' . $this['project']->id . '?lang=' . LANG;
+	$url = SITE_URL . '/widget/project/' . $this['project']->id;
+    if (LANG != 'es')
+        $url .= '?lang=' . LANG;
 
     if (isset($this['investor']) && is_object($this['investor'])) {
         $url .= '/invested/'.$this['investor']->id;
