@@ -836,15 +836,16 @@ namespace Goteo\Controller {
                                 $log->add($errors);
 
                                 // evento público
-                                $log->title = $_SESSION['user']->name;
-                                $log->url = '/user/profile/'.$_SESSION['user']->id;
-                                $log->image = $_SESSION['user']->avatar->id;
+                                $log->unique = true;
+                                $log->title = $post->title;
+                                $log->url = '/project/'.$project->id.'/updates/'.$post->id;
+                                $log->image = $post->gallery[0]->id;
                                 $log->scope = 'public';
                                 $log->type = 'projects';
                                 $log->html = Text::html('feed-new_update',
+                                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                                 Feed::item('blog', Text::get('project-menu-updates')),
-                                                Feed::item('project', $project->name, $project->id),
-                                                Feed::item('update', $post->title, $project->id.'/updates/'.$post->id)
+                                                Feed::item('project', $project->name, $project->id)
                                                 );
                                 $log->add($errors);
 

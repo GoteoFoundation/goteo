@@ -1077,7 +1077,7 @@ namespace Goteo\Model {
             $score = $score + $scoreName + $scoreDesc + $scoreAmount + $scoreDate;
 
             $costdif = $this->maxcost - $this->mincost;
-            $maxdif = $this->mincost * 0.40;
+            $maxdif = $this->mincost * 0.50;
             $scoredif = $this->mincost * 0.35;
             if ($this->mincost == 0) {
                 $errors['costs']['total-costs'] = Text::get('mandatory-project-total-costs');

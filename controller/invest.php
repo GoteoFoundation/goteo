@@ -145,15 +145,16 @@ namespace Goteo\Controller {
             // email de agradecimiento al cofinanciador
             // primero monto el texto de recompensas
             if ($confirm->resign) {
-                $txt_rewars = Text::get('invest-resign');
+                $txt_rewards = Text::get('invest-resign');
+                $template = Template::get(28); // plantilla de donativo
             } else {
                 $rewards = $confirm->rewards;
                 array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
                 $txt_rewards = implode(', ', $rewards);
+                $template = Template::get(10); // plantilla de agradecimiento
             }
-            // Obtenemos la plantilla para asunto y contenido
-            $template = Template::get(10);
 
+            // Agradecimiento al cofinanciador
             // Sustituimos los datos
             $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
 
@@ -179,6 +180,29 @@ namespace Goteo\Controller {
 
             unset($mailHandler);
             
+
+            // Notificación al autor
+            $template = Template::get(29);
+            // Sustituimos los datos
+            $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
+
+            // En el contenido:
+            $search  = array('%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%SITEURL%', '%AMOUNT%', '%MESSAGEURL%');
+            $replace = array($projectData->user->name, $_SESSION['user']->name, $projectData->name, SITE_URL, $confirm->amount, SITE_URL.'/user/profile/'.$_SESSION['user']->id.'/message');
+            $content = \str_replace($search, $replace, $template->text);
+
+            $mailHandler = new Mail();
+
+            $mailHandler->to = $projectData->user->email;
+            $mailHandler->toName = $projectData->user->name;
+            $mailHandler->subject = $subject;
+            $mailHandler->content = $content;
+            $mailHandler->html = true;
+            $mailHandler->template = $template->id;
+            $mailHandler->send();
+
+            unset($mailHandler);
+
 
 
 
