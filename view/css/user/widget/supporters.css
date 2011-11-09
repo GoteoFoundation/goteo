@@ -51,7 +51,7 @@ div.widget.user-supporters .supporters ul li h6 {
     font-size: 11px;
     font-weight: bold;
     margin: 0 0 .5em;
-    height: 1em;
+    height: 13px;
     text-transform: none;
 }
 
@@ -77,6 +77,10 @@ div.widget.user-supporters .supporters ul li h6 a {
     padding: 10px 10px 10px 60px;
     z-index: 9999;
     display: block;
+}
+
+div.widget.user-supporters .supporters ul li h4 {
+    overflow: hidden;
 }
 
 div.widget.user-supporters .supporters ul li a:hover {
