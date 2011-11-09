@@ -2,6 +2,8 @@
 
 namespace Goteo\Model\Project {
 
+    use Goteo\Library\Text;
+
     class Support extends \Goteo\Core\Model {
 
         public
@@ -165,8 +167,8 @@ namespace Goteo\Model\Project {
 
 		public static function types() {
 			return array(
-				'task'=>'Tarea',
-				'lend'=>'Préstamo'
+				'task'=>Text::get('cost-type-task'),
+				'lend'=>Text::get('cost-type-lend')
 			);
 
 		}

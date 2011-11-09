@@ -2217,7 +2217,7 @@ namespace Goteo\Controller {
                                 'action' => "$url/edit/$id",
                                 'submit' => array(
                                     'name' => 'update',
-                                    'label' => 'guardar'
+                                    'label' => Text::get('regular-save')
                                 ),
                                 'fields' => array (
                                     'id' => array(
@@ -2369,7 +2369,7 @@ namespace Goteo\Controller {
                                 'action' => "$url/edit/$id",
                                 'submit' => array(
                                     'name' => 'update',
-                                    'label' => 'guardar'
+                                    'label' => Text::get('regular-save')
                                 ),
                                 'fields' => array (
                                     'id' => array(
@@ -4061,7 +4061,7 @@ namespace Goteo\Controller {
                                 'action' => "$url/edit/$id",
                                 'submit' => array(
                                     'name' => 'update',
-                                    'label' => 'guardar'
+                                    'label' => Text::get('regular-save')
                                 ),
                                 'fields' => array (
                                     'id' => array(
@@ -4271,7 +4271,7 @@ namespace Goteo\Controller {
                                 'action' => "$url/edit/$id",
                                 'submit' => array(
                                     'name' => 'update',
-                                    'label' => 'guardar'
+                                    'label' => Text::get('regular-save')
                                 ),
                                 'fields' => array (
                                     'id' => array(
@@ -4434,7 +4434,7 @@ namespace Goteo\Controller {
                                 'action' => "$url/edit/$id",
                                 'submit' => array(
                                     'name' => 'update',
-                                    'label' => 'guardar'
+                                    'label' => Text::get('regular-save')
                                 ),
                                 'fields' => array (
                                     'id' => array(
@@ -4577,7 +4577,7 @@ namespace Goteo\Controller {
                                 'action' => "$url/edit/$id",
                                 'submit' => array(
                                     'name' => 'update',
-                                    'label' => 'guardar'
+                                    'label' => Text::get('regular-save')
                                 ),
                                 'fields' => array (
                                     'id' => array(

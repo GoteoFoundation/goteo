@@ -108,7 +108,7 @@ div.widget.projects > #widget-code textarea  {
 
 /* fancybox widget del proyecto en vista pública de proyecto
 **************************************************************/
-div#proyecto h2.widget-title{font-weight:normal;font-size:20px;margin-bottom:1px;}
+div#proyecto h2.widget-title{font-weight:normal;font-size:20px;margin-bottom:1px;text-transform:uppercase;}
 div#proyecto div#project-code{float: left;width: auto;margin:0 0 0 30px;}
 div#proyecto div#widget-code{float: left;width: 220px;}
 div#proyecto div#widget-code blockquote{font-size:11px;}

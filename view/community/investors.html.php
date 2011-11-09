@@ -15,7 +15,7 @@ uasort($investors,
 
 ?>
 <div class="widget user-supporters">
-    <h3 class="supertitle">Top Ten cofinanciadores</h3>
+    <h3 class="supertitle"><?php echo Text::get('feed-side-top_ten') ?></h3>
     <div class="supporters">
         <ul>
             <?php $c=1; foreach ($investors as $user => $investor):

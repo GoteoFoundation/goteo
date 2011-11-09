@@ -17,8 +17,8 @@ $errors = $this['errors'];
     <?php if (!empty($posts)) : ?>
     <?php foreach ($posts as $post) : ?>
         <div class="post">
-            <a class="button" href="/dashboard/translates/updates/edit/<?php echo $post->id; ?>">Editar</a>&nbsp;&nbsp;&nbsp;
-            <span><?php echo $post->publish ? 'Publicado' : 'Borrador'; ?></span>
+            <a class="button" href="/dashboard/translates/updates/edit/<?php echo $post->id; ?>"><?php echo Text::get('regular-edit') ?></a>&nbsp;&nbsp;&nbsp;
+            <span><?php echo $post->publish ? Text::get('regular-published_yes') : Text::get('regular-published_no'); ?></span>
             <strong><?php echo $post->title; ?></strong>
             <span><?php echo $post->date; ?></span>
         </div>
@@ -69,7 +69,7 @@ $errors = $this['errors'];
             'view-step-preview' => array(
                 'type'  => 'submit',
                 'name'  => 'save-post',
-                'label' => 'Guardar',
+                'label' => Text::get('regular-save'),
                 'class' => 'next'
             )
         ),

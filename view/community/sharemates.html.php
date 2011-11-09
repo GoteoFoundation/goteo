@@ -59,8 +59,8 @@ $shares     = $this['shares'];
                                 <h4><a href="/user/<?php echo htmlspecialchars($mate->user) ?>"><?php echo htmlspecialchars($mate->name) ?></a></h4>
                                 <span class="projects"><?php echo Text::get('regular-projects'); ?> (<?php echo $mate->projects ?>)</span>
                                 <span class="invests"><?php echo Text::get('regular-investing'); ?> (<?php echo $mate->invests ?>)</span><br/>
-                                <span class="profile"><a href="/user/<?php echo htmlspecialchars($mate->user) ?>">Ver perfil</a> </span>
-                                <span class="contact"><a href="/user/profile/<?php echo htmlspecialchars($mate->user) ?>/message">Escribir mensaje</a></span>
+                                <span class="profile"><a href="/user/profile/<?php echo htmlspecialchars($mate->user) ?>"><?php echo Text::get('profile-widget-button'); ?></a> </span>
+                                <span class="contact"><a href="/user/profile/<?php echo htmlspecialchars($mate->user) ?>/message"><?php echo Text::get('regular-send_message'); ?></a></span>
                             </div>
                         </li>
                     <?php 

@@ -44,7 +44,7 @@ namespace Goteo\Controller {
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
         public function edit ($id) {
-            $project = Model\Project::get($id);
+            $project = Model\Project::get($id, null);
 
             // si no tenemos SESSION stepped es porque no venimos del create
             if (!isset($_SESSION['stepped']))

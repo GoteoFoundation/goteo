@@ -30,7 +30,7 @@ $sfid = 'sf-project-profile';
         'view-step-preview' => array(
             'type'  => 'submit',
             'name'  => 'save-userProfile',
-            'label' => 'Guardar',
+            'label' => Text::get('regular-save'),
             'class' => 'next'
         )
     ),

@@ -189,7 +189,7 @@ uasort($rewards,
             </script>
             <div id="bocadillo"></div>
             <textarea rows="5" cols="50" name="message" id="message"></textarea>
-            <a class="preview" href="#preview" id="a-preview" target="_blank">·Previsualizar</a>
+            <a class="preview" href="#preview" id="a-preview" target="_blank">&middot;<?php echo Text::get('regular-preview'); ?></a>
             <div style="display:none">
                 <div style="width:400px;height:300px;overflow:auto;" id="preview"></div>
             </div>

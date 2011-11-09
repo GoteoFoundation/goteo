@@ -48,8 +48,8 @@ $user->about = nl2br(Text::urlink($user->about));
         </dd>
         <?php endif ?>
 
-        <dt class="message">Enviar mensaje</dt>
-        <dd class="message"><a href="/user/profile/<?php echo htmlspecialchars($user->id) ?>/message">Enviar mensaje</a></dd>
+        <dt class="message"><?php echo Text::get('regular-send_message')?></dt>
+        <dd class="message"><a href="/user/profile/<?php echo htmlspecialchars($user->id) ?>/message"><?php echo Text::get('regular-send_message')?></a></dd>
 
 
     </dl>

@@ -169,7 +169,7 @@ $sfid = 'sf-project-rewards';
         'view-step-preview' => array(
             'type'  => 'submit',
             'name'  => 'save-rewards',
-            'label' => 'Guardar',
+            'label' => Text::get('regular-save'),
             'class' => 'next'
         )
     ),

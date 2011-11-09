@@ -21,14 +21,14 @@ include 'view/header.html.php';
 ?>
 	<div id="sub-header-secondary">
 		<div class="clearfix">
-			<h2><a href="/glossary">GOTEO<span class="red">GLOSARIO</span></a></h2>
+            <h2><a href="/glossary">GOTEO<span class="red"><?php echo Text::get('footer-resources-glossary');?></span></a></h2>
             <?php echo new View('view/header/share.html.php') ?>
 		</div>
 	</div>
 
 	<div id="main" class="threecols">
 		<div id="glossary-content">
-            <h3 class="title">Glosario de términos utilizados en Goteo</h3>
+            <h3 class="title"><?php echo Text::get('regular-header-glossary'); ?></h3>
             <?php if (!empty($posts)) : ?>
                 <div class="glossary-page">
                 <?php while ($post = $pagedResults->fetchPagedRow()) : ?>

@@ -62,13 +62,16 @@ namespace Goteo\Model\Project {
                             reward.amount as amount,
                             reward.units as units,
                             reward.fulsocial as fulsocial,
-                            icon.name as icon_name
+                            IFNULL(icon_lang.name, icon.name) as icon_name
                         FROM    reward
                         LEFT JOIN icon
                             ON icon.id = reward.icon
                         LEFT JOIN reward_lang
                             ON  reward_lang.id = reward.id
                             AND reward_lang.lang = :lang
+                        LEFT JOIN icon_lang
+                            ON  icon_lang.id = icon.id
+                            AND icon_lang.lang = :lang
                         WHERE   project = :project
                             AND type= :type
                         $sqlFilter

@@ -22,7 +22,7 @@ namespace Goteo\Model {
                         license.id as id,
                         IFNULL(license_lang.name, license.name) as name,
                         IFNULL(license_lang.description, license.description) as description,
-                        license.url as url,
+                        IFNULL(license_lang.url, license.url) as url,
                         license.group as `group`,
                         license.order as `order`
                     FROM    license
@@ -60,7 +60,7 @@ namespace Goteo\Model {
                     license.id as id,
                     IFNULL(license_lang.name, license.name) as name,
                     IFNULL(license_lang.description, license.description) as description,
-                    license.url as url,
+                    IFNULL(license_lang.url, license.url) as url,
                     license.group as `group`,
                     license.order as `order`
                 FROM    license

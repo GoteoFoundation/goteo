@@ -37,7 +37,7 @@ $filter = "?status={$filters['status']}&category={$filters['category']}";
             'view-step-preview' => array(
                 'type'  => 'submit',
                 'name'  => 'save-accounts',
-                'label' => 'Guardar',
+                'label' => Text::get('regular-save'),
                 'class' => 'next'
             )
         ),

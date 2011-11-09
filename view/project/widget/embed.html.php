@@ -1,5 +1,6 @@
 <?php
-	use Goteo\Core\View;
+	use Goteo\Core\View,
+        Goteo\Library\Text;
 
 	$url = SITE_URL . '/widget/project/' . $this['project']->id . '?lang=' . LANG;
 
@@ -26,6 +27,6 @@
     ?>
 </div>
 <div id="widget-code">
-    <div class="wc-embed" onclick="$('#code').focus();$('#code').select()">CÓDIGO EMBED</div>
+    <div class="wc-embed" onclick="$('#code').focus();$('#code').select()"><?php echo Text::get('project-spread-embed_code'); ?></div>
     <textarea id="code" onclick="this.focus();this.select()" readonly="readonly"><?php echo htmlentities($widget_code); ?></textarea>
 </div>

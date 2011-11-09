@@ -101,7 +101,7 @@ $sfid = 'sf-project-supports';
         'view-step-preview' => array(
             'type'  => 'submit',
             'name'  => 'save-supports',
-            'label' => 'Guardar',
+            'label' => Text::get('regular-save'),
             'class' => 'next'
         )
     ),

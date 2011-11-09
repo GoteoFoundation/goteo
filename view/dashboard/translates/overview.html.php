@@ -40,7 +40,7 @@ if (!empty($project->media->url)) {
         'view-step-preview' => array(
             'type'  => 'submit',
             'name'  => 'save-overview',
-            'label' => 'Guardar',
+            'label' => Text::get('regular-save'),
             'class' => 'next'
         )
     ),

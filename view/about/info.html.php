@@ -21,7 +21,7 @@ $go_up = Text::get('regular-go_up');
 
 	<div id="main" class="threecols">
 		<div id="about-content">
-            <h3 class="title">Sobre Goteo</h3>
+            <h3 class="title"><?php echo Text::get('regular-header-about'); ?></h3>
             <?php if (!empty($posts)) : ?>
                 <div class="about-page">
                 <?php foreach ($posts as $post) : ?>

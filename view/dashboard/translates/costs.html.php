@@ -100,7 +100,7 @@ $sfid = 'sf-project-costs';
         'view-step-preview' => array(
             'type'  => 'submit',
             'name'  => 'save-costs',
-            'label' => 'Guardar',
+            'label' => Text::get('regular-save'),
             'class' => 'next'
         )
     ),

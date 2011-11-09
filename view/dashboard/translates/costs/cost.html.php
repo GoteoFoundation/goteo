@@ -8,7 +8,7 @@ $cost = $this['data']['cost'] ?>
     
     
     <div class="title"><strong><?php echo htmlspecialchars($cost->cost) ?></strong></div>
-    <input type="submit" class="edit" name="cost-<?php echo $cost->id ?>-edit" value="<?php echo Text::get('form-edit-button') ?>" />
+    <input type="submit" class="edit" name="cost-<?php echo $cost->id ?>-edit" value="<?php echo Text::get('regular-edit') ?>" />
     
     <div class="description">
         <?php echo htmlspecialchars($cost->description) ?>

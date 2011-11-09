@@ -2,7 +2,8 @@
 
 namespace Goteo\Model\Project {
 
-    use Goteo\Core\Error;
+    use Goteo\Core\Error,
+        Goteo\Library\Text;
     
     class Cost extends \Goteo\Core\Model {
 
@@ -176,9 +177,9 @@ namespace Goteo\Model\Project {
 
 		public static function types() {
 			return array (
-				'task'=>'Tarea',
-				'structure'=>'Infraestructura',
-				'material'=>'Material'
+				'task'=>Text::get('cost-type-task'),
+				'structure'=>Text::get('cost-type-structure'),
+				'material'=>Text::get('cost-type-material')
 			);
 		}
 

@@ -16,7 +16,7 @@ foreach ($project->errors as $st => $errors) {
 <div>
 
     <?php if ($step != 'preview') : ?>
-        <p>Total: <?php echo $total_errors ?> | En este paso: <?php echo $step_errors ?></p>
+    <p><?php echo Text::get('form-errors-info', $total_errors, $step_errors) ?></p>
 
         <?php if (!empty($project->errors[$step])) : ?>
         <ul class="sf-footer-errors">
@@ -28,7 +28,7 @@ foreach ($project->errors as $st => $errors) {
         </ul>
         <?php endif ?>
     <?php else : ?>
-        <p>Total: <?php echo $total_errors; ?></p>
+        <p><?php echo Text::get('form-errors-total', $total_errors) ?></p>
         <?php foreach ($project->errors as $st => $errors)  :
             if (!empty($errors)) : ?>
             <h4 class="title"><?php echo Text::get('step-'.$st); ?></h4>

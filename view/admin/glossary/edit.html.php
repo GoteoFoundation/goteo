@@ -66,7 +66,7 @@ $(document).ready(function(){
             'view-step-preview' => array(
                 'type'  => 'submit',
                 'name'  => 'save-post',
-                'label' => 'Guardar',
+                'label' => Text::get('regular-save'),
                 'class' => 'next'
             )
         ),

@@ -35,11 +35,11 @@ $twitter_url = 'http://twitter.com/home?status=' . rawurlencode($share_title . '
         <h<?php echo $level+1 ?>><?php echo Text::get('project-spread-header'); ?></h<?php echo $level+1 ?>>
         <ul>
         	<li class="proyecto">
-            <a target="_blank" id="a-proyecto" href="#proyecto" title="">Widget del proyecto</a>
+            <a target="_blank" id="a-proyecto" href="#proyecto" title=""><?php echo Text::get('project-spread-widget'); ?></a>
             <div style="display: none;">               
             <div id="proyecto" class="widget projects" style="width:600px;height:560px;overflow:auto;">
-                    <h2 class="widget-title">PUBLICA EL WIDGET DEL PROYECTO</h2>
-                    <div class="widget-porject-legend">Copia y pega el código en tu web o blog y ayuda a difundir este proyecto</div>
+                    <h2 class="widget-title"><?php echo Text::get('project-spread-widget_title'); ?></h2>
+                    <div class="widget-porject-legend"><?php echo Text::get('project-spread-widget_legend'); ?></div>
                     <?php echo new View('view/project/widget/embed.html.php', array('project'=>$project)) ?>
                 </div>
             </div>

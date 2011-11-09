@@ -27,9 +27,9 @@ if ($this['action'] == 'none') return;
     <?php if (!empty($posts)) : ?>
     <?php foreach ($posts as $post) : ?>
         <div class="post">
-            <a class="button" href="<?php echo $url; ?>/edit/<?php echo $post->id; ?>">Editar</a>&nbsp;&nbsp;&nbsp;
+            <a class="button" href="<?php echo $url; ?>/edit/<?php echo $post->id; ?>"><?php echo Text::get('regular-edit') ?></a>&nbsp;&nbsp;&nbsp;
             <a class="remove button weak" href="<?php echo $url; ?>/delete/<?php echo $post->id; ?>" onclick="return confirm('¿Seguro que deseas eliminar esta actualización?');">Eliminar</a>
-            <span><?php echo $post->publish ? 'Publicado' : 'Borrador'; ?></span>
+            <span><?php echo $post->publish ? Text::get('regular-published_yes') : Text::get('regular-published_no'); ?></span>
             <strong><?php echo $post->title; ?></strong>
             <span><?php echo $post->date; ?></span>
         </div>
@@ -98,7 +98,7 @@ if ($this['action'] == 'none') return;
             'view-step-preview' => array(
                 'type'  => 'submit',
                 'name'  => 'save-post',
-                'label' => 'Guardar',
+                'label' => Text::get('regular-save'),
                 'class' => 'next'
             )
         ),
