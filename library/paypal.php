@@ -39,9 +39,6 @@ namespace Goteo\Library {
                     $remain = Project::daysRemain($invest->project);
                     $remain++;
 
-                    // aun amplio el remain 5 dias por lo que pueda pasar
-                    $remain+=5;
-
                     date_default_timezone_set('UTC');
                     $currDate = getdate();
                     $hoy = $currDate['year'].'-'.$currDate['mon'].'-'.$currDate['mday'];
