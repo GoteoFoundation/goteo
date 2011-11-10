@@ -104,7 +104,7 @@ namespace Goteo\Controller {
                             $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
 
                             $response_url = SITE_URL . '/user/profile/' . $_SESSION['user']->id . '/message';
-                            $project_url = SITE_URL . '/project/' . $projectData->id . '/messages';
+                            $project_url = SITE_URL . '/project/' . $projectData->id . '/messages#message'.$message->id;
 
                             $search  = array('%MESSAGE%', '%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%RESPONSEURL%');
                             $replace = array($_POST['message'], $thread->user->name, $_SESSION['user']->name, $projectData->name, $project_url, $response_url);
@@ -122,6 +122,32 @@ namespace Goteo\Controller {
 
                             unset($mailHandler);
                         }
+                    } else {
+                        // mensaje al autor del proyecto
+                        // Obtenemos la plantilla para asunto y contenido
+                        $template = Template::get(30);
+
+                        // Sustituimos los datos
+                        $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
+
+                        $response_url = SITE_URL . '/user/profile/' . $_SESSION['user']->id . '/message';
+                        $project_url = SITE_URL . '/project/' . $projectData->id . '/messages#message'.$message->id;
+
+                        $search  = array('%MESSAGE%', '%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%RESPONSEURL%');
+                        $replace = array($_POST['message'], $projectData->user->name, $_SESSION['user']->name, $projectData->name, $project_url, $response_url);
+                        $content = \str_replace($search, $replace, $template->text);
+
+                        $mailHandler = new Mail();
+
+                        $mailHandler->to = $projectData->user->email;
+                        $mailHandler->toName = $projectData->user->name;
+                        $mailHandler->subject = $subject;
+                        $mailHandler->content = $content;
+                        $mailHandler->html = true;
+                        $mailHandler->template = $template->id;
+                        $mailHandler->send($errors);
+
+                        unset($mailHandler);
                     }
 
 
@@ -338,6 +364,32 @@ namespace Goteo\Controller {
                     $log->add($errors);
 
                     unset($log);
+
+                    //Notificación al autor del proyecto
+                    // Obtenemos la plantilla para asunto y contenido
+                    $template = Template::get(31);
+
+                    // Sustituimos los datos
+                    $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
+
+                    $response_url = SITE_URL . '/user/profile/' . $_SESSION['user']->id . '/message';
+                    $project_url = SITE_URL . '/project/' . $projectData->id . '/updates/'.$postData->id.'#comment'.$comment->id;
+
+                    $search  = array('%MESSAGE%', '%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%RESPONSEURL%');
+                    $replace = array($_POST['message'], $projectData->user->name, $_SESSION['user']->name, $projectData->name, $project_url, $response_url);
+                    $content = \str_replace($search, $replace, $template->text);
+
+                    $mailHandler = new Mail();
+
+                    $mailHandler->to = $projectData->user->email;
+                    $mailHandler->toName = $projectData->user->name;
+                    $mailHandler->subject = $subject;
+                    $mailHandler->content = $content;
+                    $mailHandler->html = true;
+                    $mailHandler->template = $template->id;
+                    $mailHandler->send($errors);
+
+                    unset($mailHandler);
 
                 } else {
                     // error
