@@ -233,7 +233,7 @@ body.dashboard div#invests-list div.investor div.left span.pendiente{color:#f00;
 /* Custom checkbox in investors list*/
 body.dashboard div#invests-list div.investor div.recompensas input[type="checkbox"]{height:16px;width:16px;float:left;position:absolute;left:0;opacity:0;margin:0;padding:0}
 body.dashboard div#invests-list div.investor div.recompensas label{line-height:16px;padding:0 0 0 20px}
-body.dashboard div#invests-list div.investor div.recompensas input + label{background:url('/view/css/gr_custom-inputs.png') 0 -1px no-repeat;height:18px;}
+body.dashboard div#invests-list div.investor div.recompensas input + label{background:url('/view/css/dashboard/gr_custom-inputs.png') 0 -1px no-repeat;height:18px;}
 body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:checked + label{background-position:0 -81px}
 body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:hover:checked + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:focus:checked + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:checked + label:hover,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:focus:checked + label{background-position:0 -101px}
 
@@ -250,7 +250,7 @@ input[type=checkbox]:disabled:checked + label,input[type=checkbox]:hover:disable
 /* Custom checkbox in comment box*/
 body.dashboard div#colective-messages input[type="checkbox"]{height:16px;width:16px;float:left;position:absolute;left:0;opacity:0;margin:0;padding:0}
 body.dashboard div#colective-messages label{float:left;line-height:16px;padding:0 0 0 20px; margin-right:45px; }
-body.dashboard div#colective-messages input + label{background:url('/view/css/gr_custom-inputs2.png') 0 -1px no-repeat;height:16px}
+body.dashboard div#colective-messages input + label{background:url('/view/css/dashboard/gr_custom-inputs2.png') 0 -1px no-repeat;height:16px}
 body.dashboard div#colective-messages input[type=checkbox]:checked + label{background-position:0 -81px}
 body.dashboard div#colective-messages input[type=checkbox]:hover:checked + label,body.dashboard div#colective-messages input[type=checkbox]:focus:checked + label,body.dashboard div#colective-messages input[type=checkbox]:checked + label:hover,body.dashboard div#colective-messages input[type=checkbox]:focus:checked + label{background-position:0 -101px}
 

@@ -497,11 +497,13 @@ namespace Goteo\Controller {
                             // filtro
                             case 'filter':
                                 $filter = $_POST['filter'];
+                                $order  = $_POST['order'];
                             break;
                         
                             // procesar marcas
                             case 'process':
                                 $filter = $_POST['filter'];
+                                $order  = $_POST['order'];
                                 // todos los checkboxes
                                 $fulfill = array();
                                 // se marcan con Model/Invest con el id del aporte y el id de la recompensa
@@ -519,6 +521,7 @@ namespace Goteo\Controller {
                             // enviar mensaje
                             case 'message':
                                 $filter = $_POST['filter'];
+                                $order  = $_POST['order'];
 
                                 if (empty($_POST['message'])) {
                                     $errors[] = Text::get('dashboard-investors-mail-text-required');
@@ -531,9 +534,9 @@ namespace Goteo\Controller {
                                 if (!empty($_POST['msg_all'])) {
                                     // si a todos
                                     $who = array();
-                                    foreach (Model\Invest::investors($project->id, false, true) as $investor) {
-                                        if (!in_array($investor->user, $who)) {
-                                            $who[] = $investor->user;
+                                    foreach (Model\Invest::investors($project->id, false, true) as $user=>$investor) {
+                                        if (!in_array($user, $who)) {
+                                            $who[$user] = $investor->user;
                                         }
                                     }
                                 } else {
@@ -564,25 +567,20 @@ namespace Goteo\Controller {
 
                                 // obtener contenido
                                 // segun destinatarios
-                                $enviandoa = !empty($msg_all) ? 'todos' : 'algunos de';
+                                $enviandoa = !empty($_POST['msg_all']) ? 'todos' : 'algunos de';
                                 Message::Info('Enviado a ' . $enviandoa . ' tus cofinanciadores:') ;
 
                                 // Obtenemos la plantilla para asunto y contenido
                                 $template = Template::get(2);
                                 
                                 // Sustituimos los datos
-                                // En el asunto: %PROJECTNAME% por $project->name
                                 $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
 
-                                // En el contenido:  (en el bucle de destinatarios) -> %NAME% por $data_name
-                                // el mensaje que ha escrito el productor -> %MESSAGE% por $msg_content
-                                // nombre del proyecto -> %PROJECTNAME% por $project->name
-                                // url del proyecto -> %PROJECTURL% por ".SITE_URL."/project/{$project->id}"
                                 $search  = array('%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%');
                                 $replace = array($msg_content, $project->name, SITE_URL."/project/".$project->id);
                                 $content = \str_replace($search, $replace, $template->text);
 
-                                foreach ($who as $key=>$userId) {
+                                foreach ($who as $userId) {
                                     $errors = array();
                                     //me cojo su email y lo meto en un array para enviar solo con una instancia de Mail
                                     $data = Model\User::getMini($userId);
@@ -933,6 +931,7 @@ namespace Goteo\Controller {
                     $viewData['invests'] = Model\Invest::getAll($_SESSION['project']->id);
                     // ver por (esto son orden y filtros)
                     $viewData['filter'] = $filter;
+                    $viewData['order'] = $order;
                 break;
 
                 // editar colaboraciones

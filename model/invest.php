@@ -435,7 +435,7 @@ namespace Goteo\Model {
                     ON  user.id = invest.user
                 WHERE   project = ?
                 AND (invest.status = 0 OR invest.status = 1 OR invest.status = 3 OR invest.status = 4)
-                ORDER BY invest.id DESC
+                ORDER BY invest.invested DESC
                 ";
 
             $query = self::query($sql, array($project));
@@ -444,6 +444,9 @@ namespace Goteo\Model {
                 // si el usuario es hide o el aporte es anonymo, lo ponemos como el usuario anonymous (avatar 1)
                 if (!$showall && ($investor->hide == 1 || $investor->anonymous == 1)) {
 
+                    // mantenemos la fecha del anonimo mas reciente
+                    $anonymous_date = empty($investors['anonymous']->date) ? $investor->date : $investors['anonymous']->date;
+
                     $investors['anonymous'] = (object) array(
                         'user' => 'anonymous',
                         'name' => 'Anónimo',
@@ -451,7 +454,7 @@ namespace Goteo\Model {
                         'avatar' => 1,
                         'worth' => null,
                         'amount' => ($investors['anonymous']->amount + $investor->amount),
-                        'date' => $investor->date
+                        'date' => $anonymous_date
                     );
 
                 } else {

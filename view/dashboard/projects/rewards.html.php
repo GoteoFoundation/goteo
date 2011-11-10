@@ -4,26 +4,60 @@ use Goteo\Core\View,
     Goteo\Model\Project\Reward,
     Goteo\Model\Invest;
 
-$filters = array(
-    'date'      => 'Fecha',
-    'user'      => 'Usuario',
-    'reward'    => 'Recompensa',
-    'pending'   => 'Pendientes',
-    'fulfilled' => 'Cumplidos'
-);
-
 $icons = Reward::icons('individual');
 
 $project = $this['project'];
 
 $rewards = $this['rewards'];
-
-uasort($rewards,
-    function ($a, $b) {
+// recompensas ordenadas por importe
+uasort($rewards, function ($a, $b) {
         if ($a->amount == $b->amount) return 0;
         return ($a->amount > $b->amount) ? 1 : -1;
         }
     );
+
+$invests = $this['invests'];
+
+$filter = $this['filter']; // al ir mostrando, quitamos los que no cumplan
+// pending = solo los que tienen alguna recompensa pendientes
+// fulfilled = solo los que tienen todas las recompensas cumplidas
+// resign = solo los que hicieron renuncia a recompensa
+
+$order = $this['order'];
+// segun order:
+switch ($order) {
+    case 'date': // fecha aporte, mas reciente primero
+        uasort($invests, function ($a, $b) {
+                if ($a->invested == $b->invested) return 0;
+                return ($a->invested > $b->invested) ? -1 : 1;
+                }
+            );
+        break;
+    case 'user': // nombre de usuario alfabetico
+        uasort($invests, function ($a, $b) {
+                if ($a->user->name == $b->user->name) return 0;
+                return ($a->user->name > $b->user->name) ? 1 : -1;
+                }
+            );
+        break;
+    case 'reward': // importe de recompensa, más bajo primero
+        uasort($invests, function ($a, $b) {
+                if (empty($a->rewards)) return 1;
+                if ($a->rewards[0]->amount == $b->rewards[0]->amount) return 0;
+                return ($a->rewards[0]->amount > $b->rewards[0]->amount) ? 1 : -1;
+                }
+            );
+        break;
+    case 'amount': // importe aporte, más alto primero
+    default:
+        uasort($invests, function ($a, $b) {
+                if ($a->amount == $b->amount) return 0;
+                return ($a->amount > $b->amount) ? -1 : 1;
+                }
+            );
+        break;
+}
+
 
 ?>
 <div class="widget gestrew">
@@ -43,50 +77,53 @@ uasort($rewards,
                 <div class="contenedorrecompensa">	
                 	<span class="recompensa"><strong style="color:#666;">Recompensa:</strong><br/> <?php echo Text::recorta($rewardData->description, 100); ?></span>
                 </div>
-                <?php if (count($who) > 0) : ?>
                 <a class="button green" onclick="msgto('<?php echo $rewardData->id; ?>')" >mensaje a ese grupo</a>
-                <?php endif; ?>
             </div>
         <?php ++$num;
             endforeach; ?>
     </div>
 </div>
 
-<div class="widget gestrew">
+<?php if (!empty($invests)) : ?>
+<script type="text/javascript">
+    function set(what, which) {
+        document.getElementById('invests-'+what).value = which;
+        document.getElementById('invests-filter-form').submit();
+        return false;
+    }
+</script><div class="widget gestrew">
     <h2 class="title">Gestionar retornos</h2>
-    <?php
-    /*
+    <a name="gestrew"></a>
+   <form id="invests-filter-form" name="filter_form" action="<?php echo '/dashboard/projects/rewards/filter#gestrew'; ?>" method="post">
+       <input type="hidden" id="invests-filter" name="filter" value="<?php echo $filter; ?>" />
+       <input type="hidden" id="invests-order" name="order" value="<?php echo $order; ?>" />
+   </form>
     <div class="filters">
-        <form id="invests-filter-form" name="filter_form" action="<?php echo '/dashboard/'.$this['section'].'/'.$this['option'].'/filter'; ?>" method="post">
-        <label id="invests-filter">Ver por: </label>
+        <label>Ver aportaciones: </label><br />
         <ul>			 
-        	<li class="current"><a href="#">Por fecha</a></li>
+        	<li<?php if ($order == 'amount' || $order == '') echo ' class="current"'; ?>><a href="#" onclick="return set('order', 'amount');">Por importe</a></li>
             <li>|</li>
-            <li><a href="#">Por orden alfabético</a></li>
+        	<li<?php if ($order == 'date') echo ' class="current"'; ?>><a href="#" onclick="return set('order', 'date');">Por fecha</a></li>
             <li>|</li>
-            <li><a href="#">Por retorno</a></li>
+            <li<?php if ($order == 'user') echo ' class="current"'; ?>><a href="#" onclick="return set('order', 'user');">Por usuario</a></li>
             <li>|</li>
-            <li><a href="#">Pendientes</a></li>
+            <li<?php if ($order == 'reward') echo ' class="current"'; ?>><a href="#" onclick="return set('order', 'reward');">Por retorno</a></li>
             <li>|</li>
-            <li><a href="#">Cumplidas</a></li>
+            <li<?php if ($filter == 'pending') echo ' class="current"'; ?>><a href="#" onclick="return set('filter', 'pending');">Pendientes</a></li>
+            <li>|</li>
+            <li<?php if ($filter == 'fulfilled') echo ' class="current"'; ?>><a href="#" onclick="return set('filter', 'fulfilled');">Cumplidas</a></li>
+            <li>|</li>
+            <li<?php if ($filter == 'resign') echo ' class="current"'; ?>><a href="#" onclick="return set('filter', 'resign');">Donativos</a></li>
+            <li>|</li>
+            <li<?php if ($filter == '') echo ' class="current"'; ?>><a href="#" onclick="return set('filter', '');">Todas</a></li>
         </ul>
-       <!-- <select id="invests-filter" name="filter" onchange="document.getElementById('invests-filter-form').submit();">
-        <?php foreach ($filters as $filterId=>$filterName) : ?>
-            <option value="<?php echo $filterId; ?>"<?php if ($filterId == $this['filter']) echo ' selected="selected"'; ?>><?php echo $filterName; ?></option>
-        <?php endforeach; ?>
-        </select>-->
-        <!-- un boton para aplicar filtro si no tiene javascript -->
-        </form>
     </div>
-    */
-    ?>
     
     <div id="invests-list">
         <form name="invests_form" action="<?php echo '/dashboard/'.$this['section'].'/'.$this['option'].'/process'; ?>" method="post">
-            <input type="hidden" name="filter" value="<?php echo $this['filter']; ?>" />
-            <?php foreach ($this['invests'] as $investId=>$investData) :
-
-                if (empty($investData->rewards)) continue;
+           <input type="hidden" name="filter" value="<?php echo $filter; ?>" />
+           <input type="hidden" name="order" value="<?php echo $order; ?>" />
+            <?php foreach ($invests as $investId=>$investData) :
 
                 $address = $investData->address;
                 $cumplida = true; //si nos encontramos una sola no cumplida, pasa a false
@@ -97,6 +134,11 @@ uasort($rewards,
                         $cumplida = false;
                     }
                 }
+
+                // filtro
+                if ($filter == 'pending' && $cumplida != false) continue;
+                if ($filter == 'fulfilled' && $cumplida != true) continue;
+                if ($filter == 'resign' && $investData->resign != true) continue;
                 ?>
                 
                 <div class="investor">
@@ -109,7 +151,7 @@ uasort($rewards,
 						<span class="username"><a href="/user/<?php echo $investData->user->id; ?>"><?php echo $investData->user->name; ?></a></span>
                         <label class="amount">Aporta</label>
 						<span class="amount"><?php echo $investData->amount; ?> &euro;</span>
-                        <span class="date">22/08/2011</span>
+                        <span class="date"><?php echo date('d-m-Y', strtotime($investData->invested)); ?></span>
                     </div>
                    
                     <div class="left recompensas"  style="width:280px;">
@@ -132,6 +174,8 @@ uasort($rewards,
                     
                     <div class="left">
 	                    <span class="status"><?php echo $cumplida ? '<span class="cumplida">Cumplida</span>' : '<span class="pendiente">Pendiente</span>'; ?></span>
+                        <span class="profile"><a href="/user/profile/<?php echo $investData->user->id ?>" target="_blank"><?php echo Text::get('profile-widget-button'); ?></a> </span>
+                        <span class="contact"><a href="/user/profile/<?php echo $investData->user->id ?>/message" target="_blank"><?php echo Text::get('regular-send_message'); ?></a></span>
                     </div>
                     
                     
@@ -140,45 +184,45 @@ uasort($rewards,
             <?php endforeach; ?>
 
             <?php if ($project->amount >= $project->mincost) : ?>
-            <input type="submit" name="process" value="Aplicar" class="save" onclick="return confirm('Ojo! Al marcar como cumplida no se puede desmarcar. Continuamos?')"/>
+            <input type="submit" name="process" value="Aplicar marcados" class="save" onclick="return confirm('Ojo! Al marcar como cumplida no se puede desmarcar. Continuamos?')"/>
             <?php endif; ?>
         </form>
     </div>
 
 </div>
 
-
 <div class="widget projects" id="colective-messages">
     <a name="message"></a>
     <h2 class="title">Mensajes colectivos</h2>
-    
+
         <form name="message_form" method="post" action="<?php echo '/dashboard/'.$this['section'].'/'.$this['option'].'/message'; ?>">
         	<div id="checks">
-                <input type="hidden" name="filter" value="<?php echo $this['filter']; ?>" />
-        
+               <input type="hidden" name="filter" value="<?php echo $filter; ?>" />
+               <input type="hidden" name="order" value="<?php echo $order; ?>" />
+
                 <p>
                     <input type="checkbox" id="msg_all" name="msg_all" value="1" onclick="alert('a todos es a todos, no tiene en cuenta el resto de marcados');" />
                     <label for="msg_all">A todos los cofinanciadores de este proyecto</label>
                 </p>
-        
+
                 <p>
                     Por retornos: <br />
                     <?php foreach ($rewards as $rewardId => $rewardData) : ?>
                         <input type="checkbox" id="msg_reward-<?php echo $rewardId; ?>" name="msg_reward-<?php echo $rewardId; ?>" value="1" />
                         <label for="msg_reward-<?php echo $rewardId; ?>"><?php echo $rewardData->amount; ?> &euro; (<?php echo Text::recorta($rewardData->reward, 40); ?>)</label>
                     <?php endforeach; ?>
-        
+
                 </p>
     		</div>
 		    <div id="comment">
             <script type="text/javascript">
                 // Mark DOM as javascript-enabled
-                jQuery(document).ready(function ($) { 
+                jQuery(document).ready(function ($) {
                     //change div#preview content when textarea lost focus
                     $("#message").blur(function(){
                         $("#preview").html($("#message").val());
                     });
-                    
+
                     //add fancybox on #a-preview click
                     $("#a-preview").fancybox({
                         'titlePosition'		: 'inside',
@@ -195,11 +239,12 @@ uasort($rewards,
             </div>
             <button type="submit" class="green">Enviar</button>
             </div>
-            
+
         </form>
-	
+
 </div>
 
+<?php endif; ?>
 <script type="text/javascript">
     function msgto(reward) {
         document.getElementById('msg_reward-'+reward).checked = 'checked';
