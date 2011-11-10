@@ -160,7 +160,7 @@ namespace Goteo\Controller {
 
                     $Cerr = (string) $_POST['Codigo_error'];
                     $errTxt = self::$errcode[$Cerr];
-                    @\mail('goteo-tpv-fault@doukeshi.org', 'Error en TPV', 'Codigo error: '.$Cerr.' '.$errTxt.'<br /><pre>' . print_r($_POST, 1) . '</pre>');
+                    @mail('goteo-tpv-fault@doukeshi.org', 'Error en TPV', 'Codigo error: '.$Cerr.' '.$errTxt.'<br /><pre>' . print_r($_POST, 1) . '</pre>');
                     $invest->cancel('ERR '.$Cerr);
                     $_POST['result'] = 'Fail';
 
@@ -199,7 +199,7 @@ namespace Goteo\Controller {
                 unset($log);
             } else {
                 echo 'Se esperaban recibir datos de comunicación online del TPV.';
-                @\mail('goteo-tpv-fault@doukeshi.org', 'Comunicacion online sin datos', 'Este GET<pre>' . print_r($_GET, 1) . '</pre> y este POST:<pre>' . print_r($_POST, 1) . '</pre>');
+                @mail('goteo-tpv-fault@doukeshi.org', 'Comunicacion online sin datos', 'Este GET<pre>' . print_r($_GET, 1) . '</pre> y este POST:<pre>' . print_r($_POST, 1) . '</pre>');
 //                throw new Redirection('/', Error::BAD_REQUEST);
             }
 
@@ -208,7 +208,7 @@ namespace Goteo\Controller {
 
         public function simulacrum () {
             echo 'Simulacrum<br />';
-            @\mail('julian.canaves@gmail.com', 'Test request', 'Recibido este POST:<pre>' . print_r($_POST, 1) . '</pre>');
+            @mail('julian.canaves@gmail.com', 'Test request', 'Recibido este POST:<pre>' . print_r($_POST, 1) . '</pre>');
             die;
         }
 
