@@ -43,6 +43,11 @@ if (!isset($_POST['email']) && isset($_GET['email'])) {
                         <input type="text" name="email" value="<?php echo $email?>" /></label>
                     </div>
 
+                    <div class="message">
+                        <label for="leave-message"><?php echo Text::get('login-leave-message'); ?></label>
+                        <textarea id="leave-message" name="reason" cols="50" rows="5"><?php echo $reason ?></textarea>
+                    </div>
+
                     <input type="submit" name="leaving" value="<?php echo Text::get('login-leave-button'); ?>" />
 
                 </form>

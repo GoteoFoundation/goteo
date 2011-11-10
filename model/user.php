@@ -797,7 +797,7 @@ namespace Goteo\Model {
 		 * @param string $email    Email de la cuenta
 		 * @return boolean true|false  Correctos y mail enviado
 		 */
-		public static function leaving ($email) {
+		public static function leaving ($email, $message = null) {
             $query = self::query("
                     SELECT
                         id,
@@ -837,6 +837,22 @@ namespace Goteo\Model {
                 $mail->html = true;
                 $mail->template = $template->id;
                 $mail->send($errors);
+                unset($mail);
+
+                // email a los de goteo
+                $mail = new Mail();
+                $mail->to = \GOTEO_MAIL;
+                $mail->toName = 'Admin Goteo';
+                $mail->subject = 'El usuario ' . $row->id . ' se da de baja';
+                $mail->content = '<p>Han solicitado la baja para el mail <strong>'.$email.'</strong> que corresponde al usuario <strong>'.$row->name.'</strong>';
+                if (!empty($message)) $mail->content .= 'y ha dejado el siguiente mensaje:</p><p> ' . $message;
+                $mail->content .= '</p>';
+                $mail->fromName = "{$row->name}";
+                $mail->from = $row->email;
+                $mail->html = true;
+                $mail->template = 0;
+                $mail->send($errors);
+                unset($mail);
 
                 return true;
 			}

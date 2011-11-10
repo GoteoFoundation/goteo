@@ -442,7 +442,6 @@ namespace Goteo\Controller {
                 $username = $_POST['username'];
                 $email    = $_POST['email'];
                 if (Model\User::recover($username, $email)) {
-                    // se pue recuperar
                     $message = Text::get('recover-email-sended');
                 }
                 else {
@@ -497,10 +496,10 @@ namespace Goteo\Controller {
             }
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['leaving'])) {
-                $email    = $_POST['email'];
-                if (Model\User::leaving($email)) {
-                    // se pue recuperar
+                if (Model\User::leaving($_POST['email'], $_POST['reason'])) {
                     $message = Text::get('leave-email-sended');
+                    unset($_POST['email']);
+                    unset($_POST['reason']);
                 }
                 else {
                     $error = Text::get('leave-request-fail');
