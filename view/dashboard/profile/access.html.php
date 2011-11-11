@@ -9,6 +9,24 @@ $this['level'] = 3;
 
 $message = $this['action'] == 'recover' ? $this['message'] : '';
 
+if ($_SESSION['recovering'] == $_SESSION['user']->id) {
+    $old_pass = array(
+                    'type'  => 'hidden',
+                    'errors'=> array(),
+                    'value' => $user->id
+                );
+} else {
+    $old_pass = array(
+                    'type'  => 'password',
+                    'class' => 'inline',
+                    'title' => 'Contraseña actual',
+                    'hint'  => Text::get('tooltip-dashboard-user-user_password'),
+                    'errors'=> !empty($errors['password']) ? array($errors['password']) : array(),
+                    'value' => $user_password
+                );
+}
+
+
 extract($_POST);
 ?>
 <form action="/dashboard/profile/access" method="post" enctype="multipart/form-data">
@@ -43,7 +61,7 @@ echo new SuperForm(array(
                     'class' => 'inline',
                     'title' => 'Nuevo email',
                     'hint'  => Text::get('tooltip-dashboard-user-new_email'),
-                    'errors'=> !empty($errors['email']['new']) ? array($errors['email']['new']) : array(),
+                    'errors'=> !empty($errors['email']) ? array($errors['email']) : array(),
                     'value' => $user_nemail
                 ),
                 'user_remail' => array(
@@ -51,7 +69,7 @@ echo new SuperForm(array(
                     'class' => 'inline',
                     'title' => 'Confirmar nuevo E-mail',
                     'hint'  => Text::get('tooltip-dashboard-user-confirm_email'),
-                    'errors'=> !empty($errors['email']['retry']) ? array($errors['email']['retry']) : array(),
+                    'errors'=> !empty($errors['email_retry']) ? array($errors['email_retry']) : array(),
                     'value' => $user_remail
                 ),
                 'change_email' => array(
@@ -68,14 +86,8 @@ echo new SuperForm(array(
             'title'     => 'Cambiar contraseña',
             'hint'      => Text::get('tooltip-dashboard-user-change_password'),
             'children'  => array(
-                'user_password' => array(
-                    'type'  => 'password',
-                    'class' => 'inline',
-                    'title' => 'Contraseña actual',
-                    'hint'  => Text::get('tooltip-dashboard-user-user_password'),
-                    'errors'=> !empty($errors['password']) ? array($errors['password']) : array(),
-                    'value' => $user_password
-                ),
+                'user_password' => $old_pass
+                ,
                 'pass_anchor' => array(
                     'type'  => 'html',
                     'html'  => '<a name="password"></a>' . $messge
@@ -85,7 +97,7 @@ echo new SuperForm(array(
                     'class' => 'inline',
                     'title' => 'Nueva Contraseña',
                     'hint'  => Text::get('tooltip-dashboard-user-new_password'),
-                    'errors'=> !empty($errors['password']['new']) ? array($errors['password']['new']) : array(),
+                    'errors'=> !empty($errors['password_new']) ? array($errors['password_new']) : array(),
                     'value' => $user_npassword
                 ),
                 'user_rpassword' => array(
@@ -93,7 +105,7 @@ echo new SuperForm(array(
                     'class' => 'inline',
                     'title' => 'Confirmar nueva contraseña',
                     'hint'  => Text::get('tooltip-dashboard-user-confirm_password'),
-                    'errors'=> !empty($errors['password']['retry']) ? array($errors['password']['retry']) : array(),
+                    'errors'=> !empty($errors['password_retry']) ? array($errors['password_retry']) : array(),
                     'value' => $user_rpassword
                 ),
                 'change_password' => array(

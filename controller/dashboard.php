@@ -227,10 +227,10 @@ namespace Goteo\Controller {
                                 $errors['email'] = Text::get('error-user-email-invalid');
                             }
                             elseif(empty($_POST['user_remail'])) {
-                                $errors['email']['retry'] = Text::get('error-user-email-empty');
+                                $errors['email_retry'] = Text::get('error-user-email-empty');
                             }
                             elseif (strcmp($_POST['user_nemail'], $_POST['user_remail']) !== 0) {
-                                $errors['email']['retry'] = Text::get('error-user-email-confirm');
+                                $errors['email_retry'] = Text::get('error-user-email-confirm');
                             }
                             else {
                                 $user->email = $_POST['user_nemail'];
@@ -243,30 +243,24 @@ namespace Goteo\Controller {
                         }
                         // Contraseña
                         if($_POST['change_password']) {
-                            // la recuperacion de contraseña se hace con esta funcionalidad
-                            // no chequearemos la contraseña anterior
-                            $recover = false;
-                            if ($_POST['action'] == 'recover') {
-                                $recover = true;
-                            }
-
-                            if(empty($_POST['user_password'])) {
+                            // si recuperando no chequearemos la contraseña anterior
+                            if(!isset($_SESSION['recovering']) && empty($_POST['user_password'])) {
                                 $errors['password'] = Text::get('error-user-password-empty');
                             }
-                            elseif(!$recover && !Model\User::login($user->id, $_POST['user_password'])) {
+                            elseif(!isset($_SESSION['recovering']) && !Model\User::login($user->id, $_POST['user_password'])) {
                                 $errors['password'] = Text::get('error-user-wrong-password');
                             }
                             elseif(empty($_POST['user_npassword'])) {
-                                $errors['password']['new'] = Text::get('error-user-password-empty');
+                                $errors['password_new'] = Text::get('error-user-password-empty');
                             }
                             elseif(!\Goteo\Library\Check::password($_POST['user_npassword'])) {
-                                $errors['password']['new'] = Text::get('error-user-password-invalid');
+                                $errors['password_new'] = Text::get('error-user-password-invalid');
                             }
                             elseif(empty($_POST['user_rpassword'])) {
-                                $errors['password']['retry'] = Text::get('error-user-password-empty');
+                                $errors['password_retry'] = Text::get('error-user-password-empty');
                             }
                             elseif(strcmp($_POST['user_npassword'], $_POST['user_rpassword']) !== 0) {
-                                $errors['password']['retry'] = Text::get('error-user-password-confirm');
+                                $errors['password_retry'] = Text::get('error-user-password-confirm');
                             }
                             else {
                                 $user->password = $_POST['user_npassword'];
@@ -278,9 +272,10 @@ namespace Goteo\Controller {
                                 $log_action = 'Cambiado su contraseña'; //feed admin
                             }
                         }
-                        if($user->save($errors)) {
+                        if(empty($errors) && $user->save($errors)) {
                             // Refresca la sesión.
                             $user = Model\User::flush();
+                            if (isset($_SESSION['recovering'])) unset($_SESSION['recovering']);
                         } else {
                             $errors[] = Text::get('user-save-fail');
                         }

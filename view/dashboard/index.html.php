@@ -40,7 +40,7 @@ include 'view/header.html.php'; ?>
             <?php endif; ?>
 
             <?php if (!empty($this['errors'])) : ?>
-                <div class="widget">
+                <div class="widget" style="color:red;">
                     <p><?php echo implode('<br />',$this['errors']); ?></p>
                 </div>
             <?php endif; ?>

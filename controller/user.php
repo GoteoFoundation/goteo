@@ -430,6 +430,7 @@ namespace Goteo\Controller {
                             // el token coincide con el email y he obtenido una id
                             $user = Model\User::get($id);
                             $_SESSION['user'] = $user;
+                            $_SESSION['recovering'] = $user->id;
                             throw new Redirection('/dashboard/profile/access/recover#password');
                         }
                     }
@@ -443,6 +444,8 @@ namespace Goteo\Controller {
                 $email    = $_POST['email'];
                 if (Model\User::recover($username, $email)) {
                     $message = Text::get('recover-email-sended');
+                    unset($_POST['username']);
+                    unset($_POST['email']);
                 }
                 else {
                     $error = Text::get('recover-request-fail');
