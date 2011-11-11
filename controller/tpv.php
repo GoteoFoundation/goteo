@@ -181,11 +181,17 @@ namespace Goteo\Controller {
                 $log->html = \vsprintf($log_text, $log_items);
                 $log->add($errors);
 
-                if ($doPublic && !$invest->anonymous) {
+                if ($doPublic) {
                     // evento público
-                    $log->title = $userData->name;
-                    $log->url = '/user/profile/'.$userData->id;
-                    $log->image = $userData->avatar->id;
+                    if ($invest->anonymous) {
+                        $log->title = Text::get('regular-anonymous');
+                        $log->url = '/user/profile/anonymous';
+                        $log->image = 1;
+                    } else {
+                        $log->title = $userData->name;
+                        $log->url = '/user/profile/'.$userData->id;
+                        $log->image = $userData->avatar->id;
+                    }
                     $log->scope = 'public';
                     $log->type = 'community';
 
@@ -207,13 +213,6 @@ namespace Goteo\Controller {
         public function simulacrum () {
             echo 'Simulacrum<br />';
             @mail('julian.canaves@gmail.com', 'Test request', 'Recibido este POST:<pre>' . print_r($_POST, 1) . '</pre>');
-            die;
-        }
-
-        public function test () {
-            $string = 'g o-t+e/o.org';
-            echo $string . ' -> ';
-            echo \Goteo\Core\Model::idealiza($string);
             die;
         }
 

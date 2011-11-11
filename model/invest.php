@@ -1,7 +1,9 @@
 <?php
 
 namespace Goteo\Model {
-    
+
+    use Goteo\Library\Text;
+
     class Invest extends \Goteo\Core\Model {
 
         public
@@ -449,7 +451,7 @@ namespace Goteo\Model {
 
                     $investors['anonymous'] = (object) array(
                         'user' => 'anonymous',
-                        'name' => 'Anónimo',
+                        'name' => Text::get('regular-anonymous'),
                         'projects' => null,
                         'avatar' => 1,
                         'worth' => null,

@@ -228,18 +228,22 @@ namespace Goteo\Controller {
                 $log->html = \vsprintf($log_text, $items);
                 $log->add($errors);
 
-                if (!$confirm->anonymous) {
                     // evento público
+                if ($confirm->anonymous) {
+                    $log->title = Text::get('regular-anonymous');
+                    $log->url = '/user/profile/anonymous';
+                    $log->image = 1;
+                } else {
                     $log->title = $_SESSION['user']->name;
                     $log->url = '/user/profile/'.$_SESSION['user']->id;
                     $log->image = $_SESSION['user']->avatar->id;
-                    $log->scope = 'public';
-                    $log->type = 'community';
-                    $log->html = Text::html('feed-invest',
-                                        Feed::item('money', $confirm->amount.' &euro;'),
-                                        Feed::item('project', $projectData->name, $projectData->id));
-                    $log->add($errors);
                 }
+                $log->scope = 'public';
+                $log->type = 'community';
+                $log->html = Text::html('feed-invest',
+                                    Feed::item('money', $confirm->amount.' &euro;'),
+                                    Feed::item('project', $projectData->name, $projectData->id));
+                $log->add($errors);
 
                 unset($log);
             }
