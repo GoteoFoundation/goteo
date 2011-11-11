@@ -150,9 +150,7 @@ namespace Goteo\Controller {
                     $_POST['result'] = 'Transaccion ok';
 
                     $log_text = "%s ha aportado %s al proyecto %s mediante TPV";
-                    if (!$invest->anonymous) {
-                        $doPublic = true;
-                    }
+                    $doPublic = true;
 
                     echo '$*$OKY$*$';
                     
@@ -183,7 +181,7 @@ namespace Goteo\Controller {
                 $log->html = \vsprintf($log_text, $log_items);
                 $log->add($errors);
 
-                if ($doPublic) {
+                if ($doPublic && !$invest->anonymous) {
                     // evento público
                     $log->title = $userData->name;
                     $log->url = '/user/profile/'.$userData->id;

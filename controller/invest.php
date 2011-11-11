@@ -228,7 +228,7 @@ namespace Goteo\Controller {
                 $log->html = \vsprintf($log_text, $items);
                 $log->add($errors);
 
-                if (!$invest->anonymous) {
+                if (!$confirm->anonymous) {
                     // evento público
                     $log->title = $_SESSION['user']->name;
                     $log->url = '/user/profile/'.$_SESSION['user']->id;
