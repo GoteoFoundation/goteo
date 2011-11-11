@@ -11,9 +11,18 @@
         <meta name="copyright" content="<?php echo GOTEO_META_COPYRIGHT ?>" />
         <meta name="robots" content="all" />
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<?php if (isset($ogmeta)) : ?>
+        <meta property="og:title" content="<?php echo $ogmeta['title'] ?>" />
+        <meta property="og:type" content="activity" />
+        <meta property="og:site_name" content="Goteo.org" />
+        <meta property="og:description" content="<?php echo $ogmeta['description'] ?>" />
+        <meta property="og:image" content="<?php echo $ogmeta['image'] ?>" />
+        <meta property="og:url" content="<?php echo $ogmeta['url'] ?>" />
+<?php else : ?>
         <meta property="og:title" content="Goteo.org" />
         <meta property="og:description" content="<?php echo GOTEO_META_DESCRIPTION ?>" />
         <meta property="og:image" content="<?php echo SITE_URL ?>/goteo_logo.png" />
+<?php endif; ?>
         <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/goteo.css" />
       <!--[if IE]>
       <link href="<?php echo SRC_URL ?>/view/css/ie.css" media="screen" rel="stylesheet" type="text/css" />

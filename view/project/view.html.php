@@ -39,7 +39,16 @@ if (!empty($blog->posts)) {
 
 
 
-$bodyClass = 'project-show'; include 'view/prologue.html.php' ?>
+$bodyClass = 'project-show';
+
+// metas og: para que al compartir en facebook coja bien el nombre y la imagen
+$ogmeta = array(
+    'title' => $project->name,
+    'description' => Text::get('regular-by').' '.$project->user->name,
+    'image' => SITE_URL . '/image/'.$project->gallery[0]->id . '/580/580',
+    'url' => SITE_URL . '/project/'.$project->id
+);
+include 'view/prologue.html.php' ?>
 
 <?php include 'view/header.html.php' ?>
 
