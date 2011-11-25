@@ -34,6 +34,10 @@ namespace Goteo\Model {
                 $this->error = $file['error'];
                 $this->size = $file['size'];
             }
+            elseif(is_string($file)) {
+				$this->name = self::check_filename(basename($file), $this->dir_originals);
+				$this->tmp = $file;
+			}
             //die($this->dir_originals);
             if(!is_dir($this->dir_originals)) {
 				mkdir($this->dir_originals);
@@ -75,7 +79,27 @@ namespace Goteo\Model {
                 }
 
                 if(!empty($this->tmp)) {
-					move_uploaded_file($this->tmp,$this->dir_originals . $this->name);
+
+					//si es un archivo que se sube
+					if(is_uploaded_file($this->tmp)) {
+						move_uploaded_file($this->tmp,$this->dir_originals . $this->name);
+					}
+					//si es un archivo del sistema de archivos o en una URL
+					elseif(@copy($this->tmp, $this->dir_originals . $this->name)) {
+						$data[':size'] = @filesize($this->dir_originals . $this->name);
+						if(function_exists("finfo_open")) {
+							$finfo = finfo_open(FILEINFO_MIME_TYPE);
+							$data[':type'] = finfo_file($finfo, $this->dir_originals . $this->name);
+							finfo_close($finfo);
+						}
+						elseif(function_exists("mime_content_type")) {
+							$data[':type'] = mime_content_type($this->dir_originals . $this->name);
+						}
+					}
+					else {
+						//die($this->tmp);
+						return false;
+					}
                 }
 
                 try {
@@ -122,42 +146,42 @@ namespace Goteo\Model {
 		 * @see Goteo\Core.Model::validate()
 		 */
 		public function validate(&$errors = array()) {
-		    if($this->error !== UPLOAD_ERR_OK) {
-		        $errors['image'] = $this->error;
-		    }
-
-            if(empty($this->name)) {
+			if(empty($this->name)) {
                 $errors['image'] = Text::get('error-image-name');
             }
+			if(is_uploaded_file($this->tmp)) {
+				if($this->error !== UPLOAD_ERR_OK) {
+					$errors['image'] = $this->error;
+				}
 
-            if(!empty($this->type)) {
-                $allowed_types = array(
-    				'image/gif',
-    				'image/jpeg',
-    				'image/png',
-                );
-                if(!in_array($this->type, $allowed_types)) {
-                    $errors['image'] = Text::get('error-image-type-not-allowed');
-                }
-            }
-            else {
-                $errors['image'] = Text::get('error-image-type');
-            }
+				if(!empty($this->type)) {
+					$allowed_types = array(
+						'image/gif',
+						'image/jpeg',
+						'image/png',
+					);
+					if(!in_array($this->type, $allowed_types)) {
+						$errors['image'] = Text::get('error-image-type-not-allowed');
+					}
+				}
+				else {
+					$errors['image'] = Text::get('error-image-type');
+				}
 
-            if(empty($this->tmp) || $this->tmp == "none") {
-                $errors['image'] = Text::get('error-image-tmp');
-            }
+				if(empty($this->tmp) || $this->tmp == "none") {
+					$errors['image'] = Text::get('error-image-tmp');
+				}
 
-            if(!empty($this->size)) {
-                $max_upload_size = 2 * 1024 * 1024; // = 2097152 (2 megabytes)
-                if($this->size > $max_upload_size) {
-                    $errors['image'] = Text::get('error-image-size-too-large');
-                }
-            }
-            else {
-                $errors['image'] = Text::get('error-image-size');
-            }
-
+				if(!empty($this->size)) {
+					$max_upload_size = 2 * 1024 * 1024; // = 2097152 (2 megabytes)
+					if($this->size > $max_upload_size) {
+						$errors['image'] = Text::get('error-image-size-too-large');
+					}
+				}
+				else {
+					$errors['image'] = Text::get('error-image-size');
+				}
+			}
             return empty($errors);
 		}
 
