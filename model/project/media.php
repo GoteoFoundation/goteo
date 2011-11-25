@@ -26,7 +26,6 @@ namespace Goteo\Model\Project {
 
             return '<iframe src="http://player.vimeo.com/video/'
                    . $id . '?title=0&amp;byline=0&amp;portrait=0" width="100%" height="100%" frameborder="0"></iframe>';
-
         }
 
         protected static function getSlideshareCode ($id, $https = false) {
@@ -59,11 +58,22 @@ namespace Goteo\Model\Project {
 
         }
 
-        public function getEmbedCode () {
+        public function getEmbedCode ($universalSubtitles = false, $lang = \LANG) {
 
             $code = '';
 
             if (!empty($this->url)) {
+
+                if ($universalSubtitles) {
+                    return '<script type="text/javascript" src="http://s3.www.universalsubtitles.org/embed.js">
+({
+    "video_url": "'. trim($this->url) . ' ",
+    "base_state": {"language": "'.$lang.'"},
+    "video_config": {"width": "620", "height": "380"}
+})
+</script>';
+                }
+
 
                 switch (true) {
 

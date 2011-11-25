@@ -80,8 +80,17 @@ $level = (int) $this['level'] ?: 3;
     <?php if (!empty($project->video->url)):  // video bajo motivación ?>
     <div class="project-motivation-video">
         <a name="motivideo"></a>
-        <?php echo $project->video->getEmbedCode() ?>
+        <?php
+        // @TODO   universal subtitles standard
+        // @FIXME  piñonaco para el video move commons
+        if ($project->id == 'move-commons') {
+            echo $project->video->getEmbedCode(true);
+        } else {
+            echo $project->video->getEmbedCode();
+        }
+         ?>
     </div>
+    <br />
     <?php endif ?>
 
     <?php if (!empty($project->goal)): ?>
