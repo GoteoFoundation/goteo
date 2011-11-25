@@ -5,6 +5,8 @@ use Goteo\Library\Text,
     Goteo\Model\Post,
     Goteo\Model\Sponsor;
 
+$lang = (LANG != 'es') ? '?lang='.LANG : '';
+
 $categories = Category::getList();  // categorias que se usan en proyectos
 $posts      = Post::getList('footer');
 $sponsors   = Sponsor::getList();
@@ -99,7 +101,7 @@ jQuery(document).ready(function($) {
                     <li class="facebook"><a href="<?php echo Text::get('social-account-facebook') ?>" target="_blank"><?php echo Text::get('regular-facebook') ?></a></li>
                     <li class="identica"><a href="<?php echo Text::get('social-account-identica') ?>" target="_blank"><?php echo Text::get('regular-identica') ?></a></li>
                     <li class="gplus"><a href="<?php echo Text::get('social-account-google') ?>" target="_blank"><?php echo Text::get('regular-google') ?></a></li>
-                    <li class="rss"><a rel="alternate" type="application/rss+xml" title="RSS" href="/rss" target="_blank">RSS</a></li>
+                    <li class="rss"><a rel="alternate" type="application/rss+xml" title="RSS" href="/rss<?php echo $lang ?>" target="_blank"><?php echo Text::get('regular-share-rss'); ?></a></li>
 
                 </ul>
             </div>

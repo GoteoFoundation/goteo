@@ -18,11 +18,6 @@ namespace Goteo\Controller {
     class Dashboard extends \Goteo\Core\Controller {
 
         public function index ($section = null) {
-
-            if ($_SESSION['user']->id == 'paypal') {
-                throw new Redirection('/paypal');
-            }
-
             throw new Redirection('/dashboard/activity');
         }
 
@@ -76,6 +71,14 @@ namespace Goteo\Controller {
                 $message = null;
             }
 
+            if ($option == 'wall') {
+                // obtenemos todos los eventos relacionados con este usuario y con sus proyectos
+                /// 'user'
+                $items = Feed::getAll('all', 'public', $_SESSION['user']->id);
+            } else {
+                $items = array();
+            }
+
             return new View (
                 'view/dashboard/index.html.php',
                 array(
@@ -85,6 +88,7 @@ namespace Goteo\Controller {
                     'action'  => $action,
                     'message' => $message,
                     'lists'   => $lists,
+                    'items'   => $items,
                     'status'  => $status,
                     'errors'  => $errors,
                     'success' => $success
@@ -219,7 +223,7 @@ namespace Goteo\Controller {
                     //cambio de email y contraseña
                     case 'access':
                         // E-mail
-                        if($_POST['change_email']) {
+                        if(!empty($_POST['user_nemail']) || !empty($_POST['user_remail'])) {
                             if(empty($_POST['user_nemail'])) {
                                 $errors['email'] = Text::get('error-user-email-empty');
                             }
@@ -242,15 +246,19 @@ namespace Goteo\Controller {
                             }
                         }
                         // Contraseña
-                        if($_POST['change_password']) {
-                            // si recuperando no chequearemos la contraseña anterior
+                        if(!empty($_POST['user_npassword']) ||!empty($_POST['user_rpassword'])) {
+                    // Ya no checkeamos más la contraseña actual (ni en recover ni en normal)
+                    // porque los usuarios que acceden mediante servicio no tienen contraseña
+                            /*
                             if(!isset($_SESSION['recovering']) && empty($_POST['user_password'])) {
                                 $errors['password'] = Text::get('error-user-password-empty');
                             }
                             elseif(!isset($_SESSION['recovering']) && !Model\User::login($user->id, $_POST['user_password'])) {
                                 $errors['password'] = Text::get('error-user-wrong-password');
                             }
-                            elseif(empty($_POST['user_npassword'])) {
+                            else
+                            */
+                            if(empty($_POST['user_npassword'])) {
                                 $errors['password_new'] = Text::get('error-user-password-empty');
                             }
                             elseif(!\Goteo\Library\Check::password($_POST['user_npassword'])) {
@@ -562,8 +570,9 @@ namespace Goteo\Controller {
 
                                 // obtener contenido
                                 // segun destinatarios
-                                $enviandoa = !empty($_POST['msg_all']) ? 'todos' : 'algunos de';
-                                Message::Info('Enviado a ' . $enviandoa . ' tus cofinanciadores:') ;
+                                $allsome = explode('/', Text::get('regular-allsome'));
+                                $enviandoa = !empty($_POST['msg_all']) ? $allsome[0] : $allsome[1];
+                                Message::Info(Text::get('dashboard-investors-mail-sendto', $enviandoa)) ;
 
                                 // Obtenemos la plantilla para asunto y contenido
                                 $template = Template::get(2);
@@ -594,7 +603,7 @@ namespace Goteo\Controller {
                                     if ($mailHandler->send($errors)) {
                                         Message::Info(Text::get('dashboard-investors-mail-sended', $data->name, $data->email));
                                     } else {
-                                        Message::Error(Text::get('dashboard-investors-mail-fail', $data->name, $data->email) . ' por esto: '. implode (', ', $errors));
+                                        Message::Error(Text::get('dashboard-investors-mail-fail', $data->name, $data->email) . ' : '. implode (', ', $errors));
 
                                     }
 
@@ -1260,7 +1269,8 @@ namespace Goteo\Controller {
                 'activity' => array(
                     'label'   => Text::get('dashboard-menu-activity'),
                     'options' => array (
-                        'summary' => Text::get('dashboard-menu-activity-summary')
+                        'summary' => Text::get('dashboard-menu-activity-summary'),
+                        'wall'    => Text::get('dashboard-menu-activity-wall')
                     )
                 ),
                 'profile' => array(
@@ -1285,15 +1295,6 @@ namespace Goteo\Controller {
                     )
                 )
             );
-
-            /*
-             * Quitados por falta de contenid/requerimientos
-             *
-             * Activity: , 'wall'    => Text::get('dashboard-menu-activity-wall')
-             * 'preview'  => Text::get('dashboard-menu-projects-preview')
-             * ,
-             *
-             */
 
             // si tiene algun proyecto para traducir
             $translates = Model\User\Translate::query("SELECT COUNT(project) FROM user_translate WHERE user = ?", array($_SESSION['user']->id));

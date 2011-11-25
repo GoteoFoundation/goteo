@@ -54,11 +54,17 @@ body.project-show div#sub-header div.project-header h2 > span{
 	line-height: 1em;
 }
 
+body.project-show div#sub-header div.project-subtitle {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 0 .5em;
+	max-width:700px;
+}
+
 body.project-show div#sub-header div.project-by {
     color: #20B3B2;
     font-size: 12px;
     margin: 0 0 .5em;
-    padding-left: 76px;
 }
 
 body.project-show div#sub-header div.project-by a {
@@ -76,7 +82,7 @@ body.project-show div#sub-header div.categories {
 	position: absolute;
     right: 10px;
     text-align: right;
-	max-width:300px;
+	max-width:240px;
 	top: 0;
 }
 

@@ -389,17 +389,7 @@ namespace Goteo\Controller {
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'edit' => array('label' => 'Traduciendo Micronoticia', 'item' => true)
                             )
-                        )/*,
-                        'banners' => array(
-                            'label' => 'Banners',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add'  => array('label' => 'Nuevo Banner', 'item' => false),
-                                'edit' => array('label' => 'Editando Banner', 'item' => true),
-                                'translate' => array('label' => 'Traduciendo Banner', 'item' => true)
-                            )
-                        )*/
-                        ,
+                        ),
                         'promote' => array(
                             'label' => 'Proyectos destacados',
                             'actions' => array(

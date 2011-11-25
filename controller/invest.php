@@ -39,7 +39,7 @@ namespace Goteo\Controller {
                 $los_datos = $_POST;
 
                 if (empty($_POST['amount'])) {
-                    Message::Error('Tienes que poner el importe');
+                    Message::Error(Text::get('invest-amount-error'));
                     throw new Redirection("/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
 
@@ -55,7 +55,7 @@ namespace Goteo\Controller {
                 );
 
                 if ($projectData->owner == $_SESSION['user']->id) {
-                    Message::Error('Eres el autor del proyecto, no puedes aportar personalmente a tu propio proyecto.');
+                    Message::Error(Text::get('invest-owner-error'));
                     throw new Redirection("/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
 
@@ -104,7 +104,7 @@ namespace Goteo\Controller {
                             if (Tpv::preapproval($invest, $errors)) {
                                 die;
                             } else {
-                                Message::Error('Ha fallado la pasarela del banco. ' . implode(',', $errors));
+                                Message::Error(Text::get('invest-tpv-error_fatal'));
                             }
                             break;
                         case 'paypal':
@@ -112,7 +112,7 @@ namespace Goteo\Controller {
                             if (Paypal::preapproval($invest, $errors)) {
                                 die;
                             } else {
-                                Message::Error('Ha fallado la peticion paypal. ' . implode(',', $errors));
+                                Message::Error(Text::get('invest-paypal-error_fatal'));
                             }
                             break;
                         case 'cash':
@@ -122,10 +122,10 @@ namespace Goteo\Controller {
                             break;
                     }
                 } else {
-                    Message::Error('Ha habido algun problema al inicializar la transacción');
+                    Message::Error(Text::get('invest-create-error'));
                 }
 			} else {
-                Message::Error('No se han recibido los datos necesarios');
+                Message::Error(Text::get('invest-data-error'));
             }
 
             throw new Redirection("/project/$project/invest/?confirm=fail");
@@ -135,7 +135,7 @@ namespace Goteo\Controller {
 
         public function confirmed ($project = null, $invest = null) {
             if (empty($project) || empty($invest)) {
-                Message::Error('Ha llegado una confirmación sin proyecto o sin Id de aporte');
+                Message::Error(Text::get('invest-data-error'));
                 throw new Redirection('/discover', Redirection::TEMPORARY);
             }
 
@@ -172,9 +172,9 @@ namespace Goteo\Controller {
             $mailHandler->html = true;
             $mailHandler->template = $template->id;
             if ($mailHandler->send($errors)) {
-                Message::Info('Mensaje de agradecimiento enviado correctamente');
+                Message::Info(Text::get('project-invest-thanks_mail-success'));
             } else {
-                Message::Error('Ha habido algún error al enviar el mensaje de agradecimiento');
+                Message::Error(Text::get('project-invest-thanks_mail-fail'));
                 Message::Error(implode('<br />', $errors));
             }
 

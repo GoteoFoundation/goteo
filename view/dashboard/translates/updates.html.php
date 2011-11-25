@@ -24,7 +24,7 @@ $errors = $this['errors'];
         </div>
     <?php endforeach; ?>
     <?php else : ?>
-        <p>No hay entradas</p>
+        <p><?php echo Text::get('blog-no_posts') ?></p>
     <?php endif; ?>
 
 </div>
@@ -137,7 +137,7 @@ $errors = $this['errors'];
 
             'legend-orig' => array(
                 'type'      => 'html',
-                'title'     => 'Leyenda',
+                'title'     => Text::get('regular-media_legend'),
                 'html'     => nl2br($original->legend),
             ),
             'legend' => array(

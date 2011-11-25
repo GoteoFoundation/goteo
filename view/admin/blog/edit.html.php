@@ -161,7 +161,7 @@ $(document).ready(function(){
             ),
             'legend' => array(
                 'type'      => 'textarea',
-                'title'     => 'Leyenda',
+                'title'     => Text::get('regular-media_legend'),
                 'value'     => $post->legend,
             ),
             

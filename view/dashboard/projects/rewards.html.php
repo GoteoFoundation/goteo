@@ -149,7 +149,7 @@ switch ($order) {
                     
                     <div class="left" style="width:120px;">
 						<span class="username"><a href="/user/<?php echo $investData->user->id; ?>"><?php echo $investData->user->name; ?></a></span>
-                        <label class="amount">Aporta</label>
+                        <label class="amount">Aporte<?php if ($investData->anonymous) echo ' <strong>'.  Text::get('regular-anonymous').'</strong>'; ?></label>
 						<span class="amount"><?php echo $investData->amount; ?> &euro;</span>
                         <span class="date"><?php echo date('d-m-Y', strtotime($investData->invested)); ?></span>
                     </div>
@@ -237,9 +237,8 @@ switch ($order) {
             <div style="display:none">
                 <div style="width:400px;height:300px;overflow:auto;" id="preview"></div>
             </div>
-            <button type="submit" class="green">Enviar</button>
+            <button type="submit" class="green"><?php echo Text::get('project-messages-send_message-button'); ?></button>
             </div>
-
         </form>
 
 </div>

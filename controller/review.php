@@ -149,9 +149,9 @@ namespace Goteo\Controller {
             if ($option == 'evaluate') {
                 //Text::get
                 if ($review->ready == 1) {
-                    Message::Info('Has dado por terminada esta revisión, no pueder realizar más cambios');
+                    Message::Info(Text::get('review-closed-alert'));
                 } else {
-                    Message::Info('Los criterios y los campos de evaluación / mejoras se guardan automáticamente al modificarse');
+                    Message::Info(Text::get('review-ajax-alert'));
                 }
             }
 

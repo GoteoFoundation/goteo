@@ -35,7 +35,7 @@ if ($this['action'] == 'none') return;
         </div>
     <?php endforeach; ?>
     <?php else : ?>
-        <p>No hay entradas</p>
+        <p><?php echo Text::get('blog-no_posts') ?></p>
     <?php endif; ?>
 
 </div>
@@ -46,11 +46,11 @@ if ($this['action'] == 'none') return;
         $allow = array(
             array(
                 'value'     => 1,
-                'label'     => 'Sí'
+                'label'     => Text::get('regular-yes')
                 ),
             array(
                 'value'     => 0,
-                'label'     => 'No'
+                'label'     => Text::get('regular-no')
                 )
         );
 
@@ -139,8 +139,9 @@ if ($this['action'] == 'none') return;
                 'children'  => array(
                     'image_upload'    => array(
                         'type'  => 'file',
+                        'label' => Text::get('form-image_upload-button'),
                         'class' => 'inline image_upload',
-                        'title' => 'Subir una imagen',
+                        'title' => Text::get('profile-field-avatar_upload'),
                         'hint'  => Text::get('tooltip-updates-image_upload'),
                     )
                 )
@@ -173,7 +174,7 @@ if ($this['action'] == 'none') return;
 
             'legend' => array(
                 'type'      => 'textarea',
-                'title'     => 'Leyenda',
+                'title'     => Text::get('regular-media_legend'),
                 'value'     => $post->legend,
             ),
             "date" => array(

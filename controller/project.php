@@ -158,9 +158,9 @@ namespace Goteo\Controller {
                         $mailHandler->html = true;
                         $mailHandler->template = 0;
                         if ($mailHandler->send($errors)) {
-                            Message::Info('Mensaje de solicitud de revisión enviado correctamente');
+                            Message::Info(Text::get('project-review-request_mail-success'));
                         } else {
-                            Message::Error('Ha habido algún error al enviar la solicitud de revisión');
+                            Message::Error(Text::get('project-review-request_mail-fail'));
                             Message::Error(implode('<br />', $errors));
                         }
 
@@ -188,9 +188,9 @@ namespace Goteo\Controller {
                         $mailHandler->html = true;
                         $mailHandler->template = $template->id;
                         if ($mailHandler->send($errors)) {
-                            Message::Info('Mensaje de confirmación de recepción enviado correctamente');
+                            Message::Info(Text::get('project-review-confirm_mail-success'));
                         } else {
-                            Message::Error('Ha habido algún error al enviar el mensaje de confirmación de recepción');
+                            Message::Error(Text::get('project-review-confirm_mail-fail'));
                             Message::Error(implode('<br />', $errors));
                         }
 
@@ -468,11 +468,14 @@ namespace Goteo\Controller {
                 // -- ojo a los usuarios publicos
                 if (empty($_SESSION['user'])) {
 
-                    // -- ocultamos los cofinanciadores a los usuarios públicos --
+                    // Ya no ocultamos los cofinanciadores a los usuarios públicos.
+                    /*
                     if ($show == 'supporters') {
                         Message::Info(Text::get('user-login-required-to_see-supporters'));
                         throw new Redirection('/project/' .  $id);
                     }
+                     *
+                     */
 
                     // --- loguearse para aportar
                     if ($show == 'invest') {
@@ -491,9 +494,9 @@ namespace Goteo\Controller {
                 //tenemos que tocar esto un poquito para gestionar los pasos al aportar
                 if ($show == 'invest') {
 
-                    // si no está en campaña no pueden esta qui ni de coña
+                    // si no está en campaña no pueden estar aqui ni de coña
                     if ($project->status != 3) {
-                        Message::Info('El proyecto ya no está en campaña');
+                        Message::Info(Text::get('project-invest-closed'));
                         throw new Redirection('/project/'.$id, Redirection::TEMPORARY);
                     }
 

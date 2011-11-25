@@ -23,6 +23,12 @@ body.project-edit div#sub-header img{
     margin-right: 20px;
 }
 
+body.project-edit div#sub-header div.project-subtitle {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0 0 .5em;
+}
+
 body.project-edit div#sub-header div.project-by {
     color: #20B3B2;
     font-size: 12px;

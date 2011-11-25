@@ -4,6 +4,8 @@ use Goteo\Core\View,
     Goteo\Library\Text;
 
 $bodyClass = 'user-login';
+// para que el prologue ponga el código js para botón facebook en el bannerside
+$fbCode = Text::widget(Text::get('social-account-facebook'), 'fb');
 include 'view/prologue.html.php';
 include 'view/header.html.php';
 
@@ -16,10 +18,10 @@ if (!isset($_POST['email']) && isset($_GET['email'])) {
 ?>
 <div id="sub-header">
 	<div class="clearfix">
-		<div>
-			<h2><?php echo Text::html('login-banner-header'); ?></h2>
+		<div class="subhead-banner">
+			<h2 class="message"><?php echo Text::html('login-banner-header'); ?></h2>
 		</div>
-		<div class="mod-pojctopen"><?php echo Text::html('open-banner-header'); ?></div>
+		<div class="mod-pojctopen"><?php echo Text::html('open-banner-header', $fbCode); ?></div>
 	</div>
 </div>
     <div id="main">

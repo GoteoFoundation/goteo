@@ -55,7 +55,8 @@ include 'view/prologue.html.php' ?>
         <div id="sub-header">
             <div class="project-header">
                 <a href="/user/<?php echo $project->owner; ?>"><img src="<?php echo SRC_URL ?>/image/<?php echo $project->user->avatar->id; ?>/56/56/1" /></a>
-                <h2><span><?php echo htmlspecialchars($project->name . $project->subtitle) ?></span></h2>
+                <h2><span><?php echo htmlspecialchars($project->name) ?></span></h2>
+                <div class="project-subtitle"><?php echo htmlspecialchars($project->subtitle) ?></div>
                 <div class="project-by"><a href="/user/<?php echo $project->owner; ?>"><?php echo Text::get('regular-by') ?> <?php echo $project->user->name; ?></a></div>
                 <br clear="both" />
 

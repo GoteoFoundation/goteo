@@ -14,9 +14,9 @@ include 'view/header.html.php'; ?>
             <div class="dashboard-header">
                 <a href="/user/<?php echo $user->id; ?>" target="_blank"><img src="<?php echo SRC_URL ?>/image/<?php echo $user->avatar->id; ?>/56/56/1" /></a>
                 <h2><span>                    <?php if (empty($this['option'])) {
-                        echo 'Mi dashboard';
+                        echo Text::get('dashboard-header-main');
                     } else {
-                        echo 'Mi dashboard / ' . $this['menu'][$this['section']]['options'][$this['option']];
+                        echo Text::get('dashboard-header-main') . ' / ' . $this['menu'][$this['section']]['options'][$this['option']];
                     } ?></span></h2>
             </div>
         </div>
@@ -32,9 +32,6 @@ include 'view/header.html.php'; ?>
 
             <?php if (!empty($this['message'])) : ?>
                 <div class="widget">
-                    <?php if (empty($this['section']) && empty($this['option'])) : ?>
-                        <h2 class="title">Bienvenid@</h2>
-                    <?php endif; ?>
                     <p><?php echo $this['message']; ?></p>
                 </div>
             <?php endif; ?>

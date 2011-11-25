@@ -2,6 +2,10 @@
 
 namespace Goteo\Library\SuperForm\Element {
     
-    class File extends Named {}
+    class File extends Named {
+
+        public
+            $label;
+    }
     
 }

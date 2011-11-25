@@ -37,7 +37,7 @@ namespace Goteo\Library {
 
                     // desde hoy hasta los dias que le falten para finalizar la ronda (mas uno porque no queremos pillarnos los dedos por ser el mismo día)
                     $remain = Project::daysRemain($invest->project);
-                    $remain++;
+                    $remain+= 2;
 
                     date_default_timezone_set('UTC');
                     $currDate = getdate();
@@ -77,7 +77,7 @@ namespace Goteo\Library {
 
 		           if(strtoupper($ap->isSuccess) == 'FAILURE') {
                        $errors[] = 'No se ha podido iniciar la comunicación con paypal para procesar la preaprovación del cargo. ' . $ap->getLastError();
-                        @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' ap->success = FAILURE.<br /><pre>' . print_r($ap, 1) . '</pre><pre>' . print_r($response, 1) . '</pre>');
+                        @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' ap->success = FAILURE.<br /><pre>' . print_r($ap, 1) . '</pre><pre>' . print_r($response, 1) . '</pre>' . $ap->getLastError());
                         return false;
 					}
 

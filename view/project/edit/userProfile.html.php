@@ -134,6 +134,7 @@ echo new SuperForm(array(
             'children'  => array(
                 'avatar_upload'    => array(
                     'type'  => 'file',
+                    'label' => Text::get('form-image_upload-button'),
                     'class' => 'inline avatar_upload',
                     'hint'  => Text::get('tooltip-user-image'),
                 ),

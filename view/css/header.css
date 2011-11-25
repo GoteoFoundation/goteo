@@ -236,18 +236,6 @@ div.subhead-banner .banner-button{
     bottom: 10px;
 }
 
-div.subhead-banner .sign-in-with{
-	float:left;
-	list-style:none;
-	margin:0px 0px 0px 20px;
-	padding:0 0 10px 0;
-}
-
-.sign-in-with li{
-	display: inline;
-	margin: 0 20px 0 0;
-}
-
 div#sub-header > div.clearfix{
 	min-width:915px;
 }
@@ -286,7 +274,7 @@ div#sub-header > div > div.mod-pojctopen > .modpo-percent{
 
 div#sub-header > div > div.mod-pojctopen > .modpo-whyopen{
 	font: bold 14px Helvetica, Arial, Geneva, sans-serif;
-	padding:6px 0 0 22px;
+	padding:6px 0 0 50px;
 }
 /* fin de lo de open */
 

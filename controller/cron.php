@@ -382,7 +382,7 @@ namespace Goteo\Controller {
 
                     $userData = Model\User::getMini($invest->user);
 
-                    echo 'Aporte ' . $invest->id . '<br />';
+//                    echo 'Aporte ' . $invest->id . '<br />';
 //                    echo \trace($invest);
 
                     if ($invest->invested == date('Y-m-d')) {
@@ -457,7 +457,7 @@ namespace Goteo\Controller {
 
                         }
 
-                        echo 'Ejecutando: ';
+                        echo 'Ejecutando aporte ' . $invest->id . ':<br /> ';
                         $errors = array();
 
                         $log_text = null;
@@ -576,6 +576,10 @@ namespace Goteo\Controller {
                             // actualizar la cuenta de paypal que se validó para aprobar
                             $invest->setAccount($details->senderEmail);
 
+                            // si está aprobado y el aporte está en proceso, lo marcamos como pendiente de cargo
+                            if ($details->approved == true && $invest->status == '-1') {
+                                $invest->setStatus('0');
+                            }
 
 //                            echo \trace($details);
                             switch ($details->status) {

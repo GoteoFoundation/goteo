@@ -126,8 +126,8 @@ div.side div.widget .title{background:none;}
 /*widget embed code for project*/
 body.project-embed{min-width:250px !important;max-width:250px !important;margin:0;padding:0}
 body.project-embed > div#wrapper{width:250px;margin:0;padding:0;}
-body.project-embed > div#wrapper > div.alone-project{width:250px;margin:0;padding:0}
-body.project-embed > div#wrapper > div.alone-project > div.widget.project{width:250px;margin:0;padding:10px 0 0 0; position:relative;background-color:#EBEAEB;}
+body.project-embed > div#wrapper > div.alone-project{width:250px;margin:0;padding:0;}
+body.project-embed > div#wrapper > div.alone-project > div.widget.project{width:250px;margin:0;padding:10px 0 0 0; position:relative;background-color:#EBEAEB;height:420px;}
 body.project-embed > div#wrapper > div.alone-project > div.widget.project a.expand{position:absolute;top:0;bottom:0;width:100%;z-index:100}
 body.project-embed > div#wrapper > div.alone-project > div.widget.project.active{background-color:#F8F8F8 !important;}
 div.alone-project > div.widget.project > div.buttons > a.button{padding: 0.6em 1em}

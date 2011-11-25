@@ -26,13 +26,21 @@ namespace Goteo\Controller {
                 $posts[$id] = Post::get($id);
             }
 
-            foreach ($promotes as $key => &$promo) {
-                $promo->projectData = Project::get($promo->project, LANG);
-            }
+                foreach ($promotes as $key => &$promo) {
+                    try {
+                        $promo->projectData = Project::get($promo->project, LANG);
+                    } catch (\Goteo\Core\Error $e) {
+                        unset($promotes[$key]);
+                    }
+                }
 
-            foreach ($banners as $id => &$banner) {
-                $banner->project = Project::get($banner->project, LANG);
-            }
+                foreach ($banners as $id => &$banner) {
+                    try {
+                        $banner->project = Project::get($banner->project, LANG);
+                    } catch (\Goteo\Core\Error $e) {
+                        unset($banners[$id]);
+                    }
+                }
 
             $post = isset($_GET['post']) ? $_GET['post'] : reset($posts)->id;
 

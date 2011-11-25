@@ -13,7 +13,7 @@ $costs = $project->costs;
 $schedule = new stdClass();
 
 // Si la agenda es muy larga, mostraré meses en lugar de semanas
-$view = 'weeks';
+//$view = 'weeks';
 
 // Obtengo la primera y última fechas en el tiempo
 $from = $until = 0;
@@ -46,14 +46,14 @@ foreach ($costs as $cost) {
     
 }
 
-if ($from && until): 
+if ($from && $until):
 
 $diff = date_diff(new DateTime("@$until"), new DateTime("@$from"), true);
 
 $a = $diff->format('%a');
 
-$max_weeks = 52;
-$min_weeks = 4;
+//$max_weeks = 52;
+//$min_weeks = 4;
 
 // Pongo $from a dia 1 del mes
 $from = mktime(0, 0, 0, date('m', $from), 1, date('Y', $from));
@@ -73,8 +73,8 @@ $until = mktime(0, 0, 0, date('m', $until) + 1, -1, date('Y', $until));
             <tr>
                 <th><?php echo Text::get('regular-months'); ?></th>
                 <?php 
-                
-                for ($d = $from; $d <= $until;) {
+                $d = $from;
+                while ( $d <= $until) {
                     
                     $to = mktime(0, 0, 0, date('m', $d), date('t', $d), date('Y', $d));
                     

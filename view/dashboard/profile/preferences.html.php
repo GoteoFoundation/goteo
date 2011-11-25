@@ -12,11 +12,11 @@ $preferences = $this['preferences'];
 $allow = array(
     array(
         'value'     => 1,
-        'label'     => 'Sí'
+        'label'     => Text::get('regular-yes')
         ),
     array(
         'value'     => 0,
-        'label'     => 'No'
+        'label'     => Text::get('regular-no')
         )
 );
 
@@ -29,7 +29,7 @@ echo new SuperForm(array(
 
     'level'         => 3,
     'method'        => 'post',
-    'hint'          => 'Marca \'Sí\' a las notificaciones automáticas que quieras bloquear.' , //Text::get('guide-dashboard-user-preferences'),
+    'hint'          => Text::get('guide-dashboard-user-preferences'),
     'footer'        => array(
         'view-step-overview' => array(
             'type'  => 'submit',
@@ -41,7 +41,7 @@ echo new SuperForm(array(
     'elements'      => array(
 
         'updates' => array(
-            'title'     => 'Bloquear notificaciones de Novedades en los proyectos que apoyo',
+            'title'     => Text::get('user-preferences-updates'),
             'type'      => 'slider',
             'options'   => $allow,
             'class'     => 'currently cols_' . count($allow),
@@ -50,7 +50,7 @@ echo new SuperForm(array(
             'value'     => (int) $preferences->updates
         ),
         'threads' => array(
-            'title'     => 'Bloquear notificaciones de respuestas en los mensajes que yo inicio',
+            'title'     => Text::get('user-preferences-threads'),
             'type'      => 'slider',
             'options'   => $allow,
             'class'     => 'currently cols_' . count($allow),
@@ -59,7 +59,7 @@ echo new SuperForm(array(
             'value'     => (int) $preferences->threads
         ),
         'rounds' => array(
-            'title'     => 'Bloquear notificaciones de progreso de los proyectos que apoyo',
+            'title'     => Text::get('user-preferences-rounds'),
             'type'      => 'slider',
             'options'   => $allow,
             'class'     => 'currently cols_' . count($allow),
@@ -68,7 +68,7 @@ echo new SuperForm(array(
             'value'     => (int) $preferences->rounds
         ),
         'mailing' => array(
-            'title'     => 'Bloquear el envio de newsletter',
+            'title'     => Text::get('user-preferences-mailing'),
             'type'      => 'slider',
             'options'   => $allow,
             'class'     => 'currently cols_' . count($allow),

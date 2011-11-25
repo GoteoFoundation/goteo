@@ -126,6 +126,7 @@ $superform = array(
             'children'  => array(
                 'image_upload'    => array(
                     'type'  => 'file',
+                    'label' => Text::get('form-image_upload-button'),
                     'class' => 'inline image_upload',
                     'hint'  => Text::get('tooltip-project-image')
                 )

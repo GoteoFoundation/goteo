@@ -61,7 +61,6 @@ Lang::set();
 // cambiamos el locale
 \setlocale(\LC_TIME, Lang::locale());
 
-
 // Get URI without query string
 $uri = strtok($_SERVER['REQUEST_URI'], '?');
 
@@ -72,6 +71,7 @@ $segments = preg_split('!\s*/+\s*!', $uri, -1, \PREG_SPLIT_NO_EMPTY);
 $uri = '/' . implode('/', $segments);
 
 try {
+
     // Check permissions on requested URI
     if (!ACL::check($uri)) {
         Message::Info(Text::get('user-login-required-access'));

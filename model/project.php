@@ -345,6 +345,8 @@ namespace Goteo\Model {
 
 			} catch(\PDOException $e) {
 				throw \Goteo\Core\Exception($e->getMessage());
+			} catch(\Goteo\Core\Error $e) {
+                throw new \Goteo\Core\Error('404', Text::html('fatal-error-project'));
 			}
 		}
 
@@ -452,7 +454,7 @@ namespace Goteo\Model {
                             self::query("REPLACE project_image (project, image) VALUES (:project, :image)", array(':project' => $this->id, ':image' => $image->id));
                         }
                     } else {
-                        \Goteo\Library\Message::Error('Falló al subir la imagen. ' . implode(', ', $errors));
+                        \Goteo\Library\Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
                     }
                 }
 
