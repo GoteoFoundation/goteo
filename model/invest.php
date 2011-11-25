@@ -449,14 +449,14 @@ namespace Goteo\Model {
                     // mantenemos la fecha del anonimo mas reciente
                     $anonymous_date = empty($investors['anonymous']->date) ? $investor->date : $investors['anonymous']->date;
 
-                    $investors['anonymous'] = (object) array(
+                    $investors[] = (object) array(
                         'user' => 'anonymous',
                         'name' => Text::get('regular-anonymous'),
                         'projects' => null,
                         'avatar' => 1,
                         'worth' => null,
-                        'amount' => ($investors['anonymous']->amount + $investor->amount),
-                        'date' => $anonymous_date
+                        'amount' => $investor->amount,
+                        'date' => $investor->date
                     );
 
                 } else {
