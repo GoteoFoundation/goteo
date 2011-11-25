@@ -19,10 +19,13 @@ namespace Goteo\Model\Project {
 
             try {
                 $query = static::query("SELECT project, bank, paypal FROM project_account WHERE project = ?", array($id));
-                if ($accounts = $query->fetchObject(__CLASS__)) {
+                $accounts = $query->fetchObject(__CLASS__);
+                if (!empty($accounts)) {
                     return $accounts;
                 } else {
-                    return new Account(array('project'=>$id));
+                    $accounts = new Account();
+                    $accounts->project = $id;
+                    return $accounts;
                 }
             } catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
