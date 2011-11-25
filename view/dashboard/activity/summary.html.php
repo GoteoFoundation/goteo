@@ -101,12 +101,9 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 
                 <?php foreach ($projects['items'] as $project) :
 
-$url = SITE_URL . '/widget/project/' . $project->id;
-$url_regular = $url . $lsuf;
-$url_invest = $url.'/invested/'.$user->id.'/'.$lsuf;
-$widget_code = '<iframe frameborder="0" height="480px" src="'.$url_regular.'" width="250px" scrolling="no"></iframe>';
-$widget_code_investor = '<iframe frameborder="0" height="480px" src="'.$url_invest.'" width="250px" scrolling="no"></iframe>';
-
+                    $url = SITE_URL . '/widget/project/' . $project->id;
+                    $widget_code = Text::widget($url . $lsuf);
+                    $widget_code_investor = Text::widget($url.'/invested/'.$user->id.'/'.$lsuf);
                     ?>
                 <div style="float:left;">
                       <?php  echo new View('view/project/widget/project.html.php', array(
@@ -116,12 +113,12 @@ $widget_code_investor = '<iframe frameborder="0" height="480px" src="'.$url_inve
                 <br clear="both"/>
                 <?php if ($project->status > 2) : ?>
                       <div id="widget-code" style="float:none;width:250px;margin-left:25px;">
-                        <div class="wc-embed" onclick="$('#widget_code').focus();$('#widget_code').select()">CÓDIGO DIFUSIÓN SIMPLE</div>
+                          <div class="wc-embed" onclick="$('#widget_code').focus();$('#widget_code').select()"><?php echo Text::get('dashboard-embed_code'); ?></div>
                         <textarea id="widget_code" style="width:230px;margin:0 0 10px;" onclick="this.focus();this.select()" readonly="readonly"><?php echo htmlentities($widget_code); ?></textarea>
                       </div>
 
                       <div id="widget-code" style="float:none;width:250px;margin-left:25px;">
-                        <div class="wc-embed" onclick="$('#investor_code').focus();$('#investor_code').select()">CÓDIGO CON IMAGEN DE COFINANCIADOR</div>
+                        <div class="wc-embed" onclick="$('#investor_code').focus();$('#investor_code').select()"><?php echo Text::get('dashboard-embed_code_investor'); ?></div>
                         <textarea id="investor_code" style="width:230px;margin:0 0 10px;" onclick="this.focus();this.select()" readonly="readonly"><?php echo htmlentities($widget_code_investor); ?></textarea>
                       </div>
                 <?php endif; ?>

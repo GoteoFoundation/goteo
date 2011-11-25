@@ -10,7 +10,7 @@
         $url .= '/invested/'.$this['investor']->id;
     }
 
-	$widget_code = '<iframe frameborder="0" height="480px" src="'.$url.'" width="250px" scrolling="no"></iframe>';
+	$widget_code = Text::widget($url);
 ?>
 <script type="text/javascript">
 	// Mark DOM as javascript-enabled

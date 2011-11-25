@@ -9,11 +9,8 @@ $level = (int) $this['level'] ?: 3;
 $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 
 $url = SITE_URL . '/widget/project/' . $project->id;
-$url_regular = $url . $lsuf;
-$url_invest = $url.'/invested/'.$user->id.'/'.$lsuf;
-$widget_code = '<iframe frameborder="0" height="480px" src="'.$url_regular.'" width="250px" scrolling="no"></iframe>';
-$widget_code_investor = '<iframe frameborder="0" height="480px" src="'.$url_invest.'" width="250px" scrolling="no"></iframe>';
-
+$widget_code = Text::widget($url . $lsuf);
+$widget_code_investor = Text::widget($url.'/invested/'.$user->id.'/'.$lsuf);
 ?>
 <div class="widget project-spread">
     

@@ -336,6 +336,72 @@ namespace Goteo\Library {
             return $groups;
         }
 
+        /*
+         * Devuelve el número de palabras del contenido recibido
+         */
+        static public function wordCount ($section, $table, $fields = array(), &$total = 0 ) {
+
+            $count = 0;
+            $sqlFilter = '';
+
+            switch ($section) {
+                case 'texts':
+                    // todos son de la tabla purpose, $table nos indica la agrupación
+                    //  y hay que filtrar la columna group
+                    $sqlFilter = " WHERE `group` = '{$table}'";
+                    $table = 'purpose';
+                    $fields = array('purpose');
+                    break;
+                case 'pages':
+                    // table nos indica si es la de descripciones o la de contenido,
+                    //  en la de contenido hay que filtrar nodo goteo y español
+                    if ($table == 'page_node') {
+                        $sqlFilter = " WHERE node = 'goteo' AND lang = 'es'";
+                    }
+                    break;
+                case 'contents':
+                case 'home':
+                    // ojo! post es solo del blog 1 (goteo)
+                    if ($table == 'post') {
+                        $sqlFilter = " WHERE blog = '1'";
+                    }
+                    break;
+            }
+
+            // seleccionar toda la tabla,
+            $sql = "SELECT ".implode(', ', $fields)." FROM {$table}{$sqlFilter}";
+			$query = Model::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+                // para cada campo
+                foreach ($fields as $field) {
+                    // contar palabras (ojo! hay que quitar los tags html)
+                    $count += count(explode(' ', \strip_tags($row[$field])));
+                }
+            }
+
+            $total += $count;
+
+            return $count;
+        }
+
+
+        /*
+         * Devuelve el código embed de un widget de proyecto
+         */
+        static public function widget ($url, $type = 'project') {
+            
+            switch ($type) {
+                case 'fb':
+                    $code = '<div class="fb-like" data-href="'.$url.'" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>';
+                    break;
+                case 'project':
+                default:
+                    $code = '<iframe frameborder="0" height="480px" src="'.$url.'" width="250px" scrolling="no"></iframe>';
+                    break;
+            }
+
+            return $code;
+        }
 
 		/*
 		 *   Pone el enlace a gmaps segun localidad

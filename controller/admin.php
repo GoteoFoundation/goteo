@@ -5044,6 +5044,32 @@ namespace Goteo\Controller {
             );
         }
 
+        /*
+         * Conteo de palabras
+         */
+        public function wordcount($action = 'list', $id = null) {
+
+            $BC = self::menu(array(
+                'section' => 'contents',
+                'option' => __FUNCTION__,
+                'action' => $action,
+                'id' => $id
+            ));
+
+            define('ADMIN_BCPATH', $BC);
+
+            $wordcount = array();
+
+            return new View(
+                'view/admin/index.html.php',
+                array(
+                    'folder' => 'base',
+                    'file' => 'wordcount',
+                    'wordcount' => $wordcount
+                )
+            );
+        }
+
 
         /*
          * Menu de secciones, opciones, acciones y config para el panel Admin
@@ -5158,6 +5184,12 @@ namespace Goteo\Controller {
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'edit' => array('label' => 'Editando Idea', 'item' => true),
                                 'translate' => array('label' => 'Traduciendo Idea', 'item' => true)
+                            )
+                        ),
+                        'wordcount' => array(
+                            'label' => 'Conteo de palabras',
+                            'actions' => array(
+                                'list' => array('label' => 'Listando', 'item' => false)
                             )
                         )
                     )
