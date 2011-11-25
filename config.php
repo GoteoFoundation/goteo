@@ -125,3 +125,35 @@ define('TPV_WEBSERVICE_URL', 'https://sis-t.sermepa.es:25443/sis/operaciones');
 define('TPV_MERCHANT_CODE', '');
 define('TPV_REDIRECT_URL', 'http://tpv.ceca.es:8000/cgi-bin/tpv');
 define('TPV_ENCRYPT_KEY', '42353028');
+
+/******************************************************
+OAUTH APP's Secrets
+*******************************************************/
+if (!defined('OAUTH_LIBS')) {
+    define ('OAUTH_LIBS', GOTEO_PATH . 'library' . DIRECTORY_SEPARATOR . 'oauth' . DIRECTORY_SEPARATOR . 'SocialAuth.php');
+}
+
+//Facebook (l'app de Facebook la té l'usuari ivan@microstudi.net a Facebook)
+/*
+//facebook app Julian
+define('OAUTH_FACEBOOK_ID', '189133314484241'); //
+define('OAUTH_FACEBOOK_SECRET', 'f557c5ef0daa83a36bde55807d466d00'); //
+*/
+//*
+//facebook app Ivan
+define('OAUTH_FACEBOOK_ID', '184483011630708'); //
+define('OAUTH_FACEBOOK_SECRET', '3ecdf6b61b43823f70fefd7b4a77378b'); //
+
+
+//Twitter (l'app de Twitter la té l'usuari goteofunding a Twitter)
+define('OAUTH_TWITTER_ID', 'fO2A3Kx5i2zv4npTUFWWKQ'); //
+define('OAUTH_TWITTER_SECRET', 'JfMdtLhGgxx4z6aKiZJ6Pk2wmLlPly3bUohkP6U9zo'); //
+
+//Linkedin (l'app de LinkedIn la té l'usuari ivan@microstudi.net a LinkedIn)
+define('OAUTH_LINKEDIN_ID', 'xtmfiu6onthw'); //
+define('OAUTH_LINKEDIN_SECRET', 'nNFLjxt1dY6NvuMY'); //
+
+
+//Un secreto inventado cualquiera para encriptar los emails que sirven de secreto en openid
+define('OAUTH_OPENID_SECRET','CjFap3Ow4HJvUahAjWZ8kQ==');
+

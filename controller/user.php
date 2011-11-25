@@ -9,7 +9,7 @@ namespace Goteo\Controller {
         Goteo\Library\Feed,
         Goteo\Library\Text,
         Goteo\Library\Message,
-        Goteo\library\Listing;
+        Goteo\Library\Listing;
 
 	class User extends \Goteo\Core\Controller {
 
@@ -76,29 +76,183 @@ namespace Goteo\Controller {
                 }
 
             	$errors = array();
-                if (strcmp($_POST['email'], $_POST['remail']) !== 0) {
-                    $errors['remail'] = Text::get('error-register-email-confirm');
-                }
-                if(strcmp($_POST['password'], $_POST['rpassword']) !== 0) {
-                    $errors['rpassword'] = Text::get('error-register-password-confirm');
-                }
-                
-                $user = new Model\User();
-                $user->userid = $_POST['userid'];
-                $user->name = $_POST['username'];
-                $user->email = $_POST['email'];
-                $user->password = $_POST['password'];
-                $user->save($errors);
 
-                if(empty($errors)) {
-                  Message::Info(Text::get('user-register-success'));
-                  throw new Redirection('/user/login');
-                } else {
-                    foreach ($errors as $field=>$text) {
-                        Message::Error($text);
-                    }
-                }
-            }
+				if (strcmp($_POST['email'], $_POST['remail']) !== 0) {
+					$errors['remail'] = Text::get('error-register-email-confirm');
+				}
+				if(strcmp($_POST['password'], $_POST['rpassword']) !== 0) {
+					$errors['rpassword'] = Text::get('error-register-password-confirm');
+				}
+
+				$user = new Model\User();
+				$user->userid = $_POST['userid'];
+				$user->name = $_POST['username'];
+				$user->email = $_POST['email'];
+				$user->password = $_POST['password'];
+
+				$user->save($errors);
+
+				if(empty($errors)) {
+				  Message::Info(Text::get('user-register-success'));
+				  throw new Redirection('/user/login');
+				} else {
+					foreach ($errors as $field=>$text) {
+						Message::Error($text);
+					}
+				}
+			}
+			return new View (
+				'view/user/login.html.php',
+				array(
+					'errors' => $errors
+				)
+			);
+        }
+
+		/**
+		 * Registro de usuario desde oauth
+		 */
+		public function oauth_register() {
+
+			//comprovar si venimos de un registro via oauth
+			if($_POST['provider']) {
+
+				require_once OAUTH_LIBS;
+
+				$provider = $_POST['provider'];
+
+				$oauth = new \SocialAuth($provider);
+				//importar els tokens obtinguts anteriorment via POST
+				if($_POST['tokens'][$oauth->provider]['token']) $oauth->tokens[$oauth->provider]['token'] = $_POST['tokens'][$oauth->provider]['token'];
+				if($_POST['tokens'][$oauth->provider]['secret']) $oauth->tokens[$oauth->provider]['secret'] =$_POST['tokens'][$oauth->provider]['secret'];
+				//print_r($_POST['tokens']);print_R($oauth->tokens[$oauth->provider]);die;
+				$user = new Model\User();
+				$user->userid = $_POST['userid'];
+				$user->email = $_POST['email'];
+
+				//resta de dades
+				foreach($oauth->user_data as $k => $v) {
+					if($_POST[$k]) {
+						$oauth->user_data[$k] = $_POST[$k];
+						if(in_array($k,$oauth->import_user_data)) $user->$k = $_POST[$k];
+					}
+				}
+				//si no existe nombre, nos lo inventamos a partir del userid
+				if(trim($user->name)=='') $user->name = ucfirst($user->userid);
+
+				//print_R($user);print_r($oauth);die;
+				//no hará falta comprovar la contraseña ni el estado del usuario
+				$skip_validations = array('password','active');
+
+				//si el email proviene del proveedor de oauth, podemos confiar en el y lo activamos por defecto
+				if($_POST['provider_email'] == $user->email) {
+					$user->active = 1;
+				}
+				//comprovamos si ya existe el usuario
+				//en caso de que si, se comprovará que el password sea correcto
+				$query = Model\User::query('SELECT id,password,active FROM user WHERE email = ?', array($user->email));
+				if($u = $query->fetchObject()) {
+					if ($u->password == sha1($_POST['password'])) {
+						//ok, login en goteo e importar datos
+						//y fuerza que pueda logear en caso de que no esté activo
+						if(!$oauth->goteoLogin(true)) {
+							//si no: registrar errores
+							Message::Error(Text::get($oauth->last_error));
+						}
+					}
+					else {
+						Message::Error(Text::get('login-fail'));
+						return new View (
+							'view/user/confirm_account.html.php',
+							array(
+								'oauth' => $oauth,
+								'user'=>Model\User::get($u->id)
+							)
+						);
+					}
+				}
+				elseif($user->save($errors,$skip_validations)) {
+					//si el usuario se ha creado correctamente, login en goteo e importacion de datos
+					//y fuerza que pueda logear en caso de que no esté activo
+					if(!$oauth->goteoLogin(true)) {
+						//si no: registrar errores
+						Message::Error(Text::get($oauth->last_error));
+					}
+				}
+				elseif($errors) {
+					foreach($errors as $err => $val) {
+						if($err!='email' && $err!='userid') Message::Error($val);
+					}
+				}
+			}
+			return new View (
+				'view/user/confirm.html.php',
+				array(
+					'errors' => $errors,
+					'oauth' => $oauth
+				)
+			);
+		}
+        /**
+         * Registro de usuario a traves de Oauth (libreria HybridOauth, openid, facebook, twitter, etc).
+         */
+        public function oauth () {
+
+			require_once OAUTH_LIBS;
+
+            $errors = array();
+			if( isset( $_GET["provider"] ) && $_GET["provider"] ) {
+
+				$oauth = new \SocialAuth($_GET["provider"]);
+				if(!$oauth->authenticate()) {
+					//si falla: error, si no siempre se redirige al proveedor
+					Message::Error(Text::get($oauth->last_error));
+				}
+
+
+			}
+
+			//return from provider authentication
+			if( isset( $_GET["return"] ) && $_GET["return"] ) {
+
+				//check twitter activation
+				$oauth = new \SocialAuth($_GET["return"]);
+
+				if($oauth->login()) {
+					//si ok: redireccion de login!
+					//Message::Info("USER INFO:\n".print_r($oauth->user_data,1));
+					//si es posible, login en goteo (redirecciona a user/dashboard o a user/confirm)
+					//y fuerza que pueda logear en caso de que no esté activo
+					if(!$oauth->goteoLogin()) {
+						//si falla: error o formulario de confirmación
+						if($oauth->last_error == 'oauth-goteo-user-not-exists') {
+							return new View (
+								'view/user/confirm.html.php',
+								array(
+									'oauth' => $oauth
+								)
+							);
+						}
+						elseif($oauth->last_error == 'oauth-goteo-user-password-exists') {
+							Message::Error(Text::get($oauth->last_error));
+							return new View (
+								'view/user/confirm_account.html.php',
+								array(
+									'oauth' => $oauth,
+									'user'=>Model\User::get($oauth->user_data['username'])
+								)
+							);
+
+						}
+						else Message::Error(Text::get($oauth->last_error));
+					}
+				}
+				else {
+					//si falla: error
+					Message::Error(Text::get($oauth->last_error));
+				}
+			}
+
             return new View (
                 'view/user/login.html.php',
                 array(
@@ -106,9 +260,9 @@ namespace Goteo\Controller {
                 )
             );
         }
-
-        /**
+         /**
          * Modificación perfil de usuario.
+         * Metodo Obsoleto porque esto lo hacen en el dashboard
          */
         public function edit () {
             $user = $_SESSION['user'];
@@ -136,10 +290,15 @@ namespace Goteo\Controller {
                 }
                 // Contraseña
                 if($_POST['change_password']) {
+                    /*
+                     * Quitamos esta verificacion porque los usuarios que acceden mediante servicio no tienen contraseña
+                     *
                     if(empty($_POST['user_password'])) {
                         $errors['password'] = Text::get('error-user-password-empty');
                     }
-                    elseif(!Model\User::login($user->id, $_POST['user_password'])) {
+                    else
+                    */
+                    if(!Model\User::login($user->id, $_POST['user_password'])) {
                         $errors['password'] = Text::get('error-user-wrong-password');
                     }
                     elseif(empty($_POST['user_npassword'])) {
@@ -254,7 +413,7 @@ namespace Goteo\Controller {
 
             }
             //--- el resto pueden seguir ---
-            
+
             $viewData = array();
             $viewData['user'] = $user;
 
@@ -301,7 +460,7 @@ namespace Goteo\Controller {
 
             // comparten intereses
             $viewData['shares'] = Model\User\Interest::share($id, $category);
-            if (empty($viewData['shares'])) {
+            if ($show == 'sharemates' && empty($viewData['shares'])) {
                 $show = 'profile';
             }
 

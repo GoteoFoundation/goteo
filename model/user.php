@@ -72,11 +72,13 @@ namespace Goteo\Model {
          * Guardar usuario.
          * Guarda los valores de la instancia del usuario en la tabla.
          *
-         * @param type array	$errors     Errores devueltos pasados por referencia.
+         * @param type array	$errors     	   Errores devueltos pasados por referencia.
+         * @param type array	$skip_validations  Crea el usuario aunque estos campos no sean correctos
+         *                                         password, active
          * @return type bool	true|false
          */
-        public function save (&$errors = array()) {
-            if($this->validate($errors)) {
+        public function save (&$errors = array(),$skip_validations = array()) {
+            if($this->validate($errors,$skip_validations)) {
                 // Nuevo usuario.
                 if(empty($this->id)) {
                     $insert = true;
@@ -85,7 +87,7 @@ namespace Goteo\Model {
                     $data[':location'] = $this->location;
                     $data[':email'] = $this->email;
                     $data[':token'] = $token = md5(uniqid());
-                    $data[':password'] = sha1($this->password);
+                    if(!in_array('password',$skip_validations)) $data[':password'] = sha1($this->password);
                     $data[':created'] = date('Y-m-d H:i:s');
                     $data[':active'] = false;
 
@@ -98,31 +100,35 @@ namespace Goteo\Model {
                         ));
                     }
 
-                    // Obtenemos la plantilla para asunto y contenido
-                    $template = Template::get(5);
+					//active = 1 si no se quiere comprovar
+					if(in_array('active',$skip_validations) && $this->active) $data[':active'] = 1;
+					else {
+						// Obtenemos la plantilla para asunto y contenido
+						$template = Template::get(5);
 
-                    // Sustituimos los datos
-                    $subject = $template->title;
+						// Sustituimos los datos
+						$subject = $template->title;
 
-                    // En el contenido:
-                    $search  = array('%USERNAME%', '%USERID%', '%ACTIVATEURL%');
-                    $replace = array($this->name, $this->id, SITE_URL . '/user/activate/' . $token);
-                    $content = \str_replace($search, $replace, $template->text);
+						// En el contenido:
+						$search  = array('%USERNAME%', '%USERID%', '%ACTIVATEURL%');
+						$replace = array($this->name, $this->id, SITE_URL . '/user/activate/' . $token);
+						$content = \str_replace($search, $replace, $template->text);
 
-                    // Activación
-                    $mail = new Mail();
-                    $mail->to = $this->email;
-                    $mail->toName = $this->name;
-                    $mail->subject = $subject;
-                    $mail->content = $content;
-                    $mail->html = false;
-                    $mail->template = $template->id;
-                    if ($mail->send($errors)) {
-                        Message::Info('Mensaje de activación enviado correctamente');
-                    } else {
-                        Message::Error('Ha habido algún error al enviar el mensaje de activación. Por favor, contáctanos a ' . GOTEO_MAIL);
-                        Message::Error(implode('<br />', $errors));
-                    }
+						// Activación
+						$mail = new Mail();
+						$mail->to = $this->email;
+						$mail->toName = $this->name;
+						$mail->subject = $subject;
+						$mail->content = $content;
+						$mail->html = false;
+						$mail->template = $template->id;
+						if ($mail->send($errors)) {
+							Message::Info(Text::get('register-confirm_mail-success'));
+						} else {
+							Message::Error(Text::get('register-confirm_mail-fail', GOTEO_MAIL));
+							Message::Error(implode('<br />', $errors));
+						}
+					}
                 }
                 else {
                     $data[':id'] = $this->id;
@@ -144,6 +150,7 @@ namespace Goteo\Model {
                     // Contraseña
                     if(!empty($this->password)) {
                         $data[':password'] = sha1($this->password);
+                        static::query('DELETE FROM user_login WHERE user= ?', $this->id);
                     }
 
                     if(!is_null($this->active)) {
@@ -309,10 +316,12 @@ namespace Goteo\Model {
         /**
          * Validación de datos de usuario.
          *
-         * @param array $errors     Errores devueltos pasados por referencia.
+         * @param type array $errors               Errores devueltos pasados por referencia.
+         * @param type array	$skip_validations  Crea el usuario aunque estos campos no sean correctos
+         *                                         password, active
          * @return bool true|false
          */
-        public function validate (&$errors = array(), &$okeys = array()) {
+        public function validate (&$errors = array(), $skip_validations = array()) {
             // Nuevo usuario.
             if(empty($this->id)) {
                 // Nombre de usuario (id)
@@ -344,14 +353,16 @@ namespace Goteo\Model {
                 }
 
                 // Contraseña
-                if(!empty($this->password)) {
-                    if(!Check::password($this->password)) {
-                        $errors['password'] = Text::get('error-register-invalid-password');
-                    }
-                }
-                else {
-                    $errors['password'] = Text::get('error-register-pasword-empty');
-                }
+                if(!in_array('password',$skip_validations))  {
+					if(!empty($this->password)) {
+						if(!Check::password($this->password)) {
+							$errors['password'] = Text::get('error-register-invalid-password');
+						}
+					}
+					else {
+						$errors['password'] = Text::get('error-register-pasword-empty');
+					}
+				}
                 return empty($errors);
             }
             // Modificar usuario.
@@ -452,7 +463,7 @@ namespace Goteo\Model {
                 $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
                 return false;
             }
-            
+
         }
 
 
@@ -704,6 +715,7 @@ namespace Goteo\Model {
 					':password' => sha1($password)
 				)
 			);
+
 			if($row = $query->fetch()) {
 			    $user = static::get($row['id']);
 			    if($user->active) {
