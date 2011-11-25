@@ -5,6 +5,7 @@ $level = (int) $this['level'] ?: 3;
 
 $horizontal = !empty($this['horizontal']);
 $big = !empty($this['big']);
+$activable = !empty($this['activable']);
 
 $project = $this['project'];
 
@@ -57,11 +58,12 @@ $optimum_left = 100 - $optimum_done;
 $minimum_ratio =  min(100, round(($minimum / $optimum) * 100));
 
 ?>        
-    <div class="meter <?php echo $horizontal ? 'hor' : 'ver'; echo $big ? ' big' : '' ?>">
+    <div class="meter <?php echo $horizontal ? 'hor' : 'ver'; echo $big ? ' big' : ''; echo $activable ? ' activable' : ''; ?>">
         
-        <h<?php echo $level ?> class="title"><?php echo Text::get('project-view-metter-investment'); ?></h<?php echo $level ?>>
+        <h<?php echo $level ?> class="title investment"><?php echo Text::get('project-view-metter-investment'); ?></h<?php echo $level ?>>
         <?php if (!empty($project->round)) : ?><h<?php echo $level ?> class="title ronda"><?php echo $project->round . Text::get('regular-round'); ?></h<?php echo $level ?>><?php endif; ?>
-        <div class="graph">            
+        <?php if ($activable) : ?><h<?php echo $level ?> class="title obtained"><?php echo Text::get('project-view-metter-got'); ?></h<?php echo $level ?>><?php endif; ?>
+        <div class="graph">
             <div class="optimum">
                  <div class="left" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($optimum_left) ?>%"></div>
                  <div class="done" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($optimum_done) ?>%"></div>
@@ -89,6 +91,13 @@ $minimum_ratio =  min(100, round(($minimum / $optimum) * 100));
             <dd class="supporters"><strong><?php echo number_format($supporters) ?></strong></dd>                
 
         </dl>
+
+        <?php if ($activable) : ?>
+        <div class="obtained">
+            <strong><?php echo number_format($reached) ?> <span class="euro">&euro;</span></strong>
+            <span class="percent"><?php echo number_format($minimum_done_per) ?>%</span>
+        </div>
+        <?php endif; ?>
 
     <?php /*
     // si en estado 3 ha alcanzado el optimo o segunda ronda, "aun puedes seguir aportando" junto al quedan tantos días
