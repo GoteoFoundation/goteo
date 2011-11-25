@@ -49,14 +49,27 @@
 		  <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.fancybox.min.js"></script>
 		  <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/fancybox/jquery.fancybox.min.css" media="screen" />
           <!-- end custom fancybox-->          
+
+		  <!-- vigilante de sesión -->
+		  <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/watchdog.js"></script>
+
         <?php endif ?>
     </head>
 
     <body<?php if (isset($bodyClass)) echo ' class="' . htmlspecialchars($bodyClass) . '"' ?>>
-
+<?php if (isset($fbCode)) : ?>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/<?php echo \Goteo\Library\Lang::locale(); ?>/all.js#xfbml=1&appId=189133314484241";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<?php endif; ?>
         <script type="text/javascript">
             // Mark DOM as javascript-enabled
-            jQuery(document).ready(function ($) { 
+            jQuery(document).ready(function ($) {
                 $('body').addClass('js');
                 $('.tipsy').tipsy();
                 /* Rolover sobre los cuadros de color */
