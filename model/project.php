@@ -1652,7 +1652,7 @@ namespace Goteo\Model {
                             FROM project
                             WHERE project.status = 3
                             HAVING day <= 15 AND day IS NOT NULL
-                            ORDER BY day DESC";
+                            ORDER BY published DESC";
                     break;
                 case 'success':
                     // los que estan 'financiado' o 'retorno cumplido'
