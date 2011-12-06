@@ -153,7 +153,7 @@ namespace Goteo\Model {
 
             $sqlFilter = "";
             if (!empty($filters['methods'])) {
-                $sqlFilter .= " AND method = '{$filters['methods']}'";
+                $sqlFilter .= " AND invest.method = '{$filters['methods']}'";
             }
             if (!empty($filters['status'])) {
                 $sqlFilter .= " AND project.status = '{$filters['status']}'";
@@ -185,6 +185,31 @@ namespace Goteo\Model {
                         $sqlFilter .= " AND invest.campaign IS NOT NULL";
                         break;
                 }
+            }
+
+            if (!empty($filters['review'])) {
+                switch ($filters['review']) {
+                    case 'collect': //  Recaudado: tpv cargado o paypal pendiente
+                        $sqlFilter .= " AND ((invest.method = 'tpv' AND invest.status = 1)
+                                        OR (invest.method = 'paypal' AND invest.status = 0))";
+                        break;
+                    case 'online': // Solo pagos online
+                        $sqlFilter .= " AND (invest.method = 'tpv' OR invest.method = 'paypal')";
+                        break;
+                    case 'paypal': // Paypal pendientes o ok
+                        $sqlFilter .= " AND (invest.method = 'paypal' AND (invest.status = -1 OR invest.status = 0))";
+                        break;
+                    case 'tpv': // Tpv pendientes o ok
+                        $sqlFilter .= " AND (invest.method = 'tpv' AND (invest.status = -1 OR invest.status = 1))";
+                        break;
+                }
+            }
+
+            if (!empty($filters['date_from'])) {
+                $sqlFilter .= " AND invest.invested >= '{$filters['date_from']}'";
+            }
+            if (!empty($filters['date_until'])) {
+                $sqlFilter .= " AND invest.invested <= '{$filters['date_until']}'";
             }
 
             $sql = "SELECT

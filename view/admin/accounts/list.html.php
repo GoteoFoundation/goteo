@@ -21,6 +21,9 @@ $filters = $this['filters'];
     'campaigns' => array (
         'label' => 'Campaña',
         'first' => 'Todas las campañas'),
+    'review' => array (
+        'label' => 'Para revisión',
+        'first' => 'Todos'),
 ); ?>
 <a href="http://ppcalc.com/es" target="_blank" class="button">Calculadora PayPal</a>&nbsp;&nbsp;&nbsp;
 <a href="/cron/execute" target="_blank" class="button red">Ejecutar cargos</a>&nbsp;&nbsp;&nbsp;
@@ -44,6 +47,17 @@ $filters = $this['filters'];
             </select>
         </div>
         <?php endforeach; ?>
+        <div style="float:left;margin:5px;">
+            <label for="date-filter-from">Fecha desde</label><br />
+            <input type="text" id ="date-filter-from" name="date_from" value ="" />
+        </div>
+        <div style="float:left;margin:5px;">
+            <label for="date-filter-until">Fecha hasta</label><br />
+            <input type="text" id ="date-filter-until" name="date_until" value ="<?php echo date('Y-m-d') ?>" />
+        </div>
+        <div style="float:left;margin:5px;">
+            <input type="submit" value="filtrar" />
+        </div>
     </form>
     <br clear="both" />
     <a href="/admin/accounts">Quitar filtros</a>
@@ -53,6 +67,9 @@ $filters = $this['filters'];
 <?php if (empty($filters)) : ?>
     <p>Filtra algun criterio</p>
 <?php elseif (!empty($this['list'])) : ?>
+<?php $Total = 0; foreach ($this['list'] as $invest) { $Total += $invest->amount; } ?>
+    <p><strong>TOTAL:</strong>  <?php echo number_format($Total, 0, '', '.') ?> &euro;</p>
+    
     <table width="100%">
         <thead>
             <tr>

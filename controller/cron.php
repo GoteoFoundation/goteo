@@ -148,7 +148,7 @@ namespace Goteo\Controller {
                     }
                     echo '<br />';
                 }
-                if ($round == 1 && $rest == 8) {
+                if ($round == 1 && $rest == 8 && $amount < $project->mincost) {
                     echo 'Email de 8 días para fallar ';
                     if (self::toOwner('8_days', $project)) {
                         echo 'OK';

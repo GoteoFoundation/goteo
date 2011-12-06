@@ -3130,7 +3130,7 @@ namespace Goteo\Controller {
 
             // cargamos los filtros
             $filters = array();
-            $fields = array('methods', 'investStatus', 'projects', 'users', 'campaigns');
+            $fields = array('methods', 'investStatus', 'projects', 'users', 'campaigns', 'review', 'date_from', 'date_until');
             foreach ($fields as $field) {
                 $filters[$field] = (string) $_GET[$field];
             }
@@ -3159,6 +3159,14 @@ namespace Goteo\Controller {
             $users = Model\Invest::users(true);
             // campañas que tienen aportes
             $campaigns = Model\Invest::campaigns();
+
+            // filtros de revisión de proyecto
+            $review = array(
+                'collect' => 'Recaudado',
+                'paypal'  => 'Rev. PayPal',
+                'tpv'     => 'Rev. TPV',
+                'online'  => 'Pagos Online'
+            );
 
 
             /// detalles de una transaccion
@@ -3239,6 +3247,7 @@ namespace Goteo\Controller {
                     'users'         => $users,
                     'projects'      => $projects,
                     'campaigns'     => $campaigns,
+                    'review'        => $review,
                     'methods'       => $methods,
                     'status'        => $status,
                     'investStatus'  => $investStatus,
