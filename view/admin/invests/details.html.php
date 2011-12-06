@@ -14,7 +14,7 @@ $user = $this['user'];
         <strong>Usuario: </strong><?php echo $user->name ?> [<?php echo $user->email ?>]
     </p>
     <p>
-        <?php if ($project->status == 3 && ($invest->status < 1 || ($invest->method == 'tpv' && $invest->status < 2))) : ?>
+        <?php if ($project->status == 3 && ($invest->status < 1 || ($invest->method == 'tpv' && $invest->status < 2) ||($invest->method == 'cash' && $invest->status < 2))) : ?>
         <a href="/admin/invests/cancel/<?php echo $invest->id ?>"
             onclick="return confirm('¿Estás seguro de querer cancelar este aporte y su preapproval?');"
             class="button red">Cancelar este aporte</a>&nbsp;&nbsp;&nbsp;
