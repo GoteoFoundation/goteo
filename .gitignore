@@ -1,2 +1,6 @@
 
 /data/cache
+/controller/tpv_sermepa.php
+/library/tpv/wshandler_cjlaboral.php
+/library/tpv_caja_laboral.php
+/robots.txt

@@ -447,8 +447,9 @@ namespace Goteo\Model {
                     $values[":$field"] = $this->$field;
                 }
 
-				$set .= ", updated = :updated";
-				$values[':updated'] = date('Y-m-d');
+                // Solamente marcamos updated cuando se envia a revision desde el superform o el admin
+//				$set .= ", updated = :updated";
+//				$values[':updated'] = date('Y-m-d');
 				$values[':id'] = $this->id;
 
 				$sql = "UPDATE project SET " . $set . " WHERE id = :id";
@@ -1591,6 +1592,7 @@ namespace Goteo\Model {
 
             $values = array(':node' => $node);
 
+            // los filtros
             $sqlFilter = "";
             if (!empty($filters['status'])) {
                 $sqlFilter .= " AND status = :status";
@@ -1613,13 +1615,29 @@ namespace Goteo\Model {
                 $values[':category'] = $filters['category'];
             }
 
+            //el Order
+            if (!empty($filters['order'])) {
+                switch ($filters['order']) {
+                    case 'updated':
+                        $sqlOrder .= " ORDER BY updated DESC";
+                    break;
+                    case 'name':
+                        $sqlOrder .= " ORDER BY name ASC";
+                    break;
+                    default:
+                        $sqlOrder .= " ORDER BY {$filters['order']}";
+                    break;
+                }
+            }
+
+            // la select
             $sql = "SELECT 
                         id
                     FROM project
                     WHERE status > 0
                         AND node = :node
                         $sqlFilter
-                    ORDER BY name ASC
+                        $sqlOrder
                     ";
 
             $query = self::query($sql, $values);
