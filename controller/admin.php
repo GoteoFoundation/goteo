@@ -4668,6 +4668,7 @@ namespace Goteo\Controller {
 //            $projects = Model\Project::getAll();
             $interests = Model\User\Interest::getAll();
             $status = Model\Project::status();
+            $methods = Model\Invest::methods();
             $types = array(
                 'investor' => 'Cofinanciadores',
                 'owner' => 'Autores',
@@ -4702,6 +4703,7 @@ namespace Goteo\Controller {
                             'project'  => $_POST['project'],
                             'type'     => $_POST['type'],
                             'status'   => $_POST['status'],
+                            'method'   => $_POST['method'],
                             'interest' => $_POST['interest'],
                             'role'     => $_POST['role'],
                             'name'     => $_POST['name'],
@@ -4723,6 +4725,7 @@ namespace Goteo\Controller {
                                         AND project.status > 0
                                         ";
                                 $sqlFields .= ", project.name as project";
+                                $sqlFields .= ", project.id as projectId";
                                 break;
                             case 'owner':
                                 $sqlInner .= "INNER JOIN project
@@ -4730,6 +4733,7 @@ namespace Goteo\Controller {
                                         AND project.status > 0
                                         ";
                                 $sqlFields .= ", project.name as project";
+                                $sqlFields .= ", project.id as projectId";
                                 break;
                             default :
                                 break;
@@ -4750,6 +4754,16 @@ namespace Goteo\Controller {
                             $_SESSION['mailing']['filters_txt'] .= 'en estado <strong>' . $status[$filters['status']] . '</strong> ';
                         } elseif (empty($filters['status']) && !empty($sqlInner)) {
                             $_SESSION['mailing']['filters_txt'] .= 'en cualquier estado ';
+                        }
+
+                        if ($filters['type'] == 'investor') {
+                            if (!empty($filters['method']) && !empty($sqlInner)) {
+                                $sqlFilter .= "AND invest.method = :method ";
+                                $values[':method'] = $filters['method'];
+                                $_SESSION['mailing']['filters_txt'] .= 'mediante <strong>' . $methods[$filters['method']] . '</strong> ';
+                            } elseif (empty($filters['method']) && !empty($sqlInner)) {
+                                $_SESSION['mailing']['filters_txt'] .= 'mediante cualquier metodo ';
+                            }
                         }
 
                         if (!empty($filters['interest'])) {
@@ -4794,7 +4808,9 @@ namespace Goteo\Controller {
                                 GROUP BY user.id
                                 ORDER BY user.name ASC
                                 ";
-                        
+
+//                        echo '<pre>'.$sql . '<br />'.print_r($values, 1).'</pre>';
+
                         if ($query = Model\User::query($sql, $values)) {
                             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
                                 $_SESSION['mailing']['receivers'][$receiver->id] = $receiver;
@@ -4846,12 +4862,15 @@ namespace Goteo\Controller {
                         foreach ($users as $usr) {
 
                             $tmpcontent = \str_replace(
-                                array('%USERID%', '%USEREMAIL%', '%USERNAME%', '%SITEURL%'),
+                                array('%USERID%', '%USEREMAIL%', '%USERNAME%', '%SITEURL%', '%PROJECTID%', '%PROJECTNAME%', '%PROJECTURL%'),
                                 array(
                                     $usr,
                                     $_SESSION['mailing']['receivers'][$usr]->email,
                                     $_SESSION['mailing']['receivers'][$usr]->name,
-                                    SITE_URL
+                                    SITE_URL,
+                                    $_SESSION['mailing']['receivers'][$usr]->projectId,
+                                    $_SESSION['mailing']['receivers'][$usr]->project,
+                                    SITE_URL.'/project/'.$_SESSION['mailing']['receivers'][$usr]->projectId
                                 ),
                                 $content);
 
@@ -4900,6 +4919,7 @@ namespace Goteo\Controller {
 //                                'projects'  => $projects,
                                 'interests' => $interests,
                                 'status'    => $status,
+                                'methods'   => $methods,
                                 'types'     => $types,
                                 'roles'     => $roles,
                                 'users'     => $users,
@@ -4923,6 +4943,7 @@ namespace Goteo\Controller {
 //                    'projects'  => $projects,
                     'interests' => $interests,
                     'status'    => $status,
+                    'methods'   => $methods,
                     'types'     => $types,
                     'roles'     => $roles,
                     'filters'   => $_SESSION['mailing']['filters'],

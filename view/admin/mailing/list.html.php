@@ -30,6 +30,15 @@ $filters = $_SESSION['mailing']['filters'];
                     <?php endforeach; ?>
                     </select>
                 </td>
+                <td>
+                    <label for="method-filter">Aportado mediante</label><br />
+                    <select id="method-filter" name="method">
+                        <option value="">Cualquier metodo</option>
+                    <?php foreach ($this['methods'] as $methodId=>$methodName) : ?>
+                        <option value="<?php echo $methodId; ?>"<?php if ($filters['methods'] == $methodId) echo ' selected="selected"';?>><?php echo $methodName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>
