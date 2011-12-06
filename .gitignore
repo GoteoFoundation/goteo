@@ -1,6 +1,11 @@
 
 /data/cache
 /controller/tpv_sermepa.php
+<<<<<<< HEAD
 /library/tpv_caja_laboral.php
 /library/tpv/wshandler_cjlaboral.php
+=======
+/library/tpv/wshandler_cjlaboral.php
+/library/tpv_caja_laboral.php
+>>>>>>> view/project/form
 /robots.txt

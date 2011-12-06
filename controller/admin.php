@@ -371,7 +371,7 @@ namespace Goteo\Controller {
             define('ADMIN_BCPATH', $BC);
 
             $filters = array();
-            $fields = array('status', 'category', 'owner', 'name');
+            $fields = array('status', 'category', 'owner', 'name', 'order');
             foreach ($fields as $field) {
                 if (isset($_GET[$field])) {
                     $filters[$field] = $_GET[$field];
@@ -558,6 +558,10 @@ namespace Goteo\Controller {
             $status = Model\Project::status();
             $categories = Model\Project\Category::getAll();
             $owners = Model\User::getOwners();
+            $orders = array(
+                'name' => 'Nombre',
+                'updated' => 'Enviado a revision'
+            );
 
             return new View(
                 'view/admin/index.html.php',
@@ -569,6 +573,7 @@ namespace Goteo\Controller {
                     'status' => $status,
                     'categories' => $categories,
                     'owners' => $owners,
+                    'orders' => $orders,
                     'errors' => $errors
                 )
             );

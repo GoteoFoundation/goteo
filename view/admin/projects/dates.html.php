@@ -54,7 +54,7 @@ $filter = "?status={$filters['status']}&category={$filters['category']}";
             'updated' => array(
                 'type'      => 'datebox',
                 'required'  => true,
-                'title'     => 'Fecha de última actualización',
+                'title'     => 'Fecha de enviado a revisión',
                 'size'      => 8,
                 'value'     => !empty($project->updated) ? $project->updated : null
             ),

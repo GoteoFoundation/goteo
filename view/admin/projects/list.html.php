@@ -5,7 +5,7 @@ use Goteo\Library\Text;
 $filters = $this['filters'];
 
 //arrastramos los filtros
-$filter = "?status={$filters['status']}&category={$filters['category']}&owner={$filters['owner']}&name={$filters['name']}";
+$filter = "?status={$filters['status']}&category={$filters['category']}&owner={$filters['owner']}&name={$filters['name']}&order={$filters['order']}";
 
 ?>
 <div class="widget board">
@@ -45,6 +45,14 @@ $filter = "?status={$filters['status']}&category={$filters['category']}&owner={$
                     <?php endforeach; ?>
                     </select>
                 </td>
+                <td>
+                    <label for="order-filter">Ver por:</label><br />
+                    <select id="order-filter" name="order" onchange="document.getElementById('filter-form').submit();">
+                    <?php foreach ($this['orders'] as $orderId=>$orderName) : ?>
+                        <option value="<?php echo $orderId; ?>"<?php if ($filters['order'] == $orderId) echo ' selected="selected"';?>><?php echo $orderName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td colspan="2">
@@ -62,6 +70,7 @@ $filter = "?status={$filters['status']}&category={$filters['category']}&owner={$
             <tr>
                 <th>Proyecto</th> <!-- edit -->
                 <th>Creador</th> <!-- mailto -->
+                <th>Recibido</th> <!-- enviado a revision -->
                 <th>Estado</th>
                 <th>%</th> <!-- segun estado -->
                 <th>Días</th> <!-- segun estado -->
@@ -75,6 +84,7 @@ $filter = "?status={$filters['status']}&category={$filters['category']}&owner={$
             <tr>
                 <td><a href="/project/<?php echo $project->id; ?>" target="_blank" title="Preview"><?php echo $project->name; ?></a></td>
                 <td><?php echo $project->user->name; ?></td>
+                <td><?php echo date('d-m-Y', strtotime($project->updated)); ?></td>
                 <td><?php echo $this['status'][$project->status]; ?></td>
                 <td><?php if ($project->status < 3)  echo $project->progress; ?></td>
                 <td><?php if ($project->status == 3) echo "$project->days (round {$project->round})"; ?></td>
@@ -82,7 +92,7 @@ $filter = "?status={$filters['status']}&category={$filters['category']}&owner={$
                 <td><?php echo $project->mincost; ?></td>
             </tr>
             <tr>
-                <td colspan="7"> >>> Acciones:
+                <td colspan="8"> >>> Acciones:
                     <a href="/project/edit/<?php echo $project->id; ?>" target="_blank">[Editar]</a>
                     <?php if ($project->status == 1) : ?><a href="<?php echo "/admin/projects/review/{$project->id}{$filter}"; ?>">[A revisión]</a><?php endif; ?>
                     <?php if ($project->status < 3) : ?><a href="<?php echo "/admin/projects/publish/{$project->id}{$filter}"; ?>">[Publicar]</a><?php endif; ?>
