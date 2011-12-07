@@ -189,10 +189,10 @@ namespace Goteo\Model {
                 $call->user = User::get($call->owner);
 
                 // logo
-                $call->logo = Image::get($call->id, 'call_logo');
+                $call->logo = Image::get($call->logo);
 
                 // imagen
-                $call->image = Image::get($call->image, 'call_image');
+                $call->image = Image::get($call->image);
 
 				// categorias
                 $call->categories = Call\Category::get($id);
