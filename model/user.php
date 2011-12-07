@@ -676,6 +676,31 @@ namespace Goteo\Model {
         }
 
         /*
+         * Listado simple de los usuarios Convocadores
+         */
+        public static function getCallers() {
+
+            $list = array();
+
+            $query = static::query("
+                SELECT
+                    user.id as id,
+                    user.name as name
+                FROM    user
+                INNER JOIN user_role
+                    ON  user_role.user_id = user.id
+                    AND user_role.role_id = 'caller'
+                ORDER BY user.name ASC
+                ");
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $list[$item->id] = $item->name;
+            }
+
+            return $list;
+        }
+
+        /*
          * Listado id-nombre-email de los usuarios que siguen teniendo su email como contraseña
         public static function getWorkshoppers() {
 

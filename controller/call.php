@@ -215,19 +215,20 @@ namespace Goteo\Controller {
                 $_SESSION['jumpto'] = '/call/create';
                 Message::Info(Text::get('user-login-required-to_create'));
                 throw new Redirection("/user/login");
-            }
-
-            if ($_POST['action'] != 'continue' || $_POST['confirm'] != 'true') {
+            } elseif ($_POST['action'] != 'continue' || $_POST['confirm'] != 'true') {
                 throw new Redirection("/about/call");
             } elseif (empty($_POST['name'])) {
                 Message::Error('Falta nombre');
                 throw new Redirection("/about/call");
+            } else {
+                $name = $_POST['name'];
+                $caller = empty($_POST['caller']) ? $_SESSION['user']->id : $_POST['caller'];
             }
 
             $errors = array();
 
             $call = new Model\Call;
-            if ($call->create($_POST['name'], $_SESSION['user']->id, $errors)) {
+            if ($call->create($name, $caller, $errors)) {
                 $_SESSION['stepped'] = array();
 
                 // permisos para editarlo y borrarlo

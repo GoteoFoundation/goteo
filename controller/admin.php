@@ -4371,8 +4371,174 @@ namespace Goteo\Controller {
         }
 
         /*
-         *  Gestión de campañas
+         *  Lista de convocatorias
          */
+        public function calls($action = 'list', $id = null) {
+
+            $log_text = null;
+
+            $BC = self::menu(array(
+                'section' => 'sponsors',
+                'option' => __FUNCTION__,
+                'action' => $action,
+                'id' => $id
+            ));
+
+            define('ADMIN_BCPATH', $BC);
+
+            $filters = array();
+            $fields = array('status', 'category', 'owner', 'name', 'order');
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    $filters[$field] = $_GET[$field];
+                }
+            }
+
+            $errors = array();
+
+            /*
+             * switch action,
+             * proceso que sea,
+             * redirect
+             *
+             */
+            if (isset($id)) {
+                $call = Model\Call::get($id);
+            }
+            switch ($action) {
+                case 'review': // listo para aplicar proyectos (se publica, sino que siga en edicion)
+                    if ($call->ready($errors)) {
+                        $log_text = 'El admin %s ha pasado la convocatoria %s al estado <span class="red">Recepción de proyectos</span>';
+                    } else {
+                        $log_text = 'Al admin %s le ha fallado al pasar la convocatoria %s al estado <span class="red">Recepción de proyectos</span>';
+                    }
+                    break;
+                case 'publish': // comienza la campaña
+                    if ($call->publish($errors)) {
+                        $log_text = 'El admin %s ha pasado la convocatoria %s al estado <span class="red">en Campaña</span>';
+                    } else {
+                        $log_text = 'Al admin %s le ha fallado al pasar la convocatoria %s al estado <span class="red">en Campaña</span>';
+                    }
+                    break;
+                case 'cancel': // caducar una campaña o aplicacion antes de hora
+                    if ($call->cancel($errors)) {
+                        $log_text = 'El admin %s ha pasado la convocatoria %s al estado <span class="red">Descartado</span>';
+                    } else {
+                        $log_text = 'Al admin %s le ha fallado al pasar la convocatoria %s al estado <span class="red">Descartado</span>';
+                    }
+                    break;
+                case 'enable': // reabrir la edición Ojo que se quita de campña! Se puede editar mientras está en campaña?
+                    if ($call->enable($errors)) {
+                        $log_text = 'El admin %s ha pasado la convocatoria %s al estado <span class="red">Edición</span>';
+                    } else {
+                        $log_text = 'Al admin %s le ha fallado al pasar la convocatoria %s al estado <span class="red">Edición</span>';
+                    }
+                    break;
+            }
+
+            //si llega post para el action add, verificamos los datos y
+            // o mostramos error
+            // o vamos a la edicion de la convocatoria recien creada
+
+            
+            if (isset($log_text)) {
+                /*
+                 * Evento Feed
+                 *
+                 * Cuando se pone en revision para aceptar proyectos y cuando se pone en campaña para repartir dinero
+                 *
+                 *
+                $log = new Feed();
+                $log->title = 'Gestion de una convocatoria desde el admin';
+                $log->url = '/admin/calls';
+                $log->type = 'admin';
+                $log_items = array(
+                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                    Feed::item('call', $call->name, $call->id)
+                );
+                $log->html = \vsprintf($log_text, $log_items);
+                $log->add($errors);
+
+                if ($action == 'publish') {
+                    // si es publicado, hay un evento público
+                    $log->title = $call->name;
+                    $log->url = '/project/'.$call->id;
+                    $log->image = $call->logo->id;
+                    $log->scope = 'public';
+                    $log->type = 'goteo';
+//                    $log->html = Text::html('feed-new_project');
+                    $log->html = Text::html('feed-new_project');
+                    $log->add($errors);
+                }
+
+                unset($log);
+                 *
+                 */
+            }
+
+            if ($action == 'add') {
+                $callers = Model\User::getCallers();
+
+                // cambiar fechas
+                return new View(
+                    'view/admin/index.html.php',
+                    array(
+                        'folder' => 'calls',
+                        'file' => 'add',
+                        'callers' => $callers,
+                        'errors' => $errors
+                    )
+                );
+            }
+
+            if ($action == 'projects') {
+
+                $projects = Model\Call\Project::get($call->id);
+
+                // cambiar fechas
+                return new View(
+                    'view/admin/index.html.php',
+                    array(
+                        'folder' => 'calls',
+                        'file' => 'projects',
+                        'projects' => $projects,
+                        'errors' => $errors
+                    )
+                );
+            }
+
+
+            $calls = Model\Call::getList($filters);
+            $status = Model\Call::status();
+            $categories = Model\Call\Category::getAll();
+            $callers = Model\User::getCallers();
+            $orders = array(
+                'name' => 'Nombre',
+                'updated' => 'Apertura postulacion'
+            );
+
+            return new View(
+                'view/admin/index.html.php',
+                array(
+                    'folder' => 'calls',
+                    'file' => 'list',
+                    'calls' => $calls,
+                    'filters' => $filters,
+                    'status' => $status,
+                    'categories' => $categories,
+                    'callers' => $callers,
+                    'orders' => $orders,
+                    'errors' => $errors
+                )
+            );
+        }
+
+        /*
+         *  Gestión de campañas
+         *
+         *  OBSOLETO @TODO quitarlo pero ojo que hay que traspasar los aportes a la convocatoria correspondiente
+         *
+         *
         public function campaigns($action = 'list', $id = null) {
 
             $BC = self::menu(array(
@@ -4512,6 +4678,12 @@ namespace Goteo\Controller {
                 )
             );
         }
+         *
+         *  FIN Gest campañas
+         */
+
+
+
 
         /*
          *  Gestión de nodos
@@ -5411,6 +5583,14 @@ namespace Goteo\Controller {
                 'sponsors' => array(
                     'label'   => 'Convocatorias de patrocinadores',
                     'options' => array (
+                        'calls' => array(
+                            'label' => 'Listado de convocatorias',
+                            'actions' => array(
+                                'list' => array('label' => 'Listando', 'item' => false),
+                                'add'  => array('label' => 'Nueva convocatoria', 'item' => false),
+                                'projects' => array('label' => 'Gestionando proyectos de la convocatoria', 'item' => true)
+                            )
+                        ),
                         'sponsors' => array(
                             'label' => 'Apoyos institucionales',
                             'actions' => array(
@@ -5418,16 +5598,16 @@ namespace Goteo\Controller {
                                 'add'  => array('label' => 'Nuevo Patrocinador', 'item' => false),
                                 'edit' => array('label' => 'Editando Patrocinador', 'item' => true)
                             )
-                        ),
+                        )/*,
                         'campaigns' => array(
-                            'label' => 'Gestión de campañas',
+                            'label' => 'Gestión de campañas (obsoleto)',
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'add'  => array('label' => 'Nueva Campaña', 'item' => false),
                                 'edit' => array('label' => 'Editando Campaña', 'item' => true),
                                 'report' => array('label' => 'Informe de estado de la Campaña', 'item' => true)
                             )
-                        )/*,
+                        ),
                         'nodes' => array(
                             'label' => 'Gestión de Nodos',
                             'actions' => array(

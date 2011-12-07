@@ -69,6 +69,7 @@ namespace Goteo\Library {
         static public $color = array(
             'user' => 'blue',
             'project' => 'light-blue',
+            'call' => 'light-blue',
             'blog' => 'grey',
             'news' => 'grey',
             'money' => 'violet',
@@ -83,6 +84,7 @@ namespace Goteo\Library {
         static public $page = array(
             'user' => '/user/profile/',
             'project' => '/project/',
+            'call' => '/call/',
             'blog' => '/blog/',
             'news' => '/news/',
             'relevant' => '',
