@@ -33,7 +33,7 @@ namespace Goteo\Controller {
 
             $page = Page::get($id);
 
-            if ($id == 'howto') {
+            if ($id == 'howto' || $id == 'call') {
                 return new View(
                     'view/about/howto.html.php',
                     array(

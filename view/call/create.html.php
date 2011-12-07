@@ -21,12 +21,10 @@ include 'view/prologue.html.php';
             <h3 class="title">Crear convocatoria</h3>
             <p>Para crear una nueva convocatoria es necesario especificar el identificador y el usuario convocador (si no es uno mismo).</p>
             <form method="post" action="/call/create">
-                <input type="hidden" name="action" value="create" />
+                <input type="hidden" name="action" value="continue" />
+                <input type="hidden" name="confirm" value="true" />
                 <label>Identificador:<br />
                     <input type="text" name="name" value="" />
-                </label>
-                <label>Aceptar las condiciones:<br />
-                    <input type="checkbox" name="confirm" value="true" />
                 </label>
 
                 <!-- desplegable de usuarios convocadores o algo -->

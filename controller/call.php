@@ -16,7 +16,13 @@ namespace Goteo\Controller {
     class Call extends \Goteo\Core\Controller {
 
         public function index($id, $show = 'splash') {
-            return $this->view($id, $show);
+            if ($id !== null) {
+                return $this->view($id, $show);
+            } else if (isset($_GET['create'])) {
+                throw new Redirection("/call/create");
+            } else {
+                throw new Redirection("/");
+            }
         }
 
         public function raw ($id) {
@@ -211,58 +217,45 @@ namespace Goteo\Controller {
                 throw new Redirection("/user/login");
             }
 
-            if ($_POST['action'] == 'create' && $_POST['confirm'] == 'true') {
-
-                // necesitamos el nombre
-                if (empty($_POST['name'])) {
-                    Message::Error('Falta nombre');
-                    break;
-                } else {
-                    $call_name = $_POST['name'];
-                }
-
-                // inventar algo por si el usuario no es caller, hay que adignarle la convocatoria a un caller
-                if (empty($_POST['caller'])) {
-                    $call_owner = $_SESSION['user']->id;
-                }
-                
-                $errors = array();
-
-                $call = new Model\Call;
-                if ($call->create($call_name, $call_owner, $errors)) {
-                    $_SESSION['stepped'] = array();
-
-                    // permisos para editarlo y borrarlo
-                    ACL::allow('/call/edit/'.$call->id, '*', 'caller', $_SESSION['user']->id);
-                    ACL::allow('/call/delete/'.$call->id, '*', 'caller', $_SESSION['user']->id);
-
-                        /*
-                         * Evento Feed
-                         */
-                        $log = new Feed();
-                        $log->title = 'usuario crea nueva convocatoria';
-                        $log->url = 'admin/calls';
-                        $log->type = 'call';
-                        $log_text = '%s ha creado una nueva convocatoria, %s';
-                        $log_items = array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('call', $call->name, $call->id)
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
-                        $log->add($errors);
-                        unset($log);
-
-
-                    throw new Redirection("/call/edit/{$call->id}");
-                } else {
-                    Message::Error(implode('<br />', $errors));
-                    break;
-                }
-            } elseif ($_POST['confirm'] != 'true') {
-                Message::Error('Hay que aceptar las condiciones');
+            if ($_POST['action'] != 'continue' || $_POST['confirm'] != 'true') {
+                throw new Redirection("/about/call");
+            } elseif (empty($_POST['name'])) {
+                Message::Error('Falta nombre');
+                throw new Redirection("/about/call");
             }
 
-            return new View ("view/call/create.html.php");
+            $errors = array();
+
+            $call = new Model\Call;
+            if ($call->create($_POST['name'], $_SESSION['user']->id, $errors)) {
+                $_SESSION['stepped'] = array();
+
+                // permisos para editarlo y borrarlo
+                ACL::allow('/call/edit/'.$call->id, '*', 'caller', $_SESSION['user']->id);
+                ACL::allow('/call/delete/'.$call->id, '*', 'caller', $_SESSION['user']->id);
+
+                /*
+                 * Evento Feed
+                 */
+                $log = new Feed();
+                $log->title = 'usuario crea nueva convocatoria';
+                $log->url = 'admin/calls';
+                $log->type = 'call';
+                $log_text = '%s ha creado una nueva convocatoria, %s';
+                $log_items = array(
+                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                    Feed::item('call', $call->name, $call->id)
+                );
+                $log->html = \vsprintf($log_text, $log_items);
+                $log->add($errors);
+                unset($log);
+
+
+                throw new Redirection("/call/edit/{$call->id}");
+            } else {
+                Message::Error('No se ha podido crear la convocatoria,  intente otro identificador');
+                throw new Redirection("/about/call");
+            }
         }
 
         private function view ($id, $show, $post = null) {
