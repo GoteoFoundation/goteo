@@ -2588,6 +2588,14 @@ namespace Goteo\Controller {
                             $sql = "DELETE FROM user_role WHERE role_id = 'translator' AND user_id = :user";
                             $log_action = 'Quitado de traductor';
                             break;
+                        case 'caller':
+                            $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'caller')";
+                            $log_action = 'Hecho convocador';
+                            break;
+                        case 'nocaller':
+                            $sql = "DELETE FROM user_role WHERE role_id = 'caller' AND user_id = :user";
+                            $log_action = 'Quitado de convocador';
+                            break;
                         case 'admin':
                             $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'admin')";
                             $log_action = 'Hecho admin';
@@ -2704,9 +2712,10 @@ namespace Goteo\Controller {
                             );
                     $interests = Model\User\Interest::getAll();
                     $roles = array(
-                        'admin' => 'Administrador',
+                        'admin' => 'Admin',
                         'checker' => 'Revisor',
-                        'translator' => 'Traductor'
+                        'translator' => 'Traductor',
+                        'caller' => 'Convocador'
                     );
 
                     return new View(

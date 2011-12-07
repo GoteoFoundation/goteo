@@ -36,13 +36,17 @@ array_walk($roles, function (&$role) { $role = $role->name; });
                 <a href="<?php echo "/admin/users/manage/{$user->id}/translator"; ?>" class="button">Hacerlo traductor</a>
             <?php endif; ?>
 
-            <!--
-            <?php # if (in_array('admin', array_keys($user->roles))) : ?>
-                <a href="<?php # echo "/admin/users/manage/{$user->id}/noadmin"; ?>" class="button weak">Quitarlo de admin</a>
-            <?php # else : ?>
-                <a href="<?php # echo "/admin/users/manage/{$user->id}/admin"; ?>" class="button">Hacerlo admin</a>
-            <?php # endif; ?>
-            -->
+            <?php if (in_array('caller', array_keys($user->roles))) : ?>
+                <a href="<?php echo "/admin/users/manage/{$user->id}/nocaller"; ?>" class="button red">Quitarlo de convocador</a>
+            <?php else : ?>
+                <a href="<?php echo "/admin/users/manage/{$user->id}/caller"; ?>" class="button">Hacerlo convocador</a>
+            <?php endif; ?>
+
+            <?php if (in_array('admin', array_keys($user->roles))) : ?>
+                <a href="<?php echo "/admin/users/manage/{$user->id}/noadmin"; ?>" class="button red">Quitarlo de admin</a>
+            <?php else : ?>
+                <a href="<?php echo "/admin/users/manage/{$user->id}/admin"; ?>" class="button">Hacerlo admin</a>
+            <?php endif; ?>
         </dd>
     </dl>
     <dl>

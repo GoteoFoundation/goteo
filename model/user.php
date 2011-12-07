@@ -616,6 +616,9 @@ namespace Goteo\Model {
                     if ($role->role_id == 'translator') {
                         $user->translator = true;
                     }
+                    if ($role->role_id == 'caller') {
+                        $user->caller = true;
+                    }
                     if ($role->role_id == 'admin') {
                         $user->admin = true;
                     }
