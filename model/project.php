@@ -1302,8 +1302,8 @@ namespace Goteo\Model {
          */
         public function enable(&$errors = array()) {
 			try {
-				$sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
-				self::query($sql, array(':status'=>1, ':updated'=>date('Y-m-d'), ':id'=>$this->id));
+				$sql = "UPDATE project SET status = :status WHERE id = :id";
+				self::query($sql, array(':status'=>1, ':id'=>$this->id));
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al habilitar para edición. ' . $e->getMessage();
