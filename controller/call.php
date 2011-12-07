@@ -211,39 +211,58 @@ namespace Goteo\Controller {
                 throw new Redirection("/user/login");
             }
 
-            if ($_POST['action'] != 'continue' || $_POST['confirm'] != 'true') {
-                throw new Redirection("/about/howto");
-            }
+            if ($_POST['action'] == 'create' && $_POST['confirm'] == 'true') {
 
-            $call = new Model\Call;
-            if ($call->create()) {
-                $_SESSION['stepped'] = array();
+                // necesitamos el nombre
+                if (empty($_POST['name'])) {
+                    Message::Error('Falta nombre');
+                    break;
+                } else {
+                    $call_name = $_POST['name'];
+                }
+
+                // inventar algo por si el usuario no es caller, hay que adignarle la convocatoria a un caller
+                if (empty($_POST['caller'])) {
+                    $call_owner = $_SESSION['user']->id;
+                }
                 
-                // permisos para editarlo y borrarlo
-                ACL::allow('/call/edit/'.$call->id, '*', 'caller', $_SESSION['user']->id);
-                ACL::allow('/call/delete/'.$call->id, '*', 'caller', $_SESSION['user']->id);
+                $errors = array();
 
-                    /*
-                     * Evento Feed
-                     */
-                    $log = new Feed();
-                    $log->title = 'usuario crea nueva convocatoria';
-                    $log->url = 'admin/calls';
-                    $log->type = 'call';
-                    $log_text = '%s ha creado una nueva convocatoria, %s';
-                    $log_items = array(
-                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                        Feed::item('call', $call->name, $call->id)
-                    );
-                    $log->html = \vsprintf($log_text, $log_items);
-                    $log->add($errors);
-                    unset($log);
+                $call = new Model\Call;
+                if ($call->create($call_name, $call_owner, $errors)) {
+                    $_SESSION['stepped'] = array();
+
+                    // permisos para editarlo y borrarlo
+                    ACL::allow('/call/edit/'.$call->id, '*', 'caller', $_SESSION['user']->id);
+                    ACL::allow('/call/delete/'.$call->id, '*', 'caller', $_SESSION['user']->id);
+
+                        /*
+                         * Evento Feed
+                         */
+                        $log = new Feed();
+                        $log->title = 'usuario crea nueva convocatoria';
+                        $log->url = 'admin/calls';
+                        $log->type = 'call';
+                        $log_text = '%s ha creado una nueva convocatoria, %s';
+                        $log_items = array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('call', $call->name, $call->id)
+                        );
+                        $log->html = \vsprintf($log_text, $log_items);
+                        $log->add($errors);
+                        unset($log);
 
 
-                throw new Redirection("/call/edit/{$call->id}");
+                    throw new Redirection("/call/edit/{$call->id}");
+                } else {
+                    Message::Error(implode('<br />', $errors));
+                    break;
+                }
+            } elseif ($_POST['confirm'] != 'true') {
+                Message::Error('Hay que aceptar las condiciones');
             }
 
-            throw new \Goteo\Core\Exception('Fallo al crear un nuevo proyecto');
+            return new View ("view/call/create.html.php");
         }
 
         private function view ($id, $show, $post = null) {

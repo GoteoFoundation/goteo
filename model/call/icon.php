@@ -17,7 +17,7 @@ namespace Goteo\Model\Call {
 	 	public static function get ($id) {
             $array = array ();
             try {
-                $query = static::query("SELECT icon FROM call_icon WHERE call = ?", array($id));
+                $query = static::query("SELECT icon FROM call_icon WHERE `call` = :call", array(':call'=>$id));
                 $categories = $query->fetchAll();
                 foreach ($categories as $cat) {
                     $array[$cat[0]] = $cat[0];

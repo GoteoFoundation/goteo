@@ -90,6 +90,7 @@ namespace Goteo\Model {
             // datos del userpersonal por defecto a los cammpos del paso 2
             $userPersonal = User::getPersonal($owner);
 
+            // debe verificar que puede conseguir un id único a partir del nombre
             $id = self::idealiza($name);
 
             $values = array(
@@ -122,7 +123,7 @@ namespace Goteo\Model {
                 $campos[] = \str_replace(':', '', $campo);
             }
 
-            $sql = "REPLACE INTO call (" . implode(',', $campos) . ")
+            $sql = "REPLACE INTO `call` (" . implode(',', $campos) . ")
                  VALUES (" . implode(',', \array_keys($values)) . ")";
             try {
 				self::query($sql, $values);
@@ -147,7 +148,7 @@ namespace Goteo\Model {
 
             try {
 				// metemos los datos del convocatoria en la instancia
-				$query = self::query("SELECT * FROM call WHERE id = ?", array($id));
+				$query = self::query("SELECT * FROM `call` WHERE id = :id", array(':id'=>$id));
 				$call = $query->fetchObject(__CLASS__);
 
                 if (!$call instanceof \Goteo\Model\Call) {
@@ -171,7 +172,7 @@ namespace Goteo\Model {
                             IFNULL(call_lang.keywords, call.keywords) as keywords,
                             IFNULL(call_lang.media, call.media) as media,
                             IFNULL(call_lang.subtitle, call.subtitle) as subtitle
-                        FROM call
+                        FROM `call`
                         LEFT JOIN call_lang
                             ON  call_lang.id = call.id
                             AND call_lang.lang = :lang
@@ -225,7 +226,7 @@ namespace Goteo\Model {
 
             try {
 				// metemos los datos del convocatoria en la instancia
-				$query = self::query("SELECT id, name, owner, lang FROM call WHERE id = ?", array($id));
+				$query = self::query("SELECT id, name, owner, lang FROM `call` WHERE id = ?", array($id));
 				$call = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
 
                 // owner
@@ -571,7 +572,7 @@ namespace Goteo\Model {
                 self::query("DELETE FROM call_category WHERE call = ?", array($this->id));
                 self::query("DELETE FROM call_icon WHERE call = ?", array($this->id));
                 self::query("DELETE FROM call_project WHERE call = ?", array($this->id));
-                self::query("DELETE FROM call WHERE id = ?", array($this->id));
+                self::query("DELETE FROM `call` WHERE id = ?", array($this->id));
                 // y los permisos
                 self::query("DELETE FROM acl WHERE url like ?", array('%'.$this->id.'%'));
                 // si todo va bien, commit y cambio el id de la instancia
@@ -598,7 +599,7 @@ namespace Goteo\Model {
         public static function checkId($id, $num = 1) {
             try
             {
-                $query = self::query("SELECT id FROM call WHERE id = :id", array(':id'=>$id));
+                $query = self::query("SELECT id FROM `call` WHERE id = :id", array(':id'=>$id));
                 $exist = $query->fetchObject();
                 // si  ya existe, cambiar las últimas letras por un número
                 if (!empty($exist->id)) {
@@ -633,7 +634,7 @@ namespace Goteo\Model {
         {
             $calls = array();
 
-            $sql = "SELECT * FROM call WHERE owner = ?";
+            $sql = "SELECT * FROM `call` WHERE owner = ?";
             if ($published) {
                 $sql .= " AND status > 2";
             } else {
@@ -659,7 +660,7 @@ namespace Goteo\Model {
                     // de los que estan en campaña,
                     // los que tienen más usuarios (unicos) cofinanciadores y mensajeros
                     $sql = "SELECT COUNT(DISTINCT(user.id)) as people, call.id as id
-                            FROM call
+                            FROM `call`
                             LEFT JOIN invest
                                 ON invest.call = call.id
                                 AND invest.status <> 2
@@ -687,22 +688,22 @@ namespace Goteo\Model {
                     $sql = "SELECT 
                                 call.id as id,
                                 DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%e') as day
-                            FROM call
+                            FROM `call`
                             WHERE call.status = 3
                             HAVING day <= 15 AND day IS NOT NULL
                             ORDER BY published DESC";
                     break;
                 case 'success':
                     // los que estan 'financiado' o 'retorno cumplido'
-                    $sql = "SELECT id FROM call WHERE status = 4 OR status = 5 ORDER BY name ASC";
+                    $sql = "SELECT id FROM `call` WHERE status = 4 OR status = 5 ORDER BY name ASC";
                     break;
                 case 'available':
                     // ni edicion ni revision ni cancelados, estan disponibles para verse publicamente
-                    $sql = "SELECT id FROM call WHERE status > 2 AND status < 6 ORDER BY name ASC";
+                    $sql = "SELECT id FROM `call` WHERE status > 2 AND status < 6 ORDER BY name ASC";
                     break;
                 default: 
                     // todos los que estan 'en campaña'
-                    $sql = "SELECT id FROM call WHERE status = 3 ORDER BY name ASC";
+                    $sql = "SELECT id FROM `call` WHERE status = 3 ORDER BY name ASC";
             }
 
             // Limite
@@ -799,7 +800,7 @@ namespace Goteo\Model {
             // la select
             $sql = "SELECT 
                         id
-                    FROM call
+                    FROM `call`
                     WHERE status > 0
                         $sqlFilter
                         $sqlOrder
