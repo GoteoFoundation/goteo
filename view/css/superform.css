@@ -570,7 +570,9 @@ div.superform li.editcost li.required_cost-no {
     background-color: #e2e2e2 !important;
 }
 
-/* Imágenes gallery*/
+/* Imágenes gallery (y en el de convocatoria: logo, imagen) */
+div.superform li#logo div.elements li.call-image,
+div.superform li#image div.elements li.call-image,
 div.superform li#gallery div.elements li.gallery-image {
     margin: 5px 25px !important;
     display: inline-block !important;

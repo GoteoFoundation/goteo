@@ -1656,8 +1656,25 @@ namespace Goteo\Model {
                             ORDER BY published DESC";
                     break;
                 case 'success':
-                    // los que estan 'financiado' o 'retorno cumplido'
-                    $sql = "SELECT id FROM project WHERE status = 4 OR status = 5 ORDER BY name ASC";
+                    // los que han conseguido el mínimo
+                    $sql = "SELECT
+                                id,
+                                (SELECT  SUM(amount)
+                                FROM    cost
+                                WHERE   project = project.id
+                                AND     required = 1
+                                ) as `mincost`,
+                                (SELECT  SUM(amount)
+                                FROM    invest
+                                WHERE   project = project.id
+                                AND     (invest.status = 0
+                                        OR invest.status = 1
+                                        OR invest.status = 3
+                                        OR invest.status = 4)
+                                ) as `getamount`
+                        FROM project
+                        HAVING getamount >= mincost
+                        ORDER BY name ASC";
                     break;
                 case 'available':
                     // ni edicion ni revision ni cancelados, estan disponibles para verse publicamente

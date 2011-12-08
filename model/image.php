@@ -376,10 +376,6 @@ namespace Goteo\Model {
 				$it->save($cache);
             }
 
-            $expires = 60*60*24*14;
-            header("Pragma: public");
-            header('Cache-Control: public, max-age='.$expires);
-            header('Last-Modified: '. gmdate('D, d M Y H:i:s', time()-$expires) . ' GMT');
 			header("Content-type: " . $this->type);
 			readfile($cache);
 			return true;
