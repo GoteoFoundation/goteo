@@ -139,6 +139,8 @@ namespace Goteo\Controller {
 
             }
 
+            //re-evaluar los errores
+            $call->check();
             
             // variables para la vista
             $viewData = array(
@@ -437,6 +439,8 @@ namespace Goteo\Controller {
             $fields = array(
                 'name',
                 'subtitle',
+                'logo',
+                'image',
                 'description',
                 'whom',
                 'apply',

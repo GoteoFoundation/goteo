@@ -4,22 +4,9 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-$project = $this['project'];
-$errors = $project->errors[$this['step']] ?: array();
-$okeys  = $project->okeys[$this['step']] ?: array();
-
-$images = array();
-foreach ($project->gallery as $image) {
-    $images[] = array(
-        'type'  => 'html',
-        'class' => 'inline gallery-image',
-        'html'  => is_object($image) ?
-                   $image . '<img src="'.SRC_URL.'/image/'.$image->id.'/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->id.'-remove" title="Quitar imagen" value="remove"></button>' :
-                   ''
-    );
-
-}
-
+$call = $this['call'];
+$errors = $call->errors[$this['step']] ?: array();
+$okeys  = $call->okeys[$this['step']] ?: array();
 
 $categories = array();
 
@@ -27,67 +14,26 @@ foreach ($this['categories'] as $value => $label) {
     $categories[] =  array(
         'value'     => $value,
         'label'     => $label,
-        'checked'   => in_array($value, $project->categories)
+        'checked'   => in_array($value, $call->categories)
         );            
 }
 
-$currently = array();
+$icons = array();
 
-foreach ($this['currently'] as $value => $label) {
-    $currently[] =  array(
+foreach ($this['icons'] as $value => $label) {
+    $icons[] =  array(
         'value'     => $value,
-        'label'     => $label        
-        );            
-}
-
-$scope = array();
-
-foreach ($this['scope'] as $value => $label) {
-    $scope[] =  array(
-        'value'     => $value,
-        'label'     => $label
+        'label'     => $label,
+        'checked'   => in_array($value, $call->icons)
         );
 }
-
-// media del proyecto
-if (!empty($project->media->url)) {
-    $media = array(
-            'type'  => 'media',
-            'title' => Text::get('overview-field-media_preview'),
-            'class' => 'inline media',
-            'type'  => 'html',
-            'html'  => !empty($project->media) ? $project->media->getEmbedCode() : ''
-    );
-} else {
-    $media = array(
-        'type'  => 'hidden',
-        'class' => 'inline'
-    );
-}
-
-// video de motivacion
-if (!empty($project->video->url)) {
-    $video = array(
-            'type'  => 'media',
-            'title' => Text::get('overview-field-media_preview'),
-            'class' => 'inline media',
-            'type'  => 'html',
-            'html'  => !empty($project->video) ? $project->video->getEmbedCode() : ''
-    );
-} else {
-    $video = array(
-        'type'  => 'hidden',
-        'class' => 'inline'
-    );
-}
-
 
 $superform = array(
     'level'         => $this['level'],
     'action'        => '',
     'method'        => 'post',
-    'title'         => Text::get('overview-main-header'),
-    'hint'          => Text::get('guide-project-description'),
+    'title'         => Text::get('call-overview-main-header'),
+    'hint'          => Text::get('guide-call-description'),
     'class'         => 'aqua',        
     'elements'      => array(
         'process_overview' => array (
@@ -97,10 +43,10 @@ $superform = array(
         
         'name' => array(
             'type'      => 'textbox',
-            'title'     => Text::get('overview-field-name'),
+            'title'     => Text::get('call-field-name'),
             'required'  => true,
-            'hint'      => Text::get('tooltip-project-name'),
-            'value'     => $project->name,
+            'hint'      => Text::get('tooltip-call-name'),
+            'value'     => $call->name,
             'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
             'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array()
         ),
@@ -109,102 +55,109 @@ $superform = array(
             'type'      => 'textbox',
             'title'     => Text::get('overview-field-subtitle'),
             'required'  => false,
-            'value'     => $project->subtitle,
-            'hint'      => Text::get('tooltip-project-subtitle'),
+            'value'     => $call->subtitle,
+            'hint'      => Text::get('tooltip-call-subtitle'),
             'errors'    => !empty($errors['subtitle']) ? array($errors['subtitle']) : array(),
             'ok'        => !empty($okeys['subtitle']) ? array($okeys['subtitle']) : array()
         ),
 
-        'images' => array(        
-            'title'     => Text::get('overview-fields-images-title'),
+        'logo' => array(
             'type'      => 'group',
             'required'  => true,
-            'hint'      => Text::get('tooltip-project-image'),
+            'title'     => Text::get('call-field-logo-title'),
+            'hint'      => Text::get('tooltip-call-logo'),
+            'errors'    => !empty($errors['logo']) ? array($errors['logo']) : array(),
+            'ok'        => !empty($okeys['logo']) ? array($okeys['logo']) : array(),
+            'class'     => 'user_avatar',
+            'children'  => array(
+                'logo_upload'    => array(
+                    'type'  => 'file',
+                    'label' => Text::get('form-image_upload-button'),
+                    'class' => 'inline avatar_upload',
+                    'hint'  => Text::get('tooltip-call-logo'),
+                ),
+                'logo-current' => array(
+                    'type' => 'hidden',
+                    'value' => $call->logo->id,
+                ),
+                'logo-image' => array(
+                    'type'  => 'html',
+                    'class' => 'inline avatar-image',
+                    'html'  => is_object($call->logo)  ?
+                               $call->logo . '<img src="'.SRC_URL.'/image/' . $call->logo->id . '/128/128" alt="Logo" /><button class="image-remove" type="submit" name="logo-'.$call->logo->id.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               ''
+                )
+
+            )
+        ),
+
+        'image' => array(
+            'type'      => 'group',
+            'required'  => true,
+            'title'     => Text::get('call-field-image-title'),
+            'hint'      => Text::get('tooltip-call-image'),
             'errors'    => !empty($errors['image']) ? array($errors['image']) : array(),
             'ok'        => !empty($okeys['image']) ? array($okeys['image']) : array(),
-            'class'     => 'images',
+            'class'     => 'user_avatar',
             'children'  => array(
                 'image_upload'    => array(
                     'type'  => 'file',
                     'label' => Text::get('form-image_upload-button'),
-                    'class' => 'inline image_upload',
-                    'hint'  => Text::get('tooltip-project-image')
+                    'class' => 'inline avatar_upload',
+                    'hint'  => Text::get('tooltip-call-image'),
+                ),
+                'image-current' => array(
+                    'type' => 'hidden',
+                    'value' => $call->image->id,
+                ),
+                'image-image' => array(
+                    'type'  => 'html',
+                    'class' => 'inline avatar-image',
+                    'html'  => is_object($call->image) ?
+                               $call->image . '<img src="'.SRC_URL.'/image/' . $call->image->id . '/128/128" alt="Imagen" /><button class="image-remove" type="submit" name="image-'.$call->image->id.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               ''
                 )
+
             )
-        ),        
-        'gallery' => array(
-            'type'  => 'group',
-            'title' => Text::get('overview-field-image_gallery'),
-            'class' => 'inline',
-            'children'  => $images
         ),
 
         'description' => array(            
             'type'      => 'textarea',
-            'title'     => Text::get('overview-field-description'),
+            'title'     => Text::get('call-field-description'),
             'required'  => true,
-            'hint'      => Text::get('tooltip-project-description'),
-            'value'     => $project->description,            
+            'hint'      => Text::get('tooltip-call-description'),
+            'value'     => $call->description,
             'errors'    => !empty($errors['description']) ? array($errors['description']) : array(),
             'ok'        => !empty($okeys['description']) ? array($okeys['description']) : array()
         ),
         'description_group' => array(
             'type' => 'group',
             'children'  => array(                
-                'about' => array(
+                'whom' => array(
                     'type'      => 'textarea',       
-                    'title'     => Text::get('overview-field-about'),
+                    'title'     => Text::get('call-field-whom'),
                     'required'  => true,
-                    'hint'      => Text::get('tooltip-project-about'),
-                    'errors'    => !empty($errors['about']) ? array($errors['about']) : array(),
-                    'ok'        => !empty($okeys['about']) ? array($okeys['about']) : array(),
-                    'value'     => $project->about
+                    'hint'      => Text::get('tooltip-call-whom'),
+                    'errors'    => !empty($errors['whom']) ? array($errors['whom']) : array(),
+                    'ok'        => !empty($okeys['whom']) ? array($okeys['whom']) : array(),
+                    'value'     => $call->whom
                 ),
-                'motivation' => array(
+                'apply' => array(
                     'type'      => 'textarea',       
-                    'title'     => Text::get('overview-field-motivation'),
+                    'title'     => Text::get('call-field-apply'),
                     'required'  => true,
-                    'hint'      => Text::get('tooltip-project-motivation'),
-                    'errors'    => !empty($errors['motivation']) ? array($errors['motivation']) : array(),
-                    'ok'        => !empty($okeys['motivation']) ? array($okeys['motivation']) : array(),
-                    'value'     => $project->motivation
+                    'hint'      => Text::get('tooltip-call-apply'),
+                    'errors'    => !empty($errors['apply']) ? array($errors['apply']) : array(),
+                    'ok'        => !empty($okeys['apply']) ? array($okeys['apply']) : array(),
+                    'value'     => $call->apply
                 ),
-                // video motivacion
-                'video' => array(
-                    'type'      => 'textbox',
-                    'required'  => false,
-                    'title'     => Text::get('overview-field-video'),
-                    'hint'      => Text::get('tooltip-project-video'),
-                    'errors'    => !empty($errors['video']) ? array($errors['video']) : array(),
-                    'ok'        => !empty($okeys['video']) ? array($okeys['video']) : array(),
-                    'value'     => (string) $project->video
-                ),
-
-                'video-upload' => array(
-                    'name' => "upload",
-                    'type'  => 'submit',
-                    'label' => Text::get('form-upload-button'),
-                    'class' => 'inline media-upload'
-                ),
-
-                'video-preview' => $video
-                ,
-                // fin video motivacion
-                'goal' => array(
+                'legal' => array(
                     'type'      => 'textarea',
-                    'title'     => Text::get('overview-field-goal'),
-                    'hint'      => Text::get('tooltip-project-goal'),
-                    'errors'    => !empty($errors['goal']) ? array($errors['goal']) : array(),
-                    'ok'        => !empty($okeys['goal']) ? array($okeys['goal']) : array(),
-                    'value'     => $project->goal
-                ),
-                'related' => array(
-                    'type'      => 'textarea',
-                    'title'     => Text::get('overview-field-related'),
-                    'hint'      => Text::get('tooltip-project-related'),
-                    'errors'    => !empty($errors['related']) ? array($errors['related']) : array(),
-                    'ok'        => !empty($okeys['related']) ? array($okeys['related']) : array(),
-                    'value'     => $project->related
+                    'title'     => Text::get('call-field-legal'),
+                    'hint'      => Text::get('tooltip-call-legal'),
+                    'errors'    => !empty($errors['legal']) ? array($errors['legal']) : array(),
+                    'ok'        => !empty($okeys['legal']) ? array($okeys['legal']) : array(),
+                    'value'     => $call->legal
                 ),
             )
         ),
@@ -212,87 +165,46 @@ $superform = array(
         'category' => array(    
             'type'      => 'checkboxes',
             'name'      => 'categories[]',
-            'title'     => Text::get('overview-field-categories'),
+            'title'     => Text::get('call-field-categories'),
             'required'  => true,
             'class'     => 'cols_3',
             'options'   => $categories,
-            'hint'      => Text::get('tooltip-project-category'),
+            'hint'      => Text::get('tooltip-call-category'),
             'errors'    => !empty($errors['categories']) ? array($errors['categories']) : array(),
             'ok'        => !empty($okeys['categories']) ? array($okeys['categories']) : array()
         ),       
 
-        'keywords' => array(
-            'type'      => 'textbox',
-            'title'     => Text::get('overview-field-keywords'),
+        'icon' => array(
+            'type'      => 'checkboxes',
+            'name'      => 'icons[]',
+            'title'     => Text::get('call-field-icons'),
             'required'  => true,
-            'hint'      => Text::get('tooltip-project-keywords'),
-            'errors'    => !empty($errors['keywords']) ? array($errors['keywords']) : array(),
-            'ok'        => !empty($okeys['keywords']) ? array($okeys['keywords']) : array(),
-            'value'     => $project->keywords
+            'class'     => 'cols_3',
+            'options'   => $icons,
+            'hint'      => Text::get('tooltip-call-icons'),
+            'errors'    => !empty($errors['icons']) ? array($errors['icons']) : array(),
+            'ok'        => !empty($okeys['icons']) ? array($okeys['icons']) : array()
         ),
 
-        'media' => array(
-            'type'      => 'textbox',
-            'required'  => true,
-            'title'     => Text::get('overview-field-media'),
-            'hint'      => Text::get('tooltip-project-media'),
-            'errors'    => !empty($errors['media']) ? array($errors['media']) : array(),
-            'ok'        => !empty($okeys['media']) ? array($okeys['media']) : array(),
-            'value'     => (string) $project->media
-        ),
-
-        'media-upload' => array(
-            'name' => "upload",
-            'type'  => 'submit',
-            'label' => Text::get('form-upload-button'),
-            'class' => 'inline media-upload'
-        ),
-        
-        'media-preview' => $media
-        ,
-
-        'currently' => array(    
-            'title'     => Text::get('overview-field-currently'),
-            'type'      => 'slider',
-//            'required'  => true,
-            'options'   => $currently,
-            'class'     => 'currently cols_' . count($currently),
-            'hint'      => Text::get('tooltip-project-currently'),
-            'errors'    => !empty($errors['currently']) ? array($errors['currently']) : array(),
-            'ok'        => !empty($okeys['currently']) ? array($okeys['currently']) : array(),
-            'value'     => $project->currently
-        ),
 
         'location' => array(
             'type'      => 'textbox',
-            'name'      => 'project_location',
-            'title'     => Text::get('overview-field-project_location'),
+            'name'      => 'call_location',
+            'title'     => Text::get('call-field-call_location'),
             'required'  => true,
-            'hint'      => Text::get('tooltip-project-project_location'),
-            'errors'    => !empty($errors['project_location']) ? array($errors['project_location']) : array(),
-            'ok'        => !empty($okeys['project_location']) ? array($okeys['project_location']) : array(),
-            'value'     => $project->project_location
+            'hint'      => Text::get('tooltip-call-call_location'),
+            'errors'    => !empty($errors['call_location']) ? array($errors['call_location']) : array(),
+            'ok'        => !empty($okeys['call_location']) ? array($okeys['call_location']) : array(),
+            'value'     => $call->call_location
         ),
 
-        'scope' => array(
-            'title'     => Text::get('overview-field-scope'),
-            'type'      => 'slider',
-//            'required'  => true,
-            'options'   => $scope,
-            'class'     => 'scope cols_' . count($currently),
-            'hint'      => Text::get('tooltip-project-scope'),
-            'errors'    => !empty($errors['scope']) ? array($errors['scope']) : array(),
-            'ok'        => !empty($okeys['scope']) ? array($okeys['scope']) : array(),
-            'value'     => $project->scope
-        ),
-        
         'footer' => array(
             'type'      => 'group',
             'children'  => array(
                 'errors' => array(
                     'title' => Text::get('form-footer-errors_title'),
                     'view'  => new View('view/project/edit/errors.html.php', array(
-                        'project'   => $project,
+                        'project'   => $call,
                         'step'      => $this['step']
                     ))                    
                 ),

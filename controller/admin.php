@@ -4442,6 +4442,13 @@ namespace Goteo\Controller {
 
             
             if (isset($log_text)) {
+
+                $log_items = array(
+                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                    Feed::item('call', $call->name, $call->id)
+                );
+                Message::Info(\vsprintf($log_text, $log_items));
+
                 /*
                  * Evento Feed
                  *

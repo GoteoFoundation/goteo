@@ -17,6 +17,7 @@ namespace Goteo\Model {
             $node, // Node this call belongs to
             $status,
             $amount, // Presupuesto
+            $days, // Numero de dias para aplicación de proyectos
 
             $user, // owner's user information
 
@@ -64,6 +65,9 @@ namespace Goteo\Model {
             $categories = array(),
             $icons = array(),
             $call_location, // call execution location
+
+            $errors = array(), // para los fallos en los datos
+            $okeys  = array(), // para los campos que estan ok
 
             $translate,  // si se puede traducir (bool)
 
@@ -156,21 +160,15 @@ namespace Goteo\Model {
                 }
 
                 // si recibimos lang y no es el idioma original del convocatoria, ponemos la traducción y mantenemos para el resto de contenido
-                // ESTO LUEGO  //@TODO tema Lang
-                /*
                 if ($lang == $call->lang) {
                     $lang = null;
                 } elseif (!empty($lang)) {
                     $sql = "
                         SELECT
                             IFNULL(call_lang.description, call.description) as description,
-                            IFNULL(call_lang.motivation, call.motivation) as motivation,
-                            IFNULL(call_lang.video, call.video) as video,
-                            IFNULL(call_lang.about, call.about) as about,
-                            IFNULL(call_lang.goal, call.goal) as goal,
-                            IFNULL(call_lang.related, call.related) as related,
-                            IFNULL(call_lang.keywords, call.keywords) as keywords,
-                            IFNULL(call_lang.media, call.media) as media,
+                            IFNULL(call_lang.whom, call.whom) as whom,
+                            IFNULL(call_lang.apply, call.apply) as apply,
+                            IFNULL(call_lang.legal, call.legal) as legal,
                             IFNULL(call_lang.subtitle, call.subtitle) as subtitle
                         FROM `call`
                         LEFT JOIN call_lang
@@ -183,8 +181,6 @@ namespace Goteo\Model {
                         $call->$field = $value;
                     }
                 }
-                 * 
-                 */
 
                 // owner
                 $call->user = User::get($call->owner);
@@ -371,7 +367,7 @@ namespace Goteo\Model {
 //				$values[':updated'] = date('Y-m-d');
 				$values[':id'] = $this->id;
 
-				$sql = "UPDATE call SET " . $set . " WHERE id = :id";
+				$sql = "UPDATE `call` SET " . $set . " WHERE id = :id";
 				if (!self::query($sql, $values)) {
                     $errors[] = $sql . '<pre>' . print_r($values, 1) . '</pre>';
                     $fail = true;
@@ -481,7 +477,7 @@ namespace Goteo\Model {
          */
         public function ready(&$errors = array()) {
 			try {
-                $sql = "UPDATE call SET status = :status, updated = :updated WHERE id = :id";
+                $sql = "UPDATE `call` SET status = :status, updated = :updated WHERE id = :id";
                 self::query($sql, array(':status'=>2, ':updated'=>date('Y-m-d'), ':id'=>$this->id));
                 
                 return true;
@@ -498,7 +494,7 @@ namespace Goteo\Model {
          */
         public function enable(&$errors = array()) {
 			try {
-				$sql = "UPDATE call SET status = :status WHERE id = :id";
+				$sql = "UPDATE `call` SET status = :status WHERE id = :id";
 				self::query($sql, array(':status'=>1, ':id'=>$this->id));
                 return true;
             } catch (\PDOException $e) {
@@ -514,7 +510,7 @@ namespace Goteo\Model {
          */
         public function publish(&$errors = array()) {
 			try {
-				$sql = "UPDATE call SET status = :status, published = :published WHERE id = :id";
+				$sql = "UPDATE `call` SET status = :status, published = :published WHERE id = :id";
 				self::query($sql, array(':status'=>3, ':published'=>date('Y-m-d'), ':id'=>$this->id));
 
                 return true;
@@ -531,7 +527,7 @@ namespace Goteo\Model {
          */
         public function fail(&$errors = array()) {
 			try {
-				$sql = "UPDATE call SET status = :status, closed = :closed WHERE id = :id";
+				$sql = "UPDATE `call` SET status = :status, closed = :closed WHERE id = :id";
 				self::query($sql, array(':status'=>6, ':closed'=>date('Y-m-d'), ':id'=>$this->id));
                 return true;
             } catch (\PDOException $e) {
@@ -547,7 +543,7 @@ namespace Goteo\Model {
          */
         public function succeed(&$errors = array()) {
 			try {
-				$sql = "UPDATE call SET status = :status, success = :success WHERE id = :id";
+				$sql = "UPDATE `call` SET status = :status, success = :success WHERE id = :id";
 				self::query($sql, array(':status'=>4, ':success'=>date('Y-m-d'), ':id'=>$this->id));
                 return true;
             } catch (\PDOException $e) {
@@ -580,7 +576,7 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 self::query("ROLLBACK");
-				$sql = "UPDATE call SET status = :status WHERE id = :id";
+				$sql = "UPDATE `call` SET status = :status WHERE id = :id";
 				self::query($sql, array(':status'=>0, ':id'=>$this->id));
                 return false;
             }
@@ -814,6 +810,256 @@ namespace Goteo\Model {
         }
 
         /*
+         * comprueba errores de datos y actualiza la puntuación
+         */
+        public function check() {
+            //primero resetea los errores y los okeys
+            $this->errors = self::blankErrors();
+            $this->okeys  = self::blankErrors();
+
+            $errors = &$this->errors;
+            $okeys  = &$this->okeys ;
+
+            /***************** Revisión de campos del paso 1, PERFIL *****************/
+            // obligatorios: nombre, email, ciudad
+            if (empty($this->user->name)) {
+                $errors['userProfile']['name'] = Text::get('validate-user-field-name');
+            } else {
+                $okeys['userProfile']['name'] = 'ok';
+            }
+
+            if (empty($this->user->location)) {
+                $errors['userProfile']['location'] = Text::get('validate-user-field-location');
+            } else {
+                $okeys['userProfile']['location'] = 'ok';
+            }
+
+            if(!empty($this->user->avatar) && $this->user->avatar->id != 1) {
+                $okeys['userProfile']['avatar'] = 'ok';
+            }
+
+            if (!empty($this->user->about)) {
+                $okeys['userProfile']['about'] = 'ok';
+
+                // además error si tiene más de 2000
+                if (\strlen($this->user->about) > 2000) {
+                    $errors['userProfile']['about'] = Text::get('validate-user-field-about');
+                    unset($okeys['userProfile']['about']);
+                }
+            }
+
+            if (!empty($this->user->interests)) {
+                $okeys['userProfile']['interests'] = 'ok';
+            }
+
+            if (!empty($this->user->keywords)) {
+                $okeys['userProfile']['keywords'] = 'ok';
+            }
+
+            if (!empty($this->user->contribution)) {
+                $okeys['userProfile']['contribution'] = 'ok';
+            }
+
+            if (empty($this->user->webs)) {
+                $errors['userProfile']['webs'] = Text::get('validate-project-userProfile-web');
+            } else {
+                $okeys['userProfile']['webs'] = 'ok';
+
+                $anyerror = false;
+                foreach ($this->user->webs as $web) {
+                    if (trim(str_replace('http://','',$web->url)) == '') {
+                        $anyerror = !$anyerror ?: true;
+                        $errors['userProfile']['web-'.$web->id.'-url'] = Text::get('validate-user-field-web');
+                    } else {
+                        $okeys['userProfile']['web-'.$web->id.'-url'] = 'ok';
+                    }
+                }
+
+                if ($anyerror) {
+                    unset($okeys['userProfile']['webs']);
+                    $errors['userProfile']['webs'] = Text::get('validate-project-userProfile-any_error');
+                }
+            }
+
+            if (!empty($this->user->facebook)) {
+                $okeys['userProfile']['facebook'] = 'ok';
+            }
+
+            if (!empty($this->user->twitter)) {
+                $okeys['userProfile']['twitter'] = 'ok';
+            }
+
+            if (!empty($this->user->linkedin)) {
+                $okeys['userProfile']['linkedin'] = 'ok';
+            }
+
+            /***************** FIN Revisión del paso 1, PERFIL *****************/
+
+            /***************** Revisión de campos del paso 2,DATOS PERSONALES *****************/
+            // obligatorios: todos
+            if (empty($this->contract_name)) {
+                $errors['userPersonal']['contract_name'] = Text::get('mandatory-project-field-contract_name');
+            } else {
+                 $okeys['userPersonal']['contract_name'] = 'ok';
+            }
+
+            if (empty($this->contract_nif)) {
+                $errors['userPersonal']['contract_nif'] = Text::get('mandatory-project-field-contract_nif');
+            } elseif (!Check::nif($this->contract_nif)) {
+                $errors['userPersonal']['contract_nif'] = Text::get('validate-project-value-contract_nif');
+            } else {
+                 $okeys['userPersonal']['contract_nif'] = 'ok';
+            }
+
+            if (empty($this->contract_email)) {
+                $errors['userPersonal']['contract_email'] = Text::get('mandatory-project-field-contract_email');
+            } elseif (!Check::mail($this->contract_email)) {
+                $errors['userPersonal']['contract_email'] = Text::get('validate-project-value-contract_email');
+            } else {
+                 $okeys['userPersonal']['contract_email'] = 'ok';
+            }
+
+            // Segun persona física o jurídica
+            if ($this->contract_entity) {  // JURIDICA
+                if (empty($this->entity_office)) {
+                    $errors['userPersonal']['entity_office'] = Text::get('mandatory-project-field-entity_office');
+                } else {
+                     $okeys['userPersonal']['entity_office'] = 'ok';
+                }
+
+                if (empty($this->entity_name)) {
+                    $errors['userPersonal']['entity_name'] = Text::get('mandatory-project-field-entity_name');
+                } else {
+                     $okeys['userPersonal']['entity_name'] = 'ok';
+                }
+
+                if (empty($this->entity_cif)) {
+                    $errors['userPersonal']['entity_cif'] = Text::get('mandatory-project-field-entity_cif');
+                } elseif (!Check::nif($this->entity_cif)) {
+                    $errors['userPersonal']['entity_cif'] = Text::get('validate-project-value-entity_cif');
+                } else {
+                     $okeys['userPersonal']['entity_cif'] = 'ok';
+                }
+
+            } else { // FISICA
+                if (empty($this->contract_birthdate)) {
+                    $errors['userPersonal']['contract_birthdate'] = Text::get('mandatory-project-field-contract_birthdate');
+                } else {
+                     $okeys['userPersonal']['contract_birthdate'] = 'ok';
+                }
+            }
+
+
+            if (empty($this->phone)) {
+                $errors['userPersonal']['phone'] = Text::get('mandatory-project-field-phone');
+            } elseif (!Check::phone($this->phone)) {
+                $errors['userPersonal']['phone'] = Text::get('validate-project-value-phone');
+            } else {
+                 $okeys['userPersonal']['phone'] = 'ok';
+            }
+
+            if (empty($this->address)) {
+                $errors['userPersonal']['address'] = Text::get('mandatory-project-field-address');
+            } else {
+                 $okeys['userPersonal']['address'] = 'ok';
+                 ++$score;
+            }
+
+            if (empty($this->zipcode)) {
+                $errors['userPersonal']['zipcode'] = Text::get('mandatory-project-field-zipcode');
+            } else {
+                 $okeys['userPersonal']['zipcode'] = 'ok';
+            }
+
+            if (empty($this->location)) {
+                $errors['userPersonal']['location'] = Text::get('mandatory-project-field-residence');
+            } else {
+                 $okeys['userPersonal']['location'] = 'ok';
+            }
+
+            if (empty($this->country)) {
+                $errors['userPersonal']['country'] = Text::get('mandatory-project-field-country');
+            } else {
+                 $okeys['userPersonal']['country'] = 'ok';
+            }
+
+            /***************** FIN Revisión del paso 2, DATOS PERSONALES *****************/
+
+            /***************** Revisión de campos del paso 3, DESCRIPCION *****************/
+            if (empty($this->name)) {
+                $errors['overview']['name'] = Text::get('mandatory-call-field-name');
+            } else {
+                 $okeys['overview']['name'] = 'ok';
+            }
+
+            if (!empty($this->subtitle)) {
+                $errors['overview']['subtitle'] = Text::get('mandatory-call-field-subtitle');
+            } else {
+                 $okeys['overview']['subtitle'] = 'ok';
+            }
+
+            if (empty($this->logo)) {
+                $errors['overview']['logo'] = Text::get('mandatory-call-field-logo');
+            } else {
+                 $okeys['overview']['logo'] = 'ok';
+            }
+
+            if (empty($this->image)) {
+                $errors['overview']['image'] = Text::get('mandatory-call-field-image');
+            } else {
+                 $okeys['overview']['image'] = 'ok';
+            }
+
+            if (empty($this->description)) {
+                $errors['overview']['description'] = Text::get('mandatory-call-field-description');
+            } else {
+                 $okeys['overview']['description'] = 'ok';
+            }
+
+            if (empty($this->whom)) {
+                $errors['overview']['whom'] = Text::get('mandatory-call-field-whom');
+             } else {
+                 $okeys['overview']['whom'] = 'ok';
+            }
+
+            if (empty($this->apply)) {
+                $errors['overview']['apply'] = Text::get('mandatory-call-field-apply');
+            } else {
+                 $okeys['overview']['apply'] = 'ok';
+            }
+
+            if (empty($this->legal)) {
+                $errors['overview']['legal'] = Text::get('mandatory-call-field-legal');
+            } else {
+                 $okeys['overview']['legal'] = 'ok';
+            }
+
+
+            if (empty($this->categories)) {
+                $errors['overview']['categories'] = Text::get('mandatory-call-field-category');
+            } else {
+                 $okeys['overview']['categories'] = 'ok';
+            }
+
+            if (empty($this->icons)) {
+                $errors['overview']['icons'] = Text::get('mandatory-call-field-icons');
+            } else {
+                 $okeys['overview']['icons'] = 'ok';
+            }
+
+            if (empty($this->call_location)) {
+                $errors['overview']['call_location'] = Text::get('mandatory-call-field-location');
+            } else {
+                 $okeys['overview']['call_location'] = 'ok';
+                 ++$score;
+            }
+
+            /***************** FIN Revisión del paso 3, DESCRIPCION *****************/
+
+            return true;
+        }
+
+        /*
          * Estados de publicación de un convocatoria
          */
         public static function status () {
@@ -827,6 +1073,16 @@ namespace Goteo\Model {
                 6=>Text::get('form-call_status-expired'));
         }
 
-    }
+         public static function blankErrors() {
+            // para guardar los fallos en los datos
+            $errors = array(
+                'userProfile'  => array(),  // Errores en el paso 1
+                'userPersonal' => array(),  // Errores en el paso 2
+                'overview'     => array()   // Errores en el paso 3
+            );
+
+            return $errors;
+        }
+   }
 
 }

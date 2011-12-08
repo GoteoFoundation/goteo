@@ -4,7 +4,7 @@ use Goteo\Library\Text,
     Goteo\Library\SuperForm,
     Goteo\Core\View;
 
-$project = $this['project'];
+$call = $this['call'];
 $user = $this['user'];
 
 /*
@@ -19,8 +19,8 @@ if (!empty($user->avatar) && is_object($user->avatar))
 
 $interests = array();
 
-$errors = $project->errors[$this['step']] ?: array();
-$okeys  = $project->okeys[$this['step']] ?: array();
+$errors = $call->errors[$this['step']] ?: array();
+$okeys  = $call->okeys[$this['step']] ?: array();
 
 foreach ($this['interests'] as $value => $label) {
     $interests[] =  array(
@@ -274,7 +274,7 @@ echo new SuperForm(array(
                 'errors' => array(
                     'title' => Text::get('form-footer-errors_title'),
                     'view'  => new View('view/project/edit/errors.html.php', array(
-                        'project'   => $project,
+                        'project'   => $call,
                         'step'      => $this['step']
                     ))
                 ),

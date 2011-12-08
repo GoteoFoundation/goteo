@@ -72,7 +72,7 @@ namespace Goteo\Model\Call {
             try {
                 $sqlFilter = "";
                 if (!empty($call)) {
-                    $sqlFilter = " WHERE category.id IN (SELECT category FROM call_category WHERE call = '$call')";
+                    $sqlFilter = " WHERE category.id IN (SELECT category FROM call_category WHERE `call` = '$call')";
                 }
 
                 $sql = "SELECT 
@@ -121,7 +121,7 @@ namespace Goteo\Model\Call {
             if (!$this->validate($errors)) return false;
 
 			try {
-	            $sql = "REPLACE INTO call_category (call, category) VALUES(:call, :category)";
+	            $sql = "REPLACE INTO call_category (`call`, category) VALUES(:call, :category)";
                 $values = array(':call'=>$this->call, ':category'=>$this->id);
 				self::query($sql, $values);
 				return true;
@@ -147,10 +147,10 @@ namespace Goteo\Model\Call {
 			);
 
 			try {
-                self::query("DELETE FROM call_category WHERE category = :category AND call = :call", $values);
+                self::query("DELETE FROM call_category WHERE category = :category AND `call` = :call", $values);
 				return true;
 			} catch(\PDOException $e) {
-				$errors[] = 'No se ha podido quitar la categoria ' . $this->id . ' del proyecto ' . $this->call . ' ' . $e->getMessage();
+				$errors[] = 'No se ha podido quitar la categoria ' . $this->id . ' de la convocatoria ' . $this->call . ' ' . $e->getMessage();
                 //Text::get('remove-category-fail');
                 return false;
 			}

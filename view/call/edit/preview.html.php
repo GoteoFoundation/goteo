@@ -4,15 +4,15 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-$project = $this['project'];
+$call = $this['call'];
 $types   = $this['types'];
-$errors = $project->errors ?: array();
+$errors = $call->errors ?: array();
 
 // miramos el pruimer paso con errores para mandarlo a ese
 $goto = 'view-step-userProfile';
 foreach ($this['steps'] as $id => $data) {
 
-    if (empty($step) && !empty($project->errors[$id])) {
+    if (empty($step) && !empty($call->errors[$id])) {
         $goto = 'view-step-' . $id;
         break;
     }
@@ -28,24 +28,6 @@ $buttons = array(
     )
 );
 
-// si es enviable ponemos el boton
-if ($project->finishable) {
-    $buttons['finish'] = array(
-        'type'  => 'submit',
-        'name'  => 'finish',
-        'label' => Text::get('form-send_review-button'),
-        'class' => 'confirm red'
-    );
-} else {
-    $buttons['nofinish'] = array(
-        'type'  => 'submit',
-        'name'  => 'nofinish',
-        'label' => Text::get('form-send_review-button'),
-        'class' => 'confirm disabled',
-        'disabled' => 'disabled'
-    );
-}
-
 // elementos generales de preview
 $elements      = array(
     'process_preview' => array (
@@ -59,31 +41,12 @@ $elements      = array(
         'html'      =>   '<div class="project-preview" style="position: relative"><div>'
                        . '<div class="overlay" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 999"></div>'
                        . '<div style="z-index: 0">'
-                       . new View('view/project/widget/support.html.php', array('project' => $project))
-                       . new View('view/project/widget/collaborations.html.php', array('project' => $project))
-                       . new View('view/project/widget/rewards.html.php', array('project' => $project))
-                       . new View('view/user/widget/user.html.php', array('user' => $project->user))
-                       . new View('view/project/widget/media.html.php', array('project' => $project))
-                       . new View('view/project/widget/share.html.php', array('project' => $project))
-                       . new View('view/project/widget/summary.html.php', array('project' => $project))
-                       . new View('view/project/widget/needs.html.php', array('project' => $project, 'types' => $types))
-                       . new View('view/project/widget/schedule.html.php', array('project' => $project))
+//                       . new View('view/call/splash.html.php', array('call' => $call))
+                       . '<pre>' . print_r($call, 1) . '</pre>'
                        . '</div>'
                        . '</div></div>'
     )
 );
-
-// si es enviable ponemos el campo de comentario
-if ($project->finishable) {
-    $elements['comment'] = array(
-            'type'  =>'textarea',
-            'title' => Text::get('preview-send-comment'),
-            'rows'  => 8,
-            'cols'  => 100,
-            'hint'  => Text::get('tooltip-project-comment'),
-            'value' => $project->comment
-        );
-}
 
 // Footer
 $elements['footer'] = array(
@@ -92,7 +55,7 @@ $elements['footer'] = array(
         'errors' => array(
             'title' => Text::get('form-footer-errors_title'),
             'view'  => new View('view/project/edit/errors.html.php', array(
-                'project'   => $project,
+                'project'   => $call,
                 'step'      => $this['step']
             ))                    
         ),
@@ -110,6 +73,6 @@ echo new SuperForm(array(
     'level'         => $this['level'],
     'method'        => 'post',
     'title'         => Text::get('preview-main-header'),
-    'hint'          => Text::get('guide-project-preview'),
+    'hint'          => Text::get('guide-call-preview'),
     'elements'      => $elements
 ));

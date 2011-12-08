@@ -4,12 +4,12 @@ use Goteo\Library\Text,
     Goteo\Library\SuperForm,
     Goteo\Core\View;
 
-$project = $this['project'];
-$errors = $project->errors[$this['step']] ?: array();         
-$okeys  = $project->okeys[$this['step']] ?: array();
+$call = $this['call'];
+$errors = $call->errors[$this['step']] ?: array();
+$okeys  = $call->okeys[$this['step']] ?: array();
 
 // si tiene algo en direccion postal entonces tiene una direccion secundaria (la postal)
-$secondary_address = empty($project->post_address) ? false : true;
+$secondary_address = empty($call->post_address) ? false : true;
 
 
 echo new SuperForm(array(
@@ -37,7 +37,7 @@ echo new SuperForm(array(
                     'class' => 'inline',
                     'label' => Text::get('personal-field-contract_entity-person'),
                     'id'    => 'contract_entity-person',
-                    'checked' => !$project->contract_entity ? true : false,
+                    'checked' => !$call->contract_entity ? true : false,
                     'children' => array(
                         /* vacio si es persona física */
                         'contract_entity-person' => array(
@@ -54,7 +54,7 @@ echo new SuperForm(array(
                     'class' => 'inline',
                     'label' => Text::get('personal-field-contract_entity-entity'),
                     'id'    => 'contract_entity-entity',
-                    'checked' => $project->contract_entity ? true : false,
+                    'checked' => $call->contract_entity ? true : false,
                     'children' => array(
                         /* A desplegar si es persona jurídica */
                         'entity_name' => array(
@@ -66,7 +66,7 @@ echo new SuperForm(array(
                             'hint'      => Text::get('tooltip-project-entity_name'),
                             'errors'    => !empty($errors['entity_name']) ? array($errors['entity_name']) : array(),
                             'ok'        => !empty($okeys['entity_name']) ? array($okeys['entity_name']) : array(),
-                            'value'     => $project->entity_name
+                            'value'     => $call->entity_name
                         ),
                         
                         'entity_cif' => array(
@@ -78,7 +78,7 @@ echo new SuperForm(array(
                             'hint'      => Text::get('tooltip-project-entity_cif'),
                             'errors'    => !empty($errors['entity_cif']) ? array($errors['entity_cif']) : array(),
                             'ok'        => !empty($okeys['entity_cif']) ? array($okeys['entity_cif']) : array(),
-                            'value'     => $project->entity_cif
+                            'value'     => $call->entity_cif
                         ),
                         
                         'entity_office' => array(
@@ -90,7 +90,7 @@ echo new SuperForm(array(
                             'hint'      => Text::get('tooltip-project-entity_office'),
                             'errors'    => !empty($errors['entity_office']) ? array($errors['entity_office']) : array(),
                             'ok'        => !empty($okeys['entity_office']) ? array($okeys['entity_office']) : array(),
-                            'value'     => $project->entity_office
+                            'value'     => $call->entity_office
                         )
                     )
                 )
@@ -111,7 +111,7 @@ echo new SuperForm(array(
                     'hint'      => Text::get('tooltip-project-contract_name'),
                     'errors'    => !empty($errors['contract_name']) ? array($errors['contract_name']) : array(),
                     'ok'        => !empty($okeys['contract_name']) ? array($okeys['contract_name']) : array(),
-                    'value'     => $project->contract_name
+                    'value'     => $call->contract_name
                 ),
 
                 'contract_nif' => array(
@@ -123,7 +123,7 @@ echo new SuperForm(array(
                     'hint'      => Text::get('tooltip-project-contract_nif'),
                     'errors'    => !empty($errors['contract_nif']) ? array($errors['contract_nif']) : array(),
                     'ok'        => !empty($okeys['contract_nif']) ? array($okeys['contract_nif']) : array(),
-                    'value'     => $project->contract_nif
+                    'value'     => $call->contract_nif
                 ),
 
                 'phone' => array(
@@ -135,7 +135,7 @@ echo new SuperForm(array(
                     'hint'      => Text::get('tooltip-project-phone'),
                     'errors'    => !empty($errors['phone']) ? array($errors['phone']) : array(),
                     'ok'        => !empty($okeys['phone']) ? array($okeys['phone']) : array(),
-                    'value'     => $project->phone
+                    'value'     => $call->phone
                 ),
 
                 'contract_email' => array(
@@ -147,7 +147,7 @@ echo new SuperForm(array(
                     'hint'      => Text::get('tooltip-project-contract_email'),
                     'errors'    => !empty($errors['contract_email']) ? array($errors['contract_email']) : array(),
                     'ok'        => !empty($okeys['contract_email']) ? array($okeys['contract_email']) : array(),
-                    'value'     => $project->contract_email
+                    'value'     => $call->contract_email
                 ),
 
                 'contract_birthdate'  => array(
@@ -158,7 +158,7 @@ echo new SuperForm(array(
                     'hint'      => Text::get('tooltip-project-contract_birthdate'),
                     'errors'    => !empty($errors['contract_birthdate']) ? array($errors['contract_birthdate']) : array(),
                     'ok'        => !empty($okeys['contract_birthdate']) ? array($okeys['contract_birthdate']) : array(),
-                    'value'     => $project->contract_birthdate
+                    'value'     => $call->contract_birthdate
                 )
 
             )
@@ -180,7 +180,7 @@ echo new SuperForm(array(
                     'hint'      => Text::get('tooltip-project-main_address'),
                     'errors'    => !empty($errors['address']) ? array($errors['address']) : array(),
                     'ok'        => !empty($okeys['address']) ? array($okeys['address']) : array(),
-                    'value'     => $project->address
+                    'value'     => $call->address
                 ),
 
                 'zipcode' => array(
@@ -192,7 +192,7 @@ echo new SuperForm(array(
                     'hint'      => Text::get('tooltip-project-main_address'),
                     'errors'    => !empty($errors['zipcode']) ? array($errors['zipcode']) : array(),
                     'ok'        => !empty($okeys['zipcode']) ? array($okeys['zipcode']) : array(),
-                    'value'     => $project->zipcode
+                    'value'     => $call->zipcode
                 ),
 
                 'location' => array(
@@ -204,7 +204,7 @@ echo new SuperForm(array(
                     'hint'      => Text::get('tooltip-project-main_address'),
                     'errors'    => !empty($errors['location']) ? array($errors['location']) : array(),
                     'ok'        => !empty($okeys['location']) ? array($okeys['location']) : array(),
-                    'value'     => $project->location
+                    'value'     => $call->location
                 ),
 
                 'country' => array(
@@ -216,7 +216,7 @@ echo new SuperForm(array(
                     'hint'      => Text::get('tooltip-project-main_address'),
                     'errors'    => !empty($errors['country']) ? array($errors['country']) : array(),
                     'ok'        => !empty($okeys['country']) ? array($okeys['country']) : array(),
-                    'value'     => $project->country
+                    'value'     => $call->country
                 )
             )
         ),
@@ -235,7 +235,7 @@ echo new SuperForm(array(
                     'class' => 'inline',
                     'label' => Text::get('personal-field-post_address-same'),
                     'id'    => 'post_address-radio-same',
-                    'checked' => !$project->secondary_address ? true : false,
+                    'checked' => !$call->secondary_address ? true : false,
                     'children' => array(
                         /* Children vacio si es igual */
                         'post_address-same' => array(
@@ -252,7 +252,7 @@ echo new SuperForm(array(
                     'class' => 'inline',
                     'label' => Text::get('personal-field-post_address-different'),
                     'id'    => 'post_address-radio-different',
-                    'checked' => $project->secondary_address ? true : false,
+                    'checked' => $call->secondary_address ? true : false,
                     'children' => array(
                         /* Domicilio postal (a desplegar si es diferente) */
                         'post_address' => array(
@@ -264,7 +264,7 @@ echo new SuperForm(array(
                             'hint'      => Text::get('tooltip-project-post_address'),
                             'errors'    => !empty($errors['post_address']) ? array($errors['post_address']) : array(),
                             'ok'        => !empty($okeys['post_address']) ? array($okeys['post_address']) : array(),
-                            'value'     => $project->post_address
+                            'value'     => $call->post_address
                         ),
 
                         'post_zipcode' => array(
@@ -275,7 +275,7 @@ echo new SuperForm(array(
                             'hint'      => Text::get('tooltip-project-post_address'),
                             'errors'    => !empty($errors['post_zipcode']) ? array($errors['post_zipcode']) : array(),
                             'ok'        => !empty($okeys['post_zipcode']) ? array($okeys['post_zipcode']) : array(),
-                            'value'     => $project->post_zipcode
+                            'value'     => $call->post_zipcode
                         ),
 
                         'post_location' => array(
@@ -286,7 +286,7 @@ echo new SuperForm(array(
                             'hint'      => Text::get('tooltip-project-post_address'),
                             'errors'    => !empty($errors['post_location']) ? array($errors['post_location']) : array(),
                             'ok'        => !empty($okeys['post_location']) ? array($okeys['post_location']) : array(),
-                            'value'     => $project->post_location
+                            'value'     => $call->post_location
                         ),
 
                         'post_country' => array(
@@ -297,7 +297,7 @@ echo new SuperForm(array(
                             'hint'      => Text::get('tooltip-project-post_address'),
                             'errors'    => !empty($errors['post_country']) ? array($errors['post_country']) : array(),
                             'ok'        => !empty($okeys['post_country']) ? array($okeys['post_country']) : array(),
-                            'value'     => $project->post_country
+                            'value'     => $call->post_country
                         )
                     )
                 ),
@@ -310,7 +310,7 @@ echo new SuperForm(array(
                 'errors' => array(
                     'title' => Text::get('form-footer-errors_title'),
                     'view'  => new View('view/project/edit/errors.html.php', array(
-                        'project'   => $project,
+                        'project'   => $call,
                         'step'      => $this['step']
                     ))                    
                 ),

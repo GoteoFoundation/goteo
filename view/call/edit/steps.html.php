@@ -2,8 +2,7 @@
 
 use Goteo\Library\Text;
 
-$errors = $this['errors'] ?>
-
+?>
 <div id="project-steps">
             
             <fieldset>
@@ -24,26 +23,11 @@ $errors = $this['errors'] ?>
                     
                     <fieldset style="display: inline">
                         
-                        <legend><?php echo Text::get('regular-new_project'); ?></legend>
-                        
+                        <legend><?php echo Text::get('regular-new_call'); ?></legend>
+
                         <span class="step off-on<?php if ($this['step'] === 'overview') echo ' active'; else echo ' activable'; ?>">
                             <button type="submit" name="view-step-overview" value="<?php echo Text::get('step-3'); ?>"><?php echo Text::get('step-3'); ?>
                             <strong class="number">3</strong></button>                            
-                        </span>
-
-                        <span class="step on-on<?php if ($this['step'] === 'costs') echo ' active'; else echo ' activable'; ?>">
-                            <button type="submit" name="view-step-costs" value="<?php echo Text::get('step-4'); ?>"><?php echo Text::get('step-4'); ?>
-                            <strong class="number">4</strong></button>                            
-                        </span>
-
-                        <span class="step on-on<?php if ($this['step'] === 'rewards') echo ' active'; else echo ' activable'; ?>">
-                            <button type="submit" name="view-step-rewards" value="<?php echo Text::get('step-5'); ?>"><?php echo Text::get('step-5'); ?>
-                            <strong class="number">5</strong></button>                            
-                        </span>
-
-                        <span class="step on-off<?php if ($this['step'] === 'supports') echo ' active'; else echo ' activable'; ?>">
-                            <button type="submit" name="view-step-supports" value="<?php echo Text::get('step-6'); ?>"><?php echo Text::get('step-6'); ?>
-                            <strong class="number">6</strong></button>                            
                         </span>
                         
                     </fieldset>

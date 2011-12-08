@@ -72,7 +72,7 @@ namespace Goteo\Model\Call {
             try {
                 $sqlFilter = "";
                 if (!empty($call)) {
-                    $sqlFilter = " WHERE icon.id IN (SELECT icon FROM call_icon WHERE call = '$call')";
+                    $sqlFilter = " WHERE icon.id IN (SELECT icon FROM call_icon WHERE `call` = '$call')";
                 }
 
                 $sql = "SELECT 
@@ -121,7 +121,7 @@ namespace Goteo\Model\Call {
             if (!$this->validate($errors)) return false;
 
 			try {
-	            $sql = "REPLACE INTO call_icon (call, icon) VALUES(:call, :icon)";
+	            $sql = "REPLACE INTO call_icon (`call`, icon) VALUES(:call, :icon)";
                 $values = array(':call'=>$this->call, ':icon'=>$this->id);
 				self::query($sql, $values);
 				return true;
@@ -147,10 +147,10 @@ namespace Goteo\Model\Call {
 			);
 
 			try {
-                self::query("DELETE FROM call_icon WHERE icon = :icon AND call = :call", $values);
+                self::query("DELETE FROM call_icon WHERE icon = :icon AND `call` = :call", $values);
 				return true;
 			} catch(\PDOException $e) {
-				$errors[] = 'No se ha podido quitar la icono ' . $this->id . ' del proyecto ' . $this->call . ' ' . $e->getMessage();
+				$errors[] = 'No se ha podido quitar el icono ' . $this->id . ' de la convocatoria ' . $this->call . ' ' . $e->getMessage();
                 //Text::get('remove-icon-fail');
                 return false;
 			}

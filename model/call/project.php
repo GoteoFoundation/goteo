@@ -72,7 +72,7 @@ namespace Goteo\Model\Call {
             try {
                 $sqlFilter = "";
                 if (!empty($call)) {
-                    $sqlFilter = " WHERE project.id IN (SELECT project FROM call_project WHERE call = '$call')";
+                    $sqlFilter = " WHERE project.id IN (SELECT project FROM call_project WHERE `call` = '$call')";
                 }
 
                 $sql = "SELECT 
@@ -121,7 +121,7 @@ namespace Goteo\Model\Call {
             if (!$this->validate($errors)) return false;
 
 			try {
-	            $sql = "REPLACE INTO call_project (call, project) VALUES(:call, :project)";
+	            $sql = "REPLACE INTO call_project (`call`, project) VALUES(:call, :project)";
                 $values = array(':call'=>$this->call, ':project'=>$this->id);
 				self::query($sql, $values);
 				return true;
@@ -147,10 +147,10 @@ namespace Goteo\Model\Call {
 			);
 
 			try {
-                self::query("DELETE FROM call_project WHERE project = :project AND call = :call", $values);
+                self::query("DELETE FROM call_project WHERE project = :project AND `call` = :call", $values);
 				return true;
 			} catch(\PDOException $e) {
-				$errors[] = 'No se ha podido quitar la proyecto ' . $this->id . ' del proyecto ' . $this->call . ' ' . $e->getMessage();
+				$errors[] = 'No se ha podido quitar el proyecto ' . $this->id . ' de la convocatoria ' . $this->call . ' ' . $e->getMessage();
                 //Text::get('remove-project-fail');
                 return false;
 			}
