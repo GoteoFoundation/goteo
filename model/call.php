@@ -185,11 +185,14 @@ namespace Goteo\Model {
                 // owner
                 $call->user = User::get($call->owner);
 
+                /*
+                 * No vamos a hacer objetos para esto, a ver que pasa
                 // logo
-                $call->logo = Image::get($call->logo);
-
+//                $call->logo = Image::get($call->logo);
                 // imagen
-                $call->image = Image::get($call->image);
+//                $call->image = Image::get($call->image);
+                 *
+                 */
 
 				// categorias
                 $call->categories = Call\Category::get($id);
@@ -992,7 +995,7 @@ namespace Goteo\Model {
                  $okeys['overview']['name'] = 'ok';
             }
 
-            if (!empty($this->subtitle)) {
+            if (empty($this->subtitle)) {
                 $errors['overview']['subtitle'] = Text::get('mandatory-call-field-subtitle');
             } else {
                  $okeys['overview']['subtitle'] = 'ok';

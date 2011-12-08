@@ -51,3 +51,36 @@ body.project-edit div#main.overview div.superform li.element.media-preview > div
 body.project-edit div#main.overview div.superform li.element.media-preview .title {
     display: none;
 }
+
+
+/**
+ * Para imagenes de convocatorias
+ */
+
+body.project-edit div#main.overview div.superform li.element.logo > div.children > div.elements > ol > li.element,
+body.project-edit div#main.overview div.superform li.element.image > div.children > div.elements > ol > li.element {
+    display: inline-block;
+    vertical-align: top;
+}
+
+body.project-edit div#main.overview div.superform li.element.logo ol,
+body.project-edit div#main.overview div.superform li.element.image ol {
+    padding: 0;
+}
+
+body.project-edit div#main.overview div.superform li.element.logo li.element.logo-image,
+body.project-edit div#main.overview div.superform li.element.image li.element.image-image {
+    padding: 0 2em;
+    margin: 0px !important;
+}
+
+body.project-edit div#main.overview div.superform li.element.logo li.element.logo img,
+body.project-edit div#main.overview div.superform li.element.image li.element.image img {
+    width: 128px;
+    height: 128px;
+}
+
+body.project-edit div#main.overview div.superform li.element.logo li.element .title,
+body.project-edit div#main.overview div.superform li.element.image li.element .title {
+    display: none;
+}

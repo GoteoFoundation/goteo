@@ -4470,7 +4470,7 @@ namespace Goteo\Controller {
                     // si es publicado, hay un evento público
                     $log->title = $call->name;
                     $log->url = '/project/'.$call->id;
-                    $log->image = $call->logo->id;
+                    $log->image = $call->logo;
                     $log->scope = 'public';
                     $log->type = 'goteo';
 //                    $log->html = Text::html('feed-new_project');
