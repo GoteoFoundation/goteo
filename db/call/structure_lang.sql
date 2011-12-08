@@ -9,3 +9,5 @@ CREATE TABLE IF NOT EXISTS `call_lang` (
  UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
+-- Dosier informativo
+ALTER TABLE `call_lang` ADD `dossier` tinytext;
