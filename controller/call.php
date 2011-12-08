@@ -118,7 +118,7 @@ namespace Goteo\Controller {
                         $mailHandler->to = \GOTEO_MAIL;
                         $mailHandler->toName = 'Revisor de convocatorias';
                         $mailHandler->subject = 'Convocatoria ' . $call->name . ' finalizó la edición';
-                        $mailHandler->content = '<p>Se ha finalizado la edicion de una nueva convocatoria</p><p>El nombre de la convocatoria es: <span class="message-highlight-blue">'.$call->name.'</span> <br />y se puede ver en <span class="message-highlight-blue"><a href="'.SITE_URL.'/call/'.$call->id.'">'.SITE_URL.'/call/'.$call->id.'</a></span></p>';
+                        $mailHandler->content = '<p>Se ha finalizado la edicion de la convocatoria <span class="message-highlight-blue">'.$call->name.'</span>, se puede ver en <span class="message-highlight-blue"><a href="'.SITE_URL.'/call/'.$call->id.'">'.SITE_URL.'/call/'.$call->id.'</a></span></p>';
                         $mailHandler->fromName = "{$call->user->name}";
                         $mailHandler->from = $call->user->email;
                         $mailHandler->html = true;
@@ -132,7 +132,46 @@ namespace Goteo\Controller {
 
                         unset($mailHandler);
 
-                        throw new Redirection("/dashboard?ok");
+                        // email al dueño
+                        $mailHandler = new Mail();
+
+                        $mailHandler->to = $call->user->email;
+                        $mailHandler->toName = $call->user->name;
+                        $mailHandler->subject = 'Convocatoria ' . $call->name . ' creada correctamente';
+                        $mailHandler->content = '<p>Se ha completado la creación de la convocatoria <span class="message-highlight-blue">'.$call->name.'</span>, ya se puedes seleccionar proyectos.</p>';
+                        $mailHandler->html = true;
+                        $mailHandler->template = 0;
+                        if ($mailHandler->send($errors)) {
+                            Message::Info(Text::get('call-review-confirm_mail-success'));
+                        } else {
+                            Message::Error(Text::get('call-review-confirm_mail-fail'));
+                            Message::Error(implode('<br />', $errors));
+                        }
+
+                        unset($mailHandler);
+
+                        /*
+                         * Evento Feed
+                         */
+                        $log = new Feed();
+                        $log->title = 'convocatoria enviada a revision';
+                        $log->url = '/admin/calls';
+                        $log->type = 'project';
+                        $log_text = '%s ha completado la edición de la convocatoria %s, se dispone a <span class="red">asignar proyectos</span>';
+                        $log_items = array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('call', $call->name, $call->id)
+                        );
+                        $log->html = \vsprintf($log_text, $log_items);
+                        $log->add($errors);
+                        unset($log);
+
+                        if ($_SESSION['user']->id == $call->ower) {
+                            $_SESSION['call'] = $call->id;
+                            throw new Redirection("/dashboard/calls/projects");
+                        } else {
+                            throw new Redirection("/admin/calls/projects/{$call->id}");
+                        }
                     }
                 }
 
@@ -183,21 +222,6 @@ namespace Goteo\Controller {
                     break;
 
                 case 'preview':
-                    /*
-                     * A saber si vamos a necesitar esto...
-                     *
-                    $success = array();
-                    if (empty($call->errors)) {
-                        $success[] = Text::get('guide-call-success-noerrors');
-                    }
-                    if ($call->finishable) {
-                        $success[] = Text::get('guide-call-success-minprogress');
-                        $success[] = Text::get('guide-call-success-okfinish');
-                    }
-                    $viewData['success'] = $success;
-                    $viewData['types'] = Model\Call\Cost::types();
-                     *
-                     */
                     break;
             }
 

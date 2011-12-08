@@ -92,12 +92,13 @@ $filter = "?status={$filters['status']}&category={$filters['category']}&caller={
             <tr>
                 <td colspan="6"> >>> Acciones:
                     <a href="/call/edit/<?php echo $call->id; ?>" target="_blank">[Editar]</a>
-                    <?php if ($call->status == 1) : ?><a href="<?php echo "/admin/calls/review/{$call->id}{$filter}"; ?>">[Abrir aplicacion]</a><?php endif; ?>
-                    <?php if ($call->status < 3) : ?><a href="<?php echo "/admin/calls/publish/{$call->id}{$filter}"; ?>">[Publicar]</a><?php endif; ?>
-                    <?php if ($call->status > 1) : ?><a href="<?php echo "/admin/calls/enable/{$call->id}{$filter}"; ?>">[Despublicar/Desaplicable]</a><?php endif; ?>
-                    <a href="<?php echo "/admin/calls/cancel/{$call->id}{$filter}"; ?>" onclick="return confirm('La convocatoria va a quedar DESCARTADA permanentemente, ¿seguro que hacemos eso?');" style="color: red;">[Descartar]</a>
+                    <?php if ($call->status == 1) : ?><a href="<?php echo "/admin/calls/review/{$call->id}{$filter}"; ?>">[A revisión]</a><?php endif; ?>
+                    <?php if ($call->status < 3) : ?><a href="<?php echo "/admin/calls/open/{$call->id}{$filter}"; ?>">[Abrir aplicacion]</a><?php endif; ?>
+                    <?php if ($call->status < 4) : ?><a href="<?php echo "/admin/calls/publish/{$call->id}{$filter}"; ?>">[Publicar]</a><?php endif; ?>
+                    <?php if ($call->status > 1) : ?><a href="<?php echo "/admin/calls/enable/{$call->id}{$filter}"; ?>">[Reabrir edición]</a><?php endif; ?>
                     <a href="<?php echo "/admin/calls/projects/{$call->id}{$filter}"; ?>">[Proyectos]</a>
                     <?php if ($call->translate) : ?><a href="<?php echo "/admin/translates//{$call->id}"; ?>">[Ir a traducción]</a><?php endif; ?>
+                    <a href="<?php echo "/admin/calls/cancel/{$call->id}{$filter}"; ?>" onclick="return confirm('La convocatoria va a CADUCAR, ¿seguro que hacemos eso?');" style="color: red;">[Cancelar]</a>
                 </td>
             </tr>
             <tr>

@@ -4408,12 +4408,19 @@ namespace Goteo\Controller {
             switch ($action) {
                 case 'review': // listo para aplicar proyectos (se publica, sino que siga en edicion)
                     if ($call->ready($errors)) {
+                        $log_text = 'El admin %s ha pasado la convocatoria %s a <span class="red">Revisión</span>';
+                    } else {
+                        $log_text = 'Al admin %s le ha fallado al pasar la convocatoria %s a <span class="red">Revisión</span>';
+                    }
+                    break;
+                case 'publish': // comienza la campaña de postulacion
+                    if ($call->open($errors)) {
                         $log_text = 'El admin %s ha pasado la convocatoria %s al estado <span class="red">Recepción de proyectos</span>';
                     } else {
                         $log_text = 'Al admin %s le ha fallado al pasar la convocatoria %s al estado <span class="red">Recepción de proyectos</span>';
                     }
                     break;
-                case 'publish': // comienza la campaña
+                case 'publish': // comienza la campaña de pasta
                     if ($call->publish($errors)) {
                         $log_text = 'El admin %s ha pasado la convocatoria %s al estado <span class="red">en Campaña</span>';
                     } else {
@@ -4421,10 +4428,10 @@ namespace Goteo\Controller {
                     }
                     break;
                 case 'cancel': // caducar una campaña o aplicacion antes de hora
-                    if ($call->cancel($errors)) {
-                        $log_text = 'El admin %s ha pasado la convocatoria %s al estado <span class="red">Descartado</span>';
+                    if ($call->fail($errors)) {
+                        $log_text = 'El admin %s ha pasado la convocatoria %s al estado <span class="red">Caducado</span>';
                     } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar la convocatoria %s al estado <span class="red">Descartado</span>';
+                        $log_text = 'Al admin %s le ha fallado al pasar la convocatoria %s al estado <span class="red">Caducado</span>';
                     }
                     break;
                 case 'enable': // reabrir la edición Ojo que se quita de campña! Se puede editar mientras está en campaña?
@@ -4443,18 +4450,7 @@ namespace Goteo\Controller {
             
             if (isset($log_text)) {
 
-                $log_items = array(
-                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                    Feed::item('call', $call->name, $call->id)
-                );
-                Message::Info(\vsprintf($log_text, $log_items));
-
-                /*
-                 * Evento Feed
-                 *
-                 * Cuando se pone en revision para aceptar proyectos y cuando se pone en campaña para repartir dinero
-                 *
-                 *
+                // Evento Feed
                 $log = new Feed();
                 $log->title = 'Gestion de una convocatoria desde el admin';
                 $log->url = '/admin/calls';
@@ -4466,21 +4462,32 @@ namespace Goteo\Controller {
                 $log->html = \vsprintf($log_text, $log_items);
                 $log->add($errors);
 
-                if ($action == 'publish') {
-                    // si es publicado, hay un evento público
+                Message::Info($log->html);
+
+                if ($action == 'open') {
+                    // evento público, se ha abierto para recibir proyectos
                     $log->title = $call->name;
-                    $log->url = '/project/'.$call->id;
+                    $log->url = '/call/'.$call->id;
                     $log->image = $call->logo;
                     $log->scope = 'public';
                     $log->type = 'goteo';
-//                    $log->html = Text::html('feed-new_project');
-                    $log->html = Text::html('feed-new_project');
+                    $log->html = Text::html('feed-new_call-opened');
+                    $log->add($errors);
+                }
+
+                if ($action == 'publish') {
+                    // evento público, ha iniciado la campaña
+                    $log->title = $call->name;
+                    $log->url = '/call/'.$call->id;
+                    $log->image = $call->logo;
+                    $log->scope = 'public';
+                    $log->type = 'goteo';
+                    $log->html = Text::html('feed-new_call-published');
                     $log->add($errors);
                 }
 
                 unset($log);
-                 *
-                 */
+                
             }
 
             if ($action == 'add') {

@@ -482,7 +482,7 @@ namespace Goteo\Model {
         }
 
         /*
-         * Listo para entrada de proyectos
+         * Listo para revision
          */
         public function ready(&$errors = array()) {
 			try {
@@ -493,6 +493,23 @@ namespace Goteo\Model {
                 
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al finalizar la edicion. ' . $e->getMessage();
+                //Text::get('send-call-review-fail');
+                return false;
+            }
+        }
+
+        /*
+         * Listo para postulación
+         */
+        public function open(&$errors = array()) {
+			try {
+                $sql = "UPDATE `call` SET status = :status, opened = :opened WHERE id = :id";
+                self::query($sql, array(':status'=>3, ':opened'=>date('Y-m-d'), ':id'=>$this->id));
+
+                return true;
+
+            } catch (\PDOException $e) {
+                $errors[] = 'Fallo al abrir la postulacion. ' . $e->getMessage();
                 //Text::get('send-call-review-fail');
                 return false;
             }
@@ -520,7 +537,7 @@ namespace Goteo\Model {
         public function publish(&$errors = array()) {
 			try {
 				$sql = "UPDATE `call` SET status = :status, published = :published WHERE id = :id";
-				self::query($sql, array(':status'=>3, ':published'=>date('Y-m-d'), ':id'=>$this->id));
+				self::query($sql, array(':status'=>4, ':published'=>date('Y-m-d'), ':id'=>$this->id));
 
                 return true;
             } catch (\PDOException $e) {
@@ -553,7 +570,7 @@ namespace Goteo\Model {
         public function succeed(&$errors = array()) {
 			try {
 				$sql = "UPDATE `call` SET status = :status, success = :success WHERE id = :id";
-				self::query($sql, array(':status'=>4, ':success'=>date('Y-m-d'), ':id'=>$this->id));
+				self::query($sql, array(':status'=>5, ':success'=>date('Y-m-d'), ':id'=>$this->id));
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al dar por financiado el convocatoria. ' . $e->getMessage();
@@ -1079,12 +1096,12 @@ namespace Goteo\Model {
         public static function status () {
             return array(
 //                0=>Text::get('form-call_status-cancelled'),
-                1=>Text::get('form-call_status-edit'),
-                2=>Text::get('form-call_status-review'),
-                3=>Text::get('form-call_status-campaing'),
-                4=>Text::get('form-call_status-success'),
-                5=>Text::get('form-call_status-fulfilled'),
-                6=>Text::get('form-call_status-expired'));
+                1=>Text::get('form-call_status-edit'),              // edicion
+                2=>Text::get('form-call_status-review'),            // en revisión: seleccionando proyectos
+                3=>Text::get('form-call_status-apply'),             // en campaña de postulacion
+                4=>Text::get('form-call_status-published'),         // en campaña de repartir dinero
+                5=>Text::get('form-call_status-success'),           // se acabo el dinero
+                6=>Text::get('form-call_status-expired'));          // la hemos cancelado
         }
 
          public static function blankErrors() {

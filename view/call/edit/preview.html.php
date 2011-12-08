@@ -8,12 +8,14 @@ $call = $this['call'];
 $types   = $this['types'];
 $errors = $call->errors ?: array();
 
+$finishable = true;
+
 // miramos el pruimer paso con errores para mandarlo a ese
 $goto = 'view-step-userProfile';
 foreach ($this['steps'] as $id => $data) {
-
     if (empty($step) && !empty($call->errors[$id])) {
         $goto = 'view-step-' . $id;
+        $finishable = false;
         break;
     }
 }
@@ -27,6 +29,24 @@ $buttons = array(
         'class' => 'retry'
     )
 );
+
+// si es enviable ponemos el boton
+if ($finishable) {
+    $buttons['finish'] = array(
+        'type'  => 'submit',
+        'name'  => 'finish',
+        'label' => Text::get('form-send_review-button'),
+        'class' => 'confirm red'
+    );
+} else {
+    $buttons['nofinish'] = array(
+        'type'  => 'submit',
+        'name'  => 'nofinish',
+        'label' => Text::get('form-send_review-button'),
+        'class' => 'confirm disabled',
+        'disabled' => 'disabled'
+    );
+}
 
 // elementos generales de preview
 $elements      = array(
