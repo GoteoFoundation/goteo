@@ -62,6 +62,7 @@ namespace Goteo\Model {
             $whom, // quienes pueden participar
             $apply, // como publicar un convocatoria
             $legal, // terminos y condiciones
+            $dossier, // url del dosier informativo
             $categories = array(),
             $icons = array(),
             $call_location, // call execution location
@@ -165,11 +166,12 @@ namespace Goteo\Model {
                 } elseif (!empty($lang)) {
                     $sql = "
                         SELECT
+                            IFNULL(call_lang.subtitle, call.subtitle) as subtitle,
                             IFNULL(call_lang.description, call.description) as description,
                             IFNULL(call_lang.whom, call.whom) as whom,
                             IFNULL(call_lang.apply, call.apply) as apply,
                             IFNULL(call_lang.legal, call.legal) as legal,
-                            IFNULL(call_lang.subtitle, call.subtitle) as subtitle
+                            IFNULL(call_lang.dossier, call.dossier) as dossier
                         FROM `call`
                         LEFT JOIN call_lang
                             ON  call_lang.id = call.id
@@ -353,7 +355,10 @@ namespace Goteo\Model {
                     'whom',
                     'apply',
                     'legal',
-                    'call_location'
+                    'dossier',
+                    'call_location',
+                    'amount',
+                    'days'
                     );
 
                 $set = '';
@@ -448,7 +453,8 @@ namespace Goteo\Model {
                     'description'=>'description_lang',
                     'whom'=>'whom_lang',
                     'apply'=>'apply_lang',
-                    'legal'=>'legal_lang'
+                    'legal'=>'legal_lang',
+                    'dossier'=>'dossier_lang'
                     );
 
                 $set = '';
@@ -1037,7 +1043,6 @@ namespace Goteo\Model {
                  $okeys['overview']['legal'] = 'ok';
             }
 
-
             if (empty($this->categories)) {
                 $errors['overview']['categories'] = Text::get('mandatory-call-field-category');
             } else {
@@ -1055,6 +1060,12 @@ namespace Goteo\Model {
             } else {
                  $okeys['overview']['call_location'] = 'ok';
                  ++$score;
+            }
+
+            if (empty($this->amount)) {
+                $errors['overview']['amount'] = Text::get('mandatory-call-field-amount');
+            } else {
+                 $okeys['overview']['amount'] = 'ok';
             }
 
             /***************** FIN Revisión del paso 3, DESCRIPCION *****************/

@@ -18,15 +18,24 @@ foreach ($this['categories'] as $value => $label) {
         );            
 }
 
+// retornos en opcion checkboxes con icono y descripcion
 $icons = array();
 
-foreach ($this['icons'] as $value => $label) {
-    $icons[] =  array(
-        'value'     => $value,
-        'label'     => $label,
-        'checked'   => in_array($value, $call->icons)
-        );
+foreach ($this['icons'] as $id=>$icon) {
+    $rewards["icon-{$icon->id}"] =  array(
+        'name'  => "icons[]",
+        'value' => $icon->id,
+        'type'  => 'checkbox',
+        'class' => "icon {$icon->id}",
+        'label' => $icon->name,
+        'hint'  => $icon->description,
+        'id'    => "icon-{$icon->id}",
+        'checked' => in_array($id, $call->icons)
+    );
 }
+
+
+
 
 $superform = array(
     'level'         => $this['level'],
@@ -64,7 +73,7 @@ $superform = array(
         'logo' => array(
             'type'      => 'group',
             'required'  => true,
-            'title'     => Text::get('call-field-logo-title'),
+            'title'     => Text::get('call-field-logo'),
             'hint'      => Text::get('tooltip-call-logo'),
             'errors'    => !empty($errors['logo']) ? array($errors['logo']) : array(),
             'ok'        => !empty($okeys['logo']) ? array($okeys['logo']) : array(),
@@ -94,7 +103,7 @@ $superform = array(
         'image' => array(
             'type'      => 'group',
             'required'  => true,
-            'title'     => Text::get('call-field-image-title'),
+            'title'     => Text::get('call-field-image'),
             'hint'      => Text::get('tooltip-call-image'),
             'errors'    => !empty($errors['image']) ? array($errors['image']) : array(),
             'ok'        => !empty($okeys['image']) ? array($okeys['image']) : array(),
@@ -127,11 +136,14 @@ $superform = array(
             'required'  => true,
             'hint'      => Text::get('tooltip-call-description'),
             'value'     => $call->description,
+            'class'     => 'inline',
             'errors'    => !empty($errors['description']) ? array($errors['description']) : array(),
             'ok'        => !empty($okeys['description']) ? array($okeys['description']) : array()
         ),
+        
         'description_group' => array(
-            'type' => 'group',
+            'type'      => 'group',
+            'class'     => 'inline',
             'children'  => array(                
                 'whom' => array(
                     'type'      => 'textarea',       
@@ -162,6 +174,27 @@ $superform = array(
             )
         ),
        
+        'dossier' => array(
+            'type'      => 'textbox',
+            'title'     => Text::get('overview-field-dossier'),
+            'required'  => false,
+            'value'     => $call->dossier,
+            'hint'      => Text::get('tooltip-call-dossier'),
+            'errors'    => !empty($errors['dossier']) ? array($errors['dossier']) : array(),
+            'ok'        => !empty($okeys['dossier']) ? array($okeys['dossier']) : array()
+        ),
+
+        'location' => array(
+            'type'      => 'textbox',
+            'name'      => 'call_location',
+            'title'     => Text::get('call-field-call_location'),
+            'required'  => true,
+            'hint'      => Text::get('tooltip-call-call_location'),
+            'errors'    => !empty($errors['call_location']) ? array($errors['call_location']) : array(),
+            'ok'        => !empty($okeys['call_location']) ? array($okeys['call_location']) : array(),
+            'value'     => $call->call_location
+        ),
+
         'category' => array(    
             'type'      => 'checkboxes',
             'name'      => 'categories[]',
@@ -173,7 +206,7 @@ $superform = array(
             'errors'    => !empty($errors['categories']) ? array($errors['categories']) : array(),
             'ok'        => !empty($okeys['categories']) ? array($okeys['categories']) : array()
         ),       
-
+/*
         'icon' => array(
             'type'      => 'checkboxes',
             'name'      => 'icons[]',
@@ -185,17 +218,40 @@ $superform = array(
             'errors'    => !empty($errors['icons']) ? array($errors['icons']) : array(),
             'ok'        => !empty($okeys['icons']) ? array($okeys['icons']) : array()
         ),
+*/
 
-
-        'location' => array(
-            'type'      => 'textbox',
-            'name'      => 'call_location',
-            'title'     => Text::get('call-field-call_location'),
+        'icons' => array(
+            'type'      => 'group',
+            'title'     => Text::get('call-field-icons'),
             'required'  => true,
-            'hint'      => Text::get('tooltip-call-call_location'),
-            'errors'    => !empty($errors['call_location']) ? array($errors['call_location']) : array(),
-            'ok'        => !empty($okeys['call_location']) ? array($okeys['call_location']) : array(),
-            'value'     => $call->call_location
+            'class'     => '',
+            'children'  => $rewards,
+            'hint'      => Text::get('tooltip-call-icons'),
+            'errors'    => !empty($errors['icons']) ? array($errors['icons']) : array(),
+            'ok'        => !empty($okeys['icons']) ? array($okeys['icons']) : array()
+        ),
+
+        'amount' => array(
+            'type'      => 'textbox',
+            'required'  => true,
+            'title'     => Text::get('call-field-amount'),
+            'size'      => 8,
+            'class'     => 'amount',
+            'hint'      => Text::get('tooltip-call-amount'),
+            'errors'    => !empty($errors['amount']) ? array($errors['amount']) : array(),
+            'ok'        => !empty($okeys['amount']) ? array($okeys['amount']) : array(),
+            'value'     => $call->amount
+        ),
+
+        'days' => array(
+            'type'      => 'textbox',
+            'title'     => Text::get('call-field-days'),
+            'size'      => 8,
+            'class'     => 'days',
+            'hint'      => Text::get('tooltip-call-days'),
+            'errors'    => !empty($errors['days']) ? array($errors['days']) : array(),
+            'ok'        => !empty($okeys['days']) ? array($okeys['days']) : array(),
+            'value'     => $call->days
         ),
 
         'footer' => array(
@@ -213,7 +269,7 @@ $superform = array(
                     'children' => array(
                         'next' => array(
                             'type'  => 'submit',
-                            'name'  => 'view-step-costs',
+                            'name'  => 'view-step-preview',
                             'label' => Text::get('form-next-button'),
                             'class' => 'next'
                         )

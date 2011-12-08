@@ -16,40 +16,50 @@ body.project-edit div#main.rewards div.superform li.element.reward div.title {
     float: left;
 }
 
+/* Iconos tambien para los retornos de las convocatorias */
+
+body.project-edit div#main.overview div.superform li.element.icon,
 body.project-edit div#main.rewards div.superform li.element.reward div.reward {
-    padding-left: 55px;
-    background: none no-repeat 10px center;
+    background: none no-repeat right center;
     min-height: 32px;
 }
 
+body.project-edit div#main.overview div.superform li.element.icon.file,
 body.project-edit div#main.rewards div.superform li.element.reward div.file {
     background-image: url('/view/css/icon/m/file.png');
 }
 
+body.project-edit div#main.overview div.superform li.element.icon.money,
 body.project-edit div#main.rewards div.superform li.element.reward div.money {
     background-image: url('/view/css/icon/m/money.png');
 }
 
+body.project-edit div#main.overview div.superform li.element.icon.code,
 body.project-edit div#main.rewards div.superform li.element.reward div.code {
     background-image: url('/view/css/icon/m/code.png');
 }
 
+body.project-edit div#main.overview div.superform li.element.icon.service,
 body.project-edit div#main.rewards div.superform li.element.reward div.service {
     background-image: url('/view/css/icon/m/service.png');
 }
 
+body.project-edit div#main.overview div.superform li.element.icon.manual,
 body.project-edit div#main.rewards div.superform li.element.reward div.manual {
     background-image: url('/view/css/icon/m/manual.png');
 }
 
+body.project-edit div#main.overview div.superform li.element.icon.product,
 body.project-edit div#main.rewards div.superform li.element.reward div.product {
     background-image: url('/view/css/icon/m/product.png');
 }
 
+body.project-edit div#main.overview div.superform li.element.icon.design,
 body.project-edit div#main.rewards div.superform li.element.reward div.design {
     background-image: url('/view/css/icon/m/design.png');
 }
 
+body.project-edit div#main.overview div.superform li.element.icon.other,
 body.project-edit div#main.rewards div.superform li.element.reward div.other {
     background-image: url('/view/css/icon/m/other.png');
 }

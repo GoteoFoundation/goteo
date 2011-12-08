@@ -84,3 +84,25 @@ body.project-edit div#main.overview div.superform li.element.logo li.element .ti
 body.project-edit div#main.overview div.superform li.element.image li.element .title {
     display: none;
 }
+
+/**
+ * Para los campos cortos
+ */
+body.project-edit div#main.overview div.superform li.element.amount > div.contents > input {
+    width: 3em;
+    max-width: 3em;
+    min-width: 3em;
+    float: left;
+    padding-right: 2em;
+    background-image: url('/view/css/euro/m.png');
+    background-repeat: no-repeat;
+    background-position: 3.7em center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+body.project-edit div#main.overview div.superform li.element.days > div.contents > input {
+    width: 3em;
+    max-width: 3em;
+    min-width: 3em;
+}

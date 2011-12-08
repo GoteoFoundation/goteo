@@ -179,7 +179,7 @@ namespace Goteo\Controller {
                 
                 case 'overview':
                     $viewData['categories'] = Model\Call\Category::getAll();
-                    $viewData['icons'] = Model\Call\Icon::getAll();
+                    $viewData['icons'] = Model\Icon::getAll();
                     break;
 
                 case 'preview':
@@ -443,7 +443,10 @@ namespace Goteo\Controller {
                 'whom',
                 'apply',
                 'legal',
-                'call_location'
+                'dossier',
+                'call_location',
+                'amount',
+                'days'
             );
 
             foreach ($fields as $field) {

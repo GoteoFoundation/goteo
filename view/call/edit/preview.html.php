@@ -42,7 +42,7 @@ $elements      = array(
                        . '<div class="overlay" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 999"></div>'
                        . '<div style="z-index: 0">'
 //                       . new View('view/call/splash.html.php', array('call' => $call))
-                       . '<pre>' . print_r($call, 1) . '</pre>'
+                       . 'Aquí vendrá algo parecido a lo que se pinte en la web'
                        . '</div>'
                        . '</div></div>'
     )
