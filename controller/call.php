@@ -439,8 +439,6 @@ namespace Goteo\Controller {
             $fields = array(
                 'name',
                 'subtitle',
-                'logo',
-                'image',
                 'description',
                 'whom',
                 'apply',
@@ -457,11 +455,29 @@ namespace Goteo\Controller {
             // tratar el logo que suben
             if(!empty($_FILES['logo_upload']['name'])) {
                 $call->logo = $_FILES['logo_upload'];
+            } else {
+                // tratar si quitan la imagen
+                if (!empty($_POST['logo-' . $call->logo->id .  '-remove'])) {
+                    $call->logo->remove();
+                    $call->logo = '';
+                } else {
+                    $call->logo = $call->logo->id; // la acual
+                }
             }
+
+            // tratar si quitan el logo
 
             // tratar la imagen que suben
             if(!empty($_FILES['image_upload']['name'])) {
                 $call->image = $_FILES['image_upload'];
+            } else {
+                // tratar si quitan la imagen
+                if (!empty($_POST['image-' . $call->image->id .  '-remove'])) {
+                    $call->image->remove();
+                    $call->image = '';
+                } else {
+                    $call->image = $call->image->id; // la acual
+                }
             }
 
             //categorias

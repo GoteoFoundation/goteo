@@ -68,21 +68,21 @@ $superform = array(
             'hint'      => Text::get('tooltip-call-logo'),
             'errors'    => !empty($errors['logo']) ? array($errors['logo']) : array(),
             'ok'        => !empty($okeys['logo']) ? array($okeys['logo']) : array(),
-            'class'     => 'images',
+            'class'     => 'user_avatar',
             'children'  => array(
                 'logo_upload'    => array(
                     'type'  => 'file',
                     'label' => Text::get('form-image_upload-button'),
-                    'class' => 'inline image_upload',
+                    'class' => 'inline avatar_upload',
                     'hint'  => Text::get('tooltip-call-logo'),
                 ),
-                'logo' => array(
+                'logo-current' => array(
                     'type' => 'hidden',
                     'value' => $call->logo->id,
                 ),
                 'logo-image' => array(
                     'type'  => 'html',
-                    'class' => 'inline call-image',
+                    'class' => 'inline avatar-image',
                     'html'  => is_object($call->logo)  ?
                                $call->logo . '<img src="'.SRC_URL.'/image/' . $call->logo->id . '/128/128" alt="Logo" /><button class="image-remove" type="submit" name="logo-'.$call->logo->id.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
@@ -98,21 +98,21 @@ $superform = array(
             'hint'      => Text::get('tooltip-call-image'),
             'errors'    => !empty($errors['image']) ? array($errors['image']) : array(),
             'ok'        => !empty($okeys['image']) ? array($okeys['image']) : array(),
-            'class'     => 'images',
+            'class'     => 'user_avatar',
             'children'  => array(
                 'image_upload'    => array(
                     'type'  => 'file',
                     'label' => Text::get('form-image_upload-button'),
-                    'class' => 'inline image_upload',
+                    'class' => 'inline avatar_upload',
                     'hint'  => Text::get('tooltip-call-image'),
                 ),
-                'image' => array(
+                'image-current' => array(
                     'type' => 'hidden',
                     'value' => $call->image->id,
                 ),
                 'image-image' => array(
                     'type'  => 'html',
-                    'class' => 'inline call-image',
+                    'class' => 'inline avatar-image',
                     'html'  => is_object($call->image) ?
                                $call->image . '<img src="'.SRC_URL.'/image/' . $call->image->id . '/128/128" alt="Imagen" /><button class="image-remove" type="submit" name="image-'.$call->image->id.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''

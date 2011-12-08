@@ -21,16 +21,10 @@ use Goteo\Library\Text;
                         <strong class="number">2</strong></button>
                     </span>
                     
-                    <fieldset style="display: inline">
-                        
-                        <legend><?php echo Text::get('regular-new_call'); ?></legend>
-
-                        <span class="step off-on<?php if ($this['step'] === 'overview') echo ' active'; else echo ' activable'; ?>">
-                            <button type="submit" name="view-step-overview" value="<?php echo Text::get('step-3'); ?>"><?php echo Text::get('step-3'); ?>
-                            <strong class="number">3</strong></button>                            
-                        </span>
-                        
-                    </fieldset>
+                    <span class="step on-on<?php if ($this['step'] === 'overview') echo ' active'; else echo ' activable'; ?>">
+                        <button type="submit" name="view-step-overview" value="<?php echo Text::get('step-3'); ?>"><?php echo Text::get('step-3'); ?>
+                        <strong class="number">3</strong></button>
+                    </span>
                     
                     <span class="step off-last off<?php if ($this['step'] === 'preview') echo ' active'; else echo ' activable'; ?>">
                         <button type="submit" name="view-step-preview" value="<?php echo Text::get('step-7'); ?>"><?php echo Text::get('step-7'); ?>
