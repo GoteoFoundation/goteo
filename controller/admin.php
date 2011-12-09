@@ -519,6 +519,8 @@ namespace Goteo\Controller {
                 }
 
                 unset($log);
+
+                throw new Redirection('/admin/projects/list');
             }
 
             if ($action == 'dates') {
@@ -4441,6 +4443,13 @@ namespace Goteo\Controller {
                         $log_text = 'Al admin %s le ha fallado al pasar la convocatoria %s al estado <span class="red">Edición</span>';
                     }
                     break;
+                case 'delete': // eliminar completamente la convocatoria
+                    if ($call->delete($errors)) {
+                        $log_text = 'El admin %s ha eliminado la convocatoria %s <span class="red">Completamente</span>';
+                    } else {
+                        $log_text = 'Al admin %s le ha fallado al eliminar la convocatoria %s <span class="red">Completamente</span>';
+                    }
+                    break;
             }
 
             //si llega post para el action add, verificamos los datos y
@@ -4488,6 +4497,7 @@ namespace Goteo\Controller {
 
                 unset($log);
                 
+                throw new Redirection('/admin/calls/list');
             }
 
             if ($action == 'add') {

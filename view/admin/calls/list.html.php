@@ -98,7 +98,8 @@ $filter = "?status={$filters['status']}&category={$filters['category']}&caller={
                     <?php if ($call->status > 1) : ?><a href="<?php echo "/admin/calls/enable/{$call->id}{$filter}"; ?>">[Reabrir edición]</a><?php endif; ?>
                     <a href="<?php echo "/admin/calls/projects/{$call->id}{$filter}"; ?>">[Proyectos]</a>
                     <?php if ($call->translate) : ?><a href="<?php echo "/admin/translates//{$call->id}"; ?>">[Ir a traducción]</a><?php endif; ?>
-                    <a href="<?php echo "/admin/calls/cancel/{$call->id}{$filter}"; ?>" onclick="return confirm('La convocatoria va a CADUCAR, ¿seguro que hacemos eso?');" style="color: red;">[Cancelar]</a>
+                    <a href="<?php echo "/admin/calls/cancel/{$call->id}{$filter}"; ?>" onclick="return confirm('La convocatoria va a CADUCAR, ¿seguro que hacemos eso?');">[Cancelar]</a>
+                    <?php if ($call->status == 1) : ?><a href="<?php echo "/admin/calls/delete/{$call->id}{$filter}"; ?>" onclick="return confirm('La convocatoria va a ELIMINAR comlpetamente, ¿seguro que hacemos eso?');" style="color: red;">[Suprimir]</a><?php endif; ?>
                 </td>
             </tr>
             <tr>

@@ -96,7 +96,11 @@ namespace Goteo\Model {
             $userPersonal = User::getPersonal($owner);
 
             // debe verificar que puede conseguir un id único a partir del nombre
-            $id = self::idealiza($name);
+            $id = self::checkId(self::idealiza($name));
+            if ($id == false) {
+                $errors[] = 'No se ha podido generar Id';
+                return false;
+            }
 
             $values = array(
                 ':id'   => $id,
@@ -591,12 +595,12 @@ namespace Goteo\Model {
             self::query("START TRANSACTION");
             try {
                 //borrar todos los registros
-                self::query("DELETE FROM call_category WHERE call = ?", array($this->id));
-                self::query("DELETE FROM call_icon WHERE call = ?", array($this->id));
-                self::query("DELETE FROM call_project WHERE call = ?", array($this->id));
+                self::query("DELETE FROM call_category WHERE `call` = ?", array($this->id));
+                self::query("DELETE FROM call_icon WHERE `call` = ?", array($this->id));
+                self::query("DELETE FROM call_project WHERE `call` = ?", array($this->id));
                 self::query("DELETE FROM `call` WHERE id = ?", array($this->id));
                 // y los permisos
-                self::query("DELETE FROM acl WHERE url like ?", array('%'.$this->id.'%'));
+                self::query("DELETE FROM acl WHERE url LIKE :call AND url LIKE :id", array(':call'=>'%/call/%',':id'=>'%'.$this->id.'%'));
                 // si todo va bien, commit y cambio el id de la instancia
                 self::query("COMMIT");
                 return true;
@@ -636,7 +640,7 @@ namespace Goteo\Model {
                 return $id;
             }
             catch (\PDOException $e) {
-                throw new Goteo\Core\Exception('Fallo al verificar id única para el convocatoria. ' . $e->getMessage());
+                throw new Goteo\Core\Exception('Fallo al verificar id única para la convocatoria. ' . $e->getMessage());
             }
         }
 
@@ -644,9 +648,9 @@ namespace Goteo\Model {
          *  Para actualizar el presupuesto usado y restante
          *   sumamos de los aportes en estado ok que sean para esta campaña
          */
-        public function minmax() {
-            $this->mincost = 0;
-            $this->maxcost = 0;
+        public function callCalc() {
+            $this->amount_used = 0;
+            $this->amount_left = 0;
         }
 
         /*
