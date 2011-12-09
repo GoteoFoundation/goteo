@@ -29,9 +29,6 @@ $filters = $this['filters'];
 <a href="/cron/execute" target="_blank" class="button red">Ejecutar cargos</a>&nbsp;&nbsp;&nbsp;
 <a href="/cron/verify" target="_blank" class="button red">Verificar preapprovals</a>&nbsp;&nbsp;&nbsp;
 <a href="/admin/accounts/viewer" class="button">Visor de logs</a>&nbsp;&nbsp;&nbsp;
-<?php if (!empty($filters['projects'])) : ?>
-    <a href="/admin/invests/report/<?php echo $filters['projects'] ?>" class="button red" target="_blank">Informe del proyecto filtrado</a>
-<?php endif ?>
 <div class="widget board">
     <h3 class="title">Filtros</h3>
     <form id="filter-form" action="/admin/accounts" method="get">

@@ -28,9 +28,11 @@ $filters = $this['filters'];
         'label' => 'Extra',
         'first' => 'Todos')
 ); ?>
-<a href="/admin/invests/add" class="button red">Generar aportes manualmente</a>&nbsp;&nbsp;&nbsp;
+<a href="/admin/invests/add" class="button red">Generar aportes manuales</a>
 <?php if (!empty($filters['projects'])) : ?>
-    <a href="/cron/dopay/<?php echo $filters['projects'] ?>" target="_blank" class="button red">Realizar pagos secundarios al proyecto filtrado</a>
+    <br />
+    <a href="/admin/invests/report/<?php echo $filters['projects'] ?>" class="button red" target="_blank">Informe financiero de <?php echo $this['projects'][$filters['projects']] ?></a>&nbsp;&nbsp;&nbsp;
+    <a href="/cron/dopay/<?php echo $filters['projects'] ?>" target="_blank" class="button red" onclick="return confirm('No hay vuelta atrás, ok?');">Realizar pagos secundarios a <?php echo $this['projects'][$filters['projects']] ?></a>
 <?php endif ?>
 <div class="widget board">
     <h3 class="title">Filtros</h3>
