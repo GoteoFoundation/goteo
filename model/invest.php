@@ -630,7 +630,7 @@ namespace Goteo\Model {
          */
         public function setStatus ($status) {
 
-            if (!in_array($status, array('-1', '0', '1', '2', '3', '4'))) {
+            if (!in_array($status, array('-1', '0', '1', '2', '3', '4', '5'))) {
                 return false;
             }
 
@@ -748,7 +748,8 @@ namespace Goteo\Model {
                 1  => 'Cargo ejecutado',
                 2  => 'Cancelado',
                 3  => 'Pagado al proyecto',
-                4  => 'Caducado'
+                4  => 'Caducado',
+                5  => 'Reubicado'
             );
 
             if (!empty($id)) {

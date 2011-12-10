@@ -2743,9 +2743,109 @@ namespace Goteo\Controller {
 
             $errors = array();
 
+           // reubicando aporte,
+           if ($action == 'move') {
+
+                // el aporte original
+                $original = Model\Invest::get($id);
+                $userData = Model\User::getMini($original->user);
+                $projectData = Model\Project::getMini($original->project);
+
+                //el original tiene que ser de tpv o cash y estar como 'cargo ejecutado'
+                if ($original->method == 'paypal' || $original->status != 1) {
+                    Message::Error('No se puede reubicar este aporte!');
+                    throw new Redirection('/admin/invests');
+                }
 
 
+                // generar aporte manual y caducar el original
+                if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['move']) ) {
 
+                    // si falta proyecto, error
+                    
+                    $projectNew = $_POST['project'];
+
+                    // @TODO a saber si le toca dinero de alguna convocatoria
+                    $campaign = null;
+
+                    $invest = new Model\Invest(
+                        array(
+                            'amount'    => $original->amount,
+                            'user'      => $original->user,
+                            'project'   => $projectNew,
+                            'account'   => $userData->email,
+                            'method'    => 'cash',
+                            'status'    => '1',
+                            'invested'  => date('Y-m-d'),
+                            'charged'   => $original->charged,
+                            'anonymous' => $original->anonymous,
+                            'resign'    => $original->resign,
+                            'admin'     => $_SESSION['user']->id,
+                            'campaign'  => $campaign
+                        )
+                    );
+                    //@TODO si el proyecto seleccionado
+
+                    if ($invest->save($errors)) {
+
+                        //recompensas que le tocan (si no era resign)
+                        if (!$original->resign) {
+                            // sacar recompensas
+                            $rewards = Model\Project\Reward::getAll($projectNew, 'individual');
+                            
+                            foreach ($rewards as $rewId => $rewData) {
+                                $invest->setReward($rewId); //asignar
+                            }
+                        }
+
+                        // cambio estado del aporte original a 'Reubicado' (no aparece en cofinanciadores)
+                        // si tuviera que aparecer lo marcaríamos como caducado
+                        if ($original->setStatus('5')) {
+                            /*
+                             * Evento Feed
+                             */
+                            $log = new Feed();
+                            $log->title = 'Aporte reubicado';
+                            $log->url = '/admin/invests';
+                            $log->type = 'money';
+                            $log_text = "%s ha aportado %s al proyecto %s en nombre de %s";
+                            $log_items = array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('money', $_POST['amount'].' &euro;'),
+                                Feed::item('project', $projectData->name, $projectData->id),
+                                Feed::item('user', $userData->name, $userData->id)
+                            );
+                            $log->html = \vsprintf($log_text, $log_items);
+                            $log->add($errors);
+                            unset($log);
+
+                            Message::Info('Aporte reubicado correctamente');
+                            throw new Redirection('/admin/invests');
+                        } else {
+                            $errors[] = 'A fallado al cambiar el estado del aporte original ('.$original->id.')';
+                        }
+                    } else{
+                        $errors[] = 'Ha fallado algo al reubicar el aporte';
+                    }
+
+                }
+
+                $viewData = array(
+                    'folder' => 'invests',
+                    'file' => 'move',
+                    'original' => $original,
+                    'user'     => $userData,
+                    'project'  => $projectData,
+                    'errors'   => $errors
+                );
+
+                return new View(
+                    'view/admin/index.html.php',
+                    $viewData
+                );
+
+                // fin de la historia dereubicar
+           }
 
             // aportes manuales, cargamos la lista completa de usuarios, proyectos y campañas
            if ($action == 'add') {
@@ -2781,8 +2881,6 @@ namespace Goteo\Controller {
                     );
 
                     if ($invest->save($errors)) {
-                        $errors[] = 'Aporte manual creado correctamente';
-                        
                         /*
                          * Evento Feed
                          */
@@ -2801,6 +2899,8 @@ namespace Goteo\Controller {
                         $log->add($errors);
                         unset($log);
                         
+                        Message::Info('Aporte manual creado correctamente');
+                        throw new Redirection('/admin/invests');
                     } else{
                         $errors[] = 'Ha fallado algo al crear el aporte manual';
                     }
@@ -5322,6 +5422,7 @@ namespace Goteo\Controller {
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'add'  => array('label' => 'Aporte manual', 'item' => false),
+                                'move'  => array('label' => 'Reubicando el aporte', 'item' => true),
                                 'details' => array('label' => 'Detalles del aporte', 'item' => true),
                                 'execute' => array('label' => 'Ejecución del cargo ahora mismo', 'item' => true),
                                 'cancel' => array('label' => 'Cancelando aporte', 'item' => true),

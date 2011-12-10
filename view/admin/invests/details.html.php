@@ -25,6 +25,10 @@ $user = $this['user'];
             onclick="return confirm('¿Seguro que quieres ejecutar ahora? ¿No quieres esperar a la ejecución automática al final de la ronda? ?');"
             class="button red">Ejecutar cargo ahora</a>
         <?php endif; ?>
+
+        <?php if ($project->status == 3 && $invest->method != 'paypal' && $invest->status == 1) : ?>
+        <a href="/admin/invests/move/<?php echo $invest->id ?>" class="button weak">Reubicar este aporte</a>
+        <?php endif; ?>
     </p>
 
     <h3>Detalles del aporte</h3>
