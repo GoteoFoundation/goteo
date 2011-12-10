@@ -61,8 +61,8 @@ $filters = $this['filters'];
 </div>
 
 <div class="widget board">
-<?php if (empty($filters)) : ?>
-    <p>Filtra algun criterio</p>
+<?php if ($filters['filtered'] != 'yes') : ?>
+    <p>Es necesario poner algun filtro, hay demasiados registros!</p>
 <?php elseif (!empty($this['list'])) : ?>
 <?php $Total = 0; foreach ($this['list'] as $invest) { $Total += $invest->amount; } ?>
     <p><strong>TOTAL:</strong>  <?php echo number_format($Total, 0, '', '.') ?> &euro;</p>

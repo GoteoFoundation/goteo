@@ -2931,22 +2931,10 @@ namespace Goteo\Controller {
 
                // sino, cargamos los filtros
                 $filters = array();
-                $fields = array('methods', 'status', 'investStatus', 'projects', 'users', 'campaigns', 'types');
+                $fields = array('filtered', 'methods', 'status', 'investStatus', 'projects', 'users', 'campaigns', 'types');
                 foreach ($fields as $field) {
                     $filters[$field] = (string) $_GET[$field];
                 }
-
-                /*
-                if (!empty($filters['projects'])) {
-                    // si filtran proyecto, actualizamos proyecto de trabajo
-                    $_SESSION['project_admin'] = $filters['projects'];
-                } else {
-                    // si no, usamos el proyecto de trabajo
-                    $filters['projects'] = $_SESSION['project_admin'];
-                }
-                 * 
-                 */
-
 
                 // métodos de pago
                 $methods = Model\Invest::methods();
@@ -3172,7 +3160,7 @@ namespace Goteo\Controller {
             }
 
             // listado de aportes
-            if (!empty($filters)) {
+            if ($filters['filtered'] == 'yes') {
                 $list = Model\Invest::getList($filters);
             } else {
                 $list = array();
@@ -3235,7 +3223,7 @@ namespace Goteo\Controller {
 
             // cargamos los filtros
             $filters = array();
-            $fields = array('methods', 'investStatus', 'projects', 'users', 'campaigns', 'review', 'date_from', 'date_until');
+            $fields = array('filtered', 'methods', 'investStatus', 'projects', 'users', 'campaigns', 'review', 'date_from', 'date_until');
             foreach ($fields as $field) {
                 $filters[$field] = (string) $_GET[$field];
             }
@@ -3294,51 +3282,8 @@ namespace Goteo\Controller {
                 );
             }
 
-            // devolver un cargo ejecutado o un pago ya efectuado
-            /*
-            if ($action == 'return') {
-                $invest = Model\Invest::get($id);
-
-                switch ($invest->method) {
-                    case 'paypal':
-                        if (Paypal::cancelPreapproval($invest, $errors)) {
-                            $errors[] = 'Preaproval paypal cancelado.';
-                        } else {
-                            $errors[] = 'Fallo al cancelar el preapproval en paypal: ' . implode('; ', $errors);
-                            if ($invest->cancel()) {
-                                $errors[] = 'Aporte cancelado';
-                            } else{
-                                $errors[] = 'Fallo al cancelar el aporte';
-                            }
-                        }
-                        break;
-                    case 'tpv':
-                        if (Tpv::cancelPreapproval($invest, $errors)) {
-                            $errors[] = 'Transacción sermepa cancelada.';
-                        } else {
-                            $errors[] = 'Fallo al cancelar la transaccion sermepa: ' . implode('; ', $errors);
-                            if ($invest->cancel()) {
-                                $errors[] = 'Aporte cancelado';
-                            } else{
-                                $errors[] = 'Fallo al cancelar el aporte';
-                            }
-                        }
-                        break;
-                    case 'cash':
-                        if ($invest->cancel()) {
-                            $errors[] = 'Aporte cancelado';
-                        } else{
-                            $errors[] = 'Fallo al cancelar el aporte';
-                        }
-                        break;
-                }
-
-            }
-             * 
-             */
-
             // listado de aportes
-            if (!empty($filters)) {
+            if ($filters['filtered'] == 'yes') {
                 $list = Model\Invest::getList($filters);
             } else {
                 $list = array();

@@ -55,8 +55,8 @@ $filters = $this['filters'];
 </div>
 
 <div class="widget board">
-<?php if (empty($filters)) : ?>
-    <p>Filtra algun criterio</p>
+<?php if ($filters['filtered'] != 'yes') : ?>
+    <p>Es necesario poner algun filtro, hay demasiados registros!</p>
 <?php elseif (!empty($this['list'])) : ?>
     <table width="100%">
         <thead>
