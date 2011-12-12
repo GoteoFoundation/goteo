@@ -157,7 +157,7 @@ namespace Goteo\Controller {
                     }
                     echo '<br />';
                 }
-                if ($round == 1 && $rest == 1 && $per_amount > 70) {
+                if ($round == 1 && $rest == 1 && $amount < $project->mincost && $per_amount > 70) {
                     echo 'Email de 1 día para fallar ';
                     if (self::toOwner('1_day', $project)) {
                         echo 'OK';
