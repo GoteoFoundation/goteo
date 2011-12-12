@@ -63,7 +63,7 @@ include 'view/header.html.php';
                         </div>
                     <?php elseif (!empty($post->image)) : ?>
                         <div class="image">
-                            <img src="<?php echo SRC_URL ?>/image/<?php echo $post->image->id; ?>/500/285" alt="Imagen"/>
+                            <img src="<?php echo $post->image->getLink(500, 285); ?>" alt="Imagen"/>
                         </div>
                     <?php endif; ?>
                     <h3><?php echo $post->title; ?></h3>

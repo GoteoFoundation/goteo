@@ -35,7 +35,7 @@ use Goteo\Core\ACL,
             <?php endif ?>
 
             <?php if (!empty($_SESSION['user'])): ?>            
-            <li class="dashboard"><a href="/dashboard"><span><?php echo Text::get('dashboard-menu-main'); ?></span><img src="<?php echo SRC_URL ?>/image/<?php echo $_SESSION['user']->avatar->id; ?>/28/28/1" /></a>
+            <li class="dashboard"><a href="/dashboard"><span><?php echo Text::get('dashboard-menu-main'); ?></span><img src="<?php echo $_SESSION['user']->avatar->getLink(28, 28, true); ?>" /></a>
                 <div>
                     <ul>
                         <li><a href="/dashboard/activity"><span><?php echo Text::get('dashboard-menu-activity'); ?></span></a></li>

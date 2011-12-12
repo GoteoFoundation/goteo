@@ -12,7 +12,7 @@ include 'view/header.html.php';
 
 /*
  *
- <img src="<?php echo SRC_URL ?>/image/<?php echo $user->avatar->id; ?>/75/75/1" /><br />
+ <img src="<?php echo $user->avatar->getLink(75, 75, true); ?>" /><br />
                     <em><?php echo $user->name; ?></em>
  *
  */

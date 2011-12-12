@@ -282,7 +282,7 @@ namespace Goteo\Model {
 
             $tc = $crop ? 'c' : '';
             
-            $cache = $this->dir_cache . "{$width}x{$height}{$tc}" . GOTEO_DATA_PATH . $this->name;
+            $cache = $this->dir_cache . "{$width}x{$height}{$tc}" . DIRECTORY_SEPARATOR . $this->name;
 
             if (\file_exists($cache)) {
                 return SRC_URL . "/data/cache/{$width}x{$height}{$tc}/{$this->name}";

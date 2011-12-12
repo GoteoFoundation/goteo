@@ -23,7 +23,7 @@ include 'view/prologue.html.php';
 
     <div id="sub-header">
         <div class="project-header">
-            <a href="/user/<?php echo $project->owner; ?>" target="_blank"><img src="<?php echo SRC_URL ?>/image/<?php echo $project->user->avatar->id; ?>/50/50/1" /></a>
+            <a href="/user/<?php echo $project->owner; ?>" target="_blank"><img src="<?php echo $project->user->avatar->getLink(50, 50, true); ?>" /></a>
             <h2><span><?php echo htmlspecialchars($project->name) ?></span></h2>
             <div class="project-subtitle"><?php echo htmlspecialchars($project->subtitle) ?></div>
             <div class="project-by"><a href="/user/<?php echo $project->owner; ?>" target="_blank">Por: <?php echo $project->user->name; ?></a></div>
