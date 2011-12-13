@@ -29,6 +29,7 @@ include 'view/header.html.php'; ?>
 
 <?php if ($this['section'] == 'projects') echo new View ('view/dashboard/projects/selector.html.php', $this); ?>
 <?php if ($this['section'] == 'translates') echo new View ('view/dashboard/translates/selector.html.php', $this); ?>
+<?php if ($this['section'] == 'calls') echo new View ('view/dashboard/calls/selector.html.php', $this); ?>
 
             <?php if (!empty($this['message'])) : ?>
                 <div class="widget">
