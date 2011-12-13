@@ -1227,86 +1227,6 @@ namespace Goteo\Controller {
             return new View ('view/dashboard/index.html.php', $viewData);
         }
 
-
-        /*
-         * Seccion, Mis convocatorias
-         * Opciones:
-         *      'proyectos' visualización de los proyectos que tienen capital riego de la convocatoria
-         *
-         */
-        public function calls ($option = 'summary') {
-
-            $user    = $_SESSION['user'];
-
-            $errors = array();
-
-            $calls = Model\Call::ofmine($user->id);
-
-            if (!empty($calls)) {
-                // compruebo permisos
-                foreach ($calls as $call) {
-
-                    // compruebo que puedo editar mis proyectos
-                    if (!ACL::check('/call/edit/'.$call->id)) {
-                        ACL::allow('/call/edit/'.$call->id, '*', 'caller', $user);
-                    }
-
-                    // y borrarlos
-                    if (!ACL::check('/call/delete/'.$call->id)) {
-                        ACL::allow('/call/delete/'.$call->id, '*', 'caller', $user);
-                    }
-                }
-            }
-
-            if ($action == 'select' && !empty($_POST['call'])) {
-                // otra convocatoria de trabajo
-                $call = Model\call::get($_POST['call']);
-            } else {
-                // si tenemos ya convocatoria, mantener los datos actualizados
-                if (!empty($_SESSION['call']->id)) {
-                    $call = Model\Call::get($_SESSION['call']->id);
-                }
-            }
-
-            if (empty($call) && !empty($calls)) {
-                $call = $calls[0];
-            }
-
-            // aqui necesito tener una convocatoria de trabajo,
-            // si no hay ninguna ccoge la última
-            if ($call instanceof  \Goteo\Model\Call) {
-                $_SESSION['call'] = $call;
-            } else {
-                unset($call);
-                $option = 'summary';
-            }
-
-            // view data basico para esta seccion
-            $viewData = array(
-                    'menu'    => self::menu(),
-                    'section' => __FUNCTION__,
-                    'option'  => $option,
-                    'action'  => $action,
-                    'calls'   => $calls,
-                    'errors'  => $errors,
-                    'success' => $success
-                );
-
-
-            switch ($option) {
-                // proyectos
-                case 'projects':
-					$projects = Model\Call\Projects::getAll($call);
-                    $viewData['projects'] = $projects;
-                break;
-            }
-
-            $viewData['call'] = $call;
-
-            return new View ('view/dashboard/index.html.php', $viewData);
-        }
-
-
         /*
          * Salto al admin
          *
@@ -1398,18 +1318,6 @@ namespace Goteo\Controller {
                     )
                 );
             }
-
-            // si es un convocador
-            if (ACL::check('/call/create')) {
-                $menu['calls'] = array(
-                    'label' => Text::get('dashboard-menu-calls'),
-                    'options' => array (
-                        'summary'  => Text::get('dashboard-menu-calls-summary'),
-                        'projects'  => Text::get('dashboard-menu-calls-projects')
-                    )
-                );
-            }
-
 
             // si tiene permiso para ir al admin
             if (ACL::check('/admin')) {

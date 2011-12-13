@@ -131,7 +131,9 @@ namespace Goteo\Library {
                 }
 
 			} else {
-                $texto = 'Texto: ' . $id;
+                // para catalogar textos nuevos
+				Model::query("REPLACE INTO purpose (text, purpose, html, `group`) VALUES (:text, :purpose, NULL, 'new')", array(':text' => $id, ':purpose' => $id));
+                $texto = $id;
 			}
 
             $texto = nl2br($texto);
@@ -328,7 +330,10 @@ namespace Goteo\Library {
                 'feed' => 'Eventos recientes',
                 'mailer' => 'Emails automaticos',
                 'bluead' => 'Avisos azules',
-                'error' => 'Errores catastroficos'
+                'error' => 'Errores catastroficos',
+                'call_public' => 'Convocatorias: publicos',
+                'call_form' => 'Convocatorias: formulario',
+                'call_dash' => 'Convocatorias: dashboard'
             );
 
             \asort($groups);
