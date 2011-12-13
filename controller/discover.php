@@ -20,7 +20,8 @@ namespace Goteo\Controller {
                 'popular' => Text::get('discover-group-popular-header'),
                 'outdate' => Text::get('discover-group-outdate-header'),
                 'recent'  => Text::get('discover-group-recent-header'),
-                'success' => Text::get('discover-group-success-header')
+                'success' => Text::get('discover-group-success-header'),
+                'archive' => Text::get('discover-group-archive-header')
             );
 
             $viewData['lists'] = array();
@@ -29,7 +30,8 @@ namespace Goteo\Controller {
                 'popular',
                 'outdate',
                 'recent',
-                'success'
+                'success',
+                'archive'
             );
 
             // cada tipo tiene sus grupos
@@ -107,7 +109,7 @@ namespace Goteo\Controller {
          */
         public function view ($type = 'all') {
 
-            if (!in_array($type, array('popular', 'outdate', 'recent', 'success', 'all'))) {
+            if (!in_array($type, array('popular', 'outdate', 'recent', 'success', 'archive', 'all'))) {
                 throw new Redirection('/discover');
             }
 

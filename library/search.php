@@ -25,7 +25,6 @@ namespace Goteo\Library {
             $sql = "SELECT id
                     FROM project
                     WHERE status > 2
-                    AND status < 6
                     AND (name LIKE :text
                         OR description LIKE :text
                         OR motivation LIKE :text
@@ -95,7 +94,6 @@ namespace Goteo\Library {
             $sql = "SELECT id
                     FROM project
                     WHERE status > 2
-                    AND status < 6
                     ";
             
             if (!empty($where)) {

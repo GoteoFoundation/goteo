@@ -13,6 +13,7 @@ namespace Goteo\Model {
 
         public
             $id = null,
+            $dontsave = false,
             $owner, // User who created it
             $node, // Node this project belongs to
             $status,
@@ -281,62 +282,8 @@ namespace Goteo\Model {
                 //mensajes
                 $project->messages = Message::getAll($project->id, $lang);
 
-                //para proyectos en campaña o posterior
-                if ($project->status > 2) {
-                    // tiempo de campaña
-                    if ($project->status == 3) {
-                        $days = $project->daysActive();
-                        if ($days > 80) {
-                            $project->round = 0;
-                            $days = 0;
-                        } elseif ($days >= 40) {
-                            $days = 80 - $days;
-                            $project->round = 2;
-                        } else {
-                            $days = 40 - $days;
-                            $project->round = 1;
-                        }
-
-                        if ($days < 0) {
-                            // no deberia estar en campaña sino financuiado o caducado
-                            $days = 0;
-                        }
-                        
-                    } else {
-                        $project->round = 0;
-                        $days = 0;
-                    }
-
-                    // a ver que banderolo le toca
-                    // "financiado" al final de de los 80 dias
-                    if ($project->status == 4) :
-                        $project->tagmark = 'gotit';
-                    // "en marcha" cuando llega al optimo en primera o segunda ronda
-                    elseif ($project->status == 3 && $project->amount >= $project->maxcost) :
-                        $project->tagmark = 'onrun';
-                    // "en marcha" y "aun puedes" cuando está en la segunda ronda
-                    elseif ($project->status == 3 && $project->round == 2) :
-                        $project->tagmark = 'onrun-keepiton';
-                    // Obtiene el mínimo durante la primera ronda, "aun puedes seguir aportando"
-                    elseif ($project->status == 3 && $project->round == 1 && $project->amount >= $project->mincost ) :
-                        $project->tagmark = 'keepiton';
-                    // tag de exitoso cuando es retorno cumplido
-                    elseif ($project->status == 5) :
-                        $project->tagmark = 'success';
-                    // tag de caducado
-                    elseif ($project->status == 6) :
-                        $project->tagmark = 'fail';
-                    endif;
-
-                } else {
-                    $days = 0;
-                }
-                
-                if ($project->days != $days) {
-                    self::query("UPDATE project SET days = '{$days}' WHERE id = ?", array($project->id));
-                }
-                $project->days = $days;
-
+                $project->setDays();
+                $project->setTagmark();
                 //-----------------------------------------------------------------
                 // Fin de verificaciones
                 //-----------------------------------------------------------------
@@ -371,6 +318,86 @@ namespace Goteo\Model {
 		}
 
         /*
+         *  Cargamos los datos suficientes para pintar un widget de proyecto
+         */
+        public static function getMedium($id, $lang = LANG) {
+
+            try {
+				// metemos los datos del proyecto en la instancia
+				$query = self::query("SELECT * FROM project WHERE id = ?", array($id));
+				$project = $query->fetchObject(__CLASS__);
+
+                // primero, que no lo grabe
+                $project->dontsave = true;
+
+                // si recibimos lang y no es el idioma original del proyecto, ponemos la traducción y mantenemos para el resto de contenido
+                if ($lang == $project->lang) {
+                    $lang = null;
+                } elseif (!empty($lang)) {
+                    $sql = "
+                        SELECT
+                            IFNULL(project_lang.description, project.description) as description,
+                            IFNULL(project_lang.subtitle, project.subtitle) as subtitle
+                        FROM project
+                        LEFT JOIN project_lang
+                            ON  project_lang.id = project.id
+                            AND project_lang.lang = :lang
+                        WHERE project.id = :id
+                        ";
+                    $query = self::query($sql, array(':id'=>$id, ':lang'=>$lang));
+                    foreach ($query->fetch(\PDO::FETCH_ASSOC) as $field=>$value) {
+                        $project->$field = $value;
+                    }
+                }
+
+                // owner
+                $project->user = User::getMini($project->owner);
+
+                // galeria
+                $project->gallery = Image::getAll($project->id, 'project');
+
+				// categorias
+                $project->categories = Project\Category::get($id);
+
+				// retornos colectivos
+				$project->social_rewards = Project\Reward::getAll($id, 'social', $lang);
+				// retornos individuales
+				$project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
+
+                $amount = Invest::invested($id);
+                $project->invested = $amount;
+                $project->amount   = $amount;
+
+                // sacamos rapidamente el minimo y el optimo
+                $cost_query = self::query("SELECT
+                            (SELECT  SUM(amount)
+                            FROM    cost
+                            WHERE   project = project.id
+                            AND     required = 1
+                            ) as `mincost`,
+                            (SELECT  SUM(amount)
+                            FROM    cost
+                            WHERE   project = project.id
+                            ) as `maxcost`
+                    FROM project
+                    WHERE id =?", array($project->id));
+                $costs = $cost_query->fetchObject();
+
+                $project->mincost = $costs->mincost;
+                $project->maxcost = $costs->maxcost;
+
+
+                $project->setDays();
+                $project->setTagmark();
+
+				return $project;
+
+			} catch(\PDOException $e) {
+				throw \Goteo\Core\Exception($e->getMessage());
+			}
+		}
+
+        /*
          * Listado simple de todos los proyectos
          */
         public static function getAll($node = \GOTEO_NODE) {
@@ -393,6 +420,73 @@ namespace Goteo\Model {
         }
 
         /*
+         *  Para calcular los dias y la ronda
+         */
+        private function setDays() {
+            //para proyectos en campaña o posterior
+            if ($this->status > 2) {
+                // tiempo de campaña
+                if ($this->status == 3) {
+                    $days = $this->daysActive();
+                    if ($days > 80) {
+                        $this->round = 0;
+                        $days = 0;
+                    } elseif ($days >= 40) {
+                        $days = 80 - $days;
+                        $this->round = 2;
+                    } else {
+                        $days = 40 - $days;
+                        $this->round = 1;
+                    }
+
+                    if ($days < 0) {
+                        // no deberia estar en campaña sino financuiado o caducado
+                        $days = 0;
+                    }
+
+                } else {
+                    $this->round = 0;
+                    $days = 0;
+                }
+
+
+            } else {
+                $days = 0;
+            }
+
+            if ($this->days != $days) {
+                self::query("UPDATE project SET days = '{$days}' WHERE id = ?", array($this->id));
+            }
+            $this->days = $days;
+        }
+
+        /*
+         *  Para ver que tagmark le toca
+         */
+        private function setTagmark() {
+            // a ver que banderolo le toca
+            // "financiado" al final de de los 80 dias
+            if ($this->status == 4) :
+                $this->tagmark = 'gotit';
+            // "en marcha" cuando llega al optimo en primera o segunda ronda
+            elseif ($this->status == 3 && $this->amount >= $this->maxcost) :
+                $this->tagmark = 'onrun';
+            // "en marcha" y "aun puedes" cuando está en la segunda ronda
+            elseif ($this->status == 3 && $project->round == 2) :
+                $this->tagmark = 'onrun-keepiton';
+            // Obtiene el mínimo durante la primera ronda, "aun puedes seguir aportando"
+            elseif ($this->status == 3 && $this->round == 1 && $this->amount >= $this->mincost ) :
+                $this->tagmark = 'keepiton';
+            // tag de exitoso cuando es retorno cumplido
+            elseif ($this->status == 5) :
+                $this->tagmark = 'success';
+            // tag de caducado
+            elseif ($this->status == 6) :
+                $this->tagmark = 'fail';
+            endif;
+        }
+
+        /*
          *  Para validar los campos del proyecto que son NOT NULL en la tabla
          */
         public function validate(&$errors = array()) {
@@ -407,14 +501,14 @@ namespace Goteo\Model {
 
             if (empty($this->status))
                 $this->status = 1;
-            
+
             if (empty($this->progress))
                 $this->progress = 0;
-            
+
             if (empty($this->owner))
                 $errors[] = 'El proyecto no tiene usuario creador';
                 //Text::get('validate-project-noowner');
-            
+
             if (empty($this->node))
                 $this->node = 'goteo';
 
@@ -430,6 +524,8 @@ namespace Goteo\Model {
          * @param array $project->errors para guardar los errores de datos del formulario, los errores de proceso se guardan en $project->errors['process']
          */
         public function save (&$errors = array()) {
+            if ($this->dontsave) { return false; }
+
             if(!$this->validate($errors)) { return false; }
 
   			try {
@@ -1565,30 +1661,6 @@ namespace Goteo\Model {
             return $past->days - 1;
         }
 
-        /**
-         * Metodo que devuelve los días que quedan para finalizar la ronda actual
-         *
-         * @return numeric days remaining to go
-         */
-        public function daysRemain($id) {
-            // primero, días desde el published
-            $sql = "
-                SELECT DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') as days
-                FROM project
-                WHERE id = ?";
-            $query = self::query($sql, array($id));
-            $days = $query->fetchColumn(0);
-            $days--;
-
-            if ($days > 40) {
-                $rest = 80 - $days; //en segunda ronda
-            } else {
-                $rest = 40 - $days; // en primera ronda
-            }
-
-            return $rest;
-        }
-
         /*
          * Lista de proyectos de un usuario
          */
@@ -1680,6 +1752,10 @@ namespace Goteo\Model {
                     // ni edicion ni revision ni cancelados, estan disponibles para verse publicamente
                     $sql = "SELECT id FROM project WHERE status > 2 AND status < 6 ORDER BY name ASC";
                     break;
+                case 'archive':
+                    // caducados, financiados o casos de exito
+                    $sql = "SELECT id FROM project WHERE status > 3 ORDER BY name ASC";
+                    break;
                 default: 
                     // todos los que estan 'en campaña'
                     $sql = "SELECT id FROM project WHERE status = 3 ORDER BY name ASC";
@@ -1693,7 +1769,7 @@ namespace Goteo\Model {
             $projects = array();
             $query = self::query($sql);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
-                $projects[] = self::get($proj['id']);
+                $projects[] = self::getMedium($proj['id']);
             }
             return $projects;
         }

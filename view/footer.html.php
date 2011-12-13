@@ -31,12 +31,13 @@ jQuery(document).ready(function($) {
 
             <div class="block projects">
                 <h8 class="title"><?php echo Text::get('footer-header-projects') ?></h8>
-                <ul>
+                <ul class="scroll-pane">
                     <li><a href="/"><?php echo Text::get('home-promotes-header') ?></a></li>
                     <li><a href="/discover/view/popular"><?php echo Text::get('discover-group-popular-header') ?></a></li>
                     <li><a href="/discover/view/outdate"><?php echo Text::get('discover-group-outdate-header') ?></a></li>
                     <li><a href="/discover/view/recent"><?php echo Text::get('discover-group-recent-header') ?></a></li>
                     <li><a href="/discover/view/success"><?php echo Text::get('discover-group-success-header') ?></a></li>
+                    <li><a href="/discover/view/archive"><?php echo Text::get('discover-group-archive-header') ?></a></li>
                     <li><a href="/project/create"><?php echo Text::get('regular-create') ?></a></li>
                 </ul>
             </div>
