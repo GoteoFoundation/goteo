@@ -289,7 +289,7 @@ namespace Goteo\Model {
                         if ($days > 80) {
                             $project->round = 0;
                             $days = 0;
-                        } elseif ($days > 40) {
+                        } elseif ($days >= 40) {
                             $days = 80 - $days;
                             $project->round = 2;
                         } else {

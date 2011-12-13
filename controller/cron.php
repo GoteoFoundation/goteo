@@ -170,7 +170,7 @@ namespace Goteo\Controller {
 
                 //  (financiado a los 80 o cancelado si a los 40 no llega al minimo)
                 // si ha llegado a los 40 dias: mínimo-> ejecutar ; no minimo proyecto y todos los preapprovals cancelados
-                if ($days >= 40) {
+                if ($days > 40) {
                     // si no ha alcanzado el mínimo, pasa a estado caducado
                     if ($amount < $project->mincost) {
 
@@ -196,7 +196,7 @@ namespace Goteo\Controller {
                         $log_items = array(
                             Feed::item('project', $project->name, $project->id),
                             Feed::item('relevant', 'caducado sin éxito'),
-                            Feed::item('money', $amount.' &euro; ('.\round($per_amount).'%) de aportes sobre minimo')
+                            Feed::item('money', $amount.' &euro; ('.\round($per_amount).'&#37;) de aportes sobre minimo')
                         );
                         $log->html = \vsprintf($log_text, $log_items);
                         $log->add($errors);
@@ -233,7 +233,7 @@ namespace Goteo\Controller {
                         echo '<hr />';
                     } else {
                         // tiene hasta 80 días para conseguir el óptimo (o más)
-                        if ($days >= 80) {
+                        if ($days > 80) {
 
                             if (empty($projectAccount->paypal)) {
                                 echo 'el proyecto no tiene cuenta paypal<br />';
