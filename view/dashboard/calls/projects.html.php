@@ -13,10 +13,10 @@ $projects = $this['projects'];
         ESTO ES UNA VISUALIZACIÓN DE LOS PROYECTOS QUE RIEGAS.<br />
         LOS PROYECTOS QUE NO CONSIGAN EL MÍNIMO LIBERARÁN CAPITAL RIEGO
     </div>
-    <?php foreach ($projects as $projectId=>$projectData) : ?>
+    <?php foreach ($projects as $proj) : ?>
         <div class="widget">
-            <?php echo $projectData->name ?>
-            <?php echo $projectData->amount ?>
+            <?php echo $proj->name ?>
+            <?php echo $proj->amount ?>
         </div>
     <?php endforeach; ?>
 </div>

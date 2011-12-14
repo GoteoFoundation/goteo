@@ -54,6 +54,20 @@ namespace Goteo\Controller {
                 );
 
             // aqui uno que pueda entrar a editar siempre puede ir a todos los pasos
+            if ($call->status != 1 && !ACL::check('/call/edit/todos')) {
+                // solo puede estar en preview
+                $step = 'preview';
+
+                $steps = array(
+                    'preview' => array(
+                        'name' => Text::get('step-7'),
+                        'title' => Text::get('step-preview'),
+                        'offtopic' => true
+                    )
+                );
+
+
+            } else {
                 // todos los pasos, entrando en userProfile por defecto
                 $step = 'userProfile';
 
@@ -78,7 +92,7 @@ namespace Goteo\Controller {
                         'offtopic' => true
                     )
                 );
-            
+            }
                         
             
             foreach ($_REQUEST as $k => $v) {                

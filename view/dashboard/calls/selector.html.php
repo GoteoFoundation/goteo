@@ -9,6 +9,7 @@
         </select>
         <!-- un boton para seleccionar si no tiene javascript -->
         </form>
+        <p>Puedes crear otra <a href="/call/create">aqu&iacute;</a></p>
     <?php else : ?>
     <p>No tienes ninguna convocatoria, puedes crear una <a href="/call/create">aqu&iacute;</a></p>
     <?php endif; ?>

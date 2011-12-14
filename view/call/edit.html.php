@@ -10,7 +10,7 @@ $call = $this['call'];
 
 if (!empty($this['success'])) {
     Goteo\Library\Message::Info($this['success']);
-} else {
+} elseif ($call->status == 1) {
     Goteo\Library\Message::Info(Text::get('call-form-ajax-info'));
 }
 

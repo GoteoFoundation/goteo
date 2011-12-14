@@ -20,7 +20,7 @@ if (!$call instanceof  Goteo\Model\call) {
 
 <div class="status">
 
-    <div id="call-status">
+    <div id="project-status">
         <h3><?php echo Text::get('form-call-status-title'); ?></h3>
         <ul>
             <?php foreach (call::status() as $i => $s): ?>

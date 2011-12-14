@@ -1234,7 +1234,7 @@ namespace Goteo\Controller {
          *      'proyectos' visualización de los proyectos que tienen capital riego de la convocatoria
          *
          */
-        public function calls ($option = 'summary') {
+        public function calls ($option = 'summary', $action = 'list', $id = null) {
 
             $user    = $_SESSION['user'];
 

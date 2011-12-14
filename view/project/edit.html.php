@@ -13,7 +13,7 @@ $steps  = new View('view/project/edit/steps.html.php', array('steps' => $this['s
 
 if (!empty($this['success'])) {
     Goteo\Library\Message::Info($this['success']);
-} else {
+} elseif ($project->status == 1) {
     Goteo\Library\Message::Info(Text::get('form-ajax-info'));
 }
 

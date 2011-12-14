@@ -65,7 +65,6 @@ namespace Goteo\Controller {
                     'preview' => array(
                         'name' => Text::get('step-7'),
                         'title' => Text::get('step-preview'),
-                        'guide' => Text::get('guide-project-overview'),
                         'offtopic' => true
                     )
                 );
