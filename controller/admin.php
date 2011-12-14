@@ -4497,9 +4497,39 @@ namespace Goteo\Controller {
                     break;
             }
 
-            //si llega post para el action add, verificamos los datos y
-            // o mostramos error
-            // o vamos a la edicion de la convocatoria recien creada
+            //si llega post, verificamos los datos y hacemos lo que se tenga que hacer
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['operation']) && !empty($call)) {
+                switch ($_POST['operation']) {
+                    case 'assign':
+                        if (!empty($_POST['project'])) {
+                            $registry = new Model\Call\Project;
+                            $registry->id = $_POST['project'];
+                            $registry->call = $call->id;
+                            if ($registry->save($errors)) {
+                                Message::Info('Proyecto asignado correctamente');
+                            } else {
+                                Message::Error('Fallo al asignar proyecto');
+                            }
+                        } else {
+                            $errors[] = 'No has seleccionado ningun proyecto para asignar, no?';
+                        }
+                        break;
+                    case 'unassign':
+                        if (!empty($_POST['project'])) {
+                            $registry = new Model\Call\Project;
+                            $registry->id = $_POST['project'];
+                            $registry->call = $call->id;
+                            if ($registry->remove($errors)) {
+                                Message::Info('Proyecto desasignado correctamente');
+                            } else {
+                                Message::Error('Fallo al desasignar proyecto');
+                            }
+                        } else {
+                            $errors[] = 'No has clickado ningun proyecto para desasignar, no?';
+                        }
+                        break;
+                }
+            }
 
             
             if (isset($log_text)) {
@@ -4561,16 +4591,22 @@ namespace Goteo\Controller {
             }
 
             if ($action == 'projects') {
-
-                $projects = Model\Call\Project::get($call->id);
-
+                if (empty($call)) {
+                    throw new Redirection('/admin/calls/list');
+                }
+                $projects   = Model\Call\Project::get($call->id);
+                $available  = Model\Call\Project::getAll($call->id);
+                $status     = Model\Project::status();
                 // cambiar fechas
                 return new View(
                     'view/admin/index.html.php',
                     array(
                         'folder' => 'calls',
                         'file' => 'projects',
+                        'call' => $call,
                         'projects' => $projects,
+                        'available' => $available,
+                        'status' => $status,
                         'errors' => $errors
                     )
                 );

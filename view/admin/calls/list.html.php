@@ -76,6 +76,7 @@ $filter = "?status={$filters['status']}&category={$filters['category']}&caller={
                 <th>Estado</th>
                 <th>Presupuesto</th>
                 <th>Restante</th>
+                <th>Asignados</th>
             </tr>
         </thead>
 
@@ -88,6 +89,7 @@ $filter = "?status={$filters['status']}&category={$filters['category']}&caller={
                 <td><?php echo $this['status'][$call->status]; ?></td>
                 <td><?php echo $call->amount; ?></td>
                 <td><?php echo $call->rest; ?></td>
+                <td><?php echo count($call->projects); ?></td>
             </tr>
             <tr>
                 <td colspan="6"> >>> Acciones:

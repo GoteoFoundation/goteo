@@ -10,17 +10,28 @@ namespace Goteo\Model\Call {
 
 
         /**
-         * Get the categories for a call
+         * Get the projects assigned to a call
          * @param varcahr(50) $id  Call identifier
          * @return array of categories identifiers
          */
-	 	public static function get ($id) {
+        //@TODO añadir cuanto dinero llevan de esta convocatoria
+		public static function get ($call) {
             $array = array ();
             try {
-                $query = static::query("SELECT project FROM call_project WHERE `call` = :call", array(':call'=>$id));
-                $categories = $query->fetchAll();
-                foreach ($categories as $cat) {
-                    $array[$cat[0]] = $cat[0];
+                $sql = "SELECT
+                            project.id,
+                            project.name as name,
+                            project.status as status
+                        FROM project
+                        JOIN call_project
+                            ON  call_project.project = project.id
+                            AND call_project.call = :call
+                        ORDER BY project.name ASC
+                        ";
+                $query = static::query($sql, array(':call'=>$call));
+                $items = $query->fetchAll(\PDO::FETCH_OBJ);
+                foreach ($items as $item) {
+                    $array[$item->id] = $item;
                 }
 
                 return $array;
@@ -30,68 +41,35 @@ namespace Goteo\Model\Call {
 		}
 
         /**
-         * Get all categories available
+         * Get all projects available
          *
          * @param void
          * @return array
          */
-		public static function getAll () {
+		public static function getAll ($call = null) {
             $array = array ();
+            $values = array();
             try {
                 $sql = "
                     SELECT
                         project.id as id,
-                        IFNULL(project_lang.name, project.name) as name
-                    FROM    project
-                    LEFT JOIN project_lang
-                        ON  project_lang.id = project.id
-                        AND project_lang.lang = :lang
-                    ORDER BY name ASC
+                        project.name as name,
+                        project.status as status
+                    FROM project
+                    WHERE project.status > 0";
+
+                if (!empty($call)) {
+                    $sql .= " AND project.id NOT IN (SELECT project FROM call_project WHERE `call` = :call)";
+                    $values[':call'] = $call;
+                }
+
+                $sql .= " ORDER BY name ASC
                     ";
 
-                $query = static::query($sql, array(':lang'=>\LANG));
-                $categories = $query->fetchAll();
-                foreach ($categories as $cat) {
-                    $array[$cat[0]] = $cat[1];
-                }
-
-                return $array;
-            } catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
-            }
-		}
-
-        /**
-         * Get all categories for this call by name
-         *
-         * @param void
-         * @return array
-         */
-		public static function getNames ($call = null, $limit = null) {
-            $array = array ();
-            try {
-                $sqlFilter = "";
-                if (!empty($call)) {
-                    $sqlFilter = " WHERE project.id IN (SELECT project FROM call_project WHERE `call` = '$call')";
-                }
-
-                $sql = "SELECT 
-                            project.id,
-                            IFNULL(project_lang.name, project.name) as name
-                        FROM project
-                        LEFT JOIN project_lang
-                            ON  project_lang.id = project.id
-                            AND project_lang.lang = :lang
-                        $sqlFilter
-                        ORDER BY `order` ASC
-                        ";
-                if (!empty($limit)) {
-                    $sql .= "LIMIT $limit";
-                }
-                $query = static::query($sql, array(':lang'=>\LANG));
-                $categories = $query->fetchAll();
-                foreach ($categories as $cat) {
-                    $array[$cat[0]] = $cat[1];
+                $query = static::query($sql, $values);
+                $items = $query->fetchAll(\PDO::FETCH_OBJ);
+                foreach ($items as $item) {
+                    $array[$item->id] = $item;
                 }
 
                 return $array;
@@ -123,8 +101,11 @@ namespace Goteo\Model\Call {
 			try {
 	            $sql = "REPLACE INTO call_project (`call`, project) VALUES(:call, :project)";
                 $values = array(':call'=>$this->call, ':project'=>$this->id);
-				self::query($sql, $values);
-				return true;
+				if (self::query($sql, $values)) {
+    				return true;
+                } else {
+                    $errors[] = "$sql <pre>".print_r($values, 1)."</pre>";
+                }
 			} catch(\PDOException $e) {
 				$errors[] = "La proyecto {$project} no se ha asignado correctamente. Por favor, revise los datos." . $e->getMessage();
                 return false;
@@ -147,8 +128,12 @@ namespace Goteo\Model\Call {
 			);
 
 			try {
-                self::query("DELETE FROM call_project WHERE project = :project AND `call` = :call", $values);
-				return true;
+                $sql = "DELETE FROM call_project WHERE project = :project AND `call` = :call";
+                if (self::query($sql, $values)) {
+                    return true;
+                } else {
+                    $errors[] = "$sql <pre>".print_r($values, 1)."</pre>";
+                }
 			} catch(\PDOException $e) {
 				$errors[] = 'No se ha podido quitar el proyecto ' . $this->id . ' de la convocatoria ' . $this->call . ' ' . $e->getMessage();
                 //Text::get('remove-project-fail');
