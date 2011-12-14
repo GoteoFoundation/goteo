@@ -1410,7 +1410,7 @@ namespace Goteo\Controller {
                 );
             }
 
-
+/*
             // si tiene permiso para ir al admin
             if (ACL::check('/admin')) {
                 $menu['admin'] = array(
@@ -1440,7 +1440,7 @@ namespace Goteo\Controller {
                     )
                 );
             }
-
+*/
             return $menu;
 
         }

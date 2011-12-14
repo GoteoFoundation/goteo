@@ -61,24 +61,20 @@ namespace Goteo\Controller {
                     'userProfile' => array(
                         'name' => Text::get('step-1'),
                         'title' => Text::get('step-userProfile'),
-                        'guide' => Text::get('guide-call-user-information'),
                         'offtopic' => true
                     ),
                     'userPersonal' => array(
                         'name' => Text::get('step-2'),
                         'title' => Text::get('step-userPersonal'),
-                        'guide' => Text::get('guide-call-contract-information'),
                         'offtopic' => true
                     ),
                     'overview' => array(
                         'name' => Text::get('step-3'),
-                        'title' => Text::get('step-overview'),
-                        'guide' => Text::get('guide-call-overview')
+                        'title' => Text::get('step-overview')
                     ),
                     'preview' => array(
                         'name' => Text::get('step-7'),
                         'title' => Text::get('step-preview'),
-                        'guide' => Text::get('guide-call-preview'),
                         'offtopic' => true
                     )
                 );

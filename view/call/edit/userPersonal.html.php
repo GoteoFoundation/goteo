@@ -17,7 +17,7 @@ echo new SuperForm(array(
     'level'         => $this['level'],
     'method'        => 'post',
     'title'         => Text::get('personal-main-header'),
-    'hint'          => Text::get('guide-project-contract-information'),    
+    'hint'          => Text::get('guide-call-contract-information'),
     'elements'      => array(
         'process_userPersonal' => array (
             'type' => 'hidden',

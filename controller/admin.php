@@ -4460,7 +4460,7 @@ namespace Goteo\Controller {
                         $log_text = 'Al admin %s le ha fallado al pasar la convocatoria %s a <span class="red">Revisión</span>';
                     }
                     break;
-                case 'publish': // comienza la campaña de postulacion
+                case 'open': // comienza la campaña de postulacion
                     if ($call->open($errors)) {
                         $log_text = 'El admin %s ha pasado la convocatoria %s al estado <span class="red">Recepción de proyectos</span>';
                     } else {
@@ -4568,6 +4568,10 @@ namespace Goteo\Controller {
                     $log->type = 'goteo';
                     $log->html = Text::html('feed-new_call-published');
                     $log->add($errors);
+                }
+
+                if (!empty($errors)) {
+                    Message::Error('Error al publicar el feed: '. $errors);
                 }
 
                 unset($log);

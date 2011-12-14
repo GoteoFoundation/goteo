@@ -79,39 +79,32 @@ namespace Goteo\Controller {
                     'userProfile' => array(
                         'name' => Text::get('step-1'),
                         'title' => Text::get('step-userProfile'),
-                        'guide' => Text::get('guide-project-user-information'),
                         'offtopic' => true
                     ),
                     'userPersonal' => array(
                         'name' => Text::get('step-2'),
                         'title' => Text::get('step-userPersonal'),
-                        'guide' => Text::get('guide-project-contract-information'),
                         'offtopic' => true
                     ),
                     'overview' => array(
                         'name' => Text::get('step-3'),
-                        'title' => Text::get('step-overview'),
-                        'guide' => Text::get('guide-project-description')
+                        'title' => Text::get('step-overview')
                     ),
                     'costs'=> array(
                         'name' => Text::get('step-4'),
-                        'title' => Text::get('step-costs'),
-                        'guide' => Text::get('guide-project-costs')
+                        'title' => Text::get('step-costs')
                     ),
                     'rewards' => array(
                         'name' => Text::get('step-5'),
-                        'title' => Text::get('step-rewards'),
-                        'guide' => Text::get('guide-project-rewards')
+                        'title' => Text::get('step-rewards')
                     ),
                     'supports' => array(
                         'name' => Text::get('step-6'),
-                        'title' => Text::get('step-supports'),
-                        'guide' => Text::get('guide-project-support')
+                        'title' => Text::get('step-supports')
                     ),
                     'preview' => array(
                         'name' => Text::get('step-7'),
                         'title' => Text::get('step-preview'),
-                        'guide' => Text::get('guide-project-overview'),
                         'offtopic' => true
                     )
                 );
