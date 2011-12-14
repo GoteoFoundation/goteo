@@ -32,7 +32,7 @@ namespace Goteo\Controller {
                 }
             }
 
-            if (isset($post) && !isset($blog->posts[$post])) {
+            if (isset($post) && !isset($blog->posts[$post]) && $_GET['preview'] != $_SESSION['user']->id) {
                 throw new \Goteo\Core\Redirection('/blog');
             }
 
