@@ -16,6 +16,21 @@ include 'view/prologue.html.php';
 
 include 'view/header.html.php' ?>
 
+<script type="text/javascript">
+function projAssign(projId) {
+	//llamar al identificador de sesion
+	$.getJSON('/json/assign_proj_call/'+projId,function(data){
+		if(data.assigned) {
+            $("#assign_"+projId).html('<span style="color:red;"><?php echo Text::get('regular-call-assigned'); ?></span>');
+		} else {
+            alert('<?php echo Text::get('assign-call-failed'); ?>');
+        }
+	});
+
+
+    return false;
+}
+</script>
 
         <div id="sub-header">
             <div>
@@ -25,6 +40,7 @@ include 'view/header.html.php' ?>
         </div>
 
         <div id="main">
+            <?php /* if (!empty($this['message'])) : ?><p><?php echo $this['message'] ?></p><?php endif; */ ?>
 
             <div class="widget projects">
                 <?php while ($project = $pagedResults->fetchPagedRow()) :

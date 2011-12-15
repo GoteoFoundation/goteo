@@ -25,6 +25,27 @@ namespace Goteo\Controller {
 		}
 
 		/**
+		 * Intenta asignar proyecto a convocatoria
+		 * */
+		public function assign_proj_call($id = null) {
+
+			$this->result = array(
+				'assigned'=>false
+			);
+			if($_SESSION['assign_mode'] === true && !empty($_SESSION['call']->id) && !empty($id)) {
+
+                $registry = new Model\Call\Project;
+                $registry->id = $id;
+                $registry->call = $_SESSION['call']->id;
+                if ($registry->save($errors)) {
+    				$this->result['assigned'] = true;
+                }
+			}
+
+			return $this->output();
+		}
+
+		/**
 		 * Json encoding...
 		 * */
 		public function output() {

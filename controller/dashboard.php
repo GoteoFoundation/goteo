@@ -1296,8 +1296,36 @@ namespace Goteo\Controller {
             switch ($option) {
                 // proyectos
                 case 'projects':
-					$projects = Model\Call\Project::get($call);
-                    $viewData['projects'] = $projects;
+
+                    // Si no s ponemos en Modo asignar proyectos
+                    if ($action == 'assign_mode' && $id == 'on') {
+                        if ($call->status < 3) {
+                            $_SESSION['assign_mode'] = true;
+                            throw new Redirection('/discover/call');
+                        } else {
+                            Message::Error('No se pueden asignar proyectos ahora');
+                            unset($_SESSION['assign_mode']);
+                        }
+                    } elseif ($action == 'assign_mode' && $id == 'off') {
+                        unset($_SESSION['assign_mode']);
+                    }
+
+                    //si estamos quitando un proyecto
+                    if ($action == 'unassign' && !empty($id) && isset($call->projects[$id]) && $call->projects[$id]->amount <= 0 ) {
+
+                        $registry = new Model\Call\Project;
+                        $registry->id = $id;
+                        $registry->call = $call->id;
+                        if ($registry->remove($errors)) {
+                            Message::Error('El proyecto se ha quitado correctamente de la convocatoria');
+                            $call->projects = Model\Call\Project::get($call->id);
+                        } else{
+                            Message::Error('Falló al quitar el proyecto: ' . implode('<br />', $errors));
+                        }
+                    } elseif ($action == 'unassign') {
+                        Message::Error('No se puede quitar este proyecto ahora');
+                    }
+
                 break;
             }
 

@@ -37,13 +37,17 @@ $status = $this['status'];
         <tr>
             <th>Proyecto</th>
             <th>Estado</th>
+            <th>Riego</th>
             <th></th>
         </tr>
         <?php foreach ($projects as $proj) : ?>
         <tr>
             <td><?php echo $proj->name ?></td>
             <td><?php echo $status[$proj->status] ?></td>
-            <td><a href="#" onclick="if (confirm('Seguro que quitamos el proyecto \'<?php echo $proj->name ?>\' de la convocatoria \'<?php echo $call->name ?>\' ?')) { assignproj('<?php echo $proj->id ?>') }">[Quitar]</a></td>
+            <td><?php echo $proj->amount ?></td>
+            <td><?php if ($proj->amount <= 0) : ?>
+                <a href="#" onclick="if (confirm('Seguro que quitamos el proyecto \'<?php echo $proj->name ?>\' de la convocatoria \'<?php echo $call->name ?>\' ?')) { assignproj('<?php echo $proj->id ?>') }">[Quitar]</a>
+            <?php endif; ?></td>
         </tr>
         <?php endforeach; ?>
     </table>

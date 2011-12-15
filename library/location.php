@@ -21,7 +21,6 @@ namespace Goteo\Library {
             $sql = "SELECT distinct(project_location) as location
                     FROM project
                     WHERE status > 2
-                    AND status < 6
                     ORDER BY location ASC";
 
             try {

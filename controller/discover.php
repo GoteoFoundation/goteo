@@ -129,6 +129,67 @@ namespace Goteo\Controller {
 
         }
 
+        /*
+         * Resultados para los
+         */
+        public function call () {
+
+            // antenemos actualizados los datos de convocatoria
+            $_SESSION['call'] = Model\Call::get($_SESSION['call']->id);
+
+            if (!$_SESSION['call'] instanceof Model\Call || $_SESSION['assign_mode'] !== true || $call->status >= 3) {
+                throw new Redirection('/dashboard/calls/projects');
+            } else {
+                $call = $_SESSION['call'];
+            }
+
+            $viewData = array();
+
+            // segun el tipo cargamos el título de la página
+            $viewData['title'] = Text::get('discover-group-call-header') . ' ' . $_SESSION['call']->name;
+
+            $message = 'Mostramos coincidencias con, ';
+
+            // sacamos parametros de la convocatoria
+            // para cada parametro, si no hay ninguno es todos los valores
+            $params = array('category'=>array(), 'location'=>array(), 'reward'=>array());
+            // categorias
+            $message .= ' las categorias: ';
+            foreach ($call->categories as $category) {
+                $params['category'][] = "'{$category}'";
+                $message .= $category . ', ';
+            }
+
+            // localizacion (separamos la localizacion de la convocatoria y las hacemos md5)
+            $locations = \explode(',', $call->call_location);
+
+            // solo ponemos las localidades que existan en proyectos
+            $existing_locations = \Goteo\Library\Location::getList();
+
+            $message .= '; Las localizaciones : ';
+            foreach ($locations as $location ) {
+                $call_loc = md5(trim($location));
+                if (isset($existing_locations[$call_loc]))
+                $params['location'][] = "'".$call_loc."'";
+                $message .= $location . ', ';
+            }
+
+            // recompensas
+            $message .= '; las recompensas: ';
+            foreach ($call->icons as $icon) {
+                $params['reward'][] = "'{$icon}'";
+                $message .= $icon . ', ';
+            }
+
+
+            $viewData['message'] = $message;
+
+            $viewData['list'] = \Goteo\Library\Search::params($params, true);
+
+            return new View('view/discover/assign.html.php', $viewData);
+
+        }
+
     }
     
 }

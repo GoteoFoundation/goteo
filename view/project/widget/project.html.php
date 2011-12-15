@@ -98,6 +98,17 @@ if (isset($this['investor']) && is_object($this['investor'])) {
 
     </div>
 
+    <?php if ($_SESSION['assign_mode'] === true) : // boton para asignar ?>
+    <div class="buttons" id="assign_<?php echo $project->id ?>">
+        <?php if (!isset($_SESSION['call']->projects[$project->id])) : ?>
+            <a class="button weak" href="#" onclick="return projAssign('<?php echo $project->id ?>');"><?php echo Text::get('regular-call-assign_this'); ?></a>
+        <?php else : ?>
+            <span style="color:red;"><?php echo Text::get('regular-call-assigned'); ?></span>
+        <?php endif; ?>
+    </div>
+    <?php endif; ?>
+
+
     <?php
     /*
      * quitamos los botones

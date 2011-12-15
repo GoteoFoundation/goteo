@@ -50,9 +50,10 @@ namespace Goteo\Library {
         /**
          * Metodo para realizar una busqueda por parametros
          * @param array multiple $params 'category', 'location', 'reward'
+         * @param bool showall si true, muestra tambien proyectos en estado de edicion y revision
          * @return array results
          */
-		public static function params ($params) {
+		public static function params ($params, $showall = false) {
 
             $results = array();
             $where   = array();
@@ -91,9 +92,11 @@ namespace Goteo\Library {
                 $values[':text'] = "%{$params['query']}%";
             }
 
+            $minstatus = ($showall) ? '0' : '2';
+
             $sql = "SELECT id
                     FROM project
-                    WHERE status > 2
+                    WHERE status > $minstatus
                     ";
             
             if (!empty($where)) {
@@ -107,7 +110,7 @@ namespace Goteo\Library {
             try {
                 $query = Model::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $match) {
-                    $results[] = Project::get($match->id);
+                    $results[] = Project::getMedium($match->id);
                 }
                 return $results;
             } catch (\PDOException $e) {
