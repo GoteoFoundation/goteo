@@ -41,6 +41,9 @@ use Goteo\Core\ACL,
                         <li><a href="/dashboard/activity"><span><?php echo Text::get('dashboard-menu-activity'); ?></span></a></li>
                         <li><a href="/dashboard/profile"><span><?php echo Text::get('dashboard-menu-profile'); ?></span></a></li>
                         <li><a href="/dashboard/projects"><span><?php echo Text::get('dashboard-menu-projects'); ?></span></a></li>
+                        <?php if (ACL::check('/call/create')) : ?>
+                        <li><a href="/dashboard/calls"><span><?php echo Text::get('dashboard-menu-calls'); ?></span></a></li>
+                        <?php endif; ?>
                         <?php if (ACL::check('/translate')) : ?>
                         <li><a href="/translate"><span><?php echo Text::get('regular-translate_board'); ?></span></a></li>
                         <?php endif; ?>
