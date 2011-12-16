@@ -46,7 +46,7 @@ if (!defined('PHPMAILER_POP3')) {
 }
 
 // Metadata
-define('GOTEO_META_TITLE', 'Crowdfunding the commons');
+define('GOTEO_META_TITLE', 'Goteo.org  Crowdfunding the commons');
 define('GOTEO_META_DESCRIPTION', utf8_encode('Red social de financiación colectiva'));
 define('GOTEO_META_KEYWORDS', utf8_encode('crowdfunding, procomún, commons, social, network, financiacion colectiva, cultural, creative commons, proyectos abiertos, open source, free software, licencias libres'));
 define('GOTEO_META_AUTHOR', 'Onliners Web Development');

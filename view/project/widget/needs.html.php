@@ -5,8 +5,8 @@ $project = $this['project'];
 $types   = $this['types'];
 $level = (int) $this['level'] ?: 3;
 
-$minimum    = $project->mincost . ' &euro;';
-$optimum    = $project->maxcost . ' &euro;';
+$minimum    = \amount_format($project->mincost) . ' &euro;';
+$optimum    = \amount_format($project->maxcost) . ' &euro;';
 
 // separar los costes por tipo
 $costs = array();
@@ -16,8 +16,8 @@ foreach ($project->costs as $cost) {
     $costs[$cost->type][] = (object) array(
         'name' => $cost->cost,
         'description' => $cost->description,
-        'min' => $cost->required == 1 ? $cost->amount . ' &euro;' : '',
-        'opt' => $cost->amount . ' &euro;',
+        'min' => $cost->required == 1 ? \amount_format($cost->amount) . ' &euro;' : '',
+        'opt' => \amount_format($cost->amount) . ' &euro;',
         'req' => $cost->required
     );
 }

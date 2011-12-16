@@ -51,4 +51,11 @@ namespace {
         return true;
     }
 
+    /**
+     * Numberformat para importes
+     */
+    function amount_format($amount, $decs = 0) {
+        return number_format($amount, $decs, ',', '.');
+    }
+
 }
