@@ -26,9 +26,9 @@ list($mreach, $mof, $mrest) = explode('-', $metter_txt);
     </div>
     <ul class="financ-meter">
         <li><?php echo $mreach ?></li>
-        <li class="reached"><?php echo $banner->project->amount ?> <img src="<?php echo SRC_URL ?>/view/css/euro/blue/s.png" alt="&euro;" /></li>
+        <li class="reached"><?php echo \amount_format($banner->project->amount) ?> <img src="<?php echo SRC_URL ?>/view/css/euro/blue/s.png" alt="&euro;" /></li>
         <li><?php echo $mof ?></li>
-        <li class="optimun"><?php echo ($banner->project->amount >= $banner->project->mincost) ? $banner->project->maxcost : $banner->project->mincost; ?> <img src="<?php echo SRC_URL ?>/view/css/euro/violet/s.png" alt="&euro;" /></li>
+        <li class="optimun"><?php echo ($banner->project->amount >= $banner->project->mincost) ? \amount_format($banner->project->maxcost) : \amount_format($banner->project->mincost); ?> <img src="<?php echo SRC_URL ?>/view/css/euro/violet/s.png" alt="&euro;" /></li>
         <?php if ($banner->project->days > 0) : ?>
         <li><?php echo $mrest ?></li>
         <li class="days"><?php echo $banner->project->days ?> <?php echo Text::get('regular-days') ?></li>

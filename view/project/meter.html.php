@@ -76,13 +76,13 @@ $minimum_ratio =  min(100, round(($minimum / $optimum) * 100));
 
         <dl>
             <dt class="optimum"><?php echo Text::get('project-view-metter-optimum'); ?></dt>
-            <dd class="optimum"><strong><?php echo number_format($optimum) ?></strong> <span class="euro">&euro;</span></dd>
+            <dd class="optimum"><strong><?php echo \amount_format($optimum) ?></strong> <span class="euro">&euro;</span></dd>
 
             <dt class="minimum" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($minimum_ratio) ?>%"><span><?php echo Text::get('project-view-metter-minimum'); ?></span></dt>
-            <dd class="minimum" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($minimum_ratio) ?>%"><strong><?php echo number_format($minimum) ?> <span class="euro">&euro;</span></strong> </dd>
+            <dd class="minimum" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($minimum_ratio) ?>%"><strong><?php echo \amount_format($minimum) ?> <span class="euro">&euro;</span></strong> </dd>
 
             <dt class="reached"><span><?php echo Text::get('project-view-metter-got'); ?></span></dt>
-            <dd class="reached"><strong><?php echo number_format($reached) ?> <span class="euro">&euro;</span></strong></dd>
+            <dd class="reached"><strong><?php echo \amount_format($reached) ?> <span class="euro">&euro;</span></strong></dd>
 
             <dt class="days"><span><?php echo Text::get('project-view-metter-days'); ?></span></dt>
             <dd class="days"><strong><?php echo number_format($days) ?></strong> <?php echo Text::get('regular-days'); ?></dd>
@@ -94,7 +94,7 @@ $minimum_ratio =  min(100, round(($minimum / $optimum) * 100));
 
         <?php if ($activable) : ?>
         <div class="obtained">
-            <strong><?php echo number_format($reached) ?> <span class="euro">&euro;</span></strong>
+            <strong><?php echo \amount_format($reached) ?> <span class="euro">&euro;</span></strong>
             <span class="percent"><?php echo number_format($minimum_done_per) ?>%</span>
         </div>
         <?php endif; ?>
