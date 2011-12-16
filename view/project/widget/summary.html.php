@@ -82,8 +82,12 @@ $level = (int) $this['level'] ?: 3;
         <a name="motivideo"></a>
         <?php
         // @TODO   universal subtitles standard
-        // @FIXME  piñonaco para el video move commons
-        if ($project->id == 'move-commons') {
+        // @FIXME  piñonaco para el video institucional de move commons y otro
+        $universales = array(
+            'move-commons',
+            'infinit-loop'
+        );
+        if (in_array($project->id, $universales)) {
             echo $project->video->getEmbedCode(true);
         } else {
             echo $project->video->getEmbedCode();
