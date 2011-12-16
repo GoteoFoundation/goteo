@@ -8,7 +8,7 @@ $project = $this['project'];
 
 $level = (int) $this['level'] ?: 3;
 
-$reached    = number_format($project->invested);
+$reached    = \amount_format($project->invested);
 $supporters = count($project->investors);
 
 $worthcracy = Worth::getAll();

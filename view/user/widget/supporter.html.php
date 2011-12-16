@@ -31,7 +31,7 @@ $worthcracy = Worth::getAll();
 	        </dd>
 	
 	        <dt class="amount"><?php echo Text::get('profile-worth-title'); ?></dt>
-	        <dd class="amount"><strong><?php echo number_format($user->amount) ?></strong> <span class="euro">&euro;</span></dd>
+	        <dd class="amount"><strong><?php echo \amount_format($user->amount) ?></strong> <span class="euro">&euro;</span></dd>
 	
 	        <dt class="date"><?php echo Text::get('profile-last_worth-title'); ?></dt>
 	        <dd class="date"><?php echo $user->date; ?></dd>
