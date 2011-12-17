@@ -93,7 +93,7 @@ $superform = array(
                     'type'  => 'html',
                     'class' => 'inline logo-image',
                     'html'  => !empty($call->logo)  ?
-                               '<img src="'.SRC_URL.'/image/' . $call->logo . '/128/128" alt="Logo" /><button class="image-remove" type="submit" name="logo-'.$call->logo.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               '<img src="'.SRC_URL.'/image/' . $call->logo . '" alt="Logo" /><button class="image-remove" type="submit" name="logo-'.$call->logo.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
 
@@ -123,7 +123,7 @@ $superform = array(
                     'type'  => 'html',
                     'class' => 'inline image-image',
                     'html'  => !empty($call->image) ?
-                               '<img src="'.SRC_URL.'/image/' . $call->image . '/128/128" alt="Imagen" /><button class="image-remove" type="submit" name="image-'.$call->image.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               '<img src="'.SRC_URL.'/image/' . $call->image . '" alt="Imagen" /><button class="image-remove" type="submit" name="image-'.$call->image.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
 
