@@ -17,20 +17,20 @@ include 'view/call/prologue.html.php';
 			<li class="item" id="description">
 				<img src="<?php echo SRC_URL ?>/image/<?php echo $call->logo ?>" alt="logo" />
                 <h2 class="title">CAMPA&Ntilde;A<br /><?php echo $call->name ?></h2>
-                <?php if ($call->status == 3) : //inscripcion ?>
+                <?php /* if ($call->status == 3) : //inscripcion ?>
                 <h2>Se buscan proyectos!</h2>
-                <?php else : //en campaña ?>
+                <?php else : //en campaña */ ?>
 				<h2 class="subtitle">Por cada (1&euro;) que das a un proyecto en www.goteo.org, <strong><?php echo $call->user->name ?></strong> aporta otro al proyecto que has apoyado. Los proyectos participantes han sido seleccionados por convocatoria abierta.</h2>
-                <?php endif; ?>
+                <?php // endif; ?>
 				<p><?php echo $call->description ?></p>
 			</li>
 			<li class="item" id="numbers">
-            <?php if ($call->status == 3) : //inscripcion ?>
+            <?php /* if ($call->status == 3) : //inscripcion ?>
 				<dl class="block long last">
 					<dt>Presupuesto total de campa&ntilde;a</dt>
                     <dd class="money<?php if ($call->status == 4) echo ' light' ?>"><?php echo \amount_format($call->amount) ?> <span class="euro">&euro;</span></dd>
 				</dl>
-				<dl class="block">
+				<dl class="block long">
 					<dt>Convocatoria válida hasta:</dt>
 					<dd><span>12</span>Nov/2011</dd>
 				</dl>
@@ -54,7 +54,7 @@ include 'view/call/prologue.html.php';
 						</ul>
 					</dd>
 				</dl>
-				<dl class="block last">
+				<dl class="block long last">
 					<dt>Más información</dt>
 					<dd>
                         <a href="<?php echo $call->pdf ?>" target="_blank">Descarga el PDF con las bases</a><br />
@@ -62,7 +62,7 @@ include 'view/call/prologue.html.php';
                         <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/legal" target="_blank">Términos y condiciones</a>
                     </dd>
 				</dl>
-            <?php else : //en campaña ?>
+            <?php else : //en campaña */ ?>
 				<dl class="block long last">
 					<dt>Presupuesto total de campa&ntilde;a</dt>
                     <dd class="money light"><?php echo \amount_format($call->amount) ?> <span class="euro">&euro;</span></dd>
@@ -99,7 +99,7 @@ include 'view/call/prologue.html.php';
 						</ul>
 					</dd>
 				</dl>
-            <?php endif; ?>
+            <?php // endif; ?>
 
 				<dl class="block location">
 					<dt>Campa&ntilde;a solo para proyectos en:</dt>
@@ -107,11 +107,11 @@ include 'view/call/prologue.html.php';
 				</dl>
 
 				<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="button aqua info" target="_blank">M&aacute;s info...</a>
-            <?php if ($call->status == 3) : //inscripcion ?>
+            <?php /* if ($call->status == 3) : //inscripcion ?>
 				<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/apply" class="button red view" target="_blank">Participar</a>
-            <?php else : // ver proyectos ?>
+            <?php else : // ver proyectos */ ?>
 				<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/projects" class="button red view" target="_blank">Ver proyectos seleccionados</a>
-            <?php endif; ?>
+            <?php // endif; ?>
 			</li>
 		</ul>
     </div>
