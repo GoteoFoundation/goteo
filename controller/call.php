@@ -332,6 +332,9 @@ namespace Goteo\Controller {
                     $show = 'index';
                 }
 
+                $call->categories = Model\Call\Category::getNames($call->id);
+                $call->icons = Model\Call\Icon::getNames($call->id);
+
                 // lo puede ver
                 return new View('view/call/'.$show.'.html.php', array('call' => $call));
 

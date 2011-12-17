@@ -209,7 +209,22 @@ namespace Goteo\Model {
 				// proyectos
 				$call->projects = Call\Project::get($id);
 
-//                $call->usedCalc();
+                // cuantos en campaña (status 3) y cuantos exitosos
+                $call->runing_projects = 0;
+                $call->success_projects = 0;
+
+                foreach ($call->projects as $proj) {
+                    if ($proj->status == 3)
+                        $call->runing_projects++;
+
+                    if ($proj->status == 4 || $proj->status == 5)
+                        $call->success_projects++;
+                }
+
+
+
+                $used = 0; //@TODO calcular cuanto se ha repartido
+                $call->rest = $calc->amount - $used;
 
                 // para convocatorias en campaña o posterior
                 // los proyectos han conseguido pasta, son exitosos, estan en campaña o no han conseguido y estan caducados pero no se calculan ni dias ni ronda
@@ -1101,8 +1116,8 @@ namespace Goteo\Model {
             return array(
 //                0=>Text::get('form-call_status-cancelled'),
                 1=>Text::get('form-call_status-edit'),              // edicion
-                2=>Text::get('form-call_status-review'),            // en revisión: seleccionando proyectos
-                3=>Text::get('form-call_status-apply'),             // en campaña de postulacion
+                2=>Text::get('form-call_status-review'),            // en revisión
+                3=>Text::get('form-call_status-apply'),             // en campaña de inscripción
                 4=>Text::get('form-call_status-published'),         // en campaña de repartir dinero
                 5=>Text::get('form-call_status-success'),           // se acabo el dinero
                 6=>Text::get('form-call_status-expired'));          // la hemos cancelado
