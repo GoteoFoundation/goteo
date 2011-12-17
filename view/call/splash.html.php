@@ -16,34 +16,34 @@ include 'view/call/prologue.html.php';
 		<ul id="list">
 			<li class="item" id="description">
 				<img src="<?php echo SRC_URL ?>/image/<?php echo $call->logo ?>" alt="logo" />
-                <h2 class="title">CAMPA&Ntilde;A<br /><?php echo $call->name ?></h2>
+                <h2 class="title"><?php echo Text::get('call-splash-campaign_title') ?><br /><?php echo $call->name ?></h2>
                 <?php /* if ($call->status == 3) : //inscripcion ?>
-                <h2>Se buscan proyectos!</h2>
+                <h2><?php echo Text::get('call-splash-searching_projects') ?></h2>
                 <?php else : //en campaña */ ?>
-				<h2 class="subtitle">Por cada (1&euro;) que das a un proyecto en www.goteo.org, <strong><?php echo $call->user->name ?></strong> aporta otro al proyecto que has apoyado. Los proyectos participantes han sido seleccionados por convocatoria abierta.</h2>
+				<h2 class="subtitle"><?php echo Text::get('call-splash-invest_explain', $call->user->name) ?></h2>
                 <?php // endif; ?>
 				<p><?php echo $call->description ?></p>
 			</li>
 			<li class="item" id="numbers">
             <?php /* if ($call->status == 3) : //inscripcion ?>
 				<dl class="block long last">
-					<dt>Presupuesto total de campa&ntilde;a</dt>
+					<dt><?php echo Text::get('call-splash-whole_budget-header') ?></dt>
                     <dd class="money<?php if ($call->status == 4) echo ' light' ?>"><?php echo \amount_format($call->amount) ?> <span class="euro">&euro;</span></dd>
 				</dl>
 				<dl class="block long">
-					<dt>Convocatoria válida hasta:</dt>
+					<dt><?php echo Text::get('call-splash-valid_until-header') ?></dt>
 					<dd><span>12</span>Nov/2011</dd>
 				</dl>
 				<dl class="block last selected">
-					<dt>Proyectos inscritos</dt>
+					<dt><?php echo Text::get('call-splash-applied_projects-header') ?></dt>
 					<dd><?php echo count($call->projects) ?></dd>
 				</dl>
 				<dl class="block category">
-					<dt>Proyectos dentro de las categor&iacute;as</dt>
+					<dt><?php echo Text::get('call-splash-categories-header') ?></dt>
 					<dd><?php echo implode(', ', $call->categories) ?></dd>
 				</dl>
 				<dl class="block return">
-					<dt>Proyectos con retornos</dt>
+					<dt><?php echo Text::get('call-splash-icons-header') ?></dt>
 					<dd>
 						<ul>
                             <?php foreach ($call->icons as $iconId=>$iconName) : ?>
@@ -55,40 +55,40 @@ include 'view/call/prologue.html.php';
 					</dd>
 				</dl>
 				<dl class="block long last">
-					<dt>Más información</dt>
+					<dt><?php echo Text::get('call-splash-more_info-header') ?></dt>
 					<dd>
-                        <a href="<?php echo $call->pdf ?>" target="_blank">Descarga el PDF con las bases</a><br />
+                        <a href="<?php echo $call->pdf ?>" target="_blank"><?php echo Text::get('call-splash-dossier-link') ?></a><br />
                         <a href="<?php echo $call->user->webs[0]->url ?>" target="_blank"><?php echo $call->user->webs[0]->url ?></a><br />
-                        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/legal" target="_blank">Términos y condiciones</a>
+                        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/legal" target="_blank"><?php echo Text::get('call-splash-legal-link') ?></a>
                     </dd>
 				</dl>
             <?php else : //en campaña */ ?>
 				<dl class="block long last">
-					<dt>Presupuesto total de campa&ntilde;a</dt>
+					<dt><?php echo Text::get('call-splash-whole_budget-header') ?></dt>
                     <dd class="money light"><?php echo \amount_format($call->amount) ?> <span class="euro">&euro;</span></dd>
 				</dl>
 				<dl class="block long">
-					<dt>Queda por repartir</dt>
+					<dt><?php echo Text::get('call-splash-remain_budget-header') ?></dt>
 					<dd class="money"><?php echo \amount_format($call->rest) ?> <span class="euro">&euro;</span></dd>
 				</dl>
 				<dl class="block last category">
-					<dt>Proyectos dentro de las categor&iacute;as</dt>
+					<dt><?php echo Text::get('call-splash-categories-header') ?></dt>
 					<dd><?php echo implode(', ', $call->categories) ?></dd>
 				</dl>
 				<dl class="block selected">
-					<dt>Proyectos seleccionados</dt>
+					<dt><?php echo Text::get('call-splash-selected_projects-header') ?></dt>
 					<dd><?php echo count($call->projects) ?></dd>
 				</dl>
 				<dl class="block processing">
-					<dt>Proyectos en proceso</dt>
+					<dt><?php echo Text::get('call-splash-runing_projects-header') ?></dt>
 					<dd><?php echo $call->runing_projects ?></dd>
 				</dl>
 				<dl class="block success">
-					<dt>Proyectos exitosos</dt>
+					<dt><?php echo Text::get('call-splash-success_projects-header') ?></dt>
 					<dd><?php echo $call->success_projects ?></dd>
 				</dl>
 				<dl class="block last return">
-					<dt>Proyectos con retornos</dt>
+					<dt><?php echo Text::get('call-splash-icons-header') ?></dt>
 					<dd>
 						<ul>
                             <?php foreach ($call->icons as $iconId=>$iconName) : ?>
@@ -102,20 +102,20 @@ include 'view/call/prologue.html.php';
             <?php // endif; ?>
 
 				<dl class="block location">
-					<dt>Campa&ntilde;a solo para proyectos en:</dt>
+					<dt><?php echo Text::get('call-splash-location-header') ?></dt>
 					<dd><?php echo Text::GmapsLink($call->call_location); ?></dd>
 				</dl>
 
-				<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="button aqua info" target="_blank">M&aacute;s info...</a>
+				<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="button aqua info" target="_blank"><?php echo Text::get('call-splash-more_info-button') ?></a>
             <?php /* if ($call->status == 3) : //inscripcion ?>
-				<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/apply" class="button red view" target="_blank">Participar</a>
+				<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/apply" class="button red view" target="_blank"><?php echo Text::get('call-splash-apply-button') ?></a>
             <?php else : // ver proyectos */ ?>
-				<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/projects" class="button red view" target="_blank">Ver proyectos seleccionados</a>
+				<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/projects" class="button red view" target="_blank"><?php echo Text::get('call-splash-see_projects-button') ?></a>
             <?php // endif; ?>
 			</li>
 		</ul>
     </div>
 
-	<a href="<?php echo URL_SITE ?>/service/resources" id="capital" target="_blank">Capital Riego</a>
+	<a href="<?php echo URL_SITE ?>/service/resources" id="capital" target="_blank"><?php echo Text::get('footer-service-resources') ?></a>
     
 <?php include 'view/epilogue.html.php' ?>
