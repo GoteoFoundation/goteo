@@ -43,21 +43,43 @@ namespace Goteo\Model {
          */
         public static function getAll ($section = 'node') {
 
-            $query = static::query("
+            $values = array(':section' => $section);
+
+            $sql = "
                 SELECT
                     faq.id as id,
                     faq.node as node,
-                    faq.section as section,
-                    IFNULL(faq_lang.title, faq.title) as title,
-                    IFNULL(faq_lang.description, faq.description) as description,
+                    faq.section as section,";
+
+            if (\LANG != 'es') {
+                $sql .= "
+                    faq_lang.title as title,
+                    faq_lang.description as description,";
+            } else {
+                $sql .= "
+                    faq.title as title,
+                    faq.description as description,";
+            }
+
+            $sql .= "
                     faq.order as `order`
-                FROM faq
-                LEFT JOIN faq_lang
+                FROM faq";
+
+            if (\LANG != 'es') {
+                $sql .= "
+                INNER JOIN faq_lang
                     ON  faq_lang.id = faq.id
                     AND faq_lang.lang = :lang
+                ";
+                $values[':lang'] = \LANG;
+            }
+
+            $sql .= "
                 WHERE faq.section = :section
                 ORDER BY `order` ASC, title ASC
-                ", array(':section' => $section, ':lang'=>\LANG));
+                ";
+
+            $query = static::query($sql, $values);
             
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
