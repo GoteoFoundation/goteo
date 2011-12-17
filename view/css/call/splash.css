@@ -125,7 +125,7 @@ li#description.item p {
 /* Numbers */
 
 div#main ul#list > li#numbers {
-	padding: 25px;
+	padding: 25px 25px 0;
 }
 
 li#numbers dl.block {
@@ -133,8 +133,8 @@ li#numbers dl.block {
 	overflow: hidden;
 	width: 97px;
 	border-bottom: solid 1px #cbcbcc;
-	padding-bottom: 10px;
-	margin: 0 15px 20px 0;
+	padding: 0 15px 10px 0;
+	margin: 0 0 20px;
 	overflow: hidden;
 }
 
@@ -142,8 +142,8 @@ li#numbers dl.long {
 	width: 160px;
 }
 
-li#numbers dl.nomargin {
-	margin-right: 0;
+li#numbers dl.last {
+	padding-right: 0;
 }
 
 li#numbers dl.block dt {
@@ -211,6 +211,27 @@ li#numbers dl.return dd {
 	font-size: 11px;
 }
 
+li#numbers dl.location {
+	width: 138px;
+	margin-bottom: 0;
+	border-bottom: 0;
+	padding: 0 10px 0 0;
+}
+
+li#numbers dl.location dt {
+	height: 28px;
+}
+
+li#numbers dl.location dd {
+	font-size: 10px;
+	font-weight: normal;
+	padding-left: 12px;
+	padding-top: 3px;
+    background: url('/view/css/location/s.png') no-repeat left top;
+    text-indent: .5em;    
+}
+
+
 .money {
 	color: #95268d;
 }
@@ -234,7 +255,8 @@ span.euro {
     background: url("/view/css/euro/light-violet/xl.png") no-repeat right center;
 }
 
-/* ^^^^^^^^^^^^^^^ */
+/* Retornos */
+
 .return ul {
     margin: 0;
     padding: 0;
@@ -303,7 +325,76 @@ span.euro {
     background-image: url('/view/css/icon/s/other.png');
 }
 
-/* ^^^^^^^^^^^^^ */
+/* Botones */
+
+input[type="submit"],
+input[type="reset"],
+button,
+a.button {
+    background-color: #58595B;
+    padding: .5em .8em;
+	font-size: 11px;
+    text-transform: uppercase;
+    border: none;    
+    cursor: pointer;
+    font-weight: normal;
+    margin: 0;
+    color: white;
+    margin: .5em 0;
+    display: inline-block;
+    text-decoration: none;    
+    text-align: center;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    background: #149290 url('/view/css/button/aqua.png') repeat-x top;   
+}
+
+input[type="submit"]:active,
+input[type="reset"]:active,
+button:active,
+a.button:active {
+    background: #60c1bf url('/view/css/button/aqua-active.png') repeat-x top;    
+}
+
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+button:hover,
+a.button:hover {
+    background: #60c1bf url('/view/css/button/aqua-active.png') repeat-x top;
+}
+
+input.red[type="submit"],
+input.red[type="reset"],
+button.red,
+a.button.red {    
+    background: #b5161e url('/view/css/button/red.png') repeat-x top;    
+    color: white;    
+} 
+
+input.red[type="submit"]:active,
+input.red[type="reset"]:active,
+button.red:active,
+a.button.red:active {
+    background: #e44133 url('/view/css/button/red-active.png') repeat-x top;    
+} 
+
+input.red[type="submit"]:hover,
+input.red[type="reset"]:hover,
+button.red:hover,
+a.button.red:hover {
+    background: #e44133 url('/view/css/button/red-active.png') repeat-x top;
+}
+
+a.button.info,
+a.button.location {
+	margin-top: 1em;
+}
+
+a.button.info {
+	margin-right: 1em;
+	margin-left: .5em;
+}
 
 /* Logo */
 

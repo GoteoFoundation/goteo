@@ -21,7 +21,7 @@ include 'view/call/prologue.html.php';
 				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 			</li>
 			<li class="item" id="numbers">
-				<dl class="block long nomargin">
+				<dl class="block long last">
 					<dt>Presupuesto total de campa&ntilde;a</dt>
 					<dd class="money light">30,000 <span class="euro">€</span></dd>
 				</dl>
@@ -29,7 +29,7 @@ include 'view/call/prologue.html.php';
 					<dt>Queda por repartir</dt>
 					<dd class="money">20,600 <span class="euro">€</span></dd>
 				</dl>
-				<dl class="block nomargin category">
+				<dl class="block last category">
 					<dt>Proyectos dentro de las categor&iacute;as</dt>
 					<dd>Comunicativo, <a href="#">Educativo</a>, <a href="#">Tecnolog&iacute;a</a>, <a href="#">Educaci&oacute;n</a></dd>
 				</dl>
@@ -45,7 +45,7 @@ include 'view/call/prologue.html.php';
 					<dt>Proyectos exitosos</dt>
 					<dd>6</dd>
 				</dl>
-				<dl class="block nomargin return">
+				<dl class="block last return">
 					<dt>Proyectos con retornos</dt>
 					<dd>
 						<ul>
@@ -80,7 +80,12 @@ include 'view/call/prologue.html.php';
 						</ul>
 					</dd>
 				</dl>
-				
+				<dl class="block location">
+					<dt>Campa&ntilde;a solo para proyectos en:</dt>
+					<dd>Barcelona y Cataluña, SP</dd>
+				</dl>
+				<a href="#" class="button aqua info">M&aacute;s info...</a>
+				<a href="#" class="button red view">Ver proyectos seleccionados</a>				
 			</li>
 		</ul>
     </div>

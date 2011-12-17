@@ -311,8 +311,13 @@ namespace Goteo\Controller {
 
         }
 
-        private function view ($id, $show, $post = null) {
+        private function view ($id, $show) {
             $call = Model\Call::get($id, LANG);
+
+            if (!$call instanceof Model\Call) {
+                Message::Error('Ha habido algun errror al cargar la convocatoria solicitada');
+                throw new Redirection("/");
+            }
 
             // solamente se puede ver publicamente si
             // - es el dueño
@@ -322,14 +327,13 @@ namespace Goteo\Controller {
                 $call->owner == $_SESSION['user']->id ||
                 ACL::check('/call/edit/todos') ||
                 ACL::check('/call/view/todos')) {
+
+                if (!\in_array($show, array('splash'))) {
+                    $show = 'index';
+                }
+
                 // lo puede ver
-
-                $viewData = array(
-                        'call' => $call,
-                        'show' => $show
-                    );
-
-                return new View('view/call/index.html.php', $viewData);
+                return new View('view/call/'.$show.'.html.php', array('call' => $call));
 
             } else {
                 // no lo puede ver
