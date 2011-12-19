@@ -472,7 +472,7 @@ namespace Goteo\Model {
             elseif ($this->status == 3 && $this->amount >= $this->maxcost) :
                 $this->tagmark = 'onrun';
             // "en marcha" y "aun puedes" cuando está en la segunda ronda
-            elseif ($this->status == 3 && $project->round == 2) :
+            elseif ($this->status == 3 && $this->round == 2) :
                 $this->tagmark = 'onrun-keepiton';
             // Obtiene el mínimo durante la primera ronda, "aun puedes seguir aportando"
             elseif ($this->status == 3 && $this->round == 1 && $this->amount >= $this->mincost ) :
@@ -1659,6 +1659,30 @@ namespace Goteo\Model {
             $past = $query->fetchObject();
 
             return $past->days - 1;
+        }
+
+        /**
+         * Metodo que devuelve los días que quedan para finalizar la ronda actual
+         *
+         * @return numeric days remaining to go
+         */
+        public function daysRemain($id) {
+            // primero, días desde el published
+            $sql = "
+                SELECT DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') as days
+                FROM project
+                WHERE id = ?";
+            $query = self::query($sql, array($id));
+            $days = $query->fetchColumn(0);
+            $days--;
+
+            if ($days > 40) {
+                $rest = 80 - $days; //en segunda ronda
+            } else {
+                $rest = 40 - $days; // en primera ronda
+            }
+
+            return $rest;
         }
 
         /*
