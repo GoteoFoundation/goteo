@@ -97,22 +97,36 @@ li#description.item img {
 	float: left;
 	display: block;
 	padding: 20px 30px 30px 0;
+	width: 153px;
 }
 
 li#description.item h2.title {
 	color: #1db3b2;
 	font-size: 15px;
+	text-transform: uppercase;
 	font-weight: normal;
 	margin: 10px 0;
 }
 
-li#description.item h2.subtitle {
+li#description.item p.subtitle {
 	color: #95268d;
 	font-weight: normal;
-	font-size: 16px;
+	font-size: 15px;
 	margin: 0 0 1em;
 	float: right;
+	clear: none;
 	width: 277px;
+}
+
+li#description.item p.subtitle.red {
+	font-weight: bold;
+	color: red;
+	font-size: 36px;
+	margin: 0 0 .4em;
+}
+
+li#description.item p.subtitle strong {
+	text-transform: uppercase;
 }
 
 li#description.item p {
@@ -128,13 +142,20 @@ div#main ul#list > li#numbers {
 	padding: 25px 25px 0;
 }
 
+li#numbers div.row {
+	border-bottom: solid 1px #cbcbcc;
+	overflow: hidden;
+	margin: 0 0 20px;
+	padding: 0 0 10px 0;
+	clear: both;
+}
+
 li#numbers dl.block {
 	float: left;
 	overflow: hidden;
 	width: 97px;
-	border-bottom: solid 1px #cbcbcc;
-	padding: 0 15px 10px 0;
-	margin: 0 0 20px;
+	margin: 0;
+	padding-right: 15px;
 	overflow: hidden;
 }
 
@@ -153,7 +174,7 @@ li#numbers dl.block dt {
 }
 
 li#numbers dl.block dd {
-	height: 36px;
+	min-height: 36px;
 	font-size: 34px;
 	font-weight: bold;
 	padding: 0;
@@ -173,14 +194,13 @@ li#numbers dl.category dd a {
 }
 
 li#numbers dl.category dd a:hover {
-	text-decoration: underline;
 	color: #58595B;
 }
 
 li#numbers dl.selected dd,
 li#numbers dl.processing dd,
 li#numbers dl.success dd {
-	padding-bottom: 9px;
+/*	padding-bottom: 9px;*/
 }
 
 li#numbers dl.selected dd,
@@ -203,7 +223,7 @@ li#numbers dl.success dd {
 }
 
 li#numbers dl.return {
-	height: 78px;
+	min-height: 80px;
 	width: 120px;
 } 
 
@@ -231,6 +251,48 @@ li#numbers dl.location dd {
     text-indent: .5em;    
 }
 
+li#numbers dl.location dd a {
+	font-size: 10px;
+	text-decoration: none;
+	color: #58595b;
+}
+
+li#numbers dl.location dd a:hover {
+	text-decoration: underline;
+}
+
+li#numbers dl.expires dd {
+	color: red;
+	font-size: 20px;
+}
+
+li#numbers dl.expires dd strong {
+	font-size: 34px;
+}
+
+li#numbers dl.moreinfo {
+	width: 180px;
+}
+
+li#numbers dl.moreinfo dd a {
+	display: block;
+	text-decoration: none;
+	font-size: 11px;
+	font-weight: normal;
+	margin-bottom: 2px;
+}
+
+li#numbers dl.moreinfo dd a.red {
+	color: #f00;
+}
+
+li#numbers dl.moreinfo dd a.aqua {
+	color: #1db3b2;
+}
+
+li#numbers dl.moreinfo dd a:hover {
+	color: #58595B;
+}
 
 .money {
 	color: #95268d;
@@ -394,6 +456,17 @@ a.button.location {
 a.button.info {
 	margin-right: 1em;
 	margin-left: .5em;
+}
+
+a.button.info.long {
+	font-size: 15px;
+	padding: 0.4em 1.6em;
+}
+
+a.button.join {
+	font-size: 15px;
+	padding: 0.4em 2.1em;
+	
 }
 
 /* Logo */
