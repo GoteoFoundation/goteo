@@ -39,7 +39,7 @@ namespace Goteo\Library {
             try {
                 $query = Model::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $match) {
-                    $results[] = Project::get($match->id);
+                    $results[] = Project::getMedium($match->id);
                 }
                 return $results;
             } catch (\PDOException $e) {
@@ -103,9 +103,7 @@ namespace Goteo\Library {
                 $sql .= implode (' ', $where);
             }
 
-            $sql .= "ORDER BY name ASC";
-
-//            echo "$sql<br />";
+            $sql .= " ORDER BY name ASC";
 
             try {
                 $query = Model::query($sql, $values);

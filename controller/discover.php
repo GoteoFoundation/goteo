@@ -137,7 +137,7 @@ namespace Goteo\Controller {
             // antenemos actualizados los datos de convocatoria
             $_SESSION['call'] = Model\Call::get($_SESSION['call']->id);
 
-            if (!$_SESSION['call'] instanceof Model\Call || $_SESSION['assign_mode'] !== true || $call->status >= 3) {
+            if (!$_SESSION['call'] instanceof Model\Call || $_SESSION['assign_mode'] !== true || $_SESSION['call']->status >= 3) {
                 throw new Redirection('/dashboard/calls/projects');
             } else {
                 $call = $_SESSION['call'];
@@ -161,17 +161,20 @@ namespace Goteo\Controller {
             }
 
             // localizacion (separamos la localizacion de la convocatoria y las hacemos md5)
-            $locations = \explode(',', $call->call_location);
+            if (!empty($call->call_location)) {
+                $locations = \explode(',', $call->call_location);
 
-            // solo ponemos las localidades que existan en proyectos
-            $existing_locations = \Goteo\Library\Location::getList();
+                // solo ponemos las localidades que existan en proyectos
+                $existing_locations = \Goteo\Library\Location::getList();
 
-            $message .= '; Las localizaciones : ';
-            foreach ($locations as $location ) {
-                $call_loc = md5(trim($location));
-                if (isset($existing_locations[$call_loc]))
-                $params['location'][] = "'".$call_loc."'";
-                $message .= $location . ', ';
+                $message .= '; Las localizaciones : ';
+                foreach ($locations as $location ) {
+                    $call_loc = md5(trim($location));
+                    if (!empty($call_loc) && isset($existing_locations[$call_loc])) {
+                        $params['location'][] = "'".$call_loc."'";
+                        $message .= $location . ', ';
+                    }
+                }
             }
 
             // recompensas

@@ -320,7 +320,7 @@ namespace Goteo\Model {
         /*
          *  Cargamos los datos suficientes para pintar un widget de proyecto
          */
-        public static function getMedium($id, $lang = LANG) {
+        public static function getMedium($id, $lang = \LANG) {
 
             try {
 				// metemos los datos del proyecto en la instancia

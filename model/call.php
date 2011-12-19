@@ -224,7 +224,7 @@ namespace Goteo\Model {
 
 
                 $used = 0; //@TODO calcular cuanto se ha repartido
-                $call->rest = $calc->amount - $used;
+                $call->rest = $call->amount - $used;
 
                 // para convocatorias en campaña o posterior
                 // los proyectos han conseguido pasta, son exitosos, estan en campaña o no han conseguido y estan caducados pero no se calculan ni dias ni ronda

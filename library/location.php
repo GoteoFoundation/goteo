@@ -24,7 +24,7 @@ namespace Goteo\Library {
                     ORDER BY location ASC";
 
             try {
-                $query = Model::query($sql, $values);
+                $query = Model::query($sql);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
                     $results[md5($item->location)] = $item->location;
                 }

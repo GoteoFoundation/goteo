@@ -40,7 +40,7 @@ function projAssign(projId) {
         </div>
 
         <div id="main">
-            <?php /* if (!empty($this['message'])) : ?><p><?php echo $this['message'] ?></p><?php endif; */ ?>
+            <?php if (!empty($this['message'])) : ?><p><?php echo $this['message'] ?></p><?php endif;  ?>
 
             <div class="widget projects">
                 <?php while ($project = $pagedResults->fetchPagedRow()) :
