@@ -80,19 +80,7 @@ $level = (int) $this['level'] ?: 3;
     <?php if (!empty($project->video->url)):  // video bajo motivación ?>
     <div class="project-motivation-video">
         <a name="motivideo"></a>
-        <?php
-        // @TODO   universal subtitles standard
-        // @FIXME  piñonaco para el video institucional de move commons y otro
-        $universales = array(
-            'move-commons',
-            'infinit-loop'
-        );
-        if (in_array($project->id, $universales)) {
-            echo $project->video->getEmbedCode(true);
-        } else {
-            echo $project->video->getEmbedCode();
-        }
-         ?>
+        <?php echo $project->video->getEmbedCode($project->video_usubs); ?>
     </div>
     <br />
     <?php endif ?>

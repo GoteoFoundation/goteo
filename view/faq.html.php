@@ -21,7 +21,9 @@ $go_up = Text::get('regular-go_up');
         <div id="main" class="threecols">
 			<div id="faq-content">
 				<h2><?php echo Text::get('regular-faq') ?></h2>
-				<?php foreach ($this['sections'] as $sectionId=>$sectionName) : ?>
+				<?php foreach ($this['sections'] as $sectionId=>$sectionName) :
+                    if (empty($this['faqs'][$sectionId])) continue;
+                    ?>
 					<div class="widget faq-content-module">
 						<h3><?php echo $sectionName; ?></h3>
 						<ol>
@@ -38,7 +40,9 @@ $go_up = Text::get('regular-go_up');
 				<?php endforeach; ?>
 			</div>
 			<div id="faq-sidebar">
-				<?php foreach ($this['sections'] as $sectionId=>$sectionName) : ?>
+				<?php foreach ($this['sections'] as $sectionId=>$sectionName) :
+                    if (empty($this['faqs'][$sectionId])) continue;
+                    ?>
 					<div class="widget faq-sidebar-module">
 						<h3 style="border-bottom-color: <?php echo $this['colors'][$sectionId] ?>;" class="supertitle"><?php echo $sectionName; ?></h3>
 						<ol>

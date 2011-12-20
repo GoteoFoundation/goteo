@@ -17,7 +17,12 @@ namespace Goteo\Controller {
             $colors   = Model\Faq::colors();
 
             foreach ($sections as $id=>$name) {
-                $faqs[$id] = Model\Faq::getAll($id);
+                $qs = Model\Faq::getAll($id);
+                
+                if (empty($qs))
+                    continue;
+
+                $faqs[$id] = $qs;
                 foreach ($faqs[$id] as &$question) {
                     $question->description = nl2br(str_replace(array('%SITE_URL%'), array(SITE_URL), $question->description));
                 }
