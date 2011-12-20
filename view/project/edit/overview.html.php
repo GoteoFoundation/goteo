@@ -56,7 +56,7 @@ if (!empty($project->media->url)) {
             'title' => Text::get('overview-field-media_preview'),
             'class' => 'inline media',
             'type'  => 'html',
-            'html'  => !empty($project->media) ? $project->media->getEmbedCode() : ''
+            'html'  => !empty($project->media) ? $project->media->getEmbedCode($project->media_usubs) : ''
     );
 } else {
     $media = array(
@@ -72,7 +72,7 @@ if (!empty($project->video->url)) {
             'title' => Text::get('overview-field-media_preview'),
             'class' => 'inline media',
             'type'  => 'html',
-            'html'  => !empty($project->video) ? $project->video->getEmbedCode() : ''
+            'html'  => !empty($project->video) ? $project->video->getEmbedCode($project->video_usubs) : ''
     );
 } else {
     $video = array(
@@ -187,8 +187,21 @@ $superform = array(
                     'class' => 'inline media-upload'
                 ),
 
-                'video-preview' => $video
-                ,
+                'video-preview' => $video,
+                
+                // universal subtitles video motivacion
+                'video_usubs' => array(
+                    'type'      => 'checkbox',
+                    'class'     => 'inline cols_1',
+                    'required'  => false,
+                    'name'      => 'video_usubs',
+                    'label'     => Text::get('overview-field-usubs'),
+                    'hint'      => Text::get('tooltip-project-usubs'),
+                    'errors'    => array(),
+                    'ok'        => array(),
+                    'value'     => 1,
+                    'checked'   => (bool) $project->video_usubs
+                ),
                 // fin video motivacion
                 'goal' => array(
                     'type'      => 'textarea',
@@ -248,8 +261,22 @@ $superform = array(
             'class' => 'inline media-upload'
         ),
         
-        'media-preview' => $media
-        ,
+        'media-preview' => $media,
+        
+        // universal subtitles video principal
+        'media_usubs' => array(
+            'type'      => 'checkbox',
+            'class'     => 'inline cols_1',
+            'required'  => false,
+            'label'     => Text::get('overview-field-usubs'),
+            'name'      => 'media_usubs',
+            'hint'      => Text::get('tooltip-project-usubs'),
+            'errors'    => array(),
+            'ok'        => array(),
+            'checked'   => (bool) $project->media_usubs,
+            'value'     => 1
+        ),
+        // fin media
 
         'currently' => array(    
             'title'     => Text::get('overview-field-currently'),
