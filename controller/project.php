@@ -670,11 +670,13 @@ namespace Goteo\Controller {
                 'description',
                 'motivation',
                 'video',
+                'video_usubs',
                 'about',
                 'goal',
                 'related',
                 'keywords',
                 'media',
+                'media_usubs',
                 'currently',
                 'project_location',
                 'scope'

@@ -6,9 +6,11 @@
 namespace Goteo\Library {
 
 	use Goteo\Model\Invest,
+        Goteo\Model\Project,
         Goteo\Core\Exception;
 
     class WallFriends {
+		public $project = '';
 		public $investors = array();
 		public $avatars = array(); //listado de avatars válidos con su multiplicador de tamaño
 		public $max_multiplier = 4; //màxim multiplicador de tamanys
@@ -21,16 +23,19 @@ namespace Goteo\Library {
          * @param   type mixed  $id     Identificador
          * @return  type object         Objeto
          */
-        public function __construct ($id) {
-			if($this->investors = Invest::investors($id)) {
+        public function __construct ($id, $all_avatars=true) {
+			if($this->project = Project::get($id)) {
+				$this->investors = $this->project->investors;
+
 				$avatars = array();
 				foreach($this->investors as $i) {
-					if($i->avatar != 1) {
-						$avatars[$i->avatar] = $i->amount;
-					}
+					if($i->avatar != 1 || $all_avatars)
+						$avatars[$i->user] = $i->amount;
+
 				}
 				$this->avatars = self::pondera($avatars,$this->max_multiplier);
 				arsort($this->avatars);
+				//print_r($this->project);die;
 
 			}
 			else {
@@ -65,19 +70,20 @@ namespace Goteo\Library {
 		 * @param type int	$height
 		 *
 		*/
-		public function html($width = 200, $height = 200, $mode = 0) {
+		public function html($width = 200, $mode = 0) {
 			$ret = array();
-			foreach($this->avatars as $i => $mult) {
-				if($mode == 0) {
-					$w = $this->w_size;
-					$h = $this->h_size;
-				}
-				else {
-					$w = $this->w_size * $mult;
-					$h = $this->h_size * $mult;
+			foreach($this->avatars as $user => $mult) {
+				$style = '';
+				$w = $this->w_size;
+				$h = $this->h_size;
+
+				if($mode == 1 && $mult!=1) {
+					$w *= $mult;
+					$h *= $mult;
+					$style = ' style="width:'.$w.'px;height:'.$h.'px;"';
 				}
 
-				$img = '<img style="float:left;display:inline-block;padding:'.$this->h_padding.'px '.$this->w_padding.'px '.$this->h_padding.'px '.$this->w_padding.'px;width:'.$w.'px;height:'.$h.'px;" src="/image/'.$i.'/'.$w.'/'.$h.'/1" />';
+				$img = '<a href="'.SITE_URL.'/user/profile/'.$user.'"><img'.$style.' src="'.SITE_URL.'/image/'.$this->investors[$user]->avatar.'/'.$w.'/'.$h.'/1" alt="'.$this->investors[$user]->name.'" title="'.$this->investors[$user]->name.'" /></a>';
 
 				if($mode == 0) {
 					for($i = 0; $i<$mult-1; $i++) $img .= $img;
@@ -92,22 +98,17 @@ namespace Goteo\Library {
 			$wsize = $this->w_size + $this->w_padding * 2;
 			$width = $wsize * round($width / $wsize);
 
-			return '<div style="background-color:#ccc;display:inline-block;width:'.$width.'px;height:auto;">'.implode("",$ret).'</div>';
+			$style = "<style type=\"text/css\">";
+			$style .= "div.wof {font-size: 12px;color: #58595b;font-family: \"Liberation Sans\", Helvetica, \"Helvetica Neue\", Arial, Geneva, sans-serif;background-color: #deddde;display:inline-block;width:{$width}px;height:auto;}";
+			$style .= "div.wof img {border:0;width:{$this->w_size}px;height:{$this->h_size}px;float:left;display:inline-block;padding:{$this->h_padding}px {$this->w_padding}px {$this->h_padding}px {$this->w_padding}px;}";
+			$style .= "div.wof a,div.wof a:link,div.wof a:visited,div.wof a:active,div.wof a:hover {text-decoration:none;color: #58595b;}";
+			$style .= "div.wof h2 { display:block; background:url(".SITE_URL."/view/css/project/tagmark_green.png) no-repeat right top; font-size: 14px; color:#fff;padding:0;margin: 0;}";
+			$style .= "div.wof h2 a,div.wof h2 a:link,div.wof h2 a:visited,div.wof h2 a:active,div.wof h2 a:hover {display:block;width:" . ($width - 50) . "px;height:21px;overflow:hidden; background:#19b5b3;color:#fff;padding: 7px 0 0 0}";
+			$style .= "div.wof h2 span {display:block;float:left;width:30px;height:28px;background:url(".SITE_URL."/view/css/project/tagmark_green.png) no-repeat -1px -7px;}";
+			$style .= "div.wof>div {clear:both;}";
+			$style .= "</style>";
+			$title = '<h2><span></span><a href="'.SITE_URL.'/project/'.$this->project->id.'">'.$this->project->name.'</a></h2>';
+			return $style . '<div class="wof">' . $title . '<div>' . implode("",$ret).'</div></div>';
 		}
-		/**
-		 * Muestra la imagen en pantalla.
-		 * @param type int	$width
-		 * @param type int	$height
-		 *
-		public function display ($width, $height) {
-			require_once PEAR . 'Image/Transform.php';
-            $it =& \Image_Transform::factory('GD');
-            if (\PEAR::isError($it)) {
-                die($it->getMessage() . '<br />' . $it->getDebugInfo());
-            }
-		}
-*/
-
-
     }
 }
