@@ -61,12 +61,14 @@ namespace Goteo\Model {
             $gallery = array(), // array de instancias image de project_image
             $description,
              $motivation,
-                $video,   // video de motivacion
+              $video,   // video de motivacion
+               $video_usubs,   // universal subtitles para el video de motivacion
              $about,
              $goal,
              $related,
             $categories = array(),
-            $media,
+            $media, // video principal
+             $media_usubs, // universal subtitles para el video principal
             $keywords, // por ahora se guarda en texto tal cual
             $currently, // Current development status of the project
             $project_location, // project execution location
@@ -579,11 +581,13 @@ namespace Goteo\Model {
                     'description',
                     'motivation',
                     'video',
+                    'video_usubs',
                     'about',
                     'goal',
                     'related',
                     'keywords',
                     'media',
+                    'media_usubs',
                     'currently',
                     'project_location',
                     'scope',
