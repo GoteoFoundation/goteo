@@ -2430,7 +2430,7 @@ namespace Goteo\Controller {
         public function users($action = 'list', $id = null, $subaction = '') {
 
             $filters = array();
-            $fields = array('status', 'interest', 'role', 'name');
+            $fields = array('status', 'interest', 'role', 'name', 'order');
             foreach ($fields as $field) {
                 if (isset($_GET[$field])) {
                     $filters[$field] = $_GET[$field];
@@ -2708,6 +2708,10 @@ namespace Goteo\Controller {
                         'checker' => 'Revisor',
                         'translator' => 'Traductor'
                     );
+                    $orders = array(
+                        'created' => 'Fecha de alta',
+                        'name' => 'Nombre'
+                    );
 
                     return new View(
                         'view/admin/index.html.php',
@@ -2720,6 +2724,7 @@ namespace Goteo\Controller {
                             'status' => $status,
                             'interests' => $interests,
                             'roles' => $roles,
+                            'orders' => $orders,
                             'errors' => $errors
                         )
                     );
