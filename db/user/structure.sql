@@ -25,3 +25,5 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- alters
 ALTER TABLE `user` ADD `google` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL AFTER `facebook` ;
 ALTER TABLE `user` ADD `hide` BOOLEAN NOT NULL DEFAULT '0';
+
+ALTER TABLE `user` ADD `confirmed` INT( 1 ) NOT NULL DEFAULT '0';

@@ -340,20 +340,29 @@ namespace Goteo\Model {
 
         /*
          * Lista de proyectos con aportes
+         *
+         * @param bool success solo los prroyectos en campaña, financiados o exitosos
          */
-        public static function projects ($node = \GOTEO_NODE) {
+        public static function projects ($success = false, $node = \GOTEO_NODE) {
 
             $list = array();
 
-            $query = static::query("
+            $sql = "
                 SELECT
                     project.id as id,
                     project.name as name
                 FROM    project
                 INNER JOIN invest
                     ON project.id = invest.project
-                ORDER BY project.name ASC
-                ", array(':node' => $node));
+                    ";
+
+            if ($success) {
+                $sql .= " WHERE project.status >= 3 AND project.status <= 5 ";
+            }
+            $sql .= " ORDER BY project.name ASC";
+
+            //, array(':node' => $node)
+            $query = static::query($sql);
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
                 $list[$item->id] = $item->name;

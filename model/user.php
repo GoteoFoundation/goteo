@@ -24,6 +24,7 @@ namespace Goteo\Model {
             $contribution,
             $keywords,
             $active,  // si no activo, no puede loguear
+            $confirmed = false,  // si no ha confirmado el email
             $hide, // si oculto no aparece su avatar en ninguna parte (pero sus aportes cuentan)
             $facebook,
             $google,
@@ -89,7 +90,8 @@ namespace Goteo\Model {
                     $data[':token'] = $token = md5(uniqid());
                     if(!in_array('password',$skip_validations)) $data[':password'] = sha1($this->password);
                     $data[':created'] = date('Y-m-d H:i:s');
-                    $data[':active'] = false;
+                    $data[':active'] = true;
+                    $data[':confirmed'] = false;
 
                     // Rol por defecto.
                     if (!empty($this->id)) {
@@ -155,6 +157,10 @@ namespace Goteo\Model {
 
                     if(!is_null($this->active)) {
                         $data[':active'] = $this->active;
+                    }
+
+                    if(!is_null($this->confirmed)) {
+                        $data[':active'] = $this->confirmed;
                     }
 
                     if(!is_null($this->hide)) {
@@ -588,17 +594,30 @@ namespace Goteo\Model {
                  */
             }
 
+            //el Order
+            switch ($filters['order']) {
+                case 'name':
+                    $sqlOrder .= " ORDER BY name ASC";
+                break;
+                default:
+                    $sqlOrder .= " ORDER BY created DESC";
+                break;
+            }
+
             $sql = "SELECT
                         id,
                         name,
                         email,
                         active,
-                        hide
+                        hide,
+                        DATE_FORMAT(created, '%d/%m/%Y %H:%i:%s') as register_date
                     FROM user
                     WHERE id != 'root'
                         $sqlFilter
-                    ORDER BY name ASC
+                   $sqlOrder
                     ";
+
+
 
             $query = self::query($sql, array($node));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $user) {

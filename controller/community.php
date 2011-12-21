@@ -41,7 +41,7 @@ namespace Goteo\Controller {
                     $viewData['shares'] = $shares;
 
                     // top ten cofinanciadores en Goteo
-                    $projects = Invest::projects();
+                    $projects = Invest::projects(true);
 
                     $investors = array();
                     foreach ($projects as $projectId=>$projectName) {

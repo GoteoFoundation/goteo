@@ -94,7 +94,9 @@ namespace Goteo\Controller {
 
 				if(empty($errors)) {
 				  Message::Info(Text::get('user-register-success'));
-				  throw new Redirection('/user/login');
+				  Message::Info('Tus datos de acceso son Usuario: <strong>'.$user->id.'</strong> Contraseña: <strong>'.$_POST['password'].'</strong>');
+                  
+                  throw new Redirection('/user/login');
 				} else {
 					foreach ($errors as $field=>$text) {
 						Message::Error($text);
@@ -492,8 +494,8 @@ namespace Goteo\Controller {
             $query = Model\User::query('SELECT id FROM user WHERE token = ?', array($token));
             if($id = $query->fetchColumn()) {
                 $user = Model\User::get($id);
-                if(!$user->active) {
-                    $user->active = true;
+                if(!$user->confirmed) {
+                    $user->confirmed = true;
                     if($user->save($errors)) {
                         Message::Info(Text::get('user-activate-success'));
                         $_SESSION['user'] = $user;
