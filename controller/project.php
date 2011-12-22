@@ -399,22 +399,49 @@ namespace Goteo\Controller {
                 ACL::allow('/project/edit/'.$project->id, '*', 'user', $_SESSION['user']->id);
                 ACL::allow('/project/delete/'.$project->id, '*', 'user', $_SESSION['user']->id);
 
-                    /*
-                     * Evento Feed
-                     */
-                    $log = new Feed();
-                    $log->title = 'usuario crea nuevo proyecto';
-                    $log->url = 'admin/projects';
-                    $log->type = 'project';
-                    $log_text = '%s ha creado un nuevo proyecto, %s';
-                    $log_items = array(
-                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                        Feed::item('project', $project->name, $project->id)
-                    );
-                    $log->html = \vsprintf($log_text, $log_items);
-                    $log->add($errors);
-                    unset($log);
+                /*
+                 * Evento Feed
+                 */
+                $log = new Feed();
+                $log->title = 'usuario crea nuevo proyecto';
+                $log->url = 'admin/projects';
+                $log->type = 'project';
+                $log_text = '%s ha creado un nuevo proyecto, %s';
+                $log_items = array(
+                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                    Feed::item('project', $project->name, $project->id)
+                );
+                $log->html = \vsprintf($log_text, $log_items);
+                $log->add($errors);
+                unset($log);
 
+                // Si hay que asignarlo a un proyecto
+                if (isset($_SESSION['oncreate_applyto'])) {
+                    $call = $_SESSION['oncreate_applyto'];
+
+                    $registry = new Model\Call\Project;
+                    $registry->id = $project->id;
+                    $registry->call = $call;
+                    if ($registry->save($errors)) {
+
+                        Message::Info(Text::get('assign-call-success'));
+
+                        $log = new Feed();
+                        $log->title = 'nuevo proyecto asignado a convocatoria ' . $call;
+                        $log->url = 'admin/calls/'.$call.'/projects';
+                        $log->type = 'project';
+                        $log_text = 'Nuevo proyecto %s asignado automaticamente a la convocatoria %s';
+                        $log_items = array(
+                            Feed::item('project', $project->name, $project->id),
+                            Feed::item('call', $call, $call)
+                        );
+                        $log->html = \vsprintf($log_text, $log_items);
+                        $log->add($errors);
+                        unset($log);
+                    } else {
+                        \mail(GOTEO_MAIL, 'Fallo al asignar a convocatoria al crear proyecto', 'Teniamos que asignar el nuevo proyecto ' . $project->id . ' a la convocatoria ' . $call . ' con esta instancia <pre>'.print_r($register, 1).'</pre> y ha dado estos errores: <pre>' . print_r($errors, 1) . '</pre>');
+                    }
+                }
 
                 throw new Redirection("/project/edit/{$project->id}");
             }

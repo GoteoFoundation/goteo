@@ -55,20 +55,6 @@ namespace Goteo\Model\Call {
             $values = array(':call' => $call);
             
             try {
-
-
-            if (!empty($params['category'])) {
-                $where[] = '';
-            }
-
-            if (!empty($params['location'])) {
-                $where[] = '';
-            }
-
-            if (!empty($params['reward'])) {
-                $where[] = '';
-            }
-
                 $sql = "
                     SELECT
                         project.id as id,

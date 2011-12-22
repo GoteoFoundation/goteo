@@ -17,7 +17,12 @@ namespace Goteo\Controller {
 
         public function index($id, $show = 'splash') {
             if ($id !== null) {
-                return $this->view($id, $show);
+                if ($show == 'apply') {
+                    // Preparamos la sesión para que al crear proyecto se asigne a esta convocatoria
+                    $this->apply($id);
+                } else {
+                    return $this->view($id, $show);
+                }
             } else if (isset($_GET['create'])) {
                 throw new Redirection("/call/create");
             } else {
@@ -343,6 +348,12 @@ namespace Goteo\Controller {
                 throw new Redirection("/");
             }
         }
+
+        private function apply ($id) {
+            $_SESSION['oncreate_applyto'] = $id;
+            throw new Redirection("/project/create");
+        }
+
 
         //-----------------------------------------------
         // Métodos privados para el tratamiento de datos
