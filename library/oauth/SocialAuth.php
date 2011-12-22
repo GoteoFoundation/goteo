@@ -566,8 +566,6 @@ class SocialAuth {
 			}
 		}
 
-		//login en caso de que esté activo
-		//if($user->active || $force_login) {
 			//CAMBIADO A: siempre login, aunque no esté activo el usuario
 			//Iniciar sessión i redirigir
 			$_SESSION['user'] = $user;
@@ -585,11 +583,6 @@ class SocialAuth {
 			} else {
 				throw new Goteo\Core\Redirection('/dashboard');
 			}
-		/*}
-		else {
-			$this->last_error = 'user-account-inactive';
-			return false;
-		}*/
 	}
 
 	/**
