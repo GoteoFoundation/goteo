@@ -131,6 +131,7 @@ namespace Goteo\Controller {
 				$user = new Model\User();
 				$user->userid = $_POST['userid'];
 				$user->email = $_POST['email'];
+                $user->active = true;
 
 				//resta de dades
 				foreach($oauth->user_data as $k => $v) {
@@ -148,7 +149,7 @@ namespace Goteo\Controller {
 
 				//si el email proviene del proveedor de oauth, podemos confiar en el y lo activamos por defecto
 				if($_POST['provider_email'] == $user->email) {
-					$user->active = 1;
+					$user->confirmed = 1;
 				}
 				//comprovamos si ya existe el usuario
 				//en caso de que si, se comprovará que el password sea correcto
