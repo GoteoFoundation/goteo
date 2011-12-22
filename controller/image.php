@@ -9,17 +9,6 @@ namespace Goteo\Controller {
 
         public function index($id, $width = 200, $height = 200, $crop = false) {
             if ($image = Model\Image::get($id)) {
-/*
-                // cabeceras de cache
-                $expires = 60*60*24*60;
-                header("Pragma: public");
-//                header('Cache-Control: public, max-age='.$expires);
-                header('Cache-Control: public');
-                
-                header('Expires: '. gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
-//                header('Last-Modified: '. gmdate('D, d M Y H:i:s', time()-$expires) . ' GMT');
-                header('ETag: ' . 'img' . $id . 'w'. $width . 'h'. $height . 'c'. (int) $crop);
-  */
                 $image->display($width, $height, $crop);
             } else {
                 throw new Error(Error::NOT_FOUND);
