@@ -350,8 +350,21 @@ namespace Goteo\Controller {
         }
 
         private function apply ($id) {
-            $_SESSION['oncreate_applyto'] = $id;
-            throw new Redirection("/project/create");
+            $call = Model\Call::get($id, LANG);
+
+            if (!$call instanceof Model\Call) {
+                Message::Error('Ha habido algun errror al cargar la convocatoria solicitada');
+                throw new Redirection("/");
+            }
+            
+            if ($call->expired) {
+                Message::Error('El proceso de inscripción para esa convocatoria ha finalizado');
+                throw new Redirection("/project/create");
+            } else {
+                $_SESSION['oncreate_applyto'] = $id;
+                throw new Redirection("/project/create");
+            }
+
         }
 
 

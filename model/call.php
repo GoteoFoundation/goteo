@@ -76,8 +76,9 @@ namespace Goteo\Model {
             $amount_used = 0,
             $amount_left = 0,
 
-            $projects = array(); // convocatorias relacionados a la convocatoria
+            $projects = array(), // convocatorias relacionados a la convocatoria
 
+            $expired = false; // si ha finalizado el tiempo de inscripcion
 
 
         /**
@@ -228,6 +229,17 @@ namespace Goteo\Model {
 
                 // para convocatorias en campaña o posterior
                 // los proyectos han conseguido pasta, son exitosos, estan en campaña o no han conseguido y estan caducados pero no se calculan ni dias ni ronda
+
+                if ($call->status == 3) {
+                    // a ver si ya ha expirado
+                    $until = strtotime($call->until);
+                    $hoy = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+
+                    if ($hoy > $until) {
+                        $call->expired = true;
+                    }
+                }
+
 
 				return $call;
 
@@ -522,8 +534,11 @@ namespace Goteo\Model {
          */
         public function open(&$errors = array()) {
 			try {
-                $sql = "UPDATE `call` SET status = :status, opened = :opened WHERE id = :id";
-                self::query($sql, array(':status'=>3, ':opened'=>date('Y-m-d'), ':id'=>$this->id));
+                // segun los dias de inscripcion, al abrir ponemos la fecha limite
+                $until = date('Y-m-d', mktime(0,0,0,date('m'),date('d')+$this->days,date('Y')));
+
+                $sql = "UPDATE `call` SET status = :status, opened = :opened, until = :until WHERE id = :id";
+                self::query($sql, array(':status'=>3, ':opened'=>date('Y-m-d'), ':until'=>$until, ':id'=>$this->id));
 
                 return true;
 

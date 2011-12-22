@@ -7,6 +7,16 @@ $bodyClass = 'splash';
 
 $call = $this['call'];
 
+if ($call->status == 3) {
+    $until = strtotime($call->until);
+    $until_day = date('d', $until);
+    $until_month = strftime('%B', $until);
+    $until_month = ucfirst(substr($until_month, 0, 3));
+    $until_year = date('Y', $until);
+}
+
+
+
 include 'view/call/prologue.html.php';
 ?>
 	
@@ -33,7 +43,7 @@ include 'view/call/prologue.html.php';
                     </dl>
                     <dl class="block long expires">
                         <dt><?php echo Text::get('call-splash-valid_until-header') ?></dt>
-						<dd><strong>12</strong> Nov / 2011</dd>
+						<dd><strong><?php echo $until_day ?></strong> <?php echo $until_month ?> / <?php echo $until_year ?></dd>
                     </dl>
                     <dl class="block last selected">
                         <dt><?php echo Text::get('call-splash-applied_projects-header') ?></dt>
@@ -117,7 +127,9 @@ include 'view/call/prologue.html.php';
 
             <?php if ($call->status == 3) : //inscripcion ?>
 				<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="button aqua info long" target="_blank"><?php echo Text::get('call-splash-more_info-button') ?></a>
-				<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/apply" class="button red join" target="_blank"><?php echo Text::get('call-splash-apply-button') ?></a>
+                <?php if (!$call->expired) : // sigue abierta ?>
+                    <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/apply" class="button red join" target="_blank"><?php echo Text::get('call-splash-apply-button') ?></a>
+                <?php endif; ?>
             <?php else : // ver proyectos ?>
 				<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="button aqua info" target="_blank"><?php echo Text::get('call-splash-more_info-button') ?></a>
 				<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/projects" class="button red view" target="_blank"><?php echo Text::get('call-splash-see_projects-button') ?></a>
