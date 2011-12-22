@@ -54,11 +54,11 @@ if (isset($this['investor']) && is_object($this['investor'])) {
         } ?>
 
         <?php if (isset($this['investor'])) : ?>
-            <div class="investor"><img src="<?php echo SRC_URL ?>/image/<?php echo $investor->avatar->id ?>/43/43/1" alt="<?php echo $investor->name ?>" /><div class="invest">Mi aporte<br /><span class="amount"><?php echo $invest->total ?></span></div></div>
+            <div class="investor"><img src="<?php echo $investor->avatar->getLink(43, 43, 1) ?>" alt="<?php echo $investor->name ?>" /><div class="invest">Mi aporte<br /><span class="amount"><?php echo $invest->total ?></span></div></div>
         <?php endif; ?>
 
         <?php if (!empty($project->gallery) && (current($project->gallery) instanceof Image)): ?>
-        <a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><img alt="<?php echo $project->name ?>" src="<?php echo SRC_URL ?>/image/<?php echo current($project->gallery)->id ?>/255/130/1" /></a>
+        <a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><img alt="<?php echo $project->name ?>" src="<?php echo current($project->gallery)->getLink(255, 130, true) ?>" /></a>
         <?php endif ?>
         <?php if (!empty($categories)): ?>
         <div class="categories">
@@ -111,7 +111,7 @@ if (isset($this['investor']) && is_object($this['investor'])) {
     </div>
     <?php else : // normal ?>
     <div class="buttons">
-        <?php if ($project->status == 3) : // si esta en campaï¿½a se puede aportar ?>
+        <?php if ($project->status == 3) : // si esta en campaña se puede aportar ?>
         <a class="button violet supportit" href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>/invest"<?php echo $blank; ?>><?php echo Text::get('regular-invest_it'); ?></a>
         <?php else : ?>
         <a class="button view" href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>/updates"<?php echo $blank; ?>><?php echo Text::get('regular-see_blog'); ?></a>

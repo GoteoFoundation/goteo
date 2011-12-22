@@ -518,8 +518,9 @@ namespace Goteo\Model {
 
                 $user->roles = $user->getRoles();
                 $user->avatar = Image::get($user->avatar);
-                // @FIXME temporal para usuarios sin avatar
-                if (empty($user->avatar->id)) $user->avatar->id = 1;
+                if (empty($user->avatar->id) || !$user->avatar instanceof Image) {
+                    $user->avatar = Image::get(1);
+                }
                 $user->interests = User\Interest::get($id);
                 $user->webs = User\Web::get($id);
                 return $user;
@@ -543,7 +544,9 @@ namespace Goteo\Model {
                 $user = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
 
                 $user->avatar = Image::get($user->avatar);
-                if (empty($user->avatar->id)) $user->avatar->id = 1;
+                if (empty($user->avatar->id) || !$user->avatar instanceof Image) {
+                    $user->avatar = Image::get(1);
+                }
 
                 return $user;
             } catch(\PDOException $e) {

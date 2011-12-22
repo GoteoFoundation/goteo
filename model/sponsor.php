@@ -89,6 +89,11 @@ namespace Goteo\Model {
                 ");
 
             foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $sponsor) {
+                // imagen
+                if (!empty($sponsor->image)) {
+                    $sponsor->image = Image::get($sponsor->image);
+                }
+
                 $list[] = $sponsor;
             }
 

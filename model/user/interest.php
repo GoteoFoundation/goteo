@@ -2,6 +2,8 @@
 
 namespace Goteo\Model\User {
 
+    use Goteo\Model\Image;
+
     class Interest extends \Goteo\Model\Category {
 
         public
@@ -162,7 +164,7 @@ namespace Goteo\Model\User {
 
                     // nombre i avatar
                     $user = \Goteo\Model\User::get($share['id']);
-                    if (empty($user->avatar)) $user->avatar = (object) array('id'=>1);
+                    if (empty($user->avatar)) $user->avatar = Image::get(1);
                     // meritocracia
                     $support = (object) $user->support;
                     // proyectos publicados

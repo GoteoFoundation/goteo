@@ -19,7 +19,7 @@ $level = (int) $this['level'] ?: 3;
            <div class="arrow-up"></div>
            <span class="avatar">
                <a href="/user/profile/<?php echo htmlspecialchars($comment->user->id)?>" target="_blank">
-                   <img src="<?php echo SRC_URL ?>/image/<?php echo $comment->user->avatar->id; ?>/50/50/1" alt="<?php echo $comment->user->name; ?>" />
+                   <img src="<?php echo $comment->user->avatar->getLink(50, 50, true); ?>" alt="<?php echo $comment->user->name; ?>" />
                </a>
            </span>
            <h<?php echo $level ?> class="user">

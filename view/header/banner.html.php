@@ -35,4 +35,4 @@ list($mreach, $mof, $mrest) = explode('-', $metter_txt);
         <?php endif; ?>
     </ul>
 </div>
-<div class="shb-img"><img src="<?php echo SRC_URL ?>/image/<?php echo $banner->image ?>/700/156/1" title="<?php echo $banner->project->name ?>" alt="<?php echo $banner->project->name ?>" /></div>
+<div class="shb-img"><img src="<?php echo $banner->image->getLink(700, 156, true) ?>" title="<?php echo $banner->project->name ?>" alt="<?php echo $banner->project->name ?>" /></div>
