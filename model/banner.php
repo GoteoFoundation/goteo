@@ -68,6 +68,7 @@ namespace Goteo\Model {
                 ", array(':node' => $node));
             
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $banner) {
+                $banner->image = Image::get($banner->image);
                 $banner->status = $status[$banner->status];
                 $banners[] = $banner;
             }

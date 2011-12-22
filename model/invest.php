@@ -2,7 +2,8 @@
 
 namespace Goteo\Model {
 
-    use Goteo\Library\Text;
+    use Goteo\Library\Text,
+        Goteo\Model\Image;
 
     class Invest extends \Goteo\Core\Model {
 
@@ -477,6 +478,12 @@ namespace Goteo\Model {
             $query = self::query($sql, array($project));
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $investor) {
 
+                $investor->avatar = Image::get($investor->avatar);
+                if (empty($investor->avatar->id) || !$investor->avatar instanceof Image) {
+                    $investor->avatar = Image::get(1);
+                }
+
+
                 // si el usuario es hide o el aporte es anonymo, lo ponemos como el usuario anonymous (avatar 1)
                 if (!$showall && ($investor->hide == 1 || $investor->anonymous == 1)) {
 
@@ -487,7 +494,7 @@ namespace Goteo\Model {
                         'user' => 'anonymous',
                         'name' => Text::get('regular-anonymous'),
                         'projects' => null,
-                        'avatar' => 1,
+                        'avatar' => Image::get(1),
                         'worth' => null,
                         'amount' => $investor->amount,
                         'date' => $investor->date
@@ -499,7 +506,7 @@ namespace Goteo\Model {
                         'user' => $investor->user,
                         'name' => $investor->name,
                         'projects' => $investor->projects,
-                        'avatar' => !empty($investor->avatar) ? $investor->avatar : '1',
+                        'avatar' => $investor->avatar,
                         'worth' => \Goteo\Model\User::calcWorth($investor->user),
                         'amount' => ($investors[$investor->user]->amount + $investor->amount),
                         'date' => $investor->date

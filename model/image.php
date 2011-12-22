@@ -268,14 +268,28 @@ namespace Goteo\Model {
 
 
 		/**
-		 * Enlace público.
-		 *
+		 * Para montar la url de una imagen (porque las url con parametros no se cachean bien)
+		 *  - Si el thumb está creado, montamos la url de /data/cache
+         *  - Sino, monamos la url de /image/
+         *
+		 * @param type int $id
 		 * @param type int $width
 		 * @param type int $height
+		 * @param type int $crop
 		 * @return type string
 		 */
-		public function getLink ($width = 200, $height = 200) {
-		    return '/image/' . $this->id . '/' . $width . '/' . $height;
+		public function getLink ($width = 200, $height = 200, $crop = false) {
+
+            $tc = $crop ? 'c' : '';
+            
+            $cache = $this->dir_cache . "{$width}x{$height}{$tc}" . DIRECTORY_SEPARATOR . $this->name;
+
+            if (\file_exists($cache)) {
+                return SRC_URL . "/data/cache/{$width}x{$height}{$tc}/{$this->name}";
+            } else {
+                return SRC_URL . "/image/{$this->id}/{$width}/{$height}/" . $crop;
+            }
+
 		}
 
 		/**

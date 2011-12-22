@@ -13,7 +13,7 @@ $worthcracy = Worth::getAll();
 	<a class="expand" href="/user/<?php echo htmlspecialchars($user->user) ?>">&nbsp;</a>
 	<?php } ?>
 	<div class="supporter">
-		<span class="avatar"><img src="<?php echo SRC_URL ?>/image/<?php echo $user->avatar; ?>/43/43/1" /></span>
+		<span class="avatar"><img src="<?php echo $user->avatar->getLink(43, 43, true); ?>" /></span>
 	    <?php if ($user->user != 'anonymous') : ?>
 	    <h4><?php echo $user->name; ?></h4>
 	    <?php else : ?>

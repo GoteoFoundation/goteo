@@ -12,7 +12,7 @@ include 'view/header.html.php'; ?>
 
         <div id="sub-header">
             <div class="dashboard-header">
-                <a href="/user/<?php echo $user->id; ?>" target="_blank"><img src="<?php echo SRC_URL ?>/image/<?php echo $user->avatar->id; ?>/56/56/1" /></a>
+                <a href="/user/<?php echo $user->id; ?>" target="_blank"><img src="<?php echo $user->avatar->getLink(56, 56, true); ?>" /></a>
                 <h2><span>                    <?php if (empty($this['option'])) {
                         echo Text::get('dashboard-header-main');
                     } else {

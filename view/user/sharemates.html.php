@@ -37,7 +37,7 @@ if (empty($shares)) {
 ?>
 <div id="sub-header">
     <div>
-        <h2><a href="/user/<?php echo $user->id; ?>"><img src="<?php echo SRC_URL ?>/image/<?php echo $user->avatar->id; ?>/75/75/1" /></a> <?php echo Text::get('profile-name-header'); ?> <br /><em><?php echo $user->name; ?></em></h2>
+        <h2><a href="/user/<?php echo $user->id; ?>"><img src="<?php echo $user->avatar->getLink(75, 75, true); ?>" /></a> <?php echo Text::get('profile-name-header'); ?> <br /><em><?php echo $user->name; ?></em></h2>
     </div>
 </div>
 
@@ -95,7 +95,7 @@ if (empty($shares)) {
                         <li class="<?php if($cnt < 3) echo " bordertop"?>">
                             <div class="user">
                                 <a href="/user/<?php echo htmlspecialchars($mate->user) ?>" class="expand">&nbsp;</a>
-                                <div class="avatar"><a href="/user/<?php echo htmlspecialchars($mate->user) ?>"><img src="<?php echo SRC_URL ?>/image/<?php echo $mate->avatar->id ?>/43/43/1" /></a></div>
+                                <div class="avatar"><a href="/user/<?php echo htmlspecialchars($mate->user) ?>"><img src="<?php echo $mate->avatar->getLink(43, 43, true) ?>" /></a></div>
                                 <h4><a href="/user/<?php echo htmlspecialchars($mate->user) ?>"><?php echo htmlspecialchars($mate->name) ?></a></h4>
                                 <span class="projects"><?php echo Text::get('regular-projects'); ?> (<?php echo $mate->projects ?>)</span>
                                 <span class="invests"><?php echo Text::get('regular-investing'); ?> (<?php echo $mate->invests ?>)</span><br/>
