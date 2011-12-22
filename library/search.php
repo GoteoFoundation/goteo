@@ -92,11 +92,13 @@ namespace Goteo\Library {
                 $values[':text'] = "%{$params['query']}%";
             }
 
-            $minstatus = ($showall) ? '0' : '2';
+            $minstatus = ($showall) ? '1' : '2';
+            $maxstatus = ($showall) ? '4' : '7';
 
             $sql = "SELECT id
                     FROM project
                     WHERE status > $minstatus
+                    AND status < $maxstatus
                     ";
             
             if (!empty($where)) {

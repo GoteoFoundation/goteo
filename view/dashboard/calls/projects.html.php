@@ -33,7 +33,9 @@ $status = Model\Project::status();
             <th>Riego</th>
             <th></th>
         </tr>
-        <?php foreach ($call->projects as $proj) : ?>
+        <?php foreach ($call->projects as $proj) :
+            if ($proj->status <= 1) continue;
+            ?>
         <tr>
             <td><?php echo $proj->name ?></td>
             <td><?php echo $status[$proj->status] ?></td>

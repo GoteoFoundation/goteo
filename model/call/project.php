@@ -21,7 +21,8 @@ namespace Goteo\Model\Call {
                 $sql = "SELECT
                             project.id,
                             project.name as name,
-                            project.status as status
+                            project.status as status,
+                            project.project_location as location
                         FROM project
                         JOIN call_project
                             ON  call_project.project = project.id
@@ -43,28 +44,60 @@ namespace Goteo\Model\Call {
         /**
          * Get all projects available
          *
+         * Los que corresponden a los criterios de la convocatoria (como en discover/call) pero tambien si estan en edicion
+         * @FIXME no tiene en cuenta la localidad por la problematica de varias localidades y ámbito
+         *
          * @param void
          * @return array
          */
-		public static function getAll ($call = null) {
+		public static function getAvailable ($call) {
             $array = array ();
-            $values = array();
+            $values = array(':call' => $call);
+            
             try {
+
+
+            if (!empty($params['category'])) {
+                $where[] = '';
+            }
+
+            if (!empty($params['location'])) {
+                $where[] = '';
+            }
+
+            if (!empty($params['reward'])) {
+                $where[] = '';
+            }
+
                 $sql = "
                     SELECT
                         project.id as id,
                         project.name as name,
-                        project.status as status
+                        project.status as status,
+                        project.project_location as location
                     FROM project
-                    WHERE project.status > 0";
-
-                if (!empty($call)) {
-                    $sql .= " AND project.id NOT IN (SELECT project FROM call_project WHERE `call` = :call)";
-                    $values[':call'] = $call;
-                }
-
-                $sql .= " ORDER BY name ASC
-                    ";
+                    WHERE project.status > 0
+                    AND project.status < 4
+                    AND project.id IN (
+                                        SELECT distinct(project)
+                                        FROM project_category
+                                        WHERE category IN (
+                                                SELECT distinct(category)
+                                                FROM call_category
+                                                WHERE `call` = :call
+                                            )
+                                    )
+                    AND project.id IN (
+                                        SELECT DISTINCT(project)
+                                        FROM reward
+                                        WHERE icon IN (
+                                                SELECT distinct(icon)
+                                                FROM call_icon
+                                                WHERE `call` = :call
+                                            )
+                                    )
+                    AND project.id NOT IN (SELECT project FROM call_project WHERE `call` = :call)
+                    ORDER BY name ASC";
 
                 $query = static::query($sql, $values);
                 $items = $query->fetchAll(\PDO::FETCH_OBJ);

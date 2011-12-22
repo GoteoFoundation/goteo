@@ -4511,12 +4511,12 @@ namespace Goteo\Controller {
                             $registry->id = $_POST['project'];
                             $registry->call = $call->id;
                             if ($registry->save($errors)) {
-                                Message::Info('Proyecto asignado correctamente');
+                                Message::Info('Proyecto seleccionado correctamente');
                             } else {
-                                Message::Error('Fallo al asignar proyecto');
+                                Message::Error('Fallo al seleccionar proyecto');
                             }
                         } else {
-                            $errors[] = 'No has seleccionado ningun proyecto para asignar, no?';
+                            $errors[] = 'No has seleccionado ningun proyecto para asignar a la convocatoria, no?';
                         }
                         break;
                     case 'unassign':
@@ -4604,8 +4604,12 @@ namespace Goteo\Controller {
                     throw new Redirection('/admin/calls/list');
                 }
                 $projects   = Model\Call\Project::get($call->id);
-                $available  = Model\Call\Project::getAll($call->id);
                 $status     = Model\Project::status();
+
+                // los available son los que aparecen en el discover/call pero tambien los que estan en esdicion
+                $available  = Model\Call\Project::getAvailable($call->id);
+
+
                 // cambiar fechas
                 return new View(
                     'view/admin/index.html.php',
