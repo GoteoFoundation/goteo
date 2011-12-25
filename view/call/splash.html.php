@@ -138,6 +138,6 @@ include 'view/call/prologue.html.php';
 		</ul>
     </div>
 
-	<a href="<?php echo URL_SITE ?>/service/resources" id="capital" target="_blank"><?php echo Text::get('footer-service-resources') ?></a>
+	<a href="<?php echo SITE_URL ?>/service/resources" id="capital" target="_blank"><?php echo Text::get('footer-service-resources') ?></a>
     
 <?php include 'view/epilogue.html.php' ?>

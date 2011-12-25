@@ -93,6 +93,11 @@ include 'view/prologue.html.php' ?>
             echo
                 new View('view/project/widget/support.html.php', array('project' => $project));
 
+            // seleccionado para capital riego
+            if ($project->called) {
+                echo new View('view/project/widget/called.html.php', array('call' => $project->called));
+            }
+
             if ((!empty($project->investors) &&
                 !empty($invest) &&
                 in_array($invest, array('start', 'ok', 'fail')) )

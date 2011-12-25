@@ -203,8 +203,7 @@ body.project-show div#main > div.side > div.widget .title {
     background: none !important;
 }
 
-/* = ayuda a difundir este proyecto
-***********************************/
+/* ayuda a difundir este proyecto */
 div.widget.project-spread > h3.title{padding-left:46px;}
 div.widget.project-spread > div.widget.projects > div.left{float:left;width:280px;border-right:#000 1px solid;}
 div.widget.project-spread > div.widget.projects > div.right{float:left;width:245px;margin-left:12px;}
@@ -215,10 +214,88 @@ div.widget.project-spread div.subtitle{width:245px;text-transform:uppercase;marg
 	div.widget.project-spread div.subtitle > span.primero{margin-bottom:3px;}	
 	div.widget.project-spread div.subtitle > span.segundo{color:#28ACAB;font-weight:bold;}		
 	
-/* = envía mensaje al autor - widget embed code
-**************************************************/
+/* envía mensaje al autor - widget embed code */
 div.widget.projects #widget-code{	width:350px;	float:left; margin: 0 0 0 20px;}
 div.widget.projects  #widget-code .wc-embed{background: url("/view/css/social/embed.png") no-repeat; min-height:20px;text-transform:uppercase;padding: 3px 0 0 25px;}
 div.widget.projects  #widget-code textarea{width:200px;	margin: 10px 0;	padding:10px;	background:#E7E7E7;border:none;font-size:11px;resize:none;}
 
 
+/* widget called - regado por convocatoria */
+div.widget.project-called {
+    background: url("/view/css/call/logo-capital.png") no-repeat 5px 5px #f5f2f0;
+    min-height: 135px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+div.widget.project-called > div{
+    margin-right: -5px;
+    margin-bottom: 0px;
+    padding: 0px 0px 0px 82px;
+}
+
+/*
+div.widget.project-called div.explain {
+    padding: 10px 0px 0px 90px;
+}
+*/
+
+div.widget.project-called div.amount {
+    display: none;
+}
+
+div.widget.project-called div.explain dl dt,
+div.widget.project-called div.amount dl dt {
+    text-transform: uppercase;
+    font-size: 0.8em;
+}
+
+div.widget.project-called div.explain dl dd {
+    color: #20b2b3;
+    text-transform: uppercase;
+    font-size: 1em;
+    margin: 12px 0px;
+}
+
+div.widget.project-called div.explain p {
+    font-size: 0.9em;
+    margin: 0px;
+}
+
+div.widget.project-called div.explain p strong {
+    color: #96238F;
+}
+
+div.widget.project-called div.amount dl dd {
+    margin: 0px;
+}
+
+div.widget.project-called div.amount dl dd strong {
+    font-size: 30px;
+}
+
+div.widget.project-called div.amount dl dd.light-violet {
+    background: url('/view/css/euro/light-violet/l.png') no-repeat right center;
+    color: #BB70B6;
+}
+
+div.widget.project-called div.amount dl dd.violet {
+    background: url('/view/css/euro/violet/l.png') no-repeat right center;
+    color: #96238F;
+}
+
+div.widget.project-called div.amount dl dd span.euro {
+    display: none;
+}
+
+div.widget.project-called.active {
+    background-color: #FFF;
+}
+
+div.widget.project-called.active div.explain {
+    display: none;
+}
+
+div.widget.project-called.active div.amount {
+    display: block !important;
+}

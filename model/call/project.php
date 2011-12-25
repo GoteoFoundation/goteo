@@ -2,6 +2,8 @@
 
 namespace Goteo\Model\Call {
 
+    use Goteo\Model\Call;
+
     class Project extends \Goteo\Core\Model {
 
         public
@@ -159,6 +161,43 @@ namespace Goteo\Model\Call {
                 return false;
 			}
 		}
+
+
+
+        /**
+         * Devuelve la convocatoria de la que puede obtener riego
+         *
+         * @param varchar50 $project proyecto
+         * @return Model\Call $call convocatoria
+         */
+        public static function called ($project) {
+
+            try {
+                $sql = "SELECT
+                            call_project.call as id
+                        FROM call_project
+                        INNER JOIN `call`
+                            ON call_project.call = call.id
+                        WHERE  call_project.project = :project
+                        AND call.status = 4
+                        LIMIT 1
+                        ";
+//                die(str_replace(':project', "'$project'", $sql));
+
+                $query = static::query($sql, array(':project'=>$project));
+                $called = $query->fetchColumn();
+                if (!empty ($called)) {
+                    $call = Call::get($called);
+
+                    return $call;
+                }
+
+            } catch(\PDOException $e) {
+				throw new \Goteo\Core\Exception($e->getMessage());
+            }
+
+            return false;
+        }
 
 	}
     
