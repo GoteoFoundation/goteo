@@ -89,6 +89,7 @@ namespace Goteo\Controller {
 				$user->name = $_POST['username'];
 				$user->email = $_POST['email'];
 				$user->password = $_POST['password'];
+				$user->active = true;
 
 				$user->save($errors);
 
@@ -590,6 +591,7 @@ namespace Goteo\Controller {
                     if($id = $query->fetchColumn()) {
                         if(!empty($id)) {
                             // el token coincide con el email y he obtenido una id
+                            Model\User::query('UPDATE user SET active = 1 WHERE id = ?', array($id));
                             $user = Model\User::get($id);
                             $_SESSION['user'] = $user;
                             $_SESSION['recovering'] = $user->id;
@@ -604,7 +606,7 @@ namespace Goteo\Controller {
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['recover'])) {
                 $username = $_POST['username'];
                 $email    = $_POST['email'];
-                if (Model\User::recover($username, $email)) {
+                if ((!empty($username) || !empty($email)) && Model\User::recover($username, $email)) {
                     $message = Text::get('recover-email-sended');
                     unset($_POST['username']);
                     unset($_POST['email']);
