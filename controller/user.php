@@ -498,6 +498,7 @@ namespace Goteo\Controller {
                 $user = Model\User::get($id);
                 if(!$user->confirmed) {
                     $user->confirmed = true;
+                    $user->active = true;
                     if($user->save($errors)) {
                         Message::Info(Text::get('user-activate-success'));
                         $_SESSION['user'] = $user;
