@@ -17,7 +17,7 @@ if ($call->status == 3) {
 
 
 
-include 'view/call/prologue.html.php';
+include 'view/call/prologue-splash.html.php';
 ?>
 	
 	<img id="bgimage" src="<?php echo SRC_URL ?>/image/<?php echo $call->image ?>/2000/2000" alt="background" />
