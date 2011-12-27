@@ -2610,28 +2610,41 @@ namespace Goteo\Controller {
 
 
                     if (!empty($sql)) {
+
+                        $user = Model\User::getMini($id);
+
                         if (Model\User::query($sql, array(':user'=>$id))) {
                             
-                            $user = Model\User::getMini($id);
-
-                            /*
-                             * Evento Feed
-                             */
-                            $log = new Feed();
-                            $log->title = 'Operación sobre usuario (admin)';
-                            $log->url = '/admin/users';
-                            $log->type = 'user';
+                            // mensaje de ok y volvemos a la gestion del usuario
+                            Message::Info('Ha <strong>' . $log_action . '</strong> al usuario <strong>'.$user->name.'</strong> CORRECTAMENTE');
                             $log_text = 'El admin %s ha %s al usuario %s';
-                            $log_items = array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', $log_action),
-                                Feed::item('user', $user->name, $user->id)
-                            );
-                            $log->html = \vsprintf($log_text, $log_items);
-                            $log->add($errors);
 
-                            unset($log);
+                        } else {
+
+                            // mensaje de error y volvemos a la gestion del usuario
+                            Message::Error('Ha FALLADO cuando ha <strong>' . $log_action . '</strong> al usuario <strong>'.$id.'</strong>');
+                            $log_text = 'Al admin %s le ha <strong>FALLADO</strong> cuando ha %s al usuario %s';
+
                         }
+
+                        /*
+                         * Evento Feed
+                         */
+                        $log = new Feed();
+                        $log->title = 'Operación sobre usuario (admin)';
+                        $log->url = '/admin/users';
+                        $log->type = 'user';
+                        $log_items = array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('relevant', $log_action),
+                            Feed::item('user', $user->name, $user->id)
+                        );
+                        $log->html = \vsprintf($log_text, $log_items);
+                        $log->add($errors);
+
+                        unset($log);
+
+                        throw new Redirection('/admin/users/manage/'.$id);
                     }
 
                     $user = Model\User::get($id);

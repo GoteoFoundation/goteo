@@ -770,9 +770,7 @@ namespace Goteo\Model {
 			    $user = static::get($row['id']);
 			    if($user->active) {
 			        return $user;
-
-			    }
-			    else {
+			    } else {
 			        Message::Error(Text::get('user-account-inactive'));
 			    }
 			}
@@ -807,16 +805,16 @@ namespace Goteo\Model {
 		 * @param string $email    Email de la cuenta
 		 * @return boolean true|false  Correctos y mail enviado
 		 */
-		public static function recover ($username, $email) {
+		public static function recover ($username = null, $email = null) {
             $query = self::query("
                     SELECT
                         id,
                         name,
                         email
                     FROM user
-                    WHERE BINARY id = :username
-                    AND BINARY email = :email
-                    AND active = 1",
+                    WHERE (BINARY id = :username
+                    OR BINARY email = :email)
+                    ",
 				array(
 					':username' => trim($username),
 					':email'    => trim($email)
