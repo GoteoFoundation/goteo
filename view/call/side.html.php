@@ -1,48 +1,81 @@
+<?php
+
+use Goteo\Library\Text,
+    Goteo\Core\View;
+
+$call = $this['call'];
+
+if ($call->status == 3) {
+    $until = strtotime($call->until);
+    $until_day = date('d', $until);
+    $until_month = strftime('%B', $until);
+    $until_month = ucfirst(substr($until_month, 0, 3));
+    $until_year = date('Y', $until);
+}
+
+?>
 <div id="side">
-	<img src="<?php echo SRC_URL ?>/view/css/call/logo-iniciativa-alt.png" alt="logo" class="logo" />
-	<p class="block">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+	<img src="<?php echo $call->logo->getLink(155, 200) ?>" alt="<?php echo $call->user->name ?>" class="logo" />
+	<p class="block"><?php echo $call->subtitle ?></p>
+    
+<?php if ($call->status == 3) : //inscripcion ?>
+    <dl class="">
+        <dt><?php echo Text::get('call-splash-whole_budget-header') ?></dt>
+        <dd class="money"><?php echo \amount_format($call->amount) ?> <span class="euro">&euro;</span></dd>
+    </dl>
+    <dl class="expires">
+        <dt><?php echo Text::get('call-splash-valid_until-header') ?></dt>
+        <dd><strong><?php echo $until_day ?></strong> <?php echo $until_month ?> / <?php echo $until_year ?></dd>
+    </dl>
+    <dl class="selected">
+        <dt><?php echo Text::get('call-splash-applied_projects-header') ?></dt>
+        <dd><?php echo count($call->projects) ?></dd>
+    </dl>
+<?php else : //en campaña ?>
 	<dl class="">
-		<dt>Presupuesto total de campa&ntilde;a</dt>
-		<dd class="money light">30,000 <span class="euro">€</span></dd>
+		<dt><?php echo Text::get('call-splash-whole_budget-header') ?></dt>
+		<dd class="money light"><?php echo \amount_format($call->amount) ?> <span class="euro">&euro;</span></dd>
 	</dl>
 	<dl class="">
-		<dt>Queda por repartir</dt>
-		<dd class="money">20,600 <span class="euro">€</span></dd>
+		<dt><?php echo Text::get('call-splash-remain_budget-header') ?></dt>
+		<dd class="money"><?php echo \amount_format($call->rest) ?> <span class="euro">&euro;</span></dd>
 	</dl>
+<?php endif; ?>
 	<dl class="block return">
-		<dt>Proyectos con retornos</dt>
+		<dt><?php echo Text::get('call-splash-icons-header') ?></dt>
 		<dd>
 			<ul>
-				<li class="product activable">
-					<a class="tipsy" href="#" title="Lorem ipsum dolor sit amet">Instalación premium para una campaña concreta</a>
-				</li>
-				<li class="manual activable">
-					<a class="tipsy" href="#" title="Lorem ipsum dolor sit amet">Acceso y utilización libre de la aplicación web</a>
-				</li>
-				<li class="code activable">
-					<a class="tipsy" href="#" title="Lorem ipsum dolor sit amet">El código de Twittometro</a>
-				</li>
-				<li class="service activable">
-					<a class="tipsy" href="#" title="Lorem ipsum dolor sit amet">Asesoría para futuros administradores de la aplicación</a>
-				</li>
+                <?php foreach ($call->icons as $iconId=>$iconName) : ?>
+                <li class="<?php echo $iconId ?> activable">
+                    <a class="tipsy" title="<?php echo $iconName ?>" ><?php echo $iconName ?></a>
+                </li>
+                <?php endforeach; ?>
 			</ul>
 		</dd>
 	</dl>
 	<dl class="block category">
-		<dt>Proyectos dentro de las categor&iacute;as</dt>
-		<dd>Social, <a href="#">Tecnológico</a>, Comercial, <a href="#">Comunicativo</a>, Cultural, Ecológico, Científico</dd>
+		<dt><?php echo Text::get('call-splash-categories-header') ?></dt>
+		<dd><?php echo implode(', ', $call->categories) ?></dd>
 	</dl>
+    
+<?php if ($call->status == 3) : //inscripcion ?>
+	<dl class="">
+		<dt>Más información</dt>
+		<dd><a class="red" href="<?php echo $call->pdf ?>" target="_blank"><?php echo Text::get('call-splash-dossier-link') ?></a></dd>
+	</dl>
+<?php endif; ?>
+    
 	<dl class="">
 		<dt>Web</dt>
-		<dd><a href="#">www.iniciativajoven.es</a></dd>
+		<dd><a href="<?php echo $call->user->webs[0]->url ?>"><?php echo preg_replace( '^http(?<https>s)?://^', '', $call->user->webs[0]->url ) ?></a></dd>
 	</dl>
 	<dl class="block">
-		<dd class="location">Barcelona y Cataluña, SP</dd>
+		<dd class="location"><?php echo Text::GmapsLink($call->call_location); ?></dd>
 	</dl>
 	<dl class="block category">
-		<dd><a href="#">Términos y condiciones</a></dd>
+		<dd><a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/terms"><?php echo Text::get('call-splash-legal-link') ?></a></dd>
 	</dl>
-	<a href="#" id="capital">Capital Riego</a>
+	<a href="<?php echo SITE_URL ?>/service/resources" id="capital" target="_blank"><?php echo Text::get('footer-service-resources') ?></a>
 	
 	
 </div>

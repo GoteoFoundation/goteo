@@ -15,17 +15,15 @@ if ($call->status == 3) {
     $until_year = date('Y', $until);
 }
 
-
-
 include 'view/call/prologue-splash.html.php';
 ?>
 	
-	<img id="bgimage" src="<?php echo SRC_URL ?>/image/<?php echo $call->image ?>/2000/2000" alt="background" />
+	<img id="bgimage" src="<?php echo $call->image->getLink(2000, 2000) ?>" alt="<?php echo $call->name ?>" />
 
 	<div id="main" class="onecol">
 		<ul id="list">
 			<li class="item" id="description">
-				<img src="<?php echo SRC_URL ?>/image/<?php echo $call->logo ?>" alt="logo" />
+				<img src="<?php echo $call->logo->getLink(155, 200) ?>" alt="<?php echo $call->user->name ?>" />
                 <h2 class="title"><?php echo Text::get('call-splash-campaign_title') ?><br /><?php echo $call->name ?></h2>
                 <?php if ($call->status == 3) : //inscripcion ?>
                 <p class="subtitle red"><?php echo Text::get('call-splash-searching_projects') ?></p>
@@ -39,7 +37,7 @@ include 'view/call/prologue-splash.html.php';
 				<div class="row">
                     <dl class="block long last">
                         <dt><?php echo Text::get('call-splash-whole_budget-header') ?></dt>
-                        <dd class="money<?php if ($call->status == 4) echo ' light' ?>"><?php echo \amount_format($call->amount) ?> <span class="euro">&euro;</span></dd>
+                        <dd class="money"><?php echo \amount_format($call->amount) ?> <span class="euro">&euro;</span></dd>
                     </dl>
                     <dl class="block long expires">
                         <dt><?php echo Text::get('call-splash-valid_until-header') ?></dt>
@@ -72,8 +70,8 @@ include 'view/call/prologue-splash.html.php';
                         <dt><?php echo Text::get('call-splash-more_info-header') ?></dt>
                         <dd>
                             <a class="red" href="<?php echo $call->pdf ?>" target="_blank"><?php echo Text::get('call-splash-dossier-link') ?></a>
-                            <a href="<?php echo $call->user->webs[0]->url ?>" target="_blank"><?php echo $call->user->webs[0]->url ?></a>
-                            <a class="aqua" href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/legal" target="_blank"><?php echo Text::get('call-splash-legal-link') ?></a>
+                            <a href="<?php echo $call->user->webs[0]->url ?>" target="_blank"><?php echo preg_replace( '^http(?<https>s)?://^', '', $call->user->webs[0]->url ) ?></a>
+                            <a class="aqua" href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/terms" target="_blank"><?php echo Text::get('call-splash-legal-link') ?></a>
                         </dd>
                     </dl>
 				</div>

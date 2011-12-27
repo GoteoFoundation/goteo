@@ -322,6 +322,9 @@ namespace Goteo\Controller {
             if (!$call instanceof Model\Call) {
                 Message::Error('Ha habido algun errror al cargar la convocatoria solicitada');
                 throw new Redirection("/");
+            } else {
+                $call->logo = Model\Image::get($call->logo);
+                $call->image = Model\Image::get($call->image);
             }
 
             // solamente se puede ver publicamente si
@@ -333,8 +336,8 @@ namespace Goteo\Controller {
                 ACL::check('/call/edit/todos') ||
                 ACL::check('/call/view/todos')) {
 
-                if (!\in_array($show, array('splash'))) {
-                    $show = 'index';
+                if (!\in_array($show, array('splash', 'info', 'projects', 'terms'))) {
+                    $show = 'info';
                 }
 
                 $call->categories = Model\Call\Category::getNames($call->id);
