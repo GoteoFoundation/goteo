@@ -231,14 +231,8 @@ div.widget.project-called {
 div.widget.project-called > div{
     margin-right: -5px;
     margin-bottom: 0px;
-    padding: 0px 0px 0px 82px;
+    padding: 0px 0px 0px 75px;
 }
-
-/*
-div.widget.project-called div.explain {
-    padding: 10px 0px 0px 90px;
-}
-*/
 
 div.widget.project-called div.amount {
     display: none;
@@ -270,22 +264,20 @@ div.widget.project-called div.amount dl dd {
     margin: 0px;
 }
 
-div.widget.project-called div.amount dl dd strong {
+div.widget.project-called div.amount dl dd span {
     font-size: 30px;
+    font-weight: bold;
+    padding-right: 25px;
 }
 
-div.widget.project-called div.amount dl dd.light-violet {
+div.widget.project-called div.amount dl dd.light-violet span {
     background: url('/view/css/euro/light-violet/l.png') no-repeat right center;
     color: #BB70B6;
 }
 
-div.widget.project-called div.amount dl dd.violet {
+div.widget.project-called div.amount dl dd.violet span {
     background: url('/view/css/euro/violet/l.png') no-repeat right center;
     color: #96238F;
-}
-
-div.widget.project-called div.amount dl dd span.euro {
-    display: none;
 }
 
 div.widget.project-called.active {

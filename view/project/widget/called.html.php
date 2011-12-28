@@ -15,11 +15,11 @@ $call = $this['call'];
     </div>
     <div class="amount">
         <dl>
-            <dt>Presupuesto total de campaña</dt>
-            <dd class="light-violet"><strong><?php echo $call->amount ?> <span class="euro">&euro;</span></strong></dd>
+            <dt><?php echo Text::get('call-splash-whole_budget-header') ?></dt>
+            <dd class="light-violet"><span><?php echo \amount_format($call->amount) ?></span></dd>
 
-            <dt>Queda por repartir</dt>
-            <dd class="violet"><strong><?php echo $call->rest ?> <span class="euro">&euro;</span></strong></dd>
+            <dt><?php echo Text::get('call-splash-remain_budget-header') ?></dt>
+            <dd class="violet"><span><?php echo \amount_format($call->rest) ?></span></dd>
         </dl>
     </div>
 </div>

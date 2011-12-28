@@ -340,6 +340,10 @@ namespace Goteo\Controller {
                     $show = 'info';
                 }
 
+                if ($show == 'projects' && $call->status != 4) {
+                    $show = 'info';
+                }
+
                 $call->categories = Model\Call\Category::getNames($call->id);
                 $call->icons = Model\Call\Icon::getNames($call->id);
 
