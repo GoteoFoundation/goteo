@@ -33,4 +33,6 @@ div.widget.project-collaborations > a.more {
     display: inline-block;
     float: right;
     text-decoration: none;
+	position: relative;
+	top: 22px;
 }

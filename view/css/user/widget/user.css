@@ -1,12 +1,11 @@
 div.widget.user {   
-    margin-bottom: .5em;
+    margin-bottom: .8em;
 }
 
 div.widget.user div.image {
     width: 80px;
     height: 80px;
     display: block;
-/*    background: url('/view/css/avatar/l.png') no-repeat top left;       //@FIXME revisar esto porque los avatares trasparentes o pequeños salen con este abajo*/
     margin-bottom: 12px;
 }
 
@@ -70,5 +69,5 @@ div.widget.user dl dd.message a:hover {
 }
 
 div.widget.user a.button {
-    margin: 1.5em 0 0;
+    margin: 1.5em 0 10px;
 }

@@ -28,6 +28,7 @@ div.widget.project-invest div.individual h4.title,
 div.widget.project-rewards div.individual h4.title,
 #rewards-summary div.individual h4.title {
     color: #96238F !important;
+	margin-top: 20px;
 }
 
 div.widget.project-invest > div.individual ul li,
@@ -99,7 +100,8 @@ div.widget.project-rewards > div.individual ul li span.taken,
     color: #313B96;
     border: #313B96 1px solid;
     margin-right: 5px;
-    padding: 2px 6px 2px 6px;
+    padding: 2px 6px;
+	margin-left: 6px;
 }
 
 div.widget.project-rewards > div.individual ul li span.left,
@@ -119,7 +121,7 @@ div.widget.project-rewards ul,
 div.widget.project-invest ul li,
 div.widget.project-rewards ul li,
 #rewards-summary ul li {
-    padding: 10px 10px 10px 65px;
+    padding: 10px 10px 10px 60px;
     background: none no-repeat 10px 10px;
     min-height: 32px;    
     margin-bottom: 1em;
@@ -230,7 +232,7 @@ div.widget.project-rewards ul li div.license a,
 div.widget.project-invest ul li div.license > a strong,
 div.widget.project-rewards ul li div.license > a strong,
 #rewards-summary ul li div.license > a strong {
-    background: url("/view/css/license/license.png") no-repeat left top;
+    background: url("/view/css/license/license.png") no-repeat left 4px;
     padding-top: 40px;
     display: block;
 }
