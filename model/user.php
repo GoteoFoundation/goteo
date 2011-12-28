@@ -24,7 +24,7 @@ namespace Goteo\Model {
             $contribution,
             $keywords,
             $active,  // si no activo, no puede loguear
-            $confirmed = false,  // si no ha confirmado el email
+            $confirmed,  // si no ha confirmado el email
             $hide, // si oculto no aparece su avatar en ninguna parte (pero sus aportes cuentan)
             $facebook,
             $google,
@@ -160,7 +160,7 @@ namespace Goteo\Model {
                     }
 
                     if(!is_null($this->confirmed)) {
-                        $data[':active'] = $this->confirmed;
+                        $data[':confirmed'] = $this->confirmed;
                     }
 
                     if(!is_null($this->hide)) {
@@ -499,6 +499,7 @@ namespace Goteo\Model {
                         user.identica as identica,
                         user.linkedin as linkedin,
                         user.active as active,
+                        user.confirmed as confirmed,
                         user.hide as hide,
                         user.created as created,
                         user.modified as modified

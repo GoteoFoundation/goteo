@@ -56,9 +56,10 @@ body.project-show div#sub-header div.project-header h2 > span{
 
 body.project-show div#sub-header div.project-subtitle {
     font-size: 16px;
-    font-weight: bold;
-    margin: 0 0 .5em;
-	max-width:700px;
+    font-weight: normal;
+    margin: 3px 0;
+	max-width:620px;
+	font-style: normal;
 }
 
 body.project-show div#sub-header div.project-by {
@@ -184,7 +185,7 @@ body.project-show div#main div.widget {
 }
 
 body.project-show div#main div.widget.project-support {
-    min-height: 340px;
+    min-height: 355px;
 }
 
 body.project-show div#main > div.side > div.widget {
