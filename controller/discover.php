@@ -64,7 +64,7 @@ namespace Goteo\Controller {
 			if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['query']) && !isset($category)) {
                 $errors = array();
 
-                $params['query'] = $_GET['query']; // busqueda de texto
+                $params['query'] = \strip_tags($_GET['query']); // busqueda de texto
 
                 $results = \Goteo\Library\Search::text($params['query']);
 
@@ -83,7 +83,7 @@ namespace Goteo\Controller {
                     }
                 }
 
-                $params['query'] = $_POST['query'];
+                $params['query'] = \strip_tags($_POST['query']);
 
                 // para cada parametro, si no hay ninguno es todos los valores
                 $results = \Goteo\Library\Search::params($params);
