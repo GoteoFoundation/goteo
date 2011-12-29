@@ -34,7 +34,7 @@ $(document).ready(function() {
 
 				<h2 class="title">Informaci&oacute;n general de la campa&ntilde;a</h2>
 
-				<p><?php echo $call->description ?></p>
+				<div id="call-description"><?php echo $call->description ?></div>
 
                 <span style="font-size:15px;font-weight:bold;">¿Quiénes pueden participan?</span>
 				<p><?php echo $call->whom ?></p>

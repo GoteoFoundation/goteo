@@ -26,7 +26,7 @@ include 'view/call/header.html.php';
 
 				<h2 class="title">Terminos y condiciones de la campa&ntilde;a</h2>
 				
-				<p><?php echo $call->legal ?></p>
+				<div id="call-terms"><?php echo $call->legal ?></div>
 				
 			</div>
 

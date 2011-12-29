@@ -93,7 +93,7 @@ $filter = "?status={$filters['status']}&interest={$filters['interest']}&role={$f
                 <td><a href="/admin/users/manage/<?php echo $user->id; ?>">[Gestionar]</a></td>
                 <td><a href="/user/<?php echo $user->id; ?>" target="_blank" title="Preview"><?php echo $user->name; ?></a></td>
                 <td><strong><?php echo $user->id; ?></strong></td>
-                <td><?php echo $user->email; ?></td>
+                <td><a href="mailto:<?php echo $user->email; ?>"><?php echo $user->email; ?></a></td>
                 <td><?php echo $user->register_date; ?></td>
                 <td>
                     <?php echo $user->active ? '' : ' Inactivo'; ?>
