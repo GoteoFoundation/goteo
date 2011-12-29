@@ -36,18 +36,21 @@ div.widget.project div.image img {
     height: 100%; */
 }
 
+/** Tagmarks widget **/
 div.widget.project div.image div.tagmark {
     position: absolute;
     z-index: 899;
     text-align: left;
     color: #ffffff;
-    font-size: 1.3em;
-    font-weight: bold;
+    font-size: 1.2em;
+    font-weight: normal;
     text-transform: uppercase;
     margin-top: 8px;
     width: 226px;
     height: 40px;
-    padding: 12px 0px 0px 27px;
+    padding: 12px 0px 0px 35px;
+	font-style: normal;
+	letter-spacing: 1px;
 }
 
 div.widget.project div.image div.tagmark.green {
@@ -68,14 +71,15 @@ div.widget.project div.image div.tagmark.grey {
 
 /* tipografia pequeña para que quepa todo */
 div.widget.project div.image div.tagmark span.small {
-    font-size: 0.7em !important;
+    font-size: 0.9em !important;
     font-weight: normal !important;
 }
 
 /* Dos lineas para el en marcha y aun puedes */
 div.widget.project div.image div.tagmark.twolines {
-    padding-top: 6px !important;
+    padding-top: 5px !important;
 }
+/** Fin tagmarks **/
 
 div.widget.project div.image div.investor {
     position: absolute;

@@ -197,7 +197,6 @@ div.widget.project-rewards > a.more {
     display: inline-block;
     float: right;
     text-decoration: none;
-	text-transform:uppercase;
 }
 
 div.widget.project-invest ul li div.license h4,

@@ -17,7 +17,7 @@ $project = $this['project'];
             echo '<div class="tagmark green">' . Text::get('regular-onrun_mark') . '</div>';
             break;
         case 'keepiton': // "aun puedes"
-            echo '<div class="tagmark green"><span class="small">' . Text::get('regular-keepiton_mark') . '</span></div>';
+            echo '<div class="tagmark green">' . Text::get('regular-keepiton_mark') . '</div>';
             break;
         case 'onrun-keepiton': // "en marcha" y "aun puedes"
             echo '<div class="tagmark green twolines"><span class="small"><strong>' . Text::get('regular-onrun_mark') . '</strong><br />' . Text::get('regular-keepiton_mark') . '</span></div>';
