@@ -15,8 +15,8 @@ $params = $this['params'];
     <form method="post" action="/discover/results">
         <div class="text-filter">
             <label for="text-query"><?php echo Text::get('discover-searcher-bycontent-header'); ?></label>
-                <input type="text" id="text-query" name="query" size="48" value="<?php echo $params['query']; ?>" />
-                <br clear="all" />
+            <input type="text" id="text-query" name="query" size="48" value="<?php echo \htmlspecialchars($params['query']); ?>" />
+            <br clear="all" />
         </div>
 
         <div class="filter">

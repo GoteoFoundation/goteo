@@ -36,7 +36,7 @@ if (isset($this['investor']) && is_object($this['investor'])) {
                 echo '<div class="tagmark green">' . Text::get('regular-onrun_mark') . '</div>';
                 break;
             case 'keepiton': // "aun puedes"
-                echo '<div class="tagmark green"><span class="small">' . Text::get('regular-keepiton_mark') . '</span></div>';
+                echo '<div class="tagmark green">' . Text::get('regular-keepiton_mark') . '</div>';
                 break;
             case 'onrun-keepiton': // "en marcha" y "aun puedes"
 //                echo '<div class="tagmark green">' . Text::get('regular-onrun_mark') . '</div>';
@@ -122,7 +122,7 @@ if (isset($this['investor']) && is_object($this['investor'])) {
     </div>
     <?php else : // normal ?>
     <div class="buttons">
-        <?php if ($project->status == 3) : // si esta en campaña se puede aportar ?>
+        <?php if ($project->status == 3) : // si esta en campaï¿½a se puede aportar ?>
         <a class="button violet supportit" href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>/invest"<?php echo $blank; ?>><?php echo Text::get('regular-invest_it'); ?></a>
         <?php else : ?>
         <a class="button view" href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>/updates"<?php echo $blank; ?>><?php echo Text::get('regular-see_blog'); ?></a>

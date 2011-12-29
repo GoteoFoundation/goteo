@@ -214,7 +214,7 @@ div.widget.project-support a.more {
 	top: 16px;
 }
 
-/* Las tagmark */
+/* Tagmark termometro */
 div.widget.project-support div.tagmark {
     position: absolute;
     z-index: 9999;
@@ -258,3 +258,4 @@ div.widget.project-support div.tagmark span.small {
 div.widget.project-support div.tagmark.twolines {
     padding-top: 3px !important;
 }
+/** Fin tagmark **/
