@@ -45,19 +45,21 @@ body {
 	margin: 0;
 }
 
-#bgimage {
-	top: 25px;
-	z-index: 0;
-	display: block;
-	position: fixed;
-	max-width: 940px;
-}
-
 #wrapper {
 	width: 940px;
-	margin: 0 auto;
+	margin: 25px auto;
 	position: relative;
+	background-color: #f5f1f2;
 }
+
+.projects #wrapper {
+	background-color: #f5f1f2;
+    background-image: none;
+    background-position: top center;
+    background-attachment: fixed;
+}
+
+
 
 /* Main */
 
@@ -65,10 +67,7 @@ div#main {
     clear: both;
     margin: 0;
     overflow: hidden;
-    z-index: 10;
-	position: absolute;
-	top: 25px;
-	left: 0;
+	height: 100%;
 }
 
 div#main ul#list {
@@ -106,6 +105,25 @@ div#main ul#list>li {
 	margin: 0 auto;
 }
 
+/* Footer */
+
+#footer {
+	position: fixed;
+	background-color: #58595c;
+	height: 20px;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	font-size: 11px;
+	padding: 5px 0;
+}
+
+#footer #super-footer {
+	width: 940px;
+	margin: 0 auto;
+	color: #fff;
+}
+
 /* Side */
 
 #side {
@@ -113,6 +131,8 @@ div#main ul#list>li {
 	float: left;
 	background-color: #f5f1f2;
 	padding: 30px 15px;
+	padding-bottom: 30000px;
+	margin-bottom: -30000px;
 }
 
 #side img.logo {
@@ -123,7 +143,7 @@ div#main ul#list>li {
 
 #side .block {
 	/*border-bottom: 1px solid #cecbcc;*/
-	background: url('side-border.gif') no-repeat left bottom;
+	background: url('/view/css/call/side-border.gif') no-repeat left bottom;
 	padding-bottom: 15px;
 }
 
@@ -170,175 +190,58 @@ div#main ul#list>li {
 	line-height: 1.4em;
 }
 
+#side dd.location a {
+	font-size: 10px;
+}
+
+#side dl.expires dd {
+	color: red;
+	font-size: 20px;
+}
+
+#side dl.expires dd strong {
+	font-size: 34px;
+}
+
+#side dl.selected dd {
+	color: #1db3b2;
+	font-size: 48px;
+}
+
+#side dl.moreinfo a {
+	color: #ff0000;
+	font-size: 11px;
+}
+
 #side a#capital {
 	width: 91px;
 	height: 122px;
 	display: block;
 	text-indent: -10000px;
-	background: url('logo-capital.png') no-repeat;
+	background: url('/view/css/call/logo-capital.png') no-repeat;
 	margin: 0 auto;
+}
+
+#side a {
+	text-decoration: none;
+}
+
+#side a:hover {
+	text-decoration: underline;
 }
 
 /* Content */
 
 #content {
 	width: 650px;
+	position: relative;
 	padding: 15px 35px;
 	float: left;
 	background-color: #fff;
 }
 
-
-li#numbers div.row {
-	border-bottom: solid 1px #cbcbcc;
-	overflow: hidden;
-	margin: 0 0 20px;
-	padding: 0 0 10px 0;
-	clear: both;
-}
-
-li#numbers dl.block {
-	float: left;
-	overflow: hidden;
-	width: 97px;
-	margin: 0;
-	padding-right: 15px;
-	overflow: hidden;
-}
-
-li#numbers dl.long {
-	width: 160px;
-}
-
-li#numbers dl.last {
-	padding-right: 0;
-}
-
-li#numbers dl.block dt {
-	height: 33px;
-	font-size: 11px;
-	text-transform: uppercase;
-}
-
-li#numbers dl.block dd {
-	min-height: 36px;
-	font-size: 34px;
-	font-weight: bold;
-	padding: 0;
-	margin: 0;
-}
-
-li#numbers dl.category {
-	width: 125px;
-}
-
-li#numbers dl.category dd,
-li#numbers dl.category dd a {
-	color: #1db3b2;
-	text-decoration: none;
-	font-size: 11px;
-	font-weight: normal;
-}
-
-li#numbers dl.category dd a:hover {
-	color: #58595B;
-}
-
-li#numbers dl.selected dd,
-li#numbers dl.processing dd,
-li#numbers dl.success dd {
-/*	padding-bottom: 9px;*/
-}
-
-li#numbers dl.selected dd,
-li#numbers dl.processing dd,
-li#numbers dl.success dd {
-	line-height: 42px;
-	font-size: 48px;
-	vertical-align: top;
-}
-
-li#numbers dl.selected dd {
-	color: #1db3b2;
-}
-
-li#numbers dl.processing dd {
-}
-
-li#numbers dl.success dd {
-	color: #fe4848;
-}
-
-li#numbers dl.return {
-	min-height: 80px;
-	width: 120px;
-} 
-
-li#numbers dl.return dd {
-	font-size: 11px;
-}
-
-li#numbers dl.location {
-	width: 138px;
-	margin-bottom: 0;
-	border-bottom: 0;
-	padding: 0 10px 0 0;
-}
-
-li#numbers dl.location dt {
-	height: 28px;
-}
-
-li#numbers dl.location dd {
-	font-size: 10px;
-	font-weight: normal;
-	padding-left: 12px;
-	padding-top: 3px;
-    background: url('/view/css/location/s.png') no-repeat left top;
-    text-indent: .5em;    
-}
-
-li#numbers dl.location dd a {
-	font-size: 10px;
-	text-decoration: none;
-	color: #58595b;
-}
-
-li#numbers dl.location dd a:hover {
-	text-decoration: underline;
-}
-
-li#numbers dl.expires dd {
-	color: red;
-	font-size: 20px;
-}
-
-li#numbers dl.expires dd strong {
-	font-size: 34px;
-}
-
-li#numbers dl.moreinfo {
-	width: 180px;
-}
-
-li#numbers dl.moreinfo dd a {
-	display: block;
-	text-decoration: none;
-	font-size: 11px;
-	font-weight: normal;
-	margin-bottom: 2px;
-}
-
-li#numbers dl.moreinfo dd a.red {
-	color: #f00;
-}
-
-li#numbers dl.moreinfo dd a.aqua {
-	color: #1db3b2;
-}
-
-li#numbers dl.moreinfo dd a:hover {
-	color: #58595B;
+.projects #content {
+	width: 520px;
 }
 
 /* Iconos */
@@ -538,7 +441,7 @@ p.subtitle {
 }
 
 .freetext {
-	padding: 0 65px 0 15px;
+	padding: 0 65px 25px 15px;
 }
 
 /* Info table.info-table */
@@ -656,4 +559,14 @@ table.info-table tfoot th.total {
 
 table.info-table tfoot tr > * {
     border: none;   
+}
+
+.info .freetext h3 {
+	padding: 25px 0 0 0;
+	margin: 0;
+	text-transform: uppercase;
+}
+
+.info .freetext .button {
+	margin: 15px 0;
 }

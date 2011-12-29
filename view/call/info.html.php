@@ -44,7 +44,7 @@ $(document).ready(function() {
 				<p><?php echo $call->apply ?></p>
             <?php else : //en campaña ?>
                 
-                    <h2 class="title"><?php echo Text::get('call-splash-selected_projects-header') ?></h2>
+                <h3><?php echo Text::get('call-splash-selected_projects-header') ?></h3>
 
 				<table class="info-table" width="100%">
 					<thead class="task">

@@ -8,26 +8,22 @@ use Goteo\Library\Text,
 $bodyClass = 'projects';
 
 $call = $this['call'];
-
+$bgimage = $call->image->getLink(2000, 2000);
 include 'view/call/prologue.html.php';
 include 'view/call/header.html.php';
 ?>
-	<img id="bgimage" src="<?php echo $call->image->getLink(2000, 2000) ?>" alt="<?php echo $call->name ?>" />
 
 	<div id="main">
 
 		<?php echo new View('view/call/side.html.php', $this); ?>
 	
-        <div id="content" style="background-color: transparent;">
+        <div id="content">
 
-            <div  style="width:350px;background-color: #FFFFFF;padding: 40px;margin:-40px;">
-                <h2 class="title"><?php echo Text::get('call-splash-campaign_title') ?><br /><?php echo $call->name ?></h2>
-                <p class="subtitle"><?php echo Text::get('call-splash-invest_explain', $call->user->name) ?></p>
+            <h2 class="title"><?php echo Text::get('call-splash-campaign_title') ?><br /><?php echo $call->name ?></h2>
+            <p class="subtitle"><?php echo Text::get('call-splash-invest_explain', $call->user->name) ?></p>
 
-                <h2 class="title"><?php echo Text::get('call-splash-selected_projects-header') ?></h2>
-            </div>
+            <h2 class="title"><?php echo Text::get('call-splash-selected_projects-header') ?></h2>
 
-            <div style="position:absolute;left:240px;z-index:999;">
             <?php
             $c = 0;
             foreach ($call->projects as $proj) :
@@ -35,12 +31,13 @@ include 'view/call/header.html.php';
                 $categories = Project\Category::getNames($proj->id, 2);
                 $project->per_amount = round(($project->amount / $project->minimum) * 100);
 
-                if ($c > 3) {
+                if ($c > 0) {
                     $c = 0;
-                    echo '<br style="clear:all;" />';
+//                    echo '<br style="clear:all;" /><br />';
+                    echo '<br />';
                 }
                 ?>
-            <div style="height:260px;width:160px;background-color:#EBE9E9;float:left;margin:0px 10px 10px 0px;overflow:hidden;">
+            <div style="height:260px;width:160px;background-color:#EBE9E9;margin:0px 10px 10px 0px;">
                 <div class="image" style="max-width: 150px; margin: 5px;">
                     <?php if (!empty($project->gallery) && (current($project->gallery) instanceof Image)): ?>
                     <a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>"><img src="<?php echo current($project->gallery)->getLink(150, 98, true) ?>" alt="<?php echo $project->name ?>"/></a>
@@ -75,7 +72,7 @@ include 'view/call/header.html.php';
             $c++;
             endforeach; ?>
             </div>
-            
+
         </div>
 
     </div>

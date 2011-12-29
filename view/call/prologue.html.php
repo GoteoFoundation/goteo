@@ -53,5 +53,5 @@
         </script>
         <noscript><!-- Please enable JavaScript --></noscript>
 
-        <div id="wrapper">
+        <div id="wrapper" <?php if (isset($bgimage)) echo "style=\"background-image:url('{$bgimage}');\""; ?>>
 			

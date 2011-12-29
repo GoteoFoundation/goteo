@@ -53,8 +53,6 @@ body {
 }
 
 #wrapper {
-	width: 940px;
-	margin: 0 auto;
 	position: relative;
 }
 
@@ -472,10 +470,10 @@ a.button.join {
 /* Logo */
 
 a#capital {
-	bottom: 10px;
+	bottom: 0;
 	width: 91px;
 	height: 122px;
-	right: 55px;
+	left: 840px;
 	z-index: 10;
 	display: block;
 	text-indent: -10000px;
