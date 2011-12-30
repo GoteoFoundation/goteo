@@ -32,7 +32,7 @@ if (!$call instanceof  Goteo\Model\call) {
 </div>
 
 <div class="widget">
-    <p>Presupuesto: tanto</p>
-    <p>Queda por repartir: tanto</p>
+    <p>Presupuesto: <?php echo \amount_format($call->amount) ?> &euro;</p>
+    <p>Queda por repartir: <?php echo \amount_format($call->rest) ?> &euro;</p>
 </div>
 
