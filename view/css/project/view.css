@@ -252,12 +252,14 @@ div.widget.project-called div.explain dl dd {
     margin: 12px 0px;
 }
 
-div.widget.project-called div.explain p {
+div.widget.project-called div.explain p,
+div.widget.project-invest-amount.called  p {
     font-size: 0.9em;
     margin: 0px;
 }
 
-div.widget.project-called div.explain p strong {
+div.widget.project-called div.explain p strong,
+div.widget.project-invest-amount.called  p strong {
     color: #96238F;
 }
 

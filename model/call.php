@@ -1125,6 +1125,24 @@ namespace Goteo\Model {
         }
 
         /*
+         * Consulta rapida de si queda dinero
+         *
+         * @param id call
+         */
+        public static function isThereRest($id)
+        {
+            // cogemos la cantidad de presupuesto y la cantidad de aportes activos para esta campaña
+            return 1000;
+
+
+            $sql = "SELECT * FROM `call` WHERE owner = ?";
+            $query = self::query($sql, array($owner));
+            $calc = $query->fetchObject();
+
+            return ($calc->amount - $calc->used);
+        }
+
+        /*
          * Estados de publicación de un convocatoria
          */
         public static function status () {

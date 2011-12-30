@@ -3,7 +3,8 @@
 namespace Goteo\Model {
 
     use Goteo\Library\Text,
-        Goteo\Model\Image;
+        Goteo\Model\Image,
+        Goteo\Model\Call;
 
     class Invest extends \Goteo\Core\Model {
 
@@ -31,7 +32,8 @@ namespace Goteo\Model {
                 'address'  => '',
                 'zipcode'  => '',
                 'location' => '',
-                'country'  => '');  // dirección de envio del retorno
+                'country'  => ''),  // dirección de envio del retorno
+            $call = null; // aportes que tienen capital riego asociado
 
         // añadir los datos del cargo
 
@@ -290,7 +292,9 @@ namespace Goteo\Model {
                 'charged',
                 'returned',
                 'admin',
-                'campaign'
+                'campaign',
+                'call',
+                'drops'
                 );
 
             $set = '';
@@ -307,7 +311,49 @@ namespace Goteo\Model {
             try {
                 $sql = "REPLACE INTO invest SET " . $set;
                 self::query($sql, $values);
-                if (empty($this->id)) $this->id = self::insertId();
+                if (empty($this->id)) {
+                    $this->id = self::insertId();
+                    if (empty($this->id)) {
+                        $errors[] = 'No ha conseguido Id de aporte';
+                        return false;
+                    }
+
+                    // si es de convocatoria,
+                    if (isset($this->called) && $this->called instanceof Call) {
+                        // si queda capital riego
+                        $rest = Call::isThereRest($this->call->id);
+                        if ($rest >= $this->amount) {
+                            // se crea el aporte paralelo
+                            $drop = new Invest(
+                                array(
+                                    'amount' => $this->amount,
+                                    'user' => $this->called->owner,
+                                    'project' => $this->project,
+                                    'method' => 'cash',
+                                    'status' => '-1', // en proceso
+                                    'invested' => date('Y-m-d'),
+                                    'anonymous' => null,
+                                    'resign' => true,
+                                    'campaign' => true,
+                                    'drops' => $this->id,
+                                    'call' => $this->called->id
+                                )
+                            ) ;
+
+                            // se actualiza el registro de convocatoria
+                            if ($drop->save($errors)) {
+                                self::query("UPDATE invest SET droped=".$drop->id." WHERE id=".$this->id);
+                            } else {
+                                $errors[] = 'No se ha podido actualizar el aporte con el capital riego que ha generado';
+                            }
+                            
+                        } else {
+                            $errors[] = 'No queda capital riego';
+                            unset($this->called);
+                        }
+                    }
+
+                }
 
                 // y las recompensas
                 foreach ($this->rewards as $reward) {
@@ -657,6 +703,13 @@ namespace Goteo\Model {
 
             $sql = "UPDATE invest SET status = :status WHERE id = :id";
             if (self::query($sql, $values)) {
+
+                // si tiene capital riego asociado pasa al mismo estado
+                if (!empty($this->droped)) {
+                    $drop = Invest::get($this->droped);
+                    $drop->setStatus($status);
+                }
+
                 return true;
             } else {
                 return false;

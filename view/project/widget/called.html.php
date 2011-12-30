@@ -11,7 +11,7 @@ $call = $this['call'];
             <dt>Este proyecto recibe aportes de la campaña:</dt>
             <dd><?php echo $call->name ?></dd>
         </dl>
-        <p>Por cada <strong>1&euro;</strong> que aportes a este proyecto, <?php echo $call->user->name ?> aporta otro <strong>1€</strong>.</p>
+        <p>Por cada <strong>1&euro;</strong> que aportes a este proyecto, <strong><?php echo $call->user->name ?></strong> aporta otro <strong>1€</strong>.</p>
     </div>
     <div class="amount">
         <dl>

@@ -452,13 +452,6 @@ namespace Goteo\Controller {
         private function view ($id, $show, $post = null) {
             $project = Model\Project::get($id, LANG);
 
-            // si está en campaña podría tener riego de alguna convocatoria
-            if ($project->status == 3) {
-                $project->called = Model\Call\Project::called($id);
-            } else {
-                $project->called = false;
-            }
-
             // recompensas
             foreach ($project->individual_rewards as &$reward) {
                 $reward->none = false;

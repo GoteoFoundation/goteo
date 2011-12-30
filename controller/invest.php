@@ -96,6 +96,11 @@ namespace Goteo\Controller {
                 $invest->rewards = $rewards;
                 $invest->address = (object) $address;
 
+                // si obtiene dinero de convocatoria
+                if (isset($projectData->called)) {
+                    $invest->called = $projectData->called;
+                }
+
                 if ($invest->save($errors)) {
 
                     switch($_POST['method']) {
@@ -116,7 +121,7 @@ namespace Goteo\Controller {
                             }
                             break;
                         case 'cash':
-                            $invest->setStatus('0');
+                            $invest->setStatus('1');
                             // En betatest aceptamos cash para pruebas
                             throw new Redirection("/invest/confirmed/{$project}/{$invest->id}");
                             break;

@@ -35,3 +35,9 @@ ALTER TABLE `invest` ADD `method` VARCHAR( 20 ) NOT NULL COMMENT 'Metodo de pago
 -- Para aportes manuales y aportes de campaña
 ALTER TABLE `invest` ADD `admin` VARCHAR( 50 ) NULL COMMENT 'Admin que creó el aporte manual';
 ALTER TABLE `invest` ADD `campaign` BIGINT UNSIGNED NULL COMMENT 'campaña de la que forma parte este dinero';
+
+-- Para aportes de capital riego
+ALTER TABLE `invest` CHANGE `campaign` `campaign` INT( 1 ) UNSIGNED NULL DEFAULT NULL COMMENT 'si es un aporte de capital riego';
+ALTER TABLE `invest` ADD `drops` BIGINT( 20 ) UNSIGNED NULL DEFAULT NULL COMMENT 'id del aporte que provoca este riego';
+ALTER TABLE `invest` ADD `droped` BIGINT( 20 ) UNSIGNED NULL DEFAULT NULL COMMENT 'id del riego generado por este aporte';
+ALTER TABLE `invest` ADD `call` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'campaña dedonde sale el dinero';

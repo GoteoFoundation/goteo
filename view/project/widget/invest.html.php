@@ -23,12 +23,16 @@ $action = '/invest/' . $project->id;
 
 
 ?>
-<div class="widget project-invest project-invest-amount">
+<div class="widget project-invest project-invest-amount<?php if ($project->called) echo ' called' ?>">
     <h<?php echo $level ?> class="title"><?php echo Text::get('invest-amount') ?></h<?php echo $level ?>>
-    
+
     <form method="post" action="<?php echo $action; ?>">
 
     <label><input type="text" id="amount" name="amount" class="amount" value="" /><?php echo Text::get('invest-amount-tooltip') ?></label>
+
+    <?php if ($project->called) : ?>
+    <p>Por cada <strong>1&euro;</strong> que aportes a este proyecto, <strong><?php echo $project->called->user->name ?></strong> aporta otro <strong>1€</strong>.</p>
+    <?php endif; ?>
 </div>
 
     

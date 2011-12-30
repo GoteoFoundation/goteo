@@ -7,7 +7,8 @@ namespace Goteo\Model {
         Goteo\Library\Text,
         Goteo\Model\User,
         Goteo\Model\Image,
-        Goteo\Model\Message;
+        Goteo\Model\Message,
+        Goteo\Model\Call;
 
     class Project extends \Goteo\Core\Model {
 
@@ -286,6 +287,15 @@ namespace Goteo\Model {
 
                 $project->setDays();
                 $project->setTagmark();
+
+                // si está en campaña podría tener riego de alguna convocatoria
+                if ($project->status == 3) {
+                    $project->called = Call\Project::called($id);
+                } else {
+                    $project->called = false;
+                }
+
+
                 //-----------------------------------------------------------------
                 // Fin de verificaciones
                 //-----------------------------------------------------------------
