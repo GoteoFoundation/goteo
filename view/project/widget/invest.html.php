@@ -23,7 +23,7 @@ $action = '/invest/' . $project->id;
 
 
 ?>
-<div class="widget project-invest project-invest-amount">
+<div class="widget project-invest project-invest-amount<?php if ($project->called) echo ' called' ?>">
     <h<?php echo $level ?> class="title"><?php echo Text::get('invest-amount') ?></h<?php echo $level ?>>
     
     <form method="post" action="<?php echo $action; ?>">

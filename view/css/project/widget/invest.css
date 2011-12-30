@@ -191,7 +191,7 @@ div.widget.project-invest div.individual ul li label input[type="checkbox"]:chec
 }
 
 div.widget.project-invest div.individual ul li.disabled label input[type="checkbox"] + span.chkbox {
-	background: url("checkbox_disabled.png") no-repeat scroll 0 0px transparent;
+	background: url("/view/css/project/widget/checkbox_disabled.png") no-repeat scroll 0 0px transparent;
 }
 
 div.widget.project-invest p label input[type="checkbox"] {
@@ -206,11 +206,18 @@ div.widget.project-invest p label input[type="checkbox"] + span.chkbox {
 	display: block;
 	width:12px;
 	height:12px;
-	background: url("checkbox_disabled.png") no-repeat scroll 0 0px transparent;
+	background: url("/view/css/project/widget/checkbox_disabled.png") no-repeat scroll 0 0px transparent;
 	position: absolute;
 	margin-top: -15px;
 }
 
 div.widget.project-invest p label input[type="checkbox"]:checked + span.chkbox {
 	background-position: 0 -13px;
+}
+
+/* Logo riego */
+div.widget.project-invest.project-invest-amount.called {
+	background-image: url("/view/css/call/logo-capital.png");
+    background-position: right center;;
+    background-repeat: no-repeat;
 }
