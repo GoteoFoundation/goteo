@@ -73,7 +73,7 @@ namespace Goteo\Model {
 
                     $invest->address = $usr_address;
                 }
-                
+
                 return $invest;
         }
 
@@ -102,7 +102,7 @@ namespace Goteo\Model {
                 SELECT  *
                 FROM  invest
                 WHERE   invest.project = ?
-                AND (invest.status = 0 OR invest.status = 1 OR invest.status = 3 OR invest.status = 4)
+                AND invest.status IN ('0', '1', '3', '4')
                 ", array($project));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $invest) {
                 // datos del usuario
@@ -321,8 +321,7 @@ namespace Goteo\Model {
                     // si es de convocatoria,
                     if (isset($this->called) && $this->called instanceof Call) {
                         // si queda capital riego
-                        $rest = Call::isThereRest($this->call->id);
-                        if ($rest >= $this->amount) {
+                        if ($this->called->rest >= $this->amount) {
                             // se crea el aporte paralelo
                             $drop = new Invest(
                                 array(
@@ -343,6 +342,7 @@ namespace Goteo\Model {
                             // se actualiza el registro de convocatoria
                             if ($drop->save($errors)) {
                                 self::query("UPDATE invest SET droped=".$drop->id." WHERE id=".$this->id);
+                                $this->droped = $drop->id;
                             } else {
                                 $errors[] = 'No se ha podido actualizar el aporte con el capital riego que ha generado';
                             }
@@ -477,13 +477,32 @@ namespace Goteo\Model {
         /*
          * Obtenido por un proyecto
          */
-        public static function invested ($project) {
-            $query = static::query("
-                SELECT  SUM(amount) as much
+        public static function invested ($project, $only = null, $call = null) {
+
+            $values = array(':project' => $project);
+
+            $sql = "SELECT  SUM(amount) as much
                 FROM    invest
                 WHERE   project = :project
-                AND     (invest.status = 0 OR invest.status = 1 OR invest.status = 3 OR invest.status = 4)
-                ", array(':project' => $project));
+                AND     invest.status IN ('0', '1', '3', '4')
+                ";
+
+            if (isset ($only) && in_array($only, array('users', 'call'))) {
+                switch ($only) {
+                    case 'users':
+                        $sql .= " AND (invest.campaign = 0 OR invest.campaign IS NULL)";
+                        break;
+                    case 'call':
+                        $sql .= " AND invest.campaign = 1";
+                        if (isset($call)) {
+                            $sql .= " AND invest.call = :call";
+                            $values['call'] = $call;
+                        }
+                        break;
+                }
+            }
+
+            $query = static::query($sql, $values);
             $got = $query->fetchObject();
             return (int) $got->much;
         }
@@ -507,7 +526,7 @@ namespace Goteo\Model {
                         COUNT(DISTINCT(project))
                      FROM invest as invb
                      WHERE invb.user = invest.user
-                     AND (invb.status = 0 OR invb.status = 1 OR invb.status = 3 OR invb.status = 4)
+                     AND  invb.status IN ('0', '1', '3', '4')
                      ) as projects,";
             }
 
@@ -517,7 +536,7 @@ namespace Goteo\Model {
                 INNER JOIN user
                     ON  user.id = invest.user
                 WHERE   project = ?
-                AND (invest.status = 0 OR invest.status = 1 OR invest.status = 3 OR invest.status = 4)
+                AND     invest.status IN ('0', '1', '3', '4')
                 ORDER BY invest.invested DESC
                 ";
 
@@ -576,7 +595,7 @@ namespace Goteo\Model {
                 FROM    invest
                 WHERE   user = :user
                 AND     project = :project
-                AND     (invest.status = 0 OR invest.status = 1 OR invest.status = 3 OR invest.status = 4)
+                AND     invest.status IN ('0', '1', '3', '4')
                 AND     (anonymous = 0 OR anonymous IS NULL)
                 ORDER BY invested DESC";
 
@@ -600,7 +619,7 @@ namespace Goteo\Model {
                 INNER JOIN user
                     ON  user.id = invest.user
                     AND (user.hide = 0 OR user.hide IS NULL)
-                WHERE   (invest.status = 0 OR invest.status = 1 OR invest.status = 3 OR invest.status = 4)
+                WHERE   invest.status IN ('0', '1', '3', '4')
                 ";
 
             $query = self::query($sql, array($reward));
@@ -706,6 +725,9 @@ namespace Goteo\Model {
 
                 // si tiene capital riego asociado pasa al mismo estado
                 if (!empty($this->droped)) {
+                    // si estan reubicando cancelamos el riego por ahora
+                    if ($status == 5) $status = 2;
+
                     $drop = Invest::get($this->droped);
                     $drop->setStatus($status);
                 }

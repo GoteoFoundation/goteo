@@ -51,7 +51,7 @@ div.widget.project-needs table th.summary {
 div.widget.project-needs table *.min,
 div.widget.project-needs table *.max {
     padding: 7px 1.5em;
-	text-align: center;
+	text-align: right;
 	vertical-align: top;
 }
 

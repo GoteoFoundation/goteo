@@ -72,13 +72,31 @@ namespace Goteo\Model {
 
             $translate,  // si se puede traducir (bool)
 
-            //Operative purpose properties
-            $amount_used = 0,
-            $amount_left = 0,
-
             $projects = array(), // convocatorias relacionados a la convocatoria
 
             $expired = false; // si ha finalizado el tiempo de inscripcion
+
+
+        /**
+         * Sobrecarga de métodos 'getter'.
+         *
+         * @param type string $name
+         * @return type mixed
+         */
+        public function __get ($name) {
+            switch ($name) {
+                case "rest":
+                    return $this->getRest();
+                    break;
+                case "used":
+                    return $this->getRest(true);
+                    break;
+
+                default:
+                    return $this->$name;
+            }
+        }
+
 
 
         /**
@@ -221,11 +239,6 @@ namespace Goteo\Model {
                     if ($proj->status == 4 || $proj->status == 5)
                         $call->success_projects++;
                 }
-
-
-
-                $used = 0; //@TODO calcular cuanto se ha repartido
-                $call->rest = $call->amount - $used;
 
                 // para convocatorias en campaña o posterior
                 // los proyectos han conseguido pasta, son exitosos, estan en campaña o no han conseguido y estan caducados pero no se calculan ni dias ni ronda
@@ -675,15 +688,6 @@ namespace Goteo\Model {
         }
 
         /*
-         *  Para actualizar el presupuesto usado y restante
-         *   sumamos de los aportes en estado ok que sean para esta campaña
-         */
-        public function callCalc() {
-            $this->amount_used = 0;
-            $this->amount_left = 0;
-        }
-
-        /*
          * Lista de convocatorias de un usuario
          */
         public static function ofmine($owner, $published = false)
@@ -1125,21 +1129,25 @@ namespace Goteo\Model {
         }
 
         /*
-         * Consulta rapida de si queda dinero
+         * Dinero restante
          *
          * @param id call
          */
-        public static function isThereRest($id)
+        private function getRest($getUsed = false)
         {
             // cogemos la cantidad de presupuesto y la cantidad de aportes activos para esta campaña
-            return 1000;
+            $sql = "
+                SELECT SUM(invest.amount)
+                FROM invest
+                WHERE invest.campaign = 1
+                AND invest.call = ?
+                AND invest.status IN ('0', '1', '3', '4')";
+            $query = self::query($sql, array($this->id));
+            $used = $query->fetchColumn();
 
+            if ($getUsed) return $used;
 
-            $sql = "SELECT * FROM `call` WHERE owner = ?";
-            $query = self::query($sql, array($owner));
-            $calc = $query->fetchObject();
-
-            return ($calc->amount - $calc->used);
+            return ($this->amount - $used);
         }
 
         /*

@@ -2,7 +2,7 @@
 
 namespace Goteo\Model\Call {
 
-    use Goteo\Model\Call;
+    use Goteo\Model;
 
     class Project extends \Goteo\Core\Model {
 
@@ -21,10 +21,11 @@ namespace Goteo\Model\Call {
             $array = array ();
             try {
                 $sql = "SELECT
-                            project.id,
+                            project.id as id,
                             project.name as name,
                             project.status as status,
-                            project.project_location as location
+                            project.project_location as location,
+                            project.subtitle as subtitle
                         FROM project
                         JOIN call_project
                             ON  call_project.project = project.id
@@ -33,7 +34,14 @@ namespace Goteo\Model\Call {
                         ";
                 $query = static::query($sql, array(':call'=>$call));
                 $items = $query->fetchAll(\PDO::FETCH_OBJ);
+
                 foreach ($items as $item) {
+                    // cuanto han recaudado
+                    // de los usuarios
+                    $item->amount_users = Model\Invest::invested($item->id, 'users');
+                    // de la convocatoria
+                    $item->amount_call = Model\Invest::invested($item->id, 'call', $call);
+
                     $array[$item->id] = $item;
                 }
 
@@ -187,7 +195,7 @@ namespace Goteo\Model\Call {
                 $query = static::query($sql, array(':project'=>$project));
                 $called = $query->fetchColumn();
                 if (!empty ($called)) {
-                    $call = Call::get($called);
+                    $call = Model\Call::get($called);
 
                     return $call;
                 }

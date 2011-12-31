@@ -21,6 +21,8 @@ if (function_exists('ini_set')) {
  *
  */
 
+//Estoy en local
+define('DEVGOTEO_LOCAL', true);
 
 // Nodo actual
 define('GOTEO_NODE', 'goteo');

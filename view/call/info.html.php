@@ -13,8 +13,8 @@ include 'view/call/header.html.php';
 <script type="text/javascript">
 $(document).ready(function() {
    $("div.click").click(function() {
+       $(this).children("span.icon").toggleClass("open");
        $(this).children("blockquote").toggle();
-       $(this).children("span.icon").toggleClass("closed");
     });
  });
 </script>
@@ -42,7 +42,7 @@ $(document).ready(function() {
             <?php if ($call->status == 3) : //inscripcion ?>
                 <span style="font-size:15px;font-weight:bold;">¿Cómo puedo publicar un proyecto?</span>
 				<p><?php echo $call->apply ?></p>
-            <?php else : //en campaña ?>
+            <?php elseif (count($call->projects) > 0) : //en campaña ?>
                 
                 <h3><?php echo Text::get('call-splash-selected_projects-header') ?></h3>
 
@@ -55,32 +55,34 @@ $(document).ready(function() {
 						</tr>
 					</thead>
 					<tbody>
-                        <?php
-                        $tot_min = 0;
-                        $tot_max = 0;
+                    <?php
+                        $tot_call  = 0;
+                        $tot_users = 0;
                         $odd = true;
+                        
                         foreach ($call->projects as $proj) :
 
-                            $tot_min += 2000;
-                            $tot_min += 3000;
+                            $tot_call  += $proj->amount_call;
+                            $tot_users += $proj->amount_users;
                         ?>
 						<tr class="<?php if ($odd) {echo 'odd'; $odd = false;} else {echo 'even'; $odd = true;} ?>">
 							<th class="summary">
 								<div class="click">
-									<span class="icon closed">&nbsp;</span> <span><strong><?php echo $proj->name ?></strong></span>
-									<blockquote style="display: none;"><?php echo $proj->subtitle ?></blockquote>
+									<span class="icon">&nbsp;</span>
+                                    <span><strong><?php echo $proj->name ?></strong></span>
+									<blockquote><?php echo $proj->subtitle ?></blockquote>
 								</div>
 							</th>
-							<td class="min">2000 &euro;</td>
-							<td class="max">3000 &euro;</td>
+							<td class="min"><?php echo $proj->amount_call  ?> &euro;</td>
+							<td class="max"><?php echo $proj->amount_users ?> &euro;</td>
 						</tr>
-                        <?php endforeach; ?>
+                    <?php endforeach; ?>
 					</tbody>
 					<tfoot>
 						<tr>
 							<th class="total"><?php echo Text::get('regular-total'); ?></th>
-							<th class="min"><?php echo $tot_min ?> &euro;</th>
-							<th class="max"><?php echo $tot_max ?> &euro;</th>
+							<th class="min"><?php echo $tot_call  ?> &euro;</th>
+							<th class="max"><?php echo $tot_users ?> &euro;</th>
 						</tr>
 					</tfoot>
 				</table>
