@@ -84,12 +84,19 @@ namespace Goteo\Library {
 
             // si lo estan cambiando, ponemos el que llega
             if (isset($_GET['lang'])) {
-                // si está activo, sino default
+/*                // si está activo, sino default
+ *
+ *  Aunque no esté activo!!
+ *
                 if (Lang::is_active($_GET['lang'])) {
+ *
+ */
                     $_SESSION['lang'] = $_GET['lang'];
-                } else {
+   /*             } else {
                     $_SESSION['lang'] = \GOTEO_DEFAULT_LANG;
                 }
+    * 
+    */
             } elseif (empty($_SESSION['lang'])) {
                 // si no hay uno de session ponemos el default
                 $_SESSION['lang'] = \GOTEO_DEFAULT_LANG;

@@ -1,10 +1,12 @@
 body.discover div#main div.widget {
     overflow: hidden;
-    margin-bottom: 30px;
+	margin-bottom: 24px;
 }
 
 body.discover div#main div.searcher {
-	background-color: transparent;	
+	background-color: transparent;
+	padding-bottom: 0;
+	border-bottom: 1px solid #d1d3d4;
 }
 
 /* Buscador */
@@ -25,7 +27,7 @@ div.searcher form {
 	/*background:url('triangulo-lateral.png') right no-repeat #656566;*/
 	font-size: 14px;
 	float: left;
-	padding-top: 7px;
+	padding-top: 9px;
 }
 
 .searcher #text-query {
@@ -34,12 +36,11 @@ div.searcher form {
 	background-color: #ffffff;
 	border: 1px solid #808184;
 	color: #808184;
-	padding: 6px 5px 6px 15px;
+	padding: 4px 5px 4px 10px;
 	/*border:none;*/
-	width: 620px;
-    margin-left: 31px;
+	width: 740px;
     /*font-size: 0.9em;*/
-    font-size: 14px;
+    font-size: 16px;
     float: right;
 }
 
@@ -55,7 +56,6 @@ div.searcher form {
 	width:238px;
 	margin-right:35px;
 	position:relative;
-    margin-bottom: 10px;
 }
 
 .searcher .filter label{
@@ -71,11 +71,12 @@ div.searcher form {
 
 .searcher .filter select{
 	color:#58595B;
-	border:none;
-	width:100%;	
-	margin-top:10px;
+	width:100%;
     font-size: 0.9em;
-    background-color: #e7e7e7
+    background-color: #e7e7e7;
+	border-style: none;
+	padding-top: 10px;
+	margin: 0;
 }
 
 .searcher .filter select option{
