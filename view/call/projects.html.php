@@ -18,32 +18,29 @@ include 'view/call/header.html.php';
 		<?php echo new View('view/call/side.html.php', $this); ?>
 	
         <div id="content">
+		<div id="campaign-desc">
 
             <h2 class="title"><?php echo Text::get('call-splash-campaign_title') ?><br /><?php echo $call->name ?></h2>
             <p class="subtitle"><?php echo Text::get('call-splash-invest_explain', $call->user->name) ?></p>
 
             <h2 class="title"><?php echo Text::get('call-splash-selected_projects-header') ?></h2>
+		</div>
+		<ul id="project-list">
 
             <?php
-            $c = 0;
             foreach ($call->projects as $proj) :
                 $project = Project::getMedium($proj->id);
                 $categories = Project\Category::getNames($proj->id, 2);
                 $project->per_amount = round(($project->amount / $project->minimum) * 100);
 
-                if ($c > 0) {
-                    $c = 0;
-//                    echo '<br style="clear:all;" /><br />';
-                    echo '<br />';
-                }
                 ?>
-            <div style="height:260px;width:160px;background-color:#EBE9E9;margin:0px 10px 10px 0px;">
-                <div class="image" style="max-width: 150px; margin: 5px;">
+			<li>
+                <div class="image">
                     <?php if (!empty($project->gallery) && (current($project->gallery) instanceof Image)): ?>
                     <a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>"><img src="<?php echo current($project->gallery)->getLink(150, 98, true) ?>" alt="<?php echo $project->name ?>"/></a>
                     <?php endif ?>
                     <?php if (!empty($categories)): ?>
-                    <div style="max-width: 150px;overflow:hidden;">
+                    <div class="categories">
                     <?php $sep = ''; foreach ($categories as $key=>$value) :
                         echo $sep.htmlspecialchars($value);
                     $sep = ', '; endforeach; ?>
@@ -51,27 +48,27 @@ include 'view/call/header.html.php';
                     <?php endif ?>
                 </div>
 
-                <h5 style="max-width: 150px; margin: 5px; padding: 0px; max-height:35px;">
+                <h3 class="title">
                     <a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><?php echo htmlspecialchars(Text::recorta($project->name,50)) ?></a>
-                </h5>
-                <p style="max-width: 150px; margin: 5px; padding: 0px; height:35px;"><?php echo $project->subtitle; ?></p>
+                </h3>
 
-                <h6 style="max-width: 150px; margin: 5px; padding: 0px;">
+                <h4 class="author">
                     <?php echo Text::get('regular-by')?> <a href="<?php echo SITE_URL ?>/user/profile/<?php echo htmlspecialchars($project->user->id) ?>"<?php echo $blank; ?>><?php echo htmlspecialchars(Text::recorta($project->user->name,40)) ?></a>
-                </h6>
+                </h4>
+                <div class="description"><?php echo $project->subtitle; ?></div>
 
-                <fieldset style="max-width: 150px; margin: 5px; padding: 0px;">
-                    <legend>Obtenido</legend>
-                    <span><?php echo $project->amount ?> &euro;</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span><?php echo $project->per_amount ?> &#37;</span>
-                </fieldset>
 
-                <span style="max-width: 150px; margin: 5px; padding: 0px;">Quedan <?php echo $project->days ?> d&iacute;as</span>
+                <div class="">
+                    <span class="">Obtenido</span>
+                    <div class=""><?php echo $project->amount ?> <span class="euro">&euro;</span></div>&nbsp;&nbsp;|&nbsp;&nbsp;<div class=""><?php echo $project->per_amount ?> &#37;</div>
+                </div>
 
-            </div>
+                <div class="days">Quedan <?php echo $project->days ?> d&iacute;as</div>
+
+			</li>
             <?php
-            $c++;
             endforeach; ?>
-            </div>
+		</ul>
 
         </div>
 

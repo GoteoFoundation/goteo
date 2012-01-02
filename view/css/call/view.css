@@ -52,14 +52,6 @@ body {
 	background-color: #f5f1f2;
 }
 
-.projects #wrapper {
-	background-color: #f5f1f2;
-    background-image: none;
-    background-position: top center;
-    background-attachment: fixed;
-}
-
-
 
 /* Main */
 
@@ -110,12 +102,13 @@ div#main ul#list>li {
 #footer {
 	position: fixed;
 	background-color: #58595c;
-	height: 20px;
+	height: 30px;
 	bottom: 0;
 	left: 0;
 	width: 100%;
 	font-size: 11px;
-	padding: 5px 0;
+	padding: 0;
+	z-index: 1000;
 }
 
 #footer #super-footer {
@@ -123,6 +116,114 @@ div#main ul#list>li {
 	margin: 0 auto;
 	color: #fff;
 }
+
+#footer ul {
+    list-style: none outside none;
+    margin-top: 9px;
+}
+
+#footer ul {
+    float: left;
+    max-width: 700px;
+    padding-left: 0;
+    list-style: none;
+}
+
+#footer ul li{
+	display:inline-block;
+	color:#fff;
+	margin-right:25px;
+}
+
+#footer ul li a{
+	text-decoration:none;
+	text-transform:uppercase;
+	color:#fff;
+}
+
+#footer + * {
+    font-size: 12px;
+    border-top: 2.2em solid #59595c;
+    margin-top: -2.2em;
+}
+
+#footer a {
+    color: #e9e3dc;
+    font-size: 11px;
+}
+
+#footer a:hover {
+    color: #8ed9d8 !important;
+}
+
+#footer div.platoniq {
+    padding: 0;
+    margin: 0;
+    border-width: 0;
+    min-width: 0 !important;
+	position:relative;
+	float:right;
+}
+
+#footer div.platoniq span.text{
+	margin-right:15px;
+}
+
+#footer div.platoniq span.logo {
+    display: inline-block;
+    float: left;
+}
+
+#footer div.platoniq a.foundation {
+    display: inline-block;
+    width: 120px;
+    height: 30px;
+	background: url('/view/css/logoFFA.png') no-repeat 0px 5px transparent;
+    text-indent: 2000px;
+    line-height: 2000px;
+    overflow: hidden;
+	position:relative;
+}
+
+#footer div.platoniq a.foundation:hover{
+	background: url('/view/css/logoFFA2.png') no-repeat 0px 5px transparent;
+}
+
+#footer div.platoniq a.growby {
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+    background: url('/view/css/platoniq.png') no-repeat 0px 8px transparent;
+    text-indent: 2000px;
+    line-height: 2000px;
+    overflow: hidden;
+	position:relative;
+}
+
+#footer div.platoniq a.growby:hover{
+	background: url('/view/css/platoniq2.png') no-repeat 0px 8px transparent;
+}
+
+#footer div.platoniq a.poweredby {
+    display: inline-block;
+    height: 30px;
+    font-size: 12px !important;
+    color: #FFF;
+	text-decoration: none;
+    cursor: default;
+    position: absolute;
+    top: 8px;
+    right: 100px;
+    width: 100%;
+}
+
+#footer div.platoniq a.poweredby:hover{
+    color: #FFF !important;
+	text-decoration: none;
+    cursor: default;
+}
+
+
 
 /* Side */
 
@@ -238,10 +339,6 @@ div#main ul#list>li {
 	padding: 15px 35px;
 	float: left;
 	background-color: #fff;
-}
-
-.projects #content {
-	width: 520px;
 }
 
 /* Iconos */
@@ -541,4 +638,103 @@ table.info-table tfoot tr > * {
 
 .info .freetext .button {
 	margin: 15px 0;
+}
+
+/* Projects */
+
+.projects #wrapper {
+	background-color: #f5f1f2;
+    background-image: none;
+    background-position: top center;
+    background-attachment: fixed;
+}
+
+.projects #content {
+	background-color: transparent;
+	padding: 0;
+	width: 720px;
+/*	position: relative;*/
+}
+
+#campaign-desc {
+	background-color: #fff;
+	width: 350px;
+	padding-bottom: 30000px;
+	margin-bottom: -30000px;
+	padding-left: 35px;
+}
+
+#campaign-desc * {
+	margin-top: 0;
+}
+
+#campaign-desc .title {
+	padding-top: 1em;
+}
+
+#project-list {
+	padding: 0 0 0 35px;
+	margin: 0;
+	overflow: hidden;
+}
+
+#project-list li {
+	padding: 5px;
+	margin: 0 10px 10px 0;
+	list-style-type: none;
+	background-color: #ebe9e9;
+	width: 150px;
+	float: left;
+	min-height: 180px;
+	position: relative;
+}
+
+#project-list li .image {
+    height: 79px;
+    text-align: center;
+    background-color: #deddde;
+    padding: 0 !important;
+	overflow: hidden;
+    position: relative;
+}
+
+#project-list li img {
+	width: 153px;
+}
+
+#project-list li .categories {
+	text-align: left;
+    color: #ffffff;
+    background-color: #19b5b3;
+    font-size: 0.8em;
+    text-transform: uppercase;    
+    padding: 2px 8px;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+    cursor: default;
+    position: absolute;
+    bottom: 0;
+    right: 0;    
+    left: 0;
+}
+
+#project-list li .title {
+	margin: 10px 0 0;
+}
+
+#project-list li .author {
+	margin: 5px 0;
+}
+
+#project-list li .title a {
+	text-transform: uppercase;
+	text-decoration: none;
+}
+
+a.expand {
+	position:absolute;
+	top:0;bottom:0;left:0;right:0;
+	width:100%;
+	z-index:99;
+    padding: 0px;	
 }
