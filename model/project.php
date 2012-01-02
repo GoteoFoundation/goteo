@@ -791,6 +791,9 @@ namespace Goteo\Model {
                 foreach ($fields as $field=>$ffield) {
                     if ($set != '') $set .= ', ';
                     $set .= "$field = :$field";
+                    if (empty($this->$ffield)) {
+                        $this->$ffield = null;
+                    }
                     $values[":$field"] = $this->$ffield;
                 }
 
