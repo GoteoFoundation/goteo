@@ -75,7 +75,7 @@ div.widget.project-supporters .supporters > ul > li {
 }
 
 div.widget.project-supporters .supporters > ul > li div.supporterContainer {
-	padding: 10px 10px 10px 70px;
+	padding: 10px 10px 10px 65px;
 	width: 220px;
 }
 
@@ -176,16 +176,17 @@ div.widget.project-supporters .supporters ul li dl dd.amount {
     position: absolute;
     top: 25px;
     right: 10px;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
     color: #96238F;
+	line-height: 26px;
+	padding-top: 2px;
 }
 
 div.widget.project-supporters .supporters ul li dl dd.amount {
-    background: url("/view/css/euro/violet/m.png") no-repeat scroll right center transparent;        
-    height: 27px;    
-    line-height: 27px;
+    background: url('/view/css/euro/violet/m.png') no-repeat scroll right center;
     padding-right: 22px;
+	height: 25px;
 }
 
 div.widget.project-supporters .supporters ul li dl dd.amount .euro {
@@ -202,6 +203,7 @@ div.widget.project-supporters .supporters ul li dl dd.date {
     bottom: 10px;    
     color: #a6a8ab;
     font-size: 11px;
+	padding-top: 7px;
 }
 
 div.widget.project-supporters .supporters ul li dl dt.worthcracy {
@@ -256,8 +258,8 @@ div.widget.project-supporters .supporters ul li dl dd.worthcracy ul li > strong 
     left: 50%;
     margin-left: -100px;
     text-align: center;
-    background: url('/view/css/worth/beak.png') no-repeat center top;
-    padding-top: 6px;
+    padding-top: 9px;
+	background: url('/view/css/worth/beak.png') no-repeat center top;
 }
 
 div.widget.project-supporters ul#pagination {
@@ -399,15 +401,14 @@ div.widget.project-investors .investors ul li dl dd.amount {
     position: absolute;
     top: 25px;
     right: 10px;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: normal;
     color: #96238F;
+	line-height: 28px;
 }
 
 div.widget.project-investors .investors ul li dl dd.amount {
-    background: url("/view/css/euro/violet/s.png") no-repeat scroll right center transparent;
-    height: 20px;
-    line-height: 21px;
+    background: transparent url('/view/css/euro/violet/s.png') no-repeat scroll right center;
     padding-right: 18px;
 }
 
@@ -479,8 +480,8 @@ div.widget.project-investors .investors ul li dl dd.worthcracy ul li > strong {
     left: 50%;
     margin-left: -100px;
     text-align: center;
-    background: url('/view/css/worth/beak.png') no-repeat center top;
     padding-top: 6px;
+	background: url('/view/css/worth/beak.png') no-repeat center top;
 }
 
 

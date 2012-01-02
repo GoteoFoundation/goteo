@@ -68,6 +68,7 @@ div.widget.project-rewards > div.individual ul li div.amount,
     top: -10px;
     right: -10px;
 	text-transform:uppercase;
+	height: 28px;
 }
 
 #rewards-summary > div.individual ul li div.amount {
@@ -77,12 +78,16 @@ div.widget.project-rewards > div.individual ul li div.amount,
 
 div.widget.project-rewards > div.individual ul li div.amount span.euro,
 #rewards-summary > div.individual ul li div.amount span.euro {
-    padding: 5px 20px 5px 10px;
-    margin: 0px;
+    margin: 0px 0px 0px 2px;
     background: url('/view/css/euro/violet/s.png') no-repeat right center;
     display: inline-block;
     background-color: #e7e7e7;
     border-right: #e7e7e7 solid 5px;
+	font-size: 14px;
+	padding-left: 8px;
+	padding-right: 20px;
+	line-height: 28px;
+	font-weight: bold;
 }
 
 div.widget.project-rewards > div.individual ul li div.investors,

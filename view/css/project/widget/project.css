@@ -42,15 +42,16 @@ div.widget.project div.image div.tagmark {
     z-index: 899;
     text-align: left;
     color: #ffffff;
-    font-size: 1.2em;
+    font-size: 1.0em;
     font-weight: normal;
     text-transform: uppercase;
-    margin-top: 8px;
     width: 226px;
-    height: 40px;
-    padding: 12px 0px 0px 35px;
+    height: 31px;
 	font-style: normal;
 	letter-spacing: 1px;
+	margin-top: 8px;
+	line-height: 32px;
+	padding: 1px 0px 0px 30px;
 }
 
 div.widget.project div.image div.tagmark.green {
@@ -71,13 +72,15 @@ div.widget.project div.image div.tagmark.grey {
 
 /* tipografia pequeña para que quepa todo */
 div.widget.project div.image div.tagmark span.small {
-    font-size: 0.9em !important;
-    font-weight: normal !important;
+    font-size: 0.8em !important;
+	line-height: normal;
 }
 
 /* Dos lineas para el en marcha y aun puedes */
 div.widget.project div.image div.tagmark.twolines {
-    padding-top: 5px !important;
+    padding-top: 4px !important;
+	font-weight: normal;
+	font-style: normal;
 }
 /** Fin tagmarks **/
 

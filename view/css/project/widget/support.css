@@ -227,9 +227,10 @@ div.widget.project-support div.tagmark {
     top: 0px;
     width: 235px;
     height: 40px;
-    padding: 13px 30px 0px 35px;
+    padding: 0 30px 0px 38px;
 	font-style: normal;
 	letter-spacing: 1px;
+	line-height: 40px;
 }
 
 div.widget.project-support div.tagmark.green {
@@ -250,12 +251,13 @@ div.widget.project-support div.tagmark.grey {
 
 /* tipografia pequeña para que quepa todo */
 div.widget.project-support div.tagmark span.small {
-    font-size: 0.9em !important;
+    font-size: 0.8em !important;
     font-weight: normal !important;
+	line-height: normal;
 }
 
 /* Dos lineas para el en marcha y aun puedes */
 div.widget.project-support div.tagmark.twolines {
-    padding-top: 3px !important;
+    padding-top: 6px !important;
 }
 /** Fin tagmark **/
