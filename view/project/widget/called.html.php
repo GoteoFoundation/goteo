@@ -7,6 +7,7 @@ $call = $this['call'];
 ?>
 <div class="widget project-called collapsable activable" id="project-called">
     <div class="explain">
+        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="expand" target="_blank"></a>
         <dl>
             <dt>Este proyecto recibe aportes de la campaña:</dt>
             <dd><?php echo $call->name ?></dd>
@@ -14,6 +15,7 @@ $call = $this['call'];
         <p>Por cada <strong>1&euro;</strong> que aportes a este proyecto, <strong><?php echo $call->user->name ?></strong> aporta otro <strong>1€</strong>.</p>
     </div>
     <div class="amount">
+        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="expand" target="_blank"></a>
         <dl>
             <dt><?php echo Text::get('call-splash-whole_budget-header') ?></dt>
             <dd class="light-violet"><span><?php echo \amount_format($call->amount) ?></span></dd>
