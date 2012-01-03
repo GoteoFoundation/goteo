@@ -46,7 +46,7 @@ body {
 }
 
 #wrapper {
-	width: 940px;
+	width: 950px;
 	margin: 25px auto 0;
 	position: relative;
 	background-color: #f5f1f2;
@@ -230,17 +230,16 @@ div#main ul#list>li {
 /* Side */
 
 #side {
-	width: 190px;
+	width: 175px;
 	float: left;
 	background-color: #f5f1f2;
-	padding: 30px 15px;
-	padding-bottom: 30000px;
+	padding: 30px 0 30000px 15px;
 	margin-bottom: -30000px;
 }
 
 #side img.logo {
 	display: block;
-	margin: 0 auto;
+	margin: 0;
 	max-width: 190px;
 }
 
@@ -253,6 +252,7 @@ div#main ul#list>li {
 #side p {
 	font-size: 10px;
 	margin-top: 25px;
+	padding-right: 25px;
 }
 
 #side dl {
@@ -323,6 +323,7 @@ div#main ul#list>li {
 	text-indent: -10000px;
 	background: url('/view/css/call/logo-capital.png') no-repeat;
 	margin: 0 auto;
+	padding-right: 10px;
 }
 
 #side a {
@@ -400,7 +401,7 @@ span.euro {
 
 .return ul {
     margin: 0;
-    padding: 5px 50px 0 15px;
+    padding: 5px 40px 0 15px;
     list-style: none;
     position: relative;
     z-index: 910;
@@ -695,13 +696,13 @@ table.info-table tfoot tr > * {
 .projects #content {
 	background-color: transparent;
 	padding: 0;
-	width: 720px;
+	width: 760px;
 /*	position: relative;*/
 }
 
 #campaign-desc {
 	background-color: #fff;
-	width: 350px;
+	width: 315px;
 	padding-bottom: 30000px;
 	margin-bottom: -30000px;
 	padding-left: 35px;
@@ -726,10 +727,15 @@ table.info-table tfoot tr > * {
 	margin: 0 10px 10px 0;
 	list-style-type: none;
 	background-color: #ebe9e9;
-	width: 150px;
+	width: 160px;
 	float: left;
-	min-height: 250px;
+	min-height: 245px;
 	position: relative;
+	overflow: hidden;
+}
+
+#project-list li.active {
+	background-color: #f8f8f8 !important;
 }
 
 #project-list li .image {
@@ -742,7 +748,7 @@ table.info-table tfoot tr > * {
 }
 
 #project-list li img {
-	width: 153px;
+	width: 160px;
 }
 
 #project-list li .categories {
@@ -762,16 +768,99 @@ table.info-table tfoot tr > * {
 }
 
 #project-list li .title {
-	margin: 10px 0 0;
+    height: 22px;
+    overflow: hidden;
+	margin: 10px 0 5px;
+	line-height: .8em;
 }
 
 #project-list li .author {
-	margin: 5px 0;
+	margin: 0;
+	font-size: 10px;
+	color: #a7a9ac;
+}
+
+#project-list li .author a {
+	text-decoration: none;
+	font-size: 10px;
+	color: #a7a9ac;
+    position: relative;
+    z-index: 999;
+}
+
+#project-list li.active .author a:hover {
+	color: #20b3b2;
 }
 
 #project-list li .title a {
 	text-transform: uppercase;
 	text-decoration: none;
+}
+
+#project-list li.active .title a {
+	color: #20b3b2;
+}
+
+#project-list li .description {
+	margin: 5px 0;
+	font-size: .9em;
+	height: 40px;
+    overflow: hidden;
+}
+
+#project-list li div.obtained {
+    position: relative;
+	padding-left: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #a7a9ac;
+}
+
+#project-list li span.obtained {
+	text-transform: uppercase;
+	font-size: 11px;
+	padding-top: 10px;
+	border-top: 1px solid #a7a9ac;
+	margin: 10px 0 5px;
+    display: block;
+}
+
+#project-list li div.obtained strong {
+    font-size: 18px;
+    font-weight: bold;
+    color: #96238F;
+    padding-right: 10px;
+    border-right: 1px solid #a7a9ac;
+}
+
+#project-list li div.obtained span.euro {
+    width: 16px;
+    height: 16px;
+    line-height: 2000px;
+    overflow: hidden;
+    display: inline-block;
+    background:  url('/view/css/euro/violet/s.png') no-repeat center;
+    margin-bottom: -1px;
+}
+
+#project-list li div.obtained span.percent {
+    font-size: 18px;
+    font-weight: bold;
+    color: #a7a9ac;
+    padding-left: 5px;
+}
+
+#project-list li .days {
+	font-size: 11px;
+	margin: 1em 0 .5em;
+}
+
+#project-list li .days.red span {
+	color: #ff0000;
+	font-weight: bold;
+}
+
+#project-list li .days span {
+	text-transform: uppercase;
 }
 
 a.expand {
