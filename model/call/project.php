@@ -16,7 +16,6 @@ namespace Goteo\Model\Call {
          * @param varcahr(50) $id  Call identifier
          * @return array of categories identifiers
          */
-        //@TODO añadir cuanto dinero llevan de esta convocatoria
 		public static function get ($call) {
             $array = array ();
             try {
@@ -25,7 +24,8 @@ namespace Goteo\Model\Call {
                             project.name as name,
                             project.status as status,
                             project.project_location as location,
-                            project.subtitle as subtitle
+                            project.subtitle as subtitle,
+                            project.description as description
                         FROM project
                         JOIN call_project
                             ON  call_project.project = project.id

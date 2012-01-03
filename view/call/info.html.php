@@ -72,19 +72,19 @@ $(document).ready(function() {
 								<div class="click">
 									<span class="icon">&nbsp;</span>
                                     <span><strong><?php echo $proj->name ?></strong></span>
-									<blockquote><?php echo $proj->subtitle ?></blockquote>
+									<blockquote><?php echo empty($proj->subtitle) ? Text::recorta($proj->description, 250) : $proj->subtitle; ?></blockquote>
 								</div>
 							</th>
-							<td class="min"><?php echo $proj->amount_call  ?> &euro;</td>
-							<td class="max"><?php echo $proj->amount_users ?> &euro;</td>
+                            <td class="min"><?php echo \amount_format($proj->amount_call)  ?> &euro;</td>
+                            <td class="max"><?php echo \amount_format($proj->amount_users) ?> &euro;</td>
 						</tr>
                     <?php endforeach; ?>
 					</tbody>
 					<tfoot>
 						<tr>
 							<th class="total"><?php echo Text::get('regular-total'); ?></th>
-							<th class="min"><?php echo $tot_call  ?> &euro;</th>
-							<th class="max"><?php echo $tot_users ?> &euro;</th>
+							<th class="min"><?php echo \amount_format($tot_call)  ?> &euro;</th>
+							<th class="max"><?php echo \amount_format($tot_users) ?> &euro;</th>
 						</tr>
 					</tfoot>
 				</table>
