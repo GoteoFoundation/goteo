@@ -24,14 +24,14 @@ include 'view/call/header.html.php';
             <?php endif; ?>
 			<div class="freetext">
 
-				<h2 class="title">Terminos y condiciones de la campa&ntilde;a</h2>
+				<h2 class="title"><?php echo Text::get('call-terms-main-header') ?></h2>
 				
-				<div id="call-terms"><?php echo $call->legal ?></div>
+				<div id="call-terms"><?php echo nl2br(Text::urlink($call->legal)) ?></div>
 				
 			</div>
 
             <p class="block">
-                <a class="aqua" href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info">Informaci&oacute;n general de la campa&ntilde;a</a>
+                <a class="aqua" href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info"><?php echo Text::get('call-info-main-header') ?></a>
             </p>
        <?php if ($call->status == 3) : //inscripcion ?>
             <?php if (!$call->expired) : // sigue abierta ?>

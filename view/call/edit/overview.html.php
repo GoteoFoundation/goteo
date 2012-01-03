@@ -34,6 +34,17 @@ foreach ($this['icons'] as $id=>$icon) {
     );
 }
 
+
+$scope = array();
+
+foreach ($this['scope'] as $value => $label) {
+    $scope[] =  array(
+        'value'     => $value,
+        'label'     => $label
+        );
+}
+
+
 /*
 <script type="text/javascript" src="/view/js/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
@@ -228,17 +239,6 @@ $superform = array(
             'ok'        => !empty($okeys['dossier']) ? array($okeys['dossier']) : array()
         ),
 
-        'location' => array(
-            'type'      => 'textbox',
-            'name'      => 'call_location',
-            'title'     => Text::get('call-field-call_location'),
-            'required'  => true,
-            'hint'      => Text::get('tooltip-call-call_location'),
-            'errors'    => !empty($errors['call_location']) ? array($errors['call_location']) : array(),
-            'ok'        => !empty($okeys['call_location']) ? array($okeys['call_location']) : array(),
-            'value'     => $call->call_location
-        ),
-
         'category' => array(    
             'type'      => 'checkboxes',
             'name'      => 'categories[]',
@@ -250,19 +250,6 @@ $superform = array(
             'errors'    => !empty($errors['categories']) ? array($errors['categories']) : array(),
             'ok'        => !empty($okeys['categories']) ? array($okeys['categories']) : array()
         ),       
-/*
-        'icon' => array(
-            'type'      => 'checkboxes',
-            'name'      => 'icons[]',
-            'title'     => Text::get('call-field-icons'),
-            'required'  => true,
-            'class'     => 'cols_3',
-            'options'   => $icons,
-            'hint'      => Text::get('tooltip-call-icons'),
-            'errors'    => !empty($errors['icons']) ? array($errors['icons']) : array(),
-            'ok'        => !empty($okeys['icons']) ? array($okeys['icons']) : array()
-        ),
-*/
 
         'icons' => array(
             'type'      => 'group',
@@ -273,6 +260,30 @@ $superform = array(
             'hint'      => Text::get('tooltip-call-icons'),
             'errors'    => !empty($errors['icons']) ? array($errors['icons']) : array(),
             'ok'        => !empty($okeys['icons']) ? array($okeys['icons']) : array()
+        ),
+
+
+        'location' => array(
+            'type'      => 'textbox',
+            'name'      => 'call_location',
+            'title'     => Text::get('call-field-call_location'),
+            'required'  => true,
+            'hint'      => Text::get('tooltip-call-call_location'),
+            'errors'    => !empty($errors['call_location']) ? array($errors['call_location']) : array(),
+            'ok'        => !empty($okeys['call_location']) ? array($okeys['call_location']) : array(),
+            'value'     => $call->call_location
+        ),
+
+        'scope' => array(
+            'title'     => Text::get('call-field-scope'),
+            'type'      => 'slider',
+            'required'  => true,
+            'options'   => $scope,
+            'class'     => 'inline scope cols_' . count($scope),
+            'hint'      => Text::get('tooltip-call-scope'),
+            'errors'    => !empty($errors['scope']) ? array($errors['scope']) : array(),
+            'ok'        => !empty($okeys['scope']) ? array($okeys['scope']) : array(),
+            'value'     => $call->scope
         ),
 
         'amount' => array(

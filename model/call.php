@@ -66,6 +66,7 @@ namespace Goteo\Model {
             $categories = array(),
             $icons = array(),
             $call_location, // call execution location
+            $scope, // ambito
 
             $errors = array(), // para los fallos en los datos
             $okeys  = array(), // para los campos que estan ok
@@ -401,6 +402,7 @@ namespace Goteo\Model {
                     'legal',
                     'dossier',
                     'call_location',
+                    'scope',
                     'amount',
                     'days'
                     );

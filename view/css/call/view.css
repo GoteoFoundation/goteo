@@ -331,6 +331,16 @@ div#main ul#list>li {
 	text-decoration: underline;
 }
 
+#side a.red {
+	color: red;
+}
+
+#side div.bottom {
+    position: absolute;
+    bottom: 10px;
+}
+
+
 /* Content */
 
 #content {
@@ -339,6 +349,20 @@ div#main ul#list>li {
 	padding: 15px 35px;
 	float: left;
 	background-color: #fff;
+}
+
+#content a.aqua {
+	text-decoration: none;
+    color: #1DB3B2;
+}
+
+#content a.aqua:hover {
+	text-decoration: underline;
+}
+
+#content p.block {
+	background: url('/view/css/call/side-border.gif') no-repeat left bottom;
+	padding-bottom: 15px;
 }
 
 /* Iconos */
@@ -507,7 +531,7 @@ a.button.info {
 	margin-left: .5em;
 }
 
-a.button.info.long {
+a.button.long {
 	font-size: 15px;
 	padding: 0.4em 1.6em;
 }
@@ -537,8 +561,21 @@ p.subtitle {
 	padding: 0 60px 0 0;
 }
 
+p.subtitle.red {
+	font-weight: bold;
+	color: red;
+	font-size: 32px;
+}
+
 .freetext {
 	padding: 0 65px 25px 15px;
+}
+
+.freetext h3.title {
+    font-size: 15px;
+    font-weight: bold;
+	margin: 15px 0px;
+    text-transform: none !important;
 }
 
 /* Info table.info-table */

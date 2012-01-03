@@ -23,6 +23,8 @@ include 'view/call/header.html.php';
             <h2 class="title"><?php echo Text::get('call-splash-campaign_title') ?><br /><?php echo $call->name ?></h2>
             <p class="subtitle"><?php echo Text::get('call-splash-invest_explain', $call->user->name) ?></p>
 
+            <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="button long"><?php echo Text::get('call-splash-more_info-button') ?></a>
+
             <h2 class="title"><?php echo Text::get('call-splash-selected_projects-header') ?></h2>
 		</div>
 		<ul id="project-list">

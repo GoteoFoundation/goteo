@@ -32,16 +32,16 @@ $(document).ready(function() {
             <?php endif; ?>
 			<div class="freetext">
 
-				<h2 class="title">Informaci&oacute;n general de la campa&ntilde;a</h2>
+				<h2 class="title"><?php echo Text::get('call-info-main-header') ?></h2>
 
-				<div id="call-description"><?php echo $call->description ?></div>
+				<div id="call-description"><?php echo nl2br(Text::urlink($call->description)) ?></div>
 
-                <span style="font-size:15px;font-weight:bold;">¿Quiénes pueden participan?</span>
-				<p><?php echo $call->whom ?></p>
+                <h3 class="title"><?php echo Text::get('call-info-whom-header') ?></h3>
+				<p><?php echo nl2br(Text::urlink($call->whom)) ?></p>
 
             <?php if ($call->status == 3) : //inscripcion ?>
-                <span style="font-size:15px;font-weight:bold;">¿Cómo puedo publicar un proyecto?</span>
-				<p><?php echo $call->apply ?></p>
+                <h3 class="title"><?php echo Text::get('call-info-apply-header') ?></h3>
+				<p><?php echo nl2br(Text::urlink($call->apply)) ?></p>
             <?php elseif (count($call->projects) > 0) : //en campaña ?>
                 
                 <h3><?php echo Text::get('call-splash-selected_projects-header') ?></h3>
@@ -90,15 +90,14 @@ $(document).ready(function() {
                 
 			</div>
 
-       <?php if ($call->status == 3) : //inscripcion ?>
             <p class="block">
-                <a class="aqua" href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/terms"><?php echo Text::get('call-splash-legal-link') ?></a>
+                <a class="aqua" href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/terms"><?php echo Text::get('call-terms-main-header') ?></a>
             </p>
-
+            
+       <?php if ($call->status == 3) : //inscripcion ?>
             <?php if (!$call->expired) : // sigue abierta ?>
             <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/apply" class="button red join" target="_blank"><?php echo Text::get('call-splash-apply-button') ?></a>
             <?php endif; ?>
-
         <?php else : //en campaña ?>
             <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/projects" class="button red view"><?php echo Text::get('call-splash-see_projects-button') ?></a>
         <?php endif; ?>

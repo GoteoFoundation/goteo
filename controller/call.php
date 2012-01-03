@@ -234,6 +234,7 @@ namespace Goteo\Controller {
                 case 'overview':
                     $viewData['categories'] = Model\Call\Category::getAll();
                     $viewData['icons'] = Model\Icon::getAll();
+                    $viewData['scope'] = Model\Project::scope();
                     break;
 
                 case 'preview':
@@ -533,6 +534,7 @@ namespace Goteo\Controller {
                 'legal',
                 'dossier',
                 'call_location',
+                'scope',
                 'amount',
                 'days'
             );
