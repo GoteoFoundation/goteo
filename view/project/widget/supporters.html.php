@@ -19,7 +19,6 @@ foreach ($project->investors as $user=>$investor) {
     $investors[] = $investor;
 }
 
-
 // en la página de cofinanciadores, paginación de 20 en 20
 require_once 'library/pagination/pagination.php';
 
@@ -31,15 +30,19 @@ $pagedResults = new \Paginated($investors, 20, isset($_GET['page']) ? $_GET['pag
     
     <h<?php echo $level ?> class="title"><?php echo Text::get('project-menu-supporters'); ?></h<?php echo $level ?>>
     
-    <dl class="summary">
+    <dl class="summary<?php if (isset($this['droped'])) echo ' drop'; ?>">
         <dt class="supporters"><?php echo Text::get('project-menu-supporters'); ?></dt>
         <dd class="supporters"><?php echo $supporters ?></dd>
         
         <dt class="reached"><?php echo Text::get('project-invest-total'); ?></dt>
         <dd class="reached"><?php echo $reached ?> <span class="euro">&euro;</span></dd>
-        
+
+        <?php if (isset($this['droped'])) : ?>
+        <dt class="droped">Aportaciones Capital riego</dt>
+        <dd class="droped"><?php echo \amount_format($this['droped']) ?> <span class="euro">&euro;</span></dd>
+        <?php endif; ?>
     </dl>   
-        
+
     <div class="supporters">
         <ul>
         <?php while ($investor = $pagedResults->fetchPagedRow()) : ?>

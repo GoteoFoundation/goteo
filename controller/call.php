@@ -324,8 +324,10 @@ namespace Goteo\Controller {
                 Message::Error('Ha habido algun errror al cargar la convocatoria solicitada');
                 throw new Redirection("/");
             } else {
-                $call->logo = Model\Image::get($call->logo);
-                $call->image = Model\Image::get($call->image);
+                $the_logo = empty($call->logo) ? 1 : $call->logo;
+                $call->logo = Model\Image::get($the_logo);
+                $the_image = empty($call->image) ? 1 : $call->image;
+                $call->image = Model\Image::get($the_image);
             }
 
             // solamente se puede ver publicamente si

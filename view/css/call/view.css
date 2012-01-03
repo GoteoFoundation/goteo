@@ -47,9 +47,10 @@ body {
 
 #wrapper {
 	width: 940px;
-	margin: 25px auto;
+	margin: 25px auto 0;
 	position: relative;
 	background-color: #f5f1f2;
+	overflow: hidden;
 }
 
 
@@ -60,6 +61,7 @@ div#main {
     margin: 0;
     overflow: hidden;
 	height: 100%;
+	margin-bottom: 25px;
 }
 
 div#main ul#list {
@@ -335,11 +337,15 @@ div#main ul#list>li {
 	color: red;
 }
 
-#side div.bottom {
-    position: absolute;
-    bottom: 10px;
+#side #go-up {
+	position: absolute;
+	bottom: 15px;
+	display: block;
+	height: 40px;
+	width: 140px;
+	z-index: 1;
+	left: 15px;
 }
-
 
 /* Content */
 
@@ -722,7 +728,7 @@ table.info-table tfoot tr > * {
 	background-color: #ebe9e9;
 	width: 150px;
 	float: left;
-	min-height: 180px;
+	min-height: 250px;
 	position: relative;
 }
 

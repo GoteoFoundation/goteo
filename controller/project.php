@@ -538,6 +538,14 @@ namespace Goteo\Controller {
                     $viewData['owner'] = $project->owner;
                 }
 
+                // para la pagina de cofinanciadores miramos si hay riego
+                if ($show == 'supporters') {
+                    $droped = Model\Invest::invested($project->id, 'call');
+                    if ($droped > 0) {
+                        $viewData['droped'] = $droped;
+                    }
+                }
+
                 return new View('view/project/public.html.php', $viewData);
 
             } else {

@@ -77,7 +77,5 @@ if ($call->status == 3) {
 	</dl>
 	<a href="<?php echo SITE_URL ?>/service/resources" id="capital" target="_blank"><?php echo Text::get('footer-service-resources') ?></a>
 	
-    <div class="bottom">
-        <a href="#"><?php echo Text::get('regular-go_up') ?></a>
-    </div>
+        <a href="#" id="go-up"><?php echo Text::get('regular-go_up') ?></a>
 </div>

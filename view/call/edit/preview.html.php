@@ -61,7 +61,7 @@ $elements      = array(
         'html'      =>   '<div class="project-preview" style="position: relative"><div>'
                        . '<div class="overlay" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 999"></div>'
                        . '<div style="z-index: 0">'
-                       . 'Enlaces a la previsualizac´on de la pagina splash y de las paginas de convocatoria, no se como hacer las modalidades...'
+                       . 'Resumen de datos y enlaces a la previsualizacion de la pagina splash y de las paginas de convocatoria, no se como hacer las modalidades...'
                        . '</div>'
                        . '</div></div>'
     )

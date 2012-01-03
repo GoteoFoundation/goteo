@@ -62,6 +62,8 @@ $(document).ready(function() {
                         
                         foreach ($call->projects as $proj) :
 
+                            if ($proj->status < 3) continue;
+
                             $tot_call  += $proj->amount_call;
                             $tot_users += $proj->amount_users;
                         ?>

@@ -223,10 +223,9 @@ div.widget.projects  #widget-code textarea{width:200px;	margin: 10px 0;	padding:
 
 /* widget called - regado por convocatoria */
 #project-called {
-    background: url("/view/css/call/logo-capital.png") no-repeat 5px 5px #f5f2f0;
-    min-height: 135px;
+    background: url("/view/css/call/logo-capital_medium.png") no-repeat 10px 10px #f5f2f0;
     padding-top: 0px;
-    padding-bottom: 0px;
+    min-height: 125px;
 }
 
 
@@ -251,25 +250,30 @@ div.widget.projects  #widget-code textarea{width:200px;	margin: 10px 0;	padding:
 
 #project-called div.amount {
     display: none;
+    padding-top: 12px;
+}
+
+#project-called div.explain dl {
+    margin: 15px 0px 0px;
 }
 
 #project-called div.explain dl dt,
 #project-called div.amount dl dt {
     text-transform: uppercase;
-    font-size: 0.8em;
+    font-size: 10px;
 }
 
 #project-called div.explain dl dd {
     color: #20b2b3;
     text-transform: uppercase;
     font-size: 1em;
-    margin: 12px 0px;
+    margin: 8px 0px;
 }
 
 #project-called div.explain p,
 div.widget.project-invest-amount.called  p {
     font-size: 0.9em;
-    margin: 0px;
+    margin: 0px 0px 5px;
 }
 
 #project-called div.explain p strong,
@@ -277,23 +281,27 @@ div.widget.project-invest-amount.called  p strong {
     color: #96238F;
 }
 
+#project-called div.amount dl {
+    margin: 10px 0px 0px;
+}
+
 #project-called div.amount dl dd {
     margin: 0px;
 }
 
 #project-called div.amount dl dd span {
-    font-size: 30px;
+    font-size: 26px;
     font-weight: bold;
     padding-right: 25px;
 }
 
 #project-called div.amount dl dd.light-violet span {
-    background: url('/view/css/euro/light-violet/l.png') no-repeat right center;
+    background: url('/view/css/euro/light-violet/m.png') no-repeat right 6px transparent;
     color: #BB70B6;
 }
 
 #project-called div.amount dl dd.violet span {
-    background: url('/view/css/euro/violet/l.png') no-repeat right center;
+    background: url('/view/css/euro/violet/m.png') no-repeat right 6px transparent;
     color: #96238F;
 }
 

@@ -168,7 +168,7 @@ include 'view/prologue.html.php' ?>
                             }
                         } else {
                             echo
-                                new View('view/project/widget/supporters.html.php', array('project' => $project)),
+                                new View('view/project/widget/supporters.html.php', $this),
                                 new View('view/worth/legend.html.php');
                         }
                         break;

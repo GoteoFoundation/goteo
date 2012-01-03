@@ -19,7 +19,9 @@ $call = $this['call'];
         <dl>
             <dt><?php echo Text::get('call-splash-whole_budget-header') ?></dt>
             <dd class="light-violet"><span><?php echo \amount_format($call->amount) ?></span></dd>
+        </dl>
 
+        <dl>
             <dt><?php echo Text::get('call-splash-remain_budget-header') ?></dt>
             <dd class="violet"><span><?php echo \amount_format($call->rest) ?></span></dd>
         </dl>

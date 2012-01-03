@@ -1,4 +1,5 @@
-/* Widget central de cofinanciadiores: div.widget.project-supporters */
+/* Widget central de cofinanciadiores: div.widget.project-supporters 
+Drop es para capital riego */
 div.widget.project-supporters {
     background: transparent !important;
     padding: 0 !important;
@@ -26,7 +27,8 @@ div.widget.project-supporters dl.summary dd {
 }
 
 div.widget.project-supporters dl.summary dt {
-    font-size: 16px;
+    font-size: 11px;
+    text-transform: uppercase;
 }
 
 div.widget.project-supporters dl.summary dd {
@@ -38,6 +40,22 @@ div.widget.project-supporters dl.summary .supporters {
     width: 50%;
 }
 
+div.widget.project-supporters dl.summary.drop .supporters {
+    width: 25% !important;
+}
+
+div.widget.project-supporters dl.summary.drop dt.droped {
+    position: absolute;
+    left: 410px;
+    top: 36px;
+}
+
+div.widget.project-supporters dl.summary.drop dd.droped {
+    position: absolute;
+    left: 410px;
+    top: 38px;
+}
+
 div.widget.project-supporters dl.summary dd.supporters {
     clear: left;    
 }
@@ -47,14 +65,31 @@ div.widget.project-supporters dl.summary dt.reached {
     color: #96238F;
 }
 
+div.widget.project-supporters dl.summary.drop dt.droped {
+    margin-top: -1.5em;
+    color: #58595B;
+}
+
 div.widget.project-supporters dl.summary dd.reached {
     background: url("/view/css/euro/violet/l.png") no-repeat scroll right center transparent;        
     padding-right: 30px;
     color: #96238F;
 }
 
+div.widget.project-supporters dl.summary.drop dd.droped {
+    background: url("/view/css/euro/l.png") no-repeat scroll right center transparent;
+    padding-right: 30px;
+    color: #58595B;
+}
 
-div.widget.project-supporters dl.summary dd.reached .euro {
+div.widget.project-supporters dl.summary.drop {
+    background-image: url("/view/css/call/logo-capital_small.png");
+    background-repeat: no-repeat;
+    background-position: 350px 16px;
+}
+
+div.widget.project-supporters dl.summary dd.reached .euro,
+div.widget.project-supporters dl.summary.drop dd.droped .euro {
     display: none;
 }
 
@@ -101,6 +136,16 @@ div.widget.project-supporters .supporters ul li div.supporterContainer a.expand 
 	top: 0px;
 	text-decoration: none;
 	z-index: 999;
+}
+
+div.widget.project-supporters .supporters ul li div.supporterContainer div.droped {
+	position: absolute;
+	right: 9px;
+	top: 8px;
+	z-index: 99;
+    background: url('/view/css/call/badge_riego.png') no-repeat scroll 0px 0px transparent;
+    width: 27px;
+    height: 25px;
 }
 
 div.widget.project-supporters .supporters ul li .avatar img {

@@ -12,6 +12,9 @@ $worthcracy = Worth::getAll();
 	<?php if ($user->user != 'anonymous') { ?>
 	<a class="expand" href="/user/<?php echo htmlspecialchars($user->user) ?>">&nbsp;</a>
 	<?php } ?>
+    <?php if ($user->droped) : ?>
+    <div class="droped">&nbsp;</div>
+    <?php endif; ?>
 	<div class="supporter">
 		<span class="avatar"><img src="<?php echo $user->avatar->getLink(43, 43, true); ?>" /></span>
 	    <?php if ($user->user != 'anonymous') : ?>

@@ -1116,7 +1116,12 @@ namespace Goteo\Model {
                 $errors['overview']['call_location'] = Text::get('mandatory-call-field-location');
             } else {
                  $okeys['overview']['call_location'] = 'ok';
-                 ++$score;
+            }
+
+            if (empty($this->scope)) {
+                $errors['overview']['scope'] = Text::get('mandatory-call-field-scope');
+            } else {
+                 $okeys['overview']['scope'] = 'ok';
             }
 
             if (empty($this->amount)) {
