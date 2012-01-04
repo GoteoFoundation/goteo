@@ -689,7 +689,8 @@ table.info-table tfoot tr > * {
 .projects #wrapper {
 	background-color: #f5f1f2;
     background-image: none;
-    background-position: top center;
+    background-position: top right;
+    background-repeat: no-repeat;
     background-attachment: fixed;
 }
 

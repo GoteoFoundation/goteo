@@ -31,6 +31,10 @@ include 'view/call/header.html.php';
 
             <?php
             foreach ($call->projects as $proj) :
+
+                if ($proj->status < 3 || $proj->status > 5)
+                    continue;
+
                 $project = Project::getMedium($proj->id);
                 $categories = Project\Category::getNames($proj->id, 2);
                 $project->per_amount = round(($project->amount / $project->minimum) * 100);

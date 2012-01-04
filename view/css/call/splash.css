@@ -470,7 +470,7 @@ a.button.join {
 /* Logo */
 
 a#capital {
-	bottom: 0;
+	top: 12px;
 	width: 91px;
 	height: 122px;
 	left: 840px;
@@ -478,5 +478,5 @@ a#capital {
 	display: block;
 	text-indent: -10000px;
 	position: fixed;
-	background: url(logo-capital.png) no-repeat;
+	background: url('/view/css/call/logo-capital_medium.png') no-repeat;
 }

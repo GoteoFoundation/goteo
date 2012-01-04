@@ -1148,7 +1148,7 @@ namespace Goteo\Model {
                 FROM invest
                 WHERE invest.campaign = 1
                 AND invest.call = ?
-                AND invest.status IN ('0', '1', '3', '4')";
+                AND invest.status IN ('0', '1', '3')";
             $query = self::query($sql, array($this->id));
             $used = $query->fetchColumn();
 

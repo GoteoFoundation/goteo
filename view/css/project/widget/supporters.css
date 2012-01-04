@@ -138,10 +138,11 @@ div.widget.project-supporters .supporters ul li div.supporterContainer a.expand 
 	z-index: 999;
 }
 
+div.widget.project-investors .investors ul li div.supporterContainer div.droped,
 div.widget.project-supporters .supporters ul li div.supporterContainer div.droped {
 	position: absolute;
-	right: 9px;
-	top: 8px;
+	right: -8px;
+	top: -8px;
 	z-index: 99;
     background: url('/view/css/call/badge_riego.png') no-repeat scroll 0px 0px transparent;
     width: 27px;

@@ -374,6 +374,9 @@ namespace Goteo\Controller {
                         OR (invest.method = 'tpv'
                             AND invest.status = 1
                         )
+                        OR (invest.method = 'cash'
+                            AND invest.status = 1
+                        )
                     )
                     ", array($project->id));
                 $project->invests = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');

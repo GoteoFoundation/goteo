@@ -28,7 +28,7 @@ use Goteo\Library\Text;
                     
                     <span class="step off-last off<?php if ($this['step'] === 'preview') echo ' active'; else echo ' activable'; ?>">
                         <button type="submit" name="view-step-preview" value="<?php echo Text::get('step-7'); ?>"><?php echo Text::get('step-7'); ?>
-                        <strong class="number">7</strong></button>                        
+                        <strong class="number">4</strong></button>
                     </span>
 
                 </div>
