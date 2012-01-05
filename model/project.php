@@ -1752,11 +1752,25 @@ namespace Goteo\Model {
                     break;
                 case 'outdate':
                     // los que les quedan 15 dias o menos
-                    $sql = "SELECT  id
+                    $sql = "SELECT  id,
+                                (SELECT  SUM(amount)
+                                FROM    cost
+                                WHERE   project = project.id
+                                AND     required = 1
+                                ) as `mincost`,
+                                (SELECT  SUM(amount)
+                                FROM    invest
+                                WHERE   project = project.id
+                                AND     (invest.status = 0
+                                        OR invest.status = 1
+                                        OR invest.status = 3
+                                        OR invest.status = 4)
+                                ) as `getamount`
                             FROM    project
                             WHERE   days <= 15
                             AND     days > 0
                             AND     status = 3
+                            HAVING getamount < mincost
                             ORDER BY days ASC";
                     break;
                 case 'recent':
@@ -1766,6 +1780,7 @@ namespace Goteo\Model {
                                 DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%e') as day
                             FROM project
                             WHERE project.status = 3
+                            AND project.passed IS NULL
                             HAVING day <= 15 AND day IS NOT NULL
                             ORDER BY published DESC";
                     break;

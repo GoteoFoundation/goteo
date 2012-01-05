@@ -28,9 +28,9 @@ namespace Goteo\Controller {
 
             $types = array(
                 'popular',
-                'outdate',
                 'recent',
                 'success',
+                'outdate',
                 'archive'
             );
 
