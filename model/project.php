@@ -1775,14 +1775,16 @@ namespace Goteo\Model {
                     break;
                 case 'recent':
                     // los que llevan menos tiempo desde el published, hasta 15 dias
+                    // Cambio de criterio: Los últimos 9
+                    //,  DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%e') as day
+                    //        HAVING day <= 15 AND day IS NOT NULL
                     $sql = "SELECT 
-                                project.id as id,
-                                DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%e') as day
+                                project.id as id
                             FROM project
                             WHERE project.status = 3
                             AND project.passed IS NULL
-                            HAVING day <= 15 AND day IS NOT NULL
-                            ORDER BY published DESC";
+                            ORDER BY published DESC
+                            LIMIT 9";
                     break;
                 case 'success':
                     // los que han conseguido el mínimo
