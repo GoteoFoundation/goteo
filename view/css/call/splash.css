@@ -470,13 +470,23 @@ a.button.join {
 /* Logo */
 
 a#capital {
-	top: 12px;
+	top: 20px;
 	width: 91px;
-	height: 122px;
+	height: 12px;
 	left: 840px;
 	z-index: 10;
 	display: block;
-	text-indent: -10000px;
 	position: fixed;
-	background: url('/view/css/call/logo-capital_medium.png') no-repeat;
+	color: #1db3b2;
+	background: url('/view/css/call/logo-capital_medium.png') no-repeat center top transparent;
+	text-decoration: none;
+	padding: 90px 0 0;
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 0.9em;
+    font-weight: bold;
+}
+
+a#capital:hover {
+	color: #58595B;
 }

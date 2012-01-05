@@ -251,7 +251,7 @@ div.widget.projects  #widget-code textarea{width:200px;	margin: 10px 0;	padding:
 
 #project-called div.amount {
     display: none;
-    padding-top: 12px;
+    padding-top: 5px;
 }
 
 #project-called div.explain dl {

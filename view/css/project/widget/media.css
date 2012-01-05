@@ -1,5 +1,5 @@
 div.widget.project-media {
-    padding: 0;
+    padding: 0 !important;
     width: 620px !important;
     min-width: 620px !important;
     max-width: 620px !important;

@@ -239,8 +239,9 @@ div#main ul#list>li {
 
 #side img.logo {
 	display: block;
-	margin: 0;
+	margin: 0 auto;
 	max-width: 190px;
+	padding-right: 15px;
 }
 
 #side .block {
