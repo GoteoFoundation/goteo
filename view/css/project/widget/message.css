@@ -6,8 +6,9 @@ div.project-message{
 div.project-message div#bocadillo{
 	background:url('/view/css/bocadillo.jpg') no-repeat;
 	position:absolute;
-	width:56px;
-	height:51px;
+	width: 50px;
+	height: 50px;
+	margin-top: 8px;
 }
 /*
 div.project-message h3.title{
@@ -19,9 +20,11 @@ div.project-message h3.title{
 }*/
 div.project-message button{
 	float:right;
-	padding:5px 20px;
-	margin-top:35px;
-	font-weight:bold;
+	margin-top: 25px;
+	font-weight: normal;
+	padding: 5px 20px;
+	margin-bottom: 0;
+	font-style: normal;
 }
 
 div.widget.project-message textarea {
@@ -31,7 +34,7 @@ div.widget.project-message textarea {
 	display: block;
 	float: right;
 	height: 50px;
-	margin: -1px;
+	margin: 10px -1px -1px;
 	padding: 0.3em 0;
 	width: 525px;
 	resize:none;
@@ -39,12 +42,13 @@ div.widget.project-message textarea {
 
 div.widget.project-message a.preview{
 	color: #2EAB58;
-	font-weight: bold;
+	font-weight: normal;
 	left: 52px;
 	position: relative;
 	text-decoration: none;
 	text-transform: uppercase;
 	top: 10px;
+	font-style: normal;
 }
 
 div.widget.project-message .button {

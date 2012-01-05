@@ -249,7 +249,7 @@ div.widget.project-supporters .supporters ul li dl dd.date {
     bottom: 10px;    
     color: #a6a8ab;
     font-size: 11px;
-	padding-top: 7px;
+	margin-top: 8px;
 }
 
 div.widget.project-supporters .supporters ul li dl dt.worthcracy {
@@ -447,7 +447,7 @@ div.widget.project-investors .investors ul li dl dd.amount {
     position: absolute;
     top: 25px;
     right: 10px;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: normal;
     color: #96238F;
 	line-height: 28px;
@@ -472,6 +472,7 @@ div.widget.project-investors .investors ul li dl dd.date {
     bottom: 15px;
     color: #a6a8ab;
     font-size: 11px;
+	margin-top: 5px;
 }
 
 div.widget.project-investors .investors ul li dl dt.worthcracy {
@@ -538,11 +539,11 @@ div.widget.project-supporters .supporters > ul > li > div.supporter h4{padding-b
 div.widget.project-supporters .supporters > ul > li > div.supporter h4 > a{
 max-height: 6px;max-width: 175px;overflow: hidden;}
 div.widget.project-supporters .supporters > ul > li .avatar{left:6px}
-div.widget.project-supporters .supporters > ul > li dl dt.amount{top:20px}
-div.widget.project-supporters .supporters > ul > li dl dd.amount{top:32px}
-div.widget.project-supporters .supporters > ul > li dl dt.projects, div.widget.project-supporters .supporters > ul > li dl dd.projects{font-size:0.8em}
-div.widget.project-supporters .supporters ul li dl dd.worthcracy{margin-top:5px}
-div.widget.project-supporters .supporters ul li dl dd.date{top:55px}
+div.widget.project-supporters .supporters > ul > li dl dt.amount{top: 20px}
+div.widget.project-supporters .supporters > ul > li dl dd.amount{top: 32px}
+div.widget.project-supporters .supporters > ul > li dl dt.projects, div.widget.project-supporters .supporters > ul > li dl dd.projects{font-size: 0.8em}
+div.widget.project-supporters .supporters ul li dl dd.worthcracy{margin-top: 5px}
+div.widget.project-supporters .supporters ul li dl dd.date{top: 55px}
 
 div.widget.project-investors .investors ul li{height:80px}
 div.widget.project-investors .investors ul li > div.supporter h4{padding-bottom:3px;border-bottom:#D5D5D6 1px solid;overflow:hidden;margin-bottom:6px}

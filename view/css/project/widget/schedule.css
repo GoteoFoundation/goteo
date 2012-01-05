@@ -77,10 +77,7 @@ div.widget.project-schedule table tbody th span {
 
 
 div.widget.project-schedule table tbody td.on {
-    border-radius: 8px;
-    -moz-border-radius: 8px;
-    -webkit-border-radius: 8px;
-    background-color: #d1edf1;    
+	background-color: #d1edf1;    
     text-align: left;
     padding: 1em;
 }
@@ -90,12 +87,12 @@ div.widget.project-schedule table tbody td.on span {
 }
 
 div.widget.project-schedule table tbody td.on.task {
-    background: #d1edf1 url("/view/css/icon/s/task.png") no-repeat 10px center;
+    background: #d1edf1 url('/view/css/icon/s/task.png') no-repeat 10px center;
     padding-left: 38px;
 }
 
 div.widget.project-schedule table tbody td.on.material {
-    background: #d1edf1 url("/view/css/icon/s/material.png") no-repeat 10px center;
+    background: #d1edf1 url('/view/css/icon/s/material.png') no-repeat 10px center;
     padding-left: 38px;
 }
 

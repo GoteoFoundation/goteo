@@ -1,15 +1,15 @@
 div.project-messages div.message {
     background: #e7e7e7 url('/view/css/message/beak/1.png') no-repeat left top;
     margin-left: 60px;
-    padding: .5em 1em .5em 1.5em;
     overflow: visible;
     position: relative;
+	padding: .8em 1em .5em 1.5em;
 }
 
 div.project-messages div.child{
     background: #e7e7e7 url('/view/css/message/beak/1.png') no-repeat left top;
     margin-left: 130px;
-    padding: .5em 1em .5em 1.5em;
+    padding: .8em 1em .8em 1.5em;
     overflow: visible;
     position: relative;
 }

@@ -93,12 +93,12 @@ div.widget.worthcracy  ul li.done.worth-5.active {
 
 /* Para el mini legend del lateral */
 div.side-worthcracy ul {
-    padding: 1em 20px 1em 0;
-    margin: 0;
+    margin: 0 0 0 4px;
     list-style: none;
     position: relative;
     display: inline-block;
-    background: url('../euro/s.png') no-repeat right center;
+    background: url('/view/css/euro/s.png') no-repeat right 11px;
+	padding: 2em 20px 1em 0;
 }
 
 div.side-worthcracy ul li {

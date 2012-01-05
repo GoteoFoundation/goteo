@@ -92,7 +92,7 @@ if (empty($shares)) {
                     foreach ($sharemates as $mate) :
                         if (empty($this['category']) && $cnt > 6) break;
                     ?>
-                        <li class="<?php if($cnt < 3) echo " bordertop"?>">
+                        <li>
                             <div class="user">
                                 <a href="/user/<?php echo htmlspecialchars($mate->user) ?>" class="expand">&nbsp;</a>
                                 <div class="avatar"><a href="/user/<?php echo htmlspecialchars($mate->user) ?>"><img src="<?php echo $mate->avatar->getLink(43, 43, true) ?>" /></a></div>

@@ -4,15 +4,16 @@
 	float:left;
 }
 #faq-content h2 {
-	margin: 0px;
-	padding: 13px 0 0 20px;
+	padding: 15px 0 0 20px;
 	background: white url('arrowH2-section.gif') no-repeat scroll -5px -2px;
-	height:37px;
-	font: bold 18px Helvetica, Arial, Geneva, sans-serif;
+	font: bold 16px Helvetica, Arial, Geneva, sans-serif;
+	border-bottom: 2px solid #e7e7e7;
+	height: 30px;
+	margin: 0;
 }
 #faq-content h3 {
-	font: bold 20px Helvetica, Arial, Geneva, sans-serif;
-	margin: 0 0 10px;
+	font: bold 16px Helvetica, Arial, Geneva, sans-serif;
+	margin: 5px 0 20px;
 }
 #faq-content h4 {
 	margin: 5px 0 0 0;
@@ -34,7 +35,7 @@
 div.widget.faq-content-module,
 div.widget.faq-sidebar-module {
     background-color: white;
-    line-height: 18px;
+    line-height: 16px;
     margin: 0 0 20px;
 }
 div.widget.faq-content-module ol li a.up{
@@ -43,9 +44,9 @@ div.widget.faq-content-module ol li a.up{
 }
 div.widget.faq-sidebar-module .supertitle {
     border-bottom: 1px solid #58595b;
-    font: bold 16px Helvetica, Arial, Geneva, sans-serif;
-    margin: 0 0 1em;
-    padding: 0 2px 0.2em;
+    font: normal 14px Helvetica, Arial, Geneva, sans-serif;
+    padding: 0 2px 0.4em;
+	margin: 0 0 1em;
 }
 div.widget.faq-sidebar-module .supertitle.ask {
     border-bottom-color: #25a345;

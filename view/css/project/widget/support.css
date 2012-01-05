@@ -181,17 +181,17 @@ div.widget.project-support div.meter.ver div.graph .minimum .done {
 div.widget.project-support div.graph > div.minimum > div.done strong {
     background: url('/view/css/project/widget/support/marker.png') no-repeat center center;
     width: 30px;  
-    padding: 0 8px 0 0;
+    padding: 0 8px 0 4px;
     height: 20px;    
     margin-top: -9px;    
     color: white;    
-    font-size: 10px;
+    font-size: 9px;
     font-weight: normal;    
     line-height: 20px;
-    margin-left: -14px;    
+    margin-left: -16px;    
     text-align: center;
 	display: block;
-	letter-spacing: -1px;
+	letter-spacing: 0.2em;
 }
 
 div.widget.project-support div.buttons {

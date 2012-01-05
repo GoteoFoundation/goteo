@@ -45,10 +45,6 @@ div.center div.widget.user-mates .users ul > li{
 }
 
 
-div.center div.widget.user-mates .users ul > li.bordertop{
-	border-top:#D5D5D6 1px solid;
-}
-
 div.center div.widget.user-mates .users ul > li h4{
 	margin-top:4px;
 }
@@ -91,11 +87,12 @@ div.center div.widget.user-mates .users ul > li span.contact a:hover{
 div.center > div.widget.categorylist{padding-bottom:12px;}
 div.center > div.widget.categorylist ul{list-style:none;display:inline-block;margin:0;padding-left:0;}
 div.center > div.widget.categorylist ul li{display:inline-block;margin-left:0;padding-left:0;}
-div.center > div.widget.categorylist ul li a{text-decoration:none;}
+div.center > div.widget.categorylist ul li a{text-decoration:none;
+}
 div.center > div.widget.categorylist ul li a.active,
 div.center > div.widget.categorylist ul li a:hover{color:#19B4B2}
 
-div.center > div.widget.categorylist > h3.title{font-size: 19px;font-weight: normal;margin: 0 0 1em -23px;padding-left:35px;}
+div.center > div.widget.categorylist > h3.title{font-size: 19px;font-weight: bold;margin: 0 0 1em -20px;padding-left: 20px;}
 div.center > div.widget.categorylist > div.filters{border-bottom: 1px solid #D5D5D6;border-top: 1px solid #D5D5D6;padding: 5px;}
 	div.center > div.widget.categorylist > div.filters > span{font-size:11px;}
 	div.center > div.widget.categorylist > div.filters > ul{margin-left:1em;}
@@ -104,13 +101,18 @@ div.center > div.widget.categorylist > div.filters{border-bottom: 1px solid #D5D
 	background:url('/view/css/user/grey-triangle-down.png') no-repeat left; padding-left:15px;font-size:11px;}
 	div.center > div.widget.categorylist > div.filters > ul > li > a.active{background:url('/view/css/user/blue-triangle-down.png') no-repeat left;}
 
-div.center > div.widget.categorylist > div.list{padding-top:5px;}
+div.center > div.widget.categorylist > div.list{
+}
 	div.center > div.widget.categorylist > div.list > ul{}
-	div.center > div.widget.categorylist > div.list > ul > li{margin-right:0.5em;}
+	div.center > div.widget.categorylist > div.list > ul > li{margin-right:0.5em;
+	margin-bottom: 0.5em;
+}
 	div.center > div.widget.categorylist > div.list > ul > li > a{text-transform:uppercase;font-size:12px;}
 
 /* detalle de categorías (encabezado de categoría)*/
-div.center > div.widget.user-mates > h3.title{margin: 0 0 1em;padding: 0 2px 0.5em;font-size: 12px;font-weight: normal; background:none; border-bottom: 1px dashed #818284;border-top: 1px solid #808285;color: #20B3B2;font-size: 12px;padding: 5px 0 5px 5px;}
+div.center > div.widget.user-mates > h3.title{padding: 9px 0 7px 5px;font-size: 12px;font-weight: normal; background:none; border-bottom: 1px solid #1eb2b2;border-top: 1px solid #808285;color: #20B3B2;font-size: 12px;
+	margin: 0;
+}
 
 
 

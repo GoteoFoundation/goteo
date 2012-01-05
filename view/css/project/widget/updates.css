@@ -44,8 +44,9 @@ div.widget.project-updates > div {
 }
 .project-updates .post  .date{
     display:block;
-	color:#cabcbf;
-	margin: 0 0 5px 0;
+	color: #808285;
+	margin: 10px 0 0;
+	font-size: 11px;
 }
 .project-updates .post .categories{
     display:block;
@@ -54,9 +55,11 @@ div.widget.project-updates > div {
 }
 .project-updates .post blockquote{
 	color: #58595B;
-	padding: 0 0 20px 0;
-	margin: 18px 18px 12px 18px;
-	float:left;
+	padding: 0 0 8px;
+	border-bottom: 1px solid #CABCBF;
+	margin: 8px 0 16px;
+	font-size: 12px;
+	line-height: 18px;
 }
 .project-updates .post .embed{
     width: 500px;
@@ -86,7 +89,8 @@ div.widget.project-updates > div {
 	background: transparent url('/view/css/ico-blogcomment.png') scroll no-repeat  0 0;
 	padding: 0 0 0 26px;
 	height:24px;
-	margin: 0 0 0 20px;
+	margin: 0;
+	line-height: 24px;
 }
 .project-updates .post .comments-num a {
 	color:#00ad4e;
@@ -140,7 +144,7 @@ div.post-comments div.message blockquote {
 /** end Comments like messages**/
 /** share goteo **/
 .project-updates .post ul.share-goteo {
-	margin: 0 20px  0 0;
+	margin: 0;
 	padding:0px;
 	list-style:none;
 	float:right;
@@ -156,11 +160,14 @@ div.post-comments div.message blockquote {
 	height:20px;
 	float:left;
 	padding: 0 0 0 25px;
+	font-size: 11px;
+	line-height: 20px;
 }
 .project-updates .post ul.share-goteo li.sharetext{
 	height:20px;
 	float:left;
-	color:#cabcbf;
+	color: #808285;
+	font-size: 11px;
 }
 .project-updates .post ul.share-goteo li.twitter a{
 	background: transparent url('/view/css/twitter.png') scroll no-repeat  0 0;
@@ -203,7 +210,7 @@ div.post-comments div.message blockquote {
 	display: block;
 	float: right;
 	height: 50px;
-	margin: -1px;
+	margin: 10px -1px -1px;
 	padding: 0.3em 0;
 	resize: none;
 	width: 525px;
@@ -219,11 +226,12 @@ div.post-comments div.message blockquote {
 
 .project-updates div.widget.blog-comment a.preview{
 	color: #2EAB58;
-	font-weight: bold;
+	font-weight: normal;
 	left: 52px;
 	position: relative;
 	text-decoration: none;
 	text-transform: uppercase;
 	top: 10px;
+	font-style: normal;
 }
 /* end send comment */

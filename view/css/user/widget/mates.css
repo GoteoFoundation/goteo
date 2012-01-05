@@ -1,4 +1,5 @@
-div.widget.user-mates{padding-top:10px;padding-bottom:0}
+div.widget.user-mates{padding-top: 15px;padding-bottom:0;
+}
 div.widget.user-mates h3.supertitle{margin-bottom:8px}
 
 div.widget.user-mates div.users,div.widget.user-mates div.categories{height:auto;overflow:visible;}
@@ -18,7 +19,7 @@ height: 62px;
 margin-bottom: 8px;
 margin-right: 3px;
 overflow: hidden;
-padding-top: 2px;
+padding-top: 5px;
 position: relative;
 width: 127px;		
 }
@@ -83,6 +84,7 @@ div.widget.user-mates .users ul li div.user h4 a{font-weight:bold;display:inline
 
 div.widget.user-mates .users ul > li span {
     font-size: 9px;
+	padding-top: 4px;
 }
 
 div.widget.user-mates .users ul > li span.projects {
@@ -95,8 +97,8 @@ div.widget.user-mates .users ul > li span.invests {
 
 
 div.widget.user-mates a.more  {    
-    color: #20b3b2;
-    font-size: 12px !important;
+    color: #58595b;
+    font-size: 11px !important;
     text-transform: uppercase;
     float: right;
     clear: both;
@@ -104,11 +106,19 @@ div.widget.user-mates a.more  {
 	/*padding-right:20px;*/
 	/*background:url(more.png) right no-repeat;*/
 	line-height:1em;height:1em;margin-bottom:15px;   
-	margin-top:8px;
+	margin-top: 15px;
+}
+
+div.widget.user-mates a:hover.more  {    
+    color: #20b3b2;
 }
 
 
 
 /* only center widget
 **********************/
-div.center div.widget.user-mates .users ul > li{width:276px !important; max-width:276px !important;margin-bottom:0}
+div.center div.widget.user-mates .users ul > li{
+	width:276px !important; 
+	max-width:276px !important;
+	margin-bottom:0
+	}
