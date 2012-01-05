@@ -339,6 +339,7 @@ namespace Goteo\Controller {
                             AND invest.status = 1
                         )
                     )
+                    AND (invest.campaign IS NULL OR invest.campaign = 0)
                     ", array($project->id));
                 $project->invests = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
 

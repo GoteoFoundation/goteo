@@ -728,11 +728,16 @@ namespace Goteo\Model {
 
                 // si tiene capital riego asociado pasa al mismo estado
                 if (!empty($this->droped)) {
-                    // si estan reubicando cancelamos el riego por ahora
-                    if ($status == 5) $status = 2;
-
                     $drop = Invest::get($this->droped);
-                    $drop->setStatus($status);
+                    // si estan reubicando o caducando
+                    // cancelamos el riego como si nunca hubiera existido
+                    if ($status == 4 || $status == 5) {
+                        if ($drop->setStatus(2)) {
+                            self::query("UPDATE invest SET droped = NULL WHERE id = :id", array(':id' => $this->id));
+                        } else {
+                            $drop->setStatus($status);
+                        }
+                    }
                 }
 
                 return true;
