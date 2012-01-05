@@ -11,3 +11,6 @@ CREATE TABLE IF NOT EXISTS `user_personal` (
   `country` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Datos personales de usuario';
+
+-- Para VATs
+ALTER TABLE `user_personal` CHANGE `contract_nif` `contract_nif` VARCHAR( 15 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'Guardar sin espacios ni puntos ni guiones';

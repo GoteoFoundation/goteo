@@ -5,6 +5,7 @@ namespace Goteo\Library {
 	/*
 	 * Clase para verificar valores
 	 * Nif (DNI, NIE o pasaporte) - X0000000A
+     * VAT (de los 27 UE)
 	 * Mail - xxxx.xxxx@xxx.xxxx.xxxx
 	 * Words - minimo de x palabras
 	 *
@@ -84,6 +85,45 @@ namespace Goteo\Library {
 			//si todavia no se ha verificado devuelve error
 			return false;
 		}
+
+		/*
+		 * Validación del numero VAT para los 27 paises de la UE
+		 */
+		public static function vat ($value) {
+
+			// quitamos puntos y guiones
+			$value = str_replace(array('_', '.', ' ', '-', ',', '\\', '+', '*'), '', $value);
+
+			$value = strtoupper($value);
+
+            $vats = array();
+            $vats[] = '(AT)?U[0-9]{8}';
+            $vats[] = '(BE)?[0]?[0-9]{9}';
+            $vats[] = '(BG)?[0-9]{9,10}';
+            $vats[] = '(CY)?[0-9]{8}[A-Z]';
+            $vats[] = '(CZ)?[0-9]{8,10}';
+            $vats[] = '(EE|EL|GR|DE|PT)?[0-9]{9}';
+            $vats[] = '(FR)?[0-9A-Z]{2}[0-9]{9}';
+            $vats[] = '(FI|HU|LU|MT|SI|DK)?[0-9]{8}';
+            $vats[] = '(IE)?[0-9][0-9A-Z][0-9]{5}[A-Z]';
+            $vats[] = '(IT|LV)?[0-9]{11}';
+            $vats[] = '(LT)?([0-9]{9}|[0-9]{12})';
+            $vats[] = '(NL)?[0-9]{9}B[0-9]{2}';
+            $vats[] = '(PL|SK)?[0-9]{10}';
+            $vats[] = '(RO)?[0-9]{2,10}';
+            $vats[] = '(SE)?[0-9]{12}';
+            $vats[] = '(ES)?([0-9A-Z][0-9]{7}[A-Z])|([A-Z][0-9]{7}[0-9A-Z])';
+            $vats[] = '(GB)?([1-9][0-9]{2}[0-9]{4}[0-9]{2})|([1-9][0-9]{2}[0-9]{4}[0-9]{2}[0-9]{3})|((GD|HA)[0-9]{3})';
+
+            $expr = '/^('.implode($vats, '|').')$/';
+
+			if (preg_match($expr, $value)) {
+				return true;
+			}
+
+            return false;
+        }
+
 
 		/**
 		 * Valida una dirección de correo.

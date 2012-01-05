@@ -74,7 +74,7 @@ echo new SuperForm(array(
                             'class'     => 'inline',
                             'required'  => true,
                             'title'     => Text::get('personal-field-entity_cif'),
-                            'size'      => 9,
+                            'size'      => 15,
                             'hint'      => Text::get('tooltip-project-entity_cif'),
                             'errors'    => !empty($errors['entity_cif']) ? array($errors['entity_cif']) : array(),
                             'ok'        => !empty($okeys['entity_cif']) ? array($okeys['entity_cif']) : array(),
