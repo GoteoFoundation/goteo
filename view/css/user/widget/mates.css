@@ -6,13 +6,15 @@ div.widget.user-mates div.users,div.widget.user-mates div.categories{height:auto
 div.widget.user-mates div.users ul,div.widget.user-mates div.categories ul {list-style: none;margin: 0;padding: 0;height:auto;overflow:auto;}
 div.widget.user-mates div.categories{height: auto;padding-bottom: 10px;line-height:1em;overflow:hidden}	
 div.widget.user-mates div.categories ul{overflow:hidden}
-div.widget.user-mates div.categories ul li{display:inline-block;margin-right:5px}
-div.widget.user-mates div.categories ul li a{color:#636466;text-transform:uppercase;text-decoration:none;font-size:11px}
+div.widget.user-mates div.categories ul li{display:inline-block;margin-right:5px;
+	margin-bottom: 5px;
+}
+div.widget.user-mates div.categories ul li a{color:#636466;text-transform:uppercase;text-decoration:none;font-size:11px;
+}
 div.widget.user-mates div.categories ul li a:hover{color:#20B3B2}
 
 div.widget.user-mates div.users{clear:both;};
 div.widget.user-mates div.users h3.supertitle{border-top: 1px solid #808285;border-bottom:1px dashed #818284;padding:5px 0 5px 5px;color:#20B3B2;font-size:12px;margin-bottom:8px}
-div.widget.user-mates div.users h3.supertitle:hover{background:#E8E9E9;}
 div.widget.user-mates .users ul > li {        
 float: left;
 height: 62px;
@@ -103,9 +105,9 @@ div.widget.user-mates a.more  {
     float: right;
     clear: both;
     text-decoration: none;
-	/*padding-right:20px;*/
-	/*background:url(more.png) right no-repeat;*/
-	line-height:1em;height:1em;margin-bottom:15px;   
+	line-height:1em;
+	height:1em;
+	margin-bottom:15px;   
 	margin-top: 15px;
 }
 

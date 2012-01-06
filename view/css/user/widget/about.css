@@ -1,5 +1,6 @@
 div.widget.user-about {
     padding-bottom: 0;
+	line-height: 16px;
 }
 
 div.widget.user-about > div {
@@ -40,6 +41,11 @@ div.widget.user-about > div.webs ul li {
 
 div.widget.user-about > div.webs ul li a {
     text-decoration: none;
+	font-size: 12px;
+}
+
+div.widget.user-about > div.webs ul li a:hover {
+	color: #20B3B2;
 }
 
 div.widget.user-about > div.location h4 {
@@ -47,7 +53,7 @@ div.widget.user-about > div.location h4 {
 }
 
 div.widget.user-about > div.location p {
-    padding-left: 24px;
+    padding-left: 28px;
     line-height: 20px;
     min-height: 22px;
     background: url("/view/css/location/m.png") no-repeat left center;        
@@ -55,9 +61,15 @@ div.widget.user-about > div.location p {
 
 div.widget.user-about > div.location p,
 div.widget.user-about > div.location p * {
-    font-size: 18px !important;
-    font-weight: bold;
+    font-size: 12px;
+    font-weight: normal;
     text-decoration: none;
+	font-style: normal;
+}
+
+div.widget.user-about > div.location p a:hover,
+div.widget.user-about > div.location p a:hover * {
+    color: #20B3B2;
 }
 
 div.widget.user-about > div.message p {

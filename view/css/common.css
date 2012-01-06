@@ -45,7 +45,7 @@ textarea,
 fieldset {
     border: 1px solid #58595b;
     background-color: #d7d9da;
-    padding: .3em;    
+    padding: .3em;
 }
 
 fieldset {
@@ -68,21 +68,20 @@ input[type="reset"],
 button,
 a.button {
     background-color: #58595B;
-    padding: .6em 1.3em;
     text-transform: uppercase;
     border: none;    
     cursor: pointer;
     font-weight: normal;
-    margin: 0;
     color: white;
-    margin: .5em 0;
     display: inline-block;
     text-decoration: none;    
     text-align: center;
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
-    background: #149290 url('button/aqua.png') repeat-x top;   
+    background: #149290 url('button/aqua.png') repeat-x top;
+	padding: .6em 1.3em;
+	margin: .8em 0 .5em;
 }
 
 input[type="submit"]:active,

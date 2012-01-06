@@ -1,21 +1,23 @@
 body.user-login div#main > div {
     display: table-cell;
+	width: 30%;
 }
 
 body.user-login div#main > div > * {
-    padding: 20px;
+    padding: 20px 20px 15px;
     background-color: white;
+	margin: 0 0 15px;
 }
 
 body.user-login div#main > div h2 {
     margin: 0 0 2em;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
 }
 
 
 body.user-login div#main div.external-login {
-    width: 100%;
+	width: 40%;
 }
 
 body.user-login div#main div.external-login  {
@@ -29,30 +31,42 @@ body.user-login div#main > div form > div {
 body.user-login div#main > div form > div label {
     line-height: 2em;
     display: block;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 12px;
+    font-weight: normal;
+	font-style: normal;
 }
 
 body.user-login div#main > div form > div input {
     display: block;
     background-color: #DFF2F3;
-    width: 15em;
+	height: 12px;
+	font-size: 11px;
+	width: 21.5em;
 }
 
 body.user-login div#main form input[type="submit"] {
-    margin-bottom: 0;
+    margin-bottom: 10px;
 }
 
 body.user-login div#main div.register form > div input {
-    width: 18em;
+	height: 12px;
+	width: 21.5em;
 }
 
 body.user-login div#main div.register form > div em {
     color: red;
+	font-size: 11px;
 }
 
 body.user-login div#main div.register label.conditions {
     font-size: 11px;
+	line-height: 16px;
+	color: #999999;
+}
+
+body.user-login div#main div.register label.conditions a {
+    font-size: 11px;
+	color: #999999;
 }
 
 body.user-login div#main div.register label.conditions a:hover {
@@ -61,26 +75,26 @@ body.user-login div#main div.register label.conditions a:hover {
 
 body.user-login .sign-in-with {
 	list-style: none;
-	margin: 0px 0px 0px 20px;
-	padding: 0 0 10px 0;
+	margin: 0 0 0 15px;
+	padding: 0;
 }
 
 .sign-in-with li{
-	margin: 10px 0;
+	margin: 0 0 10px;
     display:block;
 }
 
 .sign-in-with > li a {
-    padding: 3px 22px;
+    padding: 3px 22px 3px 30px;
     text-decoration: none;
     background: transparent no-repeat 0px 0px;
     line-height: 22px;
-    font-size: 16px;
+    font-size: 12px;
 }
 
 .sign-in-with > li a:hover {
 	opacity:0.7;
-	filter:alpha(opacity=70)
+	filter:alpha(opacity=70);
 }
 .sign-in-with li.more {
 	margin:0;
@@ -142,5 +156,17 @@ body.user-login .sign-in-with {
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     background: #aaa;
+}
+
+.login > div a {
+	float: right;
+	font-size: 11px;
+	position: relative;
+	bottom: 5px;
+	color: #999999;
+}
+
+.login > div a:hover {
+	color: #20B3B2;
 }
 

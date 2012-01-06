@@ -143,6 +143,7 @@ div.widget.user-supporters .supporters ul li dl dd.date {
     bottom: 8px;
     color: #a6a8ab;
     font-size: 11px;
+	margin-top: 5px;
 }
 
 div.widget.user-supporters .supporters ul li dl dt.worthcracy {
@@ -202,13 +203,17 @@ div.widget.user-supporters .supporters ul li dl dd.worthcracy ul li > strong {
 }
 
 div.widget.user-supporters a.more  {
-    color: #313B96;
-    font-size: 12px !important;
+    color: #58595b;
+    font-size: 11px !important;
     text-transform: uppercase;
     float: right;
     clear: both;
-    text-decoration: none;
+    text-decoration: none;  
+	margin-top: 15px;
+}
 
+div.widget.user-supporters a:hover.more  {
+    color: #20b3b2;
 }
 
 
