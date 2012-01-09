@@ -31,7 +31,7 @@ namespace Goteo\Library {
 
 				$avatars = array();
 				foreach($this->investors as $i) {
-					if($i->avatar != 1 || $all_avatars)
+					if($i->avatar->id != 1 || $all_avatars)
 						$avatars[$i->user] = $i->amount;
 
 				}
@@ -157,19 +157,14 @@ namespace Goteo\Library {
 			$width = $wsize * $num_icons;
 
 			$style = "<style type=\"text/css\">";
-			$style .= "div.wof {font-size: 12px;color: #58595b;font-family: \"Liberation Sans\", Helvetica, \"Helvetica Neue\", Arial, Geneva, sans-serif;background-color: #deddde;display:inline-block;width:{$width}px;height:auto}";
+
+            // estatico
+			$style .= "div.wof {font-size: 12px;color: #58595b;font-family: \"Liberation Sans\", Helvetica, \"Helvetica Neue\", Arial, Geneva, sans-serif;background-color: transparent;display:inline-block;height:auto}";
 			$style .= "div.wof>div.ct {position:relative;clear:both}";
 			$style .= "div.wof a,div.wof a:link,div.wof a:visited,div.wof a:active,div.wof a:hover {text-decoration:none;color: #58595b}";
-			$style .= "div.wof h2 { display:block; background:url(".SITE_URL."/view/css/project/tagmark_green.png) no-repeat right top; font-size: 14px; color:#fff;padding:0;margin: 0;text-transform:uppercase}";
-			$style .= "div.wof h2 a,div.wof h2 a:link,div.wof h2 a:visited,div.wof h2 a:active,div.wof h2 a:hover {display:block;width:" . ($width - 50) . "px;height:21px;overflow:hidden; background:#19b5b3;color:#fff;padding: 7px 0 0 0}";
-			$style .= "div.wof h2 span {display:block;float:left;width:30px;height:28px;background:url(".SITE_URL."/view/css/project/tagmark_green.png) no-repeat -1px -7px}";
-			$style .= "div.wof>div.ct>a>img {border:0;width:{$this->w_size}px;height:{$this->h_size}px;display:inline-block;padding:{$this->h_padding}px {$this->w_padding}px {$this->h_padding}px {$this->w_padding}px}";
-			$style .= "div.wof>div.ct>div.a {display:inline-block;width:" . ($wsize * 8) . "px;height:" . $hsize . "px}";
-			$style .= "div.wof>div.ct>div.b {display:inline-block;width:" . ($wsize * 5) . "px;height:" . $hsize . "px}";
-			$style .= "div.wof>div.ct>div.c {display:inline-block;width:" . ($wsize * ($num_icons < 18 ? $num_icons : 17)) . "px;height:" . $hsize . "px}";
-			$style .= "div.wof>div.ct>div.i {overflow:hidden;padding:0;margin:0;position:absolute;height:" . ($hsize * 3) . "px;background:#fff;left:" . ($num_icons < 15 ? "0" : $wsize) . "px;top:" . $hsize . "px}";
-			$style .= "div.wof>div.ct>div.b.i {left:" . ($wsize * ($num_icons <15 ? 9 : 10)) . "px;top:" . $hsize . "px}";
-			$style .= "div.wof>div.ct>div.c.i {left:" . ($num_icons < 18 ? "0" : $wsize) . "px;top:" . ( $hsize * 5) . "px}";
+			$style .= "div.wof h2 { display:block; background:url('/view/css/project/tagmark_green.png') no-repeat right top; font-size: 14px; color:#fff;padding:0;margin: 0;text-transform:uppercase}";
+			$style .= "div.wof h2 a,div.wof h2 a:link,div.wof h2 a:visited,div.wof h2 a:active,div.wof h2 a:hover {display:block;height:21px;overflow:hidden; background:#19b5b3;color:#fff;padding: 7px 0 0 0}";
+			$style .= "div.wof h2 span {display:block;float:left;width:30px;height:28px;background:url('/view/css/project/tagmark_green.png') no-repeat -1px -2px}";
 			$style .= "div.wof>div.ct>div.i h3 {color:#95268D;font-size:64px;font-weight:bold;text-align:center;padding:0;margin:0}";
 			$style .= "div.wof>div.ct>div.i h3 a {color:#95268D}";
 			$style .= "div.wof>div.ct>div.i h3>img {vertical-align:top;padding:11px 0 0 0}";
@@ -181,26 +176,37 @@ namespace Goteo\Library {
 			$style .= "div.wof>div.ct>div.i.c h3 {color:#1db3b2;font-size:32px;line-height:32px;text-transform:uppercase;text-align:left;padding:4px 0 4px 4px}";
 			$style .= "div.wof>div.ct>div.i.c h3 a{color:#1db3b2}";
 			$style .= "div.wof>div.ct>div.i.c p {color:#58595c;;text-align:left;padding:0 0 0 4px}";
-			$style .= "div.wof>div.ct>div.c>div.c1 {float:left;height:" . ($wsize * 3) . "px;width:" . ($wsize * 3) . "px}";
-			$style .= "div.wof>div.ct>div.c>div.c2 {float:right;height:" . ($wsize * 3) . "px;width:" . ($wsize * ($num_icons < 18 ? $num_icons - 3 : 14)) . "px}";
 			$style .= "div.wof>div.ct>div.i.c>div.c1 p {padding:10px;font-size:10px;line-height:10px;text-align:center}";
 			$style .= "div.wof>div.ct>div.i.c>div.c1 p img {padding:0 0 4px 0}";
 			$style .= "div.wof>div.ct>div.i.c>div.c1 a {color:#1db3b2}";
+
+            // dinamico
+			$style .= "div.wof>div.ct>a>img {border:0;width:{$this->w_size}px;height:{$this->h_size}px;display:inline-block;padding:{$this->h_padding}px {$this->w_padding}px {$this->h_padding}px {$this->w_padding}px}";
+			$style .= "div.wof>div.ct>div.a {display:inline-block;width:" . ($wsize * 5) . "px;height:" . $hsize . "px}";
+			$style .= "div.wof>div.ct>div.b {display:inline-block;width:" . ($wsize * 8) . "px;height:" . $hsize . "px}";
+			$style .= "div.wof>div.ct>div.c {display:inline-block;width:" . ($wsize * ($num_icons < 18 ? $num_icons : 17)) . "px;height:" . $hsize . "px}";
+			$style .= "div.wof>div.ct>div.i {overflow:hidden;padding:0;margin:0;position:absolute;height:" . ($hsize * 3) . "px;background:#fff;left:" . ($num_icons < 15 ? "0" : $wsize) . "px;top:" . $hsize . "px}";
+			$style .= "div.wof>div.ct>div.b.i {left:" . ($wsize * ($num_icons <15 ? 6 : 7)) . "px;top:" . $hsize . "px}";
+			$style .= "div.wof>div.ct>div.c.i {left:" . ($num_icons < 18 ? "0" : $wsize) . "px;top:" . ( $hsize * 5) . "px}";
+			$style .= "div.wof>div.ct>div.c>div.c1 {float:left;height:" . ($wsize * 3) . "px;width:" . ($wsize * 3) . "px}";
+			$style .= "div.wof>div.ct>div.c>div.c2 {float:right;height:" . ($wsize * 3) . "px;width:" . ($wsize * ($num_icons < 18 ? $num_icons - 3 : 14)) . "px}";
 			$style .= "</style>";
 
-			$title = '<h2><span></span><a href="'.SITE_URL.'/project/'.$this->project->id.'">'.'Crowdfunding the commons in www.goteo.org'.'</a></h2>';
+			$title = '<h2><span></span><a href="'.SITE_URL.'/project/'.$this->project->id.'" style="width:'.($width - 50).'px;">'.GOTEO_META_TITLE.'</a></h2>';
+
+			//num finançadors
+			$info = '<div class="a i"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'">' . count($this->project->investors) . '</a></h3><p><a href="'.SITE_URL.'/project/'.$this->project->id.'">'.Text::get('project-view-metter-investors').'</a></p></div>';
 
 			//financiacio, data
-			$info = '<div class="a i"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'">' . number_format($this->project->invested,0,'',','). '<img src="'.SITE_URL.'/view/css/euro/violet/xxl.png" alt="&euro;"></a></h3>';
+			$info .= '<div class="b i"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'">' . number_format($this->project->invested,0,'',','). '<img src="'.SITE_URL.'/view/css/euro/violet/xxl.png" alt="&euro;"></a></h3>';
 			$info .= '<p><a href="'.SITE_URL.'/project/'.$this->project->id.'">' . Text::get('project-view-metter-days') . " {$this->project->days} " . Text::get('regular-days') .'</a></p></div>';
-			//num finançadors
-			$info .= '<div class="b i"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'">' . count($this->project->investors) . '</a></h3><p><a href="'.SITE_URL.'/project/'.$this->project->id.'">'.Text::get('project-view-metter-investors').'</a></p></div>';
+
 			//impulsores, nom, desc
 			$info .= '<div class="c i">';
 			$info .= '<div class="c1"><p><a href="'.SITE_URL.'/user/'.$this->project->owner.'"><img src="'.SITE_URL.'/image/'.$this->project->user->avatar->id.'/56/56/1" alt="'.$this->project->user->name.'" title="'.$this->project->user->name.'"><br />' . Text::get('regular-by') . ' '  . $this->project->user->name . '</a></p></div>';
 			$info .= '<div class="c2"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'">' . $this->project->name . '</a></h3><p><a href="'.SITE_URL.'/project/'.$this->project->id.'">'.$this->project->subtitle.'</a></p></div>';
 			$info .= '</div>';
-			return $style . '<div class="wof">' . ($this->show_title ? $title : '') . '<div class="ct">' . $info . implode("",$this->html_content($num_icons)).'</div></div>';
+			return $style . '<div class="wof" style="width:'.$width.'px;">' . ($this->show_title ? $title : '') . '<div class="ct">' . $info . implode("",$this->html_content($num_icons)).'</div></div>';
 		}
     }
 }

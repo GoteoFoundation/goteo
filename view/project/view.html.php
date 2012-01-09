@@ -194,9 +194,14 @@ include 'view/prologue.html.php' ?>
                         if (!empty($project->media->url)) {
                             echo new View('view/project/widget/media.html.php', array('project' => $project));
                         }
+
                         echo
                             new View('view/project/widget/share.html.php', array('project' => $project)),
                             new View('view/project/widget/summary.html.php', array('project' => $project));
+
+                        // wall of friends
+                        echo new View('view/project/widget/wof.html.php', array('project' => $project));
+
                         break;
                 }
                 ?>

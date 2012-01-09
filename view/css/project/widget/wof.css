@@ -1,0 +1,153 @@
+div.wof {
+    font-size: 12px;
+    color: #58595b;
+    font-family: "Liberation Sans", Helvetica, "Helvetica Neue", Arial, Geneva, sans-serif;
+    background-color: transparent;
+    display:inline-block;
+    height:auto;
+}
+
+div.wof > div.ct {
+    position:relative;
+    clear:both;
+}
+
+div.wof > div.ct > div.a,
+div.wof > div.ct > div.b,
+div.wof > div.ct > div.c {
+    display:inline-block;
+}
+
+div.wof > div.ct > div.i {
+    overflow:hidden;
+    padding:0;
+    margin:0;
+    position:absolute;
+    background:#fff;
+}
+
+div.wof > div.ct > div.c > div.c1 {
+    float:left;
+}
+
+div.wof > div.ct > div.c > div.c2 {
+    float:right;
+}
+
+div.wof a,
+div.wof a:link,
+div.wof a:visited,
+div.wof a:active,
+div.wof a:hover {
+    text-decoration:none;
+    color: #58595b;
+}
+
+div.wof h2 { 
+    display:block;
+    background:url('/view/css/project/tagmark_green.png') no-repeat right top;
+    font-size: 14px;
+    color:#fff;
+    padding:0;
+    margin: 0;
+    text-transform:uppercase;
+}
+
+div.wof h2 a,
+div.wof h2 a:link,
+div.wof h2 a:visited,
+div.wof h2 a:active,
+div.wof h2 a:hover {
+    display:block;
+    height:21px;
+    overflow:hidden;
+    background:#19b5b3;
+    color:#fff;
+    padding: 7px 0 0 0;
+}
+
+div.wof h2 span {
+    display:block;
+    float:left;
+    width:30px;
+    height:28px;
+    background:url('/view/css/project/tagmark_green.png') no-repeat -1px -2px;
+}
+
+div.wof>div.ct>div.i h3 {
+    color:#95268D;
+    font-size:64px;
+    font-weight:bold;
+    text-align:center;
+    padding:0;
+    margin:0;
+}
+
+div.wof>div.ct>div.i h3 a {
+    color:#95268D;
+}
+
+div.wof>div.ct>div.i h3>img {
+    vertical-align:top;
+    padding:11px 0 0 0;
+}
+
+div.wof>div.ct>div.i p {
+    color:#58595c;
+    font-size:14px;
+    text-align:right;
+    padding:0 12px 0 0;
+    margin:0;
+}
+
+div.wof>div.ct>div.i.b h3 {
+    color:#0b4f99;
+}
+
+div.wof>div.ct>div.i.b h3 a {
+    color:#0b4f99;
+}
+
+div.wof>div.ct>div.i.b p {
+    color:#0b4f99;
+    text-transform:uppercase;
+    text-align:center;
+}
+
+div.wof>div.ct>div.i.b p a {
+    color:#0b4f99;
+}
+
+div.wof>div.ct>div.i.c h3 {
+    color:#1db3b2;
+    font-size:32px;
+    line-height:32px;
+    text-transform:uppercase;
+    text-align:left;
+    padding:4px 0 4px 4px;
+}
+
+div.wof>div.ct>div.i.c h3 a{
+    color:#1db3b2;
+}
+
+div.wof>div.ct>div.i.c p {
+    color:#58595c;
+    text-align:left;
+    padding:0 0 0 4px;
+}
+
+div.wof>div.ct>div.i.c>div.c1 p {
+    padding:10px;
+    font-size:10px;
+    line-height:10px;
+    text-align:center;
+}
+
+div.wof>div.ct>div.i.c>div.c1 p img {
+    padding:0 0 4px 0;
+}
+
+div.wof>div.ct>div.i.c>div.c1 a {
+    color:#1db3b2;
+}
