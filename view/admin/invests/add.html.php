@@ -28,10 +28,10 @@ use Goteo\Library\Text;
             </select>
         </p>
         <p>
-            <label for="invest-campaign">Campaña:</label><br />
+            <label for="invest-campaign">Convocatoria:</label><br />
             <select id="invest-campaign" name="campaign">
-                <option value="">Seleccionar la campaña a la que se asigna este aporte</option>
-            <?php foreach ($this['campaigns'] as $campaignId=>$campaignName) : ?>
+                <option value="">Seleccionar la convocatoria que riega este aporte</option>
+            <?php foreach ($this['calls'] as $campaignId=>$campaignName) : ?>
                 <option value="<?php echo $campaignId; ?>"><?php echo $campaignName; ?></option>
             <?php endforeach; ?>
             </select>

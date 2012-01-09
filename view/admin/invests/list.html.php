@@ -21,9 +21,9 @@ $filters = $this['filters'];
     'investStatus' => array (
         'label' => 'Estado de aporte',
         'first' => 'Todos los estados'),
-    'campaigns' => array (
+    'calls' => array (
         'label' => 'Convocatoria',
-        'first' => 'Todas las convocatorias'),
+        'first' => 'Sin capital riego asociado'),
     'types' => array (
         'label' => 'Extra',
         'first' => 'Todos')
@@ -91,7 +91,8 @@ $filters = $this['filters'];
                 <td>
                     <?php if ($invest->anonymous == 1)  echo 'Anónimo ' ?>
                     <?php if ($invest->resign == 1)  echo 'Donativo ' ?>
-                    <?php if (!empty($invest->admin)) echo 'Manual' ?>
+                    <?php if (!empty($invest->admin)) echo 'Manual ' ?>
+                    <?php if (!empty($invest->droped)) echo 'Regado ('.$invest->droped.')' ?>
                 </td>
             </tr>
             <?php endforeach; ?>

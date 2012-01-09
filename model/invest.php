@@ -170,8 +170,10 @@ namespace Goteo\Model {
             if (!empty($filters['users'])) {
                 $sqlFilter .= " AND invest.user = '{$filters['users']}'";
             }
-            if (!empty($filters['campaigns'])) {
-                $sqlFilter .= " AND invest.campaign = '{$filters['campaigns']}'";
+            if (!empty($filters['calls'])) {
+                $sqlFilter .= " AND invest.campaign = 1 AND invest.call = '{$filters['calls']}'";
+            } else {
+                $sqlFilter .= " AND (invest.campaign = 0 OR invest.campaign IS NULL)";
             }
             if (!empty($filters['types'])) {
                 switch ($filters['types']) {
@@ -185,7 +187,7 @@ namespace Goteo\Model {
                         $sqlFilter .= " AND invest.admin IS NOT NULL";
                         break;
                     case 'campaign':
-                        $sqlFilter .= " AND invest.campaign IS NOT NULL";
+                        $sqlFilter .= " AND invest.droped IS NOT NULL";
                         break;
                 }
             }
@@ -223,6 +225,8 @@ namespace Goteo\Model {
                         invest.status as investStatus,
                         project.status as status,
                         invest.campaign as campaign,
+                        invest.call as call,
+                        invest.droped as droped,
                         invest.amount as amount,
                         invest.anonymous as anonymous,
                         invest.resign as resign,
@@ -451,19 +455,20 @@ namespace Goteo\Model {
         }
 
         /*
-         * Lista de campañas con aportes asociados
+         * Lista de convocatorias con aportes asociados
          */
-        public static function campaigns () {
+        public static function calls () {
 
             $list = array();
 
             $query = static::query("
                 SELECT
-                    campaign.id as id,
-                    campaign.name as name
-                FROM    campaign
+                    call.id as id,
+                    call.name as name
+                FROM    call
                 INNER JOIN invest
-                    ON campaign.id = invest.campaign
+                    ON call.id = invest.call
+                    AND invest.campaign = 1
                 ORDER BY campaign.name ASC
                 ");
 
@@ -725,18 +730,17 @@ namespace Goteo\Model {
 
             $sql = "UPDATE invest SET status = :status WHERE id = :id";
             if (self::query($sql, $values)) {
-
                 // si tiene capital riego asociado pasa al mismo estado
                 if (!empty($this->droped)) {
                     $drop = Invest::get($this->droped);
                     // si estan reubicando o caducando
-                    // cancelamos el riego como si nunca hubiera existido
+                    // liberamos el capital riego
                     if ($status == 4 || $status == 5) {
                         if ($drop->setStatus(2)) {
                             self::query("UPDATE invest SET droped = NULL WHERE id = :id", array(':id' => $this->id));
-                        } else {
-                            $drop->setStatus($status);
                         }
+                    } else {
+                        $drop->setStatus($status);
                     }
                 }
 
@@ -765,6 +769,13 @@ namespace Goteo\Model {
                         status = 1
                     WHERE id = :id";
             if (self::query($sql, $values)) {
+
+                // si tiene capital riego asociado pasa al mismo estado
+                if (!empty($this->droped)) {
+                    $drop = Invest::get($this->droped);
+                    $drop->setStatus(1);
+                }
+
                 return true;
             } else {
                 return false;
@@ -807,6 +818,15 @@ namespace Goteo\Model {
                         status = 2
                     WHERE id = :id";
             if (self::query($sql, $values)) {
+
+                // si tiene capital riego asociado, lo liberamos
+                if (!empty($this->droped)) {
+                    $drop = Invest::get($this->droped);
+                    if ($drop->setStatus(2)) {
+                        self::query("UPDATE invest SET droped = NULL WHERE id = :id", array(':id' => $this->id));
+                    }
+                }
+                
                 return true;
             } else {
                 return false;
@@ -830,6 +850,15 @@ namespace Goteo\Model {
                     WHERE id = :id";
             
             if (self::query($sql, $values)) {
+                
+                // si tiene capital riego asociado, lo liberamos
+                if (!empty($this->droped)) {
+                    $drop = Invest::get($this->droped);
+                    if ($drop->setStatus(2)) {
+                        self::query("UPDATE invest SET droped = NULL WHERE id = :id", array(':id' => $this->id));
+                    }
+                }
+
                 return true;
             } else {
                 return false;

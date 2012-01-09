@@ -2884,7 +2884,11 @@ namespace Goteo\Controller {
                 // usuarios
                 $users = Model\User::getAllMini();
                 // campañas
-                $campaigns = Model\Campaign::getAll();
+                $calls = Model\Call::getAll();
+
+                //@TODO tema convocatorias (calls)
+                //Ojo! Solo convocatorias revisadas?
+                //Ojo! Puede ser que se tenga que restringir proyectos de esa
 
                 // generar aporte manual
                 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add']) ) {
@@ -2908,6 +2912,8 @@ namespace Goteo\Controller {
                             'campaign'  => $_POST['campaign']
                         )
                     );
+                    //@TODO si llega campaign, montar el $invest->called con instancia call para que el save genere el riego
+
 
                     if ($invest->save($errors)) {
                         /*
@@ -2941,7 +2947,7 @@ namespace Goteo\Controller {
                         'file' => 'add',
                         'users'         => $users,
                         'projects'      => $projects,
-                        'campaigns'     => $campaigns,
+                        'calls'         => $calls,
                         'errors'        => $errors
                     );
 
@@ -2960,7 +2966,7 @@ namespace Goteo\Controller {
 
                // sino, cargamos los filtros
                 $filters = array();
-                $fields = array('filtered', 'methods', 'status', 'investStatus', 'projects', 'users', 'campaigns', 'types');
+                $fields = array('filtered', 'methods', 'status', 'investStatus', 'projects', 'users', 'calls', 'types');
                 foreach ($fields as $field) {
                     $filters[$field] = (string) $_GET[$field];
                 }
@@ -2976,13 +2982,13 @@ namespace Goteo\Controller {
                 // usuarios cofinanciadores
                 $users = Model\Invest::users(true);
                 // campañas que tienen aportes
-                $campaigns = Model\Invest::campaigns();
+                $calls = Model\Invest::calls();
                 // extras
                 $types = array(
                     'donative' => 'Solo los donativos',
                     'anonymous' => 'Solo los anónimos',
                     'manual' => 'Solo los manuales',
-                    'campaign' => 'Solo los de Bolsa',
+                    'campaign' => 'Solo con riego',
                 );
 
            }
@@ -3182,7 +3188,7 @@ namespace Goteo\Controller {
                         'user' => $userData,
                         'status' => $status,
                         'investStatus' => $investStatus,
-                        'campaign' => $campaigns[$invest->campaign],
+                        'call' => $calls[$invest->call],
                         'errors' => $errors
                     )
                 );
@@ -3202,7 +3208,7 @@ namespace Goteo\Controller {
                     'filters'       => $filters,
                     'users'         => $users,
                     'projects'      => $projects,
-                    'campaigns'     => $campaigns,
+                    'calls'         => $calls,
                     'methods'       => $methods,
                     'types'         => $types,
                     'status'        => $status,
@@ -3252,7 +3258,7 @@ namespace Goteo\Controller {
 
             // cargamos los filtros
             $filters = array();
-            $fields = array('filtered', 'methods', 'investStatus', 'projects', 'users', 'campaigns', 'review', 'date_from', 'date_until');
+            $fields = array('filtered', 'methods', 'investStatus', 'projects', 'users', 'calls', 'review', 'date_from', 'date_until');
             foreach ($fields as $field) {
                 $filters[$field] = (string) $_GET[$field];
             }
@@ -3280,7 +3286,7 @@ namespace Goteo\Controller {
             // usuarios cofinanciadores
             $users = Model\Invest::users(true);
             // campañas que tienen aportes
-            $campaigns = Model\Invest::campaigns();
+            $calls = Model\Invest::calls();
 
             // filtros de revisión de proyecto
             $review = array(
@@ -3325,7 +3331,7 @@ namespace Goteo\Controller {
                     'filters'       => $filters,
                     'users'         => $users,
                     'projects'      => $projects,
-                    'campaigns'     => $campaigns,
+                    'calls'         => $calls,
                     'review'        => $review,
                     'methods'       => $methods,
                     'status'        => $status,
@@ -5731,15 +5737,6 @@ namespace Goteo\Controller {
                                 'edit' => array('label' => 'Editando Patrocinador', 'item' => true)
                             )
                         )/*,
-                        'campaigns' => array(
-                            'label' => 'Gestión de campañas (obsoleto)',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add'  => array('label' => 'Nueva Campaña', 'item' => false),
-                                'edit' => array('label' => 'Editando Campaña', 'item' => true),
-                                'report' => array('label' => 'Informe de estado de la Campaña', 'item' => true)
-                            )
-                        ),
                         'nodes' => array(
                             'label' => 'Gestión de Nodos',
                             'actions' => array(
