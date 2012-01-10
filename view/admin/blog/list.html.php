@@ -36,7 +36,7 @@ $translator = ACL::check('/translate') ? true : false;
                 <td><a href="/translate/post/edit/<?php echo $post->id; ?>" target="_blank">[Traducir]</a></td>
                 <?php endif; ?>
                 <td><a href="/admin/blog/remove/<?php echo $post->id; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Quitar]</a></td>
-                <td><a href="/blog/<?php echo $post->id; ?>?preview=<?php echo $_SESSION['user']->id ?>">[Ver publicado]</a></td>
+                <td><a href="/blog/<?php echo $post->id; ?>?preview=<?php echo $_SESSION['user']->id ?>" target="_blank">[Ver publicado]</a></td>
             </tr>
             <?php endforeach; ?>
         </tbody>
