@@ -296,7 +296,7 @@ namespace Goteo\Model {
                 SELECT
                     call.id as id,
                     call.name as name
-                FROM    call
+                FROM `call`
                 ORDER BY call.name ASC
                 ");
 

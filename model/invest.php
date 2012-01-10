@@ -465,11 +465,11 @@ namespace Goteo\Model {
                 SELECT
                     call.id as id,
                     call.name as name
-                FROM    call
+                FROM `call`
                 INNER JOIN invest
                     ON call.id = invest.call
                     AND invest.campaign = 1
-                ORDER BY campaign.name ASC
+                ORDER BY call.name ASC
                 ");
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
