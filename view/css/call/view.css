@@ -99,6 +99,56 @@ div#main ul#list>li {
 	margin: 0 auto;
 }
 
+div#header div#menu {
+    background: #b5dadc url('header/background.png') repeat-x top;
+    overflow: visible;
+}
+
+div#header div#menu > ul {
+    max-width: 940px;
+    margin: 0 auto;
+    position: relative;
+    list-style: none;
+    text-align: right;
+    overflow: visible;
+	padding-bottom: 0;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+div#header div#menu > ul > li {
+    display: inline-block;
+    text-align: left;
+}
+
+div#header div#menu > ul > li.home {
+    width: 90px;
+    height: 20px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+div#super-header div#menu > ul > li.home > a {    
+    overflow: hidden;
+    text-indent: 2000px;
+    display: block;
+    line-height: 2000px;
+    width: 105px;
+    height: 36px;  
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -45px;
+    margin-top: -18px;
+    background: url('../header/goteo.png') no-repeat left center;        
+}
+
+div#super-header div#menu > ul > li.home > a:hover {
+    background: url('../header/goteo.png') no-repeat right center;
+}
+
+
 /* Footer */
 
 #footer {

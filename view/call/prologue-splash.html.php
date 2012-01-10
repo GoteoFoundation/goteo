@@ -49,9 +49,18 @@
                 $(".a-null").click(function (event) {
                     event.preventDefault();
                 });
+				
+				(function(){var a=document.body;var b=document.getElementById("bgimage").getElementsByTagName("img")[0];var c={};var d=b.src;setInterval(function(){window.scrollTo(0,0);if(b.complete){if(a.clientWidth!=c.w||a.clientHeight!=c.h||b.src!=d){d=b.src;c.w=a.clientWidth;c.h=a.clientHeight;var e=Math.round(c.h*(b.offsetWidth/b.offsetHeight));b.style.width=(c.w>e?c.w:e)+"px"}}},300)})()				
+				
             });
         </script>
+
+
         <noscript><!-- Please enable JavaScript --></noscript>
+
+		<div id="bgimage">
+			<div><img alt="<?php echo $call->name ?>" src="<?php echo $call->image->getLink(2000, 2000) ?>" /></div>
+		</div>
 
         <div id="wrapper">
 			

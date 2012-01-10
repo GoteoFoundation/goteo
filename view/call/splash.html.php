@@ -18,8 +18,6 @@ if ($call->status == 3) {
 include 'view/call/prologue-splash.html.php';
 ?>
 	
-	<img id="bgimage" src="<?php echo $call->image->getLink(2000, 2000) ?>" alt="<?php echo $call->name ?>" />
-
 	<div id="main" class="onecol">
 		<ul id="list">
 			<li class="item" id="description">

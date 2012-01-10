@@ -18,7 +18,10 @@ html {
 }
 
 html, body {        
-    padding: 0;    
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
 }
 
 body, td, th, a, a:link, a:visited, a:active, a:hover, input, textarea, button {    
@@ -38,22 +41,19 @@ h1 {
     display: none;
 }
 
-/* Extend */
-
 body {
 	background-color: #58595c;
 	margin: 0;
 }
 
-#bgimage {
-	top: 0;
-	z-index: 0;
-	display: block;
-	position: fixed;
-}
-
 #wrapper {
-	position: relative;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
 }
 
 /* Main */
@@ -85,11 +85,45 @@ div#main ul#list>li {
 	-webkit-border-radius: 5px;
 }
 
-/* Description */
+/* Background Image */
 
-div#main ul#list > li#description {
-	
+#bgimage{
+	position: absolute;
+	width: 200%;
+	height: 200%;
+	top: -50%;
+	left: -50%;
 }
+
+#bgimage[id]{
+	display: table;
+}
+
+#bgimage div{
+	position: absolute;
+	left: 0;
+	top: 50%;
+}
+
+#bgimage[id] div {
+	display: table-cell;
+	vertical-align: middle;
+	position: static;
+}
+
+#bgimage img {
+	position: relative;
+	top: -50%;
+	margin: 0 auto;
+	display: block;
+	width: 100%;
+}
+
+*:first-child+html #bgimage div {
+	position: absolute;
+}
+
+/* Description */
 
 li#description.item img {
 	float: left;
@@ -193,12 +227,6 @@ li#numbers dl.category dd a {
 
 li#numbers dl.category dd a:hover {
 	color: #58595B;
-}
-
-li#numbers dl.selected dd,
-li#numbers dl.processing dd,
-li#numbers dl.success dd {
-/*	padding-bottom: 9px;*/
 }
 
 li#numbers dl.selected dd,
@@ -473,8 +501,8 @@ a#capital {
 	top: 20px;
 	width: 91px;
 	height: 12px;
-	left: 840px;
-	z-index: 10;
+	right: 40px;
+	z-index: 1;
 	display: block;
 	position: fixed;
 	color: #1db3b2;
