@@ -2908,12 +2908,18 @@ namespace Goteo\Controller {
                             'charged'   => date('Y-m-d'),
                             'anonymous' => $_POST['anonymous'],
                             'resign'    => 1,
-                            'admin'     => $_SESSION['user']->id,
-                            'campaign'  => $_POST['campaign']
+                            'admin'     => $_SESSION['user']->id
                         )
                     );
-                    //@TODO si llega campaign, montar el $invest->called con instancia call para que el save genere el riego
 
+                    //@TODO si llega campaign, montar el $invest->called con instancia call para que el save genere el riego
+                    if (isset($_POST['campaign'])) {
+                        $called = Model\Call::get($_POST['campaign']);
+
+                        if ($called instanceof Model\Call) {
+                            $invest->called = $called;
+                        }
+                    }
 
                     if ($invest->save($errors)) {
                         /*
@@ -3178,6 +3184,12 @@ namespace Goteo\Controller {
 
                 $invest = Model\Invest::get($id);
 
+                if (!empty($invest->droped)) {
+                    $droped = Model\Invest::get($invest->droped);
+                } else {
+                    $droped = null;
+                }
+
                 return new View(
                     'view/admin/index.html.php',
                     array(
@@ -3188,7 +3200,8 @@ namespace Goteo\Controller {
                         'user' => $userData,
                         'status' => $status,
                         'investStatus' => $investStatus,
-                        'call' => $calls[$invest->call],
+                        'droped' => $droped,
+                        'calls' => $calls,
                         'errors' => $errors
                     )
                 );
@@ -3196,6 +3209,10 @@ namespace Goteo\Controller {
 
             // listado de aportes
             if ($filters['filtered'] == 'yes') {
+                
+                if (!empty($filters['calls']))
+                    $filters['types'] = '';
+
                 $list = Model\Invest::getList($filters);
             } else {
                 $list = array();

@@ -22,8 +22,8 @@ $filters = $this['filters'];
         'label' => 'Estado de aporte',
         'first' => 'Todos los estados'),
     'calls' => array (
-        'label' => 'Convocatoria',
-        'first' => 'Sin capital riego asociado'),
+        'label' => 'De la convocatoria',
+        'first' => 'Ninguna'),
     'types' => array (
         'label' => 'Extra',
         'first' => 'Todos')
@@ -80,19 +80,21 @@ $filters = $this['filters'];
                 <td><a href="/admin/invests/details/<?php echo $invest->id ?>">[Detalles]</a></td>
                 <td><?php echo $invest->id ?></td>
                 <td><?php echo $invest->invested ?></td>
-                <td><?php echo $this['users'][$invest->user] ?></td>
-                <td><?php echo $this['projects'][$invest->project]; if (!empty($invest->campaign)) echo '<br />('.$this['campaigns'][$invest->campaign].')'; ?></td>
+                <td><?php echo $this['users'][$invest->user]; if (!empty($invest->call)) echo '<br />(<strong>'.$this['calls'][$invest->call].'</strong>)'; ?></td>
+                <td><?php echo $this['projects'][$invest->project] ?></td>
                 <td><?php echo $this['status'][$invest->status] ?></td>
                 <td><?php echo $this['methods'][$invest->method] ?></td>
                 <td><?php echo $this['investStatus'][$invest->investStatus] ?></td>
                 <td><?php echo $invest->amount ?></td>
-                <td><?php echo $invest->charged ?></td>
+<!--                <td><?php echo $invest->charged ?></td>
                 <td><?php echo $invest->returned ?></td>
+-->
                 <td>
                     <?php if ($invest->anonymous == 1)  echo 'Anónimo ' ?>
                     <?php if ($invest->resign == 1)  echo 'Donativo ' ?>
                     <?php if (!empty($invest->admin)) echo 'Manual ' ?>
-                    <?php if (!empty($invest->droped)) echo 'Regado ('.$invest->droped.')' ?>
+                    <?php if (!empty($invest->campaign)) echo 'Riego ' ?>
+                    <?php if (!empty($invest->droped)) echo 'Regado (<strong>'.$invest->droped.'</strong>)' ?>
                 </td>
             </tr>
             <?php endforeach; ?>

@@ -172,9 +172,8 @@ namespace Goteo\Model {
             }
             if (!empty($filters['calls'])) {
                 $sqlFilter .= " AND invest.campaign = 1 AND invest.call = '{$filters['calls']}'";
-            } else {
-                $sqlFilter .= " AND (invest.campaign = 0 OR invest.campaign IS NULL)";
             }
+            // else { $sqlFilter .= " AND (invest.campaign = 0 OR invest.campaign IS NULL)"; }
             if (!empty($filters['types'])) {
                 switch ($filters['types']) {
                     case 'donative':
@@ -225,7 +224,7 @@ namespace Goteo\Model {
                         invest.status as investStatus,
                         project.status as status,
                         invest.campaign as campaign,
-                        invest.call as call,
+                        invest.call as `call`,
                         invest.droped as droped,
                         invest.amount as amount,
                         invest.anonymous as anonymous,
@@ -333,7 +332,7 @@ namespace Goteo\Model {
                                     'user' => $this->called->owner,
                                     'project' => $this->project,
                                     'method' => 'cash',
-                                    'status' => '-1', // en proceso
+                                    'status' => $this->status,
                                     'invested' => date('Y-m-d'),
                                     'anonymous' => null,
                                     'resign' => true,

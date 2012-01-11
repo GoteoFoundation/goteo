@@ -4,7 +4,8 @@ use Goteo\Library\Text;
 
 $invest = $this['invest'];
 $project = $this['project'];
-$campaign = $this['campaign'];
+$calls = $this['calls'];
+$droped = $this['droped'];
 $user = $this['user'];
 
 ?>
@@ -32,6 +33,12 @@ $user = $this['user'];
     </p>
 
     <h3>Detalles del aporte</h3>
+    <?php if (!empty($invest->call)) : ?>
+    <dl>
+        <dt>Riego de la Convocatoria:</dt>
+        <dd><?php echo $calls[$invest->call] ?></dd>
+    </dl>
+    <?php endif; ?>
     <dl>
         <dt>Cantidad aportada:</dt>
         <dd><?php echo $invest->amount ?> &euro;
@@ -64,6 +71,9 @@ $user = $this['user'];
         <dt>Método de pago:</dt>
         <dd><?php echo $invest->method . '   '; ?>
             <?php
+                if (!empty($invest->campaign))
+                    echo '<br />Capital riego';
+
                 if (!empty($invest->anonymous))
                     echo '<br />Aporte anónimo';
 
@@ -106,4 +116,14 @@ $user = $this['user'];
             <?php echo $invest->address->country; ?>
         </dd>
     </dl>
+
+    <?php if (!empty($droped)) : ?>
+    <h3>Capital riego asociado</h3>
+    <dl>
+        <dt>Convocatoria:</dt>
+        <dd><?php echo $calls[$droped->call] ?></dd>
+    </dl>
+    <a href="/admin/invests/details/<?php echo $droped->id ?>" target="_blank">Ver aporte completo de riego</a>
+    <?php endif; ?>
+    
 </div>
