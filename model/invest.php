@@ -536,6 +536,7 @@ namespace Goteo\Model {
 
             $sql .= "user.hide as hide,
                     invest.droped as droped,
+                    invest.campaign as campaign,
                     invest.anonymous as anonymous
                 FROM    invest
                 INNER JOIN user
@@ -568,7 +569,8 @@ namespace Goteo\Model {
                         'worth' => null,
                         'amount' => $investor->amount,
                         'date' => $investor->date,
-                        'droped' => $investor->droped
+                        'droped' => $investor->droped,
+                        'campaign' => $investor->campaign
                     );
 
                 } else {
@@ -581,7 +583,8 @@ namespace Goteo\Model {
                         'worth' => \Goteo\Model\User::calcWorth($investor->user),
                         'amount' => ($investors[$investor->user]->amount + $investor->amount),
                         'date' => $investor->date,
-                        'droped' => empty($investors[$investor->user]->droped) ? $investor->droped : $investors[$investor->user]->droped
+                        'droped' => empty($investors[$investor->user]->droped) ? $investor->droped : $investors[$investor->user]->droped,
+                        'campaign' => empty($investors[$investor->user]->campaign) ? $investor->campaign : $investors[$investor->user]->campaign
                     );
 
                 }

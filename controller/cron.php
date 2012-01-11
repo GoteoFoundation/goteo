@@ -188,7 +188,7 @@ namespace Goteo\Controller {
                             $log_text = 'El proyecto %s ha %s obteniendo %s';
                         } else {
                             @mail('goteo_fail@doukeshi.org',
-                                'Fallo al archivar',
+                                'Fallo al archivar ' . SITE_URL,
                                 'Fallo al marcar el proyecto '.$project->name.' como archivado ' . implode(',', $errors));
                             echo 'ERROR::' . implode(',', $errors);
                             $log_text = 'El proyecto %s ha fallado al, %s obteniendo %s';
@@ -233,9 +233,17 @@ namespace Goteo\Controller {
                     } else {
                         // Si el proyecto no tiene cuenta paypal
                         if (empty($projectAccount->paypal)) {
-                            @mail(\GOTEO_MAIL,
-                                'El proyecto '.$project->name.' no tiene cuenta PayPal',
-                                'Hola Goteo, el proyecto '.$project->name.' no tiene cuenta PayPal y el proceso automatico no podrá tratar los preaprovals al final de ronda.');
+                            // iniciamos mail
+                            $mailHandler = new Mail();
+                            $mailHandler->to = \GOTEO_MAIL;
+                            $mailHandler->toName = 'Goteo.org';
+                            $mailHandler->subject = 'El proyecto '.$project->name.' no tiene cuenta PayPal';
+                            $mailHandler->content = 'Hola Goteo, el proyecto '.$project->name.' no tiene cuenta PayPal y el proceso automatico no podrá tratar los preaprovals al final de ronda.';
+                            $mailHandler->html = false;
+                            $mailHandler->template = null;
+                            $mailHandler->send();
+                            unset($mailHandler);
+
                             echo 'El proyecto '.$project->name.' no tiene cuenta PayPal';
                             continue;
                         }
@@ -254,7 +262,7 @@ namespace Goteo\Controller {
                                 $log_text = 'El proyecto %s ha sido %s obteniendo %s';
                             } else {
                                 @mail('goteo_fail@doukeshi.org',
-                                    'Fallo al marcar financiado',
+                                    'Fallo al marcar financiado ' . SITE_URL,
                                     'Fallo al marcar el proyecto '.$project->name.' como financiado ' . implode(',', $errors));
                                 echo 'ERROR::' . implode(',', $errors);
                                 $log_text = 'El proyecto %s ha fallado al ser, %s obteniendo %s';
@@ -305,7 +313,7 @@ namespace Goteo\Controller {
                                 echo 'Ok';
                             } else {
                                 @mail('goteo_fail@doukeshi.org',
-                                    'Fallo al marcar fecha de paso a segunda ronda',
+                                    'Fallo al marcar fecha de paso a segunda ronda ' . SITE_URL,
                                     'Fallo al marcar la fecha de paso a segunda ronda para el proyecto '.$project->name.': ' . implode(',', $errors));
                                 echo 'ERROR::' . implode(',', $errors);
                             }
@@ -449,7 +457,7 @@ namespace Goteo\Controller {
                         if (empty($projectAccount->paypal)) {
                             echo 'El proyecto '.$project->name.' no tiene cuenta paypal!!<br />';
                             @mail('goteo_fail@doukeshi.org',
-                                'El proyecto '.$project->name.' no tiene cuenta paypal',
+                                'El proyecto '.$project->name.' no tiene cuenta paypal ' . SITE_URL,
                                 'El proyecto '.$project->name.' no tiene cuenta paypal y esto intentaba ejecutarlo :S');
                             
                             break;
@@ -470,7 +478,7 @@ namespace Goteo\Controller {
                                     $txt_errors = implode('; ', $err);
                                     echo 'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: ' . $txt_errors . '<br />';
                                     @mail('goteo_fail@doukeshi.org',
-                                        'Fallo al ejecutar cargo Paypal',
+                                        'Fallo al ejecutar cargo Paypal ' . SITE_URL,
                                         'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: ' . $txt_errors);
                                     $log_text = "Ha fallado al ejecutar el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
                                 }
@@ -592,7 +600,7 @@ namespace Goteo\Controller {
                             }
                         } else {
                             @mail('goteo_fail@doukeshi.org',
-                                'errores al pedir detalles Paypal',
+                                'errores al pedir detalles Paypal ' . SITE_URL,
                                 'Aporte ' . $invest->id . ': al pedir detalles paypal: Errores:<br />' . implode('<br />', $errors));
                         }
                     }
@@ -620,9 +628,17 @@ namespace Goteo\Controller {
             $projectAccount = Model\Project\Account::get($project);
 
             if (empty($projectAccount->paypal)) {
-                @mail(\GOTEO_MAIL,
-                    'El proyecto '.$projectData->name.' no tiene cuenta PayPal',
-                    'Hola Goteo, el proyecto '.$projectData->name.' no tiene cuenta PayPal y se estaba intentando realizar pagos secundarios.');
+                // iniciamos mail
+                $mailHandler = new Mail();
+                $mailHandler->to = \GOTEO_MAIL;
+                $mailHandler->toName = 'Goteo.org';
+                $mailHandler->subject = 'El proyecto '.$projectData->name.' no tiene cuenta PayPal';
+                $mailHandler->content = 'Hola Goteo, el proyecto '.$projectData->name.' no tiene cuenta PayPal y se estaba intentando realizar pagos secundarios.';
+                $mailHandler->html = false;
+                $mailHandler->template = null;
+                $mailHandler->send();
+                unset($mailHandler);
+                
                 die('El proyecto '.$projectData->name.' no tiene la cuenta PayPal!!');
             }
 
@@ -768,7 +784,7 @@ namespace Goteo\Controller {
                     return true;
                 } else {
                     @mail('goteo_fail@doukeshi.org',
-                        'Fallo al enviar email automaticamente al autor',
+                        'Fallo al enviar email automaticamente al autor ' . SITE_URL,
                         'Fallo al enviar email automaticamente al autor: <pre>' . print_r($mailHandler, 1). '</pre>');
                 }
             }
@@ -852,7 +868,7 @@ namespace Goteo\Controller {
                         } else {
                             $anyfail = true;
                             @mail('goteo_fail@doukeshi.org',
-                                'Fallo al enviar email automaticamente al cofinanciador',
+                                'Fallo al enviar email automaticamente al cofinanciador ' . SITE_URL,
                                 'Fallo al enviar email automaticamente al cofinanciador: <pre>' . print_r($mailHandler, 1). '</pre>');
                         }
                         unset($mailHandler);

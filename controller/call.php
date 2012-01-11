@@ -363,14 +363,15 @@ namespace Goteo\Controller {
             $call = Model\Call::get($id, LANG);
 
             if (!$call instanceof Model\Call) {
-                Message::Error('Ha habido algun errror al cargar la convocatoria solicitada');
+                Message::Error(Text::get('call-apply-failed'));
                 throw new Redirection("/");
             }
             
             if ($call->expired) {
-                Message::Error('El proceso de inscripción para esa convocatoria ha finalizado');
+                Message::Error(Text::get('call-apply-expired'));
                 throw new Redirection("/project/create");
             } else {
+                Message::Info(Text::get('call-apply-notice', $call->name));
                 $_SESSION['oncreate_applyto'] = $id;
                 throw new Redirection("/project/create");
             }

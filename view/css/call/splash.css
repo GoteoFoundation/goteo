@@ -241,6 +241,11 @@ li#numbers dl.selected dd {
 	color: #1db3b2;
 }
 
+li#numbers dl.applied dd {
+	color: #1db3b2;
+	font-size: 34px;
+}
+
 li#numbers dl.processing dd {
 }
 

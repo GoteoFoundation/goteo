@@ -362,6 +362,11 @@ div#super-header div#menu > ul > li.home > a:hover {
 	font-size: 48px;
 }
 
+#side dl.applied dd {
+	color: #1db3b2;
+	font-size: 34px;
+}
+
 #side dl.moreinfo a {
 	color: #ff0000;
 	font-size: 11px;

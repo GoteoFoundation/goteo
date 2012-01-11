@@ -27,7 +27,7 @@ if ($call->status == 3) {
         <dt><?php echo Text::get('call-splash-valid_until-header') ?></dt>
         <dd><strong><?php echo $until_day ?></strong> <?php echo $until_month ?> / <?php echo $until_year ?></dd>
     </dl>
-    <dl class="selected">
+    <dl class="applied">
         <dt><?php echo Text::get('call-splash-applied_projects-header') ?></dt>
         <dd><?php echo count($call->projects) ?></dd>
     </dl>

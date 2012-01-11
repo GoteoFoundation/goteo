@@ -239,6 +239,11 @@ div.widget.project-supporters .supporters ul li dl dd.amount .euro {
     display: none;
 }
 
+div.widget.project-supporters .supporters ul li dl dd.amount.campaign {
+    background: url('/view/css/euro/m.png') no-repeat scroll right center !important;
+    color: #58595B !important;
+}
+
 div.widget.project-supporters .supporters ul li dl dt.date {
     display: none;
 }
