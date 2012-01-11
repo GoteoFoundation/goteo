@@ -922,3 +922,51 @@ a.expand {
 	z-index:99;
     padding: 0px;	
 }
+
+/** Tagmarks widget **/
+#project-list li div.image div.tagmark {
+    position: absolute;
+    z-index: 899;
+    text-align: left;
+    color: #ffffff;
+    font-size: 1.0em;
+    font-weight: normal;
+    text-transform: uppercase;
+    width: 226px;
+    height: 31px;
+	font-style: normal;
+	letter-spacing: 1px;
+	margin-top: 8px;
+	line-height: 32px;
+	padding: 1px 0px 0px 30px;
+}
+
+#project-list li div.image div.tagmark.green {
+    background:url('/view/css/project/tagmark_green.png') 0 0 no-repeat;
+}
+
+#project-list li div.image div.tagmark.red {
+    background:url('/view/css/project/tagmark_red.png') 0 0 no-repeat;
+}
+
+#project-list li div.image div.tagmark.violet {
+    background:url('/view/css/project/tagmark_violet.png') 0 0 no-repeat;
+}
+
+#project-list li div.image div.tagmark.grey {
+    background:url('/view/css/project/tagmark_grey.png') 0 0 no-repeat;
+}
+
+/* tipografia pequeña para que quepa todo */
+#project-list li div.image div.tagmark span.small {
+    font-size: 0.8em !important;
+	line-height: normal;
+}
+
+/* Dos lineas para el en marcha y aun puedes */
+#project-list li div.image div.tagmark.twolines {
+    padding-top: 4px !important;
+	font-weight: normal;
+	font-style: normal;
+}
+/** Fin tagmarks **/

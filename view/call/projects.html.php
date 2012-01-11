@@ -8,7 +8,28 @@ use Goteo\Library\Text,
 $bodyClass = 'projects';
 
 $call = $this['call'];
-$bgimage = $call->image->getLink(2000, 2000);
+$bgimage = $call->image->getLink(5000, 5000);
+
+// reordenar proyectos: random pero si ya no está en campaña sale al final
+$final = array();
+
+foreach ($call->projects as $key=>$proj) {
+
+    if ($proj->status < 3 || $proj->status > 5) {
+        unset($call->projects[$key]);
+    }
+
+    if ($proj->status == 4 || $proj->status == 5) {
+        $final[$proj->id] = $proj;
+        unset($call->projects[$key]);
+    }
+}
+
+shuffle($call->projects);
+shuffle($final);
+
+$call->projects = array_merge($call->projects, $final);
+
 include 'view/call/prologue.html.php';
 include 'view/call/header.html.php';
 ?>
@@ -32,9 +53,6 @@ include 'view/call/header.html.php';
             <?php
             foreach ($call->projects as $proj) :
 
-                if ($proj->status < 3 || $proj->status > 5)
-                    continue;
-
                 $project = Project::getMedium($proj->id);
                 $categories = Project\Category::getNames($proj->id, 2);
                 $project->per_amount = round(($project->amount / $project->minimum) * 100);
@@ -43,6 +61,28 @@ include 'view/call/header.html.php';
 			<li>
 				<a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>" class="expand" target="_blank"></a>
                 <div class="image">
+                    <?php switch ($project->tagmark) {
+                        case 'onrun': // "en marcha"
+                            echo '<div class="tagmark green">' . Text::get('regular-onrun_mark') . '</div>';
+                            break;
+                        case 'keepiton': // "aun puedes"
+                            echo '<div class="tagmark green">' . Text::get('regular-keepiton_mark') . '</div>';
+                            break;
+                        case 'onrun-keepiton': // "en marcha" y "aun puedes"
+            //                echo '<div class="tagmark green">' . Text::get('regular-onrun_mark') . '</div>';
+                              echo '<div class="tagmark green twolines"><span class="small"><strong>' . Text::get('regular-onrun_mark') . '</strong><br />' . Text::get('regular-keepiton_mark') . '</span></div>';
+                            break;
+                        case 'gotit': // "financiado"
+                            echo '<div class="tagmark violet">' . Text::get('regular-gotit_mark') . '</div>';
+                            break;
+                        case 'success': // "exitoso"
+                            echo '<div class="tagmark red">' . Text::get('regular-success_mark') . '</div>';
+                            break;
+                        case 'fail': // "caducado"
+                            echo '<div class="tagmark grey">' . Text::get('regular-fail_mark') . '</div>';
+                            break;
+                    } ?>
+
                     <?php if (!empty($project->gallery) && (current($project->gallery) instanceof Image)): ?>
                     <a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>"><img src="<?php echo current($project->gallery)->getLink(150, 98, true) ?>" alt="<?php echo $project->name ?>"/></a>
                     <?php endif ?>
@@ -53,7 +93,7 @@ include 'view/call/header.html.php';
                     <?php endif ?>
                 </div>
                 <h3 class="title"><a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><?php echo htmlspecialchars(Text::recorta($project->name,50)) ?></a></h3>
-                <div class="description"><?php echo empty($project->subtitle) ? Text::recorta($project->description, 250) : $project->subtitle; ?></div>
+                <div class="description"><?php echo empty($project->subtitle) ? Text::recorta($project->description, 100) : Text::recorta($project->subtitle, 100); ?></div>
                 <h4 class="author"><?php echo Text::get('regular-by')?> <a href="<?php echo SITE_URL ?>/user/profile/<?php echo htmlspecialchars($project->user->id) ?>" target="_blank"><?php echo htmlspecialchars(Text::recorta($project->user->name,40)) ?></a></h4>
 				<span class="obtained"><?php echo Text::get('project-view-metter-got'); ?></span>
 				<div class="obtained">
