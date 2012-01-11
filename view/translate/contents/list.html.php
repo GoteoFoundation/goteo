@@ -63,6 +63,7 @@ $types = Content::$fields[$table]; // por tipo de campo
                 <th>Texto</th>
                 <th>Campo</th>
                 <th>Id</th>
+                <?php if ($table == 'post') echo '<th></th>'; ?>
             </tr>
         </thead>
 
@@ -73,6 +74,9 @@ $types = Content::$fields[$table]; // por tipo de campo
                 <td width="75%"><?php if ($item->pendiente == 1) echo '* '; ?><?php echo Text::recorta($item->value, 250) ?></td>
                 <td><?php echo $item->fieldName ?></td>
                 <td><?php echo $item->id ?></td>
+                <?php if ($table == 'post') : ?>
+                <td><a href="/blog/<?php echo $item->id; ?>?preview=<?php echo $_SESSION['user']->id ?>" target="_blank">[Ver]</a></td>
+                <?php endif; ?>
             </tr>
         <?php endwhile; ?>
         </tbody>

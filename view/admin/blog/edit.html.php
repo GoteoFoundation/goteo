@@ -130,7 +130,7 @@ $(document).ready(function(){
                     'image_upload'    => array(
                         'type'  => 'file',
                         'class' => 'inline image_upload',
-                        'title' => 'Subir una imagen',
+                        'label' => Text::get('form-image_upload-button'),
                         'hint'  => Text::get('tooltip-updates-image_upload'),
                     )
                 )
