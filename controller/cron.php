@@ -22,15 +22,24 @@ namespace Goteo\Controller {
          *  Proceso que ejecuta los cargos, cambia estados, lanza eventos de cambio de ronda
          */
         public function execute () {
+
+            // debug para supervisar
+            $debug = ($_GET['debug'] == 'debug') ? true : false;
+
             // revision de proyectos: dias, conseguido y cambios de estado
             // proyectos en campaña 
             $projects = Model\Project::active();
 
+            if ($debug) echo 'Comenzamos con los proyectos en campaña o financiados<br />';
 
             foreach ($projects as &$project) {
+
+                if ($debug) echo 'Proyecto '.$project->name.'<br />';
+
                 //este método devuelve tambien los financiados pero vamos a pasar de ellos
                 // les ponemos los dias a cero y lsitos
                 if ($project->status != 3) {
+                    if ($debug) echo 'Financiado: dias a cero y listos<br />';
                     if ($project->days > 0) {
                         \Goteo\Core\Model::query("UPDATE project SET days = '0' WHERE id = ?", array($project->id));
                     }
@@ -41,6 +50,8 @@ namespace Goteo\Controller {
                 $projectAccount = Model\Project\Account::get($project->id);
 
                 if (empty($projectAccount->paypal)) {
+
+                    if ($debug) echo 'No tiene cuenta PayPal<br />';
                     /*
                      * Evento Feed
                      */
@@ -73,6 +84,7 @@ namespace Goteo\Controller {
                         $project->mincost += $item->amount;
                     }
                 }
+                if ($debug) echo 'Minimo: '.$project->mincost.' &euro; <br />';
                 
                 $execute = false;
                 $cancelAll = false;
@@ -82,9 +94,19 @@ namespace Goteo\Controller {
                 if ($project->invested != $amount) {
                     \Goteo\Core\Model::query("UPDATE project SET amount = '{$amount}' WHERE id = ?", array($project->id));
                 }
+                if ($debug) echo 'Obtenido: '.$amount.' &euro;<br />';
+
+                // porcentaje alcanzado
+                if ($project->mincost > 0) {
+                    $per_amount = \round(($amount / $project->mincost) * 100);
+                } else {
+                    $per_amount = 0;
+                }
+                if ($debug) echo 'Ha alcanzado el '.$per_amount.' &#37; del minimo<br />';
 
                 // los dias que lleva el proyecto  (ojo que los financiados llevaran mas de 80 dias)
                 $days = $project->daysActive();
+                if ($debug) echo 'Lleva '.$days.'  dias desde la publicacion<br />';
 
                 // actualiza dias restantes para proyectos en campaña
                 if ($project->status == 3) {
@@ -103,9 +125,12 @@ namespace Goteo\Controller {
                 if ($project->days != $rest) {
                     \Goteo\Core\Model::query("UPDATE project SET days = '{$rest}' WHERE id = ?", array($project->id));
                 }
+                if ($debug) echo 'Quedan '.$rest.' dias para el final de la '.$round.'a ronda<br />';
+
 
                 // a los 5, 3, 2, y 1 dia para finalizar ronda
                 if ($round > 0 && in_array((int) $rest, array(5, 3, 2, 1))) {
+                    if ($debug) echo 'Feed publico cuando quedan 5, 3, 2, 1 dias<br />';
                     /*
                      * Evento Feed
                      */
@@ -130,27 +155,29 @@ namespace Goteo\Controller {
                     unset($log);
                 }
 
-                // porcentaje alcanzado
-                $per_amount = \round(($amount / $project->mincost) * 100);
-
                 // pero seguimos trabajando con el numero de dias que lleva para enviar mail al autor
                 // cuando quedan 20 días
                 if ($round == 1 && $rest == 20) {
                     self::toOwner('20_days', $project);
+                    if ($debug) echo 'Aviso al autor: lleva 20 dias<br />';
                 }
                 // cuando quedan 8 dias y no ha conseguido el minimo
                 if ($round == 1 && $rest == 8 && $amount < $project->mincost) {
                     self::toOwner('8_days', $project);
+                    if ($debug) echo 'Aviso al autor: faltan 8 dias y no ha conseguido el minimo<br />';
                 }
                 // cuando queda 1 día y no ha conseguido el minimo pero casi
                 if ($round == 1 && $rest == 1 && $amount < $project->mincost && $per_amount > 70) {
                     self::toOwner('1_day', $project);
+                    if ($debug) echo 'Aviso al autor: falta 1 dia y no supera el 70 el minimo<br />';
                 }
 
 
                 //  (financiado a los 80 o cancelado si a los 40 no llega al minimo)
                 // si ha llegado a los 40 dias: mínimo-> ejecutar ; no minimo proyecto y todos los preapprovals cancelados
                 if ($days > 40) {
+                    if ($debug) echo 'Ha llegado a los 40 dias de campaña (final de primera ronda)<br />';
+
                     // si no ha alcanzado el mínimo, pasa a estado caducado
                     if ($amount < $project->mincost) {
                         echo $project->name . ': ha recaudado ' . $amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . '<br />';
@@ -215,6 +242,8 @@ namespace Goteo\Controller {
 
                         // tiene hasta 80 días para conseguir el óptimo (o más)
                         if ($days > 80) {
+                            if ($debug) echo 'Ha llegado a los 80 dias de campaña (final de segunda ronda)<br />';
+
                             echo $project->name . ': ha recaudado ' . $amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . '<br />';
                             echo 'Ha llegado a los 80 días: financiado. ';
 
@@ -316,6 +345,8 @@ namespace Goteo\Controller {
 
                             unset($log);
 
+                            if ($debug) echo 'Email al autor y a los cofinanciadores<br />';
+
                             // Email de proyecto pasa a segunda ronda al autor
                             self::toOwner('r1_pass', $project);
                             
@@ -326,6 +357,7 @@ namespace Goteo\Controller {
                     }
                 }
 
+                if ($debug) echo '::::::Comienza tratamiento de aportes:::::::<br />';
                 // tratamiento de aportes penddientes
                 $query = \Goteo\Core\Model::query("
                     SELECT  *
@@ -348,7 +380,7 @@ namespace Goteo\Controller {
                     $userData = Model\User::getMini($invest->user);
 
                     if ($invest->invested == date('Y-m-d')) {
-                        echo 'Aporte ' . $invest->id . ' es de hoy.<br />';
+                        if ($debug) echo 'Aporte ' . $invest->id . ' es de hoy.<br />';
                     } elseif ($invest->method != 'cash' && empty($invest->preapproval)) {
                         //si no tiene preaproval, cancelar
                         echo 'Aporte ' . $invest->id . ' cancelado por no tener preapproval.<br />';
@@ -486,11 +518,18 @@ namespace Goteo\Controller {
                     }
 
                 }
+                if ($debug) echo '::Fin tratamiento aportes<br />';
+
+                if ($debug) echo 'Fin tratamiento Proyecto '.$project->name.'<hr />';
 
             }
 
-            // recogemos el buffer para grabar el log
-            \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
+            $buffer = \ob_get_contents();
+
+            if (\strlen($buffer) != 0) {
+                // recogemos el buffer para grabar el log
+                \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', $buffer);
+            }
         }
 
 
@@ -560,8 +599,12 @@ namespace Goteo\Controller {
                 }
             }
 
-            // recogemos el buffer para grabar el log
-            \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
+            $buffer = \ob_get_contents();
+
+            if (\strlen($buffer) != 0) {
+                // recogemos el buffer para grabar el log
+                \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', $buffer);
+            }
         }
 
         /*
@@ -631,8 +674,12 @@ namespace Goteo\Controller {
                 echo '<hr />';
             }
 
-            // recogemos el buffer para grabar el log
-            \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
+            $buffer = \ob_get_contents();
+
+            if (\strlen($buffer) != 0) {
+                // recogemos el buffer para grabar el log
+                \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', $buffer);
+            }
         }
 
         /**
@@ -994,8 +1041,12 @@ namespace Goteo\Controller {
 
             }
 
-            // recogemos el buffer para grabar el log
-            \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
+            $buffer = \ob_get_contents();
+
+            if (\strlen($buffer) != 0) {
+                // recogemos el buffer para grabar el log
+                \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', $buffer);
+            }
         }
 
     }
