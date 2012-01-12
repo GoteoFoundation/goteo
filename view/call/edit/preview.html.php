@@ -2,9 +2,19 @@
 
 use Goteo\Core\View,
     Goteo\Library\Text,
-    Goteo\Library\SuperForm;
+    Goteo\Library\SuperForm,
+    Goteo\Model;
 
 $call = $this['call'];
+
+$the_logo = empty($call->logo) ? 1 : $call->logo;
+$call->logo = Model\Image::get($the_logo);
+$the_image = empty($call->image) ? 1 : $call->image;
+$call->image = Model\Image::get($the_image);
+
+$call->categories = Model\Call\Category::getNames($call->id);
+$call->icons = Model\Call\Icon::getNames($call->id);
+
 $types   = $this['types'];
 $errors = $call->errors ?: array();
 
@@ -55,16 +65,26 @@ $elements      = array(
         'value' => 'preview'
     ),
 
+    'splash' => array(
+        'type'      => 'html',
+        'class'     => 'fullwidth',
+        'html'      => '<a href="/call/'.$call->id.'" class="button" target="_blank">Ver Splash</a>'
+                        . '&nbsp;&nbsp;&nbsp;'
+                        . '<a href="/call/'.$call->id.'/info" class="button" target="_blank">Ver Convocatoria</a>'
+    )
+
+/*
     'preview' => array(
         'type'      => 'html',
         'class'     => 'fullwidth',
         'html'      =>   '<div class="project-preview" style="position: relative"><div>'
                        . '<div class="overlay" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 999"></div>'
                        . '<div style="z-index: 0">'
-                       . 'Resumen de datos y enlaces a la previsualizacion de la pagina splash y de las paginas de convocatoria, no se como hacer las modalidades...'
                        . '</div>'
                        . '</div></div>'
     )
+ *
+ */
 );
 
 // Footer
