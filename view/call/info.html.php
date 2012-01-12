@@ -7,6 +7,14 @@ $bodyClass = 'info';
 
 $call = $this['call'];
 
+foreach ($call->projects as $key=>$proj) {
+
+    if ($proj->status < 3 || $proj->status > 5) {
+        unset($call->projects[$key]);
+    }
+}
+
+
 include 'view/call/prologue.html.php';
 include 'view/call/header.html.php';
 ?>
@@ -25,11 +33,15 @@ $(document).ready(function() {
 	
 		<div id="content">
 			<h2 class="title"><?php echo Text::get('call-splash-campaign_title') ?><br /><?php echo $call->name ?></h2>
+            
             <?php if ($call->status == 3) : //inscripcion ?>
             <p class="subtitle red"><?php echo Text::get('call-splash-searching_projects') ?></p>
-            <?php else : //en campaña ?>
+            <?php elseif (!empty($call->amount)) : //en campaña con dinero ?>
             <p class="subtitle"><?php echo Text::get('call-splash-invest_explain', $call->user->name) ?></p>
+            <?php else : //en campaña sin dinero, con recursos ?>
+            <p class="subtitle"><?php echo $call->resources ?></p>
             <?php endif; ?>
+            
 			<div class="freetext">
 
 				<h2 class="title"><?php echo Text::get('call-info-main-header') ?></h2>
@@ -50,7 +62,7 @@ $(document).ready(function() {
 					<thead class="task">
 						<tr>
 							<th class="summary">Aportaciones:</th>
-							<th class="min">Campaña</th>
+							<th class="min"><?php if (!empty($call->amount)) : ?>Campaña<?php endif; ?></th>
 							<th class="max">Usuarios</th>
 						</tr>
 					</thead>
@@ -61,9 +73,6 @@ $(document).ready(function() {
                         $odd = true;
                         
                         foreach ($call->projects as $proj) :
-
-                            if ($proj->status < 3 || $proj->status > 5)
-                                continue;
 
                             $tot_call  += $proj->amount_call;
                             $tot_users += $proj->amount_users;
@@ -76,7 +85,7 @@ $(document).ready(function() {
 									<blockquote><?php echo empty($proj->subtitle) ? Text::recorta($proj->description, 250) : $proj->subtitle; ?></blockquote>
 								</div>
 							</th>
-                            <td class="min"><?php echo \amount_format($proj->amount_call)  ?> &euro;</td>
+                            <td class="min"><?php if (!empty($call->amount)) echo \amount_format($proj->amount_call) . ' &euro;'; ?></td>
                             <td class="max"><?php echo \amount_format($proj->amount_users) ?> &euro;</td>
 						</tr>
                     <?php endforeach; ?>
@@ -84,7 +93,7 @@ $(document).ready(function() {
 					<tfoot>
 						<tr>
 							<th class="total"><?php echo Text::get('regular-total'); ?></th>
-							<th class="min"><?php echo \amount_format($tot_call)  ?> &euro;</th>
+							<th class="min"><?php if (!empty($call->amount)) echo \amount_format($tot_call) . ' &euro;';  ?></th>
 							<th class="max"><?php echo \amount_format($tot_users) ?> &euro;</th>
 						</tr>
 					</tfoot>

@@ -11,3 +11,6 @@ CREATE TABLE IF NOT EXISTS `call_lang` (
 
 -- Dosier informativo
 ALTER TABLE `call_lang` ADD `dossier` tinytext;
+
+-- Recursos de capital riego
+ALTER TABLE `call_lang` ADD `resources` TEXT NULL DEFAULT NULL COMMENT 'Recursos de capital riego';

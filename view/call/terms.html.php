@@ -19,8 +19,10 @@ include 'view/call/header.html.php';
 			<h2 class="title"><?php echo Text::get('call-splash-campaign_title') ?><br /><?php echo $call->name ?></h2>
             <?php if ($call->status == 3) : //inscripcion ?>
             <p class="subtitle red"><?php echo Text::get('call-splash-searching_projects') ?></p>
-            <?php else : //en campaña ?>
+            <?php elseif (!empty($call->amount)) : //en campaña con dinero ?>
             <p class="subtitle"><?php echo Text::get('call-splash-invest_explain', $call->user->name) ?></p>
+            <?php else : //en campaña sin dinero, con recursos ?>
+            <p class="subtitle"><?php echo $call->resources ?></p>
             <?php endif; ?>
 			<div class="freetext">
 

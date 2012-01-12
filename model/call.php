@@ -17,6 +17,7 @@ namespace Goteo\Model {
             $node, // Node this call belongs to
             $status,
             $amount, // Presupuesto
+            $resources, // Recursos de capital riego
             $days, // Numero de dias para aplicación de proyectos
 
             $user, // owner's user information
@@ -402,6 +403,7 @@ namespace Goteo\Model {
                     'legal',
                     'dossier',
                     'call_location',
+                    'resources',
                     'scope',
                     'amount',
                     'days'
@@ -1124,10 +1126,13 @@ namespace Goteo\Model {
                  $okeys['overview']['scope'] = 'ok';
             }
 
-            if (empty($this->amount)) {
+            // si no tiene presupuesto tiene que tener recursos
+            if (empty($this->amount) && empty($this->resources)) {
                 $errors['overview']['amount'] = Text::get('mandatory-call-field-amount');
+                $errors['overview']['resources'] = Text::get('mandatory-call-field-resources');
             } else {
-                 $okeys['overview']['amount'] = 'ok';
+                $okeys['overview']['amount'] = 'ok';
+                $okeys['overview']['resources'] = 'ok';
             }
 
             /***************** FIN Revisión del paso 3, DESCRIPCION *****************/

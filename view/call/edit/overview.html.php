@@ -298,6 +298,16 @@ $superform = array(
             'value'     => $call->amount
         ),
 
+        'resources' => array(
+            'type'      => 'textarea',
+            'title'     => Text::get('call-field-resources'),
+            'required'  => true,
+            'hint'      => Text::get('tooltip-call-resources'),
+            'value'     => $call->resources,
+            'errors'    => !empty($errors['resources']) ? array($errors['resources']) : array(),
+            'ok'        => !empty($okeys['resources']) ? array($okeys['resources']) : array()
+        ),
+
         'days' => array(
             'type'      => 'textbox',
             'title'     => Text::get('call-field-days'),

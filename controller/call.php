@@ -537,6 +537,7 @@ namespace Goteo\Controller {
                 'legal',
                 'dossier',
                 'call_location',
+                'resources',
                 'scope',
                 'amount',
                 'days'

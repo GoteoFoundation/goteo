@@ -15,14 +15,21 @@ if ($call->status == 3) {
 
 ?>
 <div id="side">
-	<img src="<?php echo $call->logo->getLink(155, 200) ?>" alt="<?php echo $call->user->name ?>" class="logo" />
+	<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"><img src="<?php echo $call->logo->getLink(155, 200) ?>" alt="<?php echo $call->user->name ?>" class="logo" /></a>
 	<p class="block"><?php echo $call->subtitle ?></p>
     
 <?php if ($call->status == 3) : //inscripcion ?>
+    <?php if (!empty($call->amount)) : ?>
     <dl class="">
         <dt><?php echo Text::get('call-splash-whole_budget-header') ?></dt>
         <dd class="money"><?php echo \amount_format($call->amount) ?> <span class="euro">&euro;</span></dd>
     </dl>
+    <?php else : ?>
+	<dl class="block category">
+		<dt><?php echo Text::get('call-splash-resources-header') ?></dt>
+		<dd><?php echo $call->resources ?></dd>
+	</dl>
+    <?php endif; ?>
     <dl class="expires">
         <dt><?php echo Text::get('call-splash-valid_until-header') ?></dt>
         <dd><strong><?php echo $until_day ?></strong> <?php echo $until_month ?> / <?php echo $until_year ?></dd>
@@ -32,6 +39,7 @@ if ($call->status == 3) {
         <dd><?php echo count($call->projects) ?></dd>
     </dl>
 <?php else : //en campaña ?>
+    <?php if (!empty($call->amount)) : ?>
 	<dl class="">
 		<dt><?php echo Text::get('call-splash-whole_budget-header') ?></dt>
 		<dd class="money light"><?php echo \amount_format($call->amount) ?> <span class="euro">&euro;</span></dd>
@@ -40,6 +48,7 @@ if ($call->status == 3) {
 		<dt><?php echo Text::get('call-splash-remain_budget-header') ?></dt>
 		<dd class="money"><?php echo \amount_format($call->rest) ?> <span class="euro">&euro;</span></dd>
 	</dl>
+    <?php endif; ?>
 <?php endif; ?>
 	<dl class="block return">
 		<dt><?php echo Text::get('call-splash-icons-header') ?></dt>
@@ -59,19 +68,25 @@ if ($call->status == 3) {
 	</dl>
     
 <?php if ($call->status == 3) : //inscripcion ?>
-	<dl class="">
-		<dt>Más información</dt>
+	<?php if (!empty($call->pdf)) : ?>
+    <dl class="">
+		<dt><?php echo Text::get('call-splash-more_info-header') ?></dt>
 		<dd><a class="red" href="<?php echo $call->pdf ?>" target="_blank"><?php echo Text::get('call-splash-dossier-link') ?></a></dd>
 	</dl>
+    <?php endif; ?>
 <?php endif; ?>
-    
+
+    <?php if (!empty($call->user->webs[0]->url)) : ?>
 	<dl class="">
 		<dt>Web</dt>
 		<dd><a href="<?php echo $call->user->webs[0]->url ?>"><?php echo preg_replace( '^http(?<https>s)?://^', '', $call->user->webs[0]->url ) ?></a></dd>
 	</dl>
+    <?php endif; ?>
+    <?php if (!empty($call->call_location)) : ?>
 	<dl class="block">
 		<dd class="location"><?php echo Text::GmapsLink($call->call_location); ?></dd>
 	</dl>
+    <?php endif; ?>
 	<dl class="block category">
 		<dd><a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/terms"><?php echo Text::get('call-splash-legal-link') ?></a></dd>
 	</dl>
