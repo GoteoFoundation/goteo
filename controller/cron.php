@@ -532,12 +532,8 @@ namespace Goteo\Controller {
 
             }
 
-            $buffer = \ob_get_contents();
-
-            if (\strlen($buffer) != 0) {
-                // recogemos el buffer para grabar el log
-                \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', $buffer);
-            }
+            // recogemos el buffer para grabar el log
+            \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
         }
 
 
@@ -607,12 +603,8 @@ namespace Goteo\Controller {
                 }
             }
 
-            $buffer = \ob_get_contents();
-
-            if (\strlen($buffer) != 0) {
-                // recogemos el buffer para grabar el log
-                \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', $buffer);
-            }
+            // recogemos el buffer para grabar el log
+            \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
         }
 
         /*
@@ -690,12 +682,8 @@ namespace Goteo\Controller {
                 echo '<hr />';
             }
 
-            $buffer = \ob_get_contents();
-
-            if (\strlen($buffer) != 0) {
-                // recogemos el buffer para grabar el log
-                \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', $buffer);
-            }
+            // recogemos el buffer para grabar el log
+            \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
         }
 
         /**
@@ -1057,12 +1045,8 @@ namespace Goteo\Controller {
 
             }
 
-            $buffer = \ob_get_contents();
-
-            if (\strlen($buffer) != 0) {
-                // recogemos el buffer para grabar el log
-                \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', $buffer);
-            }
+            // recogemos el buffer para grabar el log
+            \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
         }
 
     }
