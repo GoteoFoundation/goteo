@@ -88,7 +88,7 @@ div#main ul#list>li {
 	left:0;
 	width: 100%;
 	z-index: 999;
-	background-color: #cbe2e3;
+	background: url("../header/background.png") repeat-x scroll center top #B5DADC;
 	margin: 0;
 	height: 25px;
 	overflow: hidden;
@@ -97,36 +97,29 @@ div#main ul#list>li {
 #super-header {
 	width: 940px;
 	margin: 0 auto;
+	overflow: hidden;
 }
 
 div#header div#menu {
-    background: #b5dadc url('header/background.png') repeat-x top;
     overflow: visible;
+	width: 450px;
+	float: left;
 }
 
 div#header div#menu > ul {
-    max-width: 940px;
-    margin: 0 auto;
+    margin: 3px 0 0;
     position: relative;
     list-style: none;
-    text-align: right;
-    overflow: visible;
+    overflow: hidden;
 	padding-bottom: 0;
 	padding-left: 0;
 	padding-right: 0;
 }
 
 div#header div#menu > ul > li {
-    display: inline-block;
     text-align: left;
-}
-
-div#header div#menu > ul > li.home {
-    width: 90px;
-    height: 20px;
-    position: absolute;
-    left: 0;
-    top: 0;
+	float: left;
+	line-height: 1.8em;
 }
 
 div#super-header div#menu > ul > li.home > a {    
@@ -134,20 +127,64 @@ div#super-header div#menu > ul > li.home > a {
     text-indent: 2000px;
     display: block;
     line-height: 2000px;
-    width: 105px;
-    height: 36px;  
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-left: -45px;
-    margin-top: -18px;
-    background: url('../header/goteo.png') no-repeat left center;        
+    width: 57px;
+    height: 16px;  
+    background: url('../header/goteo-mini.png') no-repeat left center;        
 }
 
 div#super-header div#menu > ul > li.home > a:hover {
-    background: url('../header/goteo.png') no-repeat right center;
+    background: url('../header/goteo-mini.png') no-repeat right center;
 }
 
+div#super-header div#menu > ul > li.campanya {
+	float: left;
+	text-transform: uppercase;
+	font-weight: bold;
+	vertical-align: middle;
+}
+
+div#super-header div#menu > ul > li.campanya > a,
+div#super-header div#menu > ul > li.create > a {
+    padding: .4em 1.8em .4em .8em;
+    font-size: 12px;
+    color: white;
+    display: inline-block;
+    margin: .68em .2em .6em 0;
+    max-width: 7.5em;
+    text-align: left;
+	width:80px;
+	line-height: 1em;
+}
+
+div#super-header div#rightside {
+	float: right;
+	width: 300px;
+}
+
+div#super-header div#rightside {
+	text-transform: uppercase;
+}
+
+div#super-header div#rightside ul {
+	margin: 5px 0;
+	text-align: right;
+}
+
+div#super-header div#rightside ul > li {
+	list-style-type: none;
+	margin: 0 5px 0;
+	display: inline-block;
+	line-height: 1.2em;
+}
+
+div#super-header div#rightside ul > li > a {
+	text-decoration: none;
+	font-size: 11px;
+}
+
+div#super-header div#rightside ul > li > a:hover {
+	color: #333;
+}
 
 /* Footer */
 
