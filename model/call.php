@@ -196,7 +196,8 @@ namespace Goteo\Model {
                             IFNULL(call_lang.whom, call.whom) as whom,
                             IFNULL(call_lang.apply, call.apply) as apply,
                             IFNULL(call_lang.legal, call.legal) as legal,
-                            IFNULL(call_lang.dossier, call.dossier) as dossier
+                            IFNULL(call_lang.dossier, call.dossier) as dossier,
+                            IFNULL(call_lang.resources, call.resources) as resources
                         FROM `call`
                         LEFT JOIN call_lang
                             ON  call_lang.id = call.id
@@ -876,6 +877,50 @@ namespace Goteo\Model {
             }
             return $calls;
         }
+
+        /**
+         * Saca una lista de convocatorias disponibles para traducir
+         *
+         * @param array filters
+         * @param string node id
+         * @return array of project instances
+         */
+        public static function getTranslates($filters = array(), $node = \GOTEO_NODE) {
+            $projects = array();
+
+            $values = array(':node' => $node);
+
+            $sqlFilter = "";
+            if (!empty($filters['owner'])) {
+                $sqlFilter .= " AND owner = :owner";
+                $values[':owner'] = $filters['owner'];
+            }
+            if (!empty($filters['translator'])) {
+                $sqlFilter .= " AND id IN (
+                    SELECT item
+                    FROM user_translate
+                    WHERE user = :translator
+                    AND type = 'call'
+                    )";
+                $values[':translator'] = $filters['translator'];
+            }
+
+//                    AND node = :node
+            $sql = "SELECT
+                        id
+                    FROM `call`
+                    WHERE translate = 1
+                        $sqlFilter
+                    ORDER BY name ASC
+                    ";
+
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
+                $projects[] = self::getMini($proj['id']);
+            }
+            return $projects;
+        }
+
 
         /*
          * comprueba errores de datos y actualiza la puntuación

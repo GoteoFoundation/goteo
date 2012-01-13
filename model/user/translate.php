@@ -7,25 +7,101 @@ namespace Goteo\Model\User {
     class Translate extends \Goteo\Core\Model {
 
         public
-            $id,
-            $user;
+            $user,
+            $type,
+            $item,
+            $ready;
 
+        // tipos de contenidos que se traducen
+        public static
+            $types = array('project', 'call');
+
+        /*
+         *  Para conseguir una instancia de traduccion
+         *
+        public static function get ($user, $type, $item) {
+
+            if (!in_array($type, self::$types)) {
+                return false;
+            }
+
+            $query = static::query("
+                SELECT *
+                FROM    user_translate
+                WHERE type = :type
+                AND item = :item
+                AND user = :user
+                ", array(':type' => $type, ':item'=>$item, ':user'=>$user));
+
+            $translate =  $query->fetchObject(__CLASS__);
+
+            if ($translate instanceof \Goteo\Model\User\Translate){
+                return $translate;
+            } else {
+                return false;
+            }
+        }
+         * 
+         */
+        
+
+        /**
+         * Lo usamos para conseguir el tipo de ese item
+         * @param varchar(50) $item
+         * @return string $type ('project', 'call') or false if not one
+         */
 	 	public static function get ($id) {
-            return true;
+            $array = array ();
+            try {
+                $query = static::query("SELECT DISTINCT(type) FROM user_translate WHERE item = ?", array($id));
+                $types = $query->fetchAll();
+                foreach ($types as $type) {
+                    $array[] = $type[0];
+                }
+
+                if (count($array) !== 1) {
+                    return false;
+                } else {
+                    return $array[0];
+                }
+                
+            } catch(\PDOException $e) {
+				throw new \Goteo\Core\Exception($e->getMessage());
+            }
         }
 
         /**
          * Get the translations for a user
          * @param varcahr(50) $id  user identifier
-         * @return array of reviews identifiers
+         * @return array of items
          */
-	 	public static function getMine ($id, $lang = null) {
+	 	public static function getMine ($id, $lang = null, $type = null) {
             $array = array ();
             try {
-                $query = static::query("SELECT project FROM user_translate WHERE user = ?", array($id));
-                $translates = $query->fetchAll();
+
+                $sql = "SELECT type, item FROM user_translate WHERE user = :user";
+                $values = array(':user'=>$id);
+                
+                if (in_array($type, self::$types)) {
+                    $sql .= " AND type = :type";
+                    $values[':type'] = $type;
+                } else {
+                    return false;
+                }
+
+                $query = static::query($sql, $values);
+                $translates = $query->fetchAll(\PDO::FETCH_ASSOC);
                 foreach ($translates as $item) {
-                    $array[] = Model\Project::get($item[0], $lang);
+                    switch ($item['type']) {
+                        case 'project':
+                            $array[] = Model\Project::get($item['item'], $lang);
+                            break;
+                        case 'call':
+                            $array[] = Model\Call::get($item['item'], $lang);
+                            break;
+                        default:
+                            continue;
+                    }
                 }
 
                 return $array;
@@ -34,15 +110,30 @@ namespace Goteo\Model\User {
             }
 		}
 
+        // shortcuts para getMine
+	 	public static function getMyProjects ($id, $lang = null) {
+            return self::getMine($id, $lang, 'project');
+        }
+
+	 	public static function getMyCalls ($id, $lang = null) {
+            return self::getMine($id, $lang, 'call');
+        }
+
+
         /**
-         * Metodo para sacar los proyectos disponibles apra traducir
+         * Metodo para sacar los contenidos disponibles para traducir
          * @param varcahr(50) $id  user identifier
-         * @return array of reviews identifiers
+         * @return array of items
          */
-	 	public static function getAvailables () {
+	 	public static function getAvailables ($type = 'project') {
+
+            if (!in_array($type, self::$types)) {
+                return false;
+            }
+
             $array = array ();
             try {
-                $query = static::query("SELECT id, name FROM project WHERE status > 1 AND translate = 0");
+                $query = static::query("SELECT id, name FROM `{$type}` WHERE status > 1 AND translate = 0");
                 $avail = $query->fetchAll(\PDO::FETCH_OBJ);
                 foreach ($avail as $item) {
                     $array[] = $item;
@@ -56,8 +147,11 @@ namespace Goteo\Model\User {
 
 		public function validate(&$errors = array()) {
             // Estos son errores que no permiten continuar
-            if (empty($this->id))
-                $errors[] = 'No hay una traducción para asignar';
+            if (empty($this->type) || !in_array($this->type, self::$types))
+                $errors[] = 'No hay tipo de contenido o no el tipo no esta habilitado';
+
+            if (empty($this->item))
+                $errors[] = 'No hay contenido para asignar';
 
             if (empty($this->user))
                 $errors[] = 'No hay ningun usuario al que asignar';
@@ -72,14 +166,18 @@ namespace Goteo\Model\User {
 		public function save (&$errors = array()) {
             if (!$this->validate($errors)) return false;
 
-            $values = array(':user'=>$this->user, ':project'=>$this->id);
+            $values = array(
+                    ':user'=>$this->user,
+                    ':type'=>$this->type,
+                    ':item'=>$this->item
+                );
 
 			try {
-	            $sql = "REPLACE INTO user_translate (user, project) VALUES(:user, :project)";
+	            $sql = "REPLACE INTO user_translate (user, type, item) VALUES(:user, :type, :item)";
 				self::query($sql, $values);
 				return true;
 			} catch(\PDOException $e) {
-				$errors[] = "La traducción {$this->id} no se ha asignado correctamente. Por favor, revise el metodo User\Translate->save." . $e->getMessage();
+				$errors[] = "La traducción {$this->type}:{$this->item} no se ha asignado correctamente. Por favor, revise el metodo User\Translate->save." . $e->getMessage();
 				return false;
 			}
 
@@ -94,16 +192,17 @@ namespace Goteo\Model\User {
 		 * @return boolean
 		 */
 		public function remove (&$errors = array()) {
-			$values = array (
-				':user'=>$this->user,
-				':project'=>$this->id,
-			);
+            $values = array(
+                    ':user'=>$this->user,
+                    ':type'=>$this->type,
+                    ':item'=>$this->item
+                );
 
             try {
-                self::query("DELETE FROM user_translate WHERE project = :project AND user = :user", $values);
+                self::query("DELETE FROM user_translate WHERE type = :type AND item = :item AND user = :user", $values);
 				return true;
 			} catch(\PDOException $e) {
-                $errors[] = 'No se ha podido desasignar la traduccion ' . $this->id . ' del usuario ' . $this->user . ' ' . $e->getMessage();
+                $errors[] = 'No se ha podido desasignar la traduccion ' . $this->type .':'. $this->item . ' del usuario ' . $this->user . '. Revisar metodo User\Translate:remove ' . $e->getMessage();
                 //Text::get('remove-review-fail');
                 return false;
 			}
@@ -112,70 +211,74 @@ namespace Goteo\Model\User {
         /*
          * Dar por lista una traducción
          *
+        */
 		public function ready (&$errors = array()) {
-			$values = array (
-				':user'=>$this->user,
-				':project'=>$this->id,
-			);
+            $values = array(
+                    ':user'=>$this->user,
+                    ':type'=>$this->type,
+                    ':item'=>$this->item
+                );
 
             try {
-                self::query("UPDATE user_translate SET ready = 1 WHERE project = :project AND user = :user", $values);
-
-                // recalcular puntuacion global de la revision
-                Model\Review::recount($this->id, $errors);
-
-				return true;
+                if (self::query("UPDATE user_translate SET ready = 1 WHERE type = :type AND item = :item AND user = :user", $values)) {
+    				return true;
+                }
 			} catch(\PDOException $e) {
-                $errors[] = 'No se ha podido marcar la traduccion ' . $this->id . ' del usuario ' . $this->user . ' como lista. ' . $e->getMessage();
+                $errors[] = 'No se ha podido marcar la traduccion ' . $this->type .':'. $this->item . ' del usuario ' . $this->user . ' como lista. ' . $e->getMessage();
                 //Text::get('review-set_ready-fail');
-                return false;
 			}
+            
+            return false;
 		}
 
-        *
+        /*
          * Reabrir una traduccion
-         *
+        */
 		public function unready (&$errors = array()) {
-			$values = array (
-				':user'=>$this->user,
-				':project'=>$this->id,
-			);
+            $values = array(
+                    ':user'=>$this->user,
+                    ':type'=>$this->type,
+                    ':item'=>$this->item
+                );
 
             try {
-                self::query("UPDATE user_translate SET ready = 0 WHERE project = :project AND user = :user", $values);
-
-                // recalcular puntuacion global de la revision
-                Model\Review::recount($this->id, $errors);
-
-				return true;
+                if (self::query("UPDATE user_translate SET ready = 0 WHERE type = :type AND item = :item AND user = :user", $values)) {
+    				return true;
+                }
 			} catch(\PDOException $e) {
-                $errors[] = 'No se ha podido reabrir la revision ' . $this->id . ' del usuario ' . $this->user . '. ' . $e->getMessage();
-                //Text::get('review-set_unready-fail');
-                return false;
+                $errors[] = 'No se ha podido reabrir la traduccion ' . $this->type .':'. $this->item . ' del usuario ' . $this->user . '. ' . $e->getMessage();
 			}
+            
+            return false;
 		}
-*/
+
         
         /*
          * Lista de usuarios que tienen asignada cierta traduccion
          *
          * //, user_review.ready as ready
          */
-        public static function translators ($project) {
+        public static function translators ($item, $type = 'project') {
+
+            if (!in_array($type, self::$types)) {
+                return false;
+            }
+
              $array = array ();
             try {
                $sql = "SELECT 
-                            DISTINCT(user_translate.user) as id
+                            DISTINCT(user) as id
                         FROM user_translate
-                        WHERE user_translate.project = :id
+                        WHERE type = :type
+                        AND item = :item
                         ";
-                $query = static::query($sql, array(':id'=>$project));
-                foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $item) {
+                $query = static::query($sql, array(':type'=>$type, ':item'=>$item));
+                foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $row) {
 
                     // nombre i avatar
-                    $user = \Goteo\Model\User::getMini($item['id']);
+                    $user = \Goteo\Model\User::getMini($row['id']);
 
-                    $array[$item['id']] = $user->name;
+                    $array[$row['id']] = $user->name;
                 }
 
                 return $array;
@@ -187,15 +290,21 @@ namespace Goteo\Model\User {
         /*
          * Devuelve true o false si es legal que este usuario haga algo con esta revision
          */
-        public static function is_legal ($user, $project) {
-            $sql = "SELECT user, translate FROM user_translate WHERE user = :user AND project = :project";
+        public static function is_legal ($user, $item, $type = 'project') {
+
+            if (!in_array($type, self::$types)) {
+                return false;
+            }
+            
+            $sql = "SELECT user FROM user_translate WHERE user = :user AND type = :type AND item = :item";
             $values = array(
                 ':user' => $user,
-                ':project' => $project
+                ':type' => $type,
+                ':item' => $item
             );
             $query = static::query($sql, $values);
             $legal = $query->fetchObject();
-            if ($legal->user == $user && $legal->project == $project) {
+            if ($legal->user == $user) {
                 return true;
             } else {
                 return false;

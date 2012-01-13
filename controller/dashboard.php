@@ -999,7 +999,7 @@ namespace Goteo\Controller {
                 $_SESSION['translate_project_lang'] = 'en';
             }
 
-            $projects = Model\User\Translate::getMine($user->id, $_SESSION['translate_project_lang']);
+            $projects = Model\User\Translate::getMyProjects($user->id, $_SESSION['translate_project_lang']);
 
             if ($action == 'select' && !empty($_POST['project'])) {
                 // otro proyecto de trabajo
@@ -1404,9 +1404,21 @@ namespace Goteo\Controller {
                 )
             );
 
-            // si tiene algun proyecto para traducir
-            $translates = Model\User\Translate::query("SELECT COUNT(project) FROM user_translate WHERE user = ?", array($_SESSION['user']->id));
-            if ($translates->fetchColumn(0) > 0) {
+            if ($_SESSION['translate_type'] == 'project' && !empty($_SESSION['translate_project'])) {
+                // si esta traduciendo un proyecto
+                $menu['translates'] = array(
+                    'label' => Text::get('dashboard-menu-translates'),
+                    'options' => array (
+                        'profile'  => Text::get('step-1'),
+                        'overview' => Text::get('step-3'),
+                        'costs'    => Text::get('step-4'),
+                        'rewards'  => Text::get('step-5'),
+                        'supports' => Text::get('step-6'),
+                        'updates'  => Text::get('project-menu-updates')
+                    )
+                );
+            } elseif ($_SESSION['translate_type'] == 'call' && !empty($_SESSION['translate_call'])) {
+                // si esta traduciendo una convocatoria
                 $menu['translates'] = array(
                     'label' => Text::get('dashboard-menu-translates'),
                     'options' => array (
@@ -1419,6 +1431,7 @@ namespace Goteo\Controller {
                     )
                 );
             } else {
+                // si está traduciendo su perfil
                 $menu['translates'] = array(
                     'label' => Text::get('dashboard-menu-translates'),
                     'options' => array (

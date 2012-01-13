@@ -1935,9 +1935,10 @@ namespace Goteo\Model {
             }
             if (!empty($filters['translator'])) {
                 $sqlFilter .= " AND id IN (
-                    SELECT project
+                    SELECT item
                     FROM user_translate
                     WHERE user = :translator
+                    AND type = 'project'
                     )";
                 $values[':translator'] = $filters['translator'];
             }
