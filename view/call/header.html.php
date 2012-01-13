@@ -62,8 +62,6 @@
 			 $("#lang").hover(function(){
 			   //desplegar idiomas
 			   try{clearTimeout(TID_LANG)}catch(e){};
-			   var pos = $(this).offset().left;
-			   $('ul.lang').css({left:pos+'px'});
 			   $("ul.lang").fadeIn();
 		       $("#lang").css("background","#808285 url('/view/css/bolita.png') 4px 7px no-repeat");
 

@@ -95,7 +95,7 @@ div#main ul#list>li {
 }
 
 #super-header {
-	width: 940px;
+	width: 945px;
 	margin: 0 auto;
 	overflow: hidden;
 }
@@ -158,7 +158,7 @@ div#super-header div#menu > ul > li.create > a {
 
 div#super-header div#rightside {
 	float: right;
-	width: 300px;
+	width: 330px;
 }
 
 div#super-header div#rightside {
@@ -166,13 +166,14 @@ div#super-header div#rightside {
 }
 
 div#super-header div#rightside ul {
-	margin: 5px 0;
+	margin: 0;
 	text-align: right;
 }
 
 div#super-header div#rightside ul > li {
 	list-style-type: none;
 	margin: 0 5px 0;
+	padding: 5px 0;
 	display: inline-block;
 	line-height: 1.2em;
 }
@@ -184,6 +185,69 @@ div#super-header div#rightside ul > li > a {
 
 div#super-header div#rightside ul > li > a:hover {
 	color: #333;
+}
+
+div#super-header ul li#lang {
+	background:url('../bolita.png') 4px 7px no-repeat;
+	margin-left: 15px;
+    padding-right: 22px;
+    width: 44px;
+	margin-right: 0 !important;
+}
+
+div#super-header ul li#lang.active {
+	background:url('../bolita.png') 4px 7px no-repeat #808286;
+}
+
+div#super-header ul li#lang a {
+	padding-right: 5px;
+	background: url('../lang-triangulo.png') no-repeat scroll 100% bottom transparent;
+	cursor:default;
+}
+
+div#super-header ul li#lang a:hover {
+	color:#fff
+}
+
+ul.lang {
+	position: absolute;
+	right: 2px;
+	top: 0;
+	z-index: 1000;
+	list-style:none;
+	display:none;
+	background-color: #fff;
+	margin:0;
+	padding:0;
+}
+	
+ul.lang li {
+	background-color: #59595C;
+	height: 15px;
+	padding: 4px 0;
+	position: relative;
+	width: 70px;
+	text-align:center;
+}
+
+ul.lang li:hover {
+	background: #808285; 
+}
+
+ul.lang li>a {
+	bottom: 0;
+	color: #ffffff;
+	font-size: 11px;
+	position: relative;
+	text-decoration: none;
+	text-transform: uppercase;
+	top: 0;
+	width: 100%;
+	display: block;
+}
+
+ul.lang li:hover>a {
+	color: #1EB2B2;
 }
 
 /* Footer */
