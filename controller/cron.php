@@ -23,6 +23,8 @@ namespace Goteo\Controller {
          */
         public function execute () {
 
+            ob_start();
+
             // debug para supervisar
             $debug = ($_GET['debug'] == 'debug') ? true : false;
 
@@ -176,10 +178,10 @@ namespace Goteo\Controller {
                 //  (financiado a los 80 o cancelado si a los 40 no llega al minimo)
                 // si ha llegado a los 40 dias: mínimo-> ejecutar ; no minimo proyecto y todos los preapprovals cancelados
                 if ($days > 40) {
-                    if ($debug) echo 'Ha llegado a los 40 dias de campaña (final de primera ronda)<br />';
-
                     // si no ha alcanzado el mínimo, pasa a estado caducado
                     if ($amount < $project->mincost) {
+                        if ($debug) echo 'Ha llegado a los 40 dias de campaña sin conseguir el minimo, no pasa a segunda ronda<br />';
+
                         echo $project->name . ': ha recaudado ' . $amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . '<br />';
                         echo 'No ha conseguido el minimo, cancelamos todos los aportes y lo caducamos:';
                         $cancelAll = true;
@@ -304,18 +306,22 @@ namespace Goteo\Controller {
                             
                             echo '<hr />';
                         } elseif (empty($project->passed)) {
+
+                            if ($debug) echo 'Ha llegado a los 40 dias de campaña, pasa a segunda ronda<br />';
+
                             echo $project->name . ': ha recaudado ' . $amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . '<br />';
-                            echo 'El proyecto supera la primera ronda: marcamos fecha. ';
+                            echo 'El proyecto supera la primera ronda: marcamos fecha';
 
                             $execute = true; // ejecutar los cargos de la primera ronda
 
-                            if ($project->passed()) {
-                                echo 'Ok';
+                            $errors = array();
+                            if ($project->passed($errors)) {
+                                echo ' -> Ok';
                             } else {
                                 @mail('goteo_fail@doukeshi.org',
                                     'Fallo al marcar fecha de paso a segunda ronda ' . SITE_URL,
                                     'Fallo al marcar la fecha de paso a segunda ronda para el proyecto '.$project->name.': ' . implode(',', $errors));
-                                echo 'ERROR::' . implode(',', $errors);
+                                echo ' -> ERROR::' . implode(',', $errors);
                             }
 
                             echo '<br />';
@@ -361,154 +367,83 @@ namespace Goteo\Controller {
                             //Email de proyecto pasa a segunda ronda a los inversores
                             self::toInvestors('r1_pass', $project);
                             
+                        } else {
+                            if ($debug) echo 'Lleva más de 40 dias de campaña, debe estar en segunda ronda con fecha marcada<br />';
+                            if ($debug) echo $project->name . ': lleva recaudado ' . $amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . ' y paso a segunda ronda el '.$project->passed.'<br />';
                         }
                     }
                 }
 
-                if ($debug) echo '::::::Comienza tratamiento de aportes:::::::<br />';
-                // tratamiento de aportes penddientes
-                $query = \Goteo\Core\Model::query("
-                    SELECT  *
-                    FROM  invest
-                    WHERE   invest.project = ?
-                    AND     (invest.status = 0
-                        OR (invest.method = 'tpv'
-                            AND invest.status = 1
+                // si hay que ejecutar o cancelar
+                if ($cancelAll || $execute) {
+                    if ($debug) echo '::::::Comienza tratamiento de aportes:::::::<br />';
+                    // tratamiento de aportes penddientes
+                    $query = \Goteo\Core\Model::query("
+                        SELECT  *
+                        FROM  invest
+                        WHERE   invest.project = ?
+                        AND     (invest.status = 0
+                            OR (invest.method = 'tpv'
+                                AND invest.status = 1
+                            )
+                            OR (invest.method = 'cash'
+                                AND invest.status = 1
+                            )
                         )
-                        OR (invest.method = 'cash'
-                            AND invest.status = 1
-                        )
-                    )
-                    AND (invest.campaign IS NULL OR invest.campaign = 0)
-                    ", array($project->id));
-                $project->invests = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
+                        AND (invest.campaign IS NULL OR invest.campaign = 0)
+                        ", array($project->id));
+                    $project->invests = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
 
-                foreach ($project->invests as $key=>&$invest) {
+                    foreach ($project->invests as $key=>&$invest) {
 
-                    $userData = Model\User::getMini($invest->user);
+                        $userData = Model\User::getMini($invest->user);
 
-                    if ($invest->invested == date('Y-m-d')) {
-                        if ($debug) echo 'Aporte ' . $invest->id . ' es de hoy.<br />';
-                    } elseif ($invest->method != 'cash' && empty($invest->preapproval)) {
-                        //si no tiene preaproval, cancelar
-                        echo 'Aporte ' . $invest->id . ' cancelado por no tener preapproval.<br />';
-                        $invest->cancel();
-                        continue;
-                    }
-
-                    if ($cancelAll) {
-                        switch ($invest->method) {
-                            case 'paypal':
-                                $err = array();
-                                if (Paypal::cancelPreapproval($invest, $err)) {
-                                    $log_text = "Se ha cancelado aporte y preapproval de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
-                                } else {
-                                    $txt_errors = implode('; ', $err);
-                                    $log_text = "Ha fallado al cancelar el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
-                                }
-                                break;
-                            case 'tpv':
-                                // se habre la operación en optra ventana
-                                $err = array();
-                                if (Tpv::cancelPreapproval($invest, $err)) {
-                                    $log_text = "Se ha anulado el cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s";
-                                } else {
-                                    $txt_errors = implode('; ', $err);
-                                    $log_text = "Ha fallado al anular el cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
-                                }
-                                break;
-                            case 'cash':
-                                if ($invest->cancel()) {
-                                    $log_text = "Se ha cancelado aporte manual de %s de %s (id: %s) al proyecto %s del dia %s";
-                                } else{
-                                    $log_text = "Ha fallado al cancelar el aporte manual de %s de %s (id: %s) al proyecto %s del dia %s. ";
-                                }
-                                break;
+                        if ($invest->invested == date('Y-m-d')) {
+                            if ($debug) echo 'Aporte ' . $invest->id . ' es de hoy.<br />';
+                        } elseif ($invest->method != 'cash' && empty($invest->preapproval)) {
+                            //si no tiene preaproval, cancelar
+                            echo 'Aporte ' . $invest->id . ' cancelado por no tener preapproval.<br />';
+                            $invest->cancel();
+                            continue;
                         }
 
-                        /*
-                         * Evento Feed
-                         */
-                        $log = new Feed();
-                        $log->title = 'Cargo cancelado (cron)';
-                        $log->url = '/admin/invests';
-                        $log->type = 'system';
-                        $log_items = array(
-                            Feed::item('user', $userData->name, $userData->id),
-                            Feed::item('money', $invest->amount.' &euro;'),
-                            Feed::item('system', $invest->id),
-                            Feed::item('project', $project->name, $project->id),
-                            Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
-                        $log->add($errors);
-                        unset($log);
+                        if ($cancelAll) {
+                            if ($debug) echo 'Cancelar todo<br />';
 
-                        echo 'Aporte '.$invest->id.' cancelado por proyecto caducado.<br />';
-                        $invest->setStatus('4');
-                        
-                        continue;
-                    }
-
-                    // si hay que ejecutar
-                    if ($execute && empty($invest->payment)) {
-
-                        // si tiene cuenta, claro...
-                        if (empty($projectAccount->paypal)) {
-                            echo 'El proyecto '.$project->name.' no tiene cuenta paypal!!<br />';
-                            @mail('goteo_fail@doukeshi.org',
-                                'El proyecto '.$project->name.' no tiene cuenta paypal ' . SITE_URL,
-                                'El proyecto '.$project->name.' no tiene cuenta paypal y esto intentaba ejecutarlo :S');
-                            
-                            break;
-
+                            switch ($invest->method) {
+                                case 'paypal':
+                                    $err = array();
+                                    if (Paypal::cancelPreapproval($invest, $err)) {
+                                        $log_text = "Se ha cancelado aporte y preapproval de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
+                                    } else {
+                                        $txt_errors = implode('; ', $err);
+                                        $log_text = "Ha fallado al cancelar el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                                    }
+                                    break;
+                                case 'tpv':
+                                    // se habre la operación en optra ventana
+                                    $err = array();
+                                    if (Tpv::cancelPreapproval($invest, $err)) {
+                                        $log_text = "Se ha anulado el cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s";
+                                    } else {
+                                        $txt_errors = implode('; ', $err);
+                                        $log_text = "Ha fallado al anular el cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                                    }
+                                    break;
+                                case 'cash':
+                                    if ($invest->cancel()) {
+                                        $log_text = "Se ha cancelado aporte manual de %s de %s (id: %s) al proyecto %s del dia %s";
+                                    } else{
+                                        $log_text = "Ha fallado al cancelar el aporte manual de %s de %s (id: %s) al proyecto %s del dia %s. ";
+                                    }
+                                    break;
                         }
 
-                        $errors = array();
-
-                        $log_text = null;
-
-                        switch ($invest->method) {
-                            case 'paypal':
-                                $invest->account = $projectAccount->paypal;
-                                $err = array();
-                                if (Paypal::pay($invest, $err)) {
-                                    $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
-                                } else {
-                                    $txt_errors = implode('; ', $err);
-                                    echo 'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: ' . $txt_errors . '<br />';
-                                    @mail('goteo_fail@doukeshi.org',
-                                        'Fallo al ejecutar cargo Paypal ' . SITE_URL,
-                                        'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: ' . $txt_errors);
-                                    $log_text = "Ha fallado al ejecutar el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
-                                }
-                                break;
-                            case 'tpv':
-                                // los cargos con este tpv vienen ejecutados de base
-                            /*
-                                $err = array();
-                                if (Tpv::pay($invest, $err)) {
-                                    echo 'Cargo sermepa correcto';
-                                    $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s del dia %s";
-                                } else {
-                                    $txt_errors = implode('; ', $err);
-                                    echo 'Fallo al ejecutar cargo sermepa: ' . $txt_errors;
-                                    $log_text = "Ha fallado al ejecutar el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s del dia %s <br />Se han dado los siguientes errores: $txt_errors";
-                                }
-                             *
-                             */
-                                break;
-                            case 'cash':
-                                $invest->setStatus('1');
-                                break;
-                        }
-
-                        if (!empty($log_text)) {
                             /*
                              * Evento Feed
                              */
                             $log = new Feed();
-                            $log->title = 'Cargo ejecutado (cron)';
+                            $log->title = 'Cargo cancelado (cron)';
                             $log->url = '/admin/invests';
                             $log->type = 'system';
                             $log_items = array(
@@ -521,19 +456,111 @@ namespace Goteo\Controller {
                             $log->html = \vsprintf($log_text, $log_items);
                             $log->add($errors);
                             unset($log);
+
+                            echo 'Aporte '.$invest->id.' cancelado por proyecto caducado.<br />';
+                            $invest->setStatus('4');
+
+                            continue;
+                        }
+
+                        // si hay que ejecutar
+                        if ($execute && empty($invest->payment)) {
+                            if ($debug) echo 'Ejecutando aporte '.$invest->id.' ['.$invest->method.']';
+
+                            // si estamos aqui y no tiene cuenta paypal es que nos hemos colado en algo
+                            if (empty($projectAccount->paypal)) {
+                                if ($debug) echo '<br /> Al ejecutar nos encontramos que el proyecto '.$project->name.' no tiene cuenta paypal!!<br />';
+                                @mail('goteo_fail@doukeshi.org',
+                                    'El proyecto '.$project->name.' no tiene cuenta paypal ' . SITE_URL,
+                                    'El proyecto '.$project->name.' no tiene cuenta paypal y esto intentaba ejecutarlo :S');
+
+                                break;
+
+                            }
+
+                            $errors = array();
+
+                            $log_text = null;
+
+                            switch ($invest->method) {
+                                case 'paypal':
+                                    $invest->account = $projectAccount->paypal;
+                                    $err = array();
+                                    if (Paypal::pay($invest, $err)) {
+                                        $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
+                                        if ($debug) echo ' -> Ok';
+                                    } else {
+                                        $txt_errors = implode('; ', $err);
+                                        echo 'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: ' . $txt_errors . '<br />';
+                                        @mail('goteo_fail@doukeshi.org',
+                                            'Fallo al ejecutar cargo Paypal ' . SITE_URL,
+                                            'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: ' . $txt_errors);
+                                        $log_text = "Ha fallado al ejecutar el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                                        if ($debug) echo ' -> ERROR!!';
+                                    }
+                                    break;
+                                case 'tpv':
+                                    // los cargos con este tpv vienen ejecutados de base
+                                    if ($debug) echo ' -> Ok';
+                                /*
+                                    $err = array();
+                                    if (Tpv::pay($invest, $err)) {
+                                        echo 'Cargo sermepa correcto';
+                                        $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s del dia %s";
+                                    } else {
+                                        $txt_errors = implode('; ', $err);
+                                        echo 'Fallo al ejecutar cargo sermepa: ' . $txt_errors;
+                                        $log_text = "Ha fallado al ejecutar el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s del dia %s <br />Se han dado los siguientes errores: $txt_errors";
+                                    }
+                                 *
+                                 */
+                                    break;
+                                case 'cash':
+                                    // los cargos manuales vienen ejecutados de base
+                                    $invest->setStatus('1');
+                                    if ($debug) echo ' -> Ok';
+                                    break;
+                            }
+                            if ($debug) echo '<br />';
+
+                            if (!empty($log_text)) {
+                                /*
+                                 * Evento Feed
+                                 */
+                                $log = new Feed();
+                                $log->title = 'Cargo ejecutado (cron)';
+                                $log->url = '/admin/invests';
+                                $log->type = 'system';
+                                $log_items = array(
+                                    Feed::item('user', $userData->name, $userData->id),
+                                    Feed::item('money', $invest->amount.' &euro;'),
+                                    Feed::item('system', $invest->id),
+                                    Feed::item('project', $project->name, $project->id),
+                                    Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                                );
+                                $log->html = \vsprintf($log_text, $log_items);
+                                $log->add($errors);
+                                if ($debug) echo $log->html . '<br />';
+                                unset($log);
+                            }
+
+                            if ($debug) echo 'Aporte '.$invest->id.' tratado<br />';
                         }
 
                     }
 
+                    if ($debug) echo '::Fin tratamiento aportes<br />';
                 }
-                if ($debug) echo '::Fin tratamiento aportes<br />';
 
                 if ($debug) echo 'Fin tratamiento Proyecto '.$project->name.'<hr />';
-
             }
 
-            // recogemos el buffer para grabar el log
-            \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
+            $buffer = \ob_get_contents();
+            if (!empty($buffer)) {
+                // recogemos el buffer para grabar el log
+                \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', $buffer);
+            }
+            ob_end_flush ();
         }
 
 
@@ -543,6 +570,9 @@ namespace Goteo\Controller {
          *
          */
         public function verify () {
+
+            ob_start();
+            
             // proyectos en campaña (y los financiados por si se ha quedado alguno descolgado)
             $projects = Model\Project::active();
 
@@ -603,8 +633,12 @@ namespace Goteo\Controller {
                 }
             }
 
-            // recogemos el buffer para grabar el log
-            \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
+            $buffer = \ob_get_contents();
+            if (!empty($buffer)) {
+                // recogemos el buffer para grabar el log
+                \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', $buffer);
+            }
+            ob_end_flush ();
         }
 
         /*
@@ -614,6 +648,9 @@ namespace Goteo\Controller {
          *
          */
         public function dopay ($project) {
+
+            ob_start();
+
             $projectData = Model\Project::getMini($project);
 
             // necesitamos la cuenta del proyecto y que sea la misma que cuando el preapproval
@@ -682,8 +719,12 @@ namespace Goteo\Controller {
                 echo '<hr />';
             }
 
-            // recogemos el buffer para grabar el log
-            \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
+            $buffer = \ob_get_contents();
+            if (!empty($buffer)) {
+                // recogemos el buffer para grabar el log
+                \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', $buffer);
+            }
+            ob_end_flush ();
         }
 
         /**
@@ -886,6 +927,9 @@ namespace Goteo\Controller {
          */
         
         public function daily () {
+
+            ob_start();
+
             // proyectos en campaña o financiados
             $projects = Model\Project::active();
 
@@ -1045,8 +1089,12 @@ namespace Goteo\Controller {
 
             }
 
-            // recogemos el buffer para grabar el log
-            \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
+            $buffer = \ob_get_contents();
+            if (!empty($buffer)) {
+                // recogemos el buffer para grabar el log
+                \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', $buffer);
+            }
+            ob_end_flush ();
         }
 
     }

@@ -1515,7 +1515,7 @@ namespace Goteo\Model {
 				self::query($sql, array(':passed'=>date('Y-m-d'), ':id'=>$this->id));
                 return true;
             } catch (\PDOException $e) {
-                $errors[] = 'Fallo al dar por financiado el proyecto. ' . $e->getMessage();
+                $errors[] = 'Fallo SQL al marcar fecha de paso de ronda. ' . $e->getMessage();
                 //Text::get('send-project-success-fail');
                 return false;
             }
