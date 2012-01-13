@@ -12,6 +12,17 @@ $filters = $this['filters'];
 $filter = "?owner={$filters['owner']}&translator={$filters['translator']}";
 
 ?>
+<script type="text/javascript">
+function assign() {
+    if (document.getElementById('assign-user').value != '') {
+        document.getElementById('form-assign').submit();
+        return true;
+    } else {
+        alert('No has seleccionado ningun traductor');
+        return false;
+    }
+}
+</script>
 <div class="widget">
 <?php if ($this['action'] == 'edit') : ?>
     <h3 class="title">Traductores para el proyecto <?php echo $project->name ?></h3>
@@ -30,7 +41,7 @@ $filter = "?owner={$filters['owner']}&translator={$filters['translator']}";
             <tr>
                 <form id="form-assign" action="/admin/translates/assign/<?php echo $project->id; ?>/<?php echo $filter; ?>" method="get">
                 <td colspan="2">
-                    <select name="user">
+                    <select id="assign-user" name="user">
                         <option value="">Selecciona otro traductor</option>
                         <?php foreach ($this['translators'] as $user) :
                             if (in_array($user->id, array_keys($project->translators))) continue;
@@ -39,13 +50,13 @@ $filter = "?owner={$filters['owner']}&translator={$filters['translator']}";
                         <?php endforeach; ?>
                     </select>
                 </td>
-                <td><a href="#" onclick="document.getElementById('form-assign').submit(); return false;">[Asignar]</a></td>
+                <td><a href="#" onclick="return assign();" class="button aqua">Asignar</a></td>
                 </form>
             </tr>
         </table>
         <hr />
         <a href="/admin/translates/close/<?php echo $project->id; ?>" class="button red" onclick="return confirm('Seguro que deseas dar por finalizada esta traducción?')">Cerrar la traducción</a>&nbsp;&nbsp;&nbsp;
-        <a href="/admin/translates/send/<?php echo $project->id; ?>" class="button green" onclick="return confirm('Se va a enviar un email?')">Avisar al autor</a>
+        <a href="/admin/translates/send/<?php echo $project->id; ?>" class="button green" onclick="return confirm('Se va a enviar un email automaticamente, ok?')">Avisar al autor</a>
         <hr />
 <?php endif; ?>
 

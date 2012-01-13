@@ -39,7 +39,7 @@ $filter = "?owner={$filters['owner']}&translator={$filters['translator']}";
                         <th width="5%"><!-- Editar y asignar --></th>
                         <th width="55%">Convocatoria</th> <!-- edit -->
                         <th width="30%">Creador</th>
-                        <th width="10%">Idioma</th>
+<!--                        <th width="10%">Idioma</th> -->
                     </tr>
                 </thead>
 
@@ -49,7 +49,7 @@ $filter = "?owner={$filters['owner']}&translator={$filters['translator']}";
                         <td><a href="/admin/transcalls/edit/<?php echo $call->id; ?>/<?php echo $filter; ?>">[Editar]</a></td>
                         <td><a href="/call/<?php echo $call->id; ?>" target="_blank" title="Preview"><?php echo $call->name; ?></a></td>
                         <td><?php echo $call->user->name; ?></td>
-                        <td><?php echo $call->lang; ?></td>
+<!--                        <td><?php echo $call->lang; ?></td> -->
                     </tr>
                     <?php endforeach; ?>
                 </tbody>

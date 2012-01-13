@@ -11,6 +11,17 @@ $filters = $this['filters'];
 $filter = "?owner={$filters['owner']}&translator={$filters['translator']}";
 
 ?>
+<script type="text/javascript">
+function assign() {
+    if (document.getElementById('assign-user').value != '') {
+        document.getElementById('form-assign').submit();
+        return true;
+    } else {
+        alert('No has seleccionado ningun traductor');
+        return false;
+    }
+}
+</script>
 <div class="widget">
 <?php if ($this['action'] == 'edit') : ?>
     <h3 class="title">Traductores para la convocatoria <?php echo $call->name ?></h3>
@@ -29,7 +40,7 @@ $filter = "?owner={$filters['owner']}&translator={$filters['translator']}";
             <tr>
                 <form id="form-assign" action="/admin/transcalls/assign/<?php echo $call->id; ?>/<?php echo $filter; ?>" method="get">
                 <td colspan="2">
-                    <select name="user">
+                    <select id="assign-user" name="user">
                         <option value="">Selecciona otro traductor</option>
                         <?php foreach ($this['translators'] as $user) :
                             if (in_array($user->id, array_keys($call->translators))) continue;
@@ -38,21 +49,20 @@ $filter = "?owner={$filters['owner']}&translator={$filters['translator']}";
                         <?php endforeach; ?>
                     </select>
                 </td>
-                <td><a href="#" onclick="document.getElementById('form-assign').submit(); return false;">[Asignar]</a></td>
+                <td><a href="#" onclick="return assign();" class="button aqua">Asignar</a></td>
                 </form>
             </tr>
         </table>
         <hr />
         <a href="/admin/transcalls/close/<?php echo $call->id; ?>" class="button red" onclick="return confirm('Seguro que deseas dar por finalizada esta traducción?')">Cerrar la traducción</a>&nbsp;&nbsp;&nbsp;
-        <a href="/admin/transcalls/send/<?php echo $call->id; ?>" class="button green" onclick="return confirm('Se va a enviar un email?')">Avisar al autor</a>
+        <a href="/admin/transcalls/send/<?php echo $call->id; ?>" class="button green" onclick="return confirm('Se va a enviar un email automaticamente, ok?')">Avisar al convocador</a>
         <hr />
-<?php endif; ?>
-
+<?php elseif ($this['action'] == 'add') : ?>
     <form method="post" action="/admin/transcalls/<?php echo $this['action']; ?>/<?php echo $call->id; ?>/?filter=<?php echo $this['filter']; ?>">
 
         <table>
             <tr>
-                <td><?php if ($this['action'] == 'add') : ?>
+                <td>
                     <label for="add-proj">Convocatoria que habilitamos</label><br />
                     <select id="add-proj" name="call">
                         <option value="">Selecciona la convocatoria</option>
@@ -60,13 +70,12 @@ $filter = "?owner={$filters['owner']}&translator={$filters['translator']}";
                             <option value="<?php echo $call->id; ?>"<?php if ($_GET['call'] == $call->id) echo ' selected="selected"';?>><?php echo $call->name; ?></option>
                         <?php endforeach; ?>
                     </select>
-                <?php else : ?>
-                    <input type="hidden" name="call" value="<?php echo $call->id; ?>" />
-                <?php endif; ?></td>
+                </td>
             </tr>
         </table>
 
 
        <input type="submit" name="save" value="Guardar" />
     </form>
+<?php endif; ?>
 </div>

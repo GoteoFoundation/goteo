@@ -993,148 +993,26 @@ namespace Goteo\Controller {
 
             $langs = \Goteo\Library\Lang::getAll();
             
-            if ($action == 'select' && !empty($_POST['lang'])) {
-                $_SESSION['translate_project_lang'] = $_POST['lang'];
-            } elseif (empty($_SESSION['translate_project_lang'])) {
-                $_SESSION['translate_project_lang'] = 'en';
+            if ($action == 'lang' && !empty($_POST['lang'])) {
+                $_SESSION['translate_lang'] = $_POST['lang'];
+            } elseif (empty($_SESSION['translate_lang'])) {
+                $_SESSION['translate_lang'] = 'en';
             }
 
-            $projects = Model\User\Translate::getMyProjects($user->id, $_SESSION['translate_project_lang']);
+            $projects = Model\User\Translate::getMyProjects($user->id, $_SESSION['translate_lang']);
+            $calls    = Model\User\Translate::getMyCalls($user->id, $_SESSION['translate_lang']);
 
-            if ($action == 'select' && !empty($_POST['project'])) {
-                // otro proyecto de trabajo
-                $project = Model\Project::get($_POST['project'], $_SESSION['translate_project_lang']);
-            } elseif (!empty($_SESSION['translate_project']->id)) {
-                // si tenemos ya proyecto, mantener los datos actualizados
-                $project = Model\Project::get($_SESSION['translate_project']->id, $_SESSION['translate_project_lang']);
-            } elseif (!empty($projects)) {
-                $project = $projects[0];
-            }
+            // al seleccionar controlamos: translate_type y translateproject/translate_call
+            if ($action == 'select' && !empty($_POST['type'])) {
+                unset($_SESSION['translate_call']); // quitamos la convocatoria de trabajo
+                unset($_SESSION['translate_project']); // quitamos el proyecto de trabajo
 
-            // aqui necesito tener un proyecto de trabajo,
-            // si no hay ninguno ccoge el último
-            if (!empty($project)) {
-                $_SESSION['translate_project'] = $project;
-                $project->lang_name = $langs[$project->lang]->name;
-                unset($langs[$project->lang]);
-            } else {
-                $option = 'profile';
-                unset($langs['es']);
-            }
-
-
-            if ($option == 'updates') {
-                // sus novedades
-                $blog = Model\Blog::get($project->id);
-                if ($action != 'edit') {
-                    $action = 'list';
-                }
-            }
-
-
-            // tratar lo que llega por post
-			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-                switch ($option) {
-                    case 'profile':
-                        if ($action == 'save') {
-                            $user = Model\User::get($_POST['id'], $_SESSION['translate_project_lang']);
-                            $user->about_lang = $_POST['about'];
-                            $user->keywords_lang = $_POST['keywords'];
-                            $user->contribution_lang = $_POST['contribution'];
-                            $user->lang = $_SESSION['translate_project_lang'];
-                            $user->saveLang($errors);
-                        }
-                    break;
-
-                    case 'overview':
-                        if ($action == 'save') {
-                            $project->description_lang = $_POST['description'];
-                            $project->motivation_lang = $_POST['motivation'];
-                            $project->video_lang = $_POST['video'];
-                            $project->about_lang = $_POST['about'];
-                            $project->goal_lang = $_POST['goal'];
-                            $project->related_lang = $_POST['related'];
-                            $project->keywords_lang = $_POST['keywords'];
-                            $project->media_lang = $_POST['media'];
-                            $project->subtitle_lang = $_POST['subtitle'];
-                            $project->lang_lang = $_SESSION['translate_project_lang'];
-                            $project->saveLang($errors);
-                        }
-                    break;
-
-                    case 'costs':
-                        if ($action == 'save') {
-                            foreach ($project->costs as $key => $cost) {
-                                if (isset($_POST['cost-' . $cost->id . '-cost'])) {
-                                    $cost->cost_lang = $_POST['cost-' . $cost->id . '-cost'];
-                                    $cost->description_lang = $_POST['cost-' . $cost->id .'-description'];
-                                    $cost->lang = $_SESSION['translate_project_lang'];
-                                    $cost->saveLang($errors);
-                                }
-                            }
-                        }
-                    break;
-
-                    case 'rewards':
-                        if ($action == 'save') {
-                            foreach ($project->social_rewards as $k => $reward) {
-                                if (isset($_POST['social_reward-' . $reward->id . '-reward'])) {
-                                    $reward->reward_lang = $_POST['social_reward-' . $reward->id . '-reward'];
-                                    $reward->description_lang = $_POST['social_reward-' . $reward->id . '-description'];
-                                    $reward->lang = $_SESSION['translate_project_lang'];
-                                    $reward->saveLang($errors);
-                                }
-                            }
-                            foreach ($project->individual_rewards as $k => $reward) {
-                                if (isset($_POST['individual_reward-' . $reward->id .'-reward'])) {
-                                    $reward->reward_lang = $_POST['individual_reward-' . $reward->id .'-reward'];
-                                    $reward->description_lang = $_POST['individual_reward-' . $reward->id . '-description'];
-                                    $reward->lang = $_SESSION['translate_project_lang'];
-                                    $reward->saveLang($errors);
-                                }
-
-                            }
-                        }
-                    break;
-
-                    case 'supports':
-                        if ($action == 'save') {
-                            // tratar colaboraciones existentes
-                            foreach ($project->supports as $key => $support) {
-                                if (isset($_POST['support-' . $support->id . '-support'])) {
-                                    // guardamos los datos traducidos
-                                    $support->support_lang = $_POST['support-' . $support->id . '-support'];
-                                    $support->description_lang = $_POST['support-' . $support->id . '-description'];
-                                    $support->lang = $_SESSION['translate_project_lang'];
-                                    $support->saveLang($errors);
-                                    
-                                    // actualizar el Mensaje correspondiente, solamente actualizar
-                                    $msg = Model\Message::get($support->thread);
-                                    $msg->message_lang = "{$support->support_lang}: {$support->description_lang}";
-                                    $msg->lang = $_SESSION['translate_project_lang'];
-                                    $msg->saveLang($errors);
-                                }
-                            }
-                        }
-                    break;
-
-                    case 'updates':
-                        if (empty($_POST['blog']) || empty($_POST['id'])) {
-                            break;
-                        }
-
-                        $post = Model\Blog\Post::get($_POST['id']);
-
-                        $post->title_lang = $_POST['title'];
-                        $post->text_lang = $_POST['text'];
-                        $post->media_lang = $_POST['media'];
-                        $post->legend_lang = $_POST['legend'];
-                        $post->lang = $_SESSION['translate_project_lang'];
-                        $post->saveLang($errors);
-
-                        $action = 'edit';
-                    break;
+                $type = $_POST['type'];
+                if (!empty($_POST[$type])) {
+                    $_SESSION['translate_type'] = $type;
+                    $_SESSION['translate_'.$type] = $_POST[$type];
+                } else {
+                    $_SESSION['translate_type'] = 'profile';
                 }
             }
 
@@ -1146,83 +1024,292 @@ namespace Goteo\Controller {
                     'action'  => $action,
                     'langs'=> $langs,
                     'projects'=> $projects,
+                    'calls'=> $calls,
                     'errors'  => $errors,
                     'success' => $success
                 );
 
+            // aqui, segun lo que este traduciendo, necesito tener un proyecto de trabajo, una convocatoria o mi perfil personal
+            switch ($_SESSION['translate_type']) {
+                case 'project':
+                    try {
+                        // si lo que tenemos en sesion no es una instancia de proyecto (es una id de proyecto)
+                        if ($_SESSION['translate_project'] instanceof Model\Project) {
+                            $project = Model\Project::get($_SESSION['translate_project']->id, $_SESSION['translate_lang']);
+                        } else {
+                            $project = Model\Project::get($_SESSION['translate_project'], $_SESSION['translate_lang']);
+                        }
+                    } catch (\Goteo\Core\Error $e) {
+                        $project = null;
+                    }
 
-            switch ($option) {
-                case 'profile':
-                    if ($action == 'own') {
-                        $viewData['user'] = Model\User::get($user->id, $_SESSION['translate_project_lang']);
-                        $viewData['ownprofile'] = true;
+                    if (!$project instanceof Model\Project) {
+                        Message::Error('Ha fallado al cargar los datos del proyecto');
+                        $_SESSION['translate_type'] = 'profile';
+                        throw new Redirection('/dashboard/translates');
+                    }
+                    
+                    $_SESSION['translate_project'] = $project;
+                    $project->lang_name = $langs[$project->lang]->name;
+                    unset($langs[$project->lang]);
+
+//// Control de traduccion de proyecto
+                    if ($option == 'updates') {
+                        // sus novedades
+                        $blog = Model\Blog::get($project->id);
+                        if ($action != 'edit') {
+                            $action = 'list';
+                        }
+                    }
+
+                    // tratar lo que llega por post para guardar los datos
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                        switch ($option) {
+                            case 'profile':
+                                if ($action == 'save') {
+                                    $user = Model\User::get($_POST['id'], $_SESSION['translate_lang']);
+                                    $user->about_lang = $_POST['about'];
+                                    $user->keywords_lang = $_POST['keywords'];
+                                    $user->contribution_lang = $_POST['contribution'];
+                                    $user->lang = $_SESSION['translate_lang'];
+                                    $user->saveLang($errors);
+                                }
+                            break;
+
+                            case 'overview':
+                                if ($action == 'save') {
+                                    $project->description_lang = $_POST['description'];
+                                    $project->motivation_lang = $_POST['motivation'];
+                                    $project->video_lang = $_POST['video'];
+                                    $project->about_lang = $_POST['about'];
+                                    $project->goal_lang = $_POST['goal'];
+                                    $project->related_lang = $_POST['related'];
+                                    $project->keywords_lang = $_POST['keywords'];
+                                    $project->media_lang = $_POST['media'];
+                                    $project->subtitle_lang = $_POST['subtitle'];
+                                    $project->lang_lang = $_SESSION['translate_lang'];
+                                    $project->saveLang($errors);
+                                }
+                            break;
+
+                            case 'costs':
+                                if ($action == 'save') {
+                                    foreach ($project->costs as $key => $cost) {
+                                        if (isset($_POST['cost-' . $cost->id . '-cost'])) {
+                                            $cost->cost_lang = $_POST['cost-' . $cost->id . '-cost'];
+                                            $cost->description_lang = $_POST['cost-' . $cost->id .'-description'];
+                                            $cost->lang = $_SESSION['translate_lang'];
+                                            $cost->saveLang($errors);
+                                        }
+                                    }
+                                }
+                            break;
+
+                            case 'rewards':
+                                if ($action == 'save') {
+                                    foreach ($project->social_rewards as $k => $reward) {
+                                        if (isset($_POST['social_reward-' . $reward->id . '-reward'])) {
+                                            $reward->reward_lang = $_POST['social_reward-' . $reward->id . '-reward'];
+                                            $reward->description_lang = $_POST['social_reward-' . $reward->id . '-description'];
+                                            $reward->lang = $_SESSION['translate_lang'];
+                                            $reward->saveLang($errors);
+                                        }
+                                    }
+                                    foreach ($project->individual_rewards as $k => $reward) {
+                                        if (isset($_POST['individual_reward-' . $reward->id .'-reward'])) {
+                                            $reward->reward_lang = $_POST['individual_reward-' . $reward->id .'-reward'];
+                                            $reward->description_lang = $_POST['individual_reward-' . $reward->id . '-description'];
+                                            $reward->lang = $_SESSION['translate_lang'];
+                                            $reward->saveLang($errors);
+                                        }
+
+                                    }
+                                }
+                            break;
+
+                            case 'supports':
+                                if ($action == 'save') {
+                                    // tratar colaboraciones existentes
+                                    foreach ($project->supports as $key => $support) {
+                                        if (isset($_POST['support-' . $support->id . '-support'])) {
+                                            // guardamos los datos traducidos
+                                            $support->support_lang = $_POST['support-' . $support->id . '-support'];
+                                            $support->description_lang = $_POST['support-' . $support->id . '-description'];
+                                            $support->lang = $_SESSION['translate_lang'];
+                                            $support->saveLang($errors);
+
+                                            // actualizar el Mensaje correspondiente, solamente actualizar
+                                            $msg = Model\Message::get($support->thread);
+                                            $msg->message_lang = "{$support->support_lang}: {$support->description_lang}";
+                                            $msg->lang = $_SESSION['translate_lang'];
+                                            $msg->saveLang($errors);
+                                        }
+                                    }
+                                }
+                            break;
+
+                            case 'updates':
+                                if (empty($_POST['blog']) || empty($_POST['id'])) {
+                                    break;
+                                }
+
+                                $post = Model\Blog\Post::get($_POST['id']);
+
+                                $post->title_lang = $_POST['title'];
+                                $post->text_lang = $_POST['text'];
+                                $post->media_lang = $_POST['media'];
+                                $post->legend_lang = $_POST['legend'];
+                                $post->lang = $_SESSION['translate_lang'];
+                                $post->saveLang($errors);
+
+                                $action = 'edit';
+                            break;
+                        }
+                    }
+
+                    switch ($option) {
+                        case 'profile':
+                            $viewData['user'] = Model\User::get($project->owner, $_SESSION['translate_lang']);
+                        break;
+
+                        case 'overview':
+                        break;
+
+                        case 'costs':
+                            if ($_POST) {
+                                foreach ($_POST as $k => $v) {
+                                    if (!empty($v) && preg_match('/cost-(\d+)-edit/', $k, $r)) {
+                                        $viewData[$k] = true;
+                                    }
+                                }
+                            }
+                        break;
+
+                        case 'rewards':
+                            if ($_POST) {
+                                foreach ($_POST as $k => $v) {
+                                    if (!empty($v) && preg_match('/((social)|(individual))_reward-(\d+)-edit/', $k)) {
+                                        $viewData[$k] = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        break;
+
+                        case 'supports':
+                            if ($_POST) {
+                                foreach ($_POST as $k => $v) {
+                                    if (!empty($v) && preg_match('/support-(\d+)-edit/', $k, $r)) {
+                                        $viewData[$k] = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        break;
+
+                        // publicar actualizaciones
+                        case 'updates':
+                            $viewData['blog'] = $blog;
+
+                            if ($action == 'edit') {
+                                $post = Model\Blog\Post::get($id, $_SESSION['translate_lang']);
+                                $viewData['post'] = $post;
+                            } else {
+                                $posts = array();
+                                foreach ($blog->posts as $post) {
+                                    $posts[] = Model\Blog\Post::get($post->id, $_SESSION['translate_lang']);
+                                }
+                                $viewData['posts'] = $posts;
+                            }
                         break;
                     }
 
-                    if ($project instanceof \Goteo\Model\Project) {
-                        $viewData['user'] = Model\User::get($project->owner, $_SESSION['translate_project_lang']);
-                    } else {
-                        $viewData['user'] = Model\User::get($user->id, $_SESSION['translate_project_lang']);
-                        $viewData['noowner'] = true;
+                    $viewData['project'] = $project;
+//// FIN Control de traduccion de proyecto
+                    break;
+                case 'call':
+                    try {
+                        // si lo que tenemos en sesion no es una instancia de proyecto (es una id de proyecto)
+                        if ($_SESSION['translate_call'] instanceof Model\Call) {
+                            $call = Model\Call::get($_SESSION['translate_call']->id, $_SESSION['translate_lang']);
+                        } else {
+                            $call = Model\Call::get($_SESSION['translate_call'], $_SESSION['translate_lang']);
+                        }
+                    } catch (\Goteo\Core\Error $e) {
+                        $call = null;
                     }
-                break;
+                    if (!$call instanceof Model\Call) {
+                        Message::Error('Ha fallado al cargar los datos de la convocatoria');
+                        $_SESSION['translate_type'] = 'profile';
+                        throw new Redirection('/dashboard/translates');
+                    }
+                    $_SESSION['translate_call'] = $call;
+                    $call->lang_name = $langs[$call->lang]->name;
+                    unset($langs['es']);
 
-                case 'overview':
-                break;
+//// Control de traduccion de proyecto
+                    // tratar lo que llega por post para guardar los datos
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-                case 'costs':
-                    if ($_POST) {
-                        foreach ($_POST as $k => $v) {
-                            if (!empty($v) && preg_match('/cost-(\d+)-edit/', $k, $r)) {
-                                $viewData[$k] = true;
-                            }
+                        switch ($option) {
+                            case 'profile':
+                                if ($action == 'save') {
+                                    $user = Model\User::get($_POST['id'], $_SESSION['translate_lang']);
+                                    $user->about_lang = $_POST['about'];
+                                    $user->keywords_lang = $_POST['keywords'];
+                                    $user->contribution_lang = $_POST['contribution'];
+                                    $user->lang = $_SESSION['translate_lang'];
+                                    $user->saveLang($errors);
+                                }
+                            break;
+
+                            case 'overview':
+                                if ($action == 'save') {
+                                    $call->description_lang = $_POST['description'];
+                                    $call->whom_lang = $_POST['whom'];
+                                    $call->apply_lang = $_POST['apply'];
+                                    $call->legal_lang = $_POST['legal'];
+                                    $call->dossier_lang = $_POST['dossier'];
+                                    $call->resources_lang = $_POST['resources'];
+                                    $call->subtitle_lang = $_POST['subtitle'];
+                                    $call->lang_lang = $_SESSION['translate_lang'];
+                                    $call->saveLang($errors);
+                                }
+                            break;
                         }
                     }
-                break;
 
-                case 'rewards':
-                    if ($_POST) {
-                        foreach ($_POST as $k => $v) {
-                            if (!empty($v) && preg_match('/((social)|(individual))_reward-(\d+)-edit/', $k)) {
-                                $viewData[$k] = true;
-                                break;
-                            }
-                        }
+                    if ($option == 'profile') {
+                        $viewData['user'] = Model\User::get($call->owner, $_SESSION['translate_lang']);
                     }
 
-
-                break;
-
-                case 'supports':
-                    if ($_POST) {
-                        foreach ($_POST as $k => $v) {
-                            if (!empty($v) && preg_match('/support-(\d+)-edit/', $k, $r)) {
-                                $viewData[$k] = true;
-                                break;
-                            }
-                        }
+                    if ($option == 'overview') {
+                        $viewData['option'] = 'call_overview';
                     }
-                break;
 
-                // publicar actualizaciones
-                case 'updates':
+                    $viewData['call'] = $call;
+//// FIN Control de traduccion de convocatoria
+                    break;
+                default: // profile
+                    $viewData['option'] = 'profile';
+                    unset($langs['es']);
 
-                    $viewData['blog'] = $blog;
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-                    if ($action == 'edit') {
-                        $post = Model\Blog\Post::get($id, $_SESSION['translate_project_lang']);
-                        $viewData['post'] = $post;
-                    } else {
-                        $posts = array();
-                        foreach ($blog->posts as $post) {
-                            $posts[] = Model\Blog\Post::get($post->id, $_SESSION['translate_project_lang']);
+                        if ($action == 'save') {
+                            $user = Model\User::get($_POST['id'], $_SESSION['translate_lang']);
+                            $user->about_lang = $_POST['about'];
+                            $user->keywords_lang = $_POST['keywords'];
+                            $user->contribution_lang = $_POST['contribution'];
+                            $user->lang = $_SESSION['translate_lang'];
+                            $user->saveLang($errors);
                         }
-                        $viewData['posts'] = $posts;
+                        
                     }
-                break;
+
+                    $viewData['user'] = Model\User::get($user->id, $_SESSION['translate_lang']);
             }
-
-            $viewData['project'] = $project;
 
             return new View ('view/dashboard/index.html.php', $viewData);
         }
@@ -1404,7 +1491,19 @@ namespace Goteo\Controller {
                 )
             );
 
-            if ($_SESSION['translate_type'] == 'project' && !empty($_SESSION['translate_project'])) {
+            // si es un convocador
+            if (ACL::check('/call/create')) {
+                $menu['calls'] = array(
+                    'label' => Text::get('dashboard-menu-calls'),
+                    'options' => array (
+                        'summary'  => Text::get('dashboard-menu-calls-summary'),
+                        'projects'  => Text::get('dashboard-menu-calls-projects')
+                    )
+                );
+            }
+
+            // segun lo que este traduciendo
+            if ($_SESSION['translate_type'] == 'project') {
                 // si esta traduciendo un proyecto
                 $menu['translates'] = array(
                     'label' => Text::get('dashboard-menu-translates'),
@@ -1417,17 +1516,13 @@ namespace Goteo\Controller {
                         'updates'  => Text::get('project-menu-updates')
                     )
                 );
-            } elseif ($_SESSION['translate_type'] == 'call' && !empty($_SESSION['translate_call'])) {
+            } elseif ($_SESSION['translate_type'] == 'call') {
                 // si esta traduciendo una convocatoria
                 $menu['translates'] = array(
                     'label' => Text::get('dashboard-menu-translates'),
                     'options' => array (
                         'profile'  => Text::get('step-1'),
-                        'overview' => Text::get('step-3'),
-                        'costs'    => Text::get('step-4'),
-                        'rewards'  => Text::get('step-5'),
-                        'supports' => Text::get('step-6'),
-                        'updates'  => Text::get('project-menu-updates')
+                        'overview' => Text::get('step-3')
                     )
                 );
             } else {
@@ -1436,17 +1531,6 @@ namespace Goteo\Controller {
                     'label' => Text::get('dashboard-menu-translates'),
                     'options' => array (
                         'profile'  => Text::get('step-1')
-                    )
-                );
-            }
-
-            // si es un convocador
-            if (ACL::check('/call/create')) {
-                $menu['calls'] = array(
-                    'label' => Text::get('dashboard-menu-calls'),
-                    'options' => array (
-                        'summary'  => Text::get('dashboard-menu-calls-summary'),
-                        'projects'  => Text::get('dashboard-menu-calls-projects')
                     )
                 );
             }

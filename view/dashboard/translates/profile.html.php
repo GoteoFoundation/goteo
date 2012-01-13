@@ -11,12 +11,6 @@ $original = \Goteo\Model\User::get($user->id);
 $sfid = 'sf-project-profile';
 ?>
 
-<?php if (isset($this['ownprofile'])) : ?>
-<div class="widget">Estas traduciendo tu perfil personal. <a href="/dashboard/translates/profile">Volver al perfil del autor del proyecto</a></div>
-<?php elseif (!isset($this['noowner']) && $user->id != $_SESSION['user']->id && $_SESSION['user']->roles['translator']->id == 'translator') : ?>
-<div class="widget">Estas traduciendo el perfil del autor del proyecto. <a href="/dashboard/translates/profile/own">Traducir mi perfil personal</a></div>
-<?php endif; ?>
-
 <form method="post" action="<?php echo SITE_URL ?>/dashboard/translates/profile/save" class="project" enctype="multipart/form-data">
 
 <?php echo new SuperForm(array(

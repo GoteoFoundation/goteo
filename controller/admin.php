@@ -1036,7 +1036,7 @@ namespace Goteo\Controller {
                         $log->title = 'traducción finalizada (admin)';
                         $log->url = '/admin/translates';
                         $log->type = 'admin';
-                        $log_text = 'El admin %s ha dado por %s la traducción de %s';
+                        $log_text = 'El admin %s ha dado por %s la traducción del proyecto %s';
                         $log_items = array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                             Feed::item('relevant', 'Finalizada'),
@@ -1210,13 +1210,10 @@ namespace Goteo\Controller {
                         // Informar al autor de que la traduccion está habilitada
                         // Obtenemos la plantilla para asunto y contenido
 
-                        //@TODO plantilla mensaje autor convocatoria se puede traducir
-
-                        /*
-                        $template = Template::get( PENDIENTE TEMPLATE );
+                        $template = Template::get(32);
                         // Sustituimos los datos
-                        $subject = str_replace('%PROJECTNAME%', $call->name, $template->title);
-                        $search  = array('%OWNERNAME%', '%PROJECTNAME%', '%SITEURL%');
+                        $subject = str_replace('%CALLNAME%', $call->name, $template->title);
+                        $search  = array('%OWNERNAME%', '%CALLNAME%', '%SITEURL%');
                         $replace = array($call->user->name, $call->name, SITE_URL);
                         $content = \str_replace($search, $replace, $template->text);
                         // iniciamos mail
@@ -1233,8 +1230,7 @@ namespace Goteo\Controller {
                             $errors[] = 'Ha fallado informar a <strong>'.$call->user->name.'</strong> de la posibilidad de traducción de su convocatoria';
                         }
                         unset($mailHandler);
-                         *
-                         */
+
                         $action = 'edit';
                     }
 
@@ -1265,10 +1261,10 @@ namespace Goteo\Controller {
                     // la sentencia aqui mismo
                     // el campo translate de la convocatoria $id a false
                     $sql = "UPDATE `call` SET translate = 0 WHERE id = :id";
-                    if (Model\Project::query($sql, array(':id'=>$id))) {
+                    if (Model\Call::query($sql, array(':id'=>$id))) {
                         $success[] = 'La traducción de la convocatoria '.$call->name.' se ha finalizado';
 
-                        Model\Project::query("DELETE FROM user_translate WHERE type = 'call' AND item = :id", array(':id'=>$id));
+                        Model\Call::query("DELETE FROM user_translate WHERE type = 'call' AND item = :id", array(':id'=>$id));
 
                         /*
                          * Evento Feed
@@ -1277,7 +1273,7 @@ namespace Goteo\Controller {
                         $log->title = 'traducción convocatoria finalizada (admin)';
                         $log->url = '/admin/transcalls';
                         $log->type = 'admin';
-                        $log_text = 'El admin %s ha dado por %s la traducción de %s';
+                        $log_text = 'El admin %s ha dado por %s la traducción de la convocatoria %s';
                         $log_items = array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                             Feed::item('relevant', 'Finalizada'),
@@ -5827,7 +5823,7 @@ namespace Goteo\Controller {
                             )
                         ),
                         'translates' => array(
-                            'label' => 'Traducciones',
+                            'label' => 'Traducciones de proyectos',
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'add'  => array('label' => 'Habilitando traducción', 'item' => false),
@@ -5989,7 +5985,7 @@ namespace Goteo\Controller {
                             )
                         ),
                         'transcalls' => array(
-                            'label' => 'Traducciones',
+                            'label' => 'Traducciones de convocatorias',
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'add'  => array('label' => 'Habilitando traducción', 'item' => false),
@@ -5997,7 +5993,7 @@ namespace Goteo\Controller {
                             )
                         ),
                         'sponsors' => array(
-                            'label' => 'Apoyos institucionales',
+                            'label' => 'Apoyos institucionales (Footer)',
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'add'  => array('label' => 'Nuevo Patrocinador', 'item' => false),

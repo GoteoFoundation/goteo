@@ -1,6 +1,7 @@
 <?php 
     use Goteo\Library\Text,
-        Goteo\Library\Lang;
+        Goteo\Library\Lang,
+        Goteo\Core\ACL;
 ?>
 
 <?php include 'view/header/lang.html.php' ?> 

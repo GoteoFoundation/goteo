@@ -331,7 +331,6 @@ namespace Goteo\Model {
             
             if (empty($this->owner))
                 $errors[] = 'El convocatoria no tiene usuario dueño';
-                //Text::get('validate-call-noowner');
             
             //cualquiera de estos errores hace fallar la validación
             if (!empty($errors))
@@ -503,6 +502,7 @@ namespace Goteo\Model {
                     'whom'=>'whom_lang',
                     'apply'=>'apply_lang',
                     'legal'=>'legal_lang',
+                    'resources'=>'resources_lang',
                     'dossier'=>'dossier_lang'
                     );
 
