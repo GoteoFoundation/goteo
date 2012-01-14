@@ -98,7 +98,7 @@ $filter = "?status={$filters['status']}&category={$filters['category']}&owner={$
                     <?php if ($project->status < 3) : ?><a href="<?php echo "/admin/projects/publish/{$project->id}{$filter}"; ?>" onclick="return confirm('El proyecto va a comenzar los 40 dias de la primera ronda de campaña, ¿comenzamos?');">[Publicar]</a><?php endif; ?>
                     <?php if ($project->status > 1) : ?><a href="<?php echo "/admin/projects/enable/{$project->id}{$filter}"; ?>" onclick="return confirm('Mucho Ojo! si el proyecto esta en campaña, ¿Reabrimos la edicion?');">[Reabrir]</a><?php endif; ?>
                     <?php if ($project->status == 4) : ?><a href="<?php echo "/admin/projects/fulfill/{$project->id}{$filter}"; ?>">[Retorno Cumplido]</a><?php endif; ?>
-                    <a href="<?php echo "/admin/projects/cancel/{$project->id}{$filter}"; ?>" onclick="return confirm('El proyecto va a quedar DESCARTADO permanentemente, ¿seguro que hacemos eso?');">[Descartar]</a>
+                    <?php if ($project->status < 3) : ?><a href="<?php echo "/admin/projects/cancel/{$project->id}{$filter}"; ?>" onclick="return confirm('El proyecto va a desaparecer del admin, solo se podra recuperar desde la base de datos, Ok?');">[Descartar]</a><?php endif; ?>
                     <a href="<?php echo "/admin/projects/dates/{$project->id}{$filter}"; ?>">[Cambiar fechas]</a>
                     <a href="<?php echo "/admin/projects/accounts/{$project->id}{$filter}"; ?>">[Cuentas]</a>
                     <?php if ($project->translate) : ?><a href="<?php echo "/admin/translates/edit/{$project->id}"; ?>">[Ir a traducción]</a>

@@ -102,6 +102,8 @@ $filter = "?status={$filters['status']}&category={$filters['category']}&caller={
                     <?php if ($call->translate) : ?><a href="<?php echo "/admin/translates/calls/{$call->id}"; ?>">[Ir a traducción]</a><?php endif; ?>
                     <a href="<?php echo "/admin/calls/cancel/{$call->id}{$filter}"; ?>" onclick="return confirm('La convocatoria va a CADUCAR, ¿seguro que hacemos eso?');">[Cancelar]</a>
                     <?php if ($call->status == 1) : ?><a href="<?php echo "/admin/calls/delete/{$call->id}{$filter}"; ?>" onclick="return confirm('La convocatoria va a ELIMINAR comlpetamente, ¿seguro que hacemos eso?');" style="color: red;">[Suprimir]</a><?php endif; ?>
+                    <?php if ($call->translate) : ?><a href="<?php echo "/admin/transcalls/edit/{$call->id}"; ?>">[Ir a traducción]</a>
+                    <?php else : ?><a href="<?php echo "/admin/transcalls/add/?call={$call->id}"; ?>">[Habilitar traducción]</a><?php endif; ?>
                 </td>
             </tr>
             <tr>

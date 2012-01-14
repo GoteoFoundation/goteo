@@ -507,6 +507,8 @@ namespace Goteo\Controller {
                 $log->html = \vsprintf($log_text, $log_items);
                 $log->add($errors);
 
+                Message::Info($log->html);
+
                 if ($action == 'publish') {
                     // si es publicado, hay un evento público
                     $log->title = $project->name;
