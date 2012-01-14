@@ -715,95 +715,20 @@ namespace Goteo\Model {
         }
 
         /*
-         * Lista de convocatorias publicados
-         *
-        public static function published($type = 'all', $limit = null)
-        {
-            // segun el tipo (ver controller/discover.php)
-            switch ($type) {
-                case 'popular':
-                    // de los que estan en campaña,
-                    // los que tienen más usuarios (unicos) cofinanciadores y mensajeros
-                    $sql = "SELECT COUNT(DISTINCT(user.id)) as people, call.id as id
-                            FROM `call`
-                            LEFT JOIN invest
-                                ON invest.call = call.id
-                                AND invest.status <> 2
-                            LEFT JOIN message
-                                ON message.call = call.id
-                            LEFT JOIN user 
-                                ON user.id = invest.user OR user.id = message.user
-                            WHERE call.status= 3
-                            AND (call.id = invest.call
-                                OR call.id = message.call)
-                            GROUP BY call.id
-                            ORDER BY people DESC";
-                    break;
-                case 'outdate':
-                    // los que les quedan 15 dias o menos
-                    $sql = "SELECT  id
-                            FROM    call
-                            WHERE   days <= 15
-                            AND     days > 0
-                            AND     status = 3
-                            ORDER BY days ASC";
-                    break;
-                case 'recent':
-                    // los que llevan menos tiempo desde el published, hasta 15 dias
-                    $sql = "SELECT 
-                                call.id as id,
-                                DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%e') as day
-                            FROM `call`
-                            WHERE call.status = 3
-                            HAVING day <= 15 AND day IS NOT NULL
-                            ORDER BY published DESC";
-                    break;
-                case 'success':
-                    // los que estan 'financiado' o 'retorno cumplido'
-                    $sql = "SELECT id FROM `call` WHERE status = 4 OR status = 5 ORDER BY name ASC";
-                    break;
-                case 'available':
-                    // ni edicion ni revision ni cancelados, estan disponibles para verse publicamente
-                    $sql = "SELECT id FROM `call` WHERE status > 2 AND status < 6 ORDER BY name ASC";
-                    break;
-                default: 
-                    // todos los que estan 'en campaña'
-                    $sql = "SELECT id FROM `call` WHERE status = 3 ORDER BY name ASC";
-            }
-
-            // Limite
-            if (!empty($limit) && \is_numeric($limit)) {
-                $sql .= " LIMIT $limit";
-            }
-
-            $calls = array();
-            $query = self::query($sql);
-            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
-                $calls[] = self::get($proj['id']);
-            }
-            return $calls;
-        }
-         * 
+         * Lista de convocatorias en campaña (para la portada)
          */
-
-        /*
-         * Lista de convocatorias en campaña (para ser revisados por el cron)
-         *
-        public static function active()
+        public static function getActive()
         {
             $calls = array();
             $query = self::query("SELECT call.id
-                                  FROM  call
+                                  FROM  `call`
                                   WHERE call.status = 3 OR call.status = 4
-                                  GROUP BY call.id
                                   ORDER BY name ASC");
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
-                $calls[] = self::get($proj->id);
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $call) {
+                $calls[] = self::get($call->id);
             }
             return $calls;
         }
-         *
-         */
 
         /**
          * Saca una lista completa de convocatorias
@@ -872,8 +797,8 @@ namespace Goteo\Model {
                     ";
 
             $query = self::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
-                $calls[] = self::get($proj['id']);
+            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $call) {
+                $calls[] = self::get($call['id']);
             }
             return $calls;
         }

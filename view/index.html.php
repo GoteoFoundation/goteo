@@ -108,6 +108,18 @@ include 'view/header.html.php';
     </div>
     <?php endif; ?>
 
+    <?php if (!empty($this['calls'])): ?>
+    <div class="widget calls">
+
+        <h2 class="title"><?php echo Text::get('home-calls-header'); ?></h2>
+
+        <?php foreach ($this['calls'] as $call) {
+            echo new View('view/call/widget/call.html.php', array('call' => $call));
+        } ?>
+
+    </div>
+    <?php endif; ?>
+
 </div>
 <?php include 'view/footer.html.php'; ?>
 <?php include 'view/epilogue.html.php'; ?>

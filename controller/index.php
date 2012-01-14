@@ -5,6 +5,7 @@ namespace Goteo\Controller {
     use Goteo\Core\View,
         Goteo\Model\Project,
         Goteo\Model\Banner,
+        Goteo\Model\Call,
         Goteo\Model\Post,
         Goteo\Model\Promote,
         Goteo\Library\Text;
@@ -21,26 +22,27 @@ namespace Goteo\Controller {
             $posts    = Post::getList();
             $promotes = Promote::getAll(true);
             $banners  = Banner::getAll();
+            $calls    = Call::getActive();
 
             foreach ($posts as $id=>$title) {
                 $posts[$id] = Post::get($id);
             }
 
-                foreach ($promotes as $key => &$promo) {
-                    try {
-                        $promo->projectData = Project::get($promo->project, LANG);
-                    } catch (\Goteo\Core\Error $e) {
-                        unset($promotes[$key]);
-                    }
+            foreach ($promotes as $key => &$promo) {
+                try {
+                    $promo->projectData = Project::get($promo->project, LANG);
+                } catch (\Goteo\Core\Error $e) {
+                    unset($promotes[$key]);
                 }
+            }
 
-                foreach ($banners as $id => &$banner) {
-                    try {
-                        $banner->project = Project::get($banner->project, LANG);
-                    } catch (\Goteo\Core\Error $e) {
-                        unset($banners[$id]);
-                    }
+            foreach ($banners as $id => &$banner) {
+                try {
+                    $banner->project = Project::get($banner->project, LANG);
+                } catch (\Goteo\Core\Error $e) {
+                    unset($banners[$id]);
                 }
+            }
 
             $post = isset($_GET['post']) ? $_GET['post'] : reset($posts)->id;
 
@@ -48,7 +50,8 @@ namespace Goteo\Controller {
                 array(
                     'banners'  => $banners,
                     'posts'    => $posts,
-                    'promotes' => $promotes
+                    'promotes' => $promotes,
+                    'calls'    => $calls
                 )
             );
             
