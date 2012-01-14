@@ -43,14 +43,14 @@ function item_select(type) {
     </form>
 
     <?php if ($_SESSION['translate_type'] == 'project' && !empty($_SESSION['translate_project'])) : ?>
-    <p>Estás traduciendo el proyecto <strong><?php echo $_SESSION['translate_project']->name; ?></strong>. El idioma original es <strong><?php echo $this['project']->lang_name ?></strong></p>
+    <p>Est&aacute;s traduciendo el proyecto <strong><?php echo $_SESSION['translate_project']->name; ?></strong>. El idioma original es <strong><?php echo $this['project']->lang_name ?></strong></p>
     <?php endif; ?>
 
     <?php if ($_SESSION['translate_type'] == 'call' && !empty($_SESSION['translate_call'])) : ?>
-    <p>Estás traduciendo la convocatoria <strong><?php echo $_SESSION['translate_call']->name; ?></strong>. El idioma original es <strong>Español</strong></p>
+    <p>Est&aacute;s traduciendo la convocatoria <strong><?php echo $_SESSION['translate_call']->name; ?></strong>. El idioma original es <strong>Espa&ntilde;ol</strong></p>
     <?php endif; ?>
 
-    <?php if ($_SESSION['translate_type'] != 'profile') : ?>
+    <?php if (!empty($_SESSION['translate_type']) && $_SESSION['translate_type'] != 'profile') : ?>
         <a href="#" name="profile" class="button aqua" onclick="item_select('profile');">Ir a traducir tu perfil personal</a>
     <?php else : ?>
         <p>Estas traduciendo tu perfil personal.</p>
