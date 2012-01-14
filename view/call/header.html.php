@@ -72,7 +72,7 @@
 				try{clearTimeout(TID_LANG)}catch(e){};
 			},function() {
 			   TID_LANG = setTimeout('$("ul.lang").hide()',100);
-			   $("#lang").css("background","#59595C url('/view/css/bolita.png') 4px 7px no-repeat");
+			   $("#lang").css("background","url('/view/css/bolita.png') 4px 7px no-repeat");
 			});
 
 
