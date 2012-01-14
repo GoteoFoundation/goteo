@@ -23,10 +23,9 @@ namespace Goteo\Controller {
          */
         public function execute () {
 
-            ob_start();
-
-            // debug para supervisar
-            $debug = ($_GET['debug'] == 'debug') ? true : false;
+            // debug para supervisar en las fechas clave
+//            $debug = ($_GET['debug'] == 'debug') ? true : false;
+            $debug = true;
 
             // revision de proyectos: dias, conseguido y cambios de estado
             // proyectos en campaña 
@@ -555,12 +554,8 @@ namespace Goteo\Controller {
                 if ($debug) echo 'Fin tratamiento Proyecto '.$project->name.'<hr />';
             }
 
-            $buffer = \ob_get_contents();
-            if (!empty($buffer)) {
-                // recogemos el buffer para grabar el log
-                \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', $buffer);
-            }
-            ob_end_flush ();
+            // recogemos el buffer para grabar el log
+            \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
         }
 
 
@@ -571,8 +566,6 @@ namespace Goteo\Controller {
          */
         public function verify () {
 
-            ob_start();
-            
             // proyectos en campaña (y los financiados por si se ha quedado alguno descolgado)
             $projects = Model\Project::active();
 
@@ -633,12 +626,8 @@ namespace Goteo\Controller {
                 }
             }
 
-            $buffer = \ob_get_contents();
-            if (!empty($buffer)) {
-                // recogemos el buffer para grabar el log
-                \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', $buffer);
-            }
-            ob_end_flush ();
+            // recogemos el buffer para grabar el log
+            \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
         }
 
         /*
@@ -648,8 +637,6 @@ namespace Goteo\Controller {
          *
          */
         public function dopay ($project) {
-
-            ob_start();
 
             $projectData = Model\Project::getMini($project);
 
@@ -719,12 +706,8 @@ namespace Goteo\Controller {
                 echo '<hr />';
             }
 
-            $buffer = \ob_get_contents();
-            if (!empty($buffer)) {
-                // recogemos el buffer para grabar el log
-                \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', $buffer);
-            }
-            ob_end_flush ();
+            // recogemos el buffer para grabar el log
+            \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
         }
 
         /**
@@ -928,8 +911,6 @@ namespace Goteo\Controller {
         
         public function daily () {
 
-            ob_start();
-
             // proyectos en campaña o financiados
             $projects = Model\Project::active();
 
@@ -1089,12 +1070,8 @@ namespace Goteo\Controller {
 
             }
 
-            $buffer = \ob_get_contents();
-            if (!empty($buffer)) {
-                // recogemos el buffer para grabar el log
-                \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', $buffer);
-            }
-            ob_end_flush ();
+            // recogemos el buffer para grabar el log
+            \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
         }
 
     }
