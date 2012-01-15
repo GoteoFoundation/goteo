@@ -429,15 +429,11 @@ namespace Goteo\Controller {
             $investors = array();
             foreach ($projects as $kay=>$project) {
 
-                /*
-                 * PASAMOS DE ESTA RESTRICCION POR AHORA
-                // quitamos los no publicados o caducados
-                if ($project->status < 3 || $project->status > 5) {
+                // quitamos los caducados
+                if ($project->status == 0) {
                     unset ($projects[$kay]);
                     continue;
                 }
-                 *
-                 */
 
                 foreach (Model\Invest::investors($project->id) as $key=>$investor) {
                     if (\array_key_exists($investor->user, $investors)) {

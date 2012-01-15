@@ -33,11 +33,12 @@ $filters = $this['filters'];
     <h3 class="title">Filtros</h3>
     <form id="filter-form" action="/admin/accounts" method="get">
         <input type="hidden" name="filtered" value="yes" />
+        <input type="hidden" name="status" value="all" />
         <?php foreach ($the_filters as $filter=>$data) : ?>
         <div style="float:left;margin:5px;">
             <label for="<?php echo $filter ?>-filter"><?php echo $data['label'] ?></label><br />
             <select id="<?php echo $filter ?>-filter" name="<?php echo $filter ?>" onchange="document.getElementById('filter-form').submit();">
-                <option value="<?php if ($filter == 'investStatus') echo 'all' ?>"<?php if ($filter == 'investStatus' && $filters[$filter] == 'all') echo ' selected="selected"'?>><?php echo $data['first'] ?></option>
+                <option value="<?php if ($filter == 'investStatus' || $filter == 'status') echo 'all' ?>"<?php if (($filter == 'investStatus' || $filter == 'status') && $filters[$filter] == 'all') echo ' selected="selected"'?>><?php echo $data['first'] ?></option>
             <?php foreach ($this[$filter] as $itemId=>$itemName) : ?>
                 <option value="<?php echo $itemId; ?>"<?php if ($filters[$filter] === (string) $itemId) echo ' selected="selected"';?>><?php echo $itemName; ?></option>
             <?php endforeach; ?>

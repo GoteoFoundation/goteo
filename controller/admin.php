@@ -378,6 +378,8 @@ namespace Goteo\Controller {
                 }
             }
 
+            if (!isset($filters['status'])) $filters['status'] = -1;
+
             $errors = array();
 
 
@@ -3206,16 +3208,16 @@ namespace Goteo\Controller {
 
            } else {
 
-               if (!isset($_GET['investStatus'])) {
-                   $_GET['investStatus'] = 'all';
-               }
-
                // sino, cargamos los filtros
                 $filters = array();
                 $fields = array('filtered', 'methods', 'status', 'investStatus', 'projects', 'users', 'calls', 'types');
                 foreach ($fields as $field) {
                     $filters[$field] = (string) $_GET[$field];
                 }
+
+                if (!isset($filters['status'])) $filters['status'] = 'all';
+                if (!isset($filters['investStatus'])) $filters['status'] = 'all';
+
 
                 // métodos de pago
                 $methods = Model\Invest::methods();
@@ -3509,10 +3511,6 @@ namespace Goteo\Controller {
                 );
             }
 
-            if (!isset($_GET['investStatus'])) {
-               $_GET['investStatus'] = 'all';
-            }
-
             // cargamos los filtros
             $filters = array();
             $fields = array('filtered', 'methods', 'investStatus', 'projects', 'users', 'calls', 'review', 'date_from', 'date_until');
@@ -3520,17 +3518,7 @@ namespace Goteo\Controller {
                 $filters[$field] = (string) $_GET[$field];
             }
 
-            /*
-            if (!empty($filters['projects'])) {
-                // si filtran proyecto, actualizamos proyecto de trabajo
-                $_SESSION['project_admin'] = $filters['projects'];
-            } else {
-                // si no, usamos el proyecto de trabajo
-                $filters['projects'] = $_SESSION['project_admin'];
-            }
-             * 
-             */
-
+            if (!isset($filters['investStatus'])) $filters['investStatus'] = 'all';
 
             // tipos de aporte
             $methods = Model\Invest::methods();
@@ -5260,6 +5248,9 @@ namespace Goteo\Controller {
                 $_SESSION['mailing'] = array();
             }
 
+            if (!isset($_SESSION['mailing']['filters']['status']))
+                $_SESSION['mailing']['filters']['status'] = -1;
+
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 switch ($action) {
@@ -5297,7 +5288,6 @@ namespace Goteo\Controller {
                                         AND (invest.status = 0 OR invest.status = 1 OR invest.status = 3 OR invest.status = 4)
                                     INNER JOIN project
                                         ON project.id = invest.project
-                                        AND project.status > 0
                                         ";
                                 $sqlFields .= ", project.name as project";
                                 $sqlFields .= ", project.id as projectId";
@@ -5305,7 +5295,6 @@ namespace Goteo\Controller {
                             case 'owner':
                                 $sqlInner .= "INNER JOIN project
                                         ON project.owner = user.id
-                                        AND project.status > 0
                                         ";
                                 $sqlFields .= ", project.name as project";
                                 $sqlFields .= ", project.id as projectId";
@@ -5323,11 +5312,11 @@ namespace Goteo\Controller {
                             $_SESSION['mailing']['filters_txt'] .= 'de cualquier proyecto ';
                         }
 
-                        if (!empty($filters['status']) && !empty($sqlInner)) {
+                        if (isset($filters['status']) && $filters['status'] > -1 && !empty($sqlInner)) {
                             $sqlFilter .= "AND project.status = :status ";
                             $values[':status'] = $filters['status'];
                             $_SESSION['mailing']['filters_txt'] .= 'en estado <strong>' . $status[$filters['status']] . '</strong> ';
-                        } elseif (empty($filters['status']) && !empty($sqlInner)) {
+                        } elseif ($filters['status'] < 0 && !empty($sqlInner)) {
                             $_SESSION['mailing']['filters_txt'] .= 'en cualquier estado ';
                         }
 

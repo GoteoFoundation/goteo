@@ -158,7 +158,7 @@ namespace Goteo\Model {
             if (!empty($filters['methods'])) {
                 $sqlFilter .= " AND invest.method = '{$filters['methods']}'";
             }
-            if (!empty($filters['status'])) {
+            if (is_numeric($filters['status'])) {
                 $sqlFilter .= " AND project.status = '{$filters['status']}'";
             }
             if (is_numeric($filters['investStatus'])) {

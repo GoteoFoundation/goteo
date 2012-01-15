@@ -1713,9 +1713,9 @@ namespace Goteo\Model {
             $sql = "SELECT * FROM project WHERE owner = ?";
             if ($published) {
                 $sql .= " AND status > 2";
-            } else {
+            } /* else {
                 $sql .= " AND status > 0";
-            }
+            } */
             $sql .= " ORDER BY created DESC";
             $query = self::query($sql, array($owner));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
@@ -1863,9 +1863,11 @@ namespace Goteo\Model {
 
             // los filtros
             $sqlFilter = "";
-            if (!empty($filters['status'])) {
+            if ($filters['status'] > -1) {
                 $sqlFilter .= " AND status = :status";
                 $values[':status'] = $filters['status'];
+            } else {
+                $sqlFilter .= " AND status > 0";
             }
             if (!empty($filters['owner'])) {
                 $sqlFilter .= " AND owner = :owner";
@@ -1903,8 +1905,7 @@ namespace Goteo\Model {
             $sql = "SELECT 
                         id
                     FROM project
-                    WHERE status > 0
-                        AND node = :node
+                    WHERE node = :node
                         $sqlFilter
                         $sqlOrder
                     ";
@@ -1986,7 +1987,7 @@ namespace Goteo\Model {
          */
         public static function status () {
             return array(
-//                0=>Text::get('form-project_status-cancelled'),
+                0=>Text::get('form-project_status-cancelled'),
                 1=>Text::get('form-project_status-edit'),
                 2=>Text::get('form-project_status-review'),
                 3=>Text::get('form-project_status-campaing'),
