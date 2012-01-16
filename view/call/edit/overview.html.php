@@ -117,7 +117,7 @@ $superform = array(
         
         'subtitle' => array(
             'type'      => 'textbox',
-            'title'     => Text::get('overview-field-subtitle'),
+            'title'     => Text::get('call-field-subtitle'),
             'required'  => false,
             'value'     => $call->subtitle,
             'hint'      => Text::get('tooltip-call-subtitle'),
@@ -231,7 +231,7 @@ $superform = array(
        
         'dossier' => array(
             'type'      => 'textbox',
-            'title'     => Text::get('overview-field-dossier'),
+            'title'     => Text::get('call-field-dossier'),
             'required'  => false,
             'value'     => $call->dossier,
             'hint'      => Text::get('tooltip-call-dossier'),

@@ -68,9 +68,9 @@ $elements      = array(
     'splash' => array(
         'type'      => 'html',
         'class'     => 'fullwidth',
-        'html'      => '<a href="/call/'.$call->id.'" class="button" target="_blank">Ver Splash</a>'
+        'html'      => '<a href="/call/'.$call->id.'" class="button" target="_blank">'.Text::get('call-see_splash-button').'</a>'
                         . '&nbsp;&nbsp;&nbsp;'
-                        . '<a href="/call/'.$call->id.'/info" class="button" target="_blank">Ver Convocatoria</a>'
+                        . '<a href="/call/'.$call->id.'/info" class="button" target="_blank">'.Text::get('call-see_main-button').'</a>'
     )
 
 /*
