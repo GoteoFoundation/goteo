@@ -15,8 +15,8 @@ namespace Goteo\Library {
             $title, // titulo entrada o nombre usuario
             $url = null, // enlace del titulo
             $image = null, // enlace del titulo
-            $scope, // ambito del evento (public, admin)
-            $type, // tipo de evento  ($public_types , $admin_types)
+            $scope = 'admin', // ambito del evento (public, admin)
+            $type =  'system', // tipo de evento  ($public_types , $admin_types)
             $timeago, // el hace tanto
             $date, // fecha y hora del evento
             $html, // contenido del evento en codigo html
@@ -42,6 +42,10 @@ namespace Goteo\Library {
             ),
             'project' => array(
                 'label' => 'Proyecto',
+                'color' => 'light-blue'
+            ),
+            'call' => array(
+                'label' => 'Convocatoria',
                 'color' => 'light-blue'
             ),
             'money' => array(
@@ -95,7 +99,33 @@ namespace Goteo\Library {
             'update' => '/project/'
         );
 
-		/**
+        /**
+         * Metodo que rellena instancia
+         * No usamos el __construct para no joder el fetch_CLASS
+         */
+        public function populate($title, $url, $html, $image = null) {
+            $this->title = $title;
+            $this->url = $url;
+            $this->html = $html;
+            $this->image = $image;
+        }
+
+
+        public function doAdmin ($type = 'system') {
+            $this->doEvent('admin', $type);
+        }
+
+        public function doPublic ($type = 'goteo') {
+            $this->doEvent('public', $type);
+        }
+
+        private function doEvent ($scope = 'admin', $type = 'system') {
+            $this->scope = $scope;
+            $this->type = $type;
+            $this->add();
+        }
+
+        /**
 		 *  Metodo para sacar los eventos
          *
          * @param string $type  tipo de evento (public: columnas goteo, proyectos, comunidad;  admin: categorias de filtro)
@@ -171,11 +201,14 @@ namespace Goteo\Library {
          * @return boolean true | false   as success
          *
 		 */
-		public function add(&$errors = array()) {
+		public function add() {
 
-            if (empty($this->scope)) $this->scope = 'admin';
-            if (empty($this->type)) $this->type = 'system';
-            if (empty($this->html)) return false;
+            if (empty($this->html)) {
+                @mail('goteo_fail@doukeshi.org',
+                    'Evento feed sin html: ' . SITE_URL,
+                    "Feed sin contenido html<hr /><pre>" . print_r($this, 1) . "</pre>");
+                return false;
+            }
 
 
             // primero, verificar si es unique, no duplicarlo
@@ -209,12 +242,16 @@ namespace Goteo\Library {
 				if (Model::query($sql, $values)) {
                     return true;
                 } else {
-                    $errors[] = "Ha fallado $sql con <pre>" . print_r($values, 1) . "</pre>";
+                    @mail('goteo_fail@doukeshi.org',
+                        'Fallo al hacer evento feed: ' . SITE_URL,
+                        "Ha fallado Feed<br /> {$sql} con <pre>" . print_r($values, 1) . "</pre><hr /><pre>" . print_r($this, 1) . "</pre>");
                     return false;
                 }
                 
 			} catch(\PDOException $e) {
-                $errors[] = 'Error sql al grabar el contenido de la pagina. ' . $e->getMessage();
+                    @mail('goteo_fail@doukeshi.org',
+                        'PDO Exception evento feed: ' . SITE_URL,
+                        "Ha fallado Feed PDO Exception<br /> {$sql} con " . $e->getMessage() . "<hr /><pre>" . print_r($this, 1) . "</pre>");
                 return false;
 			}
 
