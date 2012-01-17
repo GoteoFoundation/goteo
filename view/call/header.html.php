@@ -14,14 +14,15 @@
 		<div id="menu">
 			<ul>
 				<li class="home"><a href="/">Inicio</a></li>
-				<li class="campanya">: Capital Riego - <?php echo $call->name ?></li>
+				<li class="campanya">: <?php echo Text::get('call_header_riego'); ?> - <?php echo $call->name ?></li>
 			</ul>
 		</div>
-	   <div id="rightside">
+        
+        <div id="rightside">
 		
-		<ul>
+        <ul class="menu-right">
             <li class="capital">
-                <a href="/service/resources">Que es capital riego?</a>
+                <a href="/service/resources" target="_blank"><?php echo Text::get('call_header_whats_riego'); ?></a>
             </li>
             <?php if (!empty($_SESSION['user'])): ?>
             <li class="dashboard"><a href="/dashboard"><span><?php echo Text::get('dashboard-menu-main'); ?></span><img src="<?php echo $_SESSION['user']->avatar->getLink(28, 28, true); ?>" /></a>
@@ -48,7 +49,7 @@
             </li>
             <?php else: ?>
             <li class="login">
-                <a href="/user/login"><?php echo Text::get('regular-login'); ?></a>
+                <a href="/user/login?return=<?php echo $_SERVER['REQUEST_URI'] ?>"><?php echo Text::get('regular-login'); ?></a>
             </li>
             <?php endif ?>
             
@@ -63,7 +64,7 @@
 			   //desplegar idiomas
 			   try{clearTimeout(TID_LANG)}catch(e){};
 			   $("ul.lang").fadeIn();
-		       $("#lang").css("background","#808285 url('/view/css/bolita.png') 4px 7px no-repeat");
+		       $("#lang").css("background","#808285 url('/view/css/bolita.png') 4px 5px no-repeat");
 
 		   },function() {
 			   TID_LANG = setTimeout('$("ul.lang").hide()',100);
@@ -72,7 +73,7 @@
 				try{clearTimeout(TID_LANG)}catch(e){};
 			},function() {
 			   TID_LANG = setTimeout('$("ul.lang").hide()',100);
-			   $("#lang").css("background","url('/view/css/bolita.png') 4px 7px no-repeat");
+			   $("#lang").css("background","url('/view/css/bolita_gris.png') 4px 5px no-repeat");
 			});
 
 

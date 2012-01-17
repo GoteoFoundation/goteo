@@ -88,16 +88,15 @@ div#main ul#list>li {
 	left:0;
 	width: 100%;
 	z-index: 999;
-	background: url("../header/background.png") repeat-x scroll center top #B5DADC;
+	background: url("/view/css/header/background.png") repeat-x scroll center top #B5DADC;
 	margin: 0;
 	height: 25px;
-	overflow: hidden;
+	/*overflow: hidden;*/
 }
 
 #super-header {
 	width: 945px;
 	margin: 0 auto;
-	overflow: hidden;
 }
 
 div#header div#menu {
@@ -122,29 +121,30 @@ div#header div#menu > ul > li {
 	line-height: 1.8em;
 }
 
-div#super-header div#menu > ul > li.home > a {    
+div#super-header ul > li.home > a {    
     overflow: hidden;
     text-indent: 2000px;
     display: block;
     line-height: 2000px;
     width: 57px;
     height: 16px;  
-    background: url('../header/goteo-mini.png') no-repeat left center;        
+    background: url('/view/css/header/goteo-mini.png') no-repeat left center;
 }
 
-div#super-header div#menu > ul > li.home > a:hover {
-    background: url('../header/goteo-mini.png') no-repeat right center;
+div#super-header ul > li.home > a:hover {
+    background: url('/view/css/header/goteo-mini.png') no-repeat right center;
 }
 
-div#super-header div#menu > ul > li.campanya {
+div#super-header ul > li.campanya {
 	float: left;
 	text-transform: uppercase;
 	font-weight: bold;
 	vertical-align: middle;
+	line-height: 1.5em !important;
 }
 
-div#super-header div#menu > ul > li.campanya > a,
-div#super-header div#menu > ul > li.create > a {
+div#super-header ul > li.campanya > a,
+div#super-header ul > li.create > a {
     padding: .4em 1.8em .4em .8em;
     font-size: 12px;
     color: white;
@@ -158,37 +158,39 @@ div#super-header div#menu > ul > li.create > a {
 
 div#super-header div#rightside {
 	float: right;
-	width: 330px;
+	width: 490px;
 }
 
 div#super-header div#rightside {
 	text-transform: uppercase;
 }
 
-div#super-header div#rightside ul {
+div#super-header div#rightside ul.menu-right {
 	margin: 0;
+	padding: 0;
 	text-align: right;
 }
 
-div#super-header div#rightside ul > li {
+div#super-header div#rightside ul.menu-right > li {
 	list-style-type: none;
 	margin: 0 5px 0;
-	padding: 5px 0;
+	padding: 0;
 	display: inline-block;
-	line-height: 1.2em;
+	line-height: 25px;
+	height: 25px;
 }
 
-div#super-header div#rightside ul > li > a {
+div#super-header div#rightside ul.menu-right > li > a {
 	text-decoration: none;
 	font-size: 11px;
 }
 
-div#super-header div#rightside ul > li > a:hover {
+div#super-header ul.menu-right > li > a:hover {
 	color: #333;
 }
 
 div#super-header ul li#lang {
-	background:url('../bolita.png') 4px 7px no-repeat;
+	background:url('/view/css/bolita_gris.png') 4px 5px no-repeat transparent;
 	margin-left: 15px;
     padding-right: 22px;
     width: 44px;
@@ -196,17 +198,19 @@ div#super-header ul li#lang {
 }
 
 div#super-header ul li#lang.active {
-	background:url('../bolita.png') 4px 7px no-repeat #808286;
+	background:url('/view/css/bolita.png') 4px 5px no-repeat #808286;
 }
 
 div#super-header ul li#lang a {
 	padding-right: 5px;
-	background: url('../lang-triangulo.png') no-repeat scroll 100% bottom transparent;
+	background: url('/view/css/lang-triangulo.png') no-repeat scroll 100% bottom transparent;
 	cursor:default;
 }
 
-div#super-header ul li#lang a:hover {
-	color:#fff
+div#super-header ul li#lang a:hover,
+div#super-header ul li#lang.active a,
+div#super-header ul li#lang.active a:hover {
+	color:#20B2B3 !important;
 }
 
 ul.lang {
@@ -249,6 +253,87 @@ ul.lang li>a {
 ul.lang li:hover>a {
 	color: #1EB2B2;
 }
+
+div#header ul > li.dashboard {
+	position: relative;
+    background: transparent url('/view/css/header/down-black.png') no-repeat right 30px;
+}
+
+div#header ul > li.dashboard > a {
+    padding: .5em .8em;
+    font-size: 12px;
+    display: inline-block;    
+    color: #59595c;
+}
+
+div#header ul > li.dashboard > a {
+    padding: 0 15px 0 5px;
+}
+
+div#header ul > li.dashboard > a:hover {
+	color: #fff;
+}
+
+div#header ul > li.dashboard > a > img{
+	position:relative;
+	left:7px;
+	top:3px;
+	height: 16px;
+}
+
+div#header ul > li.dashboard:hover {
+    background-color: #1db3b2;    
+}
+
+div#header ul > li.dashboard > a > span > em {
+    display: none;
+}
+
+div#header ul > li.dashboard > div {
+    display: none;
+}
+
+div#header ul > li.dashboard:hover > div {
+    display: block;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 100%;
+}
+
+div#header ul > li.dashboard > div > ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: #1db3b2;
+	text-align: left;
+}
+
+div#header ul > li.dashboard > div > ul > li {
+    border-top: 1px solid #a5e1e0;    
+}
+
+div#header ul > li.dashboard > div > ul > li * {
+    color: white;
+    text-transform: none;
+}
+
+div#header ul > li.dashboard > div > ul > li > a {
+    display: block;    
+    padding: .1em 1em;
+	text-decoration: none;
+}
+
+div#header ul > li.dashboard > div > ul > li.logout > a > span{
+	color:#F00 !important;
+}
+
+div#header ul > li.dashboard > div > ul > li > a:hover {
+    background-color: #78d1d1;
+}
+
+
+
 
 /* Footer */
 
