@@ -68,8 +68,9 @@ uasort($project->individual_rewards,
                 <?php $units = ($individual->units - $individual->taken); 
                 echo Text::html('project-rewards-individual_reward-units_left', $units); ?><br />
             <?php endif; ?>
-            <div class="investors"><span class="taken"><?php echo $individual->taken; ?></span><?php echo Text::get('project-view-metter-investors'); ?></div>
-
+            <div class="investors"><span class="taken"><?php echo $individual->taken; ?></span><?php echo Text::get('project-view-metter-investors'); ?>
+                <?php if (!$individual->none) : ?><a href="/project/<?php echo $project->id ?>/invest?amount=<?php echo $individual->amount ?>" class="button violet">Get it!</a><?php endif; ?>
+            </div>
         </li>
         <?php endforeach ?>
         </ul>
