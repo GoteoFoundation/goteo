@@ -499,6 +499,9 @@ namespace Goteo\Controller {
                     // --- loguearse para aportar
                     if ($show == 'invest') {
                         $_SESSION['jumpto'] = '/project/' .  $id . '/invest';
+                        if (isset($_GET['amount'])) {
+                            $_SESSION['jumpto'] .= '?amount='.$_GET['amount'];
+                        }
                         Message::Info(Text::get('user-login-required-to_invest'));
                         throw new Redirection("/user/login");
                     }

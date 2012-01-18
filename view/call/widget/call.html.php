@@ -25,7 +25,7 @@ $call->icons = Model\Call\Icon::getNames($call->id);
 
 ?>
 
-<div class="widget call activable">
+<div class="call activable">
 	<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>" class="expand"<?php echo $blank; ?>></a>
 
     <div class="image">
@@ -36,16 +36,16 @@ $call->icons = Model\Call\Icon::getNames($call->id);
         <?php endif ?>
 
         <?php if (!empty($call->image)): ?>
-        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"<?php echo $blank; ?>><img alt="<?php echo $call->name ?>" src="<?php echo $call->image->getLink(155, 200, true) ?>" /></a>
+        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"><img alt="<?php echo $call->name ?>" src="<?php echo $call->image->getLink(211, 230, true) ?>" /></a>
         <?php endif ?>
     </div>
 
     <div class="name">
-    <?php if (!empty($call->logo)): ?>
-    <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"<?php echo $blank; ?>><img alt="<?php echo $call->name ?>" src="<?php echo $call->logo->getLink(120, 60) ?>" /></a>
-    <?php endif ?>
+        <?php if (!empty($call->logo)): ?>
+        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"><img alt="<?php echo $call->name ?>" src="<?php echo $call->logo->getLink(120) ?>" /></a>
+        <?php endif ?>
 
-    <h3 class="title"><a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"<?php echo $blank; ?>><?php echo Text::get('call-splash-campaign_title') ?><br /><?php echo $call->name ?></a></h3>
+        <h3><a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"<?php echo $blank; ?>><?php echo Text::get('call-splash-campaign_title') ?><br /><?php echo $call->name ?></a></h3>
     </div>
 
     <div class="data">
@@ -64,14 +64,14 @@ $call->icons = Model\Call\Icon::getNames($call->id);
                 <?php if ($call->status == 3) : //inscripcion ?>
                     <div class="row">
                     <?php if (!empty($call->amount)) : //con dinero ?>
-                        <dl class="block long last">
+                        <dl class="block long">
                             <dt><?php echo Text::get('call-splash-whole_budget-header') ?></dt>
                             <dd class="money"><?php echo \amount_format($call->amount) ?> <span class="euro">&euro;</span></dd>
                         </dl>
                     <?php else: ?>
-                        <dl class="block long category">
+                        <dl class="block long resources">
                             <dt><?php echo Text::get('call-splash-resources-header') ?></dt>
-                            <dd><?php echo $call->resources ?></dd>
+                            <dd><?php echo Text::recorta($call->resources, 100) ?></dd>
                         </dl>
                     <?php endif; ?>
                         <dl class="block long expires">
@@ -86,7 +86,7 @@ $call->icons = Model\Call\Icon::getNames($call->id);
                 <?php else : //en campaña ?>
                     <div class="row">
                     <?php if (!empty($call->amount)) : //con dinero ?>
-                        <dl class="block long last">
+                        <dl class="block long">
                             <dt><?php echo Text::get('call-splash-whole_budget-header') ?></dt>
                             <dd class="money light"><?php echo \amount_format($call->amount) ?> <span class="euro">&euro;</span></dd>
                         </dl>
@@ -95,12 +95,12 @@ $call->icons = Model\Call\Icon::getNames($call->id);
                             <dd class="money"><?php echo \amount_format($call->rest) ?> <span class="euro">&euro;</span></dd>
                         </dl>
                     <?php else : // sin dinero, con recursos ?>
-                        <dl class="block long category">
+                        <dl class="block resources longer">
                             <dt><?php echo Text::get('call-splash-resources-header') ?></dt>
-                            <dd><?php echo $call->resources ?></dd>
+                            <dd><?php echo Text::recorta($call->resources, 100) ?></dd>
                         </dl>
                     <?php endif; ?>
-                        <dl class="block selected">
+                        <dl class="block last selected">
                             <dt><?php echo Text::get('call-splash-selected_projects-header') ?></dt>
                             <dd><?php echo count($call->projects) ?></dd>
                         </dl>
@@ -108,14 +108,14 @@ $call->icons = Model\Call\Icon::getNames($call->id);
                 <?php endif; ?>
 
                 <?php if (!empty($call->call_location)) : ?>
-                <dl class="block location">
+                <dl class="block long location">
                     <dt><?php echo Text::get('call-splash-location-header') ?></dt>
                     <dd><?php echo Text::GmapsLink($call->call_location); ?></dd>
                 </dl>
                 <?php endif; ?>
 
                 <?php if (!empty($call->icons)) : ?>
-                <dl class="block long return">
+                <dl class="block last return">
                     <dt><?php echo Text::get('call-splash-icons-header') ?></dt>
                     <dd>
                         <ul>

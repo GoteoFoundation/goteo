@@ -201,7 +201,7 @@ namespace Goteo\Controller {
             $viewData = array();
 
             // segun el tipo cargamos el título de la página
-            $viewData['title'] = Text::get('home-calls-header');
+            $viewData['title'] = Text::html('discover-calls-header');
 
             // segun el tipo cargamos la lista
             $viewData['list']  = Model\Call::getActive();

@@ -146,6 +146,15 @@ namespace Goteo\Controller {
 
             $confirm = Model\Invest::get($invest);
             $projectData = Model\Project::getMini($project);
+            if (!empty($confirm->droped)) {
+                $drop = Model\Invest::get($confirm->droped);
+
+                $caller = Model\User::get($drop->user);
+                $callData = Model\Call::get($drop->call);
+
+                // @TODO añadir texto de capital riego al mail de gracias y al productor
+                $txt_droped = "Además, el proyecto ha conseguido 999€ de capital riego de la campaña NOMBRE-DE-CAMPAÑA";
+            }
 
             // email de agradecimiento al cofinanciador
             // primero monto el texto de recompensas
@@ -159,7 +168,7 @@ namespace Goteo\Controller {
                 $template = Template::get(10); // plantilla de agradecimiento
             }
 
-            // @TODO añadir direccion
+            // @TODO formatear direccion (un poco)
             $txt_address = implode(', ', $contirm->address);
 
             // Agradecimiento al cofinanciador
@@ -167,8 +176,8 @@ namespace Goteo\Controller {
             $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
 
             // En el contenido:
-            $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%');
-            $replace = array($_SESSION['user']->name, $projectData->name, SITE_URL.'/project/'.$projectData->id, $confirm->amount, $txt_rewards, $txt_address);
+            $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%', '%DROPED%');
+            $replace = array($_SESSION['user']->name, $projectData->name, SITE_URL.'/project/'.$projectData->id, $confirm->amount, $txt_rewards, $txt_address, $txt_droped);
             $content = \str_replace($search, $replace, $template->text);
 
             $mailHandler = new Mail();
@@ -195,8 +204,8 @@ namespace Goteo\Controller {
             $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
 
             // En el contenido:
-            $search  = array('%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%SITEURL%', '%AMOUNT%', '%MESSAGEURL%');
-            $replace = array($projectData->user->name, $_SESSION['user']->name, $projectData->name, SITE_URL, $confirm->amount, SITE_URL.'/user/profile/'.$_SESSION['user']->id.'/message');
+            $search  = array('%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%SITEURL%', '%AMOUNT%', '%MESSAGEURL%', '%DROPED%');
+            $replace = array($projectData->user->name, $_SESSION['user']->name, $projectData->name, SITE_URL, $confirm->amount, SITE_URL.'/user/profile/'.$_SESSION['user']->id.'/message', $txt_droped);
             $content = \str_replace($search, $replace, $template->text);
 
             $mailHandler = new Mail();
@@ -216,34 +225,22 @@ namespace Goteo\Controller {
              * SOLAMENTE DESARROLLO Y PRUEBAS!!!
              -----------------------------------*/
             if ($confirm->method == 'cash') {
-                /*
-                 * Evento Feed
-                 */
+                // Evento Feed
                 $log = new Feed();
-                $log->title = 'Aporte '.$confirm->method;
-                $log->url = '/admin/invests';
-                $log->type = 'money';
-                $log_text = "%s ha aportado %s al proyecto %s mediante Cash";
-                $items = array(
-                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                    Feed::item('money', $confirm->amount.' &euro;'),
-                    Feed::item('project', $projectData->name, $projectData->id)
-                );
-                $log->html = \vsprintf($log_text, $items);
-                $log->add($errors);
-
+                $log->populate('Aporte '.$confirm->method, '/admin/invests',
+                    \vsprintf("%s ha aportado %s al proyecto %s mediante Cash", array(
+                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                        Feed::item('money', $confirm->amount.' &euro;'),
+                        Feed::item('project', $projectData->name, $projectData->id))
+                    ));
+                $log->doAdmin('money');
                 // evento público
-                $log->title = $_SESSION['user']->name;
-                $log->url = '/user/profile/'.$_SESSION['user']->id;
-                $log->image = $_SESSION['user']->avatar->id;
-
-                $log->scope = 'public';
-                $log->type = 'community';
-                $log->html = Text::html('feed-invest',
+                $log->populate($_SESSION['user']->name, '/user/profile/'.$_SESSION['user']->id,
+                    Text::html('feed-invest',
                                     Feed::item('money', $confirm->amount.' &euro;'),
-                                    Feed::item('project', $projectData->name, $projectData->id));
-                $log->add($errors);
-
+                                    Feed::item('project', $projectData->name, $projectData->id)),
+                    $_SESSION['user']->avatar->id);
+                $log->doPublic('community');
                 unset($log);
             }
             /*--------------------------------------
@@ -255,50 +252,31 @@ namespace Goteo\Controller {
                 // hay que cambiarle el status a 0
                 $confirm->setStatus('0');
 
-                /*
-                 * Evento Feed
-                 */
+                // Evento Feed
                 $log = new Feed();
-                $log->title = 'Aporte PayPal';
-                $log->url = '/admin/invests';
-                $log->type = 'money';
-                $log_text = "%s ha aportado %s al proyecto %s mediante PayPal";
-                $items = array(
-                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                    Feed::item('money', $confirm->amount.' &euro;'),
-                    Feed::item('project', $projectData->name, $projectData->id)
-                );
-                $log->html = \vsprintf($log_text, $items);
-                $log->add($errors);
-
-                    // evento público
-                if ($confirm->anonymous) {
-                    $log->title = Text::get('regular-anonymous');
-                    $log->url = '/user/profile/anonymous';
-                    $log->image = 1;
-                } else {
-                    $log->title = $_SESSION['user']->name;
-                    $log->url = '/user/profile/'.$_SESSION['user']->id;
-                    $log->image = $_SESSION['user']->avatar->id;
-                }
-                $log->scope = 'public';
-                $log->type = 'community';
-                $log->html = Text::html('feed-invest',
+                $log->populate('Aporte PayPal', '/admin/invests',
+                    \vsprintf("%s ha aportado %s al proyecto %s mediante PayPal",
+                        array(
+                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                        Feed::item('money', $confirm->amount.' &euro;'),
+                        Feed::item('project', $projectData->name, $projectData->id))
+                    ));
+                $log->doAdmin('money');
+                // evento público
+                $log_html = Text::html('feed-invest',
                                     Feed::item('money', $confirm->amount.' &euro;'),
                                     Feed::item('project', $projectData->name, $projectData->id));
-                $log->add($errors);
-
+                if ($confirm->anonymous) {
+                    $log->populate(Text::get('regular-anonymous'), '/user/profile/anonymous', $log_html, 1);
+                } else {
+                    $log->populate($_SESSION['user']->name, '/user/profile/'.$_SESSION['user']->id, $log_html, $_SESSION['user']->avatar->id);
+                }
+                $log->doPublic('community');
                 unset($log);
             }
 
             // Feed del aporte de la campaña
-            if (!empty($confirm->droped)) {
-                $drop = Model\Invest::get($confirm->droped);
-                if ($drop->campaign != 1) break;
-
-                $caller = Model\User::get($drop->user);
-                $callData = Model\Call::get($drop->call);
-
+            if (!empty($confirm->droped) && $drop instanceof Model\Invest && !empty($drop->campaign)) {
                 // Evento Feed
                 $log = new Feed();
                 $log->populate('Aporte riego '.$drop->method, '/admin/invests',
@@ -308,7 +286,6 @@ namespace Goteo\Controller {
                         Feed::item('project', $projectData->name, $projectData->id)
                     )));
                 $log->doAdmin('money');
-
                 // evento público
                 $log->populate('Campaña ' . $callData->name, '/call/'.$callData->id,
                             Text::html('feed-invest',
