@@ -193,6 +193,27 @@ namespace Goteo\Controller {
 
         }
 
+         /*
+         * Ver todas las convocatorias
+         */
+        public function calls () {
+
+            $viewData = array();
+
+            // segun el tipo cargamos el título de la página
+            $viewData['title'] = Text::get('home-calls-header');
+
+            // segun el tipo cargamos la lista
+            $viewData['list']  = Model\Call::getActive();
+
+
+            return new View(
+                'view/discover/calls.html.php',
+                $viewData
+             );
+
+        }
+
     }
     
 }

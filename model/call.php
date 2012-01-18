@@ -717,13 +717,22 @@ namespace Goteo\Model {
         /*
          * Lista de convocatorias en campaña (para la portada)
          */
-        public static function getActive()
+        public static function getActive($status = null)
         {
             $calls = array();
-            $query = self::query("SELECT call.id
-                                  FROM  `call`
-                                  WHERE call.status = 3 OR call.status = 4
-                                  ORDER BY name ASC");
+
+            if (in_array($status, array(3, 4))) {
+                $sqlFilter .= " WHERE call.status = $status";
+            } else {
+                $sqlFilter .= " WHERE call.status = 3 OR call.status = 4";
+            }
+
+            $sql = "SELECT call.id
+                    FROM  `call`
+                    $sqlFilter
+                    ORDER BY name ASC";
+
+            $query = self::query($sql);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $call) {
                 $calls[] = self::get($call->id);
             }

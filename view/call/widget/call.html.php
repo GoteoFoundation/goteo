@@ -23,12 +23,6 @@ $call->image = Model\Image::get($the_image);
 $call->categories = Model\Call\Category::getNames($call->id);
 $call->icons = Model\Call\Icon::getNames($call->id);
 
-
-if ($this['global'] === true) {
-    $blank = ' target="_blank"';
-} else {
-    $blank = '';
-}
 ?>
 
 <div class="widget call activable">
@@ -62,7 +56,7 @@ if ($this['global'] === true) {
                 <?php elseif (!empty($call->amount)) : //en campaña con dinero ?>
                 <p class="subtitle"><?php echo Text::get('call-splash-invest_explain', $call->user->name) ?></p>
                 <?php else : //en campaña sin dinero, con recursos ?>
-                <p class="subtitle"><?php echo $call->resources ?></p>
+                <p class="subtitle"><?php echo Text::get('call-splash-resources_explain') ?></p>
                 <?php endif; ?>
             </li>
 
@@ -101,17 +95,9 @@ if ($this['global'] === true) {
                             <dd class="money"><?php echo \amount_format($call->rest) ?> <span class="euro">&euro;</span></dd>
                         </dl>
                     <?php else : // sin dinero, con recursos ?>
-                        <dl class="block long return">
-                            <dt><?php echo Text::get('call-splash-icons-header') ?></dt>
-                            <dd>
-                                <ul>
-                                    <?php foreach ($call->icons as $iconId=>$iconName) : ?>
-                                    <li class="<?php echo $iconId ?> activable">
-                                        <a class="tipsy" title="<?php echo $iconName ?>" ><?php echo $iconName ?></a>
-                                    </li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </dd>
+                        <dl class="block long category">
+                            <dt><?php echo Text::get('call-splash-resources-header') ?></dt>
+                            <dd><?php echo $call->resources ?></dd>
                         </dl>
                     <?php endif; ?>
                         <dl class="block selected">
@@ -128,14 +114,21 @@ if ($this['global'] === true) {
                 </dl>
                 <?php endif; ?>
 
-                <div class="button">
-                    <?php if ($call->status == 3) : // en convocatoria ?>
-                    <a class="button red" href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"<?php echo $blank; ?>>VER CONVOCATORIA</a>
-                    <?php else : ?>
-                    <a class="button aqua" href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"<?php echo $blank; ?>>VER CAMPA&Ntilde;A</a>
-                    <?php endif; ?>
-                </div>
-
+                <?php if (!empty($call->icons)) : ?>
+                <dl class="block long return">
+                    <dt><?php echo Text::get('call-splash-icons-header') ?></dt>
+                    <dd>
+                        <ul>
+                            <?php foreach ($call->icons as $iconId=>$iconName) : ?>
+                            <li class="<?php echo $iconId ?> activable">
+                                <a class="tipsy" title="<?php echo $iconName ?>" ><?php echo $iconName ?></a>
+                            </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </dd>
+                </dl>
+                <?php endif; ?>
+                
             </li>
         </ul>
     </div>

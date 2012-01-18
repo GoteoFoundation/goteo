@@ -19,10 +19,11 @@ namespace Goteo\Controller {
             }
 
             // hay que sacar los que van en portada de su blog (en cuanto aclaremos lo de los nodos)
-            $posts    = Post::getList();
-            $promotes = Promote::getAll(true);
-            $banners  = Banner::getAll();
-            $calls    = Call::getActive();
+            $posts     = Post::getList();
+            $promotes  = Promote::getAll(true);
+            $banners   = Banner::getAll();
+            $calls     = Call::getActive(3); // convocatorias en modalidad 1; inscripcion de proyectos
+            $campaigns = Call::getActive(4); // convocatorias en modalidad 2; repartiendo capital riego
 
             foreach ($posts as $id=>$title) {
                 $posts[$id] = Post::get($id);
@@ -48,10 +49,11 @@ namespace Goteo\Controller {
 
             return new View('view/index.html.php',
                 array(
-                    'banners'  => $banners,
-                    'posts'    => $posts,
-                    'promotes' => $promotes,
-                    'calls'    => $calls
+                    'banners'   => $banners,
+                    'posts'     => $posts,
+                    'promotes'  => $promotes,
+                    'calls'     => $calls,
+                    'campaigns' => $campaigns
                 )
             );
             

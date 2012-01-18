@@ -1,0 +1,6 @@
+/* traido desde /view/css/call/view.css */
+/* home y discover */
+body.home div#main div.widget.calls div.title,
+body.discover div#main div.widget.calls div.title {
+    border: 1px solid blue;
+}

@@ -16,6 +16,7 @@
 @import url('tipsy/tipsy.css');
 @import url('about.css');
 @import url('feed.css');
+@import url('call.css');
 
 div#sub-header > div,
 div#sub-header-secondary > div {

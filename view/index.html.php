@@ -3,7 +3,8 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$currentPost = $this['posts'][$this['post']];
+$calls     = $this['calls'];
+$campaigns = $this['campaigns'];
 
 $bodyClass = 'home';
 // para que el prologue ponga el código js para botón facebook en el bannerside
@@ -15,6 +16,7 @@ include 'view/header.html.php';
     $(function(){
         $('#sub-header').slides();
     });
+
 </script>
 <div id="sub-header" class="banners">
     <div class="clearfix">
@@ -108,15 +110,75 @@ include 'view/header.html.php';
     </div>
     <?php endif; ?>
 
-    <?php if (!empty($this['calls'])): ?>
+    <?php if (!empty($calls) || !empty($campaigns)): ?>
     <div class="widget calls">
 
-        <h2 class="title"><?php echo Text::get('home-calls-header'); ?></h2>
+        <div class="title">
+            <div class="logo">
+                [LOGO] <?php echo Text::get('home-calls-header'); ?>
+            </div>
+            <?php if (!empty($calls)) : ?>
+            <div class="call-count mod1">
+                <strong><?php echo count($calls) ?>.2</strong>
+                <span>Convocatorias abiertas</span>
+            </div>
+            <?php endif; ?>
+            
+            <?php if (!empty($campaigns)) : ?>
+            <div class="call-count mod2">
+                <strong><?php echo count($campaigns) ?>.12</strong>
+                <span>Campañas activas</span>
+            </div>
+            <?php endif; ?>
+        </div>
 
-        <?php foreach ($this['calls'] as $call) {
-            echo new View('view/call/widget/call.html.php', array('call' => $call));
-        } ?>
+        <?php if (!empty($calls)) : ?>
+        <script type="text/javascript">
+            $(function(){
+                $('#calls').slides({
+                    container: 'slder_calls',
+                    generatePagination: false,
+                    play: 0
+                });
+            });
+        </script>
+        <div id="calls" class="callrow">
+            <?php if (count($calls) > 1) : ?><a class="prev">prev</a><?php endif ?>
+            <div class="slder_calls"<?php if (count($calls)==1) echo ' style="display:block;"'; ?>>
+            <?php foreach ($calls as $call) : ?>
+                <div class="slder_slide">
+                <?php echo new View('view/call/widget/call.html.php', array('call' => $call)); ?>
+                </div>
+            <?php endforeach; ?>
+            </div>
+            <?php if (count($calls) > 1) : ?><a class="next">next</a><?php endif ?>
+        </div>
+        <?php endif; ?>
+        
+        <?php if (!empty($campaigns)) : ?>
+        <script type="text/javascript">
+            $(function(){
+                $('#campaigns').slides({
+                    container: 'slder_campaigns',
+                    generatePagination: false,
+                    play: 0
+                });
+            });
+        </script>
+        <div id="campaigns" class="callrow">
+            <?php if (count($campaigns) > 1) : ?><a class="prev">prev</a><?php endif ?>
+            <div class="slder_campaigns"<?php if (count($campaigns)==1) echo ' style="display:block;"'; ?>>
+            <?php foreach ($campaigns as $call)  : ?>
+                <div class="slder_slide">
+                <?php echo new View('view/call/widget/call.html.php', array('call' => $call)); ?>
+                </div>
+            <?php endforeach; ?>
+            </div>
+            <?php if (count($campaigns) > 1) : ?><a class="next">next</a><?php endif ?>
+        </div>
+        <?php endif; ?>
 
+        <a class="all" href="/discover/calls"><?php echo Text::get('regular-see_all'); ?></a>
     </div>
     <?php endif; ?>
 

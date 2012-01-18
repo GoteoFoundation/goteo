@@ -39,7 +39,7 @@ $(document).ready(function() {
             <?php elseif (!empty($call->amount)) : //en campaña con dinero ?>
             <p class="subtitle"><?php echo Text::get('call-splash-invest_explain', $call->user->name) ?></p>
             <?php else : //en campaña sin dinero, con recursos ?>
-            <p class="subtitle"><?php echo $call->resources ?></p>
+            <p class="subtitle"><?php echo Text::recorta($call->resources, 250) ?></p>
             <?php endif; ?>
             
 			<div class="freetext">
