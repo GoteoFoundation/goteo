@@ -77,6 +77,7 @@ namespace Goteo\Library {
             'blog' => 'grey',
             'news' => 'grey',
             'money' => 'violet',
+            'drop' => 'violet',
             'relevant' => 'red',
             'comment' => 'green',
             'update-comment' => 'grey',
@@ -89,6 +90,7 @@ namespace Goteo\Library {
             'user' => '/user/profile/',
             'project' => '/project/',
             'call' => '/call/',
+            'drop' => SITE_URL,
             'blog' => '/blog/',
             'news' => '/news/',
             'relevant' => '',
@@ -229,8 +231,8 @@ namespace Goteo\Library {
                     ':title' => $this->title,
                     ':url' => $this->url,
                     ':image' => $this->image,
-                    ':scope' => !empty($this->scope) ? $this->scope : 'admin' ,
-                    ':type' => !empty($this->type) ? $this->type : 'system',
+                    ':scope' => $this->scope,
+                    ':type' => $this->type,
                     ':html' => $this->html
                 );
 

@@ -333,7 +333,8 @@ namespace Goteo\Library {
                 'error' => 'Errores catastroficos',
                 'call_public' => 'Convocatorias: publicos',
                 'call_form' => 'Convocatorias: formulario',
-                'call_dash' => 'Convocatorias: dashboard'
+                'call_dash' => 'Convocatorias: dashboard',
+                'wof' => 'Wall of friends'
             );
 
             \asort($groups);

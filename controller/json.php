@@ -2,7 +2,8 @@
 namespace Goteo\Controller {
 
     use Goteo\Model,
-        Goteo\Model\User;
+        Goteo\Model\User,
+        Goteo\Library\Feed;
 
     class JSON extends \Goteo\Core\Controller {
 
@@ -39,6 +40,24 @@ namespace Goteo\Controller {
                 $registry->call = $_SESSION['call']->id;
                 if ($registry->save($errors)) {
     				$this->result['assigned'] = true;
+
+                    $projectData = Model\Project::get($id);
+
+                    // Evento feed
+                    $log = new Feed();
+                    $log->populate('proyecto asignado a convocatoria por convocador', 'admin/calls/'.$_SESSION['call']->id.'/projects',
+                        \vsprintf('El convocador %s ha asignado el proyecto %s a la convocatoria %s', array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('project', $projectData->name, $projectData->id),
+                            Feed::item('call', $_SESSION['call']->name, $_SESSION['call']->id))
+                        ));
+                    $log->doAdmin('call');
+                    $log->populate($_SESSION['call']->name, '/call/'.$_SESSION['call']->id,
+                        \vsprintf('Proyecto %s seleccionado', array(
+                            Feed::item('project', $projectData->name, $projectData->id))
+                        ), $_SESSION['call']->logo);
+                    $log->doPublic('projects');
+                    unset($log);
                 }
 			}
 

@@ -10,13 +10,13 @@ if (!$call instanceof  Goteo\Model\call) {
 }
 ?>
 <div class="widget">
-    <a class="button red" href="/call/edit/<?php echo $call->id ?>"><?php echo Text::get('regular-edit') ?></a>
+    <a class="button red" href="/call/edit/<?php echo $call->id ?>?from=dashboard"><?php echo Text::get('regular-edit') ?></a>
     <a class="button" href="/call/<?php echo $call->id ?>" target="_blank"><?php echo Text::get('dashboard-menu-calls-preview') ?></a>
 
 <?php if ($call->status < 3) : ?>
     <?php if ($_SESSION['assign_mode'] === true) : ?>
-        <a href="/discover/call">Seguir seleccionando proyectos</a> ó
-        <a class="button" href="/dashboard/calls/projects/assign_mode/off"><?php echo Text::get('dashboard-menu-calls-assign_mode-off') ?></a>
+        <a href="/discover/call" class="button"><?php echo Text::get('dashboard-menu-calls-assign_mode-on') ?></a>
+        <a class="button red" href="/dashboard/calls/projects/assign_mode/off"><?php echo Text::get('dashboard-menu-calls-assign_mode-off') ?></a>
     <?php else : ?>
         <a class="button" href="/dashboard/calls/projects/assign_mode/on"><?php echo Text::get('dashboard-menu-calls-assign_mode-on') ?></a>
     <?php endif; ?>

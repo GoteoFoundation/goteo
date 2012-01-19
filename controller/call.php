@@ -50,6 +50,18 @@ namespace Goteo\Controller {
         public function edit ($id) {
             $call = Model\Call::get($id, null);
 
+            if (isset($_GET['from']) && $_GET['from'] == 'dashboard') {
+                // Evento Feed
+                $log = new Feed();
+                $log->populate('El convocador entra a editar desde dashboard', '/admin/calls/'.$id,
+                    \vsprintf('El convocador %s ha entrado a editar su convocatoria %s desde su dashboard', array(
+                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                        Feed::item('call', $call->name, $call->id)
+                )));
+                $log->doAdmin('call');
+                unset($log);
+            }
+
             // si no tenemos SESSION stepped es porque no venimos del create
             if (!isset($_SESSION['stepped']))
                 $_SESSION['stepped'] = array(
@@ -165,9 +177,7 @@ namespace Goteo\Controller {
 
                         unset($mailHandler);
 
-                        /*
-                         * Evento Feed
-                         */
+                        // Evento Feed
                         $log = new Feed();
                         $log->title = 'convocatoria enviada a revision';
                         $log->url = '/admin/calls';
@@ -282,20 +292,14 @@ namespace Goteo\Controller {
                     ACL::allow('/call/edit/'.$call->id, '*', 'caller', $_SESSION['user']->id);
                     ACL::allow('/call/delete/'.$call->id, '*', 'caller', $_SESSION['user']->id);
 
-                    /*
-                     * Evento Feed
-                     */
+                    // Evento Feed
                     $log = new Feed();
-                    $log->title = 'usuario crea nueva convocatoria';
-                    $log->url = 'admin/calls';
-                    $log->type = 'call';
-                    $log_text = '%s ha creado una nueva convocatoria, %s';
-                    $log_items = array(
-                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                        Feed::item('call', $call->name, $call->id)
-                    );
-                    $log->html = \vsprintf($log_text, $log_items);
-                    $log->add($errors);
+                    $log->populate('usuario admin/convocador crea convocatoria', 'admin/calls',
+                        \vsprintf('El usuario %s ha creado una nueva convocatoria, %s', array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('call', $call->name, $call->id))
+                        ));
+                    $log->doAdmin('call');
                     unset($log);
 
                 } else {

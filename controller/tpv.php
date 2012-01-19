@@ -166,39 +166,27 @@ namespace Goteo\Controller {
                     $doPublic = false;
                 }
 
-                /*
-                 * Evento Feed
-                 */
+                // Evento Feed
                 $log = new Feed();
-                $log->title = 'Aporte TPV';
-                $log->url = '/admin/invests';
-                $log->type = 'money';
-                $log_items = array(
-                    Feed::item('user', $userData->name, $userData->id),
-                    Feed::item('money', $invest->amount.' &euro;'),
-                    Feed::item('project', $projectData->name, $projectData->id)
-                );
-                $log->html = \vsprintf($log_text, $log_items);
-                $log->add($errors);
+                $log->populate('Aporte TPV', '/admin/invests',
+                    \vsprintf($log_text, $log_items = array(
+                        Feed::item('user', $userData->name, $userData->id),
+                        Feed::item('money', $invest->amount.' &euro;'),
+                        Feed::item('project', $projectData->name, $projectData->id))
+                    ));
+                $log->doAdmin('money');
 
                 if ($doPublic) {
                     // evento público
-                    if ($invest->anonymous) {
-                        $log->title = Text::get('regular-anonymous');
-                        $log->url = '/user/profile/anonymous';
-                        $log->image = 1;
-                    } else {
-                        $log->title = $userData->name;
-                        $log->url = '/user/profile/'.$userData->id;
-                        $log->image = $userData->avatar->id;
-                    }
-                    $log->scope = 'public';
-                    $log->type = 'community';
-
-                    $log->html = Text::html('feed-invest', 
+                    $log_html = Text::html('feed-invest',
                                         Feed::item('money', $invest->amount.' &euro;'),
                                         Feed::item('project', $projectData->name, $projectData->id));
-                    $log->add($errors);
+                    if ($invest->anonymous) {
+                        $log->populate(Text::get('regular-anonymous'), '/user/profile/anonymous', $log_html, 1);
+                    } else {
+                        $log->populate($userData->name, '/user/profile/'.$userData->id, $log_html, $userData->avatar->id);
+                    }
+                    $log->doPublic('community');
                 }
                 unset($log);
             } else {

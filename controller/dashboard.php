@@ -1395,6 +1395,7 @@ namespace Goteo\Controller {
                         }
                     } elseif ($action == 'assign_mode' && $id == 'off') {
                         unset($_SESSION['assign_mode']);
+                        throw new Redirection('/dashboard/calls/summary');
                     }
 
                     //si estamos quitando un proyecto

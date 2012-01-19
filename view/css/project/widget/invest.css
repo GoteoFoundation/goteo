@@ -217,7 +217,7 @@ div.widget.project-invest p label input[type="checkbox"]:checked + span.chkbox {
 
 /* Logo riego */
 div.widget.project-invest.project-invest-amount.called {
-	background-image: url("/view/css/call/logo-capital.png");
-    background-position: right center;;
+	background-image: url("/view/css/call/logo-capital_medium.png");
+    background-position: right top;
     background-repeat: no-repeat;
 }

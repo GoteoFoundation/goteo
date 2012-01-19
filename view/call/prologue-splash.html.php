@@ -59,7 +59,7 @@
         <noscript><!-- Please enable JavaScript --></noscript>
 
 		<div id="bgimage">
-            <div><img alt="<?php echo $call->name ?>" src="<?php if ($call->image instanceof Goteo\Core\Model\Image) echo $call->image->getLink(5000, 5000) ?>" /></div>
+            <div><img alt="<?php echo $call->name ?>" src="<?php if ($call->image instanceof Goteo\Model\Image) echo $call->image->getLink(5000, 5000) ?>" /></div>
 		</div>
 
         <div id="wrapper">

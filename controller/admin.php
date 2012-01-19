@@ -2835,6 +2835,7 @@ namespace Goteo\Controller {
                         case 'caller':
                             $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'caller')";
                             $log_action = 'Hecho convocador';
+                            $newcaller = true;
                             break;
                         case 'nocaller':
                             $sql = "DELETE FROM user_role WHERE role_id = 'caller' AND user_id = :user";
@@ -2869,21 +2870,22 @@ namespace Goteo\Controller {
 
                         }
 
-                        /*
-                         * Evento Feed
-                         */
+                        // Evento Feed
                         $log = new Feed();
-                        $log->title = 'Operación sobre usuario (admin)';
-                        $log->url = '/admin/users';
-                        $log->type = 'user';
-                        $log_items = array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('relevant', $log_action),
-                            Feed::item('user', $user->name, $user->id)
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
-                        $log->add($errors);
-
+                        $log->populate('Operación sobre usuario (admin)', '/admin/users',
+                            \vsprintf($log_text, array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', $log_action),
+                                Feed::item('user', $user->name, $user->id)
+                        )));
+                        $log->doAdmin('user');
+                        // si es nuevo convocador
+                        $log->populate('Nuevo usuario convocador', 'admin/users/'.$user->id.'/manage',
+                            \vsprintf('El admin %s ha hecho convocador al usuario %s', array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('call', $user->name, $user->id))
+                            ));
+                        $log->doAdmin('admin');
                         unset($log);
 
                         throw new Redirection('/admin/users/manage/'.$id);
@@ -4776,6 +4778,25 @@ namespace Goteo\Controller {
                             $registry->call = $call->id;
                             if ($registry->save($errors)) {
                                 Message::Info('Proyecto seleccionado correctamente');
+
+                                $projectData = Model\Project::get($_POST['project']);
+
+                                // Evento feed
+                                $log = new Feed();
+                                $log->populate('proyecto asignado a convocatoria desde admin', 'admin/calls/'.$call->id.'/projects',
+                                    \vsprintf('El admin %s ha asignado el proyecto %s a la convocatoria %s', array(
+                                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                        Feed::item('project', $projectData->name, $projectData->id),
+                                        Feed::item('call', $call->name, $call->id))
+                                    ));
+                                $log->doAdmin('call');
+                                $log->populate($call->name, '/call/'.$call->id,
+                                    \vsprintf('Proyecto %s seleccionado', array(
+                                        Feed::item('project', $projectData->name, $projectData->id))
+                                    ), $call->logo);
+                                $log->doPublic('projects');
+                                unset($log);
+
                             } else {
                                 Message::Error('Fallo al seleccionar proyecto');
                             }
@@ -4802,47 +4823,28 @@ namespace Goteo\Controller {
 
             
             if (isset($log_text)) {
-
                 // Evento Feed
                 $log = new Feed();
-                $log->title = 'Gestion de una convocatoria desde el admin';
-                $log->url = '/admin/calls';
-                $log->type = 'admin';
-                $log_items = array(
-                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                    Feed::item('call', $call->name, $call->id)
-                );
-                $log->html = \vsprintf($log_text, $log_items);
-                $log->add($errors);
+                $log_html = \vsprintf($log_text, array(
+                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                        Feed::item('call', $call->name, $call->id))
+                    );
+                // Mensaje como el log
+                Message::Info($log_html);
+                $log->populate('Gestion de una convocatoria desde el admin', '/admin/calls', $log_html);
+                $log->doAdmin('admin');
 
-                Message::Info($log->html);
-
-                if ($action == 'open') {
-                    // evento público, se ha abierto para recibir proyectos
-                    $log->title = $call->name;
-                    $log->url = '/call/'.$call->id;
-                    $log->image = $call->logo;
-                    $log->scope = 'public';
-                    $log->type = 'goteo';
-                    $log->html = Text::html('feed-new_call-opened');
-                    $log->add($errors);
+                // publicos
+                switch ($action) {
+                    case 'open': // se ha abierto para recibir proyectos
+                        $log->populate($call->name, '/call/'.$call->id, Text::html('feed-new_call-opened'), $call->logo);
+                        $log->doPublic();
+                    break;
+                    case 'publish': // ha iniciado la campaña
+                        $log->populate($call->name, '/call/'.$call->id, Text::html('feed-new_call-published'), $call->logo);
+                        $log->doPublic();
+                    break;
                 }
-
-                if ($action == 'publish') {
-                    // evento público, ha iniciado la campaña
-                    $log->title = $call->name;
-                    $log->url = '/call/'.$call->id;
-                    $log->image = $call->logo;
-                    $log->scope = 'public';
-                    $log->type = 'goteo';
-                    $log->html = Text::html('feed-new_call-published');
-                    $log->add($errors);
-                }
-
-                if (!empty($errors)) {
-                    Message::Error('Error al publicar el feed: '. $errors);
-                }
-
                 unset($log);
                 
                 throw new Redirection('/admin/calls/list');

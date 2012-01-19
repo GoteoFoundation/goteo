@@ -280,18 +280,24 @@ namespace Goteo\Controller {
                 // Evento Feed
                 $log = new Feed();
                 $log->populate('Aporte riego '.$drop->method, '/admin/invests',
-                    \vsprintf("%s ha aportado %s al proyecto %s", array(
+                    \vsprintf("%s ha aportado %s de %s al proyecto %s a través de la campaña %s", array(
                         Feed::item('user', $caller->name, $caller->id),
-                        Feed::item('money', $drop->amount.' &euro; de Capital Riego'),
-                        Feed::item('project', $projectData->name, $projectData->id)
+                        Feed::item('money', $drop->amount.' &euro;'),
+                        Feed::item('drop', 'Capital Riego', '/service/resources'),
+                        Feed::item('project', $projectData->name, $projectData->id),
+                        Feed::item('call', $callData->name, $callData->id)
                     )));
                 $log->doAdmin('money');
                 // evento público
-                $log->populate('Campaña ' . $callData->name, '/call/'.$callData->id,
+                $log->populate($caller->name, '/user/profile/'.$caller->id,
                             Text::html('feed-invest',
-                                    Feed::item('money', $drop->amount.' &euro; de Capital Riego'),
+                                    Feed::item('money', $drop->amount.' &euro;')
+                                        . ' de '
+                                        . Feed::item('drop', 'Capital Riego', '/service/resources'),
                                     Feed::item('project', $projectData->name, $projectData->id)
-                            ), $callData->logo);
+                                        . ' a través de la campaña '
+                                        . Feed::item('call', $callData->name, $callData->id)
+                            ), $caller->avatar->id);
                 $log->doPublic('community');
                 unset($log);
             }

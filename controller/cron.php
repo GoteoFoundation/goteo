@@ -1070,6 +1070,99 @@ namespace Goteo\Controller {
 
             }
 
+            // convocatorias con aplicación abierta
+            $calls = Model\Call::getActive(3);
+            foreach ($calls as $call) {
+                // a ver cuantos días le quedan para que acabe la convocatoria
+                $until = strtotime($call->until);
+//                echo 'convocatoria abierta hasta el '.$call->until.' => '.$until.'<br />';
+                $now = strtotime(date('Y-m-d'));
+//                echo 'hoy es '.date('Y-m-d').' => '.$now.'<br />';
+                $diference = $until - $now;
+//                echo 'Faltan' . $diference . '<br />';
+                $days = \round($diference/24/60/60);
+//                echo 'Esto son '.$days.' dias<br />';
+
+                $doFeed = false;
+                switch ($days) {
+                    case 7:
+                        $log_text = 'Falta una semana para que acabe la convocatoria %s';
+                        $log_text_public = 'Falta una semana para que se cierre la aplicación de proyectos';
+                        $doFeed = true;
+                        break;
+                    case 3:
+                        $log_text = 'Faltan 3 dias para que acabe la convocatoria %s';
+                        $log_text_public = 'Faltan 3 dias para que se cierre la aplicación de proyectos';
+                        $doFeed = true;
+                        break;
+                    case 1:
+                        $log_text = 'Ultimo día para la convocatoria %s';
+                        $log_text_public = 'Hoy es el último día para aplicar proyectos!';
+                        $doFeed = true;
+                        break;
+                }
+
+                // feed
+                if ($doFeed) {
+                    $log = new Feed();
+                    $log->unique = true;
+                    $log->populate('Convocatoria terminando (cron)', '/admin/calls/'.$call->id.'?days='.$days,
+                        \vsprintf($log_text, array(
+                            Feed::item('call', $call->name, $call->id))
+                        ));
+                    $log->doAdmin('call');
+                    $log->populate('Convocatoria: ' . $call->name, '/call/'.$call->id.'?days='.$days, $log_text_public, $call->logo);
+                    $log->doPublic('projects');
+                    unset($log);
+                    echo \vsprintf($log_text, array($call->name)).'<br />';
+                }
+            }
+
+
+
+            // campañas activas
+            $campaigns = Model\Call::getActive(4);
+            foreach ($campaigns as $campaign) {
+                // a ver cuanto le queda de capital riego
+                $rest = $campaign->rest;
+                echo 'A la campaña '.$campaign->name.' le quedan '.$rest.' euros<br />';
+
+                $doFeed = false;
+                if ($rest < 100) {
+                    $amount = 100;
+                    $doFeed = true;
+                } elseif ($rest < 500) {
+                    $amount = 500;
+                    $doFeed = true;
+                } elseif ($rest < 1000) {
+                    $amount = 1000;
+                    $doFeed = true;
+                }
+                // feed
+                if ($doFeed) {
+                    $log = new Feed();
+                    $log->unique = true;
+                    $log->populate('Campaña terminando (cron)', '/admin/calls/'.$campaign->id.'?rest='.$amount,
+                        \vsprintf('Quedan menos de %s en la campaña %s', array(
+                            Feed::item('money', $amount.' &euro;')
+                                . ' de '
+                                . Feed::item('drop', 'Capital Riego', '/service/resources'),
+                            Feed::item('call', $campaign->name, $campaign->id))
+                        ));
+                    $log->doAdmin('call');
+                    $log->populate($campaign->name, '/call/'.$campaign->id.'?rest='.$amount,
+                        \vsprintf('Quedan menos de %s en la campaña %s', array(
+                            Feed::item('money', $amount.' &euro;') 
+                                . ' de '
+                                . Feed::item('drop', 'Capital Riego', '/service/resources'),
+                            Feed::item('call', $campaign->name, $campaign->id))
+                        ), $call->logo);
+                    $log->doPublic('projects');
+                    unset($log);
+                }
+            }
+
+
             // recogemos el buffer para grabar el log
             \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
         }

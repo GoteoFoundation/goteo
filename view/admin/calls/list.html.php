@@ -85,7 +85,7 @@ $filter = "?status={$filters['status']}&category={$filters['category']}&caller={
             <tr>
                 <td><a href="/call/<?php echo $call->id; ?>" target="_blank" title="Preview"><?php echo $call->name; ?></a></td>
                 <td><?php echo $call->user->name; ?></td>
-                <td><?php echo date('d-m-Y', strtotime($call->updated)); ?></td>
+                <td><?php if (!empty($call->opened)) echo date('d-m-Y', strtotime($call->opened)); ?></td>
                 <td><?php echo $this['status'][$call->status]; ?></td>
                 <td><?php echo $call->amount; ?></td>
                 <td><?php echo $call->rest; ?></td>
