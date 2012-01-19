@@ -71,6 +71,8 @@ $elements      = array(
         'html'      => '<a href="/call/'.$call->id.'" class="button" target="_blank">'.Text::get('call-see_splash-button').'</a>'
                         . '&nbsp;&nbsp;&nbsp;'
                         . '<a href="/call/'.$call->id.'/info" class="button" target="_blank">'.Text::get('call-see_main-button').'</a>'
+                        . '&nbsp;&nbsp;&nbsp;'
+                        . '<a href="/dashboard/calls" class="button">'.Text::get('call-go_dashboard-button').'</a>'
     )
 
 /*

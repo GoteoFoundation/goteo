@@ -1,6 +1,6 @@
 /* traido desde /view/css/call/view.css */
 body.discover div#main div.widget.calls > div {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     position: relative;
     display: block;
 }
@@ -136,7 +136,7 @@ div.call div.data li#description.item p.subtitle {
 	color: #95268d;
 	font-weight: normal;
 	font-size: 15px;
-	margin: 0 0 10px;
+	margin: 0 0 20px;
 }
 
 div.call div.data li#description.item p.subtitle.red {
@@ -153,7 +153,7 @@ div.call div.data li#description.item p.subtitle strong {
 /* numbers */
 div.call div.data li#numbers div.row {
 	overflow: hidden;
-	margin: 0 0 10px;
+	margin: 0 0 20px;
 	clear: both;
 }
 
@@ -274,7 +274,7 @@ div.call div.data .light span.euro {
 /* Retornos */
 div.call div.data li#numbers dl.return {
 	min-height: 80px; 
-	width: 220px;
+	width: 240px;
 }
 
 div.call div.data li#numbers dl.return dd {
