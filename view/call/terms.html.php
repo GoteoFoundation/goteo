@@ -1,11 +1,14 @@
 <?php
 
-use Goteo\Library\Text,
+use Goteo\Library\Page,
+    Goteo\Library\Text,
     Goteo\Core\View;
 
 $bodyClass = 'terms';
 
 $call = $this['call'];
+
+$terms = Page::get('callterms');
 
 include 'view/call/prologue.html.php';
 include 'view/call/header.html.php';
@@ -24,6 +27,15 @@ include 'view/call/header.html.php';
             <?php else : //en campaña sin dinero, con recursos ?>
             <p class="subtitle"><?php echo $call->resources ?></p>
             <?php endif; ?>
+
+			<div class="freetext">
+
+				<h2 class="title"><?php echo $terms->description; ?></h2>
+
+                <div class="goteo-call-terms"><?php echo $terms->content; ?></div>
+                
+			</div>
+            
 			<div class="freetext">
 
 				<h2 class="title"><?php echo Text::get('call-terms-main-header') ?></h2>
