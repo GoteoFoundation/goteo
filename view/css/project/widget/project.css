@@ -93,8 +93,8 @@ div.widget.project div.image div.investor {
 }
 
 div.widget.project div.image div.investor img {
-    width: 34px !important;
-    height: 34px !important;
+/*    width: 34px !important; */
+/*    height: 34px !important; */
     margin: 3px;
     float: left;
 }

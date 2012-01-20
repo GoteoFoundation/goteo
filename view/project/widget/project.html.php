@@ -54,7 +54,7 @@ if (isset($this['investor']) && is_object($this['investor'])) {
         } ?>
 
         <?php if (isset($this['investor'])) : ?>
-            <div class="investor"><img src="<?php echo $investor->avatar->getLink(43, 43, 1) ?>" alt="<?php echo $investor->name ?>" /><div class="invest">Mi aporte<br /><span class="amount"><?php echo $invest->total ?></span></div></div>
+            <div class="investor"><img src="<?php echo $investor->avatar->getLink(34, 34, 1) ?>" alt="<?php echo $investor->name ?>" /><div class="invest">Mi aporte<br /><span class="amount"><?php echo $invest->total ?></span></div></div>
         <?php endif; ?>
 
         <?php if (!empty($project->gallery) && (current($project->gallery) instanceof Image)): ?>
