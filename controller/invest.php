@@ -152,8 +152,10 @@ namespace Goteo\Controller {
                 $caller = Model\User::get($drop->user);
                 $callData = Model\Call::get($drop->call);
 
-                // @TODO añadir texto de capital riego al mail de gracias y al productor
-                $txt_droped = "Además, el proyecto ha conseguido 999€ de capital riego de la campaña NOMBRE-DE-CAMPAÑA";
+                // texto de capital riego
+                $txt_droped = Text::get('invest-mail_info-drop', $drop->amount, $callData->name);
+            } else {
+                $txt_droped = '';
             }
 
             // email de agradecimiento al cofinanciador
@@ -168,8 +170,13 @@ namespace Goteo\Controller {
                 $template = Template::get(10); // plantilla de agradecimiento
             }
 
-            // @TODO formatear direccion (un poco)
-            $txt_address = implode(', ', $contirm->address);
+            // Dirección en el mail
+
+            $txt_address = Text::get('invest-mail_info-address');
+            $txt_address .= '<br> ' . Text::get('invest-address-address-field') . ' ' . $confirm->address->address;
+            $txt_address .= '<br> ' . Text::get('invest-address-zipcode-field') . ' ' . $confirm->address->zipcode;
+            $txt_address .= '<br> ' . Text::get('invest-address-location-field') . ' ' . $confirm->address->location;
+            $txt_address .= '<br> ' . Text::get('invest-address-country-field') . ' ' . $confirm->address->country;
 
             // Agradecimiento al cofinanciador
             // Sustituimos los datos
