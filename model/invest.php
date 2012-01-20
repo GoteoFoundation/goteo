@@ -324,11 +324,24 @@ namespace Goteo\Model {
                     // si es de convocatoria,
                     if (isset($this->called) && $this->called instanceof Call) {
                         // si queda capital riego
-                        if ($this->called->rest >= $this->amount) {
+                        if ($this->called->rest > 0) {
+
+                            $drop_amount = $this->amount;
+
+                            // limite de riego
+                            if ($this->called->maxdrop > 0 && $drop_amount > $this->called->maxdrop) {
+                                $drop_amount = $this->called->maxdrop;
+                            }
+
+                            // no queda suficiente
+                            if ($this->called->rest < $this->amount)  {
+                                $drop_amount = $this->called->rest;
+                            }
+
                             // se crea el aporte paralelo
                             $drop = new Invest(
                                 array(
-                                    'amount' => $this->amount,
+                                    'amount' => $drop_amount,
                                     'user' => $this->called->owner,
                                     'project' => $this->project,
                                     'method' => 'cash',

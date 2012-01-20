@@ -4790,10 +4790,10 @@ namespace Goteo\Controller {
                                         Feed::item('call', $call->name, $call->id))
                                     ));
                                 $log->doAdmin('call');
-                                $log->populate($call->name, '/call/'.$call->id,
-                                    \vsprintf('Proyecto %s seleccionado', array(
-                                        Feed::item('project', $projectData->name, $projectData->id))
-                                    ), $call->logo);
+                                $log->populate($projectData->name, '/project/'.$projectData->id,
+                                    \vsprintf('Ha sido seleccionado en la convocatoria %s', array(
+                                        Feed::item('call', $call->name, $call->id))
+                                    ), $projectData->gallery[0]->id);
                                 $log->doPublic('projects');
                                 unset($log);
 

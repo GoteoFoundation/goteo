@@ -17,6 +17,7 @@ namespace Goteo\Model {
             $node, // Node this call belongs to
             $status,
             $amount, // Presupuesto
+            $maxdrop, // Limite al capital riego que puede provocar cada aporte
             $resources, // Recursos de capital riego
             $days, // Numero de dias para aplicación de proyectos
 
@@ -406,6 +407,7 @@ namespace Goteo\Model {
                     'resources',
                     'scope',
                     'amount',
+                    'maxdrop',
                     'days'
                     );
 

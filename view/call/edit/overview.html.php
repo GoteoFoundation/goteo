@@ -319,6 +319,18 @@ $superform = array(
             'value'     => $call->days
         ),
 
+        'maxdrop' => array(
+            'type'      => 'textbox',
+            'required'  => false,
+            'title'     => Text::get('call-field-maxdrop'),
+            'size'      => 8,
+            'class'     => 'amount',
+            'hint'      => Text::get('tooltip-call-maxdrop'),
+            'errors'    => !empty($errors['maxdrop']) ? array($errors['maxdrop']) : array(),
+            'ok'        => !empty($okeys['maxdrop']) ? array($okeys['maxdrop']) : array(),
+            'value'     => $call->maxdrop
+        ),
+
         'footer' => array(
             'type'      => 'group',
             'children'  => array(

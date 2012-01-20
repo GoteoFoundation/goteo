@@ -544,6 +544,7 @@ namespace Goteo\Controller {
                 'resources',
                 'scope',
                 'amount',
+                'maxdrop',
                 'days'
             );
 

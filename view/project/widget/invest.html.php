@@ -34,7 +34,12 @@ $action = '/invest/' . $project->id;
     <label><input type="text" id="amount" name="amount" class="amount" value="<?php echo $amount ?>" /><?php echo Text::get('invest-amount-tooltip') ?></label>
 
     <?php if ($project->called) : ?>
-    <p><?php echo Text::get('call-splash-invest_explain', $project->called->user->name) ?></p>
+    <p>
+        <?php echo Text::get('call-splash-invest_explain', $project->called->user->name) ?>
+        <?php if (!empty($project->called->maxdrop)) {
+            echo 'Hasta un m&aacute;ximo de ' . $project->called->maxdrop . ' &euro;';
+        } ?>
+    </p>
     <?php endif; ?>
 </div>
 

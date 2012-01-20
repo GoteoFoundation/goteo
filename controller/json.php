@@ -52,10 +52,10 @@ namespace Goteo\Controller {
                             Feed::item('call', $_SESSION['call']->name, $_SESSION['call']->id))
                         ));
                     $log->doAdmin('call');
-                    $log->populate($_SESSION['call']->name, '/call/'.$_SESSION['call']->id,
-                        \vsprintf('Proyecto %s seleccionado', array(
-                            Feed::item('project', $projectData->name, $projectData->id))
-                        ), $_SESSION['call']->logo);
+                    $log->populate($projectData->name, '/project/'.$projectData->id,
+                        \vsprintf('Ha sido seleccionado en la convocatoria %s', array(
+                            Feed::item('call', $_SESSION['call']->name, $_SESSION['call']->id))
+                        ), $projectData->gallery[0]->id);
                     $log->doPublic('projects');
                     unset($log);
                 }
