@@ -227,7 +227,7 @@ div.widget.projects  #widget-code textarea{width:200px;	margin: 10px 0;	padding:
 #project-called {
     background: url("/view/css/call/logo-capital_medium.png") no-repeat 10px 10px #f5f2f0;
     padding-top: 0px;
-    min-height: 125px;
+    height: 106px;
 }
 
 
