@@ -30,18 +30,18 @@ include 'view/call/header.html.php';
 
 			<div class="freetext">
 
-				<h2 class="title"><?php echo $terms->description; ?></h2>
-
-                <div class="goteo-call-terms"><?php echo $terms->content; ?></div>
-                
-			</div>
-            
-			<div class="freetext">
-
 				<h2 class="title"><?php echo Text::get('call-terms-main-header') ?></h2>
 				
 				<div id="call-terms"><?php echo nl2br(Text::urlink($call->legal)) ?></div>
 				
+			</div>
+
+			<div class="freetext">
+
+				<h2 class="title"><?php echo $terms->description; ?></h2>
+
+                <div class="goteo-call-terms"><?php echo $terms->content; ?></div>
+
 			</div>
 
             <p class="block">
