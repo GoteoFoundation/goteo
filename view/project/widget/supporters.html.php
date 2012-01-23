@@ -35,11 +35,11 @@ $pagedResults = new \Paginated($investors, 20, isset($_GET['page']) ? $_GET['pag
         <dd class="supporters"><?php echo $supporters ?></dd>
         
         <dt class="reached"><?php echo Text::get('project-invest-total'); ?></dt>
-        <dd class="reached"><?php echo $reached ?> <span class="euro">&euro;</span></dd>
+        <dd class="reached"><?php echo $reached ?></dd>
 
         <?php if (isset($this['droped'])) : ?>
         <dt class="droped">Aportaciones Capital riego</dt>
-        <dd class="droped"><?php echo \amount_format($this['droped']) ?> <span class="euro">&euro;</span></dd>
+        <dd class="droped"><a href="/call/<?php echo $project->called->id ?>" class="tipsy" title="<?php echo Text::get('call-splash-campaign_title').': '.$project->called->name ?>"><img src="<?php echo SRC_URL ?>/view/css/call/logo-capital_small.png" alt="CAMPAÑA" /></a><?php echo \amount_format($this['droped']) ?></dd>
         <?php endif; ?>
     </dl>   
 

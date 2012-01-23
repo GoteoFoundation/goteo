@@ -10,6 +10,7 @@ div.widget.project-supporters .title {
     display: none;
 }
 
+/* Cabecera cofinanciadores */
 div.widget.project-supporters dl.summary {
     margin: 0 0 20px;
     background-color: white;
@@ -40,58 +41,52 @@ div.widget.project-supporters dl.summary .supporters {
     width: 50%;
 }
 
-div.widget.project-supporters dl.summary.drop .supporters {
-    width: 25% !important;
-}
-
-div.widget.project-supporters dl.summary.drop dt.droped {
-    position: absolute;
-    left: 410px;
-    top: 36px;
-}
-
-div.widget.project-supporters dl.summary.drop dd.droped {
-    position: absolute;
-    left: 410px;
-    top: 38px;
-}
-
 div.widget.project-supporters dl.summary dd.supporters {
-    clear: left;    
+    clear: left;
+}
+
+div.widget.project-supporters dl.summary dt.supporters {
+    margin-bottom: 4px;
 }
 
 div.widget.project-supporters dl.summary dt.reached {
-    margin-top: -1.5em;    
+    margin-top: -2em;
     color: #96238F;
 }
 
-div.widget.project-supporters dl.summary.drop dt.droped {
-    margin-top: -1.5em;
-    color: #58595B;
-}
-
 div.widget.project-supporters dl.summary dd.reached {
-    background: url("/view/css/euro/violet/l.png") no-repeat scroll right center transparent;        
+    background: url("/view/css/euro/violet/l.png") no-repeat scroll right center transparent;
     padding-right: 30px;
     color: #96238F;
 }
 
-div.widget.project-supporters dl.summary.drop dd.droped {
+div.widget.project-supporters dl.summary.drop dd.reached {
+    margin-right: 50px;
+}
+
+div.widget.project-supporters dl.summary.drop .supporters {
+    width: 25% !important;
+}
+
+div.widget.project-supporters dl.summary dt.droped {
+    margin-top: -2em;
+    color: #58595B;
+    padding-left: 60px;
+}
+
+div.widget.project-supporters dl.summary dd.droped {
     background: url("/view/css/euro/l.png") no-repeat scroll right center transparent;
     padding-right: 30px;
     color: #58595B;
 }
 
-div.widget.project-supporters dl.summary.drop {
-    background-image: url("/view/css/call/logo-capital_small.png");
-    background-repeat: no-repeat;
-    background-position: 350px 16px;
+div.widget.project-supporters dl.summary dd.droped img {
+    margin-top: -20px;
+    margin-right: 10px;
+    margin-bottom: -9px;
 }
 
-div.widget.project-supporters dl.summary dd.reached .euro,
-div.widget.project-supporters dl.summary.drop dd.droped .euro {
-    display: none;
-}
+/* Fin Cabecera cofinanciadores */
 
 
 div.widget.project-supporters .supporters ul {
