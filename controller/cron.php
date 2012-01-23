@@ -176,7 +176,7 @@ namespace Goteo\Controller {
 
                 //  (financiado a los 80 o cancelado si a los 40 no llega al minimo)
                 // si ha llegado a los 40 dias: mínimo-> ejecutar ; no minimo proyecto y todos los preapprovals cancelados
-                if ($days > 40) {
+                if ($days >= 40) {
                     // si no ha alcanzado el mínimo, pasa a estado caducado
                     if ($amount < $project->mincost) {
                         if ($debug) echo 'Ha llegado a los 40 dias de campaña sin conseguir el minimo, no pasa a segunda ronda<br />';
@@ -230,7 +230,7 @@ namespace Goteo\Controller {
                         //Email de proyecto fallido a los inversores
                         self::toInvestors('fail', $project);
                         
-                        echo '<hr />';
+                        echo '<br />';
                     } else {
                         // Si el proyecto no tiene cuenta paypal
                         if (empty($projectAccount->paypal)) {
@@ -303,7 +303,7 @@ namespace Goteo\Controller {
                             //Email de proyecto final segunda ronda a los inversores
                             self::toInvestors('r2_pass', $project);
                             
-                            echo '<hr />';
+                            echo '<br />';
                         } elseif (empty($project->passed)) {
 
                             if ($debug) echo 'Ha llegado a los 40 dias de campaña, pasa a segunda ronda<br />';

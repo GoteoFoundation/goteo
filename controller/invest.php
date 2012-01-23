@@ -153,7 +153,7 @@ namespace Goteo\Controller {
                 $callData = Model\Call::get($drop->call);
 
                 // texto de capital riego
-                $txt_droped = Text::get('invest-mail_info-drop', $drop->amount, $callData->name);
+                $txt_droped = Text::get('invest-mail_info-drop', $caller->name, $drop->amount, $callData->name);
             } else {
                 $txt_droped = '';
             }

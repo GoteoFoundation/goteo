@@ -35,9 +35,9 @@ namespace Goteo\Library {
                     $returnURL = SITE_URL."/invest/confirmed/" . $invest->project . "/" . $invest->id; // a difundirlo @TODO mensaje gracias si llega desde un preapproval
                     $cancelURL = SITE_URL."/invest/fail/" . $invest->project . "/" . $invest->id; // a la página de aportar para intentarlo de nuevo
 
-                    // desde hoy hasta los dias que le falten para finalizar la ronda (mas uno porque no queremos pillarnos los dedos por ser el mismo día)
+                    // desde hoy hasta los dias que le falten para finalizar la ronda (mas tres para tratar incidencias)
                     $remain = Project::daysRemain($invest->project);
-                    $remain+= 2;
+                    $remain+= 3;
 
                     date_default_timezone_set('UTC');
                     $currDate = getdate();
