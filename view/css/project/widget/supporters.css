@@ -552,6 +552,10 @@ max-height: 6px;max-width: 175px;overflow: hidden;}
 div.widget.project-investors .investors ul li .avatar{left:6px}
 div.widget.project-investors .investors ul li dl dt.amount{top:20px}
 div.widget.project-investors .investors ul li dl dd.amount{top:32px}
+div.widget.project-investors .investors ul li dl dd.amount.campaign {
+    background: url('/view/css/euro/s.png') no-repeat scroll right center !important;
+    color: #59595C !important;
+}
 div.widget.project-investors .investors ul li dl dt.projects, div.widget.project-investors .investors ul li dl dd.projects{font-size:0.8em}
 div.widget.project-investors .investors ul li dl dd.worthcracy{margin-top:5px}
 div.widget.project-investors .investors ul li dl dd.date{top:55px}

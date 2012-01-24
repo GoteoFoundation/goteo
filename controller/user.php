@@ -436,6 +436,9 @@ namespace Goteo\Controller {
                 }
 
                 foreach (Model\Invest::investors($project->id) as $key=>$investor) {
+                    // convocadores no, gracias
+                    if (!empty($investor->campaign)) continue;
+                    
                     if (\array_key_exists($investor->user, $investors)) {
                         // ya está en el array, quiere decir que cofinancia este otro proyecto
                         // , añadir uno, sumar su aporte, actualizar la fecha

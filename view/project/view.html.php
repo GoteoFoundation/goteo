@@ -20,9 +20,8 @@ $categories = Category::getNames($project->id);
 
 $blog = Blog::get($project->id);
 
-
 if (!empty($project->investors)) {
-    $supporters = ' (' . count($project->investors) . ')';
+    $supporters = ' (' . $project->num_investors . ')';
 } else {
     $supporters = '';
 }

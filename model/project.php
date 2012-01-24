@@ -99,7 +99,8 @@ namespace Goteo\Model {
             //Obtenido, Días, Cofinanciadores
             $invested = 0, //cantidad de inversión
             $days = 0, //para 40 desde la publicación o para 80 si no está caducado
-            $investors = array(), // usuarios que han invertido
+            $investors = array(), // aportes individuales a este proyecto
+            $num_investors = 0, // numero de usuarios que han aportado
 
             $round = 0, // para ver si ya está en la fase de los 40 a los 80
             $passed = null, // para ver si hemos hecho los eventos de paso a segunda ronda
@@ -274,6 +275,7 @@ namespace Goteo\Model {
                 // Diferentes verificaciones segun el estado del proyecto
                 //-----------------------------------------------------------------
                 $project->investors = Invest::investors($id);
+                $project->num_investors = Invest::numInvestors($id);
 
                 $amount = Invest::invested($id);
                 if ($project->invested != $amount) {

@@ -10,13 +10,22 @@ $proyecto = array();
 $estado   = array();
 $usuario  = array();
 
+$users = array();
+foreach ($this['users'] as $user) {
+    $amount = $users[$user->user]->amount + $user->amount;
+    $users[$user->user] = (object) array(
+        'name'   => $user->name,
+        'user'   => $user->user,
+        'amount' => $amount
+    );
+}
+
 uasort($this['users'],
     function ($a, $b) {
         if ($a->name == $b->name) return 0;
         return ($a->name > $b->name) ? 1 : -1;
         }
     );
-
 
 // recorremos los aportes
 foreach ($this['invests'] as $invest) {

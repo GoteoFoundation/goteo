@@ -9,20 +9,13 @@ $project = $this['project'];
 $level = (int) $this['level'] ?: 3;
 
 $reached    = \amount_format($project->invested);
-$supporters = count($project->investors);
 
 $worthcracy = Worth::getAll();
-
-$investors = array();
-
-foreach ($project->investors as $user=>$investor) {
-    $investors[] = $investor;
-}
 
 // en la página de cofinanciadores, paginación de 20 en 20
 require_once 'library/pagination/pagination.php';
 
-$pagedResults = new \Paginated($investors, 20, isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new \Paginated($project->investors, 20, isset($_GET['page']) ? $_GET['page'] : 1);
 
 
 ?>
@@ -32,7 +25,7 @@ $pagedResults = new \Paginated($investors, 20, isset($_GET['page']) ? $_GET['pag
     
     <dl class="summary<?php if (isset($this['droped'])) echo ' drop'; ?>">
         <dt class="supporters"><?php echo Text::get('project-menu-supporters'); ?></dt>
-        <dd class="supporters"><?php echo $supporters ?></dd>
+        <dd class="supporters"><?php echo $project->num_investors ?></dd>
         
         <dt class="reached"><?php echo Text::get('project-invest-total'); ?></dt>
         <dd class="reached"><?php echo $reached ?></dd>

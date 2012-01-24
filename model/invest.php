@@ -525,9 +525,10 @@ namespace Goteo\Model {
         }
 
         /*
-         * Usuarios que han aportado aun proyecto
+         * Aportes individuales a un proyecto
          */
         public static function investors ($project, $projNum = true, $showall = false) {
+            $worth = array();
             $investors = array();
 
             $sql = "
@@ -556,7 +557,7 @@ namespace Goteo\Model {
                     ON  user.id = invest.user
                 WHERE   project = ?
                 AND     invest.status IN ('0', '1', '3', '4')
-                ORDER BY invest.invested DESC
+                ORDER BY invest.invested DESC, invest.id DESC
                 ";
 
             $query = self::query($sql, array($project));
@@ -588,16 +589,20 @@ namespace Goteo\Model {
 
                 } else {
 
-                    $investors[$investor->user] = (object) array(
+                    if (!isset($worth[$investor->user])) {
+                        $worth[$investor->user] = \Goteo\Model\User::calcWorth($investor->user);
+                    }
+
+                    $investors[] = (object) array(
                         'user' => $investor->user,
                         'name' => $investor->name,
                         'projects' => $investor->projects,
                         'avatar' => $investor->avatar,
-                        'worth' => \Goteo\Model\User::calcWorth($investor->user),
-                        'amount' => ($investors[$investor->user]->amount + $investor->amount),
+                        'worth' => $worth[$investor->user],
+                        'amount' => $investor->amount,
                         'date' => $investor->date,
-                        'droped' => empty($investors[$investor->user]->droped) ? $investor->droped : $investors[$investor->user]->droped,
-                        'campaign' => empty($investors[$investor->user]->campaign) ? $investor->campaign : $investors[$investor->user]->campaign
+                        'droped' => $investor->droped,
+                        'campaign' => $investor->campaign
                     );
 
                 }
@@ -605,6 +610,20 @@ namespace Goteo\Model {
             }
             
             return $investors;
+        }
+
+        public static function numInvestors ($project) {
+            $values = array(':project' => $project);
+
+            $sql = "SELECT  COUNT(DISTINCT(user)) as investors
+                FROM    invest
+                WHERE   project = :project
+                AND     invest.status IN ('0', '1', '3', '4')
+                ";
+
+            $query = static::query($sql, $values);
+            $got = $query->fetchObject();
+            return (int) $got->investors;
         }
 
         /*

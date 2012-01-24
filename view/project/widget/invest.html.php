@@ -34,12 +34,12 @@ $action = '/invest/' . $project->id;
     <label><input type="text" id="amount" name="amount" class="amount" value="<?php echo $amount ?>" /><?php echo Text::get('invest-amount-tooltip') ?></label>
 
     <?php if ($project->called) : ?>
-    <p>
-        <?php echo Text::get('call-splash-invest_explain', $project->called->user->name) ?>
-        <?php if (!empty($project->called->maxdrop)) {
-            echo 'Hasta un m&aacute;ximo de ' . $project->called->maxdrop . ' &euro;';
-        } ?>
-    </p>
+    <input type="hidden" id="rest" name="rest" value="<?php echo $project->called->rest ?>" />
+    <p><?php echo Text::get('call-splash-invest_explain', $project->called->user->name) ?></p>
+    <?php if (!empty($project->called->maxdrop)) : ?>
+        <p>Hasta un m&aacute;ximo de <?php echo $project->called->maxdrop ?> &euro;</p>
+    <?php endif; ?>
+    <p>Quedan <?php echo $project->called->rest ?> &euro; de Capital Riego en la campa&ntilde;a <?php echo $project->called->name ?></p>
     <?php endif; ?>
 </div>
 
@@ -236,6 +236,7 @@ $action = '/invest/' . $project->id;
 
             var input = $('div.widget.project-invest-amount input.amount');
             var amount = input.val();
+            var rest = $('#rest');
 
             if (amount <= 0) {
                 alert('<?php echo Text::get('invest-amount-error') ?>');
@@ -278,6 +279,12 @@ $action = '/invest/' . $project->id;
                     if (!confirm('<?php echo Text::get('invest-alert-rewards') ?> '+rewards+' ok?')) {
                         return false;
                     }
+                }
+            }
+
+            if (rest && amount > rest.val()) {
+                if (!confirm('Estas aportando mas del resto, que son '+rest.val()+' EUR, ok?')) {
+                    return false;
                 }
             }
 
