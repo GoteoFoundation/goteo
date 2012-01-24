@@ -445,7 +445,7 @@ namespace Goteo\Model {
                     if ($days > 80) {
                         $this->round = 0;
                         $days = 0;
-                    } elseif ($days > 40) {
+                    } elseif ($days >= 40) {
                         $days = 80 - $days;
                         $this->round = 2;
                     } else {
@@ -1800,10 +1800,7 @@ namespace Goteo\Model {
                                 (SELECT  SUM(amount)
                                 FROM    invest
                                 WHERE   project = project.id
-                                AND     (invest.status = 0
-                                        OR invest.status = 1
-                                        OR invest.status = 3
-                                        OR invest.status = 4)
+                                AND     invest.status IN ('0', '1', '3', '4')
                                 ) as `getamount`
                         FROM project
                         HAVING getamount >= mincost
@@ -1987,6 +1984,31 @@ namespace Goteo\Model {
             return $investors;
         }
 
+        /*
+         * Para saber si ha conseguido el mínimo
+         */
+        public static function isSuccessful($id) {
+            $sql = "SELECT
+                            id,
+                            (SELECT  SUM(amount)
+                            FROM    cost
+                            WHERE   project = project.id
+                            AND     required = 1
+                            ) as `mincost`,
+                            (SELECT  SUM(amount)
+                            FROM    invest
+                            WHERE   project = project.id
+                            AND     invest.status IN ('0', '1', '3', '4')
+                            ) as `getamount`
+                    FROM project
+                    WHERE project.id = ?
+                    HAVING getamount >= mincost
+                    LIMIT 1
+                    ";
+
+            $query = self::query($sql, array($id));
+            return ($query->fetchColumn() == $id);
+        }
 
         /*
          * Estados de desarrollo del propyecto

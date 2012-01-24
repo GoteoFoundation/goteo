@@ -23,17 +23,24 @@ $call->image = Model\Image::get($the_image);
 $call->categories = Model\Call\Category::getNames($call->id);
 $call->icons = Model\Call\Icon::getNames($call->id);
 
+$color = array(
+    3 => 'red',
+    4 => 'aqua',
+    5 => 'violet'
+);
+
+$tag = array(
+    3 => 'Convocatoria abierta',
+    4 => 'Campa&ntilde;a activa!',
+    5 => 'Convocatoria exitosa'
+);
 ?>
 
 <div class="call activable">
 	<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>" class="expand"<?php echo $blank; ?>></a>
 
     <div class="image">
-        <?php if ($call->status == 3) : //inscripcion ?>
-            <div class="tagmark red">Convocatoria abierta</div>
-        <?php else : // campaña?>
-            <div class="tagmark aqua">Campa&ntilde;a activa!</div>
-        <?php endif ?>
+        <div class="tagmark <?php echo $color[$call->status] ?>"><?php echo $tag[$call->status] ?></div>
 
         <?php if (!empty($call->image)): ?>
         <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"><img alt="<?php echo $call->name ?>" src="<?php echo $call->image->getLink(211, 230, true) ?>" /></a>

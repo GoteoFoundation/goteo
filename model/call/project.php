@@ -170,8 +170,6 @@ namespace Goteo\Model\Call {
 			}
 		}
 
-
-
         /**
          * Devuelve la convocatoria de la que puede obtener riego
          *
@@ -187,7 +185,7 @@ namespace Goteo\Model\Call {
                         INNER JOIN `call`
                             ON call_project.call = call.id
                         WHERE  call_project.project = :project
-                        AND call.status = 4
+                        AND call.status > 3 AND call.status < 6
                         LIMIT 1
                         ";
 //                die(str_replace(':project', "'$project'", $sql));

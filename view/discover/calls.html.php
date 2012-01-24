@@ -6,6 +6,7 @@ use Goteo\Core\View,
 
 $calls     = Call::getActive(3); // convocatorias en modalidad 1; inscripcion de proyectos
 $campaigns = Call::getActive(4); // convocatorias en modalidad 2; repartiendo capital riego
+$success = Call::getActive(5); // convocatorias en modalidad 2; repartiendo capital riego
 
 // en la página de cofinanciadores, paginación de 20 en 20
 require_once 'library/pagination/pagination.php';
@@ -42,6 +43,13 @@ include 'view/header.html.php' ?>
                     <div class="call-count mod2">
                         <strong><?php echo count($campaigns) ?></strong>
                         <span>Campañas<br />activas</span>
+                    </div>
+                    <?php endif; ?>
+
+                    <?php if (!empty($success)) : ?>
+                    <div class="call-count mod3">
+                        <strong><?php echo count($success) ?></strong>
+                        <span>Convocatorias<br />exitosas</span>
                     </div>
                     <?php endif; ?>
                 </div>

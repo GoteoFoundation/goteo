@@ -26,20 +26,20 @@ $action = '/invest/' . $project->id;
 
 
 ?>
-<div class="widget project-invest project-invest-amount<?php if ($project->called) echo ' called' ?>">
+<div class="widget project-invest project-invest-amount<?php if ($project->called && $project->called->rest > 0) echo ' called' ?>">
     <h<?php echo $level ?> class="title"><?php echo Text::get('invest-amount') ?></h<?php echo $level ?>>
 
     <form method="post" action="<?php echo $action; ?>">
 
     <label><input type="text" id="amount" name="amount" class="amount" value="<?php echo $amount ?>" /><?php echo Text::get('invest-amount-tooltip') ?></label>
 
-    <?php if ($project->called) : ?>
+    <?php if ($project->called && $project->called->rest > 0) : ?>
     <input type="hidden" id="rest" name="rest" value="<?php echo $project->called->rest ?>" />
     <p><?php echo Text::get('call-splash-invest_explain', $project->called->user->name) ?></p>
     <?php if (!empty($project->called->maxdrop)) : ?>
         <p>Hasta un m&aacute;ximo de <?php echo $project->called->maxdrop ?> &euro;</p>
     <?php endif; ?>
-    <p>Quedan <?php echo $project->called->rest ?> &euro; de Capital Riego en la campa&ntilde;a <?php echo $project->called->name ?></p>
+    <p>Solo quedan <?php echo $project->called->rest ?> &euro; de Capital Riego en la campa&ntilde;a <?php echo $project->called->name ?></p>
     <?php endif; ?>
 </div>
 
@@ -283,7 +283,7 @@ $action = '/invest/' . $project->id;
             }
 
             if (rest && amount > rest.val()) {
-                if (!confirm('Estas aportando mas del resto, que son '+rest.val()+' EUR, ok?')) {
+                if (!confirm('No queda suficiente Capital riego para cubrir tu aportacion, solamente quedan '+rest.val()+' EUR, ok?')) {
                     return false;
                 }
             }

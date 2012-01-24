@@ -347,7 +347,7 @@ namespace Goteo\Controller {
                     $show = 'info';
                 }
 
-                if ($show == 'projects' && $call->status != 4) {
+                if ($show == 'projects' && $call->status < 4) {
                     $show = 'info';
                 }
 

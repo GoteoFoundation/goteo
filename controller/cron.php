@@ -40,10 +40,14 @@ namespace Goteo\Controller {
                 //este método devuelve tambien los financiados pero vamos a pasar de ellos
                 // les ponemos los dias a cero y lsitos
                 if ($project->status != 3) {
+                    /*
                     if ($debug) echo 'Financiado: dias a cero y listos<br />';
                     if ($project->days > 0) {
                         \Goteo\Core\Model::query("UPDATE project SET days = '0' WHERE id = ?", array($project->id));
                     }
+                     * 
+                     */
+                    if ($debug) echo 'Financiado<hr />';
                     continue;
                 }
 
@@ -72,8 +76,6 @@ namespace Goteo\Controller {
                 }
 
                 $log_text = null;
-                $rest = 0;
-                $round = 0;
 
 				// costes y los sumammos
 				$project->costs = Model\Project\Cost::getAll($project->id);
@@ -109,23 +111,9 @@ namespace Goteo\Controller {
                 $days = $project->daysActive();
                 if ($debug) echo 'Lleva '.$days.'  dias desde la publicacion<br />';
 
-                // actualiza dias restantes para proyectos en campaña
-                if ($project->status == 3) {
-                    if ($days > 40) {
-                        $rest = 80 - $days;
-                        $round = 2;
-                    } else {
-                        $rest = 40 - $days;
-                        $round = 1;
-                    }
-
-                    if ($rest < 0)
-                        $rest = 0;
-                }
-
-                if ($project->days != $rest) {
-                    \Goteo\Core\Model::query("UPDATE project SET days = '{$rest}' WHERE id = ?", array($project->id));
-                }
+                /* Verificar si enviamos aviso */
+                $rest = $project->days;
+                $round = $project->round;
                 if ($debug) echo 'Quedan '.$rest.' dias para el final de la '.$round.'a ronda<br />';
 
 
@@ -172,6 +160,7 @@ namespace Goteo\Controller {
                     self::toOwner('1_day', $project);
                     if ($debug) echo 'Aviso al autor: falta 1 dia y no supera el 70 el minimo<br />';
                 }
+                /* Fin verificacion */
 
 
                 //  (financiado a los 80 o cancelado si a los 40 no llega al minimo)
@@ -1126,6 +1115,16 @@ namespace Goteo\Controller {
                 // a ver cuanto le queda de capital riego
                 $rest = $campaign->rest;
                 echo 'A la campaña '.$campaign->name.' le quedan '.$rest.' euros<br />';
+
+                // si le quedan cero
+                // -> terminar la campaña exitosamente
+                if ($rest == 0 && !empty($campaign->amount))  {
+                    if ($campaign->setSuccess()) {
+                        echo 'Se ha dado por exitosa.<br />';
+                    } else {
+                        echo 'Queda algun proyecto en primera ronda.<br />';
+                    }
+                }
 
                 $doFeed = false;
                 if ($rest < 100) {

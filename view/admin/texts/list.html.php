@@ -75,7 +75,7 @@ $per = 100 / $cols;
                 <td><?php echo $item->text; ?></td>
                 <td><?php echo $item->group; ?></td>
                 <?php if ($translator) : ?>
-                <td><a href="/translate/texts/edit/<?php echo $item->id; ?>" target="_blank">[Traducir]</a></td>
+                <td><a href="/translate/texts/edit/<?php echo $item->id; ?>" >[Traducir]</a></td>
                 <?php endif; ?>
             </tr>
             <?php endforeach; ?>

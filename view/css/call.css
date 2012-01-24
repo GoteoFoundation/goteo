@@ -38,6 +38,10 @@ body.home div#main div.widget.calls div.title div.call-count.mod2 {
     color: #20B2B3;
 }
 
+body.discover div#main div.widget.calls div.title div.call-count.mod3 {
+    color: #95268D;
+}
+
 body.discover div#main div.widget.calls div.title div.call-count strong,
 body.home div#main div.widget.calls div.title div.call-count strong {
     font-size: 3em;
@@ -435,6 +439,10 @@ div.call div.image div.tagmark.aqua {
 
 div.call div.image div.tagmark.red {
     background:url('/view/css/project/tagmark_red.png') 0 0 no-repeat;
+}
+
+div.call div.image div.tagmark.violet {
+    background:url('/view/css/project/tagmark_violet.png') 0 0 no-repeat;
 }
 /** Fin tagmarks **/
 

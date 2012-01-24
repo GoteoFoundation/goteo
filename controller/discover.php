@@ -6,6 +6,7 @@ namespace Goteo\Controller {
         Goteo\Model,
         Goteo\Core\Redirection,
         Goteo\Library\Text,
+        Goteo\Library\Message,
         Goteo\Library\Listing;
 
     class Discover extends \Goteo\Core\Controller {
@@ -148,16 +149,26 @@ namespace Goteo\Controller {
             // segun el tipo cargamos el título de la página
             $viewData['title'] = Text::get('discover-group-call-header') . ' ' . $_SESSION['call']->name;
 
-            $message = 'Mostramos coincidencias con, ';
+            // Resumen de busqueda en aviso azul
+            $categories = Model\Category::getList();  // categorias que se usan en proyectos
+            $locs = \Goteo\Library\Location::getList();  //localizaciones de royectos
+            $icons = Model\Icon::getList(); // iconos que se usan en proyectos
+
+
+            $message = '';
 
             // sacamos parametros de la convocatoria
             // para cada parametro, si no hay ninguno es todos los valores
             $params = array('category'=>array(), 'location'=>array(), 'reward'=>array());
+
             // categorias
-            $message .= ' las categorias: ';
+            $txt_categories = array();
             foreach ($call->categories as $category) {
                 $params['category'][] = "'{$category}'";
-                $message .= $category . ', ';
+                $txt_categories[] = $categories[$category];
+            }
+            if (!empty($txt_categories)) {
+                $message .= 'Categoria/s: <strong>' . implode('</strong>, <strong>', $txt_categories).'</strong><br />';
             }
 
             // localizacion (separamos la localizacion de la convocatoria y las hacemos md5)
@@ -167,25 +178,31 @@ namespace Goteo\Controller {
                 // solo ponemos las localidades que existan en proyectos
                 $existing_locations = \Goteo\Library\Location::getList();
 
-                $message .= '; Las localizaciones : ';
+                $txt_locations = array();
                 foreach ($locations as $location ) {
                     $call_loc = md5(trim($location));
                     if (!empty($call_loc) && isset($existing_locations[$call_loc])) {
                         $params['location'][] = "'".$call_loc."'";
-                        $message .= $location . ', ';
+                        $txt_locations[] = $locs[$call_loc];
                     }
+                }
+                if (!empty($txt_locations)) {
+                   $message .= 'Localidad/es: <strong>' . implode('</strong>, <strong>', $txt_locations).'</strong><br />';
                 }
             }
 
-            // recompensas
-            $message .= '; las recompensas: ';
+            // retornos
+            $txt_icons = array();
             foreach ($call->icons as $icon) {
                 $params['reward'][] = "'{$icon}'";
-                $message .= $icon . ', ';
+                $txt_icons[] = $icons[$icon]->name;
+            }
+            if (!empty($txt_icons)) {
+               $message .= 'Retorno/s de tipo: <strong>' . implode('</strong>, <strong>', $txt_icons).'</strong><br />';
             }
 
 
-            $viewData['message'] = $message;
+            Message::Info($message);
 
             $viewData['list'] = \Goteo\Library\Search::params($params, true);
 
@@ -204,7 +221,7 @@ namespace Goteo\Controller {
             $viewData['title'] = Text::html('discover-calls-header');
 
             // segun el tipo cargamos la lista
-            $viewData['list']  = Model\Call::getActive();
+            $viewData['list']  = Model\Call::getActive(null, true);
 
 
             return new View(

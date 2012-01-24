@@ -22,7 +22,7 @@ $translator = ACL::check('/translate') ? true : false;
                 <td><?php echo $page->name; ?></td>
                 <td><?php echo $page->description; ?></td>
                 <?php if ($translator) : ?>
-                <td><a href="/translate/pages/edit/<?php echo $page->id; ?>" target="_blank">[Traducir]</a></td>
+                <td><a href="/translate/pages/edit/<?php echo $page->id; ?>" >[Traducir]</a></td>
                 <?php endif; ?>
             </tr>
             <?php endforeach; ?>

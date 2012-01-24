@@ -237,11 +237,11 @@ namespace Goteo\Model {
                 $call->success_projects = 0;
 
                 foreach ($call->projects as $proj) {
-                    if ($proj->status == 3)
-                        $call->runing_projects++;
-
-                    if ($proj->status == 4 || $proj->status == 5)
+                    if (\Goteo\Model\Project::isSuccessful($proj->id)) {
                         $call->success_projects++;
+                    } else {
+                        $call->runing_projects++;
+                    }
                 }
 
                 // para convocatorias en campaña o posterior
@@ -719,14 +719,16 @@ namespace Goteo\Model {
         /*
          * Lista de convocatorias en campaña (para la portada)
          */
-        public static function getActive($status = null)
+        public static function getActive($status = null, $all = false)
         {
             $calls = array();
 
-            if (in_array($status, array(3, 4))) {
+            if (in_array($status, array(3, 4, 5))) {
                 $sqlFilter .= " WHERE call.status = $status";
+            } elseif ($all) {
+                $sqlFilter .= " WHERE call.status IN ('3', '4', '5')";
             } else {
-                $sqlFilter .= " WHERE call.status = 3 OR call.status = 4";
+                $sqlFilter .= " WHERE call.status IN ('3', '4')";
             }
 
             $sql = "SELECT call.id
@@ -1141,6 +1143,51 @@ namespace Goteo\Model {
             if ($getUsed) return $used;
 
             return ($this->amount - $used);
+        }
+
+        /*
+         * Mira si hay que pasarla a estado exitosa
+         */
+        public function setSuccess()
+        {
+            // tiene que tener presupuesto
+            if (empty($this->amount))
+                return false;
+            
+            // dame los proyectos que tienen capital riego y han conseguido el mínimo
+                $sql = "SELECT
+                            COUNT(id),
+                            (SELECT  SUM(amount)
+                            FROM    cost
+                            WHERE   project = project.id
+                            AND     required = 1
+                            ) as `mincost`,
+                            (SELECT  SUM(amount)
+                            FROM    invest
+                            WHERE   project = project.id
+                            AND     invest.status IN ('0', '1', '3', '4')
+                            ) as `getamount`
+                    FROM project
+                    WHERE project.id IN (
+                        SELECT DISTINCT(invest.project)
+                        FROM invest
+                        WHERE invest.campaign = 1
+                        AND invest.call = ?
+                        AND invest.status IN ('0', '1', '3', '4')
+                    )
+                    HAVING getamount < mincost
+                    ";
+                echo \str_replace('?', "'$this->id'", $sql) . '<br />';
+            $query = self::query($sql, array($this->id));
+            if ($query->fetchColumn() > 0) {
+                // si alguno, nada
+                return false;
+            } else {
+                // si ninguno, exitosa
+                return $this->succeed();
+            }
+
+            return true;
         }
 
         /*

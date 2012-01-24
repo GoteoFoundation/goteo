@@ -83,12 +83,6 @@ include 'view/prologue.html.php';
 
                 <?php echo $message; ?>
 
-                <?php if (ACL::check('/translate')) : ?>
-                <div class="widget">
-                    <?php echo new View ('view/admin/selector.html.php', $this); ?>
-                </div>
-                <?php endif; ?>
-
                 <?php foreach ($this['menu'] as $sCode=>$section) :
                     // piñoncete para Diego
                     if ($_SESSION['user']->id == 'diegobus' && $sCode != 'contents') continue;

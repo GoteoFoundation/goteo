@@ -39,9 +39,10 @@ function projAssign(projId) {
 
         </div>
 
-        <div id="main">
-            <?php if (!empty($this['message'])) : ?><p><?php echo $this['message'] ?></p><?php endif;  ?>
+<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
 
+        <div id="main">
+            
             <div class="widget projects">
                 <?php while ($project = $pagedResults->fetchPagedRow()) :
                         echo new View('view/project/widget/project.html.php', array(

@@ -40,7 +40,7 @@ $translator = ACL::check('/translate') ? true : false;
                 <td><?php echo $icon->description; ?></td>
                 <td><?php echo !empty($icon->group) ? $this['groups'][$icon->group] : 'Ambas'; ?></td>
                 <?php if ($translator) : ?>
-                <td><a href="/translate/icon/edit/<?php echo $icon->id; ?>" target="_blank">[Traducir]</a></td>
+                <td><a href="/translate/icon/edit/<?php echo $icon->id; ?>" >[Traducir]</a></td>
                 <?php endif; ?>
                 <!-- <td><a href="/admin/icons/remove/<?php echo $icon->id; ?>/?filter=<?php echo $this['filter']; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Quitar]</a></td> -->
             </tr>
