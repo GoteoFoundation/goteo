@@ -45,12 +45,9 @@ include 'view/header.html.php'; ?>
             <?php endif; ?>
 
             <?php
-            if (!empty($_SESSION['translator_lang']) && !empty($this['section']) && !empty($this['action'])) :
+            if (!empty($this['section']) && !empty($this['action'])) :
                 echo new View ('view/translate/'.$this['section'].'/'.$this['action'].'.html.php', $this);
             else :
-
-                echo '<div class="widget">' . Text::get('translate-home-guide') . '</div>';
-
                 foreach ($this['menu'] as $sCode=>$section) : ?>
                     <a name="<?php echo $sCode ?>"></a>
                     <div class="widget board collapse">

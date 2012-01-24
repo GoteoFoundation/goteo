@@ -7,6 +7,7 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Model,
 	    Goteo\Library\Feed,
+	    Goteo\Library\Message,
 	    Goteo\Library\Text,
 	    Goteo\Library\Page,
 	    Goteo\Library\Content,
@@ -16,9 +17,10 @@ namespace Goteo\Controller {
 
         public function index ($table = '', $action = 'list', $id = null) {
 
-            if (!isset($_SESSION['translator_lang'])) {
-                $errors[] = 'Selecciona el idioma de traducción';
-                return new View('view/translate/index.html.php', array('menu'=>self::menu()));
+            if (empty($_SESSION['translator_lang'])) {
+                $_SESSION['translator_lang'] = 'en';
+//                $errors[] = 'Selecciona el idioma de traducción';
+//                return new View('view/translate/index.html.php', array('menu'=>self::menu()));
             }
 
             if ($table == '') {
@@ -59,29 +61,38 @@ namespace Goteo\Controller {
                         if (Text::save(array(
                                         'id'   => $id,
                                         'text' => $_POST['text'],
-                                        'lang' => $_SESSION['translator_lang']
+                                        'lang' => $_POST['lang']
                                     ), $errors)) {
 
-                            /*
-                             * Evento Feed
-                             */
+                            // Evento Feed
                             $log = new Feed();
-                            $log->title = 'texto traducido (traductor)';
-                            $log->url = '/translate/texts';
-                            $log->type = 'admin';
-                            $log_text = 'El traductor %s ha %s el texto %s al %s';
-                            $log_items = array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', 'Traducido'),
-                                Feed::item('blog', $id),
-                                Feed::item('relevant', Lang::get($_SESSION['translator_lang'])->name)
-                            );
-                            $log->html = \vsprintf($log_text, $log_items);
-                            $log->add($errors);
-
+                            $log->populate('texto traducido (traductor)', '/translate/texts',
+                                \vsprintf('El traductor %s ha %s el texto %s al %s', array(
+                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('relevant', 'Traducido'),
+                                    Feed::item('blog', $id),
+                                    Feed::item('relevant', Lang::get($_POST['lang'])->name)
+                            )));
+                            $log->doAdmin('admin');
                             unset($log);
 
+                            Message::Info('Texto <strong>'.$id.'</strong> traducido correctamente al <strong>'.Lang::get($_POST['lang'])->name.'</strong>');
+
                             throw new Redirection("/translate/texts/$filter&page=".$_GET['page']);
+                        } else {
+                            // Evento Feed
+                            $log = new Feed();
+                            $log->populate('texto traducido (traductor)', '/translate/texts',
+                                \vsprintf('Al traductor %s  le ha %s el texto %s al %s', array(
+                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('relevant', 'Fallado al traducir'),
+                                    Feed::item('blog', $id),
+                                    Feed::item('relevant', Lang::get($_POST['lang'])->name)
+                            )));
+                            $log->doAdmin('admin');
+                            unset($log);
+
+                            Message::Error('Ha habido algun ERROR al traducir el Texto <strong>'.$id.'</strong> al <strong>'.Lang::get($_POST['lang'])->name.'</strong><br />' . implode('<br />', $errors));
                         }
                     }
 
@@ -101,30 +112,37 @@ namespace Goteo\Controller {
                 case 'pages':
                     // si llega post, vamos a guardar los cambios
                     if ($action == 'edit' && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
-                        $page = Page::get($id, $_SESSION['translator_lang']);
-                        $page->content = $_POST['content'];
-                        if ($page->save($errors)) {
+                        if (Page::update($id, $_POST['lang'], $_POST['content'], $errors)) {
 
-                            /*
-                             * Evento Feed
-                             */
+                            // Evento Feed
                             $log = new Feed();
-                            $log->title = 'pagina traducida (traductor)';
-                            $log->url = '/translate/pages';
-                            $log->type = 'admin';
-                            $log_text = 'El traductor %s ha %s la página %s al %s';
-                            $log_items = array(
+                            $log->populate('pagina traducida (traductor)', '/translate/pages',
+                                \vsprintf('El traductor %s ha %s la página %s al %s', array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                 Feed::item('relevant', 'Traducido'),
                                 Feed::item('blog', $id),
-                                Feed::item('relevant', Lang::get($_SESSION['translator_lang'])->name)
-                            );
-                            $log->html = \vsprintf($log_text, $log_items);
-                            $log->add($errors);
-
+                                Feed::item('relevant', Lang::get($_POST['lang'])->name)
+                            )));
+                            $log->doAdmin('admin');
                             unset($log);
 
+                            Message::Info('Contenido de la Pagina <strong>'.$id.'</strong> traducido correctamente al <strong>'.Lang::get($_POST['lang'])->name.'</strong>');
+
                             throw new Redirection("/translate/pages");
+                        } else {
+                            // Evento Feed
+                            $log = new Feed();
+                            $log->populate('pagina traducida (traductor)', '/translate/pages',
+                                \vsprintf('Al traductor %s le ha %s la página %s al %s', array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', 'Fallado al traducir'),
+                                Feed::item('blog', $id),
+                                Feed::item('relevant', Lang::get($_POST['lang'])->name)
+                            )));
+                            $log->doAdmin('admin');
+                            unset($log);
+
+                            Message::Error('Ha habido algun ERROR al traducir el contenido de la pagina <strong>'.$id.'</strong> al <strong>'.Lang::get($_POST['lang'])->name.'</strong><br />' . implode('<br />', $errors));
                         }
                     }
 
@@ -154,8 +172,6 @@ namespace Goteo\Controller {
                     // si llega post, vamos a guardar los cambios
                     if ($action == 'edit' && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
 
-        //                echo '<pre>'.print_r($_POST, 1).'</pre>';
-
                         if (!in_array($table, \array_keys(Content::$tables))) {
                             $errors[] = "Tabla $table desconocida";
                             break;
@@ -163,27 +179,37 @@ namespace Goteo\Controller {
 
                         if (Content::save($_POST, $errors)) {
 
-                            /*
-                             * Evento Feed
-                             */
+                            // Evento Feed
                             $log = new Feed();
-                            $log->title = 'contenido traducido (traductor)';
-                            $log->url = '/translate/'.$table;
-                            $log->type = 'admin';
-                            $log_text = 'El traductor %s ha %s el contenido del registro %s de la tabla %s al %s';
-                            $log_items = array(
+                            $log->populate('contenido traducido (traductor)', '/translate/'.$table,
+                                \vsprintf('El traductor %s ha %s el contenido del registro %s de la tabla %s al %s', array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                 Feed::item('relevant', 'Traducido'),
                                 Feed::item('blog', $id),
                                 Feed::item('blog', $table),
                                 Feed::item('relevant', Lang::get($_SESSION['translator_lang'])->name)
-                            );
-                            $log->html = \vsprintf($log_text, $log_items);
-                            $log->add($errors);
-
+                            )));
+                            $log->doAdmin('admin');
                             unset($log);
 
+                            Message::Info('Contenido del registro <strong>'.$id.'</strong> de la tabla <strong>'.$table.'</strong> traducido correctamente al <strong>'.Lang::get($_POST['lang'])->name.'</strong>');
+
                             throw new Redirection("/translate/$table/$filter&page=".$_GET['page']);
+                        } else {
+                            // Evento Feed
+                            $log = new Feed();
+                            $log->populate('contenido traducido (traductor)', '/translate/'.$table,
+                                \vsprintf('El traductor %s le ha %s el contenido del registro %s de la tabla %s al %s', array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', 'Fallado al traducir'),
+                                Feed::item('blog', $id),
+                                Feed::item('blog', $table),
+                                Feed::item('relevant', Lang::get($_SESSION['translator_lang'])->name)
+                            )));
+                            $log->doAdmin('admin');
+                            unset($log);
+
+                            Message::Error('Ha habido algun ERROR al traducir el contenido del registro <strong>'.$id.'</strong> de la tabla <strong>'.$table.'</strong> al <strong>'.Lang::get($_POST['lang'])->name.'</strong><br />' . implode('<br />', $errors));
                         }
                     }
 

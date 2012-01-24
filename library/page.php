@@ -133,10 +133,6 @@ namespace Goteo\Library {
                         ";
 				Model::query($sql, $values);
 
-
-
-
-
                 $values = array(
                     ':page' => $this->id,
                     ':lang' => $this->lang,
@@ -156,6 +152,39 @@ namespace Goteo\Library {
                     return false;
                 }
                 
+			} catch(\PDOException $e) {
+                $errors[] = 'Error sql al grabar el contenido de la pagina. ' . $e->getMessage();
+                return false;
+			}
+
+		}
+
+        /**
+         * PAra actualizar solamente el contenido
+         * @param <type> $errors
+         * @return <type>
+         */
+		public function update($id, $lang, $content, &$errors = array()) {
+  			try {
+                $values = array(
+                    ':page' => $id,
+                    ':lang' => $lang,
+                    ':node' => \GOTEO_NODE,
+                    ':contenido' => $content
+                );
+
+				$sql = "REPLACE INTO page_node
+                            (page, node, lang, content)
+                        VALUES
+                            (:page, :node, :lang, :contenido)
+                        ";
+				if (Model::query($sql, $values)) {
+                    return true;
+                } else {
+                    $errors[] = "Ha fallado $sql con <pre>" . print_r($values, 1) . "</pre>";
+                    return false;
+                }
+
 			} catch(\PDOException $e) {
                 $errors[] = 'Error sql al grabar el contenido de la pagina. ' . $e->getMessage();
                 return false;
