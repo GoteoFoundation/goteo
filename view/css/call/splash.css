@@ -505,20 +505,20 @@ a.button.join {
 
 a#capital {
 	top: 20px;
-	width: 91px;
+	width: 76px;
 	height: 12px;
 	right: 40px;
 	z-index: 1;
 	display: block;
 	position: fixed;
 	color: #1db3b2;
-	background: url('/view/css/call/logo-capital_medium.png') no-repeat center top transparent;
+	background: transparent url('/view/css/call/logo-capital-blanco.png') no-repeat center top;
 	text-decoration: none;
-	padding: 90px 0 0;
+	padding: 106px 0 0;
 	text-align: center;
 	text-transform: uppercase;
-	font-size: 0.9em;
-    font-weight: bold;
+	font-size: 11px;
+	line-height: 11px;
 }
 
 a#capital:hover {
