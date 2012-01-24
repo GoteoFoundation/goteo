@@ -27,7 +27,7 @@ namespace Goteo\Library {
         public function __construct ($id, $all_avatars=true, $with_title = true) {
 			if($this->project = Project::get($id)) {
 				$this->show_title = $with_title;
-				$this->investors = $this->project->investors;
+				$this->investors = $this->project->agregateInvestors();
 
 				$avatars = array();
 				foreach($this->investors as $i) {
@@ -242,10 +242,11 @@ div.wof h2 a:hover {
 	width:60%;
     display: block;
     height: 21px;
+	line-height: 21px;
     overflow: hidden;
     background: #58595c;
     color: #fff;
-    padding: 7px 0 0 0;
+    padding: 4px 0 3px;
     float:left;
 }
 div.wof h2 a.right {
@@ -259,7 +260,7 @@ div.wof>div.ct>div.i h3 {
     font-weight:bold;
     text-align: right;
     padding: 0 15px 0 0;
-    margin: 8px 0 0;
+    margin: 15px 0 0;
 }
 
 div.wof>div.ct>div.i h3 a {
@@ -273,7 +274,7 @@ div.wof>div.ct>div.i h3>img {
 
 div.wof>div.ct>div.i p {
     color:#58595c;
-    font-size:14px;
+    font-size:12px;
     text-align: right;
     padding: 0 15px 0 0;
     margin:0;
@@ -295,7 +296,8 @@ div.wof>div.ct>div.i.b h3 a {
 }
 div.wof>div.ct>div.i.b h3 a img{
 	vertical-align:top;
-	padding-top:10px;
+	padding-top:3px;
+	padding-left: 5px;
 }
 div.wof>div.ct>div.i.b p {
     color:#0b4f99;
@@ -322,6 +324,7 @@ div.wof>div.ct>div.i.c p {
     color:#58595c;
     text-align:left;
     padding:0 0 0 4px;
+	margin-right: 10px;
 }
 
 div.wof>div.ct>div.i.c>div.c1 p {
@@ -354,12 +357,16 @@ div.wof>div.ct>div.i.d a {
 	height:22px;
 	color:#fff;
 	font-size:14px;
-	padding:6px 0 0 0;
+	line-height: 22px;
+	padding: 4px 0;
 	margin:20px 20px 0 0;
 	text-transform:uppercase;
 	background:url(/view/css/project/widget/wof_sup_btn.png) no-repeat;
 	overflow:hidden;
 	float:right;
+	text-decoration: none;
+	font-weight: normal;
+	font-style: normal;
 }
 EOF;
             // dinamico

@@ -1962,6 +1962,32 @@ namespace Goteo\Model {
             return $projects;
         }
 
+        /**
+         *  Metodo para obtener cofinanciadores agregados por usuario
+         *  y sin convocadores
+         */
+        public function agregateInvestors () {
+            $investors = array();
+
+            foreach($this->investors as $investor) {
+
+                if (!empty($investor->campaign)) continue;
+                
+                $investors[$investor->user] = (object) array(
+                    'user' => $investor->user,
+                    'name' => $investor->name,
+                    'avatar' => $investor->avatar,
+                    'projects' => $investor->projects,
+                    'worth' => $investor->worth,
+                    'amount' => $investors[$investor->user]->amount + $investor->amount,
+                    'date' => !empty($investors[$investor->user]->date) ?$investors[$investor->user]->date : $investor->date
+                );
+            }
+
+            return $investors;
+        }
+
+
         /*
          * Estados de desarrollo del propyecto
          */
