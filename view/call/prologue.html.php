@@ -12,9 +12,13 @@
         <meta name="robots" content="all" />
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />	
 
-		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/tipsy/tipsy.css" />		
+		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/tipsy/tipsy.css" />
+        <?php if ($bodyClass == 'splash') : ?>
+		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/splash.css" />
+        <?php else : ?>
 		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/view.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/extra.css" />
+        <?php endif; ?>
 
       <!--[if IE]>
       <link href="<?php echo SRC_URL ?>/view/css/ie.css" media="screen" rel="stylesheet" type="text/css" />
@@ -50,9 +54,24 @@
                 $(".a-null").click(function (event) {
                     event.preventDefault();
                 });
+				
+				(function(){var a=document.body;var b=document.getElementById("bgimage").getElementsByTagName("img")[0];var c={};var d=b.src;setInterval(function(){window.scrollTo(0,0);if(b.complete){if(a.clientWidth!=c.w||a.clientHeight!=c.h||b.src!=d){d=b.src;c.w=a.clientWidth;c.h=a.clientHeight;var e=Math.round(c.h*(b.offsetWidth/b.offsetHeight));b.style.width=(c.w>e?c.w:e)+"px"}}},300)})()
+
+               if ($('#side').height() > $('#content').height()) {
+                   $('#content').height($('#side').height());
+               } else {
+                   $('#side').height($('#content').height());
+               }
+
             });
         </script>
+
+
         <noscript><!-- Please enable JavaScript --></noscript>
 
-        <div id="wrapper" <?php if (isset($bgimage)) echo "style=\"background-image:url('{$bgimage}');\""; ?>>
+		<div id="bgimage">
+            <div><img alt="<?php echo $call->name ?>" src="<?php if ($call->image instanceof Goteo\Model\Image) echo $call->image->getLink(5000, 5000) ?>" /></div>
+		</div>
+
+        <div id="wrapper">
 			

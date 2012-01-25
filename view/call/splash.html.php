@@ -15,7 +15,7 @@ if ($call->status == 3) {
     $until_year = date('Y', $until);
 }
 
-include 'view/call/prologue-splash.html.php';
+include 'view/call/prologue.html.php';
 ?>
 	
 	<div id="main" class="onecol">
@@ -80,7 +80,7 @@ include 'view/call/prologue-splash.html.php';
                         <dd>
                             <?php if (!empty($call->pdf)) : ?><a class="red" href="<?php echo $call->pdf ?>" target="_blank"><?php echo Text::get('call-splash-dossier-link') ?></a><?php endif; ?>
                             <?php if (!empty($call->user->webs[0]->url)) : ?><a href="<?php echo $call->user->webs[0]->url ?>" target="_blank"><?php echo preg_replace( '^http(?<https>s)?://^', '', $call->user->webs[0]->url ) ?></a><?php endif; ?>
-                            <a class="aqua" href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/terms" target="_blank"><?php echo Text::get('call-splash-legal-link') ?></a>
+                            <a class="aqua" href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/terms" ><?php echo Text::get('call-splash-legal-link') ?></a>
                         </dd>
                     </dl>
 				</div>

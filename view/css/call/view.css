@@ -1,12 +1,7 @@
 @import url('footer.css');
 @import url('tipsy/tipsy.css');
-
-/**
- * View
- */
-
+/* View */
 /* Common */
-
 * {
     font-family: "Liberation Sans", Helvetica, "Helvetica Neue", Arial, Geneva, sans-serif;
 }
@@ -18,7 +13,10 @@ html {
 }
 
 html, body {        
-    padding: 0;    
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
 }
 
 body, td, th, a, a:link, a:visited, a:active, a:hover, input, textarea, button {    
@@ -39,29 +37,29 @@ h1 {
 }
 
 /* Extend */
-
 body {
 	background-color: #58595c;
 	margin: 0;
 }
 
 #wrapper {
-	width: 950px;
-	margin: 25px auto 0;
-	position: relative;
-	background-color: #f5f1f2;
-	overflow: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: transparent;
 }
 
 
 /* Main */
-
 div#main {
     clear: both;
-    margin: 0;
+	width: 950px;
+	margin: 25px auto 0px;
     overflow: hidden;
-	height: 100%;
-	margin-bottom: 25px;
 }
 
 div#main ul#list {
@@ -80,8 +78,44 @@ div#main ul#list>li {
 	-webkit-border-radius: 5px;
 }
 
-/* Header */
+/* Background Image */
+#bgimage{
+	position: absolute;
+	width: 200%;
+	height: 200%;
+	top: -50%;
+	left: -50%;
+}
 
+#bgimage[id]{
+	display: table;
+}
+
+#bgimage div{
+	position: absolute;
+	left: 0;
+	top: 50%;
+}
+
+#bgimage[id] div {
+	display: table-cell;
+	vertical-align: middle;
+	position: static;
+}
+
+#bgimage img {
+	position: relative;
+	top: -50%;
+	margin: 0 auto;
+	display: block;
+	width: 100%;
+}
+
+*:first-child+html #bgimage div {
+	position: absolute;
+}
+
+/* Header */
 #header {
 	position: fixed;
 	top: 0;
@@ -91,7 +125,6 @@ div#main ul#list>li {
 	background: url("/view/css/header/background.png") repeat-x scroll center top #B5DADC;
 	margin: 0;
 	height: 25px;
-	/*overflow: hidden;*/
 }
 
 #super-header {
@@ -317,11 +350,7 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
     background-color: #78d1d1;
 }
 
-
-
-
 /* Footer */
-
 #footer {
 	position: fixed;
 	background-color: #58595c;
@@ -446,16 +475,13 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
     cursor: default;
 }
 
-
-
 /* Side */
-
 #side {
 	width: 175px;
-	float: left;
+	float: left; 
 	background-color: #f5f1f2;
-	padding: 30px 0 30000px 15px;
-	margin-bottom: -30000px;
+	padding: 30px 0 30px 15px;
+    margin: 0;
 }
 
 #side img.logo {
@@ -466,7 +492,6 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
 }
 
 #side .block {
-	/*border-bottom: 1px solid #cecbcc;*/
 	background: url('/view/css/call/side-border.gif') no-repeat left bottom;
 	padding-bottom: 15px;
 }
@@ -565,24 +590,13 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
 	color: red;
 }
 
-#side #go-up {
-	position: absolute;
-	bottom: 15px;
-	display: block;
-	height: 40px;
-	width: 140px;
-	z-index: 1;
-	left: 15px;
-}
-
 /* Content */
-
 #content {
-	width: 690px;
-	position: relative;
-	padding: 15px 35px;
+	width: 670px;
+	padding: 15px 35px 30px;
 	float: left;
 	background-color: #fff;
+    margin: 0;
 }
 
 #content a.aqua {
@@ -600,7 +614,6 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
 }
 
 /* Iconos */
-
 .money {
 	color: #95268d;
 }
@@ -912,7 +925,7 @@ table.info-table tfoot tr > * {
 }
 
 /* Projects */
-
+/*
 .projects #wrapper {
 	background-color: #f5f1f2;
     background-image: none;
@@ -920,6 +933,7 @@ table.info-table tfoot tr > * {
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
+*/
 
 .projects #content {
 	background-color: transparent;
@@ -945,7 +959,7 @@ table.info-table tfoot tr > * {
 }
 
 #project-list {
-	padding: 0 0 0 35px;
+	padding: 0 0 50px 35px;
 	margin: 0;
 	overflow: hidden;
 }

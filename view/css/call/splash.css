@@ -1,12 +1,7 @@
 @import url('footer.css');
 @import url('tipsy/tipsy.css');
-
-/**
- * Splash
- */
-
+/* Splash */
 /* Common */
-
 * {
     font-family: "Liberation Sans", Helvetica, "Helvetica Neue", Arial, Geneva, sans-serif;
 }
@@ -57,7 +52,6 @@ body {
 }
 
 /* Main */
-
 div#main {
     clear: both;
     margin: 10px 0;
@@ -86,7 +80,6 @@ div#main ul#list>li {
 }
 
 /* Background Image */
-
 #bgimage{
 	position: absolute;
 	width: 200%;
@@ -124,7 +117,6 @@ div#main ul#list>li {
 }
 
 /* Description */
-
 li#description.item img {
 	float: left;
 	display: block;
@@ -167,9 +159,7 @@ li#description.item p {
 	font-size: 11px;
 }
 
-
 /* Numbers */
-
 div#main ul#list > li#numbers {
 	padding: 25px 25px 0;
 }
@@ -502,7 +492,6 @@ a.button.join {
 }
 
 /* Logo */
-
 a#capital {
 	top: 20px;
 	width: 76px;
