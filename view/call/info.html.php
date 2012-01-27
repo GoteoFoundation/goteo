@@ -105,7 +105,7 @@ $(document).ready(function() {
             <p class="block">
                 <a class="aqua" href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/terms"><?php echo Text::get('call-terms-main-header') ?></a>
             </p>
-            
+            <p>
        <?php if ($call->status == 3) : //inscripcion ?>
             <?php if (!$call->expired) : // sigue abierta ?>
             <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/apply" class="button red join" target="_blank"><?php echo Text::get('call-splash-apply-button') ?></a>
@@ -113,7 +113,7 @@ $(document).ready(function() {
         <?php else : //en campaña ?>
             <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/projects" class="button red view"><?php echo Text::get('call-splash-see_projects-button') ?></a>
         <?php endif; ?>
-
+            </p>
 		</div>	
 	
 	</div>

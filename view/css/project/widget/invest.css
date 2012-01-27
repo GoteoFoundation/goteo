@@ -100,20 +100,32 @@ div.widget.project-invest #country {
 div.widget.project-invest #email {
     width: 350px;
 }
-div.widget.project-invest div.individual ul li label.amount {
+
+div.widget.project-invest div.individual ul li label.amount span.amount {
     color: #96238f;
     font-weight: bold;
+}
+
+div.widget.project-invest div.individual ul li.disabled label.amount span.amount,
+div.widget.project-invest div.individual ul li label{
+    color: #58595b;
 }
 
 div.widget.project-invest div.individual ul li.disabled{
     background-color: #e8e7e7;
 }
 
-div.widget.project-invest div.individual ul li.disabled label.amount {
-    color: #58595b;
+div.widget.project-invest.method div.buttons {
+    width: 50%;
+    float:left;
 }
 
-div.widget.project-invest button.pay-tpv {
+div.widget.project-invest.method button {
+    margin-bottom: 10px;
+    display: block;
+}
+
+div.widget.project-invest.method button.pay-tpv {
     background: url('/view/css/button/tpv.gif') no-repeat 0 0 transparent;
     width: 178px;
     height: 35px;
@@ -121,7 +133,7 @@ div.widget.project-invest button.pay-tpv {
     padding: 3px;
 }
 
-div.widget.project-invest button.pay-paypal {
+div.widget.project-invest.method button.pay-paypal {
     background: url('/view/css/button/paypal.gif') no-repeat 0 0 transparent;
     width: 145px;
     height: 32px;
@@ -129,19 +141,41 @@ div.widget.project-invest button.pay-paypal {
     padding: 3px;
 }
 
-div.widget.project-invest button.pay-tpv:hover,
-div.widget.project-invest button.pay-paypal:hover {
+div.widget.project-invest.method button.pay-tpv:hover,
+div.widget.project-invest.method button.pay-paypal:hover {
     border: 1px solid #20b2b3;
+}
+
+div.widget.project-invest div.reminder {
+    width: 40%;
+    float: left;
+}
+
+div.widget.project-invest div.reminder #amount-reminder {
+    background: url('/view/css/euro/violet/s.png') no-repeat right center transparent;
+    color: #96238F;
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 5px;
+    padding-right: 20px;
 }
 
 div.widget.project-invest div.individual ul li {
 	padding: 0px;
 }
 
+div.widget.project-invest div.individual ul li.chosed {
+    background-color: #E5C8E3;
+}
+
 div.widget.project-invest div.individual ul li label.resign{
 	padding: 10px 10px 10px 65px;
 	display: block;
 	cursor: pointer;
+}
+
+div.widget.project-invest div.individual ul li span.left{
+    color:red;
 }
 
 div.widget.project-invest div.individual ul li label.amount{

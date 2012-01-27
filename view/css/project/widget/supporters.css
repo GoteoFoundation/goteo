@@ -60,8 +60,10 @@ div.widget.project-supporters dl.summary dd.reached {
     color: #96238F;
 }
 
+div.widget.project-supporters dl.summary.drop dt.reached, 
 div.widget.project-supporters dl.summary.drop dd.reached {
-    margin-right: 50px;
+    position: relative;
+    left: 100px;
 }
 
 div.widget.project-supporters dl.summary.drop .supporters {

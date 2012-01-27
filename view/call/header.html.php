@@ -6,7 +6,6 @@
 
 <?php include 'view/header/lang.html.php' ?> 
 
-
 <div id="header">
     <h1><?php echo Text::get('regular-main-header'); ?></h1>
 
@@ -61,10 +60,16 @@
 		<script type="text/javascript">
 		jQuery(document).ready(function ($) {
 			 $("#lang").hover(function(){
+               // posicionar idiomas
+               var pos = $("#lang").position();
+               var top = $("#wrapper").scrollTop();
+               $("ul.lang").css("left", pos.left+5);
+               $("ul.lang").css("top", top+25);
+
 			   //desplegar idiomas
 			   try{clearTimeout(TID_LANG)}catch(e){};
 			   $("ul.lang").fadeIn();
-		       $("#lang").css("background","#808285 url('/view/css/bolita.png') 4px 5px no-repeat");
+		       $("#lang").css("background","url('/view/css/bolita.png') 4px 5px no-repeat #808285");
 
 		   },function() {
 			   TID_LANG = setTimeout('$("ul.lang").hide()',100);
@@ -73,7 +78,7 @@
 				try{clearTimeout(TID_LANG)}catch(e){};
 			},function() {
 			   TID_LANG = setTimeout('$("ul.lang").hide()',100);
-			   $("#lang").css("background","url('/view/css/bolita_gris.png') 4px 5px no-repeat");
+			   $("#lang").css("background","url('/view/css/bolita_gris.png') 4px 5px no-repeat transparent");
 			});
 
 

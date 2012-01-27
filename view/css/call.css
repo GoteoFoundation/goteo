@@ -370,6 +370,8 @@ div.callrow a.next {
     text-indent: 24px;
     display: inline-block;
     cursor: pointer;
+    margin: 0;
+    padding: 0;
 }
 
 div#calls a.prev {

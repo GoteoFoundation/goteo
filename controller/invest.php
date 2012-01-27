@@ -60,22 +60,14 @@ namespace Goteo\Controller {
                 }
 
                 // añadir recompensas que ha elegido
-                
-                $rewards = array();
-                if (isset($_POST['resign']) && $_POST['resign'] == 1) {
+                $chosen = $_POST['selected_reward'];
+                if ($chosen == 0) {
                     // renuncia a las recompensas, bien por el/ella
+                    $resign = true;
+                    $reward = false;
                 } else {
-                    foreach ($_POST as $key=>$value) {
-                        if (substr($key, 0, strlen('reward_')) == 'reward_') {
-
-                            $id = \str_replace('reward_', '', $key);
-
-                            //no darle las recompensas que no entren en el rango del aporte por mucho que vengan marcadas
-                            if ($projectData->individual_rewards[$id]->amount <= $_POST['amount']) {
-                                $rewards[] = $id;
-                            }
-                        }
-                    }
+                    $resign = false;
+                    $reward = true;
                 }
 
                 // insertamos los datos personales del usuario si no tiene registro aun
@@ -90,10 +82,12 @@ namespace Goteo\Controller {
                         'status' => '-1',               // aporte en proceso
                         'invested' => date('Y-m-d'),
                         'anonymous' => $_POST['anonymous'],
-                        'resign' => $_POST['resign']
+                        'resign' => $resign
                     )
                 );
-                $invest->rewards = $rewards;
+                if ($reward) {
+                    $invest->rewards = array($chosen);
+                }
                 $invest->address = (object) $address;
 
                 // si obtiene dinero de convocatoria
