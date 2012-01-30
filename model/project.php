@@ -1543,7 +1543,8 @@ namespace Goteo\Model {
          */
         public function delete(&$errors = array()) {
 
-            if ($this->status != 1) {
+            if ($this->status > 1) {
+                $errors[] = "El proyecto no esta descartado ni en edicion";
                 return false;
             }
 
@@ -1567,6 +1568,7 @@ namespace Goteo\Model {
                 self::query("ROLLBACK");
 				$sql = "UPDATE project SET status = :status WHERE id = :id";
 				self::query($sql, array(':status'=>0, ':id'=>$this->id));
+                $errors[] = "Fallo en la transaccion, el proyecto ha quedado como descartado";
                 return false;
             }
         }

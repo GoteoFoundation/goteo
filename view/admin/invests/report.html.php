@@ -3,6 +3,12 @@
 use Goteo\Library\Text;
 
 $project = $this['project'];
+$Data = $this['reportData'];
+
+\trace($Data);
+echo '<hr />';
+\trace($project);
+die;
 
 $desglose = array();
 $goteo    = array();
@@ -40,6 +46,10 @@ foreach ($this['invests'] as $invest) {
 // para cada usuario
     $usuario[$invest->user->id]['total'] += $invest->amount;
     $usuario[$invest->user->id][$invest->method] += $invest->amount;
+// por metodo
+    $usuario[$invest->method]['users'][$invest->user->id] = 1;
+    $usuario[$invest->method]['invests']++;
+
 }
 
 ?>
@@ -52,8 +62,8 @@ foreach ($this['invests'] as $invest) {
         .</p>
     <p>El proyecto tiene un <strong>coste m&iacute;nimo de <?php echo number_format($project->mincost, 0, '', '.') ?> &euro;</strong>, un coste <strong>&oacute;ptimo de <?php echo number_format($project->maxcost, 0, '', '.') ?> &euro;</strong> y ahora mismo lleva <strong>conseguidos <?php echo number_format($project->amount, 0, '', '.') ?> &euro;</strong>, lo que representa un <strong><?php echo number_format(($project->amount / $project->mincost * 100), 2, ',', '') . '%' ?></strong> sobre el m&iacute;nimo.</p>
 
-    <h3>Desglose del obtenido</h3>
-    <p style="font-style:italic;">Cantidades en bruto (no se tiene en cuenta comisión PayPal ni SaNostra)</p>
+    <h3>Informe de aportes</h3>
+    <p style="font-style:italic;">Cantidades en bruto (no se tiene en cuenta ejecuciones fallidas ni comisiones PayPal ni SaNostra)</p>
 
     <h4>Por destinatario</h4>
     <table>
@@ -128,4 +138,165 @@ foreach ($this['invests'] as $invest) {
         </tr>
         <?php endforeach; ?>
     </table>
+</div>
+<!-- información detallada apra tratar transferencias a proyectos -->
+<div class="widget">
+    <h3>Informe de transacciones correctas</h3>
+    <p style="font-style:italic;">Descuenta las incidencias de conteo de usuarios/operaciones, comision y neto.</p>
+
+<?php if (!empty($Data['tpv'])) : ?>
+    <h4>TPV</h4>
+    <?php
+        $users_ok = count($usuarios['tpv']['users']);
+        $invests_ok = $usuarios['tpv']['invests'];
+        $incidencias = 0;
+        $correcto = $desglose['tpv'] - $incidencias;
+        $comision = $correcto * 0.008;
+        $neto = $correcto - $comision;
+        $neto_goteo = $neto * 0.08;
+        $neto_proyecto = $neto - $neto_goteo;
+    ?>
+    <table>
+        <tr>
+            <th></th>
+            <th>1a Ronda</th>
+            <th>2a Ronda</th>
+            <th>Total</th>
+        </tr>
+        <tr>
+            <th>Usuarios (sin incidencias)</th>
+            <td><?php echo $users_ok ?></td>
+        </tr>
+        <tr>
+            <th>Operaciones (sin incidencias)</th>
+            <td><?php echo $invests_ok ?></td>
+        </tr>
+        <tr>
+            <th>Importe Incidencias</th>
+            <td style="text-align:right;"><?php echo number_format($incidencias, 0, '', '.'); ?></td>
+        </tr>
+        <tr>
+            <th>Importe Ejecutado Correcto</th>
+            <td style="text-align:right;"><?php echo number_format($correcto, 0, '', '.'); ?></td>
+        </tr>
+        <tr>
+            <th>Comisi&oacute;n 0,80&#37;</th>
+            <td style="text-align:right;"><?php echo number_format($comision, 0, '', '.'); ?></td>
+        </tr>
+        <tr>
+            <th>Neto Goteo</th>
+            <td style="text-align:right;"><?php echo number_format($neto_goteo, 0, '', '.'); ?></td>
+        </tr>
+        <tr>
+            <th>Neto Proyecto</th>
+            <td style="text-align:right;"><?php echo number_format($neto_proyecto, 0, '', '.'); ?></td>
+        </tr>
+    </table>
+<?php endif; ?>
+
+<?php if (!empty($Data['paypal'])) : ?>
+    <h4>PayPal</h4>
+    <?php
+        $users_ok = count($usuarios['paypal']['users']);
+        $invests_ok = $usuarios['paypal']['invests'];
+        $incidencias = 0;
+        $correcto = $desglose['paypal'] - $incidencias;
+        $correcto_goteo = ($correcto * 0.08);
+        $correcto_proyecto = $correcto - $correcto_goteo;
+        $fee_goteo = ($usuario['paypal']['invests'] * 0.35) + ($correcto_goteo * 0.034);
+        $fee_proyecto = ($usuario['paypal']['invests'] * 0.35) + ($correcto_proyecto * 0.034);
+        $neto_goteo = $correcto_goteo - $fee_goteo;
+        $neto_proyecto = $correcto_proyecto - $fee_proyecto;
+    ?>
+    <table>
+        <tr>
+            <th></th>
+            <th>1a Ronda</th>
+            <th>2a Ronda</th>
+            <th>Total</th>
+        </tr>
+        <tr>
+            <th>Usuarios (sin incidencias)</th>
+            <td><?php echo $users_ok ?></td>
+        </tr>
+        <tr>
+            <th>Operaciones (sin incidencias)</th>
+            <td><?php echo $invests_ok ?></td>
+        </tr>
+        <tr>
+            <th>Importe Incidencias</th>
+            <td style="text-align:right;"><?php echo number_format($incidencias, 0, '', '.'); ?></td>
+        </tr>
+        <tr>
+            <th>Importe Ejecutado Correcto</th>
+            <td style="text-align:right;"><?php echo number_format($correcto, 0, '', '.'); ?></td>
+        </tr>
+        <tr>
+            <th>Fee a Goteo 0,35/operacion + 3,4&#37; de <?php echo number_format($correcto_goteo, 0, '', '.'); ?></th>
+            <td style="text-align:right;"><?php echo number_format($fee_goteo, 0, '', '.'); ?></td>
+        </tr>
+        <tr>
+            <th>Fee al Promotor 0,35/operacion + 3,4&#37; de <?php echo number_format($correcto_proyecto, 0, '', '.'); ?></th>
+            <td style="text-align:right;"><?php echo number_format($fee_proyecto, 0, '', '.'); ?></td>
+        </tr>
+        <tr>
+            <th>Neto Goteo</th>
+            <td style="text-align:right;"><?php echo number_format($neto_goteo, 0, '', '.'); ?></td>
+        </tr>
+        <tr>
+            <th>Neto Proyecto</th>
+            <td style="text-align:right;"><?php echo number_format($neto_proyecto, 0, '', '.'); ?></td>
+        </tr>
+    </table>
+<?php endif; ?>
+
+<?php if (!empty($Data['cash'])) : ?>
+    <h4>CASH</h4>
+    <?php
+        $users_ok = count($usuarios['cash']['users']);
+        $invests_ok = $usuarios['cash']['invests'];
+        $incidencias = 0;
+        $correcto = $desglose['cash'] - $incidencias;
+    ?>
+    <table>
+        <tr>
+            <th></th>
+            <th>1a Ronda</th>
+            <th>2a Ronda</th>
+            <th>Total</th>
+        </tr>
+        <tr>
+            <th>Usuarios (sin incidencias)</th>
+            <td><?php echo $users_ok ?></td>
+        </tr>
+        <tr>
+            <th>Operaciones (sin incidencias)</th>
+            <td><?php echo $invests_ok ?></td>
+        </tr>
+        <tr>
+            <th>Importe Incidencias</th>
+            <td style="text-align:right;"><?php echo number_format($incidencias, 0, '', '.'); ?></td>
+        </tr>
+        <tr>
+            <th>Importe Ejecutado Correcto</th>
+            <td style="text-align:right;"><?php echo number_format($correcto, 0, '', '.'); ?></td>
+        </tr>
+        <tr>
+            <th>Comisi&oacute;n 0,80&#37;</th>
+            <td style="text-align:right;"><?php echo number_format($comision, 0, '', '.'); ?></td>
+        </tr>
+        <tr>
+            <th>Neto Goteo</th>
+            <td style="text-align:right;"><?php echo number_format($neto_goteo, 0, '', '.'); ?></td>
+        </tr>
+        <tr>
+            <th>Neto Proyecto</th>
+            <td style="text-align:right;"><?php echo number_format($neto_proyecto, 0, '', '.'); ?></td>
+        </tr>
+    </table>
+<?php endif; ?>
+
+<?php if (!empty($Data['note'])) : ?>
+    <p><?php echo implode('<br />- ', $Data['note']) ?></p>
+<?php endif; ?>
 </div>

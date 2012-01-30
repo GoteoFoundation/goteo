@@ -188,6 +188,9 @@ namespace Goteo\Model {
                     case 'campaign':
                         $sqlFilter .= " AND invest.droped IS NOT NULL";
                         break;
+                    case 'drop':
+                        $sqlFilter .= " AND invest.campaign = 1";
+                        break;
                 }
             }
 
@@ -932,6 +935,314 @@ namespace Goteo\Model {
                 'cash'   => 'Manual'
             );
         }
+
+
+        /*
+         * Metodo para obtener datos para el informe completo (con incidencias y netos)
+         */
+         public static function getReportData($project, $status, $round, $passsed) {
+             $Data = array();
+
+            // segun estado, ronda y fecha de pase a segunda
+            // el cash(1) es igual para todos
+            switch ($status) {
+                case 0: // descartado
+                case 1: // edicion
+                case 2: // revision
+                case 6: // caducado
+                    // Para estos cuatro estados es lo mismo:
+                    // - Solo finaciacion actual
+                    //      (aunque hiciera una ronda, aunque se descartara en segunda ronda)
+                    // - Puede tener aportes en cash
+                    // - Puede tener aportes caducados (pero no los mostramos)
+                    // - Si tiene aportes de paypal(0,1) o tpv(1) es un problema
+
+                    // A ver si tiene cash
+                    // si hay aportes de cash activos no es incidencia porque puede venir de taller
+                    // a menos que sea de convocatoria (que deberian estar cancelados)
+                    $inv_cash = self::getList(array(
+                        'methods' => 'cash',
+                        'projects' => $project,
+                        'investStatus' => '1'
+                    ));
+                    if (!empty($inv_cash)) {
+                        $Data['note'][] = "Los aportes cash pueden venir de un taller y no son incidencias, solamente estan pendientes de reubicar";
+                        $Data['cash']['total']['fail'] = 0;
+                        foreach ($inv_cash as $invId => $invest) {
+                            $Data['cash']['total']['users'][$invest->user] = $invest->user;
+                            $Data['cash']['total']['invests']++;
+                            $Data['cash']['total']['amount'] += $invest->amount;
+                            if ($invest->campaign == 1) {
+                                $Data['cash']['total']['fail'] += $invest->amount;
+                                $Data['note'][] = "Aporte de capital riego {$invId} debería estar cancelado";
+                            }
+                        }
+                    }
+
+                    // A ver si tiene paypal
+                    // si estan pendientes, ejecutados o pagados al proyecto es una incidencia
+                    $inv_paypal = self::getList(array(
+                        'methods' => 'paypal',
+                        'projects' => $project
+                    ));
+                    if (!empty($inv_paypal)) {
+                        $Data['note'][] = "Los aportes de paypal son incidencias si están activos";
+                        foreach ($inv_paypal as $invId => $invest) {
+                            if (in_array($invest->investStatus, array(0, 1, 3))) {
+                                $Data['paypal']['total']['fail'] += $invest->amount;
+                                $Data['note'][] = "El aporte PayPal {$invId} no debería estar en estado '" . self::status($invest->investStatus) . "'";
+                            }
+                        }
+                    }
+
+                    // A ver si tiene tpv
+                    // si estan pendientes, ejecutados o pagados al proyecto es una incidencia
+                    $inv_tpv = self::getList(array(
+                        'methods' => 'tpv',
+                        'projects' => $project
+                    ));
+                    if (!empty($inv_tpv)) {
+                        $Data['note'][] = "Los aportes de paypal son incidencias si están activos";
+                        foreach ($inv_tpv as $invId => $invest) {
+                            if ($invest->investStatus == 1) {
+                                $Data['tpv']['total']['fail'] += $invest->amount;
+                                $Data['note'][] = "El aporte TPV {$invId} no debería estar en estado '" . self::status($invest->investStatus) . "'";
+                            }
+                        }
+                    }
+
+
+                    break;
+                case 4: // financiado
+                case 5: // exitoso
+                    // en etos dos estados paypal(0) es incidencia en cualquier ronda
+                    $p0 = (string) 'all';
+                case 3: // en marcha
+                    // si tiene fecha $project->passed de pase a segunda ronda: paypal(0) no es incidencia para los aportes de segunda ronda
+                    if (!empty($passsed)) {
+                        if ($round == 1) {
+                            // esto es mal
+                            $Data['note'][] = "ATENCION! Está marcada la fecha de pase a segunda ronda (el {$passed}) pero sique en primera ronda!!! Informe solamente actual=primera";
+                            $act_eq = (string) 'first';
+                        } else {
+                            // en segunda ronda
+                            $p0 = (string) 'first'; // paypal(0) es incidencia paralos de primera ronda solamente
+                            // si está en segunda ronda; la financiacion actual es un merge de usuarios y suma de aportes correctos, incidencias, correctos y cantidad total
+                            $act_eq = (string) 'sum';
+                        }
+                    } else {
+                        // si no tiene fecha de pase y esta en ronda 2: es un problema se trata como solo financiacion actual y paypal(0) no son incidencias
+                        if ($round == 2) {
+                            $Data['note'][] = "ATENCION! En segunda ronda pero NO está marcada la fecha de pase a segunda ronda!!! Informe solamente actual=primera";
+                            $act_eq = (string) 'first';
+                        } else {
+                            // ok, en primera ronda sin  fecha marcada, informe solo actual = primera
+                            $act_eq = (string) 'first';
+                        }
+                    }
+
+                    // si solamente financiacion actual=primera
+                    //   simple: no filtramos fecha
+                    if ($act_eq === 'first') {
+                        // CASH
+                        $inv_cash = self::getList(array(
+                            'methods' => 'cash',
+                            'projects' => $project,
+                            'investStatus' => '1'
+                        ));
+                        if (!empty($inv_cash)) {
+                            $Data['cash']['first']['fail'] = 0;
+                            foreach ($inv_cash as $invId => $invest) {
+                                $Data['cash']['first']['users'][$invest->user] = $invest->user;
+                                $Data['cash']['first']['invests']++;
+                                $Data['cash']['first']['amount'] += $invest->amount;
+                            }
+                            $Data['cash']['total'] = $Data['cash']['first'];
+                        }
+
+                        // TPV
+                        $inv_tpv = self::getList(array(
+                            'methods' => 'tpv',
+                            'projects' => $project,
+                            'investStatus' => '1'
+                        ));
+                        if (!empty($inv_tpv)) {
+                            $Data['tpv']['first']['fail'] = 0;
+                            foreach ($inv_tpv as $invId => $invest) {
+                                $Data['tpv']['first']['users'][$invest->user] = $invest->user;
+                                $Data['tpv']['first']['invests']++;
+                                $Data['tpv']['first']['amount'] += $invest->amount;
+                            }
+                            $Data['tpv']['total'] = $Data['tpv']['first'];
+                        }
+
+
+                        // PAYPAL
+                        if (!empty($inv_paypal)) {
+                            $Data['paypal']['first']['fail'] = 0;
+                            foreach ($inv_paypal as $invId => $invest) {
+                                if (in_array($invest->investStatus, array('0', '1', '3'))) {
+                                    $Data['paypal']['first']['users'][$invest->user] = $invest->user;
+                                    $Data['paypal']['first']['invests']++;
+                                    $Data['paypal']['first']['amount'] += $invest->amount;
+                                }
+                            }
+                            $Data['paypal']['total'] = $Data['paypal']['first'];
+                        }
+
+                    } elseif ($act_eq === 'sum') {
+                        // complicado: primero los de primera ronda, luego los de segunda ronda sumando al total
+                        // calcular ultimo dia de primera ronda segun la fecha de pase
+                        echo 'Pasa el > '.$passed.'<br />';
+                        $passtime = \mktime($passed);
+                        echo 'Timepass > '.$passtime.'<br />';
+                        $last_day = date('Y-m-d', \mktime(0, 0, 0, date('m', $passtime), date('d', $passtime)-1, date('Y', $passtime)));
+                        echo 'Lastday > '.$last_day.'<br />';
+
+
+                        // CASH first
+                        $inv_cash = self::getList(array(
+                            'methods' => 'cash',
+                            'projects' => $project,
+                            'investStatus' => '1',
+                            'date_until' => $last_day
+                        ));
+                        if (!empty($inv_cash)) {
+                            $Data['cash']['first']['fail'] = 0;
+                            foreach ($inv_cash as $invId => $invest) {
+                                $Data['cash']['first']['users'][$invest->user] = $invest->user;
+                                $Data['cash']['first']['invests']++;
+                                $Data['cash']['first']['amount'] += $invest->amount;
+                            }
+                            $Data['cash']['total'] = $Data['cash']['first'];
+                        }
+
+                        // TPV first
+                        $inv_tpv = self::getList(array(
+                            'methods' => 'tpv',
+                            'projects' => $project,
+                            'investStatus' => '1',
+                            'date_until' => $last_day
+                        ));
+                        if (!empty($inv_tpv)) {
+                            $Data['tpv']['first']['fail'] = 0;
+                            foreach ($inv_tpv as $invId => $invest) {
+                                $Data['tpv']['first']['users'][$invest->user] = $invest->user;
+                                $Data['tpv']['first']['invests']++;
+                                $Data['tpv']['first']['amount'] += $invest->amount;
+                            }
+                            $Data['tpv']['total'] = $Data['tpv']['first'];
+                        }
+
+
+                        // PAYPAL first
+                        $inv_paypal = self::getList(array(
+                            'methods' => 'paypal',
+                            'projects' => $project,
+                            'date_until' => $last_day
+                        ));
+                        if (!empty($inv_paypal)) {
+                            $Data['paypal']['first']['fail'] = 0;
+                            foreach ($inv_paypal as $invId => $invest) {
+                                if (in_array($invest->investStatus, array('0', '1', '3'))) {
+                                    // a ver si cargo pendiente es incidencia...
+                                    if ($invest->investStatus == 0 && ($p0 === 'first' || $p0 === 'all')) {
+                                        $Data['paypal']['first']['fail'] += $invest->amount;
+                                        $Data['note'][] = "El aporte paypal {$invId} no debería estar en estado '".self::status($invest->investStatus)."'";
+                                        continue;
+                                    }
+                                    $Data['paypal']['first']['users'][$invest->user] = $invest->user;
+                                    $Data['paypal']['first']['invests']++;
+                                    $Data['paypal']['first']['amount'] += $invest->amount;
+                                }
+                            }
+                            $Data['paypal']['total'] = $Data['paypal']['first'];
+                        }
+
+                        // CASH  second
+                        $inv_cash = self::getList(array(
+                            'methods' => 'cash',
+                            'projects' => $project,
+                            'investStatus' => '1',
+                            'date_from' => $passed
+
+                        ));
+                        if (!empty($inv_cash)) {
+                            $Data['cash']['second']['fail'] = 0;
+                            $Data['cash']['total']['fail'] = 0;
+                            foreach ($inv_cash as $invId => $invest) {
+                                $Data['cash']['second']['users'][$invest->user] = $invest->user;
+                                $Data['cash']['total']['users'][$invest->user] = $invest->user;
+                                $Data['cash']['second']['invests']++;
+                                $Data['cash']['total']['invests']++;
+                                $Data['cash']['second']['amount'] += $invest->amount;
+                            }
+                            $Data['cash']['total']['amount'] += $Data['cash']['second']['amount'];
+                        }
+
+
+                        // TPV  second
+                        $inv_tpv = self::getList(array(
+                            'methods' => 'tpv',
+                            'projects' => $project,
+                            'investStatus' => '1',
+                            'date_from' => $passed
+
+                        ));
+                        if (!empty($inv_tpv)) {
+                            $Data['tpv']['second']['fail'] = 0;
+                            $Data['tpv']['total']['fail'] = 0;
+                            foreach ($inv_tpv as $invId => $invest) {
+                                $Data['tpv']['second']['users'][$invest->user] = $invest->user;
+                                $Data['tpv']['total']['users'][$invest->user] = $invest->user;
+                                $Data['tpv']['second']['invests']++;
+                                $Data['tpv']['total']['invests']++;
+                                $Data['tpv']['second']['amount'] += $invest->amount;
+                            }
+                            $Data['tpv']['total']['amount'] += $Data['tpv']['second']['amount'];
+                        }
+
+                        // PAYPAL second
+                        $inv_paypal = self::getList(array(
+                            'methods' => 'paypal',
+                            'projects' => $project,
+                            'date_from' => $passed
+                        ));
+                        if (!empty($inv_paypal)) {
+                            $Data['paypal']['second']['fail'] = 0;
+                            $Data['paypal']['total']['fail'] = 0;
+                            foreach ($inv_paypal as $invId => $invest) {
+                                if (in_array($invest->investStatus, array('0', '1', '3'))) {
+                                    // a ver si cargo pendiente es incidencia...
+                                    if ($invest->investStatus == 0 && $p0 === 'all') {
+                                        $Data['paypal']['second']['fail'] += $invest->amount;
+                                        $Data['paypal']['total']['fail'] += $invest->amount;
+                                        $Data['note'][] = "El aporte paypal {$invId} no debería estar en estado '".self::status($invest->investStatus)."'";
+                                        continue;
+                                    }
+                                    $Data['paypal']['second']['users'][$invest->user] = $invest->user;
+                                    $Data['paypal']['total']['users'][$invest->user] = $invest->user;
+                                    $Data['paypal']['second']['invests']++;
+                                    $Data['paypal']['total']['invests']++;
+                                    $Data['paypal']['second']['amount'] += $invest->amount;
+                                }
+                            }
+                            $Data['paypal']['total']['amount'] += $Data['paypal']['second']['amount'];
+                        }
+
+                        
+                    } else {
+                        $Data['note'][] = 'No se ha calculado bien el parametro $act_eq';
+                    }
+
+
+
+                    break;
+            }
+
+             return $Data;
+         }
+
 
     }
     

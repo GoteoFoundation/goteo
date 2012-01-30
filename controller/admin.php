@@ -3247,8 +3247,16 @@ namespace Goteo\Controller {
             if ($action == 'report') {
                 // estados de aporte
                 $project = Model\Project::get($id);
+                if (!$project instanceof Model\Project) {
+                    Message::Error('Instancia de proyecto no valida');
+                    throw new Redirection('/admin/invests');
+                }
                 $invests = Model\Invest::getAll($id);
                 $users  = Model\Invest::investors($id, false, true);
+
+                // Datos para el informe de transacciones correctas
+                $reportData = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
+
                 return new View(
                     'view/admin/index.html.php',
                     array(
@@ -3258,7 +3266,8 @@ namespace Goteo\Controller {
                         'project' => $project,
                         'status' => $status,
                         'users' => $users,
-                        'investStatus' => $investStatus
+                        'investStatus' => $investStatus,
+                        'reportData' => $reportData
                     )
                 );
             }

@@ -13,7 +13,7 @@ if (!$project instanceof  Goteo\Model\Project) {
     <p><strong><?php echo $project->name ?></strong></p>
     <a class="button red" href="/project/edit/<?php echo $project->id ?>"><?php echo Text::get('regular-edit') ?></a>
     <a class="button" href="/project/<?php echo $project->id ?>" target="_blank"><?php echo Text::get('dashboard-menu-projects-preview') ?></a>
-    <?php if ($project->status == 1) : ?>
+    <?php if ($project->status <= 1) : ?>
     <a class="button weak" href="/project/delete/<?php echo $project->id ?>" onclick="return confirm('<?php echo Text::get('dashboard-project-delete_alert') ?>')"><?php echo Text::get('regular-delete') ?></a>
     <?php endif ?>
 </div>

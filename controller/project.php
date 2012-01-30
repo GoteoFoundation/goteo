@@ -34,10 +34,14 @@ namespace Goteo\Controller {
 
         public function delete ($id) {
             $project = Model\Project::get($id);
-            if ($project->delete()) {
+            $errors = array();
+            if ($project->delete($errors)) {
+                Message::Info("Has borrado los datos del proyecto '<strong>{$project->name}</strong>' correctamente");
                 if ($_SESSION['project']->id == $id) {
                     unset($_SESSION['project']);
                 }
+            } else {
+                Message::Info("No se han podido borrar los datos del proyecto '<strong>{$project->name}</strong>'. Error:" . implode(', ', $errors));
             }
             throw new Redirection("/dashboard/projects");
         }
