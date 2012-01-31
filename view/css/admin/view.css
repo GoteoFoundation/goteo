@@ -106,3 +106,7 @@ body.admin div#main div.board a:hover {
     color: black;
 }
 
+body.admin div#main div.widget.report th,
+body.admin div#main div.widget.report td {
+    padding: 2px 10px;
+}

@@ -103,10 +103,11 @@ $filter = "?status={$filters['status']}&category={$filters['category']}&owner={$
                     <a href="<?php echo "/admin/projects/accounts/{$project->id}{$filter}"; ?>">[Cuentas]</a>
                     <?php if ($project->translate) : ?><a href="<?php echo "/admin/translates/edit/{$project->id}"; ?>">[Ir a traducción]</a>
                     <?php else : ?><a href="<?php echo "/admin/translates/add/?project={$project->id}"; ?>">[Habilitar traducción]</a><?php endif; ?>
+                    <a href="/admin/invests/report/<?php echo $project->id; ?>#detail" target="_blank">[Informe Financiacion]</a>
                 </td>
             </tr>
             <tr>
-                <td colspan="7"><hr /></td>
+                <td colspan="8"><hr /></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

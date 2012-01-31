@@ -917,7 +917,7 @@ namespace Goteo\Model {
                 5  => 'Reubicado'
             );
 
-            if (!empty($id)) {
+            if (isset($id)) {
                 return $array[$id];
             } else {
                 return $array;
@@ -940,7 +940,7 @@ namespace Goteo\Model {
         /*
          * Metodo para obtener datos para el informe completo (con incidencias y netos)
          */
-         public static function getReportData($project, $status, $round, $passsed) {
+         public static function getReportData($project, $status, $round, $passed) {
              $Data = array();
 
             // segun estado, ronda y fecha de pase a segunda
@@ -986,7 +986,7 @@ namespace Goteo\Model {
                         'projects' => $project
                     ));
                     if (!empty($inv_paypal)) {
-                        $Data['note'][] = "Los aportes de paypal son incidencias si están activos";
+//                        $Data['note'][] = "Los aportes de paypal son incidencias si están activos";
                         foreach ($inv_paypal as $invId => $invest) {
                             if (in_array($invest->investStatus, array(0, 1, 3))) {
                                 $Data['paypal']['total']['fail'] += $invest->amount;
@@ -1002,7 +1002,7 @@ namespace Goteo\Model {
                         'projects' => $project
                     ));
                     if (!empty($inv_tpv)) {
-                        $Data['note'][] = "Los aportes de paypal son incidencias si están activos";
+//                        $Data['note'][] = "Los aportes de tpv son incidencias si están activos";
                         foreach ($inv_tpv as $invId => $invest) {
                             if ($invest->investStatus == 1) {
                                 $Data['tpv']['total']['fail'] += $invest->amount;
@@ -1019,7 +1019,7 @@ namespace Goteo\Model {
                     $p0 = (string) 'all';
                 case 3: // en marcha
                     // si tiene fecha $project->passed de pase a segunda ronda: paypal(0) no es incidencia para los aportes de segunda ronda
-                    if (!empty($passsed)) {
+                    if (!empty($passed)) {
                         if ($round == 1) {
                             // esto es mal
                             $Data['note'][] = "ATENCION! Está marcada la fecha de pase a segunda ronda (el {$passed}) pero sique en primera ronda!!! Informe solamente actual=primera";
@@ -1093,13 +1093,9 @@ namespace Goteo\Model {
                     } elseif ($act_eq === 'sum') {
                         // complicado: primero los de primera ronda, luego los de segunda ronda sumando al total
                         // calcular ultimo dia de primera ronda segun la fecha de pase
-                        echo 'Pasa el > '.$passed.'<br />';
-                        $passtime = \mktime($passed);
-                        echo 'Timepass > '.$passtime.'<br />';
+                        $passtime = strtotime($passed);
                         $last_day = date('Y-m-d', \mktime(0, 0, 0, date('m', $passtime), date('d', $passtime)-1, date('Y', $passtime)));
-                        echo 'Lastday > '.$last_day.'<br />';
-
-
+                        
                         // CASH first
                         $inv_cash = self::getList(array(
                             'methods' => 'cash',
@@ -1169,7 +1165,6 @@ namespace Goteo\Model {
                         ));
                         if (!empty($inv_cash)) {
                             $Data['cash']['second']['fail'] = 0;
-                            $Data['cash']['total']['fail'] = 0;
                             foreach ($inv_cash as $invId => $invest) {
                                 $Data['cash']['second']['users'][$invest->user] = $invest->user;
                                 $Data['cash']['total']['users'][$invest->user] = $invest->user;
@@ -1191,7 +1186,6 @@ namespace Goteo\Model {
                         ));
                         if (!empty($inv_tpv)) {
                             $Data['tpv']['second']['fail'] = 0;
-                            $Data['tpv']['total']['fail'] = 0;
                             foreach ($inv_tpv as $invId => $invest) {
                                 $Data['tpv']['second']['users'][$invest->user] = $invest->user;
                                 $Data['tpv']['total']['users'][$invest->user] = $invest->user;
@@ -1210,7 +1204,6 @@ namespace Goteo\Model {
                         ));
                         if (!empty($inv_paypal)) {
                             $Data['paypal']['second']['fail'] = 0;
-                            $Data['paypal']['total']['fail'] = 0;
                             foreach ($inv_paypal as $invId => $invest) {
                                 if (in_array($invest->investStatus, array('0', '1', '3'))) {
                                     // a ver si cargo pendiente es incidencia...
