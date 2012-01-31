@@ -177,6 +177,9 @@ $action = '/invest/' . $project->id;
                if ($reward != null) {
                  $reward.click();
                  $reward.closest('li').addClass('chosed');
+               } else {
+                 $('#resign_reward').click();
+                 $('#resign_reward').closest('li').addClass('chosed');
                }
             });
         };    
@@ -227,23 +230,19 @@ $action = '/invest/' . $project->id;
 
 /* Si estan marcando o quitando el renuncio */
         $(':radio').bind('change', function () {
+            var a = $(this).attr('amount');
+            var i = $(this).attr('id');
+
             // si es renuncio
             if ($('#resign_reward').attr('checked') == 'checked') {
                 $("#address-header").html('<?php echo Text::get('invest-donation-header') ?>');
                 $("#donation-data").show();
+                reset_reward(i);
             } else {
                 $("#address-header").html('<?php echo Text::get('invest-address-header') ?>');
                 $("#donation-data").hide();
-            }
-
-            var a = $(this).attr('amount');
-            var b = $('#amount').val();
-            var c = $(this).attr('id');
-            if (greater(a, b)) {
+                reset_reward(i);
                 reset_reminder(a);
-                update();
-            } else {
-                reset_reward(c);
             }
         });
 
@@ -253,7 +252,7 @@ $action = '/invest/' . $project->id;
             var amount = $('#amount').val();
             var rest = $('#rest');
 
-            if (amount == 0) {
+            if (parseFloat(amount) == 0 || isNaN(amount)) {
                 alert('<?php echo Text::get('invest-amount-error') ?>');
                 $('#amount').focus();
                 return false;
