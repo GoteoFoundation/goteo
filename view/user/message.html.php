@@ -17,7 +17,7 @@ $worthcracy = Worth::getAll();
 	jQuery(document).ready(function ($) {
 	    //change div#preview content when textarea lost focus
 		$("#message").blur(function(){
-			$("#preview").html($("#message").val());
+			$("#preview").html($("#message").val().replace(/\n/g, "<br />"));
 		});
 
 		//add fancybox on #a-preview click

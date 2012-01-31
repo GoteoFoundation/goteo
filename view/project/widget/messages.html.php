@@ -9,7 +9,7 @@ $level = (int) $this['level'] ?: 3;
 	jQuery(document).ready(function ($) { 
 	    //change div#preview content when textarea lost focus
 		$("#message-text").blur(function(){
-			$("#preview").html($("#message-text").val());
+			$("#preview").html($("#message-text").val().replace(/\n/g, "<br />"));
 		});
 		
 		//add fancybox on #a-preview click
