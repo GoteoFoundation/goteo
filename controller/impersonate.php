@@ -21,8 +21,10 @@ namespace Goteo\Controller {
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST' 
                 && !empty($_POST['id'])
-                && !empty($_POST['impersonate'])
-                && $_SESSION['user'] = User::get($_POST['id'])) {
+                && !empty($_POST['impersonate'])) {
+
+                session_unset();
+                $_SESSION['user'] = User::get($_POST['id']);
 
                 /*
                  * Evento Feed

@@ -18,29 +18,12 @@ foreach ($call->projects as $key=>$proj) {
 include 'view/call/prologue.html.php';
 include 'view/call/header.html.php';
 ?>
-<script type="text/javascript">
-$(document).ready(function() {
-   $("div.click").click(function() {
-       $(this).children("span.icon").toggleClass("open");
-       $(this).children("blockquote").toggle();
-    });
- });
-</script>
-
 	<div id="main">
 
 		<?php echo new View('view/call/side.html.php', $this); ?>
 	
 		<div id="content">
-			<h2 class="title"><?php echo Text::get('call-splash-campaign_title') ?><br /><?php echo $call->name ?></h2>
-            
-            <?php if ($call->status == 3) : //inscripcion ?>
-            <p class="subtitle red"><?php echo Text::get('call-splash-searching_projects') ?></p>
-            <?php elseif (!empty($call->amount)) : //en campaña con dinero ?>
-            <p class="subtitle"><?php echo Text::get('call-splash-invest_explain', $call->user->name) ?></p>
-            <?php else : //en campaña sin dinero, con recursos ?>
-            <p class="subtitle"><?php echo Text::recorta($call->resources, 250) ?></p>
-            <?php endif; ?>
+            <?php echo new View('view/call/widget/title.html.php', $this); ?>
             
 			<div class="freetext">
 
@@ -61,7 +44,7 @@ $(document).ready(function() {
 				<table class="info-table" width="100%">
 					<thead class="task">
 						<tr>
-							<th class="summary">Aportaciones:</th>
+							<th class="title">Aportaciones:</th>
 							<th class="min"><?php if (!empty($call->amount)) : ?>Campaña<?php endif; ?></th>
 							<th class="max">Usuarios</th>
 						</tr>
@@ -79,11 +62,9 @@ $(document).ready(function() {
                         ?>
 						<tr class="<?php if ($odd) {echo 'odd'; $odd = false;} else {echo 'even'; $odd = true;} ?>">
 							<th class="summary">
-								<div class="click">
-									<span class="icon">&nbsp;</span>
-                                    <span><strong><?php echo $proj->name ?></strong></span>
-									<blockquote><?php echo empty($proj->subtitle) ? Text::recorta($proj->description, 250) : $proj->subtitle; ?></blockquote>
-								</div>
+                                <a href="/project/<?php echo $proj->id ?>"><span><?php echo $proj->name ?></span><br />
+                                <blockquote><?php echo empty($proj->subtitle) ? Text::recorta($proj->description, 200) : $proj->subtitle; ?></blockquote>
+                                </a>
 							</th>
                             <td class="min"><?php if (!empty($call->amount)) echo \amount_format($proj->amount_call) . ' &euro;'; ?></td>
                             <td class="max"><?php echo \amount_format($proj->amount_users) ?> &euro;</td>

@@ -227,7 +227,6 @@ div.widget.projects  #widget-code textarea{width:200px;	margin: 10px 0;	padding:
 #project-called {
     background: url("/view/css/call/logo-capital_medium.png") no-repeat 10px 10px #f5f2f0;
     padding-top: 0px;
-    height: 106px;
 }
 
 
@@ -248,11 +247,12 @@ div.widget.projects  #widget-code textarea{width:200px;	margin: 10px 0;	padding:
     padding: 0px 0px 0px 75px;
     position: relative;
     z-index: 0;
+    min-height: 106px;
+    border: 1px solid transparent;
 }
 
 #project-called div.amount {
     display: none;
-    padding-top: 5px;
 }
 
 #project-called div.explain dl {
@@ -263,6 +263,10 @@ div.widget.projects  #widget-code textarea{width:200px;	margin: 10px 0;	padding:
 #project-called div.amount dl dt {
     text-transform: uppercase;
     font-size: 10px;
+}
+
+#project-called div.amount dl dt {
+    padding-top: 5px;
 }
 
 #project-called div.explain dl dd {

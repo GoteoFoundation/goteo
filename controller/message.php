@@ -19,6 +19,14 @@ namespace Goteo\Controller {
                 throw new Redirection('/discover', Redirection::PERMANENT);
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['message'])) {
+
+                $projectData = Model\Project::getMini($project);
+
+                if ($projectData->status < 3) {
+                    \Goteo\Library\Message::Error(Text::get('project-messages-closed'));
+                    throw new Redirection("/project/{$project}");
+                }
+
                 $message = new Model\Message(array(
                     'user' => $_SESSION['user']->id,
                     'project' => $project,
@@ -28,8 +36,6 @@ namespace Goteo\Controller {
 
                 if ($message->save($errors)) {
 
-                    $projectData = Model\Project::getMini($project);
-                    
                     /*
                      * Evento Feed
                      */

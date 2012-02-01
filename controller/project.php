@@ -549,6 +549,10 @@ namespace Goteo\Controller {
                     }
                 }
 
+                if ($show == 'messages' && $project->status < 3) {
+                    Message::Info(Text::get('project-messages-closed'));
+                }
+
                 return new View('view/project/public.html.php', $viewData);
 
             } else {

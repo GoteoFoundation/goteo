@@ -12,7 +12,7 @@ $call = $this['call'];
             <dt>Este proyecto recibe aportes de la campaña:</dt>
             <dd><?php echo $call->name ?></dd>
         </dl>
-        <p>Por cada <strong>1&euro;</strong> que aportes a este proyecto, <strong><?php echo $call->user->name ?></strong> aporta otro <strong>1€</strong>.</p>
+        <p><?php echo Text::html('call-splash-invest_explain_this', $call->user->name) ?></p>
     </div>
     <div class="amount">
         <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="expand" target="_blank"></a>
@@ -27,3 +27,14 @@ $call = $this['call'];
         </dl>
     </div>
 </div>
+<script type="text/javascript">
+
+    $(function () {
+       if ($('div.widget.project-called div.explain').height() > $('div.widget.project-called div.amount').height()) {
+           $('div.widget.project-called div.amount').height($('div.widget.project-called div.explain').height());
+       } else {
+           $('div.widget.project-called div.explain').height($('div.widget.project-called div.amount').height());
+       }
+    });
+
+</script>

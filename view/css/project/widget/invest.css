@@ -250,8 +250,27 @@ div.widget.project-invest p label input[type="checkbox"]:checked + span.chkbox {
 }
 
 /* Logo riego */
-div.widget.project-invest.project-invest-amount.called {
-	background-image: url("/view/css/call/logo-capital_medium.png");
+div.widget.project-invest.project-called {
+	background-image: url("/view/css/call/logo_riego.png");
     background-position: right top;
     background-repeat: no-repeat;
+    padding-bottom: 0px !important;
+}
+
+div.widget.project-invest.project-called p {
+    width: 500px;
+    margin-top: 0px !important;
+}
+
+div.widget.project-invest.project-called p strong {
+    color: #96238F;
+}
+
+div.widget.project-invest.project-called p span.riego {
+    color: #20B2B3;
+}
+
+div.widget.project-invest.project-called p span.call {
+    font-weight: bold;
+    color: #58595B;
 }

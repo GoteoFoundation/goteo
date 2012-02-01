@@ -133,8 +133,8 @@ div#main ul#list>li {
 }
 
 div#header div#menu {
-    overflow: visible;
-	width: 450px;
+    overflow: hidden;
+	width: 600px;
 	float: left;
 }
 
@@ -168,15 +168,15 @@ div#super-header ul > li.home > a:hover {
 }
 
 div#super-header ul > li.campanya {
-	float: left;
 	text-transform: uppercase;
 	font-weight: bold;
 	line-height: 20px;
+    overflow: hidden;
 }
 
 div#super-header div#rightside {
 	float: right;
-	width: 490px;
+	width: 340px;
 }
 
 div#super-header div#rightside {
@@ -837,29 +837,24 @@ table.info-table th {
     border-bottom: 1px dashed #C1C1C1;
 }
 
-table.info-table th.summary div.click{
-	margin-left:5px;
-}
-table.info-table th.summary div.click span.icon{
-	height:10px;width:10px;
-	background:url('/view/css/project/widget/minusplus.png') 0 0px;
-	position:relative;right:5px;top:3px;
-	clear:left;
+table.info-table th.summary {
+    text-align: left;
 }
 
-table.info-table th.summary div.click span{
-	display:block;
-	float:left;
-	cursor:pointer;	
-	max-width:360px;
+table.info-table th.summary a {
+    color: #58595B;
+    text-decoration: none;
 }
 
-table.info-table th.summary div.click span.icon.open{
-	background:url('/view/css/project/widget/minusplus.png') 0 10px;
+table.info-table th.summary a span {
+    font-weight: bold;
 }
 
-table.info-table th.summary div.click blockquote{
-	display:none; /* Plegado por defecto */
+table.info-table th.summary a:hover span {
+    color: #20B2B3;
+}
+
+table.info-table th.summary blockquote{
     padding: 0;
     margin: 3px 0 0 0;
     font-weight: normal;
@@ -874,7 +869,7 @@ table.info-table thead th {
 	vertical-align: bottom !important;
 }
 
-table.info-table th.summary {
+table.info-table th.title {
     color: #58595B;
     text-align: right;
     width:  100%;

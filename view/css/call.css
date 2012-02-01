@@ -192,21 +192,17 @@ div.call div.data li#numbers dl.block dd {
 	margin: 0;
 }
 
-li#numbers dl.longer {
+div.call div.data li#numbers dl.longer {
 	width: 310px !important;
 }
 
-li#numbers dl.resources dd {
+div.call div.data li#numbers dl.resources dd {
 	color: #1db3b2;
 	text-decoration: none;
 	font-size: 11px !important;
 	font-weight: normal;
+    margin-top: 8px !important;
 }
-
-li#numbers dl.resources dt {
-	height: 20px !important;
-}
-
 
 div.call div.data li#numbers dl.expires dd {
 	color: red;

@@ -22,15 +22,7 @@ include 'view/call/prologue.html.php';
 		<ul id="list">
 			<li class="item" id="description">
 				<img src="<?php if ($call->image instanceof Goteo\Model\Image) echo $call->logo->getLink(155, 200) ?>" alt="<?php echo $call->user->name ?>" />
-                <h2 class="title"><?php echo Text::get('call-splash-campaign_title') ?><br /><?php echo $call->name ?></h2>
-
-                <?php if ($call->status == 3) : //inscripcion ?>
-                <p class="subtitle red"><?php echo Text::get('call-splash-searching_projects') ?></p>
-                <?php elseif (!empty($call->amount)) : //en campaña con dinero ?>
-				<p class="subtitle"><?php echo Text::get('call-splash-invest_explain', $call->user->name) ?> <?php echo Text::get('call-splash-open_explain') ?></p>
-                <?php else : //en campaña sin dinero, con recursos ?>
-				<p class="subtitle"><?php Text::recorta($call->resources, 250) ?></p>
-                <?php endif; ?>
+                <?php echo new View('view/call/widget/title.html.php', $this); ?>
                 
 				<p><?php echo $call->description ?></p>
 			</li>
@@ -45,7 +37,7 @@ include 'view/call/prologue.html.php';
                 <?php else: ?>
                     <dl class="block long category">
                         <dt><?php echo Text::get('call-splash-resources-header') ?></dt>
-                        <dd><?php echo $call->resources ?></dd>
+                        <dd><?php echo Text::recorta($call->resources, 100) ?></dd>
                     </dl>
                 <?php endif; ?>
                     <dl class="block long expires">

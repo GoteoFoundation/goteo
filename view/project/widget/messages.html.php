@@ -25,7 +25,7 @@ $level = (int) $this['level'] ?: 3;
         $('#message-text').val('<?php echo Text::get('project-messages-send_message-your_answer'); ?>').focus().select();
     }
 </script>
-<?php if (!empty($_SESSION['user'])) : ?>
+<?php if (!empty($_SESSION['user']) && $project->status >= 3) : ?>
 <div class="widget project-message">
     <h<?php echo $level ?> class="title"><?php echo Text::get('project-messages-send_message-header'); ?></h<?php echo $level ?>>
 

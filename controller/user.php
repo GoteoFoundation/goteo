@@ -58,11 +58,13 @@ namespace Goteo\Controller {
          * Cerrar sesión.
          */
         public function logout() {
-            if (isset($_COOKIE[session_name()])) {
-                setcookie(session_name(), '', time()-42000, '/');
-            }
+            $lang = $_SESSION['lang'] == 'es' ? '' : '?lang='.$_SESSION['lang'];
+            session_start();
+            session_unset();
             session_destroy();
-            throw new Redirection('/');
+            session_write_close();
+            session_regenerate_id(true);
+            throw new Redirection('/'.$lang);
             die;
         }
         /**

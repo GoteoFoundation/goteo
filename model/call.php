@@ -823,10 +823,10 @@ namespace Goteo\Model {
          * @param string node id
          * @return array of project instances
          */
-        public static function getTranslates($filters = array(), $node = \GOTEO_NODE) {
+        public static function getTranslates($filters = array()) {
             $projects = array();
 
-            $values = array(':node' => $node);
+            $values = array();
 
             $sqlFilter = "";
             if (!empty($filters['owner'])) {

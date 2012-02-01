@@ -40,14 +40,7 @@ include 'view/call/header.html.php';
 	
         <div id="content">
             <div id="campaign-desc">
-
-                <h2 class="title"><?php echo Text::get('call-splash-campaign_title') ?><br /><?php echo $call->name ?></h2>
-
-                <?php if (!empty($call->amount)) : //en campaña con dinero ?>
-                <p class="subtitle"><?php echo Text::get('call-splash-invest_explain', $call->user->name) ?></p>
-                <?php else : //en campaña sin dinero, con recursos ?>
-                <p class="subtitle"><?php echo $call->resources ?></p>
-                <?php endif; ?>
+                <?php echo new View('view/call/widget/title.html.php', $this); ?>
 
                 <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="button long"><?php echo Text::get('call-splash-more_info-button') ?></a>
 

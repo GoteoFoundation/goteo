@@ -13,7 +13,7 @@
 		<div id="menu">
 			<ul>
 				<li class="home"><a href="/">Inicio</a></li>
-				<li class="campanya">: <?php echo Text::get('call_header_riego'); ?> - <?php echo $call->name ?></li>
+                <li class="campanya">: <?php echo Text::get('call_header_riego'); ?> - <?php echo Text::recorta($call->name, 65) ?></li>
 			</ul>
 		</div>
         
