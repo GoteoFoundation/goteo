@@ -44,10 +44,13 @@ namespace Goteo\Library {
 				$this->avatars = array_merge( array_flip( $keys ) , $this->avatars );
 				//print_r($this->project);die;
 
+                // relleno aqui?
+
 			}
 			else {
 				//quizá otro mensaje de error?
-                throw new \Goteo\Core\Error('404', Text::html('fatal-error-project'));
+                return false;
+//                throw new \Goteo\Core\Error('404', Text::html('fatal-error-project'));
 			}
 
         }
@@ -76,20 +79,25 @@ namespace Goteo\Library {
 		 *
 		 * $num_icons: el numero de icones per fila del widget
 		 * */
+        //@TODO poner relleno de gotas
 		public function html_content($num_icons = 19) {
 			$ret = array();
+
 			foreach($this->avatars as $user => $mult) {
 				$style = '';
 				$w = $this->w_size;
 				$h = $this->h_size;
 
-				$src = SITE_URL . '/image/1/'."$w/$h";
-				if($this->investors[$user]->avatar instanceof \Goteo\Model\Image)
-					$src = $this->investors[$user]->avatar->getLink($w,$h, true);
+                if ($user == 'ZZZfill') {
+                    $src = SITE_URL . '/image/1/'."$w/$h";
+                    if($this->investors[$user]->avatar instanceof \Goteo\Model\Image)
+                        $src = $this->investors[$user]->avatar->getLink($w,$h, true);
 
-
-
-				$img = '<a href="'.SITE_URL.'/user/profile/'.$user.'"><img'.$style.' src="' . $src . '" alt="'.$this->investors[$user]->name.'" title="'.$this->investors[$user]->name.'" /></a>';
+                    $img = '<a href="'.SITE_URL.'/user/profile/'.$user.'"><img'.$style.' src="' . $src . '" alt="'.$this->investors[$user]->name.'" title="'.$this->investors[$user]->name.'" /></a>';
+                } else {
+                    $src = SITE_URL . '/image/2/'."$w/$h";
+                    $img = '<a href="'.SITE_URL.'/project/'.$this->project->id.'"><img'.$style.' src="' . $src . '" alt="YOU" title="Aquí podrías estar tu!" /></a>';
+                }
 
 				for($i = 0; $i<$mult+1; $i++) {
 
@@ -132,6 +140,8 @@ namespace Goteo\Library {
 					}
 				}
 			}
+
+            // relleno aqui?
 
 			//afegim el logo al final de tot
 			$final = array();
@@ -176,200 +186,11 @@ namespace Goteo\Library {
 			//amplada efectiva
 			$width = $wsize * $num_icons;
 
-			$style = "<style type=\"text/css\">";
-            // estatico
-			$style .= <<<EOF
-div.wof {
-    font-size: 12px;
-    color: #58595b;
-    font-family: "Liberation Sans", Helvetica, "Helvetica Neue", Arial, Geneva, sans-serif;
-    background-color: #58595c;
-    display: inline-block;
-    height:auto;
-	padding: 0 22px 22px;
-}
-
-div.wof > div.ct {
-    position:relative;
-    clear:both;
-}
-
-div.wof > div.ct > div.a,
-div.wof > div.ct > div.b,
-div.wof > div.ct > div.c {
-    display:inline-block;
-}
-
-div.wof > div.ct > div.i {
-    overflow:hidden;
-    padding: 0;
-    margin:0;
-    position:absolute;
-    background:#fff;
-	text-align: center;
-}
-
-div.wof > div.ct > div.c > div.c1 {
-    float:left;
-}
-
-div.wof > div.ct > div.c > div.c2 {
-    float:right;
-}
-
-div.wof a,
-div.wof a:link,
-div.wof a:visited,
-div.wof a:active,
-div.wof a:hover {
-    text-decoration:none;
-    color:#58595c;
-}
-
-div.wof h2 {
-    display:block;
-    font-size: 14px;
-    color:#fff;
-    padding:0;
-    margin: 0;
-}
-
-div.wof h2 a,
-div.wof h2 a:link,
-div.wof h2 a:visited,
-div.wof h2 a:active,
-div.wof h2 a:hover {
-	width:60%;
-    display: block;
-    height: 21px;
-	line-height: 21px;
-    overflow: hidden;
-    background: #58595c;
-    color: #fff;
-    padding: 4px 0 3px;
-    float:left;
-}
-div.wof h2 a.right {
-	width:30%;
-	text-align:right;
-	float:right;
-}
-
-div.wof>div.ct>div.i h3 {
-    color: #0b4f99;
-    font-weight:bold;
-    text-align: right;
-    padding: 0 15px 0 0;
-    margin: 15px 0 0;
-}
-
-div.wof>div.ct>div.i h3 a {
-    color: #0b4f99;
-    font-size: 52px;
-}
-
-div.wof>div.ct>div.i h3>img {
-
-}
-
-div.wof>div.ct>div.i p {
-    color:#58595c;
-    font-size:12px;
-    text-align: right;
-    padding: 0 15px 0 0;
-    margin:0;
-}
-
-div.wof>div.ct>div.i.a p a{
-	color:#0b4f99;
-    text-transform:uppercase;
-}
-
-div.wof>div.ct>div.i.b h3 {
-	padding-right: 15px;
-	text-align: right;
-}
-
-div.wof>div.ct>div.i.b h3 a {
-    color:#95268D;
-	font-size: 52px;
-}
-div.wof>div.ct>div.i.b h3 a img{
-	vertical-align:top;
-	padding-top:3px;
-	padding-left: 5px;
-}
-div.wof>div.ct>div.i.b p {
-    color:#0b4f99;
-    text-align: right;
-}
-
-div.wof>div.ct>div.i.b p a {
-    color:#58595c;
-}
-
-div.wof>div.ct>div.i.c h3 {
-    color:#1db3b2;
-    text-transform:uppercase;
-    text-align:left;
-    padding:4px 0 4px 4px;
-}
-
-div.wof>div.ct>div.i.c h3 a{
-    color:#1db3b2;
-	font-size: 18px;
-}
-
-div.wof>div.ct>div.i.c p {
-    color:#58595c;
-    text-align:left;
-    padding:0 0 0 4px;
-	margin-right: 10px;
-}
-
-div.wof>div.ct>div.i.c>div.c1 p {
-    padding:10px;
-    font-size:10px;
-    line-height:10px;
-    text-align: left;
-}
-
-div.wof>div.ct>div.i.c>div.c1 p img {
-    padding:0 0 4px 0;
-}
-
-div.wof>div.ct>div.i.c>div.c1 a {
-    color:#1db3b2;
-	font-size: 11px;
-	text-align: left;
-}
-div.wof>div.ct>div.i.d p {
-	display:block;
-	float:left;
-	width:220px;
-	text-align:left;
-	font-size:12px;
-	padding:20px 0 0 90px;
-}
-div.wof>div.ct>div.i.d a {
-	display:block;
-	width:117px;
-	height:22px;
-	color:#fff;
-	font-size:14px;
-	line-height: 22px;
-	padding: 4px 0;
-	margin:20px 20px 0 0;
-	text-transform:uppercase;
-	background:url(/view/css/project/widget/wof_sup_btn.png) no-repeat;
-	overflow:hidden;
-	float:right;
-	text-decoration: none;
-	font-weight: normal;
-	font-style: normal;
-}
-EOF;
-            // dinamico
+            // estilos estaticos
+            $style = '<link rel="stylesheet" type="text/css" href="/view/css/wof.css" />';
+            
+            // estilos dinamicos
+			$style .= '<style type="text/css">';
 			$style .= "div.wof>div.ct>a>img {border:0;width:{$this->w_size}px;height:{$this->h_size}px;display:inline-block;padding:{$this->h_padding}px {$this->w_padding}px {$this->h_padding}px {$this->w_padding}px}";
 			$style .= "div.wof>div.ct>div.a {display:inline-block;width:" . ($wsize * 5) . "px;height:" . $hsize . "px}";
 			$style .= "div.wof>div.ct>div.b {display:inline-block;width:" . ($wsize * 8) . "px;height:" . $hsize . "px}";
@@ -395,7 +216,7 @@ EOF;
 			$info = '<div class="a i"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'">' . count($this->project->investors) . '</a></h3><p><a href="'.SITE_URL.'/project/'.$this->project->id.'">'.Text::get('project-view-metter-investors').'</a></p></div>';
 
 			//financiacio, data
-			$info .= '<div class="b i"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'">' . number_format($this->project->invested,0,'',','). '<img src="'.SITE_URL.'/view/css/euro/violet/yl.png" alt="&euro;"></a></h3>';
+			$info .= '<div class="b i"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'">' . \amount_format($this->project->invested,0,'',','). '<img src="'.SITE_URL.'/view/css/euro/violet/yl.png" alt="&euro;"></a></h3>';
 			$info .= '<p><a href="'.SITE_URL.'/project/'.$this->project->id.'">' . Text::get('project-view-metter-days') . " {$this->project->days} " . Text::get('regular-days') .'</a></p></div>';
 
 			//impulsores, nom, desc
@@ -406,8 +227,13 @@ EOF;
 
 			//apoyar el proyecto
 			$info .= '<div class="d i">';
-			$info .= '<p>'.Text::get('wof-join-group').'</p>';
-			$info .= '<a href="'.SITE_URL.'/project/'.$this->project->id.'/invest">'.Text::get('wof-support').'</a>';
+            if ($this->project->status == 3) {
+                $info .= '<p>'.Text::get('wof-join-group').'</p>';
+                $info .= '<a href="'.SITE_URL.'/project/'.$this->project->id.'/invest">'.Text::get('wof-support').'</a>';
+            } else {
+                $info .= '<p>'.Text::get('wof-join-comunity').'</p>';
+                $info .= '<a href="'.SITE_URL.'/project/'.$this->project->id.'/updates">'.Text::get('wof-follow').'</a>';
+            }
 			$info .= '</div>';
 
 			//logo

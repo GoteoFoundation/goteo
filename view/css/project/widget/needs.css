@@ -45,7 +45,7 @@ div.widget.project-needs table thead th {
 
 div.widget.project-needs table th.summary {
     text-align: left;
-    width:  100%;
+    width: 70%;
 }
 
 div.widget.project-needs table *.min,

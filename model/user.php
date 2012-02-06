@@ -976,9 +976,9 @@ namespace Goteo\Model {
          * @return type array
          */
     	private function getSupport () {
-            $query = self::query("SELECT DISTINCT(project) FROM invest WHERE user = ? AND status IN ('0', '1', '3', '4')", array($this->id));
+            $query = self::query("SELECT DISTINCT(project) FROM invest WHERE user = ? AND status IN ('0', '1', '3')", array($this->id));
             $projects = $query->fetchAll(\PDO::FETCH_ASSOC);
-            $query = self::query("SELECT SUM(amount), COUNT(id) FROM invest WHERE user = ? AND status IN ('0', '1', '3', '4')", array($this->id));
+            $query = self::query("SELECT SUM(amount), COUNT(id) FROM invest WHERE user = ? AND status IN ('0', '1', '3')", array($this->id));
             $invest = $query->fetch();
             return array('projects' => $projects, 'amount' => $invest[0], 'invests' => $invest[1]);
         }
@@ -1164,7 +1164,7 @@ namespace Goteo\Model {
                     INNER JOIN invest
                         ON project.id = invest.project
                         AND invest.user = ?
-                        AND invest.status IN ('0', '1', '3', '4')
+                        AND invest.status IN ('0', '1', '3')
                     WHERE project.status < 7
                     ";
             if ($publicOnly) {
@@ -1189,7 +1189,7 @@ namespace Goteo\Model {
         }
 
         public static function calcWorth($userId) {
-            $query = self::query("SELECT id FROM worthcracy WHERE amount <= (SELECT SUM(amount) FROM invest WHERE user = ? AND status IN ('0', '1', '3', '4')) ORDER BY amount DESC LIMIT 1", array($userId));
+            $query = self::query("SELECT id FROM worthcracy WHERE amount <= (SELECT SUM(amount) FROM invest WHERE user = ? AND status IN ('0', '1', '3')) ORDER BY amount DESC LIMIT 1", array($userId));
             $worth = $query->fetchColumn();
             self::query('UPDATE user SET worth = :worth WHERE id = :id', array(':id' => $userId, ':worth' => $worth));
 
