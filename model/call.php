@@ -596,7 +596,6 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al publicar el convocatoria. ' . $e->getMessage();
-                //Text::get('send-call-publish-fail');
                 return false;
             }
         }
@@ -612,7 +611,6 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al cerrar el convocatoria. ' . $e->getMessage();
-                //Text::get('send-projecct-close-fail');
                 return false;
             }
         }
@@ -628,7 +626,6 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al dar por financiado el convocatoria. ' . $e->getMessage();
-                //Text::get('send-call-success-fail');
                 return false;
             }
         }
@@ -1154,7 +1151,7 @@ namespace Goteo\Model {
             if (empty($this->amount))
                 return false;
             
-            // dame los proyectos que tienen capital riego y han conseguido el mínimo
+            // dame los proyectos que tienen capital riego y aun no han conseguido el mínimo
                 $sql = "SELECT
                             COUNT(id),
                             (SELECT  SUM(amount)
