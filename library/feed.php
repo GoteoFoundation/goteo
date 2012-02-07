@@ -303,7 +303,6 @@ namespace Goteo\Library {
             return empty($retval) ? $justnow : $retval;
         }
 
-
         /**
          *  Genera codigo html para enlace o texto dentro de feed
          *

@@ -400,6 +400,9 @@ namespace Goteo\Library {
                 case 'fb':
                     $code = '<div class="fb-like" data-href="'.$url.'" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>';
                     break;
+                case 'wof':
+                    $code = '<iframe frameborder="0" height="100%" src="'.$url.'" width="630px" scrolling="no"></iframe>';
+                    break;
                 case 'project':
                 default:
                     $code = '<iframe frameborder="0" height="480px" src="'.$url.'" width="250px" scrolling="no"></iframe>';

@@ -2879,13 +2879,6 @@ namespace Goteo\Controller {
                                 Feed::item('user', $user->name, $user->id)
                         )));
                         $log->doAdmin('user');
-                        // si es nuevo convocador
-                        $log->populate('Nuevo usuario convocador', 'admin/users/'.$user->id.'/manage',
-                            \vsprintf('El admin %s ha hecho convocador al usuario %s', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('call', $user->name, $user->id))
-                            ));
-                        $log->doAdmin('admin');
                         unset($log);
 
                         throw new Redirection('/admin/users/manage/'.$id);
@@ -3157,7 +3150,7 @@ namespace Goteo\Controller {
                     );
 
                     //@TODO si llega campaign, montar el $invest->called con instancia call para que el save genere el riego
-                    if (isset($_POST['campaign'])) {
+                    if (!empty($_POST['campaign'])) {
                         $called = Model\Call::get($_POST['campaign']);
 
                         if ($called instanceof Model\Call) {

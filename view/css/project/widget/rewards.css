@@ -58,6 +58,10 @@ div.widget.project-rewards > div.individual ul li span.name,
     text-transform: none;
 }
 
+#rewards-summary div.individual ul li h5.name {
+    max-width: 400px;
+}
+
 
 
 div.widget.project-rewards > div.individual ul li div.amount,
@@ -146,7 +150,6 @@ div.widget.project-rewards ul li > .name,
     font-weight: bold;
     text-transform: none;
 }
-
 
 div.widget.project-invest ul li.file,
 div.widget.project-rewards ul li.file,

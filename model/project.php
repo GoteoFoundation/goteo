@@ -1814,7 +1814,7 @@ namespace Goteo\Model {
                     break;
                 case 'archive':
                     // caducados, financiados o casos de exito
-                    $sql = "SELECT id FROM project WHERE status > 3 ORDER BY name ASC";
+                    $sql = "SELECT id FROM project WHERE status = 6 ORDER BY name ASC";
                     break;
                 default: 
                     // todos los que estan 'en campaña'

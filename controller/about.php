@@ -27,6 +27,10 @@ namespace Goteo\Controller {
                  );
             }
 
+            if ($id == 'maintenance' && GOTEO_MAINTENANCE !== true) {
+                $id = 'credits';
+            }
+
             if ($id == 'faq' || $id == 'contact') {
                 throw new Redirection('/'.$id, Redirection::TEMPORARY);
             }

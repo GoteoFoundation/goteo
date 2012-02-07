@@ -1,5 +1,6 @@
 <?php
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Library\Check;
 
 $level = (int) $this['level'] ?: 3;
 
@@ -84,8 +85,58 @@ $minimum_ratio =  min(100, round(($minimum / $optimum) * 100));
             <dt class="reached"><span><?php echo Text::get('project-view-metter-got'); ?></span></dt>
             <dd class="reached"><strong><?php echo \amount_format($reached) ?> <span class="euro">&euro;</span></strong></dd>
 
+            <?php
+            switch ($project->status) {
+                case 1: // en edicion
+                ?>
+            <dt class="days long"><span><?php echo Text::get('project-view-metter-day_created'); ?></span></dt>
+            <dd class="days long"><strong><?php echo date('d / m / Y', strtotime($project->created)) ?></strong></dd>
+                <?php
+                break;
+
+                case 2: // enviado a revision
+                ?>
+            <dt class="days long"><span><?php echo Text::get('project-view-metter-day_updated'); ?></span></dt>
+            <dd class="days long"><strong><?php echo date('d / m / Y', strtotime($project->updated)) ?></strong></dd>
+                <?php
+                break;
+
+                case 4: // financiado
+                case 5: // caso de exito
+                ?>
+            <dt class="days long"><span><?php echo Text::get('project-view-metter-day_success'); ?></span></dt>
+            <dd class="days long"><strong><?php echo date('d / m / Y', strtotime($project->success)) ?></strong></dd>
+                <?php
+                break;
+
+                case 6: // archivado
+                ?>
+            <dt class="days long"><span><?php echo Text::get('project-view-metter-day_closed'); ?></span></dt>
+            <dd class="days long"><strong><?php echo date('d / m / Y', strtotime($project->closed)) ?></strong></dd>
+                <?php
+                break;
+
+                default:
+                    if ($days > 2) :
+                ?>
             <dt class="days"><span><?php echo Text::get('project-view-metter-days'); ?></span></dt>
             <dd class="days"><strong><?php echo number_format($days) ?></strong> <?php echo Text::get('regular-days'); ?></dd>
+                <?php
+                    else :
+                        $part = strtotime($project->published);
+                        // si primera ronda: published + 40
+                        // si segunda ronda: published + 80
+                        $plus = 40 * $project->round;
+                        $final_day = date('Y-m-d', mktime(0, 0, 0, date('m', $part), date('d', $part)+$plus, date('Y', $part)));
+                        $timeTogo = Check::time_togo($final_day,1);
+                ?>
+            <dt class="days"><span><?php echo Text::get('project-view-metter-days'); ?></span></dt>
+            <dd class="days"><strong><?php echo $timeTogo ?></strong></dd>
+                <?php
+                    endif;
+                break;
+            }
+            ?>
 
             <dt class="supporters"><span><?php echo Text::get('project-view-metter-investors'); ?></span></dt>
             <dd class="supporters"><strong><?php echo number_format($supporters) ?></strong></dd>                

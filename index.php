@@ -11,6 +11,10 @@ use Goteo\Core\Resource,
 require_once 'config.php';
 require_once 'core/common.php';
 
+if (GOTEO_MAINTENANCE === true && $_SERVER['REQUEST_URI'] != '/about/maintenance' && $_SERVER['REMOTE_ADDR'] != '80.30.12.194') {
+    header('Location: /about/maintenance');
+}
+
 // Include path
 //set_include_path(GOTEO_PATH . PATH_SEPARATOR . '.');
 

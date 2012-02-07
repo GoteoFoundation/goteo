@@ -10,8 +10,26 @@ div.wof {
 }
 
 div.wof > div.ct {
-    position:relative;
+    position: relative;
     clear:both;
+    min-height: 480px;
+    background: url('/view/css/la_gota.png') repeat;
+}
+
+div.wof > div.ct a {
+    position: relative;
+    z-index: 99;
+}
+
+div.wof > div.ct a.expand {
+    bottom: 0;
+    left: 0;
+    padding: 0;
+    position: absolute !important;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 0 !important;
 }
 
 div.wof > div.ct > div.a,
@@ -115,7 +133,6 @@ div.wof>div.ct>div.i.b h3 a {
 	font-size: 52px;
 }
 div.wof>div.ct>div.i.b h3 a img{
-	vertical-align:top;
 	padding-top:3px;
 	padding-left: 5px;
 }
@@ -187,4 +204,9 @@ div.wof>div.ct>div.i.d a {
 	text-decoration: none;
 	font-weight: normal;
 	font-style: normal;
+}
+
+div.wof >div.ct>div.e {
+    position: relative;
+    z-index: 100;
 }

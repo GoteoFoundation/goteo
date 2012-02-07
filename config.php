@@ -24,6 +24,9 @@ if (function_exists('ini_set')) {
 //Estoy en local
 define('DEVGOTEO_LOCAL', true);
 
+//Estoy en mantenimiento
+define('GOTEO_MAINTENANCE', null);
+
 // Nodo actual
 define('GOTEO_NODE', 'goteo');
 

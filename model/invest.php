@@ -102,7 +102,7 @@ namespace Goteo\Model {
                 SELECT  *
                 FROM  invest
                 WHERE   invest.project = ?
-                AND invest.status IN ('0', '1', '3', '4')
+                AND invest.status IN ('0', '1', '3')
                 ", array($project));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $invest) {
                 // datos del usuario

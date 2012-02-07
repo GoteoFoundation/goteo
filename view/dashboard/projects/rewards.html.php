@@ -43,6 +43,7 @@ switch ($order) {
     case 'reward': // importe de recompensa, más bajo primero
         uasort($invests, function ($a, $b) {
                 if (empty($a->rewards)) return 1;
+                if (empty($b->rewards)) return -1;
                 if ($a->rewards[0]->amount == $b->rewards[0]->amount) return 0;
                 return ($a->rewards[0]->amount > $b->rewards[0]->amount) ? 1 : -1;
                 }
@@ -67,12 +68,11 @@ switch ($order) {
     </div>
     <div class="rewards">
         <?php $num = 1; 
-            foreach ($rewards as $rewardId=>$rewardData) :
-                $who = Invest::choosed($rewardData->id); ?>
+            foreach ($rewards as $rewardId=>$rewardData) : ?>
             <div class="reward <?php if(($num % 4)==0)echo " last"?>">
             	<div class="orden"><?php echo $num; ?></div>
                 <span class="aporte">Aportaciones de <span class="num"><?php echo $rewardData->amount; ?></span> <span class="euro">&nbsp;</span></span>
-                <span class="cofinanciadores">cofinanciadores <span class="num"><?php echo count($who); ?></span></span>
+                <span class="cofinanciadores">Comprometidas <span class="num"><?php echo $rewardData->getTaken(); ?></span></span>
                 <div class="tiporec"><ul><li class="<?php echo $rewardData->icon; ?>"><?php echo Text::recorta($rewardData->reward, 40); ?></li></ul></div>
                 <div class="contenedorrecompensa">	
                 	<span class="recompensa"><strong style="color:#666;">Recompensa:</strong><br/> <?php echo Text::recorta($rewardData->description, 100); ?></span>
@@ -136,9 +136,10 @@ switch ($order) {
                 }
 
                 // filtro
-                if ($filter == 'pending' && $cumplida != false) continue;
-                if ($filter == 'fulfilled' && $cumplida != true) continue;
-                if ($filter == 'resign' && $investData->resign != true) continue;
+                if ($filter == 'pending' && ($cumplida != false || $investData->resign || empty($investData->rewards))) continue;
+                if ($filter == 'fulfilled' && ($cumplida != true || $investData->resign)) continue;
+                if ($filter == 'resign' && !$investData->resign) continue;
+                if ($order  == 'reward' && empty($investData->rewards)) continue;
                 ?>
                 
                 <div class="investor">
@@ -155,6 +156,9 @@ switch ($order) {
                     </div>
                    
                     <div class="left recompensas"  style="width:280px;">
+                    <?php if ($investData->resign) : ?>
+                     	<span style="margin-bottom:2px;color:red;"><strong>Renuncia a la recompensa</strong></span>
+                    <?php else : ?>
                      	<span style="margin-bottom:2px;" class="<?php echo $estilo;?>"><strong>Recompensas esperadas:</strong></span>
                         <?php foreach ($investData->rewards as $reward) : ?>
                         <div style="width: 250px; overflow: hidden; height: 18px;" class="<?php echo $estilo;?>">
@@ -162,7 +166,7 @@ switch ($order) {
                         <label for="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>"><?php echo Text::recorta($reward->reward, 40); ?></label>
                         </div>
                         <?php endforeach; ?>
-
+                    <?php endif; ?>
                     </div>
                     
 					<div class="left" style="width:200px;padding-right:30px;">

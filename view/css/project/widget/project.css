@@ -481,11 +481,19 @@ div.widget.project div.meter dl dt.days {
     text-transform: uppercase;
 }
 
+div.widget.project div.meter dl dt.days.long {
+    width: 100px !important;
+}
+
 div.widget.project div.meter dl dd.days {
     left: 70px;
     right: -40px;
     color: #ee4843;
     font-weight: bold;
+}
+
+div.widget.project div.meter dl dd.days.long {
+    left: 100px !important;
 }
 
 div.widget.project div.rewards {

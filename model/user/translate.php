@@ -156,7 +156,7 @@ namespace Goteo\Model\User {
             if (empty($this->user))
                 $errors[] = 'No hay ningun usuario al que asignar';
 
-            //cualquiera de estos errores hace fallar la validaci贸n
+            //cualquiera de estos errores hace fallar la validacion
             if (!empty($errors))
                 return false;
             else
@@ -177,14 +177,14 @@ namespace Goteo\Model\User {
 				self::query($sql, $values);
 				return true;
 			} catch(\PDOException $e) {
-				$errors[] = "La traducci贸n {$this->type}:{$this->item} no se ha asignado correctamente. Por favor, revise el metodo User\Translate->save." . $e->getMessage();
+				$errors[] = "La traducci髇 {$this->type}:{$this->item} no se ha asignado correctamente. Por favor, revise el metodo User\Translate->save." . $e->getMessage();
 				return false;
 			}
 
 		}
 
 		/**
-		 * Quitarle una traducci贸n al usuario
+		 * Quitarle una traduccion al usuario
 		 *
 		 * @param varchar(50) $user id del usuario
 		 * @param INT(12) $id  identificador de la tabla project
@@ -209,7 +209,7 @@ namespace Goteo\Model\User {
 		}
 
         /*
-         * Dar por lista una traducci贸n
+         * Dar por lista una traduccion
          *
         */
 		public function ready (&$errors = array()) {

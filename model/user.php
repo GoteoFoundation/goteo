@@ -526,7 +526,7 @@ namespace Goteo\Model {
                 $user->webs = User\Web::get($id);
                 return $user;
             } catch(\PDOException $e) {
-				throw \Goteo\Core\Exception($e->getMessage());
+                return false;
             }
         }
 
@@ -551,7 +551,7 @@ namespace Goteo\Model {
 
                 return $user;
             } catch(\PDOException $e) {
-				throw \Goteo\Core\Exception($e->getMessage());
+                return false;
             }
         }
 

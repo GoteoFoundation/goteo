@@ -44,8 +44,6 @@ namespace Goteo\Library {
 				$this->avatars = array_merge( array_flip( $keys ) , $this->avatars );
 				//print_r($this->project);die;
 
-                // relleno aqui?
-
 			}
 			else {
 				//quizá otro mensaje de error?
@@ -79,25 +77,24 @@ namespace Goteo\Library {
 		 *
 		 * $num_icons: el numero de icones per fila del widget
 		 * */
-        //@TODO poner relleno de gotas
 		public function html_content($num_icons = 19) {
 			$ret = array();
-
 			foreach($this->avatars as $user => $mult) {
 				$style = '';
 				$w = $this->w_size;
 				$h = $this->h_size;
 
-                if ($user == 'ZZZfill') {
-                    $src = SITE_URL . '/image/1/'."$w/$h";
-                    if($this->investors[$user]->avatar instanceof \Goteo\Model\Image)
+                $src = SITE_URL . '/image/2/'."$w/$h";
+                if($this->investors[$user]->avatar instanceof \Goteo\Model\Image) {
+                    if ($this->investors[$user]->avatar->id == 1) {
+                        $noface = \Goteo\Model\Image::get(2);
+                        $src = $noface->getLink($w,$h, true);
+                    } else {
                         $src = $this->investors[$user]->avatar->getLink($w,$h, true);
-
-                    $img = '<a href="'.SITE_URL.'/user/profile/'.$user.'"><img'.$style.' src="' . $src . '" alt="'.$this->investors[$user]->name.'" title="'.$this->investors[$user]->name.'" /></a>';
-                } else {
-                    $src = SITE_URL . '/image/2/'."$w/$h";
-                    $img = '<a href="'.SITE_URL.'/project/'.$this->project->id.'"><img'.$style.' src="' . $src . '" alt="YOU" title="Aquí podrías estar tu!" /></a>';
+                    }
                 }
+
+                $img = '<a href="'.SITE_URL.'/user/profile/'.$user.'"><img'.$style.' src="' . $src . '" alt="'.$this->investors[$user]->name.'" title="'.$this->investors[$user]->name.'" /></a>';
 
 				for($i = 0; $i<$mult+1; $i++) {
 
@@ -141,8 +138,9 @@ namespace Goteo\Library {
 				}
 			}
 
-            // relleno aqui?
-
+            return $ret;
+            
+            /*
 			//afegim el logo al final de tot
 			$final = array();
 			$total = count($ret);
@@ -166,6 +164,8 @@ namespace Goteo\Library {
 				}
 			}
 			return $final;
+            */
+
 		}
 
 		/**
@@ -204,20 +204,26 @@ namespace Goteo\Library {
 
 			$content = $this->html_content($num_icons);
 			$cols = floor((count($content)  + 3*13 + 3*11 + 2*13 +2*3) / $num_icons);
-
-			$style .= "div.wof>div.ct>div.e.i {left:" . (($num_icons - 5) * $wsize) . "px;top:" . ($hsize * ($cols-2)) . "px;height:" . ($hsize * 2) . "px;background:#fff url(".SITE_URL."/view/css/project/widget/wof_logo.png) center no-repeat}";
+            $logotop = ($hsize * ($cols-2));
+            if ($logotop < 385) $logotop = 385;
+			$style .= "div.wof>div.ct>div.e.i {left:" . (($num_icons - 5) * $wsize) . "px;top:" . ($logotop) . "px;height:" . ($hsize * 2) . "px;background:#fff url(".SITE_URL."/view/css/project/widget/wof_logo.png) center no-repeat}";
 			$style .= "div.wof>div.ct>div.c>div.c1 {float:left;height:" . ($wsize * 3) . "px;width:" . ($wsize * 3) . "px}";
 			$style .= "div.wof>div.ct>div.c>div.c2 {float:right;height:" . ($wsize * 3) . "px;width:" . ($wsize * 11) . "px}";
 			$style .= "</style>";
 
 			$title = '<h2><a href="'.SITE_URL.'/project/'.$this->project->id.'">'.Text::get('wof-title').'</a><a href="'.SITE_URL.'" class="right">goteo.org</a></h2>';
 
+            $info = '';
+            if ($this->project->status == 3) {
+                $info .= '<a class="expand" href="'.SITE_URL.'/project/'.$this->project->id.'/invest" title="'.Text::get('wof-here').'"></a>';
+            }
+
 			//num finançadors
-			$info = '<div class="a i"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'">' . count($this->project->investors) . '</a></h3><p><a href="'.SITE_URL.'/project/'.$this->project->id.'">'.Text::get('project-view-metter-investors').'</a></p></div>';
+			$info .= '<div class="a i"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'/supporters">' . count($this->project->investors) . '</a></h3><p><a href="'.SITE_URL.'/project/'.$this->project->id.'/supporters">'.Text::get('project-view-metter-investors').'</a></p></div>';
 
 			//financiacio, data
-			$info .= '<div class="b i"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'">' . \amount_format($this->project->invested,0,'',','). '<img src="'.SITE_URL.'/view/css/euro/violet/yl.png" alt="&euro;"></a></h3>';
-			$info .= '<p><a href="'.SITE_URL.'/project/'.$this->project->id.'">' . Text::get('project-view-metter-days') . " {$this->project->days} " . Text::get('regular-days') .'</a></p></div>';
+			$info .= '<div class="b i"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'/needs">' . \amount_format($this->project->invested,0,'',','). '<img src="'.SITE_URL.'/view/css/euro/violet/yl.png" alt="&euro;"></a></h3>';
+			$info .= '<p><a href="'.SITE_URL.'/project/'.$this->project->id.'/needs">' . Text::get('project-view-metter-days') . " {$this->project->days} " . Text::get('regular-days') .'</a></p></div>';
 
 			//impulsores, nom, desc
 			$info .= '<div class="c i">';
