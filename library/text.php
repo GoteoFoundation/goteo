@@ -31,15 +31,24 @@ namespace Goteo\Library {
         }
 
         /*
-         * Devuelve un testo sin HTML
+         * Devuelve un texto sin HTML
          */
         static public function plain ($id) {
             // sacamos el contenido del texto
-            $text = call_user_func_array ( 'Text::get' , \func_get_args() );
+            $text = call_user_func_array ( 'static::get' , \func_get_args() );
             if (self::isHtml($id))
                 return \strip_tags($text) ; // ES html, le quitamos los tags
             else
                 return $text;
+        }
+
+        /*
+         * Devuelve un texto con comillas escapadas para usarlo en javascript
+         */
+        static public function slash ($id) {
+            // sacamos el contenido del texto
+            $text = call_user_func_array ( 'static::get' , \func_get_args() );
+            return \addslashes($text);
         }
 
         static public function getAdmin ($id) {

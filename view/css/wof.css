@@ -13,7 +13,7 @@ div.wof > div.ct {
     position: relative;
     clear:both;
     min-height: 480px;
-    background: url('/view/css/la_gota.png') repeat;
+    background: url('/view/css/fondo-wof.png') repeat;
 }
 
 div.wof > div.ct a {
