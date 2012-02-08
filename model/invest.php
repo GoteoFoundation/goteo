@@ -547,7 +547,7 @@ namespace Goteo\Model {
                         COUNT(DISTINCT(project))
                      FROM invest as invb
                      WHERE invb.user = invest.user
-                     AND  invb.status IN ('0', '1', '3', '4')
+                     AND  invb.status IN ('0', '1', '3')
                      ) as projects,";
             }
 
