@@ -15,17 +15,16 @@ namespace Goteo\Library {
             $title, // titulo entrada o nombre usuario
             $url = null, // enlace del titulo
             $image = null, // enlace del titulo
-            $scope = 'admin', // ambito del evento (public, admin)
-            $type =  'system', // tipo de evento  ($public_types , $admin_types)
+            $scope = 'admin', // ambito del evento (public, admin, private)
+            $type =  'system', // tipo de evento  ($public_types , $admin_types, $private_types)
             $timeago, // el hace tanto
             $date, // fecha y hora del evento
             $html, // contenido del evento en codigo html
             $unique = false, // si es un evento unique, no lo grabamos si ya hay un evento con esa url
             $text,  // id del texto dinamico
             $params,  // (array serializado en bd) parametros para el texto dinamico
-            $user, // usuario asociado al evento
-            $project, // proyecto asociado al evento
-            $node; // nodo asociado al evento
+            $target_type, // tipo de objetivo del evento (user, project, call, node, etc..) normalmente project
+            $target_id; // id registro del objetivo (normalmente varchar(50))
 
         static public $admin_types = array(
             'all' => array(
@@ -67,6 +66,15 @@ namespace Goteo\Library {
             ),
             'community' => array(
                 'label' => 'Comunidad'
+            )
+        );
+
+        static public $private_types = array(
+            'info' => array(
+                'label' => 'Información'
+            ),
+            'alert' => array(
+                'label' => 'Alerta'
             )
         );
 
@@ -112,6 +120,18 @@ namespace Goteo\Library {
             $this->image = $image;
         }
 
+        /**
+         * Metodo que establece el elemento al que afecta el evento
+         *
+         * Sufridor del evento: tipo (tabla) & id registro
+         *
+         * @param $id string normalmente varchar(50)
+         * @param $type string (project, user, node, call, etc...)
+         */
+        public function setTarget ($id, $type = 'project') {
+            $this->target_id = $id;
+            $this->target_type = $type;
+        }
 
         public function doAdmin ($type = 'system') {
             $this->doEvent('admin', $type);
@@ -119,6 +139,10 @@ namespace Goteo\Library {
 
         public function doPublic ($type = 'goteo') {
             $this->doEvent('public', $type);
+        }
+
+        public function doPrivate ($type = 'info') {
+            $this->doEvent('private', $type);
         }
 
         private function doEvent ($scope = 'admin', $type = 'system') {
@@ -233,13 +257,15 @@ namespace Goteo\Library {
                     ':image' => $this->image,
                     ':scope' => $this->scope,
                     ':type' => $this->type,
-                    ':html' => $this->html
+                    ':html' => $this->html,
+                    ':target_type' => $this->target_type,
+                    ':target_id' => $this->target_id
                 );
 
 				$sql = "INSERT INTO feed
-                            (id, title, url, scope, type, html, image)
+                            (id, title, url, scope, type, html, image, target_type, target_id)
                         VALUES
-                            ('', :title, :url, :scope, :type, :html, :image)
+                            ('', :title, :url, :scope, :type, :html, :image, :target_type, :target_id)
                         ";
 				if (Model::query($sql, $values)) {
                     return true;
