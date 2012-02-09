@@ -189,23 +189,17 @@ namespace Goteo\Library {
                             if ($invest->cancel()) {
                                 $action = 'Aporte cancelado';
 
-                                /*
-                                 * Evento Feed
-                                 */
+                                // Evento Feed
                                 $log = new Feed();
-                                $log->title = 'Aporte cancelado por preaproval cancelado por el usuario paypal';
-                                $log->url = '/admin/invests';
-                                $log->type = 'system';
-                                $log_text = 'Se ha <span class="red">Cancelado</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s por preapproval cancelado';
-                                $items = array(
-                                    Feed::item('user', $userData->name, $userData->id),
-                                    Feed::item('money', $invest->amount.' &euro;'),
-                                    Feed::item('system', $invest->id),
-                                    Feed::item('project', $project->name, $project->id),
-                                    Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
-                                );
-                                $log->html = \vsprintf($log_text, $items);
-                                $log->add($errors);
+                                $log->populate('Aporte cancelado por preaproval cancelado por el usuario paypal', '/admin/invests',
+                                    \vsprintf('Se ha <span class="red">Cancelado</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s por preapproval cancelado', array(
+                                        Feed::item('user', $userData->name, $userData->id),
+                                        Feed::item('money', $invest->amount.' &euro;'),
+                                        Feed::item('system', $invest->id),
+                                        Feed::item('project', $project->name, $project->id),
+                                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                                )));
+                                $log->doAdmin();
                                 unset($log);
 
                             }
@@ -296,23 +290,17 @@ namespace Goteo\Library {
                             if ($invest->cancel()) {
                                 $action = 'Aporte cancelado';
 
-                                /*
-                                 * Evento Feed
-                                 */
+                                // Evento Feed
                                 $log = new Feed();
-                                $log->title = 'Aporte cancelado por preaproval cancelado por el usuario paypal';
-                                $log->url = '/admin/invests';
-                                $log->type = 'system';
-                                $log_text = 'Se ha <span class="red">Cancelado</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s por preapproval cancelado';
-                                $items = array(
-                                    Feed::item('user', $userData->name, $userData->id),
-                                    Feed::item('money', $invest->amount.' &euro;'),
-                                    Feed::item('system', $invest->id),
-                                    Feed::item('project', $project->name, $project->id),
-                                    Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
-                                );
-                                $log->html = \vsprintf($log_text, $items);
-                                $log->add($errors);
+                                $log->populate('Aporte cancelado por preaproval cancelado por el usuario paypal', '/admin/invests',
+                                    \vsprintf('Se ha <span class="red">Cancelado</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s por preapproval cancelado', array(
+                                        Feed::item('user', $userData->name, $userData->id),
+                                        Feed::item('money', $invest->amount.' &euro;'),
+                                        Feed::item('system', $invest->id),
+                                        Feed::item('project', $project->name, $project->id),
+                                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                                )));
+                                $log->doAdmin('system');
                                 unset($log);
 
                             }

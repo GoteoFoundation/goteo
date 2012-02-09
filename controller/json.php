@@ -56,6 +56,7 @@ namespace Goteo\Controller {
                         \vsprintf('Ha sido seleccionado en la convocatoria %s', array(
                             Feed::item('call', $_SESSION['call']->name, $_SESSION['call']->id))
                         ), $projectData->gallery[0]->id);
+                    $log->setTarget($projectData->id);
                     $log->doPublic('projects');
                     unset($log);
                 }

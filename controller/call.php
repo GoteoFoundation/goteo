@@ -179,16 +179,12 @@ namespace Goteo\Controller {
 
                         // Evento Feed
                         $log = new Feed();
-                        $log->title = 'convocatoria enviada a revision';
-                        $log->url = '/admin/calls';
-                        $log->type = 'project';
-                        $log_text = '%s ha completado la edición de la convocatoria %s, se dispone a <span class="red">asignar proyectos</span>';
-                        $log_items = array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('call', $call->name, $call->id)
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
-                        $log->add($errors);
+                        $log->populate('convocatoria enviada a revision', '/admin/calls',
+                            \vsprintf('%s ha completado la edición de la convocatoria %s, se dispone a <span class="red">asignar proyectos</span>', array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('call', $call->name, $call->id)
+                        )));
+                        $log->doAdmin('project');
                         unset($log);
 
                         if ($_SESSION['user']->id == $call->ower) {

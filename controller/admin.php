@@ -72,21 +72,15 @@ namespace Goteo\Controller {
                         $page->content = $_POST['content'];
                         if ($page->save($errors)) {
 
-                            /*
-                             * Evento Feed
-                             */
+                            // Evento Feed
                             $log = new Feed();
-                            $log->title = 'modificacion de página institucional (admin)';
-                            $log->url = '/admin/pages';
-                            $log->type = 'admin';
-                            $log_text = "El admin %s ha %s la página institucional %s";
-                            $log_items = array(
+                            $log->populate('modificacion de página institucional (admin)', '/admin/pages',
+                                \vsprintf("El admin %s ha %s la página institucional %s", array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                 Feed::item('relevant', 'Modificado'),
                                 Feed::item('relevant', $page->name, $page->url)
-                            );
-                            $log->html = \vsprintf($log_text, $log_items);
-                            $log->add($errors);
+                            )));
+                            $log->doAdmin('admin');
                             unset($log);
 
                             throw new Redirection("/admin/pages");
@@ -495,31 +489,22 @@ namespace Goteo\Controller {
             }
 
             if (isset($log_text)) {
-                /*
-                 * Evento Feed
-                 */
+                // Evento Feed
                 $log = new Feed();
-                $log->title = 'Cambio estado/fechas de un proyecto desde el admin';
-                $log->url = '/admin/projects';
-                $log->type = 'admin';
-                $log_items = array(
+                $log->populate('Cambio estado/fechas de un proyecto desde el admin', '/admin/projects',
+                    \vsprintf($log_text, array(
                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                     Feed::item('project', $project->name, $project->id)
-                );
-                $log->html = \vsprintf($log_text, $log_items);
-                $log->add($errors);
+                )));
+                $log->doAdmin('admin');
 
                 Message::Info($log->html);
 
                 if ($action == 'publish') {
                     // si es publicado, hay un evento público
-                    $log->title = $project->name;
-                    $log->url = '/project/'.$project->id;
-                    $log->image = $project->gallery[0]->id;
-                    $log->scope = 'public';
-                    $log->type = 'projects';
-                    $log->html = Text::html('feed-new_project');
-                    $log->add($errors);
+                    $log->populate($project->name, '/project/'.$project->id, Text::html('feed-new_project'), $project->gallery[0]->id);
+                    $log->setTarget($project->id);
+                    $log->doPublic('projects');
                 }
 
                 unset($log);
@@ -634,22 +619,15 @@ namespace Goteo\Controller {
                                 case 'add':
                                     $success[] = 'Revisión iniciada correctamente';
 
-                                    /*
-                                     * Evento Feed
-                                     */
+                                    // Evento Feed
                                     $log = new Feed();
-                                    $log->title = 'valoración iniciada (admin)';
-                                    $log->url = '/admin/reviews';
-                                    $log->type = 'admin';
-                                    $log_text = 'El admin %s ha %s la valoración de %s';
-                                    $log_items = array(
-                                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                        Feed::item('relevant', 'Iniciado'),
-                                        Feed::item('project', $project->name, $project->id)
-                                    );
-                                    $log->html = \vsprintf($log_text, $log_items);
-                                    $log->add($errors);
-
+                                    $log->populate('valoración iniciada (admin)', '/admin/reviews',
+                                        \vsprintf('El admin %s ha %s la valoración de %s', array(
+                                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                            Feed::item('relevant', 'Iniciado'),
+                                            Feed::item('project', $project->name, $project->id)
+                                    )));
+                                    $log->doAdmin('admin');
                                     unset($log);
 
                                     break;
@@ -684,22 +662,15 @@ namespace Goteo\Controller {
                     if (Model\Review::close($id, $errors)) {
                         $message = 'La revisión se ha cerrado';
 
-                        /*
-                         * Evento Feed
-                         */
+                        // Evento Feed
                         $log = new Feed();
-                        $log->title = 'valoración finalizada (admin)';
-                        $log->url = '/admin/reviews';
-                        $log->type = 'admin';
-                        $log_text = 'El admin %s ha dado por %s la valoración de %s';
-                        $log_items = array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('relevant', 'Finalizada'),
-                            Feed::item('project', $review->name, $review->project)
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
-                        $log->add($errors);
-
+                        $log->populate('valoración finalizada (admin)', '/admin/reviews',
+                            \vsprintf('El admin %s ha dado por %s la valoración de %s', array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', 'Finalizada'),
+                                Feed::item('project', $review->name, $review->project)
+                        )));
+                        $log->doAdmin('admin');
                         unset($log);
 
                     }
@@ -732,23 +703,16 @@ namespace Goteo\Controller {
                             $userData = Model\User::getMini($user);
                             $reviewData = Model\Review::getData($id);
 
-                            /*
-                             * Evento Feed
-                             */
+                            // Evento Feed
                             $log = new Feed();
-                            $log->title = 'asignar revision (admin)';
-                            $log->url = '/admin/reviews';
-                            $log->type = 'admin';
-                            $log_text = 'El admin %s ha %s a %s la revisión de %s';
-                            $log_items = array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', 'Asignado'),
-                                Feed::item('user', $userData->name, $userData->id),
-                                Feed::item('project', $reviewData->name, $reviewData->project)
-                            );
-                            $log->html = \vsprintf($log_text, $log_items);
-                            $log->add($errors);
-
+                            $log->populate('asignar revision (admin)', '/admin/reviews',
+                                \vsprintf('El admin %s ha %s a %s la revisión de %s', array(
+                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('relevant', 'Asignado'),
+                                    Feed::item('user', $userData->name, $userData->id),
+                                    Feed::item('project', $reviewData->name, $reviewData->project)
+                            )));
+                            $log->doAdmin('admin');
                             unset($log);
 
                         }
@@ -769,23 +733,16 @@ namespace Goteo\Controller {
                             $userData = Model\User::getMini($user);
                             $reviewData = Model\Review::getData($id);
 
-                            /*
-                             * Evento Feed
-                             */
+                            // Evento Feed
                             $log = new Feed();
-                            $log->title = 'asignar revision (admin)';
-                            $log->url = '/admin/reviews';
-                            $log->type = 'admin';
-                            $log_text = 'El admin %s ha %s a %s la revisión de %s';
-                            $log_items = array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', 'Desasignado'),
-                                Feed::item('user', $userData->name, $userData->id),
-                                Feed::item('project', $reviewData->name, $reviewData->project)
-                            );
-                            $log->html = \vsprintf($log_text, $log_items);
-                            $log->add($errors);
-
+                            $log->populate('Desasignar revision (admin)', '/admin/reviews',
+                                \vsprintf('El admin %s ha %s a %s la revisión de %s', array(
+                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('relevant', 'Desasignado'),
+                                    Feed::item('user', $userData->name, $userData->id),
+                                    Feed::item('project', $reviewData->name, $reviewData->project)
+                            )));
+                            $log->doAdmin('admin');
                             unset($log);
 
                         }
@@ -911,25 +868,17 @@ namespace Goteo\Controller {
                         }
 
                         if (empty($errors)) {
-                            /*
-                             * Evento Feed
-                             */
+                            // Evento Feed
                             $log = new Feed();
-                            $log->title = $what . ' traduccion (admin)';
-                            $log->url = '/admin/translates';
-                            $log->type = 'admin';
-                            $log_text = 'El admin %s ha %s a %s la traducción del proyecto %s';
-                            $log_items = array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', $what),
-                                Feed::item('user', $userData->name, $userData->id),
-                                Feed::item('project', $project->name, $project->id)
-                            );
-                            $log->html = \vsprintf($log_text, $log_items);
-                            $log->add($errors);
-
+                            $log->populate($what . ' traduccion (admin)', '/admin/translates',
+                                \vsprintf('El admin %s ha %s a %s la traducción del proyecto %s', array(
+                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('relevant', $what),
+                                    Feed::item('user', $userData->name, $userData->id),
+                                    Feed::item('project', $project->name, $project->id)
+                            )));
+                            $log->doAdmin('admin');
                             unset($log);
-
                         }
 
                         $action = 'edit';
@@ -948,22 +897,15 @@ namespace Goteo\Controller {
                             $success[] = ($action == 'add') ? 'El proyecto '.$project->name.' se ha habilitado para traducir' : 'Datos de traducción actualizados';
 
                             if ($action == 'add') {
-                                /*
-                                 * Evento Feed
-                                 */
+                                // Evento Feed
                                 $log = new Feed();
-                                $log->title = 'proyecto habilitado para traducirse (admin)';
-                                $log->url = '/admin/translates';
-                                $log->type = 'admin';
-                                $log_text = 'El admin %s ha %s la traducción del proyecto %s';
-                                $log_items = array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                    Feed::item('relevant', 'Habilitado'),
-                                    Feed::item('project', $project->name, $project->id)
-                                );
-                                $log->html = \vsprintf($log_text, $log_items);
-                                $log->add($errors);
-
+                                $log->populate('proyecto habilitado para traducirse (admin)', '/admin/translates',
+                                    \vsprintf('El admin %s ha %s la traducción del proyecto %s', array(
+                                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                        Feed::item('relevant', 'Habilitado'),
+                                        Feed::item('project', $project->name, $project->id)
+                                )));
+                                $log->doAdmin('admin');
                                 unset($log);
 
                                 $action = 'edit';
@@ -1033,23 +975,17 @@ namespace Goteo\Controller {
 
                         Model\Project::query("DELETE FROM user_translate WHERE type = 'project' AND item = :id", array(':id'=>$id));
 
-                        /*
-                         * Evento Feed
-                         */
+                        // Evento Feed
                         $log = new Feed();
-                        $log->title = 'traducción finalizada (admin)';
-                        $log->url = '/admin/translates';
-                        $log->type = 'admin';
-                        $log_text = 'El admin %s ha dado por %s la traducción del proyecto %s';
-                        $log_items = array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('relevant', 'Finalizada'),
-                            Feed::item('project', $project->name, $project->id)
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
-                        $log->add($errors);
-
+                        $log->populate('traducción finalizada (admin)', '/admin/translates',
+                            \vsprintf('El admin %s ha dado por %s la traducción del proyecto %s', array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', 'Finalizada'),
+                                Feed::item('project', $project->name, $project->id)
+                        )));
+                        $log->doAdmin('admin');
                         unset($log);
+
                     } else {
                         $errors[] = 'Falló al finalizar la traducción';
                     }
@@ -1148,25 +1084,17 @@ namespace Goteo\Controller {
                         }
 
                         if (empty($errors)) {
-                            /*
-                             * Evento Feed
-                             */
+                            // Evento Feed
                             $log = new Feed();
-                            $log->title = $what . ' traduccion de convocatoria (admin)';
-                            $log->url = '/admin/transcalls';
-                            $log->type = 'admin';
-                            $log_text = 'El admin %s ha %s a %s la traducción de la convocatoria %s';
-                            $log_items = array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', $what),
-                                Feed::item('user', $userData->name, $userData->id),
-                                Feed::item('call', $call->name, $call->id)
-                            );
-                            $log->html = \vsprintf($log_text, $log_items);
-                            $log->add($errors);
-
+                            $log->populate($what . ' traduccion de convocatoria (admin)', '/admin/transcalls',
+                                \vsprintf('El admin %s ha %s a %s la traducción de la convocatoria %s', array(
+                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('relevant', $what),
+                                    Feed::item('user', $userData->name, $userData->id),
+                                    Feed::item('call', $call->name, $call->id)
+                            )));
+                            $log->doAdmin('admin');
                             unset($log);
-
                         }
 
                         $action = 'edit';
@@ -1185,22 +1113,16 @@ namespace Goteo\Controller {
                             $success[] = ($action == 'add') ? 'La convocatoria '.$call->name.' se ha habilitado para traducir' : 'Datos de traducción actualizados';
 
                             if ($action == 'add') {
-                                /*
-                                 * Evento Feed
-                                 */
+                                
+                                // Evento Feed
                                 $log = new Feed();
-                                $log->title = 'convocatoria habilitada para traducirse (admin)';
-                                $log->url = '/admin/transcalls';
-                                $log->type = 'admin';
-                                $log_text = 'El admin %s ha %s la traducción de la convocatoria %s';
-                                $log_items = array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                    Feed::item('relevant', 'Habilitado'),
-                                    Feed::item('call', $call->name, $call->id)
-                                );
-                                $log->html = \vsprintf($log_text, $log_items);
-                                $log->add($errors);
-
+                                $log->populate('convocatoria habilitada para traducirse (admin)', '/admin/transcalls',
+                                    \vsprintf('El admin %s ha %s la traducción de la convocatoria %s', array(
+                                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                        Feed::item('relevant', 'Habilitado'),
+                                        Feed::item('call', $call->name, $call->id)
+                                )));
+                                $log->doAdmin('admin');
                                 unset($log);
 
                                 $action = 'edit';
@@ -1270,23 +1192,17 @@ namespace Goteo\Controller {
 
                         Model\Call::query("DELETE FROM user_translate WHERE type = 'call' AND item = :id", array(':id'=>$id));
 
-                        /*
-                         * Evento Feed
-                         */
+                        // Evento Feed
                         $log = new Feed();
-                        $log->title = 'traducción convocatoria finalizada (admin)';
-                        $log->url = '/admin/transcalls';
-                        $log->type = 'admin';
-                        $log_text = 'El admin %s ha dado por %s la traducción de la convocatoria %s';
-                        $log_items = array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('relevant', 'Finalizada'),
-                            Feed::item('call', $call->name, $call->id)
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
-                        $log->add($errors);
-
+                        $log->populate('traducción convocatoria finalizada (admin)', '/admin/transcalls',
+                            \vsprintf('El admin %s ha dado por %s la traducción de la convocatoria %s', array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', 'Finalizada'),
+                                Feed::item('call', $call->name, $call->id)
+                        )));
+                        $log->doAdmin('admin');
                         unset($log);
+
                     } else {
                         $errors[] = 'Falló al finalizar la traducción de la convocatoria ' . $call->name;
                     }
@@ -1348,22 +1264,15 @@ namespace Goteo\Controller {
 
                             $projectData = Model\Project::getMini($_POST['project']);
 
-                            /*
-                             * Evento Feed
-                             */
+                            // Evento Feed
                             $log = new Feed();
-                            $log->title = 'nuevo proyecto destacado en portada (admin)';
-                            $log->url = '/admin/promote';
-                            $log->type = 'admin';
-                            $log_text = 'El admin %s ha %s el proyecto %s';
-                            $log_items = array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', 'Destacado en portada', '/'),
-                                Feed::item('project', $projectData->name, $projectData->id)
-                            );
-                            $log->html = \vsprintf($log_text, $log_items);
-                            $log->add($errors);
-
+                            $log->populate('nuevo proyecto destacado en portada (admin)', '/admin/promote',
+                                \vsprintf('El admin %s ha %s el proyecto %s', array(
+                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('relevant', 'Destacado en portada', '/'),
+                                    Feed::item('project', $projectData->name, $projectData->id)
+                            )));
+                            $log->doAdmin('admin');
                             unset($log);
 
                             break;
@@ -1407,16 +1316,19 @@ namespace Goteo\Controller {
                 case 'active':
                     $set = $flag == 'on' ? true : false;
                     Model\Promote::setActive($id, $set);
-                    /*
-                    {
-                        $res = ($set) ? 'publicado' : 'oculto';
-                        $success[] = "El proyecto ahora está " . $res;
-                    } else {
-                        $res = ($set) ? 'publicar' : 'ocultar';
-                        $errors[] = "Falló al " . $res . " el proyecto";
-                    }
-                     *
-                     */
+                    
+                    // Evento Feed
+                    $log = new Feed();
+                    $log_action = $set ? 'Mostrado en la portada' : 'Ocultado de la portada';
+                    $log->populate('proyecto destacado mostrado/ocultado (admin)', '/admin/promote',
+                        \vsprintf('El admin %s ha %s el proyecto %s', array(
+                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                        Feed::item('relevant', $log_action),
+                        Feed::item('project', $projectData->name, $projectData->id)
+                    )));
+                    $log->doAdmin('admin');
+                    unset($log);
+
                     break;
                 case 'up':
                     Model\Promote::up($id);
@@ -1428,22 +1340,15 @@ namespace Goteo\Controller {
                     if (Model\Promote::delete($id)) {
                         $projectData = Model\Project::getMini($id);
 
-                        /*
-                         * Evento Feed
-                         */
+                        // Evento Feed
                         $log = new Feed();
-                        $log->title = 'proyecto quitado portada (admin)';
-                        $log->url = '/admin/promote';
-                        $log->type = 'admin';
-                        $log_text = 'El admin %s ha %s el proyecto %s';
-                        $log_items = array(
+                        $log->populate('proyecto quitado portada (admin)', '/admin/promote',
+                            \vsprintf('El admin %s ha %s el proyecto %s', array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                             Feed::item('relevant', 'Quitado de la portada'),
                             Feed::item('project', $projectData->name, $projectData->id)
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
-                        $log->add($errors);
-
+                        )));
+                        $log->doAdmin('admin');
                         unset($log);
 
                         $success[] = 'Proyecto quitado correctamente';
@@ -1532,22 +1437,15 @@ namespace Goteo\Controller {
                     if ($_POST['action'] == 'add') {
                         $projectData = Model\Project::getMini($_POST['project']);
 
-                        /*
-                         * Evento Feed
-                         */
+                        // Evento Feed
                         $log = new Feed();
-                        $log->title = 'nuevo banner de proyecto destacado en portada (admin)';
-                        $log->url = '/admin/promote';
-                        $log->type = 'admin';
-                        $log_text = 'El admin %s ha %s del proyecto %s';
-                        $log_items = array(
+                        $log->populate('nuevo banner de proyecto destacado en portada (admin)', '/admin/promote',
+                            \vsprintf('El admin %s ha %s del proyecto %s', array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                             Feed::item('relevant', 'Publicado un banner', '/'),
                             Feed::item('project', $projectData->name, $projectData->id)
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
-                        $log->add($errors);
-
+                        )));
+                        $log->doAdmin('admin');
                         unset($log);
                     }
 
@@ -1594,22 +1492,15 @@ namespace Goteo\Controller {
                     if (Model\Banner::delete($id)) {
                         $projectData = Model\Project::getMini($id);
 
-                        /*
-                         * Evento Feed
-                         */
+                        // Evento Feed
                         $log = new Feed();
-                        $log->title = 'banner de proyecto quitado portada (admin)';
-                        $log->url = '/admin/promote';
-                        $log->type = 'admin';
-                        $log_text = 'El admin %s ha %s del proyecto %s';
-                        $log_items = array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('relevant', 'Quitado el banner', '/'),
-                            Feed::item('project', $projectData->name, $projectData->id)
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
-                        $log->add($errors);
-
+                        $log->populate('banner de proyecto quitado portada (admin)', '/admin/promote',
+                            \vsprintf('El admin %s ha %s del proyecto %s', array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', 'Quitado el banner', '/'),
+                                Feed::item('project', $projectData->name, $projectData->id)
+                        )));
+                        $log->doAdmin('admin');
                         unset($log);
 
                     }
@@ -1954,21 +1845,15 @@ namespace Goteo\Controller {
                         case 'edit':
                             $success = 'Tipo editado correctamente';
 
-                            /*
-                             * Evento Feed
-                             */
+                            // Evento Feed
                             $log = new Feed();
-                            $log->title = 'modificacion de tipo de retorno/recompensa (admin)';
-                            $log->url = '/admin/icons';
-                            $log->type = 'admin';
-                            $log_text = "El admin %s ha %s el tipo de retorno/recompensa %s";
-                            $log_items = array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', 'Modificado'),
-                                Feed::item('project', $icon->name)
-                            );
-                            $log->html = \vsprintf($log_text, $log_items);
-                            $log->add($errors);
+                            $log->populate('modificacion de tipo de retorno/recompensa (admin)', '/admin/icons', 
+                                \vsprintf("El admin %s ha %s el tipo de retorno/recompensa %s", array(
+                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('relevant', 'Modificado'),
+                                    Feed::item('project', $icon->name)
+                            )));
+                            $log->doAdmin('admin');
                             unset($log);
 
                             break;
@@ -2102,21 +1987,15 @@ namespace Goteo\Controller {
                         case 'edit':
                             $success = 'Licencia editada correctamente';
 
-                            /*
-                             * Evento Feed
-                             */
+                            // Evento Feed
                             $log = new Feed();
-                            $log->title = 'modificacion de licencia (admin)';
-                            $log->url = '/admin/licenses';
-                            $log->type = 'admin';
-                            $log_text = "El admin %s ha %s la licencia %s";
-                            $log_items = array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', 'Modificado'),
-                                Feed::item('project', $license->name)
-                            );
-                            $log->html = \vsprintf($log_text, $log_items);
-                            $log->add($errors);
+                            $log->populate('modificacion de licencia (admin)', '/admin/licenses',
+                                \vsprintf("El admin %s ha %s la licencia %s", array(
+                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('relevant', 'Modificado'),
+                                    Feed::item('project', $license->name)
+                            )));
+                            $log->doAdmin('admin');
                             unset($log);
 
                             break;
@@ -2751,24 +2630,15 @@ namespace Goteo\Controller {
 
                         if(!empty($tocado) && $user->update($errors)) {
 
-                            /*
-                             * Evento Feed
-                             */
+                            // Evento Feed
                             $log = new Feed();
-                            $log->title = 'Operación sobre usuario (admin)';
-                            $log->url = '/admin/users';
-                            $log->type = 'user';
-                            $log_text = 'El admin %s ha %s del usuario %s';
-                            $log_items = array(
+                            $log->populate('Operación sobre usuario (admin)', '/admin/users', \vsprintf('El admin %s ha %s del usuario %s', array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                 Feed::item('relevant', 'Tocado ' . implode (' y ', $tocado)),
                                 Feed::item('user', $user->name, $user->id)
-                            );
-                            $log->html = \vsprintf($log_text, $log_items);
-                            $log->add($errors);
-
+                            )));
+                            $log->doAdmin('user');
                             unset($log);
-
 
                             // mensaje de ok y volvemos a la lista de usuarios
                             Message::Info('Datos actualizados');
@@ -3067,22 +2937,16 @@ namespace Goteo\Controller {
                         // cambio estado del aporte original a 'Reubicado' (no aparece en cofinanciadores)
                         // si tuviera que aparecer lo marcaríamos como caducado
                         if ($original->setStatus('5')) {
-                            /*
-                             * Evento Feed
-                             */
+                            // Evento Feed
                             $log = new Feed();
-                            $log->title = 'Aporte reubicado';
-                            $log->url = '/admin/invests';
-                            $log->type = 'money';
-                            $log_text = "%s ha aportado %s al proyecto %s en nombre de %s";
-                            $log_items = array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('money', $_POST['amount'].' &euro;'),
-                                Feed::item('project', $projectData->name, $projectData->id),
-                                Feed::item('user', $userData->name, $userData->id)
-                            );
-                            $log->html = \vsprintf($log_text, $log_items);
-                            $log->add($errors);
+                            $log->populate('Aporte reubicado', '/admin/invests',
+                                \vsprintf("%s ha aportado %s al proyecto %s en nombre de %s", array(
+                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('money', $_POST['amount'].' &euro;'),
+                                    Feed::item('project', $projectData->name, $projectData->id),
+                                    Feed::item('user', $userData->name, $userData->id)
+                            )));
+                            $log->doAdmin('money');
                             unset($log);
 
                             Message::Info('Aporte reubicado correctamente');
@@ -3159,22 +3023,16 @@ namespace Goteo\Controller {
                     }
 
                     if ($invest->save($errors)) {
-                        /*
-                         * Evento Feed
-                         */
+                        // Evento Feed
                         $log = new Feed();
-                        $log->title = 'Aporte manual';
-                        $log->url = '/admin/invests';
-                        $log->type = 'money';
-                        $log_text = "%s ha aportado %s al proyecto %s en nombre de %s";
-                        $log_items = array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('money', $_POST['amount'].' &euro;'),
-                            Feed::item('project', $projectData->name, $projectData->id),
-                            Feed::item('user', $userData->name, $userData->id)
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
-                        $log->add($errors);
+                        $log->populate('Aporte manual (admin)', '/admin/invests',
+                            \vsprintf("%s ha aportado %s al proyecto %s en nombre de %s", array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('money', $_POST['amount'].' &euro;'),
+                                Feed::item('project', $projectData->name, $projectData->id),
+                                Feed::item('user', $userData->name, $userData->id)
+                        )));
+                        $log->doAdmin('money');
                         unset($log);
                         
                         Message::Info('Aporte manual creado correctamente');
@@ -3319,23 +3177,18 @@ namespace Goteo\Controller {
                         break;
                 }
 
-                /*
-                 * Evento Feed
-                 */
+                // Evento Feed
                 $log = new Feed();
-                $log->title = 'Cargo cancelado (admin)';
-                $log->url = '/admin/invests';
-                $log->type = 'system';
-                $log_items = array(
-                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                    Feed::item('user', $userData->name, $userData->id),
-                    Feed::item('money', $invest->amount.' &euro;'),
-                    Feed::item('system', $invest->id),
-                    Feed::item('project', $project->name, $project->id),
-                    Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
-                );
-                $log->html = \vsprintf($log_text, $log_items);
-                $log->add($errors);
+                $log->populate('Cargo cancelado manualmente (admin)', '/admin/invests',
+                    \vsprintf($log_text, array(
+                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                        Feed::item('user', $userData->name, $userData->id),
+                        Feed::item('money', $invest->amount.' &euro;'),
+                        Feed::item('system', $invest->id),
+                        Feed::item('project', $project->name, $project->id),
+                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                )));
+                $log->doAdmin();
                 unset($log);
             }
 
@@ -3348,24 +3201,18 @@ namespace Goteo\Controller {
                         $projectAccount = Model\Project\Account::get($invest->project);
 
                         if (empty($projectAccount->paypal)) {
+                            // Erroraco!
                             $errors[] = 'El proyecto no tiene cuenta paypal!!, ponersela en la seccion Contrato del dashboard del autor';
                             $log_text = null;
-                            // Erroraco!
-                            /*
-                             * Evento Feed
-                             */
-                            $log = new Feed();
-                            $log->title = 'proyecto sin cuenta paypal (admin)';
-                            $log->url = '/admin/projects';
-                            $log->type = 'project';
-                            $log_text = 'El proyecto %s aun no ha puesto su %s !!!';
-                            $log_items = array(
-                                Feed::item('project', $project->name, $project->id),
-                                Feed::item('relevant', 'cuenta PayPal')
-                            );
-                            $log->html = \vsprintf($log_text, $log_items);
-                            $log->add($errors);
 
+                            // Evento Feed
+                            $log = new Feed();
+                            $log->populate('proyecto sin cuenta paypal (admin)', '/admin/projects',
+                                \vsprintf('El proyecto %s aun no ha puesto su %s !!!', array(
+                                    Feed::item('project', $project->name, $project->id),
+                                    Feed::item('relevant', 'cuenta PayPal')
+                            )));
+                            $log->doAdmin('project');
                             unset($log);
                             
                             break;
@@ -3402,23 +3249,18 @@ namespace Goteo\Controller {
                 }
 
                 if (!empty($log_text)) {
-                    /*
-                     * Evento Feed
-                     */
+                    // Evento Feed
                     $log = new Feed();
-                    $log->title = 'Cargo ejecutado (admin)';
-                    $log->url = '/admin/invests';
-                    $log->type = 'system';
-                    $log_items = array(
-                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                        Feed::item('user', $userData->name, $userData->id),
-                        Feed::item('money', $invest->amount.' &euro;'),
-                        Feed::item('system', $invest->id),
-                        Feed::item('project', $project->name, $project->id),
-                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
-                    );
-                    $log->html = \vsprintf($log_text, $log_items);
-                    $log->add($errors);
+                    $log->populate('Cargo ejecutado manualmente (admin)', '/admin/invests',
+                        \vsprintf($log_text, array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('user', $userData->name, $userData->id),
+                            Feed::item('money', $invest->amount.' &euro;'),
+                            Feed::item('system', $invest->id),
+                            Feed::item('project', $project->name, $project->id),
+                            Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                    )));
+                    $log->doAdmin();
                     unset($log);
                 }
             }
@@ -3760,31 +3602,20 @@ namespace Goteo\Controller {
                         $action = $editing ? 'edit' : 'list';
 
                         if ((bool) $post->publish) {
-                            /*
-                             * Evento Feed
-                             */
+                            // Evento Feed
                             $log = new Feed();
-                            $log->title = 'nueva entrada blog Goteo (admin)';
-                            $log->url = '/admin/blog';
-                            $log->type = 'admin';
-                            $log_text = 'El admin %s ha %s en el blog Goteo la entrada "%s"';
-                            $log_items = array(
+                            $log->populate('nueva entrada blog Goteo (admin)', '/admin/blog',
+                                \vsprintf('El admin %s ha %s en el blog Goteo la entrada "%s"', array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                 Feed::item('relevant', 'Publicado'),
                                 Feed::item('blog', $post->title, $post->id)
-                            );
-                            $log->html = \vsprintf($log_text, $log_items);
-                            $log->add($errors);
+                            )));
+                            $log->doAdmin('admin');
 
                             // evento público
                             $log->unique = true;
-                            $log->title = $post->title;
-                            $log->url = '/blog/'.$post->id;
-                            $log->image = $post->gallery[0]->id;
-                            $log->scope = 'public';
-                            $log->type = 'goteo';
-                            $log->html = Text::recorta($post->text, 250);
-                            $log->add($errors);
+                            $log->populate($post->title, '/blog/'.$post->id, Text::recorta($post->text, 250), $post->gallery[0]->id);
+                            $log->doPublic('goteo');
 
                             unset($log);
                         } else {
@@ -3812,22 +3643,15 @@ namespace Goteo\Controller {
                     // eliminar una entrada
                     $tempData = Model\Blog\Post::get($id);
                     if (Model\Blog\Post::delete($id)) {
-                        /*
-                         * Evento Feed
-                         */
+                        // Evento Feed
                         $log = new Feed();
-                        $log->title = 'entrada quitada (admin)';
-                        $log->url = '/admin/blog';
-                        $log->type = 'admin';
-                        $log_text = 'El admin %s ha %s la entrada "%s" del blog de Goteo';
-                        $log_items = array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('relevant', 'Quitado'),
-                            Feed::item('blog', $tempData->title)
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
-                        $log->add($errors);
-
+                        $log->populate('Quita entrada de blog (admin)', '/admin/blog',
+                            \vsprintf('El admin %s ha %s la entrada "%s" del blog de Goteo', array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', 'Quitado'),
+                                Feed::item('blog', $tempData->title)
+                        )));
+                        $log->doAdmin('admin');
                         unset($log);
 
                         unset($blog->posts[$id]);
@@ -4146,21 +3970,15 @@ namespace Goteo\Controller {
                         }
                         $action = $editing ? 'edit' : 'list';
 
-                        /*
-                         * Evento Feed
-                         */
+                        // Evento Feed
                         $log = new Feed();
-                        $log->title = 'modificacion de idea about (admin)';
-                        $log->url = '/admin/info';
-                        $log->type = 'admin';
-                        $log_text = 'El admin %s ha %s la Idea de fuerza "%s"';
-                        $log_items = array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('relevant', $log_action),
-                            Feed::item('relevant', $post->title, '/about#info'.$post->id)
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
-                        $log->add($errors);
+                        $log->populate('modificacion de idea about (admin)', '/admin/info',
+                            \vsprintf('El admin %s ha %s la Idea de fuerza "%s"', array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', $log_action),
+                                Feed::item('relevant', $post->title, '/about#info'.$post->id)
+                        )));
+                        $log->doAdmin('admin');
                         unset($log);
 
                     } else {
@@ -4190,21 +4008,15 @@ namespace Goteo\Controller {
                     if (Model\Info::delete($id)) {
                         $success[] = 'Entrada eliminada';
 
-                        /*
-                         * Evento Feed
-                         */
+                        // Evento Feed
                         $log = new Feed();
-                        $log->title = 'quitar de idea about (admin)';
-                        $log->url = '/admin/info';
-                        $log->type = 'admin';
-                        $log_text = 'El admin %s ha %s la Idea de fuerza "%s"';
-                        $log_items = array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('relevant', 'Eliminado'),
-                            Feed::item('relevant', $tempData->title)
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
-                        $log->add($errors);
+                        $log->populate('quitar de idea about (admin)', '/admin/info',
+                            \vsprintf('El admin %s ha %s la Idea de fuerza "%s"', array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', 'Eliminado'),
+                                Feed::item('relevant', $tempData->title)
+                        )));
+                        $log->doAdmin('admin');
                         unset($log);
 
                     } else {
@@ -4371,22 +4183,14 @@ namespace Goteo\Controller {
                         if ($item->save($errors)) {
 
                             if (empty($_POST['id'])) {
-                                /*
-                                 * Evento Feed
-                                 */
+                                // Evento Feed
                                 $log = new Feed();
-                                $log->title = 'nueva micronoticia (admin)';
-                                $log->url = '/admin/news';
-                                $log->type = 'admin';
-                                $log_text = 'El admin %s ha %s la micronoticia "%s"';
-                                $log_items = array(
+                                $log->populate('nueva micronoticia (admin)', '/admin/news', \vsprintf('El admin %s ha %s la micronoticia "%s"', array(
                                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                     Feed::item('relevant', 'Publicado'),
                                     Feed::item('news', $_POST['title'], '#news'.$item->id)
-                                );
-                                $log->html = \vsprintf($log_text, $log_items);
-                                $log->add($errors);
-
+                                )));
+                                $log->doAdmin('admin');
                                 unset($log);
                             }
 
@@ -4455,22 +4259,15 @@ namespace Goteo\Controller {
                 case 'remove':
                     $tempData = $model::get($id);
                     if ($model::delete($id)) {
-                        /*
-                         * Evento Feed
-                         */
+                        // Evento Feed
                         $log = new Feed();
-                        $log->title = 'micronoticia quitada (admin)';
-                        $log->url = '/admin/news';
-                        $log->type = 'admin';
-                        $log_text = 'El admin %s ha %s la micronoticia "%s"';
-                        $log_items = array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('relevant', 'Quitado'),
-                            Feed::item('blog', $tempData->title)
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
-                        $log->add($errors);
-
+                        $log->populate('micronoticia quitada (admin)', '/admin/news',
+                            \vsprintf('El admin %s ha %s la micronoticia "%s"', array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', 'Quitado'),
+                                Feed::item('blog', $tempData->title)
+                        )));
+                        $log->doAdmin('admin');
                         unset($log);
 
                         throw new Redirection($url);
@@ -5462,22 +5259,16 @@ namespace Goteo\Controller {
                             unset($mailHandler);
                         }
 
-                        /*
-                         * Evento Feed
-                         *
+                        // Evento Feed
                         $log = new Feed();
-                        $log->title = 'mailing a usuarios (admin)';
-                        $log->url = '/admin/mailing';
-                        $log->type = 'admin';
-                        $log_text = "El admin %s ha %s una comunicación a usuarios";
-                        $log_items = array(
+                        $log->populate('mailing a usuarios (admin)', '/admin/mailing',
+                            \vsprintf("El admin %s ha enviado una %s", array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('relevant', 'Enviado')
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
-                        $log->add($errors);
+                            Feed::item('relevant', 'Comunicación masiva')
+                        )));
+                        $log->doAdmin('admin');
                         unset($log);
-*/
+
                         return new View(
                             'view/admin/index.html.php',
                             array(
@@ -5586,21 +5377,15 @@ namespace Goteo\Controller {
                     $action = 'list';
                     $success[] = 'Nivel de meritocracia modificado';
 
-                    /*
-                     * Evento Feed
-                     */
+                    // Evento Feed
                     $log = new Feed();
-                    $log->title = 'modificacion de meritocracia (admin)';
-                    $log->url = '/admin/worth';
-                    $log->type = 'admin';
-                    $log_text = "El admin %s ha %s el nivel de meritocrácia %s";
-                    $log_items = array(
-                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                        Feed::item('relevant', 'Modificado'),
-                        Feed::item('project', $icon->name)
-                    );
-                    $log->html = \vsprintf($log_text, $log_items);
-                    $log->add($errors);
+                    $log->populate('modificacion de meritocracia (admin)', '/admin/worth', 
+                        \vsprintf("El admin %s ha %s el nivel de meritocrácia %s", array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('relevant', 'Modificado'),
+                            Feed::item('project', $icon->name)
+                    )));
+                    $log->doAdmin('admin');
                     unset($log);
 				}
 				else {

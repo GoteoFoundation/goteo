@@ -36,57 +36,41 @@ namespace Goteo\Controller {
 
                 if ($message->save($errors)) {
 
-                    /*
-                     * Evento Feed
-                     */
+                    // Evento Feed
                     $log = new Feed();
-                    $log->title = 'usuario escribe mensaje/respuesta en Mensajes del proyecto';
-                    $log->url = '/admin/projects';
-                    $log->type = 'user';
-
                     if (empty($_POST['thread'])) {
                         // nuevo hilo
-                        $log_text = '%s ha creado un tema en %s del proyecto %s';
-                        $log_items = array(
+                        $log_html = \vsprintf('%s ha creado un tema en %s del proyecto %s', array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                             Feed::item('message', Text::get('project-menu-messages'), $projectData->id.'/messages#message'.$message->id),
                             Feed::item('project', $projectData->name, $projectData->id)
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
+                        ));
                     } else {
                         // respuesta
-                        $log_text = '%s ha respondido en %s del proyecto %s';
-                        $log_items = array(
+                        $log_html = \vsprintf('%s ha respondido en %s del proyecto %s', array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                             Feed::item('message', Text::get('project-menu-messages'), $projectData->id.'/messages#message'.$message->id),
                             Feed::item('project', $projectData->name, $projectData->id)
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
+                        ));
                     }
+                    $log->populate('usuario escribe mensaje/respuesta en Mensajes del proyecto', '/admin/projects', $log_html);
+                    $log->doAdmin('user');
 
-                    $log->add($errors);
-
-                    // y el mensaje público
-                    $log->title = $_SESSION['user']->name;
-                    $log->url = '/user/profile/'.$_SESSION['user']->id;
-                    $log->image = $_SESSION['user']->avatar->id;
-                    $log->scope = 'public';
-                    $log->type = 'community';
-
+                    // Evento público
                     if (empty($_POST['thread'])) {
-                        $log->html = Text::html('feed-messages-new_thread',
+                        $log_html = Text::html('feed-messages-new_thread',
                                             Feed::item('message', Text::get('project-menu-messages'), $projectData->id.'/messages#message'.$message->id),
                                             Feed::item('project', $projectData->name, $projectData->id)
                                             );
                     } else {
-                        $log->html = Text::html('feed-messages-response',
+                        $log_html = Text::html('feed-messages-response',
                                             Feed::item('message', Text::get('project-menu-messages'), $projectData->id.'/messages#message'.$message->id),
                                             Feed::item('project', $projectData->name, $projectData->id)
                                             );
                     }
-
-                    $log->add($errors);
-
+                    $log->populate($_SESSION['user']->name, '/user/profile/'.$_SESSION['user']->id, $log_html, $_SESSION['user']->avatar->id);
+                    $log->setTarget($projectData->id);
+                    $log->doPublic('community');
                     unset($log);
 
                     if (!empty($_POST['thread'])) {
@@ -315,60 +299,46 @@ namespace Goteo\Controller {
                 if ($comment->save($errors)) {
                     // a ver los datos del post
                     $postData = Model\Blog\Post::get($post);
-                    /*
-                     * Evento Feed
-                     */
-                    $log = new Feed();
-                    $log->title = 'usuario escribe comentario en blog/novedades';
-                    $log->url = '/admin/projects';
-                    $log->type = 'user';
 
+                    // Evento Feed
+                    $log = new Feed();
                     if (!empty($project)) {
                         $projectData = Model\Project::getMini($project);
-                        $log_text = '%s ha escrito un %s en la entrada "%s" en las %s del proyecto %s';
-                        $log_items = array(
+                        $log_html = \vsprintf('%s ha escrito un %s en la entrada "%s" en las %s del proyecto %s', array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                             Feed::item('message', 'Comentario'),
                             Feed::item('update-comment', $postData->title, $projectData->id.'/updates/'.$postData->id.'#comment'.$comment->id),
                             Feed::item('update-comment', 'Novedades', $projectData->id.'/updates/'),
                             Feed::item('project', $projectData->name, $projectData->id)
-                        );
+                        ));
                     } else {
-                        $log_text = '%s ha escrito un %s en la entrada "%s" del blog de %s';
-                        $log_items = array(
+                        $log_html = \vsprintf('%s ha escrito un %s en la entrada "%s" del blog de %s', array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                             Feed::item('message', 'Comentario'),
                             Feed::item('blog', $postData->title, $postData->id.'#comment'.$comment->id),
                             Feed::item('blog', 'Goteo', '/')
-                        );
+                        ));
                     }
+                    $log->populate('usuario escribe comentario en blog/novedades', '/admin/projects', $log_html);
+                    $log->doAdmin('user');
 
-                    $log->html = \vsprintf($log_text, $log_items);
-                    $log->add($errors);
-
-                    // y el mensaje público
-                    $log->title = $_SESSION['user']->name;
-                    $log->url = '/user/profile/'.$_SESSION['user']->id;
-                    $log->image = $_SESSION['user']->avatar->id;
-                    $log->scope = 'public';
-                    $log->type = 'community';
-
+                    // Evento público
                     if (!empty($project)) {
                         $projectData = Model\Project::getMini($project);
-                        $log->html = Text::html('feed-updates-comment',
+                        $log_html = Text::html('feed-updates-comment',
                                             Feed::item('update-comment', $postData->title, $projectData->id.'/updates/'.$postData->id.'#comment'.$comment->id),
                                             Feed::item('update-comment', 'Novedades', $projectData->id.'/updates/'),
                                             Feed::item('project', $projectData->name, $projectData->id)
                                             );
+                        $log->setTarget($projectData->id);
                     } else {
-                        $log->html = Text::html('feed-blog-comment',
+                        $log_html = Text::html('feed-blog-comment',
                                             Feed::item('blog', $postData->title, $postData->id.'#comment'.$comment->id),
                                             Feed::item('blog', 'Goteo', '/')
                                             );
                     }
-
-                    $log->add($errors);
-
+                    $log->populate($_SESSION['user']->name, '/user/profile/'.$_SESSION['user']->id, $log_html, $_SESSION['user']->avatar->id);
+                    $log->doPublic('community');
                     unset($log);
 
                     //Notificación al autor del proyecto

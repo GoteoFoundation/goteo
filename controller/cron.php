@@ -57,21 +57,14 @@ namespace Goteo\Controller {
                 if (empty($projectAccount->paypal)) {
 
                     if ($debug) echo 'No tiene cuenta PayPal<br />';
-                    /*
-                     * Evento Feed
-                     */
+                    // Evento Feed
                     $log = new Feed();
-                    $log->title = 'proyecto sin cuenta paypal (cron)';
-                    $log->url = '/admin/projects';
-                    $log->type = 'project';
-                    $log_text = 'El proyecto %s aun no ha puesto su %s !!!';
-                    $log_items = array(
-                        Feed::item('project', $project->name, $project->id),
-                        Feed::item('relevant', 'cuenta PayPal')
-                    );
-                    $log->html = \vsprintf($log_text, $log_items);
-                    $log->add($errors);
-
+                    $log->populate('proyecto sin cuenta paypal (cron)', '/admin/projects',
+                        \vsprintf('El proyecto %s aun no ha puesto su %s !!!', array(
+                            Feed::item('project', $project->name, $project->id),
+                            Feed::item('relevant', 'cuenta PayPal')
+                    )));
+                    $log->doAdmin('project');
                     unset($log);
                 }
 
@@ -120,26 +113,21 @@ namespace Goteo\Controller {
                 // a los 5, 3, 2, y 1 dia para finalizar ronda
                 if ($round > 0 && in_array((int) $rest, array(5, 3, 2, 1))) {
                     if ($debug) echo 'Feed publico cuando quedan 5, 3, 2, 1 dias<br />';
-                    /*
-                     * Evento Feed
-                     */
+                    // Evento Feed
                     $log = new Feed();
-                    $log->title = 'proyecto próximo a finalizar ronda (cron)';
-                    $log->url = '/admin/projects';
-                    $log->type = 'project';
-                    $log->html = Text::html('feed-project_runout',
-                                    Feed::item('project', $project->name, $project->id),
-                                    $rest,
-                                    $round
-                                    );
-                    $log->add($errors);
+                    $log->populate('proyecto próximo a finalizar ronda (cron)', '/admin/projects', 
+                        Text::html('feed-project_runout',
+                            Feed::item('project', $project->name, $project->id),
+                            $rest,
+                            $round
+                    ));
+                    $log->doAdmin('project');
 
                     // evento público
                     $log->title = $project->name;
                     $log->url = null;
-                    $log->scope = 'public';
-                    $log->type = 'projects';
-                    $log->add($errors);
+                    $log->setTarget($project->id);
+                    $log->doPublic('projects');
                     
                     unset($log);
                 }
@@ -185,32 +173,25 @@ namespace Goteo\Controller {
                         }
                         echo '<br />';
                         
-                        /*
-                         * Evento Feed
-                         */
+                        // Evento Feed
                         $log = new Feed();
-                        $log->title = 'proyecto caducado sin exito (cron)';
-                        $log->url = '/admin/projects';
-                        $log->type = 'project';
-                        $log_items = array(
-                            Feed::item('project', $project->name, $project->id),
-                            Feed::item('relevant', 'caducado sin éxito'),
-                            Feed::item('money', $amount.' &euro; ('.\round($per_amount).'&#37;) de aportes sobre minimo')
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
-                        $log->add($errors);
+                        $log->populate('proyecto archivado (cron)', '/admin/projects', 
+                            \vsprintf($log_text, array(
+                                Feed::item('project', $project->name, $project->id),
+                                Feed::item('relevant', 'caducado sin éxito'),
+                                Feed::item('money', $amount.' &euro; ('.\round($per_amount).'&#37;) de aportes sobre minimo')
+                        )));
+                        $log->doAdmin('project');
 
                         // evento público
-                        $log->title = $project->name;
-                        $log->url = null;
-                        $log->scope = 'public';
-                        $log->type = 'projects';
-                        $log->html = Text::html('feed-project_fail',
-                                        Feed::item('project', $project->name, $project->id),
-                                        $amount,
-                                        \round($per_amount)
-                                        );
-                        $log->add($errors);
+                        $log->populate($project->name, null,
+                            Text::html('feed-project_fail',
+                                Feed::item('project', $project->name, $project->id),
+                                $amount,
+                                \round($per_amount)
+                        ));
+                        $log->setTarget($project->id);
+                        $log->doPublic('projects');
 
                         unset($log);
 
@@ -258,33 +239,23 @@ namespace Goteo\Controller {
                                 $log_text = 'El proyecto %s ha fallado al ser, %s obteniendo %s';
                             }
 
-                            /*
-                             * Evento Feed
-                             */
+                            // Evento Feed
                             $log = new Feed();
-                            $log->title = 'proyecto supera segunda ronda (cron)';
-                            $log->url = '/admin/projects';
-                            $log->type = 'project';
-                            $log_items = array(
-                                Feed::item('project', $project->name, $project->id),
-                                Feed::item('relevant', 'financiado'),
-                                Feed::item('money', $amount.' &euro; ('.\round($per_amount).'%) de aportes sobre minimo')
-                            );
-                            $log->html = \vsprintf($log_text, $log_items);
-                            $log->add($errors);
+                            $log->populate('proyecto supera segunda ronda (cron)', '/admin/projects', 
+                                \vsprintf($log_text, array(
+                                    Feed::item('project', $project->name, $project->id),
+                                    Feed::item('relevant', 'financiado'),
+                                    Feed::item('money', $amount.' &euro; ('.\round($per_amount).'%) de aportes sobre minimo')
+                            )));
+                            $log->doAdmin('project');
 
                             // evento público
-                            $log->title = $project->name;
-                            $log->url = null;
-                            $log->scope = 'public';
-                            $log->type = 'projects';
-                            $log->html = Text::html('feed-project_finish',
+                            $log->populate($project->name, null, Text::html('feed-project_finish',
                                             Feed::item('project', $project->name, $project->id),
                                             $amount,
                                             \round($per_amount)
-                                            );
-                            $log->add($errors);
-
+                                            ));
+                            $log->doPublic('projects');
                             unset($log);
 
                             //Email de proyecto final segunda ronda al autor
@@ -314,41 +285,26 @@ namespace Goteo\Controller {
 
                             echo '<br />';
 
-
-
-
-                            /*
-                             * Evento Feed
-                             */
+                            // Evento Feed
                             $log = new Feed();
-                            $log->title = 'proyecto supera primera ronda (cron)';
-                            $log->url = '/admin/projects';
-                            $log->type = 'project';
-                            $log_text = 'El proyecto %s %s en segunda ronda obteniendo %s';
-                            $log_items = array(
+                            $log->populate('proyecto supera primera ronda (cron)', '/admin/projects', \vsprintf('El proyecto %s %s en segunda ronda obteniendo %s', array(
                                 Feed::item('project', $project->name, $project->id),
                                 Feed::item('relevant', 'continua en campaña'),
                                 Feed::item('money', $amount.' &euro; ('.\number_format($per_amount, 2).'%) de aportes sobre minimo')
-                            );
-                            $log->html = \vsprintf($log_text, $log_items);
-                            $log->add($errors);
+                            )));
+                            $log->doAdmin('project');
 
                             // evento público
-                            $log->title = $project->name;
-                            $log->url = null;
-                            $log->scope = 'public';
-                            $log->type = 'projects';
-                            $log->html = Text::html('feed-project_goon',
-                                            Feed::item('project', $project->name, $project->id),
-                                            $amount,
-                                            \round($per_amount)
-                                            );
-                            $log->add($errors);
-
+                            $log->populate($project->name, null,
+                                Text::html('feed-project_goon',
+                                    Feed::item('project', $project->name, $project->id),
+                                    $amount,
+                                    \round($per_amount)
+                            ));
+                            $log->doPublic('projects');
                             unset($log);
 
                             if ($debug) echo 'Email al autor y a los cofinanciadores<br />';
-
                             // Email de proyecto pasa a segunda ronda al autor
                             self::toOwner('r1_pass', $project);
                             
@@ -427,22 +383,16 @@ namespace Goteo\Controller {
                                     break;
                         }
 
-                            /*
-                             * Evento Feed
-                             */
+                            // Evento Feed
                             $log = new Feed();
-                            $log->title = 'Cargo cancelado (cron)';
-                            $log->url = '/admin/invests';
-                            $log->type = 'system';
-                            $log_items = array(
+                            $log->populate('Preapproval cancelado por proyecto archivado (cron)', '/admin/invests', \vsprintf($log_text, array(
                                 Feed::item('user', $userData->name, $userData->id),
                                 Feed::item('money', $invest->amount.' &euro;'),
                                 Feed::item('system', $invest->id),
                                 Feed::item('project', $project->name, $project->id),
                                 Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
-                            );
-                            $log->html = \vsprintf($log_text, $log_items);
-                            $log->add($errors);
+                            )));
+                            $log->doAdmin();
                             unset($log);
 
                             echo 'Aporte '.$invest->id.' cancelado por proyecto caducado.<br />';
@@ -512,22 +462,16 @@ namespace Goteo\Controller {
                             if ($debug) echo '<br />';
 
                             if (!empty($log_text)) {
-                                /*
-                                 * Evento Feed
-                                 */
+                                // Evento Feed
                                 $log = new Feed();
-                                $log->title = 'Cargo ejecutado (cron)';
-                                $log->url = '/admin/invests';
-                                $log->type = 'system';
-                                $log_items = array(
+                                $log->populate('Cargo ejecutado (cron)', '/admin/invests', \vsprintf($log_text, array(
                                     Feed::item('user', $userData->name, $userData->id),
                                     Feed::item('money', $invest->amount.' &euro;'),
                                     Feed::item('system', $invest->id),
                                     Feed::item('project', $project->name, $project->id),
                                     Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
-                                );
-                                $log->html = \vsprintf($log_text, $log_items);
-                                $log->add($errors);
+                                )));
+                                $log->doAdmin();
                                 if ($debug) echo $log->html . '<br />';
                                 unset($log);
                             }
@@ -674,22 +618,17 @@ namespace Goteo\Controller {
                     $log_text = "Ha fallado al realizar el pago de %s PayPal al proyecto %s por el aporte de %s (id: %s) del dia %s";
                 }
 
-                /*
-                 * Evento Feed
-                 */
+                // Evento Feed
                 $log = new Feed();
-                $log->title = 'Pago al proyecto encadenado-secundario (cron)';
-                $log->url = '/admin/accounts';
-                $log->type = 'system';
-                $log_items = array(
+                $log->populate('Pago al proyecto encadenado-secundario (cron)', '/admin/accounts',
+                    \vsprintf($log_text, array(
                     Feed::item('money', $invest->amount.' &euro;'),
                     Feed::item('project', $projectData->name, $project),
                     Feed::item('user', $userData->name, $userData->id),
                     Feed::item('system', $invest->id),
                     Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
-                );
-                $log->html = \vsprintf($log_text, $log_items);
-                $log->add($errors);
+                )));
+                $log->doAdmin();
                 unset($log);
 
                 echo '<hr />';

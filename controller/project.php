@@ -192,21 +192,15 @@ namespace Goteo\Controller {
 
                         unset($mailHandler);
 
-                        /*
-                         * Evento Feed
-                         */
+                        // Evento Feed
                         $log = new Feed();
-                        $log->title = 'proyecto enviado a revision';
-                        $log->url = '/admin/projects';
-                        $log->type = 'project';
-                        $log_text = '%s ha inscrito el proyecto %s para <span class="red">revisión</span>, el estado global de la información es del %s';
-                        $log_items = array(
+                        $log->populate('El proyecto '.$project->name.' se ha enviado a revision', '/project/'.$project->id, \vsprintf('%s ha inscrito el proyecto %s para <span class="red">revisión</span>, el estado global de la información es del %s', array(
                             Feed::item('user', $project->user->name, $project->user->id),
                             Feed::item('project', $project->name, $project->id),
                             Feed::item('relevant', $project->progress.'%')
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
-                        $log->add($errors);
+                        )));
+                        $log->setTarget($project->id);
+                        $log->doAdmin('project');
                         unset($log);
 
                         throw new Redirection("/dashboard?ok");

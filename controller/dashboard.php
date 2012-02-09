@@ -319,22 +319,15 @@ namespace Goteo\Controller {
                 }
 
                 if (!empty($log_action)) {
-                        /*
-                         * Evento Feed
-                         */
-                        $log = new Feed();
-                        $log->title = 'usuario '.$log_action.' (dashboard)';
-                        $log->url = '/admin/users';
-                        $log->type = 'user';
-                        $log_text = '%s ha %s desde su dashboard';
-                        $log_items = array(
+                    // Evento Feed
+                    $log = new Feed();
+                    $log->populate('usuario '.$log_action.' (dashboard)', '/admin/users',
+                        \vsprintf('%s ha %s desde su dashboard', array(
                             Feed::item('user', $user->name, $user->id),
                             Feed::item('relevant', $log_action)
-                        );
-                        $log->html = \vsprintf($log_text, $log_items);
-                        $log->add($errors);
-
-                        unset($log);
+                    )));
+                    $log->doAdmin('user');
+                    unset($log);
                 }
 
 			}
@@ -626,21 +619,14 @@ namespace Goteo\Controller {
 
                                 $success[] = 'Cuentas actualizadas';
 
-                                /*
-                                 * Evento Feed
-                                 */
+                                // Evento Feed
                                 $log = new Feed();
-                                $log->title = 'usuario cambia las cuentas de su proyecto (dashboard)';
-                                $log->url = '/admin/projects';
-                                $log->type = 'user';
-                                $log_text = '%s ha modificado la cuenta bancaria/paypal del proyecto %s';
-                                $log_items = array(
+                                $log->populate('usuario cambia las cuentas de su proyecto (dashboard)', '/admin/projects',
+                                    \vsprintf('%s ha modificado la cuenta bancaria/paypal del proyecto %s', array(
                                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                     Feed::item('project', $project->name, $project->id)
-                                );
-                                $log->html = \vsprintf($log_text, $log_items);
-                                $log->add($errors);
-
+                                )));
+                                $log->doAdmin('user');
                                 unset($log);
                             }
                         }
@@ -683,35 +669,27 @@ namespace Goteo\Controller {
                                             // asignado a la colaboracion como thread inicial
                                             $support->thread = $msg->id;
 
-                                            /*
-                                             * Evento Feed
-                                             */
+                                            // Evento Feed
                                             $log = new Feed();
-                                            $log->title = 'usuario pone una nueva colaboracion en su proyecto (dashboard)';
-                                            $log->url = '/admin/projects';
-                                            $log->type = 'user';
-                                            $log_text = '%s ha publicado una nueva %s en el proyecto %s, con el título "%s"';
-                                            $log_items = array(
+                                            $log->populate('usuario pone una nueva colaboracion en su proyecto (dashboard)', '/admin/projects',
+                                                \vsprintf('%s ha publicado una nueva %s en el proyecto %s, con el título "%s"', array(
                                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                                 Feed::item('message', 'Colaboración'),
                                                 Feed::item('project', $project->name, $project->id),
                                                 Feed::item('update', $support->support, $project->id.'/messages#message'.$msg->id)
-                                            );
-                                            $log->html = \vsprintf($log_text, $log_items);
-                                            $log->add($errors);
+                                            )));
+                                            $log->doAdmin('user');
 
                                             // evento público, si el proyecto es público
                                             if ($project->status > 2) {
-                                                $log->title = $_SESSION['user']->name;
-                                                $log->url = '/user/profile/'.$_SESSION['user']->id;
-                                                $log->image = $_SESSION['user']->avatar->id;
-                                                $log->scope = 'public';
-                                                $log->type = 'community';
-                                                $log->html = Text::html('feed-new_support',
+                                                $log->populate($_SESSION['user']->name, '/user/profile/'.$_SESSION['user']->id, 
+                                                    Text::html('feed-new_support',
                                                                 Feed::item('project', $project->name, $project->id),
                                                                 Feed::item('update', $support->support, $project->id.'/messages#message'.$msg->id)
-                                                                );
-                                                $log->add($errors);
+                                                                ), 
+                                                    $_SESSION['user']->avatar->id);
+                                                $log->setTarget($project->id);
+                                                $log->doPublic('community');
                                             }
                                             unset($log);
 
@@ -820,36 +798,28 @@ namespace Goteo\Controller {
 
                             // si ha marcado publish, grabamos evento de nueva novedad en proyecto
                             if ((bool) $post->publish) {
-                                /*
-                                 * Evento Feed
-                                 */
+                                // Evento Feed
                                 $log = new Feed();
-                                $log->title = 'usuario publica una novedad en su proyecto (dashboard)';
-                                $log->url = '/admin/projects';
-                                $log->type = 'user';
-                                $log_text = '%s ha publicado un nuevo post en %s sobre el proyecto %s, con el título "%s"';
-                                $log_items = array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                    Feed::item('blog', Text::get('project-menu-updates')),
-                                    Feed::item('project', $project->name, $project->id),
-                                    Feed::item('update', $post->title, $project->id.'/updates/'.$post->id)
-                                );
-                                $log->html = \vsprintf($log_text, $log_items);
-                                $log->add($errors);
+                                $log->populate('usuario publica una novedad en su proyecto (dashboard)', '/admin/projects', 
+                                    \vsprintf('%s ha publicado un nuevo post en %s sobre el proyecto %s, con el título "%s"', array(
+                                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                        Feed::item('blog', Text::get('project-menu-updates')),
+                                        Feed::item('project', $project->name, $project->id),
+                                        Feed::item('update', $post->title, $project->id.'/updates/'.$post->id)
+                                )));
+                                $log->doAdmin('user');
 
                                 // evento público
                                 $log->unique = true;
-                                $log->title = $post->title;
-                                $log->url = '/project/'.$project->id.'/updates/'.$post->id;
-                                $log->image = $post->gallery[0]->id;
-                                $log->scope = 'public';
-                                $log->type = 'projects';
-                                $log->html = Text::html('feed-new_update',
+                                $log->populate($post->title, '/project/'.$project->id.'/updates/'.$post->id, 
+                                    Text::html('feed-new_update',
                                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                                 Feed::item('blog', Text::get('project-menu-updates')),
                                                 Feed::item('project', $project->name, $project->id)
-                                                );
-                                $log->add($errors);
+                                                ), 
+                                    $post->gallery[0]->id);
+                                $log->setTarget($project->id);
+                                $log->doPublic('projects');
 
                                 unset($log);
                             }

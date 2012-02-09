@@ -504,22 +504,16 @@ namespace Goteo\Controller {
                         Message::Info(Text::get('user-activate-success'));
                         $_SESSION['user'] = $user;
 
-                        /*
-                         * Evento Feed
-                         */
+                        // Evento Feed
                         $log = new Feed();
-                        $log->title = 'nuevo usuario registrado (confirmado)';
-                        $log->url = '/admin/users';
-                        $log->type = 'user';
-                        $log->html = Text::html('feed-new_user', Feed::item('user', $user->name, $user->id));
-                        $log->add($errors);
+                        $log->populate('nuevo usuario registrado (confirmado)', '/admin/users', Text::html('feed-new_user', Feed::item('user', $user->name, $user->id)));
+                        $log->doAdmin('user');
 
                         // evento público
                         $log->title = $user->name;
                         $log->url = null;
-                        $log->scope = 'public';
-                        $log->type = 'community';
-                        $log->add($errors);
+                        $log->setTarget($user->id, 'user');
+                        $log->doPublic('community');
 
                         unset($log);
 
