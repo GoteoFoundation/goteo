@@ -41,13 +41,9 @@ include 'view/header.html.php';
 </div>
 <div id="main">
 
-    <?php if (!empty($this['posts'])) echo new View('view/home/posts.html.php', $this) ?>
-
-    <?php if (!empty($this['promotes'])) echo new View('view/home/promotes.html.php', $this) ?>
-
-    <?php if (!empty($this['calls']) || !empty($this['campaigns'])) echo new View('view/home/calls.html.php', $this) ?>
-
-    <?php if (!empty($this['feed'])) echo new View('view/home/feed.html.php', $this) ?>
+    <?php foreach ($this['order'] as $item=>$itemData) {
+        if (!empty($this[$item])) echo new View("view/home/{$item}.html.php", $this);
+    } ?>
 
 </div>
 <?php include 'view/footer.html.php'; ?>

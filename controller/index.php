@@ -3,6 +3,7 @@
 namespace Goteo\Controller {
 
     use Goteo\Core\View,
+        Goteo\Model\Home,
         Goteo\Model\Project,
         Goteo\Model\Banner,
         Goteo\Model\Call,
@@ -25,6 +26,8 @@ namespace Goteo\Controller {
             $banners   = Banner::getAll();
             $calls     = Call::getActive(3); // convocatorias en modalidad 1; inscripcion de proyectos
             $campaigns = Call::getActive(4); // convocatorias en modalidad 2; repartiendo capital riego
+
+            $drops = (!empty($calls) || !empty($campaigns)) ? true : false;
 
             foreach ($posts as $id=>$title) {
                 $posts[$id] = Post::get($id);
@@ -52,6 +55,9 @@ namespace Goteo\Controller {
             $feed['projects']  = Feed::getAll('projects', 'public', 5);
             $feed['community'] = Feed::getAll('community', 'public', 5);
 
+            // orden de los elementos, si hay
+            $order = Home::getAll();
+
             return new View('view/index.html.php',
                 array(
                     'banners'   => $banners,
@@ -59,7 +65,9 @@ namespace Goteo\Controller {
                     'promotes'  => $promotes,
                     'calls'     => $calls,
                     'campaigns' => $campaigns,
-                    'feed'      => $feed
+                    'feed'      => $feed,
+                    'drops'     => $drops,
+                    'order'     => $order
                 )
             );
             

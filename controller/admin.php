@@ -5464,6 +5464,86 @@ namespace Goteo\Controller {
             );
         }
 
+        /*
+         * Elementos en portada
+         */
+        public function home($action = 'list', $item = null) {
+
+            $node = \GOTEO_NODE;
+
+            $BC = self::menu(array(
+                'section' => 'home',
+                'option' => __FUNCTION__,
+                'action' => $action,
+                'id' => $id,
+                'filter' => ''
+            ));
+
+            define('ADMIN_BCPATH', $BC);
+
+            $errors = array();
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                // instancia
+                $item = new Model\Home(array(
+                    'item' => $_POST['item'],
+                    'node' => $_POST['node'],
+                    'order' => $_POST['order'],
+                    'move' => 'down'
+                ));
+
+				if ($item->save($errors)) {
+                    $success[] = 'Elemento añadido correctamente';
+				}
+			}
+
+
+            switch ($action) {
+                case 'up':
+                    Model\Home::up($item);
+                    break;
+                case 'down':
+                    Model\Home::down($item);
+                    break;
+                case 'add':
+                    $next = Model\Home::next($node);
+                    $availables = Model\Home::available($node);
+
+                    if (empty($availables)) {
+                        $errors[] = 'Todos los elementos disponibles ya estan en la portada';
+                        break;
+                    }
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'home',
+                            'file' => 'add',
+                            'action' => 'add',
+                            'home' => (object) array('node' => $node, 'order' => $next),
+                            'availables' => $availables
+                        )
+                    );
+                    break;
+                case 'remove':
+                    Model\Home::delete($item, $node);
+                    break;
+            }
+
+            $items = Model\Home::getAll($node);
+
+            return new View(
+                'view/admin/index.html.php',
+                array(
+                    'folder' => 'home',
+                    'file' => 'list',
+                    'items' => $items,
+                    'errors' => $errors,
+                    'success' => $success
+                )
+            );
+        }
+
 
         /*
          * Menu de secciones, opciones, acciones y config para el panel Admin
@@ -5753,6 +5833,12 @@ namespace Goteo\Controller {
                         ),
                         'feed' => array(
                             'label' => 'Actividad reciente',
+                            'actions' => array(
+                                'list' => array('label' => 'Listando', 'item' => false)
+                            )
+                        ),
+                        'home' => array(
+                            'label' => 'Elementos en portada',
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false)
                             )
