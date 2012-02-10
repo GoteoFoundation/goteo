@@ -125,8 +125,32 @@ body.home div#main div.learn div.slder_container div.slder_slide div.post div.im
     height: 285px;
 }
 
-body.home div#main div.projects {
+body.home div#main div.widget.projects {
     overflow: hidden;
     margin-left: -3%;    
     margin-bottom: 15px;
+}
+
+body.home div#main div.widget.calls {
+    margin-bottom: 16px;
+    position: relative;
+}
+
+body.home div#main div.widget.feed {
+    margin-bottom: 16px;
+    position: relative;
+}
+
+body.home div#main div.widget.feed div.see_more {
+    margin-top: 16px;
+    text-align: right;
+}
+
+body.home div#main div.widget.feed div.see_more a {
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+body.home div#main div.widget.feed div.see_more a:hover {
+    color: #20B3B2;
 }

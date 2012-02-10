@@ -158,7 +158,7 @@ namespace Goteo\Library {
          * @param string $scope ambito de eventos (public | admin)
          * @return array list of items
 		 */
-		public static function getAll($type = 'all', $scope = 'public') {
+		public static function getAll($type = 'all', $scope = 'public', $limit = '99') {
 
             $list = array();
 
@@ -182,7 +182,7 @@ namespace Goteo\Library {
                         FROM feed
                         WHERE feed.scope = :scope $sqlType
                         ORDER BY datetime DESC
-                        LIMIT 99
+                        LIMIT $limit
                         ";
 
                 $query = Model::query($sql, $values);

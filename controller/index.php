@@ -8,7 +8,8 @@ namespace Goteo\Controller {
         Goteo\Model\Call,
         Goteo\Model\Post,
         Goteo\Model\Promote,
-        Goteo\Library\Text;
+        Goteo\Library\Text,
+        Goteo\Library\Feed;
 
     class Index extends \Goteo\Core\Controller {
         
@@ -45,7 +46,11 @@ namespace Goteo\Controller {
                 }
             }
 
-            $post = isset($_GET['post']) ? $_GET['post'] : reset($posts)->id;
+            $feed = array();
+
+            $feed['goteo']     = Feed::getAll('goteo', 'public', 5);
+            $feed['projects']  = Feed::getAll('projects', 'public', 5);
+            $feed['community'] = Feed::getAll('community', 'public', 5);
 
             return new View('view/index.html.php',
                 array(
@@ -53,7 +58,8 @@ namespace Goteo\Controller {
                     'posts'     => $posts,
                     'promotes'  => $promotes,
                     'calls'     => $calls,
-                    'campaigns' => $campaigns
+                    'campaigns' => $campaigns,
+                    'feed'      => $feed
                 )
             );
             
