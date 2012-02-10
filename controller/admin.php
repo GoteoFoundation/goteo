@@ -712,6 +712,7 @@ namespace Goteo\Controller {
                                     Feed::item('user', $userData->name, $userData->id),
                                     Feed::item('project', $reviewData->name, $reviewData->project)
                             )));
+                            $log->setTarget($userData->id, 'user');
                             $log->doAdmin('admin');
                             unset($log);
 
@@ -742,6 +743,7 @@ namespace Goteo\Controller {
                                     Feed::item('user', $userData->name, $userData->id),
                                     Feed::item('project', $reviewData->name, $reviewData->project)
                             )));
+                            $log->setTarget($userData->id, 'user');
                             $log->doAdmin('admin');
                             unset($log);
 
@@ -877,6 +879,7 @@ namespace Goteo\Controller {
                                     Feed::item('user', $userData->name, $userData->id),
                                     Feed::item('project', $project->name, $project->id)
                             )));
+                            $log->setTarget($userData->id, 'user');
                             $log->doAdmin('admin');
                             unset($log);
                         }
@@ -1093,6 +1096,7 @@ namespace Goteo\Controller {
                                     Feed::item('user', $userData->name, $userData->id),
                                     Feed::item('call', $call->name, $call->id)
                             )));
+                            $log->setTarget($userData->id, 'user');
                             $log->doAdmin('admin');
                             unset($log);
                         }
@@ -2637,6 +2641,7 @@ namespace Goteo\Controller {
                                 Feed::item('relevant', 'Tocado ' . implode (' y ', $tocado)),
                                 Feed::item('user', $user->name, $user->id)
                             )));
+                            //$log->setTarget($user->id, 'user');
                             $log->doAdmin('user');
                             unset($log);
 
@@ -2748,6 +2753,7 @@ namespace Goteo\Controller {
                                 Feed::item('relevant', $log_action),
                                 Feed::item('user', $user->name, $user->id)
                         )));
+                        //$log->setTarget($user->id, 'user');
                         $log->doAdmin('user');
                         unset($log);
 

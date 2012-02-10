@@ -1,6 +1,7 @@
 <?php
 use Goteo\Core\View,
-    Goteo\Library\Text;
+    Goteo\Library\Text,
+    Goteo\Library\Feed;
 
 $items = $this['items'];
 ?>
@@ -8,29 +9,36 @@ $items = $this['items'];
     <script type="text/javascript">
         jQuery(document).ready(function($) {
             $('.scroll-pane').jScrollPane({showArrows: true});
-
-            $('.hov').hover(
-              function () {
-                $(this).addClass($(this).attr('rel'));
-              },
-              function () {
-                $(this).removeClass($(this).attr('rel'));
-              }
-            );
-
         });
         </script>
-        <h2 class="title"><?php echo Text::get('dashboard-menu-activity-wall'); ?></h2>
+        <h3 class="title"><?php echo Text::get('dashboard-menu-activity-wall'); ?></h3>
 
-        <div class="scroll-pane">
-            <?php foreach ($items as $item) :
-                $odd = !$odd ? true : false;
-                ?>
-            <div class="subitem<?php if ($odd) echo ' odd';?>">
-               <span class="datepub"><?php echo Text::get('feed-timeago', $item->timeago); ?></span>
-               <div class="content-pub"><?php echo $item->html; ?></div>
-            </div>
-            <?php endforeach; ?>
+    <div style="height:auto;overflow:auto;margin-left:15px">
+
+        <div class="block goteo">
+           <h4>Cofinancio</h4>
+           <div class="item scroll-pane" style="height:800px;">
+               <?php foreach ($items['supported'] as $item) :
+                   echo Feed::subItem($item);
+                endforeach; ?>
+           </div>
         </div>
 
+        <div class="block projects">
+            <h4>Participo</h4>
+            <div class="item scroll-pane" style="height:800px;">
+               <?php foreach ($items['comented'] as $item) :
+                   echo Feed::subItem($item);
+                endforeach; ?>
+           </div>
+        </div>
+        <div class="block community last">
+            <h4>Notificaciones</h4>
+            <div class="item scroll-pane" style="height:800px;">
+               <?php foreach ($items['private'] as $item) :
+                   echo Feed::subItem($item);
+                endforeach; ?>
+           </div>
+        </div>
+    </div>
 </div>

@@ -215,6 +215,90 @@ namespace Goteo\Library {
             }
 		}
 
+        /**
+		 * Metodo para sacar los eventos relacionados con un usuario
+         *
+         * @param string $id id del usuario
+         * @param string $filter  para tipos de eventos que queremos obtener
+         * @return array list of items (como getAll)
+		 */
+		public static function getUserItems($id, $filter = 'private') {
+
+            $list = array();
+
+            try {
+                $values = array();
+
+                $wheres = array();
+                if (!empty($filter)) {
+                    switch ($filter) {
+                        case 'private':
+                            // eventos que afecten al usuario
+                            $wheres[] = "feed.target_type = 'user'";
+                            $wheres[] = "feed.target_id = :target_id";
+                            $values[':target_id'] = $id;
+                            break;
+                        case 'supported':
+                            // eventos del proyectos que cofinancio (o he intentado cofinanciar)
+                            $wheres[] = "feed.target_type = 'project'";
+                            $wheres[] = "feed.target_id IN (
+                                SELECT DISTINCT(invest.project) FROM invest WHERE invest.user  = :id
+                                )";
+                            $values[':id'] = $id;
+                            break;
+                        case 'comented':
+                            // eventos de proyectos en los que comento pero que no cofinancio
+                            $wheres[] = "feed.target_type = 'project'";
+                            $wheres[] = "( feed.target_id IN (
+                                SELECT DISTINCT(message.project) FROM message WHERE message.user  = :id
+                                ) OR feed.target_id IN (
+                                SELECT DISTINCT(blog.owner)
+                                FROM comment
+                                INNER JOIN post
+                                    ON post.id = comment.post
+                                INNER JOIN blog
+                                    ON blog.id = post.blog
+                                    AND blog.type = 'project'
+                                WHERE comment.user  = :id
+                                )
+                            )";
+                            $wheres[] = "feed.target_id NOT IN (
+                                SELECT DISTINCT(invest.project) FROM invest WHERE invest.user  = :id
+                                )";
+                            $values[':id'] = $id;
+                            break;
+                    }
+                }
+
+                $sql = "SELECT
+                            feed.id as id,
+                            feed.title as title,
+                            feed.url as url,
+                            feed.image as image,
+                            DATE_FORMAT(feed.datetime, '%H:%i %d|%m|%Y') as date,
+                            feed.datetime as timer,
+                            feed.html as html
+                        FROM feed
+                        WHERE " . implode(' AND ', $wheres) . "
+                        ORDER BY datetime DESC
+                        LIMIT 99
+                        ";
+
+                $query = Model::query($sql, $values);
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
+
+                    //hace tanto
+                    $item->timeago = self::time_ago($item->timer);
+                    
+                    $list[] = $item;
+                }
+                return $list;
+            } catch (\PDOException $e) {
+                return array();
+                @\mail('goteo_fail@doukeshi.org', 'ERROR SQL en Feed::getItems', 'FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
+            }
+		}
+
 		/**
 		 *  Metodo para grabar eventos
          *

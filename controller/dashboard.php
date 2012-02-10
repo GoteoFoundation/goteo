@@ -72,11 +72,12 @@ namespace Goteo\Controller {
             }
 
             if ($option == 'wall') {
-                // obtenemos todos los eventos relacionados con este usuario y con sus proyectos
-                /// 'user'
-                $items = Feed::getAll('all', 'public', $_SESSION['user']->id);
-            } else {
-                $items = array();
+                // eventos privados del usuario
+                $items['private'] = Feed::getUserItems($_SESSION['user']->id, 'private');
+                // eventos de proyectos que he cofinanciado
+                $items['supported'] = Feed::getUserItems($_SESSION['user']->id, 'supported');
+                // eventos de proyectos donde he mensajeado o comentado
+                $items['comented'] = Feed::getUserItems($_SESSION['user']->id, 'comented');
             }
 
             return new View (
