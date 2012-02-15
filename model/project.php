@@ -335,6 +335,9 @@ namespace Goteo\Model {
          *  Cargamos los datos suficientes para pintar un widget de proyecto
          */
         public static function getMedium($id, $lang = \LANG) {
+            global $timelog;
+            $timein = \microtime();
+            $timelog .= "<!-- TIME -- IN::getMedium({$id}) -->\r\n";
 
             try {
 				// metemos los datos del proyecto en la instancia
@@ -403,6 +406,9 @@ namespace Goteo\Model {
 
                 $project->setDays();
                 $project->setTagmark();
+
+                $timeout = $timein - \microtime();
+                $timelog .= "<!-- TIME -- OUT::getMedium({$id}) {$timeout} -->\r\n";
 
 				return $project;
 
@@ -1734,25 +1740,29 @@ namespace Goteo\Model {
          */
         public static function published($type = 'all', $limit = null)
         {
+            global $timelog;
+            $timein = \microtime();
+            $timelog .= "<!-- TIME IN::published({$type}) -->\n\r";
             // segun el tipo (ver controller/discover.php)
             switch ($type) {
                 case 'popular':
                     // de los que estan en campaña,
-                    // los que tienen más usuarios (unicos) cofinanciadores y mensajeros
-                    $sql = "SELECT COUNT(DISTINCT(user.id)) as people, project.id as id
+                    // los que tienen más usuarios entre cofinanciadores y mensajeros
+                    $sql = "SELECT project.id as id,
+                                    (SELECT COUNT(DISTINCT(invest.user))
+                                        FROM    invest
+                                        WHERE   invest.project = project.id
+                                        AND     invest.status IN ('0', '1')
+                                    )
+                                    +
+                                    (SELECT  COUNT(DISTINCT(message.user))
+                                        FROM    message
+                                        WHERE   message.project = project.id
+                                    ) as followers
                             FROM project
-                            LEFT JOIN invest
-                                ON invest.project = project.id
-                                AND invest.status <> 2
-                            LEFT JOIN message
-                                ON message.project = project.id
-                            LEFT JOIN user 
-                                ON user.id = invest.user OR user.id = message.user
-                            WHERE project.status= 3 
-                            AND (project.id = invest.project
-                                OR project.id = message.project)
-                            GROUP BY project.id
-                            ORDER BY people DESC";
+                            WHERE project.status= 3
+                            HAVING followers > 20
+                            ORDER BY followers DESC";
                     break;
                 case 'outdate':
                     // los que les quedan 15 dias o menos
@@ -1805,6 +1815,7 @@ namespace Goteo\Model {
                                 AND     invest.status IN ('0', '1', '3', '4')
                                 ) as `getamount`
                         FROM project
+                        WHERE status IN ('3', '4', '5')
                         HAVING getamount >= mincost
                         ORDER BY name ASC";
                     break;
@@ -1814,7 +1825,7 @@ namespace Goteo\Model {
                     break;
                 case 'archive':
                     // caducados, financiados o casos de exito
-                    $sql = "SELECT id FROM project WHERE status = 6 ORDER BY name ASC";
+                    $sql = "SELECT id FROM project WHERE status = 6 ORDER BY closed DESC";
                     break;
                 default: 
                     // todos los que estan 'en campaña'
@@ -1826,11 +1837,17 @@ namespace Goteo\Model {
                 $sql .= " LIMIT $limit";
             }
 
+//            $timelog .= "<!-- EXPLAIN {$sql} -->\r\n";
+
             $projects = array();
             $query = self::query($sql);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
                 $projects[] = self::getMedium($proj['id']);
             }
+
+            $timeout = $timein - \microtime();
+            $timelog .= "<!-- TIME OUT::published({$type}) {$timeout} -->\n\r";
+
             return $projects;
         }
 

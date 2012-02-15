@@ -315,7 +315,7 @@ foreach ($this['invests'] as $invest) {
             <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['first']['fee_project'], 2) ?></td>
             <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['second']['fee_project'], 2) ?></td>
             <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['total']['fee_project'], 2) ?></td>
-            <td>0,35 por operacion + 3,4&#37; del importe del proyecto (8&#37; del correcto)</td>
+            <td>0,35 por operacion + 3,4&#37; del importe del proyecto (92&#37; del correcto)</td>
         </tr>
         <tr>
             <?php

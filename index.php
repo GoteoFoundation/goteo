@@ -15,6 +15,9 @@ if (GOTEO_MAINTENANCE === true && $_SERVER['REQUEST_URI'] != '/about/maintenance
     header('Location: /about/maintenance');
 }
 
+$timeinit = \microtime();
+$timelog = "\n\r";
+
 // Include path
 //set_include_path(GOTEO_PATH . PATH_SEPARATOR . '.');
 
@@ -143,6 +146,9 @@ try {
             echo $result;
 
             // Farewell
+            $timefinish = $timeinit - \microtime();
+            $timelog .= "<!-- TIME COMPLETE {$timefinish} -->";
+//            echo $timelog;
             die;
 
         }

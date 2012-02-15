@@ -3109,7 +3109,8 @@ namespace Goteo\Controller {
                     throw new Redirection('/admin/invests');
                 }
                 $invests = Model\Invest::getAll($id);
-                $users  = Model\Invest::investors($id, false, true);
+                $project->investors = Model\Invest::investors($id, false, true);
+                $users = $project->agregateInvestors();
 
                 // Datos para el informe de transacciones correctas
                 $reportData = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);

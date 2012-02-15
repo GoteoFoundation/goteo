@@ -28,3 +28,16 @@ ServerSignature Off
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule .* index.php?%{QUERY_STRING}
 </IfModule>
+
+# Cache para recursos estaticos
+<IfModule mod_expires.c>
+          ExpiresActive on
+
+          ExpiresByType image/jpg "access plus 60 days"
+          ExpiresByType image/png "access plus 60 days"
+          ExpiresByType image/gif "access plus 60 days"
+          ExpiresByType image/jpeg "access plus 60 days"
+
+          ExpiresByType text/css "access plus 1 week"
+          ExpiresByType text/javascript "access plus 1 week"
+</IfModule>
