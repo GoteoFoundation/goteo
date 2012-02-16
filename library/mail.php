@@ -197,7 +197,12 @@ namespace Goteo\Library {
 
                 ' . $viewData['sinoves'];
             } else {
-                return new View ('view/email/goteo.html.php', $viewData);
+                // para plantilla boletin
+                if ($this->template == 33) {
+                    return new View ('view/email/newsletter.html.php', $viewData);
+                } else {
+                    return new View ('view/email/goteo.html.php', $viewData);
+                }
             }
         }
 

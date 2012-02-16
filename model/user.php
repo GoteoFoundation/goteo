@@ -1213,6 +1213,29 @@ namespace Goteo\Model {
 
         }
 
+        /**
+         * Metodo para saber si el usuario ha bloqueado este envio de mailing
+         *
+         * @param string $userId
+         * @param string $mailingCode Tipo de envio de mailing. Default: newsletter
+         * @return bool
+         */
+        public static function mailBlock($userId, $mailingCode = 'mailing') {
+
+            $values = array(':user' => $userId);
+
+            $sql = "SELECT user_prefer.{$mailingCode} as blocked FROM user_prefer WHERE user_prefer.user = :user";
+
+            $query = self::query($sql, $values);
+            $block = $query->fetchColumn();
+            if ($block == 1) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
 
 	}
 }

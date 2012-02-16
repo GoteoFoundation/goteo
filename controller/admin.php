@@ -5229,9 +5229,15 @@ namespace Goteo\Controller {
 //                        $content = nl2br($_POST['content']);
                         $content = $_POST['content'];
                         $subject = $_POST['subject'];
+                        $templateId = !empty($_POST['template']) ? $_POST['template'] : 11;
 
                         // ahora, envio, el contenido a cada usuario
                         foreach ($users as $usr) {
+
+                            // si es newsletter y el usuario la ha desmarcado en sus preferencias, lo saltamos
+                            if ($templateId == 33 && Model\User::mailBlock($usr)) {
+                                continue;
+                            }
 
                             $tmpcontent = \str_replace(
                                 array('%USERID%', '%USEREMAIL%', '%USERNAME%', '%SITEURL%', '%PROJECTID%', '%PROJECTNAME%', '%PROJECTURL%'),
@@ -5256,7 +5262,7 @@ namespace Goteo\Controller {
                             $mailHandler->subject = $subject;
                             $mailHandler->content = '<br />'.$tmpcontent.'<br />';
                             $mailHandler->html = true;
-                            $mailHandler->template = 11;
+                            $mailHandler->template = $templateId;
                             if ($mailHandler->send($errors)) {
                                 $_SESSION['mailing']['receivers'][$usr]->ok = true;
                             } else {
