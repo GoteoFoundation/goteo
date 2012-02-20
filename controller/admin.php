@@ -2594,7 +2594,7 @@ namespace Goteo\Controller {
                         if(empty($errors)) {
                           // mensaje de ok y volvemos a la lista de usuarios
                           Message::Info(Text::get('user-register-success'));
-                          throw new Redirection('/admin/users');
+                          throw new Redirection('/admin/users/manage/'.$user->id);
                         } else {
                             // si hay algun error volvemos a poner los datos en el formulario
                             $data = $_POST;
