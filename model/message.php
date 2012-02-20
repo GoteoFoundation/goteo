@@ -228,6 +228,25 @@ namespace Goteo\Model {
 
         }
 
+
+        /**
+         * Para saber si un hilo de mensajes es de colaboración
+         *
+         * @param numeric $id Id del mensaje (thread)
+         * @return bool true/false
+         */
+        public static function isSupport ($id) {
+            $sql = "SELECT support FROM support WHERE thread = :id";
+            $query = self::query($sql, array(':id'=>$id));
+            $support = $query->fetchColumn();
+
+            if (empty($support)) {
+                return false;
+            } else {
+                return $support;
+            }
+        }
+
     }
     
 }

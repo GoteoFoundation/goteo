@@ -503,6 +503,9 @@ namespace Goteo\Controller {
                     // -- Mensaje azul molesto para usuarios no registrados
                     if ($show == 'messages' || $show == 'updates') {
                         $_SESSION['jumpto'] = '/project/' .  $id . '/'.$show;
+                        if (isset($_GET['msgto'])) {
+                            $_SESSION['jumpto'] .= '?msgto='.$_GET['msgto'];
+                        }
                         Message::Info(Text::get('user-login-required'));
                     }
                 }

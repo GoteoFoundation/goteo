@@ -1,5 +1,6 @@
 <?php
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Model\Message;
 
 $project = $this['project'];
 $level = (int) $this['level'] ?: 3;
@@ -18,11 +19,17 @@ $level = (int) $this['level'] ?: 3;
 			'transitionIn'		: 'none',
 			'transitionOut'		: 'none'
 		});
+
+    <?php if (isset($_GET['msgto']) && $support = Message::isSupport($_GET['msgto'])) : ?>
+        $('#thread').val('<?php echo $_GET['msgto'] ?>');
+        $('#message-text').val('<?php echo addslashes(Text::get('project-messages-send_message_support-your_answer', $support)) ?>').focus().select();
+    <?php endif; ?>
+
 	});
 
-    function answer(id) {
+    function answer(id, text) {
         $('#thread').val(id);
-        $('#message-text').val('<?php echo Text::get('project-messages-send_message-your_answer'); ?>').focus().select();
+        $('#message-text').val(text).focus().select();
     }
 </script>
 <?php if (!empty($_SESSION['user']) && $project->status >= 3) : ?>
@@ -50,7 +57,14 @@ $level = (int) $this['level'] ?: 3;
 
     <div id="project-messages">
 
-		<?php foreach ($project->messages as $message) : ?>
+		<?php foreach ($project->messages as $message) :
+            // si es de colaboracion
+            if ($support = Message::isSupport($message->id)) {
+                $response = addslashes(Text::get('project-messages-send_message_support-your_answer', $support));
+            } else {
+                $response = addslashes(Text::get('project-messages-send_message-your_answer'));
+            }
+            ?>
                 <div class="message<?php if ($message->user->id == $project->owner) echo ' owner'; ?>">
                    <span class="avatar">
                    <a href="/user/profile/<?php echo htmlspecialchars($message->user->id)?>" target="_blank">
@@ -67,7 +81,7 @@ $level = (int) $this['level'] ?: 3;
                    <blockquote><?php echo $message->message; ?></blockquote>
                    <div class="actions">
                         <?php if (!empty($_SESSION['user'])) : ?>
-                        <a class="" href="#" onclick="answer('<?php echo $message->id; ?>')"><?php echo Text::get('project-messages-answer_it'); ?></a>
+                        <a class="" href="#" onclick="answer('<?php echo $message->id; ?>', '<?php echo $response ?>')"><?php echo Text::get('project-messages-answer_it'); ?></a>
                         <?php endif; ?>
                         <?php // si puede borrar este mensaje
                         if (\Goteo\Core\ACL::check("/message/delete/{$message->id}/{$project->id}")) : ?>

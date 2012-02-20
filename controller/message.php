@@ -35,7 +35,8 @@ namespace Goteo\Controller {
                 ));
 
                 if ($message->save($errors)) {
-
+                    $support = Model\Message::isSupport($_POST['thread']);
+                    
                     // Evento Feed
                     $log = new Feed();
                     if (empty($_POST['thread'])) {
@@ -47,11 +48,20 @@ namespace Goteo\Controller {
                         ));
                     } else {
                         // respuesta
-                        $log_html = \vsprintf('%s ha respondido en %s del proyecto %s', array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('message', Text::get('project-menu-messages'), $projectData->id.'/messages#message'.$message->id),
-                            Feed::item('project', $projectData->name, $projectData->id)
-                        ));
+                        // si una respuesta a un mensaje de colaboraicón
+                        if (!empty($support)) {
+                            $log_html = \vsprintf('Nueva colaboración de %s con %s en el proyecto %s', array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('message', $support, $projectData->id.'/messages#message'.$_POST['thread']),
+                                Feed::item('project', $projectData->name, $projectData->id)
+                            ));
+                        } else { // es una respuesta a un hilo normal
+                            $log_html = \vsprintf('%s ha respondido en %s del proyecto %s', array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('message', Text::get('project-menu-messages'), $projectData->id.'/messages#message'.$message->id),
+                                Feed::item('project', $projectData->name, $projectData->id)
+                            ));
+                        }
                     }
                     $log->populate('usuario escribe mensaje/respuesta en Mensajes del proyecto', '/admin/projects', $log_html);
                     $log->doAdmin('user');
@@ -63,10 +73,18 @@ namespace Goteo\Controller {
                                             Feed::item('project', $projectData->name, $projectData->id)
                                             );
                     } else {
-                        $log_html = Text::html('feed-messages-response',
+                        // si una respuesta a un mensaje de colaboraicón
+                        if (!empty($support)) {
+                            $log_html = Text::html('feed-message_support-response',
+                                            Feed::item('message', $support, $projectData->id.'/messages#message'.$_POST['thread']),
+                                            Feed::item('project', $projectData->name, $projectData->id)
+                                        );
+                        } else { // es una respuesta a un hilo normal
+                            $log_html = Text::html('feed-messages-response',
                                             Feed::item('message', Text::get('project-menu-messages'), $projectData->id.'/messages#message'.$message->id),
                                             Feed::item('project', $projectData->name, $projectData->id)
-                                            );
+                                        );
+                        }
                     }
                     $log->populate($_SESSION['user']->name, '/user/profile/'.$_SESSION['user']->id, $log_html, $_SESSION['user']->avatar->id);
                     $log->setTarget($projectData->id);
