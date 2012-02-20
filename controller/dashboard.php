@@ -595,9 +595,9 @@ namespace Goteo\Controller {
                                     $mailHandler->html = true;
                                     $mailHandler->template = $template->id;
                                     if ($mailHandler->send($errors)) {
-                                        Message::Info(Text::get('dashboard-investors-mail-sended', $data->name, $data->email));
+                                        Message::Info(Text::get('dashboard-investors-mail-sended', $data->name));
                                     } else {
-                                        Message::Error(Text::get('dashboard-investors-mail-fail', $data->name, $data->email) . ' : '. implode (', ', $errors));
+                                        Message::Error(Text::get('dashboard-investors-mail-fail', $data->name) . ' : '. implode (', ', $errors));
 
                                     }
 

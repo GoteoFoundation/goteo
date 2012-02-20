@@ -140,7 +140,12 @@ namespace Goteo\Controller {
                 // si estan enviando el proyecto a revisión
                 if (isset($_POST['process_preview']) && isset($_POST['finish'])) {
                     $errors = array();
+                    $old_id = $project->id;
                     if ($project->ready($errors)) {
+
+                        if ($_SESSION['project']->id == $old_id) {
+                            $_SESSION['project'] = $project;
+                        }
 
                         // email a los de goteo
                         $mailHandler = new Mail();
