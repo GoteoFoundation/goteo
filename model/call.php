@@ -595,7 +595,7 @@ namespace Goteo\Model {
 
                 return true;
             } catch (\PDOException $e) {
-                $errors[] = 'Fallo al publicar el convocatoria. ' . $e->getMessage();
+                $errors[] = 'Fallo al publicar la convocatoria. ' . $e->getMessage();
                 return false;
             }
         }
@@ -610,7 +610,7 @@ namespace Goteo\Model {
 				self::query($sql, array(':status'=>6, ':closed'=>date('Y-m-d'), ':id'=>$this->id));
                 return true;
             } catch (\PDOException $e) {
-                $errors[] = 'Fallo al cerrar el convocatoria. ' . $e->getMessage();
+                $errors[] = 'Fallo al cerrar la convocatoria. ' . $e->getMessage();
                 return false;
             }
         }
@@ -625,7 +625,7 @@ namespace Goteo\Model {
 				self::query($sql, array(':status'=>5, ':success'=>date('Y-m-d'), ':id'=>$this->id));
                 return true;
             } catch (\PDOException $e) {
-                $errors[] = 'Fallo al dar por financiado el convocatoria. ' . $e->getMessage();
+                $errors[] = 'Fallo al dar por financiado la convocatoria. ' . $e->getMessage();
                 return false;
             }
         }

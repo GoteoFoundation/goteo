@@ -494,20 +494,21 @@ a.button.join {
 /* Logo */
 a#capital {
 	top: 20px;
-	width: 76px;
-	height: 12px;
+	width: 86px;
+	height: 20px;
 	right: 40px;
 	z-index: 1;
 	display: block;
 	position: fixed;
 	color: #1db3b2;
-	background: transparent url('/view/css/call/logo-capital-blanco.png') no-repeat center top;
+	background: url('/view/css/call/logo-capital-blanco.png') no-repeat 0px 0px transparent;
 	text-decoration: none;
-	padding: 106px 0 0;
+	padding: 102px 0 0;
 	text-align: center;
 	text-transform: uppercase;
 	font-size: 11px;
 	line-height: 11px;
+	font-weight: bold;
 }
 
 a#capital:hover {
