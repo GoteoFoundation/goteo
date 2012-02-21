@@ -5,3 +5,4 @@ INSERT INTO `role` VALUES('superadmin', 'Super administrador');
 INSERT INTO `role` VALUES('translator', 'Traductor de contenidos');
 INSERT INTO `role` VALUES('user', 'Usuario mediocre');
 INSERT INTO `role` VALUES('caller', 'Convocador');
+INSERT INTO `role` VALUES('vip', 'Usuario colaborador');

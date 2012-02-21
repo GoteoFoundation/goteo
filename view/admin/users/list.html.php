@@ -102,6 +102,7 @@ $filter = "?status={$filters['status']}&interest={$filters['interest']}&role={$f
                     <?php echo $user->translator ? ' Traductor' : ''; ?>
                     <?php echo $user->caller ? ' Convocador' : ''; ?>
                     <?php echo $user->admin ? ' Admin' : ''; ?>
+                    <?php echo $user->vip ? ' VIP' : ''; ?>
                 </td>
                 <td><a href="/admin/users/edit/<?php echo $user->id; ?>">[Editar]</a></td>
                 <td><a href="/admin/users/impersonate/<?php echo $user->id; ?>">[Suplantar]</a></td>

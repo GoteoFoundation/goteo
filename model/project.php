@@ -1837,16 +1837,11 @@ namespace Goteo\Model {
                 $sql .= " LIMIT $limit";
             }
 
-//            $timelog .= "<!-- EXPLAIN {$sql} -->\r\n";
-
             $projects = array();
             $query = self::query($sql);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
                 $projects[] = self::getMedium($proj['id']);
             }
-
-            $timeout = $timein - \microtime();
-            $timelog .= "<!-- TIME OUT::published({$type}) {$timeout} -->\n\r";
 
             return $projects;
         }

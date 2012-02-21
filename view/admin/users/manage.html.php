@@ -47,6 +47,12 @@ array_walk($roles, function (&$role) { $role = $role->name; });
             <?php else : ?>
                 <a href="<?php echo "/admin/users/manage/{$user->id}/admin"; ?>" class="button">Hacerlo admin</a>
             <?php endif; ?>
+
+            <?php if (in_array('vip', array_keys($user->roles))) : ?>
+                <a href="<?php echo "/admin/users/manage/{$user->id}/novip"; ?>" class="button red">Quitarle el VIP</a>
+            <?php else : ?>
+                <a href="<?php echo "/admin/users/manage/{$user->id}/vip"; ?>" class="button">Hacerlo VIP</a>
+            <?php endif; ?>
         </dd>
     </dl>
     <dl>

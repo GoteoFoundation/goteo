@@ -645,6 +645,9 @@ namespace Goteo\Model {
                     if ($role->role_id == 'admin') {
                         $user->admin = true;
                     }
+                    if ($role->role_id == 'vip') {
+                        $user->vip = true;
+                    }
                 }
 
                 $users[] = $user;
@@ -713,6 +716,31 @@ namespace Goteo\Model {
                 INNER JOIN user_role
                     ON  user_role.user_id = user.id
                     AND user_role.role_id = 'caller'
+                ORDER BY user.name ASC
+                ");
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $list[$item->id] = $item->name;
+            }
+
+            return $list;
+        }
+
+        /*
+         * Listado simple de los usuarios Colaboradores
+         */
+        public static function getVips() {
+
+            $list = array();
+
+            $query = static::query("
+                SELECT
+                    user.id as id,
+                    user.name as name
+                FROM    user
+                INNER JOIN user_role
+                    ON  user_role.user_id = user.id
+                    AND user_role.role_id = 'vip'
                 ORDER BY user.name ASC
                 ");
 

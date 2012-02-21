@@ -231,6 +231,28 @@ namespace Goteo\Controller {
 
         }
 
+
+        /*
+         * proyectos recomendados por usuario padrino (patron)
+         */
+        public function patron ($user) {
+
+            $viewData = array();
+
+            // título de la página
+            $viewData['title'] = Text::get('discover-patron-header', $user);
+
+            // segun el tipo cargamos la lista
+            $viewData['list']  = Model\Patron::getList($user);
+
+
+            return new View(
+                'view/discover/patron.html.php',
+                $viewData
+             );
+
+        }
+
     }
     
 }
