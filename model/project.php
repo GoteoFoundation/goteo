@@ -335,9 +335,6 @@ namespace Goteo\Model {
          *  Cargamos los datos suficientes para pintar un widget de proyecto
          */
         public static function getMedium($id, $lang = \LANG) {
-            global $timelog;
-            $timein = \microtime();
-            $timelog .= "<!-- TIME -- IN::getMedium({$id}) -->\r\n";
 
             try {
 				// metemos los datos del proyecto en la instancia
@@ -406,9 +403,6 @@ namespace Goteo\Model {
 
                 $project->setDays();
                 $project->setTagmark();
-
-                $timeout = $timein - \microtime();
-                $timelog .= "<!-- TIME -- OUT::getMedium({$id}) {$timeout} -->\r\n";
 
 				return $project;
 
@@ -1740,9 +1734,6 @@ namespace Goteo\Model {
          */
         public static function published($type = 'all', $limit = null)
         {
-            global $timelog;
-            $timein = \microtime();
-            $timelog .= "<!-- TIME IN::published({$type}) -->\n\r";
             // segun el tipo (ver controller/discover.php)
             switch ($type) {
                 case 'popular':
@@ -1842,7 +1833,6 @@ namespace Goteo\Model {
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
                 $projects[] = self::getMedium($proj['id']);
             }
-
             return $projects;
         }
 

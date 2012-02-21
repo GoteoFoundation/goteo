@@ -18,7 +18,8 @@ namespace Goteo\Model {
              'posts' => 'Entradas de blog',
              'promotes' => 'Proyectos destacados',
              'drops' => 'Capital Riego',
-             'feed' => 'Actividad reciente'
+             'feed' => 'Actividad reciente',
+             'patrons' => 'Padrinos'
          );
 
         /*
@@ -140,7 +141,7 @@ namespace Goteo\Model {
         }
 
         /*
-         * Orden para aÃ±adirlo al final
+         * Orden para añadirlo al final
          */
         public static function next ($node = \GOTEO_NODE) {
             $query = self::query('SELECT MAX(`order`) FROM home WHERE node = :node'
