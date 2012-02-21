@@ -51,9 +51,9 @@ namespace Goteo\Controller {
 
             $feed = array();
 
-            $feed['goteo']     = Feed::getAll('goteo', 'public', 5);
-            $feed['projects']  = Feed::getAll('projects', 'public', 5);
-            $feed['community'] = Feed::getAll('community', 'public', 5);
+            $feed['goteo']     = Feed::getAll('goteo', 'public', 15);
+            $feed['projects']  = Feed::getAll('projects', 'public', 15);
+            $feed['community'] = Feed::getAll('community', 'public', 15);
 
             // orden de los elementos, si hay
             $order = Home::getAll();
