@@ -4,3 +4,6 @@ CREATE TABLE IF NOT EXISTS node (
   active tinyint(1) NOT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Nodos';
+
+-- Alters
+ALTER TABLE `node` ADD `url` VARCHAR( 255 ) NOT NULL;
