@@ -29,27 +29,13 @@ namespace Goteo\Controller {
 
             // revision de proyectos: dias, conseguido y cambios de estado
             // proyectos en campaña 
-            $projects = Model\Project::active();
+            $projects = Model\Project::active(true);
 
-            if ($debug) echo 'Comenzamos con los proyectos en campaña o financiados<br />';
+            if ($debug) echo 'Comenzamos con los proyectos en campaña<br />';
 
             foreach ($projects as &$project) {
 
                 if ($debug) echo 'Proyecto '.$project->name.'<br />';
-
-                //este método devuelve tambien los financiados pero vamos a pasar de ellos
-                // les ponemos los dias a cero y lsitos
-                if ($project->status != 3) {
-                    /*
-                    if ($debug) echo 'Financiado: dias a cero y listos<br />';
-                    if ($project->days > 0) {
-                        \Goteo\Core\Model::query("UPDATE project SET days = '0' WHERE id = ?", array($project->id));
-                    }
-                     * 
-                     */
-                    if ($debug) echo 'Financiado<hr />';
-                    continue;
-                }
 
                 // a ver si tiene cuenta paypal
                 $projectAccount = Model\Project\Account::get($project->id);
@@ -220,7 +206,7 @@ namespace Goteo\Controller {
                         }
 
                         // tiene hasta 80 días para conseguir el óptimo (o más)
-                        if ($days > 80) {
+                        if ($days >= 80) {
                             if ($debug) echo 'Ha llegado a los 80 dias de campaña (final de segunda ronda)<br />';
 
                             echo $project->name . ': ha recaudado ' . $amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . '<br />';

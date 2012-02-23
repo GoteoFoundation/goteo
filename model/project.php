@@ -442,7 +442,7 @@ namespace Goteo\Model {
                 // tiempo de campaña
                 if ($this->status == 3) {
                     $days = $this->daysActive();
-                    if ($days > 80) {
+                    if ($days > 81) {
                         $this->round = 0;
                         $days = 0;
                     } elseif ($days >= 40) {
@@ -1839,14 +1839,19 @@ namespace Goteo\Model {
         /*
          * Lista de proyectos en campaña (para ser revisados por el cron)
          */
-        public static function active()
+        public static function active($campaignonly = false)
         {
             $projects = array();
-            $query = self::query("SELECT project.id
-                                  FROM  project
-                                  WHERE project.status = 3 OR project.status = 4
-                                  GROUP BY project.id
-                                  ORDER BY name ASC");
+
+            if ($campaignonly) {
+                $sqlFilter = " WHERE project.status = 3";
+            } else {
+                $sqlFilter = " WHERE project.status = 3 OR project.status = 4";
+            }
+
+            $sql = "SELECT project.id FROM  project {$sqlFilter} ORDER BY name ASC";
+
+            $query = self::query($sql);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
                 $projects[] = self::get($proj->id);
             }
