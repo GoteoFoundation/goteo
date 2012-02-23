@@ -51,9 +51,11 @@ namespace Goteo\Controller {
                             if (!empty($investor->campaign)) continue;
                             
                             if (\array_key_exists($investor->user, $investors)) {
-                                // ya está en el array, quiere decir que cofinancia este otro proyecto
-                                // , añadir uno, sumar su aporte, actualizar la fecha
-                                ++$investors[$investor->user]->projects;
+                                // si es otro proyecto y ya está en el array, añadir uno
+                                if ($investors[$investor->user]->lastproject != $projectId) {
+                                    ++$investors[$investor->user]->projects;
+                                    $investors[$investor->user]->lastproject = $projectId;
+                                }
                                 $investors[$investor->user]->amount += $investor->amount;
                                 $investors[$investor->user]->date = $investor->date;
                             } else {
@@ -61,6 +63,7 @@ namespace Goteo\Controller {
                                     'user' => $investor->user,
                                     'name' => $investor->name,
                                     'projects' => 1,
+                                    'lastproject' => $projectId,
                                     'avatar' => $investor->avatar,
                                     'worth' => $investor->worth,
                                     'amount' => $investor->amount,
