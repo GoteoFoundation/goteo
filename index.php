@@ -57,20 +57,22 @@ set_error_handler (
 /* Sistema nodos */
 // Get Node and check it
 $host = strtok($_SERVER['HTTP_HOST'], '.');
-echo "HOST: $host<br />";
+//echo "HOST: $host<br />";
 if (NodeSys::isValid($host)) {
     define('NODE_ID', $host);
 } else {
     define('NODE_ID', GOTEO_NODE);
 }
-echo "NODE_ID: ".NODE_ID."<br />";
+//echo "NODE_ID: ".NODE_ID."<br />";
 NodeSys::setConfig(NODE_ID);
+/*
 echo "NODE_NAME: ".NODE_NAME."<br />";
 echo "NODE_URL: ".NODE_URL."<br />";
 echo "NODE_PARAM1: ".NODE_PARAM1."<br />";
 echo "NODE_PARAM2: ".NODE_PARAM2."<br />";
 echo "NODE_PARAM3: ".NODE_PARAM3."<br />";
 die;
+ */
 /* Fin inicializacion nodo */
 
 /**

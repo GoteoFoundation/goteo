@@ -5,6 +5,11 @@ use Goteo\Library\Text,
     Goteo\Model\Post,
     Goteo\Model\Sponsor;
 
+if (NODE_ID != GOTEO_NODE) {
+    include 'view/node/footer.html.php';
+    return;
+}
+
 $lang = (LANG != 'es') ? '?lang='.LANG : '';
 
 $categories = Category::getList();  // categorias que se usan en proyectos

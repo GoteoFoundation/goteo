@@ -1,6 +1,13 @@
-<?php 
+<?php
     use Goteo\Library\Text,
         Goteo\Library\Lang;
+
+// si es un nodo
+if (NODE_ID != GOTEO_NODE) {
+    include 'view/node/header.html.php';
+    return;
+}
+
 ?>
 
 <?php include 'view/header/lang.html.php' ?> 

@@ -3,6 +3,7 @@
 namespace Goteo\Controller {
 
     use Goteo\Core\View,
+        Goteo\Model\Node,
         Goteo\Model\Home,
         Goteo\Model\Project,
         Goteo\Model\Banner,
@@ -16,6 +17,10 @@ namespace Goteo\Controller {
     class Index extends \Goteo\Core\Controller {
         
         public function index () {
+
+            if (NODE_ID != GOTEO_NODE) {
+                return $this->node_index();
+            }
 
             if (isset($_GET['error'])) {
                 throw new \Goteo\Core\Error('418', Text::html('fatal-error-teapot'));
@@ -103,7 +108,19 @@ namespace Goteo\Controller {
             );
             
         }
-        
+
+        public function node_index () {
+            
+            $node = Node::get(NODE_ID);
+
+            return new View('view/node/index.html.php',
+                array(
+                    'node'   => $node
+                )
+            );
+
+        }
+
     }
     
 }

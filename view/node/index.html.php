@@ -1,16 +1,12 @@
-<?php 
+<?php
 
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$calls     = $this['calls'];
-$campaigns = $this['campaigns'];
-
 $bodyClass = 'home';
-// para que el prologue ponga el código js para botón facebook en el bannerside
-$fbCode = Text::widget(Text::get('social-account-facebook'), 'fb');
-include 'view/prologue.html.php';
-include 'view/header.html.php';
+
+include 'view/node/prologue.html.php';
+include 'view/node/header.html.php';
 ?>
 <script type="text/javascript">
     $(function(){
@@ -45,13 +41,9 @@ include 'view/header.html.php';
         if (!empty($this[$item])) echo new View("view/home/{$item}.html.php", $this);
     } ?>
 
-    <p>
-        <a class="node-jump" href="http://alfa.devgoteo.org/">A AlfaNode</a>
-    </p>
-    <p>
-        <a class="node-jump" href="http://nodo.devgoteo.org/">A Nodo</a>
-    </p>
-
+    <?php
+        include 'nodesys/'.NODE_ID.'/content.php';
+    ?>
 </div>
-<?php include 'view/footer.html.php'; ?>
+<?php include 'view/node/footer.html.php'; ?>
 <?php include 'view/epilogue.html.php'; ?>
