@@ -199,10 +199,11 @@ namespace Goteo\Library {
                         \preg_match('(\d+)', $item->url, $matches);
                         if (!empty($matches[0])) {
                             //  luego hacemos get del post
-                            $post = Post::get($matches[0]);
+                            $post = Post::get($matches[0], LANG);
 
                             // y substituimos el $item->html por el $post->html
                             $item->html = Text::recorta($post->text, 250);
+                            $item->title = $post->title;
                         }
                     }
 
