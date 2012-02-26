@@ -35,6 +35,9 @@ namespace Goteo\Controller {
                 $password = $_POST['password'];
                 if (false !== ($user = (\Goteo\Model\User::login($username, $password)))) {
                     $_SESSION['user'] = $user;
+                    if (!empty($user->lang)) {
+                        $_SESSION['lang'] = $user->lang;
+                    }
                     if (!empty($_POST['return'])) {
                         throw new Redirection($_POST['return']);
                     } elseif (!empty($_SESSION['jumpto'])) {
@@ -58,7 +61,7 @@ namespace Goteo\Controller {
          * Cerrar sesión.
          */
         public function logout() {
-            $lang = $_SESSION['lang'] == 'es' ? '' : '?lang='.$_SESSION['lang'];
+            $lang = '?lang='.$_SESSION['lang'];
             session_start();
             session_unset();
             session_destroy();

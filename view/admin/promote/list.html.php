@@ -31,9 +31,9 @@ $translator = ACL::check('/translate') ? true : false;
                 <td><?php echo ($promo->active) ? '<strong>'.$promo->title.'</strong>' : $promo->title; ?></td>
                 <td><?php echo $promo->status; ?></td>
                 <td><?php echo $promo->order; ?></td>
-                <td><a href="/admin/promote/up/<?php echo $promo->project; ?>">[&uarr;]</a></td>
-                <td><a href="/admin/promote/down/<?php echo $promo->project; ?>">[&darr;]</a></td>
-                <td><a href="/admin/promote/edit/<?php echo $promo->project; ?>">[Editar]</a></td>
+                <td><a href="/admin/promote/up/<?php echo $promo->id; ?>">[&uarr;]</a></td>
+                <td><a href="/admin/promote/down/<?php echo $promo->id; ?>">[&darr;]</a></td>
+                <td><a href="/admin/promote/edit/<?php echo $promo->id; ?>">[Editar]</a></td>
                 <td><?php if ($promo->active) : ?>
                 <a href="/admin/promote/active/<?php echo $promo->id; ?>/off">[Ocultar]</a>
                 <?php else : ?>
@@ -42,7 +42,7 @@ $translator = ACL::check('/translate') ? true : false;
                 <?php if ($translator) : ?>
                 <td><a href="/translate/promote/edit/<?php echo $promo->id; ?>" >[Traducir]</a></td>
                 <?php endif; ?>
-                <td><a href="/admin/promote/remove/<?php echo $promo->project; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Quitar]</a></td>
+                <td><a href="/admin/promote/remove/<?php echo $promo->id; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Quitar]</a></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

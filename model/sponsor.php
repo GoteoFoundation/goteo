@@ -10,6 +10,7 @@ namespace Goteo\Model {
 
         public
             $id,
+            $node,
             $name,
             $url,
             $image,
@@ -22,6 +23,7 @@ namespace Goteo\Model {
                 $sql = static::query("
                     SELECT
                         id,
+                        node,
                         name,
                         url,
                         image,
@@ -43,20 +45,22 @@ namespace Goteo\Model {
         /*
          * Lista de patrocinadores
          */
-        public static function getAll () {
+        public static function getAll ($node = \GOTEO_NODE) {
 
             $list = array();
 
             $sql = static::query("
                 SELECT
                     id,
+                    node,
                     name,
                     url,
                     image,
                     `order`
                 FROM    sponsor
+                WHERE node = :node
                 ORDER BY `order` ASC, name ASC
-                ");
+                ", array(':node'=>$node));
 
             foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $sponsor) {
                 // imagen
@@ -74,7 +78,7 @@ namespace Goteo\Model {
         /*
          * Lista de patrocinadores
          */
-        public static function getList () {
+        public static function getList ($node = \GOTEO_NODE) {
 
             $list = array();
 
@@ -85,8 +89,9 @@ namespace Goteo\Model {
                     url,
                     image
                 FROM    sponsor
+                WHERE node = :node
                 ORDER BY `order` ASC, name ASC
-                ");
+                ", array(':node'=>$node));
 
             foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $sponsor) {
                 // imagen
@@ -130,6 +135,7 @@ namespace Goteo\Model {
 
             $fields = array(
                 'id',
+                'node',
                 'name',
                 'url',
                 'image',
@@ -174,17 +180,23 @@ namespace Goteo\Model {
         }
 
         /*
-         * Para que una pregunta salga antes  (disminuir el order)
+         * Para que salga antes  (disminuir el order)
          */
-        public static function up ($id) {
-            return Check::reorder($id, 'up', 'sponsor');
+        public static function up ($id, $node = \GOTEO_NODE) {
+            $extra = array (
+                    'node' => $node
+                );
+            return Check::reorder($id, 'up', 'sponsor', 'id', 'order', $extra);
         }
 
         /*
-         * Para que un proyecto salga despues  (aumentar el order)
+         * Para que salga despues  (aumentar el order)
          */
-        public static function down ($id) {
-            return Check::reorder($id, 'down', 'sponsor');
+        public static function down ($id, $node = \GOTEO_NODE) {
+            $extra = array (
+                    'node' => $node
+                );
+            return Check::reorder($id, 'down', 'sponsor', 'id', 'order', $extra);
         }
 
         /*

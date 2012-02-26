@@ -194,37 +194,6 @@ namespace Goteo\Controller {
                     );
 
                     break;
-                /*
-                case 'add':
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'texts',
-                            'file' => 'edit',
-                            'data' => (object) array(),
-                            'form' => array(
-                                'action' => '/admin/texts/edit/'.$filter,
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => 'Aplicar'
-                                ),
-                                'fields' => array (
-                                    'newtext' => array(
-                                        'label' => 'Texto',
-                                        'name' => 'text',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="6"',
-                                        
-                                    )
-                                )
-
-                            )
-                        )
-                    );
-
-                    break;
-                 * 
-                 */
                 case 'edit':
 
                     // gestionar post

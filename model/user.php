@@ -14,6 +14,8 @@ namespace Goteo\Model {
 
         public
             $id = false,
+            $lang,
+            $node,
             $userid, // para el login name al registrarse
             $email,
             $password, // para gestion de super admin
@@ -92,6 +94,8 @@ namespace Goteo\Model {
                     $data[':created'] = date('Y-m-d H:i:s');
                     $data[':active'] = true;
                     $data[':confirmed'] = false;
+                    $data[':lang'] = \LANG;
+                    $data[':node'] = \NODE_ID;
 
                     // Rol por defecto.
                     if (!empty($this->id)) {
@@ -462,6 +466,44 @@ namespace Goteo\Model {
 
             try {
                 $sql = "UPDATE user SET " . $set . " WHERE id = :id";
+                self::query($sql, $values);
+
+                return true;
+            } catch(\PDOException $e) {
+                $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
+                return false;
+            }
+
+        }
+
+        /**
+         * Este método actualiza directamente el campo de idioma preferido
+         */
+        public function updateLang (&$errors = array()) {
+
+            $values = array(':id'=>$this->id, ':lang'=>$this->lang);
+
+            try {
+                $sql = "UPDATE user SET `lang` = :lang WHERE id = :id";
+                self::query($sql, $values);
+
+                return true;
+            } catch(\PDOException $e) {
+                $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
+                return false;
+            }
+
+        }
+
+        /**
+         * Este método actualiza directamente el campo de nodo
+         */
+        public function updateNode (&$errors = array()) {
+
+            $values = array(':id'=>$this->id, ':node'=>$this->node);
+
+            try {
+                $sql = "UPDATE user SET `node` = :node WHERE id = :id";
                 self::query($sql, $values);
 
                 return true;
