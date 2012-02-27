@@ -30,14 +30,11 @@ namespace Goteo\Model {
                         patron.link as link,
                         patron.order as `order`
                     FROM    patron
-                    LEFT JOIN patron_lang
-                        ON patron_lang.id = patron.id
-                        AND patron_lang.lang = :lang
                     INNER JOIN project
                         ON project.id = patron.project
                     WHERE patron.project = :project
                     AND patron.node = :node
-                    ", array(':project'=>$project, ':node'=>$node, ':lang'=>\LANG));
+                    ", array(':project'=>$project, ':node'=>$node));
                 $patron = $query->fetchObject(__CLASS__);
                 $patron->user = Model\User::getMini($patron->user);
 

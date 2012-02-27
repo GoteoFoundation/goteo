@@ -231,6 +231,7 @@ $action = '/invest/' . $project->id;
 
 /* Si estan marcando o quitando el renuncio */
         $(':radio').bind('change', function () {
+            var curr = $('#amount').val();
             var a = $(this).attr('amount');
             var i = $(this).attr('id');
 
@@ -243,6 +244,9 @@ $action = '/invest/' . $project->id;
                 $("#address-header").html('<?php echo Text::slash('invest-address-header') ?>');
                 $("#donation-data").hide();
                 reset_reward(i);
+            }
+            
+            if (greater(a, curr)) {
                 reset_reminder(a);
             }
         });
