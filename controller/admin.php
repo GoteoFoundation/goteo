@@ -4856,158 +4856,6 @@ namespace Goteo\Controller {
         }
 
         /*
-         *  Gestión de campañas
-         *
-         *  OBSOLETO @TODO quitarlo pero ojo que hay que traspasar los aportes a la convocatoria correspondiente
-         *
-         *
-        public function campaigns($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'sponsors',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
-            define('ADMIN_BCPATH', $BC);
-
-            $model = 'Goteo\Model\Campaign';
-            $url = '/admin/campaigns';
-
-            $errors = array();
-
-            switch ($action) {
-                case 'add':
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'base',
-                            'file' => 'edit',
-                            'data' => (object) array(),
-                            'form' => array(
-                                'action' => "$url/edit/",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => 'Añadir'
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Campaña',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    ),
-                                    'description' => array(
-                                        'label' => 'Descripción',
-                                        'name' => 'description',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="2"'
-                                    )
-                                )
-
-                            )
-                        )
-                    );
-
-                    break;
-                case 'edit':
-
-                    // gestionar post
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
-
-                        $errors = array();
-
-                        // instancia
-                        $item = new $model(array(
-                            'id' => $_POST['id'],
-                            'name' => $_POST['name'],
-                            'description' => $_POST['description']
-                        ));
-
-                        if ($item->save($errors)) {
-                            throw new Redirection($url);
-                        }
-                    } else {
-                        $item = $model::get($id);
-                    }
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'base',
-                            'file' => 'edit',
-                            'data' => $item,
-                            'form' => array(
-                                'action' => "$url/edit/$id",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => Text::get('regular-save')
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Campaña',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    ),
-                                    'description' => array(
-                                        'label' => 'Descripción',
-                                        'name' => 'description',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="2"'
-                                    )
-                                )
-
-                            ),
-                            'errors' => $errors
-                        )
-                    );
-
-                    break;
-                case 'remove':
-                    if ($model::delete($id)) {
-                        throw new Redirection($url);
-                    }
-                    break;
-            }
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'base',
-                    'file' => 'list',
-                    'addbutton' => 'Nueva campaña',
-                    'data' => $model::getList(),
-                    'columns' => array(
-                        'edit' => '',
-                        'name' => 'Campaña',
-                        'used' => 'Aportes',
-                        'remove' => ''
-                    ),
-                    'url' => "$url",
-                    'errors' => $errors
-                )
-            );
-        }
-         *
-         *  FIN Gest campañas
-         */
-
-
-
-
-        /*
          *  Gestión de nodos
          */
         public function nodes($action = 'list', $id = null) {
@@ -5039,16 +4887,29 @@ namespace Goteo\Controller {
                     'id' => $_POST['id'],
                     'name' => $_POST['name'],
                     'admin' => $_POST['admin'],
-                    'status' => $_POST['status']
+                    'active' => $_POST['active']
                 ));
 
 				if ($node->create($errors)) {
 
                     if ($_POST['action'] == 'add') {
 						$success[] = 'Nodo creado';
+                        $txt_log = 'creado';
                     } else {
 						$success[] = 'Nodo actualizado';
+                        $txt_log = 'actualizado';
 					}
+
+                    // Evento feed
+                    $log = new Feed();
+                    $log->populate('Nodo gestionado desde admin', 'admin/nodes',
+                        \vsprintf('El admin %s ha %s el Nodo %s', array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('relevant', $txt_log),
+                            Feed::item('project', $_POST['name']))
+                        ));
+                    $log->doAdmin('admin');
+                    unset($log);
 
 				}
 				else {

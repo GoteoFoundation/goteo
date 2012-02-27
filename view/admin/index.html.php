@@ -83,6 +83,7 @@ include 'view/prologue.html.php';
             <div class="center">
 
                 <?php echo $message; ?>
+                <?php echo 'Administra el nodo: ' . $_SESSION['admin_node'] . '<br/ >'; ?>
 
                 <?php foreach ($this['menu'] as $sCode=>$section) :
                     // piñoncete para Diego

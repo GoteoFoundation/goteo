@@ -24,9 +24,9 @@ namespace Goteo\Model {
                     FROM node
                     WHERE id = :id
                     ", array(':id' => $id));
-                $news = $sql->fetchObject(__CLASS__);
+                $item = $sql->fetchObject(__CLASS__);
 
-                return $news;
+                return $item;
         }
 
         /*
@@ -151,6 +151,23 @@ namespace Goteo\Model {
                 return false;
             }
          }
+
+        /**
+         * Obtener el nodo que administra cierto usuario
+         * @param   type varchar(50)  $id   Usuario admin
+         * @return  type varchar(50)  $id   Id Nodo
+         */
+        static public function getAdminNode ($admin) {
+                $query = static::query("
+                    SELECT
+                        id
+                    FROM node
+                    WHERE `admin` = :admin
+                    LIMIT 1
+                    ", array(':admin' => $admin));
+
+                return $query->fetchColumn();
+        }
 
     }
     

@@ -26,6 +26,10 @@ $admins = User::getAdmins(true, $node->admin);
     <?php endforeach; ?>
     </select>
 </p>
+<p>
+    <label for="node-active">Activo:</label><br />
+    <input type="checkbox" id="node-active" name="active" value="1" <?php if ($node->active) echo ' checked="checked"'; ?>/>
+</p>
 
     <input type="submit" name="save" value="Guardar" />
 </form>

@@ -9,6 +9,7 @@ $admins = User::getAdmins(true);
 ?>
 <div class="widget">
     <form id="filter-form" action="/admin/nodes" method="post">
+        <input type="hidden" name="action" value="add" />
         <p>
             <label for="node-id">Identificador:</label><br />
             http://<input type="text" id="node-id" name="id" value="" />.goteo.org
@@ -25,6 +26,10 @@ $admins = User::getAdmins(true);
                 <option value="<?php echo $userId; ?>"><?php echo $userName; ?></option>
             <?php endforeach; ?>
             </select>
+        </p>
+        <p>
+            <label for="node-active">Activarlo ahora:</label><br />
+            <input type="checkbox" id="node-active" name="active" value="1" />
         </p>
 
         <input type="submit" name="save" value="Grabar" />

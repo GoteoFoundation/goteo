@@ -38,6 +38,14 @@ namespace Goteo\Controller {
                     if (!empty($user->lang)) {
                         $_SESSION['lang'] = $user->lang;
                     }
+                    if (isset($user->roles['admin'])) {
+                        // posible admin de nodo
+                        if ($node = Model\Node::getAdminNode($user->id)) {
+                            $_SESSION['admin_node'] = $node;
+                        } else {
+                            $_SESSION['admin_node'] = \GOTEO_NODE;
+                        }
+                    }
                     if (!empty($_POST['return'])) {
                         throw new Redirection($_POST['return']);
                     } elseif (!empty($_SESSION['jumpto'])) {
