@@ -599,7 +599,7 @@ namespace Goteo\Controller {
         public function nodes($action = 'list', $id = null) {
 
             $BC = self::menu(array(
-                'section' => 'sponsors',
+                'section' => 'nodes',
                 'option' => __FUNCTION__,
                 'action' => $action,
                 'id' => $id,
@@ -707,10 +707,8 @@ namespace Goteo\Controller {
             //   devolveremos el contenido html para pintar el camino de migas de pan
             //   con enlaces a lo anterior
 
-            $menu = array(
-                'contents' => array(
-                    'label'   => 'Gestión de Textos y Traducciones',
-                    'options' => array (
+            // Primero montamos un array de los gestores que existen
+            $options = array(
                         'blog' => array(
                             'label' => 'Blog',
                             'actions' => array(
@@ -817,12 +815,7 @@ namespace Goteo\Controller {
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false)
                             )
-                        )
-                    )
-                ),
-                'projects' => array(
-                    'label'   => 'Gestión de proyectos',
-                    'options' => array (
+                        ),
                         'projects' => array(
                             'label' => 'Listado de proyectos',
                             'actions' => array(
@@ -853,12 +846,7 @@ namespace Goteo\Controller {
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false)
                             )
-                        )
-                    )
-                ),
-                'users' => array(
-                    'label'   => 'Gestión de usuarios',
-                    'options' => array (
+                        ),
                         'users' => array(
                             'label' => 'Listado de usuarios',
                             'actions' => array(
@@ -889,12 +877,7 @@ namespace Goteo\Controller {
                             'actions' => array(
                                 'list' => array('label' => 'Emails enviados', 'item' => false)
                             )
-                        )
-                    )
-                ),
-                'accounting' => array(
-                    'label'   => 'Gestión de aportes y transacciones',
-                    'options' => array (
+                        ),
                         'invests' => array(
                             'label' => 'Aportes a Proyectos',
                             'actions' => array(
@@ -914,12 +897,7 @@ namespace Goteo\Controller {
                                 'details' => array('label' => 'Detalles de la transacción', 'item' => true),
                                 'viewer' => array('label' => 'Viendo logs', 'item' => false)
                             )
-                        )
-                    )
-                ),
-                'home' => array(
-                    'label'   => 'Portada',
-                    'options' => array (
+                        ),
                         'news' => array(
                             'label' => 'Micronoticias',
                             'actions' => array(
@@ -939,7 +917,7 @@ namespace Goteo\Controller {
                             )
                         ),
                         'posts' => array(
-                            'label' => 'Carrusel de blog',
+                            'label' => 'Entradas de blog',
                             'actions' => array(
                                 'list' => array('label' => 'Ordenando', 'item' => false),
                                 'add'  => array('label' => 'Colocando Entrada en la portada', 'item' => false)
@@ -972,12 +950,7 @@ namespace Goteo\Controller {
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false)
                             )
-                        )
-                    )
-                ),
-                'sponsors' => array(
-                    'label'   => 'Convocatorias de patrocinadores',
-                    'options' => array (
+                        ),
                         'calls' => array(
                             'label' => 'Listado de convocatorias',
                             'actions' => array(
@@ -995,7 +968,7 @@ namespace Goteo\Controller {
                             )
                         ),
                         'sponsors' => array(
-                            'label' => 'Apoyos institucionales (Footer)',
+                            'label' => 'Apoyos institucionales',
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'add'  => array('label' => 'Nuevo Patrocinador', 'item' => false),
@@ -1017,10 +990,132 @@ namespace Goteo\Controller {
                                 'add'  => array('label' => 'Nuevo Nodo', 'item' => false),
                                 'edit' => array('label' => 'Gestionando Nodo', 'item' => true)
                             )
+                        ),
+                        'node' => array(
+                            'label' => 'Datos del Nodo',
+                            'actions' => array(
+                                'edit' => array('label' => 'Gestionando Nodo', 'item' => true)
+                            )
+                        )
+                    );
+
+            // El menu del panel admin dependerá del rol del usuario que accede
+            // Superadmin = todo
+            // Admin = contenidos de Nodo
+            if (isset($_SESSION['admin_node'])) {
+                $menu = array(
+                    'contents' => array(
+                        'label'   => 'Contenidos',
+                        'options' => array (
+                            'node' => $options['node'],   // la gestion de datos del nodo
+                            'pages' => $options['pages'], // páginas institucionales del nodo
+                            'blog' => $options['blog'],   // entradas del blog
+                            'tags' => $options['tags']    // tags de blog
+                        )
+                    ),
+                    'projects' => array(
+                        'label'   => 'Gestión de proyectos',
+                        'options' => array (
+                            'projects' => $options['projects'],     // proyectos del nodo
+                            'reviews' => $options['reviews'],       // revisiones de proyectos del nodo
+                            'translates' => $options['translates'], // traducciones de proyectos del nodo
+                            'patron' => $options['patron']          // padrinos de proyectos del nodo
+                        )
+                    ),
+                    'users' => array(
+                        'label'   => 'Gestión de usuarios',
+                        'options' => array (
+                            'users' => $options['users'],     // usuarios asociados al nodo
+                            'mailing' => $options['mailing'], // comunicaciones del nodoc on sus usuarios / promotores
+                            'sended' => $options['sended']    // historial de envios realizados por el nodo
+                        )
+                    ),
+                    'home' => array(
+                        'label'   => 'Portada',
+                        'options' => array (
+                            'posts' => $options['posts'],       // seleccion de entradas en portada
+                            'promote' => $options['promote'],   // seleccion de proyectos destacados
+                            // convocatorias en portada del nodo
+                            'sponsors' => $options['sponsors'], // patrocinadores del nodo
+                            'home' => $options['home'],         // elementos en portada 
+                            'feed' => $options['feed']          // Eventos de admin (a ver cuales le van a salir)
                         )
                     )
-                )
-            );
+                );
+            } else {
+                $menu = array(
+                    'contents' => array(
+                        'label'   => 'Gestión de Textos y Traducciones',
+                        'options' => array (
+                            'blog' => $options['blog'],
+                            'texts' => $options['texts'],
+                            'faq' => $options['faq'],
+                            'pages' => $options['pages'],
+                            'categories' => $options['categories'],
+                            'licenses' => $options['licenses'],
+                            'icons' => $options['icons'],
+                            'tags' => $options['tags'],
+                            'criteria' => $options['criteria'],
+                            'templates' => $options['templates'],
+                            'glossary' => $options['glossary'],
+                            'info' => $options['info'],
+                            'wordcount' => $options['wordcount']
+                        )
+                    ),
+                    'projects' => array(
+                        'label'   => 'Gestión de proyectos',
+                        'options' => array (
+                            'projects' => $options['projects'],
+                            'reviews' => $options['reviews'],
+                            'translates' => $options['translates'],
+                            'rewards' => $options['rewards'],
+                            'patron' => $options['patron']
+                        )
+                    ),
+                    'users' => array(
+                        'label'   => 'Gestión de usuarios',
+                        'options' => array (
+                            'users' => $options['users'],
+                            'worth' => $options['worth'],
+                            'mailing' => $options['mailing'],
+                            'sended' => $options['sended']
+                        )
+                    ),
+                    'accounting' => array(
+                        'label'   => 'Gestión de aportes y transacciones',
+                        'options' => array (
+                            'invests' => $options['invests'],
+                            'accounts' => $options['accounts']
+                        )
+                    ),
+                    'home' => array(
+                        'label'   => 'Portada',
+                        'options' => array (
+                            'news' => $options['news'],
+                            'banners' => $options['banners'],
+                            'posts' => $options['posts'],
+                            'promote' => $options['promote'],
+                            'footer' => $options['footer'],
+                            'feed' => $options['feed'],
+                            'home' => $options['home']
+                        )
+                    ),
+                    'sponsors' => array(
+                        'label'   => 'Convocatorias y patrocinadores',
+                        'options' => array (
+                            'calls' => $options['calls'],
+                            'transcalls' => $options['transcalls'],
+                            'sponsors' => $options['sponsors']
+                        )
+                    ),
+                    'nodes' => array(
+                        'label'   => 'Nodos',
+                        'options' => array (
+                            'nodes' => $options['nodes']
+                        )
+                    )
+                );
+            }
 
             if (empty($BC)) {
                 return $menu;
