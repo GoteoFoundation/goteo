@@ -7,3 +7,4 @@ CREATE TABLE IF NOT EXISTS node (
 
 -- Alters
 ALTER TABLE `node` ADD `url` VARCHAR( 255 ) NOT NULL;
+ALTER TABLE `node` ADD `admin` VARCHAR( 50 ) NOT NULL;

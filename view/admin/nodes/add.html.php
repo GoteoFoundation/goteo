@@ -1,0 +1,33 @@
+<?php
+
+use Goteo\Library\Text,
+    Goteo\Model\User;
+
+// administradores
+$admins = User::getAdmins(true);
+
+?>
+<div class="widget">
+    <form id="filter-form" action="/admin/nodes" method="post">
+        <p>
+            <label for="node-id">Identificador:</label><br />
+            http://<input type="text" id="node-id" name="id" value="" />.goteo.org
+        </p>
+        <p>
+            <label for="node-name">Nombre:</label><br />
+            <input type="text" id="node-name" name="name" value="" style="width:250px" />
+        </p>
+        <p>
+            <label for="node-admin">Administrador:</label><br />
+            <select id="node-admin" name="admin">
+                <option value="">Seleccionar usuario administrador</option>
+            <?php foreach ($admins as $userId=>$userName) : ?>
+                <option value="<?php echo $userId; ?>"><?php echo $userName; ?></option>
+            <?php endforeach; ?>
+            </select>
+        </p>
+
+        <input type="submit" name="save" value="Grabar" />
+
+    </form>
+</div>

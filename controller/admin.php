@@ -2692,7 +2692,7 @@ namespace Goteo\Controller {
                 'option' => __FUNCTION__,
                 'action' => $action,
                 'id' => $id,
-                'filter' => !empty($filters) ? "?status={$filters['status']}&interest={$filters['interest']}" : ''
+                'filter' => !empty($filters) ? "?status={$filters['status']}&interest={$filters['interest']}&role={$filters['role']}&name={$filters['name']}&order={$filters['order']}" : ''
             ));
 
             define('ADMIN_BCPATH', $BC);
@@ -5012,144 +5012,125 @@ namespace Goteo\Controller {
          */
         public function nodes($action = 'list', $id = null) {
 
+            $filters = array();
+            $fields = array('status', 'admin', 'name');
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    $filters[$field] = $_GET[$field];
+                }
+            }
+
             $BC = self::menu(array(
                 'section' => 'sponsors',
                 'option' => __FUNCTION__,
                 'action' => $action,
-                'id' => $id
+                'id' => $id,
+                'filter' => !empty($filters) ? "?status={$filters['status']}&admin={$filters['admin']}&name={$filters['name']}" : ''
             ));
 
             define('ADMIN_BCPATH', $BC);
 
-            $model = 'Goteo\Model\Node';
-            $url = '/admin/nodes';
-
             $errors = array();
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                // objeto
+                $node = new Model\Node(array(
+                    'id' => $_POST['id'],
+                    'name' => $_POST['name'],
+                    'admin' => $_POST['admin'],
+                    'status' => $_POST['status']
+                ));
+
+				if ($node->create($errors)) {
+
+                    if ($_POST['action'] == 'add') {
+						$success[] = 'Nodo creado';
+                    } else {
+						$success[] = 'Nodo actualizado';
+					}
+
+				}
+				else {
+                    switch ($_POST['action']) {
+                        case 'add':
+							$errors[] = 'Fallo al crear, revisar los campos';
+
+                            return new View(
+                                'view/admin/index.html.php',
+                                array(
+                                    'folder' => 'nodes',
+                                    'file' => 'add',
+                                    'action' => 'add',
+                                    'errors' => $errors
+                                )
+                            );
+                            break;
+                        case 'edit':
+							$errors[] = 'Fallo al actualizar, revisar los campos';
+
+                            return new View(
+                                'view/admin/index.html.php',
+                                array(
+                                    'folder' => 'nodes',
+                                    'file' => 'edit',
+                                    'action' => 'edit',
+                                    'node' => $node,
+                                    'errors' => $errors
+                                )
+                            );
+                            break;
+                    }
+				}
+			}
 
             switch ($action) {
                 case 'add':
                     return new View(
                         'view/admin/index.html.php',
                         array(
-                            'folder' => 'base',
-                            'file' => 'edit',
-                            'data' => (object) array(),
-                            'form' => array(
-                                'action' => "$url/edit/",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => 'Añadir'
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Campaña',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    ),
-                                    'description' => array(
-                                        'label' => 'Descripción',
-                                        'name' => 'description',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="2"'
-                                    )
-                                )
-
-                            )
+                            'folder' => 'nodes',
+                            'file' => 'add',
+                            'action' => 'add',
+                            'node' => null
                         )
                     );
-
                     break;
                 case 'edit':
-
-                    // gestionar post
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
-
-                        $errors = array();
-
-                        // instancia
-                        $item = new $model(array(
-                            'id' => $_POST['id'],
-                            'name' => $_POST['name'],
-                            'description' => $_POST['description']
-                        ));
-
-                        if ($item->save($errors)) {
-                            throw new Redirection($url);
-                        }
-                    } else {
-                        $item = $model::get($id);
-                    }
+                    $node = Model\Node::get($id);
 
                     return new View(
                         'view/admin/index.html.php',
                         array(
-                            'folder' => 'base',
+                            'folder' => 'nodes',
                             'file' => 'edit',
-                            'data' => $item,
-                            'form' => array(
-                                'action' => "$url/edit/$id",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => Text::get('regular-save')
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Campaña',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    ),
-                                    'description' => array(
-                                        'label' => 'Descripción',
-                                        'name' => 'description',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="2"'
-                                    )
-                                )
-
-                            ),
-                            'errors' => $errors
+                            'action' => 'edit',
+                            'node' => $node
                         )
                     );
-
-                    break;
-                case 'remove':
-                    if ($model::delete($id)) {
-                        throw new Redirection($url);
-                    }
                     break;
             }
+
+
+            $nodes = Model\Node::getAll($filters);
+            $status = array(
+                        'active' => 'Activo',
+                        'inactive' => 'Inactivo'
+                    );
 
             return new View(
                 'view/admin/index.html.php',
                 array(
-                    'folder' => 'base',
+                    'folder' => 'nodes',
                     'file' => 'list',
-                    'addbutton' => 'Nuevo nodo',
-                    'data' => $model::getList(),
-                    'columns' => array(
-                        'edit' => '',
-                        'name' => 'Campaña',
-                        'used' => 'Aportes',
-                        'remove' => ''
-                    ),
-                    'url' => "$url",
-                    'errors' => $errors
+                    'filters' => $filters,
+                    'nodes' => $nodes,
+                    'status' => $status,
+                    'errors' => $errors,
+                    'success' => $success
                 )
             );
         }
-
 
         /*
          * Comunicaciones con los usuarios mediante mailing
@@ -5876,20 +5857,7 @@ namespace Goteo\Controller {
                             'actions' => array(
                                 'list' => array('label' => 'Emails enviados', 'item' => false)
                             )
-                        )/*,
-                        'useradd' => array(
-                            'label' => 'Creación de usuarios',
-                            'actions' => array(
-                                'add'  => array('label' => 'Nuevo Usuario', 'item' => false)
-                            )
-                        ),
-                        'usermod' => array(
-                            'label' => 'Gestión de roles y nodos de Usuarios',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'edit' => array('label' => 'Editando roles y nodos de Usuario', 'item' => true)
-                            )
-                        )*/
+                        )
                     )
                 ),
                 'accounting' => array(
@@ -5914,16 +5882,7 @@ namespace Goteo\Controller {
                                 'details' => array('label' => 'Detalles de la transacción', 'item' => true),
                                 'viewer' => array('label' => 'Viendo logs', 'item' => false)
                             )
-                        )/*,
-                        'credits' => array(
-                            'label' => 'Gestión de crédito',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add'  => array('label' => 'Nuevo ', 'item' => false),
-                                'edit' => array('label' => 'Editando Tag', 'item' => true),
-                                'translate' => array('label' => 'Traduciendo Tag', 'item' => true)
-                            )
-                        )*/
+                        )
                     )
                 ),
                 'home' => array(
@@ -6018,15 +5977,15 @@ namespace Goteo\Controller {
                                 'add'  => array('label' => 'Nueva Recomendación', 'item' => false),
                                 'edit' => array('label' => 'Editando Recomendacion', 'item' => true)
                             )
-                        )/*,
+                        ),
                         'nodes' => array(
                             'label' => 'Gestión de Nodos',
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'add'  => array('label' => 'Nuevo Nodo', 'item' => false),
-                                'edit' => array('label' => 'Editando Nodo', 'item' => true)
+                                'edit' => array('label' => 'Gestionando Nodo', 'item' => true)
                             )
-                        )*/
+                        )
                     )
                 )
             );

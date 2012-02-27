@@ -769,6 +769,39 @@ namespace Goteo\Model {
         }
 
         /*
+         * Listado simple de los usuarios Administradores
+         */
+        public static function getAdmins($availableonly = false, $except = null) {
+
+            $list = array();
+
+            $sql = "
+                SELECT
+                    user.id as id,
+                    user.name as name
+                FROM    user
+                INNER JOIN user_role
+                    ON  user_role.user_id = user.id
+                    AND user_role.role_id = 'admin'
+                ";
+            
+            if ($availableonly) {
+                $sql .= " WHERE id NOT IN (SELECT distinct(admin) FROM node WHERE admin != '{$except}')";
+            }
+
+            $sql .= " ORDER BY user.name ASC
+                ";
+
+            $query = static::query($sql);
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $list[$item->id] = $item->name;
+            }
+
+            return $list;
+        }
+
+        /*
          * Listado simple de los usuarios Colaboradores
          */
         public static function getVips() {
