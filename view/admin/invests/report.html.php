@@ -259,9 +259,9 @@ foreach ($this['invests'] as $invest) {
         </tr>
         <tr>
             <?php
-            $Data['paypal']['first']['ok']  = $Data['paypal']['first']['amount']  - $Data['paypal']['first']['fail'];
-            $Data['paypal']['second']['ok'] = $Data['paypal']['second']['amount'] - $Data['paypal']['second']['fail'];
-            $Data['paypal']['total']['ok']  = $Data['paypal']['total']['amount']  - $Data['paypal']['total']['fail'];
+            $Data['paypal']['first']['ok']  = $Data['paypal']['first']['amount'];
+            $Data['paypal']['second']['ok'] = $Data['paypal']['second']['amount'];
+            $Data['paypal']['total']['ok']  = $Data['paypal']['total']['amount'];
             ?>
             <th>Importe</th>
             <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['first']['ok']) ?></td>
