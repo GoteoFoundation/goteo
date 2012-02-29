@@ -52,6 +52,7 @@ function displayCategories(categoryId1,categoryId2){
 	
     foreach ($shares as $catId => $sharemates) {
         if (count($sharemates) == 0) continue;
+        shuffle($sharemates);
         ?>
     <div class="users" id="mates-<?php echo $catId ?>" 
 	<?php if ($muestra > 2) {echo 'style="display:none;"';} else {$muestra++;} ?>>

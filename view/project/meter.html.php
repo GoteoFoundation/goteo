@@ -13,7 +13,8 @@ $project = $this['project'];
 $minimum    = $project->mincost;
 $optimum    = $project->maxcost;
 $reached    = $project->invested;
-$supporters = count($project->investors);
+$investors = $project->agregateInvestors();
+$supporters = count($investors);
 $days       = $project->days;
 
 

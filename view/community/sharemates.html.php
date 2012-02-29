@@ -42,6 +42,7 @@ $shares     = $this['shares'];
         <!-- detalle de categoría (cabecera de categoría) -->
         <?php foreach ($shares as $catId => $sharemates) :
             if (count($sharemates) == 0) continue;
+            shuffle($sharemates);
             ?>
             <div class="widget user-mates" id="cat<?php echo $catId;?>" <?php if (!empty($this['category']) && $catId != $this['category']) echo 'style="display:none;"'?>>
                 <h3 class="title"><?php echo $categories[$catId] ?></h3>
