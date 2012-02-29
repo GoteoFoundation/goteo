@@ -35,18 +35,14 @@ namespace Goteo\Library {
                     $returnURL = SITE_URL."/invest/confirmed/" . $invest->project . "/" . $invest->id; // a difundirlo @TODO mensaje gracias si llega desde un preapproval
                     $cancelURL = SITE_URL."/invest/fail/" . $invest->project . "/" . $invest->id; // a la página de aportar para intentarlo de nuevo
 
-                    // desde hoy hasta los dias que le falten para finalizar la ronda (mas tres para tratar incidencias)
-                    $remain = Project::daysRemain($invest->project);
-                    $remain+= 3;
-
                     date_default_timezone_set('UTC');
                     $currDate = getdate();
                     $hoy = $currDate['year'].'-'.$currDate['mon'].'-'.$currDate['mday'];
                     $startDate = strtotime($hoy);
                     $startDate = date('Y-m-d', mktime(date('h',$startDate),date('i',$startDate),0,date('m',$startDate),date('d',$startDate),date('Y',$startDate)));
                     $endDate = strtotime($hoy);
-                    $endDate = date('Y-m-d', mktime(0,0,0,date('m',$endDate),date('d',$endDate)+$remain,date('Y',$endDate)));
-
+                    $endDate = date('Y-m-d', mktime(0,0,0,date('m',$endDate)+5,date('d',$endDate),date('Y',$endDate)));
+                    // sí, pongo la fecha de caducidad de los preapprovals a 5 meses para tratar incidencias
 
 		           /* Make the call to PayPal to get the preapproval token
 		            If the API call succeded, then redirect the buyer to PayPal
