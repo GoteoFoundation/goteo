@@ -607,8 +607,14 @@ namespace Goteo\Model {
             $users = array();
 
             $sqlFilter = "";
+            if (!empty($filters['id'])) {
+                $sqlFilter .= " AND id LIKE ('%{$filters['id']}%')";
+            }
             if (!empty($filters['name'])) {
-                $sqlFilter .= " AND ( name LIKE ('%{$filters['name']}%') OR email LIKE ('%{$filters['name']}%') )";
+                $sqlFilter .= " AND name LIKE ('%{$filters['name']}%')";
+            }
+            if (!empty($filters['email'])) {
+                $sqlFilter .= " AND email LIKE ('%{$filters['email']}%')";
             }
             if (!empty($filters['status'])) {
                 $active = $filters['status'] == 'active' ? '1' : '0';

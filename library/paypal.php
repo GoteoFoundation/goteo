@@ -35,18 +35,14 @@ namespace Goteo\Library {
                     $returnURL = SITE_URL."/invest/confirmed/" . $invest->project . "/" . $invest->id; // a difundirlo @TODO mensaje gracias si llega desde un preapproval
                     $cancelURL = SITE_URL."/invest/fail/" . $invest->project . "/" . $invest->id; // a la página de aportar para intentarlo de nuevo
 
-                    // desde hoy hasta los dias que le falten para finalizar la ronda (mas tres para tratar incidencias)
-                    $remain = Project::daysRemain($invest->project);
-                    $remain+= 3;
-
                     date_default_timezone_set('UTC');
                     $currDate = getdate();
                     $hoy = $currDate['year'].'-'.$currDate['mon'].'-'.$currDate['mday'];
                     $startDate = strtotime($hoy);
                     $startDate = date('Y-m-d', mktime(date('h',$startDate),date('i',$startDate),0,date('m',$startDate),date('d',$startDate),date('Y',$startDate)));
                     $endDate = strtotime($hoy);
-                    $endDate = date('Y-m-d', mktime(0,0,0,date('m',$endDate),date('d',$endDate)+$remain,date('Y',$endDate)));
-
+                    $endDate = date('Y-m-d', mktime(0,0,0,date('m',$endDate)+5,date('d',$endDate),date('Y',$endDate)));
+                    // sí, pongo la fecha de caducidad de los preapprovals a 5 meses para tratar incidencias
 
 		           /* Make the call to PayPal to get the preapproval token
 		            If the API call succeded, then redirect the buyer to PayPal
@@ -131,11 +127,11 @@ namespace Goteo\Library {
                 // Create request object
                 $payRequest = new \PayRequest();
                 $payRequest->actionType = "PAY";
-                $payRequest->memo = "Cargo del aporte de {$invest->amount} EUR del usuario '{$invest->user->name}' al proyecto '{$project->name}'";
+                $payRequest->memo = "Cargo del aporte de {$invest->amount} EUR del usuario '{$userData->name}' al proyecto '{$project->name}'";
                 $payRequest->cancelUrl = SITE_URL.'/invest/charge/fail/' . $invest->id;
                 $payRequest->returnUrl = SITE_URL.'/invest/charge/success/' . $invest->id;
                 $payRequest->clientDetails = new \ClientDetailsType();
-		        $payRequest->clientDetails->customerId = $invest->user->id;
+		        $payRequest->clientDetails->customerId = $invest->user;
                 $payRequest->clientDetails->applicationId = PAYPAL_APPLICATION_ID;
                 $payRequest->clientDetails->deviceId = PAYPAL_DEVICE_ID;
                 $payRequest->clientDetails->ipAddress = PAYPAL_IP_ADDRESS;
@@ -150,7 +146,7 @@ namespace Goteo\Library {
                 // Primary receiver, Goteo Business Account
                 $receiverP = new \receiver();
                 $receiverP->email = PAYPAL_BUSINESS_ACCOUNT; // tocar en config para poner en real
-                $receiverP->amount = (int) $invest->amount;
+                $receiverP->amount = $invest->amount;
                 $receiverP->primary = true;
 
                 // Receiver, Projects PayPal Account
@@ -220,6 +216,12 @@ namespace Goteo\Library {
                 $token = $response->payKey;
                 if (!empty($token)) {
                     if ($invest->setPayment($token)) {
+                        if ($response->status != 'INCOMPLETE') {
+                            $errors[] = "Obtenido codigo de pago $token pero no ha quedado en estado INCOMPLETE id {$invest->id}.";
+                            @mail('goteo-paypal-API-fault@doukeshi.org', 'El chained payment no ha quedado como incomplete', 'ERROR en ' . __FUNCTION__ . ' No payment status incomplete.<br /><pre>' . print_r($response, 1) . '</pre>');
+                            return false;
+                        }
+
                         return true;
                     } else {
                         $errors[] = "Obtenido codigo de pago $token pero no se ha grabado correctamente en el registro de aporte id {$invest->id}.";
@@ -319,7 +321,7 @@ namespace Goteo\Library {
                 }
 
                 // verificar el campo paymentExecStatus
-                if (!empty($response->paymentExecStatus) && $response->paymentExecStatus == 'COMPLETED') {
+                if ($response->paymentExecStatus == 'COMPLETED') {
                     if ($invest->setStatus('3')) {
                         return true;
                     } else {

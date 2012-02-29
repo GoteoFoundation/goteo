@@ -80,7 +80,7 @@ $filters = $this['filters'];
                 <td><a href="/admin/invests/details/<?php echo $invest->id ?>">[Detalles]</a></td>
                 <td><?php echo $invest->id ?></td>
                 <td><?php echo $invest->invested ?></td>
-                <td><?php echo $this['users'][$invest->user]; if (!empty($invest->call)) echo '<br />(<strong>'.$this['calls'][$invest->call].'</strong>)'; ?></td>
+                <td><a href="/admin/users?id=<?php echo $invest->user ?>" target="_blank"><?php echo $this['users'][$invest->user]; ?></a><?php if (!empty($invest->call)) echo '<br />(<strong>'.$this['calls'][$invest->call].'</strong>)'; ?></td>
                 <td><?php echo $this['projects'][$invest->project] ?></td>
                 <td><?php echo $this['status'][$invest->status] ?></td>
                 <td><?php echo $this['methods'][$invest->method] ?></td>

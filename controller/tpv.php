@@ -204,6 +204,12 @@ namespace Goteo\Controller {
             die;
         }
 
+        public function ipn () {
+            echo 'Thanks<br />';
+            @mail('goteo_paypal_ipn@doukeshi.org', 'IPN message desde '.SITE_URL, 'Recibido este POST:<pre>' . print_r($_POST, 1) . '</pre>');
+            die;
+        }
+
     }
     
 }

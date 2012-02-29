@@ -593,7 +593,7 @@ namespace Goteo\Controller {
                 $errors = array();
 
                 $userData = Model\User::getMini($invest->user);
-                echo 'Tratando: Aporte (id: '.$invest->id.') de '.$userData->name.'<br />';
+                echo 'Tratando: Aporte (id: '.$invest->id.') de '.$userData->name.' ['.$userData->email.']<br />';
 
                 if (Paypal::doPay($invest, $errors)) {
                     echo 'Aporte (id: '.$invest->id.') pagado al proyecto. Ver los detalles en la <a href="/admin/accounts/details/'.$invest->id.'">gestion de transacciones</a><br />';

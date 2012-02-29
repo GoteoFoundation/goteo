@@ -42,9 +42,19 @@ $filter = "?status={$filters['status']}&interest={$filters['interest']}&role={$f
                     <?php endforeach; ?>
                     </select>
                 </td>
-                <td colspan="2">
-                    <label for="name-filter">Por nombre o email:</label><br />
+            </tr>
+            <tr>
+                <td>
+                    <label for="id-filter">Id:</label><br />
+                    <input id="id-filter" name="id" value="<?php echo $filters['id']; ?>" />
+                </td>
+                <td>
+                    <label for="name-filter">Alias:</label><br />
                     <input id="name-filter" name="name" value="<?php echo $filters['name']; ?>" />
+                </td>
+                <td>
+                    <label for="email-filter">Email:</label><br />
+                    <input id="email-filter" name="email" value="<?php echo $filters['email']; ?>" />
                 </td>
             </tr>
             <tr>

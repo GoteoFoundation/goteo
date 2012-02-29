@@ -1026,7 +1026,9 @@ namespace Goteo\Model {
                             $act_eq = (string) 'first';
                         } else {
                             // en segunda ronda
-                            $p0 = (string) 'first'; // paypal(0) es incidencia paralos de primera ronda solamente
+                            if (!isset($p0)) {
+                                $p0 = (string) 'first'; // paypal(0) es incidencia paralos de primera ronda solamente
+                            }
                             // si está en segunda ronda; la financiacion actual es un merge de usuarios y suma de aportes correctos, incidencias, correctos y cantidad total
                             $act_eq = (string) 'sum';
                         }

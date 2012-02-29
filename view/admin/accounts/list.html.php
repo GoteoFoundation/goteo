@@ -90,7 +90,7 @@ $filters = $this['filters'];
                 <td><a href="/admin/accounts/details/<?php echo $invest->id ?>">[Detalles]</a></td>
                 <td><?php echo $invest->id ?></td>
                 <td><?php echo $invest->invested ?></td>
-                <td><?php echo $this['users'][$invest->user] ?></td>
+                <td><a href="/admin/users?id=<?php echo $invest->user ?>" target="_blank"><?php echo $this['users'][$invest->user]; ?></a></td>
                 <td><?php echo $this['projects'][$invest->project]; if (!empty($invest->campaign)) echo '<br />('.$this['campaigns'][$invest->campaign].')'; ?></td>
                 <td><?php echo $this['status'][$invest->status] ?></td>
                 <td><?php echo $this['methods'][$invest->method] ?></td>
