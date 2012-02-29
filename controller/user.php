@@ -45,6 +45,8 @@ namespace Goteo\Controller {
                         } else {
                             $_SESSION['admin_node'] = \GOTEO_NODE;
                         }
+                    } else {
+                        $_SESSION['admin_node'] = \GOTEO_NODE;
                     }
                     if (!empty($_POST['return'])) {
                         throw new Redirection($_POST['return']);

@@ -8,22 +8,27 @@ namespace Goteo\Model {
     class Home extends \Goteo\Core\Model {
 
         public
-            $id,
-            $section,
-            $title,
-            $description,
+            $item,
+            $node,
             $order;
 
-         static public $items = array(
+         static public
+        $items = array(
              'posts' => 'Entradas de blog',
              'promotes' => 'Proyectos destacados',
              'drops' => 'Capital Riego',
              'feed' => 'Actividad reciente',
              'patrons' => 'Padrinos'
+         ),
+         $node_items = array(
+             'posts' => 'Noticias',
+             'promotes' => 'Proyectos',
+             'calls' => 'CampaÃ±as'
          );
 
+
         /*
-         *  Devuelve datos de un destacado
+         *  Devuelve datos de un elemento
          */
         public static function get ($item, $node = \GOTEO_NODE) {
                 $query = self::query("
@@ -141,7 +146,7 @@ namespace Goteo\Model {
         }
 
         /*
-         * Orden para añadirlo al final
+         * Orden para aï¿½adirlo al final
          */
         public static function next ($node = \GOTEO_NODE) {
             $query = self::query('SELECT MAX(`order`) FROM home WHERE node = :node'
@@ -155,7 +160,11 @@ namespace Goteo\Model {
          * Elementos disponibles apra portada
          */
 		public static function available ($node = \GOTEO_NODE) {
-            $array = self::$items;
+            if ($node == \GOTEO_NODE) {
+                $array = self::$items;
+            } else {
+                $array = self::$node_items;
+            }
             $values = array(':node'=>$node);
             $sql = "SELECT
                         home.item as item

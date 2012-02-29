@@ -1009,6 +1009,7 @@ namespace Goteo\Controller {
                         'options' => array (
                             'node' => $options['node'],   // la gestion de datos del nodo
                             'pages' => $options['pages'], // páginas institucionales del nodo
+                            'sponsors' => $options['sponsors'], // patrocinadores del nodo
                             'blog' => $options['blog'],   // entradas del blog
                             'tags' => $options['tags']    // tags de blog
                         )
@@ -1033,11 +1034,10 @@ namespace Goteo\Controller {
                     'home' => array(
                         'label'   => 'Portada',
                         'options' => array (
+                            'home' => $options['home'],         // elementos en portada
                             'posts' => $options['posts'],       // seleccion de entradas en portada
                             'promote' => $options['promote'],   // seleccion de proyectos destacados
                             // convocatorias en portada del nodo
-                            'sponsors' => $options['sponsors'], // patrocinadores del nodo
-                            'home' => $options['home'],         // elementos en portada 
                             'feed' => $options['feed']          // Eventos de admin (a ver cuales le van a salir)
                         )
                     )

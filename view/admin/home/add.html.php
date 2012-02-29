@@ -1,14 +1,13 @@
 <?php
 
 use Goteo\Library\Text,
-    Goteo\Model;
+    Goteo\Model\Home;
 
 $home = $this['home'];
 $availables = $this['availables'];
 ?>
 <form method="post" action="/admin/home" >
     <input type="hidden" name="action" value="<?php echo $this['action'] ?>" />
-    <input type="hidden" name="node" value="<?php echo $home->node ?>" />
     <input type="hidden" name="order" value="<?php echo $home->order ?>" />
 
 <p>

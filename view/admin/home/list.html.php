@@ -3,6 +3,8 @@
 use Goteo\Library\Text,
     Goteo\Model\Home;
 
+$the_items = ($_SESSION['admin_node'] != \GOTEO_NODE) ? Home::$node_items : Home::$items;
+
 ?>
 <a href="/admin/home/add" class="button red">A&ntilde;adir elemento</a>
 
@@ -23,7 +25,7 @@ use Goteo\Library\Text,
             <?php foreach ($this['items'] as $item) : ?>
             <tr>
                 <td><?php echo $item->order; ?></td>
-                <td><?php echo Home::$items[$item->item]; ?></td>
+                <td><?php echo $the_items[$item->item]; ?></td>
                 <td><a href="/admin/home/up/<?php echo $item->item; ?>">[&uarr;]</a></td>
                 <td><a href="/admin/home/down/<?php echo $item->item; ?>">[&darr;]</a></td>
                 <td><a href="/admin/home/remove/<?php echo $item->item; ?>">[Quitar]</a></td>

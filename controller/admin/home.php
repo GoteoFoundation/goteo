@@ -12,7 +12,7 @@ namespace Goteo\Controller\Admin {
 
         public static function process ($action = 'list', $id = null) {
 
-            $node = \GOTEO_NODE;
+            $node = $_SESSION['admin_node'];
 
             $errors = array();
 
@@ -21,7 +21,7 @@ namespace Goteo\Controller\Admin {
                 // instancia
                 $item = new Model\Home(array(
                     'item' => $_POST['item'],
-                    'node' => $_POST['node'],
+                    'node' => $node,
                     'order' => $_POST['order'],
                     'move' => 'down'
                 ));
@@ -34,10 +34,10 @@ namespace Goteo\Controller\Admin {
 
             switch ($action) {
                 case 'up':
-                    Model\Home::up($id);
+                    Model\Home::up($id, $node);
                     break;
                 case 'down':
-                    Model\Home::down($id);
+                    Model\Home::down($id, $node);
                     break;
                 case 'add':
                     $next = Model\Home::next($node);

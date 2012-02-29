@@ -4,6 +4,7 @@ namespace Goteo\Model {
 
     use Goteo\Model\Project\Media,
         Goteo\Model\Image,
+        Goteo\Model\User,
         Goteo\Library\Check;
 
     class Post extends \Goteo\Core\Model {
@@ -15,6 +16,7 @@ namespace Goteo\Model {
             $image,
             $gallery = array(), // array de instancias image de post_image
             $media,
+            $author,
             $order;
 
         /*
@@ -30,6 +32,7 @@ namespace Goteo\Model {
                         post.image as image,
                         post.media as `media`,
                         DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
+                        post.author as author,
                         post.order as `order`
                     FROM    post
                     LEFT JOIN post_lang
@@ -43,8 +46,12 @@ namespace Goteo\Model {
                 // galeria
                 $post->gallery = Image::getAll($id, 'post');
                 $post->image = $post->gallery[0];
-                
+
+                // video
                 $post->media = new Media($post->media);
+
+                // autor
+                $post->user = User::get($post->author);
 
                 return $post;
 
