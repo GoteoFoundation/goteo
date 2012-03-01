@@ -1263,13 +1263,13 @@ namespace Goteo\Model {
              $sql = "SELECT
                         type,
                         log,
-                        DATE_FORMAT(invest.date, '%d/%m/%Y %H:%i:%s') as date
+                        DATE_FORMAT(invest_detail.date, '%d/%m/%Y %H:%i:%s') as date
                     FROM invest_detail
                     WHERE invest = :id
-                    ORDER BY invest.date DESC
+                    ORDER BY invest_detail.date DESC
                     ";
 
-            $query = self::query($sql);
+            $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
                 $list[] = $item;
             }

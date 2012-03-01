@@ -47,11 +47,11 @@ $filters = $this['filters'];
         <?php endforeach; ?>
         <div style="float:left;margin:5px;">
             <label for="date-filter-from">Fecha desde</label><br />
-            <input type="text" id ="date-filter-from" name="date_from" value ="" />
+            <input type="text" id ="date-filter-from" name="date_from" value ="<?php echo $filters['date_from']?>" />
         </div>
         <div style="float:left;margin:5px;">
             <label for="date-filter-until">Fecha hasta</label><br />
-            <input type="text" id ="date-filter-until" name="date_until" value ="<?php echo date('Y-m-d') ?>" />
+            <input type="text" id ="date-filter-until" name="date_until" value ="<?php echo $filters['date_until']?>" />
         </div>
         <div style="float:left;margin:5px;">
             <input type="submit" value="filtrar" />

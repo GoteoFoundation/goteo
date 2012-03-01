@@ -489,22 +489,21 @@ namespace Goteo\Controller {
          *
          */
         public function verify () {
-
+die('Ya no podemos hacer esto a la ligera');
             // proyectos en campaña
             $projects = Model\Project::active(true);
 
             foreach ($projects as &$project) {
                 // aportes de ese proyecto que esten pendientes de cargo
-                // y haga mas de 30 dias que se hizo
-                $timeago = date('Y-m-d', \mktime(0, 0, 0, date('m'), date('d')-30, date('Y')));
+//                $timeago = date('Y-m-d', \mktime(0, 0, 0, date('m'), date('d')-30, date('Y')));
                 $query = Model\Project::query("
                     SELECT  *
                     FROM  invest
                     WHERE   invest.status = 0
                     AND     invest.method = 'paypal'
                     AND     invest.project = ?
-                    AND     invest.invested <= '{$timeago}'
                     ", array($project->id));
+//                    AND     invest.invested <= '{$timeago}'
                 $project->invests = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
 
                 if (empty($project->invests)) continue;
