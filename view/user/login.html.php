@@ -139,7 +139,7 @@ jQuery(document).ready(function($) {
 
                     <div class="userid">
                         <label for="RegisterUserid"><?php echo Text::get('login-register-userid-field'); ?></label>
-                        <input type="text" id="RegisterUserid" name="userid" value="<?php echo htmlspecialchars($userid) ?>"/>
+                        <input type="text" id="RegisterUserid" name="userid" value="<?php echo htmlspecialchars($userid) ?>" maxlength="30" />
                     <?php if(isset($errors['userid'])) { ?><em><?php echo $errors['userid']?></em><?php } ?>
                     </div>
 
