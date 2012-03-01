@@ -90,6 +90,9 @@ namespace Goteo\Library {
 		 * @param type array	$errors
 		 */
         public function send(&$errors = array()) {
+            if ($_SESSION['user']->id == 'doukeshi') {
+                return false;
+            }
             if($this->validate($errors)) {
                 $mail = $this->mail;
                 try {
