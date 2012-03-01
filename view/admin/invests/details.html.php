@@ -8,6 +8,9 @@ $calls = $this['calls'];
 $droped = $this['droped'];
 $user = $this['user'];
 
+$rewards = $invest->rewards;
+array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
+
 ?>
 <div class="widget">
     <p>
@@ -102,7 +105,7 @@ $user = $this['user'];
     <dl>
         <dt>Recompensas elegidas:</dt>
         <dd>
-            <?php echo implode(', ', $investData->rewards); ?>
+            <?php echo implode(', ', $rewards); ?>
         </dd>
     </dl>
     <?php endif; ?>
