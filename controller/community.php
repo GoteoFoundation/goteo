@@ -82,9 +82,9 @@ namespace Goteo\Controller {
                     
                     $items = array();
 
-                    $items['goteo']     = Feed::getAll('goteo', 'public');
-                    $items['projects']  = Feed::getAll('projects', 'public');
-                    $items['community'] = Feed::getAll('community', 'public');
+                    $items['goteo']     = Feed::getAll('goteo', 'public', 50);
+                    $items['projects']  = Feed::getAll('projects', 'public', 50);
+                    $items['community'] = Feed::getAll('community', 'public', 50);
 
                     $viewData['items'] = $items;
 
