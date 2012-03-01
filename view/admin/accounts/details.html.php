@@ -103,3 +103,10 @@ $user = $this['user'];
     <?php endif ?>
 
 </div>
+
+<div class="widget">
+    <h3>Log</h3>
+    <?php foreach (\Goteo\Model\Invest::getDetails($invest->id) as $log)  {
+        echo "{$log->date} : {$log->log} ({$log->type})<br />";
+    } ?>
+</div>

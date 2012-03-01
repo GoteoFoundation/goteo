@@ -334,6 +334,7 @@ namespace Goteo\Controller {
                             //si no tiene preaproval, cancelar
                             echo 'Aporte ' . $invest->id . ' cancelado por no tener preapproval.<br />';
                             $invest->cancel();
+                            Model\Invest::setDetail($invest->id, 'no-preapproval', 'Aporte cancelado porque no tiene preapproval. Proceso cron/execute');
                             continue;
                         }
 
@@ -383,6 +384,7 @@ namespace Goteo\Controller {
 
                             echo 'Aporte '.$invest->id.' cancelado por proyecto caducado.<br />';
                             $invest->setStatus('4');
+                            Model\Invest::setDetail($invest->id, 'project-expired', 'Aporte marcado como caducado porque el proyecto no ha tenido exito. Proceso cron/execute');
 
                             continue;
                         }
@@ -394,6 +396,7 @@ namespace Goteo\Controller {
                             // si estamos aqui y no tiene cuenta paypal es que nos hemos colado en algo
                             if (empty($projectAccount->paypal)) {
                                 if ($debug) echo '<br /> Al ejecutar nos encontramos que el proyecto '.$project->name.' no tiene cuenta paypal!!<br />';
+                                Model\Invest::setDetail($invest->id, 'no-paypal-account', 'El proyecto no tiene cuenta paypal en el momento de ejecutar el preapproval. Proceso cron/execute');
                                 @mail('goteo_fail@doukeshi.org',
                                     'El proyecto '.$project->name.' no tiene cuenta paypal ' . SITE_URL,
                                     'El proyecto '.$project->name.' no tiene cuenta paypal y esto intentaba ejecutarlo :S');
@@ -413,6 +416,7 @@ namespace Goteo\Controller {
                                     if (Paypal::pay($invest, $err)) {
                                         $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
                                         if ($debug) echo ' -> Ok';
+                                        Model\Invest::setDetail($invest->id, 'executed', 'Se ha ejecutado el preapproval, ha iniciado el pago encadenado. Proceso cron/execute');
                                     } else {
                                         $txt_errors = implode('; ', $err);
                                         echo 'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: ' . $txt_errors . '<br />';
@@ -421,6 +425,7 @@ namespace Goteo\Controller {
                                             'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: ' . $txt_errors);
                                         $log_text = "Ha fallado al ejecutar el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
                                         if ($debug) echo ' -> ERROR!!';
+                                        Model\Invest::setDetail($invest->id, 'execution-failed', 'Fallo al ejecutar el preapproval, no ha iniciado el pago encadenado: ' . $txt_errors . '. Proceso cron/execute');
                                     }
                                     break;
                                 case 'tpv':
@@ -485,16 +490,20 @@ namespace Goteo\Controller {
          */
         public function verify () {
 
-            // proyectos en campaña (y los financiados por si se ha quedado alguno descolgado)
-            $projects = Model\Project::active();
+            // proyectos en campaña
+            $projects = Model\Project::active(true);
 
             foreach ($projects as &$project) {
+                // aportes de ese proyecto que esten pendientes de cargo
+                // y haga mas de 30 dias que se hizo
+                $timeago = date('Y-m-d', \mktime(0, 0, 0, date('m'), date('d')-30, date('Y')));
                 $query = Model\Project::query("
                     SELECT  *
                     FROM  invest
                     WHERE   invest.status = 0
                     AND     invest.method = 'paypal'
                     AND     invest.project = ?
+                    AND     invest.invested <= '{$timeago}'
                     ", array($project->id));
                 $project->invests = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
 
@@ -509,8 +518,9 @@ namespace Goteo\Controller {
 
                     if (empty($invest->preapproval)) {
                         // no tiene preaproval, cancelar
-                        echo 'Aporte ' . $invest->id . ' No tiene preapproval, aporte cancelado<br />';
+                        echo 'Aporte ' . $invest->id . ' del ' . $invest->invested . ' No tiene preapproval, aporte cancelado<br />';
                         $invest->cancel();
+                        Model\Invest::setDetail($invest->id, 'no-preapproval', 'Aporte cancelado en el proceso cron/verify porque no tiene preapproval');
                     } else {
                         // comprobar si está cancelado por el usuario
                         if ($details = Paypal::preapprovalDetails($invest->preapproval, $errors)) {
@@ -521,6 +531,7 @@ namespace Goteo\Controller {
                             // si está aprobado y el aporte está en proceso, lo marcamos como pendiente de cargo
                             if ($details->approved == true && $invest->status == '-1') {
                                 $invest->setStatus('0');
+                                Model\Invest::setDetail($invest->id, 'set-status-0', 'El Aporte estaba \'En proceso\' pero los detalles dicen que el preapproval está aprobado. Cambio estado a \'pendiente de cargo\' en el proceso cron/verify');
                             }
 
 //                            echo \trace($details);
@@ -529,11 +540,20 @@ namespace Goteo\Controller {
                                     //echo 'Sigue activo<br />';
                                     break;
                                 case 'CANCELED':
-                                    echo 'Aporte ' . $invest->id . ' Preapproval cancelado por el usuario<br />';
+                                    echo 'Proyecto: '.$project->name.' <br /> Aporte ' . $invest->id . ' del ' . $invest->invested . '  Preapproval cancelado por el usuario<br />';
                                     $invest->cancel();
+                                    Model\Invest::setDetail($invest->id, 'preapproval_canceled', 'Preapproval cancelado por el usuario, aporte cancelado en el proceso cron/verify');
+                                    @mail('goteo_fail@doukeshi.org',
+                                        'Preapproval cancelado por el usuario ' . SITE_URL,
+                                        'Aporte ' . $invest->id . ': al pedir detalles paypal: Cancelado por el usuario');
                                     break;
                                 case 'DEACTIVED':
-                                    echo 'Aporte ' . $invest->id . ' Preapproval Desactivado!<br />';
+                                    echo 'Proyecto: '.$project->name.' <br /> Aporte ' . $invest->id . ' del ' . $invest->invested . '  Preapproval Desactivado!<br />';
+                                    $invest->cancel();
+                                    Model\Invest::setDetail($invest->id, 'preapproval_canceled', 'Preapproval está desactivado, aporte cancelado en el proceso cron/verify');
+                                    @mail('goteo_fail@doukeshi.org',
+                                        'Preapproval desactivado ' . SITE_URL,
+                                        'Aporte ' . $invest->id . ': al pedir detalles paypal: Está desactivado!!');
                                     break;
                             }
                         } else {
@@ -598,10 +618,12 @@ namespace Goteo\Controller {
                 if (Paypal::doPay($invest, $errors)) {
                     echo 'Aporte (id: '.$invest->id.') pagado al proyecto. Ver los detalles en la <a href="/admin/accounts/details/'.$invest->id.'">gestion de transacciones</a><br />';
                     $log_text = "Se ha realizado el pago de %s PayPal al proyecto %s por el aporte de %s (id: %s) del dia %s";
+                    Model\Invest::setDetail($invest->id, 'payed', 'Se ha realizado el pago secundario al proyecto. Proceso cron/doPay');
 
                 } else {
                     echo 'Fallo al pagar al proyecto el aporte (id: '.$invest->id.'). Ver los detalles en la <a href="/admin/accounts/details/'.$invest->id.'">gestion de transacciones</a><br />' . implode('<br />', $errors);
                     $log_text = "Ha fallado al realizar el pago de %s PayPal al proyecto %s por el aporte de %s (id: %s) del dia %s";
+                    Model\Invest::setDetail($invest->id, 'pay-failed', 'Fallo al realizar el pago secundario: ' . implode('<br />', $errors) . '. Proceso cron/doPay');
                 }
 
                 // Evento Feed

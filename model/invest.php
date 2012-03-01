@@ -1239,6 +1239,45 @@ namespace Goteo\Model {
          }
 
 
+         public static function setDetail($id, $type, $log) {
+             $values = array(
+                ':id' => $id,
+                ':type' => $type,
+                ':log' => $log
+            );
+
+            $sql = "REPLACE INTO invest_detail (invest, type, log, date)
+                VALUES (:id, :type, :log, NOW())";
+
+            self::query($sql, $values);
+
+
+         }
+
+         public static function getDetails($id) {
+
+             $list = array();
+
+             $values = array(':id' => $id);
+
+             $sql = "SELECT
+                        type,
+                        log,
+                        DATE_FORMAT(invest.date, '%d/%m/%Y %H:%i:%s') as date
+                    FROM invest_detail
+                    WHERE invest = :id
+                    ORDER BY invest.date DESC
+                    ";
+
+            $query = self::query($sql);
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $list[] = $item;
+            }
+            return $list;
+
+
+         }
+
     }
     
 }
