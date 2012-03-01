@@ -5,11 +5,12 @@ use Goteo\Library\Text;
 $filters = $this['filters'];
 
 //arrastramos los filtros
-$filter = "?status={$filters['status']}&category={$filters['category']}&owner={$filters['owner']}&name={$filters['name']}&order={$filters['order']}";
+$filter = "?filtered={$filters['filtered']}&status={$filters['status']}&category={$filters['category']}&owner={$filters['owner']}&name={$filters['name']}&order={$filters['order']}";
 
 ?>
 <div class="widget board">
     <form id="filter-form" action="/admin/projects" method="get">
+        <input type="hidden" name="filtered" value="yes" />
         <table>
             <tr>
                 <td>
@@ -64,7 +65,9 @@ $filter = "?status={$filters['status']}&category={$filters['category']}&owner={$
 </div>
 
 <div class="widget board">
-    <?php if (!empty($this['projects'])) : ?>
+<?php if ($filters['filtered'] != 'yes') : ?>
+    <p>Es necesario poner algun filtro, hay demasiados registros!</p>
+<?php elseif (!empty($this['projects'])) : ?>
     <table>
         <thead>
             <tr>
