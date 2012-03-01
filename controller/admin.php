@@ -406,7 +406,7 @@ namespace Goteo\Controller {
         public function users($action = 'list', $id = null, $subaction = '') {
 
             $filters = array();
-            $fields = array('status', 'interest', 'role', 'id', 'name', 'email', 'order');
+            $fields = array('filtered', 'status', 'interest', 'role', 'id', 'name', 'email', 'order');
             foreach ($fields as $field) {
                 if (isset($_GET[$field])) {
                     $filters[$field] = $_GET[$field];

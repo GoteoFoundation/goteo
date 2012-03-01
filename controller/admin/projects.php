@@ -15,7 +15,7 @@ namespace Goteo\Controller\Admin {
             
 
             $filters = array();
-            $fields = array('status', 'category', 'owner', 'name', 'order');
+            $fields = array('filtered', 'status', 'category', 'owner', 'name', 'order');
             foreach ($fields as $field) {
                 if (isset($_GET[$field])) {
                     $filters[$field] = $_GET[$field];
