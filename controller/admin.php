@@ -544,8 +544,11 @@ namespace Goteo\Controller {
                 );
             }
 
-
-            $projects = Model\Project::getList($filters);
+            if (!empty($filters['filtered'])) {
+                $projects = Model\Project::getList($filters);
+            } else {
+                $projects = array();
+            }
             $status = Model\Project::status();
             $categories = Model\Project\Category::getAll();
             $owners = Model\User::getOwners();
@@ -2995,7 +2998,11 @@ namespace Goteo\Controller {
                 
                 case 'list':
                 default:
-                    $users = Model\User::getAll($filters);
+                    if (!empty($filters['filtered'])) {
+                        $users = Model\User::getAll($filters);
+                    } else {
+                        $users = array();
+                    }
                     $status = array(
                                 'active' => 'Activo',
                                 'inactive' => 'Inactivo'

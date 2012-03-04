@@ -9,6 +9,7 @@ if (LANG != 'es') {
     header('Location: /admin/?lang=es');
 }
 
+// piñoncete para Diego
 $allowed_contents = array(
     'base',
     'blog',
@@ -25,10 +26,23 @@ $allowed_contents = array(
     'mailing' // para testeo newsletter
 );
 
-// piñoncete para Diego
 if ($_SESSION['user']->id == 'diegobus'
     && !empty($this['folder'])
     && !in_array($this['folder'], $allowed_contents)) {
+
+    header('Location: /admin/');
+}
+
+// piñoncete para Mercè
+$merx_allowed_contents = array(
+    'users',
+    'invests',
+    'accounts'
+);
+
+if ($_SESSION['user']->id == 'merxxx'
+    && !empty($this['folder'])
+    && !in_array($this['folder'], $merx_allowed_contents)) {
 
     header('Location: /admin/');
 }
@@ -91,6 +105,12 @@ include 'view/prologue.html.php';
                              continue;
                         }
                     }
+                    // piñoncete para Mercè
+                    if ($_SESSION['user']->id == 'merxxx') {
+                        if (!in_array($sCode, array('users','accounting')))  {
+                             continue;
+                        }
+                    }
                     ?>
                 <a name="<?php echo $sCode ?>"></a>
                 <div class="widget board collapse">
@@ -100,6 +120,12 @@ include 'view/prologue.html.php';
                     // re piñoncete para Diego, en seccion users solamente 'mailing'
                     if ($_SESSION['user']->id == 'diegobus') {
                         if ($sCode == 'users' && $oCode != 'mailing')  {
+                             continue;
+                        }
+                    }
+                    // re piñoncete para Mercè, en seccion users no ve la gestion de meritocracia
+                    if ($_SESSION['user']->id == 'merxxx') {
+                        if ($sCode == 'users' && $oCode != 'users')  {
                              continue;
                         }
                     }

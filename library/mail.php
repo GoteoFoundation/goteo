@@ -270,7 +270,7 @@ namespace Goteo\Library {
          *
          * @param array $filters    user (nombre o email),  template
          */
-        public function getSended($filters = array()) {
+        public function getSended($filters = array(), $limit = 999) {
 
             $values = array();
             $sqlFilter = '';
@@ -298,7 +298,8 @@ namespace Goteo\Library {
                     LEFT JOIN user
                         ON user.email = mail.email
                     $sqlFilter
-                    ORDER BY mail.date DESC";
+                    ORDER BY mail.date DESC
+                    LIMIT {$limit}";
             $query = Model::query($sql, $values);
             return $query->fetchAll(\PDO::FETCH_OBJ);
             
