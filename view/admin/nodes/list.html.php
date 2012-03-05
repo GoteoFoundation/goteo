@@ -5,9 +5,6 @@ use Goteo\Library\Text,
 
 $filters = $this['filters'];
 
-//arrastramos los filtros
-$filter = "?status={$filters['status']}&admin={$filters['admin']}&name={$filters['name']}";
-
 $admins = User::getAdmins();
 
 ?>

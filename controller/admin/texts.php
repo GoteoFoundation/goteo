@@ -10,19 +10,8 @@ namespace Goteo\Controller\Admin {
 
     class Texts {
 
-        public static function process ($action = 'list', $id = null) {
+        public static function process ($action = 'list', $id = null, $filters = array()) {
             
-
-            // comprobamos los filtros
-            $filters = array();
-            $fields = array('idfilter', 'group', 'text');
-            foreach ($fields as $field) {
-                if (isset($_GET[$field])) {
-                    $filters[$field] = $_GET[$field];
-                }
-            }
-
-            $filter = "?idfilter={$filters['idfilter']}&group={$filters['group']}&text={$filters['text']}";
 
             // valores de filtro
             $idfilters = Text::filters();
@@ -93,7 +82,7 @@ namespace Goteo\Controller\Admin {
                         );
 
                         if (Text::update($data, $errors)) {
-                            throw new Redirection("/admin/texts/$filter");
+                            throw new Redirection("/admin/texts");
                         }
                     } else {
                         $text = Text::getPurpose($id);
@@ -109,7 +98,7 @@ namespace Goteo\Controller\Admin {
                                 'text' => $text
                             ),
                             'form' => array(
-                                'action' => '/admin/texts/edit/'.$id.'/'.$filter,
+                                'action' => '/admin/texts/edit/'.$id,
                                 'submit' => array(
                                     'name' => 'update',
                                     'label' => 'Aplicar'

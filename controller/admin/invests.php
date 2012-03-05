@@ -198,18 +198,6 @@ namespace Goteo\Controller\Admin {
                 // fin de la historia
 
            } else {
-
-               // sino, cargamos los filtros
-                $filters = array();
-                $fields = array('filtered', 'methods', 'status', 'investStatus', 'projects', 'users', 'calls', 'types');
-                foreach ($fields as $field) {
-                    $filters[$field] = (string) $_GET[$field];
-                }
-
-                if (!isset($filters['status'])) $filters['status'] = 'all';
-                if (!isset($filters['investStatus'])) $filters['status'] = 'all';
-
-
                 // métodos de pago
                 $methods = Model\Invest::methods();
                 // estados del proyecto

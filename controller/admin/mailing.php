@@ -12,7 +12,7 @@ namespace Goteo\Controller\Admin {
 
     class Mailing {
 
-        public static function process ($action = 'list', $id = null) {
+        public static function process ($action = 'list', $id = null, $filters = array()) {
 
             $errors = array();
 
@@ -37,324 +37,304 @@ namespace Goteo\Controller\Admin {
                 $_SESSION['mailing'] = array();
             }
 
-            if (!isset($_SESSION['mailing']['filters']['status']))
-                $_SESSION['mailing']['filters']['status'] = -1;
+            switch ($action) {
+                case 'edit':
 
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    $_SESSION['mailing']['receivers'] = array();
 
-                switch ($action) {
-                    case 'edit':
-
-                        $_SESSION['mailing']['receivers'] = array();
-
-                        $values = array();
-                        $sqlFields  = '';
-                        $sqlInner  = '';
-                        $sqlFilter = '';
+                    $values = array();
+                    $sqlFields  = '';
+                    $sqlInner  = '';
+                    $sqlFilter = '';
 
 
-                        // Han elegido filtros
-                        $filters = array(
-                            'project'  => $_POST['project'],
-                            'type'     => $_POST['type'],
-                            'status'   => $_POST['status'],
-                            'method'   => $_POST['method'],
-                            'interest' => $_POST['interest'],
-                            'role'     => $_POST['role'],
-                            'name'     => $_POST['name'],
-                            'workshopper' => $_POST['workshopper']
-                        );
-
-                        $_SESSION['mailing']['filters'] = $filters;
-
-                        // cargamos los destiantarios
-                        //----------------------------
-                        // por tipo de usuario
-                        switch ($filters['type']) {
-                            case 'investor':
-                                $sqlInner .= "INNER JOIN invest
-                                        ON invest.user = user.id
-                                        AND (invest.status = 0 OR invest.status = 1 OR invest.status = 3 OR invest.status = 4)
-                                    INNER JOIN project
-                                        ON project.id = invest.project
-                                        ";
-                                $sqlFields .= ", project.name as project";
-                                $sqlFields .= ", project.id as projectId";
-                                break;
-                            case 'owner':
-                                $sqlInner .= "INNER JOIN project
-                                        ON project.owner = user.id
-                                        ";
-                                $sqlFields .= ", project.name as project";
-                                $sqlFields .= ", project.id as projectId";
-                                break;
-                            default :
-                                break;
-                        }
-                        $_SESSION['mailing']['filters_txt'] = 'los <strong>' . $types[$filters['type']] . '</strong> ';
-
-                        if (!empty($filters['project']) && !empty($sqlInner)) {
-                            $sqlFilter .= " AND project.name LIKE (:project) ";
-                            $values[':project'] = '%'.$filters['project'].'%';
-                            $_SESSION['mailing']['filters_txt'] .= 'de proyectos que su nombre contenga <strong>\'' . $filters['project'] . '\'</strong> ';
-                        } elseif (empty($filters['project']) && !empty($sqlInner)) {
-                            $_SESSION['mailing']['filters_txt'] .= 'de cualquier proyecto ';
-                        }
-
-                        if (isset($filters['status']) && $filters['status'] > -1 && !empty($sqlInner)) {
-                            $sqlFilter .= "AND project.status = :status ";
-                            $values[':status'] = $filters['status'];
-                            $_SESSION['mailing']['filters_txt'] .= 'en estado <strong>' . $status[$filters['status']] . '</strong> ';
-                        } elseif ($filters['status'] < 0 && !empty($sqlInner)) {
-                            $_SESSION['mailing']['filters_txt'] .= 'en cualquier estado ';
-                        }
-
-                        if ($filters['type'] == 'investor') {
-                            if (!empty($filters['method']) && !empty($sqlInner)) {
-                                $sqlFilter .= "AND invest.method = :method ";
-                                $values[':method'] = $filters['method'];
-                                $_SESSION['mailing']['filters_txt'] .= 'mediante <strong>' . $methods[$filters['method']] . '</strong> ';
-                            } elseif (empty($filters['method']) && !empty($sqlInner)) {
-                                $_SESSION['mailing']['filters_txt'] .= 'mediante cualquier metodo ';
-                            }
-                        }
-
-                        if (!empty($filters['interest'])) {
-                            $sqlInner .= "INNER JOIN user_interest
-                                    ON user_interest.user = user.id
-                                    AND user_interest.interest = :interest
+                    // cargamos los destiantarios
+                    //----------------------------
+                    // por tipo de usuario
+                    switch ($filters['type']) {
+                        case 'investor':
+                            $sqlInner .= "INNER JOIN invest
+                                    ON invest.user = user.id
+                                    AND (invest.status = 0 OR invest.status = 1 OR invest.status = 3 OR invest.status = 4)
+                                INNER JOIN project
+                                    ON project.id = invest.project
                                     ";
-                            $values[':interest'] = $filters['interest'];
-                            $_SESSION['mailing']['filters_txt'] .= 'interesados en fin <strong>' . $interests[$filters['interest']] . '</strong> ';
-                        }
-
-                        if (!empty($filters['role'])) {
-                            $sqlInner .= "INNER JOIN user_role
-                                    ON user_role.user_id = user.id
-                                    AND user_role.role_id = :role
+                            $sqlFields .= ", project.name as project";
+                            $sqlFields .= ", project.id as projectId";
+                            break;
+                        case 'owner':
+                            $sqlInner .= "INNER JOIN project
+                                    ON project.owner = user.id
                                     ";
-                            $values[':role'] = $filters['role'];
-                            $_SESSION['mailing']['filters_txt'] .= 'que sean <strong>' . $roles[$filters['role']] . '</strong> ';
-                        }
+                            $sqlFields .= ", project.name as project";
+                            $sqlFields .= ", project.id as projectId";
+                            break;
+                        default :
+                            break;
+                    }
+                    $_SESSION['mailing']['filters_txt'] = 'los <strong>' . $types[$filters['type']] . '</strong> ';
 
-                        if (!empty($filters['name'])) {
-                            $sqlFilter .= " AND ( user.name LIKE (:name) OR user.email LIKE (:name) ) ";
-                            $values[':name'] = '%'.$filters['name'].'%';
-                            $_SESSION['mailing']['filters_txt'] .= 'que su nombre o email contenga <strong>\'' . $filters['name'] . '\'</strong> ';
-                        }
+                    if (!empty($filters['project']) && !empty($sqlInner)) {
+                        $sqlFilter .= " AND project.name LIKE (:project) ";
+                        $values[':project'] = '%'.$filters['project'].'%';
+                        $_SESSION['mailing']['filters_txt'] .= 'de proyectos que su nombre contenga <strong>\'' . $filters['project'] . '\'</strong> ';
+                    } elseif (empty($filters['project']) && !empty($sqlInner)) {
+                        $_SESSION['mailing']['filters_txt'] .= 'de cualquier proyecto ';
+                    }
 
-                        if (!empty($filters['workshopper'])) {
-                            $sqlFilter .= " AND user.password = SHA1(user.email) ";
-                            $_SESSION['mailing']['filters_txt'] .= 'que su contraseña sea igual que su email ';
-                        }
+                    if (isset($filters['status']) && $filters['status'] > -1 && !empty($sqlInner)) {
+                        $sqlFilter .= "AND project.status = :status ";
+                        $values[':status'] = $filters['status'];
+                        $_SESSION['mailing']['filters_txt'] .= 'en estado <strong>' . $status[$filters['status']] . '</strong> ';
+                    } elseif ($filters['status'] < 0 && !empty($sqlInner)) {
+                        $_SESSION['mailing']['filters_txt'] .= 'en cualquier estado ';
+                    }
 
-                        $sql = "SELECT
-                                    user.id as id,
-                                    user.name as name,
-                                    user.email as email
-                                    $sqlFields
-                                FROM user
-                                $sqlInner
-                                WHERE user.id != 'root'
-                                AND user.active = 1
-                                $sqlFilter
-                                GROUP BY user.id
-                                ORDER BY user.name ASC
+                    if ($filters['type'] == 'investor') {
+                        if (!empty($filters['method']) && !empty($sqlInner)) {
+                            $sqlFilter .= "AND invest.method = :method ";
+                            $values[':method'] = $filters['method'];
+                            $_SESSION['mailing']['filters_txt'] .= 'mediante <strong>' . $methods[$filters['method']] . '</strong> ';
+                        } elseif (empty($filters['method']) && !empty($sqlInner)) {
+                            $_SESSION['mailing']['filters_txt'] .= 'mediante cualquier metodo ';
+                        }
+                    }
+
+                    if (!empty($filters['interest'])) {
+                        $sqlInner .= "INNER JOIN user_interest
+                                ON user_interest.user = user.id
+                                AND user_interest.interest = :interest
                                 ";
+                        $values[':interest'] = $filters['interest'];
+                        $_SESSION['mailing']['filters_txt'] .= 'interesados en fin <strong>' . $interests[$filters['interest']] . '</strong> ';
+                    }
+
+                    if (!empty($filters['role'])) {
+                        $sqlInner .= "INNER JOIN user_role
+                                ON user_role.user_id = user.id
+                                AND user_role.role_id = :role
+                                ";
+                        $values[':role'] = $filters['role'];
+                        $_SESSION['mailing']['filters_txt'] .= 'que sean <strong>' . $roles[$filters['role']] . '</strong> ';
+                    }
+
+                    if (!empty($filters['name'])) {
+                        $sqlFilter .= " AND ( user.name LIKE (:name) OR user.email LIKE (:name) ) ";
+                        $values[':name'] = '%'.$filters['name'].'%';
+                        $_SESSION['mailing']['filters_txt'] .= 'que su nombre o email contenga <strong>\'' . $filters['name'] . '\'</strong> ';
+                    }
+
+                    if (!empty($filters['workshopper'])) {
+                        $sqlFilter .= " AND user.password = SHA1(user.email) ";
+                        $_SESSION['mailing']['filters_txt'] .= 'que su contraseña sea igual que su email ';
+                    }
+
+                    $sql = "SELECT
+                                user.id as id,
+                                user.name as name,
+                                user.email as email
+                                $sqlFields
+                            FROM user
+                            $sqlInner
+                            WHERE user.id != 'root'
+                            AND user.active = 1
+                            $sqlFilter
+                            GROUP BY user.id
+                            ORDER BY user.name ASC
+                            ";
 
 //                        echo '<pre>'.$sql . '<br />'.print_r($values, 1).'</pre>';
 
-                        if ($query = Model\User::query($sql, $values)) {
-                            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
-                                $_SESSION['mailing']['receivers'][$receiver->id] = $receiver;
-                            }
-                        } else {
-                            $_SESSION['mailing']['errors'][] = 'Fallo el SQL!!!!! <br />' . $sql . '<pre>'.print_r($values, 1).'</pre>';
+                    if ($query = Model\User::query($sql, $values)) {
+                        foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
+                            $_SESSION['mailing']['receivers'][$receiver->id] = $receiver;
                         }
+                    } else {
+                        $_SESSION['mailing']['errors'][] = 'Fallo el SQL!!!!! <br />' . $sql . '<pre>'.print_r($values, 1).'</pre>';
+                    }
 
-                        // si no hay destinatarios, salta a la lista con mensaje de error
-                        if (empty($_SESSION['mailing']['receivers'])) {
-                            $_SESSION['mailing']['errors'][] = 'No se han encontrado destinatarios para ' . $_SESSION['mailing']['filters_txt'];
+                    // si no hay destinatarios, salta a la lista con mensaje de error
+                    if (empty($_SESSION['mailing']['receivers'])) {
+                        $_SESSION['mailing']['errors'][] = 'No se han encontrado destinatarios para ' . $_SESSION['mailing']['filters_txt'];
 
-                            throw new Redirection('/admin/mailing/list');
-                        }
+                        throw new Redirection('/admin/mailing/list');
+                    }
 
-                        // si hay, mostramos el formulario de envio
-                        return new View(
-                            'view/admin/index.html.php',
-                            array(
-                                'folder'    => 'mailing',
-                                'file'      => 'edit',
-                                'filters'   => $_SESSION['mailing']['filters'],
+                    // si hay, mostramos el formulario de envio
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder'    => 'mailing',
+                            'file'      => 'edit',
+                            'filters'   => $filters,
 //                                'projects'  => $projects,
-                                'interests' => $interests,
-                                'status'    => $status,
-                                'types'     => $types,
-                                'roles'     => $roles
-                            )
-                        );
+                            'interests' => $interests,
+                            'status'    => $status,
+                            'types'     => $types,
+                            'roles'     => $roles
+                        )
+                    );
 
-                        break;
-                    case 'send':
-                        // Enviando contenido recibido a destinatarios recibidos
-                        $users = array();
-                        foreach ($_POST as $key=>$value) {
-                            $matches = array();
-                            \preg_match('#receiver_(\w+)#', $key, $matches);
+                    break;
+                case 'send':
+                    // Enviando contenido recibido a destinatarios recibidos
+                    $users = array();
+                    foreach ($_POST as $key=>$value) {
+                        $matches = array();
+                        \preg_match('#receiver_(\w+)#', $key, $matches);
 //                            echo \trace($matches);
-                            if (!empty($matches[1]) && !empty($_SESSION['mailing']['receivers'][$matches[1]]->email)) {
-                                $users[] = $matches[1];
-                            }
+                        if (!empty($matches[1]) && !empty($_SESSION['mailing']['receivers'][$matches[1]]->email)) {
+                            $users[] = $matches[1];
                         }
+                    }
 
 //                        $content = nl2br($_POST['content']);
-                        $content = $_POST['content'];
-                        $subject = $_POST['subject'];
-                        $templateId = !empty($_POST['template']) ? $_POST['template'] : 11;
+                    $content = $_POST['content'];
+                    $subject = $_POST['subject'];
+                    $templateId = !empty($_POST['template']) ? $_POST['template'] : 11;
 
+                    /*
+                     * Contenido para newsletter
+                     * - Sacamos los elementos en portada
+                     * - Preparamos el contenedor para cada grupo que tengamos
+                     * - Maquetamos cada elemento en su contenedor
+                     */
+                    if ($templateId == 33) {
+                        $_SESSION['NEWSLETTER_SENDID'] = '';
+
+                        // orden de los elementos en portada
+                        $order = Model\Home::getAll();
+
+                        // entradas de blog
+                        $posts_content = '';
                         /*
-                         * Contenido para newsletter
-                         * - Sacamos los elementos en portada
-                         * - Preparamos el contenedor para cada grupo que tengamos
-                         * - Maquetamos cada elemento en su contenedor
+                        if (isset($order['posts'])) {
+                            $home_posts = Model\Post::getList();
+                            if (!empty($home_posts)) {
+                                $posts_content = '<div class="section-tit">'.Text::get('home-posts-header').'</div>';
+                                foreach ($posts as $id=>$title) {
+                                    $the_post = Model\Post::get($id);
+                                    $posts_content .= new View('view/email/newsletter_post.html.php', array('post'=>$the_post));
+                                    break; // solo cogemos uno
+                                }
+                            }
+                        }
+                         *
                          */
+
+                        // Proyectos destacados
+                        $promotes_content = '';
+                        if (isset($order['promotes'])) {
+                            $home_promotes  = Model\Promote::getAll(true);
+
+                            if (!empty($home_promotes)) {
+                                $promotes_content = '<div class="section-tit">'.Text::get('home-promotes-header').'</div>';
+                                foreach ($home_promotes as $key => $promote) {
+                                    try {
+                                        $the_project = Model\Project::getMedium($promote->project, LANG);
+                                        $promotes_content .= new View('view/email/newsletter_project.html.php', array('promote'=>$promote, 'project'=>$the_project));
+                                    } catch (\Goteo\Core\Error $e) {
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+
+                        // capital riego
+                        $drops_content = '';
+                        /*
+                        if (isset($order['drops'])) {
+                            $calls     = Model\Call::getActive(3); // convocatorias en modalidad 1; inscripcion de proyectos
+                            $campaigns = Model\Call::getActive(4); // convocatorias en modalidad 2; repartiendo capital riego
+
+                            if (!empty($calls) || !empty($campaigns)) {
+                                $drops_content = '<div class="section-tit">'.str_replace('<br />', ': ', Text::get('home-calls-header')).'</div>';
+
+                            }
+                        }
+                        */
+
+                        // montammos el contenido completo
+                        $tmpcontent = $content;
+                        foreach (\array_keys($order) as $item) {
+                            $var = $item.'_content';
+                            $tmpcontent .= $$var;
+                        }
+
+                    }
+
+                    // ahora, envio, el contenido a cada usuario
+                    foreach ($users as $usr) {
+
+                        // si es newsletter
                         if ($templateId == 33) {
-                            $_SESSION['NEWSLETTER_SENDID'] = '';
+                            // Mirar que no tenga bloqueadas las preferencias
+                            if (Model\User::mailBlock($usr)) continue;
 
-                            // orden de los elementos en portada
-                            $order = Model\Home::getAll();
-
-                            // entradas de blog
-                            $posts_content = '';
-                            /*
-                            if (isset($order['posts'])) {
-                                $home_posts = Model\Post::getList();
-                                if (!empty($home_posts)) {
-                                    $posts_content = '<div class="section-tit">'.Text::get('home-posts-header').'</div>';
-                                    foreach ($posts as $id=>$title) {
-                                        $the_post = Model\Post::get($id);
-                                        $posts_content .= new View('view/email/newsletter_post.html.php', array('post'=>$the_post));
-                                        break; // solo cogemos uno
-                                    }
-                                }
-                            }
-                             *
-                             */
-
-                            // Proyectos destacados
-                            $promotes_content = '';
-                            if (isset($order['promotes'])) {
-                                $home_promotes  = Model\Promote::getAll(true);
-
-                                if (!empty($home_promotes)) {
-                                    $promotes_content = '<div class="section-tit">'.Text::get('home-promotes-header').'</div>';
-                                    foreach ($home_promotes as $key => $promote) {
-                                        try {
-                                            $the_project = Model\Project::getMedium($promote->project, LANG);
-                                            $promotes_content .= new View('view/email/newsletter_project.html.php', array('promote'=>$promote, 'project'=>$the_project));
-                                        } catch (\Goteo\Core\Error $e) {
-                                            continue;
-                                        }
-                                    }
-                                }
-                            }
-
-                            // capital riego
-                            $drops_content = '';
-                            /*
-                            if (isset($order['drops'])) {
-                                $calls     = Model\Call::getActive(3); // convocatorias en modalidad 1; inscripcion de proyectos
-                                $campaigns = Model\Call::getActive(4); // convocatorias en modalidad 2; repartiendo capital riego
-
-                                if (!empty($calls) || !empty($campaigns)) {
-                                    $drops_content = '<div class="section-tit">'.str_replace('<br />', ': ', Text::get('home-calls-header')).'</div>';
-
-                                }
-                            }
-                            */
-
-                            // montammos el contenido completo
-                            $tmpcontent = $content;
-                            foreach (\array_keys($order) as $item) {
-                                $var = $item.'_content';
-                                $tmpcontent .= $$var;
-                            }
-
+                            // el sontenido es el mismo para todos, no lleva variables
+                        } else {
+                            $tmpcontent = \str_replace(
+                                array('%USERID%', '%USEREMAIL%', '%USERNAME%', '%SITEURL%', '%PROJECTID%', '%PROJECTNAME%', '%PROJECTURL%'),
+                                array(
+                                    $usr,
+                                    $_SESSION['mailing']['receivers'][$usr]->email,
+                                    $_SESSION['mailing']['receivers'][$usr]->name,
+                                    SITE_URL,
+                                    $_SESSION['mailing']['receivers'][$usr]->projectId,
+                                    $_SESSION['mailing']['receivers'][$usr]->project,
+                                    SITE_URL.'/project/'.$_SESSION['mailing']['receivers'][$usr]->projectId
+                                ),
+                                $content);
                         }
 
-                        // ahora, envio, el contenido a cada usuario
-                        foreach ($users as $usr) {
 
-                            // si es newsletter
-                            if ($templateId == 33) {
-                                // Mirar que no tenga bloqueadas las preferencias
-                                if (Model\User::mailBlock($usr)) continue;
+                        $mailHandler = new Mail();
 
-                                // el sontenido es el mismo para todos, no lleva variables
-                            } else {
-                                $tmpcontent = \str_replace(
-                                    array('%USERID%', '%USEREMAIL%', '%USERNAME%', '%SITEURL%', '%PROJECTID%', '%PROJECTNAME%', '%PROJECTURL%'),
-                                    array(
-                                        $usr,
-                                        $_SESSION['mailing']['receivers'][$usr]->email,
-                                        $_SESSION['mailing']['receivers'][$usr]->name,
-                                        SITE_URL,
-                                        $_SESSION['mailing']['receivers'][$usr]->projectId,
-                                        $_SESSION['mailing']['receivers'][$usr]->project,
-                                        SITE_URL.'/project/'.$_SESSION['mailing']['receivers'][$usr]->projectId
-                                    ),
-                                    $content);
-                            }
-
-
-                            $mailHandler = new Mail();
-
-                            $mailHandler->to = $_SESSION['mailing']['receivers'][$usr]->email;
-                            $mailHandler->toName = $_SESSION['mailing']['receivers'][$usr]->name;
-                            $mailHandler->subject = $subject;
-                            $mailHandler->content = '<br />'.$tmpcontent.'<br />';
-                            $mailHandler->html = true;
-                            $mailHandler->template = $templateId;
-                            if ($mailHandler->send($errors)) {
-                                $_SESSION['mailing']['receivers'][$usr]->ok = true;
-                            } else {
-                                $_SESSION['mailing']['receivers'][$usr]->ok = false;
-                            }
-
-                            unset($mailHandler);
+                        $mailHandler->to = $_SESSION['mailing']['receivers'][$usr]->email;
+                        $mailHandler->toName = $_SESSION['mailing']['receivers'][$usr]->name;
+                        $mailHandler->subject = $subject;
+                        $mailHandler->content = '<br />'.$tmpcontent.'<br />';
+                        $mailHandler->html = true;
+                        $mailHandler->template = $templateId;
+                        if ($mailHandler->send($errors)) {
+                            $_SESSION['mailing']['receivers'][$usr]->ok = true;
+                        } else {
+                            $_SESSION['mailing']['receivers'][$usr]->ok = false;
                         }
 
-                        // Evento Feed
-                        $log = new Feed();
-                        $log->populate('mailing a usuarios (admin)', '/admin/mailing',
-                            \vsprintf("El admin %s ha enviado una %s", array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('relevant', 'Comunicación masiva')
-                        )));
-                        $log->doAdmin('admin');
-                        unset($log);
+                        unset($mailHandler);
+                    }
 
-                        return new View(
-                            'view/admin/index.html.php',
-                            array(
-                                'folder'    => 'mailing',
-                                'file'      => 'send',
-                                'content'   => $content,
+                    // Evento Feed
+                    $log = new Feed();
+                    $log->populate('mailing a usuarios (admin)', '/admin/mailing',
+                        \vsprintf("El admin %s ha enviado una %s", array(
+                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                        Feed::item('relevant', 'Comunicación masiva')
+                    )));
+                    $log->doAdmin('admin');
+                    unset($log);
+
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder'    => 'mailing',
+                            'file'      => 'send',
+                            'content'   => $content,
 //                                'projects'  => $projects,
-                                'interests' => $interests,
-                                'status'    => $status,
-                                'methods'   => $methods,
-                                'types'     => $types,
-                                'roles'     => $roles,
-                                'users'     => $users,
-                                'errors'    => $errors,
-                                'success'   => $success
-                            )
-                        );
+                            'interests' => $interests,
+                            'status'    => $status,
+                            'methods'   => $methods,
+                            'types'     => $types,
+                            'roles'     => $roles,
+                            'users'     => $users,
+                            'errors'    => $errors,
+                            'success'   => $success
+                        )
+                    );
 
-                        break;
-                }
-			}
+                    break;
+            }
 
             $errors = $_SESSION['mailing']['errors'];
             unset($_SESSION['mailing']['errors']);
@@ -370,7 +350,7 @@ namespace Goteo\Controller\Admin {
                     'methods'   => $methods,
                     'types'     => $types,
                     'roles'     => $roles,
-                    'filters'   => $_SESSION['mailing']['filters'],
+                    'filters'   => $filters,
                     'errors'    => $errors
                 )
             );

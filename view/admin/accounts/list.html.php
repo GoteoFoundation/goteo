@@ -32,8 +32,6 @@ $filters = $this['filters'];
 <div class="widget board">
     <h3 class="title">Filtros</h3>
     <form id="filter-form" action="/admin/accounts" method="get">
-        <input type="hidden" name="filtered" value="yes" />
-        <input type="hidden" name="status" value="all" />
         <?php foreach ($the_filters as $filter=>$data) : ?>
         <div style="float:left;margin:5px;">
             <label for="<?php echo $filter ?>-filter"><?php echo $data['label'] ?></label><br />

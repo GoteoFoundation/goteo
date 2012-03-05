@@ -10,17 +10,7 @@ namespace Goteo\Controller\Admin {
 
     class Reviews {
 
-        public static function process ($action = 'list', $id = null) {
-
-            $filters = array();
-            $fields = array('status', 'checker');
-            foreach ($fields as $field) {
-                if (isset($_GET[$field])) {
-                    $filters[$field] = $_GET[$field];
-                }
-            }
-
-            $filter = "?status={$filters['status']}&checker={$filters['checker']}";
+        public static function process ($action = 'list', $id = null, $filters = array()) {
 
             $success = array();
             $errors  = array();
@@ -64,7 +54,7 @@ namespace Goteo\Controller\Admin {
                                     break;
                             }
 
-                            throw new Redirection('/admin/reviews/' . $filter);
+                            throw new Redirection('/admin/reviews');
                         }
                     }
 

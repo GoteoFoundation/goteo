@@ -7,10 +7,6 @@ $project = $this['project'];
 $langs = Lang::getAll();
 
 $filters = $this['filters'];
-
-//arrastramos los filtros
-$filter = "?owner={$filters['owner']}&translator={$filters['translator']}";
-
 ?>
 <script type="text/javascript">
 function assign() {
@@ -35,11 +31,11 @@ function assign() {
             <?php foreach ($project->translators as $userId=>$userName) : ?>
             <tr>
                 <td><?php if ($userId == $project->owner) echo '(AUTOR) '; ?><?php echo $userName; ?></td>
-                <td><a href="/admin/translates/unassign/<?php echo $project->id; ?>/<?php echo $filter; ?>&user=<?php echo $userId; ?>">[Desasignar]</a></td>
+                <td><a href="/admin/translates/unassign/<?php echo $project->id; ?>/?user=<?php echo $userId; ?>">[Desasignar]</a></td>
             </tr>
             <?php endforeach; ?>
             <tr>
-                <form id="form-assign" action="/admin/translates/assign/<?php echo $project->id; ?>/<?php echo $filter; ?>" method="get">
+                <form id="form-assign" action="/admin/translates/assign/<?php echo $project->id; ?>" method="get">
                 <td colspan="2">
                     <select id="assign-user" name="user">
                         <option value="">Selecciona otro traductor</option>
@@ -60,7 +56,7 @@ function assign() {
         <hr />
 <?php endif; ?>
 
-    <form method="post" action="/admin/translates/<?php echo $this['action']; ?>/<?php echo $project->id; ?>/?filter=<?php echo $this['filter']; ?>">
+    <form method="post" action="/admin/translates/<?php echo $this['action']; ?>/<?php echo $project->id; ?>">
 
         <table>
             <tr>

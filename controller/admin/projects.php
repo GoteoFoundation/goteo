@@ -159,7 +159,6 @@ namespace Goteo\Controller\Admin {
                         'folder' => 'projects',
                         'file' => 'dates',
                         'project' => $project,
-                        'filters' => $filters,
                         'errors' => $errors
                     )
                 );
@@ -177,7 +176,6 @@ namespace Goteo\Controller\Admin {
                         'file' => 'accounts',
                         'project' => $project,
                         'accounts' => $accounts,
-                        'filters' => $filters,
                         'errors' => $errors
                     )
                 );

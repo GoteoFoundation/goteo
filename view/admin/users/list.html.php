@@ -3,10 +3,6 @@
 use Goteo\Library\Text;
 
 $filters = $this['filters'];
-
-//arrastramos los filtros
-$filter = "?filtered={$filters['filtered']}&status={$filters['status']}&interest={$filters['interest']}&role={$filters['role']}&order={$filters['order']}";
-
 ?>
 <a href="/admin/users/add" class="button red">Crear usuario</a>
 
@@ -96,13 +92,13 @@ $filter = "?filtered={$filters['filtered']}&status={$filters['status']}&interest
                 </th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
 
         <tbody>
             <?php foreach ($this['users'] as $user) : ?>
             <tr>
-                <td><a href="/admin/users/manage/<?php echo $user->id; ?>">[Gestionar]</a></td>
                 <td><a href="/user/<?php echo $user->id; ?>" target="_blank" title="Preview"><?php echo substr($user->name, 0, 15); ?></a></td>
                 <td><strong><?php echo substr($user->id, 0, 15); ?></strong></td>
                 <td><a href="mailto:<?php echo $user->email; ?>"><?php echo $user->email; ?></a></td>
@@ -116,8 +112,16 @@ $filter = "?filtered={$filters['filtered']}&status={$filters['status']}&interest
                     <?php echo $user->admin ? ' Admin' : ''; ?>
                     <?php echo $user->vip ? ' VIP' : ''; ?>
                 </td>
+            </tr>
+            <tr>
+                <td>Acciones:</td>
+                <td><a href="/admin/users/manage/<?php echo $user->id; ?>">[Gestionar]</a></td>
                 <td><a href="/admin/users/edit/<?php echo $user->id; ?>">[Editar]</a></td>
+                <td><a href="/admin/sended/?user=<?php echo $user->email; ?>">[Historial]</a></td>
                 <td><a href="/admin/users/impersonate/<?php echo $user->id; ?>">[Suplantar]</a></td>
+            </tr>
+            <tr>
+                <td colspan="5"><hr /></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

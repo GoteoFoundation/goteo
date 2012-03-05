@@ -10,15 +10,7 @@ namespace Goteo\Controller\Admin {
 
     class Calls {
 
-        public static function process ($action = 'list', $id = null) {
-
-            $filters = array();
-            $fields = array('status', 'category', 'owner', 'name', 'order');
-            foreach ($fields as $field) {
-                if (isset($_GET[$field])) {
-                    $filters[$field] = $_GET[$field];
-                }
-            }
+        public static function process ($action = 'list', $id = null, $filters = array()) {
 
             $errors = array();
 

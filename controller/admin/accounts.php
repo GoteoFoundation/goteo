@@ -11,7 +11,7 @@ namespace Goteo\Controller\Admin {
 
     class Accounts {
 
-        public static function process ($action = 'list', $id = null) {
+        public static function process ($action = 'list', $id = null, $filters = array()) {
 
             $errors = array();
 
@@ -25,15 +25,6 @@ namespace Goteo\Controller\Admin {
                     )
                 );
             }
-
-            // cargamos los filtros
-            $filters = array();
-            $fields = array('filtered', 'methods', 'investStatus', 'projects', 'users', 'calls', 'review', 'date_from', 'date_until');
-            foreach ($fields as $field) {
-                $filters[$field] = (string) $_GET[$field];
-            }
-
-            if (!isset($filters['investStatus'])) $filters['investStatus'] = 'all';
 
             // tipos de aporte
             $methods = Model\Invest::methods();

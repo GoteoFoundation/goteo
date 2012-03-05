@@ -10,10 +10,14 @@ namespace Goteo\Controller\Admin {
 
     class Criteria {
 
-        public static function process ($action = 'list', $id = null, $filter = '') {
+        public static function process ($action = 'list', $id = null, $filters = array()) {
 
             $sections = Model\Criteria::sections();
-            
+
+            if (!isset($sections[$filters['section']])) {
+                unset($filters['section']);
+            }
+
             $errors = array();
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -46,7 +50,6 @@ namespace Goteo\Controller\Admin {
                             'file' => 'edit',
                             'action' => $_POST['action'],
                             'criteria' => $criteria,
-                            'filter' => $filter,
                             'sections' => $sections,
                             'errors' => $errors
                         )
@@ -63,7 +66,7 @@ namespace Goteo\Controller\Admin {
                     Model\Criteria::down($id);
                     break;
                 case 'add':
-                    $next = Model\Criteria::next($filter);
+                    $next = Model\Criteria::next($filters['section']);
 
                     return new View(
                         'view/admin/index.html.php',
@@ -71,8 +74,7 @@ namespace Goteo\Controller\Admin {
                             'folder' => 'criteria',
                             'file' => 'edit',
                             'action' => 'add',
-                            'criteria' => (object) array('section' => $filter, 'order' => $next, 'cuantos' => $next),
-                            'filter' => $filter,
+                            'criteria' => (object) array('section' => $filters['section'], 'order' => $next, 'cuantos' => $next),
                             'sections' => $sections
                         )
                     );
@@ -90,7 +92,6 @@ namespace Goteo\Controller\Admin {
                             'file' => 'edit',
                             'action' => 'edit',
                             'criteria' => $criteria,
-                            'filter' => $filter,
                             'sections' => $sections
                         )
                     );
@@ -100,7 +101,7 @@ namespace Goteo\Controller\Admin {
                     break;
             }
 
-            $criterias = Model\Criteria::getAll($filter);
+            $criterias = Model\Criteria::getAll($filters['section']);
 
             return new View(
                 'view/admin/index.html.php',
@@ -109,7 +110,7 @@ namespace Goteo\Controller\Admin {
                     'file' => 'list',
                     'criterias' => $criterias,
                     'sections' => $sections,
-                    'filter' => $filter,
+                    'filters' => $filters,
                     'errors' => $errors,
                     'success' => $success
                 )

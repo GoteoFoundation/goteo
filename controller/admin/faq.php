@@ -10,10 +10,14 @@ namespace Goteo\Controller\Admin {
 
     class Faq {
 
-        public static function process ($action = 'list', $id = null, $filter = 'node') {
+        public static function process ($action = 'list', $id = null, $filters = array()) {
 
             $sections = Model\Faq::sections();
-            
+
+            if (!isset($sections[$filters['section']])) {
+                unset($filters['section']);
+            }
+
             $errors = array();
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -64,7 +68,7 @@ namespace Goteo\Controller\Admin {
                     Model\Faq::down($id);
                     break;
                 case 'add':
-                    $next = Model\Faq::next($filter);
+                    $next = Model\Faq::next($filters['section']);
 
                     return new View(
                         'view/admin/index.html.php',
@@ -72,8 +76,7 @@ namespace Goteo\Controller\Admin {
                             'folder' => 'faq',
                             'file' => 'edit',
                             'action' => 'add',
-                            'faq' => (object) array('section' => $filter, 'order' => $next, 'cuantos' => $next),
-                            'filter' => $filter,
+                            'faq' => (object) array('section' => $filters['section'], 'order' => $next, 'cuantos' => $next),
                             'sections' => $sections
                         )
                     );
@@ -91,7 +94,6 @@ namespace Goteo\Controller\Admin {
                             'file' => 'edit',
                             'action' => 'edit',
                             'faq' => $faq,
-                            'filter' => $filter,
                             'sections' => $sections
                         )
                     );
@@ -101,7 +103,7 @@ namespace Goteo\Controller\Admin {
                     break;
             }
 
-            $faqs = Model\Faq::getAll($filter);
+            $faqs = Model\Faq::getAll($filters['section']);
 
             return new View(
                 'view/admin/index.html.php',
@@ -110,7 +112,7 @@ namespace Goteo\Controller\Admin {
                     'file' => 'list',
                     'faqs' => $faqs,
                     'sections' => $sections,
-                    'filter' => $filter,
+                    'filters' => $filters,
                     'errors' => $errors,
                     'success' => $success
                 )

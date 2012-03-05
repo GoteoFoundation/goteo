@@ -3,10 +3,6 @@
 use Goteo\Library\Text;
 
 $filters = $this['filters'];
-
-//arrastramos los filtros
-$filter = "?owner={$filters['owner']}&translator={$filters['translator']}";
-
 ?>
 <a href="/admin/translates/add" class="button red">Nuevo proyecto para traducir</a>
 
@@ -46,7 +42,7 @@ $filter = "?owner={$filters['owner']}&translator={$filters['translator']}";
                 <tbody>
                     <?php foreach ($this['projects'] as $project) : ?>
                     <tr>
-                        <td><a href="/admin/translates/edit/<?php echo $project->id; ?>/<?php echo $filter; ?>">[Editar]</a></td>
+                        <td><a href="/admin/translates/edit/<?php echo $project->id; ?>">[Editar]</a></td>
                         <td><a href="/project/<?php echo $project->id; ?>" target="_blank" title="Preview"><?php echo $project->name; ?></a></td>
                         <td><?php echo $project->user->name; ?></td>
                         <td><?php echo $project->lang; ?></td>

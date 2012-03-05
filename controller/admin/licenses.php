@@ -64,7 +64,6 @@ namespace Goteo\Controller\Admin {
                             'file' => 'edit',
                             'action'  => $_POST['action'],
                             'license' => $license,
-                            'filters' => $filters,
                             'icons'   => $icons,
                             'groups'  => $groups,
                             'errors'  => $errors
@@ -105,7 +104,6 @@ namespace Goteo\Controller\Admin {
                             'file' => 'edit',
                             'action' => 'edit',
                             'license' => $license,
-                            'filters' => $filters,
                             'icons' => $icons,
                             'groups' => $groups
                         )

@@ -3,10 +3,6 @@
 use Goteo\Library\Text;
 
 $filters = $this['filters'];
-
-//arrastramos los filtros
-$filter = "?filtered={$filters['filtered']}&status={$filters['status']}&category={$filters['category']}&owner={$filters['owner']}&name={$filters['name']}&order={$filters['order']}";
-
 ?>
 <div class="widget board">
     <form id="filter-form" action="/admin/projects" method="get">

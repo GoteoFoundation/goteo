@@ -12,17 +12,7 @@ namespace Goteo\Controller\Admin {
 
     class Translates {
 
-        public static function process ($action = 'list', $id = null) {
-
-            $filters = array();
-            $fields = array('owner', 'translator');
-            foreach ($fields as $field) {
-                if (isset($_GET[$field])) {
-                    $filters[$field] = $_GET[$field];
-                }
-            }
-
-            $filter = "?owner={$filters['owner']}&translator={$filters['translator']}";
+        public static function process ($action = 'list', $id = null, $filters = array()) {
 
             $success = array();
             $errors  = array();
@@ -162,7 +152,6 @@ namespace Goteo\Controller\Admin {
                             'folder' => 'translates',
                             'file'   => 'edit',
                             'action' => $action,
-                            'filters' => $filters,
                             'availables' => $availables,
                             'translators' => $translators,
                             'project'=> $project,

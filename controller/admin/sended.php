@@ -11,15 +11,7 @@ namespace Goteo\Controller\Admin {
 
     class Sended {
 
-        public static function process ($action = 'list', $id = null) {
-
-            $filters = array();
-            $fields = array('user', 'template');
-            foreach ($fields as $field) {
-                if (isset($_GET[$field])) {
-                    $filters[$field] = $_GET[$field];
-                }
-            }
+        public static function process ($action = 'list', $id = null, $filters = array()) {
 
             $templates = Template::getAllMini();
 
