@@ -96,6 +96,7 @@ namespace Goteo\Controller {
                 }
 
                 if ($invest->save($errors)) {
+                    Model\Invest::setDetail($invest->id, 'init', 'Se ha creado el registro de aporte, el usuario ha clickado el boton de tpv o paypal. Proceso controller/invest');
 
                     switch($_POST['method']) {
                         case 'tpv':

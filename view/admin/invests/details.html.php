@@ -8,6 +8,9 @@ $calls = $this['calls'];
 $droped = $this['droped'];
 $user = $this['user'];
 
+$rewards = $invest->rewards;
+array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
+
 ?>
 <div class="widget">
     <p>
@@ -102,7 +105,7 @@ $user = $this['user'];
     <dl>
         <dt>Recompensas elegidas:</dt>
         <dd>
-            <?php echo implode(', ', $investData->rewards); ?>
+            <?php echo implode(', ', $rewards); ?>
         </dd>
     </dl>
     <?php endif; ?>
@@ -126,4 +129,11 @@ $user = $this['user'];
     <a href="/admin/invests/details/<?php echo $droped->id ?>" target="_blank">Ver aporte completo de riego</a>
     <?php endif; ?>
     
+</div>
+
+<div class="widget">
+    <h3>Log</h3>
+    <?php foreach (\Goteo\Model\Invest::getDetails($invest->id) as $log)  {
+        echo "{$log->date} : {$log->log} ({$log->type})<br />";
+    } ?>
 </div>

@@ -212,34 +212,105 @@ namespace Goteo\Controller\Admin {
                         $subject = $_POST['subject'];
                         $templateId = !empty($_POST['template']) ? $_POST['template'] : 11;
 
+                        /*
+                         * Contenido para newsletter
+                         * - Sacamos los elementos en portada
+                         * - Preparamos el contenedor para cada grupo que tengamos
+                         * - Maquetamos cada elemento en su contenedor
+                         */
+                        if ($templateId == 33) {
+                            $_SESSION['NEWSLETTER_SENDID'] = '';
+
+                            // orden de los elementos en portada
+                            $order = Model\Home::getAll();
+
+                            // entradas de blog
+                            $posts_content = '';
+                            /*
+                            if (isset($order['posts'])) {
+                                $home_posts = Model\Post::getList();
+                                if (!empty($home_posts)) {
+                                    $posts_content = '<div class="section-tit">'.Text::get('home-posts-header').'</div>';
+                                    foreach ($posts as $id=>$title) {
+                                        $the_post = Model\Post::get($id);
+                                        $posts_content .= new View('view/email/newsletter_post.html.php', array('post'=>$the_post));
+                                        break; // solo cogemos uno
+                                    }
+                                }
+                            }
+                             *
+                             */
+
+                            // Proyectos destacados
+                            $promotes_content = '';
+                            if (isset($order['promotes'])) {
+                                $home_promotes  = Model\Promote::getAll(true);
+
+                                if (!empty($home_promotes)) {
+                                    $promotes_content = '<div class="section-tit">'.Text::get('home-promotes-header').'</div>';
+                                    foreach ($home_promotes as $key => $promote) {
+                                        try {
+                                            $the_project = Model\Project::getMedium($promote->project, LANG);
+                                            $promotes_content .= new View('view/email/newsletter_project.html.php', array('promote'=>$promote, 'project'=>$the_project));
+                                        } catch (\Goteo\Core\Error $e) {
+                                            continue;
+                                        }
+                                    }
+                                }
+                            }
+
+                            // capital riego
+                            $drops_content = '';
+                            /*
+                            if (isset($order['drops'])) {
+                                $calls     = Model\Call::getActive(3); // convocatorias en modalidad 1; inscripcion de proyectos
+                                $campaigns = Model\Call::getActive(4); // convocatorias en modalidad 2; repartiendo capital riego
+
+                                if (!empty($calls) || !empty($campaigns)) {
+                                    $drops_content = '<div class="section-tit">'.str_replace('<br />', ': ', Text::get('home-calls-header')).'</div>';
+
+                                }
+                            }
+                            */
+
+                            // montammos el contenido completo
+                            $tmpcontent = $content;
+                            foreach (\array_keys($order) as $item) {
+                                $var = $item.'_content';
+                                $tmpcontent .= $$var;
+                            }
+
+                        }
+
                         // ahora, envio, el contenido a cada usuario
                         foreach ($users as $usr) {
 
-                            // si es newsletter y el usuario la ha desmarcado en sus preferencias, lo saltamos
-                            if ($templateId == 33 && Model\User::mailBlock($usr)) {
-                                continue;
-                            }
+                            // si es newsletter
+                            if ($templateId == 33) {
+                                // Mirar que no tenga bloqueadas las preferencias
+                                if (Model\User::mailBlock($usr)) continue;
 
-                            $tmpcontent = \str_replace(
-                                array('%USERID%', '%USEREMAIL%', '%USERNAME%', '%SITEURL%', '%PROJECTID%', '%PROJECTNAME%', '%PROJECTURL%'),
-                                array(
-                                    $usr,
-                                    $_SESSION['mailing']['receivers'][$usr]->email,
-                                    $_SESSION['mailing']['receivers'][$usr]->name,
-                                    SITE_URL,
-                                    $_SESSION['mailing']['receivers'][$usr]->projectId,
-                                    $_SESSION['mailing']['receivers'][$usr]->project,
-                                    SITE_URL.'/project/'.$_SESSION['mailing']['receivers'][$usr]->projectId
-                                ),
-                                $content);
+                                // el sontenido es el mismo para todos, no lleva variables
+                            } else {
+                                $tmpcontent = \str_replace(
+                                    array('%USERID%', '%USEREMAIL%', '%USERNAME%', '%SITEURL%', '%PROJECTID%', '%PROJECTNAME%', '%PROJECTURL%'),
+                                    array(
+                                        $usr,
+                                        $_SESSION['mailing']['receivers'][$usr]->email,
+                                        $_SESSION['mailing']['receivers'][$usr]->name,
+                                        SITE_URL,
+                                        $_SESSION['mailing']['receivers'][$usr]->projectId,
+                                        $_SESSION['mailing']['receivers'][$usr]->project,
+                                        SITE_URL.'/project/'.$_SESSION['mailing']['receivers'][$usr]->projectId
+                                    ),
+                                    $content);
+                            }
 
 
                             $mailHandler = new Mail();
 
                             $mailHandler->to = $_SESSION['mailing']['receivers'][$usr]->email;
                             $mailHandler->toName = $_SESSION['mailing']['receivers'][$usr]->name;
-                            // blind copy a goteo desactivado durante las verificaciones
-            //              $mailHandler->bcc = 'comunicaciones@goteo.org';
                             $mailHandler->subject = $subject;
                             $mailHandler->content = '<br />'.$tmpcontent.'<br />';
                             $mailHandler->html = true;

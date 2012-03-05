@@ -321,6 +321,10 @@ namespace Goteo\Library {
                 return false;
             }
 
+            if ($this->scope == 'public' && $_SESSION['user']->id == 'doukeshi') {
+                return false;
+            }
+
 
             // primero, verificar si es unique, no duplicarlo
             if ($this->unique === true) {

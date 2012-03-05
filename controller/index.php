@@ -45,7 +45,7 @@ namespace Goteo\Controller {
 
                 foreach ($promotes as $key => &$promo) {
                     try {
-                        $promo->projectData = Project::get($promo->project, LANG);
+                        $promo->projectData = Project::getMedium($promo->project, LANG);
                     } catch (\Goteo\Core\Error $e) {
                         unset($promotes[$key]);
                     }

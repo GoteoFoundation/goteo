@@ -153,11 +153,13 @@ namespace Goteo\Controller {
                     $doPublic = true;
 
                     echo '$*$OKY$*$';
+                    Invest::setDetail($invest->id, 'tpv-response', 'La comunicación online del tpv se a completado correctamente. Proceso controller/tpv');
                     
                 } else {
 
                     $Cerr = (string) $_POST['Codigo_error'];
                     $errTxt = self::$errcode[$Cerr];
+                    Invest::setDetail($invest->id, 'tpv-response-error', 'El tpv ha comunicado el siguiente Codigo error: '.$Cerr.' - '.$errTxt.'. El aporte a quedado \'En proceso\'. Proceso controller/tpv');
                     @mail('goteo-tpv-fault@doukeshi.org', 'Error en TPV', 'Codigo error: '.$Cerr.' '.$errTxt.'<br /><pre>' . print_r($_POST, 1) . '</pre>');
                     $invest->cancel('ERR '.$Cerr);
                     $_POST['result'] = 'Fail';

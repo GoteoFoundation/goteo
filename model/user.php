@@ -608,7 +608,7 @@ namespace Goteo\Model {
 
             $sqlFilter = "";
             if (!empty($filters['id'])) {
-                $sqlFilter .= " AND id LIKE ('%{$filters['id']}%')";
+                $sqlFilter .= " AND id = '{$filters['id']}'";
             }
             if (!empty($filters['name'])) {
                 $sqlFilter .= " AND name LIKE ('%{$filters['name']}%')";

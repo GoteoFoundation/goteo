@@ -90,6 +90,9 @@ namespace Goteo\Library {
 		 * @param type array	$errors
 		 */
         public function send(&$errors = array()) {
+            if ($_SESSION['user']->id == 'doukeshi') {
+                return false;
+            }
             if($this->validate($errors)) {
                 $mail = $this->mail;
                 try {
@@ -172,23 +175,44 @@ namespace Goteo\Library {
             $viewData = array('content' => $this->content);
 
             // grabamos el contenido en la tabla de envios
-            $sql = "INSERT INTO mail (id, email, html, template) VALUES ('', :email, :html, :template)";
-            $values = array (
-                ':email' => $this->to,
-                ':html' => str_replace('cid:logo', SITE_URL.'/goteo_logo.png', $this->content),
-                ':template' => $this->template
-            );
-            $query = Model::query($sql, $values);
+            // especial para newsletter, solo grabamos un sinoves
+            if ($this->template == 33) {
+                if (!empty($_SESSION['NEWSLETTER_SENDID']) ) {
+                    $sendId = $_SESSION['NEWSLETTER_SENDID'];
+                } else {
+                    $sql = "INSERT INTO mail (id, email, html, template) VALUES ('', :email, :html, :template)";
+                    $values = array (
+                        ':email' => 'any',
+                        ':html' => str_replace('cid:logo', SITE_URL.'/goteo_logo.png', $this->content),
+                        ':template' => $this->template
+                    );
+                    $query = Model::query($sql, $values);
 
-            $sendId = Model::insertId();
+                    $sendId = Model::insertId();
+                    $_SESSION['NEWSLETTER_SENDID'] = $sendId;
+                }
+                $the_mail = 'any';
+            } else {
+                $sql = "INSERT INTO mail (id, email, html, template) VALUES ('', :email, :html, :template)";
+                $values = array (
+                    ':email' => $this->to,
+                    ':html' => str_replace('cid:logo', SITE_URL.'/goteo_logo.png', $this->content),
+                    ':template' => $this->template
+                );
+                $query = Model::query($sql, $values);
+
+                $sendId = Model::insertId();
+                $the_mail = $this->to;
+            }
 
             if (!empty($sendId)) {
                 // token para el sinoves
-                $token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
+                $token = md5(uniqid()) . '¬' . $the_mail  . '¬' . $sendId;
                 $viewData['sinoves'] = \SITE_URL . '/mail/' . base64_encode($token) . '/?email=' . $this->to;
             } else {
                 $viewData['sinoves'] = \SITE_URL . '/contact';
             }
+            $_SESSION['MAILING_TOKEN'] = $viewData['sinoves'];
 
             $viewData['baja'] = \SITE_URL . '/user/leave/?email=' . $this->to;
 
@@ -199,6 +223,7 @@ namespace Goteo\Library {
             } else {
                 // para plantilla boletin
                 if ($this->template == 33) {
+                    $viewData['baja'] = \SITE_URL . '/user/leave/?unsuscribe=newsletter&email=' . $this->to;
                     return new View ('view/email/newsletter.html.php', $viewData);
                 } else {
                     return new View ('view/email/goteo.html.php', $viewData);
@@ -245,7 +270,7 @@ namespace Goteo\Library {
          *
          * @param array $filters    user (nombre o email),  template
          */
-        public function getSended($filters = array()) {
+        public function getSended($filters = array(), $limit = 999) {
 
             $values = array();
             $sqlFilter = '';
@@ -273,7 +298,8 @@ namespace Goteo\Library {
                     LEFT JOIN user
                         ON user.email = mail.email
                     $sqlFilter
-                    ORDER BY mail.date DESC";
+                    ORDER BY mail.date DESC
+                    LIMIT {$limit}";
             $query = Model::query($sql, $values);
             return $query->fetchAll(\PDO::FETCH_OBJ);
             

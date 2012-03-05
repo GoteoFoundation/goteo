@@ -11,19 +11,8 @@ namespace Goteo\Controller\Admin {
 
     class Projects {
 
-        public static function process ($action = 'list', $id = null) {
+        public static function process ($action = 'list', $id = null, $filters = array()) {
             
-
-            $filters = array();
-            $fields = array('filtered', 'status', 'category', 'owner', 'name', 'order');
-            foreach ($fields as $field) {
-                if (isset($_GET[$field])) {
-                    $filters[$field] = $_GET[$field];
-                }
-            }
-
-            if (!isset($filters['status'])) $filters['status'] = -1;
-
             $errors = array();
 
 
@@ -195,7 +184,11 @@ namespace Goteo\Controller\Admin {
             }
 
 
-            $projects = Model\Project::getList($filters);
+            if (!empty($filters['filtered'])) {
+                $projects = Model\Project::getList($filters);
+            } else {
+                $projects = array();
+            }
             $status = Model\Project::status();
             $categories = Model\Project\Category::getAll();
             $owners = Model\User::getOwners();

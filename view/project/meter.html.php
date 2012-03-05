@@ -13,8 +13,6 @@ $project = $this['project'];
 $minimum    = $project->mincost;
 $optimum    = $project->maxcost;
 $reached    = $project->invested;
-$investors = $project->agregateInvestors();
-$supporters = count($investors);
 $days       = $project->days;
 
 
@@ -140,7 +138,7 @@ $minimum_ratio =  min(100, round(($minimum / $optimum) * 100));
             ?>
 
             <dt class="supporters"><span><?php echo Text::get('project-view-metter-investors'); ?></span></dt>
-            <dd class="supporters"><strong><?php echo number_format($supporters) ?></strong></dd>                
+            <dd class="supporters"><strong><?php echo $project->num_investors ?></strong></dd>
 
         </dl>
 

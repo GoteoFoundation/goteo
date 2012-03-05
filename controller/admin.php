@@ -113,7 +113,17 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            return Admin\Projects::process($action, $id);
+            $filters = array();
+            $fields = array('filtered', 'status', 'category', 'owner', 'name', 'order');
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    $filters[$field] = $_GET[$field];
+                }
+            }
+
+            if (!isset($filters['status'])) $filters['status'] = -1;
+
+            return Admin\Projects::process($action, $id, $filters);
         }
 
         /*
@@ -406,7 +416,7 @@ namespace Goteo\Controller {
         public function users($action = 'list', $id = null, $subaction = '') {
 
             $filters = array();
-            $fields = array('filtered', 'status', 'interest', 'role', 'id', 'name', 'email', 'order');
+            $fields = array('filtered', 'status', 'interest', 'role', 'name', 'order');
             foreach ($fields as $field) {
                 if (isset($_GET[$field])) {
                     $filters[$field] = $_GET[$field];

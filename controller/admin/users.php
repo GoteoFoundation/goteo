@@ -281,7 +281,11 @@ namespace Goteo\Controller\Admin {
 
                 case 'list':
                 default:
-                    $users = Model\User::getAll($filters);
+                    if (!empty($filters['filtered'])) {
+                        $users = Model\User::getAll($filters);
+                    } else {
+                        $users = array();
+                    }
                     $status = array(
                                 'active' => 'Activo',
                                 'inactive' => 'Inactivo'

@@ -17,5 +17,8 @@ $users = $this['users'];
                 echo $receivers[$usr]->ok ? 'Enviado a ' : 'Fallo al enviar a ';
                 echo '<strong>' .$receivers[$usr]->name . '</strong> ('.$receivers[$usr]->id.') al mail <strong>' . $receivers[$usr]->email . '</strong><br />';
         } ?></blockquote>
+
+    <p>El último "si no ves" ha sido: <a href="<?php echo $_SESSION['MAILING_TOKEN'] ?>" target="_blank"><?php echo $_SESSION['MAILING_TOKEN'] ?></a></p>
+
 </div>
 
