@@ -6,6 +6,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Redirection,
         Goteo\Core\Error,
 		Goteo\Library\Feed,
+		Goteo\Library\Message,
         Goteo\Model;
 
     class Nodes {
@@ -27,10 +28,10 @@ namespace Goteo\Controller\Admin {
 				if ($node->create($errors)) {
 
                     if ($_POST['action'] == 'add') {
-						$success[] = 'Nodo creado';
+                        Message::Info('Nodo creado');
                         $txt_log = 'creado';
                     } else {
-						$success[] = 'Nodo actualizado';
+                        Message::Info('Nodo actualizado');
                         $txt_log = 'actualizado';
 					}
 
@@ -45,11 +46,16 @@ namespace Goteo\Controller\Admin {
                     $log->doAdmin('admin');
                     unset($log);
 
+                    if ($_POST['action'] == 'add') {
+                        Message::Info('Puedes asignar ahora sus administradores');
+                        throw new Redirection('/admin/nodes/admins/'.$node->id);
+                    }
+
 				}
 				else {
                     switch ($_POST['action']) {
                         case 'add':
-							$errors[] = 'Fallo al crear, revisar los campos';
+                            Message::Error('Fallo al crear, revisar los campos');
 
                             return new View(
                                 'view/admin/index.html.php',
@@ -62,7 +68,7 @@ namespace Goteo\Controller\Admin {
                             );
                             break;
                         case 'edit':
-							$errors[] = 'Fallo al actualizar, revisar los campos';
+                            Message::Error('Fallo al actualizar, revisar los campos');
 
                             return new View(
                                 'view/admin/index.html.php',
@@ -104,6 +110,32 @@ namespace Goteo\Controller\Admin {
                         )
                     );
                     break;
+                case 'admins':
+                    $node = Model\Node::get($id);
+
+                    if (isset($_GET['op']) && isset($_GET['user']) && in_array($_GET['op'], array('assign', 'unassign'))) {
+                        $errors = array();
+                        if ($node->$_GET['op']($_GET['user'])) {
+                            // ok
+                        } else {
+                            Message::Error(implode('<br />', $errors));
+                        }
+                    }
+
+                    $node->admins = Model\Node::getAdmins($node->id);
+                    $admins = Model\User::getAdmins(true);
+
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'nodes',
+                            'file' => 'admins',
+                            'action' => 'admins',
+                            'node' => $node,
+                            'admins' => $admins
+                        )
+                    );
+                    break;
             }
 
 
@@ -112,6 +144,7 @@ namespace Goteo\Controller\Admin {
                         'active' => 'Activo',
                         'inactive' => 'Inactivo'
                     );
+            $admins = Model\Node::getAdmins();
 
             return new View(
                 'view/admin/index.html.php',
@@ -121,6 +154,7 @@ namespace Goteo\Controller\Admin {
                     'filters' => $filters,
                     'nodes' => $nodes,
                     'status' => $status,
+                    'admins' => $admins,
                     'errors' => $errors,
                     'success' => $success
                 )

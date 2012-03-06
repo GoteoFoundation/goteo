@@ -5,8 +5,6 @@ use Goteo\Library\Text,
 
 $filters = $this['filters'];
 
-$admins = User::getAdmins();
-
 ?>
 <a href="/admin/nodes/add" class="button red">Crear nuevo nodo</a>
 
@@ -54,8 +52,9 @@ $admins = User::getAdmins();
                 <th>Nodo</th>
                 <th>Nombre</th>
                 <th>Estado</th>
-                <th>Administrador</th>
                 <th></th>
+                <th></th>
+                <th>Administradores</th>
             </tr>
         </thead>
 
@@ -68,8 +67,9 @@ $admins = User::getAdmins();
                 <td><a class="node-jump" href="<?php echo $url; ?>" target="_blank"><?php echo $url; ?></a></td>
                 <td><?php echo $node->name; ?></td>
                 <td><?php echo $this['status'][$status]; ?></td>
-                <td><?php echo $admins[$node->admin]; ?></td>
                 <td><a href="/admin/nodes/edit/<?php echo $node->id; ?>">[Editar]</a></td>
+                <td><a href="/admin/nodes/admins/<?php echo $node->id; ?>">[Admins]</a></td>
+                <td><?php echo implode(', ', $node->admins); ?></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

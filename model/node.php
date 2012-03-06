@@ -7,6 +7,7 @@ namespace Goteo\Model {
         public
             $id = null,
             $name,
+            $admins = array(), // administradores
             $logo,
             $image;
 
@@ -26,7 +27,42 @@ namespace Goteo\Model {
                     ", array(':id' => $id));
                 $item = $sql->fetchObject(__CLASS__);
 
+                // y sus administradores
+                $item->admins = self::getAdmins($id);
+
                 return $item;
+        }
+
+        /*
+         * Array asociativo de administradores de un nodo
+         *  (o todos los que administran si no hay filtro)
+         */
+        public static function getAdmins ($node = null) {
+
+            $list = array();
+
+            $sqlFilter = "";
+            if (!empty($node)) {
+                $sqlFilter .= " WHERE user_node.node = '{$node}'";
+            }
+
+
+            $query = static::query("
+                SELECT
+                    DISTINCT(user_node.user) as admin,
+                    user.name as name
+                FROM user_node
+                INNER JOIN user
+                    ON user.id = user_node.user
+                $sqlFilter
+                ORDER BY user.name ASC
+                ");
+
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                $list[$item->admin] = $item->name;
+            }
+
+            return $list;
         }
 
         /*
@@ -38,7 +74,7 @@ namespace Goteo\Model {
 
             $sqlFilter = "";
             if (!empty($filters['name'])) {
-                $sqlFilter .= " AND ( name LIKE ('%{$filters['name']}%') )";
+                $sqlFilter .= " AND ( name LIKE ('%{$filters['name']}%') OR id = '{$filters['name']}' )";
             }
             if (!empty($filters['status'])) {
                 $active = $filters['status'] == 'active' ? '1' : '0';
@@ -58,6 +94,9 @@ namespace Goteo\Model {
                 ");
 
             foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
+                // y sus administradores
+                $item->admins = self::getAdmins($item->id);
+
                 $list[] = $item;
             }
 
@@ -128,7 +167,6 @@ namespace Goteo\Model {
             $fields = array(
                 'id',
                 'name',
-                'admin',
                 'active'
                 );
 
@@ -158,16 +196,54 @@ namespace Goteo\Model {
          * @return  type varchar(50)  $id   Id Nodo
          */
         static public function getAdminNode ($admin) {
-                $query = static::query("
-                    SELECT
-                        id
-                    FROM node
-                    WHERE `admin` = :admin
-                    LIMIT 1
-                    ", array(':admin' => $admin));
+            $query = static::query("
+                SELECT
+                    node
+                FROM user_node
+                WHERE `user` = :admin
+                LIMIT 1
+                ", array(':admin' => $admin));
 
-                return $query->fetchColumn();
+            return $query->fetchColumn();
         }
+
+        /*
+         * Asignar a un usuario como administrador de un nodo
+         */
+		public function assign ($user, &$errors = array()) {
+
+            $values = array(':user'=>$user, ':node'=>$this->id);
+
+			try {
+	            $sql = "REPLACE INTO user_node (user, node) VALUES(:user, :node)";
+				self::query($sql, $values);
+				return true;
+			} catch(\PDOException $e) {
+				$errors[] = "No se ha podido asignar al usuario {$user} como administrador del nodo {$this->id}. Por favor, revise el metodo Node->assign." . $e->getMessage();
+				return false;
+			}
+
+		}
+
+        /*
+         * Quitarle a un usuario la administración de un nodo
+         */
+		public function unassign ($user, &$errors = array()) {
+			$values = array (
+				':user'=>$user,
+				':node'=>$this->id,
+			);
+
+            try {
+                self::query("DELETE FROM user_node WHERE node = :node AND user = :user", $values);
+				return true;
+			} catch(\PDOException $e) {
+                $errors[] = 'No se ha podido quitar al usuario ' . $this->user . ' de la administracion del nodo ' . $this->id . '. ' . $e->getMessage();
+                return false;
+			}
+		}
+
+
 
     }
     

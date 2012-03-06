@@ -1,10 +1,6 @@
 <?php
 
-use Goteo\Library\Text,
-    Goteo\Model\User;
-
-// administradores
-$admins = User::getAdmins(true);
+use Goteo\Library\Text;
 
 ?>
 <div class="widget">
@@ -17,15 +13,6 @@ $admins = User::getAdmins(true);
         <p>
             <label for="node-name">Nombre:</label><br />
             <input type="text" id="node-name" name="name" value="" style="width:250px" />
-        </p>
-        <p>
-            <label for="node-admin">Administrador:</label><br />
-            <select id="node-admin" name="admin">
-                <option value="">Seleccionar usuario administrador</option>
-            <?php foreach ($admins as $userId=>$userName) : ?>
-                <option value="<?php echo $userId; ?>"><?php echo $userName; ?></option>
-            <?php endforeach; ?>
-            </select>
         </p>
         <p>
             <label for="node-active">Activarlo ahora:</label><br />
