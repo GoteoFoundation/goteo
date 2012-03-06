@@ -12,7 +12,7 @@ namespace Goteo\Controller\Admin {
 
         public static function process ($action = 'list', $id = null) {
 
-            $node = $_SESSION['admin_node'];
+            $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
 
             $errors = array();
 

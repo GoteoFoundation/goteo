@@ -199,6 +199,7 @@ namespace Goteo\Controller\Admin {
                     'file' => 'list',
                     'calls' => $calls,
                     'filters' => $filters,
+                    'fields'  => array('owner', 'translator'),
                     'owners' => $owners,
                     'translators' => $translators,
                     'success' => $success,

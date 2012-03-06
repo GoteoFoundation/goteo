@@ -3,7 +3,8 @@
 use Goteo\Library\Text,
     Goteo\Core\View,
     Goteo\Core\ACL,
-    Goteo\Library\Feed;
+    Goteo\Library\Feed,
+    Goteo\Model\Node;
 
 if (LANG != 'es') {
     header('Location: /admin/?lang=es');
@@ -47,6 +48,12 @@ if ($_SESSION['user']->id == 'merxxx'
     header('Location: /admin/');
 }
 
+if (isset($_SESSION['admin_node'])) {
+    $nodeData = Node::get($_SESSION['admin_node']);
+    $node_title = ' del nodo <span style="color:#20B2B3;">'.$nodeData->name.'</span>';
+    $this['nodeData'] = $nodeData;
+}
+
 
 $bodyClass = 'admin';
 
@@ -61,7 +68,7 @@ include 'view/prologue.html.php';
 
         <div id="sub-header">
             <div>
-                <h2>Panel principal de administración</h2>
+                <h2>Panel principal de administración<?php echo $node_title; ?></h2>
                 <?php if (defined('ADMIN_BCPATH')) : ?>
                 <blockquote><?php echo ADMIN_BCPATH; ?></blockquote>
                 <?php endif; ?>

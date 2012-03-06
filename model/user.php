@@ -777,7 +777,7 @@ namespace Goteo\Model {
         /*
          * Listado simple de los usuarios Administradores
          */
-        public static function getAdmins($availableonly = false, $except = null) {
+        public static function getAdmins($availableonly = false) {
 
             $list = array();
 
@@ -792,7 +792,7 @@ namespace Goteo\Model {
                 ";
             
             if ($availableonly) {
-                $sql .= " WHERE id NOT IN (SELECT distinct(admin) FROM node WHERE admin != '{$except}')";
+                $sql .= " WHERE id NOT IN (SELECT distinct(user) FROM user_node)";
             }
 
             $sql .= " ORDER BY user.name ASC

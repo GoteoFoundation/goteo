@@ -4,9 +4,6 @@ use Goteo\Library\Text;
 
 $filters = $this['filters'];
 
-//arrastramos los filtros
-$filter = "?status={$filters['status']}&icon={$filters['icon']}";
-
 $status = Goteo\Model\Project::status();
 
 ?>
@@ -56,9 +53,9 @@ $status = Goteo\Model\Project::status();
                     <td><?php echo $this['icons'][$reward->icon]; ?></td>
                     <td><?php echo $reward->fulsocial ? 'Cumplido' : 'Pendiente'; ?></td>
                     <?php if (!$reward->fulsocial) : ?>
-                    <td><a href="<?php echo "/admin/rewards/fulfill/{$reward->id}{$filter}"; ?>">[Dar por cumplido]</a></td>
+                    <td><a href="<?php echo "/admin/rewards/fulfill/{$reward->id}"; ?>">[Dar por cumplido]</a></td>
                     <?php else : ?>
-                    <td><a href="<?php echo "/admin/rewards/unfill/{$reward->id}{$filter}"; ?>">[Dar por pendiente]</a></td>
+                    <td><a href="<?php echo "/admin/rewards/unfill/{$reward->id}"; ?>">[Dar por pendiente]</a></td>
                     <?php endif; ?>
                 </tr>
                 <?php endforeach; ?>

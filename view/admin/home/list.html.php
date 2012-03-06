@@ -3,7 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Model\Home;
 
-$the_items = ($_SESSION['admin_node'] != \GOTEO_NODE) ? Home::$node_items : Home::$items;
+$the_items = isset($_SESSION['admin_node']) ? Home::$node_items : Home::$items;
 
 ?>
 <a href="/admin/home/add" class="button red">A&ntilde;adir elemento</a>

@@ -179,7 +179,8 @@ namespace Goteo\Controller {
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false),
                             'add'  => array('label' => 'Nuevo Nodo', 'item' => false),
-                            'edit' => array('label' => 'Gestionando Nodo', 'item' => true)
+                            'edit' => array('label' => 'Gestionando Nodo', 'item' => true),
+                            'admins' => array('label' => 'Asignando administradores de Nodo', 'item' => true)
                         ),
                         'filters' => array('status'=>'active', 'admin'=>'', 'name'=>'')
                     ),

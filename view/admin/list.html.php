@@ -7,16 +7,6 @@ $translator = ACL::check('/translate') ? true : false;
 
 $filters = $this['filters'];
 
-// si hay filtro lo arrastramos
-if (!empty($filters)) {
-    $filter = "?";
-    foreach ($filters as $key => $fil) {
-        $filter .= "$key={$fil['value']}&";
-    }
-} else {
-    $filter = '';
-}
-
 $botones = array(
     'edit' => '[Editar]',
     'remove' => '[Quitar]',
