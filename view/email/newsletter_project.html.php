@@ -36,7 +36,7 @@ if ($q < 5) foreach ($project->individual_rewards as $individual) {
     </div>
 
     <div class="project-tit">
-        <?php echo htmlspecialchars($project->name) ?>
+        <a href="<?php echo SITE_URL.'/project/'.$project->id ?>"><?php echo htmlspecialchars($project->name) ?></a>
     </div>
     <div class="project-autor">
         <?php echo Text::get('regular-by').' '.htmlspecialchars($project->user->name) ?>
@@ -45,7 +45,7 @@ if ($q < 5) foreach ($project->individual_rewards as $individual) {
         <tr>
             <td rowspan="5" class="project-img">
                 <?php if (!empty($project->gallery) && (current($project->gallery) instanceof Image)): ?>
-                <img alt="<?php echo $project->name ?>" src="<?php echo current($project->gallery)->getLink(255, 130, true) ?>" width="255" height="130" />
+                <img alt="<?php echo $project->name ?>" src="<?php echo str_replace('beta.goteo.org', 'goteo.org', current($project->gallery)->getLink(255, 130, true)) ?>" width="255" height="130" />
                 <?php endif ?>
             </td>
             <td rowspan="6" class="project-txt"><?php echo Text::recorta($project->description, 100); ?></td>
