@@ -2,7 +2,8 @@
 
 namespace Goteo\Library {
 
-	use Goteo\Core\Model;
+	use Goteo\Model,
+        Goteo\Core\View;
 	/*
 	 * Clase para montar el contenido de la newsletter
 	 *

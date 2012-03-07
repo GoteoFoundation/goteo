@@ -111,15 +111,19 @@ div.widget.contact-message label {
 
 div.widget.contact-message input {
     display: block;
-    background-color: #dceedf;
+    background-color: #CCE5E6;
     width: 350px;
     margin: -1px;
     padding: .3em 0;
 }
 
+div.widget.contact-message input.short {
+    width: 175px !important;
+}
+
 div.widget.contact-message textarea {
     display: block;
-    background-color: #dceedf;
+    background-color: #CCE5E6;
     width: 350px;
     margin: -1px;
     padding: .3em 0;

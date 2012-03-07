@@ -1,8 +1,10 @@
 <?php
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Model\Invest;
 
 $filters = $this['filters'];
 
+$emails = Invest::emails(true);
 ?>
 <!-- filtros -->
 <?php $the_filters = array(
@@ -65,22 +67,29 @@ $filters = $this['filters'];
                 <th>Aporte ID</th>
                 <th>Fecha</th>
                 <th>Cofinanciador</th>
+                <th></th>
                 <th>Proyecto</th>
                 <th>Estado</th>
                 <th>Metodo</th>
                 <th>Estado aporte</th>
                 <th>Importe</th>
-                <th>Extra</th>
             </tr>
         </thead>
 
         <tbody>
             <?php foreach ($this['list'] as $invest) : ?>
             <tr>
-                <td><a href="/admin/invests/details/<?php echo $invest->id ?>">[Detalles]</a></td>
+                <td><a href="/admin/invests/details/<?php echo $invest->id ?>" title="<?php
+                    if ($invest->anonymous == 1)  echo 'Anónimo ';
+                    if ($invest->resign == 1)  echo 'Donativo ';
+                    if (!empty($invest->admin)) echo 'Manual ';
+                    if (!empty($invest->campaign)) echo 'Riego ';
+                    if (!empty($invest->droped)) echo 'Regado (<strong>'.$invest->droped.'</strong>)';
+                   ?>">[Detalles]</a></td>
                 <td><?php echo $invest->id ?></td>
                 <td><?php echo $invest->invested ?></td>
                 <td><a href="/admin/users?id=<?php echo $invest->user ?>" target="_blank"><?php echo $this['users'][$invest->user]; ?></a><?php if (!empty($invest->call)) echo '<br />(<strong>'.$this['calls'][$invest->call].'</strong>)'; ?></td>
+                <td><?php echo $emails[$invest->user]; ?></td>
                 <td><?php echo $this['projects'][$invest->project] ?></td>
                 <td><?php echo $this['status'][$invest->status] ?></td>
                 <td><?php echo $this['methods'][$invest->method] ?></td>
@@ -89,13 +98,6 @@ $filters = $this['filters'];
 <!--                <td><?php echo $invest->charged ?></td>
                 <td><?php echo $invest->returned ?></td>
 -->
-                <td>
-                    <?php if ($invest->anonymous == 1)  echo 'Anónimo ' ?>
-                    <?php if ($invest->resign == 1)  echo 'Donativo ' ?>
-                    <?php if (!empty($invest->admin)) echo 'Manual ' ?>
-                    <?php if (!empty($invest->campaign)) echo 'Riego ' ?>
-                    <?php if (!empty($invest->droped)) echo 'Regado (<strong>'.$invest->droped.'</strong>)' ?>
-                </td>
             </tr>
             <?php endforeach; ?>
         </tbody>
