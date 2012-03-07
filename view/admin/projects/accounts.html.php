@@ -45,11 +45,24 @@ $accounts = $this['accounts'];
                 'title'     => 'Cuenta bancaria',
                 'value'     => $accounts->bank
             ),
+            'bank_owner' => array(
+                'class'     => 'inline',
+                'type'      => 'textbox',
+                'title'     => 'Titular de la cuenta bancaria',
+                'value'     => $accounts->bank_owner
+            ),
             'paypal' => array(
                 'type'      => 'textbox',
                 'required'  => true,
                 'title'     => 'Cuenta paypal',
                 'value'     => $accounts->paypal
+            ),
+            'paypal_owner' => array(
+                'class'     => 'inline',
+                'type'      => 'textbox',
+                'required'  => true,
+                'title'     => 'Titular de la cuenta paypal',
+                'value'     => $accounts->paypal_owner
             )
 
         )

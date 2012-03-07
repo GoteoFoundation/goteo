@@ -4,3 +4,7 @@ CREATE TABLE `project_account` (
 `paypal` TINYTEXT NULL ,
 PRIMARY KEY ( `project` )
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Cuentas bancarias de proyecto';
+
+-- Alters
+ALTER TABLE `project_account` ADD `bank_owner` TINYTEXT NULL AFTER `bank` ;
+ALTER TABLE `project_account` ADD `paypal_owner` TINYTEXT NULL AFTER `paypal` ;
