@@ -19,6 +19,8 @@ namespace Goteo\Controller {
 
                 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send'])) {
 
+                    $name = $_POST['name'];
+
                     // si falta mensaje, email o asunto, error
                     if(empty($_POST['email'])) {
                         $errors['email'] = Text::get('error-contact-email-empty');
@@ -44,6 +46,7 @@ namespace Goteo\Controller {
                     if (empty($errors)) {
                         $data = array(
                                 'subject' => $_POST['subject'],
+                                'name'    => $_POST['name'],
                                 'email'   => $_POST['email'],
                                 'message' => $_POST['message']
                         );
@@ -56,7 +59,7 @@ namespace Goteo\Controller {
 
                 // En el contenido:
                 $search  = array('%TONAME%', '%MESSAGE%', '%USEREMAIL%');
-                $replace = array('Goteo', $msg_content, $email);
+                $replace = array('Goteo', $msg_content, $name.' '.$email);
                 $content = \str_replace($search, $replace, $template->text);
 
 
