@@ -211,7 +211,7 @@ namespace Goteo\Controller\Admin {
                         if (isset($order['posts'])) {
                             $home_posts = Model\Post::getList();
                             if (!empty($home_posts)) {
-                                $posts_content = '<div class="section-tit">'.Text::get('home-posts-header').'</div>';
+//                                $posts_content = '<div class="section-tit">'.Text::get('home-posts-header').'</div>';
                                 foreach ($posts as $id=>$title) {
                                     $the_post = Model\Post::get($id);
                                     $posts_content .= new View('view/email/newsletter_post.html.php', array('post'=>$the_post));
@@ -228,7 +228,7 @@ namespace Goteo\Controller\Admin {
                             $home_promotes  = Model\Promote::getAll(true);
 
                             if (!empty($home_promotes)) {
-                                $promotes_content = '<div class="section-tit">'.Text::get('home-promotes-header').'</div>';
+//                                $promotes_content = '<div class="section-tit">'.Text::get('home-promotes-header').'</div>';
                                 foreach ($home_promotes as $key => $promote) {
                                     try {
                                         $the_project = Model\Project::getMedium($promote->project, LANG);
@@ -248,8 +248,8 @@ namespace Goteo\Controller\Admin {
                             $campaigns = Model\Call::getActive(4); // convocatorias en modalidad 2; repartiendo capital riego
 
                             if (!empty($calls) || !empty($campaigns)) {
-                                $drops_content = '<div class="section-tit">'.str_replace('<br />', ': ', Text::get('home-calls-header')).'</div>';
-
+//                                $drops_content = '<div class="section-tit">'.str_replace('<br />', ': ', Text::get('home-calls-header')).'</div>';
+                                // resto de programacion dinamica de convocatorias
                             }
                         }
                         */
