@@ -27,6 +27,17 @@ $filters = $this['filters'];
                     <?php endforeach; ?>
                     </select>
                 </td>
+                <?php if (!isset($_SESSION['admin_node'])) : ?>
+                <td>
+                    <label for="node-filter">Del nodo:</label><br />
+                    <select id="node-filter" name="node" onchange="document.getElementById('filter-form').submit();">
+                        <option value="">Cualquier nodo</option>
+                    <?php foreach ($this['nodes'] as $nodeId=>$nodeName) : ?>
+                        <option value="<?php echo $nodeId; ?>"<?php if ($filters['node'] == $nodeId) echo ' selected="selected"';?>><?php echo $nodeName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </td>
+                <?php endif; ?>
             </tr>
             <tr>
                 <td>
@@ -93,13 +104,14 @@ $filters = $this['filters'];
             <tr>
                 <td colspan="8"> >>> Acciones:
                     <a href="/project/edit/<?php echo $project->id; ?>" target="_blank">[Editar]</a>
-                    <?php if ($project->status < 2) : ?><a href="<?php echo "/admin/projects/review/{$project->id}{$filter}"; ?>">[A revisión]</a><?php endif; ?>
-                    <?php if ($project->status < 3 && $project->status > 0) : ?><a href="<?php echo "/admin/projects/publish/{$project->id}{$filter}"; ?>" onclick="return confirm('El proyecto va a comenzar los 40 dias de la primera ronda de campaña, ¿comenzamos?');">[Publicar]</a><?php endif; ?>
-                    <?php if ($project->status != 1) : ?><a href="<?php echo "/admin/projects/enable/{$project->id}{$filter}"; ?>" onclick="return confirm('Mucho Ojo! si el proyecto esta en campaña, ¿Reabrimos la edicion?');">[Reabrir]</a><?php endif; ?>
-                    <?php if ($project->status == 4) : ?><a href="<?php echo "/admin/projects/fulfill/{$project->id}{$filter}"; ?>">[Retorno Cumplido]</a><?php endif; ?>
-                    <?php if ($project->status < 3 && $project->status > 0) : ?><a href="<?php echo "/admin/projects/cancel/{$project->id}{$filter}"; ?>" onclick="return confirm('El proyecto va a desaparecer del admin, solo se podra recuperar desde la base de datos, Ok?');">[Descartar]</a><?php endif; ?>
-                    <a href="<?php echo "/admin/projects/dates/{$project->id}{$filter}"; ?>">[Cambiar fechas]</a>
-                    <a href="<?php echo "/admin/projects/accounts/{$project->id}{$filter}"; ?>">[Cuentas]</a>
+                    <?php if ($project->status < 2) : ?><a href="<?php echo "/admin/projects/review/{$project->id}"; ?>">[A revisión]</a><?php endif; ?>
+                    <?php if ($project->status < 3 && $project->status > 0) : ?><a href="<?php echo "/admin/projects/publish/{$project->id}"; ?>" onclick="return confirm('El proyecto va a comenzar los 40 dias de la primera ronda de campaña, ¿comenzamos?');">[Publicar]</a><?php endif; ?>
+                    <?php if ($project->status != 1) : ?><a href="<?php echo "/admin/projects/enable/{$project->id}"; ?>" onclick="return confirm('Mucho Ojo! si el proyecto esta en campaña, ¿Reabrimos la edicion?');">[Reabrir]</a><?php endif; ?>
+                    <?php if ($project->status == 4) : ?><a href="<?php echo "/admin/projects/fulfill/{$project->id}"; ?>">[Retorno Cumplido]</a><?php endif; ?>
+                    <?php if ($project->status < 3 && $project->status > 0) : ?><a href="<?php echo "/admin/projects/cancel/{$project->id}"; ?>" onclick="return confirm('El proyecto va a desaparecer del admin, solo se podra recuperar desde la base de datos, Ok?');">[Descartar]</a><?php endif; ?>
+                    <a href="<?php echo "/admin/projects/move/{$project->id}"; ?>">[Mover]</a>
+                    <a href="<?php echo "/admin/projects/dates/{$project->id}"; ?>">[Cambiar fechas]</a>
+                    <a href="<?php echo "/admin/projects/accounts/{$project->id}"; ?>">[Cuentas]</a>
                     <?php if ($project->translate) : ?><a href="<?php echo "/admin/translates/edit/{$project->id}"; ?>">[Ir a traducción]</a>
                     <?php else : ?><a href="<?php echo "/admin/translates/add/?project={$project->id}"; ?>">[Habilitar traducción]</a><?php endif; ?>
                     <a href="/admin/invests/report/<?php echo $project->id; ?>#detail" target="_blank">[Informe Financiacion]</a>

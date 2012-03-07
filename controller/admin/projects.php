@@ -15,8 +15,16 @@ namespace Goteo\Controller\Admin {
             
             $errors = array();
 
+            // multiples usos
+            $nodes = Model\Node::getList();
 
             if ($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['id'])) {
+
+                $projData = Model\Project::get($_POST['id']);
+                if (empty($projData->id)) {
+                    $errors[] = 'El proyecto '.$_POST['id'].' no existe';
+                    break;
+                }
 
                 if (isset($_POST['save-dates'])) {
                     $fields = array(
@@ -29,7 +37,7 @@ namespace Goteo\Controller\Admin {
                         );
 
                     $set = '';
-                    $values = array(':id' => $_POST['id']);
+                    $values = array(':id' => $projData->id);
 
                     foreach ($fields as $field) {
                         if ($set != '') $set .= ", ";
@@ -47,20 +55,42 @@ namespace Goteo\Controller\Admin {
                     try {
                         $sql = "UPDATE project SET " . $set . " WHERE id = :id";
                         if (Model\Project::query($sql, $values)) {
-                            $log_text = 'El admin %s ha <span class="red">tocado las fechas</span> del proyecto %s';
+                            $log_text = 'El admin %s ha <span class="red">tocado las fechas</span> del proyecto '.$projData->name.' %s';
                         } else {
-                            $log_text = 'Al admin %s le ha <span class="red">fallado al tocar las fechas</span> del proyecto %s';
+                            $log_text = 'Al admin %s le ha <span class="red">fallado al tocar las fechas</span> del proyecto '.$projData->name.' %s';
                         }
                     } catch(\PDOException $e) {
-                        $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
+                        $errors[] = "Ha fallado! " . $e->getMessage();
                     }
                 } elseif (isset($_POST['save-accounts'])) {
 
-                    $accounts = Model\Project\Account::get($_POST['id']);
+                    $accounts = Model\Project\Account::get($projData->id);
                     $accounts->bank = $_POST['bank'];
+                    $accounts->bank_owner = $_POST['bank_owner'];
                     $accounts->paypal = $_POST['paypal'];
+                    $accounts->paypal_owner = $_POST['paypal_owner'];
                     if ($accounts->save($errors)) {
-                        $errors[] = 'Se han actualizado las cuentas del proyecto '.$_POST['id'];
+                        $errors[] = 'Se han actualizado las cuentas del proyecto '.$projData->name;
+                    }
+
+                } elseif (isset($_POST['save-node'])) {
+
+                    if (!isset($nodes[$_POST['node']])) {
+                        $errors[] = 'El nodo '.$_POST['node'].' no existe! ';
+                    } else {
+
+                        $values = array(':id' => $projData->id, ':node' => $_POST['node']);
+                        try {
+                            $sql = "UPDATE project SET node = :node WHERE id = :id";
+                            if (Model\Project::query($sql, $values)) {
+                                $log_text = 'El admin %s ha <span class="red">movido al nodo '.$nodes[$_POST['node']].'</span> el proyecto '.$projData->name.' %s';
+                            } else {
+                                $log_text = 'Al admin %s le ha <span class="red">fallado al mover al nodo '.$nodes[$_POST['node']].'</span> el proyecto '.$projData->name.' %s';
+                            }
+                        } catch(\PDOException $e) {
+                            $errors[] = "Ha fallado! " . $e->getMessage();
+                        }
+                        
                     }
 
                 }
@@ -130,7 +160,7 @@ namespace Goteo\Controller\Admin {
             if (isset($log_text)) {
                 // Evento Feed
                 $log = new Feed();
-                $log->populate('Cambio estado/fechas de un proyecto desde el admin', '/admin/projects',
+                $log->populate('Cambio estado/fechas/cuentas/nodo de un proyecto desde el admin', '/admin/projects',
                     \vsprintf($log_text, array(
                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                     Feed::item('project', $project->name, $project->id)
@@ -181,15 +211,30 @@ namespace Goteo\Controller\Admin {
                 );
             }
 
+            if ($action == 'move') {
+                // cambiar el nodo
+                return new View(
+                    'view/admin/index.html.php',
+                    array(
+                        'folder' => 'projects',
+                        'file' => 'move',
+                        'project' => $project,
+                        'nodes' => $nodes,
+                        'errors' => $errors
+                    )
+                );
+            }
+
 
             if (!empty($filters['filtered'])) {
-                $projects = Model\Project::getList($filters);
+                $projects = Model\Project::getList($filters, $_SESSION['admin_node']);
             } else {
                 $projects = array();
             }
             $status = Model\Project::status();
             $categories = Model\Project\Category::getAll();
             $owners = Model\User::getOwners();
+            // la lista de nodos la hemos cargado arriba
             $orders = array(
                 'name' => 'Nombre',
                 'updated' => 'Enviado a revision'
@@ -205,6 +250,7 @@ namespace Goteo\Controller\Admin {
                     'status' => $status,
                     'categories' => $categories,
                     'owners' => $owners,
+                    'nodes' => $nodes,
                     'orders' => $orders,
                     'errors' => $errors
                 )

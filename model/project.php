@@ -1864,10 +1864,10 @@ namespace Goteo\Model {
          * @param string node id
          * @return array of project instances
          */
-        public static function getList($filters = array(), $node = \GOTEO_NODE) {
+        public static function getList($filters = array(), $node = null) {
             $projects = array();
 
-            $values = array(':node' => $node);
+            $values = array();
 
             // los filtros
             $sqlFilter = "";
@@ -1893,6 +1893,13 @@ namespace Goteo\Model {
                     )";
                 $values[':category'] = $filters['category'];
             }
+            if (!empty($node)) {
+                $sqlFilter .= " AND node = :node";
+                $values[':node'] = $node;
+            } elseif (!empty($filters['node'])) {
+                $sqlFilter .= " AND node = :node";
+                $values[':node'] = $filters['node'];
+            }
 
             //el Order
             if (!empty($filters['order'])) {
@@ -1913,7 +1920,7 @@ namespace Goteo\Model {
             $sql = "SELECT 
                         id
                     FROM project
-                    WHERE node = :node
+                    WHERE id != ''
                         $sqlFilter
                         $sqlOrder
                     ";

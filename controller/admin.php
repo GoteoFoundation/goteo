@@ -212,9 +212,10 @@ namespace Goteo\Controller {
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false),
                             'dates' => array('label' => 'Cambiando las fechas del proyecto ', 'item' => true),
-                            'accounts' => array('label' => 'Gestionando las cuentas del proyecto ', 'item' => true)
+                            'accounts' => array('label' => 'Gestionando las cuentas del proyecto ', 'item' => true),
+                            'move' => array('label' => 'Moviendo a otro Nodo el proyecto ', 'item' => true)
                         ),
-                        'filters' => array('status'=>'-1', 'category'=>'', 'owner'=>'', 'name'=>'', 'order'=>'')
+                        'filters' => array('status'=>'-1', 'category'=>'', 'owner'=>'', 'name'=>'', 'node'=>\GOTEO_NODE, 'order'=>'')
                     ),
                     'promote' => array(
                         'label' => 'Proyectos destacados',

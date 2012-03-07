@@ -81,7 +81,7 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND active = '$active'";
             }
             if (!empty($filters['admin'])) {
-                $sqlFilter .= " AND admin = '{$filters['interest']}'";
+                $sqlFilter .= " AND id IN (SELECT node FROM user_node WHERE user = '{$filters['admin']}')";
             }
 
             $sql = static::query("
@@ -98,6 +98,28 @@ namespace Goteo\Model {
                 $item->admins = self::getAdmins($item->id);
 
                 $list[] = $item;
+            }
+
+            return $list;
+        }
+
+        /*
+         * Lista simple de nodos
+         */
+        public static function getList () {
+
+            $list = array();
+
+            $query = static::query("
+                SELECT
+                    id,
+                    name
+                FROM node
+                ORDER BY name ASC
+                ");
+
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                $list[$item->id] = $item->name;
             }
 
             return $list;
