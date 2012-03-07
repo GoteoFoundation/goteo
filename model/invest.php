@@ -470,6 +470,38 @@ namespace Goteo\Model {
         }
 
         /*
+         * Lista de emails de usuarios que han aportado a algo
+         */
+        public static function emails ($all = false) {
+
+            $list = array();
+
+            $sql = "
+                SELECT
+                    user.id as id,
+                    user.email as email
+                FROM    user
+                INNER JOIN invest
+                    ON user.id = invest.user
+                ";
+
+            if (!$all) {
+                $sql .= "WHERE (user.hide = 0 OR user.hide IS NULL)
+                    ";
+            }
+                $sql .= "ORDER BY user.id ASC
+                ";
+
+            $query = static::query($sql);
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $list[$item->id] = $item->email;
+            }
+
+            return $list;
+        }
+
+        /*
          * Lista de convocatorias con aportes asociados
          */
         public static function calls () {
