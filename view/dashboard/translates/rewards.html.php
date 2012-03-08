@@ -218,7 +218,7 @@ $(function () {
 
     socials.delegate('li.element.editsocial_reward input.ok', 'click', function (event) {
         var data = {};
-        data[this.name.substring(0, 18) + 'edit'] = '0';
+        data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
         Superform.update(socials, data);
         event.preventDefault();
     });
@@ -235,7 +235,7 @@ $(function () {
 
     individuals.delegate('li.element.editindividual_reward input.ok', 'click', function (event) {
         var data = {};
-        data[this.name.substring(0, 22) + 'edit'] = '0';
+        data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
         Superform.update(individuals, data);
         event.preventDefault();
     });

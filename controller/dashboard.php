@@ -1395,6 +1395,49 @@ namespace Goteo\Controller {
 
 
         /*
+         * Página especial para Ricardo amaste para editar proyectos euskadi
+         * Es un apaño temporal pre-nodos
+         */
+        public function editor ($option = 'main', $action = 'view') {
+
+            if ($_SESSION['user']->id != 'ricardo-amaste') {
+                throw new Redirection('/dashboard');
+            }
+
+            // quitamos el stepped para que no nos lo coja para el siguiente proyecto que editemos
+            if (isset($_SESSION['stepped'])) {
+                unset($_SESSION['stepped']);
+            }
+
+            // proyectos disponibles
+            $projects = array(
+                Model\Project::getMini('getxoberpiztu')
+            );
+
+            foreach ($projects as $project) {
+
+                // compruebo que puedo editar mis proyectos
+                if (!ACL::check('/project/edit/'.$project->id)) {
+                    ACL::allow('/project/edit/'.$project->id, '*', 'user', $_SESSION['user']);
+                }
+            }
+
+            return new View (
+                'view/dashboard/index.html.php',
+                array(
+                    'menu'    => self::menu(),
+                    'section' => __FUNCTION__,
+                    'option'  => $option,
+                    'action'  => $action,
+                    'projects'   => $projects,
+                    'errors'  => $errors,
+                    'success' => $success
+                )
+            );
+
+        }
+
+        /*
          * Salto al admin
          *
          */
@@ -1506,6 +1549,19 @@ namespace Goteo\Controller {
                     )
                 );
             }
+
+            /*
+             * Piñonaco para ricardo amaste para edicion de proyectos de esukadi
+             */
+            if ($_SESSION['user']->id == 'ricardo-amaste') {
+                $menu['editor'] = array(
+                    'label'   => 'Editor Euskadi',
+                    'options' => array(
+                        'main' => 'Editor de proyectos de Euskadi'
+                    )
+                );
+            }
+
 
 /*
             // si tiene permiso para ir al admin

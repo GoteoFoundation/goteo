@@ -316,7 +316,6 @@ namespace Goteo\Controller {
                         foreach ($_POST as $k => $v) {
                             if (!empty($v) && preg_match('/((social)|(individual))_reward-(\d+)-edit/', $k)) {                                
                                 $viewData[$k] = true;
-                                break;
                             }                            
                         }
                         

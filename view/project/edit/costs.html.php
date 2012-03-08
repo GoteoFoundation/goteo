@@ -275,7 +275,7 @@ $(function () {
     
     costs.delegate('li.element.editcost input.ok', 'click', function (event) {
         var data = {};
-        data[this.name.substring(0, 9) + 'edit'] = '0';
+        data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
         //Superform.update($(this).parents('li.element.editcost'), data);        
         Superform.update(costs, data);         
         event.preventDefault();
