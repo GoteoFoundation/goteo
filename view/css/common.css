@@ -80,8 +80,10 @@ a.button {
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     background: #149290 url('button/aqua.png') repeat-x top;
-	padding: .6em 1.3em;
-	margin: .8em 0 .5em;
+	padding: .6em 1.3em .5em;
+	margin-top: .8em;
+	margin-right: 0;
+	margin-bottom: .5em;
 }
 
 input[type="submit"]:active,
@@ -210,7 +212,7 @@ h1, h2, h3, h4, h5, h6, h7, h8 {
 	content: " ";
 	clear: both;
 	height: 0;
-	}
+}
 .clearfix { display: inline-table; }
 /* Hides from IE-mac \*/
 * html .clearfix { height: 1%; }

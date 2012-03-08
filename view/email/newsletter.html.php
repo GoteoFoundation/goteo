@@ -7,17 +7,6 @@ use Goteo\Library\Text;
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Newsletter Goteo</title>
 <style type="text/css">
-<!--
-body {
-	margin: 0px;
-	padding: 0px;
-	font-family: "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;
-	color:#58595B;
-	padding-left: 20px;
-	background-color: #f1f1f1;
-}
-
-
 .header-bar { 
 	width: 100%;
 	height: 22px;
@@ -44,8 +33,9 @@ body {
 	}
 
 .content {
-	width:600px;
+	width:674px;
 	margin-left:50px;
+	margin-top:20px;
 	}
 
 .message {
@@ -165,190 +155,11 @@ color:#20B3B2;
 .footer-element {
 	margin-right:50px;
 	}
-
-.intro {
-	width: 634px;
-	background-color: #ffffff;
-	font-size: 18px;
-	padding: 20px 20px 5px;
-}
-
-.intro-tit {
-	font-size: 21px;
-	font-weight: bold;
-}
-
-.section-tit {
-	width: 634px;
-	font-size: 18px;
-	font-weight: bold;
-	margin-top: 30px;
-	padding-top: 20px;
-	padding-left: 20px;
-}
-
-.project {
-	width: 644px;
-	background-color: #ffffff;
-	padding: 20px 10px 10px 20px;
-	margin-top: 20px;
-}
-
-.project-header {
-	color: #38b5b1;
-	font-weight: bold;
-}
-
-.project-header-desc {
-	font-size: 14px;
-	font-weight: normal;
-	font-style: normal;
-}
-
-.project-tit {
-	font-size: 14px;
-	font-weight: bold;
-	padding-left: 5px;
-}
-
-.project-autor {
-	font-size: 11px;
-	color: #434343;
-	vertical-align: top;
-	padding-bottom: 5px;
-	padding-top: 5px;
-	color: #929292;
-	padding: 5px;
-}
-
-.project-img {
-	width: 226px;
-}
-
-.project-txt {
-	font-size: 12px;
-	color: #929292;
-	vertical-align: top;
-	border-right: 2px solid #f1f1f1;
-	line-height: 15px;
-	width: 190px;
-	padding-right: 10px;
-}
-
-.project-categoria {
-	font-size: 10px;
-	color: #434343;
-}
-
-.project-min {
-	font-size: 10px;
-	vertical-align: top;
-	color: #96238F;
-}
-
-.project-opt {
-	font-size: 10px;
-	vertical-align: top;
-	color: #ba6fb6;
-}
-
-.project-valor2 {
-	font-weight: bold;
-	color: #ba6fb6;
-	font-size: 21px;
-}
-
-.project-valor1 {
-	font-weight: bold;
-	color: #96238F;
-	font-size: 21px;
-}
-
-.project-quedan {
-	font-size: 11px;
-	line-height: 14px;
-}
-
-.project-dias {
-	font-weight: bold;
-	font-size: 14px;
-	line-height: 14px;
-}
-
-.line {
-	width: 25px;
-	height: 2px;
-	border-bottom: 1px solid #38b5b1;
-	margin-bottom: 15px;
-}
-
-.camp {
-	width: 634px;
-	background-color: #ffffff;
-	padding: 10px 20px;
-	margin-bottom: 20px;
-	margin-top: 20px;
-}
-
-.camp-logo {
-	width: 155px;
-	text-align: center;
-	border-right: 2px solid #f1f1f1;
-}
-
-.camp-tit {
-	width: 210px;
-	font-size: 16px;
-	font-weight: bold;
-	color: #38b5b1;
-	border-right: 2px solid #f1f1f1;
-	line-height: 21px;
-}
-
-.camp-sebuscan {
-	font-size: 16px;
-	font-weight: bold;
-	color: #EF4243;
-}
-
-.camp-desc {
-	color: #96238F;
-	font-size: 12px;
-	height: 60px;
-	vertical-align: top;
-}
-
-.camp-txt {
-	font-size: 10px;
-	vertical-align: top;
-}
-
-.camp-valor1 {
-	font-weight: bold;
-	color: #ba6fb6;
-	font-size: 21px;
-}
-
-.camp-valor2 {
-	font-weight: bold;
-	color: #96238F;
-	font-size: 21px;
-}
-
-.camp-fecha1 {
-	font-weight: bold;
-	font-size: 21px;
-}
-
-.camp-fecha2 {
-	font-weight: bold;
-	font-size: 14px;
-}
--->
+    
 </style>
 </head>
 
-<body>
+<body style="margin: 0px; padding: 0px; font-family: Helvetica, Arial, Geneva, sans-serif; color:#58595B; padding-left: 20px; background-color: #f1f1f1;">
 
 <?php if (isset($this['sinoves'])) : ?><div class="header-bar"><span class="header-element"><?php echo Text::html('mailer-sinoves', $this['sinoves']); ?></span></div><?php endif; ?>
 <div class="header"><span class="header-element"><img src="cid:logo" alt="Goteo"/></span></div>
