@@ -297,7 +297,7 @@ $(function () {
 
     webs.delegate('li.element.editweb input.ok', 'click', function (event) {
         var data = {};
-        data[this.name.substring(0, 7) + 'edit'] = '0';
+        data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
         Superform.update(webs, data);
         event.preventDefault();
     });
