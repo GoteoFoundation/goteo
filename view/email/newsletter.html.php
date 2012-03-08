@@ -44,8 +44,9 @@ body {
 	}
 
 .content {
-	width:600px;
+	width:674px;
 	margin-left:50px;
+	margin-top:20px;
 	}
 
 .message {
@@ -211,6 +212,15 @@ color:#20B3B2;
 	padding-left: 5px;
 }
 
+.project-tit a {
+	text-decoration: none;
+	color: #58595b;
+}
+
+.project-tit a:hover {
+	color: #38b5b1;
+}
+
 .project-autor {
 	font-size: 11px;
 	color: #434343;
@@ -226,13 +236,18 @@ color:#20B3B2;
 }
 
 .project-txt {
-	font-size: 12px;
-	color: #929292;
+	font-size: 14px;
+	color: #797979;
 	vertical-align: top;
 	border-right: 2px solid #f1f1f1;
 	line-height: 15px;
 	width: 190px;
 	padding-right: 10px;
+}
+
+.project-txt a {
+	color: #797979;
+	text-decoration: none;
 }
 
 .project-categoria {
@@ -255,13 +270,13 @@ color:#20B3B2;
 .project-valor2 {
 	font-weight: bold;
 	color: #ba6fb6;
-	font-size: 21px;
+	font-size: 19px;
 }
 
 .project-valor1 {
 	font-weight: bold;
 	color: #96238F;
-	font-size: 21px;
+	font-size: 19px;
 }
 
 .project-quedan {
