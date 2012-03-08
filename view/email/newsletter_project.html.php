@@ -45,7 +45,7 @@ if ($q < 5) foreach ($project->individual_rewards as $individual) {
         <tr>
             <td rowspan="5" class="project-img">
                 <?php if (!empty($project->gallery) && (current($project->gallery) instanceof Image)): ?>
-                <img alt="<?php echo $project->name ?>" src="<?php echo str_replace('beta.goteo.org', 'goteo.org', current($project->gallery)->getLink(255, 130, true)) ?>" width="255" height="130" />
+                <a href="<?php echo SITE_URL.'/project/'.$project->id ?>"><img alt="<?php echo $project->name ?>" src="<?php echo str_replace('beta.goteo.org', 'goteo.org', current($project->gallery)->getLink(255, 130, true)) ?>" width="255" height="130" /></a>
                 <?php endif ?>
             </td>
             <td rowspan="6" class="project-txt"><?php echo Text::recorta($project->description, 100); ?></td>
@@ -56,8 +56,8 @@ if ($q < 5) foreach ($project->individual_rewards as $individual) {
             <td class="project-opt"><?php echo Text::get('project-view-metter-optimum'); ?></td>
         </tr>
         <tr>
-            <td class="project-valor1"><?php echo \amount_format($project->mincost) ?><img src="http://www.goteo.org/view/css/euro/violet/s.png" width="19" height="16" /></td>
-            <td class="project-valor2"><?php echo \amount_format($project->maxcost) ?><img src="http://www.goteo.org/view/css/euro/light-violet/s.png" width="19" height="16" /></td>
+            <td class="project-valor1"><?php echo \amount_format($project->mincost) ?><img src="http://www.goteo.org/data/newsletter/euro-2.gif" width="19" height="16" /></td>
+            <td class="project-valor2"><?php echo \amount_format($project->maxcost) ?><img src="http://www.goteo.org/data/newsletter/euro-1.gif" width="19" height="16" /></td>
         </tr>
         <tr>
             <td colspan="2" class="camp-txt"><?php echo Text::get('project-rewards-header'); ?></td>
