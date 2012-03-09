@@ -42,7 +42,8 @@ namespace Goteo\Controller {
                             'list' => array('label' => 'Listando', 'item' => false),
                             'add'  => array('label' => 'Nueva Entrada', 'item' => false),
                             'edit' => array('label' => 'Editando Entrada', 'item' => true),
-                            'translate' => array('label' => 'Traduciendo Entrada', 'item' => true)
+                            'translate' => array('label' => 'Traduciendo Entrada', 'item' => true),
+                            'reorder' => array('label' => 'Ordenando las entradas en Portada', 'item' => false)
                         )
                     ),
                     'calls' => array(
@@ -200,13 +201,18 @@ namespace Goteo\Controller {
                             'edit' => array('label' => 'Editando Recomendacion', 'item' => true)
                         )
                     ),
+                /*
+                 * Para poner entradas en portadda y reordenar, se usa la misma gestion de blog
+                 *
                     'posts' => array(
-                        'label' => 'Entradas de blog',
+                        'label' => 'Entradas de blog en Portada',
                         'actions' => array(
                             'list' => array('label' => 'Ordenando', 'item' => false),
                             'add'  => array('label' => 'Colocando Entrada en la portada', 'item' => false)
                         )
                     ),
+                 *
+                 */
                     'projects' => array(
                         'label' => 'Listado de proyectos',
                         'actions' => array(

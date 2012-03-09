@@ -31,7 +31,7 @@ namespace Goteo\Controller {
 
             // entradas de blog
             if (isset($order['posts'])) {
-                // hay que sacar los que van en portada de su blog (en cuanto aclaremos lo de los nodos)
+                // entradas en portada
                 $posts     = Post::getList();
 
                 foreach ($posts as $id=>$title) {
@@ -113,10 +113,38 @@ namespace Goteo\Controller {
             
             $node = Node::get(NODE_ID);
 
+            // orden de los elementos en portada
+            $order = Home::getAll();
+
+            // entradas de blog
+            if (isset($order['posts'])) {
+                // entradas en portada
+                $posts     = Post::getList('home', NODE_ID);
+
+                foreach ($posts as $id=>$title) {
+                    $posts[$id] = Post::get($id);
+                }
+            }
+
+            // Proyectos destacados
+            if (isset($order['promotes'])) {
+                $promotes  = Promote::getAll(true, NODE_ID);
+
+                foreach ($promotes as $key => &$promo) {
+                    try {
+                        $promo->projectData = Project::getMedium($promo->project, LANG);
+                    } catch (\Goteo\Core\Error $e) {
+                        unset($promotes[$key]);
+                    }
+                }
+            }
+
             return new View('view/node/index.html.php',
                 array(
-                    'node'   => $node
-                )
+                    'node'   => $node,
+                    'posts'     => $posts,
+                    'promotes'  => $promotes,
+                    'order'     => $order                )
             );
 
         }

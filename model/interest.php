@@ -105,7 +105,7 @@ namespace Goteo\Model {
 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
+                $errors[] = "HA FALLADO!!! " . $e->getMessage();
                 return false;
             }
         }

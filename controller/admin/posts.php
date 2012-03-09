@@ -8,6 +8,10 @@ namespace Goteo\Controller\Admin {
 		Goteo\Library\Feed,
         Goteo\Model;
 
+    /**
+     *  Clase auxiliar para la gestión de entradas en portada
+     *  Las entradas en la portada de nodo utilizan la clase auxiliar PostsHome
+     */
     class Posts {
 
         public static function process ($action = 'list', $id = null) {

@@ -4,6 +4,7 @@ namespace Goteo\Model\Blog {
 
     use \Goteo\Model\Project\Media,
         \Goteo\Model\Image,
+        \Goteo\Model\User,
         \Goteo\Library\Text;
 
     class Post extends \Goteo\Core\Model {
@@ -20,6 +21,8 @@ namespace Goteo\Model\Blog {
             $publish,
             $home,
             $footer,
+            $author,
+            $owner,
             $tags = array(),
             $gallery = array(), // array de instancias image de post_image
             $num_comments = 0,
@@ -43,8 +46,12 @@ namespace Goteo\Model\Blog {
                         post.allow as allow,
                         post.publish as publish,
                         post.home as home,
-                        post.footer as footer
+                        post.footer as footer,
+                        post.author as author,
+                        CONCAT(blog.type, '-', blog.owner) as owner
                     FROM    post
+                    INNER JOIN blog
+                        ON  blog.id = post.blog
                     LEFT JOIN post_lang
                         ON  post_lang.id = post.id
                         AND post_lang.lang = :lang
@@ -68,6 +75,9 @@ namespace Goteo\Model\Blog {
                 //tags
                 $post->tags = Post\Tag::getAll($id);
 
+                // autor
+                if (!empty($post->author)) $post->author = User::getMini($post->author);
+                
                 return $post;
         }
 
@@ -93,8 +103,12 @@ namespace Goteo\Model\Blog {
                     DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                     post.publish as publish,
                     post.home as home,
-                    post.footer as footer
+                    post.footer as footer,
+                    post.author as author,
+                    CONCAT(blog.type, '-', blog.owner) as owner
                 FROM    post
+                INNER JOIN blog
+                    ON  blog.id = post.blog
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
@@ -129,6 +143,9 @@ namespace Goteo\Model\Blog {
                 // reconocimiento de enlaces y saltos de linea
 //                $post->text = nl2br(Text::urlink($post->text));
 
+                // autor
+                if (!empty($post->author)) $post->author = User::getMini($post->author);
+
                 $list[$post->id] = $post;
             }
 
@@ -156,8 +173,12 @@ namespace Goteo\Model\Blog {
                     DATE_FORMAT(post.date, '%d-%m-%Y') as fecha,
                     post.publish as publish,
                     post.home as home,
-                    post.footer as footer
+                    post.footer as footer,
+                    post.author as author,
+                    CONCAT(blog.type, '-', blog.owner) as owner
                 FROM    post
+                INNER JOIN blog
+                    ON  blog.id = post.blog
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
@@ -188,6 +209,9 @@ namespace Goteo\Model\Blog {
 
                 $post->num_comments = Post\Comment::getCount($post->id);
 
+                // autor
+                if (!empty($post->author)) $post->author = User::getMini($post->author);
+                
                 $list[$post->id] = $post;
             }
 
@@ -276,7 +300,7 @@ namespace Goteo\Model\Blog {
 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
+                $errors[] = "HA FALLADO!!! " . $e->getMessage();
                 return false;
             }
         }
@@ -306,7 +330,7 @@ namespace Goteo\Model\Blog {
                 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
+                $errors[] = "HA FALLADO!!! " . $e->getMessage();
                 return false;
             }
         }
