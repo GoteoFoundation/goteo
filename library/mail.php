@@ -183,7 +183,7 @@ namespace Goteo\Library {
                     $sql = "INSERT INTO mail (id, email, html, template) VALUES ('', :email, :html, :template)";
                     $values = array (
                         ':email' => 'any',
-                        ':html' => str_replace('cid:logo', SITE_URL.'/goteo_logo.png', $this->content),
+                        ':html' => $this->content,
                         ':template' => $this->template
                     );
                     $query = Model::query($sql, $values);
@@ -196,7 +196,7 @@ namespace Goteo\Library {
                 $sql = "INSERT INTO mail (id, email, html, template) VALUES ('', :email, :html, :template)";
                 $values = array (
                     ':email' => $this->to,
-                    ':html' => str_replace('cid:logo', SITE_URL.'/goteo_logo.png', $this->content),
+                    ':html' => $this->content,
                     ':template' => $this->template
                 );
                 $query = Model::query($sql, $values);
