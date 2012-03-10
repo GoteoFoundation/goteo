@@ -7,41 +7,8 @@ use Goteo\Library\Text;
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Newsletter Goteo</title>
 <style type="text/css">
-.header-bar { 
-	width: 100%;
-	height: 22px;
-	line-height:22px;
-	font-size:10px;
-	color:#cccccc;
-	background-color:#58595B;
-}
-
-.header-bar a { 
-	color:#ffffff;
-}
-
-
-.header { 
-	width: 100%;
-	background-color:#CDE4E5;
-	padding-top:7px;
-	padding-bottom:7px;
-}
-
-.header-element {
-	margin-left:50px;
-	}
-
-.content {
-	width:674px;
-	margin-left:50px;
-	margin-top:20px;
-	}
-
 .message {
-	font-size:14px;
-	padding-bottom:20px;
-	padding-top:20px;
+	font-size:14px; padding-bottom:20px; padding-top:20px;
 	}
 	
 .message-highlight-red {
@@ -56,134 +23,34 @@ use Goteo\Library\Text;
 	color:#20B3B2;
 	text-decoration:none;
 	}
-
-.disclaimer {
-	font-size:11px;
-	color:#20B3B2;
-	padding-bottom:10px;
-	padding-top:10px;
-	border-bottom: 1px solid #20B3B2;
-	border-top: 1px solid #20B3B2;
-	}
-	
-.goteo-url {
-	font-size:12px;
-	color:#20B3B2;
-	padding-top:10px;
-	padding-bottom:10px;
-	}
-	
-.goteo-url a {
-	color:#20B3B2;
-	text-decoration:none;
-	}
-
-.descubre {
-	color:#E32526;
-	font-size:14px;
-	padding-top:5px;
-    text-transform: uppercase;
-	}
-	
-.descubre a {
-	color:#E32526;
-	text-decoration:none;
-	}
-	
-.crea {
-	color:#20B3B2;
-	font-size:14px;
-	padding-top:5px;
-	padding-bottom:10px;
-    text-transform: uppercase;
-	}
-	
-.crea a {
-	color:#20B3B2;
-	text-decoration:none;
-	}
-
-.follow {
-	font-size:11px;
-	padding-bottom:10px;
-	}
-
-.facebook a {
-	color:#233E99;
-	text-decoration:none;
-	}
-
-.twitter a {
-	color:#00AEEF;
-	text-decoration:none;
-	}
-	
-.rss a {
-	color:#F15A29;
-	text-decoration:none;
-	}
-	
-.unsuscribe {
-	font-size:11px;
-	text-align:right;
-	padding-bottom:10px;
-	padding-top:10px;
-	border-top: 1px solid #20B3B2;
-	}
-	
-.unsuscribe a {
-color:#20B3B2;
-	text-decoration:none;
-	}
-
-.footer-bar { 
-	width: 100%;
-	height: 22px;
-	line-height:22px;
-	font-size:10px;
-	color:#ffffff;
-	background-color:#58595B;
-	text-align:right
-}
-
-.footer-bar a { 
-	color:#ffffff;
-	text-decoration:none
-}
-
-
-.footer-element {
-	margin-right:50px;
-	}
-    
 </style>
 </head>
 
 <body style="margin: 0px; padding: 0px; font-family: Helvetica, Arial, Geneva, sans-serif; color:#58595B; padding-left: 20px; background-color: #f1f1f1;">
 
-<?php if (isset($this['sinoves'])) : ?><div class="header-bar"><span class="header-element"><?php echo Text::html('mailer-sinoves', $this['sinoves']); ?></span></div><?php endif; ?>
-<div class="header"><span class="header-element"><img src="cid:logo" alt="Goteo"/></span></div>
+<?php if (isset($this['sinoves'])) : ?><div style="width: 100%; height: 22px; line-height:22px; font-size:10px; color:#cccccc; background-color:#58595B;"><span style="margin-left:50px;"><?php echo Text::html('mailer-sinoves', $this['sinoves']); ?></span></div><?php endif; ?>
+<div style="width: 100%; background-color:#CDE4E5; padding-top:7px; padding-bottom:7px;"><span style="margin-left:50px;"><img src="cid:logo" alt="Goteo"/></span></div>
 
-<div class="content">
+<div style="width:674px; margin-left:50px; margin-top:20px;">
 
 <div><!--mensaje - contenido-->
   <?php echo $this['content'] ?>
 </div>  
   
-<div class="disclaimer"><?php echo Text::get('mailer-disclaimer') ?></div>
+<div style="font-size:11px; color:#20B3B2; padding-bottom:10px; padding-top:10px; border-bottom: 1px solid #20B3B2; border-top: 1px solid #20B3B2;"><?php echo Text::get('mailer-disclaimer') ?></div>
 
-<div class="goteo-url"><a href="<?php echo SITE_URL ?>">www.goteo.org</a></div>
-<div class="descubre"><a href="<?php echo SITE_URL . '/discover' ?>"><?php echo Text::get('regular-discover'); ?></a></div>
-<div class="crea"><a href="<?php echo SITE_URL . '/project/create' ?>"><?php echo Text::get('regular-create'); ?></a></div>
+<div style="font-size:12px; color:#20B3B2; padding-top:10px; padding-bottom:10px;"><a href="<?php echo SITE_URL ?>" style="color:#20B3B2; text-decoration:none;">www.goteo.org</a></div>
+<div style="color:#E32526; font-size:14px; padding-top:5px; text-transform: uppercase;"><a href="<?php echo SITE_URL . '/discover' ?>" style="color:#E32526; text-decoration:none;"><?php echo Text::get('regular-discover'); ?></a></div>
+<div style="color:#20B3B2; font-size:14px; padding-top:5px; padding-bottom:10px; text-transform: uppercase;"><a href="<?php echo SITE_URL . '/project/create' ?>" style="color:#20B3B2; text-decoration:none;"><?php echo Text::get('regular-create'); ?></a></div>
 
-<div class="follow">S&iacute;guenos en:<br />
-  <span class="facebook"><a href="<?php echo Text::get('social-account-facebook') ?>">facebook</a></span> |  <span class="twitter"><a href="<?php echo Text::get('social-account-twitter') ?>">twitter</a></span> |   <span class="rss"><a rel="alternate" type="application/rss+xml" title="RSS" href="<?php echo SITE_URL. '/rss' ?>">RSS</a></span></div>
+<div style="font-size:11px; padding-bottom:10px;"><?php echo utf8_encode('Síguenos en:') ?><br />
+  <span><a href="<?php echo Text::get('social-account-facebook') ?>" style="color:#233E99; text-decoration:none;">facebook</a></span> |  <span><a href="<?php echo Text::get('social-account-twitter') ?>" style="color:#00AEEF; text-decoration:none;">twitter</a></span> |   <span><a rel="alternate" type="application/rss+xml" title="RSS" href="<?php echo SITE_URL. '/rss' ?>" style="color:#F15A29; text-decoration:none;">RSS</a></span></div>
 
-<div class="unsuscribe"><?php echo Text::get('newsletter-block'); ?></div>
+<div style="font-size:11px; text-align:right; padding-bottom:10px; padding-top:10px; border-top: 1px solid #20B3B2;"><?php echo Text::get('newsletter-block'); ?></div> <!-- enlace color:#20B3B2; text-decoration:none; -->
 
 </div>
 
-<div class="footer-bar"><span class="footer-element"><?php echo Text::get('footer-platoniq-iniciative') ?> <strong><a href="http://platoniq.net">Platoniq</a></strong></span></div>
+<div style="width: 100%; height: 22px; line-height:22px; font-size:10px; color:#ffffff; background-color:#58595B; text-align:right;"><span style="margin-right:50px;"><?php echo Text::get('footer-platoniq-iniciative') ?> <strong><a href="http://platoniq.net" style="color:#ffffff; text-decoration:none;" >Platoniq</a></strong></span></div>
 
 </body>
 </html>

@@ -6,6 +6,7 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Library\Text,
+        Goteo\Library\Message,
         Goteo\Library\Mail,
         Goteo\Library\Template;
 
@@ -43,24 +44,25 @@ namespace Goteo\Controller {
                         $msg_content = nl2br($msg_content);
                     }
 
+                    $data = array(
+                            'subject' => $_POST['subject'],
+                            'name'    => $_POST['name'],
+                            'email'   => $_POST['email'],
+                            'message' => $_POST['message']
+                    );
+
                     if (empty($errors)) {
-                        $data = array(
-                                'subject' => $_POST['subject'],
-                                'name'    => $_POST['name'],
-                                'email'   => $_POST['email'],
-                                'message' => $_POST['message']
-                        );
 
-                // Obtenemos la plantilla para asunto y contenido
-                $template = Template::get(1);
+                        // Obtenemos la plantilla para asunto y contenido
+                        $template = Template::get(1);
 
-                // Sustituimos los datos
-                $subject = str_replace('%SUBJECT%', $subject, $template->title);
+                        // Sustituimos los datos
+                        $subject = str_replace('%SUBJECT%', $subject, $template->title);
 
-                // En el contenido:
-                $search  = array('%TONAME%', '%MESSAGE%', '%USEREMAIL%');
-                $replace = array('Goteo', $msg_content, $name.' '.$email);
-                $content = \str_replace($search, $replace, $template->text);
+                        // En el contenido:
+                        $search  = array('%TONAME%', '%MESSAGE%', '%USEREMAIL%');
+                        $replace = array('Goteo', $msg_content, $name.' '.$email);
+                        $content = \str_replace($search, $replace, $template->text);
 
 
                         $mailHandler = new Mail();
@@ -74,10 +76,10 @@ namespace Goteo\Controller {
                         $mailHandler->html = true;
                         $mailHandler->template = $template->id;
                         if ($mailHandler->send($errors)) {
-                            $message = 'Mensaje de contacto enviado correctamente.';
+                            Message::Info('Mensaje de contacto enviado correctamente.');
                             $data = array();
                         } else {
-                            $errors[] = 'Ha habido algún error al enviar el mensaje.';
+                            Message::Error('Ha fallado al enviar el mensaje.');
                         }
 
                         unset($mailHandler);
@@ -88,8 +90,7 @@ namespace Goteo\Controller {
                     'view/about/contact.html.php',
                     array(
                         'data'    => $data,
-                        'errors'  => $errors,
-                        'message' => $message
+                        'errors'  => $errors
                     )
                 );
             
