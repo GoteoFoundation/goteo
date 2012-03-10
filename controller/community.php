@@ -29,6 +29,7 @@ namespace Goteo\Controller {
                 // compartiendo intereses global
                 case 'sharemates':
                     $categories = Interest::getAll();
+                    unset($categories[15]); // la de testeos
 
                     foreach ($categories as $catId => $catName) {
                         $gente = Interest::shareAll($catId);

@@ -8,6 +8,7 @@ $user = $this['user'];
 $user->about = nl2br(Text::urlink($user->about));
 
 $interests = Interest::getAll();
+unset($interests[15]); // la de testeo
 ?>
 
 <div class="widget user-about">
