@@ -32,7 +32,7 @@ namespace Goteo\Controller {
             // entradas de blog
             if (isset($order['posts'])) {
                 // entradas en portada
-                $posts     = Post::getList();
+                $posts     = Post::getAll();
 
                 foreach ($posts as $id=>$title) {
                     $posts[$id] = Post::get($id);

@@ -97,6 +97,18 @@ $(document).ready(function(){
                 'type' => 'hidden',
                 'value' => $post->id
             ),
+            'author' => array (
+                'type' => 'hidden',
+                'value' => $post->author
+            ),
+            'home' => array (
+                'type' => 'hidden',
+                'value' => $post->home
+            ),
+            'footer' => array (
+                'type' => 'hidden',
+                'value' => $post->footer
+            ),
             'blog' => array (
                 'type' => 'hidden',
                 'value' => $post->blog
@@ -199,24 +211,6 @@ $(document).ready(function(){
                 'hint'      => Text::get('tooltip-updates-publish'),
                 'errors'    => !empty($errors['publish']) ? array($errors['publish']) : array(),
                 'value'     => (int) $post->publish
-            ),
-            'home' => array(
-                'title'     => 'En portada',
-                'type'      => 'slider',
-                'options'   => $allow,
-                'class'     => 'currently cols_' . count($allow),
-                'hint'      => Text::get('tooltip-updates-home'),
-                'errors'    => !empty($errors['home']) ? array($errors['home']) : array(),
-                'value'     => (int) $post->home
-            ),
-            'footer' => array(
-                'title'     => 'Enlace en footer',
-                'type'      => 'slider',
-                'options'   => $allow,
-                'class'     => 'currently cols_' . count($allow),
-                'hint'      => Text::get('tooltip-updates-footer'),
-                'errors'    => !empty($errors['footer']) ? array($errors['footer']) : array(),
-                'value'     => (int) $post->footer
             )
 
         )

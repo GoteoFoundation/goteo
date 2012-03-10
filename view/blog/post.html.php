@@ -31,6 +31,7 @@
 		</script>
     <?php endif; ?>
 	<h<?php echo $level + 1?>><a href="<?php echo $url.$post->id; ?>"><?php echo $post->title; ?></a></h<?php echo $level + 1?>>
+	<?php if (!empty($post->author)) : ?><span class="categories"><?php echo Text::get('regular-by') ?> <a href="/profile/<?php echo $post->author->id; ?>"><?php echo $post->author->name; ?></a></span><?php endif; ?>
 	<span class="date"><?php echo $post->fecha; ?></span>
 	<?php if (!empty($post->tags)) : $sep = '';?>
 		<span class="categories">

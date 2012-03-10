@@ -77,6 +77,7 @@ namespace Goteo\Model {
                 $sqlFilter = " WHERE post.$position = 1
                     AND post.publish = 1
                     ";
+                $sqlField = "post.order as `order`,";
 
             } else {
                 // portada nodo, igualmente las entradas de blogs tipo nodo
@@ -85,6 +86,8 @@ namespace Goteo\Model {
                     AND post.publish = 1
                     ";
                 $values[':node'] = $node;
+
+                $sqlField = "(SELECT `order` FROM post_node WHERE node = :node AND post = post.id) as `order`,";
             }
 
             $sql = "
@@ -95,7 +98,7 @@ namespace Goteo\Model {
                     IFNULL(post_lang.text, post.text) as `text`,
                     post.image as `image`,
                     post.media as `media`,
-                    post.order as `order`,
+                    $sqlField
                     DATE_FORMAT(post.date, '%d-%m-%Y') as date,
                     DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                     post.publish as publish,
@@ -143,14 +146,12 @@ namespace Goteo\Model {
                 // portada goteo, sacamos todas las de blogs tipo nodo
                 // que esten marcadas en la tabla post
                 $sqlFilter = " WHERE post.$position = 1
-                    AND post.publish = 1
-                    ";
+                ";
 
             } else {
                 // portada nodo, igualmente las entradas de blogs tipo nodo
                 // perosolo la que esten en la tabla de entradas en portada de ese nodo
                 $sqlFilter = " WHERE post.id IN (SELECT post FROM post_node WHERE node = :node)
-                    AND post.publish = 1
                     ";
                 $values[':node'] = $node;
             }
@@ -205,7 +206,8 @@ namespace Goteo\Model {
                 'order',
                 'publish',
                 'home',
-                'footer'
+                'footer',
+                'author'
                 );
 
             $set = '';
@@ -349,7 +351,7 @@ namespace Goteo\Model {
             }
 
             try {
-                $sql = "REPLACE post_node SET " . $set;
+                $sql = "REPLACE INTO post_node SET " . $set;
                 self::query($sql, $values);
 
                 return true;

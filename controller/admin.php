@@ -90,6 +90,9 @@ namespace Goteo\Controller {
                             'list' => array('label' => 'Listando', 'item' => false)
                         )
                     ),
+                /*
+                 * Para poner entradas en el footer y reordenar, se usa la misma gestion de blog
+                 *
                     'footer' => array(
                         'label' => 'Entradas en el footer',
                         'actions' => array(
@@ -97,6 +100,7 @@ namespace Goteo\Controller {
                             'add'  => array('label' => 'Colocando Entrada en el footer', 'item' => false)
                         )
                     ),
+                */
                     'home' => array(
                         'label' => 'Elementos en portada',
                         'actions' => array(
@@ -202,7 +206,7 @@ namespace Goteo\Controller {
                         )
                     ),
                 /*
-                 * Para poner entradas en portadda y reordenar, se usa la misma gestion de blog
+                 * Para poner entradas en portada y reordenar, se usa la misma gestion de blog
                  *
                     'posts' => array(
                         'label' => 'Entradas de blog en Portada',
@@ -1003,8 +1007,7 @@ namespace Goteo\Controller {
                             'home' => $options['home'],         // elementos en portada
                             'posts' => $options['posts'],       // seleccion de entradas en portada
                             'promote' => $options['promote'],   // seleccion de proyectos destacados
-                            // convocatorias en portada del nodo
-                            'feed' => $options['feed']          // Eventos de admin (a ver cuales le van a salir)
+                            'blog' => $options['blog']          // entradas de blog (en la gestion de blog)
                         )
                     )
                 );

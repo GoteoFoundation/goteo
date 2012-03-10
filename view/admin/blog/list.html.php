@@ -17,7 +17,8 @@ $translator = ACL::check('/translate') ? true : false;
     <table>
         <thead>
             <tr>
-                <th colspan="4">Título</th> <!-- title -->
+                <th>Autor</th>
+                <th colspan="3">Título</th> <!-- title -->
                 <th>Fecha</th> <!-- date -->
                 <th><!-- published --></th>
             </tr>
@@ -26,36 +27,40 @@ $translator = ACL::check('/translate') ? true : false;
         <tbody>
             <?php foreach ($this['posts'] as $post) : ?>
             <tr>
-                <td colspan="4"><?php
-                        if ($post->home)
-                            $style = ' font-weight:bold;';
+                <td><?php echo $post->author->name; ?></td>
+                <td colspan="3"><?php
+                        $style = '';
+                        if (isset($this['homes'][$post->id]))
+                            $style .= ' font-weight:bold;';
                         if (empty($_SESSION['admin_node']) || $_SESSION['admin_node'] == \GOTEO_NODE) {
-                            if ($post->footer)
+                            if (isset($this['footers'][$post->id]))
                                 $style .= ' font-style:italic;';
                         }
                             
                       echo "<span style=\"{$style}\">{$post->title}</span>";
                 ?></td>
                 <td><?php echo $post->date; ?></td>
-                <td><?php if ($post->publish) echo 'Publicada'; ?></td>
+                <td><?php if ($post->publish) echo '<strong style="color:#20b2b3;font-size:10px;">Publicada</sttrong>'; ?></td>
             </tr>
             <tr>
-                <td><a href="/blog/<?php echo $post->id; ?>?preview=<?php echo $_SESSION['user']->id ?>" target="_blank">[Ver publicado]</a></td>
-                <td><a href="/admin/blog/edit/<?php echo $post->id; ?>">[Editar]</a></td>
-                <td><?php
-                        if (isset($this['home'][$post->id]))
+                <td><a href="/blog/<?php echo $post->id; ?>?preview=<?php echo $_SESSION['user']->id ?>" target="_blank">[Ver publicada]</a></td>
+                <td><?php if (!empty($_SESSION['admin_node']) && $post->owner == 'node-'.$_SESSION['admin_node']) : ?>
+                    <a href="/admin/blog/edit/<?php echo $post->id; ?>">[Editar]</a>
+                <?php endif; ?></td>
+                <td><?php if ($post->publish) {
+                        if (isset($this['homes'][$post->id]))
                             echo '<a href="/admin/blog/remove_home/'.$post->id.'" style="color:red;">[Quitar de portada]</a>';
                         else
                             echo '<a href="/admin/blog/add_home/'.$post->id.'" style="color:blue;">[Poner en portada]</a>';
-                ?></td>
-                <td><?php
+                } ?></td>
+                <td><?php if ($post->publish) {
                     if (empty($_SESSION['admin_node']) || $_SESSION['admin_node'] == \GOTEO_NODE) {
-                        if (isset($this['footer'][$post->id]))
+                        if (isset($this['footers'][$post->id]))
                             echo '<a href="/admin/blog/remove_footer/'.$post->id.'" style="color:red;">[Quitar del footer]</a>';
                         else
                             echo '<a href="/admin/blog/add_footer/'.$post->id.'" style="color:blue;">[Poner en footer]</a>';
                     }
-                ?></td>
+                } ?></td>
                 <td><?php if ($translator) : ?><a href="/translate/post/edit/<?php echo $post->id; ?>" >[Traducir]</a><?php endif; ?></td>
                 <td><?php if (!empty($_SESSION['admin_node']) && $post->owner == 'node-'.$_SESSION['admin_node']) : ?>
                     <a href="/admin/blog/remove/<?php echo $post->id; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Eliminar]</a>

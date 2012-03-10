@@ -86,10 +86,11 @@ namespace Goteo\Model\Blog {
          * de mas nueva a mas antigua
          * // si es portada son los que se meten por la gestion de entradas en portada que llevan el tag 1 'Portada'
          */
-        public static function getAll ($blog, $limit = null, $published = true) {
-
+        public static function getAll ($blog = null, $limit = null, $published = true) {
             $list = array();
 
+            $values = array(':lang'=>\LANG);
+            
             $sql = "
                 SELECT
                     post.id as id,
@@ -112,8 +113,15 @@ namespace Goteo\Model\Blog {
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
-                WHERE post.blog = :blog
                 ";
+            if (!empty($blog)) {
+                $sql .= " WHERE post.blog = :blog
+                ";
+                $values[':blog'] = $blog;
+            } else {
+                $sql .= " WHERE blog.type = 'node'
+                ";
+            }
             if ($published) {
                 $sql .= " AND post.publish = 1
                 ";
@@ -124,7 +132,7 @@ namespace Goteo\Model\Blog {
                 $sql .= "LIMIT $limit";
             }
             
-            $query = static::query($sql, array(':blog'=>$blog, ':lang'=>\LANG));
+            $query = static::query($sql, $values);
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 // galeria
@@ -156,7 +164,11 @@ namespace Goteo\Model\Blog {
          * Lista de entradas filtradas por tag
          * de mas nueva a mas antigua
          */
-        public static function getList ($blog, $tag, $published = true) {
+        public static function getList ($blog = null, $tag = null, $published = true) {
+
+            if (empty($tag)) return false;
+
+            $values = array(':tag'=>$tag, ':lang'=>\LANG);
 
             $list = array();
 
@@ -185,8 +197,15 @@ namespace Goteo\Model\Blog {
                 INNER JOIN post_tag
                     ON post_tag.post = post.id
                     AND post_tag.tag = :tag
-                WHERE post.blog = :blog
                 ";
+            if (!empty($blog)) {
+                $sql .= " WHERE post.blog = :blog
+                ";
+                $values[':blog'] = $blog;
+            } else {
+                $sql .= " WHERE blog.type = 'node'
+                ";
+            }
             if ($published) {
                 $sql .= " AND post.publish = 1
                 ";
@@ -195,7 +214,7 @@ namespace Goteo\Model\Blog {
                 ORDER BY date DESC, post.id DESC
                 ";
 
-            $query = static::query($sql, array(':blog'=>$blog, ':tag'=>$tag, ':lang'=>\LANG));
+            $query = static::query($sql, $values);
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 // galeria
@@ -235,7 +254,7 @@ namespace Goteo\Model\Blog {
         }
 
         public function save (&$errors = array()) {
-//            if (!$this->validate($errors)) return false;
+            if (empty($this->blog)) return false;
 
             // @TODO poner la imagen principal
 
@@ -250,7 +269,8 @@ namespace Goteo\Model\Blog {
                 'allow',
                 'publish',
                 'home',
-                'footer'
+                'footer',
+                'author'
                 );
 
             $values = array();
