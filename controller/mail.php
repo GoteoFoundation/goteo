@@ -20,6 +20,7 @@ namespace Goteo\Controller {
                     // cogemos el contenido de la bbdd y lo pintamos aqui tal cual
                     if ($query = Model::query('SELECT html FROM mail WHERE email = ? AND id = ?', array($parts[1], $parts[2]))) {
                         $content = $query->fetchColumn();
+                        $content = str_replace('cid:logo', 'http://goteo.org/goteo_logo.png', $content);
                         $baja = \SITE_URL . '/user/leave/?email=' . $parts[1];
                         if ($parts[1] == 'any') {
                             return new View ('view/email/newsletter.html.php', array('content'=>$content, 'baja' => ''));
