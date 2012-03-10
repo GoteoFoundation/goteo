@@ -185,8 +185,6 @@ namespace Goteo\Controller {
                         if ($user->save($errors)) {
                             Message::Info(Text::get('user-profile-saved'));
                             $user = Model\User::flush();
-
-//                            $log_action = 'Modificado su información de perfil'; //feed admin
                         }
                     break;
                     

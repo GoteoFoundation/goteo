@@ -14,6 +14,7 @@ $user = $this['user'];
 $worthcracy = Worth::getAll();
 
 $categories = Interest::getAll($user->id);
+unset($categories[15]);
 
 if (empty($categories)) {
     throw new Redirection('/user/profile/' . $this['user']->id);
