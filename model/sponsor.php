@@ -3,7 +3,6 @@
 namespace Goteo\Model {
 
     use Goteo\Library\Check,
-        Goteo\Library\Message,
         Goteo\Model\Image;
 
 
@@ -130,7 +129,7 @@ namespace Goteo\Model {
                 if ($image->save($errors)) {
                     $this->image = $image->id;
                 } else {
-                    Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                    \Goteo\Library\Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
                     $this->image = '';
                 }
             }

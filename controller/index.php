@@ -114,7 +114,7 @@ namespace Goteo\Controller {
             $node = Node::get(NODE_ID);
 
             // orden de los elementos en portada
-            $order = Home::getAll();
+            $order = Home::getAll(NODE_ID);
 
             // entradas de blog
             if (isset($order['posts'])) {

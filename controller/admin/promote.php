@@ -6,6 +6,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Redirection,
         Goteo\Core\Error,
 		Goteo\Library\Feed,
+		Goteo\Library\Message,
         Goteo\Model;
 
     class Promote {
@@ -14,12 +15,14 @@ namespace Goteo\Controller\Admin {
 
             $errors = array();
 
+            $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
+
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 // objeto
                 $promo = new Model\Promote(array(
                     'id' => $id,
-                    'node' => \GOTEO_NODE,
+                    'node' => $node,
                     'project' => $_POST['project'],
                     'title' => $_POST['title'],
                     'description' => $_POST['description'],
@@ -30,24 +33,26 @@ namespace Goteo\Controller\Admin {
 				if ($promo->save($errors)) {
                     switch ($_POST['action']) {
                         case 'add':
-                            $success[] = 'Proyecto destacado correctamente';
+                            Message::Info('Proyecto destacado correctamente');
 
                             $projectData = Model\Project::getMini($_POST['project']);
 
-                            // Evento Feed
-                            $log = new Feed();
-                            $log->populate('nuevo proyecto destacado en portada (admin)', '/admin/promote',
-                                \vsprintf('El admin %s ha %s el proyecto %s', array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                    Feed::item('relevant', 'Destacado en portada', '/'),
-                                    Feed::item('project', $projectData->name, $projectData->id)
-                            )));
-                            $log->doAdmin('admin');
-                            unset($log);
+                            if ($node == \GOTEO_NODE) {
+                                // Evento Feed
+                                $log = new Feed();
+                                $log->populate('nuevo proyecto destacado en portada (admin)', '/admin/promote',
+                                    \vsprintf('El admin %s ha %s el proyecto %s', array(
+                                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                        Feed::item('relevant', 'Destacado en portada', '/'),
+                                        Feed::item('project', $projectData->name, $projectData->id)
+                                )));
+                                $log->doAdmin('admin');
+                                unset($log);
+                            }
 
                             break;
                         case 'edit':
-                            $success[] = 'Destacado actualizado correctamente';
+                            Message::Info('Destacado actualizado correctamente');
                             break;
                     }
 				}
@@ -87,6 +92,7 @@ namespace Goteo\Controller\Admin {
                     $set = $flag == 'on' ? true : false;
                     Model\Promote::setActive($id, $set);
 
+                    /*
                     // Evento Feed
                     $log = new Feed();
                     $log_action = $set ? 'Mostrado en la portada' : 'Ocultado de la portada';
@@ -98,35 +104,41 @@ namespace Goteo\Controller\Admin {
                     )));
                     $log->doAdmin('admin');
                     unset($log);
+                     * 
+                     */
 
                     break;
                 case 'up':
-                    Model\Promote::up($id);
+                    Model\Promote::up($id, $node);
                     break;
                 case 'down':
-                    Model\Promote::down($id);
+                    Model\Promote::down($id, $node);
                     break;
                 case 'remove':
                     if (Model\Promote::delete($id)) {
                         $projectData = Model\Project::getMini($id);
 
-                        // Evento Feed
-                        $log = new Feed();
-                        $log->populate('proyecto quitado portada (admin)', '/admin/promote',
-                            \vsprintf('El admin %s ha %s el proyecto %s', array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('relevant', 'Quitado de la portada'),
-                            Feed::item('project', $projectData->name, $projectData->id)
-                        )));
-                        $log->doAdmin('admin');
-                        unset($log);
+                        if ($node == \GOTEO_NODE) {
+                            // Evento Feed
+                            $log = new Feed();
+                            $log->populate('proyecto quitado portada (admin)', '/admin/promote',
+                                \vsprintf('El admin %s ha %s el proyecto %s', array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('relevant', 'Quitado de la portada'),
+                                Feed::item('project', $projectData->name, $projectData->id)
+                            )));
+                            $log->doAdmin('admin');
+                            unset($log);
+                        }
 
-                        $success[] = 'Proyecto quitado correctamente';
+                        Message::Info('Proyecto quitado correctamente');
+                    } else {
+                        Message::Error('No se ha podido quitar el destacado');
                     }
                     break;
                 case 'add':
                     // siguiente orden
-                    $next = Model\Promote::next();
+                    $next = Model\Promote::next($node);
 
                     return new View(
                         'view/admin/index.html.php',
@@ -134,7 +146,7 @@ namespace Goteo\Controller\Admin {
                             'folder' => 'promote',
                             'file' => 'edit',
                             'action' => 'add',
-                            'promo' => (object) array('order' => $next),
+                            'promo' => (object) array('order' => $next, 'node'=>$node),
                             'status' => $status
                         )
                     );
@@ -155,7 +167,7 @@ namespace Goteo\Controller\Admin {
             }
 
 
-            $promoted = Model\Promote::getAll();
+            $promoted = Model\Promote::getAll(false, $node);
 
             return new View(
                 'view/admin/index.html.php',

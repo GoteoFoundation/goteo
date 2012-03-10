@@ -38,9 +38,6 @@ include 'view/node/header.html.php';
 <div id="main">
 
     <?php
-
-    \trace($this['order']);
-
     foreach ($this['order'] as $item=>$itemData) {
         if (!empty($this[$item])) echo new View("view/home/{$item}.html.php", $this);
     } ?>
