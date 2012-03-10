@@ -4,6 +4,7 @@ namespace Goteo\Model {
     use Goteo\Library\Text,
         Goteo\Model\Project,
         Goteo\Model\Image,
+        Goteo\Library\Message,
         Goteo\Library\Check;
 
     class Banner extends \Goteo\Core\Model {
@@ -131,6 +132,9 @@ namespace Goteo\Model {
                 $image = new Image($this->image);
                 if ($image->save()) {
                     $this->image = $image->id;
+                } else {
+                    Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                    $this->image = '';
                 }
             }
 

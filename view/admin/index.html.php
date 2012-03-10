@@ -136,6 +136,11 @@ include 'view/prologue.html.php';
                              continue;
                         }
                     }
+
+                    // no hay gestión de datos de nodo para el master node de goteo (por ahora)
+                    if ($_SESSION['admin_node'] == \GOTEO_NODE && $oCode == 'node')  {
+                        continue;
+                    }
                             echo '<li><a href="/admin/'.$oCode.'">'.$option['label'].'</a></li>
                                 ';
                         endforeach; ?>

@@ -174,14 +174,18 @@ namespace Goteo\Model {
                     // Avatar
                     if (is_array($this->avatar) && !empty($this->avatar['name'])) {
                         $image = new Image($this->avatar);
-                        $image->save();
-                        $data[':avatar'] = $image->id;
+                        if ($image->save()) {
+                            $data[':avatar'] = $image->id;
 
-                        /**
-                         * Guarda la relación NM en la tabla 'user_image'.
-                         */
-                        if(!empty($image->id)) {
-                            self::query("REPLACE user_image (user, image) VALUES (:user, :image)", array(':user' => $this->id, ':image' => $image->id));
+                            /**
+                             * Guarda la relación NM en la tabla 'user_image'.
+                             */
+                            if(!empty($image->id)) {
+                                self::query("REPLACE user_image (user, image) VALUES (:user, :image)", array(':user' => $this->id, ':image' => $image->id));
+                            }
+                        } else {
+                            Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                            $data[':avatar'] = '';
                         }
                     }
 

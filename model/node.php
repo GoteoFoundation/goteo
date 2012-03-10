@@ -1,7 +1,10 @@
 <?php
 
 namespace Goteo\Model {
-    
+
+    use \Goteo\Library\Message,
+        \Goteo\Model\Image;
+
     class Node extends \Goteo\Core\Model {
 
         public
@@ -29,6 +32,11 @@ namespace Goteo\Model {
 
                 // y sus administradores
                 $item->admins = self::getAdmins($id);
+
+                // logo
+                if (!empty($item->logo)) {
+                    $item->logo = Image::get($item->logo);
+                }
 
                 return $item;
         }
@@ -265,7 +273,51 @@ namespace Goteo\Model {
 			}
 		}
 
+        /*
+         * Para actualizar los datos de descripción
+         */
+         public function update (&$errors) {
+             if (empty($this->id)) return false;
 
+            // Primero tratamos la imagen
+            if (is_array($this->logo) && !empty($this->logo['name'])) {
+                $image = new Image($this->logo);
+                if ($image->save($errors)) {
+                    $this->logo = $image->id;
+                } else {
+                    Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                    $this->logo = '';
+                }
+            }
+
+            $fields = array(
+                'name',
+                'subtitle',
+                'location',
+                'logo',
+                'description'
+                );
+
+            $values = array (':id' => $this->id);
+
+            foreach ($fields as $field) {
+                if ($set != '') $set .= ", ";
+                $set .= "`$field` = :$field ";
+                $values[":$field"] = $this->$field;
+            }
+
+            try {
+                if ($set != '') {
+                    $sql = "UPDATE node SET " . $set ." WHERE id = :id";
+                    self::query($sql, $values);
+                }
+
+                return true;
+            } catch(\PDOException $e) {
+                $errors[] = "HA FALLADO!!! " . $e->getMessage();
+                return false;
+            }
+         }
 
     }
     

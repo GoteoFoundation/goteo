@@ -5,7 +5,8 @@ namespace Goteo\Model\Blog {
     use \Goteo\Model\Project\Media,
         \Goteo\Model\Image,
         \Goteo\Model\User,
-        \Goteo\Library\Text;
+        \Goteo\Library\Text,
+        \Goteo\Library\Message;
 
     class Post extends \Goteo\Core\Model {
 
@@ -256,8 +257,6 @@ namespace Goteo\Model\Blog {
         public function save (&$errors = array()) {
             if (empty($this->blog)) return false;
 
-            // @TODO poner la imagen principal
-
             $fields = array(
                 'id',
                 'blog',
@@ -300,7 +299,9 @@ namespace Goteo\Model\Blog {
                             self::query("REPLACE post_image (post, image) VALUES (:post, :image)", array(':post' => $this->id, ':image' => $image->id));
                         }
                     }
-//                    else { $this->image = ''; }
+                    else {
+                        Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                    }
                 }
 
                 // y los tags, si hay

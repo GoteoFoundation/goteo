@@ -90,17 +90,6 @@ namespace Goteo\Controller {
                             'list' => array('label' => 'Listando', 'item' => false)
                         )
                     ),
-                /*
-                 * Para poner entradas en el footer y reordenar, se usa la misma gestion de blog
-                 *
-                    'footer' => array(
-                        'label' => 'Entradas en el footer',
-                        'actions' => array(
-                            'list' => array('label' => 'Ordenando', 'item' => false),
-                            'add'  => array('label' => 'Colocando Entrada en el footer', 'item' => false)
-                        )
-                    ),
-                */
                     'home' => array(
                         'label' => 'Elementos en portada',
                         'actions' => array(
@@ -176,7 +165,7 @@ namespace Goteo\Controller {
                     'node' => array(
                         'label' => 'Datos del Nodo',
                         'actions' => array(
-                            'edit' => array('label' => 'Gestionando Nodo', 'item' => true)
+                            'edit' => array('label' => 'Gestionando la informacion pública del Nodo', 'item' => true)
                         )
                     ),
                     'nodes' => array(
@@ -869,6 +858,23 @@ namespace Goteo\Controller {
             define('ADMIN_BCPATH', $BC);
 
             return Admin\Nodes::process($action, $id, self::setFilters(__FUNCTION__));
+        }
+
+        /*
+         *  Gestión de datos del nodo
+         */
+        public function node($action = 'edit', $id = null) {
+
+            $BC = self::menu(array(
+                'section' => 'contents',
+                'option' => __FUNCTION__,
+                'action' => $action,
+                'id' => $id
+            ));
+
+            define('ADMIN_BCPATH', $BC);
+
+            return Admin\Node::process();
         }
 
         /*
