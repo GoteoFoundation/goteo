@@ -45,6 +45,7 @@ $filters = $this['filters'];
                     <label for="interest-filter">Interesados en fin</label><br />
                     <select id="interest-filter" name="interest">
                         <option value="">Cualquiera</option>
+                        <option value="15">__PRUEBAS__</option>
                     <?php foreach ($this['interests'] as $interestId=>$interestName) : ?>
                         <option value="<?php echo $interestId; ?>"<?php if ($filters['interest'] == $interestId) echo ' selected="selected"';?>><?php echo $interestName; ?></option>
                     <?php endforeach; ?>
