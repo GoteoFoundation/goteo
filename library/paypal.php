@@ -220,7 +220,7 @@ namespace Goteo\Library {
                 $token = $response->payKey;
                 if (!empty($token)) {
                     if ($invest->setPayment($token)) {
-                        if ($response->status != 'INCOMPLETE') {
+                        if ($response->paymentExecStatus != 'INCOMPLETE') {
                             $errors[] = "Obtenido codigo de pago $token pero no ha quedado en estado INCOMPLETE id {$invest->id}.";
                             @mail('goteo-paypal-API-fault@doukeshi.org', 'El chained payment no ha quedado como incomplete', 'ERROR en ' . __FUNCTION__ . ' No payment status incomplete.<br /><pre>' . print_r($response, 1) . '</pre>');
                             return false;
