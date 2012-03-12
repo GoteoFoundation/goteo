@@ -130,7 +130,6 @@ namespace Goteo\Library {
 
                 // Create request object
                 $payRequest = new \PayRequest();
-                $payRequest->actionType = "PAY";
                 $payRequest->memo = "Cargo del aporte de {$invest->amount} EUR del usuario '{$userData->name}' al proyecto '{$project->name}'";
                 $payRequest->cancelUrl = SITE_URL.'/invest/charge/fail/' . $invest->id;
                 $payRequest->returnUrl = SITE_URL.'/invest/charge/success/' . $invest->id;
@@ -143,6 +142,8 @@ namespace Goteo\Library {
            		$payRequest->preapprovalKey = $invest->preapproval;
                 $payRequest->actionType = 'PAY_PRIMARY';
                 $payRequest->feesPayer = 'EACHRECEIVER';
+                $payRequest->reverseAllParallelPaymentsOnError = true;
+                $payRequest->trackingId = $invest->id;
                 // SENDER no vale para chained payments   (PRIMARYRECEIVER, EACHRECEIVER, SECONDARYONLY)
                 $payRequest->requestEnvelope = new \RequestEnvelope();
                 $payRequest->requestEnvelope->errorLanguage = 'es_ES';
@@ -225,7 +226,7 @@ namespace Goteo\Library {
                             @mail('goteo-paypal-API-fault@doukeshi.org', 'El chained payment no ha quedado como incomplete', 'ERROR en ' . __FUNCTION__ . ' No payment status incomplete.<br /><pre>' . print_r($response, 1) . '</pre>');
                             return false;
                         }
-
+                        $invest->setStatus(1);
                         return true;
                     } else {
                         $errors[] = "Obtenido codigo de pago $token pero no se ha grabado correctamente en el registro de aporte id {$invest->id}.";

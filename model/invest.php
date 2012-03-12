@@ -834,17 +834,9 @@ namespace Goteo\Model {
             $sql = "UPDATE  invest
                     SET
                         payment = :payment,
-                        charged = :charged, 
-                        status = 1
+                        charged = :charged
                     WHERE id = :id";
             if (self::query($sql, $values)) {
-
-                // si tiene capital riego asociado pasa al mismo estado
-                if (!empty($this->droped)) {
-                    $drop = Invest::get($this->droped);
-                    $drop->setStatus(1);
-                }
-
                 return true;
             } else {
                 return false;

@@ -606,7 +606,7 @@ die('Ya no podemos hacer esto a la ligera');
                 ", array($project));
             $invests = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
 
-            echo 'Vamos a tratar ' . count($invests) . ' aportes<br />';
+            echo 'Vamos a tratar ' . count($invests) . ' aportes para el proyecto '.$projectData->name.'<br />';
 
             foreach ($invests as $key=>$invest) {
                 $errors = array();

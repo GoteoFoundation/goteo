@@ -147,6 +147,7 @@ namespace Goteo\Controller {
                 if (!empty($_POST['Referencia'])) {
                     $invest->setPayment($_POST['Referencia']);
                     $invest->setTransaction($_POST['Num_aut']);
+                    $invest->setStatus(1);
                     $_POST['result'] = 'Transaccion ok';
 
                     $log_text = "%s ha aportado %s al proyecto %s mediante TPV";
@@ -203,12 +204,6 @@ namespace Goteo\Controller {
         public function simulacrum () {
             echo 'Simulacrum<br />';
             @mail('julian.canaves@gmail.com', 'Test request', 'Recibido este POST:<pre>' . print_r($_POST, 1) . '</pre>');
-            die;
-        }
-
-        public function ipn () {
-            echo 'Thanks<br />';
-            @mail('goteo_paypal_ipn@doukeshi.org', 'IPN message desde '.SITE_URL, 'Recibido este POST:<pre>' . print_r($_POST, 1) . '</pre>');
             die;
         }
 
