@@ -1,6 +1,6 @@
 CREATE TABLE `invest_detail` (
 `invest` BIGINT NOT NULL ,
-`type` VARCHAR( 10 ) NOT NULL ,
+`type` VARCHAR( 30 ) NOT NULL ,
 `log` TEXT NOT NULL ,
 `date` TIMESTAMP NOT NULL ,
 INDEX ( `invest` )
