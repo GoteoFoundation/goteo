@@ -103,6 +103,7 @@ namespace Goteo\Controller {
 				$user->email = $_POST['email'];
 				$user->password = $_POST['password'];
 				$user->active = true;
+                $user->node = \NODE_ID;
 
 				$user->save($errors);
 

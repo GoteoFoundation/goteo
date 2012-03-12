@@ -6,12 +6,15 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Redirection,
         Goteo\Core\Error,
 		Goteo\Library\Feed,
+		Goteo\Library\Message,
         Goteo\Model;
 
     class Patron {
 
         public static function process ($action = 'list', $id = null) {
 
+            $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
+            
             $errors = array();
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -19,7 +22,7 @@ namespace Goteo\Controller\Admin {
                 // objeto
                 $promo = new Model\Patron(array(
                     'id' => $id,
-                    'node' => \GOTEO_NODE,
+                    'node' => $node,
                     'project' => $_POST['project'],
                     'user' => $_POST['user'],
                     'link' => $_POST['link'],
@@ -29,7 +32,7 @@ namespace Goteo\Controller\Admin {
 				if ($promo->save($errors)) {
                     switch ($_POST['action']) {
                         case 'add':
-                            $success[] = 'Proyecto apadrinado correctamente';
+                            Message::Info('Proyecto apadrinado correctamente');
 
                             $projectData = Model\Project::getMini($_POST['project']);
                             $userData = Model\User::getMini($_POST['user']);
@@ -47,11 +50,12 @@ namespace Goteo\Controller\Admin {
 
                             break;
                         case 'edit':
-                            $success[] = 'Apadrinamiento actualizado correctamente';
+                            Message::Info('Apadrinamiento actualizado correctamente');
                             break;
                     }
 				}
 				else {
+                    Message::Error('El registro no se ha grabado correctamente. '. implode(', ', $errors));
                     switch ($_POST['action']) {
                         case 'add':
                             return new View(
@@ -61,8 +65,7 @@ namespace Goteo\Controller\Admin {
                                     'file' => 'edit',
                                     'action' => 'add',
                                     'promo' => $promo,
-                                    'status' => $status,
-                                    'errors' => $errors
+                                    'status' => $status
                                 )
                             );
                             break;
@@ -73,8 +76,7 @@ namespace Goteo\Controller\Admin {
                                     'folder' => 'patron',
                                     'file' => 'edit',
                                     'action' => 'edit',
-                                    'promo' => $promo,
-                                    'errors' => $errors
+                                    'promo' => $promo
                                 )
                             );
                             break;
@@ -84,10 +86,10 @@ namespace Goteo\Controller\Admin {
 
             switch ($action) {
                 case 'up':
-                    Model\Patron::up($id);
+                    Model\Patron::up($id, $node);
                     break;
                 case 'down':
-                    Model\Patron::down($id);
+                    Model\Patron::down($id, $node);
                     break;
                 case 'remove':
                     if (Model\Patron::delete($id)) {
@@ -104,12 +106,14 @@ namespace Goteo\Controller\Admin {
                         $log->doAdmin('admin');
                         unset($log);
 
-                        $success[] = 'Apadrinamiento quitado correctamente';
+                        Message::Info('Apadrinamiento quitado correctamente');
+                    } else {
+                        Message::Error('No se ha podido quitar correctamente el apadrinamiento');
                     }
                     break;
                 case 'add':
                     // siguiente orden
-                    $next = Model\Patron::next();
+                    $next = Model\Patron::next($node);
 
                     return new View(
                         'view/admin/index.html.php',
@@ -138,16 +142,14 @@ namespace Goteo\Controller\Admin {
             }
 
 
-            $patroned = Model\Patron::getAll();
+            $patroned = Model\Patron::getAll($node);
 
             return new View(
                 'view/admin/index.html.php',
                 array(
                     'folder' => 'patron',
                     'file' => 'list',
-                    'patroned' => $patroned,
-                    'errors' => $errors,
-                    'success' => $success
+                    'patroned' => $patroned
                 )
             );
             

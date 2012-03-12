@@ -37,11 +37,9 @@ namespace Goteo\Model\User {
             // Estos son errores que no permiten continuar
             if (empty($this->id))
                 $errors[] = 'No hay una revision para asignar';
-                //Text::get('validate-review-noid');
 
             if (empty($this->user))
                 $errors[] = 'No hay ningun usuario al que asignar';
-                //Text::get('validate-review-nouser');
 
             //cualquiera de estos errores hace fallar la validación
             if (!empty($errors))
@@ -85,7 +83,6 @@ namespace Goteo\Model\User {
 				return true;
 			} catch(\PDOException $e) {
                 $errors[] = 'No se ha podido desasignar la revision ' . $this->id . ' del usuario ' . $this->user . ' ' . $e->getMessage();
-                //Text::get('remove-review-fail');
                 return false;
 			}
 		}
@@ -108,7 +105,6 @@ namespace Goteo\Model\User {
 				return true;
 			} catch(\PDOException $e) {
                 $errors[] = 'No se ha podido marcar la revision ' . $this->id . ' del usuario ' . $this->user . ' como lista. ' . $e->getMessage();
-                //Text::get('review-set_ready-fail');
                 return false;
 			}
 		}
@@ -131,7 +127,6 @@ namespace Goteo\Model\User {
 				return true;
 			} catch(\PDOException $e) {
                 $errors[] = 'No se ha podido reabrir la revision ' . $this->id . ' del usuario ' . $this->user . '. ' . $e->getMessage();
-                //Text::get('review-set_unready-fail');
                 return false;
 			}
 		}

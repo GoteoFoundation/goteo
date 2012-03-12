@@ -125,7 +125,7 @@ namespace Goteo\Model\User {
          * @param varcahr(50) $id  user identifier
          * @return array of items
          */
-	 	public static function getAvailables ($type = 'project') {
+	 	public static function getAvailables ($type = 'project', $node = null) {
 
             if (!in_array($type, self::$types)) {
                 return false;
@@ -133,7 +133,13 @@ namespace Goteo\Model\User {
 
             $array = array ();
             try {
-                $query = static::query("SELECT id, name FROM `{$type}` WHERE status > 1 AND translate = 0");
+                $values = array();
+                $sql = "SELECT id, name FROM `{$type}` WHERE status > 1 AND translate = 0";
+                if ($type != 'call' && !empty($node)) {
+                    $sql .= " AND node = :node";
+                    $values[':node'] = $node;
+                }
+                $query = static::query($sql, $values);
                 $avail = $query->fetchAll(\PDO::FETCH_OBJ);
                 foreach ($avail as $item) {
                     $array[] = $item;
@@ -177,7 +183,7 @@ namespace Goteo\Model\User {
 				self::query($sql, $values);
 				return true;
 			} catch(\PDOException $e) {
-				$errors[] = "La traducción {$this->type}:{$this->item} no se ha asignado correctamente. Por favor, revise el metodo User\Translate->save." . $e->getMessage();
+				$errors[] = "HA FALLADO!!! " . $e->getMessage();
 				return false;
 			}
 
@@ -202,8 +208,7 @@ namespace Goteo\Model\User {
                 self::query("DELETE FROM user_translate WHERE type = :type AND item = :item AND user = :user", $values);
 				return true;
 			} catch(\PDOException $e) {
-                $errors[] = 'No se ha podido desasignar la traduccion ' . $this->type .':'. $this->item . ' del usuario ' . $this->user . '. Revisar metodo User\Translate:remove ' . $e->getMessage();
-                //Text::get('remove-review-fail');
+                $errors[] = 'HA FALLADO!!! ' . $e->getMessage();
                 return false;
 			}
 		}

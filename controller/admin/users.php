@@ -15,6 +15,9 @@ namespace Goteo\Controller\Admin {
 
         public static function process ($action = 'list', $id = null, $subaction = '', $filters = array()) {
 
+            // multiples usos
+            $nodes = Model\Node::getList();
+
             $errors = array();
 
             switch ($action)  {
@@ -240,6 +243,51 @@ namespace Goteo\Controller\Admin {
                     );
 
                     break;
+                case 'move':
+                    $user = Model\User::get($id);
+                    
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        $errors = array();
+
+                        $values = array(':id' => $id, ':node' => $_POST['node']);
+                        try {
+                            $sql = "UPDATE user SET node = :node WHERE id = :id";
+                            if (Model\User::query($sql, $values)) {
+                                $log_text = 'El admin %s ha <span class="red">movido</span> el usuario %s al nodo %s';
+                            } else {
+                                $log_text = 'Al admin %s le ha <span class="red">fallado al mover</span> el usuario %s al nodo %s';
+                            }
+                            // Evento Feed
+                            $log = new Feed();
+                            $log->populate('User cambiado de nodo (admin)', '/admin/users',
+                                \vsprintf($log_text, array(
+                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('user', $user->name, $user->id),
+                                    Feed::item('user', $nodes[$_POST['node']])
+                            )));
+                            Message::Error($log->html);
+                            $log->doAdmin('user');
+                            unset($log);
+
+                            throw new Redirection('/admin/users');
+
+                        } catch(\PDOException $e) {
+                            Message::Error("Ha fallado! " . $e->getMessage());
+                        }
+                    }
+
+                    // vista de acceso a suplantación de usuario
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'users',
+                            'file'   => 'move',
+                            'user'   => $user,
+                            'nodes' => $nodes
+                        )
+                    );
+
+                    break;
                 /*
                 case 'send':
                     // obtenemos los usuarios que siguen teniendo su email como contraseña
@@ -282,7 +330,7 @@ namespace Goteo\Controller\Admin {
                 case 'list':
                 default:
                     if (!empty($filters['filtered'])) {
-                        $users = Model\User::getAll($filters);
+                        $users = Model\User::getAll($filters, $_SESSION['admin_node']);
                     } else {
                         $users = array();
                     }
@@ -314,6 +362,7 @@ namespace Goteo\Controller\Admin {
                             'status' => $status,
                             'interests' => $interests,
                             'roles' => $roles,
+                            'nodes' => $nodes,
                             'orders' => $orders,
                             'errors' => $errors
                         )

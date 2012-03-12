@@ -38,6 +38,15 @@ $filters = $this['filters'];
                     <?php endforeach; ?>
                     </select>
                 </td>
+                <td><?php if (!isset($_SESSION['admin_node'])) : ?>
+                    <label for="node-filter">Mostrar usuarios del nodo:</label><br />
+                    <select id="node-filter" name="node" onchange="document.getElementById('filter-form').submit();">
+                        <option value="">Cualquier nodo</option>
+                    <?php foreach ($this['nodes'] as $nodeId=>$nodeName) : ?>
+                        <option value="<?php echo $nodeId; ?>"<?php if ($filters['node'] == $nodeId) echo ' selected="selected"';?>><?php echo $nodeName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                <?php endif; ?></td>
             </tr>
             <tr>
                 <td>
@@ -54,10 +63,9 @@ $filters = $this['filters'];
                 </td>
             </tr>
             <tr>
-                <td colspan="3">
+                <td>
                     <input type="submit" name="filter" value="Buscar">
                 </td>
-                <td></td>
                 <td>
                     <label for="order-filter">Ver por:</label><br />
                     <select id="order-filter" name="order" onchange="document.getElementById('filter-form').submit();">
@@ -79,7 +87,6 @@ $filters = $this['filters'];
     <table>
         <thead>
             <tr>
-                <th></th>
                 <th>Alias</th> <!-- view profile -->
                 <th>User</th>
                 <th>Email</th>
@@ -90,9 +97,6 @@ $filters = $this['filters'];
                     <!-- Revisor -->
                     <!-- Traductor -->
                 </th>
-                <th></th>
-                <th></th>
-                <th></th>
             </tr>
         </thead>
 
@@ -103,7 +107,7 @@ $filters = $this['filters'];
                 <td><strong><?php echo substr($user->id, 0, 15); ?></strong></td>
                 <td><a href="mailto:<?php echo $user->email; ?>"><?php echo $user->email; ?></a></td>
                 <td><?php echo $user->register_date; ?></td>
-                <td>
+                <td style="color:blue;">
                     <?php echo $user->active ? '' : ' Inactivo'; ?>
                     <?php echo $user->hide ? ' Oculto' : ''; ?>
                     <?php echo $user->checker ? ' Revisor' : ''; ?>
@@ -113,13 +117,17 @@ $filters = $this['filters'];
                     <?php echo $user->vip ? ' VIP' : ''; ?>
                 </td>
             </tr>
+            <?php if (!isset($_SESSION['admin_node']) || (isset($_SESSION['admin_node']) && $user->node == $_SESSION['admin_node'])) : ?>
             <tr>
-                <td>Acciones:</td>
-                <td><a href="/admin/users/manage/<?php echo $user->id; ?>">[Gestionar]</a></td>
-                <td><a href="/admin/users/edit/<?php echo $user->id; ?>">[Editar]</a></td>
-                <td><a href="/admin/sended/?user=<?php echo $user->email; ?>">[Historial]</a></td>
-                <td><a href="/admin/users/impersonate/<?php echo $user->id; ?>">[Suplantar]</a></td>
+                <td colspan="5">Acciones:
+                    <a href="/admin/users/manage/<?php echo $user->id; ?>">[Gestionar]</a>
+                    <a href="/admin/users/edit/<?php echo $user->id; ?>">[Editar]</a>
+                    <a href="/admin/sended/?user=<?php echo $user->email; ?>">[Historial]</a>
+                    <a href="/admin/users/move/<?php echo $user->id; ?>">[Mover]</a>
+                    <a href="/admin/users/impersonate/<?php echo $user->id; ?>">[Suplantar]</a>
+                </td>
             </tr>
+            <?php endif; ?>
             <tr>
                 <td colspan="5"><hr /></td>
             </tr>

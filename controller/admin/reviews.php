@@ -6,13 +6,15 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Redirection,
         Goteo\Core\Error,
 		Goteo\Library\Feed,
+		Goteo\Library\Message,
         Goteo\Model;
 
     class Reviews {
 
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
-            $success = array();
+            $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
+            
             $errors  = array();
 
             switch ($action) {
@@ -23,6 +25,11 @@ namespace Goteo\Controller\Admin {
                     $review = Model\Review::get($id);
 
                     $project = Model\Project::getMini($review->project);
+
+                    if (empty($id) || ($action == 'edit' && !$review instanceof Model\Review)) {
+                        Message::Error('Hemos perdido de vista el proyecto o la revisión');
+                        throw new Redirection('/admin/reviews');
+                    }
 
                     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
 
@@ -35,7 +42,7 @@ namespace Goteo\Controller\Admin {
                         if ($review->save($errors)) {
                             switch ($action) {
                                 case 'add':
-                                    $success[] = 'Revisión iniciada correctamente';
+                                    Message::Info('Revisión iniciada correctamente');
 
                                     // Evento Feed
                                     $log = new Feed();
@@ -50,11 +57,13 @@ namespace Goteo\Controller\Admin {
 
                                     break;
                                 case 'edit':
-                                    $success[] = 'Datos editados correctamente';
+                                    Message::Info('Datos editados correctamente');
                                     break;
                             }
 
                             throw new Redirection('/admin/reviews');
+                        } else {
+                            Message::Error('No se han podido grabar los datos. ', implode(', ', $errors));
                         }
                     }
 
@@ -65,9 +74,7 @@ namespace Goteo\Controller\Admin {
                             'file'   => 'edit',
                             'action' => $action,
                             'review' => $review,
-                            'project'=> $project,
-                            'success'=> $success,
-                            'errors' => $errors
+                            'project'=> $project
                         )
                     );
 
@@ -78,7 +85,7 @@ namespace Goteo\Controller\Admin {
 
                     // marcamos la revision como completamente cerrada
                     if (Model\Review::close($id, $errors)) {
-                        $message = 'La revisión se ha cerrado';
+                        Message::Info('La revisión se ha cerrado');
 
                         // Evento Feed
                         $log = new Feed();
@@ -91,6 +98,8 @@ namespace Goteo\Controller\Admin {
                         $log->doAdmin('admin');
                         unset($log);
 
+                    } else {
+                        Message::Error('La revisión no se ha podido cerrar. '.implode(', ', $errors));
                     }
                     break;
                 case 'unready':
@@ -104,6 +113,9 @@ namespace Goteo\Controller\Admin {
                             'user' => $user
                         ));
                         $user_rev->unready($errors);
+                        if (!empty($errors)) {
+                            Message::Error(implode(', ', $errors));
+                        }
                     }
                     break;
                 case 'assign':
@@ -121,6 +133,8 @@ namespace Goteo\Controller\Admin {
                             $userData = Model\User::getMini($user);
                             $reviewData = Model\Review::getData($id);
 
+                            Message::Info('Revisión asignada correctamente');
+
                             // Evento Feed
                             $log = new Feed();
                             $log->populate('asignar revision (admin)', '/admin/reviews',
@@ -134,6 +148,8 @@ namespace Goteo\Controller\Admin {
                             $log->doAdmin('admin');
                             unset($log);
 
+                        } else {
+                            Message::Error(implode(', ', $errors));
                         }
                     }
                     break;
@@ -152,6 +168,8 @@ namespace Goteo\Controller\Admin {
                             $userData = Model\User::getMini($user);
                             $reviewData = Model\Review::getData($id);
 
+                            Message::Info('Revisión asignada correctamente');
+
                             // Evento Feed
                             $log = new Feed();
                             $log->populate('Desasignar revision (admin)', '/admin/reviews',
@@ -165,6 +183,8 @@ namespace Goteo\Controller\Admin {
                             $log->doAdmin('admin');
                             unset($log);
 
+                        } else {
+                            Message::Error(implode(', ', $errors));
                         }
                     }
                     break;
@@ -193,7 +213,7 @@ namespace Goteo\Controller\Admin {
                     break;
             }
 
-            $projects = Model\Review::getList($filters);
+            $projects = Model\Review::getList($filters, $node);
             $status = array(
                 'open' => 'Abiertas',
                 'closed' => 'Cerradas'
@@ -205,12 +225,10 @@ namespace Goteo\Controller\Admin {
                 array(
                     'folder' => 'reviews',
                     'file' => 'list',
-                    'message' => $message,
                     'projects' => $projects,
                     'filters' => $filters,
                     'status' => $status,
-                    'checkers' => $checkers,
-                    'errors' => $errors
+                    'checkers' => $checkers
                 )
             );
             

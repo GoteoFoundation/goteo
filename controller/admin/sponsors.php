@@ -7,11 +7,14 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Error,
 		Goteo\Library\Text,
 		Goteo\Library\Feed,
+		Goteo\Library\Message,
         Goteo\Model;
 
     class Sponsors {
 
         public static function process ($action = 'list', $id = null) {
+
+            $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
 
             $model = 'Goteo\Model\Sponsor';
             $url = '/admin/sponsors';
@@ -25,7 +28,7 @@ namespace Goteo\Controller\Admin {
                         array(
                             'folder' => 'base',
                             'file' => 'edit',
-                            'data' => (object) array('order' => $model::next() ),
+                            'data' => (object) array('order' => $model::next($node), 'node' => $node ),
                             'form' => array(
                                 'action' => "$url/edit/",
                                 'submit' => array(
@@ -36,6 +39,12 @@ namespace Goteo\Controller\Admin {
                                     'id' => array(
                                         'label' => '',
                                         'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'node' => array(
+                                        'label' => '',
+                                        'name' => 'node',
                                         'type' => 'hidden'
 
                                     ),
@@ -78,17 +87,14 @@ namespace Goteo\Controller\Admin {
                         $item = new $model(array(
                             'id' => $_POST['id'],
                             'name' => $_POST['name'],
+                            'node' => $_POST['node'],
+                            'image' => $_POST['image'],
                             'url' => $_POST['url'],
                             'order' => $_POST['order']
                         ));
 
-                        // tratar la imagen y ponerla en la propiedad image
-                        if(!empty($_FILES['image']['name'])) {
-                            $item->image = $_FILES['image'];
-                        }
-
                         // tratar si quitan la imagen
-                        $current = $_POST['image']; // la acual
+                        $current = $_POST['image']; // la actual
                         if (isset($_POST['image-' . $current .  '-remove'])) {
                             $image = Model\Image::get($current);
                             $image->remove('sponsor');
@@ -96,8 +102,16 @@ namespace Goteo\Controller\Admin {
                             $removed = true;
                         }
 
+                        // tratar la imagen y ponerla en la propiedad image
+                        if(!empty($_FILES['image']['name'])) {
+                            $item->image = $_FILES['image'];
+                        }
+
                         if ($item->save($errors)) {
+                            Message::Info('Datos grabados correctamente');
                             throw new Redirection($url);
+                        } else {
+                            Message::Error('No se han podido grabar los datos. ' . implode(', ', $errors));
                         }
                     } else {
                         $item = $model::get($id);
@@ -119,6 +133,12 @@ namespace Goteo\Controller\Admin {
                                     'id' => array(
                                         'label' => '',
                                         'name' => 'id',
+                                        'type' => 'hidden'
+
+                                    ),
+                                    'node' => array(
+                                        'label' => '',
+                                        'name' => 'node',
                                         'type' => 'hidden'
 
                                     ),
@@ -152,14 +172,17 @@ namespace Goteo\Controller\Admin {
 
                     break;
                 case 'up':
-                    $model::up($id);
+                    $model::up($id, $node);
                     break;
                 case 'down':
-                    $model::down($id);
+                    $model::down($id, $node);
                     break;
                 case 'remove':
                     if ($model::delete($id)) {
+                        Message::Info('Se ha eliminado el registro');
                         throw new Redirection($url);
+                    } else {
+                        Message::Info('No se ha podido eliminar el registro');
                     }
                     break;
             }
@@ -170,7 +193,7 @@ namespace Goteo\Controller\Admin {
                     'folder' => 'base',
                     'file' => 'list',
                     'addbutton' => 'Nuevo patrocinador',
-                    'data' => $model::getAll(),
+                    'data' => $model::getAll($node),
                     'columns' => array(
                         'edit' => '',
                         'name' => 'Patrocinador',
@@ -181,8 +204,7 @@ namespace Goteo\Controller\Admin {
                         'down' => '',
                         'remove' => ''
                     ),
-                    'url' => "$url",
-                    'errors' => $errors
+                    'url' => "$url"
                 )
             );
             

@@ -308,9 +308,10 @@ namespace Goteo\Controller {
                             'add' => array('label' => 'Creando Usuario', 'item' => true),
                             'edit' => array('label' => 'Editando Usuario', 'item' => true),
                             'manage' => array('label' => 'Gestionando Usuario', 'item' => true),
-                            'impersonate' => array('label' => 'Suplantando al Usuario', 'item' => true)
+                            'impersonate' => array('label' => 'Suplantando al Usuario', 'item' => true),
+                            'move' => array('label' => 'Moviendo a otro Nodo el usuario ', 'item' => true)
                         ),
-                        'filters' => array('status'=>'active', 'interest'=>'', 'role'=>'', 'id'=>'', 'name'=>'', 'email'=>'', 'order'=>'')
+                        'filters' => array('status'=>'active', 'interest'=>'', 'role'=>'', 'node'=>'', 'id'=>'', 'name'=>'', 'email'=>'', 'order'=>'')
                     ),
                     'wordcount' => array(
                         'label' => 'Conteo de palabras',
@@ -985,7 +986,6 @@ namespace Goteo\Controller {
                         'options' => array (
                             'node' => $options['node'],   // la gestion de datos del nodo
                             'pages' => $options['pages'], // páginas institucionales del nodo
-                            'sponsors' => $options['sponsors'], // patrocinadores del nodo
                             'blog' => $options['blog'],   // entradas del blog
                             'tags' => $options['tags']    // tags de blog
                         )
@@ -995,8 +995,7 @@ namespace Goteo\Controller {
                         'options' => array (
                             'projects' => $options['projects'],     // proyectos del nodo
                             'reviews' => $options['reviews'],       // revisiones de proyectos del nodo
-                            'translates' => $options['translates'], // traducciones de proyectos del nodo
-                            'patron' => $options['patron']          // padrinos de proyectos del nodo
+                            'translates' => $options['translates'] // traducciones de proyectos del nodo
                         )
                     ),
                     'users' => array(
@@ -1005,6 +1004,13 @@ namespace Goteo\Controller {
                             'users' => $options['users'],     // usuarios asociados al nodo
                             'mailing' => $options['mailing'], // comunicaciones del nodoc on sus usuarios / promotores
                             'sended' => $options['sended']    // historial de envios realizados por el nodo
+                        )
+                    ),
+                    'sponsors' => array(
+                        'label'   => 'Patrocinadores',
+                        'options' => array (
+                            'sponsors' => $options['sponsors'], // patrocinadores del nodo
+                            'patron' => $options['patron']      // padrinos de proyectos del nodo
                         )
                     ),
                     'home' => array(

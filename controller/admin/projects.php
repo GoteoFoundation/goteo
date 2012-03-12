@@ -110,6 +110,7 @@ namespace Goteo\Controller\Admin {
                 case 'review':
                     // pasar un proyecto a revision
                     if ($project->ready($errors)) {
+                        $redir = '/admin/reviews/add/'.$project->id;
                         $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Revisión</span>';
                     } else {
                         $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Revisión</span>';
@@ -178,7 +179,11 @@ namespace Goteo\Controller\Admin {
 
                 unset($log);
 
-                throw new Redirection('/admin/projects/list');
+                if (empty($redir)) {
+                    throw new Redirection('/admin/projects/list');
+                } else {
+                    throw new Redirection($redir);
+                }
             }
 
             if ($action == 'dates') {

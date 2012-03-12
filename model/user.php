@@ -548,7 +548,8 @@ namespace Goteo\Model {
                         user.confirmed as confirmed,
                         user.hide as hide,
                         user.created as created,
-                        user.modified as modified
+                        user.modified as modified,
+                        user.node as node
                     FROM user
                     LEFT JOIN user_lang
                         ON  user_lang.id = user.id
@@ -607,47 +608,55 @@ namespace Goteo\Model {
          * @param  bool $visible    true|false
          * @return mixed            Array de objetos de usuario activos|todos.
          */
-        public static function getAll ($filters = array()) {
+        public static function getAll ($filters = array(), $node = null) {
+
+            $values = array();
+
             $users = array();
 
             $sqlFilter = "";
             if (!empty($filters['id'])) {
-                $sqlFilter .= " AND id = '{$filters['id']}'";
+                $sqlFilter .= " AND id = :id";
+                $values[':id'] = $filters['id'];
             }
             if (!empty($filters['name'])) {
-                $sqlFilter .= " AND name LIKE ('%{$filters['name']}%')";
+                $sqlFilter .= " AND name LIKE :name";
+                $values[':name'] = "'%{$filters['name']}%'";
             }
             if (!empty($filters['email'])) {
-                $sqlFilter .= " AND email LIKE ('%{$filters['email']}%')";
+                $sqlFilter .= " AND email LIKE :email";
+                $values[':email'] = "'%{$filters['email']}%'";
             }
             if (!empty($filters['status'])) {
-                $active = $filters['status'] == 'active' ? '1' : '0';
-                $sqlFilter .= " AND active = '$active'";
+                $sqlFilter .= " AND active = :active";
+                $values[':active'] = $filters['status'] == 'active' ? '1' : '0';
             }
             if (!empty($filters['interest'])) {
                 $sqlFilter .= " AND id IN (
                     SELECT user
                     FROM user_interest
-                    WHERE interest = {$filters['interest']}
+                    WHERE interest = :interest
                     ) ";
+                $values[':interest'] = $filters['interest'];
             }
             if (!empty($filters['role'])) {
                 $sqlFilter .= " AND id IN (
                     SELECT user_id
                     FROM user_role
-                    WHERE role_id = '{$filters['role']}'
+                    WHERE role_id = :role
                     ) ";
+                $values[':role'] = $filters['role'];
             }
-            if (!empty($filters['posted'])) {
-                /*
-                 * Si ha enviado algun mensaje o comentario
-                $sqlFilter .= " AND id IN (
-                    SELECT user
-                    FROM message
-                    WHERE interest = {$filters['interest']}
-                    ) ";
-                 *
-                 */
+            if (!empty($filters['node'])) {
+                $sqlFilter .= " AND node = :node";
+                $values[':node'] = $filters['node'];
+            } else
+                if (!empty($node)) {
+                $sqlFilter .= " AND node = :node";
+                $values[':node'] = $node;
+            } else {
+                $sqlFilter .= " AND (node = :node OR node IS NULL)";
+                $values[':node'] = \GOTEO_NODE;
             }
 
             //el Order
@@ -666,7 +675,8 @@ namespace Goteo\Model {
                         email,
                         active,
                         hide,
-                        DATE_FORMAT(created, '%d/%m/%Y %H:%i:%s') as register_date
+                        DATE_FORMAT(created, '%d/%m/%Y %H:%i:%s') as register_date,
+                        node
                     FROM user
                     WHERE id != 'root'
                         $sqlFilter
@@ -675,7 +685,7 @@ namespace Goteo\Model {
 
 
 
-            $query = self::query($sql, array($node));
+            $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $user) {
 
                 $query = static::query("
