@@ -6,7 +6,6 @@ use Goteo\Core\View,
 $user = $this['user'];
 
 $categories = Interest::getAll($user->id);
-unset($categories[15]); //la de testeo
 
 $shares = array();
 foreach ($categories as $catId => $catName) {
