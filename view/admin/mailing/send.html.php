@@ -30,7 +30,7 @@ $_SESSION['mailing']['receivers'] = $new_receivers;
         <blockquote><?php foreach ($fails as $usrId) {
                 echo '<strong>' .$receivers[usrId]->name . '</strong> ('.$receivers[usrId]->id.') al mail <strong>' . $receivers[usrId]->email . '</strong><br />';
         } ?></blockquote>
-    <p>Puedes cargarlos como nueva lista de destinatarios pulsando <a href="/admin/mailing/send/?recover=receivers">este enlace</a></p>
+    <p>Puedes cargarlos como nueva lista de destinatarios pulsando <a href="/admin/mailing/edit/?recover=receivers">este enlace</a></p>
 
 </div>
 
