@@ -178,35 +178,38 @@ namespace Goteo\Controller\Admin {
 
                     break;
                 case 'send':
+                    $tini = \microtime();
                     // Enviando contenido recibido a destinatarios recibidos
                     $users = array();
-                    foreach ($_POST as $key=>$value) {
-                        $matches = array();
-                        \preg_match('#receiver_(\w+)#', $key, $matches);
-//                            echo \trace($matches);
-                        if (!empty($matches[1]) && !empty($_SESSION['mailing']['receivers'][$matches[1]]->email)) {
-                            $users[] = $matches[1];
-                        }
-                    }
 
 //                        $content = nl2br($_POST['content']);
                     $content = $_POST['content'];
                     $subject = $_POST['subject'];
                     $templateId = !empty($_POST['template']) ? $_POST['template'] : 11;
 
+
                     // Contenido para newsletter
                     if ($templateId == 33) {
                         $_SESSION['NEWSLETTER_SENDID'] = '';
-                        $tmpcontent = Newsletter::getContent($content);
+                        $tmpcontent = \Goteo\Library\Newsletter::getContent($content);
                     }
 
                     // ahora, envio, el contenido a cada usuario
-                    foreach ($users as $usr) {
+                    foreach ($_SESSION['mailing']['receivers'] as $usr=>$userData) {
+                        $users[] = $usr;
+                        $campo = 'receiver_'.str_replace('.', '_', $usr);
+                        if (!isset($_POST[$campo])) {
+                            $errors[] = $usr . ' no venia en el post ['.$campo.']';
+                            continue;
+                        }
 
                         // si es newsletter
                         if ($templateId == 33) {
                             // Mirar que no tenga bloqueadas las preferencias
-                            if (Model\User::mailBlock($usr)) continue;
+                            if (Model\User::mailBlock($usr)) {
+                                $errors[] = $usr . ' lo tiene bloqueado';
+                                continue;
+                            }
 
                             // el sontenido es el mismo para todos, no lleva variables
                         } else {
@@ -214,21 +217,20 @@ namespace Goteo\Controller\Admin {
                                 array('%USERID%', '%USEREMAIL%', '%USERNAME%', '%SITEURL%', '%PROJECTID%', '%PROJECTNAME%', '%PROJECTURL%'),
                                 array(
                                     $usr,
-                                    $_SESSION['mailing']['receivers'][$usr]->email,
-                                    $_SESSION['mailing']['receivers'][$usr]->name,
+                                    $userData->email,
+                                    $userData->name,
                                     SITE_URL,
-                                    $_SESSION['mailing']['receivers'][$usr]->projectId,
-                                    $_SESSION['mailing']['receivers'][$usr]->project,
-                                    SITE_URL.'/project/'.$_SESSION['mailing']['receivers'][$usr]->projectId
+                                    $userData->projectId,
+                                    $userData->project,
+                                    SITE_URL.'/project/'.$userData->projectId
                                 ),
                                 $content);
                         }
 
-
                         $mailHandler = new Mail();
 
-                        $mailHandler->to = $_SESSION['mailing']['receivers'][$usr]->email;
-                        $mailHandler->toName = $_SESSION['mailing']['receivers'][$usr]->name;
+                        $mailHandler->to = $userData->email;
+                        $mailHandler->toName = $userData->name;
                         $mailHandler->subject = $subject;
                         $mailHandler->content = '<br />'.$tmpcontent.'<br />';
                         $mailHandler->html = true;
@@ -242,15 +244,19 @@ namespace Goteo\Controller\Admin {
                         unset($mailHandler);
                     }
 
+                    $tend = \microtime();
+                    $time = $tend - $tini;
+
                     // Evento Feed
                     $log = new Feed();
                     $log->populate('mailing a usuarios (admin)', '/admin/mailing',
                         \vsprintf("El admin %s ha enviado una %s", array(
                         Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                        Feed::item('relevant', 'Comunicación masiva')
+                        Feed::item('relevant', 'ComunicaciÃ³n masiva')
                     )));
                     $log->doAdmin('admin');
                     unset($log);
+
 
                     return new View(
                         'view/admin/index.html.php',
@@ -266,7 +272,8 @@ namespace Goteo\Controller\Admin {
                             'roles'     => $roles,
                             'users'     => $users,
                             'errors'    => $errors,
-                            'success'   => $success
+                            'success'   => $success,
+                            'time'      => $time
                         )
                     );
 
