@@ -9,6 +9,10 @@ CREATE TABLE `mailer_send` (
   `error` text collate utf8_general_ci
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Destinatarios pendientes y realizados';
 
+-- alter
+ALTER TABLE `mailer_content` ADD `blocked` INT( 1 ) NULL;
+
+
 -- registro de contenido a enviar, fecha que se inició el envío
 CREATE TABLE `mailer_content` (
 `id` int(1) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
