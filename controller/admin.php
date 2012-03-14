@@ -12,6 +12,7 @@ namespace Goteo\Controller {
         Goteo\Library\Mail,
         Goteo\Library\Template,
         Goteo\Library\Message,
+        Goteo\Library\Newsletter,
         Goteo\Library\Worth;
 
 	class Admin extends \Goteo\Core\Controller {
@@ -160,6 +161,14 @@ namespace Goteo\Controller {
                             'add'  => array('label' => 'Nueva Micronoticia', 'item' => false),
                             'edit' => array('label' => 'Editando Micronoticia', 'item' => true),
                             'translate' => array('label' => 'Traduciendo Micronoticia', 'item' => true)
+                        )
+                    ),
+                    'newsletter' => array(
+                        'label' => 'Boletín',
+                        'actions' => array(
+                            'list' => array('label' => 'Estado del envío automático', 'item' => false),
+                            'init' => array('label' => 'Iniciando un nuevo boletín', 'item' => false),
+                            'init' => array('label' => 'Viendo listado completo', 'item' => true)
                         )
                     ),
                     'node' => array(
@@ -809,6 +818,83 @@ namespace Goteo\Controller {
 
             return Admin\News::process($action, $id);
         }
+
+        /*
+         * Gestor de envio automático de newsletter
+         */
+        public function newsletter ($action = 'list', $id = null) {
+            $BC = self::menu(array(
+                'section' => 'users',
+                'option' => __FUNCTION__,
+                'action' => $action
+            ));
+
+            define('ADMIN_BCPATH', $BC);
+
+            switch ($action) {
+                case 'init':
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        $suject = \strip_tags($_POST['subject']);
+                        if ($_POST['test']) {
+                            $receivers = Newsletter::getTesters();
+                        } else {
+                            $receivers = Newsletter::getReceivers();
+                        }
+                        if (Newsletter::initiateSending($suject, $receivers)) {
+
+                            $mailing = Newsletter::getSending();
+
+                            return new View(
+                                'view/admin/index.html.php',
+                                array(
+                                    'folder' => 'newsletter',
+                                    'file' => 'init',
+                                    'mailing' => $mailing,
+                                    'receivers' => $receivers
+                                )
+                            );
+                        }
+                    }
+
+                    throw new Redirection('/admin/newsletter');
+
+                    break;
+                case 'activate':
+                    if (Newsletter::activateSending()) {
+                        Message::Info('Se ha activado el envío automático de newsletter');
+                    } else {
+                        Message::Error('No se pudo activar el envío. Iniciar de nuevo');
+                    }
+                    throw new Redirection('/admin/newsletter');
+                    break;
+                case 'detail':
+                    $list = Newsletter::getDetail($id);
+
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'newsletter',
+                            'file' => 'detail',
+                            'detail' => $id,
+                            'list' => $list
+                        )
+                    );
+                    break;
+                default:
+                    $mailing = Newsletter::getSending();
+
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'newsletter',
+                            'file' => 'list',
+                            'mailing' => $mailing
+                        )
+                    );
+            }
+
+        }
+
 
         /*
          *  Gestión de patrocinadores
