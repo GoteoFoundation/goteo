@@ -124,7 +124,8 @@ namespace Goteo\Library {
                         mailer_content.active as active,
                         mailer_content.mail as mail,
                         mailer_content.subject as subject,
-                        DATE_FORMAT(mailer_content.datetime, '%d/%m/%Y %H:%i:%s') as date
+                        DATE_FORMAT(mailer_content.datetime, '%d/%m/%Y %H:%i:%s') as date,
+                        mailer_content.blocked as blocked
                     FROM mailer_content
                     LIMIT 1
                     ");
@@ -185,7 +186,6 @@ namespace Goteo\Library {
                     $sqlFilter
                 ORDER BY user.id";
 
-            echo $sql . '<br />';
             if ($query = Model::query($sql, $values)) {
                 foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $user) {
                     $list[] = $user;
@@ -202,8 +202,6 @@ namespace Goteo\Library {
             $query = Model::query("UPDATE mailer_content SET active = 1 ORDER BY id DESC LIMIT 1");
             return ($query->rowCount() == 1);
         }
-
-
 
 		static public function getContent ($content) {
             // orden de los elementos en portada

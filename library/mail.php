@@ -90,9 +90,6 @@ namespace Goteo\Library {
 		 * @param type array	$errors
 		 */
         public function send(&$errors = array()) {
-            if ($_SESSION['user']->id == 'doukeshi') {
-                return false;
-            }
             if($this->validate($errors)) {
                 $mail = $this->mail;
                 try {
@@ -224,7 +221,7 @@ namespace Goteo\Library {
                 // para plantilla boletin
                 if ($this->template == 33) {
                     $viewData['baja'] = \SITE_URL . '/user/leave/?unsuscribe=newsletter&email=' . $this->to;
-                    return new View ('view/email/newsletter.html.php', $viewData);
+                    return new View (GOTEO_PATH.'/view/email/newsletter.html.php', $viewData);
                 } else {
                     return new View ('view/email/goteo.html.php', $viewData);
                 }
