@@ -47,7 +47,7 @@ jQuery(document).ready(function ($) {
 <div class="widget">
     <p><?php echo 'Vamos a comunicarnos con ' . $_SESSION['mailing']['filters_txt']; ?></p>
     <p>Son <?php echo count($_SESSION['mailing']['receivers']) ?> destinatarios.</p>
-    <form action="/admin/mailing/send" method="post">
+    <form action="/admin/mailing/send" method="post" enctype="multipart/form-data">
     <dl>
         <dt>Seleccionar plantilla:</dt>
         <dd>

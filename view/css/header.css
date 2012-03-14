@@ -136,6 +136,7 @@ div#sub-header > div > div.slides_container > div.slides_control > div.subhead-b
 	font: bold 14px Helvetica, Arial, Geneva, sans-serif;
     margin: 0px;
     text-transform: uppercase;
+    width: 255px;
 }
 
 div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info small{
@@ -188,8 +189,10 @@ div#sub-header > div > div.slides_container > div.slides_control > div.subhead-b
 	font-size: 11px;
     font-weight: normal;
 	list-style:none;
-	margin: -25px 0 0 20px;
+	margin: 0 0 0 20px;
 	padding:0;
+    position: relative;
+    top: -35px;
 }
 
 div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter li{
