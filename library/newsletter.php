@@ -127,6 +127,7 @@ namespace Goteo\Library {
                         DATE_FORMAT(mailer_content.datetime, '%d/%m/%Y %H:%i:%s') as date,
                         mailer_content.blocked as blocked
                     FROM mailer_content
+                    ORDER BY active DESC, id DESC
                     LIMIT 1
                     ");
                 $mailing = $query->fetchObject();
