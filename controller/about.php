@@ -14,17 +14,38 @@ namespace Goteo\Controller {
         
         public function index ($id = null) {
 
-            if (empty($id)) {
+            if ( empty($id) ||
+                 $id == 'about' ||
+                ( NODE_ID != \GOTEO_NODE
+                 && !\in_array($id, array('about', 'contact', 'press', 'service'))
+                 )
+                ) {
                 $id = 'about';
 
-                $posts = Model\Info::getAll(true, \GOTEO_NODE);
+                if (NODE_ID == \GOTEO_NODE) {
+                    $posts = Model\Info::getAll(true, \GOTEO_NODE);
 
-                return new View(
-                    'view/about/info.html.php',
-                    array(
-                        'posts' => $posts
-                    )
-                 );
+                    return new View(
+                        'view/about/info.html.php',
+                        array(
+                            'posts' => $posts
+                        )
+                     );
+                } else {
+
+                    $page = Page::get($id, \NODE_ID);
+
+                    return new View(
+                        'view/about/sample.html.php',
+                        array(
+                            'name' => $page->name,
+                            'description' => $page->description,
+                            'content' => $page->content
+                        )
+                     );
+                }
+
+
             }
 
             if ($id == 'maintenance' && GOTEO_MAINTENANCE !== true) {
@@ -35,7 +56,7 @@ namespace Goteo\Controller {
                 throw new Redirection('/'.$id, Redirection::TEMPORARY);
             }
 
-            $page = Page::get($id);
+            $page = Page::get($id, \NODE_ID);
 
             if ($id == 'howto' || $id == 'call') {
                 return new View(

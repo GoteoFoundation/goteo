@@ -5,7 +5,7 @@ use Goteo\Library\Page,
 
 $bodyClass = 'about';
 
-$page = Page::get('contact');
+$page = Page::get('contact', \NODE_ID);
 
 include 'view/prologue.html.php';
 include 'view/header.html.php';

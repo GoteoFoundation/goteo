@@ -12,6 +12,7 @@ $translator = ACL::check('/translate') ? true : false;
                 <th><!-- Editar --></th>
                 <th>Página</th>
                 <th>Descripción</th>
+                <th><!-- Abrir --></th>
                 <th><!-- Traducir --></th>
             </tr>
         </thead>
@@ -21,6 +22,7 @@ $translator = ACL::check('/translate') ? true : false;
                 <td><a href="/admin/pages/edit/<?php echo $page->id; ?>">[Editar]</a></td>
                 <td><?php echo $page->name; ?></td>
                 <td><?php echo $page->description; ?></td>
+                <td><a href="<?php echo $page->url; ?>" target="_blank">[Ver]</a></td>
                 <?php if ($translator) : ?>
                 <td><a href="/translate/pages/edit/<?php echo $page->id; ?>" >[Traducir]</a></td>
                 <?php endif; ?>

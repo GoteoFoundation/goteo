@@ -11,7 +11,7 @@ namespace Goteo\Controller {
         
         public function index () {
 
-            $page = Page::get('press');
+            $page = Page::get('press', \NODE_ID);
 
             return new View(
                 'view/about/sample.html.php',

@@ -11,12 +11,9 @@ use Goteo\Library\Text;
 
                 <ul>
                     <li><a href="/about"><?php echo Text::get('regular-header-about'); ?></a></li>
-                    <li><a href="/user/login"><?php echo Text::get('regular-login'); ?></a></li>
+                    <li><a href="/press"><?php echo Text::get('footer-resources-press'); ?></a></li>
+                    <li><a href="/service"><?php echo Text::get('footer-header-services'); ?></a></li>
                     <li><a href="/contact"><?php echo Text::get('regular-footer-contact'); ?></a></li>
-<!--                    <li><a href="/blog"><?php echo Text::get('regular-header-blog'); ?></a></li> -->
-<!--                    <li><a href="/about/legal"><?php echo Text::get('regular-footer-legal'); ?></a></li> -->
-                    <li><a href="/legal/terms"><?php echo Text::get('regular-footer-terms'); ?></a></li>
-                    <li><a href="/legal/privacy"><?php echo Text::get('regular-footer-privacy'); ?></a></li>
                 </ul>
 
                 <div class="platoniq">
