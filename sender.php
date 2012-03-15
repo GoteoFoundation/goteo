@@ -99,7 +99,7 @@ if ($query = Model::query($sql)) {
 // si no quedan pendientes, grabamos el feed y desactivamos
 if (empty($users)) {
     // Desactivamos
-    Model::query("UPDATE mailer_content SET active = 0");
+    Model::query('UPDATE mailer_content SET active = 0 WHERE id = ?', array($mailing->id));
 
     // evento feed
     $log = new Feed();
