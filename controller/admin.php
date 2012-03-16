@@ -56,6 +56,13 @@ namespace Goteo\Controller {
                         ),
                         'filters' => array('status'=>'', 'category'=>'', 'owner'=>'', 'name'=>'', 'order'=>'')
                     ),
+                    'campaigns' => array(
+                        'label' => 'Campañas',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add'  => array('label' => 'Nueva campaña en portada', 'item' => false)
+                        )
+                    ),
                     'categories' => array(
                         'label' => 'Categorias e Intereses',
                         'actions' => array(
@@ -1042,8 +1049,8 @@ namespace Goteo\Controller {
                         'label'   => 'Portada',
                         'options' => array (
                             'home' => $options['home'],         // elementos en portada
-                            'posts' => $options['posts'],       // seleccion de entradas en portada
                             'promote' => $options['promote'],   // seleccion de proyectos destacados
+                            'campaigns' => $options['campaigs'],          // convocatorias en portada
                             'blog' => $options['blog']          // entradas de blog (en la gestion de blog)
                         )
                     )
@@ -1099,7 +1106,7 @@ namespace Goteo\Controller {
                         'options' => array (
                             'news' => $options['news'],
                             'banners' => $options['banners'],
-                            'posts' => $options['posts'],
+                            'blog' => $options['blog'],
                             'promote' => $options['promote'],
                             'footer' => $options['footer'],
                             'feed' => $options['feed'],

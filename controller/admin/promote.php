@@ -57,6 +57,9 @@ namespace Goteo\Controller\Admin {
                     }
 				}
 				else {
+
+                    Message::Error(implode(', ', $errors));
+
                     switch ($_POST['action']) {
                         case 'add':
                             return new View(
@@ -65,9 +68,7 @@ namespace Goteo\Controller\Admin {
                                     'folder' => 'promote',
                                     'file' => 'edit',
                                     'action' => 'add',
-                                    'promo' => $promo,
-                                    'status' => $status,
-                                    'errors' => $errors
+                                    'promo' => $promo
                                 )
                             );
                             break;
@@ -78,8 +79,7 @@ namespace Goteo\Controller\Admin {
                                     'folder' => 'promote',
                                     'file' => 'edit',
                                     'action' => 'edit',
-                                    'promo' => $promo,
-                                    'errors' => $errors
+                                    'promo' => $promo
                                 )
                             );
                             break;
@@ -91,22 +91,6 @@ namespace Goteo\Controller\Admin {
                 case 'active':
                     $set = $flag == 'on' ? true : false;
                     Model\Promote::setActive($id, $set);
-
-                    /*
-                    // Evento Feed
-                    $log = new Feed();
-                    $log_action = $set ? 'Mostrado en la portada' : 'Ocultado de la portada';
-                    $log->populate('proyecto destacado mostrado/ocultado (admin)', '/admin/promote',
-                        \vsprintf('El admin %s ha %s el proyecto %s', array(
-                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                        Feed::item('relevant', $log_action),
-                        Feed::item('project', $projectData->name, $projectData->id)
-                    )));
-                    $log->doAdmin('admin');
-                    unset($log);
-                     * 
-                     */
-
                     break;
                 case 'up':
                     Model\Promote::up($id, $node);
@@ -146,8 +130,7 @@ namespace Goteo\Controller\Admin {
                             'folder' => 'promote',
                             'file' => 'edit',
                             'action' => 'add',
-                            'promo' => (object) array('order' => $next, 'node'=>$node),
-                            'status' => $status
+                            'promo' => (object) array('order' => $next, 'node'=>$node)
                         )
                     );
                     break;
@@ -174,9 +157,7 @@ namespace Goteo\Controller\Admin {
                 array(
                     'folder' => 'promote',
                     'file' => 'list',
-                    'promoted' => $promoted,
-                    'errors' => $errors,
-                    'success' => $success
+                    'promoted' => $promoted
                 )
             );
             
