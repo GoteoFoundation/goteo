@@ -27,7 +27,7 @@ if ($q < 5) foreach ($project->individual_rewards as $individual) {
 
     <div style="color: #38b5b1;font-weight: bold;text-transform: uppercase;font-size: 16px;">
         <a href="<?php echo $url ?>" style="text-decoration:none;color: #38b5b1;font-weight: bold;text-transform: uppercase;font-size: 16px;"><?php echo htmlspecialchars($promote->title); ?></a><br />
-        <a href="<?php echo $url ?>" style="text-decoration:none;color: #38b5b1;font-size: 14px;font-weight: normal;font-style: normal;text-transform: capitalize; padding-top:5px;"><?php echo $promote->description; ?></a>
+        <a href="<?php echo $url ?>" style="text-decoration:none;color: #38b5b1;font-size: 14px;font-weight: normal;font-style: normal;text-transform: none; padding-top:5px;"><?php echo $promote->description; ?></a>
     </div>
 
     <div style="width: 25px;height: 2px;border-bottom: 1px solid #38b5b1;margin-bottom: 15px; margin-top:15px;"></div>
