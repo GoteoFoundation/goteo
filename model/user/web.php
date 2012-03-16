@@ -16,11 +16,17 @@ namespace Goteo\Model\User {
          * @return array of interests identifiers
          */
 	 	public static function get ($id) {
+            $list = array();
             try {
                 $query = static::query("SELECT id, user, url FROM user_web WHERE user = ?", array($id));
-                $webs = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $web) {
+                    if (\substr($web->url, 0, 4) != 'http') {
+                        $web->url = 'http://'.$web->url;
+                    }
+                    $list[] = $web;
+                }
 
-                return $webs;
+                return $list;
             } catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
             }
