@@ -873,7 +873,24 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            return Admin\Sponsors::process($action, $id);
+            return Admin\Calls::process($action, $id);
+        }
+
+        /*
+         *  Convocatorias en portada
+         */
+        public function campaigns($action = 'list', $id = null) {
+
+            $BC = self::menu(array(
+                'section' => 'home',
+                'option' => __FUNCTION__,
+                'action' => $action,
+                'id' => $id
+            ));
+
+            define('ADMIN_BCPATH', $BC);
+
+            return Admin\Campaigns::process($action, $id);
         }
 
         /*
@@ -1050,7 +1067,7 @@ namespace Goteo\Controller {
                         'options' => array (
                             'home' => $options['home'],         // elementos en portada
                             'promote' => $options['promote'],   // seleccion de proyectos destacados
-                            'campaigns' => $options['campaigs'],          // convocatorias en portada
+                            'campaigns' => $options['campaigns'],          // convocatorias en portada
                             'blog' => $options['blog']          // entradas de blog (en la gestion de blog)
                         )
                     )

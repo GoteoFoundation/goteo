@@ -11,7 +11,7 @@ namespace Goteo\Controller\Admin {
 
     class Campaigns {
 
-        public static function process ($action = 'list', $id = null, $flag = null) {
+        public static function process ($action = 'list', $id = null) {
 
             $status = Model\Call::status();
 
@@ -61,7 +61,7 @@ namespace Goteo\Controller\Admin {
                             return new View(
                                 'view/admin/index.html.php',
                                 array(
-                                    'folder' => 'campaign',
+                                    'folder' => 'campaigns',
                                     'file' => 'edit',
                                     'action' => 'add',
                                     'campaign' => $campaign,
@@ -74,7 +74,7 @@ namespace Goteo\Controller\Admin {
                             return new View(
                                 'view/admin/index.html.php',
                                 array(
-                                    'folder' => 'campaign',
+                                    'folder' => 'campaigns',
                                     'file' => 'edit',
                                     'action' => 'edit',
                                     'campaign' => $campaign,
@@ -111,12 +111,16 @@ namespace Goteo\Controller\Admin {
                     $next = Model\Campaign::next($node);
 
                     // campañas disponibles disponibles
-                    $calls = Model\campaign::available(null, $node);
+                    $calls = Model\Campaign::available(null, $node);
+                    if (empty($calls)) {
+                        Message::Info('No hay más campañas disponibles para destacar');
+                        throw new Redirection('/admin/campaigns');
+                    }
 
                     return new View(
                         'view/admin/index.html.php',
                         array(
-                            'folder' => 'campaign',
+                            'folder' => 'campaigns',
                             'file' => 'edit',
                             'action' => 'add',
                             'promo' => (object) array('order' => $next, 'node'=>$node),
@@ -128,12 +132,12 @@ namespace Goteo\Controller\Admin {
                 case 'edit':
                     $campaign = Model\Campaign::get($id);
                     // campañas disponibles disponibles
-                    $calls = Model\campaign::available($campaign->call, $node);
+                    $calls = Model\Campaign::available($campaign->call, $node);
 
                     return new View(
                         'view/admin/index.html.php',
                         array(
-                            'folder' => 'campaign',
+                            'folder' => 'campaigns',
                             'file' => 'edit',
                             'action' => 'edit',
                             'campaign' => $campaign,
@@ -150,10 +154,9 @@ namespace Goteo\Controller\Admin {
             return new View(
                 'view/admin/index.html.php',
                 array(
-                    'folder' => 'campaign',
+                    'folder' => 'campaigns',
                     'file' => 'list',
-                    'setted' => $setted,
-                            'status' => $status
+                    'setted' => $setted
                 )
             );
             

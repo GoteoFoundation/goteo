@@ -22,15 +22,15 @@ namespace Goteo\Model {
                     SELECT
                         campaign.id as id,
                         campaign.node as node,
-                        campaign.call as call,
+                        campaign.call as `call`,
                         call.name as name,
                         campaign.order as `order`,
                         campaign.active as `active`
                     FROM    campaign
-                    INNER JOIN call
+                    INNER JOIN `call`
                         ON call.id = campaign.call
                     WHERE campaign.id = :id
-                    ", array(':id'=>$id, ':lang'=>\LANG));
+                    ", array(':id'=>$id));
                 $campaign = $query->fetchObject(__CLASS__);
 
                 return $campaign;
@@ -44,33 +44,33 @@ namespace Goteo\Model {
             // estados
             $status = call::status();
 
-            $promos = array();
+            $campas = array();
 
-            $sqlFilter = ($activeonly) ? " AND campaign.active = 1" : '';
+            $sqlFilter = ($activeonly) ? " AND campaign.active = 1 " : '';
 
             $query = static::query("
                 SELECT
                     campaign.id as id,
-                    campaign.call as call,
+                    campaign.call as `call`,
                     call.name as name,
                     call.status as status,
                     campaign.order as `order`,
                     campaign.active as `active`
                 FROM    campaign
-                INNER JOIN call
+                INNER JOIN `call`
                     ON call.id = campaign.call
                 WHERE campaign.node = :node
                 $sqlFilter
                 ORDER BY `order` ASC, name ASC
-                ", array(':node' => $node, ':lang'=>\LANG));
+                ", array(':node' => $node));
 
-            foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
-                $promo->description =Text::recorta($promo->description, 100, false);
-                $promo->status = $status[$promo->status];
-                $promos[] = $promo;
+            foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $campa) {
+                $campa->description = \Goteo\Library\Text::recorta($campa->description, 100, false);
+                $campa->status = $status[$campa->status];
+                $campas[] = $campa;
             }
 
-            return $promos;
+            return $campas;
         }
 
         /*
@@ -79,21 +79,22 @@ namespace Goteo\Model {
         public static function available ($current = null, $node = \GOTEO_NODE) {
 
             if (!empty($current)) {
-                $sqlCurr = " AND call != '$current'";
+                $sqlCurr = " AND `call` != '$current'";
             } else {
                 $sqlCurr = "";
             }
 
-            $query = static::query("
-                SELECT
+            $sql = "SELECT
                     call.id as id,
                     call.name as name,
                     call.status as status
-                FROM    call
+                FROM    `call`
                 WHERE status = 3
-                AND call.id NOT IN (SELECT call FROM campaign WHERE campaign.node = :node{$sqlCurr} )
+                AND call.id NOT IN (SELECT `call` FROM campaign WHERE campaign.node = :node{$sqlCurr} )
                 ORDER BY name ASC
-                ", array(':node' => $node));
+                ";
+
+            $query = static::query($sql, array(':node' => $node));
 
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
