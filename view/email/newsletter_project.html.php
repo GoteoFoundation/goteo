@@ -41,7 +41,7 @@ if ($q < 5) foreach ($project->individual_rewards as $individual) {
     
     <div style="width: 226px; padding-bottom:10px;">
         <?php if (!empty($project->gallery) && (current($project->gallery) instanceof Image)): ?>
-        <a href="<?php echo $url ?>"><img alt="<?php echo $project->name ?>" src="<?php echo str_replace('beta.goteo.org', 'goteo.org', current($project->gallery)->getLink(255, 130, true)) ?>" width="255" height="130" /></a>
+        <a href="<?php echo $url ?>"><img alt="<?php echo $project->name ?>" src="<?php echo current($project->gallery)->getLink(255, 130, true) ?>" width="255" height="130" /></a>
         <?php endif ?>
     </div>
     
@@ -53,7 +53,7 @@ if ($q < 5) foreach ($project->individual_rewards as $individual) {
     
     <div style="width: 25px;height: 2px;border-bottom: 1px solid #38b5b1;margin-bottom: 10px; margin-top:10px;"></div>
    
-    <div style="font-size: 14px;vertical-align: top;text-transform: uppercase; padding-bottom:10px;"><?php echo Text::get('project-view-metter-investment'); ?>: <span style="font-size:14px;color:#96238F;font-weight: bold;"><?php echo Text::get('project-view-metter-minimum') . ' ' . \amount_format($project->mincost) . ' '.  utf8_encode(html_entity_decode('&euro;')); ?></span>  <span style="color:#FFF;>_</span>  <span style="font-size:14px;color:#ba6fb6;font-weight: bold;"><?php echo Text::get('project-view-metter-optimum') . ' ' . \amount_format($project->maxcost) . ' '.  utf8_encode(html_entity_decode('&euro;')); ?></span>
+    <div style="font-size: 14px;vertical-align: top;text-transform: uppercase; padding-bottom:10px;"><?php echo Text::get('project-view-metter-investment'); ?>: <span style="font-size:14px;color:#96238F;font-weight: bold;"><?php echo Text::get('project-view-metter-minimum') . ' ' . \amount_format($project->mincost) . ' '.  utf8_encode(html_entity_decode('&euro;')); ?></span>  <span style="color:#FFF;">_</span>  <span style="font-size:14px;color:#ba6fb6;font-weight: bold;"><?php echo Text::get('project-view-metter-optimum') . ' ' . \amount_format($project->maxcost) . ' '.  utf8_encode(html_entity_decode('&euro;')); ?></span>
     </div>
     <!--
     <div style="font-size: 10px;color: #434343;text-transform: uppercase;"><?php echo Text::get('project-rewards-header'); ?>&nbsp;

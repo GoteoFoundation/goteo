@@ -1,6 +1,7 @@
 <?php
 
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Library\Template;
 
 $mailing = $this['mailing'];
 
@@ -8,11 +9,13 @@ $link = SITE_URL.'/mail/'.base64_encode(md5(uniqid()).'¬any¬'.$mailing->mail).
 
 // si el mailing está desactivado , mostrar mensaje y botón para iniciar de nuevo
 ?>
-<?php if (empty($mailing) || !$mailing->active) : ?>
+<?php if (empty($mailing) || !$mailing->active) :
+    $template = Template::get(33);
+?>
 <div class="widget board">
     <p>No se está enviando ningún boletín actualmente. Confirmar el asunto y pulsar el botón para generar uno nuevo con los datos actuales de plantilla y portada.</p>
     <form action="/admin/newsletter/init" method="post">
-        <label>Asunto: <input type="text" name="subject" value="Newsletter Goteo" style="width:300px" /></label><br />
+        <label>Asunto: <input type="text" name="subject" value="<?php echo $template->title ?>" style="width:300px" /></label><br />
         <label>Es una prueba: <input type="checkbox" name="test" value="1" /></label><br />
         
         <input type="submit" name="init" value="Iniciar" />
