@@ -2,6 +2,9 @@
 
 namespace Goteo\Model {
     
+    use \Goteo\Library\Text,
+        \Goteo\Library\Check;
+
     class Campaign extends \Goteo\Core\Model {
 
         public
@@ -65,7 +68,7 @@ namespace Goteo\Model {
                 ", array(':node' => $node));
 
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $campa) {
-                $campa->description = \Goteo\Library\Text::recorta($campa->description, 100, false);
+                $campa->description = Text::recorta($campa->description, 100, false);
                 $campa->status = $status[$campa->status];
                 $campas[] = $campa;
             }
@@ -89,7 +92,7 @@ namespace Goteo\Model {
                     call.name as name,
                     call.status as status
                 FROM    `call`
-                WHERE status = 3
+                WHERE status IN ('3', '4')
                 AND call.id NOT IN (SELECT `call` FROM campaign WHERE campaign.node = :node{$sqlCurr} )
                 ORDER BY name ASC
                 ";

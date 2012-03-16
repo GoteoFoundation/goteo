@@ -10,6 +10,7 @@ namespace Goteo\Controller {
         Goteo\Model\Call,
         Goteo\Model\Post,
         Goteo\Model\Promote,
+        Goteo\Model\Campaign, // convocatorias en portada
         Goteo\Model\User,
         Goteo\Library\Text,
         Goteo\Library\Feed;
@@ -139,12 +140,27 @@ namespace Goteo\Controller {
                 }
             }
 
+            // Convocatoris destacadas
+            if (isset($order['calls'])) {
+                $calls  = Campaign::getAll(true, NODE_ID);
+
+                foreach ($calls as $key => &$call) {
+                    try {
+                        $call = Call::get($call->call);
+                    } catch (\Goteo\Core\Error $e) {
+                        unset($calls[$key]);
+                    }
+                }
+            }
+
             return new View('view/node/index.html.php',
                 array(
-                    'node'   => $node,
-                    'posts'     => $posts,
-                    'promotes'  => $promotes,
-                    'order'     => $order                )
+                    'node'     => $node,
+                    'posts'    => $posts,
+                    'promotes' => $promotes,
+                    'calls'    => $calls,
+                    'order'    => $order
+                )
             );
 
         }

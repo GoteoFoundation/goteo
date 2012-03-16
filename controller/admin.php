@@ -879,7 +879,7 @@ namespace Goteo\Controller {
         /*
          *  Convocatorias en portada
          */
-        public function campaigns($action = 'list', $id = null) {
+        public function campaigns($action = 'list', $id = null, $flag = null) {
 
             $BC = self::menu(array(
                 'section' => 'home',
@@ -890,7 +890,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            return Admin\Campaigns::process($action, $id);
+            return Admin\Campaigns::process($action, $id, $flag);
         }
 
         /*

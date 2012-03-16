@@ -11,7 +11,7 @@ namespace Goteo\Controller\Admin {
 
     class Campaigns {
 
-        public static function process ($action = 'list', $id = null) {
+        public static function process ($action = 'list', $id = null, $flag = null) {
 
             $status = Model\Call::status();
 
@@ -123,7 +123,7 @@ namespace Goteo\Controller\Admin {
                             'folder' => 'campaigns',
                             'file' => 'edit',
                             'action' => 'add',
-                            'promo' => (object) array('order' => $next, 'node'=>$node),
+                            'campaign' => (object) array('order' => $next, 'node'=>$node),
                             'status' => $status,
                             'calls' => $calls
                         )
