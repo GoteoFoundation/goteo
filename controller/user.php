@@ -52,6 +52,8 @@ namespace Goteo\Controller {
                         $jumpto = $_SESSION['jumpto'];
                         unset($_SESSION['jumpto']);
                         throw new Redirection($jumpto);
+                    } elseif (isset($user->roles['admin'])) {
+                        throw new Redirection('/admin');
                     } else {
                         throw new Redirection('/dashboard');
                     }
