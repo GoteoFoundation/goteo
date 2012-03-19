@@ -46,10 +46,10 @@ include 'view/header.html.php';
     } ?>
 
     <p>
-        <a class="node-jump" href="http://alfa.devgoteo.org/">A AlfaNode</a>
+        <a class="node-jump" href="http://test.goteo.org/">A TestNode</a>
     </p>
     <p>
-        <a class="node-jump" href="http://nodo.devgoteo.org/">A Nodo</a>
+        <a class="node-jump" href="http://nodo.goteo.org/">A Nodo</a>
     </p>
 
 </div>
