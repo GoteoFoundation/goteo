@@ -4,6 +4,7 @@ namespace Goteo\Model {
 
     use Goteo\Model\Project\Media,
         Goteo\Model\Image,
+        Goteo\Model\User,
         Goteo\Library\Check;
 
     class Post extends \Goteo\Core\Model {
@@ -15,7 +16,9 @@ namespace Goteo\Model {
             $image,
             $gallery = array(), // array de instancias image de post_image
             $media,
-            $order;
+            $author,
+            $order,
+            $node;  // las entradas en portada para nodos se guardan en la tabla post_node con unos metodos alternativos
 
         /*
          *  Devuelve datos de una entrada
@@ -30,6 +33,7 @@ namespace Goteo\Model {
                         post.image as image,
                         post.media as `media`,
                         DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
+                        post.author as author,
                         post.order as `order`
                     FROM    post
                     LEFT JOIN post_lang
@@ -43,8 +47,12 @@ namespace Goteo\Model {
                 // galeria
                 $post->gallery = Image::getAll($id, 'post');
                 $post->image = $post->gallery[0];
-                
+
+                // video
                 $post->media = new Media($post->media);
+
+                // autor
+                $post->user = User::get($post->author);
 
                 return $post;
 
@@ -53,13 +61,34 @@ namespace Goteo\Model {
         /*
          * Lista de entradas
          */
-        public static function getAll ($position = 'home', $blog = 1) {
+        public static function getAll ($position = 'home', $node = \GOTEO_NODE) {
 
             if (!in_array($position, array('home', 'footer'))) {
                 $position = 'home';
             }
 
             $list = array();
+
+            $values = array(':lang'=>\LANG);
+
+            if ($node == \GOTEO_NODE || empty($node)) {
+                // portada goteo, sacamos todas las de blogs tipo nodo
+                // que esten marcadas en la tabla post
+                $sqlFilter = " WHERE post.$position = 1
+                    AND post.publish = 1
+                    ";
+                $sqlField = "post.order as `order`,";
+
+            } else {
+                // portada nodo, igualmente las entradas de blogs tipo nodo
+                // perosolo la que esten en la tabla de entradas en portada de ese nodo
+                $sqlFilter = " WHERE post.id IN (SELECT post FROM post_node WHERE node = :node)
+                    AND post.publish = 1
+                    ";
+                $values[':node'] = $node;
+
+                $sqlField = "(SELECT `order` FROM post_node WHERE node = :node AND post = post.id) as `order`,";
+            }
 
             $sql = "
                 SELECT
@@ -69,7 +98,7 @@ namespace Goteo\Model {
                     IFNULL(post_lang.text, post.text) as `text`,
                     post.image as `image`,
                     post.media as `media`,
-                    post.order as `order`,
+                    $sqlField
                     DATE_FORMAT(post.date, '%d-%m-%Y') as date,
                     DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                     post.publish as publish,
@@ -79,12 +108,11 @@ namespace Goteo\Model {
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
-                WHERE   post.blog = $blog
-                AND     post.$position = 1
+                $sqlFilter
                 ORDER BY `order` ASC, title ASC
                 ";
             
-            $query = static::query($sql, array(':lang'=>\LANG));
+            $query = static::query($sql, $values);
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 // galeria
@@ -104,8 +132,7 @@ namespace Goteo\Model {
         /*
          * Entradas en portada o pie
          */
-        //@FIXME essse blog a piñon!
-        public static function getList ($position = 'home', $blog = 1) {
+        public static function getList ($position = 'home', $node = \GOTEO_NODE) {
 
             if (!in_array($position, array('home', 'footer'))) {
                 $position = 'home';
@@ -113,22 +140,40 @@ namespace Goteo\Model {
 
             $list = array();
 
+            $values = array(':lang'=>\LANG);
+
+            if ($node == \GOTEO_NODE || empty($node)) {
+                // portada goteo, sacamos todas las de blogs tipo nodo
+                // que esten marcadas en la tabla post
+                $sqlFilter = " WHERE post.$position = 1
+                ";
+
+            } else {
+                // portada nodo, igualmente las entradas de blogs tipo nodo
+                // perosolo la que esten en la tabla de entradas en portada de ese nodo
+                $sqlFilter = " WHERE post.id IN (SELECT post FROM post_node WHERE node = :node)
+                    ";
+                $values[':node'] = $node;
+            }
+
+
             $sql = "
                 SELECT
                     post.id as id,
                     IFNULL(post_lang.title, post.title) as title,
                     post.order as `order`
                 FROM    post
+                INNER JOIN blog
+                    ON  blog.id = post.blog
+                    AND blog.type = 'node'
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
-                WHERE   post.blog = $blog
-                AND     post.$position = 1
-                AND     post.publish = 1
+                $sqlFilter
                 ORDER BY `order` ASC, title ASC
                 ";
 
-            $query = static::query($sql, array(':lang'=>\LANG));
+            $query = static::query($sql, $values);
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 $list[$post->id] = $post->title;
@@ -161,7 +206,8 @@ namespace Goteo\Model {
                 'order',
                 'publish',
                 'home',
-                'footer'
+                'footer',
+                'author'
                 );
 
             $set = '';
@@ -180,11 +226,15 @@ namespace Goteo\Model {
 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
+                $errors[] = "HA FALLADO!!! " . $e->getMessage();
                 return false;
             }
         }
 
+        /*
+         *  Actualizar una entrada en portada
+         * si es de nodo se guarda en otra tabla con el metodo update_node
+         */
         public function update (&$errors = array()) {
             if (!$this->id) return false;
 
@@ -206,7 +256,10 @@ namespace Goteo\Model {
                 $values[":$field"] = $this->$field;
             }
 
-            if ($set == '') return false;
+            if ($set == '') {
+                $errors[] = 'Sin datos';
+                return false;
+            }
 
             try {
                 $sql = "UPDATE post SET " . $set . " WHERE post.id = :id";
@@ -214,7 +267,7 @@ namespace Goteo\Model {
 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
+                $errors[] = "HA FALLADO!!! " . $e->getMessage();
                 return false;
             }
         }
@@ -240,11 +293,9 @@ namespace Goteo\Model {
         /*
          * Para que salga antes  (disminuir el order)
          */
-        //@FIXME essse blog a piñon!
         public static function up ($id, $type = 'home') {
             $extra = array (
-                    $type => 1,
-                    'blog' => 1
+                    $type => 1
                 );
             return Check::reorder($id, 'up', 'post', 'id', 'order', $extra);
         }
@@ -252,11 +303,9 @@ namespace Goteo\Model {
         /*
          * Para que un proyecto salga despues  (aumentar el order)
          */
-        //@FIXME essse blog a piñon!
         public static function down ($id, $type = 'home') {
             $extra = array (
-                    $type => 1,
-                    'blog' => 1
+                    $type => 1
                 );
             return Check::reorder($id, 'down', 'post', 'id', 'order', $extra);
         }
@@ -266,6 +315,92 @@ namespace Goteo\Model {
          */
         public static function next ($type = 'home') {
             $query = self::query('SELECT MAX(`order`) FROM post WHERE '.$type.'=1');
+            $order = $query->fetchColumn(0);
+            return ++$order;
+
+        }
+
+
+        /****************************************************
+        * Variantes de los metodos para las portadas de nodo *
+         ****************************************************/
+        /*
+         *  Actualizar una entrada en portada
+         */
+        public function update_node ($data, &$errors = array()) {
+            if (!$data->post || !$data->node) return false;
+
+            $fields = array(
+                'post',
+                'node',
+                'order'
+                );
+
+            $set = '';
+            $values = array();
+
+            foreach ($fields as $field) {
+                if ($set != '') $set .= ", ";
+                $set .= "`$field` = :$field ";
+                $values[":$field"] = $data->$field;
+            }
+
+            if ($set == '') {
+                $errors[] = 'Sin datos';
+                return false;
+            }
+
+            try {
+                $sql = "REPLACE INTO post_node SET " . $set;
+                self::query($sql, $values);
+
+                return true;
+            } catch(\PDOException $e) {
+                $errors[] = "Ha fallado!!! " . $e->getMessage();
+                return false;
+            }
+        }
+
+        /*
+         * Para quitar una entrada
+         */
+        public static function remove_node ($post, $node) {
+
+            $values = array(':post'=>$post, ':node'=>$node);
+            $sql = "DELETE FROM post_node WHERE post = :post AND node = :node";
+            if (self::query($sql, $values)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+        /*
+         * Para que salga antes  (disminuir el order)
+         */
+        public static function up_node ($post, $node) {
+            $extra = array (
+                    'node' => $node
+                );
+            return Check::reorder($post, 'up', 'post_node', 'post', 'order', $extra);
+        }
+
+        /*
+         * Para que un proyecto salga despues  (aumentar el order)
+         */
+        public static function down_node ($post, $node) {
+            $extra = array (
+                    'node' => $node
+                );
+            return Check::reorder($post, 'down', 'post_node', 'post', 'order', $extra);
+        }
+
+        /*
+         * Orden para añadirlo al final
+         */
+        public static function next_node ($node) {
+            $query = self::query('SELECT MAX(`order`) FROM post_node WHERE node = :node', array(':node'=>$node));
             $order = $query->fetchColumn(0);
             return ++$order;
 

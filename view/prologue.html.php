@@ -1,3 +1,9 @@
+<?php
+if (NODE_ID != GOTEO_NODE) {
+    include 'view/node/prologue.html.php';
+    return;
+}
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -50,8 +56,11 @@
 		  <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/fancybox/jquery.fancybox.min.css" media="screen" />
           <!-- end custom fancybox-->          
 
-		  <!-- vigilante de sesión -->
+		  <!-- vigilante de sesiï¿½n -->
 		  <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/watchdog.js"></script>
+
+		  <!-- saltos entre nodos -->
+		  <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/nodejump.js"></script>
 
         <?php endif ?>
     </head>

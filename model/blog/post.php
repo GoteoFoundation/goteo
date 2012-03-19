@@ -4,7 +4,9 @@ namespace Goteo\Model\Blog {
 
     use \Goteo\Model\Project\Media,
         \Goteo\Model\Image,
-        \Goteo\Library\Text;
+        \Goteo\Model\User,
+        \Goteo\Library\Text,
+        \Goteo\Library\Message;
 
     class Post extends \Goteo\Core\Model {
 
@@ -20,6 +22,8 @@ namespace Goteo\Model\Blog {
             $publish,
             $home,
             $footer,
+            $author,
+            $owner,
             $tags = array(),
             $gallery = array(), // array de instancias image de post_image
             $num_comments = 0,
@@ -43,8 +47,12 @@ namespace Goteo\Model\Blog {
                         post.allow as allow,
                         post.publish as publish,
                         post.home as home,
-                        post.footer as footer
+                        post.footer as footer,
+                        post.author as author,
+                        CONCAT(blog.type, '-', blog.owner) as owner
                     FROM    post
+                    INNER JOIN blog
+                        ON  blog.id = post.blog
                     LEFT JOIN post_lang
                         ON  post_lang.id = post.id
                         AND post_lang.lang = :lang
@@ -68,6 +76,9 @@ namespace Goteo\Model\Blog {
                 //tags
                 $post->tags = Post\Tag::getAll($id);
 
+                // autor
+                if (!empty($post->author)) $post->author = User::getMini($post->author);
+                
                 return $post;
         }
 
@@ -76,10 +87,11 @@ namespace Goteo\Model\Blog {
          * de mas nueva a mas antigua
          * // si es portada son los que se meten por la gestion de entradas en portada que llevan el tag 1 'Portada'
          */
-        public static function getAll ($blog, $limit = null, $published = true) {
-
+        public static function getAll ($blog = null, $limit = null, $published = true) {
             $list = array();
 
+            $values = array(':lang'=>\LANG);
+            
             $sql = "
                 SELECT
                     post.id as id,
@@ -93,13 +105,24 @@ namespace Goteo\Model\Blog {
                     DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                     post.publish as publish,
                     post.home as home,
-                    post.footer as footer
+                    post.footer as footer,
+                    post.author as author,
+                    CONCAT(blog.type, '-', blog.owner) as owner
                 FROM    post
+                INNER JOIN blog
+                    ON  blog.id = post.blog
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
-                WHERE post.blog = :blog
                 ";
+            if (!empty($blog)) {
+                $sql .= " WHERE post.blog = :blog
+                ";
+                $values[':blog'] = $blog;
+            } else {
+                $sql .= " WHERE blog.type = 'node'
+                ";
+            }
             if ($published) {
                 $sql .= " AND post.publish = 1
                 ";
@@ -110,7 +133,7 @@ namespace Goteo\Model\Blog {
                 $sql .= "LIMIT $limit";
             }
             
-            $query = static::query($sql, array(':blog'=>$blog, ':lang'=>\LANG));
+            $query = static::query($sql, $values);
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 // galeria
@@ -129,6 +152,9 @@ namespace Goteo\Model\Blog {
                 // reconocimiento de enlaces y saltos de linea
 //                $post->text = nl2br(Text::urlink($post->text));
 
+                // autor
+                if (!empty($post->author)) $post->author = User::getMini($post->author);
+
                 $list[$post->id] = $post;
             }
 
@@ -139,7 +165,11 @@ namespace Goteo\Model\Blog {
          * Lista de entradas filtradas por tag
          * de mas nueva a mas antigua
          */
-        public static function getList ($blog, $tag, $published = true) {
+        public static function getList ($blog = null, $tag = null, $published = true) {
+
+            if (empty($tag)) return false;
+
+            $values = array(':tag'=>$tag, ':lang'=>\LANG);
 
             $list = array();
 
@@ -156,16 +186,27 @@ namespace Goteo\Model\Blog {
                     DATE_FORMAT(post.date, '%d-%m-%Y') as fecha,
                     post.publish as publish,
                     post.home as home,
-                    post.footer as footer
+                    post.footer as footer,
+                    post.author as author,
+                    CONCAT(blog.type, '-', blog.owner) as owner
                 FROM    post
+                INNER JOIN blog
+                    ON  blog.id = post.blog
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
                 INNER JOIN post_tag
                     ON post_tag.post = post.id
                     AND post_tag.tag = :tag
-                WHERE post.blog = :blog
                 ";
+            if (!empty($blog)) {
+                $sql .= " WHERE post.blog = :blog
+                ";
+                $values[':blog'] = $blog;
+            } else {
+                $sql .= " WHERE blog.type = 'node'
+                ";
+            }
             if ($published) {
                 $sql .= " AND post.publish = 1
                 ";
@@ -174,7 +215,7 @@ namespace Goteo\Model\Blog {
                 ORDER BY date DESC, post.id DESC
                 ";
 
-            $query = static::query($sql, array(':blog'=>$blog, ':tag'=>$tag, ':lang'=>\LANG));
+            $query = static::query($sql, $values);
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 // galeria
@@ -188,6 +229,9 @@ namespace Goteo\Model\Blog {
 
                 $post->num_comments = Post\Comment::getCount($post->id);
 
+                // autor
+                if (!empty($post->author)) $post->author = User::getMini($post->author);
+                
                 $list[$post->id] = $post;
             }
 
@@ -211,9 +255,7 @@ namespace Goteo\Model\Blog {
         }
 
         public function save (&$errors = array()) {
-//            if (!$this->validate($errors)) return false;
-
-            // @TODO poner la imagen principal
+            if (empty($this->blog)) return false;
 
             $fields = array(
                 'id',
@@ -226,7 +268,8 @@ namespace Goteo\Model\Blog {
                 'allow',
                 'publish',
                 'home',
-                'footer'
+                'footer',
+                'author'
                 );
 
             $values = array();
@@ -256,7 +299,9 @@ namespace Goteo\Model\Blog {
                             self::query("REPLACE post_image (post, image) VALUES (:post, :image)", array(':post' => $this->id, ':image' => $image->id));
                         }
                     }
-//                    else { $this->image = ''; }
+                    else {
+                        Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                    }
                 }
 
                 // y los tags, si hay
@@ -276,7 +321,7 @@ namespace Goteo\Model\Blog {
 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
+                $errors[] = "HA FALLADO!!! " . $e->getMessage();
                 return false;
             }
         }
@@ -306,7 +351,7 @@ namespace Goteo\Model\Blog {
                 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
+                $errors[] = "HA FALLADO!!! " . $e->getMessage();
                 return false;
             }
         }

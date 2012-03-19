@@ -35,12 +35,25 @@ namespace Goteo\Controller {
                 $password = $_POST['password'];
                 if (false !== ($user = (\Goteo\Model\User::login($username, $password)))) {
                     $_SESSION['user'] = $user;
+                    if (!empty($user->lang)) {
+                        $_SESSION['lang'] = $user->lang;
+                    }
+                    if (isset($user->roles['admin'])) {
+                        // posible admin de nodo
+                        if ($node = Model\Node::getAdminNode($user->id)) {
+                            $_SESSION['admin_node'] = $node;
+                        } else {
+                            $_SESSION['admin_node'] = \GOTEO_NODE;
+                        }
+                    }
                     if (!empty($_POST['return'])) {
                         throw new Redirection($_POST['return']);
                     } elseif (!empty($_SESSION['jumpto'])) {
                         $jumpto = $_SESSION['jumpto'];
                         unset($_SESSION['jumpto']);
                         throw new Redirection($jumpto);
+                    } elseif (isset($user->roles['admin'])) {
+                        throw new Redirection('/admin');
                     } else {
                         throw new Redirection('/dashboard');
                     }
@@ -58,7 +71,7 @@ namespace Goteo\Controller {
          * Cerrar sesión.
          */
         public function logout() {
-            $lang = $_SESSION['lang'] == 'es' ? '' : '?lang='.$_SESSION['lang'];
+            $lang = '?lang='.$_SESSION['lang'];
             session_start();
             session_unset();
             session_destroy();
@@ -92,6 +105,7 @@ namespace Goteo\Controller {
 				$user->email = $_POST['email'];
 				$user->password = $_POST['password'];
 				$user->active = true;
+                $user->node = \NODE_ID;
 
 				$user->save($errors);
 

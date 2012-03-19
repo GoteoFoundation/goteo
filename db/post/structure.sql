@@ -23,3 +23,4 @@ ALTER TABLE `post` ADD `publish` BOOLEAN NOT NULL DEFAULT '0' COMMENT 'Publicado
 ALTER TABLE  `post` ADD  `home` BOOLEAN NULL DEFAULT  '0' COMMENT  'para los de portada';
 ALTER TABLE `post` ADD `footer` BOOLEAN NULL DEFAULT '0' COMMENT 'Para los del footer';
 ALTER TABLE `post` ADD `legend` TEXT NULL ;
+ALTER TABLE  `post` ADD  `author` VARCHAR( 50 ) NULL ;

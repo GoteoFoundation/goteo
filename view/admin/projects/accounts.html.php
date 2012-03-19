@@ -15,15 +15,9 @@ if (!$project instanceof Model\Project) {
 
 $accounts = $this['accounts'];
 
-$filters = $this['filters'];
-
-//arrastramos los filtros
-$filter = "?status={$filters['status']}&category={$filters['category']}";
-
-
 // Superform
 ?>
-<form method="post" action="/admin/projects/<?php echo $filter ?>" class="project" enctype="multipart/form-data">
+<form method="post" action="/admin/projects" class="project" enctype="multipart/form-data">
 
     <?php echo new SuperForm(array(
 
@@ -51,11 +45,24 @@ $filter = "?status={$filters['status']}&category={$filters['category']}";
                 'title'     => 'Cuenta bancaria',
                 'value'     => $accounts->bank
             ),
+            'bank_owner' => array(
+                'class'     => 'inline',
+                'type'      => 'textbox',
+                'title'     => 'Titular de la cuenta bancaria',
+                'value'     => $accounts->bank_owner
+            ),
             'paypal' => array(
                 'type'      => 'textbox',
                 'required'  => true,
                 'title'     => 'Cuenta paypal',
                 'value'     => $accounts->paypal
+            ),
+            'paypal_owner' => array(
+                'class'     => 'inline',
+                'type'      => 'textbox',
+                'required'  => true,
+                'title'     => 'Titular de la cuenta paypal',
+                'value'     => $accounts->paypal_owner
             )
 
         )

@@ -14,6 +14,8 @@ namespace Goteo\Model {
 
         public
             $id = false,
+            $lang,
+            $node,
             $userid, // para el login name al registrarse
             $email,
             $password, // para gestion de super admin
@@ -92,6 +94,8 @@ namespace Goteo\Model {
                     $data[':created'] = date('Y-m-d H:i:s');
                     $data[':active'] = true;
                     $data[':confirmed'] = false;
+                    $data[':lang'] = \LANG;
+                    $data[':node'] = \NODE_ID;
 
                     // Rol por defecto.
                     if (!empty($this->id)) {
@@ -170,14 +174,18 @@ namespace Goteo\Model {
                     // Avatar
                     if (is_array($this->avatar) && !empty($this->avatar['name'])) {
                         $image = new Image($this->avatar);
-                        $image->save();
-                        $data[':avatar'] = $image->id;
+                        if ($image->save()) {
+                            $data[':avatar'] = $image->id;
 
-                        /**
-                         * Guarda la relación NM en la tabla 'user_image'.
-                         */
-                        if(!empty($image->id)) {
-                            self::query("REPLACE user_image (user, image) VALUES (:user, :image)", array(':user' => $this->id, ':image' => $image->id));
+                            /**
+                             * Guarda la relación NM en la tabla 'user_image'.
+                             */
+                            if(!empty($image->id)) {
+                                self::query("REPLACE user_image (user, image) VALUES (:user, :image)", array(':user' => $this->id, ':image' => $image->id));
+                            }
+                        } else {
+                            Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                            $data[':avatar'] = '';
                         }
                     }
 
@@ -466,7 +474,45 @@ namespace Goteo\Model {
 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
+                $errors[] = "HA FALLADO!!! " . $e->getMessage();
+                return false;
+            }
+
+        }
+
+        /**
+         * Este método actualiza directamente el campo de idioma preferido
+         */
+        public function updateLang (&$errors = array()) {
+
+            $values = array(':id'=>$this->id, ':lang'=>$this->lang);
+
+            try {
+                $sql = "UPDATE user SET `lang` = :lang WHERE id = :id";
+                self::query($sql, $values);
+
+                return true;
+            } catch(\PDOException $e) {
+                $errors[] = "HA FALLADO!!! " . $e->getMessage();
+                return false;
+            }
+
+        }
+
+        /**
+         * Este método actualiza directamente el campo de nodo
+         */
+        public function updateNode (&$errors = array()) {
+
+            $values = array(':id'=>$this->id, ':node'=>$this->node);
+
+            try {
+                $sql = "UPDATE user SET `node` = :node WHERE id = :id";
+                self::query($sql, $values);
+
+                return true;
+            } catch(\PDOException $e) {
+                $errors[] = "HA FALLADO!!! " . $e->getMessage();
                 return false;
             }
 
@@ -502,7 +548,8 @@ namespace Goteo\Model {
                         user.confirmed as confirmed,
                         user.hide as hide,
                         user.created as created,
-                        user.modified as modified
+                        user.modified as modified,
+                        user.node as node
                     FROM user
                     LEFT JOIN user_lang
                         ON  user_lang.id = user.id
@@ -561,47 +608,55 @@ namespace Goteo\Model {
          * @param  bool $visible    true|false
          * @return mixed            Array de objetos de usuario activos|todos.
          */
-        public static function getAll ($filters = array()) {
+        public static function getAll ($filters = array(), $node = null) {
+
+            $values = array();
+
             $users = array();
 
             $sqlFilter = "";
             if (!empty($filters['id'])) {
-                $sqlFilter .= " AND id = '{$filters['id']}'";
+                $sqlFilter .= " AND id = :id";
+                $values[':id'] = $filters['id'];
             }
             if (!empty($filters['name'])) {
-                $sqlFilter .= " AND name LIKE ('%{$filters['name']}%')";
+                $sqlFilter .= " AND name LIKE :name";
+                $values[':name'] = "'%{$filters['name']}%'";
             }
             if (!empty($filters['email'])) {
-                $sqlFilter .= " AND email LIKE ('%{$filters['email']}%')";
+                $sqlFilter .= " AND email LIKE :email";
+                $values[':email'] = "'%{$filters['email']}%'";
             }
             if (!empty($filters['status'])) {
-                $active = $filters['status'] == 'active' ? '1' : '0';
-                $sqlFilter .= " AND active = '$active'";
+                $sqlFilter .= " AND active = :active";
+                $values[':active'] = $filters['status'] == 'active' ? '1' : '0';
             }
             if (!empty($filters['interest'])) {
                 $sqlFilter .= " AND id IN (
                     SELECT user
                     FROM user_interest
-                    WHERE interest = {$filters['interest']}
+                    WHERE interest = :interest
                     ) ";
+                $values[':interest'] = $filters['interest'];
             }
             if (!empty($filters['role'])) {
                 $sqlFilter .= " AND id IN (
                     SELECT user_id
                     FROM user_role
-                    WHERE role_id = '{$filters['role']}'
+                    WHERE role_id = :role
                     ) ";
+                $values[':role'] = $filters['role'];
             }
-            if (!empty($filters['posted'])) {
-                /*
-                 * Si ha enviado algun mensaje o comentario
-                $sqlFilter .= " AND id IN (
-                    SELECT user
-                    FROM message
-                    WHERE interest = {$filters['interest']}
-                    ) ";
-                 *
-                 */
+            if (!empty($filters['node'])) {
+                $sqlFilter .= " AND node = :node";
+                $values[':node'] = $filters['node'];
+            } else
+                if (!empty($node)) {
+                $sqlFilter .= " AND node = :node";
+                $values[':node'] = $node;
+            } else {
+                $sqlFilter .= " AND (node = :node OR node IS NULL)";
+                $values[':node'] = \GOTEO_NODE;
             }
 
             //el Order
@@ -620,7 +675,8 @@ namespace Goteo\Model {
                         email,
                         active,
                         hide,
-                        DATE_FORMAT(created, '%d/%m/%Y %H:%i:%s') as register_date
+                        DATE_FORMAT(created, '%d/%m/%Y %H:%i:%s') as register_date,
+                        node
                     FROM user
                     WHERE id != 'root'
                         $sqlFilter
@@ -629,7 +685,7 @@ namespace Goteo\Model {
 
 
 
-            $query = self::query($sql, array($node));
+            $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $user) {
 
                 $query = static::query("
@@ -724,6 +780,39 @@ namespace Goteo\Model {
                     AND user_role.role_id = 'caller'
                 ORDER BY user.name ASC
                 ");
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $list[$item->id] = $item->name;
+            }
+
+            return $list;
+        }
+
+        /*
+         * Listado simple de los usuarios Administradores
+         */
+        public static function getAdmins($availableonly = false) {
+
+            $list = array();
+
+            $sql = "
+                SELECT
+                    user.id as id,
+                    user.name as name
+                FROM    user
+                INNER JOIN user_role
+                    ON  user_role.user_id = user.id
+                    AND user_role.role_id = 'admin'
+                ";
+            
+            if ($availableonly) {
+                $sql .= " WHERE id NOT IN (SELECT distinct(user) FROM user_node)";
+            }
+
+            $sql .= " ORDER BY user.name ASC
+                ";
+
+            $query = static::query($sql);
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
                 $list[$item->id] = $item->name;

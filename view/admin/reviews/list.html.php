@@ -4,9 +4,6 @@ use Goteo\Library\Text;
 
 $filters = $this['filters'];
 
-//arrastramos los filtros
-$filter = "?status={$filters['status']}&checker={$filters['checker']}";
-
 ?>
 <div class="widget board">
 <form id="filter-form" action="/admin/reviews" method="get">
@@ -54,15 +51,15 @@ $filter = "?status={$filters['status']}&checker={$filters['checker']}";
                         <td><?php echo $project->progress; ?></td>
                         <td><?php echo $project->score . ' / ' . $project->max; ?></td>
                         <?php if (!empty($project->review)) : ?>
-                        <td><a href="/admin/reviews/edit/<?php echo $project->project; ?>/<?php echo $filter; ?>">[Editar]</a></td>
+                        <td><a href="/admin/reviews/edit/<?php echo $project->project; ?>">[Editar]</a></td>
                         <td><a href="/admin/reviews/report/<?php echo $project->project; ?>" target="_blank">[Ver informe]</a></td>
                             <?php if ( $project->status > 0 ) : ?>
-                        <td><a href="/admin/reviews/close/<?php echo $project->review; ?>/<?php echo $filter; ?>">[Cerrar]</a></td>
+                        <td><a href="/admin/reviews/close/<?php echo $project->review; ?>">[Cerrar]</a></td>
                             <?php else : ?>
                         <td>Revisión cerrada</td>
                             <?php endif; ?>
                         <?php else : ?>
-                        <td><a href="/admin/reviews/add/<?php echo $project->project; ?>/<?php echo $filter; ?>">[Iniciar revision]</a></td>
+                        <td><a href="/admin/reviews/add/<?php echo $project->project; ?>">[Iniciar revision]</a></td>
                         <td></td>
                         <?php endif; ?>
                         <td><?php if ($project->translate) : ?><a href="<?php echo "/admin/translates/edit/{$project->project}"; ?>">[Ir a traducción]</a>

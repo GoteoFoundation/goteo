@@ -5,38 +5,69 @@ use Goteo\Library\Text,
 $translator = ACL::check('/translate') ? true : false;
 ?>
 <a href="/admin/blog/add" class="button red">Nueva entrada</a>
+&nbsp;&nbsp;&nbsp;
+<a href="/admin/blog/reorder" class="button aqua">Ordenar la portada</a>
+<?php if (empty($_SESSION['admin_node'])) : ?>
+&nbsp;&nbsp;&nbsp;
+<a href="/admin/blog/footer" class="button aqua">Ordenar el footer</a>
+<?php endif; ?>
 
 <div class="widget board">
     <?php if (!empty($this['posts'])) : ?>
     <table>
         <thead>
             <tr>
-                <td><!-- Edit --></td>
-                <th>Título</th> <!-- title -->
+                <th>Autor</th>
+                <th colspan="3">Título</th> <!-- title -->
                 <th>Fecha</th> <!-- date -->
-                <th>Publicado</th>
-                <th>En portada</th>
-                <th>Al pie</th>
-                <th><!-- Traducir--></th>
-                <td><!-- Remove --></td>
-                <td></td><!-- preview -->
+                <th><!-- published --></th>
             </tr>
         </thead>
 
         <tbody>
             <?php foreach ($this['posts'] as $post) : ?>
             <tr>
-                <td><a href="/admin/blog/edit/<?php echo $post->id; ?>">[Editar]</a></td>
-                <td><?php echo $post->title; ?></td>
+                <td><?php echo $post->author->name; ?></td>
+                <td colspan="3"><?php
+                        $style = '';
+                        if (isset($this['homes'][$post->id]))
+                            $style .= ' font-weight:bold;';
+                        if (empty($_SESSION['admin_node']) || $_SESSION['admin_node'] == \GOTEO_NODE) {
+                            if (isset($this['footers'][$post->id]))
+                                $style .= ' font-style:italic;';
+                        }
+                            
+                      echo "<span style=\"{$style}\">{$post->title}</span>";
+                ?></td>
                 <td><?php echo $post->date; ?></td>
-                <td><?php echo $post->publish ? 'Sí' : ''; ?></td>
-                <td><?php echo $post->home ? 'Sí' : ''; ?></td>
-                <td><?php echo $post->footer ? 'Sí' : ''; ?></td>
-                <?php if ($translator) : ?>
-                <td><a href="/translate/post/edit/<?php echo $post->id; ?>" >[Traducir]</a></td>
-                <?php endif; ?>
-                <td><a href="/admin/blog/remove/<?php echo $post->id; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Quitar]</a></td>
-                <td><a href="/blog/<?php echo $post->id; ?>?preview=<?php echo $_SESSION['user']->id ?>" target="_blank">[Ver publicado]</a></td>
+                <td><?php if ($post->publish) echo '<strong style="color:#20b2b3;font-size:10px;">Publicada</sttrong>'; ?></td>
+            </tr>
+            <tr>
+                <td><a href="/blog/<?php echo $post->id; ?>?preview=<?php echo $_SESSION['user']->id ?>" target="_blank">[Ver publicada]</a></td>
+                <td><?php if (!empty($_SESSION['admin_node']) && $post->owner == 'node-'.$_SESSION['admin_node']) : ?>
+                    <a href="/admin/blog/edit/<?php echo $post->id; ?>">[Editar]</a>
+                <?php endif; ?></td>
+                <td><?php if ($post->publish) {
+                        if (isset($this['homes'][$post->id]))
+                            echo '<a href="/admin/blog/remove_home/'.$post->id.'" style="color:red;">[Quitar de portada]</a>';
+                        else
+                            echo '<a href="/admin/blog/add_home/'.$post->id.'" style="color:blue;">[Poner en portada]</a>';
+                } ?></td>
+                <td><?php if ($post->publish) {
+                    if (empty($_SESSION['admin_node']) || $_SESSION['admin_node'] == \GOTEO_NODE) {
+                        if (isset($this['footers'][$post->id]))
+                            echo '<a href="/admin/blog/remove_footer/'.$post->id.'" style="color:red;">[Quitar del footer]</a>';
+                        else
+                            echo '<a href="/admin/blog/add_footer/'.$post->id.'" style="color:blue;">[Poner en footer]</a>';
+                    }
+                } ?></td>
+                <td><?php if ($translator) : ?><a href="/translate/post/edit/<?php echo $post->id; ?>" >[Traducir]</a><?php endif; ?></td>
+                <td><?php if (!empty($_SESSION['admin_node']) && $post->owner == 'node-'.$_SESSION['admin_node']) : ?>
+                    <a href="/admin/blog/remove/<?php echo $post->id; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Eliminar]</a>
+                <?php endif; ?></td>
+            </tr>
+            <tr>
+                <td colspan="6"><hr /></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

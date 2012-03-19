@@ -8,14 +8,7 @@ require_once 'library/pagination/pagination.php';
 $filters = $this['filters'];
 $templates = $this['templates'];
 
-//arrastramos los filtros
-$filter = "?user={$filters['user']}&template={$filters['template']}";
-
-$sended = $this['sended'];
-
-$pagedResults = new \Paginated($sended, 20, isset($_GET['page']) ? $_GET['page'] : 1);
-
-
+$pagedResults = new \Paginated($this['sended'], 20, isset($_GET['page']) ? $_GET['page'] : 1);
 ?>
 <div class="widget board">
     <form id="filter-form" action="/admin/sended" method="get">
@@ -28,7 +21,7 @@ $pagedResults = new \Paginated($sended, 20, isset($_GET['page']) ? $_GET['page']
                 </td>
                 <td>
                     <label for="template-filter">Plantilla</label><br />
-                    <select id="template-filter" name="template" >
+                    <select id="template-filter" name="template" onchange="document.getElementById('filter-form').submit();" >
                         <option value="">Todas las plantillas</option>
                     <?php foreach ($templates as $templateId=>$templateName) : ?>
                         <option value="<?php echo $templateId; ?>"<?php if ($filters['template'] == $templateId) echo ' selected="selected"';?>><?php echo $templateName; ?></option>
@@ -43,8 +36,10 @@ $pagedResults = new \Paginated($sended, 20, isset($_GET['page']) ? $_GET['page']
     </form>
 </div>
 
-<?php if (!empty($sended)) : ?>
 <div class="widget board">
+<?php if ($filters['filtered'] != 'yes') : ?>
+    <p>Es necesario poner algun filtro, hay demasiados registros!</p>
+<?php elseif (!empty($this['sended'])) : ?>
     <table>
         <thead>
             <tr>

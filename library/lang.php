@@ -99,7 +99,7 @@ namespace Goteo\Library {
     */
             } elseif (empty($_SESSION['lang'])) {
                 // si no hay uno de session ponemos el default
-                $_SESSION['lang'] = \GOTEO_DEFAULT_LANG;
+                $_SESSION['lang'] = defined('NODE_DEFAULT_LANG') ? \NODE_DEFAULT_LANG : \GOTEO_DEFAULT_LANG;
             }
             // establecemos la constante
             define('LANG', $_SESSION['lang']);

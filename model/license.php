@@ -79,10 +79,16 @@ namespace Goteo\Model {
             }
 
             if (!empty($group)) {
-                // de un grupo o de todos
-                $sql .= "WHERE `group` = :group
-                    ";
-                $values[':group'] = $group;
+                if ($group == 'regular') {
+                    // sin grupo
+                    $sql .= "WHERE (`group` = '' OR `group` IS NULL)
+                        ";
+                } else {
+                    // de un grupo
+                    $sql .= "WHERE `group` = :group
+                        ";
+                    $values[':group'] = $group;
+                }
             }
 
             $sql .= "ORDER BY `order` ASC, name ASC
@@ -140,7 +146,7 @@ namespace Goteo\Model {
 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
+                $errors[] = "HA FALLADO!!! " . $e->getMessage();
                 return false;
             }
         }

@@ -1,8 +1,9 @@
-CREATE TABLE `goteo`.`campaign` (
+CREATE TABLE `campaign` (
 `id` SERIAL NOT NULL ,
-`name` TINYTEXT NOT NULL ,
-PRIMARY KEY ( `id` )
-) ENGINE = InnoDB;
-
--- alters
-ALTER TABLE `campaign` ADD `description` TEXT NULL ;
+`node` VARCHAR( 50 ) NOT NULL ,
+`call` VARCHAR( 50 ) NOT NULL ,
+`active` INT(1) NOT NULL DEFAULT '0' ,
+`order` SMALLINT UNSIGNED NOT NULL DEFAULT '1',
+ UNIQUE KEY `call_node` (`node`,`call`),
+  PRIMARY KEY `id` (`id`)
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Convocatorias en portada';

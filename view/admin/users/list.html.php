@@ -3,10 +3,6 @@
 use Goteo\Library\Text;
 
 $filters = $this['filters'];
-
-//arrastramos los filtros
-$filter = "?filtered={$filters['filtered']}&status={$filters['status']}&interest={$filters['interest']}&role={$filters['role']}&order={$filters['order']}";
-
 ?>
 <a href="/admin/users/add" class="button red">Crear usuario</a>
 
@@ -42,6 +38,15 @@ $filter = "?filtered={$filters['filtered']}&status={$filters['status']}&interest
                     <?php endforeach; ?>
                     </select>
                 </td>
+                <td><?php if (!isset($_SESSION['admin_node'])) : ?>
+                    <label for="node-filter">Mostrar usuarios del nodo:</label><br />
+                    <select id="node-filter" name="node" onchange="document.getElementById('filter-form').submit();">
+                        <option value="">Cualquier nodo</option>
+                    <?php foreach ($this['nodes'] as $nodeId=>$nodeName) : ?>
+                        <option value="<?php echo $nodeId; ?>"<?php if ($filters['node'] == $nodeId) echo ' selected="selected"';?>><?php echo $nodeName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                <?php endif; ?></td>
             </tr>
             <tr>
                 <td>
@@ -58,10 +63,9 @@ $filter = "?filtered={$filters['filtered']}&status={$filters['status']}&interest
                 </td>
             </tr>
             <tr>
-                <td colspan="3">
+                <td>
                     <input type="submit" name="filter" value="Buscar">
                 </td>
-                <td></td>
                 <td>
                     <label for="order-filter">Ver por:</label><br />
                     <select id="order-filter" name="order" onchange="document.getElementById('filter-form').submit();">
@@ -83,7 +87,6 @@ $filter = "?filtered={$filters['filtered']}&status={$filters['status']}&interest
     <table>
         <thead>
             <tr>
-                <th></th>
                 <th>Alias</th> <!-- view profile -->
                 <th>User</th>
                 <th>Email</th>
@@ -94,20 +97,17 @@ $filter = "?filtered={$filters['filtered']}&status={$filters['status']}&interest
                     <!-- Revisor -->
                     <!-- Traductor -->
                 </th>
-                <th></th>
-                <th></th>
             </tr>
         </thead>
 
         <tbody>
             <?php foreach ($this['users'] as $user) : ?>
             <tr>
-                <td><a href="/admin/users/manage/<?php echo $user->id; ?>">[Gestionar]</a></td>
                 <td><a href="/user/<?php echo $user->id; ?>" target="_blank" title="Preview"><?php echo substr($user->name, 0, 15); ?></a></td>
                 <td><strong><?php echo substr($user->id, 0, 15); ?></strong></td>
                 <td><a href="mailto:<?php echo $user->email; ?>"><?php echo $user->email; ?></a></td>
                 <td><?php echo $user->register_date; ?></td>
-                <td>
+                <td style="color:blue;">
                     <?php echo $user->active ? '' : ' Inactivo'; ?>
                     <?php echo $user->hide ? ' Oculto' : ''; ?>
                     <?php echo $user->checker ? ' Revisor' : ''; ?>
@@ -116,8 +116,20 @@ $filter = "?filtered={$filters['filtered']}&status={$filters['status']}&interest
                     <?php echo $user->admin ? ' Admin' : ''; ?>
                     <?php echo $user->vip ? ' VIP' : ''; ?>
                 </td>
-                <td><a href="/admin/users/edit/<?php echo $user->id; ?>">[Editar]</a></td>
-                <td><a href="/admin/users/impersonate/<?php echo $user->id; ?>">[Suplantar]</a></td>
+            </tr>
+            <?php if (!isset($_SESSION['admin_node']) || (isset($_SESSION['admin_node']) && $user->node == $_SESSION['admin_node'])) : ?>
+            <tr>
+                <td colspan="5">Acciones:
+                    <a href="/admin/users/manage/<?php echo $user->id; ?>">[Gestionar]</a>
+                    <a href="/admin/users/edit/<?php echo $user->id; ?>">[Editar]</a>
+                    <a href="/admin/sended/?user=<?php echo $user->email; ?>">[Historial]</a>
+                    <a href="/admin/users/move/<?php echo $user->id; ?>">[Mover]</a>
+                    <a href="/admin/users/impersonate/<?php echo $user->id; ?>">[Suplantar]</a>
+                </td>
+            </tr>
+            <?php endif; ?>
+            <tr>
+                <td colspan="5"><hr /></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

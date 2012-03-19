@@ -394,7 +394,7 @@ namespace Goteo\Controller {
             }
 
             $project = new Model\Project;
-            if ($project->create()) {
+            if ($project->create(NODE_ID)) {
                 $_SESSION['stepped'] = array();
                 
                 // permisos para editarlo y borrarlo

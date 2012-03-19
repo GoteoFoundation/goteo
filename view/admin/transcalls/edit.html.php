@@ -7,9 +7,6 @@ $call = $this['call'];
 
 $filters = $this['filters'];
 
-//arrastramos los filtros
-$filter = "?owner={$filters['owner']}&translator={$filters['translator']}";
-
 ?>
 <script type="text/javascript">
 function assign() {
@@ -34,11 +31,11 @@ function assign() {
             <?php foreach ($call->translators as $userId=>$userName) : ?>
             <tr>
                 <td><?php if ($userId == $call->owner) echo '(AUTOR) '; ?><?php echo $userName; ?></td>
-                <td><a href="/admin/transcalls/unassign/<?php echo $call->id; ?>/<?php echo $filter; ?>&user=<?php echo $userId; ?>">[Desasignar]</a></td>
+                <td><a href="/admin/transcalls/unassign/<?php echo $call->id; ?>/?user=<?php echo $userId; ?>">[Desasignar]</a></td>
             </tr>
             <?php endforeach; ?>
             <tr>
-                <form id="form-assign" action="/admin/transcalls/assign/<?php echo $call->id; ?>/<?php echo $filter; ?>" method="get">
+                <form id="form-assign" action="/admin/transcalls/assign/<?php echo $call->id; ?>" method="get">
                 <td colspan="2">
                     <select id="assign-user" name="user">
                         <option value="">Selecciona otro traductor</option>
@@ -58,7 +55,7 @@ function assign() {
         <a href="/admin/transcalls/send/<?php echo $call->id; ?>" class="button green" onclick="return confirm('Se va a enviar un email automaticamente, ok?')">Avisar al convocador</a>
         <hr />
 <?php elseif ($this['action'] == 'add') : ?>
-    <form method="post" action="/admin/transcalls/<?php echo $this['action']; ?>/<?php echo $call->id; ?>/?filter=<?php echo $this['filter']; ?>">
+    <form method="post" action="/admin/transcalls/<?php echo $this['action']; ?>/<?php echo $call->id; ?>">
 
         <table>
             <tr>

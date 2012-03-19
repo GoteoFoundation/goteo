@@ -19,12 +19,12 @@ namespace Goteo\Library {
             $content,
             $pendiente; // para si esta pendiente de traduccion
 
-        static public function get ($id, $lang = \LANG, $node = \GOTEO_NODE) {
+        static public function get ($id, $node = \GOTEO_NODE, $lang = \LANG) {
 
             // buscamos la página para este nodo en este idioma
 			$sql = "SELECT  page.id as id,
-                            IFNULL(page_lang.name, page.name) as name,
-                            IFNULL(page_lang.description, page.description) as description,
+                            IFNULL(page_lang.name, IFNULL(page_node.name, page.name)) as name,
+                            IFNULL(page_lang.description, IFNULL(page_node.description, page.description)) as description,
                             page.url as url,
                             IFNULL(page_node.lang, '$lang') as lang,
                             IFNULL(page_node.node, '$node') as node,
@@ -66,8 +66,8 @@ namespace Goteo\Library {
 
                 $sql = "SELECT
                             page.id as id,
-                            IFNULL(page_lang.name, page.name) as name,
-                            IFNULL(page_lang.description, page.description) as description,
+                            IFNULL(page_lang.name, IFNULL(page_node.name, page.name)) as name,
+                            IFNULL(page_lang.description, IFNULL(page_node.description, page.description)) as description,
                             IF(page_node.content IS NULL, 1, 0) as pendiente,
                             page.url as url
                         FROM page
@@ -79,6 +79,46 @@ namespace Goteo\Library {
                             AND page_node.lang = :lang
                             AND page_node.node = :node
                         ORDER BY pendiente DESC, name ASC
+                        ";
+
+                $query = Model::query($sql, $values);
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $page) {
+                    $pages[] = $page;
+                }
+                return $pages;
+            } catch (\PDOException $e) {
+                throw new Exception('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
+            }
+		}
+
+		/*
+		 *  Lista simple de páginas
+		 */
+		public static function getList($node = \GOTEO_NODE) {
+            $pages = array();
+
+            try {
+
+                if ($node != \GOTEO_NODE) {
+                    $sqlFilter = " WHERE page.id IN ('about', 'contact', 'press', 'service')";
+                } else {
+                    $sqlFilter = '';
+                }
+
+                $values = array(':lang' => 'es', ':node' => $node);
+
+                $sql = "SELECT
+                            page.id as id,
+                            IFNULL(page_node.name, page.name) as name,
+                            IFNULL(page_node.description, page.description) as description,
+                            page.url as url
+                        FROM page
+                        LEFT JOIN page_node
+                           ON  page_node.page = page.id
+                           AND page_node.lang = :lang
+                           AND page_node.node = :node
+                        $sqlFilter
+                        ORDER BY name ASC
                         ";
 
                 $query = Model::query($sql, $values);
@@ -110,6 +150,11 @@ namespace Goteo\Library {
                 $allok = false;
             }
 
+            if (empty($this->name)) {
+                $errors[] = 'Registro sin nombre';
+                $allok = false;
+            }
+
             return $allok;
         }
 
@@ -121,29 +166,18 @@ namespace Goteo\Library {
 
   			try {
                 $values = array(
-                    ':id' => $this->id,
-                    ':name' => $this->name,
-                    ':description' => $this->description
-                );
-
-				$sql = "UPDATE page
-                            SET name = :name,
-                                description = :description
-                            WHERE id = :id
-                        ";
-				Model::query($sql, $values);
-
-                $values = array(
                     ':page' => $this->id,
                     ':lang' => $this->lang,
                     ':node' => $this->node,
+                    ':name' => $this->name,
+                    ':description' => $this->description,
                     ':contenido' => $this->content
                 );
 
 				$sql = "REPLACE INTO page_node
-                            (page, node, lang, content)
+                            (page, node, lang, name, description, content)
                         VALUES
-                            (:page, :node, :lang, :contenido)
+                            (:page, :node, :lang, :name, :description, :contenido)
                         ";
 				if (Model::query($sql, $values)) {
                     return true;
@@ -164,19 +198,21 @@ namespace Goteo\Library {
          * @param <type> $errors
          * @return <type>
          */
-		public function update($id, $lang, $content, &$errors = array()) {
+		public function update($id, $lang, $node, $name, $description, $content, &$errors = array()) {
   			try {
                 $values = array(
                     ':page' => $id,
                     ':lang' => $lang,
-                    ':node' => \GOTEO_NODE,
+                    ':node' => $node,
+                    ':name' => $name,
+                    ':description' => $description,
                     ':contenido' => $content
                 );
 
 				$sql = "REPLACE INTO page_node
-                            (page, node, lang, content)
+                            (page, node, lang, name, description, content)
                         VALUES
-                            (:page, :node, :lang, :contenido)
+                            (:page, :node, :lang, :name, :description, :contenido)
                         ";
 				if (Model::query($sql, $values)) {
                     return true;

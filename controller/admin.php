@@ -6,18 +6,343 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Model,
-	    Goteo\Library\Text,
 		Goteo\Library\Feed,
 		Goteo\Library\Lang,
-        Goteo\Library\Paypal,
-        Goteo\Library\Tpv,
         Goteo\Library\Page,
         Goteo\Library\Mail,
         Goteo\Library\Template,
         Goteo\Library\Message,
+        Goteo\Library\Newsletter,
         Goteo\Library\Worth;
 
 	class Admin extends \Goteo\Core\Controller {
+
+            // Array de los gestores que existen
+            static public $options = array(
+                    'accounts' => array(
+                        'label' => 'Transacciones económicas',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'details' => array('label' => 'Detalles de la transacción', 'item' => true),
+                            'viewer' => array('label' => 'Viendo logs', 'item' => false)
+                        ),
+                        'filters' => array('methods'=>'', 'investStatus'=>'all', 'projects'=>'', 'status'=>'all','users'=>'', 'calls'=>'', 'review'=>'', 'date_from'=>'', 'date_until'=>'')
+                    ),
+                    'banners' => array(
+                        'label' => 'Banners',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add'  => array('label' => 'Nuevo Banner', 'item' => false),
+                            'edit' => array('label' => 'Editando Banner', 'item' => true),
+                            'translate' => array('label' => 'Traduciendo Banner', 'item' => true)
+                        )
+                    ),
+                    'blog' => array(
+                        'label' => 'Blog',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add'  => array('label' => 'Nueva Entrada', 'item' => false),
+                            'edit' => array('label' => 'Editando Entrada', 'item' => true),
+                            'translate' => array('label' => 'Traduciendo Entrada', 'item' => true),
+                            'reorder' => array('label' => 'Ordenando las entradas en Portada', 'item' => false)
+                        )
+                    ),
+                    'calls' => array(
+                        'label' => 'Listado de convocatorias',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add'  => array('label' => 'Nueva convocatoria', 'item' => false),
+                            'projects' => array('label' => 'Gestionando proyectos de la convocatoria', 'item' => true)
+                        ),
+                        'filters' => array('status'=>'', 'category'=>'', 'owner'=>'', 'name'=>'', 'order'=>'')
+                    ),
+                    'campaigns' => array(
+                        'label' => 'Campañas',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add'  => array('label' => 'Nueva campaña en portada', 'item' => false)
+                        )
+                    ),
+                    'categories' => array(
+                        'label' => 'Categorias e Intereses',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add'  => array('label' => 'Nueva Categoría', 'item' => false),
+                            'edit' => array('label' => 'Editando Categoría', 'item' => true),
+                            'translate' => array('label' => 'Traduciendo Categoría', 'item' => true)
+                        )
+                    ),
+                    'criteria' => array(
+                        'label' => 'Criterios de revisión',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add'  => array('label' => 'Nuevo Criterio', 'item' => false),
+                            'edit' => array('label' => 'Editando Criterio', 'item' => true),
+                            'translate' => array('label' => 'Traduciendo Criterio', 'item' => true)
+                        ),
+                        'filters' => array('section'=>'project')
+                    ),
+                    'faq' => array(
+                        'label' => 'FAQs',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add'  => array('label' => 'Nueva Pregunta', 'item' => false),
+                            'edit' => array('label' => 'Editando Pregunta', 'item' => true),
+                            'translate' => array('label' => 'Traduciendo Pregunta', 'item' => true)
+                        ),
+                        'filters' => array('section'=>'node')
+                    ),
+                    'feed' => array(
+                        'label' => 'Actividad reciente',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false)
+                        )
+                    ),
+                    'home' => array(
+                        'label' => 'Elementos en portada',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false)
+                        )
+                    ),
+                    'glossary' => array(
+                        'label' => 'Glosario',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'edit' => array('label' => 'Editando Término', 'item' => true),
+                            'translate' => array('label' => 'Traduciendo Término', 'item' => true)
+                        )
+                    ),
+                    'icons' => array(
+                        'label' => 'Tipos de Retorno',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'edit' => array('label' => 'Editando Tipo', 'item' => true),
+                            'translate' => array('label' => 'Traduciendo Tipo', 'item' => true)
+                        ),
+                        'filters' => array('group'=>'')
+                    ),
+                    'info' => array(
+                        'label' => 'Ideas about',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'edit' => array('label' => 'Editando Idea', 'item' => true),
+                            'translate' => array('label' => 'Traduciendo Idea', 'item' => true)
+                        )
+                    ),
+                    'invests' => array(
+                        'label' => 'Aportes a Proyectos',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add'  => array('label' => 'Aporte manual', 'item' => false),
+                            'move'  => array('label' => 'Reubicando el aporte', 'item' => true),
+                            'details' => array('label' => 'Detalles del aporte', 'item' => true),
+                            'execute' => array('label' => 'Ejecución del cargo ahora mismo', 'item' => true),
+                            'cancel' => array('label' => 'Cancelando aporte', 'item' => true),
+                            'report' => array('label' => 'Informe de proyecto', 'item' => true)
+                        ),
+                        'filters' => array('methods'=>'', 'status'=>'all', 'investStatus'=>'all', 'projects'=>'', 'users'=>'', 'calls'=>'', 'types'=>'')
+                    ),
+                    'licenses' => array(
+                        'label' => 'Licencias',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'edit' => array('label' => 'Editando Licencia', 'item' => true),
+                            'translate' => array('label' => 'Traduciendo Licencia', 'item' => true)
+                        ),
+                        'filters' => array('group'=>'', 'icon'=>'')
+                    ),
+                    'mailing' => array(
+                        'label' => 'Comunicaciones',
+                        'actions' => array(
+                            'list' => array('label' => 'Seleccionando destinatarios', 'item' => false),
+                            'edit' => array('label' => 'Escribiendo contenido', 'item' => false),
+                            'send' => array('label' => 'Comunicación enviada', 'item' => false)
+                        ),
+                        'filters' => array('project'=>'', 'type'=>'', 'status'=>'-1', 'method'=>'', 'interest'=>'', 'role'=>'', 'name'=>'', 'workshopper'=>'',
+                        )
+                    ),
+                    'news' => array(
+                        'label' => 'Micronoticias',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add'  => array('label' => 'Nueva Micronoticia', 'item' => false),
+                            'edit' => array('label' => 'Editando Micronoticia', 'item' => true),
+                            'translate' => array('label' => 'Traduciendo Micronoticia', 'item' => true)
+                        )
+                    ),
+                    'newsletter' => array(
+                        'label' => 'Boletín',
+                        'actions' => array(
+                            'list' => array('label' => 'Estado del envío automático', 'item' => false),
+                            'init' => array('label' => 'Iniciando un nuevo boletín', 'item' => false),
+                            'init' => array('label' => 'Viendo listado completo', 'item' => true)
+                        )
+                    ),
+                    'node' => array(
+                        'label' => 'Datos del Nodo',
+                        'actions' => array(
+                            'edit' => array('label' => 'Gestionando la informacion pública del Nodo', 'item' => true)
+                        )
+                    ),
+                    'nodes' => array(
+                        'label' => 'Gestión de Nodos',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add'  => array('label' => 'Nuevo Nodo', 'item' => false),
+                            'edit' => array('label' => 'Gestionando Nodo', 'item' => true),
+                            'admins' => array('label' => 'Asignando administradores de Nodo', 'item' => true)
+                        ),
+                        'filters' => array('status'=>'active', 'admin'=>'', 'name'=>'')
+                    ),
+                    'pages' => array(
+                        'label' => 'Páginas institucionales',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'edit' => array('label' => 'Editando Página', 'item' => true),
+                            'translate' => array('label' => 'Traduciendo Página', 'item' => true)
+                        )
+                    ),
+                    'patron' => array(
+                        'label' => 'Proyectos apadrinados',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add'  => array('label' => 'Nueva Recomendación', 'item' => false),
+                            'edit' => array('label' => 'Editando Recomendacion', 'item' => true)
+                        )
+                    ),
+                /*
+                 * Para poner entradas en portada y reordenar, se usa la misma gestion de blog
+                 *
+                    'posts' => array(
+                        'label' => 'Entradas de blog en Portada',
+                        'actions' => array(
+                            'list' => array('label' => 'Ordenando', 'item' => false),
+                            'add'  => array('label' => 'Colocando Entrada en la portada', 'item' => false)
+                        )
+                    ),
+                 *
+                 */
+                    'projects' => array(
+                        'label' => 'Listado de proyectos',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'dates' => array('label' => 'Cambiando las fechas del proyecto ', 'item' => true),
+                            'accounts' => array('label' => 'Gestionando las cuentas del proyecto ', 'item' => true),
+                            'move' => array('label' => 'Moviendo a otro Nodo el proyecto ', 'item' => true)
+                        ),
+                        'filters' => array('status'=>'-1', 'category'=>'', 'owner'=>'', 'name'=>'', 'node'=>\GOTEO_NODE, 'order'=>'')
+                    ),
+                    'promote' => array(
+                        'label' => 'Proyectos destacados',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add'  => array('label' => 'Nuevo Destacado', 'item' => false),
+                            'edit' => array('label' => 'Editando Destacado', 'item' => true),
+                            'translate' => array('label' => 'Traduciendo Destacado', 'item' => true)
+                        )
+                    ),
+                    'reviews' => array(
+                        'label' => 'Revisiones',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add'  => array('label' => 'Iniciando briefing', 'item' => false),
+                            'edit' => array('label' => 'Editando briefing', 'item' => true),
+                            'report' => array('label' => 'Informe', 'item' => true)
+                        ),
+                        'filters' => array('status'=>'', 'checker'=>'')
+                    ),
+                    'rewards' => array(
+                        'label' => 'Gestión de retornos colectivos cumplidos',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false)
+                        ),
+                        'filters' => array('status'=>'', 'icon'=>'')
+                    ),
+                    'sended' => array(
+                        'label' => 'Historial envios',
+                        'actions' => array(
+                            'list' => array('label' => 'Emails enviados', 'item' => false)
+                        ),
+                        'filters' => array('user'=>'', 'template'=>'')
+                    ),
+                    'sponsors' => array(
+                        'label' => 'Apoyos institucionales',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add'  => array('label' => 'Nuevo Patrocinador', 'item' => false),
+                            'edit' => array('label' => 'Editando Patrocinador', 'item' => true)
+                        )
+                    ),
+                    'tags' => array(
+                        'label' => 'Tags de blog',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add'  => array('label' => 'Nuevo Tag', 'item' => false),
+                            'edit' => array('label' => 'Editando Tag', 'item' => true),
+                            'translate' => array('label' => 'Traduciendo Tag', 'item' => true)
+                        )
+                    ),
+                    'templates' => array(
+                        'label' => 'Plantillas de email',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'edit' => array('label' => 'Editando Plantilla', 'item' => true),
+                            'translate' => array('label' => 'Traduciendo Plantilla', 'item' => true)
+                        )
+                    ),
+                    'texts' => array(
+                        'label' => 'Textos interficie',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'edit' => array('label' => 'Editando Original', 'item' => true),
+                            'translate' => array('label' => 'Traduciendo Texto', 'item' => true)
+                        ),
+                        'filters' => array('idfilter'=>'', 'group'=>'', 'text'=>'')
+                    ),
+                    'transcalls' => array(
+                        'label' => 'Traducciones de convocatorias',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add'  => array('label' => 'Habilitando traducción', 'item' => false),
+                            'edit' => array('label' => 'Asignando traducción', 'item' => true)
+                        ),
+                        'filters' => array('owner'=>'', 'translator'=>'')
+                    ),
+                    'translates' => array(
+                        'label' => 'Traducciones de proyectos',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add'  => array('label' => 'Habilitando traducción', 'item' => false),
+                            'edit' => array('label' => 'Asignando traducción', 'item' => true)
+                        ),
+                        'filters' => array('owner'=>'', 'translator'=>'')
+                    ),
+                    'users' => array(
+                        'label' => 'Listado de usuarios',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add' => array('label' => 'Creando Usuario', 'item' => true),
+                            'edit' => array('label' => 'Editando Usuario', 'item' => true),
+                            'manage' => array('label' => 'Gestionando Usuario', 'item' => true),
+                            'impersonate' => array('label' => 'Suplantando al Usuario', 'item' => true),
+                            'move' => array('label' => 'Moviendo a otro Nodo el usuario ', 'item' => true)
+                        ),
+                        'filters' => array('status'=>'active', 'interest'=>'', 'role'=>'', 'node'=>'', 'id'=>'', 'name'=>'', 'email'=>'', 'order'=>'')
+                    ),
+                    'wordcount' => array(
+                        'label' => 'Conteo de palabras',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false)
+                        )
+                    ),
+                    'worth' => array(
+                        'label' => 'Niveles de meritocracia',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'edit' => array('label' => 'Editando Nivel', 'item' => true)
+                        )
+                    )
+                );
 
         public function index () {
             return new View('view/admin/index.html.php', array('menu'=>self::menu()));
@@ -30,6 +355,9 @@ namespace Goteo\Controller {
             return new View('view/admin/index.html.php', array('menu'=>self::menu()));
         }
 
+        /*
+         * Info de Actividad reciente para los administradores
+         */
         public function feed () {
 
             $BC = self::menu(array(
@@ -42,7 +370,6 @@ namespace Goteo\Controller {
 
             return new View('view/admin/feed.html.php');
         }
-
 
         /*
          * Gestión de páginas institucionales
@@ -58,64 +385,12 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $errors = array();
-
-            switch ($action) {
-                case 'edit':
-                    // si estamos editando una página
-                    $page = Page::get($id);
-
-                    // si llega post, vamos a guardar los cambios
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                        $page->name = $_POST['name'];
-                        $page->description = $_POST['description'];
-                        $page->content = $_POST['content'];
-                        if ($page->save($errors)) {
-
-                            // Evento Feed
-                            $log = new Feed();
-                            $log->populate('modificacion de página institucional (admin)', '/admin/pages',
-                                \vsprintf("El admin %s ha %s la página institucional %s", array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', 'Modificado'),
-                                Feed::item('relevant', $page->name, $page->url)
-                            )));
-                            $log->doAdmin('admin');
-                            unset($log);
-
-                            throw new Redirection("/admin/pages");
-                        }
-                    }
-
-
-                    // sino, mostramos para editar
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'pages',
-                            'file' => 'edit',
-                            'page' => $page,
-                            'errors'=>$errors
-                        )
-                     );
-                    break;
-                case 'list':
-                    // si estamos en la lista de páginas
-                    $pages = Page::getAll();
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'pages',
-                            'file' => 'list',
-                            'pages' => $pages
-                        )
-                    );
-                    break;
-            }
-
+            return Admin\Pages::process($action, $id);
 		}
 
+        /*
+         * Gestion de textos dinámicos
+         */
 		public function texts ($action = 'list', $id = null) {
 
             $BC = self::menu(array(
@@ -130,164 +405,7 @@ namespace Goteo\Controller {
             // no cache para textos
             define('GOTEO_ADMIN_NOCACHE', true);
 
-            // comprobamos los filtros
-            $filters = array();
-            $fields = array('idfilter', 'group', 'text');
-            foreach ($fields as $field) {
-                if (isset($_GET[$field])) {
-                    $filters[$field] = $_GET[$field];
-                }
-            }
-
-            $filter = "?idfilter={$filters['idfilter']}&group={$filters['group']}&text={$filters['text']}";
-            
-            // valores de filtro
-            $idfilters = Text::filters();
-            $groups    = Text::groups();
-
-            // metemos el todos
-            \array_unshift($idfilters, 'Todos los textos');
-            \array_unshift($groups, 'Todas las agrupaciones');
-
- //@fixme temporal hasta pasar las agrupaciones a tabal o arreglar en el list.html.php
-            $data = Text::getAll($filters, 'original');
-            foreach ($data as $key=>$item) {
-                $data[$key]->group = $groups[$item->group];
-            }
-
-            switch ($action) {
-                case 'list':
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'texts',
-                            'file' => 'list',
-                            'data' => $data,
-                            'columns' => array(
-                                'edit' => '',
-                                'text' => 'Texto',
-                                'group' => 'Agrupación'
-                            ),
-                            'url' => '/admin/texts',
-                            'filters' => array(
-                                'idfilter' => array(
-                                        'label'   => 'Filtrar por tipo:',
-                                        'type'    => 'select',
-                                        'options' => $idfilters,
-                                        'value'   => $filters['idfilter']
-                                    ),
-                                'group' => array(
-                                        'label'   => 'Filtrar por agrupación:',
-                                        'type'    => 'select',
-                                        'options' => $groups,
-                                        'value'   => $filters['group']
-                                    ),
-                                'text' => array(
-                                        'label'   => 'Buscar texto:',
-                                        'type'    => 'input',
-                                        'options' => null,
-                                        'value'   => $filters['text']
-                                    )
-                            ),
-                            'errors' => $errors
-                        )
-                    );
-
-                    break;
-                /*
-                case 'add':
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'texts',
-                            'file' => 'edit',
-                            'data' => (object) array(),
-                            'form' => array(
-                                'action' => '/admin/texts/edit/'.$filter,
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => 'Aplicar'
-                                ),
-                                'fields' => array (
-                                    'newtext' => array(
-                                        'label' => 'Texto',
-                                        'name' => 'text',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="6"',
-                                        
-                                    )
-                                )
-
-                            )
-                        )
-                    );
-
-                    break;
-                 * 
-                 */
-                case 'edit':
-
-                    // gestionar post
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
-
-                        $errors = array();
-
-                        $id = $_POST['id'];
-                        $text = $_POST['text'];
-
-                        $data = array(
-                            'id' => $id,
-                            'text' => $_POST['text']
-                        );
-
-                        if (Text::update($data, $errors)) {
-                            throw new Redirection("/admin/texts/$filter");
-                        }
-                    } else {
-                        $text = Text::getPurpose($id);
-                    }
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'texts',
-                            'file' => 'edit',
-                            'data' => (object) array (
-                                'id' => $id,
-                                'text' => $text
-                            ),
-                            'form' => array(
-                                'action' => '/admin/texts/edit/'.$id.'/'.$filter,
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => 'Aplicar'
-                                ),
-                                'fields' => array (
-                                    'idtext' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden',
-                                        'properties' => '',
-
-                                    ),
-                                    'newtext' => array(
-                                        'label' => 'Texto',
-                                        'name' => 'text',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="6"',
-
-                                    )
-                                )
-
-                            ),
-                            'errors' => $errors
-                        )
-                    );
-
-                    break;
-                default:
-                    throw new Redirection("/admin");
-            }
+            return Admin\Texts::process($action, $id, self::setFilters(__FUNCTION__));
 		}
 
         /*
@@ -304,48 +422,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $errors = array();
-
-            switch ($action) {
-                case 'edit':
-                    // si estamos editando una plantilla
-                    $template = Template::get($id);
-
-                    // si llega post, vamos a guardar los cambios
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                        $template->title = $_POST['title'];
-                        $template->text  = $_POST['text'];
-                        if ($template->save($errors))
-                            throw new Redirection("/admin/templates");
-                    }
-
-
-                    // sino, mostramos para editar
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'templates',
-                            'file' => 'edit',
-                            'template' => $template,
-                            'errors'=>$errors
-                        )
-                     );
-                    break;
-                case 'list':
-                    // si estamos en la lista de páginas
-                    $templates = Template::getAll();
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'templates',
-                            'file' => 'list',
-                            'templates' => $templates
-                        )
-                    );
-                    break;
-            }
-
+            return Admin\Templates::process($action, $id);
 		}
 
         /*
@@ -364,213 +441,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $filters = array();
-            $fields = array('filtered', 'status', 'category', 'owner', 'name', 'order');
-            foreach ($fields as $field) {
-                if (isset($_GET[$field])) {
-                    $filters[$field] = $_GET[$field];
-                }
-            }
-
-            if (!isset($filters['status'])) $filters['status'] = -1;
-
-            $errors = array();
-
-
-            if ($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['id'])) {
-
-                if (isset($_POST['save-dates'])) {
-                    $fields = array(
-                        'created',
-                        'updated',
-                        'published',
-                        'success',
-                        'closed',
-                        'passed'
-                        );
-
-                    $set = '';
-                    $values = array(':id' => $_POST['id']);
-
-                    foreach ($fields as $field) {
-                        if ($set != '') $set .= ", ";
-                        $set .= "`$field` = :$field ";
-                        if (empty($_POST[$field]) || $_POST[$field] == '0000-00-00')
-                            $_POST[$field] = null;
-                        
-                        $values[":$field"] = $_POST[$field];
-                    }
-
-                    if ($set == '') {
-                        break;
-                    }
-
-                    try {
-                        $sql = "UPDATE project SET " . $set . " WHERE id = :id";
-                        if (Model\Project::query($sql, $values)) {
-                            $log_text = 'El admin %s ha <span class="red">tocado las fechas</span> del proyecto %s';
-                        } else {
-                            $log_text = 'Al admin %s le ha <span class="red">fallado al tocar las fechas</span> del proyecto %s';
-                        }
-                    } catch(\PDOException $e) {
-                        $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
-                    }
-                } elseif (isset($_POST['save-accounts'])) {
-
-                    $accounts = Model\Project\Account::get($_POST['id']);
-                    $accounts->bank = $_POST['bank'];
-                    $accounts->paypal = $_POST['paypal'];
-                    if ($accounts->save($errors)) {
-                        $errors[] = 'Se han actualizado las cuentas del proyecto '.$_POST['id'];
-                    }
-
-                }
-                
-            }
-
-            /*
-             * switch action,
-             * proceso que sea,
-             * redirect
-             *
-             */
-            if (isset($id)) {
-                $project = Model\Project::get($id);
-            }
-            switch ($action) {
-                case 'review':
-                    // pasar un proyecto a revision
-                    if ($project->ready($errors)) {
-                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Revisión</span>';
-                    } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Revisión</span>';
-                    }
-                    break;
-                case 'publish':
-                    // poner un proyecto en campaña
-                    if ($project->publish($errors)) {
-                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">en Campaña</span>';
-                    } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">en Campaña</span>';
-                    }
-                    break;
-                case 'cancel':
-                    // descartar un proyecto por malo
-                    if ($project->cancel($errors)) {
-                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Descartado</span>';
-                    } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Descartado</span>';
-                    }
-                    break;
-                case 'enable':
-                    // si no está en edición, recuperarlo
-                    if ($project->enable($errors)) {
-                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Edición</span>';
-                    } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Edición</span>';
-                    }
-                    break;
-                case 'complete':
-                    // dar un proyecto por financiado manualmente
-                    if ($project->succeed($errors)) {
-                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Financiado</span>';
-                    } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Financiado</span>';
-                    }
-                    break;
-                case 'fulfill':
-                    // marcar que el proyecto ha cumplido con los retornos colectivos
-                    if ($project->satisfied($errors)) {
-                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Retorno cumplido</span>';
-                    } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Retorno cumplido</span>';
-                    }
-                    break;
-            }
-
-            if (isset($log_text)) {
-                // Evento Feed
-                $log = new Feed();
-                $log->populate('Cambio estado/fechas de un proyecto desde el admin', '/admin/projects',
-                    \vsprintf($log_text, array(
-                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                    Feed::item('project', $project->name, $project->id)
-                )));
-                $log->doAdmin('admin');
-
-                Message::Info($log->html);
-
-                if ($action == 'publish') {
-                    // si es publicado, hay un evento público
-                    $log->populate($project->name, '/project/'.$project->id, Text::html('feed-new_project'), $project->gallery[0]->id);
-                    $log->setTarget($project->id);
-                    $log->doPublic('projects');
-                }
-
-                unset($log);
-
-                throw new Redirection('/admin/projects/list');
-            }
-
-            if ($action == 'dates') {
-                // cambiar fechas
-                return new View(
-                    'view/admin/index.html.php',
-                    array(
-                        'folder' => 'projects',
-                        'file' => 'dates',
-                        'project' => $project,
-                        'filters' => $filters,
-                        'errors' => $errors
-                    )
-                );
-            }
-
-            if ($action == 'accounts') {
-
-                $accounts = Model\Project\Account::get($project->id);
-
-                // cambiar fechas
-                return new View(
-                    'view/admin/index.html.php',
-                    array(
-                        'folder' => 'projects',
-                        'file' => 'accounts',
-                        'project' => $project,
-                        'accounts' => $accounts,
-                        'filters' => $filters,
-                        'errors' => $errors
-                    )
-                );
-            }
-
-            if (!empty($filters['filtered'])) {
-                $projects = Model\Project::getList($filters);
-            } else {
-                $projects = array();
-            }
-            $status = Model\Project::status();
-            $categories = Model\Project\Category::getAll();
-            $owners = Model\User::getOwners();
-            $orders = array(
-                'name' => 'Nombre',
-                'updated' => 'Enviado a revision'
-            );
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'projects',
-                    'file' => 'list',
-                    'projects' => $projects,
-                    'filters' => $filters,
-                    'status' => $status,
-                    'categories' => $categories,
-                    'owners' => $owners,
-                    'orders' => $orders,
-                    'errors' => $errors
-                )
-            );
+            return Admin\Projects::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
         /*
@@ -587,217 +458,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $filters = array();
-            $fields = array('status', 'checker');
-            foreach ($fields as $field) {
-                if (isset($_GET[$field])) {
-                    $filters[$field] = $_GET[$field];
-                }
-            }
-
-            $filter = "?status={$filters['status']}&checker={$filters['checker']}";
-
-            $success = array();
-            $errors  = array();
-
-            switch ($action) {
-                case 'add':
-                case 'edit':
-
-                    // el get se hace con el id del proyecto
-                    $review = Model\Review::get($id);
-
-                    $project = Model\Project::getMini($review->project);
-
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
-
-                        // instancia
-                        $review->id         = $_POST['id'];
-                        $review->project    = $_POST['project'];
-                        $review->to_checker = $_POST['to_checker'];
-                        $review->to_owner   = $_POST['to_owner'];
-
-                        if ($review->save($errors)) {
-                            switch ($action) {
-                                case 'add':
-                                    $success[] = 'Revisión iniciada correctamente';
-
-                                    // Evento Feed
-                                    $log = new Feed();
-                                    $log->populate('valoración iniciada (admin)', '/admin/reviews',
-                                        \vsprintf('El admin %s ha %s la valoración de %s', array(
-                                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                            Feed::item('relevant', 'Iniciado'),
-                                            Feed::item('project', $project->name, $project->id)
-                                    )));
-                                    $log->doAdmin('admin');
-                                    unset($log);
-
-                                    break;
-                                case 'edit':
-                                    $success[] = 'Datos editados correctamente';
-                                    break;
-                            }
-                            
-                            throw new Redirection('/admin/reviews/' . $filter);
-                        }
-                    }
-                    
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'reviews',
-                            'file'   => 'edit',
-                            'action' => $action,
-                            'review' => $review,
-                            'project'=> $project,
-                            'success'=> $success,
-                            'errors' => $errors
-                        )
-                    );
-
-                    break;
-                case 'close':
-                    // el get se hace con el id del proyecto
-                    $review = Model\Review::getData($id);
-
-                    // marcamos la revision como completamente cerrada
-                    if (Model\Review::close($id, $errors)) {
-                        $message = 'La revisión se ha cerrado';
-
-                        // Evento Feed
-                        $log = new Feed();
-                        $log->populate('valoración finalizada (admin)', '/admin/reviews',
-                            \vsprintf('El admin %s ha dado por %s la valoración de %s', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', 'Finalizada'),
-                                Feed::item('project', $review->name, $review->project)
-                        )));
-                        $log->doAdmin('admin');
-                        unset($log);
-
-                    }
-                    break;
-                case 'unready':
-                    // se la reabrimos para que pueda seguir editando
-                    // la id de revision llega en $id
-                    // la id del usuario llega por get
-                    $user = $_GET['user'];
-                    if (!empty($user)) {
-                        $user_rev = new Model\User\Review(array(
-                            'id' => $id,
-                            'user' => $user
-                        ));
-                        $user_rev->unready($errors);
-                    }
-                    break;
-                case 'assign':
-                    // asignamos la revision a este usuario
-                    // la id de revision llega en $id
-                    // la id del usuario llega por get
-                    $user = $_GET['user'];
-                    if (!empty($user)) {
-                        $assignation = new Model\User\Review(array(
-                            'id' => $id,
-                            'user' => $user
-                        ));
-                        if ($assignation->save($errors)) {
-
-                            $userData = Model\User::getMini($user);
-                            $reviewData = Model\Review::getData($id);
-
-                            // Evento Feed
-                            $log = new Feed();
-                            $log->populate('asignar revision (admin)', '/admin/reviews',
-                                \vsprintf('El admin %s ha %s a %s la revisión de %s', array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                    Feed::item('relevant', 'Asignado'),
-                                    Feed::item('user', $userData->name, $userData->id),
-                                    Feed::item('project', $reviewData->name, $reviewData->project)
-                            )));
-                            $log->setTarget($userData->id, 'user');
-                            $log->doAdmin('admin');
-                            unset($log);
-
-                        }
-                    }
-                    break;
-                case 'unassign':
-                    // se la quitamos a este revisor
-                    // la id de revision llega en $id
-                    // la id del usuario llega por get
-                    $user = $_GET['user'];
-                    if (!empty($user)) {
-                        $assignation = new Model\User\Review(array(
-                            'id' => $id,
-                            'user' => $user
-                        ));
-                        if ($assignation->remove($errors)) {
-
-                            $userData = Model\User::getMini($user);
-                            $reviewData = Model\Review::getData($id);
-
-                            // Evento Feed
-                            $log = new Feed();
-                            $log->populate('Desasignar revision (admin)', '/admin/reviews',
-                                \vsprintf('El admin %s ha %s a %s la revisión de %s', array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                    Feed::item('relevant', 'Desasignado'),
-                                    Feed::item('user', $userData->name, $userData->id),
-                                    Feed::item('project', $reviewData->name, $reviewData->project)
-                            )));
-                            $log->setTarget($userData->id, 'user');
-                            $log->doAdmin('admin');
-                            unset($log);
-
-                        }
-                    }
-                    break;
-                case 'report':
-                    // mostramos los detalles de revision
-                    // ojo que este id es la id del proyecto, no de la revision
-                    $review = Model\Review::get($id);
-                    $review = Model\Review::getData($review->id);
-
-                    $evaluation = array();
-
-                    foreach ($review->checkers as $user=>$user_data) {
-                        $evaluation[$user] = Model\Review::getEvaluation($review->id, $user);
-                    }
-
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'reviews',
-                            'file' => 'report',
-                            'review'     => $review,
-                            'evaluation' => $evaluation
-                        )
-                    );
-                    break;
-            }
-
-            $projects = Model\Review::getList($filters);
-            $status = array(
-                'open' => 'Abiertas',
-                'closed' => 'Cerradas'
-            );
-            $checkers = Model\User::getAll(array('role'=>'checker'));
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'reviews',
-                    'file' => 'list',
-                    'message' => $message,
-                    'projects' => $projects,
-                    'filters' => $filters,
-                    'status' => $status,
-                    'checkers' => $checkers,
-                    'errors' => $errors
-                )
-            );
+            return Admin\Reviews::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
         /*
@@ -814,207 +475,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $filters = array();
-            $fields = array('owner', 'translator');
-            foreach ($fields as $field) {
-                if (isset($_GET[$field])) {
-                    $filters[$field] = $_GET[$field];
-                }
-            }
-
-            $filter = "?owner={$filters['owner']}&translator={$filters['translator']}";
-
-            $success = array();
-            $errors  = array();
-
-            switch ($action) {
-                case 'add':
-                    // proyectos que están más allá de edición y con traducción deshabilitada
-                    $availables = Model\User\Translate::getAvailables();
-                case 'edit':
-                case 'assign':
-                case 'unassign':
-                case 'send':
-
-                    // a ver si tenemos proyecto
-                    if (empty($id) && !empty($_POST['project'])) {
-                        $id = $_POST['project'];
-                    }
-
-                    if (!empty($id)) {
-                        $project = Model\Project::getMini($id);
-                    } elseif ($action != 'add') {
-                        Message::Error('No hay proyecto sobre el que operar');
-                        throw new Redirection('/admin/translates');
-                    }
-
-                    // asignar o desasignar
-                    // la id de revision llega en $id
-                    // la id del usuario llega por get
-                    $user = $_GET['user'];
-                    if (!empty($user)) {
-                        $userData = Model\User::getMini($user);
-
-                        $assignation = new Model\User\Translate(array(
-                            'item' => $project->id,
-                            'type' => 'project',
-                            'user' => $user
-                        ));
-
-                        switch ($action) {
-                            case 'assign': // se la ponemos
-                                $assignation->save($errors);
-                                $what = 'Asignado';
-                                break;
-                            case 'unassign': // se la quitamos
-                                $assignation->remove($errors);
-                                $what = 'Desasignado';
-                                break;
-                        }
-
-                        if (empty($errors)) {
-                            // Evento Feed
-                            $log = new Feed();
-                            $log->populate($what . ' traduccion (admin)', '/admin/translates',
-                                \vsprintf('El admin %s ha %s a %s la traducción del proyecto %s', array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                    Feed::item('relevant', $what),
-                                    Feed::item('user', $userData->name, $userData->id),
-                                    Feed::item('project', $project->name, $project->id)
-                            )));
-                            $log->setTarget($userData->id, 'user');
-                            $log->doAdmin('admin');
-                            unset($log);
-                        }
-
-                        $action = 'edit';
-                    }
-                    // fin asignar o desasignar
-
-                    // añadir o actualizar
-                    // se guarda el idioma original y si la traducción está abierta o cerrada
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
-
-                        echo \trace($_POST);
-
-                        // ponemos los datos que llegan
-                        $sql = "UPDATE project SET lang = :lang, translate = 1 WHERE id = :id";
-                        if (Model\Project::query($sql, array(':lang'=>$_POST['lang'], ':id'=>$id))) {
-                            $success[] = ($action == 'add') ? 'El proyecto '.$project->name.' se ha habilitado para traducir' : 'Datos de traducción actualizados';
-
-                            if ($action == 'add') {
-                                // Evento Feed
-                                $log = new Feed();
-                                $log->populate('proyecto habilitado para traducirse (admin)', '/admin/translates',
-                                    \vsprintf('El admin %s ha %s la traducción del proyecto %s', array(
-                                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                        Feed::item('relevant', 'Habilitado'),
-                                        Feed::item('project', $project->name, $project->id)
-                                )));
-                                $log->doAdmin('admin');
-                                unset($log);
-
-                                $action = 'edit';
-                            }
-                        } else {
-                            $errors[] = 'Ha fallado al habilitar la traducción del proyecto ' . $project->name;
-                        }
-                    }
-
-                    if ($action == 'send') {
-                        // Informar al autor de que la traduccion está habilitada
-                        // Obtenemos la plantilla para asunto y contenido
-                        $template = Template::get(26);
-                        // Sustituimos los datos
-                        $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
-                        $search  = array('%OWNERNAME%', '%PROJECTNAME%', '%SITEURL%');
-                        $replace = array($project->user->name, $project->name, SITE_URL);
-                        $content = \str_replace($search, $replace, $template->text);
-                        // iniciamos mail
-                        $mailHandler = new Mail();
-                        $mailHandler->to = $project->user->email;
-                        $mailHandler->toName = $project->user->name;
-                        // blind copy a goteo desactivado durante las verificaciones
-            //              $mailHandler->bcc = 'comunicaciones@goteo.org';
-                        $mailHandler->subject = $subject;
-                        $mailHandler->content = $content;
-                        $mailHandler->html = true;
-                        $mailHandler->template = $template->id;
-                        if ($mailHandler->send()) {
-                            $success[] = 'Se ha enviado un email a <strong>'.$project->user->name.'</strong> a la dirección <strong>'.$project->user->email.'</strong>';
-                        } else {
-                            $errors[] = 'Ha fallado informar a <strong>'.$project->user->name.'</strong> de la posibilidad de traducción de su proyecto';
-                        }
-                        unset($mailHandler);
-                        $action = 'edit';
-                    }
-
-
-                    $project->translators = Model\User\Translate::translators($id);
-                    $translators = Model\User::getAll(array('role'=>'translator'));
-                    // añadimos al dueño del proyecto en el array de traductores
-                    array_unshift($translators, $project->user);
-
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'translates',
-                            'file'   => 'edit',
-                            'action' => $action,
-                            'filters' => $filters,
-                            'availables' => $availables,
-                            'translators' => $translators,
-                            'project'=> $project,
-                            'success' => $success,
-                            'errors' => $errors
-                        )
-                    );
-
-                    break;
-                case 'close':
-                    // la sentencia aqui mismo
-                    // el campo translate del proyecto $id a false
-                    $sql = "UPDATE project SET translate = 0 WHERE id = :id";
-                    if (Model\Project::query($sql, array(':id'=>$id))) {
-                        $success[] = 'La traducción del proyecto '.$project->name.' se ha finalizado';
-
-                        Model\Project::query("DELETE FROM user_translate WHERE type = 'project' AND item = :id", array(':id'=>$id));
-
-                        // Evento Feed
-                        $log = new Feed();
-                        $log->populate('traducción finalizada (admin)', '/admin/translates',
-                            \vsprintf('El admin %s ha dado por %s la traducción del proyecto %s', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', 'Finalizada'),
-                                Feed::item('project', $project->name, $project->id)
-                        )));
-                        $log->doAdmin('admin');
-                        unset($log);
-
-                    } else {
-                        $errors[] = 'Falló al finalizar la traducción';
-                    }
-                    break;
-            }
-
-            $projects = Model\Project::getTranslates($filters);
-            $owners = Model\User::getOwners();
-            $translators = Model\User::getAll(array('role'=>'translator'));
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'translates',
-                    'file' => 'list',
-                    'projects' => $projects,
-                    'filters' => $filters,
-                    'owners' => $owners,
-                    'translators' => $translators,
-                    'success' => $success,
-                    'errors' => $errors
-                )
-            );
+            return Admin\Translates::process($action, $id);
         }
 
         /*
@@ -1031,208 +492,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $filters = array();
-            $fields = array('owner', 'translator');
-            foreach ($fields as $field) {
-                if (isset($_GET[$field])) {
-                    $filters[$field] = $_GET[$field];
-                }
-            }
-
-            $filter = "?owner={$filters['owner']}&translator={$filters['translator']}";
-
-            $success = array();
-            $errors  = array();
-
-            switch ($action) {
-                case 'add':
-                    // convocatorias que están más allá de edición y con traducción deshabilitada
-                    $availables = Model\User\Translate::getAvailables('call');
-                case 'edit':
-                case 'assign':
-                case 'unassign':
-                case 'send':
-
-                    // a ver si tenemos convocatoria
-                    if (empty($id) && !empty($_POST['call'])) {
-                        $id = $_POST['call'];
-                    }
-
-                    if (!empty($id)) {
-                        $call = Model\Call::getMini($id);
-                    } elseif ($action != 'add') {
-                        Message::Error('No hay convocatoria sobre la que operar');
-                        throw new Redirection('/admin/transcalls');
-                    }
-
-                    // asignar o desasignar
-                    // la id de revision llega en $id
-                    // la id del usuario llega por get
-                    $user = $_GET['user'];
-                    if (!empty($user)) {
-                        $userData = Model\User::getMini($user);
-
-                        $assignation = new Model\User\Translate(array(
-                            'item' => $call->id,
-                            'type' => 'call',
-                            'user' => $user
-                        ));
-
-                        switch ($action) {
-                            case 'assign': // se la ponemos
-                                $assignation->save($errors);
-                                $what = 'Asignado';
-                                break;
-                            case 'unassign': // se la quitamos
-                                $assignation->remove($errors);
-                                $what = 'Desasignado';
-                                break;
-                        }
-
-                        if (empty($errors)) {
-                            // Evento Feed
-                            $log = new Feed();
-                            $log->populate($what . ' traduccion de convocatoria (admin)', '/admin/transcalls',
-                                \vsprintf('El admin %s ha %s a %s la traducción de la convocatoria %s', array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                    Feed::item('relevant', $what),
-                                    Feed::item('user', $userData->name, $userData->id),
-                                    Feed::item('call', $call->name, $call->id)
-                            )));
-                            $log->setTarget($userData->id, 'user');
-                            $log->doAdmin('admin');
-                            unset($log);
-                        }
-
-                        $action = 'edit';
-                    }
-                    // fin asignar o desasignar
-
-                    // añadir o actualizar
-                    // se guarda el idioma original y si la traducción está abierta o cerrada
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
-
-                        echo \trace($_POST);
-
-                        // ponemos los datos que llegan
-                        $sql = "UPDATE `call` SET lang = :lang, translate = 1 WHERE id = :id";
-                        if (Model\Project::query($sql, array(':lang'=>$_POST['lang'], ':id'=>$id))) {
-                            $success[] = ($action == 'add') ? 'La convocatoria '.$call->name.' se ha habilitado para traducir' : 'Datos de traducción actualizados';
-
-                            if ($action == 'add') {
-                                
-                                // Evento Feed
-                                $log = new Feed();
-                                $log->populate('convocatoria habilitada para traducirse (admin)', '/admin/transcalls',
-                                    \vsprintf('El admin %s ha %s la traducción de la convocatoria %s', array(
-                                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                        Feed::item('relevant', 'Habilitado'),
-                                        Feed::item('call', $call->name, $call->id)
-                                )));
-                                $log->doAdmin('admin');
-                                unset($log);
-
-                                $action = 'edit';
-                            }
-                        } else {
-                            $errors[] = 'Ha fallado al habilitar la traducción de la convocatoria ' . $call->name;
-                        }
-                    }
-
-                    if ($action == 'send') {
-                        // Informar al autor de que la traduccion está habilitada
-                        // Obtenemos la plantilla para asunto y contenido
-
-                        $template = Template::get(32);
-                        // Sustituimos los datos
-                        $subject = str_replace('%CALLNAME%', $call->name, $template->title);
-                        $search  = array('%OWNERNAME%', '%CALLNAME%', '%SITEURL%');
-                        $replace = array($call->user->name, $call->name, SITE_URL);
-                        $content = \str_replace($search, $replace, $template->text);
-                        // iniciamos mail
-                        $mailHandler = new Mail();
-                        $mailHandler->to = $call->user->email;
-                        $mailHandler->toName = $call->user->name;
-                        $mailHandler->subject = $subject;
-                        $mailHandler->content = $content;
-                        $mailHandler->html = true;
-                        $mailHandler->template = $template->id;
-                        if ($mailHandler->send()) {
-                            $success[] = 'Se ha enviado un email a <strong>'.$call->user->name.'</strong> a la dirección <strong>'.$project->user->email.'</strong>';
-                        } else {
-                            $errors[] = 'Ha fallado informar a <strong>'.$call->user->name.'</strong> de la posibilidad de traducción de su convocatoria';
-                        }
-                        unset($mailHandler);
-
-                        $action = 'edit';
-                    }
-
-
-                    $call->translators = Model\User\Translate::translators($id, 'call');
-                    $translators = Model\User::getAll(array('role'=>'translator'));
-                    // añadimos al dueño del proyecto en el array de traductores
-                    array_unshift($translators, $call->user);
-
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'transcalls',
-                            'file'   => 'edit',
-                            'action' => $action,
-                            'filters' => $filters,
-                            'availables' => $availables,
-                            'translators' => $translators,
-                            'call'=> $call,
-                            'success' => $success,
-                            'errors' => $errors
-                        )
-                    );
-
-                    break;
-                case 'close':
-                    // la sentencia aqui mismo
-                    // el campo translate de la convocatoria $id a false
-                    $sql = "UPDATE `call` SET translate = 0 WHERE id = :id";
-                    if (Model\Call::query($sql, array(':id'=>$id))) {
-                        $success[] = 'La traducción de la convocatoria '.$call->name.' se ha finalizado';
-
-                        Model\Call::query("DELETE FROM user_translate WHERE type = 'call' AND item = :id", array(':id'=>$id));
-
-                        // Evento Feed
-                        $log = new Feed();
-                        $log->populate('traducción convocatoria finalizada (admin)', '/admin/transcalls',
-                            \vsprintf('El admin %s ha dado por %s la traducción de la convocatoria %s', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', 'Finalizada'),
-                                Feed::item('call', $call->name, $call->id)
-                        )));
-                        $log->doAdmin('admin');
-                        unset($log);
-
-                    } else {
-                        $errors[] = 'Falló al finalizar la traducción de la convocatoria ' . $call->name;
-                    }
-                    break;
-            }
-
-            $calls = Model\Call::getTranslates($filters);
-            $owners = Model\User::getCallers();
-            $translators = Model\User::getAll(array('role'=>'translator'));
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'transcalls',
-                    'file' => 'list',
-                    'calls' => $calls,
-                    'filters' => $filters,
-                    'owners' => $owners,
-                    'translators' => $translators,
-                    'success' => $success,
-                    'errors' => $errors
-                )
-            );
+            return Admin\Transcalls::process($action, $id);
         }
 
         /*
@@ -1249,161 +509,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $errors = array();
-
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-                // objeto
-                $promo = new Model\Promote(array(
-                    'id' => $id,
-                    'node' => \GOTEO_NODE,
-                    'project' => $_POST['project'],
-                    'title' => $_POST['title'],
-                    'description' => $_POST['description'],
-                    'order' => $_POST['order'],
-                    'active' => $_POST['active']
-                ));
-
-				if ($promo->save($errors)) {
-                    switch ($_POST['action']) {
-                        case 'add':
-                            $success[] = 'Proyecto destacado correctamente';
-
-                            $projectData = Model\Project::getMini($_POST['project']);
-
-                            // Evento Feed
-                            $log = new Feed();
-                            $log->populate('nuevo proyecto destacado en portada (admin)', '/admin/promote',
-                                \vsprintf('El admin %s ha %s el proyecto %s', array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                    Feed::item('relevant', 'Destacado en portada', '/'),
-                                    Feed::item('project', $projectData->name, $projectData->id)
-                            )));
-                            $log->doAdmin('admin');
-                            unset($log);
-
-                            break;
-                        case 'edit':
-                            $success[] = 'Destacado actualizado correctamente';
-                            break;
-                    }
-				}
-				else {
-                    switch ($_POST['action']) {
-                        case 'add':
-                            return new View(
-                                'view/admin/index.html.php',
-                                array(
-                                    'folder' => 'promote',
-                                    'file' => 'edit',
-                                    'action' => 'add',
-                                    'promo' => $promo,
-                                    'status' => $status,
-                                    'errors' => $errors
-                                )
-                            );
-                            break;
-                        case 'edit':
-                            return new View(
-                                'view/admin/index.html.php',
-                                array(
-                                    'folder' => 'promote',
-                                    'file' => 'edit',
-                                    'action' => 'edit',
-                                    'promo' => $promo,
-                                    'errors' => $errors
-                                )
-                            );
-                            break;
-                    }
-				}
-			}
-
-            switch ($action) {
-                case 'active':
-                    $set = $flag == 'on' ? true : false;
-                    Model\Promote::setActive($id, $set);
-                    
-                    // Evento Feed
-                    $log = new Feed();
-                    $log_action = $set ? 'Mostrado en la portada' : 'Ocultado de la portada';
-                    $log->populate('proyecto destacado mostrado/ocultado (admin)', '/admin/promote',
-                        \vsprintf('El admin %s ha %s el proyecto %s', array(
-                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                        Feed::item('relevant', $log_action),
-                        Feed::item('project', $projectData->name, $projectData->id)
-                    )));
-                    $log->doAdmin('admin');
-                    unset($log);
-
-                    break;
-                case 'up':
-                    Model\Promote::up($id);
-                    break;
-                case 'down':
-                    Model\Promote::down($id);
-                    break;
-                case 'remove':
-                    if (Model\Promote::delete($id)) {
-                        $projectData = Model\Project::getMini($id);
-
-                        // Evento Feed
-                        $log = new Feed();
-                        $log->populate('proyecto quitado portada (admin)', '/admin/promote',
-                            \vsprintf('El admin %s ha %s el proyecto %s', array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('relevant', 'Quitado de la portada'),
-                            Feed::item('project', $projectData->name, $projectData->id)
-                        )));
-                        $log->doAdmin('admin');
-                        unset($log);
-
-                        $success[] = 'Proyecto quitado correctamente';
-                    }
-                    break;
-                case 'add':
-                    // siguiente orden
-                    $next = Model\Promote::next();
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'promote',
-                            'file' => 'edit',
-                            'action' => 'add',
-                            'promo' => (object) array('order' => $next),
-                            'status' => $status
-                        )
-                    );
-                    break;
-                case 'edit':
-                    $promo = Model\Promote::get($id);
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'promote',
-                            'file' => 'edit',
-                            'action' => 'edit',
-                            'promo' => $promo
-                        )
-                    );
-                    break;
-            }
-
-
-            $promoted = Model\Promote::getAll();
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'promote',
-                    'file' => 'list',
-                    'promoted' => $promoted,
-                    'errors' => $errors,
-                    'success' => $success
-                )
-            );
+            return Admin\Promote::process($action, $id, $flag);
         }
 
         /*
@@ -1420,144 +526,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $errors = array();
-
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-                // objeto
-                $promo = new Model\Patron(array(
-                    'id' => $id,
-                    'node' => \GOTEO_NODE,
-                    'project' => $_POST['project'],
-                    'user' => $_POST['user'],
-                    'link' => $_POST['link'],
-                    'order' => $_POST['order']
-                ));
-
-				if ($promo->save($errors)) {
-                    switch ($_POST['action']) {
-                        case 'add':
-                            $success[] = 'Proyecto apadrinado correctamente';
-
-                            $projectData = Model\Project::getMini($_POST['project']);
-                            $userData = Model\User::getMini($_POST['user']);
-
-                            // Evento Feed
-                            $log = new Feed();
-                            $log->populate('nuevo proyecto apadrinado (admin)', '/admin/patron',
-                                \vsprintf('El admin %s ha hecho al usuario %s padrino del proyecto %s', array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                    Feed::item('user', $userData->name, $userData->id),
-                                    Feed::item('project', $projectData->name, $projectData->id)
-                            )));
-                            $log->doAdmin('admin');
-                            unset($log);
-
-                            break;
-                        case 'edit':
-                            $success[] = 'Apadrinamiento actualizado correctamente';
-                            break;
-                    }
-				}
-				else {
-                    switch ($_POST['action']) {
-                        case 'add':
-                            return new View(
-                                'view/admin/index.html.php',
-                                array(
-                                    'folder' => 'patron',
-                                    'file' => 'edit',
-                                    'action' => 'add',
-                                    'promo' => $promo,
-                                    'status' => $status,
-                                    'errors' => $errors
-                                )
-                            );
-                            break;
-                        case 'edit':
-                            return new View(
-                                'view/admin/index.html.php',
-                                array(
-                                    'folder' => 'patron',
-                                    'file' => 'edit',
-                                    'action' => 'edit',
-                                    'promo' => $promo,
-                                    'errors' => $errors
-                                )
-                            );
-                            break;
-                    }
-				}
-			}
-
-            switch ($action) {
-                case 'up':
-                    Model\Patron::up($id);
-                    break;
-                case 'down':
-                    Model\Patron::down($id);
-                    break;
-                case 'remove':
-                    if (Model\Patron::delete($id)) {
-                        $projectData = Model\Project::getMini($id);
-
-                        // Evento Feed
-                        $log = new Feed();
-                        $log->populate('proyecto desapadrinado (admin)', '/admin/promote',
-                            \vsprintf('El admin %s ha %s del proyecto %s', array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('relevant', 'Quitado el apadrinamiento'),
-                            Feed::item('project', $projectData->name, $projectData->id)
-                        )));
-                        $log->doAdmin('admin');
-                        unset($log);
-
-                        $success[] = 'Apadrinamiento quitado correctamente';
-                    }
-                    break;
-                case 'add':
-                    // siguiente orden
-                    $next = Model\Patron::next();
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'patron',
-                            'file' => 'edit',
-                            'action' => 'add',
-                            'promo' => (object) array('order' => $next),
-                            'status' => $status
-                        )
-                    );
-                    break;
-                case 'edit':
-                    $promo = Model\Patron::get($id);
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'patron',
-                            'file' => 'edit',
-                            'action' => 'edit',
-                            'promo' => $promo
-                        )
-                    );
-                    break;
-            }
-
-
-            $patroned = Model\Patron::getAll();
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'patron',
-                    'file' => 'list',
-                    'patroned' => $patroned,
-                    'errors' => $errors,
-                    'success' => $success
-                )
-            );
+            return Admin\Patron::process($action, $id);
         }
 
         /*
@@ -1574,141 +543,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $errors = array();
-
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-                // objeto
-                $banner = new Model\Banner(array(
-                    'node' => \GOTEO_NODE,
-                    'project' => $_POST['project'],
-                    'order' => $_POST['order']
-                ));
-
-                // imagen
-                if(!empty($_FILES['image']['name'])) {
-                    $banner->image = $_FILES['image'];
-                } else {
-                    $banner->image = $_POST['prev_image'];
-                }
-
-				if ($banner->save($errors)) {
-                    $success[] = 'Datos guardados';
-
-                    if ($_POST['action'] == 'add') {
-                        $projectData = Model\Project::getMini($_POST['project']);
-
-                        // Evento Feed
-                        $log = new Feed();
-                        $log->populate('nuevo banner de proyecto destacado en portada (admin)', '/admin/promote',
-                            \vsprintf('El admin %s ha %s del proyecto %s', array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('relevant', 'Publicado un banner', '/'),
-                            Feed::item('project', $projectData->name, $projectData->id)
-                        )));
-                        $log->doAdmin('admin');
-                        unset($log);
-                    }
-
-				}
-				else {
-                    switch ($_POST['action']) {
-                        case 'add':
-                            return new View(
-                                'view/admin/index.html.php',
-                                array(
-                                    'folder' => 'banners',
-                                    'file' => 'edit',
-                                    'action' => 'add',
-                                    'banner' => $banner,
-                                    'status' => $status,
-                                    'errors' => $errors
-                                )
-                            );
-                            break;
-                        case 'edit':
-                            return new View(
-                                'view/admin/index.html.php',
-                                array(
-                                    'folder' => 'banners',
-                                    'file' => 'edit',
-                                    'action' => 'edit',
-                                    'banenr' => $banner,
-                                    'errors' => $errors
-                                )
-                            );
-                            break;
-                    }
-				}
-			}
-
-            switch ($action) {
-                case 'up':
-                    Model\Banner::up($id);
-                    break;
-                case 'down':
-                    Model\Banner::down($id);
-                    break;
-                case 'remove':
-                    if (Model\Banner::delete($id)) {
-                        $projectData = Model\Project::getMini($id);
-
-                        // Evento Feed
-                        $log = new Feed();
-                        $log->populate('banner de proyecto quitado portada (admin)', '/admin/promote',
-                            \vsprintf('El admin %s ha %s del proyecto %s', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', 'Quitado el banner', '/'),
-                                Feed::item('project', $projectData->name, $projectData->id)
-                        )));
-                        $log->doAdmin('admin');
-                        unset($log);
-
-                    }
-                    break;
-                case 'add':
-                    // siguiente orden
-                    $next = Model\Banner::next();
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'banners',
-                            'file' => 'edit',
-                            'action' => 'add',
-                            'banner' => (object) array('order' => $next),
-                            'status' => $status
-                        )
-                    );
-                    break;
-                case 'edit':
-                    $banner = Model\Banner::get($id);
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'banners',
-                            'file' => 'edit',
-                            'action' => 'edit',
-                            'banner' => $banner
-                        )
-                    );
-                    break;
-            }
-
-
-            $bannered = Model\Banner::getAll();
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'banners',
-                    'file' => 'list',
-                    'bannered' => $bannered,
-                    'errors' => $errors,
-                    'success' => $success
-                )
-            );
+            return Admin\Banners::process($action, $id);
         }
 
         /*
@@ -1716,125 +551,16 @@ namespace Goteo\Controller {
          */
         public function faq($action = 'list', $id = null) {
 
-            // secciones
-            $sections = Model\Faq::sections();
-            if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $sections)) {
-                $filter = $_GET['filter'];
-            } else {
-                $filter = 'node';
-            }
-
             $BC = self::menu(array(
                 'section' => 'contents',
                 'option' => __FUNCTION__,
                 'action' => $action,
-                'id' => $id,
-                'filter' => '?filter=' . $filter
+                'id' => $id
             ));
 
             define('ADMIN_BCPATH', $BC);
 
-            $errors = array();
-
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-                // instancia
-                $faq = new Model\Faq(array(
-                    'id' => $_POST['id'],
-                    'node' => \GOTEO_NODE,
-                    'section' => $_POST['section'],
-                    'title' => $_POST['title'],
-                    'description' => $_POST['description'],
-                    'order' => $_POST['order'],
-                    'move' => $_POST['move']
-                ));
-
-				if ($faq->save($errors)) {
-                    switch ($_POST['action']) {
-                        case 'add':
-                            $success = 'Pregunta añadida correctamente';
-                            break;
-                        case 'edit':
-                            $success = 'Pregunta editado correctamente';
-                            break;
-                    }
-				}
-				else {
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'faq',
-                            'file' => 'edit',
-                            'action' => $_POST['action'],
-                            'faq' => $faq,
-                            'filter' => $filter,
-                            'sections' => $sections,
-                            'errors' => $errors
-                        )
-                    );
-				}
-			}
-
-
-            switch ($action) {
-                case 'up':
-                    Model\Faq::up($id);
-                    break;
-                case 'down':
-                    Model\Faq::down($id);
-                    break;
-                case 'add':
-                    $next = Model\Faq::next($filter);
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'faq',
-                            'file' => 'edit',
-                            'action' => 'add',
-                            'faq' => (object) array('section' => $filter, 'order' => $next, 'cuantos' => $next),
-                            'filter' => $filter,
-                            'sections' => $sections
-                        )
-                    );
-                    break;
-                case 'edit':
-                    $faq = Model\Faq::get($id);
-
-                    $cuantos = Model\Faq::next($faq->section);
-                    $faq->cuantos = ($cuantos -1);
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'faq',
-                            'file' => 'edit',
-                            'action' => 'edit',
-                            'faq' => $faq,
-                            'filter' => $filter,
-                            'sections' => $sections
-                        )
-                    );
-                    break;
-                case 'remove':
-                    Model\Faq::delete($id);
-                    break;
-            }
-
-            $faqs = Model\Faq::getAll($filter);
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'faq',
-                    'file' => 'list',
-                    'faqs' => $faqs,
-                    'sections' => $sections,
-                    'filter' => $filter,
-                    'errors' => $errors,
-                    'success' => $success
-                )
-            );
+            return Admin\Faq::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
         /*
@@ -1842,124 +568,16 @@ namespace Goteo\Controller {
          */
         public function criteria($action = 'list', $id = null) {
 
-            // secciones
-            $sections = Model\Criteria::sections();
-            if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $sections)) {
-                $filter = $_GET['filter'];
-            } else {
-                $filter = 'project';
-            }
-
             $BC = self::menu(array(
                 'section' => 'contents',
                 'option' => __FUNCTION__,
                 'action' => $action,
-                'id' => $id,
-                'filter' => '?filter=' . $filter
+                'id' => $id
             ));
 
             define('ADMIN_BCPATH', $BC);
 
-            $errors = array();
-
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-                // instancia
-                $criteria = new Model\Criteria(array(
-                    'id' => $_POST['id'],
-                    'section' => $_POST['section'],
-                    'title' => $_POST['title'],
-                    'description' => $_POST['description'],
-                    'order' => $_POST['order'],
-                    'move' => $_POST['move']
-                ));
-
-				if ($criteria->save($errors)) {
-                    switch ($_POST['action']) {
-                        case 'add':
-                            $success = 'Criterio añadido correctamente';
-                            break;
-                        case 'edit':
-                            $success = 'Criterio editado correctamente';
-                            break;
-                    }
-				}
-				else {
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'criteria',
-                            'file' => 'edit',
-                            'action' => $_POST['action'],
-                            'criteria' => $criteria,
-                            'filter' => $filter,
-                            'sections' => $sections,
-                            'errors' => $errors
-                        )
-                    );
-				}
-			}
-
-
-            switch ($action) {
-                case 'up':
-                    Model\Criteria::up($id);
-                    break;
-                case 'down':
-                    Model\Criteria::down($id);
-                    break;
-                case 'add':
-                    $next = Model\Criteria::next($filter);
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'criteria',
-                            'file' => 'edit',
-                            'action' => 'add',
-                            'criteria' => (object) array('section' => $filter, 'order' => $next, 'cuantos' => $next),
-                            'filter' => $filter,
-                            'sections' => $sections
-                        )
-                    );
-                    break;
-                case 'edit':
-                    $criteria = Model\Criteria::get($id);
-
-                    $cuantos = Model\Criteria::next($criteria->section);
-                    $criteria->cuantos = ($cuantos -1);
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'criteria',
-                            'file' => 'edit',
-                            'action' => 'edit',
-                            'criteria' => $criteria,
-                            'filter' => $filter,
-                            'sections' => $sections
-                        )
-                    );
-                    break;
-                case 'remove':
-                    Model\Criteria::delete($id);
-                    break;
-            }
-
-            $criterias = Model\Criteria::getAll($filter);
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'criteria',
-                    'file' => 'list',
-                    'criterias' => $criterias,
-                    'sections' => $sections,
-                    'filter' => $filter,
-                    'errors' => $errors,
-                    'success' => $success
-                )
-            );
+            return Admin\Criteria::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
         /*
@@ -1967,125 +585,16 @@ namespace Goteo\Controller {
          */
         public function icons($action = 'list', $id = null) {
 
-            // grupos
-            $groups = Model\Icon::groups();
-            if (isset($_GET['filter']) && array_key_exists($_GET['filter'], $groups)) {
-                $filter = $_GET['filter'];
-            } else {
-                $filter = '';
-            }
-
             $BC = self::menu(array(
                 'section' => 'contents',
                 'option' => __FUNCTION__,
                 'action' => $action,
-                'id' => $id,
-                'filter' => !empty($filter) ? '?filter=' . $filter : ''
+                'id' => $id
             ));
 
             define('ADMIN_BCPATH', $BC);
 
-            $errors = array();
-
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-                // instancia
-                $icon = new Model\Icon(array(
-                    'id' => $_POST['id'],
-                    'name' => $_POST['name'],
-                    'description' => $_POST['description'],
-                    'order' => $_POST['order'],
-                    'group' => empty($_POST['group']) ? null : $_POST['group']
-                ));
-
-				if ($icon->save($errors)) {
-                    switch ($_POST['action']) {
-                        case 'add':
-                            $success = 'Nuevo tipo añadido correctamente';
-                            break;
-                        case 'edit':
-                            $success = 'Tipo editado correctamente';
-
-                            // Evento Feed
-                            $log = new Feed();
-                            $log->populate('modificacion de tipo de retorno/recompensa (admin)', '/admin/icons', 
-                                \vsprintf("El admin %s ha %s el tipo de retorno/recompensa %s", array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                    Feed::item('relevant', 'Modificado'),
-                                    Feed::item('project', $icon->name)
-                            )));
-                            $log->doAdmin('admin');
-                            unset($log);
-
-                            break;
-                    }
-				}
-				else {
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'icons',
-                            'file' => 'edit',
-                            'action' => $_POST['action'],
-                            'icon' => $icon,
-                            'filter' => $filter,
-                            'groups' => $groups,
-                            'errors' => $errors
-                        )
-                    );
-				}
-			}
-
-            switch ($action) {
-                case 'add':
-/*
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'icons',
-                            'file' => 'edit',
-                            'action' => 'add',
-                            'icon' => (object) array('group' => ''),
-                            'groups' => $groups
-                        )
-                    );
- *
- */
-                    break;
-                case 'edit':
-                    $icon = Model\Icon::get($id);
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'icons',
-                            'file' => 'edit',
-                            'action' => 'edit',
-                            'icon' => $icon,
-                            'filter' => $filter,
-                            'groups' => $groups
-                        )
-                    );
-                    break;
-                case 'remove':
-    //                Model\Icon::delete($id);
-                    break;
-            }
-
-            $icons = Model\Icon::getAll($filter);
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'icons',
-                    'file' => 'list',
-                    'icons' => $icons,
-                    'groups' => $groups,
-                    'filter' => $filter,
-                    'errors' => $errors,
-                    'success' => $success
-                )
-            );
+            return Admin\Icons::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
         /*
@@ -2093,150 +602,16 @@ namespace Goteo\Controller {
          */
         public function licenses($action = 'list', $id = null) {
 
-            if (isset($_GET['filters'])) {
-                foreach (\unserialize($_GET['filters']) as $field=>$value) {
-                    $filters[$field] = $value;
-                }
-            } else {
-                $filters = array();
-            }
-
-            $fields = array('group', 'icon');
-            foreach ($fields as $field) {
-                if (isset($_GET[$field])) {
-                    $filters[$field] = $_GET[$field];
-                }
-            }
-
             $BC = self::menu(array(
                 'section' => 'contents',
                 'option' => __FUNCTION__,
                 'action' => $action,
-                'id' => $id,
-                'filter' => !empty($filters) ? '?filter=' . serialize($filters) : ''
+                'id' => $id
             ));
 
             define('ADMIN_BCPATH', $BC);
 
-            // agrupaciones de mas a menos abertas
-            $groups = Model\License::groups();
-
-            // tipos de retorno para asociar
-            $icons = Model\Icon::getAll('social');
-
-
-            $errors = array();
-
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-                // objeto
-                $license = new Model\License(array(
-                    'id' => $_POST['id'],
-                    'name' => $_POST['name'],
-                    'description' => $_POST['description'],
-                    'url' => $_POST['url'],
-                    'group' => $_POST['group'],
-                    'order' => $_POST['order'],
-                    'icons' => $_POST['icons']
-                ));
-
-				if ($license->save($errors)) {
-                    switch ($_POST['action']) {
-                        case 'add':
-                            $success = 'Licencia añadida correctamente';
-                            break;
-                        case 'edit':
-                            $success = 'Licencia editada correctamente';
-
-                            // Evento Feed
-                            $log = new Feed();
-                            $log->populate('modificacion de licencia (admin)', '/admin/licenses',
-                                \vsprintf("El admin %s ha %s la licencia %s", array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                    Feed::item('relevant', 'Modificado'),
-                                    Feed::item('project', $license->name)
-                            )));
-                            $log->doAdmin('admin');
-                            unset($log);
-
-                            break;
-                    }
-				}
-				else {
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'licenses',
-                            'file' => 'edit',
-                            'action'  => $_POST['action'],
-                            'license' => $license,
-                            'filters' => $filters,
-                            'icons'   => $icons,
-                            'groups'  => $groups,
-                            'errors'  => $errors
-                        )
-                    );
-				}
-			}
-
-            switch ($action) {
-                case 'up':
-                    Model\License::up($id);
-                    break;
-                case 'down':
-                    Model\License::down($id);
-                    break;
-                case 'add':
-                    $next = Model\License::next();
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'licenses',
-                            'file' => 'edit',
-                            'action' => 'add',
-                            'license' => (object) array('order' => $next, 'icons' => array()),
-                            'icons' => $icons,
-                            'groups' => $groups
-                        )
-                    );
-                    break;
-                case 'edit':
-                    $license = Model\License::get($id);
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'licenses',
-                            'file' => 'edit',
-                            'action' => 'edit',
-                            'license' => $license,
-                            'filters' => $filters,
-                            'icons' => $icons,
-                            'groups' => $groups
-                        )
-                    );
-                    break;
-                case 'remove':
-    //                Model\License::delete($id);
-                    break;
-            }
-
-            $licenses = Model\License::getAll($filters['icon'], $filters['group']);
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'licenses',
-                    'file' => 'list',
-                    'licenses' => $licenses,
-                    'filters'  => $filters,
-                    'groups' => $groups,
-                    'icons'    => $icons,
-                    'errors' => $errors,
-                    'success' => $success
-                )
-            );
+            return Admin\Licenses::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
         /*
@@ -2253,80 +628,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $errors = array();
-
-            if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['action'] == 'add') {
-
-                // esto es para añadir una entrada en la portada
-                
-
-                // objeto
-                $post = new Model\Post(array(
-                    'id' => $_POST['post'],
-                    'order' => $_POST['order'],
-                    'home' => $_POST['home']
-                ));
-
-				if ($post->update($errors)) {
-                    $success[] = 'Entrada colocada en la portada correctamente';
-				}
-				else {
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'posts',
-                            'file' => 'add',
-                            'action' => 'add',
-                            'post' => $post,
-                            'errors' => $errors
-                        )
-                    );
-				}
-			}
-
-
-            switch ($action) {
-                case 'up':
-                    Model\Post::up($id, 'home');
-                    break;
-                case 'down':
-                    Model\Post::down($id, 'home');
-                    break;
-                case 'add':
-                    // siguiente orden
-                    $next = Model\Post::next('home');
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'posts',
-                            'file' => 'add',
-                            'action' => 'add',
-                            'post' => (object) array('order' => $next)
-                        )
-                    );
-                    break;
-                case 'edit':
-                    throw new Redirection('/admin/blog');
-                    break;
-                case 'remove':
-                    // se quita de la portada solamente
-                    Model\Post::remove($id, 'home');
-                    break;
-            }
-
-            $posts = Model\Post::getAll('home');
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'posts',
-                    'file' => 'list',
-                    'posts' => $posts,
-                    'errors' => $errors,
-                    'success' => $success
-                )
-            );
+            return Admin\Posts::process($action, $id);
         }
 
         /*
@@ -2343,76 +645,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $errors = array();
-
-            if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['action'] == 'add') {
-
-                // objeto
-                $post = new Model\Post(array(
-                    'id' => $_POST['post'],
-                    'order' => $_POST['order'],
-                    'footer' => $_POST['footer']
-                ));
-
-				if ($post->update($errors)) {
-                    $success[] = 'Entrada colocada en el footer correctamente';
-				}
-				else {
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'footer',
-                            'file' => 'add',
-                            'action' => 'add',
-                            'post' => $post,
-                            'errors' => $errors
-                        )
-                    );
-				}
-			}
-
-
-            switch ($action) {
-                case 'up':
-                    Model\Post::up($id, 'footer');
-                    break;
-                case 'down':
-                    Model\Post::down($id, 'footer');
-                    break;
-                case 'add':
-                    // siguiente orden
-                    $next = Model\Post::next('footer');
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'footer',
-                            'file' => 'add',
-                            'action' => 'add',
-                            'post' => (object) array('order' => $next)
-                        )
-                    );
-                    break;
-                case 'edit':
-                    throw new Redirection('/admin/blog');
-                    break;
-                case 'remove':
-                    Model\Post::remove($id, 'footer');
-                    break;
-            }
-
-            $posts = Model\Post::getAll('footer');
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'footer',
-                    'file' => 'list',
-                    'posts' => $posts,
-                    'errors' => $errors,
-                    'success' => $success
-                )
-            );
+            return Admin\Footer::process($action, $id);
         }
 
         /*
@@ -2430,153 +663,13 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $model = 'Goteo\Model\Category';
-            $url = '/admin/categories';
-
-            $errors = array();
-
-            switch ($action) {
-                case 'add':
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'base',
-                            'file' => 'edit',
-                            'data' => (object) array(),
-                            'form' => array(
-                                'action' => "$url/edit/",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => 'Añadir'
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Categoría',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    ),
-                                    'description' => array(
-                                        'label' => 'Descripción',
-                                        'name' => 'description',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="2"',
-
-                                    )
-                                )
-
-                            )
-                        )
-                    );
-
-                    break;
-                case 'edit':
-
-                    // gestionar post
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
-
-                        $errors = array();
-
-                        // instancia
-                        $item = new $model(array(
-                            'id' => $_POST['id'],
-                            'name' => $_POST['name'],
-                            'description' => $_POST['description']
-                        ));
-
-                        if ($item->save($errors)) {
-                            throw new Redirection($url);
-                        }
-                    } else {
-                        $item = $model::get($id);
-                    }
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'base',
-                            'file' => 'edit',
-                            'data' => $item,
-                            'form' => array(
-                                'action' => "$url/edit/$id",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => Text::get('regular-save')
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Categoría',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    ),
-                                    'description' => array(
-                                        'label' => 'Descripción',
-                                        'name' => 'description',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="2"',
-
-                                    )
-                                )
-
-                            ),
-                            'errors' => $errors
-                        )
-                    );
-
-                    break;
-                case 'up':
-                    $model::up($id);
-                    break;
-                case 'down':
-                    $model::down($id);
-                    break;
-                case 'remove':
-                    if ($model::delete($id)) {
-                        throw new Redirection($url);
-                    }
-                    break;
-            }
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'base',
-                    'file' => 'list',
-                    'model' => 'category',
-                    'addbutton' => 'Nueva categoría',
-                    'data' => $model::getAll(),
-                    'columns' => array(
-                        'edit' => '',
-                        'name' => 'Categoría',
-                        'numProj' => 'Proyectos',
-                        'numUser' => 'Usuarios',
-                        'order' => 'Prioridad',
-                        'translate' => '',
-                        'up' => '',
-                        'down' => '',
-                        'translate' => '',
-                        'remove' => ''
-                    ),
-                    'url' => "$url",
-                    'errors' => $errors
-                )
-            );
+            return Admin\Categories::process($action, $id);
         }
 
         /*
          *  Gestión de tags de blog
          *  Si no lo usa ningun post se puede borrar
+         *  Si es un nodo solamente puede borrar los propios
          */
         public function tags($action = 'list', $id = null) {
 
@@ -2589,454 +682,24 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $model = 'Goteo\Model\Blog\Post\Tag';
-            $url = '/admin/tags';
-
-            $errors = array();
-
-            switch ($action) {
-                case 'add':
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'base',
-                            'file' => 'edit',
-                            'data' => (object) array(),
-                            'form' => array(
-                                'action' => "$url/edit/",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => 'Añadir'
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Tag',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    )
-                                )
-
-                            )
-                        )
-                    );
-
-                    break;
-                case 'edit':
-
-                    // gestionar post
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
-
-                        $errors = array();
-
-                        // instancia
-                        $item = new $model(array(
-                            'id' => $_POST['id'],
-                            'name' => $_POST['name'],
-                            'blog' => 1
-                        ));
-
-                        if ($item->save($errors)) {
-                            throw new Redirection($url);
-                        }
-                    } else {
-                        $item = $model::get($id);
-                    }
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'base',
-                            'file' => 'edit',
-                            'data' => $item,
-                            'form' => array(
-                                'action' => "$url/edit/$id",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => Text::get('regular-save')
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Tag',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    )
-                                )
-
-                            ),
-                            'errors' => $errors
-                        )
-                    );
-
-                    break;
-                case 'remove':
-                    if ($model::delete($id)) {
-                        throw new Redirection($url);
-                    }
-                    break;
-            }
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'base',
-                    'file' => 'list',
-                    'model' => 'tag',
-                    'addbutton' => 'Nuevo tag',
-                    'data' => $model::getList(1),
-                    'columns' => array(
-                        'edit' => '',
-                        'name' => 'Tag',
-                        'used' => 'Entradas',
-                        'translate' => '',
-                        'remove' => ''
-                    ),
-                    'url' => "$url",
-                    'errors' => $errors
-                )
-            );
+            return Admin\Tags::process($action, $id);
         }
 
         /*
          *  administración de usuarios para superadmin
          */
-        public function users($action = 'list', $id = null, $subaction = '') {
-
-            $filters = array();
-            $fields = array('filtered', 'status', 'interest', 'role', 'id', 'name', 'email', 'order');
-            foreach ($fields as $field) {
-                if (isset($_GET[$field])) {
-                    $filters[$field] = $_GET[$field];
-                }
-            }
+        public function users($action = 'list', $id = null, $subaction = '', $filters = array()) {
 
             $BC = self::menu(array(
                 'section' => 'users',
                 'option' => __FUNCTION__,
                 'action' => $action,
-                'id' => $id,
-                'filter' => !empty($filters) ? "?status={$filters['status']}&interest={$filters['interest']}" : ''
+                'id' => $id
             ));
 
             define('ADMIN_BCPATH', $BC);
 
-            $errors = array();
-
-            switch ($action)  {
-                case 'add':
-
-                    // si llega post: creamos
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                        $errors = array();
-
-                        // para crear se usa el mismo método save del modelo, hay que montar el objeto
-                        $user = new Model\User();
-                        $user->userid = $_POST['userid'];
-                        $user->name = $_POST['name'];
-                        $user->email = $_POST['email'];
-                        $user->password = $_POST['password'];
-                        $user->save($errors);
-
-                        if(empty($errors)) {
-                          // mensaje de ok y volvemos a la lista de usuarios
-                          Message::Info(Text::get('user-register-success'));
-                          throw new Redirection('/admin/users/manage/'.$user->id);
-                        } else {
-                            // si hay algun error volvemos a poner los datos en el formulario
-                            $data = $_POST;
-                        }
-                    }
-
-                    // vista de crear usuario
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'users',
-                            'file' => 'add',
-                            'data'=>$data,
-                            'errors'=>$errors
-                        )
-                    );
-
-                    break;
-                case 'edit':
-
-                    $user = Model\User::get($id);
-
-                    // si llega post: actualizamos
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                        $errors = array();
-
-                        $tocado = array();
-                        // para crear se usa el mismo método save del modelo, hay que montar el objeto
-                        if (!empty($_POST['email'])) {
-                            $user->email = $_POST['email'];
-                            $tocado[] = 'el email';
-                        }
-                        if (!empty($_POST['password'])) {
-                            $user->password = $_POST['password'];
-                            $tocado[] = 'la contraseña';
-                        }
-
-                        if(!empty($tocado) && $user->update($errors)) {
-
-                            // Evento Feed
-                            $log = new Feed();
-                            $log->populate('Operación sobre usuario (admin)', '/admin/users', \vsprintf('El admin %s ha %s del usuario %s', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', 'Tocado ' . implode (' y ', $tocado)),
-                                Feed::item('user', $user->name, $user->id)
-                            )));
-                            //$log->setTarget($user->id, 'user');
-                            $log->doAdmin('user');
-                            unset($log);
-
-                            // mensaje de ok y volvemos a la lista de usuarios
-                            Message::Info('Datos actualizados');
-                            throw new Redirection('/admin/users');
-                            
-                        } else {
-                            // si hay algun error volvemos a poner los datos en el formulario
-                            $data = $_POST;
-                        }
-                    }
-
-                    // vista de editar usuario
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'users',
-                            'file' => 'edit',
-                            'user'=>$user,
-                            'data'=>$data,
-                            'errors'=>$errors
-                        )
-                    );
-
-                    break;
-                case 'manage':
-
-                    // si llega post: ejecutamos + mensaje + seguimos editando
-
-                    // operación y acción para el feed
-                    $sql = '';
-                    switch ($subaction)  {
-                        case 'ban':
-                            $sql = "UPDATE user SET active = 0 WHERE id = :user";
-                            $log_action = 'Desactivado';
-                            break;
-                        case 'unban':
-                            $sql = "UPDATE user SET active = 1 WHERE id = :user";
-                            $log_action = 'Activado';
-                            break;
-                        case 'show':
-                            $sql = "UPDATE user SET hide = 0 WHERE id = :user";
-                            $log_action = 'Mostrado';
-                            break;
-                        case 'hide':
-                            $sql = "UPDATE user SET hide = 1 WHERE id = :user";
-                            $log_action = 'Ocultado';
-                            break;
-                        case 'checker':
-                            $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'checker')";
-                            $log_action = 'Hecho revisor';
-                            break;
-                        case 'nochecker':
-                            $sql = "DELETE FROM user_role WHERE role_id = 'checker' AND user_id = :user";
-                            $log_action = 'Quitado de revisor';
-                            break;
-                        case 'translator':
-                            $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'translator')";
-                            $log_action = 'Hecho traductor';
-                            break;
-                        case 'notranslator':
-                            $sql = "DELETE FROM user_role WHERE role_id = 'translator' AND user_id = :user";
-                            $log_action = 'Quitado de traductor';
-                            break;
-                        case 'caller':
-                            $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'caller')";
-                            $log_action = 'Hecho convocador';
-                            $newcaller = true;
-                            break;
-                        case 'nocaller':
-                            $sql = "DELETE FROM user_role WHERE role_id = 'caller' AND user_id = :user";
-                            $log_action = 'Quitado de convocador';
-                            break;
-                        case 'admin':
-                            $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'admin')";
-                            $log_action = 'Hecho admin';
-                            break;
-                        case 'noadmin':
-                            $sql = "DELETE FROM user_role WHERE role_id = 'admin' AND user_id = :user";
-                            $log_action = 'Quitado de admin';
-                            break;
-                        case 'vip':
-                            $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'vip')";
-                            $log_action = 'Hecho VIP';
-                            break;
-                        case 'novip':
-                            $sql = "DELETE FROM user_role WHERE role_id = 'vip' AND user_id = :user";
-                            $log_action = 'Quitado el VIP';
-                            break;
-                    }
-
-
-                    if (!empty($sql)) {
-
-                        $user = Model\User::getMini($id);
-
-                        if (Model\User::query($sql, array(':user'=>$id))) {
-                            
-                            // mensaje de ok y volvemos a la gestion del usuario
-                            Message::Info('Ha <strong>' . $log_action . '</strong> al usuario <strong>'.$user->name.'</strong> CORRECTAMENTE');
-                            $log_text = 'El admin %s ha %s al usuario %s';
-
-                        } else {
-
-                            // mensaje de error y volvemos a la gestion del usuario
-                            Message::Error('Ha FALLADO cuando ha <strong>' . $log_action . '</strong> al usuario <strong>'.$id.'</strong>');
-                            $log_text = 'Al admin %s le ha <strong>FALLADO</strong> cuando ha %s al usuario %s';
-
-                        }
-
-                        // Evento Feed
-                        $log = new Feed();
-                        $log->populate('Operación sobre usuario (admin)', '/admin/users',
-                            \vsprintf($log_text, array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', $log_action),
-                                Feed::item('user', $user->name, $user->id)
-                        )));
-                        //$log->setTarget($user->id, 'user');
-                        $log->doAdmin('user');
-                        unset($log);
-
-                        throw new Redirection('/admin/users/manage/'.$id);
-                    }
-
-                    $user = Model\User::get($id);
-
-
-                    // vista de gestión de usuario
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'users',
-                            'file' => 'manage',
-                            'user'=>$user,
-                            'errors'=>$errors,
-                            'success'=>$success
-                        )
-                    );
-
-
-                    break;
-                case 'impersonate':
-
-                    $user = Model\User::get($id);
-
-                    // vista de acceso a suplantación de usuario
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'users',
-                            'file'   => 'impersonate',
-                            'user'   => $user
-                        )
-                    );
-
-                    break;
-                /*
-                case 'send':
-                    // obtenemos los usuarios que siguen teniendo su email como contraseña
-                    $workshoppers = Model\User::getWorkshoppers();
-
-                    if (empty($workshoppers)) {
-                        $errors[] = 'Ningún usuario tiene su email como contraseña, podemos cambiar la funcionalidad de este botón!';
-                    } else {
-
-                        // Obtenemos la plantilla para asunto y contenido
-                        $template = Template::get(27);
-
-                        foreach ($workshoppers as $fellow) {
-                            $err = array();
-                            // iniciamos mail
-                            $mailHandler = new Mail();
-                            $mailHandler->to = $fellow->email;
-                            $mailHandler->toName = $fellow->name;
-                            // blind copy a goteo desactivado durante las verificaciones
-                //              $mailHandler->bcc = 'comunicaciones@goteo.org';
-                            $mailHandler->subject = $template->title;
-                            // substituimos los datos
-                            $search  = array('%USERNAME%', '%USERID%', '%USEREMAIL%', '%SITEURL%');
-                            $replace = array($fellow->name, $fellow->id, $fellow->email, SITE_URL);
-                            $mailHandler->content = \str_replace($search, $replace, $template->text);
-                            $mailHandler->html = true;
-                            $mailHandler->template = $template->id;
-                            if ($mailHandler->send($err)) {
-                                $errors[] = 'Se ha enviado OK! a <strong>'.$fellow->name.'</strong> a la dirección <strong>'.$fellow->email.'</strong>';
-                            } else {
-                                $errors[] = 'Ha FALLADO! al enviar a <strong>'.$fellow->name.'</strong>. Ha dado este error: '. implode(',', $err);
-                            }
-                            unset($mailHandler);
-                        }
-
-
-                    }
-*/
-                
-                case 'list':
-                default:
-                    if (!empty($filters['filtered'])) {
-                        $users = Model\User::getAll($filters);
-                    } else {
-                        $users = array();
-                    }
-                    $status = array(
-                                'active' => 'Activo',
-                                'inactive' => 'Inactivo'
-                            );
-                    $interests = Model\User\Interest::getAll();
-                    $roles = array(
-                        'admin' => 'Admin',
-                        'checker' => 'Revisor',
-                        'translator' => 'Traductor',
-                        'caller' => 'Convocador',
-                        'vip' => 'VIP'
-                    );
-                    $orders = array(
-                        'created' => 'Fecha de alta',
-                        'name' => 'Nombre'
-                    );
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'users',
-                            'file' => 'list',
-                            'users'=>$users,
-                            'filters' => $filters,
-                            'name' => $name,
-                            'status' => $status,
-                            'interests' => $interests,
-                            'roles' => $roles,
-                            'orders' => $orders,
-                            'errors' => $errors
-                        )
-                    );
-                    break;
-            }
+            return Admin\Users::process($action, $id, $subaction, self::setFilters(__FUNCTION__));
         }
 
         /*
@@ -3053,456 +716,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $errors = array();
-
-           // reubicando aporte,
-           if ($action == 'move') {
-
-                // el aporte original
-                $original = Model\Invest::get($id);
-                $userData = Model\User::getMini($original->user);
-                $projectData = Model\Project::getMini($original->project);
-
-                //el original tiene que ser de tpv o cash y estar como 'cargo ejecutado'
-                if ($original->method == 'paypal' || $original->status != 1) {
-                    Message::Error('No se puede reubicar este aporte!');
-                    throw new Redirection('/admin/invests');
-                }
-
-
-                // generar aporte manual y caducar el original
-                if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['move']) ) {
-
-                    // si falta proyecto, error
-                    
-                    $projectNew = $_POST['project'];
-
-                    // @TODO a saber si le toca dinero de alguna convocatoria
-                    $campaign = null;
-
-                    $invest = new Model\Invest(
-                        array(
-                            'amount'    => $original->amount,
-                            'user'      => $original->user,
-                            'project'   => $projectNew,
-                            'account'   => $userData->email,
-                            'method'    => 'cash',
-                            'status'    => '1',
-                            'invested'  => date('Y-m-d'),
-                            'charged'   => $original->charged,
-                            'anonymous' => $original->anonymous,
-                            'resign'    => $original->resign,
-                            'admin'     => $_SESSION['user']->id,
-                            'campaign'  => $campaign
-                        )
-                    );
-                    //@TODO si el proyecto seleccionado
-
-                    if ($invest->save($errors)) {
-
-                        //recompensas que le tocan (si no era resign)
-                        if (!$original->resign) {
-                            // sacar recompensas
-                            $rewards = Model\Project\Reward::getAll($projectNew, 'individual');
-                            
-                            foreach ($rewards as $rewId => $rewData) {
-                                $invest->setReward($rewId); //asignar
-                            }
-                        }
-
-                        // cambio estado del aporte original a 'Reubicado' (no aparece en cofinanciadores)
-                        // si tuviera que aparecer lo marcaríamos como caducado
-                        if ($original->setStatus('5')) {
-                            // Evento Feed
-                            $log = new Feed();
-                            $log->populate('Aporte reubicado', '/admin/invests',
-                                \vsprintf("%s ha aportado %s al proyecto %s en nombre de %s", array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                    Feed::item('money', $_POST['amount'].' &euro;'),
-                                    Feed::item('project', $projectData->name, $projectData->id),
-                                    Feed::item('user', $userData->name, $userData->id)
-                            )));
-                            $log->doAdmin('money');
-                            unset($log);
-
-                            Message::Info('Aporte reubicado correctamente');
-                            throw new Redirection('/admin/invests');
-                        } else {
-                            $errors[] = 'A fallado al cambiar el estado del aporte original ('.$original->id.')';
-                        }
-                    } else{
-                        $errors[] = 'Ha fallado algo al reubicar el aporte';
-                    }
-
-                }
-
-                $viewData = array(
-                    'folder' => 'invests',
-                    'file' => 'move',
-                    'original' => $original,
-                    'user'     => $userData,
-                    'project'  => $projectData,
-                    'errors'   => $errors
-                );
-
-                return new View(
-                    'view/admin/index.html.php',
-                    $viewData
-                );
-
-                // fin de la historia dereubicar
-           }
-
-            // aportes manuales, cargamos la lista completa de usuarios, proyectos y campañas
-           if ($action == 'add') {
-               
-                // listado de proyectos existentes
-                $projects = Model\Project::getAll();
-                // usuarios
-                $users = Model\User::getAllMini();
-                // campañas
-                $calls = Model\Call::getAll();
-
-                //@TODO tema convocatorias (calls)
-                //Ojo! Solo convocatorias revisadas?
-                //Ojo! Puede ser que se tenga que restringir proyectos de esa
-
-                // generar aporte manual
-                if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add']) ) {
-
-                    $userData = Model\User::getMini($_POST['user']);
-                    $projectData = Model\Project::getMini($_POST['project']);
-
-                    $invest = new Model\Invest(
-                        array(
-                            'amount'    => $_POST['amount'],
-                            'user'      => $userData->id,
-                            'project'   => $projectData->id,
-                            'account'   => $userData->email,
-                            'method'    => 'cash',
-                            'status'    => '1',
-                            'invested'  => date('Y-m-d'),
-                            'charged'   => date('Y-m-d'),
-                            'anonymous' => $_POST['anonymous'],
-                            'resign'    => 1,
-                            'admin'     => $_SESSION['user']->id
-                        )
-                    );
-
-                    //@TODO si llega campaign, montar el $invest->called con instancia call para que el save genere el riego
-                    if (!empty($_POST['campaign'])) {
-                        $called = Model\Call::get($_POST['campaign']);
-
-                        if ($called instanceof Model\Call) {
-                            $invest->called = $called;
-                        }
-                    }
-
-                    if ($invest->save($errors)) {
-                        // Evento Feed
-                        $log = new Feed();
-                        $log->populate('Aporte manual (admin)', '/admin/invests',
-                            \vsprintf("%s ha aportado %s al proyecto %s en nombre de %s", array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('money', $_POST['amount'].' &euro;'),
-                                Feed::item('project', $projectData->name, $projectData->id),
-                                Feed::item('user', $userData->name, $userData->id)
-                        )));
-                        $log->doAdmin('money');
-                        unset($log);
-                        
-                        Message::Info('Aporte manual creado correctamente');
-                        throw new Redirection('/admin/invests');
-                    } else{
-                        $errors[] = 'Ha fallado algo al crear el aporte manual';
-                    }
-
-                }
-
-                 $viewData = array(
-                        'folder' => 'invests',
-                        'file' => 'add',
-                        'users'         => $users,
-                        'projects'      => $projects,
-                        'calls'         => $calls,
-                        'errors'        => $errors
-                    );
-
-                return new View(
-                    'view/admin/index.html.php',
-                    $viewData
-                );
-
-                // fin de la historia
-
-           } else {
-
-               // sino, cargamos los filtros
-                $filters = array();
-                $fields = array('filtered', 'methods', 'status', 'investStatus', 'projects', 'users', 'calls', 'types');
-                foreach ($fields as $field) {
-                    $filters[$field] = (string) $_GET[$field];
-                }
-
-                if (!isset($filters['status'])) $filters['status'] = 'all';
-                if (!isset($filters['investStatus'])) $filters['status'] = 'all';
-
-
-                // métodos de pago
-                $methods = Model\Invest::methods();
-                // estados del proyecto
-                $status = Model\Project::status();
-                // estados de aporte
-                $investStatus = Model\Invest::status();
-                // listado de proyectos
-                $projects = Model\Invest::projects();
-                // usuarios cofinanciadores
-                $users = Model\Invest::users(true);
-                // campañas que tienen aportes
-                $calls = Model\Invest::calls();
-                // extras
-                $types = array(
-                    'donative' => 'Solo los donativos',
-                    'anonymous' => 'Solo los anónimos',
-                    'manual' => 'Solo los manuales',
-                    'campaign' => 'Solo con riego',
-                );
-
-           }
-
-            // Informe de la financiación de un proyecto
-            if ($action == 'report') {
-                // estados de aporte
-                $project = Model\Project::get($id);
-                if (!$project instanceof Model\Project) {
-                    Message::Error('Instancia de proyecto no valida');
-                    throw new Redirection('/admin/invests');
-                }
-                $invests = Model\Invest::getAll($id);
-                $project->investors = Model\Invest::investors($id, false, true);
-                $users = $project->agregateInvestors();
-
-                // Datos para el informe de transacciones correctas
-                $reportData = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
-
-                return new View(
-                    'view/admin/index.html.php',
-                    array(
-                        'folder' => 'invests',
-                        'file' => 'report',
-                        'invests' => $invests,
-                        'project' => $project,
-                        'status' => $status,
-                        'users' => $users,
-                        'investStatus' => $investStatus,
-                        'reportData' => $reportData
-                    )
-                );
-            }
-
-            if (in_array($action, array('details', 'cancel', 'execute')) ) {
-                $invest = Model\Invest::get($id);
-                $project = Model\Project::get($invest->project);
-                $userData = Model\User::get($invest->user);
-            }
-
-            // cancelar aporte antes de ejecución, solo aportes no cargados
-            if ($action == 'cancel') {
-
-                if ($project->status > 3 && $project->status < 6) {
-                    $errors[] = 'No debería poderse cancelar un aporte cuando el proyecto ya está financiado. Si es imprescindible, hacerlo desde el panel de paypal o tpv';
-                    break;
-                }
-
-                switch ($invest->method) {
-                    case 'paypal':
-                        $err = array();
-                        if (Paypal::cancelPreapproval($invest, $err)) {
-                            $errors[] = 'Preaproval paypal cancelado.';
-                            $log_text = "El admin %s ha cancelado aporte y preapproval de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
-                        } else {
-                            $txt_errors = implode('; ', $err);
-                            $errors[] = 'Fallo al cancelar el preapproval en paypal: ' . $txt_errors;
-                            $log_text = "El admin %s ha fallado al cancelar el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
-                            if ($invest->cancel()) {
-                                $errors[] = 'Aporte cancelado';
-                            } else{
-                                $errors[] = 'Fallo al cancelar el aporte';
-                            }
-                        }
-                        break;
-                    case 'tpv':
-                        $err = array();
-                        if (Tpv::cancelPreapproval($invest, $err)) {
-                            $txt_errors = implode('; ', $err);
-                            $errors[] = 'Aporte cancelado correctamente. ' . $txt_errors;
-                            $log_text = "El admin %s ha anulado el cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s";
-                        } else {
-                            $txt_errors = implode('; ', $err);
-                            $errors[] = 'Fallo en la operación. ' . $txt_errors;
-                            $log_text = "El admin %s ha fallado al solicitar la cancelación del cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
-                        }
-                        break;
-                    case 'cash':
-                        if ($invest->cancel()) {
-                            $log_text = "El admin %s ha cancelado aporte manual de %s de %s (id: %s) al proyecto %s del dia %s";
-                            $errors[] = 'Aporte cancelado';
-                        } else{
-                            $log_text = "El admin %s ha fallado al cancelar el aporte manual de %s de %s (id: %s) al proyecto %s del dia %s. ";
-                            $errors[] = 'Fallo al cancelar el aporte';
-                        }
-                        break;
-                }
-
-                // Evento Feed
-                $log = new Feed();
-                $log->populate('Cargo cancelado manualmente (admin)', '/admin/invests',
-                    \vsprintf($log_text, array(
-                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                        Feed::item('user', $userData->name, $userData->id),
-                        Feed::item('money', $invest->amount.' &euro;'),
-                        Feed::item('system', $invest->id),
-                        Feed::item('project', $project->name, $project->id),
-                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
-                )));
-                $log->doAdmin();
-                unset($log);
-            }
-
-            // ejecutar cargo ahora!!, solo aportes no ejecutados
-            // si esta pendiente, ejecutar el cargo ahora (como si fuera final de ronda), deja pendiente el pago secundario
-            if ($action == 'execute' && $invest->status == 0) {
-                switch ($invest->method) {
-                    case 'paypal':
-                        // a ver si tiene cuenta paypal
-                        $projectAccount = Model\Project\Account::get($invest->project);
-
-                        if (empty($projectAccount->paypal)) {
-                            // Erroraco!
-                            $errors[] = 'El proyecto no tiene cuenta paypal!!, ponersela en la seccion Contrato del dashboard del autor';
-                            $log_text = null;
-
-                            // Evento Feed
-                            $log = new Feed();
-                            $log->populate('proyecto sin cuenta paypal (admin)', '/admin/projects',
-                                \vsprintf('El proyecto %s aun no ha puesto su %s !!!', array(
-                                    Feed::item('project', $project->name, $project->id),
-                                    Feed::item('relevant', 'cuenta PayPal')
-                            )));
-                            $log->doAdmin('project');
-                            unset($log);
-                            
-                            break;
-                        }
-
-                        $invest->account = $projectAccount->paypal;
-                        if (Paypal::pay($invest, $errors)) {
-                            $errors[] = 'Cargo paypal correcto';
-                            $log_text = "El admin %s ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
-                            $invest->status = 1;
-                        } else {
-                            $txt_errors = implode('; ', $errors);
-                            $errors[] = 'Fallo al ejecutar cargo paypal: ' . $txt_errors;
-                            $log_text = "El admin %s ha fallado al ejecutar el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
-                        }
-                        break;
-                    case 'tpv':
-                        if (Tpv::pay($invest, $errors)) {
-                            $errors[] = 'Cargo sermepa correcto';
-                            $log_text = "El admin %s ha ejecutado el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s del dia %s";
-                            $invest->status = 1;
-                        } else {
-                            $txt_errors = implode('; ', $errors);
-                            $errors[] = 'Fallo al ejecutar cargo sermepa: ' . $txt_errors;
-                            $log_text = "El admin %s ha fallado al ejecutar el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s del dia %s <br />Se han dado los siguientes errores: $txt_errors";
-                        }
-                        break;
-                    case 'cash':
-                        $invest->setStatus('1');
-                        $errors[] = 'Aporte al contado, nada que ejecutar.';
-                        $log_text = "El admin %s ha dado por ejecutado el aporte manual a nombre de %s por la cantidad de %s (id: %s) al proyecto %s del dia %s";
-                        $invest->status = 1;
-                        break;
-                }
-
-                if (!empty($log_text)) {
-                    // Evento Feed
-                    $log = new Feed();
-                    $log->populate('Cargo ejecutado manualmente (admin)', '/admin/invests',
-                        \vsprintf($log_text, array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('user', $userData->name, $userData->id),
-                            Feed::item('money', $invest->amount.' &euro;'),
-                            Feed::item('system', $invest->id),
-                            Feed::item('project', $project->name, $project->id),
-                            Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
-                    )));
-                    $log->doAdmin();
-                    unset($log);
-                }
-            }
-
-
-
-            // detalles del aporte
-            if (in_array($action, array('details', 'cancel', 'execute')) ) {
-
-                $invest = Model\Invest::get($id);
-
-                if (!empty($invest->droped)) {
-                    $droped = Model\Invest::get($invest->droped);
-                } else {
-                    $droped = null;
-                }
-
-                return new View(
-                    'view/admin/index.html.php',
-                    array(
-                        'folder' => 'invests',
-                        'file' => 'details',
-                        'invest' => $invest,
-                        'project' => $project,
-                        'user' => $userData,
-                        'status' => $status,
-                        'investStatus' => $investStatus,
-                        'droped' => $droped,
-                        'calls' => $calls,
-                        'errors' => $errors
-                    )
-                );
-            }
-
-            // listado de aportes
-            if ($filters['filtered'] == 'yes') {
-                
-                if (!empty($filters['calls']))
-                    $filters['types'] = '';
-
-                $list = Model\Invest::getList($filters);
-            } else {
-                $list = array();
-            }
-
-             $viewData = array(
-                    'folder' => 'invests',
-                    'file' => 'list',
-                    'list'          => $list,
-                    'filters'       => $filters,
-                    'users'         => $users,
-                    'projects'      => $projects,
-                    'calls'         => $calls,
-                    'methods'       => $methods,
-                    'types'         => $types,
-                    'status'        => $status,
-                    'investStatus'  => $investStatus,
-                    'errors'        => $errors
-                );
-
-            return new View(
-                'view/admin/index.html.php',
-                $viewData
-            );
-
+            return Admin\Invests::process($action, $id);
         }
 
         /*
@@ -3521,97 +735,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $errors = array();
-
-            // visor de logs
-            if ($action == 'viewer') {
-                return new View(
-                    'view/admin/index.html.php',
-                    array(
-                        'folder' => 'accounts',
-                        'file' => 'viewer'
-                    )
-                );
-            }
-
-            // cargamos los filtros
-            $filters = array();
-            $fields = array('filtered', 'methods', 'investStatus', 'projects', 'users', 'calls', 'review', 'date_from', 'date_until');
-            foreach ($fields as $field) {
-                $filters[$field] = (string) $_GET[$field];
-            }
-
-            if (!isset($filters['investStatus'])) $filters['investStatus'] = 'all';
-
-            // tipos de aporte
-            $methods = Model\Invest::methods();
-            // estados del proyecto
-            $status = Model\Project::status();
-            // estados de aporte
-            $investStatus = Model\Invest::status();
-            // listado de proyectos
-            $projects = Model\Invest::projects();
-            // usuarios cofinanciadores
-            $users = Model\Invest::users(true);
-            // campañas que tienen aportes
-            $calls = Model\Invest::calls();
-
-            // filtros de revisión de proyecto
-            $review = array(
-                'collect' => 'Recaudado',
-                'paypal'  => 'Rev. PayPal',
-                'tpv'     => 'Rev. TPV',
-                'online'  => 'Pagos Online'
-            );
-
-
-            /// detalles de una transaccion
-            if ($action == 'details') {
-                $invest = Model\Invest::get($id);
-                $project = Model\Project::get($invest->project);
-                $userData = Model\User::get($invest->user);
-                return new View(
-                    'view/admin/index.html.php',
-                    array(
-                        'folder' => 'accounts',
-                        'file' => 'details',
-                        'invest'=>$invest,
-                        'project'=>$project,
-                        'user'=>$userData,
-                        'details'=>$details,
-                        'status'=>$status,
-                        'investStatus'=>$investStatus
-                    )
-                );
-            }
-
-            // listado de aportes
-            if ($filters['filtered'] == 'yes') {
-                $list = Model\Invest::getList($filters);
-            } else {
-                $list = array();
-            }
-
-             $viewData = array(
-                    'folder' => 'accounts',
-                    'file' => 'list',
-                    'list'          => $list,
-                    'filters'       => $filters,
-                    'users'         => $users,
-                    'projects'      => $projects,
-                    'calls'         => $calls,
-                    'review'        => $review,
-                    'methods'       => $methods,
-                    'status'        => $status,
-                    'investStatus'  => $investStatus,
-                    'errors'        => $errors
-                );
-
-            return new View(
-                'view/admin/index.html.php',
-                $viewData
-            );
-
+            return Admin\Accounts::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
 
@@ -3619,69 +743,18 @@ namespace Goteo\Controller {
          * Gestión de retornos, por ahora en el admin pero es una gestión para los responsables de proyectos
          * Proyectos financiados, puede marcar un retorno cumplido
          */
-        public function rewards($action = 'list', $id = null) {
-
-            $filters = array();
-            $fields = array('status', 'icon');
-            foreach ($fields as $field) {
-                if (isset($_GET[$field])) {
-                    $filters[$field] = $_GET[$field];
-                }
-            }
+        public function rewards($action = 'list', $id = null, $filters = array()) {
 
             $BC = self::menu(array(
                 'section' => 'projects',
                 'option' => __FUNCTION__,
                 'action' => $action,
-                'id' => $id,
-                'filter' => !empty($filters) ? "?status={$filters['status']}&icon={$filters['icon']}" : ''
+                'id' => $id
             ));
 
             define('ADMIN_BCPATH', $BC);
 
-            $errors = array();
-
-            switch ($action)  {
-                case 'fulfill':
-                    $sql = "UPDATE reward SET fulsocial = 1 WHERE type= 'social' AND id = ?";
-                    Model\Project\Reward::query($sql, array($id));
-                    break;
-                case 'unfill':
-                    $sql = "UPDATE reward SET fulsocial = 0 WHERE id = ?";
-                    Model\Project\Reward::query($sql, array($id));
-                    break;
-            }
-
-            $projects = Model\Project::published('success');
-
-            foreach ($projects as $kay=>&$project) {
-                $project->social_rewards = Model\Project\Reward::getAll($project->id, 'social', LANG, $filters['status'], $filters['icon']);
-            }
-
-            $status = array(
-                        'nok' => 'Pendiente',
-                        'ok'  => 'Cumplido'
-                        
-                    );
-            $icons = Model\Icon::getAll('social');
-            foreach ($icons as $key => $icon) {
-                $icons[$key] = $icon->name;
-            }
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'base',
-                    'file' => 'rewards',
-                    'projects'=>$projects,
-                    'filters' => $filters,
-                    'status' => $status,
-                    'icons' => $icons,
-                    'errors' => $errors
-                )
-            );
-
-
+            return Admin\Rewards::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
         /*
@@ -3689,123 +762,6 @@ namespace Goteo\Controller {
          */
         public function blog ($action = 'list', $id = null) {
             
-            $errors = array();
-
-            $blog = Model\Blog::get(\GOTEO_NODE, 'node');
-            if (!$blog instanceof \Goteo\Model\Blog) {
-                $errors[] = 'No tiene espacio de blog, Contacte con nosotros';
-                $action = 'list';
-            } else {
-                if (!$blog->active) {
-                    $errors[] = 'Lo sentimos, el blog para este nodo esta desactivado';
-                    $action = 'list';
-                }
-            }
-
-            // primero comprobar que tenemos blog
-            if (!$blog instanceof Model\Blog) {
-                $errors[] = 'No se ha encontrado ningún blog para este nodo';
-                $action = 'list';
-            }
-
-            $url = '/admin/blog';
-
-			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                    if (empty($_POST['blog'])) {
-                        break;
-                    }
-
-                    $editing = false;
-
-                    if (!empty($_POST['id'])) {
-                        $post = Model\Blog\Post::get($_POST['id']);
-                    } else {
-                        $post = new Model\Blog\Post();
-                    }
-                    // campos que actualizamos
-                    $fields = array(
-                        'id',
-                        'blog',
-                        'title',
-                        'text',
-                        'image',
-                        'media',
-                        'legend',
-                        'date',
-                        'publish',
-                        'home',
-                        'footer',
-                        'allow'
-                    );
-
-                    foreach ($fields as $field) {
-                        $post->$field = $_POST[$field];
-                    }
-
-                    // tratar la imagen y ponerla en la propiedad image
-                    if(!empty($_FILES['image_upload']['name'])) {
-                        $post->image = $_FILES['image_upload'];
-                        $editing = true;
-                    }
-
-                    // tratar las imagenes que quitan
-                    foreach ($post->gallery as $key=>$image) {
-                        if (!empty($_POST["gallery-{$image->id}-remove"])) {
-                            $image->remove('post');
-                            unset($post->gallery[$key]);
-                            if ($post->image == $image->id) {
-                                $post->image = '';
-                            }
-                            $editing = true;
-                        }
-                    }
-
-                    if (!empty($post->media)) {
-                        $post->media = new Model\Project\Media($post->media);
-                    }
-
-                    $post->tags = $_POST['tags'];
-
-                    /// este es el único save que se lanza desde un metodo process_
-                    if ($post->save($errors)) {
-                        if ($action == 'edit') {
-                            $success[] = 'La entrada se ha actualizado correctamente';
-                            ////Text::get('dashboard-project-updates-saved');
-                        } else {
-                            $success[] = 'Se ha añadido una nueva entrada';
-                            ////Text::get('dashboard-project-updates-inserted');
-                            $id = $post->id;
-                        }
-                        $action = $editing ? 'edit' : 'list';
-
-                        if ((bool) $post->publish) {
-                            // Evento Feed
-                            $log = new Feed();
-                            $log->populate('nueva entrada blog Goteo (admin)', '/admin/blog',
-                                \vsprintf('El admin %s ha %s en el blog Goteo la entrada "%s"', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', 'Publicado'),
-                                Feed::item('blog', $post->title, $post->id)
-                            )));
-                            $log->doAdmin('admin');
-
-                            // evento público
-                            $log->unique = true;
-                            $log->populate($post->title, '/blog/'.$post->id, Text::recorta($post->text, 250), $post->gallery[0]->id);
-                            $log->doPublic('goteo');
-
-                            unset($log);
-                        } else {
-                            //sino lo quitamos
-                            \Goteo\Core\Model::query("DELETE FROM feed WHERE url = '/blog/{$post->id}' AND scope = 'public' AND type = 'goteo'");
-                        }
-
-                    } else {
-                        $errors[] = 'Ha habido algun problema al guardar los datos';
-                        ////Text::get('dashboard-project-updates-fail');
-                    }
-            }
-
             $BC = self::menu(array(
                 'section' => 'contents',
                 'option' => __FUNCTION__,
@@ -3815,109 +771,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            switch ($action)  {
-                case 'remove':
-                    // eliminar una entrada
-                    $tempData = Model\Blog\Post::get($id);
-                    if (Model\Blog\Post::delete($id)) {
-                        // Evento Feed
-                        $log = new Feed();
-                        $log->populate('Quita entrada de blog (admin)', '/admin/blog',
-                            \vsprintf('El admin %s ha %s la entrada "%s" del blog de Goteo', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', 'Quitado'),
-                                Feed::item('blog', $tempData->title)
-                        )));
-                        $log->doAdmin('admin');
-                        unset($log);
-
-                        unset($blog->posts[$id]);
-                        $success[] = 'Entrada eliminada';
-                    } else {
-                        $errors[] = 'No se ha podido eliminar la entrada';
-                    }
-                    // no break para que continue con list
-                case 'list':
-                    // lista de entradas
-                    // obtenemos los datos
-                    $posts = Model\Blog\Post::getAll($blog->id, null, false);
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'blog',
-                            'file' => 'list',
-                            'posts' => $posts,
-                            'errors' => $errors,
-                            'success' => $success
-                        )
-                    );
-                    break;
-                case 'add':
-                    // nueva entrada con wisiwig
-                    // obtenemos datos basicos
-                    $post = new Model\Blog\Post(
-                            array(
-                                'blog' => $blog->id,
-                                'date' => date('Y-m-d'),
-                                'publish' => false,
-                                'allow' => true,
-                                'tags' => array()
-                            )
-                        );
-
-                    $message = 'Añadiendo una nueva entrada';
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'blog',
-                            'file' => 'edit',
-                            'action' => 'add',
-                            'post' => $post,
-                            'tags' => Model\Blog\Post\Tag::getAll(),
-                            'message' => $message,
-                            'errors' => $errors,
-                            'success' => $success
-                        )
-                    );
-                    break;
-                case 'edit':
-                    if (empty($id)) {
-                        throw new Redirection('/admin/blog');
-//                        $errors[] = 'No se ha encontrado la entrada';
-                        //Text::get('dashboard-project-updates-nopost');
-//                        $action = 'list';
-                        break;
-                    } else {
-                        $post = Model\Blog\Post::get($id);
-
-                        if (!$post instanceof Model\Blog\Post) {
-                            $errors[] = 'La entrada esta corrupta, contacte con nosotros.';
-                            //Text::get('dashboard-project-updates-postcorrupt');
-                            $action = 'list';
-                            break;
-                        }
-                    }
-
-                    $message = 'Editando una entrada existente';
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'blog',
-                            'file' => 'edit',
-                            'action' => 'edit',
-                            'post' => $post,
-                            'tags' => Model\Blog\Post\Tag::getAll(),
-                            'message' => $message,
-                            'errors' => $errors,
-                            'success' => $success
-                        )
-                    );
-                    break;
-            }
-
+            return Admin\Blog::process($action, $id);
         }
 
         /*
@@ -3925,68 +779,6 @@ namespace Goteo\Controller {
          */
         public function glossary ($action = 'list', $id = null) {
 
-            $errors = array();
-
-            $url = '/admin/glossary';
-
-			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-                    $editing = false;
-
-                    if (!empty($_POST['id'])) {
-                        $post = Model\Glossary::get($_POST['id']);
-                    } else {
-                        $post = new Model\Glossary();
-                    }
-                    // campos que actualizamos
-                    $fields = array(
-                        'id',
-                        'title',
-                        'text',
-                        'media',
-                        'legend'
-                    );
-
-                    foreach ($fields as $field) {
-                        $post->$field = $_POST[$field];
-                    }
-
-                    // tratar la imagen y ponerla en la propiedad image
-                    if(!empty($_FILES['image_upload']['name'])) {
-                        $post->image = $_FILES['image_upload'];
-                        $editing = true;
-                    }
-
-                    // tratar las imagenes que quitan
-                    foreach ($post->gallery as $key=>$image) {
-                        if (!empty($_POST["gallery-{$image->id}-remove"])) {
-                            $image->remove('glossary');
-                            unset($post->gallery[$key]);
-                            if ($post->image == $image->id) {
-                                $post->image = '';
-                            }
-                            $editing = true;
-                        }
-                    }
-
-                    if (!empty($post->media)) {
-                        $post->media = new Model\Project\Media($post->media);
-                    }
-
-                    /// este es el único save que se lanza desde un metodo process_
-                    if ($post->save($errors)) {
-                        if ($action == 'edit') {
-                            $success[] = 'El término se ha actualizado correctamente';
-                        } else {
-                            $success[] = 'Se ha añadido un nuevo término';
-                            $id = $post->id;
-                        }
-                        $action = $editing ? 'edit' : 'list';
-                    } else {
-                        $errors[] = 'Ha habido algun problema al guardar los datos';
-                    }
-            }
-
             $BC = self::menu(array(
                 'section' => 'contents',
                 'option' => __FUNCTION__,
@@ -3996,81 +788,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            switch ($action)  {
-                case 'remove':
-                    // eliminar un término
-                    if (Model\Glossary::delete($id)) {
-                        $success[] = 'Término eliminado';
-                    } else {
-                        $errors[] = 'No se ha podido eliminar el término';
-                    }
-                    break;
-                case 'add':
-                    // nueva entrada con wisiwig
-                    // obtenemos datos basicos
-                    $post = new Model\Glossary();
-
-                    $message = 'Añadiendo un nuevo término';
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'glossary',
-                            'file' => 'edit',
-                            'action' => 'add',
-                            'post' => $post,
-                            'message' => $message,
-                            'errors' => $errors,
-                            'success' => $success
-                        )
-                    );
-                    break;
-                case 'edit':
-                    if (empty($id)) {
-                        throw new Redirection('/admin/glossary');
-                        break;
-                    } else {
-                        $post = Model\Glossary::get($id);
-
-                        if (!$post instanceof Model\Glossary) {
-                            $errors[] = 'La entrada esta corrupta, contacte con nosotros.';
-                            //Text::get('dashboard-project-updates-postcorrupt');
-                            $action = 'list';
-                            break;
-                        }
-                    }
-
-                    $message = 'Editando un término existente';
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'glossary',
-                            'file' => 'edit',
-                            'action' => 'edit',
-                            'post' => $post,
-                            'message' => $message,
-                            'errors' => $errors,
-                            'success' => $success
-                        )
-                    );
-                    break;
-            }
-
-            // lista de términos
-            $posts = Model\Glossary::getAll();
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'glossary',
-                    'file' => 'list',
-                    'posts' => $posts,
-                    'errors' => $errors,
-                    'success' => $success
-                )
-            );
-
+            return Admin\Glossary::process($action, $id);
         }
 
         /*
@@ -4078,91 +796,6 @@ namespace Goteo\Controller {
          */
         public function info ($action = 'list', $id = null) {
 
-            $errors = array();
-
-            $url = '/admin/info';
-
-			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-                    $editing = false;
-
-                    if (!empty($_POST['id'])) {
-                        $post = Model\Info::get($_POST['id']);
-                    } else {
-                        $post = new Model\Info();
-                    }
-                    // campos que actualizamos
-                    $fields = array(
-                        'id',
-                        'node',
-                        'title',
-                        'text',
-                        'media',
-                        'legend',
-                        'publish',
-                        'order'
-                    );
-
-                    foreach ($fields as $field) {
-                        $post->$field = $_POST[$field];
-                    }
-
-                    // tratar la imagen y ponerla en la propiedad image
-                    if(!empty($_FILES['image_upload']['name'])) {
-                        $post->image = $_FILES['image_upload'];
-                        $editing = true;
-                    }
-
-                    // tratar las imagenes que quitan
-                    foreach ($post->gallery as $key=>$image) {
-                        if (!empty($_POST["gallery-{$image->id}-remove"])) {
-                            $image->remove('info');
-                            unset($post->gallery[$key]);
-                            if ($post->image == $image->id) {
-                                $post->image = '';
-                            }
-                            $editing = true;
-                        }
-                    }
-
-                    if (!empty($post->media)) {
-                        $post->media = new Model\Project\Media($post->media);
-                    }
-
-                    /// este es el único save que se lanza desde un metodo process_
-                    if ($post->save($errors)) {
-                        if ($action == 'edit') {
-                            $success[] = 'La entrada se ha actualizado correctamente';
-
-                            if ((bool) $post->publish) {
-                                $log_action = 'Publicado';
-                            } else {
-                                $log_action = 'Modificado';
-                            }
-
-                        } else {
-                            $success[] = 'Se ha añadido una nueva entrada';
-                            $id = $post->id;
-                            $log_action = 'Añadido';
-                        }
-                        $action = $editing ? 'edit' : 'list';
-
-                        // Evento Feed
-                        $log = new Feed();
-                        $log->populate('modificacion de idea about (admin)', '/admin/info',
-                            \vsprintf('El admin %s ha %s la Idea de fuerza "%s"', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', $log_action),
-                                Feed::item('relevant', $post->title, '/about#info'.$post->id)
-                        )));
-                        $log->doAdmin('admin');
-                        unset($log);
-
-                    } else {
-                        $errors[] = 'Ha habido algun problema al guardar los datos';
-                    }
-            }
-
             $BC = self::menu(array(
                 'section' => 'contents',
                 'option' => __FUNCTION__,
@@ -4172,102 +805,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            switch ($action)  {
-                case 'up':
-                    Model\Info::up($id);
-                    break;
-                case 'down':
-                    Model\Info::down($id);
-                    break;
-                case 'remove':
-                    $tempData = Model\Info::get($id);
-                    // eliminar un término
-                    if (Model\Info::delete($id)) {
-                        $success[] = 'Entrada eliminada';
-
-                        // Evento Feed
-                        $log = new Feed();
-                        $log->populate('quitar de idea about (admin)', '/admin/info',
-                            \vsprintf('El admin %s ha %s la Idea de fuerza "%s"', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', 'Eliminado'),
-                                Feed::item('relevant', $tempData->title)
-                        )));
-                        $log->doAdmin('admin');
-                        unset($log);
-
-                    } else {
-                        $errors[] = 'No se ha podido eliminar la entrada';
-                    }
-                    break;
-                case 'add':
-                    // nueva entrada con wisiwig
-                    // obtenemos datos basicos
-                    if (!$post instanceof Model\Info) {
-                        $post = new Model\Info();
-                    }
-
-                    $message = 'Añadiendo una nueva entrada';
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'info',
-                            'file' => 'edit',
-                            'action' => 'add',
-                            'post' => $post,
-                            'message' => $message,
-                            'errors' => $errors,
-                            'success' => $success
-                        )
-                    );
-                    break;
-                case 'edit':
-                    if (empty($id)) {
-                        throw new Redirection('/admin/info');
-                        break;
-                    } else {
-                        $post = Model\Info::get($id);
-
-                        if (!$post instanceof Model\Info) {
-                            $errors[] = 'La entrada esta corrupta, contacte con nosotros.';
-                            //Text::get('dashboard-project-updates-postcorrupt');
-                            $action = 'list';
-                            break;
-                        }
-                    }
-
-                    $message = 'Editando una entrada existente';
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'info',
-                            'file' => 'edit',
-                            'action' => 'edit',
-                            'post' => $post,
-                            'message' => $message,
-                            'errors' => $errors,
-                            'success' => $success
-                        )
-                    );
-                    break;
-            }
-
-            // lista de términos
-            $posts = Model\Info::getAll();
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'info',
-                    'file' => 'list',
-                    'posts' => $posts,
-                    'errors' => $errors,
-                    'success' => $success
-                )
-            );
-
+            return Admin\Info::process($action, $id);
         }
 
 
@@ -4285,196 +823,24 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $model = 'Goteo\Model\News';
-            $url = '/admin/news';
-
-            $errors = array();
-
-            switch ($action) {
-                case 'add':
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'base',
-                            'file' => 'edit',
-                            'data' => (object) array('order' => $model::next()),
-                            'form' => array(
-                                'action' => "$url/edit/",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => 'Añadir'
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'title' => array(
-                                        'label' => 'Noticia',
-                                        'name' => 'title',
-                                        'type' => 'text',
-                                        'properties' => 'size="100" maxlength="100"'
-                                    ),
-                                    'description' => array(
-                                        'label' => 'Entradilla',
-                                        'name' => 'description',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="2"'
-                                    ),
-                                    'url' => array(
-                                        'label' => 'Enlace',
-                                        'name' => 'url',
-                                        'type' => 'text',
-                                        'properties' => 'size=100'
-                                    ),
-                                    'order' => array(
-                                        'label' => 'Posición',
-                                        'name' => 'order',
-                                        'type' => 'text'
-                                    )
-                                )
-
-                            )
-                        )
-                    );
-
-                    break;
-                case 'edit':
-
-                    // gestionar post
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
-
-                        $errors = array();
-
-                        // instancia
-                        $item = new $model(array(
-                            'id'          => $_POST['id'],
-                            'title'       => $_POST['title'],
-                            'description' => $_POST['description'],
-                            'url'         => $_POST['url'],
-                            'order'       => $_POST['order']
-                        ));
-
-                        if ($item->save($errors)) {
-
-                            if (empty($_POST['id'])) {
-                                // Evento Feed
-                                $log = new Feed();
-                                $log->populate('nueva micronoticia (admin)', '/admin/news', \vsprintf('El admin %s ha %s la micronoticia "%s"', array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                    Feed::item('relevant', 'Publicado'),
-                                    Feed::item('news', $_POST['title'], '#news'.$item->id)
-                                )));
-                                $log->doAdmin('admin');
-                                unset($log);
-                            }
-
-                            throw new Redirection($url);
-                        }
-                    } else {
-                        $item = $model::get($id);
-                    }
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'base',
-                            'file' => 'edit',
-                            'data' => $item,
-                            'form' => array(
-                                'action' => "$url/edit/$id",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => Text::get('regular-save')
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'title' => array(
-                                        'label' => 'Noticia',
-                                        'name' => 'title',
-                                        'type' => 'text',
-                                        'properties' => 'size="100"  maxlength="80"'
-                                    ),
-                                    'description' => array(
-                                        'label' => 'Entradilla',
-                                        'name' => 'description',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="2"'
-                                    ),
-                                    'url' => array(
-                                        'label' => 'Enlace',
-                                        'name' => 'url',
-                                        'type' => 'text',
-                                        'properties' => 'size=100'
-                                    ),
-                                    'order' => array(
-                                        'label' => 'Posición',
-                                        'name' => 'order',
-                                        'type' => 'text'
-                                    )
-                                )
-
-                            ),
-                            'errors' => $errors
-                        )
-                    );
-
-                    break;
-                case 'up':
-                    $model::up($id);
-                    break;
-                case 'down':
-                    $model::down($id);
-                    break;
-                case 'remove':
-                    $tempData = $model::get($id);
-                    if ($model::delete($id)) {
-                        // Evento Feed
-                        $log = new Feed();
-                        $log->populate('micronoticia quitada (admin)', '/admin/news',
-                            \vsprintf('El admin %s ha %s la micronoticia "%s"', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', 'Quitado'),
-                                Feed::item('blog', $tempData->title)
-                        )));
-                        $log->doAdmin('admin');
-                        unset($log);
-
-                        throw new Redirection($url);
-                    }
-                    break;
-            }
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'base',
-                    'file' => 'list',
-                    'model' => 'news',
-                    'addbutton' => 'Nueva noticia',
-                    'data' => $model::getAll(),
-                    'columns' => array(
-                        'edit' => '',
-                        'title' => 'Noticia',
-                        'url' => 'Enlace',
-                        'order' => 'Posición',
-                        'up' => '',
-                        'down' => '',
-                        'translate' => '',
-                        'remove' => ''
-                    ),
-                    'url' => "$url",
-                    'errors' => $errors
-                )
-            );
+            return Admin\News::process($action, $id);
         }
+
+        /*
+         * Gestor de envio automático de newsletter
+         */
+        public function newsletter ($action = 'list', $id = null) {
+            $BC = self::menu(array(
+                'section' => 'users',
+                'option' => __FUNCTION__,
+                'action' => $action
+            ));
+
+            define('ADMIN_BCPATH', $BC);
+
+            return Admin\Newsletter::process($action, $id);
+        }
+
 
         /*
          *  Gestión de patrocinadores
@@ -4490,178 +856,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $model = 'Goteo\Model\Sponsor';
-            $url = '/admin/sponsors';
-
-            $errors = array();
-
-            switch ($action) {
-                case 'add':
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'base',
-                            'file' => 'edit',
-                            'data' => (object) array('order' => $model::next() ),
-                            'form' => array(
-                                'action' => "$url/edit/",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => 'Añadir'
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Patrocinador',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    ),
-                                    'url' => array(
-                                        'label' => 'Enlace',
-                                        'name' => 'url',
-                                        'type' => 'text',
-                                        'properties' => 'size=100'
-                                    ),
-                                    'image' => array(
-                                        'label' => 'Logo',
-                                        'name' => 'image',
-                                        'type' => 'image'
-                                    ),
-                                    'order' => array(
-                                        'label' => 'Posición',
-                                        'name' => 'order',
-                                        'type' => 'text'
-                                    )
-                                )
-
-                            )
-                        )
-                    );
-
-                    break;
-                case 'edit':
-
-                    // gestionar post
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-                        $errors = array();
-
-                        // instancia
-                        $item = new $model(array(
-                            'id' => $_POST['id'],
-                            'name' => $_POST['name'],
-                            'url' => $_POST['url'],
-                            'order' => $_POST['order']
-                        ));
-
-                        // tratar la imagen y ponerla en la propiedad image
-                        if(!empty($_FILES['image']['name'])) {
-                            $item->image = $_FILES['image'];
-                        }
-
-                        // tratar si quitan la imagen
-                        $current = $_POST['image']; // la acual
-                        if (isset($_POST['image-' . $current .  '-remove'])) {
-                            $image = Model\Image::get($current);
-                            $image->remove('sponsor');
-                            $item->image = '';
-                            $removed = true;
-                        }
-
-                        if ($item->save($errors)) {
-                            throw new Redirection($url);
-                        }
-                    } else {
-                        $item = $model::get($id);
-                    }
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'base',
-                            'file' => 'edit',
-                            'data' => $item,
-                            'form' => array(
-                                'action' => "$url/edit/$id",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => Text::get('regular-save')
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Patrocinador',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    ),
-                                    'url' => array(
-                                        'label' => 'Enlace',
-                                        'name' => 'url',
-                                        'type' => 'text',
-                                        'properties' => 'size=100'
-                                    ),
-                                    'image' => array(
-                                        'label' => 'Logo',
-                                        'name' => 'image',
-                                        'type' => 'image'
-                                    ),
-                                    'order' => array(
-                                        'label' => 'Posición',
-                                        'name' => 'order',
-                                        'type' => 'text'
-                                    )
-                                )
-
-                            ),
-                            'errors' => $errors
-                        )
-                    );
-
-                    break;
-                case 'up':
-                    $model::up($id);
-                    break;
-                case 'down':
-                    $model::down($id);
-                    break;
-                case 'remove':
-                    if ($model::delete($id)) {
-                        throw new Redirection($url);
-                    }
-                    break;
-            }
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'base',
-                    'file' => 'list',
-                    'addbutton' => 'Nuevo patrocinador',
-                    'data' => $model::getAll(),
-                    'columns' => array(
-                        'edit' => '',
-                        'name' => 'Patrocinador',
-                        'url' => 'Enlace',
-                        'image' => 'Imagen',
-                        'order' => 'Posición',
-                        'up' => '',
-                        'down' => '',
-                        'remove' => ''
-                    ),
-                    'url' => "$url",
-                    'errors' => $errors
-                )
-            );
+            return Admin\Sponsors::process($action, $id);
         }
 
         /*
@@ -4669,8 +864,6 @@ namespace Goteo\Controller {
          */
         public function calls($action = 'list', $id = null) {
 
-            $log_text = null;
-
             $BC = self::menu(array(
                 'section' => 'sponsors',
                 'option' => __FUNCTION__,
@@ -4680,229 +873,16 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $filters = array();
-            $fields = array('status', 'category', 'owner', 'name', 'order');
-            foreach ($fields as $field) {
-                if (isset($_GET[$field])) {
-                    $filters[$field] = $_GET[$field];
-                }
-            }
-
-            $errors = array();
-
-            /*
-             * switch action,
-             * proceso que sea,
-             * redirect
-             *
-             */
-            if (isset($id)) {
-                $call = Model\Call::get($id);
-            }
-            switch ($action) {
-                case 'review': // listo para aplicar proyectos (se publica, sino que siga en edicion)
-                    if ($call->ready($errors)) {
-                        $log_text = 'El admin %s ha pasado la convocatoria %s a <span class="red">Revisión</span>';
-                    } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar la convocatoria %s a <span class="red">Revisión</span>';
-                    }
-                    break;
-                case 'open': // comienza la campaña de postulacion
-                    if ($call->open($errors)) {
-                        $log_text = 'El admin %s ha pasado la convocatoria %s al estado <span class="red">Recepción de proyectos</span>';
-                    } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar la convocatoria %s al estado <span class="red">Recepción de proyectos</span>';
-                    }
-                    break;
-                case 'publish': // comienza la campaña de pasta
-                    if ($call->publish($errors)) {
-                        $log_text = 'El admin %s ha pasado la convocatoria %s al estado <span class="red">en Campaña</span>';
-                    } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar la convocatoria %s al estado <span class="red">en Campaña</span>';
-                    }
-                    break;
-                case 'cancel': // caducar una campaña o aplicacion antes de hora
-                    if ($call->fail($errors)) {
-                        $log_text = 'El admin %s ha pasado la convocatoria %s al estado <span class="red">Caducado</span>';
-                    } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar la convocatoria %s al estado <span class="red">Caducado</span>';
-                    }
-                    break;
-                case 'enable': // reabrir la edición Ojo que se quita de campña! Se puede editar mientras está en campaña?
-                    if ($call->enable($errors)) {
-                        $log_text = 'El admin %s ha pasado la convocatoria %s al estado <span class="red">Edición</span>';
-                    } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar la convocatoria %s al estado <span class="red">Edición</span>';
-                    }
-                    break;
-                case 'delete': // eliminar completamente la convocatoria
-                    if ($call->delete($errors)) {
-                        $log_text = 'El admin %s ha eliminado la convocatoria %s <span class="red">Completamente</span>';
-                    } else {
-                        $log_text = 'Al admin %s le ha fallado al eliminar la convocatoria %s <span class="red">Completamente</span>';
-                    }
-                    break;
-            }
-
-            //si llega post, verificamos los datos y hacemos lo que se tenga que hacer
-            if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['operation']) && !empty($call)) {
-                switch ($_POST['operation']) {
-                    case 'assign':
-                        if (!empty($_POST['project'])) {
-                            $registry = new Model\Call\Project;
-                            $registry->id = $_POST['project'];
-                            $registry->call = $call->id;
-                            if ($registry->save($errors)) {
-                                Message::Info('Proyecto seleccionado correctamente');
-
-                                $projectData = Model\Project::get($_POST['project']);
-
-                                // Evento feed
-                                $log = new Feed();
-                                $log->populate('proyecto asignado a convocatoria desde admin', 'admin/calls/'.$call->id.'/projects',
-                                    \vsprintf('El admin %s ha asignado el proyecto %s a la convocatoria %s', array(
-                                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                        Feed::item('project', $projectData->name, $projectData->id),
-                                        Feed::item('call', $call->name, $call->id))
-                                    ));
-                                $log->doAdmin('call');
-                                $log->populate($projectData->name, '/project/'.$projectData->id,
-                                    \vsprintf('Ha sido seleccionado en la convocatoria %s', array(
-                                        Feed::item('call', $call->name, $call->id))
-                                    ), $projectData->gallery[0]->id);
-                                $log->doPublic('projects');
-                                unset($log);
-
-                            } else {
-                                Message::Error('Fallo al seleccionar proyecto');
-                            }
-                        } else {
-                            $errors[] = 'No has seleccionado ningun proyecto para asignar a la convocatoria, no?';
-                        }
-                        break;
-                    case 'unassign':
-                        if (!empty($_POST['project'])) {
-                            $registry = new Model\Call\Project;
-                            $registry->id = $_POST['project'];
-                            $registry->call = $call->id;
-                            if ($registry->remove($errors)) {
-                                Message::Info('Proyecto desasignado correctamente');
-                            } else {
-                                Message::Error('Fallo al desasignar proyecto');
-                            }
-                        } else {
-                            $errors[] = 'No has clickado ningun proyecto para desasignar, no?';
-                        }
-                        break;
-                }
-            }
-
-            
-            if (isset($log_text)) {
-                // Evento Feed
-                $log = new Feed();
-                $log_html = \vsprintf($log_text, array(
-                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                        Feed::item('call', $call->name, $call->id))
-                    );
-                // Mensaje como el log
-                Message::Info($log_html);
-                $log->populate('Gestion de una convocatoria desde el admin', '/admin/calls', $log_html);
-                $log->doAdmin('admin');
-
-                // publicos
-                switch ($action) {
-                    case 'open': // se ha abierto para recibir proyectos
-                        $log->populate($call->name, '/call/'.$call->id, Text::html('feed-new_call-opened'), $call->logo);
-                        $log->doPublic();
-                    break;
-                    case 'publish': // ha iniciado la campaña
-                        $log->populate($call->name, '/call/'.$call->id, Text::html('feed-new_call-published'), $call->logo);
-                        $log->doPublic();
-                    break;
-                }
-                unset($log);
-                
-                throw new Redirection('/admin/calls/list');
-            }
-
-            if ($action == 'add') {
-                $callers = Model\User::getCallers();
-
-                // cambiar fechas
-                return new View(
-                    'view/admin/index.html.php',
-                    array(
-                        'folder' => 'calls',
-                        'file' => 'add',
-                        'callers' => $callers,
-                        'errors' => $errors
-                    )
-                );
-            }
-
-            if ($action == 'projects') {
-                if (empty($call)) {
-                    throw new Redirection('/admin/calls/list');
-                }
-                $projects   = Model\Call\Project::get($call->id);
-                $status     = Model\Project::status();
-
-                // los available son los que aparecen en el discover/call pero tambien los que estan en esdicion
-                $available  = Model\Call\Project::getAvailable($call->id);
-
-
-                // cambiar fechas
-                return new View(
-                    'view/admin/index.html.php',
-                    array(
-                        'folder' => 'calls',
-                        'file' => 'projects',
-                        'call' => $call,
-                        'projects' => $projects,
-                        'available' => $available,
-                        'status' => $status,
-                        'errors' => $errors
-                    )
-                );
-            }
-
-
-            $calls = Model\Call::getList($filters);
-            $status = Model\Call::status();
-            $categories = Model\Call\Category::getAll();
-            $callers = Model\User::getCallers();
-            $orders = array(
-                'name' => 'Nombre',
-                'updated' => 'Apertura postulacion'
-            );
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'calls',
-                    'file' => 'list',
-                    'calls' => $calls,
-                    'filters' => $filters,
-                    'status' => $status,
-                    'categories' => $categories,
-                    'callers' => $callers,
-                    'orders' => $orders,
-                    'errors' => $errors
-                )
-            );
+            return Admin\Calls::process($action, $id);
         }
 
         /*
-         *  Gestión de campañas
-         *
-         *  OBSOLETO @TODO quitarlo pero ojo que hay que traspasar los aportes a la convocatoria correspondiente
-         *
-         *
-        public function campaigns($action = 'list', $id = null) {
+         *  Convocatorias en portada
+         */
+        public function campaigns($action = 'list', $id = null, $flag = null) {
 
             $BC = self::menu(array(
-                'section' => 'sponsors',
+                'section' => 'home',
                 'option' => __FUNCTION__,
                 'action' => $action,
                 'id' => $id
@@ -4910,140 +890,8 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $model = 'Goteo\Model\Campaign';
-            $url = '/admin/campaigns';
-
-            $errors = array();
-
-            switch ($action) {
-                case 'add':
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'base',
-                            'file' => 'edit',
-                            'data' => (object) array(),
-                            'form' => array(
-                                'action' => "$url/edit/",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => 'Añadir'
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Campaña',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    ),
-                                    'description' => array(
-                                        'label' => 'Descripción',
-                                        'name' => 'description',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="2"'
-                                    )
-                                )
-
-                            )
-                        )
-                    );
-
-                    break;
-                case 'edit':
-
-                    // gestionar post
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
-
-                        $errors = array();
-
-                        // instancia
-                        $item = new $model(array(
-                            'id' => $_POST['id'],
-                            'name' => $_POST['name'],
-                            'description' => $_POST['description']
-                        ));
-
-                        if ($item->save($errors)) {
-                            throw new Redirection($url);
-                        }
-                    } else {
-                        $item = $model::get($id);
-                    }
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'base',
-                            'file' => 'edit',
-                            'data' => $item,
-                            'form' => array(
-                                'action' => "$url/edit/$id",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => Text::get('regular-save')
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Campaña',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    ),
-                                    'description' => array(
-                                        'label' => 'Descripción',
-                                        'name' => 'description',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="2"'
-                                    )
-                                )
-
-                            ),
-                            'errors' => $errors
-                        )
-                    );
-
-                    break;
-                case 'remove':
-                    if ($model::delete($id)) {
-                        throw new Redirection($url);
-                    }
-                    break;
-            }
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'base',
-                    'file' => 'list',
-                    'addbutton' => 'Nueva campaña',
-                    'data' => $model::getList(),
-                    'columns' => array(
-                        'edit' => '',
-                        'name' => 'Campaña',
-                        'used' => 'Aportes',
-                        'remove' => ''
-                    ),
-                    'url' => "$url",
-                    'errors' => $errors
-                )
-            );
+            return Admin\Campaigns::process($action, $id, $flag);
         }
-         *
-         *  FIN Gest campañas
-         */
-
-
-
 
         /*
          *  Gestión de nodos
@@ -5051,7 +899,7 @@ namespace Goteo\Controller {
         public function nodes($action = 'list', $id = null) {
 
             $BC = self::menu(array(
-                'section' => 'sponsors',
+                'section' => 'nodes',
                 'option' => __FUNCTION__,
                 'action' => $action,
                 'id' => $id
@@ -5059,135 +907,25 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $model = 'Goteo\Model\Node';
-            $url = '/admin/nodes';
-
-            $errors = array();
-
-            switch ($action) {
-                case 'add':
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'base',
-                            'file' => 'edit',
-                            'data' => (object) array(),
-                            'form' => array(
-                                'action' => "$url/edit/",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => 'Añadir'
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Campaña',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    ),
-                                    'description' => array(
-                                        'label' => 'Descripción',
-                                        'name' => 'description',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="2"'
-                                    )
-                                )
-
-                            )
-                        )
-                    );
-
-                    break;
-                case 'edit':
-
-                    // gestionar post
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
-
-                        $errors = array();
-
-                        // instancia
-                        $item = new $model(array(
-                            'id' => $_POST['id'],
-                            'name' => $_POST['name'],
-                            'description' => $_POST['description']
-                        ));
-
-                        if ($item->save($errors)) {
-                            throw new Redirection($url);
-                        }
-                    } else {
-                        $item = $model::get($id);
-                    }
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'base',
-                            'file' => 'edit',
-                            'data' => $item,
-                            'form' => array(
-                                'action' => "$url/edit/$id",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => Text::get('regular-save')
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Campaña',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    ),
-                                    'description' => array(
-                                        'label' => 'Descripción',
-                                        'name' => 'description',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="2"'
-                                    )
-                                )
-
-                            ),
-                            'errors' => $errors
-                        )
-                    );
-
-                    break;
-                case 'remove':
-                    if ($model::delete($id)) {
-                        throw new Redirection($url);
-                    }
-                    break;
-            }
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'base',
-                    'file' => 'list',
-                    'addbutton' => 'Nuevo nodo',
-                    'data' => $model::getList(),
-                    'columns' => array(
-                        'edit' => '',
-                        'name' => 'Campaña',
-                        'used' => 'Aportes',
-                        'remove' => ''
-                    ),
-                    'url' => "$url",
-                    'errors' => $errors
-                )
-            );
+            return Admin\Nodes::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
+        /*
+         *  Gestión de datos del nodo
+         */
+        public function node($action = 'edit', $id = null) {
+
+            $BC = self::menu(array(
+                'section' => 'contents',
+                'option' => __FUNCTION__,
+                'action' => $action,
+                'id' => $id
+            ));
+
+            define('ADMIN_BCPATH', $BC);
+
+            return Admin\Node::process();
+        }
 
         /*
          * Comunicaciones con los usuarios mediante mailing
@@ -5203,317 +941,13 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $errors = array();
-
-            // Valores de filtro
-//            $projects = Model\Project::getAll();
-            $interests = Model\User\Interest::getAll();
-            $status = Model\Project::status();
-            $methods = Model\Invest::methods();
-            $types = array(
-                'investor' => 'Cofinanciadores',
-                'owner' => 'Autores',
-                'user' => 'Usuarios'
-            );
-            $roles = array(
-                'admin' => 'Administrador',
-                'checker' => 'Revisor',
-                'translator' => 'Traductor'
-            );
-
-            // una variable de sesion para mantener los datos de todo esto
-            if (!isset($_SESSION['mailing'])) {
-                $_SESSION['mailing'] = array();
-            }
-
-            if (!isset($_SESSION['mailing']['filters']['status']))
-                $_SESSION['mailing']['filters']['status'] = -1;
-
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-                switch ($action) {
-                    case 'edit':
-
-                        $_SESSION['mailing']['receivers'] = array();
-
-                        $values = array();
-                        $sqlFields  = '';
-                        $sqlInner  = '';
-                        $sqlFilter = '';
-
-
-                        // Han elegido filtros
-                        $filters = array(
-                            'project'  => $_POST['project'],
-                            'type'     => $_POST['type'],
-                            'status'   => $_POST['status'],
-                            'method'   => $_POST['method'],
-                            'interest' => $_POST['interest'],
-                            'role'     => $_POST['role'],
-                            'name'     => $_POST['name'],
-                            'workshopper' => $_POST['workshopper']
-                        );
-
-                        $_SESSION['mailing']['filters'] = $filters;
-
-                        // cargamos los destiantarios
-                        //----------------------------
-                        // por tipo de usuario
-                        switch ($filters['type']) {
-                            case 'investor':
-                                $sqlInner .= "INNER JOIN invest
-                                        ON invest.user = user.id
-                                        AND (invest.status = 0 OR invest.status = 1 OR invest.status = 3 OR invest.status = 4)
-                                    INNER JOIN project
-                                        ON project.id = invest.project
-                                        ";
-                                $sqlFields .= ", project.name as project";
-                                $sqlFields .= ", project.id as projectId";
-                                break;
-                            case 'owner':
-                                $sqlInner .= "INNER JOIN project
-                                        ON project.owner = user.id
-                                        ";
-                                $sqlFields .= ", project.name as project";
-                                $sqlFields .= ", project.id as projectId";
-                                break;
-                            default :
-                                break;
-                        }
-                        $_SESSION['mailing']['filters_txt'] = 'los <strong>' . $types[$filters['type']] . '</strong> ';
-
-                        if (!empty($filters['project']) && !empty($sqlInner)) {
-                            $sqlFilter .= " AND project.name LIKE (:project) ";
-                            $values[':project'] = '%'.$filters['project'].'%';
-                            $_SESSION['mailing']['filters_txt'] .= 'de proyectos que su nombre contenga <strong>\'' . $filters['project'] . '\'</strong> ';
-                        } elseif (empty($filters['project']) && !empty($sqlInner)) {
-                            $_SESSION['mailing']['filters_txt'] .= 'de cualquier proyecto ';
-                        }
-
-                        if (isset($filters['status']) && $filters['status'] > -1 && !empty($sqlInner)) {
-                            $sqlFilter .= "AND project.status = :status ";
-                            $values[':status'] = $filters['status'];
-                            $_SESSION['mailing']['filters_txt'] .= 'en estado <strong>' . $status[$filters['status']] . '</strong> ';
-                        } elseif ($filters['status'] < 0 && !empty($sqlInner)) {
-                            $_SESSION['mailing']['filters_txt'] .= 'en cualquier estado ';
-                        }
-
-                        if ($filters['type'] == 'investor') {
-                            if (!empty($filters['method']) && !empty($sqlInner)) {
-                                $sqlFilter .= "AND invest.method = :method ";
-                                $values[':method'] = $filters['method'];
-                                $_SESSION['mailing']['filters_txt'] .= 'mediante <strong>' . $methods[$filters['method']] . '</strong> ';
-                            } elseif (empty($filters['method']) && !empty($sqlInner)) {
-                                $_SESSION['mailing']['filters_txt'] .= 'mediante cualquier metodo ';
-                            }
-                        }
-
-                        if (!empty($filters['interest'])) {
-                            $sqlInner .= "INNER JOIN user_interest
-                                    ON user_interest.user = user.id
-                                    AND user_interest.interest = :interest
-                                    ";
-                            $values[':interest'] = $filters['interest'];
-                            $_SESSION['mailing']['filters_txt'] .= 'interesados en fin <strong>' . $interests[$filters['interest']] . '</strong> ';
-                        }
-
-                        if (!empty($filters['role'])) {
-                            $sqlInner .= "INNER JOIN user_role
-                                    ON user_role.user_id = user.id
-                                    AND user_role.role_id = :role
-                                    ";
-                            $values[':role'] = $filters['role'];
-                            $_SESSION['mailing']['filters_txt'] .= 'que sean <strong>' . $roles[$filters['role']] . '</strong> ';
-                        }
-
-                        if (!empty($filters['name'])) {
-                            $sqlFilter .= " AND ( user.name LIKE (:name) OR user.email LIKE (:name) ) ";
-                            $values[':name'] = '%'.$filters['name'].'%';
-                            $_SESSION['mailing']['filters_txt'] .= 'que su nombre o email contenga <strong>\'' . $filters['name'] . '\'</strong> ';
-                        }
-
-                        if (!empty($filters['workshopper'])) {
-                            $sqlFilter .= " AND user.password = SHA1(user.email) ";
-                            $_SESSION['mailing']['filters_txt'] .= 'que su contraseña sea igual que su email ';
-                        }
-
-                        $sql = "SELECT
-                                    user.id as id,
-                                    user.name as name,
-                                    user.email as email
-                                    $sqlFields
-                                FROM user
-                                $sqlInner
-                                WHERE user.id != 'root'
-                                AND user.active = 1
-                                $sqlFilter
-                                GROUP BY user.id
-                                ORDER BY user.name ASC
-                                ";
-
-//                        echo '<pre>'.$sql . '<br />'.print_r($values, 1).'</pre>';
-
-                        if ($query = Model\User::query($sql, $values)) {
-                            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
-                                $_SESSION['mailing']['receivers'][$receiver->id] = $receiver;
-                            }
-                        } else {
-                            $_SESSION['mailing']['errors'][] = 'Fallo el SQL!!!!! <br />' . $sql . '<pre>'.print_r($values, 1).'</pre>';
-                        }
-
-                        // si no hay destinatarios, salta a la lista con mensaje de error
-                        if (empty($_SESSION['mailing']['receivers'])) {
-                            $_SESSION['mailing']['errors'][] = 'No se han encontrado destinatarios para ' . $_SESSION['mailing']['filters_txt'];
-
-                            throw new Redirection('/admin/mailing/list');
-                        }
-
-                        // si hay, mostramos el formulario de envio
-                        return new View(
-                            'view/admin/index.html.php',
-                            array(
-                                'folder'    => 'mailing',
-                                'file'      => 'edit',
-                                'filters'   => $_SESSION['mailing']['filters'],
-//                                'projects'  => $projects,
-                                'interests' => $interests,
-                                'status'    => $status,
-                                'types'     => $types,
-                                'roles'     => $roles
-                            )
-                        );
-
-                        break;
-                    case 'send':
-                        // Enviando contenido recibido a destinatarios recibidos
-                        $users = array();
-                        foreach ($_POST as $key=>$value) {
-                            $matches = array();
-                            \preg_match('#receiver_(\w+)#', $key, $matches);
-//                            echo \trace($matches);
-                            if (!empty($matches[1]) && !empty($_SESSION['mailing']['receivers'][$matches[1]]->email)) {
-                                $users[] = $matches[1];
-                            }
-                        }
-
-//                        $content = nl2br($_POST['content']);
-                        $content = $_POST['content'];
-                        $subject = $_POST['subject'];
-                        $templateId = !empty($_POST['template']) ? $_POST['template'] : 11;
-
-
-                        // Contenido para newsletter
-                        if ($templateId == 33) {
-                            $_SESSION['NEWSLETTER_SENDID'] = '';
-                            $tmpcontent = \Goteo\Library\Newsletter::getContent($content);
-                        }
-
-                        // ahora, envio, el contenido a cada usuario
-                        foreach ($users as $usr) {
-
-                            // si es newsletter
-                            if ($templateId == 33) {
-                                // Mirar que no tenga bloqueadas las preferencias
-                                if (Model\User::mailBlock($usr)) continue;
-
-                                // el sontenido es el mismo para todos, no lleva variables
-                            } else {
-                                $tmpcontent = \str_replace(
-                                    array('%USERID%', '%USEREMAIL%', '%USERNAME%', '%SITEURL%', '%PROJECTID%', '%PROJECTNAME%', '%PROJECTURL%'),
-                                    array(
-                                        $usr,
-                                        $_SESSION['mailing']['receivers'][$usr]->email,
-                                        $_SESSION['mailing']['receivers'][$usr]->name,
-                                        SITE_URL,
-                                        $_SESSION['mailing']['receivers'][$usr]->projectId,
-                                        $_SESSION['mailing']['receivers'][$usr]->project,
-                                        SITE_URL.'/project/'.$_SESSION['mailing']['receivers'][$usr]->projectId
-                                    ),
-                                    $content);
-                            }
-
-
-                            $mailHandler = new Mail();
-
-                            $mailHandler->to = $_SESSION['mailing']['receivers'][$usr]->email;
-                            $mailHandler->toName = $_SESSION['mailing']['receivers'][$usr]->name;
-                            $mailHandler->subject = $subject;
-                            $mailHandler->content = '<br />'.$tmpcontent.'<br />';
-                            $mailHandler->html = true;
-                            $mailHandler->template = $templateId;
-                            if ($mailHandler->send($errors)) {
-                                $_SESSION['mailing']['receivers'][$usr]->ok = true;
-                            } else {
-                                $_SESSION['mailing']['receivers'][$usr]->ok = false;
-                            }
-
-                            unset($mailHandler);
-                        }
-
-                        // Evento Feed
-                        $log = new Feed();
-                        $log->populate('mailing a usuarios (admin)', '/admin/mailing',
-                            \vsprintf("El admin %s ha enviado una %s", array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('relevant', 'Comunicación masiva')
-                        )));
-                        $log->doAdmin('admin');
-                        unset($log);
-
-                        return new View(
-                            'view/admin/index.html.php',
-                            array(
-                                'folder'    => 'mailing',
-                                'file'      => 'send',
-                                'content'   => $content,
-//                                'projects'  => $projects,
-                                'interests' => $interests,
-                                'status'    => $status,
-                                'methods'   => $methods,
-                                'types'     => $types,
-                                'roles'     => $roles,
-                                'users'     => $users,
-                                'errors'    => $errors,
-                                'success'   => $success
-                            )
-                        );
-
-                        break;
-                }
-			}
-
-            $errors = $_SESSION['mailing']['errors'];
-            unset($_SESSION['mailing']['errors']);
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder'    => 'mailing',
-                    'file'      => 'list',
-//                    'projects'  => $projects,
-                    'interests' => $interests,
-                    'status'    => $status,
-                    'methods'   => $methods,
-                    'types'     => $types,
-                    'roles'     => $roles,
-                    'filters'   => $_SESSION['mailing']['filters'],
-                    'errors'    => $errors
-                )
-            );
+            return Admin\Mailing::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
         /*
          *  historial de emails enviados
          */
         public function sended($action = 'list') {
-
-            $filters = array();
-            $fields = array('user', 'template');
-            foreach ($fields as $field) {
-                if (isset($_GET[$field])) {
-                    $filters[$field] = $_GET[$field];
-                }
-            }
 
             $BC = self::menu(array(
                 'section' => 'users',
@@ -5523,20 +957,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $templates = Template::getAllMini();
-
-            $sended = Mail::getSended($filters);
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'sended',
-                    'file' => 'list',
-                    'filters' => $filters,
-                    'templates' => $templates,
-                    'sended' => $sended
-                )
-            );
+            return Admin\Sended::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
         /*
@@ -5553,74 +974,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $errors = array();
-
-            if ($_SERVER['REQUEST_METHOD'] == 'POST' && $action == 'edit') {
-
-                // instancia
-                $data = array(
-                    'id' => $_POST['id'],
-                    'name' => $_POST['name'],
-                    'amount' => $_POST['amount']
-                );
-
-				if (Worth::save($data, $errors)) {
-                    $action = 'list';
-                    $success[] = 'Nivel de meritocracia modificado';
-
-                    // Evento Feed
-                    $log = new Feed();
-                    $log->populate('modificacion de meritocracia (admin)', '/admin/worth', 
-                        \vsprintf("El admin %s ha %s el nivel de meritocrácia %s", array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('relevant', 'Modificado'),
-                            Feed::item('project', $icon->name)
-                    )));
-                    $log->doAdmin('admin');
-                    unset($log);
-				}
-				else {
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'worth',
-                            'file' => 'edit',
-                            'action' => 'edit',
-                            'worth' => (object) $data,
-                            'errors' => $errors
-                        )
-                    );
-				}
-			}
-
-            switch ($action) {
-                case 'edit':
-                    $worth = Worth::getAdmin($id);
-
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'worth',
-                            'file' => 'edit',
-                            'action' => 'edit',
-                            'worth' => $worth
-                        )
-                    );
-                    break;
-            }
-
-            $worthcracy = Worth::getAll();
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'worth',
-                    'file' => 'list',
-                    'worthcracy' => $worthcracy,
-                    'errors' => $errors,
-                    'success' => $success
-                )
-            );
+            return Admin\Worth::process($action, $id);
         }
 
         /*
@@ -5637,24 +991,13 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $wordcount = array();
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'base',
-                    'file' => 'wordcount',
-                    'wordcount' => $wordcount
-                )
-            );
+            return Admin\Wordcount::process($action, $id);
         }
 
         /*
          * Elementos en portada
          */
-        public function home($action = 'list', $item = null) {
-
-            $node = \GOTEO_NODE;
+        public function home($action = 'list', $id = null) {
 
             $BC = self::menu(array(
                 'section' => 'home',
@@ -5666,67 +1009,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            $errors = array();
-
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-                // instancia
-                $item = new Model\Home(array(
-                    'item' => $_POST['item'],
-                    'node' => $_POST['node'],
-                    'order' => $_POST['order'],
-                    'move' => 'down'
-                ));
-
-				if ($item->save($errors)) {
-                    $success[] = 'Elemento añadido correctamente';
-				}
-			}
-
-
-            switch ($action) {
-                case 'up':
-                    Model\Home::up($item);
-                    break;
-                case 'down':
-                    Model\Home::down($item);
-                    break;
-                case 'add':
-                    $next = Model\Home::next($node);
-                    $availables = Model\Home::available($node);
-
-                    if (empty($availables)) {
-                        $errors[] = 'Todos los elementos disponibles ya estan en la portada';
-                        break;
-                    }
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'home',
-                            'file' => 'add',
-                            'action' => 'add',
-                            'home' => (object) array('node' => $node, 'order' => $next),
-                            'availables' => $availables
-                        )
-                    );
-                    break;
-                case 'remove':
-                    Model\Home::delete($item, $node);
-                    break;
-            }
-
-            $items = Model\Home::getAll($node);
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'home',
-                    'file' => 'list',
-                    'items' => $items,
-                    'errors' => $errors,
-                    'success' => $success
-                )
-            );
+            return Admin\Home::process($action, $id);
         }
 
 
@@ -5740,342 +1023,129 @@ namespace Goteo\Controller {
             //   devolveremos el contenido html para pintar el camino de migas de pan
             //   con enlaces a lo anterior
 
-            $menu = array(
-                'contents' => array(
-                    'label'   => 'Gestión de Textos y Traducciones',
-                    'options' => array (
-                        'blog' => array(
-                            'label' => 'Blog',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add'  => array('label' => 'Nueva Entrada', 'item' => false),
-                                'edit' => array('label' => 'Editando Entrada', 'item' => true),
-                                'translate' => array('label' => 'Traduciendo Entrada', 'item' => true)
-                            )
-                        ),
-                        'texts' => array(
-                            'label' => 'Textos interficie',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'edit' => array('label' => 'Editando Original', 'item' => true),
-                                'translate' => array('label' => 'Traduciendo Texto', 'item' => true)
-                            )
-                        ),
-                        'faq' => array(
-                            'label' => 'FAQs',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add'  => array('label' => 'Nueva Pregunta', 'item' => false),
-                                'edit' => array('label' => 'Editando Pregunta', 'item' => true),
-                                'translate' => array('label' => 'Traduciendo Pregunta', 'item' => true)
-                            )
-                        ),
-                        'pages' => array(
-                            'label' => 'Páginas institucionales',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'edit' => array('label' => 'Editando Página', 'item' => true),
-                                'translate' => array('label' => 'Traduciendo Página', 'item' => true)
-                            )
-                        ),
-                        'categories' => array(
-                            'label' => 'Categorias e Intereses',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add'  => array('label' => 'Nueva Categoría', 'item' => false),
-                                'edit' => array('label' => 'Editando Categoría', 'item' => true),
-                                'translate' => array('label' => 'Traduciendo Categoría', 'item' => true)
-                            )
-                        ),
-                        'licenses' => array(
-                            'label' => 'Licencias',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'edit' => array('label' => 'Editando Licencia', 'item' => true),
-                                'translate' => array('label' => 'Traduciendo Licencia', 'item' => true)
-                            )
-                        ),
-                        'icons' => array(
-                            'label' => 'Tipos de Retorno',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'edit' => array('label' => 'Editando Tipo', 'item' => true),
-                                'translate' => array('label' => 'Traduciendo Tipo', 'item' => true)
-                            )
-                        ),
-                        'tags' => array(
-                            'label' => 'Tags de blog',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add'  => array('label' => 'Nuevo Tag', 'item' => false),
-                                'edit' => array('label' => 'Editando Tag', 'item' => true),
-                                'translate' => array('label' => 'Traduciendo Tag', 'item' => true)
-                            )
-                        ),
-                        'criteria' => array(
-                            'label' => 'Criterios de revisión',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add'  => array('label' => 'Nuevo Criterio', 'item' => false),
-                                'edit' => array('label' => 'Editando Criterio', 'item' => true),
-                                'translate' => array('label' => 'Traduciendo Criterio', 'item' => true)
-                            )
-                        ),
-                        'templates' => array(
-                            'label' => 'Plantillas de email',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'edit' => array('label' => 'Editando Plantilla', 'item' => true),
-                                'translate' => array('label' => 'Traduciendo Plantilla', 'item' => true)
-                            )
-                        ),
-                        'glossary' => array(
-                            'label' => 'Glosario',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'edit' => array('label' => 'Editando Término', 'item' => true),
-                                'translate' => array('label' => 'Traduciendo Término', 'item' => true)
-                            )
-                        ),
-                        'info' => array(
-                            'label' => 'Ideas about',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'edit' => array('label' => 'Editando Idea', 'item' => true),
-                                'translate' => array('label' => 'Traduciendo Idea', 'item' => true)
-                            )
-                        ),
-                        'wordcount' => array(
-                            'label' => 'Conteo de palabras',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false)
-                            )
+            $options = self::$options;
+
+            // El menu del panel admin dependerá del rol del usuario que accede
+            // Superadmin = todo
+            // Admin = contenidos de Nodo
+            if (isset($_SESSION['user']->roles['admin'])) {
+                $menu = array(
+                    'contents' => array(
+                        'label'   => 'Contenidos',
+                        'options' => array (
+                            'node' => $options['node'],   // la gestion de datos del nodo
+                            'pages' => $options['pages'], // páginas institucionales del nodo
+                            'blog' => $options['blog'],   // entradas del blog
+                            'tags' => $options['tags']    // tags de blog
+                        )
+                    ),
+                    'projects' => array(
+                        'label'   => 'Gestión de proyectos',
+                        'options' => array (
+                            'projects' => $options['projects'],     // proyectos del nodo
+                            'reviews' => $options['reviews'],       // revisiones de proyectos del nodo
+                            'translates' => $options['translates'] // traducciones de proyectos del nodo
+                        )
+                    ),
+                    'users' => array(
+                        'label'   => 'Gestión de usuarios',
+                        'options' => array (
+                            'users' => $options['users'],     // usuarios asociados al nodo
+                            'mailing' => $options['mailing'], // comunicaciones del nodoc on sus usuarios / promotores
+                            'sended' => $options['sended']    // historial de envios realizados por el nodo
+                        )
+                    ),
+                    'sponsors' => array(
+                        'label'   => 'Patrocinadores',
+                        'options' => array (
+                            'sponsors' => $options['sponsors'], // patrocinadores del nodo
+                            'patron' => $options['patron']      // padrinos de proyectos del nodo
+                        )
+                    ),
+                    'home' => array(
+                        'label'   => 'Portada',
+                        'options' => array (
+                            'home' => $options['home'],         // elementos en portada
+                            'promote' => $options['promote'],   // seleccion de proyectos destacados
+                            'campaigns' => $options['campaigns'],          // convocatorias en portada
+                            'blog' => $options['blog']          // entradas de blog (en la gestion de blog)
                         )
                     )
-                ),
-                'projects' => array(
-                    'label'   => 'Gestión de proyectos',
-                    'options' => array (
-                        'projects' => array(
-                            'label' => 'Listado de proyectos',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'dates' => array('label' => 'Cambiando las fechas del proyecto ', 'item' => true),
-                                'accounts' => array('label' => 'Gestionando las cuentas del proyecto ', 'item' => true)
-                            )
-                        ),
-                        'reviews' => array(
-                            'label' => 'Revisiones',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add'  => array('label' => 'Iniciando briefing', 'item' => false),
-                                'edit' => array('label' => 'Editando briefing', 'item' => true),
-                                'report' => array('label' => 'Informe', 'item' => true)
-                            )
-                        ),
-                        'translates' => array(
-                            'label' => 'Traducciones de proyectos',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add'  => array('label' => 'Habilitando traducción', 'item' => false),
-                                'edit' => array('label' => 'Asignando traducción', 'item' => true)
-                            )
-                        ),
-                        'rewards' => array(
-                            'label' => 'Gestión de retornos colectivos cumplidos',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false)
-                            )
+                );
+            } else {
+                $menu = array(
+                    'contents' => array(
+                        'label'   => 'Gestión de Textos y Traducciones',
+                        'options' => array (
+                            'blog' => $options['blog'],
+                            'texts' => $options['texts'],
+                            'faq' => $options['faq'],
+                            'pages' => $options['pages'],
+                            'categories' => $options['categories'],
+                            'licenses' => $options['licenses'],
+                            'icons' => $options['icons'],
+                            'tags' => $options['tags'],
+                            'criteria' => $options['criteria'],
+                            'templates' => $options['templates'],
+                            'glossary' => $options['glossary'],
+                            'info' => $options['info'],
+                            'wordcount' => $options['wordcount']
+                        )
+                    ),
+                    'projects' => array(
+                        'label'   => 'Gestión de proyectos',
+                        'options' => array (
+                            'projects' => $options['projects'],
+                            'reviews' => $options['reviews'],
+                            'translates' => $options['translates'],
+                            'rewards' => $options['rewards'],
+                            'patron' => $options['patron']
+                        )
+                    ),
+                    'users' => array(
+                        'label'   => 'Gestión de usuarios',
+                        'options' => array (
+                            'users' => $options['users'],
+                            'worth' => $options['worth'],
+                            'mailing' => $options['mailing'],
+                            'sended' => $options['sended']
+                        )
+                    ),
+                    'accounting' => array(
+                        'label'   => 'Gestión de aportes y transacciones',
+                        'options' => array (
+                            'invests' => $options['invests'],
+                            'accounts' => $options['accounts']
+                        )
+                    ),
+                    'home' => array(
+                        'label'   => 'Portada',
+                        'options' => array (
+                            'news' => $options['news'],
+                            'banners' => $options['banners'],
+                            'blog' => $options['blog'],
+                            'promote' => $options['promote'],
+                            'footer' => $options['footer'],
+                            'feed' => $options['feed'],
+                            'home' => $options['home']
+                        )
+                    ),
+                    'sponsors' => array(
+                        'label'   => 'Convocatorias y patrocinadores',
+                        'options' => array (
+                            'calls' => $options['calls'],
+                            'transcalls' => $options['transcalls'],
+                            'sponsors' => $options['sponsors']
+                        )
+                    ),
+                    'nodes' => array(
+                        'label'   => 'Nodos',
+                        'options' => array (
+                            'nodes' => $options['nodes']
                         )
                     )
-                ),
-                'users' => array(
-                    'label'   => 'Gestión de usuarios',
-                    'options' => array (
-                        'users' => array(
-                            'label' => 'Listado de usuarios',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add' => array('label' => 'Creando Usuario', 'item' => true),
-                                'edit' => array('label' => 'Editando Usuario', 'item' => true),
-                                'manage' => array('label' => 'Gestionando Usuario', 'item' => true),
-                                'impersonate' => array('label' => 'Suplantando al Usuario', 'item' => true)
-                            )
-                        ),
-                        'worth' => array(
-                            'label' => 'Niveles de meritocracia',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'edit' => array('label' => 'Editando Nivel', 'item' => true)
-                            )
-                        ),
-                        'mailing' => array(
-                            'label' => 'Comunicaciones',
-                            'actions' => array(
-                                'list' => array('label' => 'Seleccionando destinatarios', 'item' => false),
-                                'edit' => array('label' => 'Escribiendo contenido', 'item' => false),
-                                'send' => array('label' => 'Comunicación enviada', 'item' => false)
-                            )
-                        ),
-                        'sended' => array(
-                            'label' => 'Historial envios',
-                            'actions' => array(
-                                'list' => array('label' => 'Emails enviados', 'item' => false)
-                            )
-                        )/*,
-                        'useradd' => array(
-                            'label' => 'Creación de usuarios',
-                            'actions' => array(
-                                'add'  => array('label' => 'Nuevo Usuario', 'item' => false)
-                            )
-                        ),
-                        'usermod' => array(
-                            'label' => 'Gestión de roles y nodos de Usuarios',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'edit' => array('label' => 'Editando roles y nodos de Usuario', 'item' => true)
-                            )
-                        )*/
-                    )
-                ),
-                'accounting' => array(
-                    'label'   => 'Gestión de aportes y transacciones',
-                    'options' => array (
-                        'invests' => array(
-                            'label' => 'Aportes a Proyectos',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add'  => array('label' => 'Aporte manual', 'item' => false),
-                                'move'  => array('label' => 'Reubicando el aporte', 'item' => true),
-                                'details' => array('label' => 'Detalles del aporte', 'item' => true),
-                                'execute' => array('label' => 'Ejecución del cargo ahora mismo', 'item' => true),
-                                'cancel' => array('label' => 'Cancelando aporte', 'item' => true),
-                                'report' => array('label' => 'Informe de proyecto', 'item' => true)
-                            )
-                        ),
-                        'accounts' => array(
-                            'label' => 'Transacciones económicas',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'details' => array('label' => 'Detalles de la transacción', 'item' => true),
-                                'viewer' => array('label' => 'Viendo logs', 'item' => false)
-                            )
-                        )/*,
-                        'credits' => array(
-                            'label' => 'Gestión de crédito',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add'  => array('label' => 'Nuevo ', 'item' => false),
-                                'edit' => array('label' => 'Editando Tag', 'item' => true),
-                                'translate' => array('label' => 'Traduciendo Tag', 'item' => true)
-                            )
-                        )*/
-                    )
-                ),
-                'home' => array(
-                    'label'   => 'Portada',
-                    'options' => array (
-                        'news' => array(
-                            'label' => 'Micronoticias',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add'  => array('label' => 'Nueva Micronoticia', 'item' => false),
-                                'edit' => array('label' => 'Editando Micronoticia', 'item' => true),
-                                'translate' => array('label' => 'Traduciendo Micronoticia', 'item' => true)
-                            )
-                        ),
-                        'banners' => array(
-                            'label' => 'Banners',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add'  => array('label' => 'Nuevo Banner', 'item' => false),
-                                'edit' => array('label' => 'Editando Banner', 'item' => true),
-                                'translate' => array('label' => 'Traduciendo Banner', 'item' => true)
-                            )
-                        ),
-                        'posts' => array(
-                            'label' => 'Carrusel de blog',
-                            'actions' => array(
-                                'list' => array('label' => 'Ordenando', 'item' => false),
-                                'add'  => array('label' => 'Colocando Entrada en la portada', 'item' => false)
-                            )
-                        ),
-                        'promote' => array(
-                            'label' => 'Proyectos destacados',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add'  => array('label' => 'Nuevo Destacado', 'item' => false),
-                                'edit' => array('label' => 'Editando Destacado', 'item' => true),
-                                'translate' => array('label' => 'Traduciendo Destacado', 'item' => true)
-                            )
-                        ),
-                        'footer' => array(
-                            'label' => 'Entradas en el footer',
-                            'actions' => array(
-                                'list' => array('label' => 'Ordenando', 'item' => false),
-                                'add'  => array('label' => 'Colocando Entrada en el footer', 'item' => false)
-                            )
-                        ),
-                        'feed' => array(
-                            'label' => 'Actividad reciente',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false)
-                            )
-                        ),
-                        'home' => array(
-                            'label' => 'Elementos en portada',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false)
-                            )
-                        )
-                    )
-                ),
-                'sponsors' => array(
-                    'label'   => 'Convocatorias de patrocinadores',
-                    'options' => array (
-                        'calls' => array(
-                            'label' => 'Listado de convocatorias',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add'  => array('label' => 'Nueva convocatoria', 'item' => false),
-                                'projects' => array('label' => 'Gestionando proyectos de la convocatoria', 'item' => true)
-                            )
-                        ),
-                        'transcalls' => array(
-                            'label' => 'Traducciones de convocatorias',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add'  => array('label' => 'Habilitando traducción', 'item' => false),
-                                'edit' => array('label' => 'Asignando traducción', 'item' => true)
-                            )
-                        ),
-                        'sponsors' => array(
-                            'label' => 'Apoyos institucionales (Footer)',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add'  => array('label' => 'Nuevo Patrocinador', 'item' => false),
-                                'edit' => array('label' => 'Editando Patrocinador', 'item' => true)
-                            )
-                        ),
-                        'patron' => array(
-                            'label' => 'Proyectos apadrinados',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add'  => array('label' => 'Nueva Recomendación', 'item' => false),
-                                'edit' => array('label' => 'Editando Recomendacion', 'item' => true)
-                            )
-                        )/*,
-                        'nodes' => array(
-                            'label' => 'Gestión de Nodos',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'add'  => array('label' => 'Nuevo Nodo', 'item' => false),
-                                'edit' => array('label' => 'Editando Nodo', 'item' => true)
-                            )
-                        )*/
-                    )
-                )
-            );
+                );
+            }
 
             if (empty($BC)) {
                 return $menu;
@@ -6108,7 +1178,7 @@ namespace Goteo\Controller {
                 // si el BC tiene Option, enlace a la portada de esa gestión
                 if (!empty($BC['option'])) {
                     $option = $menu[$BC['section']]['options'][$BC['option']];
-                    $path = ' &gt; <a href="/admin/'.$BC['option'].''.$BC['filter'].'">'.$option['label'].'</a>'.$path;
+                    $path = ' &gt; <a href="/admin/'.$BC['option'].'">'.$option['label'].'</a>'.$path;
                 }
 
                 // si el BC tiene section, facil, enlace al admin
@@ -6120,6 +1190,42 @@ namespace Goteo\Controller {
             }
 
 
+        }
+
+        /*
+         * Si no tenemos filtros para este gestor los cogemos de la sesion
+         */
+        private static function setFilters($option) {
+
+            // arary de fltros para el sub controlador
+            $filters = array();
+
+            // si hay algun filtro
+            $filtered = false;
+
+            // filtros de este gestor:
+            // para cada uno tenemos el nombre del campo y el valor por defecto
+            foreach (self::$options[$option]['filters'] as $field=>$default) {
+                if (isset($_GET[$field])) {
+                    // si lo tenemos en el get, aplicamos ese a la sesión y al array
+                    $filters[$field] = (string) $_GET[$field];
+                    $_SESSION['admin_filters'][$option][$field] = (string) $_GET[$field];
+                    $filtered = true;
+                } elseif (!empty($_SESSION['admin_filters'][$option][$field])) {
+                    // si no lo tenemos en el get, cogemos de la sesion pero no lo pisamos
+                    $filters[$field] = $_SESSION['admin_filters'][$option][$field];
+                    $filtered = true;
+                } else {
+                    // si no tenemos en sesion, ponemos el valor por defecto
+                    $filters[$field] = $default;
+                }
+            }
+
+            if ($filtered) {
+                $filters['filtered'] = 'yes';
+            }
+
+            return $filters;
         }
 
 

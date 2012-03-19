@@ -22,7 +22,7 @@ namespace Goteo\Library {
                 'faq'       => 'Faq',
                 'post'      => 'Blog',
                 'tag'       => 'Tags',
-                'page'      => 'Páginas institucionales',
+//                'page'      => 'Páginas institucionales',
                 'criteria'  => 'Criterios de evaluación',
                 'worthcracy'=> 'Meritocrácia',
                 'template'  => 'Plantillas emails automáticos',
@@ -63,10 +63,13 @@ namespace Goteo\Library {
                 'tag' => array (
                     'name' => 'Nombre'
                 ),
+                /*
                 'page' => array (
                     'name' => 'Nombre',
                     'description' => 'Descripción'
                 ),
+                 * 
+                 */
                 'criteria' => array (
                     'title' => 'Título'
                 ),

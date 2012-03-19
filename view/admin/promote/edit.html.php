@@ -5,9 +5,11 @@ use Goteo\Library\Text,
 
 $promo = $this['promo'];
 
+$node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
+
 // proyectos disponibles
 // si tenemos ya proyecto seleccionado lo incluimos
-$projects = Model\Promote::available($promo->project);
+$projects = Model\Promote::available($promo->project, $node);
 $status = Model\Project::status();
 
 ?>

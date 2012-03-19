@@ -14,7 +14,7 @@ namespace Goteo\Controller {
         
         public function index () {
 
-            $page = Page::get('contact');
+            $page = Page::get('contact', \NODE_ID);
 
                 $errors = array();
 
@@ -59,16 +59,25 @@ namespace Goteo\Controller {
                         // Sustituimos los datos
                         $subject = str_replace('%SUBJECT%', $subject, $template->title);
 
+                        // destinatario
+                        if (\defined('NODE_MAIL')) {
+                            $to = \NODE_MAIL;
+                            $toName = \NODE_NAME;
+                        } else {
+                            $to = \GOTEO_MAIL;
+                            $toName = 'Goteo';
+                        }
+
                         // En el contenido:
                         $search  = array('%TONAME%', '%MESSAGE%', '%USEREMAIL%');
-                        $replace = array('Goteo', $msg_content, $name.' '.$email);
+                        $replace = array($toName, $msg_content, $name.' '.$email);
                         $content = \str_replace($search, $replace, $template->text);
 
 
                         $mailHandler = new Mail();
 
-                        $mailHandler->to = 'info@platoniq.net';
-                        $mailHandler->toName = 'Goteo';
+                        $mailHandler->to = $to;
+                        $mailHandler->toName = $toName;
                         $mailHandler->subject = $subject;
                         $mailHandler->content = $content;
                         $mailHandler->fromName = '';

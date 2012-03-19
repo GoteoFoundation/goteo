@@ -27,3 +27,10 @@ ALTER TABLE `user` ADD `google` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general
 ALTER TABLE `user` ADD `hide` BOOLEAN NOT NULL DEFAULT '0';
 
 ALTER TABLE `user` ADD `confirmed` INT( 1 ) NOT NULL DEFAULT '0';
+
+-- idioma preferido
+ALTER TABLE `user` ADD `lang` VARCHAR( 2 ) NULL DEFAULT NULL;
+
+-- nodo donde se registró
+ALTER TABLE `user` ADD `node` VARCHAR( 50 ) NULL DEFAULT NULL;
+

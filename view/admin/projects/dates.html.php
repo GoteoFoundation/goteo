@@ -13,15 +13,9 @@ if (!$project instanceof Model\Project) {
     throw new Redirection('/admin/projects');
 }
 
-$filters = $this['filters'];
-
-//arrastramos los filtros
-$filter = "?status={$filters['status']}&category={$filters['category']}";
-
-
 // Superform
 ?>
-<form method="post" action="/admin/projects/<?php echo $filter ?>" class="project" enctype="multipart/form-data">
+<form method="post" action="/admin/projects" class="project" enctype="multipart/form-data">
 
     <?php echo new SuperForm(array(
 

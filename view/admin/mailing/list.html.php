@@ -1,11 +1,11 @@
 <?php
 use Goteo\Library\Text;
 
-$filters = $_SESSION['mailing']['filters'];
+$filters = $this['filters'];
 
 ?>
 <div class="widget board">
-    <form id="filter-form" action="/admin/mailing/edit" method="post">
+    <form id="filter-form" action="/admin/mailing/edit" method="get">
 
         <table>
             <tr>

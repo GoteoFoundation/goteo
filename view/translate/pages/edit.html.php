@@ -3,8 +3,10 @@
 use Goteo\Library\Text,
     Goteo\Library\Page;
 
-$page = Page::get($this['id'], $_SESSION['translator_lang']);
-$original = Page::get($this['id'], \GOTEO_DEFAULT_LANG);
+$node = (empty($_SESSION['admin_node'])) ? \GOTEO_NODE : $_SESSION['admin_node'];
+
+$page = Page::get($this['id'], $node, $_SESSION['translator_lang']);
+$original = Page::get($this['id'], $node, \GOTEO_DEFAULT_LANG);
 
 $bodyClass = 'admin';
 
@@ -36,16 +38,39 @@ $(document).ready(function(){
 </script>
 
 <div class="widget board">
-    <h3 class="title"><?php echo $page->name; ?></h3>
+    <h3 class="title"><?php echo $original->name; ?></h3>
 
     <fieldset>
+        <legend>Nombre</legend>
+        <blockquote><?php echo $original->name; ?></blockquote>
+    </fieldset>
+    <fieldset>
         <legend>Descripción</legend>
-        <blockquote><?php echo $page->description; ?></blockquote>
+        <blockquote><?php echo $original->description; ?></blockquote>
     </fieldset>
 
     <form method="post" action="/translate/pages/edit/<?php echo $page->id; ?>">
         <input type="hidden" name="lang" value="<?php echo $_SESSION['translator_lang'] ?>" />
-        <textarea id="richtext_content" name="content" cols="100" rows="20"><?php echo $page->content; ?></textarea>
+        <input type="hidden" name="node" value="<?php echo $node ?>" />
+
+        <p>
+            <label>Nombre<br />
+            <input type="text" name="name" value="<?php echo $page->name ?>" style="width:350px" />
+            </label>
+        </p>
+
+        <p>
+            <label>Descripcion<br />
+            <textarea name="text" cols="100" rows="10"><?php echo $page->description; ?></textarea><br />
+            </label>
+        </p>
+
+        <p>
+            <label>Contenido<br />
+            <textarea id="richtext_content" name="content" cols="100" rows="20"><?php echo $page->content; ?></textarea>
+            </label>
+        </p>
+        
         <input type="submit" name="save" value="Guardar" />
     </form>
 </div>

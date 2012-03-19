@@ -18,7 +18,7 @@ namespace Goteo\Model\Project {
 	 	public static function get ($id) {
 
             try {
-                $query = static::query("SELECT project, bank, paypal FROM project_account WHERE project = ?", array($id));
+                $query = static::query("SELECT * FROM project_account WHERE project = ?", array($id));
                 $accounts = $query->fetchObject(__CLASS__);
                 if (!empty($accounts)) {
                     return $accounts;
@@ -47,8 +47,8 @@ namespace Goteo\Model\Project {
             if (!$this->validate($errors)) return false;
 
 			try {
-	            $sql = "REPLACE INTO project_account (project, bank, paypal) VALUES(:project, :bank, :paypal)";
-                $values = array(':project'=>$this->project, ':bank'=>$this->bank, ':paypal'=>$this->paypal);
+	            $sql = "REPLACE INTO project_account (project, bank, bank_owner, paypal, paypal_owner) VALUES(:project, :bank, :bank_owner, :paypal, :paypal_owner)";
+                $values = array(':project'=>$this->project, ':bank'=>$this->bank, ':bank_owner'=>$this->bank_owner, ':paypal'=>$this->paypal, ':paypal_owner'=>$this->paypal_owner);
 				self::query($sql, $values);
 				return true;
 			} catch(\PDOException $e) {

@@ -112,7 +112,7 @@ namespace Goteo\Controller {
                 case 'pages':
                     // si llega post, vamos a guardar los cambios
                     if ($action == 'edit' && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
-                        if (Page::update($id, $_POST['lang'], $_POST['content'], $errors)) {
+                        if (Page::update($id, $_POST['lang'], $_POST['node'], $_POST['name'], $_POST['description'], $_POST['content'], $errors)) {
 
                             // Evento Feed
                             $log = new Feed();

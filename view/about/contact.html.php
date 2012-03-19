@@ -5,7 +5,7 @@ use Goteo\Library\Page,
 
 $bodyClass = 'about';
 
-$page = Page::get('contact');
+$page = Page::get('contact', \NODE_ID);
 
 include 'view/prologue.html.php';
 include 'view/header.html.php';
@@ -23,10 +23,9 @@ include 'view/header.html.php';
         <div class="widget contact-message">
             <h3 class="title"><?php echo $page->name; ?></h3>
 
-            <?php if (!empty($this['errors']) || !empty($this['message'])) : ?>
-                <p>
+            <?php if (!empty($this['errors'])) : ?>
+                <p style="color:red;">
                     <?php echo implode(', ', $this['errors']); ?>
-                    <?php echo $this['message']; ?>
                 </p>
             <?php endif; ?>
 

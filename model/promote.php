@@ -20,7 +20,7 @@ namespace Goteo\Model {
         /*
          *  Devuelve datos de un destacado
          */
-        public static function get ($project, $node = \GOTEO_NODE) {
+        public static function get ($id) {
                 $query = static::query("
                     SELECT  
                         promote.id as id,
@@ -37,9 +37,8 @@ namespace Goteo\Model {
                         AND promote_lang.lang = :lang
                     INNER JOIN project
                         ON project.id = promote.project
-                    WHERE promote.project = :project
-                    AND promote.node = :node
-                    ", array(':project'=>$project, ':node'=>$node, ':lang'=>\LANG));
+                    WHERE promote.id = :id
+                    ", array(':id'=>$id, ':lang'=>\LANG));
                 $promote = $query->fetchObject(__CLASS__);
 
                 return $promote;
@@ -104,7 +103,7 @@ namespace Goteo\Model {
                     project.name as name,
                     project.status as status
                 FROM    project
-                WHERE status > 2
+                WHERE status = 3
                 AND project.id NOT IN (SELECT project FROM promote WHERE promote.node = :node{$sqlCurr} )
                 ORDER BY name ASC
                 ", array(':node' => $node));
@@ -161,7 +160,7 @@ namespace Goteo\Model {
 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "No se ha guardado correctamente. " . $e->getMessage();
+                $errors[] = "HA FALLADO!!! " . $e->getMessage();
                 return false;
             }
         }
@@ -169,10 +168,10 @@ namespace Goteo\Model {
         /*
          * Para quitar un proyecto destacado
          */
-        public static function delete ($project, $node = \GOTEO_NODE) {
+        public static function delete ($id) {
             
-            $sql = "DELETE FROM promote WHERE project = :project AND node = :node";
-            if (self::query($sql, array(':project'=>$project, ':node'=>$node))) {
+            $sql = "DELETE FROM promote WHERE id = :id";
+            if (self::query($sql, array(':id'=>$id))) {
                 return true;
             } else {
                 return false;
@@ -194,23 +193,23 @@ namespace Goteo\Model {
         }
 
         /*
-         * Para que un proyecto salga antes  (disminuir el order)
+         * Para que salga antes  (disminuir el order)
          */
-        public static function up ($project, $node = \GOTEO_NODE) {
+        public static function up ($id, $node = \GOTEO_NODE) {
             $extra = array (
                     'node' => $node
                 );
-            return Check::reorder($project, 'up', 'promote', 'project', 'order', $extra);
+            return Check::reorder($id, 'up', 'promote', 'id', 'order', $extra);
         }
 
         /*
-         * Para que un proyecto salga despues  (aumentar el order)
+         * Para que salga despues  (aumentar el order)
          */
-        public static function down ($project, $node = \GOTEO_NODE) {
+        public static function down ($id, $node = \GOTEO_NODE) {
             $extra = array (
                     'node' => $node
                 );
-            return Check::reorder($project, 'down', 'promote', 'project', 'order', $extra);
+            return Check::reorder($id, 'down', 'promote', 'id', 'order', $extra);
         }
 
         /*

@@ -45,6 +45,13 @@ include 'view/header.html.php';
         if (!empty($this[$item])) echo new View("view/home/{$item}.html.php", $this);
     } ?>
 
+    <p>
+        <a class="node-jump" href="http://test.goteo.org/">A TestNode</a>
+    </p>
+    <p>
+        <a class="node-jump" href="http://nodo.goteo.org/">A Nodo</a>
+    </p>
+
 </div>
 <?php include 'view/footer.html.php'; ?>
 <?php include 'view/epilogue.html.php'; ?>
