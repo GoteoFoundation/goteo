@@ -5,3 +5,6 @@ CREATE TABLE IF NOT EXISTS `reward_lang` (
 `description` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci ,
  UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+-- alter
+ALTER TABLE `reward_lang` ADD `other` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_ci;
