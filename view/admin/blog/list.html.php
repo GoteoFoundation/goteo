@@ -44,7 +44,7 @@ $translator = ACL::check('/translate') ? true : false;
             </tr>
             <tr>
                 <td><a href="/blog/<?php echo $post->id; ?>?preview=<?php echo $_SESSION['user']->id ?>" target="_blank">[Ver publicada]</a></td>
-                <td><?php if (!empty($_SESSION['admin_node']) && $post->owner == 'node-'.$_SESSION['admin_node']) : ?>
+                <td><?php if ($post->owner == 'node-'.$_SESSION['admin_node'] || !isset($_SESSION['admin_node'])) : ?>
                     <a href="/admin/blog/edit/<?php echo $post->id; ?>">[Editar]</a>
                 <?php endif; ?></td>
                 <td><?php if ($post->publish) {
@@ -62,7 +62,7 @@ $translator = ACL::check('/translate') ? true : false;
                     }
                 } ?></td>
                 <td><?php if ($translator) : ?><a href="/translate/post/edit/<?php echo $post->id; ?>" >[Traducir]</a><?php endif; ?></td>
-                <td><?php if (!empty($_SESSION['admin_node']) && $post->owner == 'node-'.$_SESSION['admin_node']) : ?>
+                <td><?php if (!$post->publish && ($post->owner == 'node-'.$_SESSION['admin_node'] || !isset($_SESSION['admin_node']))) : ?>
                     <a href="/admin/blog/remove/<?php echo $post->id; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Eliminar]</a>
                 <?php endif; ?></td>
             </tr>

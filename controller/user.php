@@ -45,6 +45,8 @@ namespace Goteo\Controller {
                         } else {
                             $_SESSION['admin_node'] = \GOTEO_NODE;
                         }
+                    } else {
+                        unset($_SESSION['admin_node']);
                     }
                     if (!empty($_POST['return'])) {
                         throw new Redirection($_POST['return']);
@@ -52,7 +54,7 @@ namespace Goteo\Controller {
                         $jumpto = $_SESSION['jumpto'];
                         unset($_SESSION['jumpto']);
                         throw new Redirection($jumpto);
-                    } elseif (isset($user->roles['admin'])) {
+                    } elseif (isset($user->roles['admin']) || isset($user->roles['superadmin'])) {
                         throw new Redirection('/admin');
                     } else {
                         throw new Redirection('/dashboard');
