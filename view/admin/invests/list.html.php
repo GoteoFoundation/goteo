@@ -4,7 +4,6 @@ use Goteo\Library\Text,
 
 $filters = $this['filters'];
 
-$emails = Invest::emails(true);
 ?>
 <!-- filtros -->
 <?php $the_filters = array(
@@ -30,12 +29,6 @@ $emails = Invest::emails(true);
         'label' => 'Extra',
         'first' => 'Todos')
 ); ?>
-<a href="/admin/invests/add" class="button weak">Generar aporte manual</a>
-<?php if (!empty($filters['projects'])) : ?>
-    <br />
-    <a href="/admin/invests/report/<?php echo $filters['projects'] ?>" class="button" target="_blank">Informe financiero de <?php echo $this['projects'][$filters['projects']] ?></a>&nbsp;&nbsp;&nbsp;
-    <a href="/cron/dopay/<?php echo $filters['projects'] ?>" target="_blank" class="button red" onclick="return confirm('No hay vuelta atrás, ok?');">Realizar pagos secundarios a <?php echo $this['projects'][$filters['projects']] ?></a>
-<?php endif ?>
 <div class="widget board">
     <h3 class="title">Filtros</h3>
     <form id="filter-form" action="/admin/invests" method="get">
@@ -67,7 +60,6 @@ $emails = Invest::emails(true);
                 <th>Aporte ID</th>
                 <th>Fecha</th>
                 <th>Cofinanciador</th>
-                <th></th>
                 <th>Proyecto</th>
                 <th>Estado</th>
                 <th>Metodo</th>
@@ -89,15 +81,11 @@ $emails = Invest::emails(true);
                 <td><?php echo $invest->id ?></td>
                 <td><?php echo $invest->invested ?></td>
                 <td><a href="/admin/users?id=<?php echo $invest->user ?>" target="_blank"><?php echo $this['users'][$invest->user]; ?></a><?php if (!empty($invest->call)) echo '<br />(<strong>'.$this['calls'][$invest->call].'</strong>)'; ?></td>
-                <td><?php echo $emails[$invest->user]; ?></td>
                 <td><?php echo $this['projects'][$invest->project] ?></td>
                 <td><?php echo $this['status'][$invest->status] ?></td>
                 <td><?php echo $this['methods'][$invest->method] ?></td>
                 <td><?php echo $this['investStatus'][$invest->investStatus] ?></td>
                 <td><?php echo $invest->amount ?></td>
-<!--                <td><?php echo $invest->charged ?></td>
-                <td><?php echo $invest->returned ?></td>
--->
             </tr>
             <?php endforeach; ?>
         </tbody>

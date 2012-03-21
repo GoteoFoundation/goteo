@@ -3,7 +3,6 @@
 namespace Goteo\Model {
 
     use Goteo\Library\Text,
-        Goteo\Model\User,
         Goteo\Model\Image,
         Goteo\Model\Call;
 

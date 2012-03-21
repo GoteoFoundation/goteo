@@ -15,24 +15,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
 <div class="widget">
     <p>
         <strong>Proyecto:</strong> <?php echo $project->name ?> (<?php echo $this['status'][$project->status] ?>)
-        <strong>Usuario: </strong><?php echo $user->name ?> [<?php echo $user->email ?>]
-    </p>
-    <p>
-        <?php if ($project->status == 3 && ($invest->status < 1 || ($invest->method == 'tpv' && $invest->status < 2) ||($invest->method == 'cash' && $invest->status < 2))) : ?>
-        <a href="/admin/invests/cancel/<?php echo $invest->id ?>"
-            onclick="return confirm('¿Estás seguro de querer cancelar este aporte y su preapproval?');"
-            class="button red">Cancelar este aporte</a>&nbsp;&nbsp;&nbsp;
-        <?php endif; ?>
-
-        <?php if ($project->status == 3 && $invest->method == 'paypal' && $invest->status == 0) : ?>
-        <a href="/admin/invests/execute/<?php echo $invest->id ?>"
-            onclick="return confirm('¿Seguro que quieres ejecutar ahora? ¿No quieres esperar a la ejecución automática al final de la ronda? ?');"
-            class="button red">Ejecutar cargo ahora</a>
-        <?php endif; ?>
-
-        <?php if ($project->status == 3 && $invest->method != 'paypal' && $invest->status == 1) : ?>
-        <a href="/admin/invests/move/<?php echo $invest->id ?>" class="button weak">Reubicar este aporte</a>
-        <?php endif; ?>
+        <strong>Usuario: </strong><?php echo $user->name ?>
     </p>
 
     <h3>Detalles del aporte</h3>
@@ -89,18 +72,6 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
         </dd>
     </dl>
 
-    <dl>
-        <dt>Códigos de seguimiento: <a href="/admin/accounts/details/<?php echo $invest->id ?>">Ir a la transacción</a></dt>
-        <dd><?php
-                if (!empty($invest->preapproval))
-                    echo 'Preapproval: '.$invest->preapproval . '   ';
-                
-                if (!empty($invest->payment)) 
-                    echo 'Cargo: '.$invest->payment . '   ';
-            ?>
-        </dd>
-    </dl>
-
     <?php if (!empty($invest->rewards)) : ?>
     <dl>
         <dt>Recompensas elegidas:</dt>
@@ -129,11 +100,4 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     <a href="/admin/invests/details/<?php echo $droped->id ?>" target="_blank">Ver aporte completo de riego</a>
     <?php endif; ?>
     
-</div>
-
-<div class="widget">
-    <h3>Log</h3>
-    <?php foreach (\Goteo\Model\Invest::getDetails($invest->id) as $log)  {
-        echo "{$log->date} : {$log->log} ({$log->type})<br />";
-    } ?>
 </div>

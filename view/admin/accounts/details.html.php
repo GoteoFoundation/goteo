@@ -6,7 +6,8 @@ use Goteo\Library\Text,
 
 $invest = $this['invest'];
 $project = $this['project'];
-$campaign = $this['campaign'];
+$calls = $this['calls'];
+$droped = $this['droped'];
 $user = $this['user'];
 
 ?>
@@ -15,14 +16,24 @@ $user = $this['user'];
         <strong>Proyecto:</strong> <?php echo $project->name ?> (<?php echo $this['status'][$project->status] ?>)
         <strong>Usuario: </strong><?php echo $user->name ?> [<?php echo $user->email ?>]
     </p>
-    <?php /* if ($invest->status == 1) : ?>
-    <h3>Operaciones</h3>
     <p>
-            <a href="/admin/invests/return/<?php echo $invest->id ?>"
-                onclick="return confirm('¿Estás seguro de querer echar atrás toda la transacción?');"
-                class="button red">Devolver el dinero</a>
+        <?php if ($project->status == 3 && ($invest->status < 1 || ($invest->method == 'tpv' && $invest->status < 2) ||($invest->method == 'cash' && $invest->status < 2))) : ?>
+        <a href="/admin/accounts/cancel/<?php echo $invest->id ?>"
+            onclick="return confirm('¿Estás seguro de querer cancelar este aporte y su preapproval?');"
+            class="button red">Cancelar este aporte</a>&nbsp;&nbsp;&nbsp;
+        <?php endif; ?>
+
+        <?php if ($project->status == 3 && $invest->method == 'paypal' && $invest->status == 0) : ?>
+        <a href="/admin/accounts/execute/<?php echo $invest->id ?>"
+            onclick="return confirm('¿Seguro que quieres ejecutar ahora? ¿No quieres esperar a la ejecución automática al final de la ronda? ?');"
+            class="button red">Ejecutar cargo ahora</a>
+        <?php endif; ?>
+
+        <?php if ($project->status == 3 && $invest->method != 'paypal' && $invest->status == 1) : ?>
+        <a href="/admin/accounts/move/<?php echo $invest->id ?>" class="button weak">Reubicar este aporte</a>
+        <?php endif; ?>
     </p>
-    <?php endif; */ ?>
+    
     <h3>Detalles de la transaccion</h3>
     <dl>
         <dt>Cantidad aportada:</dt>
@@ -54,11 +65,25 @@ $user = $this['user'];
 
     <dl>
         <dt>Método de pago:</dt>
-        <dd><?php echo $invest->method; ?></dd>
+        <dd><?php echo $invest->method . '   '; ?>
+            <?php
+                if (!empty($invest->campaign))
+                    echo '<br />Capital riego';
+
+                if (!empty($invest->anonymous))
+                    echo '<br />Aporte anónimo';
+
+                if (!empty($invest->resign))
+                    echo "<br />Donativo de: {$invest->address->name} [{$invest->address->nif}]";
+
+                if (!empty($invest->admin))
+                    echo '<br />Manual generado por admin: '.$invest->admin;
+            ?>
+        </dd>
     </dl>
 
     <dl>
-        <dt>Códigos de seguimiento: <a href="/admin/invests/details/<?php echo $invest->id ?>">Ir al aporte</a></dt>
+        <dt>Códigos de seguimiento:</dt>
         <dd><?php
                 if (!empty($invest->preapproval)) {
                     echo 'Preapproval: '.$invest->preapproval . '   ';
@@ -68,6 +93,25 @@ $user = $this['user'];
                     echo 'Cargo: '.$invest->payment . '   ';
                 }
             ?>
+        </dd>
+    </dl>
+
+    <?php if (!empty($invest->rewards)) : ?>
+    <dl>
+        <dt>Recompensas elegidas:</dt>
+        <dd>
+            <?php echo implode(', ', $rewards); ?>
+        </dd>
+    </dl>
+    <?php endif; ?>
+
+    <dl>
+        <dt>Dirección:</dt>
+        <dd>
+            <?php echo $invest->address->address; ?>,
+            <?php echo $invest->address->location; ?>,
+            <?php echo $invest->address->zipcode; ?>
+            <?php echo $invest->address->country; ?>
         </dd>
     </dl>
 
@@ -101,6 +145,15 @@ $user = $this['user'];
     <?php else : ?>
         <p>No hay nada que hacer con los aportes manuales.</p>
     <?php endif ?>
+
+    <?php if (!empty($droped)) : ?>
+    <h3>Capital riego asociado</h3>
+    <dl>
+        <dt>Convocatoria:</dt>
+        <dd><?php echo $calls[$droped->call] ?></dd>
+    </dl>
+    <a href="/admin/invests/details/<?php echo $droped->id ?>" target="_blank">Ver aporte completo de riego</a>
+    <?php endif; ?>
 
 </div>
 

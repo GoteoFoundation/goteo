@@ -146,7 +146,7 @@ namespace Goteo\Model {
         }
 
         /*
-         * Orden para a�adirlo al final
+         * Orden para añadirlo al final
          */
         public static function next ($node = \GOTEO_NODE) {
             $query = self::query('SELECT MAX(`order`) FROM home WHERE node = :node'

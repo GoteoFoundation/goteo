@@ -16,21 +16,33 @@ $emails = Invest::emails(true);
         'first' => 'Todos los usuarios'),
     'methods' => array (
         'label' => 'Método de pago',
-        'first' => 'Todos los tipos'),
+        'first' => 'Todos los métodos'),
     'investStatus' => array (
         'label' => 'Estado del aporte',
         'first' => 'Todos los estados'),
-    'campaigns' => array (
-        'label' => 'Campaña',
-        'first' => 'Todas las campañas'),
+    'investStatus' => array (
+        'label' => 'Estado de aporte',
+        'first' => 'Todos los estados'),
+    'calls' => array (
+        'label' => 'De la convocatoria',
+        'first' => 'Ninguna'),
     'review' => array (
         'label' => 'Para revisión',
         'first' => 'Todos'),
+    'types' => array (
+        'label' => 'Extra',
+        'first' => 'Todos')
 ); ?>
+<a href="/admin/accounts/add" class="button weak">Generar aporte manual</a>
 <a href="http://ppcalc.com/es" target="_blank" class="button">Calculadora PayPal</a>&nbsp;&nbsp;&nbsp;
 <a href="/cron/execute" target="_blank" class="button red">Ejecutar cargos</a>&nbsp;&nbsp;&nbsp;
 <a href="/cron/verify" target="_blank" class="button red">Verificar preapprovals</a>&nbsp;&nbsp;&nbsp;
 <a href="/admin/accounts/viewer" class="button">Visor de logs</a>&nbsp;&nbsp;&nbsp;
+<?php if (!empty($filters['projects'])) : ?>
+    <br />
+    <a href="/admin/accounts/report/<?php echo $filters['projects'] ?>#detail" class="button" target="_blank">Informe financiero completo de <?php echo $this['projects'][$filters['projects']] ?></a>&nbsp;&nbsp;&nbsp;
+    <a href="/cron/dopay/<?php echo $filters['projects'] ?>" target="_blank" class="button red" onclick="return confirm('No hay vuelta atrás, ok?');">Realizar pagos secundarios a <?php echo $this['projects'][$filters['projects']] ?></a>
+<?php endif ?>
 <div class="widget board">
     <h3 class="title">Filtros</h3>
     <form id="filter-form" action="/admin/accounts" method="get">
@@ -91,6 +103,8 @@ $emails = Invest::emails(true);
                     if ($invest->anonymous == 1)  echo 'Anónimo ';
                     if ($invest->resign == 1)  echo 'Donativo ';
                     if (!empty($invest->admin)) echo 'Manual';
+                    if (!empty($invest->campaign)) echo 'Riego ';
+                    if (!empty($invest->droped)) echo 'Regado (<strong>'.$invest->droped.'</strong>)';
                     ?>">[Detalles]</a></td>
                 <td><?php echo $invest->id ?></td>
                 <td><?php echo $invest->invested ?></td>
@@ -101,8 +115,6 @@ $emails = Invest::emails(true);
                 <td><?php echo $this['methods'][$invest->method] ?></td>
                 <td><?php echo $this['investStatus'][$invest->investStatus] ?></td>
                 <td><?php echo $invest->amount ?></td>
-                <td><?php echo $invest->charged ?></td>
-                <td><?php echo $invest->returned ?></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

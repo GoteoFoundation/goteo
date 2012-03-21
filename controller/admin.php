@@ -20,13 +20,18 @@ namespace Goteo\Controller {
             // Array de los gestores que existen
             static public $options = array(
                     'accounts' => array(
-                        'label' => 'Transacciones económicas',
+                        'label' => 'Aportes',
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false),
                             'details' => array('label' => 'Detalles de la transacción', 'item' => true),
+                            'add'  => array('label' => 'Aporte manual', 'item' => false),
+                            'move'  => array('label' => 'Reubicando el aporte', 'item' => true),
+                            'execute' => array('label' => 'Ejecución del cargo ahora mismo', 'item' => true),
+                            'cancel' => array('label' => 'Cancelando aporte', 'item' => true),
+                            'report' => array('label' => 'Informe de proyecto', 'item' => true),
                             'viewer' => array('label' => 'Viendo logs', 'item' => false)
                         ),
-                        'filters' => array('methods'=>'', 'investStatus'=>'all', 'projects'=>'', 'status'=>'all','users'=>'', 'calls'=>'', 'review'=>'', 'date_from'=>'', 'date_until'=>'')
+                        'filters' => array('methods'=>'', 'investStatus'=>'all', 'projects'=>'', 'status'=>'all','users'=>'', 'calls'=>'', 'review'=>'', 'types'=>'', 'date_from'=>'', 'date_until'=>'')
                     ),
                     'banners' => array(
                         'label' => 'Banners',
@@ -130,15 +135,10 @@ namespace Goteo\Controller {
                         )
                     ),
                     'invests' => array(
-                        'label' => 'Aportes a Proyectos',
+                        'label' => 'Aportes',
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false),
-                            'add'  => array('label' => 'Aporte manual', 'item' => false),
-                            'move'  => array('label' => 'Reubicando el aporte', 'item' => true),
-                            'details' => array('label' => 'Detalles del aporte', 'item' => true),
-                            'execute' => array('label' => 'Ejecución del cargo ahora mismo', 'item' => true),
-                            'cancel' => array('label' => 'Cancelando aporte', 'item' => true),
-                            'report' => array('label' => 'Informe de proyecto', 'item' => true)
+                            'details' => array('label' => 'Detalles del aporte', 'item' => true)
                         ),
                         'filters' => array('methods'=>'', 'status'=>'all', 'investStatus'=>'all', 'projects'=>'', 'users'=>'', 'calls'=>'', 'types'=>'')
                     ),
@@ -709,7 +709,7 @@ namespace Goteo\Controller {
         public function invests($action = 'list', $id = null) {
 
             $BC = self::menu(array(
-                'section' => 'accounting',
+                'section' => 'projects',
                 'option' => __FUNCTION__,
                 'action' => $action,
                 'id' => $id
@@ -728,7 +728,7 @@ namespace Goteo\Controller {
         public function accounts($action = 'list', $id = null) {
 
             $BC = self::menu(array(
-                'section' => 'accounting',
+                'section' => 'projects',
                 'option' => __FUNCTION__,
                 'action' => $action,
                 'id' => $id
@@ -900,7 +900,7 @@ namespace Goteo\Controller {
         public function nodes($action = 'list', $id = null) {
 
             $BC = self::menu(array(
-                'section' => 'nodes',
+                'section' => 'sponsors',
                 'option' => __FUNCTION__,
                 'action' => $action,
                 'id' => $id
@@ -1045,7 +1045,8 @@ namespace Goteo\Controller {
                         'options' => array (
                             'projects' => $options['projects'],     // proyectos del nodo
                             'reviews' => $options['reviews'],       // revisiones de proyectos del nodo
-                            'translates' => $options['translates'] // traducciones de proyectos del nodo
+                            'translates' => $options['translates'], // traducciones de proyectos del nodo
+                            'invests' => $options['invests']
                         )
                     ),
                     'users' => array(
@@ -1100,7 +1101,8 @@ namespace Goteo\Controller {
                             'reviews' => $options['reviews'],
                             'translates' => $options['translates'],
                             'rewards' => $options['rewards'],
-                            'patron' => $options['patron']
+                            'patron' => $options['patron'],
+                            'accounts' => $options['accounts']
                         )
                     ),
                     'users' => array(
@@ -1110,13 +1112,6 @@ namespace Goteo\Controller {
                             'worth' => $options['worth'],
                             'mailing' => $options['mailing'],
                             'sended' => $options['sended']
-                        )
-                    ),
-                    'accounting' => array(
-                        'label'   => 'Gestión de aportes y transacciones',
-                        'options' => array (
-                            'invests' => $options['invests'],
-                            'accounts' => $options['accounts']
                         )
                     ),
                     'home' => array(
@@ -1132,17 +1127,12 @@ namespace Goteo\Controller {
                         )
                     ),
                     'sponsors' => array(
-                        'label'   => 'Convocatorias y patrocinadores',
+                        'label'   => 'Marketing',
                         'options' => array (
                             'calls' => $options['calls'],
-                            'transcalls' => $options['transcalls'],
-                            'sponsors' => $options['sponsors']
-                        )
-                    ),
-                    'nodes' => array(
-                        'label'   => 'Nodos',
-                        'options' => array (
-                            'nodes' => $options['nodes']
+                            'sponsors' => $options['sponsors'],
+                            'nodes' => $options['nodes'],
+                            'transcalls' => $options['transcalls']
                         )
                     )
                 );
