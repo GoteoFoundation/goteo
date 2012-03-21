@@ -14,10 +14,34 @@ namespace Goteo\Controller {
         
         public function index ($id = null) {
 
+            // paginas especificas
+            if ($id == 'faq' || $id == 'contact') {
+                throw new Redirection('/'.$id, Redirection::TEMPORARY);
+            }
+
+            // en estos casos se usa el contenido de goteo
+            if ($id == 'howto' || $id == 'call') {
+                $page = Page::get($id);
+                return new View(
+                    'view/about/howto.html.php',
+                    array(
+                        'name' => $page->name,
+                        'description' => $page->description,
+                        'content' => $page->content
+                    )
+                 );
+            }
+
+            // si llegan a la de mantenimiento sin estar en mantenimiento
+            if ($id == 'maintenance' && GOTEO_MAINTENANCE !== true) {
+                $id = 'credits';
+            }
+
+            // el tipo de contenido de la pagina about es diferente
             if ( empty($id) ||
                  $id == 'about' ||
                 ( NODE_ID != \GOTEO_NODE
-                 && !\in_array($id, array('about', 'contact', 'press', 'service'))
+                 && !\in_array($id, array('about', 'contact', 'press', 'service', 'maintenance'))
                  )
                 ) {
                 $id = 'about';
@@ -48,26 +72,8 @@ namespace Goteo\Controller {
 
             }
 
-            if ($id == 'maintenance' && GOTEO_MAINTENANCE !== true) {
-                $id = 'credits';
-            }
-
-            if ($id == 'faq' || $id == 'contact') {
-                throw new Redirection('/'.$id, Redirection::TEMPORARY);
-            }
-
-            $page = Page::get($id, \NODE_ID);
-
-            if ($id == 'howto' || $id == 'call') {
-                return new View(
-                    'view/about/howto.html.php',
-                    array(
-                        'name' => $page->name,
-                        'description' => $page->description,
-                        'content' => $page->content
-                    )
-                 );
-            }
+            // resto de casos
+            $page = Page::get($id);
 
             return new View(
                 'view/about/sample.html.php',

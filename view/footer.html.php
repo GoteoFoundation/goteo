@@ -56,6 +56,7 @@ jQuery(document).ready(function($) {
                     <?php foreach ($posts as $id=>$title) : ?>
                     <li><a href="/blog/<?php echo $id ?>"><?php echo Text::recorta($title, 50) ?></a></li>
                     <?php endforeach; ?>
+                    <li><a href="/newsletter" target="_blank">Newsletter</a></li>
                 </ul>
             </div>
 			<script>

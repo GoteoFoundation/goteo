@@ -1734,6 +1734,15 @@ namespace Goteo\Model {
          */
         public static function published($type = 'all', $limit = null)
         {
+            $values = array();
+            // si es un nodo, filtrado
+            if (\NODE_ID != \GOTEO_NODE) {
+                $sqlFilter = "AND project.node = :node";
+                $values[':node'] = NODE_ID;
+            } else {
+                $sqlFilter = "";
+            }
+
             // segun el tipo (ver controller/discover.php)
             switch ($type) {
                 case 'popular':
@@ -1752,6 +1761,7 @@ namespace Goteo\Model {
                                     ) as followers
                             FROM project
                             WHERE project.status= 3
+                            $sqlFilter
                             HAVING followers > 20
                             ORDER BY followers DESC";
                     break;
@@ -1775,6 +1785,7 @@ namespace Goteo\Model {
                             WHERE   days <= 15
                             AND     days > 0
                             AND     status = 3
+                            $sqlFilter
                             HAVING getamount < mincost
                             ORDER BY days ASC";
                     break;
@@ -1788,6 +1799,7 @@ namespace Goteo\Model {
                             FROM project
                             WHERE project.status = 3
                             AND project.passed IS NULL
+                            $sqlFilter
                             ORDER BY published DESC
                             LIMIT 9";
                     break;
@@ -1807,19 +1819,25 @@ namespace Goteo\Model {
                                 ) as `getamount`
                         FROM project
                         WHERE status IN ('3', '4', '5')
+                        $sqlFilter
                         HAVING getamount >= mincost
                         ORDER BY name ASC";
                     break;
                 case 'available':
                     // ni edicion ni revision ni cancelados, estan disponibles para verse publicamente
-                    $sql = "SELECT id FROM project WHERE status > 2 AND status < 6 ORDER BY name ASC";
+                    $sql = "SELECT id FROM project WHERE status > 2 AND status < 6 $sqlFilter ORDER BY name ASC";
                     break;
                 case 'archive':
                     // caducados, financiados o casos de exito
-                    $sql = "SELECT id FROM project WHERE status = 6 ORDER BY closed DESC";
+                    $sql = "SELECT id FROM project WHERE status = 6 $sqlFilter ORDER BY closed DESC";
+                    break;
+                case 'others':
+                    // todos los que estan 'en campaña', en otro nodo
+                    if (!empty($sqlFilter)) $sqlFilter = \str_replace('=', '!=', $sqlFilter);
+                    $sql = "SELECT id FROM project WHERE status = 3 $sqlFilter ORDER BY name ASC";
                     break;
                 default: 
-                    // todos los que estan 'en campaña'
+                    // todos los que estan 'en campaña', en cualquier nodo
                     $sql = "SELECT id FROM project WHERE status = 3 ORDER BY name ASC";
             }
 
@@ -1829,7 +1847,7 @@ namespace Goteo\Model {
             }
 
             $projects = array();
-            $query = self::query($sql);
+            $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
                 $projects[] = self::getMedium($proj['id']);
             }

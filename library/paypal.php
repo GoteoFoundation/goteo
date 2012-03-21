@@ -32,8 +32,8 @@ namespace Goteo\Library {
 		            The cancelURL is the location buyers are sent to when they hit the
 		            cancel button during authorization of payment during the PayPal flow                 */
                 
-                    $returnURL = SITE_URL."/invest/confirmed/" . $invest->project . "/" . $invest->id; // a difundirlo @TODO mensaje gracias si llega desde un preapproval
-                    $cancelURL = SITE_URL."/invest/fail/" . $invest->project . "/" . $invest->id; // a la página de aportar para intentarlo de nuevo
+                    $returnURL = SITE_URL."/invest/confirmed/".$invest->project."/".$invest->id; // a difundirlo @TODO mensaje gracias si llega desde un preapproval
+                    $cancelURL = SITE_URL."/invest/fail/".$invest->project."/".$invest->id."/?amount=".$invest->amount; // a la página de aportar para intentarlo de nuevo
 
                     date_default_timezone_set('UTC');
                     $currDate = getdate();

@@ -65,7 +65,7 @@ if (NODE_ID != GOTEO_NODE) {
         <?php endif ?>
     </head>
 
-    <body<?php if (isset($bodyClass)) echo ' class="' . htmlspecialchars($bodyClass) . '"' ?>>
+    <body<?php if (isset($bodyClass)) echo ' class="' . htmlspecialchars($bodyClass) . '"' ?> style="background-color:#FAE5E6;">
 <?php if (isset($fbCode)) : ?>
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

@@ -11,10 +11,20 @@ namespace Goteo\Controller {
 
     class Discover extends \Goteo\Core\Controller {
     
+        public static $types = array(
+                'popular',
+                'recent',
+                'success',
+                'outdate',
+                'archive'
+            );
+
         /*
          * Descubre proyectos, página general
          */
         public function index () {
+
+            $types = self::$types;
 
             $viewData = array();
             $viewData['title'] = array(
@@ -27,13 +37,10 @@ namespace Goteo\Controller {
 
             $viewData['lists'] = array();
 
-            $types = array(
-                'popular',
-                'recent',
-                'success',
-                'outdate',
-                'archive'
-            );
+            if (\NODE_ID != \GOTEO_NODE) {
+                $types[] = 'others';
+                $viewData['title']['others'] = Text::get('discover-group-others-header');
+            }
 
             // cada tipo tiene sus grupos
             foreach ($types as $type) {
@@ -110,7 +117,13 @@ namespace Goteo\Controller {
          */
         public function view ($type = 'all') {
 
-            if (!in_array($type, array('popular', 'outdate', 'recent', 'success', 'archive', 'all'))) {
+            $types = self::$types;
+            $types[] = 'all';
+            if (\NODE_ID != \GOTEO_NODE) {
+                $types[] = 'others';
+            }
+
+            if (!in_array($type, $types)) {
                 throw new Redirection('/discover');
             }
 

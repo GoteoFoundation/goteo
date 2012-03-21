@@ -53,8 +53,8 @@ namespace Goteo\Library {
                 $urlMerchant = "http://www.goteo.org";
                 $clave = TPV_ENCRYPT_KEY;
 
-                $Url_OK = SITE_URL."/invest/confirmed/" . $invest->project . "/" . $invest->id;
-                $Url_NOK = SITE_URL."/invest/fail/" . $invest->project . "/" . $invest->id;
+                $Url_OK = SITE_URL."/invest/confirmed/".$invest->project."/".$invest->id;
+                $Url_NOK = SITE_URL."/invest/fail/".$invest->project."/".$invest->id."/?amount=".$invest->amount;
                 // y la firma
                 // Clave_encriptacion+MerchantID+AcquirerBIN+TerminalID+Num_operacion+Importe+Tipo Moneda+Exponente+ +Cadena SHA1+URL_OK+URL_NOK
                 $sign_code = $clave.$MerchantID.$AcquirerBIN.$TerminalID.$token.$amount.$currency.$exponent.$cypher.$Url_OK.$Url_NOK;
