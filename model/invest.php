@@ -3,6 +3,7 @@
 namespace Goteo\Model {
 
     use Goteo\Library\Text,
+        Goteo\Model\User,
         Goteo\Model\Image,
         Goteo\Model\Call;
 
@@ -1005,7 +1006,7 @@ namespace Goteo\Model {
                             $Data['cash']['total']['amount'] += $invest->amount;
                             if ($invest->campaign == 1) {
                                 $Data['cash']['total']['fail'] += $invest->amount;
-                                $Data['note'][] = "Aporte de capital riego {$invId} debería estar cancelado";
+                                $Data['note'][] = "Aporte de capital riego {$invId} debería estar cancelado. <a href=\"/admin/invests/details/{$invId}\" target=\"_blank\">Abrir detalles</a>";
                             }
                         }
                     }
@@ -1021,7 +1022,7 @@ namespace Goteo\Model {
                         foreach ($inv_paypal as $invId => $invest) {
                             if (in_array($invest->investStatus, array(0, 1, 3))) {
                                 $Data['paypal']['total']['fail'] += $invest->amount;
-                                $Data['note'][] = "El aporte PayPal {$invId} no debería estar en estado '" . self::status($invest->investStatus) . "'";
+                                $Data['note'][] = "El aporte PayPal {$invId} no debería estar en estado '" . self::status($invest->investStatus) . "'. <a href=\"/admin/invests/details/{$invId}\" target=\"_blank\">Abrir detalles</a>";
                             }
                         }
                     }
@@ -1037,7 +1038,7 @@ namespace Goteo\Model {
                         foreach ($inv_tpv as $invId => $invest) {
                             if ($invest->investStatus == 1) {
                                 $Data['tpv']['total']['fail'] += $invest->amount;
-                                $Data['note'][] = "El aporte TPV {$invId} no debería estar en estado '" . self::status($invest->investStatus) . "'";
+                                $Data['note'][] = "El aporte TPV {$invId} no debería estar en estado '" . self::status($invest->investStatus) . "'. <a href=\"/admin/invests/details/{$invId}\" target=\"_blank\">Abrir detalles</a>";
                             }
                         }
                     }
@@ -1177,7 +1178,7 @@ namespace Goteo\Model {
                                     // a ver si cargo pendiente es incidencia...
                                     if ($invest->investStatus == 0 && ($p0 === 'first' || $p0 === 'all')) {
                                         $Data['paypal']['first']['fail'] += $invest->amount;
-                                        $Data['note'][] = "El aporte paypal {$invId} no debería estar en estado '".self::status($invest->investStatus)."'";
+                                        $Data['note'][] = "El aporte paypal {$invId} no debería estar en estado '".self::status($invest->investStatus)."'. <a href=\"/admin/invests/details/{$invId}\" target=\"_blank\">Abrir detalles</a>";
                                         continue;
                                     }
                                     $Data['paypal']['first']['users'][$invest->user] = $invest->user;

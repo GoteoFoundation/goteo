@@ -35,8 +35,6 @@ foreach ($this['invests'] as $invest) {
     $desglose[$invest->method] += $invest->amount;
     $goteo[$invest->method] += ($invest->amount * 0.08);
     $proyecto[$invest->method] += ($invest->amount * 0.92);
-// la comision paypal va redondeada a dos decimales en cada transaccion
-    
 // para cada estado
     $estado[$invest->status]['total'] += $invest->amount;
     $estado[$invest->status][$invest->method] += $invest->amount;
@@ -145,6 +143,61 @@ foreach ($this['invests'] as $invest) {
 <div class="widget report">
     <h3>Informe de transacciones correctas</h3>
     <p style="font-style:italic;">Las incidencias NO se tienen en cuenta en el conteo de usuarios/operaciones ni en importes ni en comisiones ni en netos.</p>
+
+    <h4>RESUMEN</h4>
+    <table>
+        <?php
+        $sumData['total'] = $project->amount;
+        $sumData['fail']  = $Data['tpv']['total']['fail']   + $Data['paypal']['total']['fail']   + $Data['cash']['total']['fail'];
+        $sumData['brute'] = $Data['tpv']['total']['amount'] + $Data['paypal']['total']['amount'] + $Data['cash']['total']['amount'];
+        $sumData['tpv_fee_goteo'] = $Data['tpv']['total']['amount']  * 0.008;
+        $sumData['pp_goteo'] = $Data['paypal']['total']['amount'] * 0.08;
+        $sumData['pp_project'] = $Data['paypal']['total']['amount'] - $sumData['pp_goteo'];
+        $sumData['pp_fee_goteo'] = ($Data['paypal']['total']['invests'] * 0.35) + ($sumData['pp_goteo'] * 0.034);
+        $sumData['pp_fee_project'] = ($Data['paypal']['total']['invests'] * 0.35) + ($sumData['pp_project'] * 0.034);
+        $sumData['restfee'] = $sumData['tpv_fee_goteo'] + $sumData['pp_fee_goteo'];
+        $sumData['net'] = $sumData['brute'] - $sumData['tpv_fee_goteo'] - $sumData['pp_fee_goteo'] - $sumData['pp_fee_project'];
+        $sumData['goteo'] = $sumData['net'] * 0.08;
+        $sumData['ppproject'] = $sumData['pp_project'] - $sumData['pp_fee_project'];
+        $sumData['restproject'] = $sumData['brute'] - $sumData['goteo'] - $sumData['tpv_fee_goteo'] - $sumData['pp_fee_goteo'] - $sumData['ppproject'];
+        ?>
+        <tr>
+            <th style="text-align:left;">Recaudación comprometida (visualizada en el termometro del proyecto)</th>
+            <td style="text-align:right;"><?php echo \amount_format($sumData['total'], 2) ?></td>
+        </tr>
+        <tr>
+            <th style="text-align:left;">No cobrados por falta de fondos o cancelaciones</th>
+            <td style="text-align:right;"><?php echo \amount_format($sumData['fail'], 2) ?></td>
+        </tr>
+        <tr>
+            <th style="text-align:left;">Ingresado realmente</th>
+            <td style="text-align:right;"><?php echo \amount_format($sumData['brute'], 2) ?></td>
+        </tr>
+        <tr>
+            <th style="text-align:left;">Comisión Paypal ya cobrada al impulsor <strong>(!)</strong></th>
+            <td style="text-align:right;"><?php echo \amount_format($sumData['pp_fee_project'], 2) ?></td>
+        </tr>
+        <tr>
+            <th style="text-align:left;">Comisiones cobradas a Goteo (Paypal y targetas bancarias) <strong>(!)</strong></th>
+            <td style="text-align:right;"><?php echo \amount_format($sumData['restfee'], 2) ?></td>
+        </tr>
+        <tr>
+            <th style="text-align:left;">Neto de dinero ingresado  (ingresado menos comisiones bancos) <strong>(!)</strong></th>
+            <td style="text-align:right;"><?php echo \amount_format($sumData['net'], 2) ?></td>
+        </tr>
+        <tr>
+            <th style="text-align:left;">8&#37; comisión de Goteo (del neto) <strong>(!)</strong></th>
+            <td style="text-align:right;"><?php echo \amount_format($sumData['goteo'], 2) ?></td>
+        </tr>
+        <tr>
+            <th style="text-align:left;">Pagado a proyecto mediante paypal <strong>(!)</strong></th>
+            <td style="text-align:right;"><?php echo \amount_format($sumData['ppproject'], 2) ?></td>
+        </tr>
+        <tr>
+            <th style="text-align:left;">Pendiente de pagar al proyecto <strong>(!)</strong></th>
+            <td style="text-align:right;"><?php echo \amount_format($sumData['restproject'], 2) ?></td>
+        </tr>
+    </table>
 
 <?php if (!empty($Data['tpv'])) : ?>
     <h4>TPV</h4>
@@ -384,17 +437,41 @@ foreach ($this['invests'] as $invest) {
             <td>Aportes mediante PayPal, TPV o de Capital Riego activos</td>
         </tr>
         <tr>
-            <th>Correcto</th>
+            <th>Importe</th>
             <td style="text-align:right;"><?php echo \amount_format($Data['cash']['first']['amount']) ?></td>
             <td style="text-align:right;"><?php echo \amount_format($Data['cash']['second']['amount']) ?></td>
             <td style="text-align:right;"><?php echo \amount_format($Data['cash']['total']['amount']) ?></td>
-            <td>Aportes de cash anteriores a la campa&ntilde;a</td>
+            <td>Aportes de cash</td>
+        </tr>
+        <tr>
+            <?php
+            $Data['cash']['first']['goteo']  = $Data['cash']['first']['amount'] * 0.08;
+            $Data['cash']['second']['goteo'] = $Data['cash']['second']['amount'] * 0.08;
+            $Data['cash']['total']['goteo']  = $Data['cash']['total']['amount'] * 0.08;
+            ?>
+            <th>Goteo</th>
+            <td style="text-align:right;"><?php echo \amount_format($Data['cash']['first']['goteo']) ?></td>
+            <td style="text-align:right;"><?php echo \amount_format($Data['cash']['second']['goteo']) ?></td>
+            <td style="text-align:right;"><?php echo \amount_format($Data['cash']['total']['goteo']) ?></td>
+            <td>8&#37; del importe</td>
+        </tr>
+        <tr>
+            <?php
+            $Data['cash']['first']['project']  = $Data['cash']['first']['amount']  - $Data['cash']['first']['goteo'];
+            $Data['cash']['second']['project'] = $Data['cash']['second']['amount'] - $Data['cash']['second']['goteo'];
+            $Data['cash']['total']['project']  = $Data['cash']['total']['amount']  - $Data['cash']['total']['goteo'];
+            ?>
+            <th>Proyecto</th>
+            <td style="text-align:right;"><?php echo \amount_format($Data['cash']['first']['project']) ?></td>
+            <td style="text-align:right;"><?php echo \amount_format($Data['cash']['second']['project']) ?></td>
+            <td style="text-align:right;"><?php echo \amount_format($Data['cash']['total']['project']) ?></td>
+            <td>92&#37; del importe</td>
         </tr>
     </table>
 <?php endif; ?>
 
 <?php if (!empty($Data['note'])) : ?>
     <h4>Notas</h4>
-    <p><?php echo implode('<br />- ', $Data['note']) ?></p>
+    <p><?php echo implode('<br />', $Data['note']) ?></p>
 <?php endif; ?>
 </div>
