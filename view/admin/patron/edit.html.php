@@ -7,7 +7,7 @@ $promo = $this['promo'];
 
 // proyectos disponibles
 // si tenemos ya proyecto seleccionado lo incluimos
-$projects = Model\Promote::available($promo->project);
+$projects = Model\Patron::available($promo->project, $_SESSION['admin_node']);
 $users = Model\user::getVips();
 $status = Model\Project::status();
 

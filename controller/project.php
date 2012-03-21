@@ -50,6 +50,12 @@ namespace Goteo\Controller {
         public function edit ($id) {
             $project = Model\Project::get($id, null);
 
+            // si es admin de nodo y no es de su nodo no puede estar editando
+            if (isset($_SESSION['admin_node']) && $project->node != $_SESSION['admin_node']) {
+                Message::Info('No tienes permiso para editar este proyecto');
+                throw new Redirection('/admin/projects');
+            }
+
             // si no tenemos SESSION stepped es porque no venimos del create
             if (!isset($_SESSION['stepped']))
                 $_SESSION['stepped'] = array(
@@ -558,6 +564,7 @@ namespace Goteo\Controller {
 
             } else {
                 // no lo puede ver
+                Message::Info('Este proyecto aun no es público');
                 throw new Redirection("/");
             }
         }

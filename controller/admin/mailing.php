@@ -107,7 +107,11 @@ namespace Goteo\Controller\Admin {
                                 AND user_interest.interest = :interest
                                 ";
                         $values[':interest'] = $filters['interest'];
-                        $_SESSION['mailing']['filters_txt'] .= 'interesados en fin <strong>' . $interests[$filters['interest']] . '</strong> ';
+                        if ($filters['interest']) {
+                            $_SESSION['mailing']['filters_txt'] .= 'del grupo de testeo ';
+                        } else {
+                            $_SESSION['mailing']['filters_txt'] .= 'interesados en fin <strong>' . $interests[$filters['interest']] . '</strong> ';
+                        }
                     }
 
                     if (!empty($filters['role'])) {
@@ -250,9 +254,10 @@ namespace Goteo\Controller\Admin {
                     // Evento Feed
                     $log = new Feed();
                     $log->populate('mailing a usuarios (admin)', '/admin/mailing',
-                        \vsprintf("El admin %s ha enviado una %s", array(
+                        \vsprintf("El admin %s ha enviado una %s a %s", array(
                         Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                        Feed::item('relevant', 'ComunicaciÃ³n masiva')
+                        Feed::item('relevant', 'Comunicacion masiva'),
+                        $_SESSION['mailing']['filters_txt']
                     )));
                     $log->doAdmin('admin');
                     unset($log);

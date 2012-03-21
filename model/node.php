@@ -3,7 +3,8 @@
 namespace Goteo\Model {
 
     use \Goteo\Library\Message,
-        \Goteo\Model\Image;
+        \Goteo\Model\Image,
+        \Goteo\Core\ACL;
 
     class Node extends \Goteo\Core\Model {
 
@@ -246,8 +247,12 @@ namespace Goteo\Model {
 
 			try {
 	            $sql = "REPLACE INTO user_node (user, node) VALUES(:user, :node)";
-				self::query($sql, $values);
-				return true;
+				if (self::query($sql, $values)) {
+                    ACL::allow('/manage', $this->id, 'admin', $user);
+    				return true;
+                } else {
+    				return false;
+                }
 			} catch(\PDOException $e) {
 				$errors[] = "No se ha podido asignar al usuario {$user} como administrador del nodo {$this->id}. Por favor, revise el metodo Node->assign." . $e->getMessage();
 				return false;
@@ -265,8 +270,12 @@ namespace Goteo\Model {
 			);
 
             try {
-                self::query("DELETE FROM user_node WHERE node = :node AND user = :user", $values);
-				return true;
+                if (self::query("DELETE FROM user_node WHERE node = :node AND user = :user", $values)) {
+                    self::query("DELETE FROM acl WHERE node = :node AND user = :user", $values);
+                    return true;
+                } else {
+                    return false;
+                }
 			} catch(\PDOException $e) {
                 $errors[] = 'No se ha podido quitar al usuario ' . $this->user . ' de la administracion del nodo ' . $this->id . '. ' . $e->getMessage();
                 return false;

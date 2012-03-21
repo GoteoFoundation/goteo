@@ -61,7 +61,11 @@ $filters = $this['filters'];
         <tbody>
             <?php foreach ($this['nodes'] as $node) :
                 $status = $node->active ? 'active' : 'inactive';
-                $url = str_replace('http://', "http://{$node->id}.", SITE_URL);
+                if (DEVGOTEO_LOCAL === true) {
+                    $url = str_replace('http://', "http://{$node->id}.", SITE_URL);
+                } else {
+                    $url = $node->url;
+                }
                 ?>
             <tr>
                 <td><a class="node-jump" href="<?php echo $url; ?>" target="_blank"><?php echo $url; ?></a></td>

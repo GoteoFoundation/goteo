@@ -23,6 +23,17 @@ $data = $this['data'];
             <input type="text" id="user-password" name="password" value="<?php echo $data['password'] ?>" style="width:500px" maxlength="255"/>
         </p>
 
+    <p>
+        <label for="user-node">Nodo:</label><br />
+        <select id="user-node" name="node" >
+        <?php foreach ($this['nodes'] as $nodeId=>$nodeName) :
+            if (isset($_SESSION['admin_node']) && $nodeId != $_SESSION['admin_node']) continue;
+            ?>
+            <option value="<?php echo $nodeId; ?>"<?php if ($nodeId == $_SESSION['admin_node']) echo ' selected="selected"';?>><?php echo $nodeName; ?></option>
+        <?php endforeach; ?>
+        </select>
+    </p>
+
         <input type="submit" name="add" value="Crear este usuario" /><br />
         <span style="font-style:italic;font-weight:bold;">Atención! Le llegará email de verificación al usuario como si se hubiera registrado.</span>
 

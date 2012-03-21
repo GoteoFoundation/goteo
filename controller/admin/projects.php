@@ -5,6 +5,7 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
+		Goteo\Library\Text,
 		Goteo\Library\Feed,
         Goteo\Library\Message,
         Goteo\Model;
@@ -184,6 +185,23 @@ namespace Goteo\Controller\Admin {
                 } else {
                     throw new Redirection($redir);
                 }
+            }
+
+            if ($action == 'report') {
+                // informe financiero
+                // Datos para el informe de transacciones correctas
+                $reportData = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
+
+                return new View(
+                    'view/admin/index.html.php',
+                    array(
+                        'folder' => 'projects',
+                        'file' => 'report',
+                        'project' => $project,
+                        'reportData' => $reportData,
+                        'errors' => $errors
+                    )
+                );
             }
 
             if ($action == 'dates') {

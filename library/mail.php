@@ -271,7 +271,7 @@ namespace Goteo\Library {
          *
          * @param array $filters    user (nombre o email),  template
          */
-        public function getSended($filters = array(), $limit = 999) {
+        public function getSended($filters = array(), $node = null, $limit = 999) {
 
             $values = array();
             $sqlFilter = '';
@@ -289,6 +289,12 @@ namespace Goteo\Library {
                 $values[':template'] = $filters['template'];
             }
 
+            if (!empty($node)) {
+                $sqlFilter .= $and . " user.node = :node";
+                $and = " AND";
+                $values[':node'] = $node;
+            }
+
             $sql = "SELECT
                         mail.id as id,
                         user.name as user,
@@ -301,6 +307,7 @@ namespace Goteo\Library {
                     $sqlFilter
                     ORDER BY mail.date DESC
                     LIMIT {$limit}";
+
             $query = Model::query($sql, $values);
             return $query->fetchAll(\PDO::FETCH_OBJ);
             

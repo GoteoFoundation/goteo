@@ -21,6 +21,10 @@ array_walk($roles, function (&$role) { $role = $role->name; });
         <dd><?php echo $user->email ?></dd>
     </dl>
     <dl>
+        <dt>Nodo:</dt>
+        <dd><?php echo $this['nodes'][$user->node] ?></dd>
+    </dl>
+    <dl>
         <dt>Roles actuales</dt>
         <dd><?php echo implode(', ', $roles); ?></dd>
     </dl>

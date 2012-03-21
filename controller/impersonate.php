@@ -7,7 +7,8 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Library\Feed,
         Goteo\Library\Message,
-		Goteo\Model\User;
+		Goteo\Model\User,
+		Goteo\Model\Node;
 
 	class Impersonate extends \Goteo\Core\Controller {
 
@@ -25,6 +26,18 @@ namespace Goteo\Controller {
 
                 session_unset();
                 $_SESSION['user'] = User::get($_POST['id']);
+
+                // si es administrador de nodo cargamos tambien su nodo
+                if (isset($_SESSION['user']->roles['admin'])) {
+                    // posible admin de nodo
+                    if ($node = Node::getAdminNode($_SESSION['user']->id)) {
+                        $_SESSION['admin_node'] = $node;
+                    } else {
+                        $_SESSION['admin_node'] = \GOTEO_NODE;
+                    }
+                } else {
+                    unset($_SESSION['admin_node']);
+                }
 
                 // Evento Feed
                 $log = new Feed();

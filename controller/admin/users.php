@@ -33,6 +33,10 @@ namespace Goteo\Controller\Admin {
                         $user->name = $_POST['name'];
                         $user->email = $_POST['email'];
                         $user->password = $_POST['password'];
+                        $user->node = !empty($_POST['node']) ? $_POST['node'] : \GOTEO_NODE;
+                        if (isset($_SESSION['admin_node']) && $user->node != $_SESSION['admin_node']) {
+                            $user->node = $_SESSION['admin_node'];
+                        }
                         $user->save($errors);
 
                         if(empty($errors)) {
@@ -52,6 +56,7 @@ namespace Goteo\Controller\Admin {
                             'folder' => 'users',
                             'file' => 'add',
                             'data'=>$data,
+                            'nodes' => $nodes,
                             'errors'=>$errors
                         )
                     );
@@ -107,6 +112,7 @@ namespace Goteo\Controller\Admin {
                             'file' => 'edit',
                             'user'=>$user,
                             'data'=>$data,
+                            'nodes'=>$nodes,
                             'errors'=>$errors
                         )
                     );
@@ -221,6 +227,7 @@ namespace Goteo\Controller\Admin {
                             'folder' => 'users',
                             'file' => 'manage',
                             'user'=>$user,
+                            'nodes'=>$nodes,
                             'errors'=>$errors,
                             'success'=>$success
                         )
@@ -238,7 +245,8 @@ namespace Goteo\Controller\Admin {
                         array(
                             'folder' => 'users',
                             'file'   => 'impersonate',
-                            'user'   => $user
+                            'user'   => $user,
+                            'nodes'=>$nodes
                         )
                     );
 

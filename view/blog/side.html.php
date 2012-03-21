@@ -10,7 +10,7 @@ $list = array();
 switch ($this['type']) {
     case 'posts':
         $title = Text::get('blog-side-last_posts');
-        $items = Post::getAll($blog->id, 7);
+        $items = Post::getAll(null, 7);
         // enlace a la entrada
         foreach ($items as $item) {
             $list[] = '<a href="/blog/'.$item->id.'"> '.Text::recorta($item->title, 100).'</a>';
@@ -18,7 +18,7 @@ switch ($this['type']) {
         break;
     case 'tags':
         $title = Text::get('blog-side-tags');
-        $items = Post\Tag::getList($blog->id);
+        $items = Post\Tag::getList();
         // enlace a la lista de entradas con filtro tag
         foreach ($items as $item) {
             if ($item->used > 0) {

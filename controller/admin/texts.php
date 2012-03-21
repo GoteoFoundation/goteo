@@ -5,8 +5,8 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
-		Goteo\Library\Feed,
-	    Goteo\Library\Text;
+	    Goteo\Library\Text,
+		Goteo\Library\Feed;
 
     class Texts {
 

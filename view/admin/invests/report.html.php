@@ -35,6 +35,8 @@ foreach ($this['invests'] as $invest) {
     $desglose[$invest->method] += $invest->amount;
     $goteo[$invest->method] += ($invest->amount * 0.08);
     $proyecto[$invest->method] += ($invest->amount * 0.92);
+// la comision paypal va redondeada a dos decimales en cada transaccion
+    
 // para cada estado
     $estado[$invest->status]['total'] += $invest->amount;
     $estado[$invest->status][$invest->method] += $invest->amount;

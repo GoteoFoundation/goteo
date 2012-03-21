@@ -28,7 +28,7 @@ namespace Goteo\Controller {
             if (isset($_GET['tag'])) {
                 $tag = Model\Blog\Post\Tag::get($_GET['tag']);
                 if (!empty($tag->id)) {
-                    $blog->posts = Model\Blog\Post::getList($blog->id, $tag->id);
+                    $blog->posts = Model\Blog\Post::getList(null, $tag->id);
                 }
             }
 

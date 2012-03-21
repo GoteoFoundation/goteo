@@ -41,7 +41,11 @@ namespace Goteo\Model {
                         $blog->project = $blog->owner;
                         break;
                 }
-                $blog->posts = Blog\Post::getAll($blog->id);
+                if ($blog->node == \GOTEO_NODE) {
+                    $blog->posts = Blog\Post::getAll();
+                } else {
+                    $blog->posts = Blog\Post::getAll($blog->id);
+                }
                 return $blog;
         }
 

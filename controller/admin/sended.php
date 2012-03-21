@@ -15,7 +15,7 @@ namespace Goteo\Controller\Admin {
 
             $templates = Template::getAllMini();
 
-            $sended = Mail::getSended($filters);
+            $sended = Mail::getSended($filters, $_SESSION['admin_node'], 99);
 
             return new View(
                 'view/admin/index.html.php',

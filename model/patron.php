@@ -108,6 +108,12 @@ namespace Goteo\Model {
                 $sqlCurr = "";
             }
 
+            if ($node != \GOTEO_NODE) {
+                $sqlFilter = " AND project.node = :node";
+            } else {
+                $sqlFiler = "";
+            }
+
             $query = static::query("
                 SELECT
                     project.id as id,
@@ -116,6 +122,7 @@ namespace Goteo\Model {
                 FROM    project
                 WHERE status > 2
                 AND project.id NOT IN (SELECT project FROM patron WHERE patron.node = :node{$sqlCurr} )
+                $sqlFilter
                 ORDER BY name ASC
                 ", array(':node' => $node));
 

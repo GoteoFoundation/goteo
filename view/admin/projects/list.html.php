@@ -114,7 +114,7 @@ $filters = $this['filters'];
                     <a href="<?php echo "/admin/projects/accounts/{$project->id}"; ?>">[Cuentas]</a>
                     <?php if ($project->translate) : ?><a href="<?php echo "/admin/translates/edit/{$project->id}"; ?>">[Ir a traducción]</a>
                     <?php else : ?><a href="<?php echo "/admin/translates/add/?project={$project->id}"; ?>">[Habilitar traducción]</a><?php endif; ?>
-                    <a href="/admin/invests/report/<?php echo $project->id; ?>#detail" target="_blank">[Informe Financiacion]</a>
+                    <a href="/admin/projects/report/<?php echo $project->id; ?>" target="_blank">[Informe Financiacion]</a>
                 </td>
             </tr>
             <tr>
