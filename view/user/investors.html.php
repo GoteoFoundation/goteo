@@ -24,11 +24,8 @@ foreach ($this['investors'] as $i=>$p) {
 $pagedResults = new \Paginated($the_investors, 20, isset($_GET['page']) ? $_GET['page'] : 1);
 
 ?>
-<div id="sub-header">
-    <div>
-        <h2><a href="/user/<?php echo $user->id; ?>"><img src="<?php echo $user->avatar->getLink(56, 56, true); ?>" /></a> <?php echo Text::get('profile-name-header'); ?> <br /><em><?php echo $user->name; ?></em></h2>
-    </div>
-</div>
+
+<?php echo new View('view/user/widget/header.html.php', array('user'=>$user)) ?>
 
 <?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
 

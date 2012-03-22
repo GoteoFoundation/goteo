@@ -107,6 +107,17 @@ body.project-show div#sub-header div.categories a:hover {
     color: #20B3B2;
 }
 
+/* Distintivo de nodo */
+body.project-show div#sub-header div.nodemark {
+	position: absolute;
+    right: 200px;
+    text-align: right;
+	top: 70px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #B5161E;
+}
+
 body.project-show div.project-menu {
 	margin:18px 0 0 0;
 }

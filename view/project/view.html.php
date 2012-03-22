@@ -43,9 +43,13 @@ $bodyClass = 'project-show';
 $ogmeta = array(
     'title' => $project->name,
     'description' => Text::get('regular-by').' '.$project->user->name,
-    'image' => SITE_URL . '/image/'.$project->gallery[0]->id . '/580/580',
     'url' => SITE_URL . '/project/'.$project->id
 );
+if (!empty($project->gallery)) {
+    $ogmeta['image'] = $project->gallery[0]->getLink(580, 580);
+}
+
+
 include 'view/prologue.html.php' ?>
 
 <?php include 'view/header.html.php' ?>
@@ -63,6 +67,10 @@ include 'view/prologue.html.php' ?>
                         echo $sep.'<a href="/discover/results/'.$key.'">'.htmlspecialchars($value).'</a>';
                     $sep = ', '; endforeach; ?>
                 </div>
+
+                <?php if (!empty($project->node) && $project->node != \GOTEO_NODE) : ?>
+                <div class="nodemark">NODO: <?php echo $project->node ?></div>
+                <?php endif; ?>
             </div>
 
             <div class="sub-menu">
