@@ -8,3 +8,5 @@ CREATE TABLE `mail` (
 -- alters
 ALTER TABLE `mail` ADD `template` int( 20 ) NULL ,
 ADD `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ;
+
+ALTER TABLE `mail` ADD `node` VARCHAR( 50 ) NULL AFTER `template` ;

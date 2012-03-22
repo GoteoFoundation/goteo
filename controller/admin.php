@@ -264,7 +264,7 @@ namespace Goteo\Controller {
                         'actions' => array(
                             'list' => array('label' => 'Emails enviados', 'item' => false)
                         ),
-                        'filters' => array('user'=>'', 'template'=>'')
+                        'filters' => array('user'=>'', 'template'=>'', 'node'=>\GOTEO_NODE)
                     ),
                     'sponsors' => array(
                         'label' => 'Apoyos institucionales',

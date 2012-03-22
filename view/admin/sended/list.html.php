@@ -28,6 +28,17 @@ $pagedResults = new \Paginated($this['sended'], 20, isset($_GET['page']) ? $_GET
                     <?php endforeach; ?>
                     </select>
                 </td>
+                <?php if (!isset($_SESSION['admin_node'])) : ?>
+                <td>
+                    <label for="node-filter">Enviado por el nodo:</label><br />
+                    <select id="node-filter" name="node" onchange="document.getElementById('filter-form').submit();">
+                        <option value="">Cualquier nodo</option>
+                    <?php foreach ($this['nodes'] as $nodeId=>$nodeName) : ?>
+                        <option value="<?php echo $nodeId; ?>"<?php if ($filters['node'] == $nodeId) echo ' selected="selected"';?>><?php echo $nodeName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </td>
+                <?php endif; ?>
             </tr>
             <tr>
                 <td colspan="2"><input type="submit" name="filter" value="Filtrar"></td>

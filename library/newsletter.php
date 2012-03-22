@@ -85,11 +85,12 @@ namespace Goteo\Library {
                 $Template = Template::get(33);
                 $content = Newsletter::getContent($Template->text);
 
-                $sql = "INSERT INTO mail (id, email, html, template) VALUES ('', :email, :html, :template)";
+                $sql = "INSERT INTO mail (id, email, html, template, node) VALUES ('', :email, :html, :template, :node)";
                 $values = array (
                     ':email' => 'any',
                     ':html' => $content,
-                    ':template' => 33
+                    ':template' => 33,
+                    ':node' => $_SESSION['admin_node']
                 );
                 $query = Model::query($sql, $values);
 

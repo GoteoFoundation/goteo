@@ -134,6 +134,14 @@ namespace Goteo\Controller\Admin {
                         $_SESSION['mailing']['filters_txt'] .= 'que su contraseña sea igual que su email ';
                     }
 
+                    if (isset($_SESSION['admin_node'])) {
+                        $sqlFilter .= " AND user.node = :node";
+                        $values[':node'] = $_SESSION['admin_node'];
+                        if (!empty($sqlInner)) {
+                            $sqlFilter .= " AND project.node = :node";
+                        }
+                    }
+
                     $sql = "SELECT
                                 user.id as id,
                                 user.name as name,
