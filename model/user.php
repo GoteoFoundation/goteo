@@ -527,8 +527,6 @@ namespace Goteo\Model {
          */
         public static function get ($id, $lang = null) {
             try {
-                if (!$lang == 'es') $lang = null;
-
                 $sql = "
                     SELECT
                         user.id as id,

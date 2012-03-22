@@ -264,7 +264,7 @@ namespace Goteo\Controller {
             // segun el paso añadimos los datos auxiliares para pintar
             switch ($step) {
                 case 'userProfile':
-                    $owner = Model\User::get($project->owner);
+                    $owner = Model\User::get($project->owner, null);
                     // si es el avatar por defecto no lo mostramos aqui
                     if ($owner->avatar->id == 1) {
                         unset($owner->avatar);

@@ -247,7 +247,7 @@ namespace Goteo\Model {
                 }
 
                 // owner
-                $project->user = User::get($project->owner);
+                $project->user = User::get($project->owner, $lang);
 
                 // imagen
                 $project->image = Image::get($project->image);

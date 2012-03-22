@@ -13,7 +13,6 @@ $show    = $this['show'];
 $invest  = $this['invest'];
 $post    = $this['post'];
 
-$owner   = User::get($project->owner, LANG);
 $user    = $_SESSION['user'];
 
 $categories = Category::getNames($project->id);
@@ -112,7 +111,7 @@ include 'view/prologue.html.php' ?>
                 echo new View('view/project/widget/rewards.html.php', array('project' => $project));
             }
 
-            echo new View('view/user/widget/user.html.php', array('user' => $owner));
+            echo new View('view/user/widget/user.html.php', array('user' => $project->user));
 
             ?>
             </div>
