@@ -13,7 +13,7 @@ namespace Goteo\Controller\Admin {
 
     class Invests {
 
-        public static function process ($action = 'list', $id = null) {
+        public static function process ($action = 'list', $id = null, $filters = array()) {
 
             $errors = array();
 
@@ -24,9 +24,9 @@ namespace Goteo\Controller\Admin {
             // estados de aporte
             $investStatus = Model\Invest::status();
             // listado de proyectos
-            $projects = Model\Invest::projects();
+            $projects = Model\Invest::projects(false, $_SESSION['admin_node']);
             // usuarios cofinanciadores
-            $users = Model\Invest::users(true);
+            $users = Model\Invest::users(true, $_SESSION['admin_node']);
             // campañas que tienen aportes
             $calls = Model\Invest::calls();
             // extras
@@ -49,6 +49,10 @@ namespace Goteo\Controller\Admin {
                     $droped = Model\Invest::get($invest->droped);
                 } else {
                     $droped = null;
+                }
+
+                if ($project->node != $_SESSION['admin_node']) {
+                    throw new Redirection('/admin/invests');
                 }
 
                 return new View(
@@ -74,7 +78,7 @@ namespace Goteo\Controller\Admin {
                 if (!empty($filters['calls']))
                     $filters['types'] = '';
 
-                $list = Model\Invest::getList($filters);
+                $list = Model\Invest::getList($filters, $_SESSION['admin_node']);
             } else {
                 $list = array();
             }

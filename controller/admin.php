@@ -717,7 +717,7 @@ namespace Goteo\Controller {
 
             define('ADMIN_BCPATH', $BC);
 
-            return Admin\Invests::process($action, $id);
+            return Admin\Invests::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
         /*

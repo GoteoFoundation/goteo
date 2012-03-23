@@ -145,33 +145,35 @@ namespace Goteo\Model {
          * Los datos que sacamos: usuario, proyecto, cantidad, estado de proyecto, estado de aporte, fecha de aporte, tipo de aporte, campaña
          * .... anonimo, resign, etc...
          */
-        public static function getList ($filters = array()) {
-
-            /*
-             * Estos son los filtros
-            $fields = array('method', 'status', 'investStatus', 'project', 'user', 'campaign', 'types');
-             */
+        public static function getList ($filters = array(), $node = null) {
 
             $list = array();
+            $values = array();
 
             $sqlFilter = "";
             if (!empty($filters['methods'])) {
-                $sqlFilter .= " AND invest.method = '{$filters['methods']}'";
+                $sqlFilter .= " AND invest.method = :methods";
+                $values[':methods'] = $filters['methods'];
             }
             if (is_numeric($filters['status'])) {
-                $sqlFilter .= " AND project.status = '{$filters['status']}'";
+                $sqlFilter .= " AND project.status = :status";
+                $values[':status'] = $filters['status'];
             }
             if (is_numeric($filters['investStatus'])) {
-                $sqlFilter .= " AND invest.status = '{$filters['investStatus']}'";
+                $sqlFilter .= " AND invest.status = :investStatus";
+                $values[':investStatus'] = $filters['investStatus'];
             }
             if (!empty($filters['projects'])) {
-                $sqlFilter .= " AND invest.project = '{$filters['projects']}'";
+                $sqlFilter .= " AND invest.project = :projects";
+                $values[':projects'] = $filters['projects'];
             }
             if (!empty($filters['users'])) {
-                $sqlFilter .= " AND invest.user = '{$filters['users']}'";
+                $sqlFilter .= " AND invest.user = :users";
+                $values[':users'] = $filters['users'];
             }
             if (!empty($filters['calls'])) {
-                $sqlFilter .= " AND invest.campaign = 1 AND invest.call = '{$filters['calls']}'";
+                $sqlFilter .= " AND invest.campaign = 1 AND invest.call = :calls";
+                $values[':calls'] = $filters['calls'];
             }
             // else { $sqlFilter .= " AND (invest.campaign = 0 OR invest.campaign IS NULL)"; }
             if (!empty($filters['types'])) {
@@ -213,10 +215,17 @@ namespace Goteo\Model {
             }
 
             if (!empty($filters['date_from'])) {
-                $sqlFilter .= " AND invest.invested >= '{$filters['date_from']}'";
+                $sqlFilter .= " AND invest.invested >= :date_from";
+                $values[':date_from'] = $filters['date_from'];
             }
             if (!empty($filters['date_until'])) {
-                $sqlFilter .= " AND invest.invested <= '{$filters['date_until']}'";
+                $sqlFilter .= " AND invest.invested <= :date_until";
+                $values[':date_until'] = $filters['date_until'];
+            }
+
+            if (!empty($node)) {
+                $sqlFilter .= " AND project.node = :node";
+                $values[':node'] = $node;
             }
 
             $sql = "SELECT
@@ -246,7 +255,7 @@ namespace Goteo\Model {
                     ORDER BY invest.id DESC
                     ";
 
-            $query = self::query($sql);
+            $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
                 $list[$item->id] = $item;
             }
@@ -440,9 +449,10 @@ namespace Goteo\Model {
         /*
          * Lista de usuarios que han aportado a algo
          */
-        public static function users ($all = false) {
+        public static function users ($all = false, $node = \GOTEO_NODE) {
 
             $list = array();
+            $values = array();
 
             $sql = "
                 SELECT
@@ -452,15 +462,24 @@ namespace Goteo\Model {
                 INNER JOIN invest
                     ON user.id = invest.user
                 ";
-            
+            if ($node != \GOTEO_NODE) {
+                $sql .= "
+                INNER JOIN project
+                    ON  project.id = invest.project
+                    AND project.node = :node
+                    ";
+                $values[':node'] = $node;
+            }
             if (!$all) {
                 $sql .= "WHERE (user.hide = 0 OR user.hide IS NULL)
                     ";
             }
-                $sql .= "ORDER BY user.name ASC
+                $sql .= "
+                    GROUP BY user.id
+                    ORDER BY user.name ASC
                 ";
 
-            $query = static::query($sql);
+            $query = static::query($sql, $values);
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
                 $list[$item->id] = $item->name;
