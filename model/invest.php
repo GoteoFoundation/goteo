@@ -1262,7 +1262,7 @@ namespace Goteo\Model {
                                     if ($invest->investStatus == 0 && $p0 === 'all') {
                                         $Data['paypal']['second']['fail'] += $invest->amount;
                                         $Data['paypal']['total']['fail'] += $invest->amount;
-                                        $Data['note'][] = "El aporte paypal {$invId} no debería estar en estado '".self::status($invest->investStatus)."'";
+                                        $Data['note'][] = "El aporte paypal {$invId} no debería estar en estado '".self::status($invest->investStatus)."'. <a href=\"/admin/invests/details/{$invId}\" target=\"_blank\">Abrir detalles</a>";
                                         continue;
                                     }
                                     $Data['paypal']['second']['users'][$invest->user] = $invest->user;

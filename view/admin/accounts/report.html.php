@@ -155,6 +155,7 @@ foreach ($this['invests'] as $invest) {
         $sumData['pp_project'] = $Data['paypal']['total']['amount'] - $sumData['pp_goteo'];
         $sumData['pp_fee_goteo'] = ($Data['paypal']['total']['invests'] * 0.35) + ($sumData['pp_goteo'] * 0.034);
         $sumData['pp_fee_project'] = ($Data['paypal']['total']['invests'] * 0.35) + ($sumData['pp_project'] * 0.034);
+        $sumData['pp_net_project'] = $sumData['pp_project'] - $sumData['pp_fee_project'];
         $sumData['restfee'] = $sumData['tpv_fee_goteo'] + $sumData['pp_fee_goteo'];
         $sumData['net'] = $sumData['brute'] - $sumData['tpv_fee_goteo'] - $sumData['pp_fee_goteo'] - $sumData['pp_fee_project'];
         $sumData['goteo'] = $sumData['net'] * 0.08;
@@ -166,7 +167,7 @@ foreach ($this['invests'] as $invest) {
             <td style="text-align:right;"><?php echo \amount_format($sumData['total'], 2) ?></td>
         </tr>
         <tr>
-            <th style="text-align:left;">No cobrados por falta de fondos o cancelaciones</th>
+            <td style="text-align:left;">No cobrados por falta de fondos o cancelaciones</td>
             <td style="text-align:right;"><?php echo \amount_format($sumData['fail'], 2) ?></td>
         </tr>
         <tr>
@@ -174,30 +175,48 @@ foreach ($this['invests'] as $invest) {
             <td style="text-align:right;"><?php echo \amount_format($sumData['brute'], 2) ?></td>
         </tr>
         <tr>
-            <th style="text-align:left;">Comisión Paypal ya cobrada al impulsor <strong>(!)</strong></th>
-            <td style="text-align:right;"><?php echo \amount_format($sumData['pp_fee_project'], 2) ?></td>
+            <td style="text-align:left;">Transferido mediante Paypal <strong>(ver desglose)</strong></td>
+            <td style="text-align:right;"><?php echo \amount_format($sumData['pp_project'], 2) ?></td>
         </tr>
         <tr>
-            <th style="text-align:left;">Comisiones cobradas a Goteo (Paypal y targetas bancarias) <strong>(!)</strong></th>
+            <td style="text-align:left;">Comisiones cobradas a Goteo (Paypal y targetas bancarias)</td>
             <td style="text-align:right;"><?php echo \amount_format($sumData['restfee'], 2) ?></td>
         </tr>
         <tr>
-            <th style="text-align:left;">Neto de dinero ingresado  (ingresado menos comisiones bancos) <strong>(!)</strong></th>
+            <th style="text-align:left;">Neto de dinero ingresado  (ingresado menos comisiones)</th>
             <td style="text-align:right;"><?php echo \amount_format($sumData['net'], 2) ?></td>
         </tr>
         <tr>
-            <th style="text-align:left;">8&#37; comisión de Goteo (del neto) <strong>(!)</strong></th>
+            <td style="text-align:left;">8&#37; comisión de Goteo (sobre el neto)</td>
             <td style="text-align:right;"><?php echo \amount_format($sumData['goteo'], 2) ?></td>
         </tr>
         <tr>
-            <th style="text-align:left;">Pagado a proyecto mediante paypal <strong>(!)</strong></th>
-            <td style="text-align:right;"><?php echo \amount_format($sumData['ppproject'], 2) ?></td>
-        </tr>
-        <tr>
-            <th style="text-align:left;">Pendiente de pagar al proyecto <strong>(!)</strong></th>
+            <th style="text-align:left;">Pendiente de pagar al proyecto</th>
             <td style="text-align:right;"><?php echo \amount_format($sumData['restproject'], 2) ?></td>
         </tr>
+        <tr>
+            <td colspan="2"><hr /></td>
+        </tr>
     </table>
+
+    <table>
+        <tr>
+            <th colspan="2">Desglose informativo de lo pagado mediante PayPal</th>
+        </tr>
+        <tr>
+            <td>Cantidad transferida</td>
+            <td><?php echo \amount_format($sumData['pp_project'], 2) ?></td>
+        </tr>
+        <tr>
+            <td>Comisión aproximada cobrada al impulor</td>
+            <td><?php echo \amount_format($sumData['pp_fee_project'], 2) ?></td>
+        </tr>
+        <tr>
+            <td>Cantidad aproximada recibida por el impulsor</td>
+            <td><?php echo \amount_format($sumData['pp_net_project'], 2) ?></td>
+        </tr>
+    </table>
+
 
 <?php if (!empty($Data['tpv'])) : ?>
     <h4>TPV</h4>
