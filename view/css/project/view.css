@@ -110,7 +110,7 @@ body.project-show div#sub-header div.categories a:hover {
 /* Distintivo de nodo */
 body.project-show div#sub-header div.nodemark {
 	position: absolute;
-    right: 200px;
+    right: 10px;
     text-align: right;
 	top: 70px;
 }

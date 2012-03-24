@@ -97,7 +97,7 @@ namespace Goteo\Controller\Admin {
                 }
 
                 $viewData = array(
-                    'folder' => 'invests',
+                    'folder' => 'accounts',
                     'file' => 'move',
                     'original' => $original,
                     'user'     => $userData,
@@ -180,7 +180,7 @@ namespace Goteo\Controller\Admin {
                 }
 
                  $viewData = array(
-                        'folder' => 'invests',
+                        'folder' => 'accounts',
                         'file' => 'add',
                         'users'         => $users,
                         'projects'      => $projects,
@@ -215,7 +215,7 @@ namespace Goteo\Controller\Admin {
                 return new View(
                     'view/admin/index.html.php',
                     array(
-                        'folder' => 'invests',
+                        'folder' => 'accounts',
                         'file' => 'report',
                         'invests' => $invests,
                         'project' => $project,

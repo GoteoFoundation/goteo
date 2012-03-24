@@ -1793,7 +1793,7 @@ namespace Goteo\Model {
                             AND     days > 0
                             AND     status = 3
                             $sqlFilter
-                            HAVING getamount < mincost
+                            HAVING (getamount < mincost OR getamount IS NULL)
                             ORDER BY days ASC";
                     break;
                 case 'recent':
@@ -1841,7 +1841,22 @@ namespace Goteo\Model {
                 case 'others':
                     // todos los que estan 'en campaña', en otro nodo
                     if (!empty($sqlFilter)) $sqlFilter = \str_replace('=', '!=', $sqlFilter);
-                    $sql = "SELECT id FROM project WHERE status = 3 $sqlFilter ORDER BY name ASC";
+                    $sql = "SELECT project.id as id,
+                                    (SELECT COUNT(DISTINCT(invest.user))
+                                        FROM    invest
+                                        WHERE   invest.project = project.id
+                                        AND     invest.status IN ('0', '1')
+                                    )
+                                    +
+                                    (SELECT  COUNT(DISTINCT(message.user))
+                                        FROM    message
+                                        WHERE   message.project = project.id
+                                    ) as followers
+                            FROM project
+                            WHERE project.status= 3
+                            $sqlFilter
+                            HAVING followers > 20
+                            ORDER BY followers DESC";
                     break;
                 default: 
                     // todos los que estan 'en campaña', en cualquier nodo
