@@ -2,9 +2,8 @@
 
 namespace Goteo\Model {
 
-    use \Goteo\Library\Message,
-        \Goteo\Model\Image,
-        \Goteo\Core\ACL;
+    use Goteo\Model\Image,
+        Goteo\Core\ACL;
 
     class Node extends \Goteo\Core\Model {
 
@@ -38,6 +37,18 @@ namespace Goteo\Model {
                 if (!empty($item->logo)) {
                     $item->logo = Image::get($item->logo);
                 }
+
+                return $item;
+        }
+
+        static public function getMini ($id) {
+                $sql = static::query("
+                    SELECT
+                        name, url
+                    FROM node
+                    WHERE id = :id
+                    ", array(':id' => $id));
+                $item = $sql->fetchObject();
 
                 return $item;
         }
@@ -294,7 +305,7 @@ namespace Goteo\Model {
                 if ($image->save($errors)) {
                     $this->logo = $image->id;
                 } else {
-                    Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                    \Goteo\Library\Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
                     $this->logo = '';
                 }
             }

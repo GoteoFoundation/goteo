@@ -42,9 +42,6 @@ include 'view/node/header.html.php';
         if (!empty($this[$item])) echo new View("view/home/{$item}.html.php", $this);
     } ?>
 
-    <?php
-        include 'nodesys/'.NODE_ID.'/content.php';
-    ?>
 </div>
 <?php include 'view/node/footer.html.php'; ?>
 <?php include 'view/epilogue.html.php'; ?>

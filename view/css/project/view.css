@@ -113,9 +113,17 @@ body.project-show div#sub-header div.nodemark {
     right: 200px;
     text-align: right;
 	top: 70px;
+}
+
+body.project-show div#sub-header div.nodemark a {
     font-size: 16px;
     font-weight: bold;
     color: #B5161E;
+    text-decoration: none;
+}
+
+body.project-show div#sub-header div.nodemark a:hover {
+    color: #20B2B3;
 }
 
 body.project-show div.project-menu {

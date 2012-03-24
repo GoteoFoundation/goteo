@@ -45,7 +45,7 @@
         <?php endif ?>
     </head>
 
-    <body<?php if (isset($bodyClass)) echo ' class="' . htmlspecialchars($bodyClass) . '"' ?> style="background-color:#B5DADC;">
+    <body<?php if (isset($bodyClass)) echo ' class="' . htmlspecialchars($bodyClass) . '"' ?> style="background-color:#FAE5E6;">
 
         <script type="text/javascript">
             // Mark DOM as javascript-enabled

@@ -5,6 +5,7 @@ namespace Goteo\Model {
 	use Goteo\Core\Redirection,
         Goteo\Library\Text,
         Goteo\Model\Image,
+        Goteo\Model\Node,
         Goteo\Library\Template,
         Goteo\Library\Mail,
         Goteo\Library\Check,
@@ -15,7 +16,8 @@ namespace Goteo\Model {
         public
             $id = false,
             $lang,
-            $node,
+            $node, // Nodo al que pertenece
+            $nodeData, // Datos del nodo
             $userid, // para el login name al registrarse
             $email,
             $password, // para gestion de super admin
@@ -569,6 +571,12 @@ namespace Goteo\Model {
                 }
                 $user->interests = User\Interest::get($id);
                 $user->webs = User\Web::get($id);
+
+                // Nodo
+                if (!empty($user->node) && $user->node != \GOTEO_NODE) {
+                    $user->nodeData = Node::getMini($user->node);
+                }
+
                 return $user;
             } catch(\PDOException $e) {
                 return false;

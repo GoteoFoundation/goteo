@@ -8,7 +8,8 @@ namespace Goteo\Model {
         Goteo\Model\User,
         Goteo\Model\Image,
         Goteo\Model\Message,
-        Goteo\Model\Call;
+        Goteo\Model\Call,
+        Goteo\Model\Node;
 
     class Project extends \Goteo\Core\Model {
 
@@ -17,6 +18,7 @@ namespace Goteo\Model {
             $dontsave = false,
             $owner, // User who created it
             $node, // Node this project belongs to
+            $nodeData, // Node data
             $status,
             $progress, // puntuation %
             $amount, // Current donated amount
@@ -295,6 +297,11 @@ namespace Goteo\Model {
                     $project->called = Call\Project::called($id);
                 } else {
                     $project->called = false;
+                }
+
+                // datos del nodo
+                if (!empty($project->node) && $project->node != \GOTEO_NODE) {
+                    $project->nodeData = Node::getMini($project->node);
                 }
 
 

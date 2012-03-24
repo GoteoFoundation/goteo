@@ -25,6 +25,30 @@ namespace Goteo\Core {
             return (bool) $query->fetchColumn();
         }
 
+        /**
+         * Solo nodos activos apra el desplegable
+         * @return <type>
+         */
+        public static function activeNodes () {
+
+            $list = array();
+
+            $sql = Model::query("
+                SELECT
+                    id, name, url
+                FROM node
+                WHERE id != 'goteo'
+                AND active = 1
+                ORDER BY `name` ASC
+                ");
+
+            foreach ($sql->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                $list[] = $item;
+            }
+
+            return $list;
+        }
+
         /*
          * Establece las constantes de configuracion de nodo
          */

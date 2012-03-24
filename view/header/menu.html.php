@@ -1,13 +1,17 @@
 <?php
 use Goteo\Core\ACL,
+    Goteo\Core\NodeSys,
     Goteo\Library\Text;
+
+$nodes = Nodesys::activeNodes();
+
 ?>
     <div id="menu">
         
         <h2><?php echo Text::get('regular-menu'); ?></h2>
         
         <ul>
-            <li class="home"><a href="/"><?php echo Text::get('regular-home'); ?></a></li>
+            <li class="home"><a class="node-jump" href="<?php echo SITE_URL ?>"><?php echo Text::get('regular-home'); ?></a></li>
             <li class="explore"><a class="button red" href="/discover"><?php echo Text::get('regular-discover'); ?></a></li>
             <li class="create"><a class="button aqua" href="/project/create"><?php echo Text::get('regular-create'); ?></a></li>
             <li class="search">
@@ -19,20 +23,18 @@ use Goteo\Core\ACL,
                     </fieldset>
                 </form>
             </li>
-            <?php if (!empty($_SESSION['user'])): ?>
             <li class="community"><a href="/community"><span><?php echo Text::get('community-menu-main'); ?></span></a>
                 <div>
                     <ul>
                         <li><a href="/community/activity"><span><?php echo Text::get('community-menu-activity'); ?></span></a></li>
                         <li><a href="/community/sharemates"><span><?php echo Text::get('community-menu-sharemates'); ?></span></a></li>
+                        <!-- nodos activos -->
+                        <?php  foreach ($nodes as $node) : ?>
+                        <li><a class="node-jump" href="<?php echo $node->url ?>"><?php echo $node->name ?></a></li>
+                        <?php  endforeach; ?>
                     </ul>
                 </div>
             </li>
-            <?php else: ?>
-            <li class="login">
-                <a href="/community"><span><?php echo Text::get('community-menu-main'); ?></span></a>
-            </li>
-            <?php endif ?>
 
             <?php if (!empty($_SESSION['user'])): ?>            
             <li class="dashboard"><a href="/dashboard"><span><?php echo Text::get('dashboard-menu-main'); ?></span><img src="<?php echo $_SESSION['user']->avatar->getLink(28, 28, true); ?>" /></a>

@@ -10,6 +10,6 @@ $user = $this['user'];
     </div>
 
     <?php if (!empty($user->node) && $user->node != \GOTEO_NODE) : ?>
-    <div class="nodemark">NODO: <?php echo $user->node ?></div>
+    <div class="nodemark"><a class="node-jump" href="<?php echo $user->nodeData->url ?>" >NODO: <?php echo $user->nodeData->name ?></a></div>
     <?php endif; ?>
 </div>

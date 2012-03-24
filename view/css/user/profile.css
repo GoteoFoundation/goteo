@@ -4,14 +4,47 @@
 @import url('widget/supporters.css');
 @import url('widget/mates.css');
 
+/**
+ * User profile
+*/
+body.user-profile div#sub-header h2 {
+    padding-left: 72px;
+    min-height: 55px;
+    position: relative;
+    line-height: 1.2em;
+    font-size: 18px;
+    font-weight: normal;
+    margin-right: 300px;
+}
+
+body.user-profile div#sub-header h2 img {
+    position: absolute;
+    left: 0;
+}
+
+body.user-profile div#sub-header h2 em {
+    display: block;
+    font-weight: bold;
+    font-size: 24px;
+    text-transform: uppercase;
+    font-style: normal;
+}
+
 /* Distintivo de nodo */
 body.user-profile div#sub-header div.nodemark {
     text-align: right;
+    margin-top: -30px;
+}
+
+body.user-profile div#sub-header div.nodemark a {
     font-size: 16px;
     font-weight: bold;
     color: #B5161E;
-    padding-right: 300px;
-    margin-top: -30px;
+    text-decoration: none;
+}
+
+body.user-profile div#sub-header div.nodemark a:hover {
+    color: #20B2B3;
 }
 
 body.user-profile div#main div.widget, 
