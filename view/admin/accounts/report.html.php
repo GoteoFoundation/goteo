@@ -158,37 +158,39 @@ foreach ($this['invests'] as $invest) {
         $sumData['pp_net_project'] = $sumData['pp_project'] - $sumData['pp_fee_project'];
         $sumData['restfee'] = $sumData['tpv_fee_goteo'] + $sumData['pp_fee_goteo'];
         $sumData['net'] = $sumData['brute'] - $sumData['tpv_fee_goteo'] - $sumData['pp_fee_goteo'] - $sumData['pp_fee_project'];
-        $sumData['goteo'] = $sumData['net'] * 0.08;
-        $sumData['ppproject'] = $sumData['pp_project'] - $sumData['pp_fee_project'];
-        $sumData['restproject'] = $sumData['brute'] - $sumData['goteo'] - $sumData['tpv_fee_goteo'] - $sumData['pp_fee_goteo'] - $sumData['ppproject'];
+        $sumData['goteo'] = $sumData['brute'] * 0.08;
+        $sumData['restproject'] = $sumData['brute'] - $sumData['goteo'] - $sumData['pp_project'];
         ?>
         <tr>
-            <th style="text-align:left;">Recaudación comprometida (visualizada en el termometro del proyecto)</th>
+            <th style="text-align:left;">Recaudación comprometida (visualizada en el termómetro del proyecto)</th>
             <td style="text-align:right;"><?php echo \amount_format($sumData['total'], 2) ?></td>
         </tr>
         <tr>
-            <td style="text-align:left;">No cobrados por falta de fondos o cancelaciones</td>
+            <td style="text-align:left;">No cobrado por falta de fondos o cancelaciones</td>
             <td style="text-align:right;"><?php echo \amount_format($sumData['fail'], 2) ?></td>
         </tr>
         <tr>
             <th style="text-align:left;">Ingresado realmente</th>
             <td style="text-align:right;"><?php echo \amount_format($sumData['brute'], 2) ?></td>
         </tr>
-        <tr>
-            <td style="text-align:left;">Transferido mediante Paypal <strong>(ver desglose)</strong></td>
-            <td style="text-align:right;"><?php echo \amount_format($sumData['pp_project'], 2) ?></td>
-        </tr>
+        <!--
         <tr>
             <td style="text-align:left;">Comisiones cobradas a Goteo (Paypal y targetas bancarias)</td>
             <td style="text-align:right;"><?php echo \amount_format($sumData['restfee'], 2) ?></td>
         </tr>
+
         <tr>
             <th style="text-align:left;">Neto de dinero ingresado  (ingresado menos comisiones)</th>
             <td style="text-align:right;"><?php echo \amount_format($sumData['net'], 2) ?></td>
         </tr>
+        -->
         <tr>
-            <td style="text-align:left;">8&#37; comisión de Goteo (sobre el neto)</td>
+            <td style="text-align:left;">8&#37; comisión de Goteo</td>
             <td style="text-align:right;"><?php echo \amount_format($sumData['goteo'], 2) ?></td>
+        </tr>
+        <tr>
+            <td style="text-align:left;">Transferido mediante Paypal (ver desglose)</td>
+            <td style="text-align:right;"><?php echo \amount_format($sumData['pp_project'], 2) ?></td>
         </tr>
         <tr>
             <th style="text-align:left;">Pendiente de pagar al proyecto</th>
