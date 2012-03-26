@@ -188,9 +188,6 @@ namespace Goteo\Library {
                 $query = Model::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
 
-                    //hace tanto
-                    $item->timeago = self::time_ago($item->timer);
-
                     // si es la columan goteo, vamos a cambiar el html por el del post traducido
                     if ($type == 'goteo') {
                         // primero sacamos la id del post de la url
@@ -204,8 +201,15 @@ namespace Goteo\Library {
                             // y substituimos el $item->html por el $post->html
                             $item->html = Text::recorta($post->text, 250);
                             $item->title = $post->title;
+
+                            // arreglo la fecha de publicación
+                            $parts = explode(' ', $item->timer);
+                            $item->timer = $post->date . ' ' . $parts[1];
                         }
                     }
+
+                    //hace tanto
+                    $item->timeago = self::time_ago($item->timer);
 
 
                     $list[] = $item;
