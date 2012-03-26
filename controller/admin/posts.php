@@ -5,6 +5,7 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
+		Goteo\Library\Message,
 		Goteo\Library\Feed,
         Goteo\Model;
 
@@ -29,17 +30,16 @@ namespace Goteo\Controller\Admin {
                 ));
 
 				if ($post->update($errors)) {
-                    $success[] = 'Entrada colocada en la portada correctamente';
-				}
-				else {
+                    Message::Info('Entrada colocada en la portada correctamente');
+				} else {
+                    Message::Error(implode('<br />', $errors));
                     return new View(
                         'view/admin/index.html.php',
                         array(
                             'folder' => 'posts',
                             'file' => 'add',
                             'action' => 'add',
-                            'post' => $post,
-                            'errors' => $errors
+                            'post' => $post
                         )
                     );
 				}
@@ -82,9 +82,7 @@ namespace Goteo\Controller\Admin {
                 array(
                     'folder' => 'posts',
                     'file' => 'list',
-                    'posts' => $posts,
-                    'errors' => $errors,
-                    'success' => $success
+                    'posts' => $posts
                 )
             );
             

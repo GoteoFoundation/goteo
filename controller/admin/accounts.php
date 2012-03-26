@@ -101,8 +101,7 @@ namespace Goteo\Controller\Admin {
                     'file' => 'move',
                     'original' => $original,
                     'user'     => $userData,
-                    'project'  => $projectData,
-                    'errors'   => $errors
+                    'project'  => $projectData
                 );
 
                 return new View(
@@ -184,8 +183,7 @@ namespace Goteo\Controller\Admin {
                         'file' => 'add',
                         'users'         => $users,
                         'projects'      => $projects,
-                        'calls'         => $calls,
-                        'errors'        => $errors
+                        'calls'         => $calls
                     );
 
                 return new View(
@@ -374,6 +372,10 @@ namespace Goteo\Controller\Admin {
                 );
             }
 
+            if (!empty($errors)) {
+                Message::Error(implode('<br />', $errors));
+            }
+
             // tipos de aporte
             $methods = Model\Invest::methods();
             // estados del proyecto
@@ -443,8 +445,7 @@ namespace Goteo\Controller\Admin {
                     'methods'       => $methods,
                     'types'        => $types,
                     'status'        => $status,
-                    'investStatus'  => $investStatus,
-                    'errors'        => $errors
+                    'investStatus'  => $investStatus
                 );
 
             return new View(

@@ -15,8 +15,6 @@ namespace Goteo\Controller\Admin {
 
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
-            $errors = array();
-
             // métodos de pago
             $methods = Model\Invest::methods();
             // estados del proyecto
@@ -66,8 +64,7 @@ namespace Goteo\Controller\Admin {
                         'status' => $status,
                         'investStatus' => $investStatus,
                         'droped' => $droped,
-                        'calls' => $calls,
-                        'errors' => $errors
+                        'calls' => $calls
                     )
                 );
             }
@@ -94,8 +91,7 @@ namespace Goteo\Controller\Admin {
                     'methods'       => $methods,
                     'types'         => $types,
                     'status'        => $status,
-                    'investStatus'  => $investStatus,
-                    'errors'        => $errors
+                    'investStatus'  => $investStatus
                 );
 
             return new View(

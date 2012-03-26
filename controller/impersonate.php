@@ -27,6 +27,7 @@ namespace Goteo\Controller {
                 session_unset();
                 $_SESSION['user'] = User::get($_POST['id']);
 
+                unset($_SESSION['admin_menu']);
                 // si es administrador de nodo cargamos tambien su nodo
                 if (isset($_SESSION['user']->roles['admin'])) {
                     // posible admin de nodo

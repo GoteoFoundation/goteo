@@ -5,6 +5,7 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
+		Goteo\Library\Message,
 		Goteo\Library\Feed,
         Goteo\Library\Template,
         Goteo\Library\Mail,
@@ -163,12 +164,12 @@ namespace Goteo\Controller\Admin {
                             $_SESSION['mailing']['receivers'][$receiver->id] = $receiver;
                         }
                     } else {
-                        $_SESSION['mailing']['errors'][] = 'Fallo el SQL!!!!! <br />' . $sql . '<pre>'.print_r($values, 1).'</pre>';
+                        Message::Errors('Fallo el SQL!!!!! <br />' . $sql . '<pre>'.print_r($values, 1).'</pre>');
                     }
 
                     // si no hay destinatarios, salta a la lista con mensaje de error
                     if (empty($_SESSION['mailing']['receivers'])) {
-                        $_SESSION['mailing']['errors'][] = 'No se han encontrado destinatarios para ' . $_SESSION['mailing']['filters_txt'];
+                        Message::Errors('No se han encontrado destinatarios para ' . $_SESSION['mailing']['filters_txt']);
 
                         throw new Redirection('/admin/mailing/list');
                     }
@@ -209,17 +210,18 @@ namespace Goteo\Controller\Admin {
                     // ahora, envio, el contenido a cada usuario
                     foreach ($_SESSION['mailing']['receivers'] as $usr=>$userData) {
                         $users[] = $usr;
-                        $campo = 'receiver_'.str_replace('.', '_', $usr);
-                        if (!isset($_POST[$campo])) {
-                            $errors[] = $usr . ' no venia en el post ['.$campo.']';
-                            continue;
+                        if (!isset($_POST[$usr])) {
+                            $campo = 'receiver_'.str_replace('.', '_', $usr);
+                            if (!isset($_POST[$campo])) {
+                                continue;
+                            }
                         }
 
                         // si es newsletter
                         if ($templateId == 33) {
                             // Mirar que no tenga bloqueadas las preferencias
                             if (Model\User::mailBlock($usr)) {
-                                $errors[] = $usr . ' lo tiene bloqueado';
+                                Message::Error($usr . ' lo tiene bloqueado');
                                 continue;
                             }
 
@@ -250,6 +252,7 @@ namespace Goteo\Controller\Admin {
                         if ($mailHandler->send($errors)) {
                             $_SESSION['mailing']['receivers'][$usr]->ok = true;
                         } else {
+                            Message::Error(implode('<br />', $errors));
                             $_SESSION['mailing']['receivers'][$usr]->ok = false;
                         }
 
@@ -284,17 +287,12 @@ namespace Goteo\Controller\Admin {
                             'types'     => $types,
                             'roles'     => $roles,
                             'users'     => $users,
-                            'errors'    => $errors,
-                            'success'   => $success,
                             'time'      => $time
                         )
                     );
 
                     break;
             }
-
-            $errors = $_SESSION['mailing']['errors'];
-            unset($_SESSION['mailing']['errors']);
 
             return new View(
                 'view/admin/index.html.php',
@@ -307,8 +305,7 @@ namespace Goteo\Controller\Admin {
                     'methods'   => $methods,
                     'types'     => $types,
                     'roles'     => $roles,
-                    'filters'   => $filters,
-                    'errors'    => $errors
+                    'filters'   => $filters
                 )
             );
             

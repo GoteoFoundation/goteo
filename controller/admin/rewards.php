@@ -5,6 +5,7 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
+		Goteo\Library\Message,
 		Goteo\Library\Feed,
         Goteo\Model;
 
@@ -12,16 +13,22 @@ namespace Goteo\Controller\Admin {
 
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
-            $errors = array();
-
             switch ($action)  {
                 case 'fulfill':
                     $sql = "UPDATE reward SET fulsocial = 1 WHERE type= 'social' AND id = ?";
-                    Model\Project\Reward::query($sql, array($id));
+                    if (Model\Project\Reward::query($sql, array($id))) {
+                        Message::Info('El retorno se ha marcado como cumplido');
+                    } else {
+                        Message::Error('Ha fallado al marcar el retorno');
+                    }
                     break;
                 case 'unfill':
                     $sql = "UPDATE reward SET fulsocial = 0 WHERE id = ?";
-                    Model\Project\Reward::query($sql, array($id));
+                    if (Model\Project\Reward::query($sql, array($id))) {
+                        Message::Info('El retorno se ha desmarcado, ahora está pendiente');
+                    } else {
+                        message::Error('Ha fallado al desmarcar');
+                    }
                     break;
             }
 
@@ -49,8 +56,7 @@ namespace Goteo\Controller\Admin {
                     'projects'=>$projects,
                     'filters' => $filters,
                     'status' => $status,
-                    'icons' => $icons,
-                    'errors' => $errors
+                    'icons' => $icons
                 )
             );
 

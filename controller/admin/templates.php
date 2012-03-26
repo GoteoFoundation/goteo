@@ -5,6 +5,7 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
+		Goteo\Library\Message,
 		Goteo\Library\Feed,
         Goteo\Library\Template;
 
@@ -23,8 +24,12 @@ namespace Goteo\Controller\Admin {
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $template->title = $_POST['title'];
                         $template->text  = $_POST['text'];
-                        if ($template->save($errors))
+                        if ($template->save($errors)) {
+                            Message::Info('La plantilla se ha actualizado correctamente');
                             throw new Redirection("/admin/templates");
+                        } else {
+                            Message::Error(implode('<br />', $errors));
+                        }
                     }
 
 
@@ -34,8 +39,7 @@ namespace Goteo\Controller\Admin {
                         array(
                             'folder' => 'templates',
                             'file' => 'edit',
-                            'template' => $template,
-                            'errors'=>$errors
+                            'template' => $template
                         )
                      );
                     break;

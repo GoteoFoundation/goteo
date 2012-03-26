@@ -5,6 +5,7 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
+		Goteo\Library\Message,
 		Goteo\Library\Feed,
         Goteo\Model;
 
@@ -37,10 +38,10 @@ namespace Goteo\Controller\Admin {
 				if ($license->save($errors)) {
                     switch ($_POST['action']) {
                         case 'add':
-                            $success[] = 'Licencia añadida correctamente';
+                            Message::Info('Licencia añadida correctamente');
                             break;
                         case 'edit':
-                            $success[] = 'Licencia editada correctamente';
+                            Message::Info('Licencia editada correctamente');
 
                             // Evento Feed
                             $log = new Feed();
@@ -57,6 +58,8 @@ namespace Goteo\Controller\Admin {
                     }
 				}
 				else {
+                    Message::Error(implode('<br />', $errors));
+
                     return new View(
                         'view/admin/index.html.php',
                         array(
@@ -65,8 +68,7 @@ namespace Goteo\Controller\Admin {
                             'action'  => $_POST['action'],
                             'license' => $license,
                             'icons'   => $icons,
-                            'groups'  => $groups,
-                            'errors'  => $errors
+                            'groups'  => $groups
                         )
                     );
 				}
@@ -124,9 +126,7 @@ namespace Goteo\Controller\Admin {
                     'licenses' => $licenses,
                     'filters'  => $filters,
                     'groups' => $groups,
-                    'icons'    => $icons,
-                    'errors' => $errors,
-                    'success' => $success
+                    'icons'    => $icons
                 )
             );
             

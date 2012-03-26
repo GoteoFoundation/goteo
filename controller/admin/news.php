@@ -73,9 +73,6 @@ namespace Goteo\Controller\Admin {
 
                     // gestionar post
                     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
-
-                        $errors = array();
-
                         // instancia
                         $item = new $model(array(
                             'id'          => $_POST['id'],
@@ -100,6 +97,8 @@ namespace Goteo\Controller\Admin {
                             }
 
                             throw new Redirection($url);
+                        } else {
+                            Message::Error(implode('<br />', $errors));
                         }
                     } else {
                         $item = $model::get($id);
@@ -149,8 +148,7 @@ namespace Goteo\Controller\Admin {
                                     )
                                 )
 
-                            ),
-                            'errors' => $errors
+                            )
                         )
                     );
 
@@ -198,8 +196,7 @@ namespace Goteo\Controller\Admin {
                         'translate' => '',
                         'remove' => ''
                     ),
-                    'url' => "$url",
-                    'errors' => $errors
+                    'url' => "$url"
                 )
             );
             

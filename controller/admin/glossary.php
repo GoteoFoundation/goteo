@@ -6,6 +6,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Redirection,
         Goteo\Core\Error,
 		Goteo\Library\Text,
+		Goteo\Library\Message,
 		Goteo\Library\Feed,
         Goteo\Model;
 
@@ -64,14 +65,15 @@ namespace Goteo\Controller\Admin {
                     /// este es el único save que se lanza desde un metodo process_
                     if ($post->save($errors)) {
                         if ($action == 'edit') {
-                            $success[] = 'El término se ha actualizado correctamente';
+                            Message::Info('El término se ha actualizado correctamente');
                         } else {
-                            $success[] = 'Se ha añadido un nuevo término';
+                            Message::Info('Se ha añadido un nuevo término');
                             $id = $post->id;
                         }
                         $action = $editing ? 'edit' : 'list';
                     } else {
-                        $errors[] = 'Ha habido algun problema al guardar los datos';
+                        Message::Error(implode('<br />', $errors));
+                        Message::Error('Ha habido algun problema al guardar los datos');
                     }
             }
 
@@ -79,9 +81,9 @@ namespace Goteo\Controller\Admin {
                 case 'remove':
                     // eliminar un término
                     if (Model\Glossary::delete($id)) {
-                        $success[] = 'Término eliminado';
+                        Message::Info('Término eliminado');
                     } else {
-                        $errors[] = 'No se ha podido eliminar el término';
+                        Message::Error('No se ha podido eliminar el término');
                     }
                     break;
                 case 'add':
@@ -98,9 +100,7 @@ namespace Goteo\Controller\Admin {
                             'file' => 'edit',
                             'action' => 'add',
                             'post' => $post,
-                            'message' => $message,
-                            'errors' => $errors,
-                            'success' => $success
+                            'message' => $message
                         )
                     );
                     break;
@@ -112,8 +112,7 @@ namespace Goteo\Controller\Admin {
                         $post = Model\Glossary::get($id);
 
                         if (!$post instanceof Model\Glossary) {
-                            $errors[] = 'La entrada esta corrupta, contacte con nosotros.';
-                            //Text::get('dashboard-project-updates-postcorrupt');
+                            Message::Error('La entrada esta corrupta, contacte con nosotros.');
                             $action = 'list';
                             break;
                         }
@@ -128,9 +127,7 @@ namespace Goteo\Controller\Admin {
                             'file' => 'edit',
                             'action' => 'edit',
                             'post' => $post,
-                            'message' => $message,
-                            'errors' => $errors,
-                            'success' => $success
+                            'message' => $message
                         )
                     );
                     break;
@@ -144,9 +141,7 @@ namespace Goteo\Controller\Admin {
                 array(
                     'folder' => 'glossary',
                     'file' => 'list',
-                    'posts' => $posts,
-                    'errors' => $errors,
-                    'success' => $success
+                    'posts' => $posts
                 )
             );
 

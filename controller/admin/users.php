@@ -25,7 +25,6 @@ namespace Goteo\Controller\Admin {
 
                     // si llega post: creamos
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                        $errors = array();
 
                         // para crear se usa el mismo método save del modelo, hay que montar el objeto
                         $user = new Model\User();
@@ -46,6 +45,7 @@ namespace Goteo\Controller\Admin {
                         } else {
                             // si hay algun error volvemos a poner los datos en el formulario
                             $data = $_POST;
+                            Message::Error(implode('<br />', $errors));
                         }
                     }
 
@@ -56,8 +56,7 @@ namespace Goteo\Controller\Admin {
                             'folder' => 'users',
                             'file' => 'add',
                             'data'=>$data,
-                            'nodes' => $nodes,
-                            'errors'=>$errors
+                            'nodes' => $nodes
                         )
                     );
 
@@ -68,8 +67,6 @@ namespace Goteo\Controller\Admin {
 
                     // si llega post: actualizamos
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                        $errors = array();
-
                         $tocado = array();
                         // para crear se usa el mismo método save del modelo, hay que montar el objeto
                         if (!empty($_POST['email'])) {
@@ -101,6 +98,7 @@ namespace Goteo\Controller\Admin {
                         } else {
                             // si hay algun error volvemos a poner los datos en el formulario
                             $data = $_POST;
+                            Message::Error(implode('<br />', $errors));
                         }
                     }
 
@@ -112,8 +110,7 @@ namespace Goteo\Controller\Admin {
                             'file' => 'edit',
                             'user'=>$user,
                             'data'=>$data,
-                            'nodes'=>$nodes,
-                            'errors'=>$errors
+                            'nodes'=>$nodes
                         )
                     );
 
@@ -227,9 +224,7 @@ namespace Goteo\Controller\Admin {
                             'folder' => 'users',
                             'file' => 'manage',
                             'user'=>$user,
-                            'nodes'=>$nodes,
-                            'errors'=>$errors,
-                            'success'=>$success
+                            'nodes'=>$nodes
                         )
                     );
 
@@ -255,8 +250,6 @@ namespace Goteo\Controller\Admin {
                     $user = Model\User::get($id);
                     
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                        $errors = array();
-
                         $values = array(':id' => $id, ':node' => $_POST['node']);
                         try {
                             $sql = "UPDATE user SET node = :node WHERE id = :id";
@@ -296,44 +289,6 @@ namespace Goteo\Controller\Admin {
                     );
 
                     break;
-                /*
-                case 'send':
-                    // obtenemos los usuarios que siguen teniendo su email como contraseña
-                    $workshoppers = Model\User::getWorkshoppers();
-
-                    if (empty($workshoppers)) {
-                        $errors[] = 'Ningún usuario tiene su email como contraseña, podemos cambiar la funcionalidad de este botón!';
-                    } else {
-
-                        // Obtenemos la plantilla para asunto y contenido
-                        $template = Template::get(27);
-
-                        foreach ($workshoppers as $fellow) {
-                            $err = array();
-                            // iniciamos mail
-                            $mailHandler = new Mail();
-                            $mailHandler->to = $fellow->email;
-                            $mailHandler->toName = $fellow->name;
-                            // blind copy a goteo desactivado durante las verificaciones
-                //              $mailHandler->bcc = 'comunicaciones@goteo.org';
-                            $mailHandler->subject = $template->title;
-                            // substituimos los datos
-                            $search  = array('%USERNAME%', '%USERID%', '%USEREMAIL%', '%SITEURL%');
-                            $replace = array($fellow->name, $fellow->id, $fellow->email, SITE_URL);
-                            $mailHandler->content = \str_replace($search, $replace, $template->text);
-                            $mailHandler->html = true;
-                            $mailHandler->template = $template->id;
-                            if ($mailHandler->send($err)) {
-                                $errors[] = 'Se ha enviado OK! a <strong>'.$fellow->name.'</strong> a la dirección <strong>'.$fellow->email.'</strong>';
-                            } else {
-                                $errors[] = 'Ha FALLADO! al enviar a <strong>'.$fellow->name.'</strong>. Ha dado este error: '. implode(',', $err);
-                            }
-                            unset($mailHandler);
-                        }
-
-
-                    }
-*/
 
                 case 'list':
                 default:
@@ -371,8 +326,7 @@ namespace Goteo\Controller\Admin {
                             'interests' => $interests,
                             'roles' => $roles,
                             'nodes' => $nodes,
-                            'orders' => $orders,
-                            'errors' => $errors
+                            'orders' => $orders
                         )
                     );
                 break;

@@ -5,6 +5,7 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
+        Goteo\Library\Message,
         Goteo\Model;
 
     class Footer {
@@ -23,17 +24,18 @@ namespace Goteo\Controller\Admin {
                 ));
 
 				if ($post->update($errors)) {
-                    $success[] = 'Entrada colocada en el footer correctamente';
+                    Message::Info('Entrada colocada en el footer correctamente');
 				}
 				else {
+                    Message::Error(implode('<br />', $errors));
+                    
                     return new View(
                         'view/admin/index.html.php',
                         array(
                             'folder' => 'footer',
                             'file' => 'add',
                             'action' => 'add',
-                            'post' => $post,
-                            'errors' => $errors
+                            'post' => $post
                         )
                     );
 				}
@@ -76,9 +78,7 @@ namespace Goteo\Controller\Admin {
                 array(
                     'folder' => 'footer',
                     'file' => 'list',
-                    'posts' => $posts,
-                    'errors' => $errors,
-                    'success' => $success
+                    'posts' => $posts
                 )
             );
 

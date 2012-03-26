@@ -62,8 +62,7 @@ namespace Goteo\Controller\Admin {
                                 array(
                                     'folder' => 'nodes',
                                     'file' => 'add',
-                                    'action' => 'add',
-                                    'errors' => $errors
+                                    'action' => 'add'
                                 )
                             );
                             break;
@@ -76,8 +75,7 @@ namespace Goteo\Controller\Admin {
                                     'folder' => 'nodes',
                                     'file' => 'edit',
                                     'action' => 'edit',
-                                    'node' => $node,
-                                    'errors' => $errors
+                                    'node' => $node
                                 )
                             );
                             break;
@@ -114,7 +112,6 @@ namespace Goteo\Controller\Admin {
                     $node = Model\Node::get($id);
 
                     if (isset($_GET['op']) && isset($_GET['user']) && in_array($_GET['op'], array('assign', 'unassign'))) {
-                        $errors = array();
                         if ($node->$_GET['op']($_GET['user'])) {
                             // ok
                         } else {
@@ -154,9 +151,7 @@ namespace Goteo\Controller\Admin {
                     'filters' => $filters,
                     'nodes' => $nodes,
                     'status' => $status,
-                    'admins' => $admins,
-                    'errors' => $errors,
-                    'success' => $success
+                    'admins' => $admins
                 )
             );
             

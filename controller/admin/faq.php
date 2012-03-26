@@ -5,6 +5,7 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
+		Goteo\Library\Message,
 		Goteo\Library\Feed,
         Goteo\Model;
 
@@ -36,14 +37,15 @@ namespace Goteo\Controller\Admin {
 				if ($faq->save($errors)) {
                     switch ($_POST['action']) {
                         case 'add':
-                            $success = 'Pregunta añadida correctamente';
+                            Message::Info('Pregunta añadida correctamente');
                             break;
                         case 'edit':
-                            $success = 'Pregunta editado correctamente';
+                            Message::Info('Pregunta editado correctamente');
                             break;
                     }
-				}
-				else {
+				} else {
+                    Message::Error(implode('<br />', $errors));
+
                     return new View(
                         'view/admin/index.html.php',
                         array(
@@ -52,8 +54,7 @@ namespace Goteo\Controller\Admin {
                             'action' => $_POST['action'],
                             'faq' => $faq,
                             'filter' => $filter,
-                            'sections' => $sections,
-                            'errors' => $errors
+                            'sections' => $sections
                         )
                     );
 				}
@@ -112,9 +113,7 @@ namespace Goteo\Controller\Admin {
                     'file' => 'list',
                     'faqs' => $faqs,
                     'sections' => $sections,
-                    'filters' => $filters,
-                    'errors' => $errors,
-                    'success' => $success
+                    'filters' => $filters
                 )
             );
             

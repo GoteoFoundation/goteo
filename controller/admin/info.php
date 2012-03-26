@@ -6,6 +6,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Redirection,
         Goteo\Core\Error,
 		Goteo\Library\Text,
+		Goteo\Library\Message,
 		Goteo\Library\Feed,
         Goteo\Model;
 
@@ -67,7 +68,7 @@ namespace Goteo\Controller\Admin {
                     /// este es el único save que se lanza desde un metodo process_
                     if ($post->save($errors)) {
                         if ($action == 'edit') {
-                            $success[] = 'La entrada se ha actualizado correctamente';
+                            Message::Info('La entrada se ha actualizado correctamente');
 
                             if ((bool) $post->publish) {
                                 $log_action = 'Publicado';
@@ -76,7 +77,7 @@ namespace Goteo\Controller\Admin {
                             }
 
                         } else {
-                            $success[] = 'Se ha añadido una nueva entrada';
+                            Message::Info('Se ha añadido una nueva entrada');
                             $id = $post->id;
                             $log_action = 'Añadido';
                         }
@@ -94,7 +95,8 @@ namespace Goteo\Controller\Admin {
                         unset($log);
 
                     } else {
-                        $errors[] = 'Ha habido algun problema al guardar los datos';
+                        Message::Error(implode('<br />', $errors));
+                        Message::Error('Ha habido algun problema al guardar los datos');
                     }
             }
 
@@ -109,7 +111,7 @@ namespace Goteo\Controller\Admin {
                     $tempData = Model\Info::get($id);
                     // eliminar un término
                     if (Model\Info::delete($id)) {
-                        $success[] = 'Entrada eliminada';
+                        Message::Info('Entrada eliminada');
 
                         // Evento Feed
                         $log = new Feed();
@@ -123,7 +125,7 @@ namespace Goteo\Controller\Admin {
                         unset($log);
 
                     } else {
-                        $errors[] = 'No se ha podido eliminar la entrada';
+                        Message::Error('No se ha podido eliminar la entrada');
                     }
                     break;
                 case 'add':
@@ -142,9 +144,7 @@ namespace Goteo\Controller\Admin {
                             'file' => 'edit',
                             'action' => 'add',
                             'post' => $post,
-                            'message' => $message,
-                            'errors' => $errors,
-                            'success' => $success
+                            'message' => $message
                         )
                     );
                     break;
@@ -156,8 +156,7 @@ namespace Goteo\Controller\Admin {
                         $post = Model\Info::get($id);
 
                         if (!$post instanceof Model\Info) {
-                            $errors[] = 'La entrada esta corrupta, contacte con nosotros.';
-                            //Text::get('dashboard-project-updates-postcorrupt');
+                            Message::Error('La entrada esta corrupta, contacte con nosotros.');
                             $action = 'list';
                             break;
                         }
@@ -172,9 +171,7 @@ namespace Goteo\Controller\Admin {
                             'file' => 'edit',
                             'action' => 'edit',
                             'post' => $post,
-                            'message' => $message,
-                            'errors' => $errors,
-                            'success' => $success
+                            'message' => $message
                         )
                     );
                     break;
@@ -188,9 +185,7 @@ namespace Goteo\Controller\Admin {
                 array(
                     'folder' => 'info',
                     'file' => 'list',
-                    'posts' => $posts,
-                    'errors' => $errors,
-                    'success' => $success
+                    'posts' => $posts
                 )
             );
 

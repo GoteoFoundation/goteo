@@ -5,6 +5,7 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
+		Goteo\Library\Message,
 		Goteo\Library\Feed,
         Goteo\Library\Mail,
 		Goteo\Library\Template,
@@ -14,7 +15,6 @@ namespace Goteo\Controller\Admin {
 
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
-            $success = array();
             $errors  = array();
 
             switch ($action) {
@@ -75,6 +75,8 @@ namespace Goteo\Controller\Admin {
                             $log->setTarget($userData->id, 'user');
                             $log->doAdmin('admin');
                             unset($log);
+                        } else {
+                            Message::Error(implode('<br />', $errors));
                         }
 
                         $action = 'edit';
@@ -90,7 +92,11 @@ namespace Goteo\Controller\Admin {
                         // ponemos los datos que llegan
                         $sql = "UPDATE `call` SET lang = :lang, translate = 1 WHERE id = :id";
                         if (Model\Project::query($sql, array(':lang'=>$_POST['lang'], ':id'=>$id))) {
-                            $success[] = ($action == 'add') ? 'La convocatoria '.$call->name.' se ha habilitado para traducir' : 'Datos de traducción actualizados';
+                            if ($action == 'add') {
+                                Message::Info('La convocatoria '.$call->name.' se ha habilitado para traducir');
+                            } else {
+                                Message::Info('Datos de traducción actualizados');
+                            }
 
                             if ($action == 'add') {
 
@@ -108,7 +114,7 @@ namespace Goteo\Controller\Admin {
                                 $action = 'edit';
                             }
                         } else {
-                            $errors[] = 'Ha fallado al habilitar la traducción de la convocatoria ' . $call->name;
+                            Message::Error('Ha fallado al habilitar la traducción de la convocatoria ' . $call->name);
                         }
                     }
 
@@ -131,9 +137,9 @@ namespace Goteo\Controller\Admin {
                         $mailHandler->html = true;
                         $mailHandler->template = $template->id;
                         if ($mailHandler->send()) {
-                            $success[] = 'Se ha enviado un email a <strong>'.$call->user->name.'</strong> a la dirección <strong>'.$project->user->email.'</strong>';
+                            Message::Info('Se ha enviado un email a <strong>'.$call->user->name.'</strong> a la dirección <strong>'.$project->user->email.'</strong>');
                         } else {
-                            $errors[] = 'Ha fallado informar a <strong>'.$call->user->name.'</strong> de la posibilidad de traducción de su convocatoria';
+                            Message::Error('Ha fallado informar a <strong>'.$call->user->name.'</strong> de la posibilidad de traducción de su convocatoria');
                         }
                         unset($mailHandler);
 
@@ -155,9 +161,7 @@ namespace Goteo\Controller\Admin {
                             'action' => $action,
                             'availables' => $availables,
                             'translators' => $translators,
-                            'call'=> $call,
-                            'success' => $success,
-                            'errors' => $errors
+                            'call'=> $call
                         )
                     );
 
@@ -167,7 +171,7 @@ namespace Goteo\Controller\Admin {
                     // el campo translate de la convocatoria $id a false
                     $sql = "UPDATE `call` SET translate = 0 WHERE id = :id";
                     if (Model\Call::query($sql, array(':id'=>$id))) {
-                        $success[] = 'La traducción de la convocatoria '.$call->name.' se ha finalizado';
+                        Message::Info('La traducción de la convocatoria '.$call->name.' se ha finalizado');
 
                         Model\Call::query("DELETE FROM user_translate WHERE type = 'call' AND item = :id", array(':id'=>$id));
 
@@ -183,7 +187,7 @@ namespace Goteo\Controller\Admin {
                         unset($log);
 
                     } else {
-                        $errors[] = 'Falló al finalizar la traducción de la convocatoria ' . $call->name;
+                        Message::Error('Falló al finalizar la traducción de la convocatoria ' . $call->name);
                     }
                     break;
             }
@@ -201,9 +205,7 @@ namespace Goteo\Controller\Admin {
                     'filters' => $filters,
                     'fields'  => array('owner', 'translator'),
                     'owners' => $owners,
-                    'translators' => $translators,
-                    'success' => $success,
-                    'errors' => $errors
+                    'translators' => $translators
                 )
             );
             

@@ -8,68 +8,76 @@ body.admin div#main {
 */
 
 body.admin div#sub-header {
-    padding-bottom: 0;
+    padding-bottom: 10px;
 }
 
-body.admin div.admin-menu {
-    max-width: 940px;
-    margin: 20px auto 0;
+body.admin div#sub-header div.breadcrumbs,
+body.admin div#sub-header div.breadcrumbs a {
+    color: #58595B;
+    font-size: 18px;
 }
 
-body.admin div.admin-menu ul {
+body.admin div#sub-header div.breadcrumbs a:hover {
+    color: #20B2B3;
+}
+
+body.admin div#sub-header div.breadcrumbs strong {
+    color: #20B2B3;
+}
+
+body.admin div#main div.admin-menu,
+body.admin div#main div.admin-home,
+body.admin div#main div.admin-side {
+    float: left;
+    height: 100%;
+}
+
+body.admin div#main div.admin-menu {
+    width: 140px;
+    margin: 0px 10px 0px 0px;
+}
+
+body.admin div#main div.admin-menu fieldset {
+    margin-bottom: 3px;
+}
+
+body.admin div#main div.admin-menu fieldset legend {
+    font-weight: bold;
+}
+
+body.admin div#main div.admin-menu ul {
     padding: 0;
     margin: 0;
     list-style: none;
     font-size: 0;
 }
 
-body.admin  div.admin-menu ul li {
-    display: inline-block;
-    margin-right: 1px;    
-    background-color: #c8babc;
-
+body.admin div#main div.admin-menu ul li {
+    background-color: white;
+    padding: 0px 3px;
+    margin-bottom: 1px;
 }
 
-body.admin div.admin-menu ul li a {
-    display: inline-block;
-    padding: .6em 2em .2em .6em;
-    color: white;
-    text-transform: uppercase;
+body.admin div#main div.admin-menu ul li a {
     text-decoration: none;
 }
 
-body.admin div.admin-menu ul li a:hover {
-    color: black;
-}
-
-body.admin div.admin-menu ul li.home {
-    background-color: #1fb0b0;
-} 
-
-body.admin div.admin-menu ul li.checking {
-    background-color: #e13028;
-} 
-
-body.admin div.admin-menu ul li.accounting {
-    background-color: #313b96;
-}
-
-body.admin div.admin-menu ul li.comunication {
-    background-color: #00b05b;
+body.admin div#main div.admin-menu ul li a:hover {
+    color: #20B2B3;
 }
 
 body.admin div#main div.widget {
     margin-bottom: 20px;
 }
 
-body.admin div#main > div.center {
-    width: 620px;
-    float: left;
+body.admin div#main div.admin-side {
+    width: 300px;
+    margin-left: 10px;
 }
 
-body.admin div#main > div.side {
-    float: right;
-    width: 300px;
+body.admin div#main div.admin-home {
+    width: 470px;
+    margin-left: 10px;
 }
 
 

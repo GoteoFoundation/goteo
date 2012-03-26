@@ -6,6 +6,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Redirection,
         Goteo\Core\Error,
 	    Goteo\Library\Text,
+	    Goteo\Library\Message,
 		Goteo\Library\Feed;
 
     class Texts {
@@ -60,8 +61,7 @@ namespace Goteo\Controller\Admin {
                                         'options' => null,
                                         'value'   => $filters['text']
                                     )
-                            ),
-                            'errors' => $errors
+                            )
                         )
                     );
 
@@ -82,7 +82,10 @@ namespace Goteo\Controller\Admin {
                         );
 
                         if (Text::update($data, $errors)) {
+                            Message::Info('El texto ha sido actualizado');
                             throw new Redirection("/admin/texts");
+                        } else {
+                            Message::Error(implode('<br />', $errors));
                         }
                     } else {
                         $text = Text::getPurpose($id);
@@ -120,8 +123,7 @@ namespace Goteo\Controller\Admin {
                                     )
                                 )
 
-                            ),
-                            'errors' => $errors
+                            )
                         )
                     );
 

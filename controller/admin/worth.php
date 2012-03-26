@@ -5,6 +5,7 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
+		Goteo\Library\Message,
 		Goteo\Library\Feed,
         Goteo\Library\Worth as WorthLib;
 
@@ -25,7 +26,7 @@ namespace Goteo\Controller\Admin {
 
 				if (WorthLib::save($data, $errors)) {
                     $action = 'list';
-                    $success[] = 'Nivel de meritocracia modificado';
+                    Message::Info('Nivel de meritocracia modificado');
 
                     // Evento Feed
                     $log = new Feed();
@@ -39,14 +40,15 @@ namespace Goteo\Controller\Admin {
                     unset($log);
 				}
 				else {
+                    Message::Error(implode('<br />', $errors));
+
                     return new View(
                         'view/admin/index.html.php',
                         array(
                             'folder' => 'worth',
                             'file' => 'edit',
                             'action' => 'edit',
-                            'worth' => (object) $data,
-                            'errors' => $errors
+                            'worth' => (object) $data
                         )
                     );
 				}
@@ -75,9 +77,7 @@ namespace Goteo\Controller\Admin {
                 array(
                     'folder' => 'worth',
                     'file' => 'list',
-                    'worthcracy' => $worthcracy,
-                    'errors' => $errors,
-                    'success' => $success
+                    'worthcracy' => $worthcracy
                 )
             );
             

@@ -17,16 +17,39 @@ namespace Goteo\Controller {
 
 	class Admin extends \Goteo\Core\Controller {
 
+            // Array de usuarios con permisos especiales
+            static public $supervisors = array(
+                'diegobus' => array(
+                        'base',
+                        'blog',
+                        'texts',
+                        'faq',
+                        'pages',
+                        'licenses',
+                        'icons',
+                        'tags',
+                        'criteria',
+                        'templates',
+                        'glossary',
+                        'info',
+                        'mailing' // para testeo newsletter
+                    ),
+                'merxxx' => array(
+                        'users',
+                        'accounts'
+                    )
+                );
+
             // Array de los gestores que existen
             static public $options = array(
                     'accounts' => array(
-                        'label' => 'Aportes',
+                        'label' => 'Gestión de aportes',
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false),
-                            'details' => array('label' => 'Detalles de la transacción', 'item' => true),
+                            'details' => array('label' => 'Detalles del aporte', 'item' => true),
                             'add'  => array('label' => 'Aporte manual', 'item' => false),
                             'move'  => array('label' => 'Reubicando el aporte', 'item' => true),
-                            'execute' => array('label' => 'Ejecución del cargo ahora mismo', 'item' => true),
+                            'execute' => array('label' => 'Ejecución del cargo', 'item' => true),
                             'cancel' => array('label' => 'Cancelando aporte', 'item' => true),
                             'report' => array('label' => 'Informe de proyecto', 'item' => true),
                             'viewer' => array('label' => 'Viendo logs', 'item' => false)
@@ -53,7 +76,7 @@ namespace Goteo\Controller {
                         )
                     ),
                     'calls' => array(
-                        'label' => 'Listado de convocatorias',
+                        'label' => 'Gestión de convocatorias',
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false),
                             'add'  => array('label' => 'Nueva convocatoria', 'item' => false),
@@ -69,7 +92,7 @@ namespace Goteo\Controller {
                         )
                     ),
                     'categories' => array(
-                        'label' => 'Categorias e Intereses',
+                        'label' => 'Categorías',
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false),
                             'add'  => array('label' => 'Nueva Categoría', 'item' => false),
@@ -97,7 +120,7 @@ namespace Goteo\Controller {
                         ),
                         'filters' => array('section'=>'node')
                     ),
-                    'feed' => array(
+                    'recent' => array(
                         'label' => 'Actividad reciente',
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false)
@@ -181,7 +204,7 @@ namespace Goteo\Controller {
                     'node' => array(
                         'label' => 'Datos del Nodo',
                         'actions' => array(
-                            'edit' => array('label' => 'Gestionando la informacion pública del Nodo', 'item' => true)
+                            'edit' => array('label' => 'Editando', 'item' => false)
                         )
                     ),
                     'nodes' => array(
@@ -190,12 +213,12 @@ namespace Goteo\Controller {
                             'list' => array('label' => 'Listando', 'item' => false),
                             'add'  => array('label' => 'Nuevo Nodo', 'item' => false),
                             'edit' => array('label' => 'Gestionando Nodo', 'item' => true),
-                            'admins' => array('label' => 'Asignando administradores de Nodo', 'item' => true)
+                            'admins' => array('label' => 'Asignando administradores del Nodo', 'item' => true)
                         ),
                         'filters' => array('status'=>'active', 'admin'=>'', 'name'=>'')
                     ),
                     'pages' => array(
-                        'label' => 'Páginas institucionales',
+                        'label' => 'Páginas',
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false),
                             'edit' => array('label' => 'Editando Página', 'item' => true),
@@ -203,7 +226,7 @@ namespace Goteo\Controller {
                         )
                     ),
                     'patron' => array(
-                        'label' => 'Proyectos apadrinados',
+                        'label' => 'Padrinos',
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false),
                             'add'  => array('label' => 'Nueva Recomendación', 'item' => false),
@@ -223,13 +246,13 @@ namespace Goteo\Controller {
                  *
                  */
                     'projects' => array(
-                        'label' => 'Listado de proyectos',
+                        'label' => 'Gestión de proyectos',
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false),
-                            'dates' => array('label' => 'Cambiando las fechas del proyecto ', 'item' => true),
-                            'accounts' => array('label' => 'Gestionando las cuentas del proyecto ', 'item' => true),
-                            'move' => array('label' => 'Moviendo a otro Nodo el proyecto ', 'item' => true),
-                            'report' => array('label' => 'Viendo el Informe Financiero del proyecto ', 'item' => true)
+                            'dates' => array('label' => 'Fechas del proyecto', 'item' => true),
+                            'accounts' => array('label' => 'Cuentas del proyecto', 'item' => true),
+                            'move' => array('label' => 'Moviendo a otro Nodo el proyecto', 'item' => true),
+                            'report' => array('label' => 'Informe Financiero del proyecto', 'item' => true)
                         ),
                         'filters' => array('status'=>'-1', 'category'=>'', 'owner'=>'', 'name'=>'', 'node'=>\GOTEO_NODE, 'order'=>'')
                     ),
@@ -253,14 +276,14 @@ namespace Goteo\Controller {
                         'filters' => array('status'=>'', 'checker'=>'')
                     ),
                     'rewards' => array(
-                        'label' => 'Gestión de retornos colectivos cumplidos',
+                        'label' => 'Retornos cumplidos',
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false)
                         ),
                         'filters' => array('status'=>'', 'icon'=>'')
                     ),
                     'sended' => array(
-                        'label' => 'Historial envios',
+                        'label' => 'Historial envíos',
                         'actions' => array(
                             'list' => array('label' => 'Emails enviados', 'item' => false)
                         ),
@@ -319,7 +342,7 @@ namespace Goteo\Controller {
                         'filters' => array('owner'=>'', 'translator'=>'')
                     ),
                     'users' => array(
-                        'label' => 'Listado de usuarios',
+                        'label' => 'Gestión de usuarios',
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false),
                             'add' => array('label' => 'Creando Usuario', 'item' => true),
@@ -346,46 +369,33 @@ namespace Goteo\Controller {
                 );
 
         public function index () {
-            return new View('view/admin/index.html.php', array('menu'=>self::menu()));
+            $BC = self::menu(array('option'=>'index', 'action'=>null, 'id' => null));
+            define('ADMIN_BCPATH', $BC);
+            return new View('view/admin/index.html.php');
         }
 
         public function select () {
-
+            $BC = self::menu(array('option'=>'index', 'action'=>null, 'id' => null));
+            define('ADMIN_BCPATH', $BC);
             $_SESSION['translator_lang'] = isset($_POST['lang']) ? $_POST['lang'] : null;
-
-            return new View('view/admin/index.html.php', array('menu'=>self::menu()));
+            return new View('view/admin/index.html.php');
         }
 
         /*
          * Info de Actividad reciente para los administradores
          */
-        public function feed () {
-
-            $BC = self::menu(array(
-                'section' => 'home',
-                'option' => __FUNCTION__,
-                'action' => 'list'
-            ));
-
+        public function recent ($action = 'list', $id = null) {
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
-            return new View('view/admin/feed.html.php');
+            return Admin\Recent::process($action, $id);
         }
 
         /*
          * Gestión de páginas institucionales
          */
 		public function pages ($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'contents',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Pages::process($action, $id);
 		}
 
@@ -393,19 +403,10 @@ namespace Goteo\Controller {
          * Gestion de textos dinámicos
          */
 		public function texts ($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'contents',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             // no cache para textos
             define('GOTEO_ADMIN_NOCACHE', true);
-
             return Admin\Texts::process($action, $id, self::setFilters(__FUNCTION__));
 		}
 
@@ -413,16 +414,8 @@ namespace Goteo\Controller {
          * Gestión de plantillas para emails automáticos
          */
 		public function templates ($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'contents',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Templates::process($action, $id);
 		}
 
@@ -430,18 +423,8 @@ namespace Goteo\Controller {
          *  Lista de proyectos
          */
         public function projects($action = 'list', $id = null) {
-
-            $log_text = null;
-
-            $BC = self::menu(array(
-                'section' => 'projects',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Projects::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
@@ -449,16 +432,8 @@ namespace Goteo\Controller {
          *  Revision de proyectos
          */
         public function reviews($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'projects',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Reviews::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
@@ -466,16 +441,8 @@ namespace Goteo\Controller {
          *  Traducciones de proyectos
          */
         public function translates($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'projects',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Translates::process($action, $id);
         }
 
@@ -483,16 +450,8 @@ namespace Goteo\Controller {
          *  Traducciones de convocatorias
          */
         public function transcalls($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'sponsors',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Transcalls::process($action, $id);
         }
 
@@ -500,16 +459,8 @@ namespace Goteo\Controller {
          * proyectos destacados
          */
         public function promote($action = 'list', $id = null, $flag = null) {
-
-            $BC = self::menu(array(
-                'section' => 'home',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Promote::process($action, $id, $flag);
         }
 
@@ -517,16 +468,8 @@ namespace Goteo\Controller {
          * proyectos recomendados por padrinos
          */
         public function patron($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'sponsors',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Patron::process($action, $id);
         }
 
@@ -534,16 +477,8 @@ namespace Goteo\Controller {
          * Banners
          */
         public function banners($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'home',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Banners::process($action, $id);
         }
 
@@ -551,16 +486,8 @@ namespace Goteo\Controller {
          * preguntas frecuentes
          */
         public function faq($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'contents',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Faq::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
@@ -568,16 +495,8 @@ namespace Goteo\Controller {
          * criterios de puntuación Goteo
          */
         public function criteria($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'contents',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Criteria::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
@@ -585,16 +504,8 @@ namespace Goteo\Controller {
          * Tipos de Retorno/Recompensa (iconos)
          */
         public function icons($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'contents',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Icons::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
@@ -602,16 +513,8 @@ namespace Goteo\Controller {
          * Licencias
          */
         public function licenses($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'contents',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Licenses::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
@@ -619,16 +522,8 @@ namespace Goteo\Controller {
          * posts para portada
          */
         public function posts($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'home',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Posts::process($action, $id);
         }
 
@@ -636,70 +531,35 @@ namespace Goteo\Controller {
          * posts para pie
          */
         public function footer($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'home',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Footer::process($action, $id);
         }
 
         /*
          *  Gestión de categorias de proyectos
-         *  Si no la usa nadie se puede borrar
          */
         public function categories($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'contents',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Categories::process($action, $id);
         }
 
         /*
          *  Gestión de tags de blog
-         *  Si no lo usa ningun post se puede borrar
-         *  Si es un nodo solamente puede borrar los propios
          */
         public function tags($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'contents',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Tags::process($action, $id);
         }
 
         /*
          *  administración de usuarios para superadmin
          */
-        public function users($action = 'list', $id = null, $subaction = '', $filters = array()) {
-
-            $BC = self::menu(array(
-                'section' => 'users',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+        public function users($action = 'list', $id = null, $subaction = '') {
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Users::process($action, $id, $subaction, self::setFilters(__FUNCTION__));
         }
 
@@ -707,35 +567,18 @@ namespace Goteo\Controller {
          *  Gestión de aportes a proyectos
          */
         public function invests($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'projects',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Invests::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
         /*
          *  Gestión transacciones (tpv/paypal)
-         *  solo proyectos en campaña o financiados
          * 
          */
         public function accounts($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'projects',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Accounts::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
@@ -745,16 +588,8 @@ namespace Goteo\Controller {
          * Proyectos financiados, puede marcar un retorno cumplido
          */
         public function rewards($action = 'list', $id = null, $filters = array()) {
-
-            $BC = self::menu(array(
-                'section' => 'projects',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Rewards::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
@@ -762,16 +597,8 @@ namespace Goteo\Controller {
          * Gestión de entradas de blog
          */
         public function blog ($action = 'list', $id = null) {
-            
-            $BC = self::menu(array(
-                'section' => 'contents',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Blog::process($action, $id);
         }
 
@@ -779,16 +606,8 @@ namespace Goteo\Controller {
          * Gestión de términos del Glosario
          */
         public function glossary ($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'contents',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Glossary::process($action, $id);
         }
 
@@ -796,16 +615,8 @@ namespace Goteo\Controller {
          * Gestión de entradas de info
          */
         public function info ($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'contents',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Info::process($action, $id);
         }
 
@@ -814,16 +625,8 @@ namespace Goteo\Controller {
          *  Gestión de noticias
          */
         public function news($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'home',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\News::process($action, $id);
         }
 
@@ -831,14 +634,8 @@ namespace Goteo\Controller {
          * Gestor de envio automático de newsletter
          */
         public function newsletter ($action = 'list', $id = null) {
-            $BC = self::menu(array(
-                'section' => 'users',
-                'option' => __FUNCTION__,
-                'action' => $action
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Newsletter::process($action, $id);
         }
 
@@ -847,16 +644,8 @@ namespace Goteo\Controller {
          *  Gestión de patrocinadores
          */
         public function sponsors($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'sponsors',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Sponsors::process($action, $id);
         }
 
@@ -864,16 +653,8 @@ namespace Goteo\Controller {
          *  Lista de convocatorias
          */
         public function calls($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'sponsors',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Calls::process($action, $id);
         }
 
@@ -881,16 +662,8 @@ namespace Goteo\Controller {
          *  Convocatorias en portada
          */
         public function campaigns($action = 'list', $id = null, $flag = null) {
-
-            $BC = self::menu(array(
-                'section' => 'home',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Campaigns::process($action, $id, $flag);
         }
 
@@ -898,33 +671,17 @@ namespace Goteo\Controller {
          *  Gestión de nodos
          */
         public function nodes($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'sponsors',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Nodes::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
         /*
          *  Gestión de datos del nodo
          */
-        public function node($action = 'edit', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'contents',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+        public function node($action = 'list', $id = null) {
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Node::process();
         }
 
@@ -932,32 +689,17 @@ namespace Goteo\Controller {
          * Comunicaciones con los usuarios mediante mailing
          */
         public function mailing($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'users',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Mailing::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
         /*
          *  historial de emails enviados
          */
-        public function sended($action = 'list') {
-
-            $BC = self::menu(array(
-                'section' => 'users',
-                'option' => __FUNCTION__,
-                'action' => $action
-            ));
-
+        public function sended($action = 'list', $id = null) {
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Sended::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
@@ -965,16 +707,8 @@ namespace Goteo\Controller {
          * Niveles de meritocracia
          */
         public function worth($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'users',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Worth::process($action, $id);
         }
 
@@ -982,16 +716,8 @@ namespace Goteo\Controller {
          * Conteo de palabras
          */
         public function wordcount($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'contents',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Wordcount::process($action, $id);
         }
 
@@ -999,145 +725,41 @@ namespace Goteo\Controller {
          * Elementos en portada
          */
         public function home($action = 'list', $id = null) {
-
-            $BC = self::menu(array(
-                'section' => 'home',
-                'option' => __FUNCTION__,
-                'action' => $action,
-                'id' => $id,
-                'filter' => ''
-            ));
-
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-
             return Admin\Home::process($action, $id);
         }
 
-
         /*
          * Menu de secciones, opciones, acciones y config para el panel Admin
-         *
          */
-        private static function menu($BC = array()) {
+        public static function menu($BC = array()) {
 
-            // si el breadcrumbs no es un array vacio,
-            //   devolveremos el contenido html para pintar el camino de migas de pan
-            //   con enlaces a lo anterior
+            // si es admin de nodo
+            if (isset($_SESSION['admin_node'])) {
+                $nodeData = Model\Node::get($_SESSION['admin_node']);
+                $admin_label = 'Admin '.$nodeData->name;
+            } else {
+                $admin_label = 'Admin';
+            }
 
             $options = self::$options;
 
             // El menu del panel admin dependerá del rol del usuario que accede
             // Superadmin = todo
             // Admin = contenidos de Nodo
-            if (isset($_SESSION['user']->roles['admin'])) {
-                $menu = array(
-                    'contents' => array(
-                        'label'   => 'Contenidos',
-                        'options' => array (
-                            'node' => $options['node'],   // la gestion de datos del nodo
-                            'pages' => $options['pages'], // páginas institucionales del nodo
-                            'blog' => $options['blog'],   // entradas del blog
-                            'tags' => $options['tags']    // tags de blog
-                        )
-                    ),
-                    'projects' => array(
-                        'label'   => 'Gestión de proyectos',
-                        'options' => array (
-                            'projects' => $options['projects'],     // proyectos del nodo
-                            'reviews' => $options['reviews'],       // revisiones de proyectos del nodo
-                            'translates' => $options['translates'], // traducciones de proyectos del nodo
-                            'invests' => $options['invests']
-                        )
-                    ),
-                    'users' => array(
-                        'label'   => 'Gestión de usuarios',
-                        'options' => array (
-                            'users' => $options['users'],     // usuarios asociados al nodo
-                            'mailing' => $options['mailing'], // comunicaciones del nodoc on sus usuarios / promotores
-                            'sended' => $options['sended']    // historial de envios realizados por el nodo
-                        )
-                    ),
-                    'sponsors' => array(
-                        'label'   => 'Patrocinadores',
-                        'options' => array (
-                            'sponsors' => $options['sponsors'], // patrocinadores del nodo
-                            'patron' => $options['patron']      // padrinos de proyectos del nodo
-                        )
-                    ),
-                    'home' => array(
-                        'label'   => 'Portada',
-                        'options' => array (
-                            'home' => $options['home'],         // elementos en portada
-                            'promote' => $options['promote'],   // seleccion de proyectos destacados
-                            'campaigns' => $options['campaigns'],          // convocatorias en portada
-                            'blog' => $options['blog']          // entradas de blog (en la gestion de blog)
-                        )
-                    )
-                );
+            // Supervisor = menus especiales
+            if (isset(self::$supervisors[$_SESSION['user']->id])) {
+                $menu = self::setMenu('supervisor', $_SESSION['user']->id);
+            } elseif (isset($_SESSION['user']->roles['admin'])) {
+                $menu = self::setMenu('admin', $_SESSION['user']->id);
             } else {
-                $menu = array(
-                    'contents' => array(
-                        'label'   => 'Gestión de Textos y Traducciones',
-                        'options' => array (
-                            'blog' => $options['blog'],
-                            'texts' => $options['texts'],
-                            'faq' => $options['faq'],
-                            'pages' => $options['pages'],
-                            'categories' => $options['categories'],
-                            'licenses' => $options['licenses'],
-                            'icons' => $options['icons'],
-                            'tags' => $options['tags'],
-                            'criteria' => $options['criteria'],
-                            'templates' => $options['templates'],
-                            'glossary' => $options['glossary'],
-                            'info' => $options['info'],
-                            'wordcount' => $options['wordcount']
-                        )
-                    ),
-                    'projects' => array(
-                        'label'   => 'Gestión de proyectos',
-                        'options' => array (
-                            'projects' => $options['projects'],
-                            'reviews' => $options['reviews'],
-                            'translates' => $options['translates'],
-                            'rewards' => $options['rewards'],
-                            'patron' => $options['patron'],
-                            'accounts' => $options['accounts']
-                        )
-                    ),
-                    'users' => array(
-                        'label'   => 'Gestión de usuarios',
-                        'options' => array (
-                            'users' => $options['users'],
-                            'worth' => $options['worth'],
-                            'mailing' => $options['mailing'],
-                            'sended' => $options['sended']
-                        )
-                    ),
-                    'home' => array(
-                        'label'   => 'Portada',
-                        'options' => array (
-                            'news' => $options['news'],
-                            'banners' => $options['banners'],
-                            'blog' => $options['blog'],
-                            'promote' => $options['promote'],
-                            'footer' => $options['footer'],
-                            'feed' => $options['feed'],
-                            'home' => $options['home']
-                        )
-                    ),
-                    'sponsors' => array(
-                        'label'   => 'Servicios',
-                        'options' => array (
-                            'calls' => $options['calls'],
-                            'sponsors' => $options['sponsors'],
-                            'nodes' => $options['nodes'],
-                            'transcalls' => $options['transcalls']
-                        )
-                    )
-                );
+                $menu = self::setMenu('superadmin', $_SESSION['user']->id);
             }
 
+            // si el breadcrumbs no es un array vacio,
+            // devolveremos el contenido html para pintar el camino de migas de pan
+            // con enlaces a lo anterior
             if (empty($BC)) {
                 return $menu;
             } else {
@@ -1146,18 +768,18 @@ namespace Goteo\Controller {
                 
                 // si el BC tiene Id, accion sobre ese registro
                 // si el BC tiene Action
-                if (!empty($BC['action'])) {
+                if (!empty($BC['action']) && $BC['action'] != 'list') {
 
                     // si es una accion no catalogada, mostramos la lista
                     if (!in_array(
                             $BC['action'],
-                            array_keys($menu[$BC['section']]['options'][$BC['option']]['actions'])
+                            array_keys($options[$BC['option']]['actions'])
                         )) {
-                        $BC['action'] = 'list';
+                        $BC['action'] = '';
                         $BC['id'] = null;
                     }
 
-                    $action = $menu[$BC['section']]['options'][$BC['option']]['actions'][$BC['action']];
+                    $action = $options[$BC['option']]['actions'][$BC['action']];
                     // si es de item , añadir el id (si viene)
                     if ($action['item'] && !empty($BC['id'])) {
                         $path = " &gt; <strong>{$action['label']}</strong> {$BC['id']}";
@@ -1166,17 +788,23 @@ namespace Goteo\Controller {
                     }
                 }
 
-                // si el BC tiene Option, enlace a la portada de esa gestión
-                if (!empty($BC['option'])) {
-                    $option = $menu[$BC['section']]['options'][$BC['option']];
-                    $path = ' &gt; <a href="/admin/'.$BC['option'].'">'.$option['label'].'</a>'.$path;
+                // si el BC tiene Option, enlace a la portada de esa gestión (a menos que sea laaccion por defecto)
+                if (!empty($BC['option']) && isset($options[$BC['option']])) {
+                    $option = $options[$BC['option']];
+                    if ($BC['action'] == 'list') {
+                        $path = " &gt; <strong>{$option['label']}</strong>";
+                    } else {
+                        $path = ' &gt; <a href="/admin/'.$BC['option'].'">'.$option['label'].'</a>'.$path;
+                    }
                 }
 
                 // si el BC tiene section, facil, enlace al admin
-                if (!empty($BC['section'])) {
-                    $section = $menu[$BC['section']];
-                    $path = '<a href="/admin#'.$BC['section'].'">'.$section['label'].'</a>' . $path;
+                if ($BC['option'] == 'index') {
+                    $path = "<strong>{$admin_label}</strong>";
+                } else {
+                    $path = '<a href="/admin">'.$admin_label.'</a>' . $path;
                 }
+
                 return $path;
             }
 
@@ -1217,6 +845,146 @@ namespace Goteo\Controller {
             }
 
             return $filters;
+        }
+
+        /*
+         * Diferentes menus para diferentes perfiles
+         */
+        public static function setMenu($role, $user = null) {
+
+            $options = self::$options;
+            
+            switch ($role) {
+                case 'supervisor':
+                    $menu = array(
+                        'contents' => array(
+                            'label'   => 'Gestores',
+                            'options' => array ()
+                        )
+                    );
+
+                    foreach (self::$supervisors[$user] as $opt) {
+                        $menu['contents']['options'][$opt] = $options[$option];
+                    }
+
+                    break;
+                case 'admin':
+                    $menu = array(
+                        'contents' => array(
+                            'label'   => 'Contenidos',
+                            'options' => array (
+                                'node' => $options['node'],   // la gestion de datos del nodo
+                                'pages' => $options['pages'], // páginas institucionales del nodo
+                                'blog' => $options['blog'],   // entradas del blog
+                                'tags' => $options['tags']    // tags de blog
+                            )
+                        ),
+                        'projects' => array(
+                            'label'   => 'Proyectos',
+                            'options' => array (
+                                'projects' => $options['projects'],     // proyectos del nodo
+                                'reviews' => $options['reviews'],       // revisiones de proyectos del nodo
+                                'translates' => $options['translates'], // traducciones de proyectos del nodo
+                                'invests' => $options['invests']
+                            )
+                        ),
+                        'users' => array(
+                            'label'   => 'Usuarios',
+                            'options' => array (
+                                'users' => $options['users'],     // usuarios asociados al nodo
+                                'mailing' => $options['mailing'], // comunicaciones del nodoc on sus usuarios / promotores
+                                'sended' => $options['sended']    // historial de envios realizados por el nodo
+                            )
+                        ),
+                        'sponsors' => array(
+                            'label'   => 'Patrocinadores',
+                            'options' => array (
+                                'sponsors' => $options['sponsors'], // patrocinadores del nodo
+                                'patron' => $options['patron']      // padrinos de proyectos del nodo
+                            )
+                        ),
+                        'home' => array(
+                            'label'   => 'Portada',
+                            'options' => array (
+                                'home' => $options['home'],         // elementos en portada
+                                'promote' => $options['promote'],   // seleccion de proyectos destacados
+                                'campaigns' => $options['campaigns'],          // convocatorias en portada
+                                'blog' => $options['blog']          // entradas de blog (en la gestion de blog)
+                            )
+                        )
+                    );
+
+                    if ($_SESSION['admin_node'] == \GOTEO_NODE)  {
+                        unset($menu['contents']['options']['node']);
+                    }
+                    
+                    break;
+                case 'superadmin':
+                    $menu = array(
+                        'contents' => array(
+                            'label'   => 'Textos y Traducciones',
+                            'options' => array (
+                                'blog' => $options['blog'],
+                                'texts' => $options['texts'],
+                                'faq' => $options['faq'],
+                                'pages' => $options['pages'],
+                                'categories' => $options['categories'],
+                                'licenses' => $options['licenses'],
+                                'icons' => $options['icons'],
+                                'tags' => $options['tags'],
+                                'criteria' => $options['criteria'],
+                                'templates' => $options['templates'],
+                                'glossary' => $options['glossary'],
+                                'info' => $options['info'],
+                                'wordcount' => $options['wordcount']
+                            )
+                        ),
+                        'projects' => array(
+                            'label'   => 'Proyectos',
+                            'options' => array (
+                                'projects' => $options['projects'],
+                                'reviews' => $options['reviews'],
+                                'translates' => $options['translates'],
+                                'rewards' => $options['rewards'],
+                                'patron' => $options['patron'],
+                                'accounts' => $options['accounts']
+                            )
+                        ),
+                        'users' => array(
+                            'label'   => 'Usuarios',
+                            'options' => array (
+                                'users' => $options['users'],
+                                'worth' => $options['worth'],
+                                'mailing' => $options['mailing'],
+                                'sended' => $options['sended']
+                            )
+                        ),
+                        'home' => array(
+                            'label'   => 'Portada',
+                            'options' => array (
+                                'news' => $options['news'],
+                                'banners' => $options['banners'],
+                                'blog' => $options['blog'],
+                                'promote' => $options['promote'],
+                                'footer' => $options['footer'],
+                                'recent' => $options['recent'],
+                                'home' => $options['home']
+                            )
+                        ),
+                        'sponsors' => array(
+                            'label'   => 'Servicios',
+                            'options' => array (
+                                'calls' => $options['calls'],
+                                'sponsors' => $options['sponsors'],
+                                'nodes' => $options['nodes'],
+                                'transcalls' => $options['transcalls']
+                            )
+                        )
+                    );
+                    break;
+            }
+
+            return $menu;
         }
 
 

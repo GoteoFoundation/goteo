@@ -5,6 +5,7 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
+		Goteo\Library\Message,
 		Goteo\Library\Feed,
         Goteo\Model;
 
@@ -35,14 +36,15 @@ namespace Goteo\Controller\Admin {
 				if ($criteria->save($errors)) {
                     switch ($_POST['action']) {
                         case 'add':
-                            $success = 'Criterio añadido correctamente';
+                            Message::Info('Criterio añadido correctamente');
                             break;
                         case 'edit':
-                            $success = 'Criterio editado correctamente';
+                            Message::Info('Criterio editado correctamente');
                             break;
                     }
-				}
-				else {
+				} else {
+                    Message::Error(implode('<br />', $errors));
+                    
                     return new View(
                         'view/admin/index.html.php',
                         array(
@@ -50,8 +52,7 @@ namespace Goteo\Controller\Admin {
                             'file' => 'edit',
                             'action' => $_POST['action'],
                             'criteria' => $criteria,
-                            'sections' => $sections,
-                            'errors' => $errors
+                            'sections' => $sections
                         )
                     );
 				}
@@ -110,9 +111,7 @@ namespace Goteo\Controller\Admin {
                     'file' => 'list',
                     'criterias' => $criterias,
                     'sections' => $sections,
-                    'filters' => $filters,
-                    'errors' => $errors,
-                    'success' => $success
+                    'filters' => $filters
                 )
             );
             

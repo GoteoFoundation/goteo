@@ -38,6 +38,7 @@ namespace Goteo\Controller {
                     if (!empty($user->lang)) {
                         $_SESSION['lang'] = $user->lang;
                     }
+                    unset($_SESSION['admin_menu']);
                     if (isset($user->roles['admin'])) {
                         // posible admin de nodo
                         if ($node = Model\Node::getAdminNode($user->id)) {

@@ -5,6 +5,7 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
+		Goteo\Library\Message,
 		Goteo\Library\Feed,
         Goteo\Model;
 
@@ -27,8 +28,10 @@ namespace Goteo\Controller\Admin {
                 ));
 
 				if ($item->save($errors)) {
-                    $success[] = 'Elemento añadido correctamente';
-				}
+                    Message::Info('Elemento añadido correctamente');
+				} else {
+                    Message::Error(implode('<br />', $errors));
+                }
 			}
 
 
@@ -70,9 +73,7 @@ namespace Goteo\Controller\Admin {
                 array(
                     'folder' => 'home',
                     'file' => 'list',
-                    'items' => $items,
-                    'errors' => $errors,
-                    'success' => $success
+                    'items' => $items
                 )
             );
             

@@ -5,6 +5,7 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
+		Goteo\Library\Message,
 		Goteo\Library\Feed,
         Goteo\Model;
 
@@ -31,7 +32,7 @@ namespace Goteo\Controller\Admin {
                 }
 
 				if ($banner->save($errors)) {
-                    $success[] = 'Datos guardados';
+                    Message::Info('Datos guardados');
 
                     if ($_POST['action'] == 'add') {
                         $projectData = Model\Project::getMini($_POST['project']);
@@ -50,6 +51,8 @@ namespace Goteo\Controller\Admin {
 
 				}
 				else {
+                    Message::Error(implode('<br />', $errors));
+                    
                     switch ($_POST['action']) {
                         case 'add':
                             return new View(
@@ -59,8 +62,7 @@ namespace Goteo\Controller\Admin {
                                     'file' => 'edit',
                                     'action' => 'add',
                                     'banner' => $banner,
-                                    'status' => $status,
-                                    'errors' => $errors
+                                    'status' => $status
                                 )
                             );
                             break;
@@ -71,8 +73,7 @@ namespace Goteo\Controller\Admin {
                                     'folder' => 'banners',
                                     'file' => 'edit',
                                     'action' => 'edit',
-                                    'banenr' => $banner,
-                                    'errors' => $errors
+                                    'banenr' => $banner
                                 )
                             );
                             break;
@@ -142,9 +143,7 @@ namespace Goteo\Controller\Admin {
                 array(
                     'folder' => 'banners',
                     'file' => 'list',
-                    'bannered' => $bannered,
-                    'errors' => $errors,
-                    'success' => $success
+                    'bannered' => $bannered
                 )
             );
             

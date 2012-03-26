@@ -6,6 +6,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Redirection,
         Goteo\Core\Error,
 		Goteo\Library\Text,
+		Goteo\Library\Message,
 		Goteo\Library\Feed,
         Goteo\Model;
 
@@ -71,6 +72,10 @@ namespace Goteo\Controller\Admin {
                     break;
             }
 
+            if (!empty($errors)) {
+                Message::Error(implode('<br />', $errors));
+            }
+
             //si llega post, verificamos los datos y hacemos lo que se tenga que hacer
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['operation']) && !empty($call)) {
                 switch ($_POST['operation']) {
@@ -104,7 +109,7 @@ namespace Goteo\Controller\Admin {
                                 Message::Error('Fallo al seleccionar proyecto');
                             }
                         } else {
-                            $errors[] = 'No has seleccionado ningun proyecto para asignar a la convocatoria, no?';
+                            Message::Error('No has seleccionado ningun proyecto para asignar a la convocatoria, no?');
                         }
                         break;
                     case 'unassign':
@@ -118,7 +123,7 @@ namespace Goteo\Controller\Admin {
                                 Message::Error('Fallo al desasignar proyecto');
                             }
                         } else {
-                            $errors[] = 'No has clickado ningun proyecto para desasignar, no?';
+                            Message::Error('No has clickado ningun proyecto para desasignar, no?');
                         }
                         break;
                 }
@@ -162,8 +167,7 @@ namespace Goteo\Controller\Admin {
                     array(
                         'folder' => 'calls',
                         'file' => 'add',
-                        'callers' => $callers,
-                        'errors' => $errors
+                        'callers' => $callers
                     )
                 );
             }
@@ -188,8 +192,7 @@ namespace Goteo\Controller\Admin {
                         'call' => $call,
                         'projects' => $projects,
                         'available' => $available,
-                        'status' => $status,
-                        'errors' => $errors
+                        'status' => $status
                     )
                 );
             }
@@ -214,8 +217,7 @@ namespace Goteo\Controller\Admin {
                     'status' => $status,
                     'categories' => $categories,
                     'callers' => $callers,
-                    'orders' => $orders,
-                    'errors' => $errors
+                    'orders' => $orders
                 )
             );
             

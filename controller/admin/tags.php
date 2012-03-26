@@ -6,6 +6,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Redirection,
         Goteo\Core\Error,
 		Goteo\Library\Text,
+		Goteo\Library\Message,
 		Goteo\Library\Feed,
         Goteo\Model;
 
@@ -66,7 +67,10 @@ namespace Goteo\Controller\Admin {
                         ));
 
                         if ($item->save($errors)) {
+                            Message::Info('El tag ha sido actualizado');
                             throw new Redirection($url);
+                        } else {
+                            Message::Error(implode('<br />', $errors));
                         }
                     } else {
                         $item = $model::get($id);
@@ -98,8 +102,7 @@ namespace Goteo\Controller\Admin {
                                     )
                                 )
 
-                            ),
-                            'errors' => $errors
+                            )
                         )
                     );
 
@@ -126,8 +129,7 @@ namespace Goteo\Controller\Admin {
                         'translate' => '',
                         'remove' => ''
                     ),
-                    'url' => "$url",
-                    'errors' => $errors
+                    'url' => "$url"
                 )
             );
             

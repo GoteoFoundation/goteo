@@ -47,7 +47,11 @@ namespace Goteo\Controller\Admin {
                             $log->doAdmin('admin');
                             unset($log);
 
+                            Message::Info('La página '.$page->name. ' se ha actualizado correctamente');
+
                             throw new Redirection("/admin/pages");
+                        } else {
+                            Message::Error(implode('<br />', $errors));
                         }
                     }
 
@@ -58,8 +62,7 @@ namespace Goteo\Controller\Admin {
                         array(
                             'folder' => 'pages',
                             'file' => 'edit',
-                            'page' => $page,
-                            'errors'=>$errors
+                            'page' => $page
                         )
                      );
                     break;

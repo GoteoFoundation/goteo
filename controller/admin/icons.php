@@ -5,6 +5,7 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
+		Goteo\Library\Message,
 		Goteo\Library\Feed,
         Goteo\Model;
 
@@ -30,10 +31,10 @@ namespace Goteo\Controller\Admin {
 				if ($icon->save($errors)) {
                     switch ($_POST['action']) {
                         case 'add':
-                            $success[] = 'Nuevo tipo añadido correctamente';
+                            Message::Info('Nuevo tipo añadido correctamente');
                             break;
                         case 'edit':
-                            $success[] = 'Tipo editado correctamente';
+                            Message::Info('Tipo editado correctamente');
 
                             // Evento Feed
                             $log = new Feed();
@@ -50,6 +51,8 @@ namespace Goteo\Controller\Admin {
                     }
 				}
 				else {
+                    Message::Error(implode('<br />', $errors));
+                    
                     return new View(
                         'view/admin/index.html.php',
                         array(
@@ -57,8 +60,7 @@ namespace Goteo\Controller\Admin {
                             'file' => 'edit',
                             'action' => $_POST['action'],
                             'icon' => $icon,
-                            'groups' => $groups,
-                            'errors' => $errors
+                            'groups' => $groups
                         )
                     );
 				}
@@ -89,9 +91,7 @@ namespace Goteo\Controller\Admin {
                     'file' => 'list',
                     'icons' => $icons,
                     'groups' => $groups,
-                    'filters' => $filters,
-                    'errors' => $errors,
-                    'success' => $success
+                    'filters' => $filters
                 )
             );
             

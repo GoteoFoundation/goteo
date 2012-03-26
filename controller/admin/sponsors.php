@@ -81,8 +81,6 @@ namespace Goteo\Controller\Admin {
                     // gestionar post
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-                        $errors = array();
-
                         // instancia
                         $item = new $model(array(
                             'id' => $_POST['id'],
@@ -165,8 +163,7 @@ namespace Goteo\Controller\Admin {
                                     )
                                 )
 
-                            ),
-                            'errors' => $errors
+                            )
                         )
                     );
 

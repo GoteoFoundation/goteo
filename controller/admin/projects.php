@@ -14,6 +14,7 @@ namespace Goteo\Controller\Admin {
 
         public static function process ($action = 'list', $id = null, $filters = array()) {
             
+            $log_text = null;
             $errors = array();
 
             // multiples usos
@@ -23,7 +24,7 @@ namespace Goteo\Controller\Admin {
 
                 $projData = Model\Project::get($_POST['id']);
                 if (empty($projData->id)) {
-                    $errors[] = 'El proyecto '.$_POST['id'].' no existe';
+                    Message::Error('El proyecto '.$_POST['id'].' no existe');
                     break;
                 }
 
@@ -61,7 +62,7 @@ namespace Goteo\Controller\Admin {
                             $log_text = 'Al admin %s le ha <span class="red">fallado al tocar las fechas</span> del proyecto '.$projData->name.' %s';
                         }
                     } catch(\PDOException $e) {
-                        $errors[] = "Ha fallado! " . $e->getMessage();
+                        Message::Error("Ha fallado! " . $e->getMessage());
                     }
                 } elseif (isset($_POST['save-accounts'])) {
 
@@ -71,13 +72,15 @@ namespace Goteo\Controller\Admin {
                     $accounts->paypal = $_POST['paypal'];
                     $accounts->paypal_owner = $_POST['paypal_owner'];
                     if ($accounts->save($errors)) {
-                        $errors[] = 'Se han actualizado las cuentas del proyecto '.$projData->name;
+                        Message::Info('Se han actualizado las cuentas del proyecto '.$projData->name);
+                    } else {
+                        Message::Error(implode('<br />', $errors));
                     }
 
                 } elseif (isset($_POST['save-node'])) {
 
                     if (!isset($nodes[$_POST['node']])) {
-                        $errors[] = 'El nodo '.$_POST['node'].' no existe! ';
+                        Message::Error('El nodo '.$_POST['node'].' no existe! ');
                     } else {
 
                         $values = array(':id' => $projData->id, ':node' => $_POST['node']);
@@ -89,7 +92,7 @@ namespace Goteo\Controller\Admin {
                                 $log_text = 'Al admin %s le ha <span class="red">fallado al mover al nodo '.$nodes[$_POST['node']].'</span> el proyecto '.$projData->name.' %s';
                             }
                         } catch(\PDOException $e) {
-                            $errors[] = "Ha fallado! " . $e->getMessage();
+                            Message::Error("Ha fallado! " . $e->getMessage());
                         }
                         
                     }
@@ -170,6 +173,9 @@ namespace Goteo\Controller\Admin {
                 $log->doAdmin('admin');
 
                 Message::Info($log->html);
+                if (!empty($errors)) {
+                    Message::Error(implode('<br />', $errors));
+                }
 
                 if ($action == 'publish') {
                     // si es publicado, hay un evento público
@@ -198,8 +204,7 @@ namespace Goteo\Controller\Admin {
                         'folder' => 'projects',
                         'file' => 'report',
                         'project' => $project,
-                        'reportData' => $reportData,
-                        'errors' => $errors
+                        'reportData' => $reportData
                     )
                 );
             }
@@ -211,8 +216,7 @@ namespace Goteo\Controller\Admin {
                     array(
                         'folder' => 'projects',
                         'file' => 'dates',
-                        'project' => $project,
-                        'errors' => $errors
+                        'project' => $project
                     )
                 );
             }
@@ -228,8 +232,7 @@ namespace Goteo\Controller\Admin {
                         'folder' => 'projects',
                         'file' => 'accounts',
                         'project' => $project,
-                        'accounts' => $accounts,
-                        'errors' => $errors
+                        'accounts' => $accounts
                     )
                 );
             }
@@ -242,8 +245,7 @@ namespace Goteo\Controller\Admin {
                         'folder' => 'projects',
                         'file' => 'move',
                         'project' => $project,
-                        'nodes' => $nodes,
-                        'errors' => $errors
+                        'nodes' => $nodes
                     )
                 );
             }
@@ -274,8 +276,7 @@ namespace Goteo\Controller\Admin {
                     'categories' => $categories,
                     'owners' => $owners,
                     'nodes' => $nodes,
-                    'orders' => $orders,
-                    'errors' => $errors
+                    'orders' => $orders
                 )
             );
             
