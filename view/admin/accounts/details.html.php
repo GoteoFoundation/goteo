@@ -11,6 +11,7 @@ $droped = $this['droped'];
 $user = $this['user'];
 
 ?>
+<a href="/admin/accounts/update/<?php echo $invest->id ?>" onclick="return confirm('Seguro que deseas cambiarle el estado a este aporte?, esto es delicado')" class="button weak">Cambiarle el estado</a>
 <div class="widget">
     <p>
         <strong>Proyecto:</strong> <?php echo $project->name ?> (<?php echo $this['status'][$project->status] ?>)

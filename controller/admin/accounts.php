@@ -112,6 +112,41 @@ namespace Goteo\Controller\Admin {
                 // fin de la historia dereubicar
            }
 
+           // cambiando estado del aporte aporte,
+           if ($action == 'update') {
+
+                // el aporte original
+                $invest = Model\Invest::get($id);
+                if (!$invest instanceof Model\Invest) {
+                    Message::Error('No tenemos registro del aporte '.$id);
+                    throw new Redirection('/admin/accounts');
+                }
+
+                $status = Model\Invest::status();
+
+                $new = isset($_POST['status']) ? $_POST['status'] : null;
+
+                // generar aporte manual y caducar el original
+                if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update']) && isset($new) && isset($status[$new]) && $new != $invest->status) {
+
+                    if (Model\Invest::query("UPDATE invest SET status=:status WHERE id=:id", array(':id'=>$id, ':status'=>$new))) {
+                        Message::Info('Se ha actualizado el estado del aporte');
+                        throw new Redirection('/admin/accounts/details/'.$id);
+                    } else {
+                        Message::Error('Ha fallado al actualizar el estado del aporte');
+                    }
+                }
+
+                return new View('view/admin/index.html.php', array(
+                    'folder' => 'accounts',
+                    'file' => 'update',
+                    'invest' => $invest,
+                    'status' => $status
+                ));
+
+                // fin de la historia actualizar estado
+           }
+
             // aportes manuales, cargamos la lista completa de usuarios, proyectos y campañas
            if ($action == 'add') {
 
