@@ -13,6 +13,8 @@ namespace Goteo\Model {
             $project,
             $name,
             $user, // padrino
+            $title,
+            $description,
             $link,
             $order;
 
@@ -27,14 +29,20 @@ namespace Goteo\Model {
                         patron.project as project,
                         project.name as name,
                         patron.user as user,
+                        IFNULL(patron_lang.title, patron.title) as title,
+                        IFNULL(patron_lang.description, patron.description) as description,
                         patron.link as link,
-                        patron.order as `order`
+                        patron.order as `order`,
+                        patron.active as `active`
                     FROM    patron
+                    LEFT JOIN patron_lang
+                        ON patron_lang.id = patron.id
+                        AND patron_lang.lang = :lang
                     INNER JOIN project
                         ON project.id = patron.project
                     WHERE patron.project = :project
                     AND patron.node = :node
-                    ", array(':project'=>$project, ':node'=>$node));
+                    ", array(':project'=>$project, ':node'=>$node, ':lang'=>\LANG));
                 $patron = $query->fetchObject(__CLASS__);
                 $patron->user = Model\User::getMini($patron->user);
 
@@ -43,13 +51,16 @@ namespace Goteo\Model {
 
         /*
          * Lista de proyectos recomendados
+         * Para la gestión
          */
-        public static function getAll ($node = \GOTEO_NODE) {
+        public static function getAll ($activeonly = false, $node = \GOTEO_NODE) {
 
             // estados
             $status = Model\Project::status();
 
             $promos = array();
+
+            $sqlFilter = ($activeonly) ? " AND patron.active = 1" : '';
 
             $query = static::query("
                 SELECT
@@ -58,17 +69,24 @@ namespace Goteo\Model {
                     project.name as name,
                     project.status as status,
                     patron.user as user,
+                    IFNULL(patron_lang.title, patron.title) as title,
+                    IFNULL(patron_lang.description, patron.description) as description,
                     patron.link as link,
-                    patron.order as `order`
+                    patron.order as `order`,
+                    patron.active as `active`
                 FROM    patron
+                LEFT JOIN patron_lang
+                    ON patron_lang.id = patron.id
+                    AND patron_lang.lang = :lang
                 INNER JOIN project
                     ON project.id = patron.project
                 WHERE patron.node = :node
                 $sqlFilter
                 ORDER BY `order` ASC, name ASC
-                ", array(':node' => $node));
+                ", array(':node' => $node, ':lang'=>\LANG));
             
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
+                $promo->description =Text::recorta($promo->description, 100, false);
                 $promo->user = Model\User::getMini($promo->user);
                 $promo->status = $status[$promo->status];
                 $promos[] = $promo;
@@ -78,20 +96,36 @@ namespace Goteo\Model {
         }
 
         /**
-         * Devuelve los proyectos recomendados por un padrino para pintar un resultado de búsqueda
+         * Devuelve los proyectos recomendados por un padrino
+         * para pintar 
          *
          * @param varchar50 $user padrino
          */
-        public function getList($user) {
+        public function getList($user, $activeonly = true) {
 
             $projects = array();
 
-            $values = array(':user'=>$user);
+            $values = array(':user'=>$user, ':lang'=>\LANG);
 
-            $sql = "SELECT project FROM patron WHERE user = :user ORDER BY id DESC";
+            $sqlFilter = ($activeonly) ? " AND patron.active = 1" : '';
+
+            $sql = "SELECT
+                        project,
+                        IFNULL(patron_lang.title, patron.title) as title,
+                        IFNULL(patron_lang.description, patron.description) as description
+                    FROM patron
+                    LEFT JOIN patron_lang
+                        ON patron_lang.id = patron.id
+                        AND patron_lang.lang = :lang
+                    WHERE user = :user
+                    $sqlFilter
+                    ORDER BY `order` ASC";
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
-                $projects[] = Model\Project::getMedium($proj['project']);
+                $projData = Model\Project::getMedium($proj['project']);
+                $projData->patron_title = $proj->title;
+                $projData->patron_description = $proj->description;
+                $projects[] = $projData;
             }
 
             return $projects;
@@ -154,7 +188,10 @@ namespace Goteo\Model {
                 'node',
                 'project',
                 'user',
+                'title',
+                'description',
                 'link',
+                'active',
                 'order'
                 );
 

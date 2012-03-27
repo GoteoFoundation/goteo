@@ -15,6 +15,7 @@ namespace Goteo\Library {
         public static 
             $tables = array(
                 'promote'   => 'Proyectos destacados',
+                'patron'    => 'Proyectos apadrinados',
                 'icon'      => 'Tipos de retorno/recompensa',
                 'license'   => 'Licencias',
                 'category'  => 'Categorías',
@@ -31,6 +32,10 @@ namespace Goteo\Library {
             ),
             $fields = array(
                 'promote' => array (
+                    'title' => 'Título',
+                    'description' => 'Descripción'
+                ),
+                'patron' => array (
                     'title' => 'Título',
                     'description' => 'Descripción'
                 ),

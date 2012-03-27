@@ -38,8 +38,25 @@ $status = Model\Project::status();
 </p>
 
 <p>
+    <label for="promo-name">Título:</label><span style="font-style:italic;">Máximo 20 caracteres</span><br />
+    <input type="text" name="title" id="promo-title" value="<?php echo $promo->title; ?>" size="50" maxlength="20" />
+</p>
+
+<p>
+    <label for="promo-description">Descripción:</label><span style="font-style:italic;">Máximo 100 caracteres</span><br />
+    <input type="text" name="description" id="promo-description" maxlength="100" value="<?php echo $promo->description; ?>" size="120" />
+</p>
+
+<p>
     <label for="promo-link">Enlace:</label><br />
-    <input type="text" name="title" id="promo-link" value="<?php echo $promo->link; ?>" size="250" />
+    <input type="text" name="link" id="promo-link" value="<?php echo $promo->link; ?>" maxlength="100" size="120" />
+</p>
+
+<p>
+    <label>Publicado:</label><br />
+    <label><input type="radio" name="active" id="promo-active" value="1"<?php if ($promo->active) echo ' checked="checked"'; ?>/> SÍ</label>
+    &nbsp;&nbsp;&nbsp;
+    <label><input type="radio" name="active" id="promo-inactive" value="0"<?php if (!$promo->active) echo ' checked="checked"'; ?>/> NO</label>
 </p>
 
     <input type="submit" name="save" value="Guardar" />

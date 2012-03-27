@@ -422,6 +422,13 @@ namespace Goteo\Controller {
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'edit' => array('label' => 'Traduciendo Destacado', 'item' => true)
                             )
+                        ),
+                        'patron' => array(
+                            'label' => 'Proyectos recomendados',
+                            'actions' => array(
+                                'list' => array('label' => 'Listando', 'item' => false),
+                                'edit' => array('label' => 'Traduciendo recomendado', 'item' => true)
+                            )
                         )
                     )
                 )

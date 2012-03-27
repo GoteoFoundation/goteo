@@ -25,8 +25,11 @@ namespace Goteo\Controller\Admin {
                     'node' => $node,
                     'project' => $_POST['project'],
                     'user' => $_POST['user'],
+                    'title' => $_POST['title'],
+                    'description' => $_POST['description'],
                     'link' => $_POST['link'],
-                    'order' => $_POST['order']
+                    'order' => $_POST['order'],
+                    'active' => $_POST['active']
                 ));
 
 				if ($promo->save($errors)) {
@@ -85,6 +88,11 @@ namespace Goteo\Controller\Admin {
 			}
 
             switch ($action) {
+                case 'active':
+                    $set = $flag == 'on' ? true : false;
+                    Model\Patron::setActive($id, $set);
+
+                    break;
                 case 'up':
                     Model\Patron::up($id, $node);
                     break;
