@@ -32,26 +32,3 @@ div.subitem > div.content-avatar > a.avatar{float:left;display:block;margin-righ
 div.subitem > div.content-avatar > a.username{display:block;clear:right;font-size:1.1em;line-height:1.1em;font-weight:bold}
 div.subitem > div.content-image > a.image{float:left;height:60px;width:90px;margin-right:5px}
 div.subitem > div.content-image > a.project{display:block;clear:right;font-size:1em;line-height:1.1em;font-weight:600;margin-bottom:3px}
-
-/* solo admin widget lateral
-*****************************/
-body.admin div#main > div.side{width:300px}
-body.admin div#main > div.side > div.widget{margin-bottom:20px}
-body.admin div#main > div.side > div.widget.feed{}
-body.admin div#main > div.side > div.widget.feed > div.scroll-pane{height:670px;}
-body.admin div#main > div.side > div.widget.feed h3{margin-top:0;padding-bottom:10px;border-bottom:1px solid #E95C5C}
-body.admin div#main > div.side > div.widget.feed > p.categories > a{margin-right:15px;font-size:11px !important;text-transform:uppercase;}
-body.admin div#main > div.side > div.widget.feed > div.scroll-pane div.subitem{width:230px;padding-left:5px}
-body.admin div#main > div.side > div.widget.feed div.subitem span.datepub{margin-bottom:5px}
-
-
-/* solo admin widget central
-*****************************/
-body.admin div#main > div.widget.feed{padding-left:100px;padding-right:100px}
-body.admin div#main > div.widget.feed > h3.title{margin-left:-100px;margin-bottom:25px}
-body.admin div#main > div.widget.feed > p.categories > a{margin-right:15px;font-size:12px !important;text-transform:uppercase;}
-body.admin div#main > div.widget.feed > div.scroll-pane{height:800px}
-body.admin div#main > div.widget.feed div.subitem{padding-left:5px}
-body.admin div#main > div.widget.feed div.subitem > span.datepub{float:left;width:100px;margin-right:10px;clear:none;line-height:1.2em}
-body.admin div#main > div.widget.feed div.subitem > div.content-pub{float:left;width:600px;clear:none;margin-top:0;}
-

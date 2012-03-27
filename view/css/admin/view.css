@@ -29,7 +29,6 @@ body.admin div#main div.admin-menu,
 body.admin div#main div.admin-home,
 body.admin div#main div.admin-side {
     float: left;
-    height: 100%;
 }
 
 body.admin div#main div.admin-menu {
@@ -118,3 +117,22 @@ body.admin div#main div.widget.report th,
 body.admin div#main div.widget.report td {
     padding: 2px 10px;
 }
+
+
+/* Feed */
+/* lateral */
+body.admin div#main > div.admin-center > div.admin-side{width:300px}
+body.admin div#main > div.admin-center > div.admin-side > div.widget{margin-bottom:20px}
+body.admin div#main > div.admin-center > div.admin-side > div.widget.feed > div.scroll-pane{height:520px;}
+body.admin div#main > div.admin-center > div.admin-side > div.widget.feed h3{margin-top:0;padding-bottom:10px;border-bottom:1px solid #E95C5C}
+body.admin div#main > div.admin-center > div.admin-side > div.widget.feed > p.categories > a{margin-right:15px;font-size:11px !important;text-transform:uppercase;}
+body.admin div#main > div.admin-center > div.admin-side > div.widget.feed > div.scroll-pane div.subitem{width:230px;padding-left:5px}
+body.admin div#main > div.admin-center > div.admin-side > div.widget.feed div.subitem span.datepub{margin-bottom:5px}
+
+
+/* central */
+body.admin div#main > div.admin-center > div.widget.feed > p.categories > a{margin-right:15px;font-size:12px !important;text-transform:uppercase;}
+body.admin div#main > div.admin-center > div.widget.feed > div.scroll-pane{height:800px}
+body.admin div#main > div.admin-center > div.widget.feed div.subitem{padding-left:5px}
+body.admin div#main > div.admin-center > div.widget.feed div.subitem > span.datepub{float:left;width:100px;margin-right:10px;clear:none;line-height:1.2em}
+body.admin div#main > div.admin-center > div.widget.feed div.subitem > div.content-pub{float:left;width:600px;clear:none;margin-top:0;}
