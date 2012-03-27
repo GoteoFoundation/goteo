@@ -14,67 +14,94 @@ if (!$project instanceof Model\Project) {
     td {padding: 3px 10px;}
 </style>
 <div class="widget report">
-    <p>Informe de financiación de <strong><?php echo $project->name ?></strong> al d&iacute;a <?php echo date('d-m-Y') ?></p>
-    <p>Se encuentra en estado <strong><?php echo $this['status'][$project->status] ?></strong>
-        <?php if ($project->round > 0) : ?>
-            , en <?php echo $project->round . 'ª ronda' ?> y le quedan <strong><?php echo $project->days ?> d&iacute;as</strong> para finalizarla
-        <?php endif; ?>
-        .</p>
-    <p>El proyecto tiene un <strong>coste m&iacute;nimo de <?php echo \amount_format($project->mincost) ?> &euro;</strong>, un coste <strong>&oacute;ptimo de <?php echo \amount_format($project->maxcost) ?> &euro;</strong> y ahora mismo lleva <strong>conseguidos <?php echo \amount_format($project->amount) ?> &euro;</strong>, lo que representa un <strong><?php echo \amount_format(($project->amount / $project->mincost * 100), 2, ',', '') . '%' ?></strong> sobre el m&iacute;nimo.</p>
+    <h3 class="title">Informe de financiación para del proyecto <span style="color:#20B2B3;"><?php echo $project->name ?></span></h3>
 
-    <h4>Resumen de financiación</h4>
+    <?php
+    $sumData['total'] = $project->amount;
+    $sumData['fail']  = $Data['tpv']['total']['fail']   + $Data['paypal']['total']['fail']   + $Data['cash']['total']['fail'];
+    $sumData['brute'] = $Data['tpv']['total']['amount'] + $Data['paypal']['total']['amount'] + $Data['cash']['total']['amount'];
+    $sumData['tpv_fee_goteo'] = $Data['tpv']['total']['amount']  * 0.008;
+    $sumData['pp_goteo'] = $Data['paypal']['total']['amount'] * 0.08;
+    $sumData['pp_project'] = $Data['paypal']['total']['amount'] - $sumData['pp_goteo'];
+    $sumData['pp_fee_goteo'] = ($Data['paypal']['total']['invests'] * 0.35) + ($sumData['pp_goteo'] * 0.034);
+    $sumData['pp_fee_project'] = ($Data['paypal']['total']['invests'] * 0.35) + ($sumData['pp_project'] * 0.034);
+    $sumData['pp_net_project'] = $sumData['pp_project'] - $sumData['pp_fee_project'];
+    $sumData['fee_goteo'] = $sumData['tpv_fee_goteo'] + $sumData['pp_fee_goteo'];
+    $sumData['net'] = $sumData['brute'] - $sumData['tpv_fee_goteo'] - $sumData['pp_fee_goteo'] - $sumData['pp_fee_project'];
+    $sumData['goteo'] = $sumData['brute'] * 0.08;
+    $sumData['restproject'] = $sumData['brute'] - $sumData['goteo'] - $sumData['pp_project'];
+    ?>
+<p>
     <table>
-        <?php
-        $sumData['total'] = $project->amount;
-        $sumData['fail']  = $Data['tpv']['total']['fail']   + $Data['paypal']['total']['fail']   + $Data['cash']['total']['fail'];
-        $sumData['brute'] = $Data['tpv']['total']['amount'] + $Data['paypal']['total']['amount'] + $Data['cash']['total']['amount'];
-        $sumData['tpv_fee_goteo'] = $Data['tpv']['total']['amount']  * 0.008;
-        $sumData['pp_goteo'] = $Data['paypal']['total']['amount'] * 0.08;
-        $sumData['pp_project'] = $Data['paypal']['total']['amount'] - $sumData['pp_goteo'];
-        $sumData['pp_fee_goteo'] = ($Data['paypal']['total']['invests'] * 0.35) + ($sumData['pp_goteo'] * 0.034);
-        $sumData['pp_fee_project'] = ($Data['paypal']['total']['invests'] * 0.35) + ($sumData['pp_project'] * 0.034);
-        $sumData['restfee'] = $sumData['tpv_fee_goteo'] + $sumData['pp_fee_goteo'];
-        $sumData['net'] = $sumData['brute'] - $sumData['tpv_fee_goteo'] - $sumData['pp_fee_goteo'] - $sumData['pp_fee_project'];
-        $sumData['goteo'] = $sumData['net'] * 0.08;
-        $sumData['ppproject'] = $sumData['pp_project'] - $sumData['pp_fee_project'];
-        $sumData['restproject'] = $sumData['brute'] - $sumData['goteo'] - $sumData['tpv_fee_goteo'] - $sumData['pp_fee_goteo'] - $sumData['ppproject'];
-        ?>
         <tr>
-            <th style="text-align:left;">Recaudación comprometida (visualizada en el termometro del proyecto)</th>
-            <td style="text-align:right;"><?php echo \amount_format($sumData['total'], 2) ?></td>
+            <th style="text-align:left;">Resumen de recaudación</th>
         </tr>
         <tr>
-            <th style="text-align:left;">No cobrados por falta de fondos o cancelaciones</th>
-            <td style="text-align:right;"><?php echo \amount_format($sumData['fail'], 2) ?></td>
+            <td>- Mostrado en el termómetro de Goteo.org: <?php echo \amount_format($sumData['total'], 2) ?></td>
         </tr>
         <tr>
-            <th style="text-align:left;">Ingresado realmente</th>
-            <td style="text-align:right;"><?php echo \amount_format($sumData['brute'], 2) ?></td>
+            <td>- Ingresado realmente descontando incidencias<strong>*</strong> (usuarios que no tienen fondos, cancelaciones, etc): <?php echo \amount_format($sumData['brute'], 2) ?></td>
         </tr>
         <tr>
-            <th style="text-align:left;">Comisión Paypal ya cobrada al impulsor <strong>(!)</strong></th>
-            <td style="text-align:right;"><?php echo \amount_format($sumData['pp_fee_project'], 2) ?></td>
-        </tr>
-        <tr>
-            <th style="text-align:left;">Comisiones cobradas a Goteo (Paypal y targetas bancarias) <strong>(!)</strong></th>
-            <td style="text-align:right;"><?php echo \amount_format($sumData['restfee'], 2) ?></td>
-        </tr>
-        <tr>
-            <th style="text-align:left;">Neto de dinero ingresado  (ingresado menos comisiones bancos) <strong>(!)</strong></th>
-            <td style="text-align:right;"><?php echo \amount_format($sumData['net'], 2) ?></td>
-        </tr>
-        <tr>
-            <th style="text-align:left;">8&#37; comisión de Goteo (del neto) <strong>(!)</strong></th>
-            <td style="text-align:right;"><?php echo \amount_format($sumData['goteo'], 2) ?></td>
-        </tr>
-        <tr>
-            <th style="text-align:left;">Pagado a proyecto mediante paypal <strong>(!)</strong></th>
-            <td style="text-align:right;"><?php echo \amount_format($sumData['ppproject'], 2) ?></td>
-        </tr>
-        <tr>
-            <th style="text-align:left;">Pendiente de pagar al proyecto <strong>(!)</strong></th>
-            <td style="text-align:right;"><?php echo \amount_format($sumData['restproject'], 2) ?></td>
+            <td>- Comisión del 8&#37; para el mantenimiento de Goteo.org (a nombre de la Fundación Fuentes Abiertas): <?php echo \amount_format($sumData['goteo'], 2) ?></td>
         </tr>
     </table>
+</p>
+<p>
+    <table>
+        <tr>
+            <th style="text-align:left;">Comisiones de bancos</th>
+        </tr>
+        <tr>
+            <td>- Comisiones cobradas a Goteo por los bancos (asumidas por la Fundación, no se cobran al impulsor): <?php echo \amount_format($sumData['fee_goteo'], 2) ?></td>
+        </tr>
+        <tr>
+            <td>- Comisiones cobradas al impulsor por PayPal (estimadas): <?php echo \amount_format($sumData['pp_fee_project'], 2) ?></td>
+        </tr>
+    </table>
+</p>
+<p>
+    <table>
+        <tr>
+            <th style="text-align:left;">Transferencias de la Fundación Fuentes Abiertas al impulsor</th>
+        </tr>
+        <tr>
+            <td>- Enviado a través de PayPal (sin descontar comisiones de PayPal al impulsor): <?php echo \amount_format($sumData['pp_project'], 2) ?> (/fecha/)</td>
+        </tr>
+        <tr>
+            <td>- Enviado a través de cuenta bancaria: <?php echo \amount_format($sumData['restproject'], 2) ?> (/fecha/)</td>
+        </tr>
+    </table>
+</p>
+<p>
+    <table>
+        <tr>
+            <th style="text-align:left;">Desglose informativo de lo pagado mediante PayPal</th>
+        </tr>
+        <tr>
+            <td>- Cantidad transferida: <?php echo \amount_format($sumData['pp_project'], 2) ?></td>
+        </tr>
+        <tr>
+            <td>- ComisiÃ³n aproximada cobrada al impulor: <?php echo \amount_format($sumData['pp_fee_project'], 2) ?></td>
+        </tr>
+        <tr>
+            <td>- Cantidad aproximada recibida por el impulsor: <?php echo \amount_format($sumData['pp_net_project'], 2) ?></td>
+        </tr>
+    </table>
+</p>
+
+<?php if (!empty($Data['note'])) : ?>
+
+    <p>
+    <table>
+        <tr>
+            <th style="text-align:left;"><strong>*</strong> Pagos de usuarios con incidencias</th>
+        </tr>
+        <tr>
+            <td><?php echo implode('<br />', $Data['note']) ?></td>
+        </tr>
+    </table>
+    </p>
+<?php endif; ?>
 </div>
 
