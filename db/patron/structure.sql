@@ -8,3 +8,8 @@ CREATE TABLE `patron` (
  UNIQUE KEY `user_project_node` (`node`,`project`,`user`),
   UNIQUE KEY `id` (`id`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Proyectos apadrinados';
+
+-- Alter
+ALTER TABLE `patron` ADD `active` INT(1) NOT NULL DEFAULT '0' AFTER `order`;
+ALTER TABLE `patron` ADD `title` TINYTEXT NULL AFTER `user`;
+ALTER TABLE `patron` ADD `description` TEXT NULL AFTER `title`;
