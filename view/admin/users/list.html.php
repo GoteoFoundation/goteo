@@ -87,6 +87,7 @@ $filters = $this['filters'];
     <table>
         <thead>
             <tr>
+                <th></th> <!-- manage -->
                 <th>Alias</th> <!-- view profile -->
                 <th>User</th>
                 <th>Email</th>
@@ -103,7 +104,12 @@ $filters = $this['filters'];
         <tbody>
             <?php foreach ($this['users'] as $user) : ?>
             <tr>
-                <td><a href="/user/<?php echo $user->id; ?>" target="_blank" title="Preview"><?php echo substr($user->name, 0, 15); ?></a></td>
+                <?php if (!isset($_SESSION['admin_node']) || (isset($_SESSION['admin_node']) && $user->node == $_SESSION['admin_node'])) : ?>
+                <td><a href="/admin/users/manage/<?php echo $user->id; ?>" title="Gestionar">[Gestionar]</a></td>
+                <?php else : ?>
+                <td></td>
+                <?php endif; ?>
+                <td><a href="/user/profile/<?php echo $user->id; ?>" target="_blank" title="Ver perfil público"><?php echo substr($user->name, 0, 15); ?></a></td>
                 <td><strong><?php echo substr($user->id, 0, 15); ?></strong></td>
                 <td><a href="mailto:<?php echo $user->email; ?>"><?php echo $user->email; ?></a></td>
                 <td><?php echo $user->register_date; ?></td>
@@ -116,20 +122,6 @@ $filters = $this['filters'];
                     <?php echo $user->admin ? ' Admin' : ''; ?>
                     <?php echo $user->vip ? ' VIP' : ''; ?>
                 </td>
-            </tr>
-            <?php if (!isset($_SESSION['admin_node']) || (isset($_SESSION['admin_node']) && $user->node == $_SESSION['admin_node'])) : ?>
-            <tr>
-                <td colspan="5">Acciones:
-                    <a href="/admin/users/manage/<?php echo $user->id; ?>">[Gestionar]</a>
-                    <a href="/admin/users/edit/<?php echo $user->id; ?>">[Editar]</a>
-                    <a href="/admin/sended/?user=<?php echo $user->email; ?>">[Historial]</a>
-                    <a href="/admin/users/move/<?php echo $user->id; ?>">[Mover]</a>
-                    <a href="/admin/users/impersonate/<?php echo $user->id; ?>">[Suplantar]</a>
-                </td>
-            </tr>
-            <?php endif; ?>
-            <tr>
-                <td colspan="5"><hr /></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

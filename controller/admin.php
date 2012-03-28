@@ -467,10 +467,10 @@ namespace Goteo\Controller {
         /*
          * proyectos recomendados por padrinos
          */
-        public function patron($action = 'list', $id = null) {
+        public function patron($action = 'list', $id = null, $flag = null) {
             $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-            return Admin\Patron::process($action, $id);
+            return Admin\Patron::process($action, $id, $flag);
         }
 
         /*
@@ -818,6 +818,11 @@ namespace Goteo\Controller {
 
             // arary de fltros para el sub controlador
             $filters = array();
+
+            if ($_GET['reset'] == 'filters') {
+                unset($_SESSION['admin_filters'][$option]);
+                return $filters;
+            }
 
             // si hay algun filtro
             $filtered = false;

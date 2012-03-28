@@ -46,7 +46,7 @@ $filters = $this['filters'];
         <?php endforeach; ?>
     </form>
     <br clear="both" />
-    <a href="/admin/invests">Quitar filtros</a>
+    <a href="/admin/invests/?reset=filters">Quitar filtros</a>
 </div>
 
 <div class="widget board">

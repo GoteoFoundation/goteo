@@ -18,6 +18,8 @@ namespace Goteo\Controller\Admin {
             // multiples usos
             $nodes = Model\Node::getList();
 
+            $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
+
             $errors = array();
 
             switch ($action)  {
@@ -293,7 +295,7 @@ namespace Goteo\Controller\Admin {
                 case 'list':
                 default:
                     if (!empty($filters['filtered'])) {
-                        $users = Model\User::getAll($filters, $_SESSION['admin_node']);
+                        $users = Model\User::getAll($filters, $node);
                     } else {
                         $users = array();
                     }

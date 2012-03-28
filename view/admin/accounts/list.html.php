@@ -70,7 +70,7 @@ $emails = Invest::emails(true);
         </div>
     </form>
     <br clear="both" />
-    <a href="/admin/accounts">Quitar filtros</a>
+    <a href="/admin/accounts/?reset=filters">Quitar filtros</a>
 </div>
 
 <div class="widget board">
@@ -108,7 +108,7 @@ $emails = Invest::emails(true);
                     ?>">[Detalles]</a></td>
                 <td><?php echo $invest->id ?></td>
                 <td><?php echo $invest->invested ?></td>
-                <td><a href="/admin/users?id=<?php echo $invest->user ?>" target="_blank"><?php echo $this['users'][$invest->user]; ?></a></td>
+                <td><a href="/admin/users/manage/<?php echo $invest->user ?>" target="_blank"><?php echo $this['users'][$invest->user]; ?></a></td>
                 <td><?php echo $emails[$invest->user]; ?></td>
                 <td><?php echo $this['projects'][$invest->project]; if (!empty($invest->campaign)) echo '<br />('.$this['campaigns'][$invest->campaign].')'; ?></td>
                 <td><?php echo $this['status'][$invest->status] ?></td>

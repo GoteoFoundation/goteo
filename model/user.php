@@ -656,13 +656,9 @@ namespace Goteo\Model {
             if (!empty($filters['node'])) {
                 $sqlFilter .= " AND node = :node";
                 $values[':node'] = $filters['node'];
-            } else
-                if (!empty($node)) {
+            } elseif (!empty($node) && $node != \GOTEO_NODE) {
                 $sqlFilter .= " AND node = :node";
                 $values[':node'] = $node;
-            } else {
-                $sqlFilter .= " AND (node = :node OR node IS NULL)";
-                $values[':node'] = \GOTEO_NODE;
             }
 
             //el Order
@@ -688,8 +684,6 @@ namespace Goteo\Model {
                         $sqlFilter
                    $sqlOrder
                     ";
-
-
 
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $user) {
@@ -1275,6 +1269,19 @@ namespace Goteo\Model {
 		    ', array($this->id));
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $rol) {
                 $roles[$rol->id] = $rol;
+            }
+            return $roles;
+
+		}
+
+        /* listado de roles */
+		public static function getRolesList () {
+
+            $roles = array();
+
+		    $query = self::query('SELECT role.id as id, role.name as name FROM role ORDER BY role.name');
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $rol) {
+                $roles[$rol->id] = $rol->name;
             }
             return $roles;
 

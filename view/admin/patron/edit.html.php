@@ -4,10 +4,8 @@ use Goteo\Library\Text,
     Goteo\Model;
 
 $promo = $this['promo'];
+$available = $this['available'];
 
-// proyectos disponibles
-// si tenemos ya proyecto seleccionado lo incluimos
-$projects = Model\Patron::available($promo->project, $_SESSION['admin_node']);
 $users = Model\user::getVips();
 $status = Model\Project::status();
 
@@ -21,7 +19,7 @@ $status = Model\Project::status();
     <label for="promo-project">Proyecto:</label><br />
     <select id="promo-project" name="project">
         <option value="" >Seleccionar el proyecto apadrinado</option>
-    <?php foreach ($projects as $project) : ?>
+    <?php foreach ($available as $project) : ?>
         <option value="<?php echo $project->id; ?>"<?php if ($promo->project == $project->id) echo' selected="selected"';?>><?php echo $project->name . ' ('. $status[$project->status] . ')'; ?></option>
     <?php endforeach; ?>
     </select>

@@ -21,7 +21,7 @@ namespace Goteo\Model {
         /*
          *  Devuelve datos de un recomendado
          */
-        public static function get ($project, $node = \GOTEO_NODE) {
+        public static function get ($id, $node = \GOTEO_NODE) {
                 $query = static::query("
                     SELECT  
                         patron.id as id,
@@ -40,9 +40,9 @@ namespace Goteo\Model {
                         AND patron_lang.lang = :lang
                     INNER JOIN project
                         ON project.id = patron.project
-                    WHERE patron.project = :project
+                    WHERE patron.id = :id
                     AND patron.node = :node
-                    ", array(':project'=>$project, ':node'=>$node, ':lang'=>\LANG));
+                    ", array(':id'=>$id, ':node'=>$node, ':lang'=>\LANG));
                 $patron = $query->fetchObject(__CLASS__);
                 $patron->user = Model\User::getMini($patron->user);
 
@@ -53,7 +53,7 @@ namespace Goteo\Model {
          * Lista de proyectos recomendados
          * Para la gestión
          */
-        public static function getAll ($activeonly = false, $node = \GOTEO_NODE) {
+        public static function getAll ($node = \GOTEO_NODE, $activeonly = false) {
 
             // estados
             $status = Model\Project::status();
@@ -148,17 +148,18 @@ namespace Goteo\Model {
                 $sqlFiler = "";
             }
 
-            $query = static::query("
+            $sql = "
                 SELECT
                     project.id as id,
                     project.name as name,
                     project.status as status
                 FROM    project
-                WHERE status > 2
+                WHERE status = 3
                 AND project.id NOT IN (SELECT project FROM patron WHERE patron.node = :node{$sqlCurr} )
                 $sqlFilter
                 ORDER BY name ASC
-                ", array(':node' => $node));
+                ";
+            $query = static::query($sql, array(':node' => $node));
 
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
@@ -217,12 +218,12 @@ namespace Goteo\Model {
         }
 
         /*
-         * Para quitar un proyecto recomendado
+         * Para quitar un proyecto apadrinado
          */
-        public static function delete ($project, $user, $node = \GOTEO_NODE) {
+        public static function delete ($id) {
             
-            $sql = "DELETE FROM patron WHERE project = :project AND user = :user AND node = :node";
-            if (self::query($sql, array(':project'=>$project, ':user'=>$user, ':node'=>$node))) {
+            $sql = "DELETE FROM patron WHERE id = :id";
+            if (self::query($sql, array(':id'=>$id))) {
                 return true;
             } else {
                 return false;

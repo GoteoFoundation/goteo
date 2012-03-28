@@ -11,17 +11,17 @@ namespace Goteo\Controller\Admin {
 
     class Patron {
 
-        public static function process ($action = 'list', $id = null) {
+        public static function process ($action = 'list', $id = null, $flag = null) {
 
             $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
             
             $errors = array();
 
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
 
                 // objeto
                 $promo = new Model\Patron(array(
-                    'id' => $id,
+                    'id' => $_POST['id'],
                     'node' => $node,
                     'project' => $_POST['project'],
                     'user' => $_POST['user'],
@@ -68,6 +68,7 @@ namespace Goteo\Controller\Admin {
                                     'file' => 'edit',
                                     'action' => 'add',
                                     'promo' => $promo,
+                                    'available' => Model\Patron::available(null, $node),
                                     'status' => $status
                                 )
                             );
@@ -79,7 +80,8 @@ namespace Goteo\Controller\Admin {
                                     'folder' => 'patron',
                                     'file' => 'edit',
                                     'action' => 'edit',
-                                    'promo' => $promo
+                                    'promo' => $promo,
+                                    'available' => Model\Patron::available($promo->project, $node),
                                 )
                             );
                             break;
@@ -91,13 +93,15 @@ namespace Goteo\Controller\Admin {
                 case 'active':
                     $set = $flag == 'on' ? true : false;
                     Model\Patron::setActive($id, $set);
-
+                    throw new Redirection('/admin/patron');
                     break;
                 case 'up':
                     Model\Patron::up($id, $node);
+                    throw new Redirection('/admin/patron');
                     break;
                 case 'down':
                     Model\Patron::down($id, $node);
+                    throw new Redirection('/admin/patron');
                     break;
                 case 'remove':
                     if (Model\Patron::delete($id)) {
@@ -118,6 +122,7 @@ namespace Goteo\Controller\Admin {
                     } else {
                         Message::Error('No se ha podido quitar correctamente el apadrinamiento');
                     }
+                    throw new Redirection('/admin/patron');
                     break;
                 case 'add':
                     // siguiente orden
@@ -130,6 +135,7 @@ namespace Goteo\Controller\Admin {
                             'file' => 'edit',
                             'action' => 'add',
                             'promo' => (object) array('order' => $next),
+                            'available' => Model\Patron::available(null, $node),
                             'status' => $status
                         )
                     );
@@ -143,7 +149,8 @@ namespace Goteo\Controller\Admin {
                             'folder' => 'patron',
                             'file' => 'edit',
                             'action' => 'edit',
-                            'promo' => $promo
+                            'promo' => $promo,
+                            'available' => Model\Patron::available($promo->project, $node),
                         )
                     );
                     break;

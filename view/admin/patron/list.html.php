@@ -28,14 +28,14 @@ $translator = ACL::check('/translate') ? true : false;
         <tbody>
             <?php foreach ($this['patroned'] as $promo) : ?>
             <tr>
-                <td><a href="/project/<?php echo $promo->project; ?>" target="_blank" title="Preview"><?php echo $promo->name; ?></a></td>
+                <td><a href="/project/<?php echo $promo->project; ?>" target="_blank" title="Preview"><?php echo substr($promo->name, 0, 40); ?></a></td>
                 <td><?php echo $promo->user->name; ?></td>
                 <td><?php echo ($promo->active) ? '<strong>'.$promo->title.'</strong>' : $promo->title; ?></td>
                 <td><?php echo $promo->status; ?></td>
                 <td><?php echo $promo->order; ?></td>
-                <td><a href="/admin/patron/up/<?php echo $promo->project; ?>">[&uarr;]</a></td>
-                <td><a href="/admin/patron/down/<?php echo $promo->project; ?>">[&darr;]</a></td>
-                <td><a href="/admin/patron/edit/<?php echo $promo->project; ?>">[Editar]</a></td>
+                <td><a href="/admin/patron/up/<?php echo $promo->id; ?>">[&uarr;]</a></td>
+                <td><a href="/admin/patron/down/<?php echo $promo->id; ?>">[&darr;]</a></td>
+                <td><a href="/admin/patron/edit/<?php echo $promo->id; ?>">[Editar]</a></td>
                 <td><?php if ($promo->active) : ?>
                 <a href="/admin/patron/active/<?php echo $promo->id; ?>/off">[Ocultar]</a>
                 <?php else : ?>
@@ -44,7 +44,7 @@ $translator = ACL::check('/translate') ? true : false;
                 <?php if ($translator) : ?>
                 <td><a href="/translate/patron/edit/<?php echo $promo->id; ?>" >[Traducir]</a></td>
                 <?php endif; ?>
-                <td><a href="/admin/patron/remove/<?php echo $promo->project; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Quitar]</a></td>
+                <td><a href="/admin/patron/remove/<?php echo $promo->id; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Quitar]</a></td>
             </tr>
             <?php endforeach; ?>
         </tbody>
