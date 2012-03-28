@@ -9,6 +9,7 @@ namespace Goteo\Model {
         Goteo\Model\Image,
         Goteo\Model\Message,
         Goteo\Model\Call,
+        Goteo\Model\Patron,
         Goteo\Model\Node;
 
     class Project extends \Goteo\Core\Model {
@@ -303,6 +304,9 @@ namespace Goteo\Model {
                 if (!empty($project->node) && $project->node != \GOTEO_NODE) {
                     $project->nodeData = Node::getMini($project->node);
                 }
+
+                // recomendaciones de padrinos
+                $project->patrons = Patron::getRecos($project->id);
 
 
                 //-----------------------------------------------------------------

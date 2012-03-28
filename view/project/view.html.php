@@ -201,9 +201,11 @@ include 'view/prologue.html.php' ?>
                             echo new View('view/project/widget/media.html.php', array('project' => $project));
                         }
 
-                        echo
-                            new View('view/project/widget/share.html.php', array('project' => $project)),
-                            new View('view/project/widget/summary.html.php', array('project' => $project));
+                        echo new View('view/project/widget/share.html.php', array('project' => $project));
+                        if (!empty($project->patrons)) {
+                            echo new View('view/project/widget/patrons.html.php', array('patrons' => $project->patrons));
+                        }
+                        echo new View('view/project/widget/summary.html.php', array('project' => $project));
 
                         // wall of friends, condicional
                         if (round(($project->invested / $project->mincost) * 100) > 20) {

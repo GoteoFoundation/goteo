@@ -8,7 +8,7 @@ $project = $this['project'];
 ?>
 <div class="widget project-collaborations collapsable" id="project-collaborations">
     
-    <h<?php echo $level + 1?> class="supertitle"><?php echo Text::get('project-collaborations-supertitle'); ?></h<?php echo $level ?>>
+    <h<?php echo $level + 1?> class="supertitle"><?php echo Text::get('project-collaborations-supertitle'); ?></h<?php echo $level + 1 ?>>
 
     <h<?php echo $level ?> class="title"><?php echo Text::get('project-collaborations-title'); ?></h<?php echo $level ?>>
     

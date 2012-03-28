@@ -101,7 +101,7 @@ namespace Goteo\Model {
          *
          * @param varchar50 $user padrino
          */
-        public function getList($user, $activeonly = true) {
+        public static function getList($user, $activeonly = true) {
 
             $projects = array();
 
@@ -123,12 +123,53 @@ namespace Goteo\Model {
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
                 $projData = Model\Project::getMedium($proj['project']);
-                $projData->patron_title = $proj->title;
-                $projData->patron_description = $proj->description;
+                $projData->patron_title = $proj['title'];
+                $projData->patron_description = $proj['description'];
                 $projects[] = $projData;
             }
 
             return $projects;
+        }
+
+        /**
+         * Devuelve las recomendaciones para un proyecto
+         * para pintar los padrinos en la página de proyecto
+         *
+         * @param varchar50 $project
+         */
+        public static function getRecos($project, $node = \GOTEO_NODE) {
+
+            $recos = array();
+
+            $values = array(':node' => $node, ':project'=>$project, ':lang'=>\LANG);
+
+            $sql = "SELECT
+                        user,
+                        IFNULL(patron_lang.title, patron.title) as title,
+                        IFNULL(patron_lang.description, patron.description) as description,
+                        patron.link as link
+                    FROM patron
+                    LEFT JOIN patron_lang
+                        ON patron_lang.id = patron.id
+                        AND patron_lang.lang = :lang
+                    WHERE patron.project = :project
+                    AND patron.active = 1
+                    AND patron.node = :node
+                    ORDER BY `order` ASC";
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $reco) {
+                $recoData = Model\User::getMini($reco['user']);
+                $recoData->title = $reco['title'];
+                $recoData->description = $reco['description'];
+                if (empty($reco['link'])) {
+                    $recoData->link = '/user/profile/'.$reco['user'];
+                } else {
+                    $recoData->link = $reco['link'];
+                }
+                $recos[] = $recoData;
+            }
+
+            return $recos;
         }
 
         /*
@@ -136,14 +177,18 @@ namespace Goteo\Model {
          */
         public static function available ($current = null, $node = \GOTEO_NODE) {
 
+            $values = array();
+            /*
             if (!empty($current)) {
                 $sqlCurr = " AND project != '$current'";
             } else {
                 $sqlCurr = "";
             }
+            */
 
             if ($node != \GOTEO_NODE) {
                 $sqlFilter = " AND project.node = :node";
+                $values[':node'] = $node;
             } else {
                 $sqlFiler = "";
             }
@@ -155,11 +200,11 @@ namespace Goteo\Model {
                     project.status as status
                 FROM    project
                 WHERE status = 3
-                AND project.id NOT IN (SELECT project FROM patron WHERE patron.node = :node{$sqlCurr} )
                 $sqlFilter
                 ORDER BY name ASC
                 ";
-            $query = static::query($sql, array(':node' => $node));
+//                AND project.id NOT IN (SELECT project FROM patron WHERE patron.node = :node{$sqlCurr} )
+            $query = static::query($sql, $values);
 
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
