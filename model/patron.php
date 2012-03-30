@@ -97,7 +97,7 @@ namespace Goteo\Model {
 
         /**
          * Devuelve los proyectos recomendados por un padrino
-         * para pintar 
+         * para pintar en su página de perfil público
          *
          * @param varchar50 $user padrino
          */
@@ -121,14 +121,44 @@ namespace Goteo\Model {
                     $sqlFilter
                     ORDER BY `order` ASC";
             $query = self::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
-                $projData = Model\Project::getMedium($proj['project']);
-                $projData->patron_title = $proj['title'];
-                $projData->patron_description = $proj['description'];
-                $projects[] = $projData;
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $reco) {
+                try {
+                    $reco->projectData = Project::getMedium($reco->project, LANG);
+                } catch (\Goteo\Core\Error $e) {
+                    continue;
+                }
+                $projects[] = $reco;
             }
 
             return $projects;
+        }
+
+        /*
+         * Devuelve la lista de patronos con recomendaciones activas
+         */
+        public static function getActiveVips($node = \GOTEO_NODE) {
+
+            $list = array();
+
+            $values = array(':node'=>$node);
+
+            $sqlFilter = ($activeonly) ? " AND " : '';
+
+            $sql = "SELECT
+                        DISTINCT(patron.user) as id,
+                        user.name as name
+                    FROM patron
+                    LEFT JOIN user
+                        ON user.id = patron.user
+                    WHERE patron.active = 1
+                    AND patron.node = :node
+                    ORDER BY `order` ASC";
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $list[$item->id] = $item->name;
+            }
+
+            return $list;
         }
 
         /**

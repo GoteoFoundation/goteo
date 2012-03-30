@@ -11,7 +11,7 @@ $wof = new WallFriends($project->id);
 if (!$wof instanceof \Goteo\Library\WallFriends) return;
 
 
-$url = SITE_URL.'/wof/'.$project->id.'/580';
+$url = SITE_URL.'/widget/wof/'.$project->id.'/580';
 if (LANG != 'es')
     $url .= '?lang='.LANG;
 

@@ -3,17 +3,41 @@ use Goteo\Core\View,
     Goteo\Library\Text;
 
 $patrons = $this['patrons'];
-?>
-<div class="widget projects">
 
-    <h2 class="title">Padrinos</h2>
+if (count($patrons) > 4) :  ?>
+<script type="text/javascript">
+    $(function(){
+        $('#slides_patrons').slides({
+            container: 'slder_patrons',
+            generatePagination: false,
+            play: 0
+        });
+    });
+</script>
+<?php endif; ?>
+<div class="widget patrons">
 
-    <?php foreach ($patrons as $patron) : ?>
+    <h2 class="title"><?php echo Text::get('home-patrons-header'); ?></h2>
 
-            <?php echo new View('view/user/widget/patron.html.php', array(
-                'user' => $patron
-            )) ?>
-
-    <?php endforeach ?>
+    <div id="slides_patrons" class="patronrow">
+        <?php if (count($patrons) > 4) : ?>
+            <div class="arrow-left">
+                <a class="prev">prev</a>
+            </div>
+        <?php endif ?>
+        <div class="slder_patrons">
+            <div class="row">
+            <?php $c=1; foreach ($patrons as $patron) {
+                echo new View('view/user/widget/patron.html.php', array('user' => $patron));
+                if ($c == 4 && $c != count($patrons)) { echo '</div><div class="row">'; $c=0; }
+            $c++; } ?>
+            </div>
+        </div>
+        <?php if (count($patrons) > 4) : ?>
+        <div class="arrow-right">
+            <a class="next">next</a>
+        </div>
+        <?php endif ?>
+    </div>
 
 </div>

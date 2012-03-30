@@ -3,21 +3,39 @@ use Goteo\Library\Text,
     Goteo\Core\View;
 
 $patrons = $this['patrons'];
-?>
-<div class="widget project-patrons">
+
+if (count($patrons) > 1) : ?>
+<script type="text/javascript">
+    $(function(){
+        $('#slides_patrons').slides();
+    });
+</script>
+<?php endif; ?>
+<div id="slides_patrons" class="widget project-patrons">
     <h4>Proyecto recomendado por:</h4>
-    <?php foreach ($patrons as $patron) : ?>
-    <div class="patron">
-        <div class="patron-name">
-            <a href="/user/profile/<?php echo $patron->id ?>" title="<?php echo $patron->name ?>" target="_blank"><?php echo $patron->name ?></a>
+    
+    <div class="slides_container">
+        <?php foreach ($patrons as $patron) : ?>
+        <div class="patron">
+            <div class="patron-name">
+                <a href="/user/profile/<?php echo $patron->id ?>" title="<?php echo $patron->name ?>" target="_blank"><?php echo $patron->name ?></a>
+            </div>
+            <div class="patron-avatar">
+                <a href="/user/profile/<?php echo $patron->id ?>" title="<?php echo $patron->name ?>" target="_blank"><img src="<?php echo $patron->avatar->getLink(112, 74, true) ?>" alt="<?php echo $patron->name ?>" /></a>
+            </div>
+            <div class="patron-reco">
+                <span><a href="<?php echo $patron->link ?>" target="_blank"><?php echo $patron->title; ?></a></span>
+                <blockquote><a href="<?php echo $patron->link ?>" target="_blank"><?php echo $patron->description; ?></a></blockquote>
+            </div>
         </div>
-        <div class="patron-avatar">
-            <a href="/user/profile/<?php echo $patron->id ?>" title="<?php echo $patron->name ?>" target="_blank"><img src="<?php echo $patron->avatar->getLink(112, 75) ?>" alt="<?php echo $patron->name ?>" /></a>
-        </div>
-        <div class="patron-reco">
-            <span><a href="<?php echo $patron->link ?>" target="_blank"><?php echo $patron->title; ?></a></span>
-            <blockquote><a href="<?php echo $patron->link ?>" target="_blank"><?php echo $patron->description; ?></a></blockquote>
-        </div>
+        <?php endforeach; ?>
     </div>
-    <?php endforeach; ?>
+
+<?php if (count($patrons) > 1) : ?>
+    <div class="sliderspatrons-ctrl">
+        <a class="prev">prev</a>
+        <ul class="paginacion"></ul>
+        <a class="next">next</a>
+    </div>
+<?php endif; ?>
 </div>

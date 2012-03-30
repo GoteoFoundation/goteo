@@ -61,31 +61,21 @@ div#footer div.block{
 }
 
 
-/*
-div#footer div#social{
-	width:125px;
-}
-div#footer div#sponsors{
-	width:225px;	
-}
-div#footer div#services{
-	width:115px;
-}
-*/
-
-
 /*hijos de div.block*/
 div#footer div.block h8{
 	font-size:11px;
 	color:#59595C;
 }
 
+/* Voy a añadir aqui el carrusel de patronos de la home porque usa los mismos estilos */
+div.widget.project-patrons ul,
 div#footer div.block ul{
 	list-style:none;
 	margin-top:15px;
 	height:115px;
 	overflow:auto;
 }
+div.widget.project-patrons ul.paginacion,
 div#footer div.block ul.paginacion {
 	margin: 8px 0 0 0;
 	list-style:none;
@@ -94,6 +84,7 @@ div#footer div.block ul.paginacion {
 	height:auto;
 }
 
+div.widget.project-patrons ul.paginacion li,
 div#footer div.block ul.paginacion li {
 	cursor:pointer;
     display: block;
@@ -102,6 +93,7 @@ div#footer div.block ul.paginacion li {
 	margin: 0px 4px 5px 4px;
 }
 
+div.widget.project-patrons ul.paginacion li a,
 div#footer div.block ul.paginacion li a {
     width: 10px;
     height: 12px;
@@ -111,16 +103,20 @@ div#footer div.block ul.paginacion li a {
 	display:block;
 }
 
+div.widget.project-patrons ul.paginacion li a:hover,
 div#footer div.block ul.paginacion li a:hover {
     background-color: #20b3b2;
     color: #20b3b2;
 }
 
+div.widget.project-patrons ul.paginacion li.current a,
 div#footer div.block ul.paginacion li.current a {
     background-color: #808184 !important;
     color: #808184 !important;
 }
 
+div#slides_patrons .sliderspatrons-ctrl .next,
+div#slides_patrons .sliderspatrons-ctrl .prev,
 div#slides_sponsor .slidersponsors-ctrl .next,
 div#slides_sponsor .slidersponsors-ctrl .prev {
     width: 16px;
@@ -133,21 +129,26 @@ div#slides_sponsor .slidersponsors-ctrl .prev {
 /*	display: inline-block; */
 }
 
+div#slides_patrons .sliderspatrons-ctrl .prev,
 div#slides_sponsor .slidersponsors-ctrl .prev {
 	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 0;
 }
 
+div#slides_patrons .sliderspatrons-ctrl .prev:hover,
 div#slides_sponsor .slidersponsors-ctrl .prev:hover {
 	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -32px;
 }
 
+div#slides_patrons .sliderspatrons-ctrl .next,
 div#slides_sponsor .slidersponsors-ctrl .next{
 	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -16px;
 }
 
+div#slides_patrons .sliderspatrons-ctrl .next:hover,
 div#slides_sponsor .slidersponsors-ctrl .next:hover {
 	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -48px;
 }
+/* fin reutilizacion para carrusel patronos */
 
 div#footer div.block ul li{
 	line-height:12px;

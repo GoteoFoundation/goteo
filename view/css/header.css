@@ -45,7 +45,7 @@ div#sub-header,
 div#sub-header-secondary { 
     clear: both;
     padding: 20px 0;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
 }
 
 div#sub-header{
@@ -54,6 +54,7 @@ div#sub-header{
 
 div#sub-header.banners{
     padding:0;
+	margin-bottom: 32px;
 }
 
 div#sub-header-secondary{
@@ -79,10 +80,6 @@ div#sub-header-secondary > div > h2 a{
 
 div#sub-header-secondary > div > h2 a:hover span.red{
 	text-decoration:underline;	
-}
-
-.discover div#sub-header > div{
-	margin:30px auto;
 }
 
 div#sub-header > div > div.slides_container{
@@ -136,7 +133,6 @@ div#sub-header > div > div.slides_container > div.slides_control > div.subhead-b
 	font: bold 14px Helvetica, Arial, Geneva, sans-serif;
     margin: 0px;
     text-transform: uppercase;
-    width: 255px;
 }
 
 div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info small{
@@ -189,10 +185,8 @@ div#sub-header > div > div.slides_container > div.slides_control > div.subhead-b
 	font-size: 11px;
     font-weight: normal;
 	list-style:none;
-	margin: 0 0 0 20px;
+	margin: -25px 0 0 20px;
 	padding:0;
-    position: relative;
-    top: -35px;
 }
 
 div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .financ-meter li{
@@ -277,7 +271,7 @@ div#sub-header > div > div.mod-pojctopen > .modpo-percent{
 
 div#sub-header > div > div.mod-pojctopen > .modpo-whyopen{
 	font: bold 14px Helvetica, Arial, Geneva, sans-serif;
-	padding:6px 0 0 50px;
+	padding:8px 0 0 35px;
 }
 /* fin de lo de open */
 

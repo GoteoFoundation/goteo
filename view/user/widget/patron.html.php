@@ -1,16 +1,19 @@
 <?php
 
 use Goteo\Core\View,
-    Goteo\Library\Text,
-    Goteo\Library\Worth;
+    Goteo\Model\Patron,
+    Goteo\Library\Text;
 
 $user = $this['user'];
+$recos = Patron::getList($user->id);
 ?>
-<div style="float: left; margin-right: 20px; border: 1px solid black; padding: 10px;">
-	<div class="patron">
-		<a href="/discover/patron/<?php echo htmlspecialchars($user->id) ?>">
-            <span class="avatar"><img src="<?php echo $user->avatar->getLink(43, 43, true); ?>" /></span>
-            <h4><?php echo $user->name; ?></h4>
-        </a>
-	</div>
+<div class="patron">
+        <a class="expand" href="/user/profile/<?php echo htmlspecialchars($user->id) ?>"></a>
+        <div class="box">
+            <div class="avatar"><img src="<?php echo $user->avatar->getLink(112, 74, true); ?>" alt="<?php echo $user->name; ?>"/></div>
+        </div>
+        <div class="reco">
+            <span class="name"><?php echo $user->name; ?></span><br />
+            <?php echo Text::html('profile-patron-header', count($recos)) ?>
+        </div>
 </div>

@@ -10,6 +10,7 @@ namespace Goteo\Controller {
         Goteo\Model\Call,
         Goteo\Model\Post,
         Goteo\Model\Promote,
+        Goteo\Model\Patron,
         Goteo\Model\Campaign, // convocatorias en portada
         Goteo\Model\User,
         Goteo\Library\Text,
@@ -63,7 +64,7 @@ namespace Goteo\Controller {
 
             // padrinos
             if (isset($order['patrons'])) {
-                $patrons  =  User::getVips(true);
+                $patrons  =  Patron::getActiveVips();
 
                 foreach ($patrons as $userId => $user) {
                     try {

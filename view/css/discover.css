@@ -9,6 +9,10 @@ body.discover div#main div.searcher {
 	border-bottom: 1px solid #d1d3d4;
 }
 
+body.discover div#sub-header > div{
+	margin:30px auto;
+}
+
 /* Buscador */
 div.searcher form {
 	/*padding-left:75px !important;*/

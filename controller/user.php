@@ -437,6 +437,18 @@ namespace Goteo\Controller {
             }
             //--- el resto pueden seguir ---
 
+            /*
+             *  Si es un usuario vip y tiene proyectos recomendados activados
+             *   mostramos la página especial de patronos
+             */
+            if (isset($user->roles['vip'])) {
+                $recos = Model\Patron::getList($user->id);
+                if (count($recos) > 0) {
+                    return new View ('view/user/patron.html.php', array('user' => $user, 'recos' => $recos));
+                }
+            }
+
+
             $viewData = array();
             $viewData['user'] = $user;
 

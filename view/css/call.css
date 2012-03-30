@@ -356,52 +356,7 @@ div.call div.data .return ul li.other {
 }
 /* hasta aqui datos */
 
-/* Flechas portada */
-div.callrow a.prev,
-div.callrow a.next {
-    width: 24px;
-    position:relative;
-    color: white;
-    line-height: 27px;
-    text-indent: 24px;
-    display: inline-block;
-    cursor: pointer;
-    margin: 0;
-    padding: 0;
-}
-
-div#calls a.prev {
-    top: 121px;
-    left: -295px;
-}
-
-div#campaigns a.prev {
-    top: 121px;
-    left: -21px;
-}
-
-div#calls a.next,
-div#campaigns a.next {
-    left: 894px;
-    bottom: 137px;
-}
-
-div.callrow a.prev {
-	background: url('arrowslider-sprt.png') scroll no-repeat 0 0;
-}
-
-div.callrow a.prev:hover {
-	background: url('arrowslider-sprt.png') scroll no-repeat 0 -48px;
-}
-
-div.callrow a.next {
-	background: url('arrowslider-sprt.png') scroll no-repeat 0 -24px;
-}
-
-div.callrow a.next:hover {
-	background: url('arrowslider-sprt.png') scroll no-repeat 0 -72px;
-}
-
+/* Los estilos de las flechitas en portada estan en home.css */
 body.home div#main div.widget.calls a.all {
     text-decoration: none;
     text-transform: uppercase;
