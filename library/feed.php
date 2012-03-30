@@ -201,6 +201,7 @@ namespace Goteo\Library {
                             // y substituimos el $item->html por el $post->html
                             $item->html = Text::recorta($post->text, 250);
                             $item->title = $post->title;
+                            $item->image = $post->image->id;
 
                             // arreglo la fecha de publicación
                             $parts = explode(' ', $item->timer);

@@ -174,7 +174,10 @@ namespace Goteo\Library {
 		 * @param type int	$height
 		 *
 		*/
-		public function html($width = 608) {
+		public function html($width = 608, $extern = false) {
+
+            // si es externo, abrimos en una ventana nueva
+            $target = $extern ? ' target="_blank"' : '';
 
 			//cal que siguin multiples del tamany
 			$wsize = $this->w_size + $this->w_padding * 2;
@@ -211,34 +214,34 @@ namespace Goteo\Library {
 			$style .= "div.wof>div.ct>div.c>div.c2 {float:right;height:" . ($wsize * 3) . "px;width:" . ($wsize * 11) . "px}";
 			$style .= "</style>";
 
-			$title = '<h2><a href="'.SITE_URL.'/project/'.$this->project->id.'">'.Text::get('wof-title').'</a><a href="'.SITE_URL.'" class="right">goteo.org</a></h2>';
+			$title = '<h2><a href="'.SITE_URL.'/project/'.$this->project->id.'"'.$target.'>'.Text::get('wof-title').'</a><a href="'.SITE_URL.'" class="right"'.$target.'>goteo.org</a></h2>';
 
             $info = '';
             if ($this->project->status == 3) {
-                $info .= '<a class="expand" href="'.SITE_URL.'/project/'.$this->project->id.'/invest" title="'.Text::get('wof-here').'"></a>';
+                $info .= '<a class="expand" href="'.SITE_URL.'/project/'.$this->project->id.'/invest" title="'.Text::get('wof-here').'"'.$target.'></a>';
             }
 
 			//num finançadors
-			$info .= '<div class="a i"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'/supporters">' . count($this->project->investors) . '</a></h3><p><a href="'.SITE_URL.'/project/'.$this->project->id.'/supporters">'.Text::get('project-view-metter-investors').'</a></p></div>';
+			$info .= '<div class="a i"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'/supporters"'.$target.'>' . count($this->project->investors) . '</a></h3><p><a href="'.SITE_URL.'/project/'.$this->project->id.'/supporters"'.$target.'>'.Text::get('project-view-metter-investors').'</a></p></div>';
 
 			//financiacio, data
-			$info .= '<div class="b i"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'/needs">' . \amount_format($this->project->invested,0,'',','). '<img src="'.SITE_URL.'/view/css/euro/violet/yl.png" alt="&euro;"></a></h3>';
+			$info .= '<div class="b i"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'/needs"'.$target.'>' . \amount_format($this->project->invested,0,'',','). '<img src="'.SITE_URL.'/view/css/euro/violet/yl.png" alt="&euro;"></a></h3>';
 			$info .= '<p><a href="'.SITE_URL.'/project/'.$this->project->id.'/needs">' . Text::get('project-view-metter-days') . " {$this->project->days} " . Text::get('regular-days') .'</a></p></div>';
 
 			//impulsores, nom, desc
 			$info .= '<div class="c i">';
-			$info .= '<div class="c1"><p><a href="'.SITE_URL.'/user/'.$this->project->owner.'"><img src="'.SITE_URL.'/image/'.$this->project->user->avatar->id.'/56/56/1" alt="'.$this->project->user->name.'" title="'.$this->project->user->name.'"><br />' . Text::get('regular-by') . ' '  . $this->project->user->name . '</a></p></div>';
-			$info .= '<div class="c2"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'">' . $this->project->name . '</a></h3><p><a href="'.SITE_URL.'/project/'.$this->project->id.'">'.$this->project->subtitle.'</a></p></div>';
+			$info .= '<div class="c1"><p><a href="'.SITE_URL.'/user/'.$this->project->owner.'"'.$target.'><img src="'.SITE_URL.'/image/'.$this->project->user->avatar->id.'/56/56/1" alt="'.$this->project->user->name.'" title="'.$this->project->user->name.'"><br />' . Text::get('regular-by') . ' '  . $this->project->user->name . '</a></p></div>';
+			$info .= '<div class="c2"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'"'.$target.'>' . $this->project->name . '</a></h3><p><a href="'.SITE_URL.'/project/'.$this->project->id.'"'.$target.'>'.$this->project->subtitle.'</a></p></div>';
 			$info .= '</div>';
 
 			//apoyar el proyecto
 			$info .= '<div class="d i">';
             if ($this->project->status == 3) {
                 $info .= '<p>'.Text::get('wof-join-group').'</p>';
-                $info .= '<a href="'.SITE_URL.'/project/'.$this->project->id.'/invest">'.Text::get('wof-support').'</a>';
+                $info .= '<a href="'.SITE_URL.'/project/'.$this->project->id.'/invest"'.$target.'>'.Text::get('wof-support').'</a>';
             } else {
                 $info .= '<p>'.Text::get('wof-join-comunity').'</p>';
-                $info .= '<a href="'.SITE_URL.'/project/'.$this->project->id.'/updates">'.Text::get('wof-follow').'</a>';
+                $info .= '<a href="'.SITE_URL.'/project/'.$this->project->id.'/updates"'.$target.'>'.Text::get('wof-follow').'</a>';
             }
 			$info .= '</div>';
 
