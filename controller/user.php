@@ -443,6 +443,10 @@ namespace Goteo\Controller {
              */
             if (isset($user->roles['vip'])) {
                 $recos = Model\Patron::getList($user->id);
+                $vip = Model\User\Vip::get($user->id);
+                if (!empty($vip->image)) {
+                    $user->avatar = $vip->image;
+                }
                 if (count($recos) > 0) {
                     return new View ('view/user/patron.html.php', array('user' => $user, 'recos' => $recos));
                 }

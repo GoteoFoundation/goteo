@@ -163,10 +163,10 @@ body.home div#main div.patron + div.patron {
 
 body.home div#main div.patron > a.expand {
     position: absolute;
-    top: 40px;
+    top: 0px;
     bottom: 0px;
     width: 185px;
-    height: 70%;
+    height: 100%;
 }
 
 body.home div#main div.patron > div.box {

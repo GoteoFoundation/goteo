@@ -68,11 +68,17 @@ namespace Goteo\Controller {
 
                 foreach ($patrons as $userId => $user) {
                     try {
-                        $patrons[$userId] = User::getMini($userId);
+                        $userData = User::getMini($userId);
+                        $vipData = User\Vip::get($userId);
+                        if (!empty($vipData->image)) {
+                            $userData->avatar = $vipData->image;
+                        }
+                        $patrons[$userId] = $userData;
                     } catch (\Goteo\Core\Error $e) {
                         unset($patrons[$key]);
                     }
                 }
+
             }
 
             // actividad reciente

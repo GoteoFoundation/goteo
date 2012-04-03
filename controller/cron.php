@@ -753,7 +753,8 @@ die('Ya no podemos hacer esto a la ligera');
                 SELECT
                     invest.user as id,
                     user.name as name,
-                    user.email as email
+                    user.email as email,
+                    invest.method as method
                 FROM  invest
                 INNER JOIN user
                     ON user.id = invest.user
@@ -761,7 +762,7 @@ die('Ya no podemos hacer esto a la ligera');
                 LEFT JOIN user_prefer
                     ON user_prefer.user = invest.user
                 WHERE   invest.project = ?
-                AND (invest.status = 0 OR invest.status = 1 OR invest.status = 3 OR invest.status = 4)
+                AND invest.status IN ('0', '1', '3', '4')
                 AND (user_prefer.{$notif} = 0 OR user_prefer.{$notif} IS NULL)
                 GROUP BY user.id
                 ";
@@ -775,8 +776,8 @@ die('Ya no podemos hacer esto a la ligera');
                                 $replace = array($investor->name, $project->name, SITE_URL . '/project/' . $project->id);
                             break;
 
-                        case 'fail': // template 17, caduca sin conseguir el mínimo
-                                $tpl = 17;
+                        case 'fail': // template 17 (paypalistas) / 35 (tpvistas) , caduca sin conseguir el mínimo
+                                $tpl = ($investor->method == 'paypal') ? 17 : 35;
                                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%DISCOVERURL%');
                                 $replace = array($investor->name, $project->name, SITE_URL . '/discover');
                             break;

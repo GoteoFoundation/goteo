@@ -126,7 +126,7 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
                 <?php endforeach; ?>
 
                 <div class="discover-arrow-right">
-                    <a class="discover-arrow" href="#invest_on" rev="<?php echo $type ?>" rel="<?php echo 'invest_on-'.$projects['next'] ?>">&nbsp;</a>
+                    <a class="discover-arrow" href="#invest_on" rev="invest_on" rel="<?php echo 'invest_on-'.$projects['next'] ?>">&nbsp;</a>
                 </div>
 
             </div>

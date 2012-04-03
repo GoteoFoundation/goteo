@@ -215,7 +215,7 @@ body.dashboard div.widget.gestrew div.filters{height:auto;overflow:auto}
 body.dashboard div.widget.gestrew div.filters ul{list-style:none;clear:right;margin-top:0;margin-left:10px;padding-left:0;}
 body.dashboard div.widget.gestrew div.filters ul li{display:inline-block;}
 body.dashboard div.widget.gestrew div.filters ul li a{text-decoration:none;font-size:9pt;}
-body.dashboard div.widget.gestrew div.filters ul li.current a{background:url('/view/css/arrow-down.png') no-repeat left;padding-left:15px;}
+body.dashboard div.widget.gestrew div.filters ul li.current a{background:url('/view/css/arrow-down.png') no-repeat left;padding-left:15px;color:#20B3B2;}
 body.dashboard div.widget.gestrew div.filters ul li a:hover{color:#20B3B2;}
 
 .disabled{color:#cccccc;}

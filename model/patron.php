@@ -189,6 +189,10 @@ namespace Goteo\Model {
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $reco) {
                 $recoData = Model\User::getMini($reco['user']);
+                $vipData = Model\User\Vip::get($reco['user']);
+                if (!empty($vipData->image)) {
+                    $recoData->avatar = $vipData->image;
+                }
                 $recoData->title = $reco['title'];
                 $recoData->description = $reco['description'];
                 if (empty($reco['link'])) {

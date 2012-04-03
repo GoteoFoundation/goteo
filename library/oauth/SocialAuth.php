@@ -501,7 +501,6 @@ class SocialAuth {
 				$img->save();
 
 				if($img->id) {
-					Goteo\Core\Model::query("REPLACE user_image (user, image) VALUES (:user, :image)", array(':user' => $username, ':image' => $img->id));
 					Goteo\Core\Model::query("UPDATE user SET avatar = :avatar WHERE id = :user", array(':user'=>$username,':avatar'=>$img->id));
 				}
 			}
@@ -559,7 +558,6 @@ class SocialAuth {
 				$img->save();
 
 				if($img->id) {
-					Goteo\Core\Model::query("REPLACE user_image (user, image) VALUES (:user, :image)", array(':user' => $username, ':image' => $img->id));
 					Goteo\Core\Model::query("UPDATE user SET avatar = :avatar WHERE id = :user", array(':user'=>$username,':avatar'=>$img->id));
 					$user = Goteo\Model\User::get($username);
 				}

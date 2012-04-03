@@ -140,7 +140,7 @@ namespace Goteo\Controller {
             }
 
             $confirm = Model\Invest::get($invest);
-            $projectData = Model\Project::getMini($project);
+            $projectData = Model\Project::get($project);
             if (!empty($confirm->droped)) {
                 $drop = Model\Invest::get($confirm->droped);
 
@@ -157,12 +157,22 @@ namespace Goteo\Controller {
             // primero monto el texto de recompensas
             if ($confirm->resign) {
                 $txt_rewards = Text::get('invest-resign');
-                $template = Template::get(28); // plantilla de donativo
+                // Plantilla de donativo segun la ronda
+                if ($projectData->round == 2) {
+                    $template = Template::get(36); // en segunda ronda
+                } else {
+                    $template = Template::get(28); // en primera ronda
+                }
             } else {
                 $rewards = $confirm->rewards;
                 array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
                 $txt_rewards = implode(', ', $rewards);
-                $template = Template::get(10); // plantilla de agradecimiento
+                // plantilla de agradecimiento segun la ronda
+                if ($projectData->round == 2) {
+                    $template = Template::get(34); // en segunda ronda
+                } else {
+                    $template = Template::get(10); // en primera ronda
+                }
             }
 
             // Dirección en el mail

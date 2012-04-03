@@ -115,6 +115,10 @@ namespace Goteo\Controller {
                 throw new Redirection('/user/profile/'.$user->id);
             }
 
+            if (isset($user->roles['vip'])) {
+                $vip = Model\User\Vip::get($user->id);
+            }
+
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $log_action = null;
@@ -153,9 +157,30 @@ namespace Goteo\Controller {
 
                         // tratar si quitan la imagen
                         if (!empty($_POST['avatar-' . $user->avatar->id .  '-remove'])) {
-                            $user->avatar->remove('user');
+                            $user->avatar->remove();
                             $user->avatar = '';
                         }
+
+                        /*
+                         * Tratamiento de la imagen vip
+                         * Se hace todo aqui usando el modelo User\Vip
+                         */
+                        if (isset($user->roles['vip'])) {
+                            $files = $_FILES;
+                            if(!empty($_FILES['vip_image_upload']['name'])) {
+                                $vip->image = $_FILES['vip_image_upload'];
+                                $vip->save();
+                            }
+
+                            // tratar si quitan la imagen vip
+                            if ($vip->image instanceof Image && !empty($_POST['vip_image-' . $vip->image->id .  '-remove'])) {
+                                $vip->image->remove();
+                                $vip->remove();
+                            }
+                        }
+                        /*
+                         * Fin tratamiento imagen Vip
+                         */
 
                         $user->interests = $_POST['user_interests'];
 
@@ -360,6 +385,11 @@ namespace Goteo\Controller {
                                 $viewData["web-{$last->id}-edit"] = true;
                             }
                         }
+
+                        if (isset($user->roles['vip'])) {
+                            $viewData['vip'] = Model\User\Vip::get($user->id);
+                        }
+
                         break;
                     case 'personal':
                         $viewData['personal'] = Model\User::getPersonal($user->id);

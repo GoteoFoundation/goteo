@@ -94,7 +94,7 @@ $sfid = 'sf-project-profile';
 
 <form method="post" action="/dashboard/profile/profile" class="project" enctype="multipart/form-data">
 
-<?php echo new SuperForm(array(
+<?php $superarray = array(
     'id'            => $sfid,
     'action'        => '',
     'level'         => $this['level'],
@@ -118,7 +118,7 @@ $sfid = 'sf-project-profile';
             'required'  => true,
             'size'      => 20,
             'title'     => Text::get('profile-field-name'),
-            'hint'      => Text::get('tooltip-user-name'),
+//            'hint'      => Text::get('tooltip-user-name'),
             'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
             'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array(),
             'value'     => $user->name
@@ -128,7 +128,7 @@ $sfid = 'sf-project-profile';
             'required'  => true,
             'size'      => 20,
             'title'     => Text::get('profile-field-location'),
-            'hint'      => Text::get('tooltip-user-location'),
+//            'hint'      => Text::get('tooltip-user-location'),
             'errors'    => !empty($errors['location']) ? array($errors['location']) : array(),
             'ok'        => !empty($okeys['location']) ? array($okeys['location']) : array(),
             'value'     => $user->location
@@ -137,7 +137,7 @@ $sfid = 'sf-project-profile';
             'type'      => 'group',
             'required'  => true,
             'title'     => Text::get('profile-fields-image-title'),
-            'hint'      => Text::get('tooltip-user-image'),
+//            'hint'      => Text::get('tooltip-user-image'),
             'errors'    => !empty($errors['avatar']) ? array($errors['avatar']) : array(),
             'ok'        => !empty($okeys['avatar']) ? array($okeys['avatar']) : array(),
             'class'     => 'user_avatar',
@@ -156,14 +156,50 @@ $sfid = 'sf-project-profile';
                     'type'  => 'html',
                     'class' => 'inline avatar-image',
                     'html'  => is_object($user->avatar) &&  $user->avatar->id != 1 ?
-                               $user->avatar . '<img src="'.SRC_URL.'/image/' . $user->avatar->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->id.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               $user->avatar . '<img src="'.SRC_URL.'/image/' . $user->avatar->id . '/128/128/1" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->id.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
 
             )
-        ),
+        )
+    )
+);
 
-        'user_about' => array(
+// imagen de colaborador si es usuario vip
+if (isset($user->roles['vip'])) {
+    
+    $vip = $this['vip'];
+
+    $superarray['elements']['vip_image'] = array(
+            'type'      => 'group',
+            'title'     => 'Imagen usuario colaborador',
+            'errors'    => array(),
+            'ok'        => array(),
+            'class'     => 'user_avatar',
+            'children'  => array(
+                'vip_image_upload'    => array(
+                    'type'  => 'file',
+                    'label' => Text::get('form-image_upload-button'),
+                    'class' => 'inline avatar_upload'
+                ),
+                'vip_image-current' => array(
+                    'type' => 'hidden',
+                    'value' => $vip->image->id,
+                ),
+                'vip_image-image' => array(
+                    'type'  => 'html',
+                    'class' => 'inline avatar-image',
+                    'html'  => is_object($vip->image) ?
+                               $vip->image . '<img src="'.SRC_URL.'/image/' . $vip->image->id . '/112/74/1" alt="Avatar" /><button class="image-remove" type="submit" name="vip_image-'.$vip->image->id.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               ''
+                )
+
+            )
+        );
+}
+
+// seguimos con los campos
+$superarray['elements']['user_about'] = array(
             'type'      => 'textarea',
             'required'  => true,
             'cols'      => 40,
@@ -173,8 +209,8 @@ $sfid = 'sf-project-profile';
             'errors'    => !empty($errors['about']) ? array($errors['about']) : array(),
             'ok'        => !empty($okeys['about']) ? array($okeys['about']) : array(),
             'value'     => $user->about
-        ),
-        'interests' => array(
+        );
+$superarray['elements']['interests'] = array(
             'type'      => 'checkboxes',
             'required'  => true,
             'class'     => 'cols_3',
@@ -184,8 +220,8 @@ $sfid = 'sf-project-profile';
             'errors'    => !empty($errors['interests']) ? array($errors['interests']) : array(),
             'ok'        => !empty($okeys['interests']) ? array($okeys['interests']) : array(),
             'options'   => $interests
-        ),
-        'user_keywords' => array(
+        );
+$superarray['elements']['user_keywords'] = array(
             'type'      => 'textbox',
             'required'  => true,
             'size'      => 20,
@@ -194,8 +230,8 @@ $sfid = 'sf-project-profile';
             'errors'    => !empty($errors['keywords']) ? array($errors['keywords']) : array(),
             'ok'        => !empty($okeys['keywords']) ? array($okeys['keywords']) : array(),
             'value'     => $user->keywords
-        ),
-        'user_contribution' => array(
+        );
+$superarray['elements']['user_contribution'] = array(
             'type'      => 'textarea',
             'required'  => true,
             'cols'      => 40,
@@ -205,8 +241,8 @@ $sfid = 'sf-project-profile';
             'errors'    => !empty($errors['contribution']) ? array($errors['contribution']) : array(),
             'ok'        => !empty($okeys['contribution']) ? array($okeys['contribution']) : array(),
             'value'     => $user->contribution
-        ),
-        'user_webs' => array(
+        );
+$superarray['elements']['user_webs'] = array(
             'type'      => 'group',
             'required'  => true,
             'title'     => Text::get('profile-field-websites'),
@@ -221,8 +257,8 @@ $sfid = 'sf-project-profile';
                     'class' => 'add red'
                 )
             )
-        ),
-        'user_social' => array(
+        );
+$superarray['elements']['user_social'] = array(
             'type'      => 'group',
             'title'     => Text::get('profile-fields-social-title'),
             'children'  => array(
@@ -277,10 +313,9 @@ $sfid = 'sf-project-profile';
                     'value'     => empty($user->linkedin) ? Text::get('regular-linkedin-url') : $user->linkedin
                 )
             )
-        )
-    )
-));
+        );
 
+echo new SuperForm($superarray);
 ?>
 </form>
 <script type="text/javascript">

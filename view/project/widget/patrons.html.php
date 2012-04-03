@@ -7,7 +7,7 @@ $patrons = $this['patrons'];
 if (count($patrons) > 1) : ?>
 <script type="text/javascript">
     $(function(){
-        $('#slides_patrons').slides();
+        $('#slides_patrons').slides({play: 4000});
     });
 </script>
 <?php endif; ?>
