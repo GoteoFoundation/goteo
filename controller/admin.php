@@ -306,6 +306,14 @@ namespace Goteo\Controller {
                             'translate' => array('label' => 'Traduciendo Tag', 'item' => true)
                         )
                     ),
+                    'tasks' => array(
+                        'label' => 'Tareas admin',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'edit' => array('label' => 'Editando Tarea', 'item' => true)
+                        ),
+                        'filters' => array('done'=>'', 'user'=>'', 'node'=>'')
+                    ),
                     'templates' => array(
                         'label' => 'Plantillas de email',
                         'actions' => array(
@@ -371,14 +379,24 @@ namespace Goteo\Controller {
         public function index () {
             $BC = self::menu(array('option'=>'index', 'action'=>null, 'id' => null));
             define('ADMIN_BCPATH', $BC);
-            return new View('view/admin/index.html.php');
+            $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
+            $tasks = Model\Task::getAll(array(), $node, true);
+            return new View('view/admin/index.html.php', array('tasks'=>$tasks));
         }
 
-        public function select () {
-            $BC = self::menu(array('option'=>'index', 'action'=>null, 'id' => null));
-            define('ADMIN_BCPATH', $BC);
-            $_SESSION['translator_lang'] = isset($_POST['lang']) ? $_POST['lang'] : null;
-            return new View('view/admin/index.html.php');
+        public function done ($id) {
+            $errors = array();
+            if (!empty($id) && isset($_SESSION['user']->id)) {
+                $task = Model\Task::get($id);
+                if ($task->setDone($errors)) {
+                    Message::Info('La tarea se ha marcado como realizada');
+                } else {
+                    Message::Error(implode('<br />', $errors));
+                }
+            } else {
+                Message::Error('Faltan datos');
+            }
+            throw new Redirection('/admin');
         }
 
         /*
@@ -552,6 +570,15 @@ namespace Goteo\Controller {
             $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
             return Admin\Tags::process($action, $id);
+        }
+
+        /*
+         *  Gestión de tareas pendientes de administracion
+         */
+        public function tasks($action = 'list', $id = null) {
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
+            define('ADMIN_BCPATH', $BC);
+            return Admin\Tasks::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
         /*
@@ -961,7 +988,8 @@ namespace Goteo\Controller {
                                 'users' => $options['users'],
                                 'worth' => $options['worth'],
                                 'mailing' => $options['mailing'],
-                                'sended' => $options['sended']
+                                'sended' => $options['sended'],
+                                'tasks' => $options['tasks']
                             )
                         ),
                         'home' => array(
@@ -982,7 +1010,8 @@ namespace Goteo\Controller {
                                 'calls' => $options['calls'],
                                 'sponsors' => $options['sponsors'],
                                 'nodes' => $options['nodes'],
-                                'transcalls' => $options['transcalls']
+                                'transcalls' => $options['transcalls'],
+                                'newsletter' => $options['newsletter']
                             )
                         )
                     );

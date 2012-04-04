@@ -58,8 +58,10 @@ include 'view/prologue.html.php';
                     <li><a href="/admin/users">Usuarios</a></li>
                     <li><a href="/admin/accounts">Aportes</a></li>
                     <li><a href="/admin/calls">Convocatorias</a></li>
+                    <li><a href="/admin/tasks">Tareas</a></li>
                     <li><a href="/admin/nodes">Nodos</a></li>
                     <li><a href="/admin/blog">Blog</a></li>
+                    <li><a href="/admin/newsletter">Boletin</a></li>
                 </ul>
             </div>
             <?php endif; ?>
@@ -81,14 +83,21 @@ include 'view/prologue.html.php';
 
         // Central pendientes
     ?>
-        <div class="admin-home">
-            <h3 class="title">Asuntos pendientes</h3>
-            <ul>
-                <li>sdfasdf</li>
-                <li>sdfasdf</li>
-                <li>sdfasdf</li>
-                <li>sdfasdf</li>
-            </ul>
+        <div class="widget admin-home">
+            <h3 class="title">Tareas pendientes</h3>
+            <?php if (!empty($this['tasks'])) : ?>
+            <table>
+                <?php foreach ($this['tasks'] as $task) : ?>
+                <tr>
+                    <td><?php if (!empty($task->url)) { echo ' <a href="'.$task->url.'">[IR]</a>';} ?></td>
+                    <td><?php echo $task->text; ?></td>
+                    <td><?php if (empty($task->done)) { echo ' <a href="/admin/done/'.$task->id.'" onclick="return confirm(\'Seguro que esta tarea ya esta realizada?\')">[Dar por realizada]</a>';} ?></td>
+                </tr>
+                <?php endforeach; ?>
+            </table>
+            <?php else : ?>
+            <p>No tienes tareas pendientes</p>
+            <?php endif; ?>
         </div>
     <?php
         // Lateral de acctividad reciente

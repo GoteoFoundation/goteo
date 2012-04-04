@@ -8,7 +8,6 @@ $filters = $this['filters'];
 
 <div class="widget board">
     <form id="filter-form" action="/admin/users" method="get">
-        <input type="hidden" name="filtered" value="yes" />
         <table>
             <tr>
                 <td>
