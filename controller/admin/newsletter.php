@@ -7,7 +7,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Error,
 		Goteo\Library\Text,
 		Goteo\Library\Message,
-		Goteo\Library\Newsletter;
+		Goteo\Library\Newsletter as Boletin;
 
     class Newsletter {
 
@@ -18,13 +18,13 @@ namespace Goteo\Controller\Admin {
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $suject = \strip_tags($_POST['subject']);
                         if ($_POST['test']) {
-                            $receivers = Newsletter::getTesters();
+                            $receivers = Boletin::getTesters();
                         } else {
-                            $receivers = Newsletter::getReceivers();
+                            $receivers = Boletin::getReceivers();
                         }
-                        if (Newsletter::initiateSending($suject, $receivers)) {
+                        if (Boletin::initiateSending($suject, $receivers)) {
 
-                            $mailing = Newsletter::getSending();
+                            $mailing = Boletin::getSending();
 
                             return new View(
                                 'view/admin/index.html.php',
@@ -42,7 +42,7 @@ namespace Goteo\Controller\Admin {
 
                     break;
                 case 'activate':
-                    if (Newsletter::activateSending()) {
+                    if (Boletin::activateSending()) {
                         Message::Info('Se ha activado el envío automático de newsletter');
                     } else {
                         Message::Error('No se pudo activar el envío. Iniciar de nuevo');
@@ -50,7 +50,7 @@ namespace Goteo\Controller\Admin {
                     throw new Redirection('/admin/newsletter');
                     break;
                 case 'detail':
-                    $list = Newsletter::getDetail($id);
+                    $list = Boletin::getDetail($id);
 
                     return new View(
                         'view/admin/index.html.php',
@@ -63,7 +63,7 @@ namespace Goteo\Controller\Admin {
                     );
                     break;
                 default:
-                    $mailing = Newsletter::getSending();
+                    $mailing = Boletin::getSending();
 
                     return new View(
                         'view/admin/index.html.php',
