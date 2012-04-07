@@ -25,7 +25,7 @@ if (!empty($project->investors)) {
     $supporters = '';
 }
 if (!empty($project->messages)) {
-    $messages = ' (' . count($project->messages) . ')';
+    $messages = ' (' . $project->num_messages . ')';
 } else {
     $messages = '';
 }

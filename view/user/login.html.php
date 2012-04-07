@@ -86,7 +86,9 @@ jQuery(document).ready(function($) {
 
                 </form>
 
-                <a href="/user/recover"><?php echo Text::get('login-recover-link'); ?></a>
+                <p><a href="/user/recover"><?php echo Text::get('login-recover-link'); ?></a></p>
+                <br />
+                <p><a class="baja" href="/user/leave"><?php echo Text::get('login-leave-button'); ?></a></p>
 
             </div>
         </div>

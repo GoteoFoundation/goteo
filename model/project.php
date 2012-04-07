@@ -289,6 +289,11 @@ namespace Goteo\Model {
 
                 //mensajes
                 $project->messages = Message::getAll($project->id, $lang);
+                $project->num_messages = 0;
+                foreach ($project->messages as $msg) {
+                    $project->num_messages++;
+                    $project->num_messages+=count($msg->responses);
+                }
 
                 $project->setDays();
                 $project->setTagmark();

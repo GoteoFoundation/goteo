@@ -158,11 +158,14 @@ body.user-login .sign-in-with {
     background: #aaa;
 }
 
-.login > div a {
+.login > div a.baja {
 	float: right;
-	font-size: 11px;
 	position: relative;
 	bottom: 5px;
+}
+
+.login > div a {
+	font-size: 11px;
 	color: #999999;
 }
 
