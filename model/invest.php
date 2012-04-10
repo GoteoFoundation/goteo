@@ -171,6 +171,10 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND invest.user = :users";
                 $values[':users'] = $filters['users'];
             }
+            if (!empty($filters['name'])) {
+                $sqlFilter .= " AND invest.user IN (SELECT id FROM user WHERE (name LIKE :name OR email LIKE :name))";
+                $values[':name'] = "%{$filters['name']}%";
+            }
             if (!empty($filters['calls'])) {
                 $sqlFilter .= " AND invest.campaign = 1 AND invest.call = :calls";
                 $values[':calls'] = $filters['calls'];
@@ -254,7 +258,6 @@ namespace Goteo\Model {
                         $sqlFilter
                     ORDER BY invest.id DESC
                     ";
-
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
                 $list[$item->id] = $item;
@@ -958,12 +961,13 @@ namespace Goteo\Model {
          */
         public static function status ($id = null) {
             $array = array (
-                -1 => 'En proceso',
-                0  => 'Pendiente de cargo',
-                1  => 'Cargo ejecutado',
+                -2 => 'Incidencia',
+                -1 => 'Incompleto',
+                0  => 'Preaprobado',
+                1  => 'Cobrado por Goteo',
                 2  => 'Cancelado',
                 3  => 'Pagado al proyecto',
-                4  => 'Caducado',
+                4  => 'Devuelto',
                 5  => 'Reubicado'
             );
 

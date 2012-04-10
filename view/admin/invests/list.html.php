@@ -53,6 +53,9 @@ $filters = $this['filters'];
 <?php if ($filters['filtered'] != 'yes') : ?>
     <p>Es necesario poner algun filtro, hay demasiados registros!</p>
 <?php elseif (!empty($this['list'])) : ?>
+<?php $Total = 0; foreach ($this['list'] as $invest) { $Total += $invest->amount; } ?>
+    <p><strong>TOTAL:</strong>  <?php echo number_format($Total, 0, '', '.') ?> &euro;</p>
+    
     <table width="100%">
         <thead>
             <tr>
@@ -61,9 +64,8 @@ $filters = $this['filters'];
                 <th>Fecha</th>
                 <th>Cofinanciador</th>
                 <th>Proyecto</th>
-                <th>Estado</th>
                 <th>Metodo</th>
-                <th>Estado aporte</th>
+                <th>Estado</th>
                 <th>Importe</th>
             </tr>
         </thead>
@@ -81,8 +83,7 @@ $filters = $this['filters'];
                 <td><?php echo $invest->id ?></td>
                 <td><?php echo $invest->invested ?></td>
                 <td><a href="/admin/users?id=<?php echo $invest->user ?>" target="_blank"><?php echo $this['users'][$invest->user]; ?></a><?php if (!empty($invest->call)) echo '<br />(<strong>'.$this['calls'][$invest->call].'</strong>)'; ?></td>
-                <td><?php echo $this['projects'][$invest->project] ?></td>
-                <td><?php echo $this['status'][$invest->status] ?></td>
+                <td><a href="/admin/projects/?name=<?php echo $this['projects'][$invest->project] ?>" target="_blank"><?php echo $this['projects'][$invest->project] ?></a></td>
                 <td><?php echo $this['methods'][$invest->method] ?></td>
                 <td><?php echo $this['investStatus'][$invest->investStatus] ?></td>
                 <td><?php echo $invest->amount ?></td>

@@ -54,7 +54,7 @@ namespace Goteo\Controller {
                             'report' => array('label' => 'Informe de proyecto', 'item' => true),
                             'viewer' => array('label' => 'Viendo logs', 'item' => false)
                         ),
-                        'filters' => array('methods'=>'', 'investStatus'=>'all', 'projects'=>'', 'status'=>'all','users'=>'', 'calls'=>'', 'review'=>'', 'types'=>'', 'date_from'=>'', 'date_until'=>'')
+                        'filters' => array('methods'=>'', 'investStatus'=>'all', 'projects'=>'', 'name'=>'', 'calls'=>'', 'review'=>'', 'types'=>'', 'date_from'=>'', 'date_until'=>'')
                     ),
                     'banners' => array(
                         'label' => 'Banners',
@@ -359,7 +359,7 @@ namespace Goteo\Controller {
                             'impersonate' => array('label' => 'Suplantando al Usuario', 'item' => true),
                             'move' => array('label' => 'Moviendo a otro Nodo el usuario ', 'item' => true)
                         ),
-                        'filters' => array('status'=>'active', 'interest'=>'', 'role'=>'', 'node'=>'', 'id'=>'', 'name'=>'', 'email'=>'', 'order'=>'')
+                        'filters' => array('status'=>'active', 'interest'=>'', 'role'=>'', 'node'=>'', 'id'=>'', 'name'=>'', 'order'=>'', 'project'=>'')
                     ),
                     'wordcount' => array(
                         'label' => 'Conteo de palabras',
@@ -917,7 +917,8 @@ namespace Goteo\Controller {
                                 'projects' => $options['projects'],     // proyectos del nodo
                                 'reviews' => $options['reviews'],       // revisiones de proyectos del nodo
                                 'translates' => $options['translates'], // traducciones de proyectos del nodo
-                                'invests' => $options['invests']
+                                'invests' => $options['invests'],
+                                'patron' => $options['patron']      // padrinos de proyectos del nodo
                             )
                         ),
                         'users' => array(
@@ -928,20 +929,14 @@ namespace Goteo\Controller {
                                 'sended' => $options['sended']    // historial de envios realizados por el nodo
                             )
                         ),
-                        'sponsors' => array(
-                            'label'   => 'Patrocinadores',
-                            'options' => array (
-                                'sponsors' => $options['sponsors'], // patrocinadores del nodo
-                                'patron' => $options['patron']      // padrinos de proyectos del nodo
-                            )
-                        ),
                         'home' => array(
                             'label'   => 'Portada',
                             'options' => array (
                                 'home' => $options['home'],         // elementos en portada
                                 'promote' => $options['promote'],   // seleccion de proyectos destacados
                                 'campaigns' => $options['campaigns'],          // convocatorias en portada
-                                'blog' => $options['blog']          // entradas de blog (en la gestion de blog)
+                                'blog' => $options['blog'],          // entradas de blog (en la gestion de blog)
+                                'sponsors' => $options['sponsors'] // patrocinadores del nodo
                             )
                         )
                     );
@@ -975,11 +970,11 @@ namespace Goteo\Controller {
                             'label'   => 'Proyectos',
                             'options' => array (
                                 'projects' => $options['projects'],
+                                'accounts' => $options['accounts'],
+                                'patron' => $options['patron'],
                                 'reviews' => $options['reviews'],
                                 'translates' => $options['translates'],
-                                'rewards' => $options['rewards'],
-                                'patron' => $options['patron'],
-                                'accounts' => $options['accounts']
+                                'rewards' => $options['rewards']
                             )
                         ),
                         'users' => array(

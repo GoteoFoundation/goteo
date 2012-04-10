@@ -52,6 +52,7 @@ $filters = $this['filters'];
                 <th>Nodo</th>
                 <th>Tarea</th>
                 <th>Estado</th>
+                <th></th> <!-- remove -->
             </tr>
         </thead>
 
@@ -62,6 +63,7 @@ $filters = $this['filters'];
                 <td><strong><?php echo $this['nodes'][$task->node]; ?></strong></td>
                 <td><?php echo substr($task->text, 0, 150); ?></td>
                 <td><?php echo (empty($task->done)) ? 'Pendiente' : 'Realizada ('.$task->user->name.')';?></td>
+                <td><a href="/admin/tasks/remove/<?php echo $task->id; ?>" title="Eliminar" onclick="return confirm('La tarea se eliminará irreversiblemente, ok?')">[Eliminar]</a></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

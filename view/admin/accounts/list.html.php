@@ -11,9 +11,6 @@ $emails = Invest::emails(true);
     'projects' => array (
         'label' => 'Proyecto',
         'first' => 'Todos los proyectos'),
-    'users' => array (
-        'label' => 'Usuario',
-        'first' => 'Todos los usuarios'),
     'methods' => array (
         'label' => 'Método de pago',
         'first' => 'Todos los métodos'),
@@ -57,6 +54,13 @@ $emails = Invest::emails(true);
             </select>
         </div>
         <?php endforeach; ?>
+        <br clear="both" />
+        
+        <div style="float:left;margin:5px;">
+            <label for="name-filter">Alias/Email del usuario:</label><br />
+            <input type="text" id ="name-filter" name="name" value ="<?php echo $filters['name']?>" />
+        </div>
+
         <div style="float:left;margin:5px;">
             <label for="date-filter-from">Fecha desde</label><br />
             <input type="text" id ="date-filter-from" name="date_from" value ="<?php echo $filters['date_from']?>" />
@@ -65,6 +69,9 @@ $emails = Invest::emails(true);
             <label for="date-filter-until">Fecha hasta</label><br />
             <input type="text" id ="date-filter-until" name="date_until" value ="<?php echo $filters['date_until']?>" />
         </div>
+
+        <br clear="both" />
+
         <div style="float:left;margin:5px;">
             <input type="submit" value="filtrar" />
         </div>
@@ -85,14 +92,13 @@ $emails = Invest::emails(true);
             <tr>
                 <th></th>
                 <th>Aporte ID</th>
+                <th>Importe</th>
                 <th>Fecha</th>
                 <th>Cofinanciador</th>
                 <th></th>
                 <th>Proyecto</th>
-                <th>Estado</th>
                 <th>Metodo</th>
-                <th>Estado aporte</th>
-                <th>Importe</th>
+                <th>Estado</th>
             </tr>
         </thead>
 
@@ -107,14 +113,13 @@ $emails = Invest::emails(true);
                     if (!empty($invest->droped)) echo 'Regado (<strong>'.$invest->droped.'</strong>)';
                     ?>">[Detalles]</a></td>
                 <td><?php echo $invest->id ?></td>
+                <td><?php echo $invest->amount ?></td>
                 <td><?php echo $invest->invested ?></td>
                 <td><a href="/admin/users/manage/<?php echo $invest->user ?>" target="_blank"><?php echo $this['users'][$invest->user]; ?></a></td>
                 <td><?php echo $emails[$invest->user]; ?></td>
-                <td><?php echo $this['projects'][$invest->project]; if (!empty($invest->campaign)) echo '<br />('.$this['campaigns'][$invest->campaign].')'; ?></td>
-                <td><?php echo $this['status'][$invest->status] ?></td>
+                <td><a href="/admin/projects/?name=<?php echo $this['projects'][$invest->project] ?>" target="_blank"><?php echo $this['projects'][$invest->project]; if (!empty($invest->campaign)) echo '<br />('.$this['campaigns'][$invest->campaign].')'; ?></a></td>
                 <td><?php echo $this['methods'][$invest->method] ?></td>
                 <td><?php echo $this['investStatus'][$invest->investStatus] ?></td>
-                <td><?php echo $invest->amount ?></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

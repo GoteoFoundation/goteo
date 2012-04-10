@@ -86,6 +86,8 @@ $filters = $this['filters'];
                 <th>Días</th> <!-- segun estado -->
                 <th>Conseguido</th> <!-- segun estado -->
                 <th>Mínimo</th> <!-- segun estado -->
+                <th>Colaboradores</th> <!-- usuarios de mensaje que no sea el autor -->
+                <th>Cofinanciadores</th> <!-- Usuarios que han completado aportes a este proyecto -->
             </tr>
         </thead>
 
@@ -100,21 +102,33 @@ $filters = $this['filters'];
                 <td><?php if ($project->status == 3) echo "$project->days (round {$project->round})"; ?></td>
                 <td><?php echo $project->invested; ?></td>
                 <td><?php echo $project->mincost; ?></td>
+                <td><?php echo $project->num_investors; ?></td>
+                <td><?php echo $project->num_messegers; ?></td>
             </tr>
             <tr>
-                <td colspan="8"> >>> Acciones:
+                <td colspan="10">
                     <a href="/project/edit/<?php echo $project->id; ?>" target="_blank">[Editar]</a>
-                    <?php if ($project->status < 2) : ?><a href="<?php echo "/admin/projects/review/{$project->id}"; ?>">[A revisión]</a><?php endif; ?>
-                    <?php if ($project->status < 3 && $project->status > 0) : ?><a href="<?php echo "/admin/projects/publish/{$project->id}"; ?>" onclick="return confirm('El proyecto va a comenzar los 40 dias de la primera ronda de campaña, ¿comenzamos?');">[Publicar]</a><?php endif; ?>
-                    <?php if ($project->status != 1) : ?><a href="<?php echo "/admin/projects/enable/{$project->id}"; ?>" onclick="return confirm('Mucho Ojo! si el proyecto esta en campaña, ¿Reabrimos la edicion?');">[Reabrir]</a><?php endif; ?>
-                    <?php if ($project->status == 4) : ?><a href="<?php echo "/admin/projects/fulfill/{$project->id}"; ?>">[Retorno Cumplido]</a><?php endif; ?>
-                    <?php if ($project->status < 3 && $project->status > 0) : ?><a href="<?php echo "/admin/projects/cancel/{$project->id}"; ?>" onclick="return confirm('El proyecto va a desaparecer del admin, solo se podra recuperar desde la base de datos, Ok?');">[Descartar]</a><?php endif; ?>
-                    <a href="<?php echo "/admin/projects/move/{$project->id}"; ?>">[Mover]</a>
-                    <a href="<?php echo "/admin/projects/dates/{$project->id}"; ?>">[Cambiar fechas]</a>
-                    <a href="<?php echo "/admin/projects/accounts/{$project->id}"; ?>">[Cuentas]</a>
+                    <?php if (!isset($_SESSION['admin_node']) || (isset($_SESSION['admin_node']) && $user->node == $_SESSION['admin_node'])) : ?>
+                    <a href="/admin/accounts/?projects=<?php echo $project->email; ?>" title="Ver sus aportes">[Aportes]</a>
+                    <?php else:  ?>
+                    <a href="/admin/invests/?projects=<?php echo $project->id; ?>" title="Ver sus aportes">[Aportes]</a>
+                    <?php endif; ?>
+                    <a href="/admin/users/?project=<?php echo $project->id; ?>" title="Ver sus cofinanciadores">[Cofinanciadores]</a>
+                    <a href="/admin/projects/report/<?php echo $project->id; ?>" target="_blank">[Informe Financiacion]</a>
                     <?php if ($project->translate) : ?><a href="<?php echo "/admin/translates/edit/{$project->id}"; ?>">[Ir a traducción]</a>
                     <?php else : ?><a href="<?php echo "/admin/translates/add/?project={$project->id}"; ?>">[Habilitar traducción]</a><?php endif; ?>
-                    <a href="/admin/projects/report/<?php echo $project->id; ?>" target="_blank">[Informe Financiacion]</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="10">
+                    <a href="<?php echo "/admin/projects/dates/{$project->id}"; ?>">[Cambiar fechas]</a>
+                    <?php if ($project->status < 2) : ?><a href="<?php echo "/admin/projects/review/{$project->id}"; ?>" onclick="return confirm('El creador no podrá editarlo más, ok?');">[A revisión]</a><?php endif; ?>
+                    <?php if ($project->status < 3 && $project->status > 0) : ?><a href="<?php echo "/admin/projects/publish/{$project->id}"; ?>" onclick="return confirm('El proyecto va a comenzar los 40 dias de la primera ronda de campaña, ¿comenzamos?');">[Publicar]</a><?php endif; ?>
+                    <?php if ($project->status != 1) : ?><a href="<?php echo "/admin/projects/enable/{$project->id}"; ?>" onclick="return confirm('Mucho Ojo! si el proyecto esta en campaña, ¿Reabrimos la edicion?');">[Reabrir]</a><?php endif; ?>
+                    <?php if ($project->status == 4) : ?><a href="<?php echo "/admin/projects/fulfill/{$project->id}"; ?>" onclick="return confirm('El proyecto pasara a ser un caso de éxito, ok?');">[Retorno Cumplido]</a><?php endif; ?>
+                    <?php if ($project->status < 3 && $project->status > 0) : ?><a href="<?php echo "/admin/projects/cancel/{$project->id}"; ?>" onclick="return confirm('El proyecto va a desaparecer del admin, solo se podra recuperar desde la base de datos, Ok?');">[Descartar]</a><?php endif; ?>
+                    <a href="<?php echo "/admin/projects/accounts/{$project->id}"; ?>">[Cuentas]</a>
+                    <a href="<?php echo "/admin/projects/move/{$project->id}"; ?>">[Mover]</a>
                 </td>
             </tr>
             <tr>

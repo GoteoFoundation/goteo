@@ -85,12 +85,12 @@ namespace Goteo\Controller\Admin {
                     'file' => 'list',
                     'list'          => $list,
                     'filters'       => $filters,
-                    'users'         => $users,
+//                    'users'         => $users,
                     'projects'      => $projects,
                     'calls'         => $calls,
                     'methods'       => $methods,
                     'types'         => $types,
-                    'status'        => $status,
+//                    'status'        => $status,
                     'investStatus'  => $investStatus
                 );
 

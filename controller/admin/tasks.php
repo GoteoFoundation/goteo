@@ -35,7 +35,7 @@ namespace Goteo\Controller\Admin {
                         $task->url = $_POST['url'];
                         $task->done = null;
                         if($task->save($errors)) {
-                          // mensaje de ok y volvemos a la lista de usuarios
+                          // mensaje de ok y volvemos a la lista de tareas
                           Message::Info('Nueva tarea pendiente creada correctamente');
                           throw new Redirection('/admin/tasks');
                         } else {
@@ -97,6 +97,20 @@ namespace Goteo\Controller\Admin {
                     );
 
                     break;
+
+                case 'remove':
+                    $task = Model\Task::get($id);
+                    if ($task instanceof  Model\Task) {
+                        if ($task->remove())  {
+                          // mensaje de ok y volvemos a la lista
+                          Message::Info('Tarea eliminada correctamente');
+                        } else {
+                            Message::Error(implode('<br />', $errors));
+                        }
+                        throw new Redirection('/admin/tasks');
+                    }
+                    break;
+
                 case 'list':
                 default:
                     $tasks = Model\Task::getAll($filters);

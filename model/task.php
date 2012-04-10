@@ -148,6 +148,28 @@ namespace Goteo\Model {
 
         }
 
+        /**
+         * Este método marca el usuario en el campo Done
+         */
+        public function remove (&$errors = array()) {
+
+            $values = array(':id'=>$this->id);
+
+            try {
+                $sql = "DELETE task WHERE id = :id";
+                if (self::query($sql, $values)) {
+                    return true;
+                } else {
+                    $errors[] = 'Algo ha fallado';
+                    return false;
+                }
+            } catch(\PDOException $e) {
+                $errors[] = "HA FALLADO!!! " . $e->getMessage();
+                return false;
+            }
+
+        }
+
         
 
     }

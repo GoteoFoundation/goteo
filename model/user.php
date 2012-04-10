@@ -620,12 +620,8 @@ namespace Goteo\Model {
                 $values[':id'] = $filters['id'];
             }
             if (!empty($filters['name'])) {
-                $sqlFilter .= " AND name LIKE :name";
-                $values[':name'] = "'%{$filters['name']}%'";
-            }
-            if (!empty($filters['email'])) {
-                $sqlFilter .= " AND email LIKE :email";
-                $values[':email'] = "'%{$filters['email']}%'";
+                $sqlFilter .= " AND (name LIKE :name OR email LIKE :name)";
+                $values[':name'] = "%{$filters['name']}%";
             }
             if (!empty($filters['status'])) {
                 $sqlFilter .= " AND active = :active";
@@ -654,11 +650,36 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND node = :node";
                 $values[':node'] = $node;
             }
+            if (!empty($filters['project'])) {
+                $subFilter = $filters['project'] == 'any' ? '' : 'invest.project = :project AND';
+                $sqlFilter .= " AND id IN (
+                    SELECT user
+                    FROM invest
+                    WHERE {$subFilter} invest.status IN ('0', '1', '3')
+                    ) ";
+                if ($filters['project'] != 'any') {
+                    $values[':project'] = $filters['project'];
+                }
+            }
+
+            // si es solo los usuarios normales, añadimos HAVING
+            if ($filters['role'] == 'user') {
+                $sqlOrder .= " HAVING roles <= 1";
+            }
 
             //el Order
             switch ($filters['order']) {
                 case 'name':
                     $sqlOrder .= " ORDER BY name ASC";
+                break;
+                case 'id':
+                    $sqlOrder .= " ORDER BY id ASC";
+                break;
+                case 'amount':
+                    $sqlOrder .= " ORDER BY amount DESC";
+                break;
+                case 'projects':
+                    $sqlOrder .= " ORDER BY projects DESC";
                 break;
                 default:
                     $sqlOrder .= " ORDER BY created DESC";
@@ -672,7 +693,10 @@ namespace Goteo\Model {
                         active,
                         hide,
                         DATE_FORMAT(created, '%d/%m/%Y %H:%i:%s') as register_date,
-                        node
+                        node,
+                        (SELECT COUNT(role_id) FROM user_role WHERE user_id = user.id) as roles,
+                        (SELECT SUM(invest.amount) FROM invest WHERE invest.user = user.id AND invest.status IN ('0', '1', '3')) as amount,
+                        (SELECT COUNT(DISTINCT(invest.project)) FROM invest WHERE invest.user = user.id AND invest.status IN ('0', '1', '3')) as projects
                     FROM user
                     WHERE id != 'root'
                         $sqlFilter

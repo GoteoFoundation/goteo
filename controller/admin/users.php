@@ -309,12 +309,18 @@ namespace Goteo\Controller\Admin {
                         'checker' => 'Revisor',
                         'translator' => 'Traductor',
                         'caller' => 'Convocador',
-                        'vip' => 'VIP'
+                        'vip' => 'VIP',
+                        'user' => 'Solo usuario'
                     );
                     $orders = array(
                         'created' => 'Fecha de alta',
-                        'name' => 'Nombre'
+                        'name' => 'Alias',
+                        'id' => 'User',
+                        'amount' => 'Cantidad',
+                        'projects' => 'Proyectos'
                     );
+                    // proyectos con aportes válidos
+                    $projects = Model\Invest::projects(true, $node);
 
                     return new View(
                         'view/admin/index.html.php',
@@ -328,6 +334,7 @@ namespace Goteo\Controller\Admin {
                             'interests' => $interests,
                             'roles' => $roles,
                             'nodes' => $nodes,
+                            'projects' => $projects,
                             'orders' => $orders
                         )
                     );

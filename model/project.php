@@ -287,13 +287,16 @@ namespace Goteo\Model {
                 $project->invested = $amount;
                 $project->amount   = $amount;
 
-                //mensajes
+                //mensajes y mensajeros
+                $messegers = array();
                 $project->messages = Message::getAll($project->id, $lang);
                 $project->num_messages = 0;
                 foreach ($project->messages as $msg) {
                     $project->num_messages++;
                     $project->num_messages+=count($msg->responses);
+                    $messegers[$msg->user] = $msg->user;
                 }
+                $project->num_messegers = count($messegers);
 
                 $project->setDays();
                 $project->setTagmark();
