@@ -4,7 +4,6 @@ use Goteo\Library\Text;
 
 ?>
 <div class="widget board">
-    <!-- superform -->
     <form action="<?php echo $this['form']['action']; ?>" method="post" enctype="multipart/form-data">
         <dl>
             <?php foreach ($this['form']['fields'] as $Id=>$field) : ?>

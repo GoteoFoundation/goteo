@@ -136,3 +136,26 @@ body.admin div#main > div.admin-center > div.widget.feed > div.scroll-pane{heigh
 body.admin div#main > div.admin-center > div.widget.feed div.subitem{padding-left:5px}
 body.admin div#main > div.admin-center > div.widget.feed div.subitem > span.datepub{float:left;width:100px;margin-right:10px;clear:none;line-height:1.2em}
 body.admin div#main > div.admin-center > div.widget.feed div.subitem > div.content-pub{float:left;width:600px;clear:none;margin-top:0;}
+
+/* Capando el superform
+
+
+*/
+body.admin div#main div.admin-center div.superform {
+    float: left;
+}
+
+body.admin div#main div.admin-center div.superform > div.elements {
+    border-right: none !important;
+    border-bottom: 1px dashed #B7C2C5;
+}
+
+body.admin div#main div.admin-center div.superform > div.elements > ol > li.element {
+    margin: 0 !important;
+}
+
+body.admin div#main div.admin-center div.superform div.elements > ol > li.required > .title,
+body.admin div#main div.admin-center div.superform div.elements > ol > li.busy > .title {
+    margin: 0 !important;
+    background: none !important;
+}

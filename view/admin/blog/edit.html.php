@@ -3,9 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Model,
     Goteo\Core\Redirection,
-    Goteo\Library\SuperForm;
-
-define('ADMIN_NOAUTOSAVE', true);
+    Goteo\Library\NormalForm;
 
 $post = $this['post'];
 
@@ -13,40 +11,39 @@ if (!$post instanceof Model\Blog\Post) {
     throw new Redirection('/admin/blog');
 }
 
-// Superform
-    $tags = array();
+$tags = array();
 
-    foreach ($this['tags'] as $value => $label) {
-        $tags[] =  array(
-            'value'     => $value,
-            'label'     => $label,
-            'checked'   => isset($post->tags[$value])
-            );
-    }
+foreach ($this['tags'] as $value => $label) {
+    $tags[] =  array(
+        'value'     => $value,
+        'label'     => $label,
+        'checked'   => isset($post->tags[$value])
+        );
+}
 
-    $allow = array(
-        array(
-            'value'     => 1,
-            'label'     => 'Sí'
-            ),
-        array(
-            'value'     => 0,
-            'label'     => 'No'
-            )
+$allow = array(
+    array(
+        'value'     => 1,
+        'label'     => 'Sí'
+        ),
+    array(
+        'value'     => 0,
+        'label'     => 'No'
+        )
+);
+
+
+$images = array();
+foreach ($post->gallery as $image) {
+    $images[] = array(
+        'type'  => 'html',
+        'class' => 'inline gallery-image',
+        'html'  => is_object($image) ?
+                   $image . '<img src="'.SRC_URL.'/image/'.$image->id.'/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->id.'-remove" title="Quitar imagen" value="remove"></button>' :
+                   ''
     );
 
-
-    $images = array();
-    foreach ($post->gallery as $image) {
-        $images[] = array(
-            'type'  => 'html',
-            'class' => 'inline gallery-image',
-            'html'  => is_object($image) ?
-                       $image . '<img src="'.SRC_URL.'/image/'.$image->id.'/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->id.'-remove" title="Quitar imagen" value="remove"></button>' :
-                       ''
-        );
-
-    }
+}
 
 ?>
 <script type="text/javascript" src="/view/js/ckeditor/ckeditor.js"></script>
@@ -74,16 +71,15 @@ $(document).ready(function(){
 });
 </script>
 
-<form method="post" action="/admin/blog/<?php echo $this['action']; ?>/<?php echo $post->id; ?>" class="project" enctype="multipart/form-data">
 
-    <?php echo new SuperForm(array(
+<form method="post" action="/admin/blog/<?php echo $this['action']; ?>/<?php echo $post->id; ?>" enctype="multipart/form-data">
+
+    <?php echo new NormalForm(array(
 
         'action'        => '',
         'level'         => 3,
         'method'        => 'post',
         'title'         => '',
-        'hint'          => Text::get('guide-blog-posting'),
-        'class'         => 'aqua',
         'footer'        => array(
             'view-step-preview' => array(
                 'type'  => 'submit',
@@ -128,22 +124,17 @@ $(document).ready(function(){
                 'cols'      => 40,
                 'rows'      => 4,
                 'title'     => 'Texto de la entrada',
-                'hint'      => Text::get('tooltip-updates-text'),
-                'errors'    => !empty($errors['text']) ? array($errors['text']) : array(),
                 'value'     => $post->text
             ),
             'image' => array(
                 'title'     => 'Imagen',
                 'type'      => 'group',
-                'hint'      => Text::get('tooltip-updates-image'),
-                'errors'    => !empty($errors['image']) ? array($errors['image']) : array(),
                 'class'     => 'image',
                 'children'  => array(
                     'image_upload'    => array(
                         'type'  => 'file',
                         'class' => 'inline image_upload',
-                        'label' => Text::get('form-image_upload-button'),
-                        'hint'  => Text::get('tooltip-updates-image_upload'),
+                        'label' => Text::get('form-image_upload-button')
                     )
                 )
             ),
@@ -159,8 +150,6 @@ $(document).ready(function(){
                 'type'      => 'textbox',
                 'title'     => 'Vídeo',
                 'class'     => 'media',
-                'hint'      => Text::get('tooltip-updates-media'),
-                'errors'    => !empty($errors['media']) ? array($errors['media']) : array(),
                 'value'     => (string) $post->media,
                 'children'  => array(
                     'media-preview' => array(
@@ -181,16 +170,18 @@ $(document).ready(function(){
                 'type'      => 'checkboxes',
                 'name'      => 'tags[]',
                 'title'     => 'Tags',
-                'options'   => $tags,
-                'hint'      => Text::get('tooltip-updates-tags'),
-                'errors'    => !empty($errors['tags']) ? array($errors['tags']) : array(),
+                'options'   => $tags
+            ),
+
+            'new-tag' => array(
+                'type'  => 'html',
+                'class' => 'inline',
+                'html'  => '<input type="text" name="new-tag" value="" /> <input type="submit" name="new-tag_save" value="Añadir" />'
             ),
 
             'date' => array(
                 'type'      => 'datebox',
-                'required'  => true,
                 'title'     => 'Fecha de publicación',
-                'hint'      => Text::get('tooltip-updates-date'),
                 'size'      => 8,
                 'value'     => $post->date
             ),
@@ -199,8 +190,6 @@ $(document).ready(function(){
                 'type'      => 'slider',
                 'options'   => $allow,
                 'class'     => 'currently cols_' . count($allow),
-                'hint'      => Text::get('tooltip-updates-allow_comments'),
-                'errors'    => !empty($errors['allow']) ? array($errors['allow']) : array(),
                 'value'     => (int) $post->allow
             ),
             'publish' => array(
@@ -208,8 +197,6 @@ $(document).ready(function(){
                 'type'      => 'slider',
                 'options'   => $allow,
                 'class'     => 'currently cols_' . count($allow),
-                'hint'      => Text::get('tooltip-updates-publish'),
-                'errors'    => !empty($errors['publish']) ? array($errors['publish']) : array(),
                 'value'     => (int) $post->publish
             )
 

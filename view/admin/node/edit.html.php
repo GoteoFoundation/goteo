@@ -3,28 +3,22 @@
 use Goteo\Library\Text,
     Goteo\Model,
     Goteo\Core\Redirection,
-    Goteo\Library\SuperForm;
-
-define('ADMIN_NOAUTOSAVE', true);
+    Goteo\Library\NormalForm;
 
 $node = $this['node'];
 
 if (!$node instanceof Model\Node) {
     throw new Redirection('/admin');
 }
-
-// Superform
-$sfid = 'sf-node-edit';
 ?>
-<form method="post" action="/admin/node" class="project" enctype="multipart/form-data">
+<form method="post" action="/admin/node" enctype="multipart/form-data">
 
-    <?php echo new SuperForm(array(
+    <?php echo new NormalForm(array(
 
         'action'        => '',
         'level'         => 3,
         'method'        => 'post',
         'title'         => '',
-        'hint'          => Text::get('guide-node-edit'),
         'class'         => 'aqua',
         'footer'        => array(
             'view-step-preview' => array(
@@ -37,36 +31,25 @@ $sfid = 'sf-node-edit';
         'elements'      => array(
             'name' => array(
                 'type'      => 'textbox',
-                'required'  => true,
                 'size'      => 20,
                 'title'     => 'Nombre',
-                'hint'      => '',
-                'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
                 'value'     => $node->name,
             ),
             'subtitle' => array(
                 'type'      => 'textbox',
-                'required'  => true,
                 'size'      => 20,
                 'title'     => 'Subtítulo',
-                'hint'      => '',
-                'errors'    => !empty($errors['subtitle']) ? array($errors['subtitle']) : array(),
                 'value'     => $node->subtitle,
             ),
             'logo' => array(
                 'type'      => 'group',
-                'required'  => true,
                 'title'     => Text::get('node-fields-logo-title'),
-                'hint'      => '',
-                'errors'    => !empty($errors['logo']) ? array($errors['logo']) : array(),
-                'ok'        => !empty($okeys['logo']) ? array($okeys['logo']) : array(),
                 'class'     => 'user_avatar',
                 'children'  => array(
                     'logo_upload'    => array(
                         'type'  => 'file',
                         'label' => Text::get('form-image_upload-button'),
-                        'class' => 'inline avatar_upload',
-                        'hint'  => '',
+                        'class' => 'inline avatar_upload'
                     ),
                     'logo-current' => array(
                         'type' => 'hidden',
@@ -87,9 +70,6 @@ $sfid = 'sf-node-edit';
                 'type'      => 'textbox',
                 'size'      => 20,
                 'title'     => Text::get('profile-field-location'),
-                'hint'      => '',
-                'errors'    => !empty($errors['location']) ? array($errors['location']) : array(),
-                'ok'        => !empty($okeys['location']) ? array($okeys['location']) : array(),
                 'value'     => $node->location
             ),
 
@@ -98,8 +78,6 @@ $sfid = 'sf-node-edit';
                 'cols'      => 40,
                 'rows'      => 4,
                 'title'     => Text::get('overview-field-description'),
-                'hint'      => '',
-                'errors'    => !empty($errors['description']) ? array($errors['description']) : array(),
                 'value'     => $node->description
             )
 

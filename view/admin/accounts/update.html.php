@@ -15,7 +15,7 @@ $status = $this['status'];
     <p>
         <label for="status-filter">Pasarlo al estado:</label><br />
         <select id="status-filter" name="status" >
-        <?php foreach ($this['statuss'] as $statusId=>$statusName) : ?>
+        <?php foreach ($status as $statusId=>$statusName) : ?>
             <option value="<?php echo $statusId; ?>"<?php if ($invest->status == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
         <?php endforeach; ?>
         </select>

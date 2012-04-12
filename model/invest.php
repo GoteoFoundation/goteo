@@ -1020,7 +1020,6 @@ namespace Goteo\Model {
                         'investStatus' => '1'
                     ));
                     if (!empty($inv_cash)) {
-                        $Data['note'][] = "Los aportes cash pueden venir de un taller y no son incidencias, solamente estan pendientes de reubicar";
                         $Data['cash']['total']['fail'] = 0;
                         foreach ($inv_cash as $invId => $invest) {
                             $Data['cash']['total']['users'][$invest->user] = $invest->user;
@@ -1076,7 +1075,7 @@ namespace Goteo\Model {
                     if (!empty($passed)) {
                         if ($round == 1) {
                             // esto es mal
-                            $Data['note'][] = "ATENCION! Está marcada la fecha de pase a segunda ronda (el {$passed}) pero sique en primera ronda!!! Informe solamente actual=primera";
+                            $Data['note'][] = "ATENCION! Está marcada la fecha de pase a segunda ronda (el {$passed}) pero sique en primera ronda!!!";
                             $act_eq = (string) 'first';
                         } else {
                             // en segunda ronda
@@ -1089,7 +1088,7 @@ namespace Goteo\Model {
                     } else {
                         // si no tiene fecha de pase y esta en ronda 2: es un problema se trata como solo financiacion actual y paypal(0) no son incidencias
                         if ($round == 2) {
-                            $Data['note'][] = "ATENCION! En segunda ronda pero NO está marcada la fecha de pase a segunda ronda!!! Informe solamente actual=primera";
+                            $Data['note'][] = "ATENCION! En segunda ronda pero NO está marcada la fecha de pase a segunda ronda!!!";
                             $act_eq = (string) 'first';
                         } else {
                             // ok, en primera ronda sin  fecha marcada, informe solo actual = primera
@@ -1281,7 +1280,7 @@ namespace Goteo\Model {
 
                         
                     } else {
-                        $Data['note'][] = 'No se ha calculado bien el parametro $act_eq';
+                        $Data['note'][] = 'ERROR INFORME!! No se ha calculado bien el parametro $act_eq';
                     }
 
 

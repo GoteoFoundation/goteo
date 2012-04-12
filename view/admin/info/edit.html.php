@@ -3,9 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Model,
     Goteo\Core\Redirection,
-    Goteo\Library\SuperForm;
-
-define('ADMIN_NOAUTOSAVE', true);
+    Goteo\Library\NormalForm;
 
 $post = $this['post'];
 
@@ -13,30 +11,29 @@ if (!$post instanceof Model\Info) {
     throw new Redirection('/admin/info');
 }
 
-// Superform
-    $allow = array(
-        array(
-            'value'     => 1,
-            'label'     => 'Sí'
-            ),
-        array(
-            'value'     => 0,
-            'label'     => 'No'
-            )
+$allow = array(
+    array(
+        'value'     => 1,
+        'label'     => 'Sí'
+        ),
+    array(
+        'value'     => 0,
+        'label'     => 'No'
+        )
+);
+
+
+$images = array();
+foreach ($post->gallery as $image) {
+    $images[] = array(
+        'type'  => 'html',
+        'class' => 'inline gallery-image',
+        'html'  => is_object($image) ?
+                   $image . '<img src="'.SRC_URL.'/image/'.$image->id.'/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->id.'-remove" title="Quitar imagen" value="remove"></button>' :
+                   ''
     );
 
-
-    $images = array();
-    foreach ($post->gallery as $image) {
-        $images[] = array(
-            'type'  => 'html',
-            'class' => 'inline gallery-image',
-            'html'  => is_object($image) ?
-                       $image . '<img src="'.SRC_URL.'/image/'.$image->id.'/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->id.'-remove" title="Quitar imagen" value="remove"></button>' :
-                       ''
-        );
-
-    }
+}
 
 ?>
 <script type="text/javascript" src="/view/js/ckeditor/ckeditor.js"></script>
@@ -66,13 +63,11 @@ $(document).ready(function(){
 
 <form method="post" action="/admin/info/<?php echo $this['action']; ?>/<?php echo $post->id; ?>" class="project" enctype="multipart/form-data">
 
-    <?php echo new SuperForm(array(
+    <?php echo new NormalForm(array(
 
         'action'        => '',
         'level'         => 3,
         'method'        => 'post',
-        'title'         => '',
-        'hint'          => 'Idea de about: descripción, imágenes y media (vimeo, youtube, presi, slideshare), publiar',
         'class'         => 'aqua',
         'footer'        => array(
             'view-step-preview' => array(
@@ -97,14 +92,12 @@ $(document).ready(function(){
             ),
             'title' => array(
                 'type'      => 'textbox',
-                'required'  => true,
                 'size'      => 20,
                 'title'     => 'Idea',
                 'value'     => $post->title,
             ),
             'text' => array(
                 'type'      => 'textarea',
-                'required'  => true,
                 'cols'      => 40,
                 'rows'      => 4,
                 'title'     => 'Explicación de la idea',
@@ -113,15 +106,13 @@ $(document).ready(function(){
             'image' => array(
                 'title'     => 'Imagen',
                 'type'      => 'group',
-                'hint'      => Text::get('tooltip-updates-image'),
-                'errors'    => !empty($errors['image']) ? array($errors['image']) : array(),
                 'class'     => 'image',
                 'children'  => array(
                     'image_upload'    => array(
                         'type'  => 'file',
                         'class' => 'inline image_upload',
-                        'title' => 'Subir una imagen',
-                        'hint'  => Text::get('tooltip-updates-image_upload'),
+                        'label' => 'Subir',
+                        'title' => 'Subir una imagen'
                     )
                 )
             ),
@@ -137,8 +128,6 @@ $(document).ready(function(){
                 'type'      => 'textbox',
                 'title'     => 'Vídeo',
                 'class'     => 'media',
-                'hint'      => Text::get('tooltip-updates-media'),
-                'errors'    => !empty($errors['media']) ? array($errors['media']) : array(),
                 'value'     => (string) $post->media,
                 'children'  => array(
                     'media-preview' => array(
@@ -160,8 +149,6 @@ $(document).ready(function(){
                 'type'      => 'slider',
                 'options'   => $allow,
                 'class'     => 'currently cols_' . count($allow),
-                'hint'      => Text::get('tooltip-updates-publish'),
-                'errors'    => !empty($errors['publish']) ? array($errors['publish']) : array(),
                 'value'     => (int) $post->publish
             )
 

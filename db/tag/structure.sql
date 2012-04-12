@@ -6,3 +6,6 @@ CREATE TABLE  `tag` (
 
 -- los alters
 ALTER TABLE `tag` CHANGE `tag` `name` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;
+
+-- no necesitamos marcar el blog porque todos los blogs de nodo usan los mismos tags
+ALTER TABLE `tag` DROP `blog`;

@@ -62,8 +62,7 @@ namespace Goteo\Controller\Admin {
                         // instancia
                         $item = new $model(array(
                             'id' => $_POST['id'],
-                            'name' => $_POST['name'],
-                            'blog' => 1
+                            'name' => $_POST['name']
                         ));
 
                         if ($item->save($errors)) {

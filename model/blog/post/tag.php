@@ -6,8 +6,7 @@ namespace Goteo\Model\Blog\Post {
 
         public
             $id,
-            $name,
-            $blog;
+            $name;
 
         /*
          *  Devuelve datos de una comentario
@@ -16,8 +15,7 @@ namespace Goteo\Model\Blog\Post {
                 $query = static::query("
                     SELECT
                         tag.id as id,
-                        IFNULL(tag_lang.name, tag.name) as name,
-                        tag.blog as blog
+                        IFNULL(tag_lang.name, tag.name) as name
                     FROM    tag
                     LEFT JOIN tag_lang
                         ON  tag_lang.id = tag.id
@@ -116,8 +114,7 @@ namespace Goteo\Model\Blog\Post {
 
             $fields = array(
                 'id',
-                'name',
-                'blog'
+                'name'
                 );
 
             $set = '';

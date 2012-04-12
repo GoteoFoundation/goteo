@@ -3,9 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Model,
     Goteo\Core\Redirection,
-    Goteo\Library\SuperForm;
-
-define('ADMIN_NOAUTOSAVE', true);
+    Goteo\Library\NormalForm;
 
 $post = $this['post'];
 
@@ -13,19 +11,17 @@ if (!$post instanceof Model\Glossary) {
     throw new Redirection('/admin/glossary');
 }
 
-// Superform
-    $images = array();
-    foreach ($post->gallery as $image) {
-        $images[] = array(
-            'type'  => 'html',
-            'class' => 'inline gallery-image',
-            'html'  => is_object($image) ?
-                       $image . '<img src="'.SRC_URL.'/image/'.$image->id.'/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->id.'-remove" title="Quitar imagen" value="remove"></button>' :
-                       ''
-        );
+$images = array();
+foreach ($post->gallery as $image) {
+    $images[] = array(
+        'type'  => 'html',
+        'class' => 'inline gallery-image',
+        'html'  => is_object($image) ?
+                   $image . '<img src="'.SRC_URL.'/image/'.$image->id.'/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->id.'-remove" title="Quitar imagen" value="remove"></button>' :
+                   ''
+    );
 
-    }
-
+}
 ?>
 <script type="text/javascript" src="/view/js/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
@@ -52,15 +48,14 @@ $(document).ready(function(){
 });
 </script>
 
-<form method="post" action="/admin/glossary/<?php echo $this['action']; ?>/<?php echo $post->id; ?>" class="project" enctype="multipart/form-data">
+<form method="post" action="/admin/glossary/<?php echo $this['action']; ?>/<?php echo $post->id; ?>" enctype="multipart/form-data">
 
-    <?php echo new SuperForm(array(
+    <?php echo new NormalForm(array(
 
         'action'        => '',
         'level'         => 3,
         'method'        => 'post',
         'title'         => '',
-        'hint'          => 'Termino de glosario, descripción, imágenes y media (vimeo, youtube, presi, slideshare)',
         'class'         => 'aqua',
         'footer'        => array(
             'view-step-preview' => array(
@@ -77,14 +72,12 @@ $(document).ready(function(){
             ),
             'title' => array(
                 'type'      => 'textbox',
-                'required'  => true,
                 'size'      => 20,
                 'title'     => 'Término',
                 'value'     => $post->title,
             ),
             'text' => array(
                 'type'      => 'textarea',
-                'required'  => true,
                 'cols'      => 40,
                 'rows'      => 4,
                 'title'     => 'Explicación del término',
@@ -93,15 +86,13 @@ $(document).ready(function(){
             'image' => array(
                 'title'     => 'Imagen',
                 'type'      => 'group',
-                'hint'      => Text::get('tooltip-updates-image'),
-                'errors'    => !empty($errors['image']) ? array($errors['image']) : array(),
                 'class'     => 'image',
                 'children'  => array(
                     'image_upload'    => array(
                         'type'  => 'file',
                         'class' => 'inline image_upload',
-                        'title' => 'Subir una imagen',
-                        'hint'  => Text::get('tooltip-updates-image_upload'),
+                        'label' => 'Subir',
+                        'title' => 'Subir una imagen'
                     )
                 )
             ),
@@ -117,8 +108,6 @@ $(document).ready(function(){
                 'type'      => 'textbox',
                 'title'     => 'Vídeo',
                 'class'     => 'media',
-                'hint'      => Text::get('tooltip-updates-media'),
-                'errors'    => !empty($errors['media']) ? array($errors['media']) : array(),
                 'value'     => (string) $post->media,
                 'children'  => array(
                     'media-preview' => array(

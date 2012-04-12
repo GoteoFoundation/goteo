@@ -97,6 +97,25 @@ namespace Goteo\Controller\Admin {
                     }
 
                     $post->tags = $_POST['tags'];
+                    
+                    // si tenemos un nuevio tag hay que añadirlo
+                    if(!empty($_POST['new-tag_save']) && !empty($_POST['new-tag'])) {
+
+                        // grabar el tag en la tabla de tag,
+                        $new_tag = new Model\Blog\Post\Tag(array(
+                            'id' => '',
+                            'name' => $_POST['new-tag']
+                        ));
+
+                        if ($new_tag->save($errors)) {
+                            $post->tags[] = $new_tag->id; // asignar al post
+                        } else {
+                            Message::Error(implode('<br />', $errors));
+                        }
+
+                        $editing = true; // seguir editando
+                    }
+
 
                     /// este es el único save que se lanza desde un metodo process_
                     if ($post->save($errors)) {
