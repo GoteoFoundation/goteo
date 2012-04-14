@@ -20,6 +20,7 @@ namespace Goteo\Model {
             $method, // metodo de pago paypal/tpv
             $status, //estado en el que se encuentra esta aportación:
                     // -1 en proceso, 0 pendiente, 1 cobrado (charged), 2 devuelto (returned)
+            $issue, // aporte con incidencia
             $anonymous, //no debe aparecer su careto ni su nombre, nivel, etc... pero si aparece en la cuenta de cofinanciadores y de aportes
             $resign, //renuncia a cualquier recompensa
             $invested, //fecha en la que se ha iniciado el aporte
@@ -179,6 +180,16 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND invest.campaign = 1 AND invest.call = :calls";
                 $values[':calls'] = $filters['calls'];
             }
+            if (!empty($filters['issue'])) {
+                switch ($filters['issue']) {
+                    case 'show':
+                        $sqlFilter .= " AND invest.issue = 1";
+                        break;
+                    case 'hide':
+                        $sqlFilter .= " AND (invest.issue = 0 OR invest.issue IS NULL)";
+                        break;
+                }
+            }
             // else { $sqlFilter .= " AND (invest.campaign = 0 OR invest.campaign IS NULL)"; }
             if (!empty($filters['types'])) {
                 switch ($filters['types']) {
@@ -248,7 +259,8 @@ namespace Goteo\Model {
                         DATE_FORMAT(invest.invested, '%d/%m/%Y') as invested,
                         DATE_FORMAT(invest.charged , '%d/%m/%Y') as charged,
                         DATE_FORMAT(invest.returned, '%d/%m/%Y') as returned,
-                        user.name as admin
+                        user.name as admin,
+                        invest.issue as issue
                     FROM invest
                     INNER JOIN project
                         ON invest.project = project.id
@@ -956,6 +968,11 @@ namespace Goteo\Model {
 
         }
 
+        /* Para marcar que es una incidencia */
+        public static function setIssue($id) {
+           self::query("UPDATE invest SET issue = 1 WHERE id = :id", array(':id' => $id));
+        }
+
         /*
          * Estados del aporte
          */
@@ -1028,6 +1045,7 @@ namespace Goteo\Model {
                             if ($invest->campaign == 1) {
                                 $Data['cash']['total']['fail'] += $invest->amount;
                                 $Data['note'][] = "Aporte de capital riego {$invId} debería estar cancelado. <a href=\"/admin/invests/details/{$invId}\" target=\"_blank\">Abrir detalles</a>";
+                                self::setIssue($invId);
                             }
                         }
                     }
@@ -1044,6 +1062,7 @@ namespace Goteo\Model {
                             if (in_array($invest->investStatus, array(0, 1, 3))) {
                                 $Data['paypal']['total']['fail'] += $invest->amount;
                                 $Data['note'][] = "El aporte PayPal {$invId} no debería estar en estado '" . self::status($invest->investStatus) . "'. <a href=\"/admin/invests/details/{$invId}\" target=\"_blank\">Abrir detalles</a>";
+                                self::setIssue($invId);
                             }
                         }
                     }
@@ -1060,6 +1079,7 @@ namespace Goteo\Model {
                             if ($invest->investStatus == 1) {
                                 $Data['tpv']['total']['fail'] += $invest->amount;
                                 $Data['note'][] = "El aporte TPV {$invId} no debería estar en estado '" . self::status($invest->investStatus) . "'. <a href=\"/admin/invests/details/{$invId}\" target=\"_blank\">Abrir detalles</a>";
+                                self::setIssue($invId);
                             }
                         }
                     }
@@ -1200,6 +1220,7 @@ namespace Goteo\Model {
                                     if ($invest->investStatus == 0 && ($p0 === 'first' || $p0 === 'all')) {
                                         $Data['paypal']['first']['fail'] += $invest->amount;
                                         $Data['note'][] = "El aporte paypal {$invId} no debería estar en estado '".self::status($invest->investStatus)."'. <a href=\"/admin/invests/details/{$invId}\" target=\"_blank\">Abrir detalles</a>";
+                                        self::setIssue($invId);
                                         continue;
                                     }
                                     $Data['paypal']['first']['users'][$invest->user] = $invest->user;
@@ -1266,6 +1287,7 @@ namespace Goteo\Model {
                                         $Data['paypal']['second']['fail'] += $invest->amount;
                                         $Data['paypal']['total']['fail'] += $invest->amount;
                                         $Data['note'][] = "El aporte paypal {$invId} no debería estar en estado '".self::status($invest->investStatus)."'. <a href=\"/admin/invests/details/{$invId}\" target=\"_blank\">Abrir detalles</a>";
+                                        self::setIssue($invId);
                                         continue;
                                     }
                                     $Data['paypal']['second']['users'][$invest->user] = $invest->user;

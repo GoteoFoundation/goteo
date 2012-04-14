@@ -126,7 +126,14 @@ namespace Goteo\Controller\Admin {
 
                 $new = isset($_POST['status']) ? $_POST['status'] : null;
 
-                // generar aporte manual y caducar el original
+                if ($invest->issue && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update']) && $_POST['resolve'] == 1) {
+                    if (Model\Invest::query("UPDATE invest SET issue = NULL WHERE id=:id", array(':id'=>$id))) {
+                        Message::Info('La incidencia se ha dado por resuelta');
+                    } else {
+                        Message::Error('Ha fallado al resolver la incidencia');
+                    }
+                }
+
                 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update']) && isset($new) && isset($status[$new]) && $new != $invest->status) {
 
                     if (Model\Invest::query("UPDATE invest SET status=:status WHERE id=:id", array(':id'=>$id, ':status'=>$new))) {
@@ -440,6 +447,11 @@ namespace Goteo\Controller\Admin {
                 'online'  => 'Pagos Online'
             );
 
+            $issue = array(
+                'show' => 'Mostrar',
+                'hide' => 'Ocultar'
+            );
+
 
             /// detalles de una transaccion
             if ($action == 'details') {
@@ -478,8 +490,9 @@ namespace Goteo\Controller\Admin {
                     'calls'         => $calls,
                     'review'        => $review,
                     'methods'       => $methods,
-                    'types'        => $types,
+                    'types'         => $types,
                     'status'        => $status,
+                    'issue'         => $issue,
                     'investStatus'  => $investStatus
                 );
 
