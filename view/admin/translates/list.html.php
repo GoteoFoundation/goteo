@@ -4,7 +4,7 @@ use Goteo\Library\Text;
 
 $filters = $this['filters'];
 ?>
-<a href="/admin/translates/add" class="button red">Nuevo proyecto para traducir</a>
+<a href="/admin/translates/add" class="button">Nuevo proyecto para traducir</a>
 
 <div class="widget board">
 <form id="filter-form" action="/admin/translates" method="get">

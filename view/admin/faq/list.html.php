@@ -5,7 +5,7 @@ use Goteo\Library\Text,
 $translator = ACL::check('/translate') ? true : false;
 $filters = $this['filters'];
 ?>
-<a href="/admin/faq/add" class="button red">Añadir pregunta</a>
+<a href="/admin/faq/add" class="button">Añadir pregunta</a>
 
 <div class="widget board">
     <form id="sectionfilter-form" action="/admin/faq" method="get">

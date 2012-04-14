@@ -41,7 +41,7 @@ function assign() {
                     <?php endforeach; ?>
                 </select>
             </td>
-            <td><a href="#" onclick="return assign();" class="button aqua">Asignar</a></td>
+            <td><a href="#" onclick="return assign();" class="button">Asignar</a></td>
             </form>
         </tr>
     </table>

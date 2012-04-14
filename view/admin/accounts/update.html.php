@@ -21,6 +21,13 @@ $status = $this['status'];
         </select>
     </p>
 
+    <?php if ($invest->issue) : ?>
+    <p>
+        <label><input type="checkbox" name="resolve" value="1" /> Dar la incidencia por resuelta</label>
+    </p>
+    <?php endif; ?>
+
+
         <input type="submit" name="update" value="Aplicar" onclick="return confirm('Segurisimo que le campibamos el estado al aporte???')"/>
     </form>
 </div>

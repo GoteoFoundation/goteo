@@ -4,7 +4,7 @@ use Goteo\Library\Text,
 
 $translator = ACL::check('/translate') ? true : false;
 ?>
-<a href="/admin/promote/add" class="button red">Nuevo destacado</a>
+<a href="/admin/promote/add" class="button">Nuevo destacado</a>
 
 <div class="widget board">
     <?php if (!empty($this['promoted'])) : ?>

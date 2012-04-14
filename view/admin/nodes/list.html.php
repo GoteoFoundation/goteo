@@ -6,7 +6,7 @@ use Goteo\Library\Text,
 $filters = $this['filters'];
 
 ?>
-<a href="/admin/nodes/add" class="button red">Crear nuevo nodo</a>
+<a href="/admin/nodes/add" class="button">Crear nuevo nodo</a>
 
 <div class="widget board">
     <form id="filter-form" action="/admin/nodes" method="get">

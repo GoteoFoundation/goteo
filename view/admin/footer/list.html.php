@@ -4,7 +4,7 @@ use Goteo\Library\Text;
 
 ?>
 
-<a href="/admin/footer/add" class="button red">Nueva entrada al pie</a>
+<a href="/admin/footer/add" class="button">Nueva entrada al pie</a>
 
 <div class="widget board">
     <?php if (!empty($this['posts'])) : ?>

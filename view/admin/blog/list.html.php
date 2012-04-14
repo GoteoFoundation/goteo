@@ -4,12 +4,12 @@ use Goteo\Library\Text,
 
 $translator = ACL::check('/translate') ? true : false;
 ?>
-<a href="/admin/blog/add" class="button red">Nueva entrada</a>
+<a href="/admin/blog/add" class="button">Nueva entrada</a>
 &nbsp;&nbsp;&nbsp;
-<a href="/admin/blog/reorder" class="button aqua">Ordenar la portada</a>
+<a href="/admin/blog/reorder" class="button">Ordenar la portada</a>
 <?php if (empty($_SESSION['admin_node'])) : ?>
 &nbsp;&nbsp;&nbsp;
-<a href="/admin/blog/footer" class="button aqua">Ordenar el footer</a>
+<a href="/admin/blog/footer" class="button">Ordenar el footer</a>
 <?php endif; ?>
 
 <div class="widget board">

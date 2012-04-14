@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Text;
 ?>
-<a href="/admin/posts/add" class="button red">Nueva entrada en portada</a>
+<a href="/admin/posts/add" class="button">Nueva entrada en portada</a>
 
 <div class="widget board">
     <?php if (!empty($this['posts'])) : ?>

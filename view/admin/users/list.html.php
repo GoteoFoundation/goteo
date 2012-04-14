@@ -4,7 +4,7 @@ use Goteo\Library\Text;
 
 $filters = $this['filters'];
 ?>
-<a href="/admin/users/add" class="button red">Crear usuario</a>
+<a href="/admin/users/add" class="button">Crear usuario</a>
 
 <div class="widget board">
     <form id="filter-form" action="/admin/users" method="get">

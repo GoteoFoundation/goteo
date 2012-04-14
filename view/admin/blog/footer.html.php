@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Text;
 ?>
-<a href="/admin/blog" class="button aqua">Volver</a>
+<a href="/admin/blog" class="button">Volver</a>
 
 <div class="widget board">
     <?php if (!empty($this['posts'])) : ?>

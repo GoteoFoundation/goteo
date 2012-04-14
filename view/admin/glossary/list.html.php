@@ -4,7 +4,7 @@ use Goteo\Library\Text,
 
 $translator = ACL::check('/translate') ? true : false;
 ?>
-<a href="/admin/glossary/add" class="button red">Nuevo término</a>
+<a href="/admin/glossary/add" class="button">Nuevo término</a>
 
 <div class="widget board">
     <?php if (!empty($this['posts'])) : ?>

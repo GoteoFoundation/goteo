@@ -3,7 +3,7 @@
 use Goteo\Library\Text;
 
 ?>
-<a href="/admin/banners/add" class="button red">Nuevo banner</a>
+<a href="/admin/banners/add" class="button">Nuevo banner</a>
 
 <div class="widget board">
     <?php if (!empty($this['bannered'])) : ?>

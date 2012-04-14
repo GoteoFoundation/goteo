@@ -46,12 +46,12 @@ function assign() {
                         <?php endforeach; ?>
                     </select>
                 </td>
-                <td><a href="#" onclick="return assign();" class="button aqua">Asignar</a></td>
+                <td><a href="#" onclick="return assign();" class="button">Asignar</a></td>
                 </form>
             </tr>
         </table>
         <hr />
-        <a href="/admin/transcalls/close/<?php echo $call->id; ?>" class="button red" onclick="return confirm('Seguro que deseas dar por finalizada esta traducción?')">Cerrar la traducción</a>&nbsp;&nbsp;&nbsp;
+        <a href="/admin/transcalls/close/<?php echo $call->id; ?>" class="button" onclick="return confirm('Seguro que deseas dar por finalizada esta traducción?')">Cerrar la traducción</a>&nbsp;&nbsp;&nbsp;
         <a href="/admin/transcalls/send/<?php echo $call->id; ?>" class="button green" onclick="return confirm('Se va a enviar un email automaticamente, ok?')">Avisar al convocador</a>
         <hr />
 <?php elseif ($this['action'] == 'add') : ?>

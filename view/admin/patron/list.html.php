@@ -4,7 +4,7 @@ use Goteo\Library\Text,
 
 $translator = ACL::check('/translate') ? true : false;
 ?>
-<a href="/admin/patron/add" class="button red">Nuevo apadrinamiento</a>
+<a href="/admin/patron/add" class="button">Nuevo apadrinamiento</a>
 
 <div class="widget board">
     <?php if (!empty($this['patroned'])) : ?>

@@ -3,7 +3,7 @@ use Goteo\Library\Text,
     Goteo\Core\ACL;
 
 ?>
-<a href="/admin/campaigns/add" class="button red">Nueva campaña destacada</a>
+<a href="/admin/campaigns/add" class="button">Nueva campaña destacada</a>
 
 <div class="widget board">
     <?php if (!empty($this['setted'])) : ?>

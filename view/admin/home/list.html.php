@@ -6,7 +6,7 @@ use Goteo\Library\Text,
 $the_items = isset($_SESSION['admin_node']) ? Home::$node_items : Home::$items;
 
 ?>
-<a href="/admin/home/add" class="button red">A&ntilde;adir elemento</a>
+<a href="/admin/home/add" class="button">A&ntilde;adir elemento</a>
 
 <div class="widget board">
     <?php if (!empty($this['items'])) : ?>

@@ -11,7 +11,7 @@ $droped = $this['droped'];
 $user = $this['user'];
 
 ?>
-<a href="/admin/accounts/update/<?php echo $invest->id ?>" onclick="return confirm('Seguro que deseas cambiarle el estado a este aporte?, esto es delicado')" class="button weak">Cambiarle el estado</a>
+<a href="/admin/accounts/update/<?php echo $invest->id ?>" onclick="return confirm('Seguro que deseas cambiarle el estado a este aporte?, esto es delicado')" class="button">Cambiarle el estado</a>
 <div class="widget">
     <p>
         <strong>Proyecto:</strong> <?php echo $project->name ?> (<?php echo $this['status'][$project->status] ?>)
@@ -21,17 +21,17 @@ $user = $this['user'];
         <?php if ($project->status == 3 && ($invest->status < 1 || ($invest->method == 'tpv' && $invest->status < 2) ||($invest->method == 'cash' && $invest->status < 2))) : ?>
         <a href="/admin/accounts/cancel/<?php echo $invest->id ?>"
             onclick="return confirm('¿Estás seguro de querer cancelar este aporte y su preapproval?');"
-            class="button red">Cancelar este aporte</a>&nbsp;&nbsp;&nbsp;
+            class="button">Cancelar este aporte</a>&nbsp;&nbsp;&nbsp;
         <?php endif; ?>
 
         <?php if ($project->status == 3 && $invest->method == 'paypal' && $invest->status == 0) : ?>
         <a href="/admin/accounts/execute/<?php echo $invest->id ?>"
             onclick="return confirm('¿Seguro que quieres ejecutar ahora? ¿No quieres esperar a la ejecución automática al final de la ronda? ?');"
-            class="button red">Ejecutar cargo ahora</a>
+            class="button">Ejecutar cargo ahora</a>
         <?php endif; ?>
 
         <?php if ($project->status == 3 && $invest->method != 'paypal' && $invest->status == 1) : ?>
-        <a href="/admin/accounts/move/<?php echo $invest->id ?>" class="button weak">Reubicar este aporte</a>
+        <a href="/admin/accounts/move/<?php echo $invest->id ?>" class="button">Reubicar este aporte</a>
         <?php endif; ?>
     </p>
     
@@ -48,7 +48,7 @@ $user = $this['user'];
 
     <dl>
         <dt>Estado:</dt>
-        <dd><?php echo $this['investStatus'][$invest->status]; if ($invest->status < 0) echo ' <span style="font-weight:bold; color:red;">OJO! que este aporte no fue confirmado.<span>'; ?></dd>
+        <dd><?php echo $this['investStatus'][$invest->status]; if ($invest->status < 0) echo ' <span style="font-weight:bold; color:red;">OJO! que este aporte no fue confirmado.<span>'; if ($invest->issue) echo ' <span style="font-weight:bold; color:red;">INCIDENCIA!<span>'; ?></dd>
     </dl>
 
     <dl>

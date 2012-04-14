@@ -20,7 +20,7 @@ $per = 100 / $cols;
 
 ?>
 <?php if (!empty($this['addbutton'])) : ?>
-<a href="<?php echo $this['url'] ?>/add" class="button red"><?php echo $this['addbutton'] ?></a>
+<a href="<?php echo $this['url'] ?>/add" class="button"><?php echo $this['addbutton'] ?></a>
 <?php endif; ?>
 <!-- Filtro -->
 <?php if (!empty($filters)) : ?>

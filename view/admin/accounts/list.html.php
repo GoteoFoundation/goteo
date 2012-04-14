@@ -28,17 +28,19 @@ $emails = Invest::emails(true);
         'first' => 'Todos'),
     'types' => array (
         'label' => 'Extra',
+        'first' => 'Todos'),
+    'issue' => array (
+        'label' => 'Incidencia',
         'first' => 'Todos')
 ); ?>
-<a href="/admin/accounts/add" class="button weak">Generar aporte manual</a>
+<a href="/admin/accounts/add" class="button">Generar aporte manual</a>
 <a href="http://ppcalc.com/es" target="_blank" class="button">Calculadora PayPal</a>&nbsp;&nbsp;&nbsp;
-<a href="/cron/execute" target="_blank" class="button red">Ejecutar cargos</a>&nbsp;&nbsp;&nbsp;
-<a href="/cron/verify" target="_blank" class="button red">Verificar preapprovals</a>&nbsp;&nbsp;&nbsp;
+<a href="/cron/execute" target="_blank" class="button" onclick="return confirm('Se va lanzar el proceso automático ahora mismo, ok?');">Ejecutar cargos</a>&nbsp;&nbsp;&nbsp;
 <a href="/admin/accounts/viewer" class="button">Visor de logs</a>&nbsp;&nbsp;&nbsp;
 <?php if (!empty($filters['projects'])) : ?>
     <br />
-    <a href="/admin/accounts/report/<?php echo $filters['projects'] ?>#detail" class="button" target="_blank">Informe financiero completo de <?php echo $this['projects'][$filters['projects']] ?></a>&nbsp;&nbsp;&nbsp;
-    <a href="/cron/dopay/<?php echo $filters['projects'] ?>" target="_blank" class="button red" onclick="return confirm('No hay vuelta atrás, ok?');">Realizar pagos secundarios a <?php echo $this['projects'][$filters['projects']] ?></a>
+    <a href="/admin/accounts/report/<?php echo $filters['projects'] ?>#detail" class="button red" target="_blank">Informe financiero completo de <strong><?php echo $this['projects'][$filters['projects']] ?></strong></a>&nbsp;&nbsp;&nbsp;
+    <a href="/cron/dopay/<?php echo $filters['projects'] ?>" target="_blank" class="button red" onclick="return confirm('No hay vuelta atrás, ok?');">Realizar pagos secundarios a <strong><?php echo $this['projects'][$filters['projects']] ?></strong></a>
 <?php endif ?>
 <div class="widget board">
     <h3 class="title">Filtros</h3>
@@ -47,7 +49,7 @@ $emails = Invest::emails(true);
         <div style="float:left;margin:5px;">
             <label for="<?php echo $filter ?>-filter"><?php echo $data['label'] ?></label><br />
             <select id="<?php echo $filter ?>-filter" name="<?php echo $filter ?>" onchange="document.getElementById('filter-form').submit();">
-                <option value="<?php if ($filter == 'investStatus' || $filter == 'status') echo 'all' ?>"<?php if (($filter == 'investStatus' || $filter == 'status') && $filters[$filter] == 'all') echo ' selected="selected"'?>><?php echo $data['first'] ?></option>
+                <option value="<?php if ($filter == 'investStatus' || $filter == 'status' || $filter == 'issue') echo 'all' ?>"<?php if (($filter == 'investStatus' || $filter == 'status') && $filters[$filter] == 'all') echo ' selected="selected"'?>><?php echo $data['first'] ?></option>
             <?php foreach ($this[$filter] as $itemId=>$itemName) : ?>
                 <option value="<?php echo $itemId; ?>"<?php if ($filters[$filter] === (string) $itemId) echo ' selected="selected"';?>><?php echo $itemName; ?></option>
             <?php endforeach; ?>
@@ -106,12 +108,13 @@ $emails = Invest::emails(true);
             <?php foreach ($this['list'] as $invest) : ?>
             <tr>
                 <td><a href="/admin/accounts/details/<?php echo $invest->id ?>" title="<?php
+                    if ($invest->issue)  echo 'Incidencia! ';
                     if ($invest->anonymous == 1)  echo 'Anónimo ';
                     if ($invest->resign == 1)  echo 'Donativo ';
                     if (!empty($invest->admin)) echo 'Manual';
                     if (!empty($invest->campaign)) echo 'Riego ';
                     if (!empty($invest->droped)) echo 'Regado (<strong>'.$invest->droped.'</strong>)';
-                    ?>">[Detalles]</a></td>
+                    ?>" <?php if ($invest->issue) echo ' style="color:red !important;"'; ?>>[Detalles]</a></td>
                 <td><?php echo $invest->id ?></td>
                 <td><?php echo $invest->amount ?></td>
                 <td><?php echo $invest->invested ?></td>
