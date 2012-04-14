@@ -54,7 +54,7 @@ namespace Goteo\Controller {
                             'report' => array('label' => 'Informe de proyecto', 'item' => true),
                             'viewer' => array('label' => 'Viendo logs', 'item' => false)
                         ),
-                        'filters' => array('methods'=>'', 'investStatus'=>'all', 'projects'=>'', 'name'=>'', 'calls'=>'', 'review'=>'', 'types'=>'', 'date_from'=>'', 'date_until'=>'')
+                        'filters' => array('methods'=>'', 'investStatus'=>'all', 'projects'=>'', 'name'=>'', 'calls'=>'', 'review'=>'', 'types'=>'', 'date_from'=>'', 'date_until'=>'', 'issue'=>'all')
                     ),
                     'banners' => array(
                         'label' => 'Banners',
@@ -204,7 +204,9 @@ namespace Goteo\Controller {
                     'node' => array(
                         'label' => 'Datos del Nodo',
                         'actions' => array(
-                            'edit' => array('label' => 'Editando', 'item' => false)
+                            'list' => array('label' => 'Datos actuales', 'item' => false),
+                            'edit' => array('label' => 'Editando', 'item' => false),
+                            'translate' => array('label' => 'Traduciendo', 'item' => false)
                         )
                     ),
                     'nodes' => array(
@@ -331,6 +333,15 @@ namespace Goteo\Controller {
                         ),
                         'filters' => array('idfilter'=>'', 'group'=>'', 'text'=>'')
                     ),
+                    'translates' => array(
+                        'label' => 'Traducciones de proyectos',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add'  => array('label' => 'Habilitando traducción', 'item' => false),
+                            'edit' => array('label' => 'Asignando traducción', 'item' => true)
+                        ),
+                        'filters' => array('owner'=>'', 'translator'=>'')
+                    ),
                     'transcalls' => array(
                         'label' => 'Traducciones de convocatorias',
                         'actions' => array(
@@ -340,14 +351,14 @@ namespace Goteo\Controller {
                         ),
                         'filters' => array('owner'=>'', 'translator'=>'')
                     ),
-                    'translates' => array(
-                        'label' => 'Traducciones de proyectos',
+                    'transnodes' => array(
+                        'label' => 'Traducciones de nodos',
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false),
                             'add'  => array('label' => 'Habilitando traducción', 'item' => false),
                             'edit' => array('label' => 'Asignando traducción', 'item' => true)
                         ),
-                        'filters' => array('owner'=>'', 'translator'=>'')
+                        'filters' => array('admin'=>'', 'translator'=>'')
                     ),
                     'users' => array(
                         'label' => 'Gestión de usuarios',
@@ -461,7 +472,7 @@ namespace Goteo\Controller {
         public function translates($action = 'list', $id = null) {
             $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-            return Admin\Translates::process($action, $id);
+            return Admin\Translates::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
         /*
@@ -470,7 +481,16 @@ namespace Goteo\Controller {
         public function transcalls($action = 'list', $id = null) {
             $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-            return Admin\Transcalls::process($action, $id);
+            return Admin\Transcalls::process($action, $id, self::setFilters(__FUNCTION__));
+        }
+
+        /*
+         *  Traducciones de nodos
+         */
+        public function transnodes($action = 'list', $id = null) {
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
+            define('ADMIN_BCPATH', $BC);
+            return Admin\Transnodes::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
         /*
@@ -1002,11 +1022,12 @@ namespace Goteo\Controller {
                         'sponsors' => array(
                             'label'   => 'Servicios',
                             'options' => array (
-                                'calls' => $options['calls'],
+                                'newsletter' => $options['newsletter'],
                                 'sponsors' => $options['sponsors'],
-                                'nodes' => $options['nodes'],
+                                'calls' => $options['calls'],
                                 'transcalls' => $options['transcalls'],
-                                'newsletter' => $options['newsletter']
+                                'nodes' => $options['nodes'],
+                                'transnodes' => $options['transnodes']
                             )
                         )
                     );

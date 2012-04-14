@@ -14,7 +14,7 @@ namespace Goteo\Model\User {
 
         // tipos de contenidos que se traducen
         public static
-            $types = array('project', 'call');
+            $types = array('project', 'call', 'node');
 
         /*
          *  Para conseguir una instancia de traduccion
@@ -99,6 +99,9 @@ namespace Goteo\Model\User {
                         case 'call':
                             $array[] = Model\Call::get($item['item'], $lang);
                             break;
+                        case 'ndoe':
+                            $array[] = Model\Node::get($item['item'], $lang);
+                            break;
                         default:
                             continue;
                     }
@@ -117,6 +120,10 @@ namespace Goteo\Model\User {
 
 	 	public static function getMyCalls ($id, $lang = null) {
             return self::getMine($id, $lang, 'call');
+        }
+
+	 	public static function getMyNodes ($id, $lang = null) {
+            return self::getMine($id, $lang, 'node');
         }
 
 

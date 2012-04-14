@@ -23,6 +23,9 @@ namespace Goteo\Controller\Admin {
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+                // ojo si estan enviando traducción  o estan enviando contenido original
+
+
                 // tratar la imagen y ponerla en la propiedad logo
                 // __FILES__
 
@@ -58,6 +61,10 @@ namespace Goteo\Controller\Admin {
                     Message::Error('Falló al actualizar los datos del nodo:<br />'.implode('<br />', $errors));
                 }
 			}
+
+            // añadir, vista por defecto son los datos del nodo (tipo vista previa)
+            // botones [editar] y [traducir]
+
 
             return new View(
                 'view/admin/index.html.php',

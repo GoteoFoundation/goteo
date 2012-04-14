@@ -21,7 +21,7 @@ namespace Goteo\Model {
          * @param   type mixed  $id     Identificador
          * @return  type object         Objeto
          */
-        static public function get ($id) {
+        static public function get ($id, $lang = null) {
                 $sql = static::query("
                     SELECT
                         *
@@ -338,6 +338,51 @@ namespace Goteo\Model {
                 return false;
             }
          }
+
+        /**
+         * Saca una lista de nodos disponibles para traducir
+         *
+         * @param array filters
+         * @param string node id
+         * @return array of project instances
+         */
+        public static function getTranslates($filters = array()) {
+            $projects = array();
+
+            $values = array();
+
+            $sqlFilter = "";
+            if (!empty($filters['owner'])) {
+                $sqlFilter .= " AND owner = :owner";
+                $values[':owner'] = $filters['owner'];
+            }
+            if (!empty($filters['translator'])) {
+                $sqlFilter .= " AND id IN (
+                    SELECT item
+                    FROM user_translate
+                    WHERE user = :translator
+                    AND type = 'node'
+                    )";
+                $values[':translator'] = $filters['translator'];
+            }
+
+//                    AND node = :node
+            $sql = "SELECT
+                        id
+                    FROM `node`
+                    WHERE translate = 1
+                        $sqlFilter
+                    ORDER BY name ASC
+                    ";
+
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
+                $projects[] = self::getMini($proj['id']);
+            }
+            return $projects;
+        }
+
+
 
     }
     
