@@ -1,15 +1,19 @@
 <?php 
     use Goteo\Library\Text,
-        Goteo\Library\Lang;
+        Goteo\Library\Lang,
+        Goteo\Core\NodeSys;
+
+$nodeData = NodeSys::setData(NODE_ID);
 ?>
-
 <?php include 'view/header/lang.html.php' ?>
-
-
 <div id="header">
     <h1><?php echo Text::get('regular-main-header'); ?></h1>
     <div id="super-header">
-	   <?php include 'view/header/highlights.html.php' ?>
+		<div id="goteo-logo">
+			<ul>
+				<li class="home"><a href="<?php echo SITE_URL ?>">Inicio</a></li>
+			</ul>
+		</div>
 
 	   <div id="rightside" style="float:right;">
            <div id="about">
@@ -44,12 +48,21 @@
                 </ul>
             </div>
 
-
 		</div>
-
 
     </div>
 
-    <?php include 'view/header/menu.html.php' ?>
-
+    <div id="node-header">
+        <div class="logos">
+            <div class="node-home"><a href="<?php echo NODE_URL ?>"><?php echo NODE_NAME ?></a></div>
+            <div class="node-intro"><?php echo $nodeData->description; ?></div>
+            <?php if ($nodeData->logo instanceof \Goteo\Model\Image) : ?>
+            <div class="node-logo">
+                <span>Con el soporte de:</span>
+                <img src="<?php echo $nodeData->logo->getLink(150, 75) ?>" alt="<?php echo $nodeData->subtitle ?>" />
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php include 'view/node/menu.html.php' ?>
 </div>

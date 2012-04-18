@@ -1,0 +1,12 @@
+/* configuración de colores del nodo */
+body.node {
+    background-color: #F0F4F9 !important;
+}
+
+div#node-header span.blue {
+    color: #1F81BB !important;
+}
+
+body.node.home > div.widget > div.title-line {
+    border-color: #1F81BB !important;
+}

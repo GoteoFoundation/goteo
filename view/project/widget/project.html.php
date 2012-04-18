@@ -15,8 +15,6 @@ if ($this['global'] === true) {
     $blank = '';
 }
 
-$categories = Category::getNames($project->id, 2);
-
 //si llega $this['investor'] sacamos el total aportado para poner en "mi aporte"
 if (isset($this['investor']) && is_object($this['investor'])) {
     $investor = $this['investor'];
@@ -60,9 +58,9 @@ if (isset($this['investor']) && is_object($this['investor'])) {
         <?php if (!empty($project->gallery) && (current($project->gallery) instanceof Image)): ?>
         <a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><img alt="<?php echo $project->name ?>" src="<?php echo current($project->gallery)->getLink(255, 130, true) ?>" /></a>
         <?php endif ?>
-        <?php if (!empty($categories)): ?>
+        <?php if (!empty($project->categories)): ?>
         <div class="categories">
-        <?php $sep = ''; foreach ($categories as $key=>$value) :
+        <?php $sep = ''; foreach ($project->categories as $key=>$value) :
             echo $sep.htmlspecialchars($value);
         $sep = ', '; endforeach; ?>
         </div>

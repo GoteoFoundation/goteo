@@ -530,7 +530,7 @@ div#header div#highlights > ul > li > a {
 
 /* menu y despelgable dashboard */
 div#header div#menu {
-    background: #b5dadc url('header/background.png') repeat-x top;
+    background: #b5dadc url('/view/css/header/background.png') repeat-x top;
     overflow: visible;
 }
 
@@ -571,11 +571,11 @@ div#header div#menu > ul > li.home > a {
     top: 50%;
     margin-left: -45px;
     margin-top: -18px;
-    background: url('header/goteo.png') no-repeat left center;        
+    background: url('/view/css/header/goteo.png') no-repeat left center;
 }
 
 div#header div#menu > ul > li.home > a:hover {
-    background: url('header/goteo.png') no-repeat right center;
+    background: url('/view/css/header/goteo.png') no-repeat right center;
 }
 
 div#header div#menu > ul > li.explore,
@@ -633,7 +633,7 @@ div#header div#menu > ul > li.search fieldset input[type="text"]:focus {
 
 div#header div#menu > ul > li.search fieldset input[type="submit"] {
 
-    background: transparent url('header/search.png') no-repeat center center;
+    background: transparent url('/view/css/header/search.png') no-repeat center center;
     display: block;
     position: absolute;
     right: 0;
@@ -665,7 +665,6 @@ div#header div#menu{
 div#header div#menu > ul > li.community,
 div#header div#menu > ul > li.dashboard {
     background: transparent url('header/down-black.png') no-repeat right 30px;
-	position:relative;
 	top:3px;
 }
 

@@ -1,0 +1,43 @@
+input.grey[type="submit"],
+input.grey[type="reset"],
+button.grey,
+a.button.grey {
+    background: #b51000 url('/view/css/button/grey.png') repeat-x top;
+    color: white;    
+} 
+
+input.grey[type="submit"]:active,
+input.grey[type="reset"]:active,
+button.grey:active,
+a.button.grey:active {
+    background: #e44000 url('/view/css/button/grey-active.png') repeat-x top;
+} 
+
+input.grey[type="submit"]:hover,
+input.grey[type="reset"]:hover,
+button.grey:hover,
+a.button.grey:hover {
+    background: #e44000 url('/view/css/button/grey-active.png') repeat-x top;
+}
+
+
+.rounded-corners{
+  -moz-border-radius: 10px; /* Firefox */
+  -webkit-border-radius: 10px; /* Safari, Chrome */
+  border-radius: 10px; /* CSS3 */
+}
+
+
+a.file{background-image:url(/view/css/icon/m/file.png)}
+a.money{background-image:url(/view/css/icon/m/money.png)}
+a.code{background-image:url(/view/css/icon/m/code.png)}
+a.service{background-image:url(/view/css/icon/m/service.png)}
+a.manual{background-image:url(/view/css/icon/m/manual.png)}
+a.product{background-image:url(/view/css/icon/m/product.png)}
+a.design{background-image:url(/view/css/icon/m/design.png)}
+a.other{background-image:url(/view/css/icon/m/other.png)}
+
+span.euro{ text-indent:-9999px;overflow:hidden}
+
+div#side div.half{width:97px;margin-right:6px;float:left;padding:13px 0px;font-size:10px}
+div#side div.half.last{margin-right:0}

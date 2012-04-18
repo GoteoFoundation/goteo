@@ -4,6 +4,7 @@ namespace Goteo\Model\Blog {
 
     use \Goteo\Model\Project\Media,
         \Goteo\Model\Image,
+        \Goteo\Model\Project,
         \Goteo\Model\User,
         \Goteo\Library\Text,
         \Goteo\Library\Message;
@@ -77,7 +78,7 @@ namespace Goteo\Model\Blog {
                 $post->tags = Post\Tag::getAll($id);
 
                 // autor
-                if (!empty($post->author)) $post->author = User::getMini($post->author);
+                if (!empty($post->author)) $post->user = User::getMini($post->author);
                 
                 return $post;
         }
@@ -96,6 +97,8 @@ namespace Goteo\Model\Blog {
                 SELECT
                     post.id as id,
                     post.blog as blog,
+                    blog.type as type,
+                    blog.owner as owner,
                     IFNULL(post_lang.title, post.title) as title,
                     IFNULL(post_lang.text, post.text) as `text`,
                     IFNULL(post_lang.legend, post.legend) as `legend`,
@@ -153,7 +156,15 @@ namespace Goteo\Model\Blog {
 //                $post->text = nl2br(Text::urlink($post->text));
 
                 // autor
-                if (!empty($post->author)) $post->author = User::getMini($post->author);
+                if (!empty($post->author)) $post->user = User::getMini($post->author);
+                // si es novedades de proyecto ponemos al dueño del proyecto como autor
+                if (empty($post->author) && $post->type == 'project') {
+                    $proj_blog = Project::getMini($post->owner);
+                    if ($proj_blog->user instanceof User) {
+                        $post->author = $proj_blog->owner;
+                        $post->user   = $proj_blog->user;
+                    }
+                }
 
                 $list[$post->id] = $post;
             }
@@ -162,14 +173,13 @@ namespace Goteo\Model\Blog {
         }
 
         /*
-         * Lista de entradas filtradas por tag
+         * Lista de entradas filtradas
+         *  por tag
          * de mas nueva a mas antigua
          */
-        public static function getList ($blog = null, $tag = null, $published = true) {
+        public static function getList ($filters = array(), $published = true) {
 
-            if (empty($tag)) return false;
-
-            $values = array(':tag'=>$tag, ':lang'=>\LANG);
+            $values = array(':lang'=>\LANG);
 
             $list = array();
 
@@ -197,16 +207,26 @@ namespace Goteo\Model\Blog {
                     AND post_lang.lang = :lang
                 INNER JOIN post_tag
                     ON post_tag.post = post.id
-                    AND post_tag.tag = :tag
+                WHERE blog.type = 'node'
                 ";
-            if (!empty($blog)) {
-                $sql .= " WHERE post.blog = :blog
+            if (!empty($filters['blog'])) {
+                $sql .= " AND post.blog = :blog
                 ";
-                $values[':blog'] = $blog;
-            } else {
-                $sql .= " WHERE blog.type = 'node'
-                ";
+                $values[':blog'] = $filters['blog'];
             }
+
+            if (!empty($filters['tag'])) {
+                $sql .= " AND post_tag.tag = :tag
+                ";
+                $values[':tag'] = $filters['tag'];
+            }
+
+            if (!empty($filters['author'])) {
+                $sql .= " AND post.author = :author
+                ";
+                $values[':author'] = $filters['author'];
+            }
+
             if ($published) {
                 $sql .= " AND post.publish = 1
                 ";
@@ -230,7 +250,7 @@ namespace Goteo\Model\Blog {
                 $post->num_comments = Post\Comment::getCount($post->id);
 
                 // autor
-                if (!empty($post->author)) $post->author = User::getMini($post->author);
+                if (!empty($post->author)) $post->user = User::getMini($post->author);
                 
                 $list[$post->id] = $post;
             }

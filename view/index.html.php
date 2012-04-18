@@ -3,6 +3,13 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
+// si es un nodo
+if (NODE_ID != GOTEO_NODE) {
+    include 'view/node/index.html.php';
+    return;
+}
+
+
 $calls     = $this['calls'];
 $campaigns = $this['campaigns'];
 

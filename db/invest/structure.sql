@@ -41,3 +41,6 @@ ALTER TABLE `invest` CHANGE `campaign` `campaign` INT( 1 ) UNSIGNED NULL DEFAULT
 ALTER TABLE `invest` ADD `drops` BIGINT( 20 ) UNSIGNED NULL DEFAULT NULL COMMENT 'id del aporte que provoca este riego';
 ALTER TABLE `invest` ADD `droped` BIGINT( 20 ) UNSIGNED NULL DEFAULT NULL COMMENT 'id del riego generado por este aporte';
 ALTER TABLE `invest` ADD `call` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'campaña dedonde sale el dinero';
+
+-- para marcar incidencia
+ALTER TABLE `invest` ADD `issue` INT( 1 ) NULL DEFAULT NULL COMMENT 'Problemas con el cobro del aporte';

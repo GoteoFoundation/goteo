@@ -43,6 +43,8 @@ if ($this['action'] == 'none') return;
 <?php  else : // sueprform!
 
         $post  = $this['post']; // si edit
+        if (empty($post->author)) $post->author = $_SESSION['user']->id;
+        
         $allow = array(
             array(
                 'value'     => 1,
@@ -106,6 +108,10 @@ if ($this['action'] == 'none') return;
             'id' => array (
                 'type' => 'hidden',
                 'value' => $post->id
+            ),
+            'author' => array (
+                'type' => 'hidden',
+                'value' => $post->author
             ),
             'blog' => array (
                 'type' => 'hidden',

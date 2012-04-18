@@ -9,10 +9,15 @@ namespace Goteo\Model {
 
         public
             $item,
+            $type,
             $node,
             $order;
 
          static public
+         $types = array(
+             'side' => 'Laterales',
+             'main' => 'Centrales'
+         ),
         $items = array(
              'posts' => 'Entradas de blog',
              'promotes' => 'Proyectos destacados',
@@ -21,9 +26,15 @@ namespace Goteo\Model {
              'patrons' => 'Padrinos'
          ),
          $node_items = array(
-             'posts' => 'Noticias',
+             'posts' => 'Novedades',
              'promotes' => 'Proyectos',
-             'calls' => 'Campañas'
+             'calls' => 'Convocatorias'
+         ),
+         $node_side_items = array(
+             'searcher' => 'Selector proyectos',
+             'summary' => 'Resumen proyectos',
+             'sumcalls' => 'Resumen convocatorias',
+             'sponsors' => 'Patrocinadores'
          );
 
 
@@ -54,6 +65,30 @@ namespace Goteo\Model {
                         home.order as `order`
                     FROM home
                     WHERE home.node = :node
+                    AND (type = 'main' OR type IS NULL)
+                    ORDER BY `order` ASC
+                    ";
+
+            $query = self::query($sql, $values);
+            foreach ( $query->fetchAll(\PDO::FETCH_CLASS) as $home) {
+                $array[$home->item] = $home;
+            }
+            return $array;
+		}
+
+        /*
+         * Devuelve elementos laterales de portada para nodos
+         */
+		public static function getAllSide ($node = \GOTEO_NODE) {
+            $array = array();
+            $values = array(':node'=>$node);
+            $sql = "SELECT
+                        home.item as item,
+                        home.node as node,
+                        home.order as `order`
+                    FROM home
+                    WHERE home.node = :node
+                    AND type = 'side'
                     ORDER BY `order` ASC
                     ";
 
@@ -71,6 +106,9 @@ namespace Goteo\Model {
             if (empty($this->node))
                 $errors[] = 'Falta nodo';
 
+            if (empty($this->type))
+                $this->type = 'main';
+
             if (empty($errors))
                 return true;
             else
@@ -82,6 +120,7 @@ namespace Goteo\Model {
 
             $fields = array(
                 'item',
+                'type',
                 'node',
                 'order'
                 );
@@ -100,7 +139,8 @@ namespace Goteo\Model {
                 self::query($sql, $values);
 
                 $extra = array(
-                    'node' => $this->node
+                    'node' => $this->node,
+                    'type' => $this->type
                 );
                 Check::reorder($this->item, $this->move, 'home', 'item', 'order', $extra);
 
@@ -112,12 +152,12 @@ namespace Goteo\Model {
         }
 
         /*
-         * Para quitar una pregunta
+         * Para quitar un elemento
          */
-        public static function delete ($item, $node = \GOTEO_NODE) {
+        public static function delete ($item, $node = \GOTEO_NODE, $type = 'main') {
             
-            $sql = "DELETE FROM home WHERE item = :item AND node = :node";
-            if (self::query($sql, array(':item'=>$item, ':node'=>$node))) {
+            $sql = "DELETE FROM home WHERE item = :item AND node = :node AND type = :type";
+            if (self::query($sql, array(':item'=>$item, ':node'=>$node, ':type'=>$type))) {
                 return true;
             } else {
                 return false;
@@ -128,9 +168,10 @@ namespace Goteo\Model {
         /*
          * Para que un elemento salga antes  (disminuir el order)
          */
-        public static function up ($item, $node = \GOTEO_NODE) {
+        public static function up ($item, $node = \GOTEO_NODE, $type = 'main') {
             $extra = array(
-                'node' => $node
+                'node' => $node,
+                'type' => $type
             );
             return Check::reorder($item, 'up', 'home', 'item', 'order', $extra);
         }
@@ -138,9 +179,10 @@ namespace Goteo\Model {
         /*
          * Para que un elemento salga despues  (aumentar el order)
          */
-        public static function down ($item, $node = \GOTEO_NODE) {
+        public static function down ($item, $node = \GOTEO_NODE, $type = 'main') {
             $extra = array(
-                'node' => $node
+                'node' => $node,
+                'type' => $type
             );
             return Check::reorder($item, 'down', 'home', 'item', 'order', $extra);
         }
@@ -148,9 +190,9 @@ namespace Goteo\Model {
         /*
          * Orden para añadirlo al final
          */
-        public static function next ($node = \GOTEO_NODE) {
-            $query = self::query('SELECT MAX(`order`) FROM home WHERE node = :node'
-                , array(':node'=>$node));
+        public static function next ($node = \GOTEO_NODE, $type = 'main') {
+            $query = self::query('SELECT MAX(`order`) FROM home WHERE node = :node AND type = :type'
+                , array(':node'=>$node, ':type'=>$type));
             $order = $query->fetchColumn(0);
             return ++$order;
 
@@ -170,6 +212,31 @@ namespace Goteo\Model {
                         home.item as item
                     FROM home
                     WHERE home.node = :node
+                    AND (type = 'main' OR type IS NULL)
+                    ";
+
+            $query = self::query($sql, $values);
+            foreach ( $query->fetchAll(\PDO::FETCH_CLASS) as $used) {
+                unset($array[$used->item]);
+            }
+            return $array;
+		}
+
+        /*
+         * Elementos disponibles apra portada
+         */
+		public static function availableSide ($node = \GOTEO_NODE) {
+            if ($node == \GOTEO_NODE) {
+                $array = array();
+            } else {
+                $array = self::$node_side_items;
+            }
+            $values = array(':node'=>$node);
+            $sql = "SELECT
+                        home.item as item
+                    FROM home
+                    WHERE home.node = :node
+                    AND type = 'side'
                     ";
 
             $query = self::query($sql, $values);

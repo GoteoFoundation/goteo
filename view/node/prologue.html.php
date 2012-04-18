@@ -11,8 +11,8 @@
         <meta name="copyright" content="<?php echo NODE_META_COPYRIGHT ?>" />
         <meta name="robots" content="all" />
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/goteo.css" />
-        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/nodesys/<?php echo NODE_ID ?>/node.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/nodesys/<?php echo NODE_ID ?>/view/css/goteo.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/nodesys/<?php echo NODE_ID ?>/view/css/node.css" />
 
         <script type="text/javascript">
         if(navigator.userAgent.indexOf('Mac') != -1)
@@ -45,7 +45,7 @@
         <?php endif ?>
     </head>
 
-    <body<?php if (isset($bodyClass)) echo ' class="' . htmlspecialchars($bodyClass) . '"' ?> style="background-color:#FAE5E6;">
+    <body class="node <?php if (isset($bodyClass)) echo ' ' . htmlspecialchars($bodyClass) ?>">
 
         <script type="text/javascript">
             // Mark DOM as javascript-enabled

@@ -66,7 +66,11 @@ if (NodeSys::isValid($host)) {
 } else {
     define('NODE_ID', GOTEO_NODE);
 }
-NodeSys::setConfig(NODE_ID);
+// configuracion estatica
+$conf_file = 'nodesys/'.NODE_ID.'/config.php';
+if (file_exists($conf_file)) {
+    require_once $conf_file;
+}
 /* Fin inicializacion nodo */
 
 /**

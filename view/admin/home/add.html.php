@@ -8,6 +8,7 @@ $availables = $this['availables'];
 ?>
 <form method="post" action="/admin/home" >
     <input type="hidden" name="action" value="<?php echo $this['action'] ?>" />
+    <input type="hidden" name="type" value="<?php echo $home->type ?>" />
     <input type="hidden" name="order" value="<?php echo $home->order ?>" />
 
 <p>

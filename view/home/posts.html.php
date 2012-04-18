@@ -30,9 +30,8 @@ $posts = $this['posts'];
                     </div>
                 <?php endif; ?>
                 <h3><?php echo $post->title; ?></h3>
-                <div class="description">
-            <?php echo Text::recorta($post->text, 600) ?>
-                </div>
+                <?php if (!empty($post->author)) : ?><div class="author"><a href="/blog/?author=<?php echo $post->author ?>"><?php echo Text::get('regular-by') ?> <?php echo $post->user->name ?></a></div><?php endif; ?>
+                <div class="description"><?php echo Text::recorta($post->text, 600) ?></div>
 
                 <div class="read_more"><a href="/blog/<?php echo $post->id; ?>"><?php echo Text::get('regular-read_more') ?></a></div>
             </div>

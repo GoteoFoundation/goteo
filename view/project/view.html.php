@@ -12,12 +12,11 @@ $project = $this['project'];
 $show    = $this['show'];
 $invest  = $this['invest'];
 $post    = $this['post'];
+$blog    = $this['blog'];
 
 $user    = $_SESSION['user'];
 
 $categories = Category::getNames($project->id);
-
-$blog = Blog::get($project->id);
 
 if (!empty($project->investors)) {
     $supporters = ' (' . $project->num_investors . ')';

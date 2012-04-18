@@ -49,6 +49,8 @@ namespace Goteo\Controller {
                         foreach (Invest::investors($projectId) as $key=>$investor) {
                             // convocadores no, gracias
                             if (!empty($investor->campaign)) continue;
+                            // estos dos tampoco
+                            if (in_array($investor->user, array('aportaciones', 'colectivoafinidadrebelde'))) continue;
                             
                             if (\array_key_exists($investor->user, $investors)) {
                                 // si es otro proyecto y ya está en el array, añadir uno

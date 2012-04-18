@@ -8,7 +8,7 @@ namespace Goteo\Controller {
         Goteo\Model\Project,
         Goteo\Model\Banner,
         Goteo\Model\Call,
-        Goteo\Model\Post,
+        Goteo\Model\Post,  // esto son entradas en portada o en footer
         Goteo\Model\Promote,
         Goteo\Model\Patron,
         Goteo\Model\Campaign, // convocatorias en portada
@@ -122,6 +122,52 @@ namespace Goteo\Controller {
             $node = Node::get(NODE_ID);
 
             // orden de los elementos en portada
+            $side_order = Home::getAllSide(NODE_ID);
+
+            // Laterales
+            // ---------------------
+            if (isset($side_order['searcher'])) {
+                // Selector proyectos: los destacados, los grupos de discover y los retornos
+                $searcher = array(
+                    'promote' => Text::get('home-promotes-header'),
+                    'popular' => Text::get('discover-group-popular-header'),
+                    'recent'  => Text::get('discover-group-recent-header'),
+                    'success' => Text::get('discover-group-success-header'),
+                    'outdate' => Text::get('discover-group-outdate-header'),
+                    'byreward' => Text::get('discover-searcher-byreward-header')
+                );
+            }
+
+            if (isset($side_order['summary'])) {
+                // Resumen proyectos: total proyectos, activos (en campaña), exitosos (que han llegado al mínimo), cofinanciadores (diferentes), colaboradores (diferentes) y total de dinero recaudado
+                $summary = array(
+                    'projects' => 250,
+                    'active' => 16,
+                    'success' => 9,
+                    'investors' => 2376,
+                    'supporters' => 53,
+                    'amount' => 120000
+                );
+            }
+
+            if (isset($side_order['sumcalls'])) {
+                // Resumen convocatorias: nº campañas abiertas, nº convocatorias activas, importe total de las campañas, resto total
+                $sumcalls = array(
+                    'budget' => 16000,
+                    'rest' => 11860,
+                    'calls' => 15,
+                    'campaigns' => 223
+                );
+            }
+
+            if (isset($side_order['sponsors'])) {
+                // Patrocinadores del nodo
+                $sponsors = \Goteo\Model\Sponsor::getList(NODE_ID);
+            }
+
+
+            // Centrales
+            // --------------------------
             $order = Home::getAll(NODE_ID);
 
             // entradas de blog
@@ -163,10 +209,19 @@ namespace Goteo\Controller {
             return new View('view/node/index.html.php',
                 array(
                     'node'     => $node,
-                    'posts'    => $posts,
-                    'promotes' => $promotes,
-                    'calls'    => $calls,
-                    'order'    => $order
+
+                    // centrales
+                    'order'    => $order,
+                        'posts'    => $posts,
+                        'promotes' => $promotes,
+                        'calls'    => $calls,
+                    
+                    // laterales
+                    'side_order' => $side_order,
+                        'searcher' => $searcher,
+                        'summary'  => $summary,
+                        'sumcalls' => $sumcalls,
+                        'sponsors' => $sponsors
                 )
             );
 

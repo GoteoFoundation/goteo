@@ -129,7 +129,9 @@ namespace Goteo\Controller {
                     'home' => array(
                         'label' => 'Elementos en portada',
                         'actions' => array(
-                            'list' => array('label' => 'Listando', 'item' => false)
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add'  => array('label' => 'Nuevo elemento en portada', 'item' => false),
+                            'addside'  => array('label' => 'Nuevo elemento lateral en portada', 'item' => false)
                         )
                     ),
                     'glossary' => array(
@@ -771,10 +773,10 @@ namespace Goteo\Controller {
         /*
          * Elementos en portada
          */
-        public function home($action = 'list', $id = null) {
+        public function home($action = 'list', $id = null, $type = 'main') {
             $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-            return Admin\Home::process($action, $id);
+            return Admin\Home::process($action, $id, $type);
         }
 
         /*

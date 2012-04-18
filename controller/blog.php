@@ -25,11 +25,27 @@ namespace Goteo\Controller {
             // sacamos su blog
             $blog = Model\Blog::get(\GOTEO_NODE, 'node');
 
+            $filters = array();
             if (isset($_GET['tag'])) {
                 $tag = Model\Blog\Post\Tag::get($_GET['tag']);
                 if (!empty($tag->id)) {
-                    $blog->posts = Model\Blog\Post::getList(null, $tag->id);
+                    $filters['tag'] = $tag->id;
                 }
+            } else {
+                $tag = null;
+            }
+
+            if (isset($_GET['author'])) {
+                $author = Model\User::getMini($_GET['author']);
+                if (!empty($author->id)) {
+                    $filters['author'] = $author->id;
+                }
+            } else {
+                $author = null;
+            }
+
+            if (!empty($filters)) {
+                $blog->posts = Model\Blog\Post::getList($filters);
             }
 
             if (isset($post) && !isset($blog->posts[$post]) && $_GET['preview'] != $_SESSION['user']->id) {
@@ -43,6 +59,7 @@ namespace Goteo\Controller {
                     'blog' => $blog,
                     'show' => $show,
                     'tag'  => $tag,
+                    'author'=> $author,
                     'post' => $post,
                     'owner' => \GOTEO_NODE
                 )

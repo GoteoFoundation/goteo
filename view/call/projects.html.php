@@ -53,7 +53,6 @@ include 'view/call/header.html.php';
             foreach ($call->projects as $proj) :
 
                 $project = Project::getMedium($proj->id);
-                $categories = Project\Category::getNames($proj->id, 2);
                 $project->per_amount = round(($project->amount / $project->mincost) * 100);
 
                 ?>
@@ -85,8 +84,8 @@ include 'view/call/header.html.php';
                     <?php if (!empty($project->gallery) && (current($project->gallery) instanceof Image)): ?>
                     <a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>"><img src="<?php echo current($project->gallery)->getLink(150, 98, true) ?>" alt="<?php echo $project->name ?>"/></a>
                     <?php endif ?>
-                    <?php if (!empty($categories)): ?>
-                    <div class="categories"><?php $sep = ''; foreach ($categories as $key=>$value) :
+                    <?php if (!empty($project->categories)): ?>
+                    <div class="categories"><?php $sep = ''; foreach ($project->categories as $key=>$value) :
                         echo $sep.htmlspecialchars($value);
                     $sep = ', '; endforeach; ?></div>
                     <?php endif ?>

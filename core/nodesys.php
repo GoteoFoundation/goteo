@@ -50,14 +50,17 @@ namespace Goteo\Core {
         }
 
         /*
-         * Establece las constantes de configuracion de nodo
+         * Saca los datos del nodo
          */
-        public static function setConfig ($id) {
+        public static function setData ($id) {
 
+            // datos del nodo
             $query = Model::query("
                 SELECT
                     name,
-                    url
+                    url,
+                    description,
+                    logo
                 FROM node
                 WHERE id = :id
                 LIMIT 1
@@ -67,16 +70,13 @@ namespace Goteo\Core {
                 )
             );
 
-            $config = $query->fetch(\PDO::FETCH_ASSOC);
+            $config = $query->fetch(\PDO::FETCH_OBJ);
 
             if (!empty($config)) {
-                define('NODE_NAME', $config['name']);
-                define('NODE_URL', $config['url']);
-            }
-
-            $conf_file = 'nodesys/'.$id.'/config.php';
-            if (file_exists($conf_file)) {
-                require_once $conf_file;
+                if (!empty($config->logo)) {
+                    $config->logo = \Goteo\Model\Image::get($config->logo);
+                }
+                return $config;
             }
 
         }

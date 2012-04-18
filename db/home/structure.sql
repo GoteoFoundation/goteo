@@ -4,3 +4,6 @@ CREATE TABLE `home` (
 `order` SMALLINT UNSIGNED NOT NULL DEFAULT '1',
  UNIQUE KEY `item_node` (`item`, `node`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Elementos en portada';
+
+-- Elementos en portada
+ALTER TABLE `home` ADD `type` VARCHAR( 5 ) NULL DEFAULT 'main' COMMENT 'lateral o central' AFTER `item` ;

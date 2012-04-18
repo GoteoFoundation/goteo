@@ -390,7 +390,7 @@ namespace Goteo\Model {
                 $project->gallery = Image::getAll($project->id, 'project');
 
 				// categorias
-                $project->categories = Project\Category::get($id);
+                $project->categories = Project\Category::getNames($id, 2);
 
 				// retornos colectivos
 				$project->social_rewards = Project\Reward::getAll($id, 'social', $lang);

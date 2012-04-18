@@ -477,6 +477,9 @@ namespace Goteo\Controller {
                         'show' => $show
                     );
 
+                // sus entradas de novedades
+                $viewData['blog'] = Model\Blog::get($project->id);
+
                 // tenemos que tocar esto un poquito para motrar las necesitades no economicas
                 if ($show == 'needs-non') {
                     $viewData['show'] = 'needs';

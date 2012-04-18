@@ -52,7 +52,7 @@ namespace Goteo\Model {
                 $post->media = new Media($post->media);
 
                 // autor
-                $post->user = User::get($post->author);
+                if (!empty($post->author)) $post->user = User::getMini($post->author);
 
                 return $post;
 
@@ -122,6 +122,8 @@ namespace Goteo\Model {
                 $post->media = new Media($post->media);
 
                 $post->type = $post->home == 1 ? 'home' : 'footer';
+                
+                if (!empty($post->author)) $post->user = User::getMini($post->author);
 
                 $list[$post->id] = $post;
             }

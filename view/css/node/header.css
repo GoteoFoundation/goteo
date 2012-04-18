@@ -1,0 +1,189 @@
+div#super-header div#goteo-logo {
+    overflow: hidden;
+	width: 600px;
+	float: left;
+}
+
+div#super-header div#goteo-logo > ul {
+    margin: 3px 0 0;
+    position: relative;
+    list-style: none;
+    overflow: hidden;
+	padding-bottom: 0;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+div#super-header div#goteo-logo > ul > li {
+    text-align: left;
+	float: left;
+}
+
+div#super-header div#goteo-logo ul > li.home > a {
+    overflow: hidden;
+    text-indent: 2000px;
+    display: block;
+    line-height: 2000px;
+    width: 57px;
+    height: 17px;
+    background: url('/view/css/header/goteo-mini-node.png') no-repeat left center;
+}
+
+div#super-header div#goteo-logo ul > li.home > a:hover {
+    background: url('/view/css/header/goteo-mini-node.png') no-repeat right center;
+}
+
+/* la cabecera de nodo */
+div#node-header{
+    background-color: white;
+}
+
+div#node-header div.logos {
+    height: 120px;
+    width: 940px;
+    margin: 0 auto;
+    position: relative;
+    list-style: none;
+    overflow: visible;
+	padding: 0;
+}
+
+div#node-header div.logos > div {
+    float: left;
+}
+
+div#node-header div.logos div.node-home {
+    margin-right: 53px;
+    margin-top: 20px;
+}
+
+div#node-header div.logos div.node-home > a {
+    overflow: hidden;
+    display: block;
+    line-height: 0px;
+    text-indent: -100px;
+    color: white; 
+    width: 135px;
+    height: 75px;
+    left: 50%;
+    background: url('/nodesys/nodo/view/css/goteo-logo.png') no-repeat left top;
+}
+
+div#node-header div.logos div.node-home > a:hover {
+    background: url('/nodesys/nodo/view/css/goteo-logo.png') no-repeat right top;
+}
+
+div#node-header div.logos div.node-intro {
+    text-transform: uppercase;
+    width: 500px;
+    font-size: 18px;
+    margin-top: 25px;
+}
+
+div#node-header div.logos div.node-logo {
+    margin-left: 75px;
+    margin-top: 20px;
+}
+
+div#node-header div.logos div.node-logo span {
+    display: block;
+    font-size: 10px;
+    text-transform: none;
+}
+
+/* botonera */
+div#header div#menu > ul > li > a.button {
+    padding: .4em .8em .4em .8em !important;
+}
+
+div#header div#menu > ul > li.info,
+div#header div#menu > ul > li.help {
+    float: left;
+}
+
+div#header div#menu > ul > li.help {
+	margin-right: 4px;
+}
+
+div#header div#menu > ul > li.explore > a {
+	margin-left: 42px !important;
+}
+
+div#header div#menu > ul > li.help > a {
+    padding: .4em 1.8em .4em .8em;
+    font-size: 12px;
+    color: white;
+    display: inline-block;
+    margin: .68em .2em .6em 0;
+    max-width: 7.5em;
+    text-align: left;
+	width:80px;
+	line-height: 1em;
+}
+
+div#header div#menu > ul > li.about {
+    height: 48px;
+    position: relative;
+	top:3px;
+    
+}
+
+div#header div#menu > ul > li.about > a {
+    padding: .5em 0 !important;
+    font-size: 12px;
+    height: 40px;
+    line-height: 40px;
+    display: inline-block;
+    color: #59595c;
+    padding-right:30px;
+	position:relative;
+	top:-3px;
+    
+}
+
+div#header div#menu > ul > li.about a:hover {
+    color: #20B2B3;
+}
+
+/* pestaña info */
+div#header div#menu > ul > li.info {
+    border-radius: 5px 5px 0px 0px;
+    width: 35px;
+    height: 40px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background-color: #F6F3ee;
+}
+
+div#header div#menu > ul > li.info > a {
+    overflow: hidden;
+    text-indent: 2000px;
+    display: block;
+    line-height: 2000px;
+    width: 23px;
+    height: 23px;
+    left: 50%;
+    border: medium none;
+    margin: 9px 6px 8px;
+}
+
+div#header div#menu > ul > li.info > a.open {
+    background: url('/view/css/header/node_info.png') no-repeat left center transparent;
+}
+
+div#header div#menu > ul > li.info > a.open:hover {
+    background: url('/view/css/header/node_info.png') no-repeat right center transparent;
+}
+
+div#header div#menu > ul > li.info > a.close {
+    background: url('/view/css/header/node_info_close.png') no-repeat left center transparent;
+}
+
+div#header div#menu > ul > li.info > a.close:hover {
+    background: url('/view/css/header/node_info_close.png') no-repeat right center transparent;
+}
+
+
+
+

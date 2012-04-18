@@ -35,8 +35,7 @@ div#main {
     width: 940px;
     margin: 10px auto;
     clear: both;
-    overflow-y: hidden;
-    overflow-x: hidden;
+    overflow: hidden;
     position: relative;
     z-index: 0;
 }

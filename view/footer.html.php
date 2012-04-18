@@ -2,7 +2,7 @@
 
 use Goteo\Library\Text,
     Goteo\Model\Category,
-    Goteo\Model\Post,
+    Goteo\Model\Post,  // esto son entradas en portada o en footer
     Goteo\Model\Sponsor;
 
 if (NODE_ID != GOTEO_NODE) {

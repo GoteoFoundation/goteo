@@ -43,8 +43,10 @@ namespace Goteo\Model {
                 }
                 if ($blog->node == \GOTEO_NODE) {
                     $blog->posts = Blog\Post::getAll();
-                } else {
+                } elseif (!empty($blog->id)) {
                     $blog->posts = Blog\Post::getAll($blog->id);
+                } else {
+                    $blog->posts = array();
                 }
                 return $blog;
         }
