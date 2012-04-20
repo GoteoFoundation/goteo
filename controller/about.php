@@ -14,6 +14,11 @@ namespace Goteo\Controller {
         
         public function index ($id = null) {
 
+            // si llegan a la de mantenimiento sin estar en mantenimiento
+            if ($id == 'maintenance' && GOTEO_MAINTENANCE !== true) {
+                $id = 'credits';
+            }
+
             // paginas especificas
             if ($id == 'faq' || $id == 'contact') {
                 throw new Redirection('/'.$id, Redirection::TEMPORARY);
@@ -30,11 +35,6 @@ namespace Goteo\Controller {
                         'content' => $page->content
                     )
                  );
-            }
-
-            // si llegan a la de mantenimiento sin estar en mantenimiento
-            if ($id == 'maintenance' && GOTEO_MAINTENANCE !== true) {
-                $id = 'credits';
             }
 
             // el tipo de contenido de la pagina about es diferente
@@ -57,16 +57,20 @@ namespace Goteo\Controller {
                      );
                 } else {
 
+                    return \Goteo\Controller\Index::node_index('about');
+/*
                     $page = Page::get($id, \NODE_ID);
 
                     return new View(
-                        'view/about/sample.html.php',
+                        'view/node/about.html.php',
                         array(
                             'name' => $page->name,
                             'description' => $page->description,
                             'content' => $page->content
                         )
                      );
+ * 
+ */
                 }
 
 

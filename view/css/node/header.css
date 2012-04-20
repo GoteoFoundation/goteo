@@ -153,7 +153,7 @@ div#header div#menu > ul > li.info {
     position: absolute;
     left: 0;
     bottom: 0;
-    background-color: #F6F3ee;
+    background-color: #dee1df;
 }
 
 div#header div#menu > ul > li.info > a {
@@ -184,6 +184,20 @@ div#header div#menu > ul > li.info > a.close:hover {
     background: url('/view/css/header/node_info_close.png') no-repeat right center transparent;
 }
 
+/* Banners de nodo */
+body.home.node div#header div#node-banners{display:block!important;
+border:#dee2e6 1px solid;border-top:none}
+div#header div#node-banners{height:270px;width:940px;display:none;margin:0 auto}
+div#header div#node-banners{
+	-webkit-box-shadow: -1px 2px 10px rgba(50, 50, 50, 0.6);
+-moz-box-shadow:    -1px 2px 10px rgba(50, 50, 50, 0.6);
+box-shadow:         -1px 2px 10px rgba(50, 50, 50, 0.6);
+}
+div#header div#node-banners div.node-banners-container{height:270px;background:url('/view/css/header/node-banner-bg.jpg')}
+div.node-banners-container > div.node-banner{position:relative;height:270px}
+div.node-banners-container > div.node-banner > div.title{position:absolute;top:25px;left:50px;line-height:25px;font-size:25px;color:#585a5c}
+div.node-banners-container > div.node-banner > div.short-desc{position:absolute;top:75px;left:50px;line-height:30px;font-size:20px;color:#1f81bb;max-width:530px}
 
+div.node-banner.sample{background:url('/view/css/header/banner-node-bg-sample.png') no-repeat right bottom}
 
-
+/* Fin banners de nodo */

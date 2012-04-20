@@ -140,7 +140,7 @@ namespace Goteo\Controller {
             }
 
             $confirm = Model\Invest::get($invest);
-            $projectData = Model\Project::get($project);
+            $projectData = Model\Project::getMedium($project);
             if (!empty($confirm->droped)) {
                 $drop = Model\Invest::get($confirm->droped);
 

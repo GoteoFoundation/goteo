@@ -1,10 +1,7 @@
 <?php
 
 use Goteo\Library\Text,
-    Goteo\Library\SuperForm;
-
-define('ADMIN_NOAUTOSAVE', true);
-
+    Goteo\Library\NormalForm;
 
 $errors = $this['errors'];
 $preferences = $this['preferences'];
@@ -25,7 +22,7 @@ $allow = array(
 <form method="post" action="/dashboard/profile/preferences" class="project" >
 
 <?php
-echo new SuperForm(array(
+echo new NormalForm(array(
 
     'level'         => 3,
     'method'        => 'post',
@@ -45,8 +42,6 @@ echo new SuperForm(array(
             'type'      => 'slider',
             'options'   => $allow,
             'class'     => 'currently cols_' . count($allow),
-            'hint'      => Text::get('tooltip-preferences-updates'),
-            'errors'    => array(),
             'value'     => (int) $preferences->updates
         ),
         'threads' => array(
@@ -54,8 +49,6 @@ echo new SuperForm(array(
             'type'      => 'slider',
             'options'   => $allow,
             'class'     => 'currently cols_' . count($allow),
-            'hint'      => Text::get('tooltip-preferences-threads'),
-            'errors'    => array(),
             'value'     => (int) $preferences->threads
         ),
         'rounds' => array(
@@ -63,8 +56,6 @@ echo new SuperForm(array(
             'type'      => 'slider',
             'options'   => $allow,
             'class'     => 'currently cols_' . count($allow),
-            'hint'      => Text::get('tooltip-preferences-rounds'),
-            'errors'    => array(),
             'value'     => (int) $preferences->rounds
         ),
         'mailing' => array(
@@ -72,8 +63,6 @@ echo new SuperForm(array(
             'type'      => 'slider',
             'options'   => $allow,
             'class'     => 'currently cols_' . count($allow),
-            'hint'      => Text::get('tooltip-preferences-mailing'),
-            'errors'    => array(),
             'value'     => (int) $preferences->mailing
         )
 

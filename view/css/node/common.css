@@ -21,23 +21,27 @@ a.button.grey:hover {
 }
 
 
-.rounded-corners{
-  -moz-border-radius: 10px; /* Firefox */
-  -webkit-border-radius: 10px; /* Safari, Chrome */
-  border-radius: 10px; /* CSS3 */
-}
+.rounded-corners{  -moz-border-radius: 5px; /* Firefox */  -webkit-border-radius: 5px; /* Safari, Chrome */  border-radius: 5px; /* CSS3 */}
+.rounded-corners-bottom{
+-moz-border-radius-bottomright: 5px;
+-moz-border-radius-bottomleft: 5px;
+-webkit-border-bottom-right-radius: 5px;
+-webkit-border-bottom-left-radius: 5px;
+border-bottom-right-radius: 5px;
+border-bottom-left-radius: 5px;}
 
 
-a.file{background-image:url(/view/css/icon/m/file.png)}
-a.money{background-image:url(/view/css/icon/m/money.png)}
-a.code{background-image:url(/view/css/icon/m/code.png)}
-a.service{background-image:url(/view/css/icon/m/service.png)}
-a.manual{background-image:url(/view/css/icon/m/manual.png)}
-a.product{background-image:url(/view/css/icon/m/product.png)}
-a.design{background-image:url(/view/css/icon/m/design.png)}
-a.other{background-image:url(/view/css/icon/m/other.png)}
+a.file{background-image:url('/view/css/icon/m/file.png')}
+a.money{background-image:url('/view/css/icon/m/money.png')}
+a.code{background-image:url('/view/css/icon/m/code.png')}
+a.service{background-image:url('/view/css/icon/m/service.png')}
+a.manual{background-image:url('/view/css/icon/m/manual.png')}
+a.product{background-image:url('/view/css/icon/m/product.png')}
+a.design{background-image:url('/view/css/icon/m/design.png')}
+a.other{background-image:url('/view/css/icon/m/other.png')}
 
 span.euro{ text-indent:-9999px;overflow:hidden}
 
-div#side div.half{width:97px;margin-right:6px;float:left;padding:13px 0px;font-size:10px}
+div#side div.line{clear:both}
+div#side div.half{width:68px;margin-right:6px;float:left;padding:13px 10px;font-size:10px}
 div#side div.half.last{margin-right:0}

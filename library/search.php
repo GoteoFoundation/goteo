@@ -53,7 +53,7 @@ namespace Goteo\Library {
          * @param bool showall si true, muestra tambien proyectos en estado de edicion y revision
          * @return array results
          */
-		public static function params ($params, $showall = false) {
+		public static function params ($params, $showall = false, $limit = null) {
 
             $results = array();
             $where   = array();
@@ -106,6 +106,10 @@ namespace Goteo\Library {
             }
 
             $sql .= " ORDER BY name ASC";
+            // Limite
+            if (!empty($limit) && \is_numeric($limit)) {
+                $sql .= " LIMIT $limit";
+            }
 
             try {
                 $query = Model::query($sql, $values);

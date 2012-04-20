@@ -11,14 +11,14 @@ $nodeData = NodeSys::setData(NODE_ID);
     <div id="super-header">
 		<div id="goteo-logo">
 			<ul>
-				<li class="home"><a href="<?php echo SITE_URL ?>">Inicio</a></li>
+				<li class="home"><a class="node-jump" href="<?php echo SITE_URL ?>">Inicio</a></li>
 			</ul>
 		</div>
 
 	   <div id="rightside" style="float:right;">
            <div id="about">
                 <ul>
-                    <li><a href="/about"><?php echo Text::get('regular-header-about'); ?></a></li>
+                    <li><a class="node-jump" href="<?php echo SITE_URL ?>/about"><?php echo Text::get('regular-header-about'); ?></a></li>
                     <li><a href="/blog"><?php echo Text::get('regular-header-blog'); ?></a></li>
                     <li><a href="/faq"><?php echo Text::get('regular-header-faq'); ?></a></li>
                     <li id="lang"><a href="#" ><?php echo Lang::get(LANG)->short ?></a></li>
@@ -65,4 +65,5 @@ $nodeData = NodeSys::setData(NODE_ID);
         </div>
     </div>
     <?php include 'view/node/menu.html.php' ?>
+    <?php include 'view/node/banners.html.php' ?>
 </div>

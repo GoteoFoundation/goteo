@@ -129,9 +129,7 @@ namespace Goteo\Controller {
                     'home' => array(
                         'label' => 'Elementos en portada',
                         'actions' => array(
-                            'list' => array('label' => 'Listando', 'item' => false),
-                            'add'  => array('label' => 'Nuevo elemento en portada', 'item' => false),
-                            'addside'  => array('label' => 'Nuevo elemento lateral en portada', 'item' => false)
+                            'list' => array('label' => 'Gestionando', 'item' => false)
                         )
                     ),
                     'glossary' => array(

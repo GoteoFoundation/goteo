@@ -1786,7 +1786,16 @@ namespace Goteo\Model {
                     break;
                 case 'outdate':
                     // los que les quedan 15 dias o menos
-                    $sql = "SELECT  id,
+                    $sql = "SELECT  id
+                            FROM    project
+                            WHERE   days <= 15
+                            AND     days > 0
+                            AND     status = 3
+                            $sqlFilter
+                            ORDER BY days ASC";
+// Quitamos lo de "si ya han conseguido el minimo"
+/*
+,
                                 (SELECT  SUM(amount)
                                 FROM    cost
                                 WHERE   project = project.id
@@ -1799,28 +1808,23 @@ namespace Goteo\Model {
                                         OR invest.status = 1
                                         OR invest.status = 3
                                         OR invest.status = 4)
-                                ) as `getamount`
-                            FROM    project
-                            WHERE   days <= 15
-                            AND     days > 0
-                            AND     status = 3
-                            $sqlFilter
-                            HAVING (getamount < mincost OR getamount IS NULL)
-                            ORDER BY days ASC";
+                                ) as `getamount` */
+//                            HAVING (getamount < mincost OR getamount IS NULL)
+
                     break;
                 case 'recent':
                     // los que llevan menos tiempo desde el published, hasta 15 dias
                     // Cambio de criterio: Los últimos 9
                     //,  DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%e') as day
                     //        HAVING day <= 15 AND day IS NOT NULL
+                    $limit = 9;
                     $sql = "SELECT 
                                 project.id as id
                             FROM project
                             WHERE project.status = 3
                             AND project.passed IS NULL
                             $sqlFilter
-                            ORDER BY published DESC
-                            LIMIT 9";
+                            ORDER BY published DESC";
                     break;
                 case 'success':
                     // los que han conseguido el mínimo

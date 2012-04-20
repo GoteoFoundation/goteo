@@ -13,15 +13,17 @@ namespace Goteo\Controller {
         Goteo\Model\Patron,
         Goteo\Model\Campaign, // convocatorias en portada
         Goteo\Model\User,
+        Goteo\Model\Icon,
         Goteo\Library\Text,
-        Goteo\Library\Feed;
+        Goteo\Library\Feed,
+        Goteo\Library\Page; // para sacar el contenido de about
 
     class Index extends \Goteo\Core\Controller {
         
         public function index () {
 
             if (NODE_ID != GOTEO_NODE) {
-                return $this->node_index();
+                return self::node_index();
             }
 
             if (isset($_GET['error'])) {
@@ -117,71 +119,19 @@ namespace Goteo\Controller {
             
         }
 
-        public function node_index () {
-            
+        public static function node_index ($page = 'index') {
+
             $node = Node::get(NODE_ID);
 
             // orden de los elementos en portada
+            $order = Home::getAll(NODE_ID);
             $side_order = Home::getAllSide(NODE_ID);
 
-            // Laterales
-            // ---------------------
-            if (isset($side_order['searcher'])) {
-                // Selector proyectos: los destacados, los grupos de discover y los retornos
-                $searcher = array(
-                    'promote' => Text::get('home-promotes-header'),
-                    'popular' => Text::get('discover-group-popular-header'),
-                    'recent'  => Text::get('discover-group-recent-header'),
-                    'success' => Text::get('discover-group-success-header'),
-                    'outdate' => Text::get('discover-group-outdate-header'),
-                    'byreward' => Text::get('discover-searcher-byreward-header')
-                );
-            }
+            $icons = Icon::getAll();
+            $hide_promotes = false;
 
-            if (isset($side_order['summary'])) {
-                // Resumen proyectos: total proyectos, activos (en campaña), exitosos (que han llegado al mínimo), cofinanciadores (diferentes), colaboradores (diferentes) y total de dinero recaudado
-                $summary = array(
-                    'projects' => 250,
-                    'active' => 16,
-                    'success' => 9,
-                    'investors' => 2376,
-                    'supporters' => 53,
-                    'amount' => 120000
-                );
-            }
-
-            if (isset($side_order['sumcalls'])) {
-                // Resumen convocatorias: nº campañas abiertas, nº convocatorias activas, importe total de las campañas, resto total
-                $sumcalls = array(
-                    'budget' => 16000,
-                    'rest' => 11860,
-                    'calls' => 15,
-                    'campaigns' => 223
-                );
-            }
-
-            if (isset($side_order['sponsors'])) {
-                // Patrocinadores del nodo
-                $sponsors = \Goteo\Model\Sponsor::getList(NODE_ID);
-            }
-
-
-            // Centrales
-            // --------------------------
-            $order = Home::getAll(NODE_ID);
-
-            // entradas de blog
-            if (isset($order['posts'])) {
-                // entradas en portada
-                $posts     = Post::getList('home', NODE_ID);
-
-                foreach ($posts as $id=>$title) {
-                    $posts[$id] = Post::get($id);
-                }
-            }
-
-            // Proyectos destacados
-            if (isset($order['promotes'])) {
+            // Proyectos destacados primero para saber si lo meto en el buscador o no
+            if (isset($order['promotes']) || isset($side_order['searcher'])) {
                 $promotes  = Promote::getAll(true, NODE_ID);
 
                 foreach ($promotes as $key => &$promo) {
@@ -193,35 +143,125 @@ namespace Goteo\Controller {
                 }
             }
 
-            // Convocatoris destacadas
-            if (isset($order['calls'])) {
-                $calls  = Campaign::getAll(true, NODE_ID);
+            // Laterales
+            // ---------------------
+            if (isset($side_order['searcher'])) {
+                // Selector proyectos: los destacados, los grupos de discover y los retornos
+                $searcher = array();
+                $discover = array();
 
-                foreach ($calls as $key => &$call) {
-                    try {
-                        $call = Call::get($call->call);
-                    } catch (\Goteo\Core\Error $e) {
-                        unset($calls[$key]);
+                if (!empty($promotes)) {
+                    $searcher['promote'] = 'Destacados';
+                    if ($page == 'about') {
+                        $hide_promotes = true;
                     }
                 }
+
+                // vamos sacando los 4 primeros de cada categoria (excepto promotes y excepto byreward)
+                // si una categoria no tiene proyectos no la ponemos en los pastillos del buscador
+                $disc_popular = Project::published('popular', 4);
+                if (!empty($disc_popular)) {
+                    $searcher['popular'] = 'Populares';
+                    $discover['popular'] = $disc_popular;
+                }
+
+                $disc_recent = Project::published('recent', 4);
+                if (!empty($disc_recent)) {
+                    $searcher['recent'] = 'Recientes';
+                    $discover['recent'] = $disc_recent;
+                }
+
+                $disc_success = Project::published('success', 4);
+                if (!empty($disc_success)) {
+                    $searcher['success'] = 'Exitosos';
+                    $discover['success'] = $disc_success;
+                }
+
+                $disc_outdate = Project::published('outdate', false, 4);
+                if (!empty($disc_outdate)) {
+                    $searcher['outdate'] = 'Urgentes';
+                    $discover['outdate'] = $disc_outdate;
+                }
+
+                $disc_byreward = array();
+                foreach ($icons as $icon=>$iconData) {
+                    $icon_projs = \Goteo\Library\Search::params(array('reward'=>array("'$icon'")), 4);
+                    if (!empty($icon_projs)) {
+                        $disc_byreward[$icon] = $icon_projs;
+                    }
+                }
+                if (!empty($disc_byreward)) {
+                    $searcher['byreward'] = 'Por retorno';
+                    $discover['byreward'] = $disc_byreward;
+                }
+
+            }
+
+            if (isset($side_order['summary'])) {
+                $summary = $node->getSummary();
+            }
+
+            if (isset($side_order['sumcalls'])) {
+                // Resumen convocatorias: nº campañas abiertas, nº convocatorias activas, importe total de las campañas, resto total
+                $sumcalls = $node->getSumcalls();
+            }
+
+            if (isset($side_order['sponsors'])) {
+                // Patrocinadores del nodo
+                $sponsors = \Goteo\Model\Sponsor::getList(NODE_ID);
+            }
+
+            // resto de centrales
+            // entradas de blog
+            if (isset($order['posts'])) {
+                // entradas en portada
+                $posts     = Post::getList('home', NODE_ID);
+
+                foreach ($posts as $id=>$title) {
+                    $posts[$id] = Post::get($id);
+                }
+            }
+
+            // Convocatoris destacadas
+            if (isset($order['calls'])) {
+                $calls     = Call::getActive(3); // convocatorias en modalidad 1; inscripcion de proyectos
+                $campaigns = Call::getActive(4); // convocatorias en modalidad 2; repartiendo capital riego
+            }
+
+            if ($page == 'about') {
+                $pageData = Page::get($page, \NODE_ID);
+            } else {
+                $pageData = null;
             }
 
             return new View('view/node/index.html.php',
                 array(
                     'node'     => $node,
+                    'page'     => $pageData,
 
                     // centrales
                     'order'    => $order,
                         'posts'    => $posts,
                         'promotes' => $promotes,
-                        'calls'    => $calls,
+                        'calls'    => array('calls'=>$calls, 'campaigns'=>$campaigns),
                     
                     // laterales
                     'side_order' => $side_order,
                         'searcher' => $searcher,
+                        'searcher' => $searcher,
                         'summary'  => $summary,
                         'sumcalls' => $sumcalls,
-                        'sponsors' => $sponsors
+                        'sponsors' => $sponsors,
+
+                    // iconos de recompensas
+                    'icons' => $icons,
+
+                    // si hay que ocultar los destacados (por ser el about)
+                    'hide_promotes' => $hide_promotes,
+
+                    // los ocultos del discover
+                    'discover' => $discover
+
                 )
             );
 

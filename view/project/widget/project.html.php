@@ -20,10 +20,12 @@ if (isset($this['investor']) && is_object($this['investor'])) {
     $investor = $this['investor'];
     $invest = Invest::supported($investor->id, $project->id);
 }
+
+$url = (defined('NODE_URL')) ? \NODE_URL : SITE_URL;
 ?>
 
 <div class="widget project activable<?php if (isset($this['balloon'])) echo ' balloon' ?>">
-	<a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>" class="expand"<?php echo $blank; ?>></a>
+	<a href="<?php echo $url ?>/project/<?php echo $project->id ?>" class="expand"<?php echo $blank; ?>></a>
     <?php if (isset($this['balloon'])): ?>
     <div class="balloon"><?php echo $this['balloon'] ?></div>
     <?php endif ?>
@@ -56,7 +58,7 @@ if (isset($this['investor']) && is_object($this['investor'])) {
         <?php endif; ?>
 
         <?php if (!empty($project->gallery) && (current($project->gallery) instanceof Image)): ?>
-        <a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><img alt="<?php echo $project->name ?>" src="<?php echo current($project->gallery)->getLink(255, 130, true) ?>" /></a>
+        <a href="<?php echo $url ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><img alt="<?php echo $project->name ?>" src="<?php echo current($project->gallery)->getLink(255, 130, true) ?>" /></a>
         <?php endif ?>
         <?php if (!empty($project->categories)): ?>
         <div class="categories">
@@ -67,9 +69,9 @@ if (isset($this['investor']) && is_object($this['investor'])) {
         <?php endif ?>
     </div>
 
-    <h<?php echo $level ?> class="title"><a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><?php echo htmlspecialchars(Text::recorta($project->name,50)) ?></a></h<?php echo $level ?>>
+    <h<?php echo $level ?> class="title"><a href="<?php echo $url ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><?php echo htmlspecialchars(Text::recorta($project->name,50)) ?></a></h<?php echo $level ?>>
 
-    <h<?php echo $level + 1 ?> class="author"><?php echo Text::get('regular-by')?> <a href="<?php echo SITE_URL ?>/user/profile/<?php echo htmlspecialchars($project->user->id) ?>"<?php echo $blank; ?>><?php echo htmlspecialchars(Text::recorta($project->user->name,40)) ?></a></h<?php echo $level + 1?>>
+    <h<?php echo $level + 1 ?> class="author"><?php echo Text::get('regular-by')?> <a href="<?php echo $url ?>/user/profile/<?php echo htmlspecialchars($project->user->id) ?>"<?php echo $blank; ?>><?php echo htmlspecialchars(Text::recorta($project->user->name,40)) ?></a></h<?php echo $level + 1?>>
 
     <div class="description"><?php echo Text::recorta($project->description, 100); ?></div>
 
@@ -81,13 +83,13 @@ if (isset($this['investor']) && is_object($this['investor'])) {
         <ul>
            <?php $q = 1; foreach ($project->social_rewards as $social): ?>
             <li class="<?php echo $social->icon ?> activable">
-                <a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$social->icon_name}: {$social->reward}") ?>" class="tipsy"<?php echo $blank; ?>><?php echo htmlspecialchars($social->reward) ?></a>
+                <a href="<?php echo $url ?>/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$social->icon_name}: {$social->reward}") ?>" class="tipsy"<?php echo $blank; ?>><?php echo htmlspecialchars($social->reward) ?></a>
             </li>
            <?php if ($q >= 5) break; $q++;
                endforeach ?>
            <?php if ($q < 5) foreach ($project->individual_rewards as $individual): ?>
             <li class="<?php echo $individual->icon ?> activable">
-                <a href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$individual->icon_name}: {$individual->reward} {$individual->amount}") ?> &euro;" class="tipsy"<?php echo $blank; ?>><?php echo htmlspecialchars($individual->reward) ?></a>
+                <a href="<?php echo $url ?>/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$individual->icon_name}: {$individual->reward} {$individual->amount}") ?> &euro;" class="tipsy"<?php echo $blank; ?>><?php echo htmlspecialchars($individual->reward) ?></a>
             </li>
            <?php if ($q >= 5) break; $q++;
            endforeach ?>

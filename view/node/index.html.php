@@ -17,9 +17,20 @@ include 'view/node/header.html.php';
     </div>
 
     <div id="content">
-    <?php foreach ($this['order'] as $item=>$itemName) {
-        if (!empty($this[$item])) echo new View("view/node/home/{$item}.html.php", $this);
-    } ?>
+    <?php
+    // primero los ocultos, los destacados si esta el buscador lateral lo ponemos anyway
+    if (isset($this['side_order']['searcher'])) echo new View("view/node/home/discover.html.php", $this);
+    if (!empty($this['page']->content)) {
+        if (isset($this['searcher']['promote'])) echo new View("view/node/home/promotes.html.php", $this);
+        echo $this['page']->content;
+    } else {
+        foreach ($this['order'] as $item=>$itemName) {
+            if (!empty($this[$item])) echo new View("view/node/home/{$item}.html.php", $this);
+        }
+    }
+
+
+    ?>
     </div>
 </div>
 <?php include 'view/node/footer.html.php'; ?>

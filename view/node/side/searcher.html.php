@@ -1,57 +1,49 @@
 <?php
 use Goteo\Library\Text,
-    Goteo\Core\View,
-    Goteo\Model\Icon;
+    Goteo\Core\View;
 
-$labels = $this['searcher'];
-$icons = Icon::getAll();
-/*
- * Solo poner el pastillo si hay proyectos en esa categoría
- * 
- * 
- *
-'promote' => Destacados en portada
-'popular' => Misma categoria del discover
-'recent'  => Misma categoria del discover
-'success' => Misma categoria del discover
-'outdate' => Misma categoria del discover
-'byreward' => Como búsqueda en el discover (tanto individual como colectivo, supongo)
-*/
-
-
-/*
- * Los elementos visuales son pastillos de toda la linea: letra gris, current en azulito, rolover en negro, ojo triangulo (sprite)
- *
- * El por retorno es diferente
- */
+$icons  = $this['icons'];
 ?>
+<!-- funcion jquery para mostrar uno y ocultar el resto
+si no es $this['hide_promotes']  vamos a mostrar el promotes y ponerlo como current
+-->
+<script type="text/javascript">
+    $(function(){
+        $(".show_cat").click(function (event) {
+            event.preventDefault();
+
+            if ($("#node-projects-"+$(this).attr('href')).is(":visible")) {
+                $(".button").removeClass('current');
+                $(".rewards").removeClass('current');
+                $(".node-projects").hide();
+            } else {
+                $(".button").removeClass('current');
+                $(".rewards").removeClass('current');
+                $(".node-projects").hide();
+                $(this).parents('div').addClass('current');
+                $("#node-projects-"+$(this).attr('href')).show();
+            }
+
+        });
+    });
+
+
+</script>
 <div class="side_widget">
-    <div class="line current button rounded-corners">
-        <p><a href="#"><?php echo $labels['promote'] ?></a></p>
-    </div>
-    <div class="line button  rounded-corners">
-        <p><a href="#"><?php echo $labels['popular'] ?></a></p>
-    </div>
-    <div class="line button  rounded-corners">
-        <p><a href="#"><?php echo $labels['recent'] ?></a></p>
-    </div>
-    <div class="line button rounded-corners">
-        <p><a href="#"><?php echo $labels['success'] ?></a></p>
-    </div>
-    <div class="line button rounded-corners">
-        <p><a href="#"><?php echo $labels['outdate'] ?></a></p>
-    </div>
+    <?php foreach ($this['searcher'] as $cat => $label) :
+        if ($cat == 'byreward') : ?>
     <div class="block rewards rounded-corners">
-        <p class="title"><?php echo $labels['byreward'] ?></p>
+        <p class="title"><?php echo $label ?></p>
         <p class="items">
-        	<a href="#" class="tipsy file" title="<?php echo $icons['file']->name ?>"><?php echo $icons['file']->name ?></a>
-            <a href="#" class="tipsy money" title="<?php echo $icons['money']->name ?>"><?php echo $icons['money']->name ?></a>
-            <a href="#" class="tipsy code" title="<?php echo $icons['code']->name ?>"><?php echo $icons['code']->name ?></a>
-        	<a href="#" class="tipsy service" title="<?php echo $icons['service']->name ?>"><?php echo $icons['service']->name ?></a>
-            <a href="#" class="tipsy manual" title="<?php echo $icons['manual']->name ?>"><?php echo $icons['manual']->name ?></a>
-            <a href="#" class="tipsy product" title="<?php echo $icons['product']->name ?>"><?php echo $icons['product']->name ?></a>
-            <a href="#" class="tipsy design" title="<?php echo $icons['design']->name ?>"><?php echo $icons['design']->name ?></a>
-            <a href="#" class="tipsy other" title="<?php echo $icons['other']->name ?>"><?php echo $icons['other']->name ?></a>
+            <?php foreach ($this['discover']['byreward'] as $icon=>$projs) : ?>
+        	<a href="<?php echo $cat . '-' . $icon ?>" class="show_cat tipsy <?php echo $icon ?>" title="<?php echo $icons[$icon]->name ?>"><?php echo $icons['file']->name ?></a>
+            <?php endforeach; ?>
     </div>
+        <?php else:  ?>
+    <div class="line button rounded-corners<?php if ($cat == 'promote' && !$this['hide_promotes']) echo ' current' ?>">
+        <p><a href="<?php echo $cat ?>" class="show_cat"><?php echo $label ?></a></p>
+    </div>
+        <?php endif; ?>
+    <?php endforeach; ?>
 
 </div>

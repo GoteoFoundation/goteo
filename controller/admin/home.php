@@ -32,7 +32,8 @@ namespace Goteo\Controller\Admin {
                 ));
 
 				if ($item->save($errors)) {
-                    Message::Info('Elemento añadido correctamente');
+                    // ok, sin mensaje porque todo se gestiona en la portada
+                    // Message::Info('Elemento añadido correctamente');
 				} else {
                     Message::Error(implode('<br />', $errors));
                 }
@@ -52,6 +53,7 @@ namespace Goteo\Controller\Admin {
                     Model\Home::down($id, $node, $type);
                     throw new Redirection('/admin/home');
                     break;
+                /*
                 case 'add':
                     $next = Model\Home::next($node, 'main');
                     $availables = Model\Home::available($node);
@@ -92,20 +94,27 @@ namespace Goteo\Controller\Admin {
                         )
                     );
                     break;
+                 * 
+                 */
             }
 
-            $items = Model\Home::getAll($node);
-            $side_items = Model\Home::getAllSide($node);
-
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'home',
-                    'file' => 'list',
-                    'items' => $items,
-                    'side_items' => $side_items
-                )
+            $viewData = array(
+                'folder' => 'home',
+                'file' => 'list'
             );
+
+            $viewData['items'] = Model\Home::getAll($node);
+
+            /* Para añadir nuevos desde la lista */
+            $viewData['availables'] = Model\Home::available($node);
+            $viewData['new'] = (object) array('node'=>$node, 'order'=>Model\Home::next($node, 'main'), 'type'=>'main');
+
+            // laterales
+            $viewData['side_items'] = Model\Home::getAllSide($node);
+            $viewData['side_availables'] = Model\Home::availableSide($node);
+            $viewData['side_new'] = (object) array('node'=>$node, 'order'=>Model\Home::next($node, 'side'), 'type'=>'side');
+
+            return new View('view/admin/index.html.php', $viewData);
             
         }
 

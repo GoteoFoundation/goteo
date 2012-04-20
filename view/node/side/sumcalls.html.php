@@ -6,14 +6,14 @@ use Goteo\Library\Text,
 ?>
 <div class="side_widget convocatorias">
     <div class="block rounded-corners">
-        <p class="title">Campañas capital riego</p>
+        <p class="title"><?php echo Text::get('home-calls-header'); ?></p>
         <div style="margin-bottom:6px">
         	<p class="text">Total (todas las campañas)</p>
-    	    <p class="quantity all"><span><?php echo $this['sumcalls']['budget'] ?></span><span class="euro">&euro;</span></p>
+    	    <p class="quantity all"><span><?php echo \amount_format($this['sumcalls']['budget']) ?></span><span class="euro">&euro;</span></p>
         </div>
         <div>
 	        <p class="text">Queda por repartir</p>
-	        <p class="quantity rest"><span><?php echo $this['sumcalls']['rest'] ?></span><span class="euro">&euro;</span></p>
+	        <p class="quantity rest"><span><?php echo \amount_format($this['sumcalls']['rest']) ?></span><span class="euro">&euro;</span></p>
         </div>
     </div>
     <div class="half calls rounded-corners">
@@ -27,28 +27,3 @@ use Goteo\Library\Text,
         Activas
     </div>
 </div>
-
-<?php
-/*
- * Esto es lo que pone en el elemento central de convocatorias de goteo
- *
-     <div class="title">
-        <div class="logo"><?php echo Text::get('home-calls-header'); ?></div>
-        <?php if (!empty($calls)) : ?>
-        <div class="call-count mod1">
-            <strong><?php echo count($calls) ?></strong>
-            <span>Convocatorias<br />abiertas</span>
-        </div>
-        <?php endif; ?>
-
-        <?php if (!empty($campaigns)) : ?>
-        <div class="call-count mod2">
-            <strong><?php echo count($campaigns) ?></strong>
-            <span>Campañas<br />activas</span>
-        </div>
-        <?php endif; ?>
-    </div>
-
-*
- *
- */

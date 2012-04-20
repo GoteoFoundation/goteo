@@ -384,6 +384,245 @@ namespace Goteo\Model {
 
 
 
+        /** Resumen proyectos: (asignados a este nodo)
+         * total proyectos, 
+         * activos (en campaña), 
+         * exitosos (que han llegado al mínimo), 
+         * cofinanciadores (diferentes), 
+         * colaboradores (diferentes) 
+         * total de dinero recaudado
+         *
+         * @return array asoc
+         */
+        public function getSummary () {
+
+            // sacamos registro de la tabla de calculos
+            $sql = "
+                SELECT
+                    projects,
+                    active,
+                    success,
+                    investors,
+                    supporters,
+                    amount,
+                    unix_timestamp(now()) - unix_timestamp(updated) as timeago
+                FROM node_data
+                WHERE node = :node
+                LIMIT 1
+                ";
+            $query = self::query($sql, array(':node' => $this->id));
+            $data = $query->fetch(\PDO::FETCH_ASSOC);
+
+            // si el calculo tiene más de 30 minutos (ojo, timeago son segundos) , calculamos de nuevo
+            if (empty($data) || $data['timeago'] > (30*60)) {
+                if ($newdata = $this->updateData()) {
+                    return $newdata;
+                }
+            }
+
+            return $data;
+        }
+
+        /** Resumen convocatorias: (destacadas por el nodo)
+         * nº campañas abiertas
+         * nº convocatorias activas
+         * importe total de las campañas
+         * resto total
+         *
+         * @return array asoc
+         */
+        public function getSumcalls () {
+
+            // sacamos registro de la abla de calculos
+            $sql = "
+                SELECT
+                    budget,
+                    rest,
+                    calls,
+                    campaigns,
+                    unix_timestamp(now()) - unix_timestamp(updated) as timeago
+                FROM node_data
+                WHERE node = :node
+                LIMIT 1
+                ";
+            $query = self::query($sql, array(':node' => $this->id));
+            $data = $query->fetch(\PDO::FETCH_ASSOC);
+
+            // si el calculo tiene más de 30 minutos (ojo, timeago son segundos) , calculamos de nuevo
+            if (empty($data) || $data['timeago'] > (30*60)) {
+                if ($newdata = $this->updateData()) {
+                    return $newdata;
+                }
+            }
+
+            return $data;
+        }
+
+        private function updateData () {
+            $values = array(':node' => $this->id);
+            $data = array();
+
+            // primero calculamos y lo metemos tanto en values como en data
+            // datos de proyectos
+            // nº de proyectos
+            $query = static::query("
+                SELECT
+                    COUNT(project.id)
+                FROM    project
+                WHERE node = :node
+                ", $values);
+            $data['projects'] = $query->fetchColumn();
+
+            // proyectos activos
+            $query = static::query("
+                SELECT
+                    COUNT(project.id)
+                FROM    project
+                WHERE node = :node
+                AND status = 3
+                ", $values);
+            $data['active'] = $query->fetchColumn();
+
+            // proyectos exitosos
+            // ojo! hay que tener en cuenta los que llegan al mínimo
+            $query = static::query("
+                SELECT
+                    project.id,
+                    (SELECT  SUM(amount)
+                    FROM    cost
+                    WHERE   project = project.id
+                    AND     required = 1
+                    ) as `mincost`,
+                    (SELECT  SUM(amount)
+                    FROM    invest
+                    WHERE   project = project.id
+                    AND     invest.status IN ('0', '1', '3', '4')
+                    ) as `getamount`
+                FROM    project
+                WHERE node = :node
+                AND status IN ('3', '4', '5')
+                HAVING getamount >= mincost
+                ", $values);
+            $data['success'] = $query->rowCount();
+
+            // cofinanciadores
+            $query = static::query("
+                SELECT
+                    COUNT(DISTINCT(invest.user))
+                FROM  invest
+                INNER JOIN project
+                    ON project.id = invest.project
+                WHERE project.node = :node
+                AND invest.status IN ('0', '1', '3')
+                ", $values);
+            $data['investors'] = $query->fetchColumn();
+
+            // colaboradores (que han enviado algun mensaje)
+            $query = static::query("
+                SELECT
+                    COUNT(DISTINCT(message.user))
+                FROM  message
+                INNER JOIN project
+                    ON project.id = message.project
+                WHERE project.node = :node
+                AND message.user != project.owner
+                ", $values);
+            $data['supporters'] = $query->fetchColumn();
+
+            // cantidad recaudada en total
+            $query = static::query("
+                SELECT
+                    SUM(invest.amount)
+                FROM  invest
+                INNER JOIN project
+                    ON project.id = invest.project
+                WHERE project.node = :node
+                AND invest.status IN ('0', '1', '3')
+                ", $values);
+            $data['amount'] = $query->fetchColumn();
+
+            // datos de convocatorias (destacadas por el nodo)
+            // presupuesto
+            $query = static::query("
+                SELECT
+                    SUM(amount)
+                FROM    `call`
+                INNER JOIN campaign
+                    ON call.id = campaign.call
+                    AND node = :node
+                ", $values);
+            $data['budget'] = $query->fetchColumn();
+
+            // por repartir
+            $query = static::query("
+                SELECT SUM(invest.amount)
+                FROM invest
+                INNER JOIN campaign
+                    ON invest.call = campaign.call
+                    AND node = :node
+                WHERE invest.campaign = 1
+                AND invest.status IN ('0', '1', '3')
+                ", $values);
+            $data['rest'] = $data['budget'] - $query->fetchColumn();
+
+            // proyectos activos
+            $query = static::query("
+                SELECT
+                    COUNT(call.id)
+                FROM    `call`
+                INNER JOIN campaign
+                    ON call.id = campaign.call
+                    AND node = :node
+                WHERE call.status = 3
+                ", $values);
+            $data['calls'] = $query->fetchColumn();
+
+            // proyectos activos
+            $query = static::query("
+                SELECT
+                    COUNT(call.id)
+                FROM   `call`
+                INNER JOIN campaign
+                    ON call.id = campaign.call
+                    AND node = :node
+                WHERE call.status = 4
+                ", $values);
+            $data['campaigns'] = $query->fetchColumn();
+
+            
+
+            //grabamos los datos en la tabla
+            $set = 'node = :node';
+
+            $fields = array(
+                'projects',
+                'active',
+                'success',
+                'investors',
+                'supporters',
+                'amount',
+                'budget',
+                'rest',
+                'calls',
+                'campaigns'
+                );
+
+            foreach ($fields as $field) {
+                $set .= ', ';
+                $set .= "$field = :$field";
+                $values[":$field"] = $data[$field];
+            }
+
+            $sql = "REPLACE node_data SET " . $set;
+            if (self::query($sql, $values)) {
+                // devolvemos los datos
+                return $data;
+            } else {
+                return false;
+            }
+
+        }
+
     }
     
 }

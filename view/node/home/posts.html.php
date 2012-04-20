@@ -13,9 +13,10 @@ $posts = $this['posts'];
         });
     });
 </script>
-<div id="node-news" class="content_widget">
-    <h2><?php echo Text::get('home-posts-header'); ?></h2>
-    <!--- ---------------- -->
+<div id="node-news" class="content_widget rounded-corners">
+    <h2><?php echo Text::get('home-posts-header'); ?>
+    <span class="line"></span>
+    </h2>
     
     <div class="slder_container"<?php if (count($posts)==1) echo ' style="display:block;"'; ?>>
 

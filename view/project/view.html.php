@@ -67,7 +67,7 @@ include 'view/prologue.html.php' ?>
                     $sep = ', '; endforeach; ?>
                 </div>
 
-                <?php if (!empty($project->node) && $project->node != \GOTEO_NODE) : ?>
+                <?php if (!empty($project->node) && $project->node != \NODE_ID) : ?>
                 <div class="nodemark"><a class="node-jump" href="<?php echo $project->nodeData->url ?>" >NODO: <?php echo $project->nodeData->name ?></a></div>
                 <?php endif; ?>
             </div>

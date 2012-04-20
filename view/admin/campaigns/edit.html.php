@@ -24,7 +24,7 @@ $node = $_SESSION['admin_node'];
     <select id="campaign-call" name="call">
         <option value="" >Seleccionar la campaña a destacar</option>
     <?php foreach ($calls as $call) : ?>
-        <option value="<?php echo $call->id; ?>"<?php if ($campaign->call == $call->id) echo' selected="selected"';?>><?php echo $call->name . ' ('. $status[$call->status] . ')'; ?></option>
+        <option value="<?php echo $call->id; ?>"<?php if ($campaign->call == $call->id) echo' selected="selected"';?>><?php echo substr($call->name, 0, 100) . ' ('. $status[$call->status] . ')'; ?></option>
     <?php endforeach; ?>
     </select>
 </p>

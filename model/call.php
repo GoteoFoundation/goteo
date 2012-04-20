@@ -719,6 +719,7 @@ namespace Goteo\Model {
         public static function getActive($status = null, $all = false)
         {
             $calls = array();
+            $values = array();
 
             if (in_array($status, array(3, 4, 5))) {
                 $sqlFilter .= " WHERE call.status = $status";
@@ -728,12 +729,17 @@ namespace Goteo\Model {
                 $sqlFilter .= " WHERE call.status IN ('3', '4')";
             }
 
+            if (\NODE_ID != \GOTEO_NODE) {
+                $sqlFilter .= " AND call.id IN (SELECT `call` FROM campaign WHERE node = :node and active = 1) ";
+                $values[':node'] = \NODE_ID;
+            }
+
             $sql = "SELECT call.id
                     FROM  `call`
                     $sqlFilter
                     ORDER BY name ASC";
 
-            $query = self::query($sql);
+            $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $call) {
                 $calls[] = self::get($call->id);
             }

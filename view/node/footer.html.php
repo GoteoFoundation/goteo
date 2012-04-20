@@ -12,30 +12,23 @@ $posts      = Post::getList('footer');
 
    <div id="footer">
 		<div class="w940">
-        	<div class="block categories">
-                <h8 class="title"><?php echo Text::get('footer-header-categories') ?></h8>
+        	<div class="block about" style="border-left:none;">
             </div>
 
-            <div class="block projects">
-                <h8 class="title"><?php echo Text::get('footer-header-projects') ?></h8>
+            <div class="block help">
+                Necesitas ayuda?
             </div>
 
-            <div class="block services">
-
-                <h8 class="title"><?php echo Text::get('footer-header-services') ?></h8>
-                <ul>
-                    <li><a href="/service/resources"><?php echo Text::get('footer-service-resources') ?></a></li>
-<?php /*                    <li><a href="/service/campaign"><?php echo Text::get('footer-service-campaign') ?></a></li>
-                    <li><a href="/service/consulting"><?php echo Text::get('footer-service-consulting') ?></a></li>
- *
- */ ?>
-                    <li><a href="/service/workshop"><?php echo Text::get('footer-service-workshop') ?></a></li>
-                </ul>
-
+            <div class="block creators">
+                Impulsores
             </div>
 
-            <div class="block social" style="border-right:#ebe9ea 2px solid;">
-                <h8 class="title"><?php echo Text::get('footer-header-social') ?></h8>
+            <div class="block investors">
+                Cofinanciadores
+            </div>
+
+            <div class="block social">
+                S&iacute;ganos
                 <ul>
                     <li class="twitter"><a href="<?php echo Text::get('social-account-twitter') ?>" target="_blank"><?php echo Text::get('regular-twitter') ?></a></li>
                     <li class="facebook"><a href="<?php echo Text::get('social-account-facebook') ?>" target="_blank"><?php echo Text::get('regular-facebook') ?></a></li>
@@ -58,7 +51,7 @@ $posts      = Post::getList('footer');
                     <li><a href="<?php echo SITE_URL ?>/about">Goteo.org</a></li>
                     <li><a href="/user/login"><?php echo Text::get('regular-login'); ?></a></li>
                     <li><a href="/blog"><?php echo Text::get('regular-header-blog'); ?></a></li> 
-                    <li><a href="/about/press"><?php echo Text::get('regular-footer-press'); ?></a></li>
+                    <li><a href="/about/press"><?php echo Text::get('footer-resources-press'); ?></a></li>
                     <li><a href="/legal/privacy"><?php echo Text::get('regular-footer-privacy'); ?></a></li>
                     <li><a href="/contact"><?php echo Text::get('regular-footer-contact'); ?></a></li>
                 </ul>
