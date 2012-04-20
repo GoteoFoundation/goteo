@@ -12,23 +12,47 @@ $posts      = Post::getList('footer');
 
    <div id="footer">
 		<div class="w940">
+
         	<div class="block about" style="border-left:none;">
+            	<span class="title"><a href="#">Goteo</a></span>
+                <div style="margin-top:-5px"><p>Red social para cofinanciar y colaborar
+                con proyectos creativos que fomentan el
+                procomún <span style="color:#57c6c5;font-size:1em">¿Tienes un proyecto con adn abierto?</span></p></div>
             </div>
 
             <div class="block help">
-                Necesitas ayuda?
+                <span class="title">Necesitas ayuda?</span>
+                <div>
+                	<ul>
+                    <li><a href="#">Qué es el Crowfunding</a></li>
+                    <li><a href="#">Porqué Goteo es diferente</a></li>                    
+                    <li><a href="#">FAQ</a></li>                                        
+                    <li><a href="#">Glosario</a></li>                                                            
+                    </ul>
+                </div>
             </div>
 
             <div class="block creators">
-                Impulsores
+                <span class="title">Impulsores</span>
+                <ul>
+                    <li><a href="#">¿Es goteable tu proyecto?</a></li>
+                    <li><a href="#">Qué son los retornos colectivos</a></li>                    
+                    <li><a href="#">10 pasos a seguir</a></li>                                        
+                    <li><a href="#">Pack de comunicación</a></li>                                                            
+                    </ul>
             </div>
 
             <div class="block investors">
-                Cofinanciadores
+                <span class="title">Cofinanciadores</span>
+                <ul>
+                    <li><a href="#">Cómo apoyar un proyecto</a></li>
+                    <li><a href="#">Cómo funcionan los pagos</a></li>                    
+                    <li><a href="#">Donaciones y desgravaciones</a></li>                                        
+                    </ul>
             </div>
 
             <div class="block social">
-                S&iacute;ganos
+                <span class="title">S&iacute;ganos</span>
                 <ul>
                     <li class="twitter"><a href="<?php echo Text::get('social-account-twitter') ?>" target="_blank"><?php echo Text::get('regular-twitter') ?></a></li>
                     <li class="facebook"><a href="<?php echo Text::get('social-account-facebook') ?>" target="_blank"><?php echo Text::get('regular-facebook') ?></a></li>

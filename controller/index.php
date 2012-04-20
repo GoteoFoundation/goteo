@@ -202,7 +202,6 @@ namespace Goteo\Controller {
             }
 
             if (isset($side_order['sumcalls'])) {
-                // Resumen convocatorias: nº campañas abiertas, nº convocatorias activas, importe total de las campañas, resto total
                 $sumcalls = $node->getSumcalls();
             }
 

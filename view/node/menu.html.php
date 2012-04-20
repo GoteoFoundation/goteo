@@ -11,7 +11,36 @@ $nodes = Nodesys::activeNodes();
         <h2><?php echo Text::get('regular-menu'); ?></h2>
         
         <ul>
-            <li class="info"><a class="open" href="#" >&nbsp;</a></li>
+         <script type="text/javascript">
+		jQuery(document).ready(function($){		
+			//inicialización del banner para páginas interiores
+			if(!($('body').hasClass("home"))){
+				//botón establecido en 'closed'
+				jQuery("#switch-banner").removeClass("open").addClass("close");	
+				//banner oculto				
+				jQuery("#node-banners").css("display","none");//forzar ocultación							
+			}
+			
+			//para todas las páginas	
+			jQuery("#switch-banner").click(function(event) {
+			  event.preventDefault();
+			  if($('#switch-banner').hasClass("open")){
+				  //el elemento está abierto, luego se cierra
+				  jQuery("#node-banners").slideUp("slow",function(){
+					  jQuery("#node-banners").css("display","none");//forzar ocultación
+					  jQuery("#switch-banner").removeClass("open").addClass("close");
+				  });			  
+			  }else{
+				  //el elemento está cerrado, luego se abre
+				  jQuery("#node-banners").slideDown("slow",function(){
+					  jQuery("#switch-banner").removeClass("close").addClass("open");
+				  });
+			  }
+			});
+			
+		});
+		</script>
+            <li class="info"><a class="open" id="switch-banner" href="#">&nbsp;</a></li>
             <li class="explore"><a class="button red" href="/discover"><?php echo Text::get('regular-discover'); ?></a></li>
             <li class="create"><a class="button aqua" href="/project/create"><?php echo Text::get('regular-create'); ?></a></li>
             <li class="help"><a class="button grey" href="/faq">¿Necesitas ayuda?</a></li>
