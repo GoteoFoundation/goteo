@@ -1,30 +1,26 @@
 <?php
-use Goteo\Core\View,
-    Goteo\Library\Text;
+if (empty($banners)) return;
 
-/*
- *
- <script type="text/javascript">
+if (count($banners) > 1) : ?>
+<script type="text/javascript">
     $(function(){
         $('#node-banners').slides({
             container: 'node-banners-container',
-            paginationClass: 'slderpag',
-            generatePagination: true,
-            play: 0
+            paginationClass: 'bannerspage',
+            generatePagination: true
+            /* para que no ruede añadir esto>>>, play: 0<<<  (pone la velocidad a cero)*/
         });
     });
 </script>
-*
- *
+<?php endif; ?>
 <div id="node-banners" class="rounded-corners-bottom">
     <div class="node-banners-container rounded-corners-bottom">
-        <div class="node-banner sample">
-            <div class="title">Cómo abrir tu proyecto?</div>
-            <div class="short-desc">Compartiendo conocimiento, procesos, resultado,
-            responsabilidad o beneficio, desde la filosofía del procomún.</div>
+        <?php foreach ($banners as $banner) : ?>
+        <div class="node-banner"<?php if ($banner->image instanceof \Goteo\Model\Image) : ?> style="background: url('<?php echo $banner->image->getLink(940); ?>') no-repeat right bottom;"<?php endif; ?>>
+            <div class="title"><?php echo $banner->title ?></div>
+            <div class="short-desc"><?php echo $banner->description ?></div>
         </div>
+        <?php endforeach; ?>
     </div>
-    <ul class="bannerpage"></ul>
+<?php if (count($banners) > 1) : ?><ul class="bannerspage"></ul><?php endif; ?>
 </div>
- */
-?>

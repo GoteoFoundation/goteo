@@ -93,7 +93,7 @@ namespace Goteo\Controller {
             }
             
             // Banners siempre
-            $banners   = Banner::getAll();
+            $banners   = Banner::getAll(true);
 
             foreach ($banners as $id => &$banner) {
                 try {

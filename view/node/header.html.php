@@ -1,9 +1,11 @@
 <?php 
     use Goteo\Library\Text,
         Goteo\Library\Lang,
-        Goteo\Core\NodeSys;
+        Goteo\Core\NodeSys,
+        Goteo\Model\Banner;
 
 $nodeData = NodeSys::setData(NODE_ID);
+$banners = Banner::getAll(true, NODE_ID);
 ?>
 <?php include 'view/header/lang.html.php' ?>
 <div id="header">

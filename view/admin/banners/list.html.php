@@ -2,6 +2,7 @@
 
 use Goteo\Library\Text;
 
+$node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
 ?>
 <a href="/admin/banners/add" class="button">Nuevo banner</a>
 
@@ -10,7 +11,7 @@ use Goteo\Library\Text;
     <table>
         <thead>
             <tr>
-                <th>Proyecto</th> <!-- preview -->
+                <th><?php echo ($node == \GOTEO_NODE) ? 'Proyecto' : 'Título'; ?></th>
                 <th>Estado</th> <!-- status -->
                 <th>Posición</th> <!-- order -->
                 <th><!-- Subir --></th>
@@ -21,17 +22,24 @@ use Goteo\Library\Text;
         </thead>
 
         <tbody>
-            <?php foreach ($this['bannered'] as $banner) : ?>
+            <?php $c = 1; foreach ($this['bannered'] as $banner) :
+                $banner_title = ($node == \GOTEO_NODE) ? $banner->name : $banner->title;
+                ?>
             <tr>
-                <td><a href="/project/<?php echo $banner->project; ?>" target="_blank" title="Preview"><?php echo $banner->name; ?></a></td>
+                <td><?php echo ($banner->active) ? '<strong>'.$banner_title.'</strong>' : $banner_title; ?></td>
                 <td><?php echo $banner->status; ?></td>
-                <td><?php echo $banner->order; ?></td>
-                <td><a href="/admin/banners/up/<?php echo $banner->project; ?>">[&uarr;]</a></td>
-                <td><a href="/admin/banners/down/<?php echo $banner->project; ?>">[&darr;]</a></td>
-                <td><a href="/admin/banners/edit/<?php echo $banner->project; ?>">[Editar]</a></td>
-                <td><a href="/admin/banners/remove/<?php echo $banner->project; ?>">[Quitar]</a></td>
+                <td><?php echo $c; ?></td>
+                <td><a href="/admin/banners/up/<?php echo $banner->id; ?>">[&uarr;]</a></td>
+                <td><a href="/admin/banners/down/<?php echo $banner->id; ?>">[&darr;]</a></td>
+                <td><a href="/admin/banners/edit/<?php echo $banner->id; ?>">[Editar]</a></td>
+                <td><?php if ($banner->active) : ?>
+                <a href="/admin/banners/active/<?php echo $banner->id; ?>/off">[Ocultar]</a>
+                <?php else : ?>
+                <a href="/admin/banners/active/<?php echo $banner->id; ?>/on">[Mostrar]</a>
+                <?php endif; ?></td>
+                <td><a href="/admin/banners/remove/<?php echo $banner->id; ?>">[Quitar]</a></td>
             </tr>
-            <?php endforeach; ?>
+            <?php $c++; endforeach; ?>
         </tbody>
 
     </table>

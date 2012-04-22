@@ -4,7 +4,6 @@ namespace Goteo\Model {
     use Goteo\Library\Text,
         Goteo\Model\Project,
         Goteo\Model\Image,
-        Goteo\Library\Message,
         Goteo\Library\Check;
 
     class Banner extends \Goteo\Core\Model {
@@ -19,21 +18,24 @@ namespace Goteo\Model {
         /*
          *  Devuelve datos de un banner de proyecto
          */
-        public static function get ($project, $node = \GOTEO_NODE) {
+        public static function get ($id) {
                 $query = static::query("
                     SELECT  
                         banner.id as id,
                         banner.node as node,
                         banner.project as project,
                         project.name as name,
+                        banner.title as title,
+                        banner.description as description,
+                        banner.url as url,
                         banner.image as image,
-                        banner.order as `order`
+                        banner.order as `order`,
+                        banner.active as `active`
                     FROM    banner
-                    INNER JOIN project
+                    LEFT JOIN project
                         ON project.id = banner.project
-                    WHERE banner.project = :project
-                    AND banner.node = :node
-                    ", array(':project'=>$project, ':node'=>$node));
+                    WHERE banner.id = :id
+                    ", array(':id'=>$id));
                 $banner = $query->fetchObject(__CLASS__);
 
                 $banner->image = Image::get($banner->image);
@@ -46,25 +48,33 @@ namespace Goteo\Model {
         /*
          * Lista de proyectos en banners
          */
-        public static function getAll ($node = \GOTEO_NODE) {
+        public static function getAll ($activeonly = false, $node = \GOTEO_NODE) {
 
             // estados
             $status = Project::status();
 
             $banners = array();
 
+            $sqlFilter = ($activeonly) ? " AND banner.active = 1" : '';
+
             $query = static::query("
                 SELECT
                     banner.id as id,
+                    banner.node as node,
                     banner.project as project,
                     project.name as name,
+                    banner.title as title,
+                    banner.description as description,
+                    banner.url as url,
                     project.status as status,
                     banner.image as image,
-                    banner.order as `order`
+                    banner.order as `order`,
+                    banner.active as `active`
                 FROM    banner
-                INNER JOIN project
+                LEFT JOIN project
                     ON project.id = banner.project
                 WHERE banner.node = :node
+                $sqlFilter
                 ORDER BY `order` ASC
                 ", array(':node' => $node));
             
@@ -103,20 +113,13 @@ namespace Goteo\Model {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
 
-
+        // ya no validamos esto
         public function validate (&$errors = array()) {
-            /*
-            if (empty($this->node))
-                $errors[] = 'Falta nodo';
-                //Text::get('mandatory-banner-node');
-*/
             if (empty($this->project))
                 $errors[] = 'Falta proyecto';
-                //Text::get('validate-banner-noproject');
 
             if (empty($this->image))
                 $errors[] = 'Falta imagen';
-                //Text::get('validate-banner-noproject');
 
             if (empty($errors))
                 return true;
@@ -125,7 +128,7 @@ namespace Goteo\Model {
         }
 
         public function save (&$errors = array()) {
-            if (!$this->validate($errors)) return false;
+//            if (!$this->validate($errors)) return false;
 
             // Imagen de fondo de banner
             if (is_array($this->image) && !empty($this->image['name'])) {
@@ -133,16 +136,21 @@ namespace Goteo\Model {
                 if ($image->save()) {
                     $this->image = $image->id;
                 } else {
-                    Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                    \Goteo\Library\Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
                     $this->image = '';
                 }
             }
 
             $fields = array(
+                'id',
                 'node',
+                'title',
+                'description',
+                'url',
                 'project',
                 'image',
-                'order'
+                'order',
+                'active'
                 );
 
             $set = '';
@@ -169,10 +177,23 @@ namespace Goteo\Model {
         /*
          * Para quitar un proyecto banner
          */
-        public static function delete ($project, $node = \GOTEO_NODE) {
+        public static function delete ($id) {
             
-            $sql = "DELETE FROM banner WHERE project = :project AND node = :node";
-            if (self::query($sql, array(':project'=>$project, ':node'=>$node))) {
+            $sql = "DELETE FROM banner WHERE id = :id";
+            if (self::query($sql, array(':id'=>$id))) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+        /* Para activar/desactivar un banner
+         */
+        public static function setActive ($id, $active = false) {
+
+            $sql = "UPDATE banner SET active = :active WHERE id = :id";
+            if (self::query($sql, array(':id'=>$id, ':active'=>$active))) {
                 return true;
             } else {
                 return false;
@@ -183,21 +204,21 @@ namespace Goteo\Model {
         /*
          * Para que un proyecto salga antes  (disminuir el order)
          */
-        public static function up ($project, $node = \GOTEO_NODE) {
+        public static function up ($id, $node = \GOTEO_NODE) {
             $extra = array (
                     'node' => $node
                 );
-            return Check::reorder($project, 'up', 'banner', 'project', 'order', $extra);
+            return Check::reorder($id, 'up', 'banner', 'id', 'order', $extra);
         }
 
         /*
          * Para que un proyecto salga despues  (aumentar el order)
          */
-        public static function down ($project, $node = \GOTEO_NODE) {
+        public static function down ($id, $node = \GOTEO_NODE) {
             $extra = array (
                     'node' => $node
                 );
-            return Check::reorder($project, 'down', 'banner', 'project', 'order', $extra);
+            return Check::reorder($id, 'down', 'banner', 'id', 'order', $extra);
         }
 
         /*

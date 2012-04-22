@@ -514,10 +514,10 @@ namespace Goteo\Controller {
         /*
          * Banners
          */
-        public function banners($action = 'list', $id = null) {
+        public function banners($action = 'list', $id = null, $flag = null) {
             $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-            return Admin\Banners::process($action, $id);
+            return Admin\Banners::process($action, $id, $flag);
         }
 
         /*
@@ -928,7 +928,7 @@ namespace Goteo\Controller {
                                 'node' => $options['node'],   // la gestion de datos del nodo
                                 'pages' => $options['pages'], // páginas institucionales del nodo
                                 'blog' => $options['blog'],   // entradas del blog
-                                'tags' => $options['tags']    // tags de blog
+                                'banners' => $options['banners']    // banners del nodo
                             )
                         ),
                         'projects' => array(

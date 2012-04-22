@@ -55,6 +55,8 @@ namespace Goteo\Controller\Admin {
                             Message::Info('Destacado actualizado correctamente');
                             break;
                     }
+
+                    throw new Redirection('/admin/promote');
 				}
 				else {
 
@@ -91,34 +93,23 @@ namespace Goteo\Controller\Admin {
                 case 'active':
                     $set = $flag == 'on' ? true : false;
                     Model\Promote::setActive($id, $set);
+                    throw new Redirection('/admin/promote');
                     break;
                 case 'up':
                     Model\Promote::up($id, $node);
+                    throw new Redirection('/admin/promote');
                     break;
                 case 'down':
                     Model\Promote::down($id, $node);
+                    throw new Redirection('/admin/promote');
                     break;
                 case 'remove':
                     if (Model\Promote::delete($id)) {
-                        $projectData = Model\Project::getMini($id);
-
-                        if ($node == \GOTEO_NODE) {
-                            // Evento Feed
-                            $log = new Feed();
-                            $log->populate('proyecto quitado portada (admin)', '/admin/promote',
-                                \vsprintf('El admin %s ha %s el proyecto %s', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', 'Quitado de la portada'),
-                                Feed::item('project', $projectData->name, $projectData->id)
-                            )));
-                            $log->doAdmin('admin');
-                            unset($log);
-                        }
-
-                        Message::Info('Proyecto quitado correctamente');
+                        Message::Info('Destacado quitado correctamente');
                     } else {
                         Message::Error('No se ha podido quitar el destacado');
                     }
+                    throw new Redirection('/admin/promote');
                     break;
                 case 'add':
                     // siguiente orden

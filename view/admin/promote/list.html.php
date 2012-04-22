@@ -11,8 +11,8 @@ $translator = ACL::check('/translate') ? true : false;
     <table>
         <thead>
             <tr>
-                <th>Proyecto</th> <!-- preview -->
-                <th>Título</th> <!-- title -->
+                <th></th> <!-- preview -->
+                <th>Proyecto</th> <!-- title -->
                 <th>Estado</th> <!-- status -->
                 <th>Posición</th> <!-- order -->
                 <th><!-- Subir --></th>

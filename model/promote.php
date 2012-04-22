@@ -111,7 +111,7 @@ namespace Goteo\Model {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
 
-
+        // ya no validamos esto
         public function validate (&$errors = array()) { 
             if (empty($this->node))
                 $errors[] = 'Falta nodo';
@@ -126,7 +126,7 @@ namespace Goteo\Model {
         }
 
         public function save (&$errors = array()) {
-            if (!$this->validate($errors)) return false;
+//            if (!$this->validate($errors)) return false;
 
             $fields = array(
                 'id',

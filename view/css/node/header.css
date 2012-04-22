@@ -183,11 +183,42 @@ div#header div#node-banners{
 -moz-box-shadow:0px 2px 3px rgba(44, 50, 51, 0.4);
 box-shadow:0px 2px 3px rgba(44, 50, 51, 0.4);
 }
-div#header div#node-banners div.node-banners-container{height:270px;background:url('/view/css/header/node-banner-bg.jpg')}
-div.node-banners-container div.node-banner{height:245px;padding:25px 0 0 50px;}
-div.node-banners-container div.node-banner > div.title{margin-bottom:32px;line-height:25px;font-size:25px;color:#585a5c}
-div.node-banners-container div.node-banner > div.short-desc{line-height:30px;font-size:20px;color:#1f81bb;max-width:530px}
+div#header div#node-banners div.node-banners-container{height:270px;background:url('/view/css/header/node-banner-bg.jpg');}
+div.node-banners-container div.node-banner{width:940px;height:270px;}
+div.node-banners-container div.node-banner > div.title{padding-top: 25px; margin-left: 50px;line-height:25px;font-size:25px;color:#585a5c}
+div.node-banners-container div.node-banner > div.short-desc{margin-top: 25px; margin-left: 50px; line-height:30px;font-size:20px;color:#1f81bb; max-width: 450px;}
 
-div.node-banner.sample{background:url('/view/css/header/banner-node-bg-sample.png') no-repeat right bottom}
+ul.bannerspage {
+	list-style:none;
+    border: 1px solid blue;
+    height: 20px;
+}
+
+ul.bannerspage li {
+    cursor:pointer;
+    display: block;
+    float: left;
+    overflow: hidden;
+	margin: 0px 4px 5px 4px;
+}
+
+ul.bannerspage li a {
+    width: 12px;
+    height: 12px;
+    margin-top: 2px;
+    background-color: #cdcdce;
+    color: #cdcdce;
+	display:block;
+}
+
+ul.bannerspage li a:hover {
+    background-color: #20b3b2;
+    color: #20b3b2;
+}
+
+ul.bannerspage li.current a {
+    background-color: #808184 !important;
+    color: #808184 !important;
+}
 
 /* Fin banners de nodo */

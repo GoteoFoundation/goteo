@@ -11,17 +11,24 @@ namespace Goteo\Controller\Admin {
 
     class Banners {
 
-        public static function process ($action = 'list', $id = null) {
+        public static function process ($action = 'list', $id = null, $flag = null) {
 
             $errors = array();
+
+            $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 // objeto
                 $banner = new Model\Banner(array(
-                    'node' => \GOTEO_NODE,
+                    'id' => $id,
+                    'node' => $node,
                     'project' => $_POST['project'],
-                    'order' => $_POST['order']
+                    'title' => $_POST['title'],
+                    'description' => $_POST['description'],
+                    'url' => $_POST['url'],
+                    'order' => $_POST['order'],
+                    'active' => $_POST['active']
                 ));
 
                 // imagen
@@ -40,15 +47,15 @@ namespace Goteo\Controller\Admin {
                         // Evento Feed
                         $log = new Feed();
                         $log->populate('nuevo banner de proyecto destacado en portada (admin)', '/admin/promote',
-                            \vsprintf('El admin %s ha %s del proyecto %s', array(
+                            \vsprintf('El admin %s ha %s', array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('relevant', 'Publicado un banner', '/'),
-                            Feed::item('project', $projectData->name, $projectData->id)
+                            Feed::item('relevant', 'Publicado un banner', '/')
                         )));
                         $log->doAdmin('admin');
                         unset($log);
                     }
 
+                    throw new Redirection('/admin/banners');
 				}
 				else {
                     Message::Error(implode('<br />', $errors));
@@ -82,28 +89,26 @@ namespace Goteo\Controller\Admin {
 			}
 
             switch ($action) {
+                case 'active':
+                    $set = $flag == 'on' ? true : false;
+                    Model\Banner::setActive($id, $set);
+                    throw new Redirection('/admin/banners');
+                    break;
                 case 'up':
                     Model\Banner::up($id);
+                    throw new Redirection('/admin/banners');
                     break;
                 case 'down':
                     Model\Banner::down($id);
+                    throw new Redirection('/admin/banners');
                     break;
                 case 'remove':
                     if (Model\Banner::delete($id)) {
-                        $projectData = Model\Project::getMini($id);
-
-                        // Evento Feed
-                        $log = new Feed();
-                        $log->populate('banner de proyecto quitado portada (admin)', '/admin/promote',
-                            \vsprintf('El admin %s ha %s del proyecto %s', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('relevant', 'Quitado el banner', '/'),
-                                Feed::item('project', $projectData->name, $projectData->id)
-                        )));
-                        $log->doAdmin('admin');
-                        unset($log);
-
+                        Message::Info('Banner quitado correctamente');
+                    } else {
+                        Message::Error('No se ha podido quitar el banner');
                     }
+                    throw new Redirection('/admin/banners');
                     break;
                 case 'add':
                     // siguiente orden
@@ -136,7 +141,7 @@ namespace Goteo\Controller\Admin {
             }
 
 
-            $bannered = Model\Banner::getAll();
+            $bannered = Model\Banner::getAll(false, $node);
 
             return new View(
                 'view/admin/index.html.php',
