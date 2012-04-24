@@ -978,7 +978,6 @@ namespace Goteo\Model {
          */
         public static function status ($id = null) {
             $array = array (
-                -2 => 'Incidencia',
                 -1 => 'Incompleto',
                 0  => 'Preaprobado',
                 1  => 'Cobrado por Goteo',

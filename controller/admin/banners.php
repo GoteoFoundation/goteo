@@ -21,7 +21,7 @@ namespace Goteo\Controller\Admin {
 
                 // objeto
                 $banner = new Model\Banner(array(
-                    'id' => $id,
+                    'id' => $_POST['id'],
                     'node' => $node,
                     'project' => $_POST['project'],
                     'title' => $_POST['title'],
@@ -80,7 +80,7 @@ namespace Goteo\Controller\Admin {
                                     'folder' => 'banners',
                                     'file' => 'edit',
                                     'action' => 'edit',
-                                    'banenr' => $banner
+                                    'banner' => $banner
                                 )
                             );
                             break;
@@ -95,11 +95,11 @@ namespace Goteo\Controller\Admin {
                     throw new Redirection('/admin/banners');
                     break;
                 case 'up':
-                    Model\Banner::up($id);
+                    Model\Banner::up($id, $node);
                     throw new Redirection('/admin/banners');
                     break;
                 case 'down':
-                    Model\Banner::down($id);
+                    Model\Banner::down($id, $node);
                     throw new Redirection('/admin/banners');
                     break;
                 case 'remove':
@@ -112,7 +112,7 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'add':
                     // siguiente orden
-                    $next = Model\Banner::next();
+                    $next = Model\Banner::next($node);
 
                     return new View(
                         'view/admin/index.html.php',

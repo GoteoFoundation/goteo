@@ -247,6 +247,21 @@ namespace Goteo\Model {
             }
         }
 
+        /*
+         * Numero de usuarios mensajeros de un proyecto
+         */
+        public static function numMessegers ($id) {
+            $sql = "SELECT COUNT(DISTINCT(message.user)) FROM message WHERE project = :id";
+            $query = self::query($sql, array(':id'=>$id));
+            $num = $query->fetchColumn();
+
+            if (empty($num)) {
+                return false;
+            } else {
+                return $num;
+            }
+        }
+
     }
     
 }

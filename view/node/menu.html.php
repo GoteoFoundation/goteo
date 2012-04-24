@@ -25,15 +25,18 @@ $nodes = Nodesys::activeNodes();
 			jQuery("#switch-banner").click(function(event) {
 			  event.preventDefault();
 			  if($('#switch-banner').hasClass("open")){
-				  //el elemento está abierto, luego se cierra
-				  jQuery("#node-banners").slideUp("slow",function(){
+				  //el elemento está abierto, luego se cierra, añadido fadeOut paginacion
+				  jQuery("#node-banners-controler").fadeOut("fast",function(){
+					  jQuery("#node-banners").slideUp("slow",function(){
 					  jQuery("#node-banners").css("display","none");//forzar ocultación
 					  jQuery("#switch-banner").removeClass("open").addClass("close");
-				  });			  
+				     });
+				  });				  			  
 			  }else{
 				  //el elemento está cerrado, luego se abre
 				  jQuery("#node-banners").slideDown("slow",function(){
 					  jQuery("#switch-banner").removeClass("close").addClass("open");
+					  jQuery("#node-banners-controler").fadeIn("fast");					  
 				  });
 			  }
 			});

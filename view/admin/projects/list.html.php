@@ -14,7 +14,7 @@ $filters = $this['filters'];
                     <select id="owner-filter" name="owner" onchange="document.getElementById('filter-form').submit();">
                         <option value="">Cualquier autor</option>
                     <?php foreach ($this['owners'] as $ownerId=>$ownerName) : ?>
-                        <option value="<?php echo $ownerId; ?>"<?php if ($filters['owner'] == $ownerId) echo ' selected="selected"';?>><?php echo $ownerName; ?></option>
+                        <option value="<?php echo $ownerId; ?>"<?php if ($filters['owner'] == $ownerId) echo ' selected="selected"';?>><?php echo (empty($ownerName)) ? $ownerId : Text::recorta($ownerName, 40); ?></option>
                     <?php endforeach; ?>
                     </select>
                 </td>
@@ -86,8 +86,8 @@ $filters = $this['filters'];
                 <th>Días</th> <!-- segun estado -->
                 <th>Conseguido</th> <!-- segun estado -->
                 <th>Mínimo</th> <!-- segun estado -->
-                <th>Colaboradores</th> <!-- usuarios de mensaje que no sea el autor -->
                 <th>Cofinanciadores</th> <!-- Usuarios que han completado aportes a este proyecto -->
+                <th>Colaboradores</th> <!-- usuarios de mensaje que no sea el autor -->
             </tr>
         </thead>
 
@@ -95,7 +95,7 @@ $filters = $this['filters'];
             <?php foreach ($this['projects'] as $project) : ?>
             <tr>
                 <td><a href="/project/<?php echo $project->id; ?>" target="_blank" title="Preview"><?php echo $project->name; ?></a></td>
-                <td><?php echo $project->user->name; ?></td>
+                <td><?php echo (empty($project->user->name)) ? $project->owner : Text::recorta($project->user->name, 40); ?></td>
                 <td><?php echo date('d-m-Y', strtotime($project->updated)); ?></td>
                 <td><?php echo $this['status'][$project->status]; ?></td>
                 <td><?php if ($project->status < 3)  echo $project->progress; ?></td>

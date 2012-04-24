@@ -37,10 +37,10 @@
           <!-- end custom fancybox-->
 
 		  <!-- vigilante de sesi�n -->
-		  <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/watchdog.js"></script>
+		  <script type="text/javascript" src="/view/js/watchdog.js"></script>
 
 		  <!-- saltos entre nodos -->
-		  <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/nodejump.js"></script>
+		  <script type="text/javascript" src="/view/js/nodejump.js"></script>
 
         <?php endif ?>
     </head>

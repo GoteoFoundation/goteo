@@ -289,7 +289,7 @@ namespace Goteo\Model {
 
                 //mensajes y mensajeros
                 $messegers = array();
-                $project->messages = Message::getAll($project->id, $lang);
+                $project->messages = Message::getAll($id, $lang);
                 $project->num_messages = 0;
                 foreach ($project->messages as $msg) {
                     $project->num_messages++;
@@ -309,7 +309,7 @@ namespace Goteo\Model {
                 }
 
                 // datos del nodo
-                if (!empty($project->node) && $project->node != \GOTEO_NODE) {
+                if (!empty($project->node)) {
                     $project->nodeData = Node::getMini($project->node);
                 }
 
@@ -400,6 +400,9 @@ namespace Goteo\Model {
                 $amount = Invest::invested($id);
                 $project->invested = $amount;
                 $project->amount   = $amount;
+
+                $project->num_investors = Invest::numInvestors($id);
+                $project->num_messegers = Message::numMessegers($id);
 
                 // sacamos rapidamente el minimo y el optimo
                 $cost_query = self::query("SELECT
@@ -1983,7 +1986,7 @@ namespace Goteo\Model {
 
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
-                $projects[] = self::get($proj['id']);
+                $projects[] = self::getMedium($proj['id']);
             }
             return $projects;
         }

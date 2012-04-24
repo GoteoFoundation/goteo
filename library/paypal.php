@@ -230,10 +230,12 @@ namespace Goteo\Library {
                         $invest->setStatus(1);
                         return true;
                     } else {
+                        Invest::setIssue($invest->id);
                         $errors[] = "Obtenido codigo de pago $token pero no se ha grabado correctamente en el registro de aporte id {$invest->id}.";
                         return false;
                     }
                 } else {
+                    Invest::setIssue($invest->id);
                     $errors[] = 'No payment key obtained. <pre>' . print_r($response, 1) . '</pre>';
                     @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No payment key obtained.<br /><pre>' . print_r($response, 1) . '</pre>');
                     return false;

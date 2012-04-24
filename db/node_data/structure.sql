@@ -12,4 +12,4 @@ CREATE TABLE `node_data` (
 `campaigns` TINYINT UNSIGNED NULL DEFAULT '0',
 `updated` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
 PRIMARY KEY ( `node` )
-) ENGINE = InnoDB COMMENT = 'Datos resumen nodo';
+) ENGINE = InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT = 'Datos resumen nodo';

@@ -23,18 +23,18 @@ body.node.home div#node-main div#content {
 }
 
 /* Estilos para los elementos laterales */
-/* genéricos de widget */
+/* genï¿½ricos de widget */
 div.side_widget{margin-bottom:18px}
 div.side_widget p.title{color:#1F81BB;font-size:14px;margin:0}
 div.side_widget span.line{display:block;clear:both;height:1px;width:85px;background:#c7dfee;margin:0}
-/* fin genéricos de widget */
+/* fin genï¿½ricos de widget */
 
-/* genéricos de euros */
+/* genï¿½ricos de euros */
 p.quantity.violet, p.quantity.violet a{color:#94278A}
 p.quantity.blue, p.quantity.blue a{color:#1ab3b0}
 p.quantity span{display:block;float:left;line-height:1em;margin-right:5px}
 p.quantity span.euro{display:block;float:left;height:30px;width:30px;}
-/* fin genéricos de euros */
+/* fin genï¿½ricos de euros */
 
 /*widget de buscador*/
 div.side_widget > div{padding:13px 8px 13px 13px;background:#fff;margin-bottom:6px;height:auto;overflow:auto}
@@ -58,13 +58,12 @@ div.side_widget > div.rewards > p.items{padding-left:8px}
 
 /*widget de resumen convocatorias*/
 div.side_widget.convocatorias{clear:both;overflow:auto;height:auto}
+div.side_widget.convocatorias > div {background-color: #F5F2F0;}
 div.side_widget.convocatorias > div > p.title{background: url('/view/css/call/logo_riego.png') no-repeat scroll -2px center transparent;color: #1AB3B0 !important;font-size: 13px;height: 43px;margin-bottom: 16px;padding-left: 59px;padding-top: 10px;text-transform: uppercase;}
 div.side_widget.convocatorias > div > div > p.text{font-size:10px;margin:0 0 5px 0}
 div.side_widget.convocatorias > div > div > p.quantity{font-size:30px;margin:0;height:auto;overflow:hidden}
 div.side_widget.convocatorias > div > div > p.quantity.all{color:#94278a}
 div.side_widget.convocatorias > div > div > p.quantity.rest{color:#1ab3b0}
-div.side_widget.convocatorias > div > div > p.quantity > span{/*display:block;float:left;line-height:1em;margin-right:5px*/}
-div.side_widget.convocatorias > div > div > p.quantity > span.euro{/*display:block;float:left;height:30px;width:30px;*/}
 div.side_widget.convocatorias > div > div > p.quantity.all > span.euro{ background:url('/view/css/euro/violet/xl.png') no-repeat 0 2px}
 div.side_widget.convocatorias > div > div > p.quantity.rest > span.euro{background:url('/view/css/euro/blue/xl.png') no-repeat 0 2px}
 
@@ -72,6 +71,10 @@ div.side_widget.convocatorias > div.half{text-transform:uppercase;}
 div.side_widget.convocatorias > div.half.calls{color:#e02828;text-align:center}
 div.side_widget.convocatorias > div.half.campaigns{color:#1ab3b0;text-align:center}
 div.side_widget.convocatorias > div.half > span{font-size:30px;}
+
+div.side_widget.convocatorias.active > div {background-color: #FFF !important;}
+div.side_widget.convocatorias.active > div > p.title{text-decoration: underline;}
+div.side_widget.convocatorias a.expand {padding: 0;position: absolute;width: 182px;height: 304px;z-index: 99;}
 /*fin de widget de resumen convocatorias*/
 
 

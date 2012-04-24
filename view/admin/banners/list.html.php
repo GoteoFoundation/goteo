@@ -22,13 +22,13 @@ $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
         </thead>
 
         <tbody>
-            <?php $c = 1; foreach ($this['bannered'] as $banner) :
+            <?php foreach ($this['bannered'] as $banner) :
                 $banner_title = ($node == \GOTEO_NODE) ? $banner->name : $banner->title;
                 ?>
             <tr>
                 <td><?php echo ($banner->active) ? '<strong>'.$banner_title.'</strong>' : $banner_title; ?></td>
                 <td><?php echo $banner->status; ?></td>
-                <td><?php echo $c; ?></td>
+                <td><?php echo $banner->order; ?></td>
                 <td><a href="/admin/banners/up/<?php echo $banner->id; ?>">[&uarr;]</a></td>
                 <td><a href="/admin/banners/down/<?php echo $banner->id; ?>">[&darr;]</a></td>
                 <td><a href="/admin/banners/edit/<?php echo $banner->id; ?>">[Editar]</a></td>
@@ -39,7 +39,7 @@ $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
                 <?php endif; ?></td>
                 <td><a href="/admin/banners/remove/<?php echo $banner->id; ?>">[Quitar]</a></td>
             </tr>
-            <?php $c++; endforeach; ?>
+            <?php endforeach; ?>
         </tbody>
 
     </table>

@@ -35,12 +35,12 @@ if ($node == \GOTEO_NODE) {
 </p>
 <?php else : ?>
 <p>
-    <label for="banner-name">Título:</label><br />
+    <label for="banner-name">T&iacute;tulo:</label><br />
     <input type="text" name="title" id="banner-title" value="<?php echo $banner->title; ?>" size="50" />
 </p>
 
 <p>
-    <label for="banner-description">Descripción:</label><br />
+    <label for="banner-description">Descripci&oacute;n:</label><br />
     <input type="text" name="description" id="banner-description" value="<?php echo $banner->description; ?>" size="85" />
 </p>
 
@@ -51,7 +51,7 @@ if ($node == \GOTEO_NODE) {
 <?php endif; ?>
 
 <p>
-    <label for="banner-image">Imagen de fondo: <?php echo $image_size_text; ?></label><br />
+    <label for="banner-image">Imagen de fondo: <?php echo $image_size_txt; ?></label><br />
     <input type="file" id="banner-image" name="image" />
     <?php if (!empty($banner->image)) : ?>
         <br />
@@ -62,7 +62,7 @@ if ($node == \GOTEO_NODE) {
 
 <p>
     <label>Publicado:</label><br />
-    <label><input type="radio" name="active" id="banner-active" value="1"<?php if ($banner->active) echo ' checked="checked"'; ?>/> SÍ</label>
+    <label><input type="radio" name="active" id="banner-active" value="1"<?php if ($banner->active) echo ' checked="checked"'; ?>/> S&Iacute;</label>
     &nbsp;&nbsp;&nbsp;
     <label><input type="radio" name="active" id="banner-inactive" value="0"<?php if (!$banner->active) echo ' checked="checked"'; ?>/> NO</label>
 </p>

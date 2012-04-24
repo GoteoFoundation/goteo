@@ -12,18 +12,23 @@ $posts      = Post::getList('footer');
 
    <div id="footer">
 		<div class="w940">
-
+			<script type="text/javascript">
+			jQuery(document).ready(function($) {
+				$('.scroll-pane').jScrollPane({showArrows: true});
+			});
+			</script>
         	<div class="block about" style="border-left:none;">
             	<span class="title"><a href="#">Goteo</a></span>
-                <div style="margin-top:-5px"><p>Red social para cofinanciar y colaborar
+                <div style="margin-top:-5px" class="scroll-pane">
+                <p>Red social para cofinanciar y colaborar
                 con proyectos creativos que fomentan el
-                procomún <span style="color:#57c6c5;font-size:1em">¿Tienes un proyecto con adn abierto?</span></p></div>
+                procomún <a href="#">¿Tienes un proyecto con adn abierto?</a></p></div>
             </div>
 
             <div class="block help">
                 <span class="title">Necesitas ayuda?</span>
                 <div>
-                	<ul>
+                	<ul class="scroll-pane">
                     <li><a href="#">Qué es el Crowfunding</a></li>
                     <li><a href="#">Porqué Goteo es diferente</a></li>                    
                     <li><a href="#">FAQ</a></li>                                        
@@ -34,7 +39,7 @@ $posts      = Post::getList('footer');
 
             <div class="block creators">
                 <span class="title">Impulsores</span>
-                <ul>
+                <ul class="scroll-pane">
                     <li><a href="#">¿Es goteable tu proyecto?</a></li>
                     <li><a href="#">Qué son los retornos colectivos</a></li>                    
                     <li><a href="#">10 pasos a seguir</a></li>                                        
@@ -44,7 +49,7 @@ $posts      = Post::getList('footer');
 
             <div class="block investors">
                 <span class="title">Cofinanciadores</span>
-                <ul>
+                <ul class="scroll-pane">
                     <li><a href="#">Cómo apoyar un proyecto</a></li>
                     <li><a href="#">Cómo funcionan los pagos</a></li>                    
                     <li><a href="#">Donaciones y desgravaciones</a></li>                                        
@@ -53,7 +58,7 @@ $posts      = Post::getList('footer');
 
             <div class="block social">
                 <span class="title">S&iacute;ganos</span>
-                <ul>
+                <ul class="scroll-pane">
                     <li class="twitter"><a href="<?php echo Text::get('social-account-twitter') ?>" target="_blank"><?php echo Text::get('regular-twitter') ?></a></li>
                     <li class="facebook"><a href="<?php echo Text::get('social-account-facebook') ?>" target="_blank"><?php echo Text::get('regular-facebook') ?></a></li>
                     <li class="identica"><a href="<?php echo Text::get('social-account-identica') ?>" target="_blank"><?php echo Text::get('regular-identica') ?></a></li>
@@ -69,8 +74,6 @@ $posts      = Post::getList('footer');
     <div id="sub-footer">
 		<div class="w940">
 
-
-
                 <ul>
                     <li><a href="<?php echo SITE_URL ?>/about">Goteo.org</a></li>
                     <li><a href="/user/login"><?php echo Text::get('regular-login'); ?></a></li>
@@ -82,7 +85,7 @@ $posts      = Post::getList('footer');
 
                 <div class="platoniq">
                    <span class="text"><a href="#" class="poweredby"><?php echo Text::get('footer-platoniq-iniciative') ?></a></span>
-                   <span class="logo"><a href="http://fuentesabiertas.org" target="_blank" class="foundation">FFA</a></span>
+                   <!--<span class="logo"><a href="http://fuentesabiertas.org" target="_blank" class="foundation">FFA</a></span>-->
                    <span class="logo"><a href="http://www.youcoop.org" target="_blank" class="growby">Platoniq</a></span>
                 </div>
 
