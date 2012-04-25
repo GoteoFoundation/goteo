@@ -820,3 +820,39 @@ ul.lang li:hover>a {
 	color: #1EB2B2;
 }
 /* fin del desplegable de idiomas */
+
+/* Sello de nodo  en pagina proyecto y pagina usuario */
+body.project-show div#sub-header div.nodemark,
+body.user-profile div#sub-header div.nodemark {
+    text-align: left;
+    width: 240px;
+    height: 50px;
+    overflow: hidden;
+}
+
+body.user-profile div#sub-header div.nodemark {
+	position: absolute;
+    right: 205px;
+    top: 105px;
+}
+
+body.project-show div#sub-header div.nodemark {
+	position: absolute;
+    right: 0px;
+	top: 0px;
+}
+
+body.project-show div#sub-header div.nodemark a,
+body.user-profile div#sub-header div.nodemark a {
+    font-size: 16px;
+    font-weight: bold;
+    color: #B5161E;
+    text-decoration: none;
+}
+
+body.project-show div#sub-header div.nodemark a:hover,
+body.user-profile div#sub-header div.nodemark a:hover {
+    color: #20B2B3;
+}
+
+/* fin sello nodo */

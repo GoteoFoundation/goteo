@@ -78,7 +78,7 @@ $Data    = $this['reportData'];
             <td>- Cantidad transferida: <?php echo \amount_format($sumData['pp_project'], 2) ?></td>
         </tr>
         <tr>
-            <td>- ComisiÃ³n aproximada cobrada al impulor: <?php echo \amount_format($sumData['pp_fee_project'], 2) ?></td>
+            <td>- Comisión aproximada cobrada al impulor: <?php echo \amount_format($sumData['pp_fee_project'], 2) ?></td>
         </tr>
         <tr>
             <td>- Cantidad aproximada recibida por el impulsor: <?php echo \amount_format($sumData['pp_net_project'], 2) ?></td>
@@ -86,16 +86,17 @@ $Data    = $this['reportData'];
     </table>
 </p>
 
-<?php if (!empty($Data['note'])) : ?>
-
+<?php if (!empty($Data['issues'])) : ?>
     <p>
     <table>
         <tr>
             <th style="text-align:left;"><strong>*</strong> Pagos de usuarios con incidencias</th>
         </tr>
+        <?php foreach ($Data['issues'] as $issue) : ?>
         <tr>
-            <td><?php echo implode('<br />', $Data['note']) ?></td>
+            <td><?php echo '<a href="/admin/accounts/details/'.$issue->invest.'" target="_blank">[Ir al aporte]</a> Usuario <a href="/admin/users/manage/' . $issue->user . '" target="_blank">' . $issue->userName . '</a> [<a href="mailto:'.$issue->userEmail.'">'.$issue->userEmail.'</a>], ' . $issue->statusName . ', ' . $issue->amount . ' euros.'; ?></td>
         </tr>
+        <?php endforeach; ?>
     </table>
     </p>
 <?php endif; ?>

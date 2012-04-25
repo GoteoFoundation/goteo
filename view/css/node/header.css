@@ -103,7 +103,7 @@ div#header div#menu > ul > li.about > a{font-size:12px;height:40px;line-height:4
 div#header div#menu > ul > li.about a:hover{color:#20B2B3}
 
 /* Pestaña de información/cerrar banner */
-div#header div#menu > ul > li.info{border-radius:5px 5px 0 0;width:35px;height:40px;position:absolute;left:-1px;bottom:0;background-color:#dee1df}
+div#header div#menu > ul > li.info{border-radius:5px 5px 0 0;width:35px;height:40px;position:absolute;left:-1px;bottom:0;background-color:#e9e5e2}
 div#header div#menu > ul > li.info > a{overflow:hidden;text-indent:2000px;display:block;line-height:2000px;width:23px;height:23px;left:50%;border:medium none;margin:9px 6px 8px}
 div#header div#menu > ul > li.info > a.open{background:url('/view/css/header/node_info_close.png') no-repeat left center transparent} /*si está abierto mostrar cerrar*/
 div#header div#menu > ul > li.info > a.open:hover{background:url('/view/css/header/node_info_close.png') no-repeat right center transparent}
@@ -112,9 +112,9 @@ div#header div#menu > ul > li.info > a.close:hover{background:url('/view/css/hea
 /* Fin de pestaña de información/cerrar banner */
 
 /* Banners de nodo */
-body.home.node div#header div#node-banners{height:270px;width:940px;overflow:hidden /*NO CAMBIAR*/;margin:0 auto;border:#dee2e6 1px solid;border-top:none;border:#000 1px transparent !important /*no tocar o el contenido se alinea de forma extraña dentro del carrousel*/
+div#header div#node-banners{width: 100%; height:270px; margin: 0; background:url('/view/css/header/node-banner-bg.jpg');overflow:hidden /*NO CAMBIAR*/;border:#dee2e6 1px solid;border-top:none;border:#000 1px transparent !important /*no tocar o el contenido se alinea de forma extraña dentro del carrousel*/
 -webkit-box-shadow:0px 2px 3px rgba(44, 50, 51, 0.4);-moz-box-shadow:0px 2px 3px rgba(44, 50, 51, 0.4);box-shadow:0px 2px 3px rgba(44, 50, 51, 0.4);}
-div#header div#node-banners div.node-banners-container{height:270px;background:url('/view/css/header/node-banner-bg.jpg');overflow:visible !important/*NO CAMBIAR*/}
+div#header div#node-banners div.node-banners-container{width:940px;height:270px;margin:0 auto;overflow:visible !important/*NO CAMBIAR*/}
 div.node-banners-container div.node-banner{width:940px;height:270px;overflow:hidden}
 div.node-banners-container div.node-banner > div.title{padding-top: 25px; margin-left: 50px;line-height:25px;font-size:25px;color:#585a5c}
 div.node-banners-container div.node-banner > div.short-desc{margin-top: 25px; margin-left: 50px; line-height:30px;font-size:20px;color:#1f81bb; max-width: 450px;}
@@ -123,7 +123,7 @@ div.node-banners-container div.node-banner a.expand {padding: 0;position: absolu
 
 
 /* paginación de los banners*/
-div#node-banners-controler{position: absolute;width: 940px;top: 440px;z-index:100;overflow:auto;height:auto;text-align:center}
+div#node-banners-controler{position: absolute;width: 100%; top: 448px;z-index:100;overflow:auto;height:auto;text-align:center}
 ul.bannerspage{list-style:none; z-index:100;  padding:0;  margin:0; display:inline-block}
 ul.bannerspage li{ cursor:pointer;  display:block;  float:left;  overflow:hidden; margin:0px 4px 5px 4px}
 ul.bannerspage li a{display:block;width:12px;height:12px;margin-top:2px; background-color:#d9cfd2;color:#d9cfd2;

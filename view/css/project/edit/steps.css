@@ -25,7 +25,7 @@ body.project-edit div#main #project-steps span.step {
     display: inline-block;
     padding: 0 1em;
     height: 100%;    
-    background: #e7e7e7 no-repeat bottom center;
+    background: no-repeat bottom center;
     position: relative;    
 }
 

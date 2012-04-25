@@ -93,11 +93,9 @@ $emails = Invest::emails(true);
         <thead>
             <tr>
                 <th></th>
-                <th>Aporte ID</th>
                 <th>Importe</th>
                 <th>Fecha</th>
                 <th>Cofinanciador</th>
-                <th></th>
                 <th>Proyecto</th>
                 <th>Metodo</th>
                 <th>Estado</th>
@@ -115,12 +113,10 @@ $emails = Invest::emails(true);
                     if (!empty($invest->campaign)) echo 'Riego ';
                     if (!empty($invest->droped)) echo 'Regado (<strong>'.$invest->droped.'</strong>)';
                     ?>" <?php if ($invest->issue) echo ' style="color:red !important;"'; ?>>[Detalles]</a></td>
-                <td><?php echo $invest->id ?></td>
                 <td><?php echo $invest->amount ?></td>
                 <td><?php echo $invest->invested ?></td>
-                <td><a href="/admin/users/manage/<?php echo $invest->user ?>" target="_blank"><?php echo $this['users'][$invest->user]; ?></a></td>
-                <td><?php echo $emails[$invest->user]; ?></td>
-                <td><a href="/admin/projects/?name=<?php echo $this['projects'][$invest->project] ?>" target="_blank"><?php echo $this['projects'][$invest->project]; if (!empty($invest->campaign)) echo '<br />('.$this['campaigns'][$invest->campaign].')'; ?></a></td>
+                <td><a href="/admin/users/manage/<?php echo $invest->user ?>" target="_blank" title="<?php echo $this['users'][$invest->user]; ?>"><?php echo $emails[$invest->user]; ?></a></td>
+                <td><a href="/admin/projects/?name=<?php echo $this['projects'][$invest->project] ?>" target="_blank"><?php echo Text::recorta($this['projects'][$invest->project], 20); if (!empty($invest->campaign)) echo '<br />('.$this['campaigns'][$invest->campaign].')'; ?></a></td>
                 <td><?php echo $this['methods'][$invest->method] ?></td>
                 <td><?php echo $this['investStatus'][$invest->investStatus] ?></td>
             </tr>

@@ -146,7 +146,6 @@ body.project-edit div.superform > .elements > ol > li#errors {
 /* Footer  */
 
 body.project-edit div.superform li.element#footer {
-    background-color: #e7e7e7;
     border-top: 3px solid #0a0a0a;
     padding: 20px;
     position: relative;

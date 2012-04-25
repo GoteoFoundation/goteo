@@ -1309,9 +1309,44 @@ namespace Goteo\Model {
                     break;
             }
 
+            // incidencias
+            $Data['issues'] = self::getReportIssues($project);
+
              return $Data;
          }
 
+         public static function getReportIssues($id) {
+
+             $status = self::status();
+
+             $list = array();
+
+             $values = array(':id' => $id);
+
+             $sql = "SELECT
+                        invest.id as invest,
+                        user.id as user,
+                        user.name as userName,
+                        user.email as userEmail,
+                        invest.amount as amount,
+                        invest.status as status
+                    FROM invest
+                    INNER JOIN user
+                        ON user.id = invest.user
+                    WHERE invest.project = :id
+                    AND invest.issue = 1
+                    ORDER BY user.name DESC
+                    ";
+
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $item->statusName = $status[$item->status];
+                $list[] = $item;
+            }
+            return $list;
+
+
+         }
 
          public static function setDetail($id, $type, $log) {
              $values = array(

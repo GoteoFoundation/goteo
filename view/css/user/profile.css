@@ -30,23 +30,6 @@ body.user-profile div#sub-header h2 em {
     font-style: normal;
 }
 
-/* Distintivo de nodo */
-body.user-profile div#sub-header div.nodemark {
-    text-align: right;
-    margin-top: -30px;
-}
-
-body.user-profile div#sub-header div.nodemark a {
-    font-size: 16px;
-    font-weight: bold;
-    color: #B5161E;
-    text-decoration: none;
-}
-
-body.user-profile div#sub-header div.nodemark a:hover {
-    color: #20B2B3;
-}
-
 body.user-profile div#main div.widget, 
 body.community div#main div.widget {
     margin-bottom: 20px;

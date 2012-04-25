@@ -83,10 +83,12 @@ body.project-show div#sub-header div.project-by a:hover {
 
 body.project-show div#sub-header div.categories {
 	position: absolute;
-    right: 10px;
+    right: 0;
+	top: 60px;
     text-align: right;
-	max-width:240px;
-	top: 0;
+	max-width: 320px;
+	max-height: 45px;
+    overflow: hidden;
 }
 
 body.project-show div#sub-header div.categories h3 {
@@ -106,25 +108,6 @@ body.project-show div#sub-header div.categories a {
 
 body.project-show div#sub-header div.categories a:hover {
     color: #20B3B2;
-}
-
-/* Distintivo de nodo */
-body.project-show div#sub-header div.nodemark {
-	position: absolute;
-    right: 10px;
-    text-align: right;
-	top: 70px;
-}
-
-body.project-show div#sub-header div.nodemark a {
-    font-size: 16px;
-    font-weight: bold;
-    color: #B5161E;
-    text-decoration: none;
-}
-
-body.project-show div#sub-header div.nodemark a:hover {
-    color: #20B2B3;
 }
 
 body.project-show div.project-menu {

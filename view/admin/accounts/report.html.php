@@ -217,20 +217,20 @@ foreach ($this['invests'] as $invest) {
     </table>
 </p>
 
-<?php if (!empty($Data['note'])) : ?>
-
+<?php if (!empty($Data['issues'])) : ?>
     <p>
     <table>
         <tr>
             <th style="text-align:left;"><strong>*</strong> Pagos de usuarios con incidencias</th>
         </tr>
+        <?php foreach ($Data['issues'] as $issue) : ?>
         <tr>
-            <td><?php echo implode('<br />', $Data['note']) ?></td>
+            <td><?php echo '<a href="/admin/accounts/details/'.$issue->invest.'" target="_blank">[Ir al aporte]</a> Usuario <a href="/admin/users/manage/' . $issue->user . '" target="_blank">' . $issue->userName . '</a> [<a href="mailto:'.$issue->userEmail.'">'.$issue->userEmail.'</a>], ' . $issue->statusName . ', ' . $issue->amount . ' euros.'; ?></td>
         </tr>
+        <?php endforeach; ?>
     </table>
     </p>
 <?php endif; ?>
-
     <hr>
     
     <h3 class="title">Desglose de financiación por rondas</h3>
@@ -507,8 +507,4 @@ foreach ($this['invests'] as $invest) {
     </table>
 <?php endif; ?>
 
-<?php if (!empty($Data['note'])) : ?>
-    <h4>Notas</h4>
-    <p><?php echo implode('<br />', $Data['note']) ?></p>
-<?php endif; ?>
 </div>
