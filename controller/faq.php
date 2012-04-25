@@ -8,7 +8,7 @@ namespace Goteo\Controller {
 
     class Faq extends \Goteo\Core\Controller {
 
-        public function index () {
+        public function index ($current = 'node') {
 
             $page = Page::get('faq');
             $faqs = array();
@@ -19,8 +19,13 @@ namespace Goteo\Controller {
             foreach ($sections as $id=>$name) {
                 $qs = Model\Faq::getAll($id);
                 
-                if (empty($qs))
+                if (empty($qs)) {
+                    if ($id == $current) {
+                        throw new \Goteo\Core\Redirection('/faq');
+                    }
+                    unset($sections[$id]);
                     continue;
+                }
 
                 $faqs[$id] = $qs;
                 foreach ($faqs[$id] as &$question) {
@@ -32,6 +37,7 @@ namespace Goteo\Controller {
                 'view/faq.html.php',
                 array(
                     'faqs'     => $faqs,
+                    'current'  => $current,
                     'sections' => $sections,
                     'colors'   => $colors
                 )
