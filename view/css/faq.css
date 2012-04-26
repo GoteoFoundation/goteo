@@ -40,7 +40,7 @@
 #faq-content ul#faq-sections li {
 	float: left;
     min-height: 35px;
-    width: 16%;
+    min-width: 16%;
 }
 #faq-content ul#faq-sections li + li {
     margin-left: 20px;
@@ -82,42 +82,3 @@
 #faq-content ol li div {
 	margin: 10px 0 25px 5px;
 }
-/*
-#faq-sidebar {
-    width:300px;
-	float:right;
-}
-div.widget.faq-content-module,
-div.widget.faq-sidebar-module {
-    background-color: white;
-    line-height: 16px;
-    margin: 0 0 20px;
-}
-div.widget.faq-content-module ol li a.up{
-    margin-left: -15px !important;
-    margin-bottom: 0px !important;
-}
-div.widget.faq-sidebar-module .supertitle {
-    border-bottom: 1px solid #58595b;
-    font: normal 14px Helvetica, Arial, Geneva, sans-serif;
-    padding: 0 2px 0.4em;
-	margin: 0 0 1em;
-}
-div.widget.faq-sidebar-module .supertitle.ask {
-    border-bottom-color: #25a345;
-	margin-bottom: 12px;
-}
-div.widget.faq-sidebar-module ol {
-    margin-left: 20px;
-	padding-left:0px;
-}
-div.widget.faq-sidebar-module ol li {
-    margin:0 0 5px 0;
-}
-div.widget.faq-sidebar-module ol li a {
-	text-decoration:none;
-}
-div.widget.faq-sidebar-module ol li a:hover {
-	text-decoration:underline;
-}
-*/

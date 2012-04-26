@@ -44,13 +44,13 @@ $go_up = Text::get('regular-go_up');
                 </div>
                 
                 <div class="goask"><?php echo Text::get('faq-ask-question'); ?></div>
-                <div class="goask-button"><a class="button green" href="/contact" target="_blank"><?php echo Text::get('regular-ask'); ?></a></div>
+                <div class="goask-button"><a class="button green" href="/contact"><?php echo Text::get('regular-ask'); ?></a></div>
 
                 <br clear="both" />
 
                 <ul id="faq-sections">
                 <?php foreach ($this['sections'] as $sectionId=>$sectionName) : ?>
-                    <li><a href="/faq/<?php echo ($sectionId == 'node') ? '' : $sectionId; ?>"<?php if ($sectionId == $current) echo ' class="current"'; ?> style="color: <?php echo $this['colors'][$sectionId] ?>;"><?php echo $sectionName; ?></a></li>
+                    <li><a href="/faq/<?php echo ($sectionId == 'node') ? '' : $sectionId; ?>"<?php if ($sectionId == $current) echo ' class="current"'; ?> style="color: <?php echo $this['colors'][$sectionId] ?>;"><?php echo preg_replace('/\s/', '<br />', $sectionName, 1); ?></a></li>
                 <?php endforeach; ?>
                 </ul>
 
