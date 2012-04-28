@@ -343,7 +343,8 @@ namespace Goteo\Library {
                 'call_public' => 'Convocatorias: publicos',
                 'call_form' => 'Convocatorias: formulario',
                 'call_dash' => 'Convocatorias: dashboard',
-                'wof' => 'Wall of friends'
+                'wof' => 'Wall of friends',
+                'node_public' => 'Nodos'
             );
 
             \asort($groups);

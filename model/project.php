@@ -1745,7 +1745,7 @@ namespace Goteo\Model {
             $sql .= " ORDER BY created DESC";
             $query = self::query($sql, array($owner));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
-                $projects[] = self::get($proj->id);
+                $projects[] = self::getMedium($proj->id);
             }
             
             return $projects;

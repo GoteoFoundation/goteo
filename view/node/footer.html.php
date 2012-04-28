@@ -20,44 +20,42 @@ $posts      = Post::getList('footer');
         	<div class="block about" style="border-left:none;">
             	<span class="title"><a href="#">Goteo</a></span>
                 <div style="margin-top:-5px" class="scroll-pane">
-                <p>Red social para cofinanciar y colaborar
-                con proyectos creativos que fomentan el
-                procomún <a href="#">¿Tienes un proyecto con adn abierto?</a></p></div>
+                <p><?php echo Text::html('node-footer-about') ?></p></div>
             </div>
 
             <div class="block help">
-                <span class="title">Necesitas ayuda?</span>
+                <span class="title"><?php echo Text::get('node-footer-title-help') ?></span>
                 <div>
                 	<ul class="scroll-pane">
-                    <li><a href="#">Qué es el Crowfunding</a></li>
-                    <li><a href="#">Porqué Goteo es diferente</a></li>                    
-                    <li><a href="#">FAQ</a></li>                                        
-                    <li><a href="#">Glosario</a></li>                                                            
+                    <li><a href="#"><?php echo Text::get('node-footer-help-what') ?></a></li>
+                    <li><a href="#"><?php echo Text::get('node-footer-help-why') ?></a></li>
+                    <li><a href="/faq"><?php echo Text::get('regular-header-faq') ?></a></li>
+                    <li><a href="/glossary"><?php echo Text::get('footer-resources-glossary') ?></a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="block creators">
-                <span class="title">Impulsores</span>
+                <span class="title"><?php echo Text::get('node-footer-title-creators') ?></span>
                 <ul class="scroll-pane">
-                    <li><a href="#">¿Es goteable tu proyecto?</a></li>
-                    <li><a href="#">Qué son los retornos colectivos</a></li>                    
-                    <li><a href="#">10 pasos a seguir</a></li>                                        
-                    <li><a href="#">Pack de comunicación</a></li>                                                            
+                    <li><a href="#"><?php echo Text::get('node-footer-creators-able') ?></a></li>
+                    <li><a href="/blog/34"><?php echo Text::get('node-footer-creators-returns') ?></a></li>
+                    <li><a href="/blog/23"><?php echo Text::get('node-footer-creators-steps') ?></a></li>
+                    <li><a href="/press"><?php echo Text::get('node-footer-creators-press') ?></a></li>
                     </ul>
             </div>
 
             <div class="block investors">
-                <span class="title">Cofinanciadores</span>
+                <span class="title"><?php echo Text::get('node-footer-title-investors') ?></span>
                 <ul class="scroll-pane">
-                    <li><a href="#">Cómo apoyar un proyecto</a></li>
-                    <li><a href="#">Cómo funcionan los pagos</a></li>                    
-                    <li><a href="#">Donaciones y desgravaciones</a></li>                                        
+                    <li><a href="#"><?php echo Text::get('node-footer-investors-invest') ?></a></li>
+                    <li><a href="#"><?php echo Text::get('node-footer-investors-payment') ?></a></li>
+                    <li><a href="/about/donations"><?php echo Text::get('node-footer-investors-donate') ?></a></li>
                     </ul>
             </div>
 
             <div class="block social">
-                <span class="title">S&iacute;ganos</span>
+                <span class="title"><?php echo Text::get('node-footer-title-social') ?></span>
                 <ul class="scroll-pane">
                     <li class="twitter"><a href="<?php echo Text::get('social-account-twitter') ?>" target="_blank"><?php echo Text::get('regular-twitter') ?></a></li>
                     <li class="facebook"><a href="<?php echo Text::get('social-account-facebook') ?>" target="_blank"><?php echo Text::get('regular-facebook') ?></a></li>

@@ -233,9 +233,6 @@ ul#pagination li {
 	width: auto;
 	float: left;
 	text-align: center;
-	-moz-box-shadow: 3px 3px 0px #E2E2E2;
-	-webkit-box-shadow: 3px 3px 0px #E2E2E2;
-	box-shadow: 3px 3px 0px #E2E2E2;
 }
 ul#pagination li.selected {
 	background:#cde4e5;

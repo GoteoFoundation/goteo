@@ -23,18 +23,18 @@ body.node.home div#node-main div#content {
 }
 
 /* Estilos para los elementos laterales */
-/* gen�ricos de widget */
+/* genericos de widget */
 div.side_widget{margin-bottom:18px}
 div.side_widget p.title{color:#1F81BB;font-size:14px;margin:0}
 div.side_widget span.line{display:block;clear:both;height:1px;width:85px;background:#c7dfee;margin:0}
-/* fin gen�ricos de widget */
+/* fin genericos de widget */
 
-/* gen�ricos de euros */
+/* genericos de euros */
 p.quantity.violet, p.quantity.violet a{color:#94278A}
 p.quantity.blue, p.quantity.blue a{color:#1ab3b0}
 p.quantity span{display:block;float:left;line-height:1em;margin-right:5px}
 p.quantity span.euro{display:block;float:left;height:30px;width:30px;}
-/* fin gen�ricos de euros */
+/* fin genericos de euros */
 
 /*widget de buscador*/
 div.side_widget > div{padding:13px 8px 13px 13px;background:#fff;margin-bottom:6px;height:auto;overflow:auto}

@@ -1337,7 +1337,7 @@ namespace Goteo\Model {
 
             $query = self::query($sql, array($user));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $proj) {
-                $projects[] = \Goteo\Model\Project::get($proj->id);
+                $projects[] = \Goteo\Model\Project::getMedium($proj->id);
             }
             return $projects;
         }

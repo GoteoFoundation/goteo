@@ -6,6 +6,8 @@
 
 $nodeData = NodeSys::setData(NODE_ID);
 $banners = Banner::getAll(true, NODE_ID);
+
+$nodeText = str_replace(array('[', ']'), array('<span class="blue">', '</span>'), $nodeData->description);
 ?>
 <?php include 'view/header/lang.html.php' ?>
 <div id="header">
@@ -57,7 +59,7 @@ $banners = Banner::getAll(true, NODE_ID);
     <div id="node-header">
         <div class="logos">
             <div class="node-home"><a href="<?php echo NODE_URL ?>"><?php echo NODE_NAME ?></a></div>
-            <div class="node-intro"><?php echo $nodeData->description; ?></div>
+            <div class="node-intro"><?php echo $nodeText; ?></div>
             <?php if ($nodeData->logo instanceof \Goteo\Model\Image) : ?>
             <div class="node-logo">
                 <span>Con el soporte de:</span>

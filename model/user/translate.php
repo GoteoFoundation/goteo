@@ -99,7 +99,7 @@ namespace Goteo\Model\User {
                         case 'call':
                             $array[] = Model\Call::get($item['item'], $lang);
                             break;
-                        case 'ndoe':
+                        case 'node':
                             $array[] = Model\Node::get($item['item'], $lang);
                             break;
                         default:

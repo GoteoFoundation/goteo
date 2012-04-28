@@ -6,7 +6,7 @@ define('NODE_META_DESCRIPTION', utf8_encode('Red social de financiación colecti
 define('NODE_META_KEYWORDS', utf8_encode('crowdfunding, procomún, commons, social, network, financiacion colectiva, cultural, creative commons, proyectos abiertos, open source, free software, licencias libres'));
 define('NODE_META_AUTHOR', 'Goteo Node System');
 define('NODE_META_COPYRIGHT', 'Platoniq');
-define('NODE_DEFAULT_LANG', 'en');
+define('NODE_DEFAULT_LANG', 'es');
 define('NODE_URL', 'http://nodo.devgoteo.org');
 define('NODE_MAIL', 'hola_nodo@doukeshi.org');
 define('NODE_NAME', 'Goteo Euskadi');

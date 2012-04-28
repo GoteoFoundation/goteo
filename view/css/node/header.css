@@ -92,22 +92,45 @@ div#node-header div.logos div.node-logo span {
 }
 
 /* botonera */
-div#header div#menu{position:relative;z-index:100;background:none repeat scroll 0 0 #2792C9 !important}
+div#header div#menu{position:relative;z-index:100;background:none repeat scroll 0 0 #2895CB !important}
 div#header div#menu > ul > li > a.button{padding:.4em .8em!important}
 div#header div#menu > ul > li > a{color:#fff !important}
-div#header div#menu > ul > li.community, div#header div#menu > ul > li.dashboard{background:url('/view/css/header/down-white.png') no-repeat scroll right 30px transparent}
-div#header div#menu > ul > li.info,div#header div#menu > ul > li.help{float:left}
 div#header div#menu > ul > li.help{margin-right:4px}
 div#header div#menu > ul > li.explore > a{margin-left:42px!important}
 div#header div#menu > ul > li.help > a{font-size:12px;display:inline-block;max-width:7.5em;text-align:left;width:80px;line-height:1em;margin:.68em .2em .6em 0;padding:.4em 1.8em .4em .8em}
-div#header div#menu > ul > li.about{height:48px;position:relative;top:3px}
-div#header div#menu > ul > li.about > a{font-size:12px;height:40px;line-height:40px;display:inline-block;position:relative;top:-3px;padding:.5em 0!important}
+
+/*botón comunidad y dashboard*/
+div#header div#menu > ul > li.community, div#header div#menu > ul > li.dashboard{background:url('/view/css/header/down-white.png') no-repeat scroll right 30px transparent;top:0}
+div#header div#menu > ul > li.community > a, div#header div#menu > ul > li.dashboard > a{top:0}
+div#header div#menu > ul > li.info,div#header div#menu > ul > li.help{float:left}
+
+/*botón dashboard*/
+div#header div#menu > ul > li.dashboard > a{padding-right:50px}
+div#header div#menu > ul > li.dashboard > a > img{position:absolute;left:70px;}
+
+/*botón sobre*/
+div#header div#menu > ul > li.about{height:48px;position:relative}
+div#header div#menu > ul > li.about > a{font-size:12px;height:40px;line-height:40px;display:inline-block;position:relative;padding:.5em 0!important}
 div#header div#menu > ul > li.about:hover{background:#1DB3B2}
 div#header div#menu > ul > li.about a:hover{color:#20B2B3}
 
 /*buscador*/
 div#header div#menu > ul > li.search fieldset{border: 1px solid #fff;}
 div#header div#menu > ul > li.search fieldset input[type="submit"]{background:url('/view/css/header/search-white.png') no-repeat scroll center center transparent !important}
+div#header div#menu > ul > li.search fieldset input[type="submit"]:hover{background-color:#58A0CD !important}
+
+/*rollover*/
+div#header div#menu > ul > li.about:hover,
+div#header div#menu > ul > li.community:hover,
+div#header div#menu > ul > li.login:hover,
+div#header div#menu > ul > li.dashboard:hover{background-color:#58A0CD !important}
+
+/*submenus*/
+div#header div#menu > ul > li.community > div > ul, div#header div#menu > ul > li.dashboard > div > ul{background-color:#2895CB}
+div#header div#menu > ul > li.community > div > ul > li > a:hover,
+div#header div#menu > ul > li.dashboard > div > ul > li > a:hover {
+    background-color: #58A0CD;
+}
 
 /* Pestaña de información/cerrar banner */
 div#header div#menu > ul > li.info{border-radius:5px 5px 0 0;width:35px;height:40px;position:absolute;left:-1px;bottom:0;background-color:#e9e5e2}
@@ -138,5 +161,8 @@ ul.bannerspage li a{display:block;width:12px;height:12px;margin-top:2px; backgro
 ul.bannerspage li a:hover{ background-color:#808184;  color:#808184}
 ul.bannerspage li.current a{ background-color:#1f81bb !important;  color:#1f81bb !important}
 /* fin paginación de los banners*/
+
+body.node.home div#node-banners{width: 940px !important; margin: 0 auto !important;}
+body.node.home div#node-banners-controler{width: 940px !important;}
 
 /* Fin banners de nodo */
