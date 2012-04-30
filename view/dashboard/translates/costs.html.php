@@ -84,7 +84,7 @@ if (!empty($project->costs)) {
 $sfid = 'sf-project-costs';
 ?>
 
-<form method="post" action="<?php echo SITE_URL ?>/dashboard/translates/costs/save" class="project" enctype="multipart/form-data">
+<form method="post" action="/dashboard/translates/costs/save" class="project" enctype="multipart/form-data">
 
 <?php echo new SuperForm(array(
 

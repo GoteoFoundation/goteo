@@ -4,8 +4,6 @@ use Goteo\Library\Text;
 
 $filters = $this['filters'];
 ?>
-<a href="/admin/transnodes/add" class="button">Nueva nodo para traducir</a>
-
 <div class="widget board">
 <form id="filter-form" action="/admin/transnodes" method="get">
     <label for="admin-filter">Nodo gestionado por:</label>
@@ -33,9 +31,9 @@ $filters = $this['filters'];
                 <thead>
                     <tr>
                         <th width="5%"><!-- Editar y asignar --></th>
-                        <th width="55%">nodo</th> <!-- edit -->
-                        <th width="30%">Creador</th>
-<!--                        <th width="10%">Idioma</th> -->
+                        <th width="35%">Nodo</th> <!-- edit -->
+                        <th width="30%">Admins</th>
+                        <th width="30%">Traductores</th>
                     </tr>
                 </thead>
 
@@ -43,9 +41,9 @@ $filters = $this['filters'];
                     <?php foreach ($this['nodes'] as $node) : ?>
                     <tr>
                         <td><a href="/admin/transnodes/edit/<?php echo $node->id; ?>">[Editar]</a></td>
-                        <td><a href="/node/<?php echo $node->id; ?>" target="_blank" title="Preview"><?php echo $node->name; ?></a></td>
-                        <td><?php echo $node->user->name; ?></td>
-<!--                        <td><?php echo $node->lang; ?></td> -->
+                        <td><?php echo $node->name; ?></td>
+                        <td><?php echo implode(', ', $node->admins); ?></td>
+                        <td><?php echo implode(', ', $node->translators); ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>

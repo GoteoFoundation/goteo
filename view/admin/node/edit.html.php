@@ -38,12 +38,21 @@ if (!$node instanceof Model\Node) {
             'subtitle' => array(
                 'type'      => 'textbox',
                 'size'      => 20,
-                'title'     => 'Subtítulo',
+                'title'     => 'Título',
                 'value'     => $node->subtitle,
             ),
+
+            'description' => array(
+                'type'      => 'textarea',
+                'cols'      => 40,
+                'rows'      => 4,
+                'title'     => 'Presentación',
+                'value'     => $node->description
+            ),
+
             'logo' => array(
                 'type'      => 'group',
-                'title'     => Text::get('node-fields-logo-title'),
+                'title'     => 'Logo',
                 'class'     => 'user_avatar',
                 'children'  => array(
                     'logo_upload'    => array(
@@ -69,16 +78,8 @@ if (!$node instanceof Model\Node) {
             'location' => array(
                 'type'      => 'textbox',
                 'size'      => 20,
-                'title'     => Text::get('profile-field-location'),
+                'title'     => 'Localización',
                 'value'     => $node->location
-            ),
-
-            'description' => array(
-                'type'      => 'textarea',
-                'cols'      => 40,
-                'rows'      => 4,
-                'title'     => Text::get('overview-field-description'),
-                'value'     => $node->description
             )
 
         )

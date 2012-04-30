@@ -1,6 +1,6 @@
 <?php
 //piñonaco que te crio
-if ($this['option'] == 'call_overview') $this['option'] = 'overview';
+$this['option'] = str_replace(array('call_overview', 'node_overview'), array('overview', 'overview'), $this['option']);
 ?>
 <div id="dashboard-menu">
     <ul>

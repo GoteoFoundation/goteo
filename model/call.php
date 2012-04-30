@@ -526,7 +526,6 @@ namespace Goteo\Model {
                 }
 			} catch(\PDOException $e) {
                 $errors[] = 'Error sql al grabar la traduccion de la convocatoria.' . $e->getMessage();
-                //Text::get('save-call-fail');
                 return false;
 			}
 

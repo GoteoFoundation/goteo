@@ -206,7 +206,8 @@ namespace Goteo\Controller {
                         'actions' => array(
                             'list' => array('label' => 'Datos actuales', 'item' => false),
                             'edit' => array('label' => 'Editando', 'item' => false),
-                            'translate' => array('label' => 'Traduciendo', 'item' => false)
+                            'translate' => array('label' => 'Traduciendo', 'item' => false),
+                            'lang' => array('label' => 'Cambiando idioma traduccion', 'item' => false)
                         )
                     ),
                     'nodes' => array(
@@ -729,7 +730,7 @@ namespace Goteo\Controller {
         public function node($action = 'list', $id = null) {
             $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-            return Admin\Node::process();
+            return Admin\Node::process($action, $id);
         }
 
         /*

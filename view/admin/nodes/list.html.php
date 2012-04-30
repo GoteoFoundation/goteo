@@ -7,6 +7,8 @@ $filters = $this['filters'];
 
 ?>
 <a href="/admin/nodes/add" class="button">Crear nuevo nodo</a>
+&nbsp;&nbsp;&nbsp;
+<a href="/admin/transnodes" class="button">Asignar traductores</a>
 
 <div class="widget board">
     <form id="filter-form" action="/admin/nodes" method="get">

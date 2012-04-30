@@ -75,7 +75,7 @@ namespace Goteo\Model\User {
          * @param varcahr(50) $id  user identifier
          * @return array of items
          */
-	 	public static function getMine ($id, $lang = null, $type = null) {
+	 	public static function getMine ($id, $type = null) {
             $array = array ();
             try {
 
@@ -94,13 +94,13 @@ namespace Goteo\Model\User {
                 foreach ($translates as $item) {
                     switch ($item['type']) {
                         case 'project':
-                            $array[] = Model\Project::get($item['item'], $lang);
+                            $array[] = Model\Project::getMini($item['item']);
                             break;
                         case 'call':
-                            $array[] = Model\Call::get($item['item'], $lang);
+                            $array[] = Model\Call::getMini($item['item']);
                             break;
                         case 'node':
-                            $array[] = Model\Node::get($item['item'], $lang);
+                            $array[] = Model\Node::getMini($item['item']);
                             break;
                         default:
                             continue;
@@ -114,16 +114,16 @@ namespace Goteo\Model\User {
 		}
 
         // shortcuts para getMine
-	 	public static function getMyProjects ($id, $lang = null) {
-            return self::getMine($id, $lang, 'project');
+	 	public static function getMyProjects ($id) {
+            return self::getMine($id, 'project');
         }
 
-	 	public static function getMyCalls ($id, $lang = null) {
-            return self::getMine($id, $lang, 'call');
+	 	public static function getMyCalls ($id) {
+            return self::getMine($id, 'call');
         }
 
-	 	public static function getMyNodes ($id, $lang = null) {
-            return self::getMine($id, $lang, 'node');
+	 	public static function getMyNodes ($id) {
+            return self::getMine($id, 'node');
         }
 
 
@@ -141,10 +141,15 @@ namespace Goteo\Model\User {
             $array = array ();
             try {
                 $values = array();
-                $sql = "SELECT id, name FROM `{$type}` WHERE status > 1 AND translate = 0";
-                if ($type != 'call' && !empty($node)) {
-                    $sql .= " AND node = :node";
-                    $values[':node'] = $node;
+
+                if ($type == 'node') {
+                    $sql = "SELECT id, name FROM `{$type}`";
+                } else {
+                    $sql = "SELECT id, name FROM `{$type}` WHERE status > 1 AND translate = 0";
+                    if ($type != 'call' && !empty($node)) {
+                        $sql .= " AND node = :node";
+                        $values[':node'] = $node;
+                    }
                 }
                 $query = static::query($sql, $values);
                 $avail = $query->fetchAll(\PDO::FETCH_OBJ);

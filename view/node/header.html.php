@@ -1,10 +1,10 @@
 <?php 
     use Goteo\Library\Text,
         Goteo\Library\Lang,
-        Goteo\Core\NodeSys,
+        Goteo\Model\Node,
         Goteo\Model\Banner;
 
-$nodeData = NodeSys::setData(NODE_ID);
+$nodeData = Node::get(NODE_ID, LANG);
 $banners = Banner::getAll(true, NODE_ID);
 
 $nodeText = str_replace(array('[', ']'), array('<span class="blue">', '</span>'), $nodeData->description);

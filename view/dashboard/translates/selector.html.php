@@ -1,6 +1,6 @@
 <?php
 //piñonaco que te crio
-if ($this['option'] == 'call_overview') $this['option'] = 'overview';
+$this['option'] = str_replace(array('call_overview', 'node_overview'), array('overview', 'overview'), $this['option']);
 ?>
 <script type="text/javascript">
 function item_select(type) {
@@ -9,12 +9,12 @@ function item_select(type) {
 }
 </script>
 <div id="project-selector">
-    <form id="selector-form" name="selector_form" action="<?php echo '/dashboard/'.$this['section'].'/'.$this['option'].'/select'; ?>" method="post">
+    <form id="selector-form" name="selector_form" action="<?php echo '/dashboard/translates/overview/select'; ?>" method="post">
         <input type="hidden" id="selector-type" name="type" value="profile" />
         
     <?php if (!empty($this['projects'])) : ?>
-        <label for="selector">Proyecto:</label>
-        <select id="selector" name="project" onchange="item_select('project');">
+        <label for="pselector">Proyecto:</label>
+        <select id="pselector" name="project" onchange="item_select('project');">
             <option value="">Selecciona proyecto para traducir</option>
         <?php foreach ($this['projects'] as $project) : ?>
             <option value="<?php echo $project->id; ?>"<?php if ($project->id == $_SESSION['translate_project']->id) echo ' selected="selected"'; ?>><?php echo $project->name; ?></option>
@@ -23,14 +23,25 @@ function item_select(type) {
     <?php endif; ?>
 
     <?php if (!empty($this['calls'])) : ?>
-        <label for="selector">Convocatoria:</label>
-        <select id="selector" name="call" onchange="item_select('call');">
+        <label for="cselector">Convocatoria:</label>
+        <select id="cselector" name="call" onchange="item_select('call');">
             <option value="">Selecciona convocatoria para traducir</option>
         <?php foreach ($this['calls'] as $call) : ?>
             <option value="<?php echo $call->id; ?>"<?php if ($call->id == $_SESSION['translate_call']->id) echo ' selected="selected"'; ?>><?php echo $call->name; ?></option>
         <?php endforeach; ?>
         </select><br />
     <?php endif; ?>
+
+    <?php if (!empty($this['nodes'])) : ?>
+        <label for="nselector">Nodo:</label>
+        <select id="nselector" name="node" onchange="item_select('node');">
+            <option value="">Selecciona nodo para traducir</option>
+        <?php foreach ($this['nodes'] as $node) : ?>
+            <option value="<?php echo $node->id; ?>"<?php if ($node->id == $_SESSION['translate_node']->id) echo ' selected="selected"'; ?>><?php echo $node->name; ?></option>
+        <?php endforeach; ?>
+        </select><br />
+    <?php endif; ?>
+        
     </form>
 
     <form id="lang-form" name="lang_form" action="<?php echo '/dashboard/'.$this['section'].'/'.$this['option'].'/lang'; ?>" method="post">
@@ -48,6 +59,10 @@ function item_select(type) {
 
     <?php if ($_SESSION['translate_type'] == 'call' && !empty($_SESSION['translate_call'])) : ?>
     <p>Est&aacute;s traduciendo la convocatoria <strong><?php echo $_SESSION['translate_call']->name; ?></strong>. El idioma original es <strong>Espa&ntilde;ol</strong></p>
+    <?php endif; ?>
+
+    <?php if ($_SESSION['translate_type'] == 'node' && !empty($_SESSION['translate_node'])) : ?>
+    <p>Est&aacute;s traduciendo el nodo <strong><?php echo $_SESSION['translate_node']->name; ?></strong>. El idioma original es <strong>Espa&ntilde;ol</strong></p>
     <?php endif; ?>
 
     <?php if (!empty($_SESSION['translate_type']) && $_SESSION['translate_type'] != 'profile') : ?>

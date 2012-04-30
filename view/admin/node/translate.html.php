@@ -6,84 +6,55 @@ use Goteo\Library\Text,
     Goteo\Library\NormalForm;
 
 $node = $this['node'];
+$nodeLang = $this['nodeLang'];
 
 if (!$node instanceof Model\Node) {
     throw new Redirection('/admin');
 }
 ?>
-<form method="post" action="/admin/node" enctype="multipart/form-data">
+<div class="widget board">
+    <form id="lang-form" name="lang_form" action="/admin/node/lang" method="post">
+        <label for="selang">Traduciendo los datos del nodo al:</label>
+        <select id="selang" name="lang" onchange="document.getElementById('lang-form').submit();" style="width:150px;">
+        <?php foreach ($this['langs'] as $lng) : ?>
+            <option value="<?php echo $lng->id; ?>"<?php if ($lng->id == $_SESSION['translate_lang']) echo ' selected="selected"'; ?>><?php echo $lng->name; ?></option>
+        <?php endforeach; ?>
+        </select>
+    </form>
 
-    <?php echo new NormalForm(array(
+    <form method="post" action="/admin/node/translate">
+        <input type="hidden" name="lang" value="<?php echo $_SESSION['translate_lang'] ?>" />
 
-        'action'        => '',
-        'level'         => 3,
-        'method'        => 'post',
-        'title'         => '',
-        'class'         => 'aqua',
-        'footer'        => array(
-            'view-step-preview' => array(
-                'type'  => 'submit',
-                'name'  => 'save-node',
-                'label' => Text::get('regular-save'),
-                'class' => 'next'
-            )
-        ),
-        'elements'      => array(
-            'name' => array(
-                'type'      => 'textbox',
-                'size'      => 20,
-                'title'     => 'Nombre',
-                'value'     => $node->name,
-            ),
-            'subtitle' => array(
-                'type'      => 'textbox',
-                'size'      => 20,
-                'title'     => 'Subtítulo',
-                'value'     => $node->subtitle,
-            ),
-            'logo' => array(
-                'type'      => 'group',
-                'title'     => Text::get('node-fields-logo-title'),
-                'class'     => 'user_avatar',
-                'children'  => array(
-                    'logo_upload'    => array(
-                        'type'  => 'file',
-                        'label' => Text::get('form-image_upload-button'),
-                        'class' => 'inline avatar_upload'
-                    ),
-                    'logo-current' => array(
-                        'type' => 'hidden',
-                        'value' => $node->logo->id,
-                    ),
-                    'logo-image' => array(
-                        'type'  => 'html',
-                        'class' => 'inline avatar-image',
-                        'html'  => is_object($node->logo) ?
-                                   $node->logo . '<img src="'.SRC_URL.'/image/' . $node->logo->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="logo-'.$node->logo->id.'-remove" title="Quitar este logo" value="remove">X</button>' :
-                                   ''
-                    )
+        <p>
+            <label>Título<br />
+            <input type="text" name="subtitle" value="<?php echo $nodeLang->subtitle ?>" style="width:350px" />
+            </label>
+        </p>
 
-                )
-            ),
+        <p>
+            <label>Presentación<br />
+            <textarea name="description" cols="100" rows="10"><?php echo $nodeLang->description; ?></textarea><br />
+            </label>
+        </p>
 
-            'location' => array(
-                'type'      => 'textbox',
-                'size'      => 20,
-                'title'     => Text::get('profile-field-location'),
-                'value'     => $node->location
-            ),
+        <input type="submit" name="save-lang" value="Aplicar los cambios" />
+    </form>
+</div>
 
-            'description' => array(
-                'type'      => 'textarea',
-                'cols'      => 40,
-                'rows'      => 4,
-                'title'     => Text::get('overview-field-description'),
-                'value'     => $node->description
-            )
 
-        )
+<div class="widget board">
+    <h3>Datos originales</h3>
 
-    ));
-    ?>
+    <table>
+        <tr>
+            <td>Título</td>
+            <td><?php echo $node->subtitle ?></td>
+        </tr>
+        <tr>
+            <td>Presentación</td>
+            <td><?php echo $node->description ?></td>
+        </tr>
+    </table>
 
-</form>
+
+</div>

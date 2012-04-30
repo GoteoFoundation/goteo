@@ -998,13 +998,15 @@ namespace Goteo\Controller {
                 $_SESSION['translate_lang'] = 'en';
             }
 
-            $projects = Model\User\Translate::getMyProjects($user->id, $_SESSION['translate_lang']);
-            $calls    = Model\User\Translate::getMyCalls($user->id, $_SESSION['translate_lang']);
+            $projects = Model\User\Translate::getMyProjects($user->id);
+            $calls    = Model\User\Translate::getMyCalls($user->id);
+            $nodes    = Model\User\Translate::getMyNodes($user->id);
 
             // al seleccionar controlamos: translate_type y translateproject/translate_call
             if ($action == 'select' && !empty($_POST['type'])) {
-                unset($_SESSION['translate_call']); // quitamos la convocatoria de trabajo
-                unset($_SESSION['translate_project']); // quitamos el proyecto de trabajo
+                unset($_SESSION['translate_project']); // quitamos el proyecto de traducción
+                unset($_SESSION['translate_call']); // quitamos la convocatoria de traducción
+                unset($_SESSION['translate_node']); // quitamos el nodo de traducción
 
                 $type = $_POST['type'];
                 if (!empty($_POST[$type])) {
@@ -1021,9 +1023,10 @@ namespace Goteo\Controller {
                     'section' => __FUNCTION__,
                     'option'  => $option,
                     'action'  => $action,
-                    'langs'=> $langs,
+                    'langs'   => $langs,
                     'projects'=> $projects,
-                    'calls'=> $calls,
+                    'calls'   => $calls,
+                    'nodes'   => $nodes,
                     'errors'  => $errors,
                     'success' => $success
                 );
@@ -1227,9 +1230,10 @@ namespace Goteo\Controller {
                     $viewData['project'] = $project;
 //// FIN Control de traduccion de proyecto
                     break;
+
                 case 'call':
                     try {
-                        // si lo que tenemos en sesion no es una instancia de proyecto (es una id de proyecto)
+                        // si lo que tenemos en sesion no es una instancia de convocatoria (es una id de convocatoria)
                         if ($_SESSION['translate_call'] instanceof Model\Call) {
                             $call = Model\Call::get($_SESSION['translate_call']->id, $_SESSION['translate_lang']);
                         } else {
@@ -1247,7 +1251,7 @@ namespace Goteo\Controller {
                     $call->lang_name = $langs[$call->lang]->name;
                     unset($langs['es']);
 
-//// Control de traduccion de proyecto
+//// Control de traduccion de convocatoria
                     // tratar lo que llega por post para guardar los datos
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -1290,6 +1294,53 @@ namespace Goteo\Controller {
                     $viewData['call'] = $call;
 //// FIN Control de traduccion de convocatoria
                     break;
+
+                 case 'node':
+                    try {
+                        // si lo que tenemos en sesion no es una instancia de convocatoria (es una id de convocatoria)
+                        if ($_SESSION['translate_node'] instanceof Model\Node) {
+                            $node = Model\Node::get($_SESSION['translate_node']->id, $_SESSION['translate_lang']);
+                        } else {
+                            $node = Model\Node::get($_SESSION['translate_node'], $_SESSION['translate_lang']);
+                        }
+                    } catch (\Goteo\Core\Error $e) {
+                        $node = null;
+                    }
+                    if (!$node instanceof Model\Node) {
+                        Message::Error('Ha fallado al cargar los datos del nodo');
+                        $_SESSION['translate_type'] = 'profile';
+                        throw new Redirection('/dashboard/translates');
+                    }
+                    $_SESSION['translate_node'] = $node;
+                    $node->lang_name = $langs['es']->name;
+                    unset($langs['es']);
+
+//// Control de traduccion de convocatoria
+                    // tratar lo que llega por post para guardar los datos
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                        switch ($option) {
+                            case 'overview':
+                                if ($action == 'save') {
+                                    $node->lang_lang = $_SESSION['translate_lang'];
+                                    $node->subtitle_lang = $_POST['subtitle'];
+                                    $node->description_lang = $_POST['description'];
+                                    if ($node->updateLang($errors)) {
+                                        $node->subtitle = $_POST['subtitle'];
+                                        $node->description = $_POST['description'];
+                                    }
+                                }
+                            break;
+                        }
+                    }
+
+                    if ($option == 'overview') {
+                        $viewData['option'] = 'node_overview';
+                    }
+
+                    $viewData['node'] = $node;
+//// FIN Control de traduccion de nodo
+                     break;
                 default: // profile
                     $viewData['option'] = 'profile';
                     unset($langs['es']);
@@ -1308,6 +1359,10 @@ namespace Goteo\Controller {
                     }
 
                     $viewData['user'] = Model\User::get($user->id, $_SESSION['translate_lang']);
+            }
+
+            if (!empty($errors)) {
+                Message::Error('HA HABIDO ERRORES: <br />'. implode('<br />', $errors));
             }
 
             return new View ('view/dashboard/index.html.php', $viewData);
@@ -1566,6 +1621,14 @@ namespace Goteo\Controller {
                     'options' => array (
                         'profile'  => Text::get('step-1'),
                         'overview' => Text::get('step-3')
+                    )
+                );
+            } elseif ($_SESSION['translate_type'] == 'node') {
+                // si esta traduciendo un nodo
+                $menu['translates'] = array(
+                    'label' => Text::get('dashboard-menu-translates'),
+                    'options' => array (
+                        'overview'  => Text::get('step-3')
                     )
                 );
             } else {

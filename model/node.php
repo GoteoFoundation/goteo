@@ -24,10 +24,19 @@ namespace Goteo\Model {
         static public function get ($id, $lang = null) {
                 $sql = static::query("
                     SELECT
-                        *
+                        node.id as id,
+                        node.name as name,
+                        IFNULL(node_lang.subtitle, node.subtitle) as subtitle,
+                        IFNULL(node_lang.description, node.description) as description,
+                        node.logo as logo,
+                        node.location as location,
+                        node.url as url
                     FROM node
-                    WHERE id = :id
-                    ", array(':id' => $id));
+                    LEFT JOIN node_lang
+                        ON  node_lang.id = node.id
+                        AND node_lang.lang = :lang
+                    WHERE node.id = :id
+                    ", array(':id' => $id, ':lang' => $lang));
                 $item = $sql->fetchObject(__CLASS__);
 
                 // y sus administradores
@@ -44,7 +53,7 @@ namespace Goteo\Model {
         static public function getMini ($id) {
                 $sql = static::query("
                     SELECT
-                        name, url
+                        id, name, url
                     FROM node
                     WHERE id = :id
                     ", array(':id' => $id));
@@ -282,7 +291,6 @@ namespace Goteo\Model {
 
             try {
                 if (self::query("DELETE FROM user_node WHERE node = :node AND user = :user", $values)) {
-                    self::query("DELETE FROM acl WHERE node = :node AND user = :user", $values);
                     return true;
                 } else {
                     return false;
@@ -339,6 +347,43 @@ namespace Goteo\Model {
             }
          }
 
+        /*
+         * Para actualizar la traduccion
+         */
+         public function updateLang (&$errors) {
+             if (empty($this->id)) return false;
+
+  			try {
+                $fields = array(
+                    'id'=>'id',
+                    'lang'=>'lang_lang',
+                    'subtitle'=>'subtitle_lang',
+                    'description'=>'description_lang'
+                    );
+
+                $set = '';
+                $values = array();
+
+                foreach ($fields as $field=>$ffield) {
+                    if ($set != '') $set .= ', ';
+                    $set .= "$field = :$field";
+                    $values[":$field"] = $this->$ffield;
+                }
+
+				$sql = "REPLACE INTO node_lang SET " . $set;
+				if (self::query($sql, $values)) {
+                    return true;
+                } else {
+                    $errors[] = $sql . '<pre>' . print_r($values, 1) . '</pre>';
+                    return false;
+                }
+			} catch(\PDOException $e) {
+                $errors[] = 'Error sql al grabar la traduccion del nodo.' . $e->getMessage();
+                return false;
+			}
+
+         }
+
         /**
          * Saca una lista de nodos disponibles para traducir
          *
@@ -347,39 +392,46 @@ namespace Goteo\Model {
          * @return array of project instances
          */
         public static function getTranslates($filters = array()) {
-            $projects = array();
+            $list = array();
 
             $values = array();
 
+            $and = " WHERE";
             $sqlFilter = "";
-            if (!empty($filters['owner'])) {
-                $sqlFilter .= " AND owner = :owner";
-                $values[':owner'] = $filters['owner'];
+            if (!empty($filters['admin'])) {
+                $sqlFilter .= "$and id IN (
+                    SELECT node
+                    FROM user_node
+                    WHERE user = :admin
+                    )";
+                $and = " AND";
+                $values[':admin'] = $filters['admin'];
             }
             if (!empty($filters['translator'])) {
-                $sqlFilter .= " AND id IN (
+                $sqlFilter .= "$and id IN (
                     SELECT item
                     FROM user_translate
                     WHERE user = :translator
                     AND type = 'node'
                     )";
+                $and = " AND";
                 $values[':translator'] = $filters['translator'];
             }
 
-//                    AND node = :node
             $sql = "SELECT
                         id
                     FROM `node`
-                    WHERE translate = 1
-                        $sqlFilter
+                    $sqlFilter
                     ORDER BY name ASC
                     ";
 
             $query = self::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
-                $projects[] = self::getMini($proj['id']);
+            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $item) {
+                $anode = self::get($item['id']);
+                $anode->translators = \Goteo\Model\User\Translate::translators($item['id'], 'node');
+                $list[] = $anode;
             }
-            return $projects;
+            return $list;
         }
 
 

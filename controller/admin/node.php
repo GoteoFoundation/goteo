@@ -10,71 +10,137 @@ namespace Goteo\Controller\Admin {
 
     class Node {
 
-        public static function process () {
+        public static function process ($action = 'list', $id = null) {
 
             if (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] != \GOTEO_NODE) {
                 $node = Model\Node::get($_SESSION['admin_node']);
             } else {
-                Message::Info('No hay nada que gestionar aquí para el Master Node GOTEO');
+                Message::Info('No hay nada que gestionar aquí para Goteo Central');
                 throw new Redirection('/admin');
             }
 
+            $langs = \Goteo\Library\Lang::getAll();
+            unset($langs['es']);
+
             $errors = array();
 
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            switch ($action) {
+                case 'edit':
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save-node'])) {
 
-                // ojo si estan enviando traducción  o estan enviando contenido original
+                        $fields = array(
+                            'name',
+                            'subtitle',
+                            'location',
+                            'description'
+                        );
 
+                        foreach ($fields as $field) {
+                            if (isset($_POST[$field])) {
+                                $node->$field = $_POST[$field];
+                            }
+                        }
 
-                // tratar la imagen y ponerla en la propiedad logo
-                // __FILES__
+                        // tratar si quitan la imagen
+                        if (!empty($_POST['logo-' . $node->logo->id .  '-remove'])) {
+                            $node->logo->remove('node');
+                            $node->logo = '';
+                        }
 
-                $fields = array(
-                    'name',
-                    'subtitle',
-                    'location',
-                    'description'
-                );
+                        // tratar la imagen y ponerla en la propiedad logo
+                        if(!empty($_FILES['logo_upload']['name'])) {
+                            $node->logo = $_FILES['logo_upload'];
+                        }
 
-                foreach ($fields as $field) {
-                    if (isset($_POST[$field])) {
-                        $node->$field = $_POST[$field];
+                        /// este es el único save que se lanza desde un metodo process_
+                        if ($node->update($errors)) {
+                            Message::Info('Datos del nodo actualizados correctamente');
+                            throw new Redirection('/admin/node');
+                        } else {
+                            Message::Error('Falló al actualizar los datos del nodo:<br />'.implode('<br />', $errors));
+                        }
+
                     }
-                }
 
-                // tratar si quitan la imagen
-                if (!empty($_POST['logo-' . $node->logo->id .  '-remove'])) {
-                    $node->logo->remove('node');
-                    $node->logo = '';
-                }
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'node',
+                            'file' => 'edit',
+                            'node' => $node
+                        )
+                    );
+                    break;
 
-                // logo
-                if(!empty($_FILES['logo_upload']['name'])) {
-                    $node->logo = $_FILES['logo_upload'];
-                }
+                case 'lang':
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['lang'])) {
+                        $_SESSION['translate_lang'] = $_POST['lang'];
+                        Message::Info('Ahora estás traduciendo al <strong>'.$langs[$_SESSION['translate_lang']]->name.'</strong>');
+                        throw new Redirection('/admin/node/translate');
+                    }
+                    break;
 
-                /// este es el único save que se lanza desde un metodo process_
-                if ($node->update($errors)) {
-                    Message::Info('Datos del nodo actualizados correctamente');
-                    throw new Redirection('/admin');
-                } else {
-                    Message::Error('Falló al actualizar los datos del nodo:<br />'.implode('<br />', $errors));
-                }
-			}
+                case 'translate':
+                    if (empty($_SESSION['translate_lang'])) {
+                        $_SESSION['translate_lang'] = 'en';
+                    }
+
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save-lang'])) {
+
+                        $node->lang_lang = $_POST['lang'];
+                        $node->subtitle_lang = $_POST['subtitle'];
+                        $node->description_lang = $_POST['description'];
+
+                        /// este es el único save que se lanza desde un metodo process_
+                        if ($node->updateLang($errors)) {
+                            Message::Info('Traducción del nodo al '.$langs[$_SESSION['translate_lang']].' actualizada correctamente');
+                            throw new Redirection('/admin/node');
+                        } else {
+                            Message::Error('Falló al actualizar la traducción al '.$langs[$_SESSION['translate_lang']]);
+                        }
+
+                    }
+
+                    $nodeLang = Model\Node::get($node->id, $_SESSION['translate_lang']);
+
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'node',
+                            'file' => 'translate',
+                            'langs' => $langs,
+                            'node' => $node,
+                            'nodeLang' => $nodeLang
+                        )
+                    );
+                    
+
+                    
+                    break;
+
+                default:
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'node',
+                            'file' => 'list',
+                            'node' => $node
+                        )
+                    );
+            }
+
+            $langs = \Goteo\Library\Lang::getAll();
+
+            if ($action == 'lang' && !empty($_POST['lang'])) {
+                $_SESSION['translate_lang'] = $_POST['lang'];
+            } elseif (empty($_SESSION['translate_lang'])) {
+                $_SESSION['translate_lang'] = 'en';
+            }
 
             // añadir, vista por defecto son los datos del nodo (tipo vista previa)
             // botones [editar] y [traducir]
 
 
-            return new View(
-                'view/admin/index.html.php',
-                array(
-                    'folder' => 'node',
-                    'file' => 'edit',
-                    'node' => $node
-                )
-            );
-            
         }
 
     }
