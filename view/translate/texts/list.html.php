@@ -12,7 +12,7 @@ define('GOTEO_ADMIN_NOCACHE', true);
 
 $filter = $this['filter'];
 
-$data = Text::getAll($this['filters'], $_SESSION['translator_lang']);
+$data = Text::getAll($this['filters'], $_SESSION['translate_lang']);
 
 $pagedResults = new \Paginated($data, 20, isset($_GET['page']) ? $_GET['page'] : 1);
 

@@ -22,8 +22,8 @@ namespace Goteo\Library {
                 'news'      => 'Noticias',
                 'faq'       => 'Faq',
                 'post'      => 'Blog',
+                'banner'    => 'Banners',
                 'tag'       => 'Tags',
-//                'page'      => 'Páginas institucionales',
                 'criteria'  => 'Criterios de evaluación',
                 'worthcracy'=> 'Meritocrácia',
                 'template'  => 'Plantillas emails automáticos',
@@ -31,6 +31,10 @@ namespace Goteo\Library {
                 'info'      => 'Ideas de about'
             ),
             $fields = array(
+                'banner' => array (
+                    'title' => 'Título',
+                    'description' => 'Descripción'
+                ),
                 'promote' => array (
                     'title' => 'Título',
                     'description' => 'Descripción'
@@ -68,13 +72,6 @@ namespace Goteo\Library {
                 'tag' => array (
                     'name' => 'Nombre'
                 ),
-                /*
-                'page' => array (
-                    'name' => 'Nombre',
-                    'description' => 'Descripción'
-                ),
-                 * 
-                 */
                 'criteria' => array (
                     'title' => 'Título'
                 ),
@@ -213,6 +210,13 @@ namespace Goteo\Library {
                             $and = "OR";
                         }
                     }
+
+                    // ojo originales vacios
+                    foreach (self::$fields[$table] as $field=>$fieldName) {
+                        $sql .= " AND {$table}.{$field} IS NOT NULL
+                            ";
+                    }
+
 
                     $sql .= " ORDER BY id ASC";
 

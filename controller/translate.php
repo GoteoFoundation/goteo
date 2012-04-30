@@ -17,8 +17,8 @@ namespace Goteo\Controller {
 
         public function index ($table = '', $action = 'list', $id = null) {
 
-            if (empty($_SESSION['translator_lang'])) {
-                $_SESSION['translator_lang'] = 'en';
+            if (empty($_SESSION['translate_lang'])) {
+                $_SESSION['translate_lang'] = 'en';
 //                $errors[] = 'Selecciona el idioma de traducción';
 //                return new View('view/translate/index.html.php', array('menu'=>self::menu()));
             }
@@ -117,10 +117,11 @@ namespace Goteo\Controller {
                             // Evento Feed
                             $log = new Feed();
                             $log->populate('pagina traducida (traductor)', '/translate/pages',
-                                \vsprintf('El traductor %s ha %s la página %s al %s', array(
+                                \vsprintf('El traductor %s ha %s la página %s del nodo %s al %s', array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                 Feed::item('relevant', 'Traducido'),
                                 Feed::item('blog', $id),
+                                Feed::item('blog', $_POST['node']),
                                 Feed::item('relevant', Lang::get($_POST['lang'])->name)
                             )));
                             $log->doAdmin('admin');
@@ -128,15 +129,20 @@ namespace Goteo\Controller {
 
                             Message::Info('Contenido de la Pagina <strong>'.$id.'</strong> traducido correctamente al <strong>'.Lang::get($_POST['lang'])->name.'</strong>');
 
+                            if ($_POST['node'] != \GOTEO_NODE) {
+                                throw new Redirection('/dashboard/translates/pages');
+                            }
+
                             throw new Redirection("/translate/pages");
                         } else {
                             // Evento Feed
                             $log = new Feed();
                             $log->populate('pagina traducida (traductor)', '/translate/pages',
-                                \vsprintf('Al traductor %s le ha %s la página %s al %s', array(
+                                \vsprintf('Al traductor %s le ha %s la página %s del nodo %s al %s', array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                 Feed::item('relevant', 'Fallado al traducir'),
                                 Feed::item('blog', $id),
+                                Feed::item('blog', $_POST['node']),
                                 Feed::item('relevant', Lang::get($_POST['lang'])->name)
                             )));
                             $log->doAdmin('admin');
@@ -145,6 +151,7 @@ namespace Goteo\Controller {
                             Message::Error('Ha habido algun ERROR al traducir el contenido de la pagina <strong>'.$id.'</strong> al <strong>'.Lang::get($_POST['lang'])->name.'</strong><br />' . implode('<br />', $errors));
                         }
                     }
+
 
                     // sino, mostramos la lista
                     return new View(
@@ -187,12 +194,16 @@ namespace Goteo\Controller {
                                 Feed::item('relevant', 'Traducido'),
                                 Feed::item('blog', $id),
                                 Feed::item('blog', $table),
-                                Feed::item('relevant', Lang::get($_SESSION['translator_lang'])->name)
+                                Feed::item('relevant', Lang::get($_SESSION['translate_lang'])->name)
                             )));
                             $log->doAdmin('admin');
                             unset($log);
 
                             Message::Info('Contenido del registro <strong>'.$id.'</strong> de la tabla <strong>'.$table.'</strong> traducido correctamente al <strong>'.Lang::get($_POST['lang'])->name.'</strong>');
+
+                            if (isset($_SESSION['translate_node'])) {
+                                throw new Redirection('/dashboard/translates/'.$table.'s');
+                            }
 
                             throw new Redirection("/translate/$table/$filter&page=".$_GET['page']);
                         } else {
@@ -204,7 +215,7 @@ namespace Goteo\Controller {
                                 Feed::item('relevant', 'Fallado al traducir'),
                                 Feed::item('blog', $id),
                                 Feed::item('blog', $table),
-                                Feed::item('relevant', Lang::get($_SESSION['translator_lang'])->name)
+                                Feed::item('relevant', Lang::get($_SESSION['translate_lang'])->name)
                             )));
                             $log->doAdmin('admin');
                             unset($log);
@@ -234,7 +245,7 @@ namespace Goteo\Controller {
 
         public function select ($section = '', $action = '', $id = null) {
 
-            $_SESSION['translator_lang'] = isset($_POST['lang']) ? $_POST['lang'] : null;
+            $_SESSION['translate_lang'] = isset($_POST['lang']) ? $_POST['lang'] : null;
 
             if (!empty($section) && !empty($action)) {
 
@@ -306,6 +317,13 @@ namespace Goteo\Controller {
                 'contents' => array(
                     'label'   => 'Gestión de Textos y Traducciones',
                     'options' => array (
+                        'banner' => array(
+                            'label' => 'Banners',
+                            'actions' => array(
+                                'list' => array('label' => 'Listando', 'item' => false),
+                                'edit' => array('label' => 'Traduciendo Banner', 'item' => true)
+                            )
+                        ),
                         'post' => array(
                             'label' => 'Blog',
                             'actions' => array(
@@ -332,13 +350,6 @@ namespace Goteo\Controller {
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'edit' => array('label' => 'Traduciendo contenido de Página', 'item' => true)
-                            )
-                        ),
-                        'page' => array(
-                            'label' => 'Páginas',
-                            'actions' => array(
-                                'list' => array('label' => 'Listando', 'item' => false),
-                                'edit' => array('label' => 'Traduciendo Página', 'item' => true)
                             )
                         ),
                         'category' => array(
@@ -449,7 +460,7 @@ namespace Goteo\Controller {
                             $BC['action'],
                             array_keys($menu[$BC['section']]['options'][$BC['option']]['actions'])
                         )) {
-                        $BC['action'] = 'list';
+                        $BC['action'] = '';
                         $BC['id'] = null;
                     }
 
@@ -463,16 +474,17 @@ namespace Goteo\Controller {
                 }
 
                 // si el BC tiene Option, enlace a la portada de esa gestión
-                if (!empty($BC['option'])) {
+                if (!empty($BC['option']) && isset($menu[$BC['section']]['options'][$BC['option']])) {
                     $option = $menu[$BC['section']]['options'][$BC['option']];
-                    $path = ' &gt; <a href="/translate/'.$BC['option'].''.$BC['filter'].'">'.$option['label'].'</a>'.$path;
+                    if ($BC['action'] == 'list') {
+                        $path = " &gt; <strong>{$option['label']}</strong>";
+                    } else {
+                        $path = ' &gt; <a href="/translate/'.$BC['option'].''.$BC['filter'].'">'.$option['label'].'</a>'.$path;
+                    }
                 }
 
-                // si el BC tiene section, facil, enlace al admin
-                if (!empty($BC['section'])) {
-                    $section = $menu[$BC['section']];
-                    $path = '<a href="/translate#'.$BC['section'].'">'.$section['label'].'</a>' . $path;
-                }
+                $path = '<a href="/translate">Traductor</a>' . $path;
+                
                 return $path;
             }
 

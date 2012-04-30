@@ -4,7 +4,7 @@ use Goteo\Library\Lang;
 $langs = Lang::getAll();
 unset($langs['es']); // no se puede traducir a español
 
-$actual = Lang::get($_SESSION['translator_lang']);
+$actual = Lang::get($_SESSION['translate_lang']);
 
 $section = isset($this['table']) ? $this['table'] : $this['section'];
 

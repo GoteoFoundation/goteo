@@ -12,7 +12,7 @@ $filter = $this['filter'];
 $table  = $this['table'];
 $this['filters']['table'] = $table;
 
-$data = Content::getAll($this['filters'], $_SESSION['translator_lang']);
+$data = Content::getAll($this['filters'], $_SESSION['translate_lang']);
 
 //recolocamos los post para la paginacion
 $list = array();

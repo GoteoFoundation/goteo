@@ -74,7 +74,7 @@ namespace Goteo\Library {
                         LEFT JOIN page_lang
                             ON  page_lang.id = page.id
                             AND page_lang.lang = :lang
-                         LEFT JOIN page_node
+                        LEFT JOIN page_node
                             ON  page_node.page = page.id
                             AND page_node.lang = :lang
                             AND page_node.node = :node
@@ -206,13 +206,13 @@ namespace Goteo\Library {
                     ':node' => $node,
                     ':name' => $name,
                     ':description' => $description,
-                    ':contenido' => $content
+                    ':content' => $content
                 );
 
 				$sql = "REPLACE INTO page_node
                             (page, node, lang, name, description, content)
                         VALUES
-                            (:page, :node, :lang, :name, :description, :contenido)
+                            (:page, :node, :lang, :name, :description, :content)
                         ";
 				if (Model::query($sql, $values)) {
                     return true;

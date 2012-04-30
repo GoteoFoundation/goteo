@@ -991,7 +991,8 @@ namespace Goteo\Controller {
             $errors = array();
 
             $langs = \Goteo\Library\Lang::getAll();
-            
+            unset($langs['es']);
+
             if ($action == 'lang' && !empty($_POST['lang'])) {
                 $_SESSION['translate_lang'] = $_POST['lang'];
             } elseif (empty($_SESSION['translate_lang'])) {
@@ -1628,7 +1629,10 @@ namespace Goteo\Controller {
                 $menu['translates'] = array(
                     'label' => Text::get('dashboard-menu-translates'),
                     'options' => array (
-                        'overview'  => Text::get('step-3')
+                        'overview'  => Text::get('step-3'),
+                        'pages'  => 'Páginas institucionales',
+                        'banners'  => 'Banners',
+                        'posts'  => 'Entradas de blog'
                     )
                 );
             } else {

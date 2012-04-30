@@ -1,16 +1,11 @@
 <?php
-use Goteo\Library\Page,
-    Goteo\Model\Node;
+use Goteo\Library\Page;
 
-$nodes = Node::getList();
-$node = (empty($_SESSION['admin_node'])) ? \GOTEO_NODE : $_SESSION['admin_node'];
+$node = $this['node'];
 
-$pages = Page::getAll($_SESSION['translate_lang'], $node);
+$pages = Page::getList($node->id);
 ?>
 <div class="widget board">
-    <?php if ($node != \GOTEO_NODE) : ?>
-    <h3>Traduciendo páginas del nodo <?php echo $nodes[$node]; ?></h3>
-    <?php endif; ?>
     <table>
         <thead>
             <tr>
@@ -22,7 +17,7 @@ $pages = Page::getAll($_SESSION['translate_lang'], $node);
         <tbody>
             <?php foreach ($pages as $page) : ?>
             <tr>
-                <td><a href="/translate/pages/edit/<?php echo $page->id; ?>">[Edit]</a></td>
+                <td><a href="/translate/pages/edit/<?php echo $page->id; ?>">[Translate]</a></td>
                 <td><?php echo $page->name; ?></td>
                 <td><?php echo $page->description; ?></td>
             </tr>

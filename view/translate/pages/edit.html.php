@@ -1,11 +1,21 @@
 <?php
 
 use Goteo\Library\Text,
-    Goteo\Library\Page;
+    Goteo\Library\Page,
+    Goteo\Model\Node;
 
+$nodes = Node::getList();
 $node = (empty($_SESSION['admin_node'])) ? \GOTEO_NODE : $_SESSION['admin_node'];
 
-$page = Page::get($this['id'], $node, $_SESSION['translator_lang']);
+if (isset($_SESSION['translate_node'])) {
+    if (is_object($_SESSION['translate_node'])) {
+        $node = $_SESSION['translate_node']->id;
+    } else {
+        $node = $_SESSION['translate_node'];
+    }
+}
+
+$page = Page::get($this['id'], $node, $_SESSION['translate_lang']);
 $original = Page::get($this['id'], $node, \GOTEO_DEFAULT_LANG);
 
 $bodyClass = 'admin';
@@ -38,6 +48,9 @@ $(document).ready(function(){
 </script>
 
 <div class="widget board">
+    <?php if ($node != \GOTEO_NODE) : ?>
+    <h3>Traduciendo el nodo <?php echo $nodes[$node]; ?></h3>
+    <?php endif; ?>
     <h3 class="title"><?php echo $original->name; ?></h3>
 
     <fieldset>
@@ -50,7 +63,7 @@ $(document).ready(function(){
     </fieldset>
 
     <form method="post" action="/translate/pages/edit/<?php echo $page->id; ?>">
-        <input type="hidden" name="lang" value="<?php echo $_SESSION['translator_lang'] ?>" />
+        <input type="hidden" name="lang" value="<?php echo $_SESSION['translate_lang'] ?>" />
         <input type="hidden" name="node" value="<?php echo $node ?>" />
 
         <p>
@@ -61,7 +74,7 @@ $(document).ready(function(){
 
         <p>
             <label>Descripcion<br />
-            <textarea name="text" cols="100" rows="10"><?php echo $page->description; ?></textarea><br />
+            <textarea name="description" cols="100" rows="10"><?php echo $page->description; ?></textarea><br />
             </label>
         </p>
 

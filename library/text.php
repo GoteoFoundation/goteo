@@ -73,7 +73,7 @@ namespace Goteo\Library {
 
         static public function getTrans ($id) {
 
-            $lang = $_SESSION['translator_lang'];
+            $lang = $_SESSION['translate_lang'];
 
 			// buscamos el texto en la tabla, si no está sacamos el propósito
             $values = array(':id'=>$id, ':lang' => $lang);
