@@ -10,6 +10,14 @@ namespace Goteo\Controller {
 
         public function index ($current = 'node') {
 
+            // si llega una pregunta  ?q=70
+            if (isset($_GET['q'])) {
+                $current = null;
+                $show = $_GET['q'];
+            } else {
+                $show = null;
+            }
+
             $page = Page::get('faq');
             $faqs = array();
 
@@ -30,6 +38,9 @@ namespace Goteo\Controller {
                 $faqs[$id] = $qs;
                 foreach ($faqs[$id] as &$question) {
                     $question->description = nl2br(str_replace(array('%SITE_URL%'), array(SITE_URL), $question->description));
+                    if (isset($show) && $show == $question->id) {
+                        $current = $id;
+                    }
                 }
             }
 
@@ -39,7 +50,8 @@ namespace Goteo\Controller {
                     'faqs'     => $faqs,
                     'current'  => $current,
                     'sections' => $sections,
-                    'colors'   => $colors
+                    'colors'   => $colors,
+                    'show'     => $show
                 )
              );
 

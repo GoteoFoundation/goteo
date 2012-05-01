@@ -7,7 +7,7 @@ $campaigns = $this['calls']['campaigns'];
 ?>
 <div id="node-calls" class="content_widget rounded-corners">
 
-    <h2>Convocatorias
+    <h2><?php echo Text::get('node-home-calls-header'); ?>
     <span class="line"></span>
     </h2>
 

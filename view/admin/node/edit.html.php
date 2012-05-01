@@ -11,7 +11,7 @@ if (!$node instanceof Model\Node) {
     throw new Redirection('/admin');
 }
 ?>
-<form method="post" action="/admin/node" enctype="multipart/form-data">
+<form method="post" action="/admin/node/edit" enctype="multipart/form-data">
 
     <?php echo new NormalForm(array(
 

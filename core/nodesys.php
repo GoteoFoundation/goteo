@@ -27,9 +27,11 @@ namespace Goteo\Core {
 
         /**
          * Solo nodos activos apra el desplegable
+         * tampoco sacamos el nodo en el que estamos
+         * ni el de testeo
          * @return <type>
          */
-        public static function activeNodes () {
+        public static function activeNodes ($current = \GOTEO_NODE) {
 
             $list = array();
 
@@ -37,8 +39,9 @@ namespace Goteo\Core {
                 SELECT
                     id, name, url
                 FROM node
-                WHERE id != 'goteo'
+                WHERE id != '$current'
                 AND active = 1
+                AND id != 'testnode'
                 ORDER BY `name` ASC
                 ");
 
@@ -59,6 +62,7 @@ namespace Goteo\Core {
                 SELECT
                     name,
                     url,
+                    subtitle,
                     description,
                     logo
                 FROM node

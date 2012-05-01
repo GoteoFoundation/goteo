@@ -92,6 +92,11 @@ namespace Goteo\Library {
                 $values[':text'] = "%{$params['query']}%";
             }
 
+            if (!empty($params['node'])) {
+                $where[] = ' AND node = :node';
+                $values[':node'] = NODE_ID;
+            }
+
             $minstatus = ($showall) ? '1' : '2';
             $maxstatus = ($showall) ? '4' : '7';
 

@@ -58,11 +58,11 @@ $nodeText = str_replace(array('[', ']'), array('<span class="blue">', '</span>')
 
     <div id="node-header">
         <div class="logos">
-            <div class="node-home"><a href="<?php echo NODE_URL ?>"><?php echo NODE_NAME ?></a></div>
+            <div class="node-home"><a href="<?php echo $nodeData->url ?>"><?php echo $nodeData->name ?></a></div>
             <div class="node-intro"><?php echo $nodeText; ?></div>
             <?php if ($nodeData->logo instanceof \Goteo\Model\Image) : ?>
             <div class="node-logo">
-                <span>Con el soporte de:</span>
+                <span><?php echo Text::get('node-header-sponsorby'); ?></span>
                 <img src="<?php echo $nodeData->logo->getLink(150, 75) ?>" alt="<?php echo $nodeData->subtitle ?>" />
             </div>
             <?php endif; ?>

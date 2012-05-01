@@ -38,11 +38,10 @@ $posts      = Post::getList('footer');
             <div class="block creators">
                 <span class="title"><?php echo Text::get('node-footer-title-creators') ?></span>
                 <ul class="scroll-pane">
-                    <li><a href="#"><?php echo Text::get('node-footer-creators-able') ?></a></li>
-                    <li><a href="/blog/34"><?php echo Text::get('node-footer-creators-returns') ?></a></li>
-                    <li><a href="/blog/23"><?php echo Text::get('node-footer-creators-steps') ?></a></li>
-                    <li><a href="/press"><?php echo Text::get('node-footer-creators-press') ?></a></li>
-                    </ul>
+                    <?php foreach ($posts as $id=>$title) : ?>
+                    <li><a href="/blog/<?php echo $id ?>"><?php echo Text::recorta($title, 50) ?></a></li>
+                    <?php endforeach; ?>
+                </ul>
             </div>
 
             <div class="block investors">

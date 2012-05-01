@@ -5,7 +5,7 @@ use Goteo\Library\Text,
 <div class="side_widget sponsors">
     <p class="title">
         <span class="line"></span>
-        Con el apoyo de:
+        <?php echo Text::get('node-header-sponsorby'); ?>
     </p>
     <!-- logos de los patrocinadores --->
     <?php foreach ($this['sponsors'] as $sponsor) : ?>

@@ -66,12 +66,15 @@ div#node-header div.logos div.node-home > a {
     width: 135px;
     height: 75px;
     left: 50%;
-    background: url('/nodesys/nodo/view/css/goteo-logo.png') no-repeat left top;
 }
+
+/*
+    background: url('/nodesys/nodo/view/css/goteo-logo.png') no-repeat left top;
 
 div#node-header div.logos div.node-home > a:hover {
     background: url('/nodesys/nodo/view/css/goteo-logo.png') no-repeat right top;
 }
+*/
 
 div#node-header div.logos div.node-intro {
     text-transform: uppercase;

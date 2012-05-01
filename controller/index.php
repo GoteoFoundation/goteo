@@ -151,7 +151,7 @@ namespace Goteo\Controller {
                 $discover = array();
 
                 if (!empty($promotes)) {
-                    $searcher['promote'] = 'Destacados';
+                    $searcher['promote'] = Text::get('node-side-searcher-promote');
                     if ($page == 'about') {
                         $hide_promotes = true;
                     }
@@ -161,37 +161,37 @@ namespace Goteo\Controller {
                 // si una categoria no tiene proyectos no la ponemos en los pastillos del buscador
                 $disc_popular = Project::published('popular', 4);
                 if (!empty($disc_popular)) {
-                    $searcher['popular'] = 'Populares';
+                    $searcher['popular'] = Text::get('node-side-searcher-popular');
                     $discover['popular'] = $disc_popular;
                 }
 
                 $disc_recent = Project::published('recent', 4);
                 if (!empty($disc_recent)) {
-                    $searcher['recent'] = 'Recientes';
+                    $searcher['recent'] = Text::get('node-side-searcher-recent');
                     $discover['recent'] = $disc_recent;
                 }
 
                 $disc_success = Project::published('success', 4);
                 if (!empty($disc_success)) {
-                    $searcher['success'] = 'Exitosos';
+                    $searcher['success'] = Text::get('node-side-searcher-success');
                     $discover['success'] = $disc_success;
                 }
 
-                $disc_outdate = Project::published('outdate', false, 4);
+                $disc_outdate = Project::published('outdate', 4);
                 if (!empty($disc_outdate)) {
-                    $searcher['outdate'] = 'Urgentes';
+                    $searcher['outdate'] = Text::get('node-side-searcher-outdate');
                     $discover['outdate'] = $disc_outdate;
                 }
 
                 $disc_byreward = array();
                 foreach ($icons as $icon=>$iconData) {
-                    $icon_projs = \Goteo\Library\Search::params(array('reward'=>array("'$icon'")), 4);
+                    $icon_projs = \Goteo\Library\Search::params(array('reward'=>array("'$icon'"), 'node'=>true), false, 4);
                     if (!empty($icon_projs)) {
                         $disc_byreward[$icon] = $icon_projs;
                     }
                 }
                 if (!empty($disc_byreward)) {
-                    $searcher['byreward'] = 'Por retorno';
+                    $searcher['byreward'] = Text::get('node-side-searcher-byreward');
                     $discover['byreward'] = $disc_byreward;
                 }
 

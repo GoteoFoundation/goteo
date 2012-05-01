@@ -8,7 +8,6 @@ if (count($banners) > 1) : ?>
             container: 'node-banners-container',
             paginationClass: 'bannerspage',
             generatePagination: true
-            /* para que no ruede añadir esto>>>, play: 0<<<  (pone la velocidad a cero)*/
         });
     });
 </script>

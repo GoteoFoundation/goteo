@@ -26,7 +26,7 @@ namespace Goteo\Controller\Admin {
 
             switch ($action) {
                 case 'edit':
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save-node'])) {
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                         $fields = array(
                             'name',
@@ -128,19 +128,6 @@ namespace Goteo\Controller\Admin {
                         )
                     );
             }
-
-            $langs = \Goteo\Library\Lang::getAll();
-
-            if ($action == 'lang' && !empty($_POST['lang'])) {
-                $_SESSION['translate_lang'] = $_POST['lang'];
-            } elseif (empty($_SESSION['translate_lang'])) {
-                $_SESSION['translate_lang'] = 'en';
-            }
-
-            // añadir, vista por defecto son los datos del nodo (tipo vista previa)
-            // botones [editar] y [traducir]
-
-
         }
 
     }

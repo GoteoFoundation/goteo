@@ -16,7 +16,7 @@ if (count($posts) > 1) : ?>
 </script>
 <?php endif; ?>
 <div id="node-news" class="content_widget rounded-corners">
-    <h2><?php echo Text::get('home-posts-header'); ?>
+    <h2><?php echo Text::get('node-home-posts-header'); ?>
     <span class="line"></span>
     </h2>
     

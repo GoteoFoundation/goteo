@@ -3,7 +3,7 @@ use Goteo\Core\ACL,
     Goteo\Core\NodeSys,
     Goteo\Library\Text;
 
-$nodes = Nodesys::activeNodes();
+$nodes = Nodesys::activeNodes(\NODE_ID);
 
 ?>
     <div id="menu">
@@ -46,7 +46,7 @@ $nodes = Nodesys::activeNodes();
             <?php if (!empty($banners)) : ?><li class="info"><a class="open" id="switch-banner" href="#">&nbsp;</a></li><?php endif; ?>
             <li class="explore"><a class="button red" href="/discover"><?php echo Text::get('regular-discover'); ?></a></li>
             <li class="create"><a class="button aqua" href="/project/create"><?php echo Text::get('regular-create'); ?></a></li>
-            <li class="help"><a class="button grey" href="/faq">¿Necesitas ayuda?</a></li>
+            <li class="help"><a class="button grey" href="/faq"><?php echo Text::get('node-footer-title-help'); ?></a></li>
             <li class="search">
                 <form method="get" action="/discover/results">
                     <fieldset>
@@ -57,7 +57,7 @@ $nodes = Nodesys::activeNodes();
                 </form>
             </li>
 
-            <li class="about"><a href="/about"><span>SOBre Goteo Euskadi</span></a></li>
+            <li class="about"><a href="/about"><span><?php echo str_replace('Goteo', $nodeData->name, Text::get('regular-header-about')); ?></span></a></li>
 
             <li class="community"><a href="/community"><span><?php echo Text::get('community-menu-main'); ?></span></a>
                 <div>

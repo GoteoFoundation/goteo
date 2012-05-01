@@ -11,8 +11,10 @@ $level = $this['level'] ?: 3;
 
 if ($this['global'] === true) {
     $blank = ' target="_blank"';
+    $url = empty($project->nodeData->url) ? \SITE_URL : $project->nodeData->url;
 } else {
     $blank = '';
+    $url = '';
 }
 
 //si llega $this['investor'] sacamos el total aportado para poner en "mi aporte"
@@ -21,7 +23,6 @@ if (isset($this['investor']) && is_object($this['investor'])) {
     $invest = Invest::supported($investor->id, $project->id);
 }
 
-$url = (defined('NODE_URL')) ? \NODE_URL : SITE_URL;
 ?>
 
 <div class="widget project activable<?php if (isset($this['balloon'])) echo ' balloon' ?>">

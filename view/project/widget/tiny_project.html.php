@@ -5,7 +5,7 @@ use Goteo\Core\View,
     Goteo\Model\Image;
 
 $project = $this['project'];
-$url = (defined('NODE_URL')) ? \NODE_URL : SITE_URL;
+$url = '';
 ?>
 <li>
     <a href="<?php echo $url ?>/project/<?php echo $project->id ?>" class="expand" target="_blank"></a>

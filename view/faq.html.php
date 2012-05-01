@@ -25,6 +25,11 @@ $go_up = Text::get('regular-go_up');
             }
 
         });
+
+        var hash = document.location.hash;
+        if (hash != '') {
+            $(hash).show();
+        }
     });
 
 
@@ -61,7 +66,7 @@ $go_up = Text::get('regular-go_up');
                     <?php foreach ($this['faqs'][$current] as $question)  : ?>
                         <li>
                             <h4><a href="#q<?php echo $question->id; ?>" class="faq-question" style="color:<?php echo $this['colors'][$current] ?>;"><?php echo $question->title; ?></a></h4>
-                            <div id="q<?php echo $question->id; ?>" style="display: none;"><?php echo $question->description; ?></div>
+                            <div id="q<?php echo $question->id; ?>" style="<?php echo ($this['show'] == $question->id) ? 'display:block;' : 'display:none;' ?>"><?php echo $question->description; ?></div>
                         </li>
                     <?php endforeach; ?>
                 </ol>
@@ -69,6 +74,6 @@ $go_up = Text::get('regular-go_up');
                 <a class="up" href="#"><?php echo $go_up; ?></a>
 
 			</div>
-        </div>        
+        </div>
 	<?php include 'view/footer.html.php' ?>
 <?php include 'view/epilogue.html.php' ?>
