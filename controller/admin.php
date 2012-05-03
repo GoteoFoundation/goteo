@@ -887,6 +887,22 @@ namespace Goteo\Controller {
                     // si no lo tenemos en el get, cogemos de la sesion pero no lo pisamos
                     $filters[$field] = $_SESSION['admin_filters'][$option][$field];
                     $filtered = true;
+                } elseif ($field == 'name') {
+                    // a ver si tenemos un filtro equivalente
+                    switch ($option) {
+                        case 'users':
+                            if (!empty($_SESSION['admin_filters']['accounts'][$field])) {
+                                $filters[$field] = $_SESSION['admin_filters']['accounts'][$field];
+                                $filtered = true;
+                            }
+                            break;
+                        case 'accounts':
+                            if (!empty($_SESSION['admin_filters']['users'][$field])) {
+                                $filters[$field] = $_SESSION['admin_filters']['users'][$field];
+                                $filtered = true;
+                            }
+                            break;
+                    }
                 } else {
                     // si no tenemos en sesion, ponemos el valor por defecto
                     $filters[$field] = $default;
@@ -917,7 +933,7 @@ namespace Goteo\Controller {
                     );
 
                     foreach (self::$supervisors[$user] as $opt) {
-                        $menu['contents']['options'][$opt] = $options[$option];
+                        $menu['contents']['options'][$opt] = $options[$opt];
                     }
 
                     break;

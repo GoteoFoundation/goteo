@@ -13,7 +13,7 @@ namespace Goteo\Core {
 
             $query = Model::query("
                 SELECT
-                    active
+                    id
                 FROM node
                 WHERE id = :id
                 LIMIT 1

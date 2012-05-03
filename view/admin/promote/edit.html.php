@@ -31,12 +31,12 @@ $status = Model\Project::status();
 <?php if ($node == \GOTEO_NODE) : ?>
 <p>
     <label for="promo-name">Título:</label><span style="font-style:italic;">Máximo 20 caracteres</span><br />
-    <input type="text" name="title" id="promo-title" value="<?php echo $promo->title; ?>" size="50" maxlength="20" />
+    <input type="text" name="title" id="promo-title" value="<?php echo $promo->title; ?>" maxlength="20" style="width:500px;" />
 </p>
 
 <p>
     <label for="promo-description">Descripción:</label><span style="font-style:italic;">Máximo 100 caracteres</span><br />
-    <input type="text" name="description" id="promo-description" maxlength="100" value="<?php echo $promo->description; ?>" size="85" />
+    <input type="text" name="description" id="promo-description" maxlength="100" value="<?php echo $promo->description; ?>" style="width:750px;" />
 </p>
 <?php endif; ?>
 

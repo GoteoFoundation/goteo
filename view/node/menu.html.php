@@ -12,31 +12,31 @@ $nodes = Nodesys::activeNodes(\NODE_ID);
         
         <ul>
          <script type="text/javascript">
-		jQuery(document).ready(function($){		
+		$(function(){
 			//inicialización del banner para páginas interiores
 			if(!($('body').hasClass("home"))){
 				//botón establecido en 'closed'
-				jQuery("#switch-banner").removeClass("open").addClass("close");	
+				$("#switch-banner").removeClass("open").addClass("close");
 				//banner oculto				
-				jQuery("#node-banners").css("display","none");//forzar ocultación							
+				$("#node-banners").css("display","none");//forzar ocultación
 			}
 			
 			//para todas las páginas	
-			jQuery("#switch-banner").click(function(event) {
+			$("#switch-banner").click(function(event) {
 			  event.preventDefault();
 			  if($('#switch-banner').hasClass("open")){
 				  //el elemento está abierto, luego se cierra, añadido fadeOut paginacion
-				  jQuery("#node-banners-controler").fadeOut("fast",function(){
-					  jQuery("#node-banners").slideUp("slow",function(){
-					  jQuery("#node-banners").css("display","none");//forzar ocultación
-					  jQuery("#switch-banner").removeClass("open").addClass("close");
+				  $("#node-banners-controler").fadeOut("fast",function(){
+					  $("#node-banners").slideUp("slow",function(){
+                          $("#node-banners").css("display","none");//forzar ocultación
+                          $("#switch-banner").removeClass("open").addClass("close");
 				     });
 				  });				  			  
 			  }else{
 				  //el elemento está cerrado, luego se abre
-				  jQuery("#node-banners").slideDown("slow",function(){
-					  jQuery("#switch-banner").removeClass("close").addClass("open");
-					  jQuery("#node-banners-controler").fadeIn("fast");					  
+				  $("#node-banners").slideDown("slow",function(){
+					  $("#switch-banner").removeClass("close").addClass("open");
+					  $("#node-banners-controler").fadeIn("fast");
 				  });
 			  }
 			});

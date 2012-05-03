@@ -906,6 +906,8 @@ die('Ya no podemos hacer esto a la ligera');
                 
                 // si ya lleva 3 meses de publicacion
                 if ($from > 90) {
+                    if ($project->id == 'tuderechoasaber.es') break;
+                    
                     // mirar el tiempo desde su último mensaje o comentario en su proyecto
                     $sql = "
                         SELECT

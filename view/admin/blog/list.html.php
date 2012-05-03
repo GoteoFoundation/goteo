@@ -43,7 +43,7 @@ $translator = ACL::check('/translate') ? true : false;
                 <td><?php if ($post->publish) echo '<strong style="color:#20b2b3;font-size:10px;">Publicada</sttrong>'; ?></td>
             </tr>
             <tr>
-                <td><a href="/blog/<?php echo $post->id; ?>?preview=<?php echo $_SESSION['user']->id ?>" target="_blank">[Ver publicada]</a></td>
+                <td><a href="/blog/<?php echo $post->id; ?>?preview=<?php echo $_SESSION['user']->id ?>" target="_blank">[Ver]</a></td>
                 <td><?php if ($post->owner == 'node-'.$_SESSION['admin_node'] || !isset($_SESSION['admin_node'])) : ?>
                     <a href="/admin/blog/edit/<?php echo $post->id; ?>">[Editar]</a>
                 <?php endif; ?></td>

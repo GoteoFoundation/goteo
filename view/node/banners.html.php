@@ -1,7 +1,7 @@
 <?php
 if (empty($banners)) return;
 
-if (count($banners) > 1) : ?>
+?>
 <script type="text/javascript">
     $(function(){
         $('#node-banners').slides({
@@ -11,7 +11,6 @@ if (count($banners) > 1) : ?>
         });
     });
 </script>
-<?php endif; ?>
 <div id="node-banners" class="rounded-corners-bottom">
     <div class="node-banners-container rounded-corners-bottom">
         <?php foreach ($banners as $banner) : ?>
@@ -22,5 +21,5 @@ if (count($banners) > 1) : ?>
         </div>
         <?php endforeach; ?>
     </div>
-<?php if (count($banners) > 1) : ?><div id="node-banners-controler"><ul class="bannerspage"></ul></div><?php endif; ?>
+<div id="node-banners-controler"><ul class="bannerspage"></ul></div>
 </div>

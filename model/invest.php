@@ -436,6 +436,9 @@ namespace Goteo\Model {
         public static function projects ($success = false, $node = \GOTEO_NODE) {
 
             $list = array();
+            $values = array();
+            
+            $and = " WHERE";
 
             $sql = "
                 SELECT
@@ -447,12 +450,17 @@ namespace Goteo\Model {
                     ";
 
             if ($success) {
-                $sql .= " WHERE project.status >= 3 AND project.status <= 5 ";
+                $sql .= "$and project.status >= 3 AND project.status <= 5 ";
+                $and = " AND";
+            }
+            if ($node != \GOTEO_NODE) {
+                $sql .= "$and project.node = :node";
+                $and = " AND";
+                $values[':node'] = $node;
             }
             $sql .= " ORDER BY project.name ASC";
 
-            //, array(':node' => $node)
-            $query = static::query($sql);
+            $query = static::query($sql, $values);
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
                 $list[$item->id] = $item->name;
