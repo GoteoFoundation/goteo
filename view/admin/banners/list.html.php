@@ -1,8 +1,10 @@
 <?php
 
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Core\ACL;
 
-$node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
+$node = $this['node'];
+$transNode = ACL::check('/translate/node/'.$node) ? true : false;
 ?>
 <a href="/admin/banners/add" class="button">Nuevo banner</a>
 
@@ -17,6 +19,7 @@ $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
                 <th><!-- Subir --></th>
                 <th><!-- Bajar --></th>
                 <th><!-- Editar--></th>
+                <th><!-- Traducir--></th>
                 <th><!-- Quitar--></th>
             </tr>
         </thead>
@@ -37,6 +40,11 @@ $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
                 <?php else : ?>
                 <a href="/admin/banners/active/<?php echo $banner->id; ?>/on">[Mostrar]</a>
                 <?php endif; ?></td>
+                <td>
+                <?php if ($transNode && $node != \GOTEO_NODE) : ?>
+                <a href="/translate/node/<?php echo $node ?>/banner/edit/<?php echo $banner->id; ?>" target="_blank">[Traducir]</a>
+                <?php endif; ?>
+                </td>
                 <td><a href="/admin/banners/remove/<?php echo $banner->id; ?>">[Quitar]</a></td>
             </tr>
             <?php endforeach; ?>

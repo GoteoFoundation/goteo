@@ -1,55 +1,15 @@
 <?php
 use Goteo\Core\View,
-    Goteo\Library\Text,
-    Goteo\Library\NormalForm;
+    Goteo\Library\Text;
 
 $node = $this['node'];
-$errors = $this['errors'];
-
-$original = \Goteo\Model\node::get($node->id);
 ?>
-<form method="post" action="/dashboard/translates/overview/save" class="project" >
-<?php echo new NormalForm(array(
-    'level'         => 3,
-    'action'        => '',
-    'method'        => 'post',
-    'class'         => 'aqua',
-    'footer'        => array(
-        'view-step-preview' => array(
-            'type'  => 'submit',
-            'name'  => 'save-node_data',
-            'label' => Text::get('regular-save'),
-            'class' => 'next'
-        )
-    ),
-    'elements'      => array(
-
-        'subtitle-orig' => array(
-            'type'      => 'html',
-            'title'     => 'Título',
-            'html'     => $original->subtitle
-        ),
-        'subtitle' => array(
-            'type'      => 'textbox',
-            'title'     => '',
-            'class'     => 'inline',
-            'value'     => $node->subtitle
-        ),
-
-        'description-orig' => array(
-            'type'      => 'html',
-            'title'     => 'Presentación',
-            'html'     => $original->description
-        ),
-        'description' => array(
-            'type'      => 'textarea',
-            'title'     => '',
-            'class'     => 'inline',
-            'value'     => $node->description
-        )
-
-    )
-
-));
-?>
-</form>
+<div class="widget board">
+    <h3>Traducir Contenidos del nodo <strong><?php echo $node->name; ?></strong></h3>
+    <ul>
+        <li><a href="/translate/node/<?php echo $node->id ?>/data/edit" target="_blank">Descripción</a></li>
+        <li><a href="/translate/node/<?php echo $node->id ?>/page" target="_blank">Páginas institucionales</a></li>
+        <li><a href="/translate/node/<?php echo $node->id ?>/post" target="_blank">Entradas Blog</a></li>
+        <li><a href="/translate/node/<?php echo $node->id ?>/banner" target="_blank">Banners</a></li>
+    </ul>
+</div>

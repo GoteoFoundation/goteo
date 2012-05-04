@@ -64,6 +64,10 @@ namespace Goteo\Library {
 
                 $values = array(':lang' => $lang, ':node' => $node);
 
+                if ($node != \GOTEO_NODE) {
+                    $sqlFilter .= " WHERE page.id IN ('about', 'contact', 'press', 'service')";
+                }
+
                 $sql = "SELECT
                             page.id as id,
                             IFNULL(page_lang.name, IFNULL(page_node.name, page.name)) as name,
@@ -78,6 +82,7 @@ namespace Goteo\Library {
                             ON  page_node.page = page.id
                             AND page_node.lang = :lang
                             AND page_node.node = :node
+                        $sqlFilter
                         ORDER BY pendiente DESC, name ASC
                         ";
 

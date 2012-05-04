@@ -169,7 +169,8 @@ namespace Goteo\Controller\Admin {
                             'file' => 'list',
                             'posts' => $posts,
                             'homes' => $homes,
-                            'footers' => $footers
+                            'footers' => $footers,
+                            'node' => $node
                         )
                     );
                     break;

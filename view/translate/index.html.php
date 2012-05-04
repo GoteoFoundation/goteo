@@ -13,7 +13,6 @@ if ($_SESSION['translate_lang'] == 'es') {
     unset($this['action']);
 }
 
-
 $bodyClass = 'admin';
 
 include 'view/prologue.html.php';
@@ -43,7 +42,9 @@ include 'view/header.html.php'; ?>
             if (!empty($this['section']) && !empty($this['action'])) :
                 echo new View ('view/translate/'.$this['section'].'/'.$this['action'].'.html.php', $this);
             else :
-                foreach ($this['menu'] as $sCode=>$section) : ?>
+                foreach ($this['menu'] as $sCode=>$section) :
+                    if ($sCode == 'node') continue;
+                    ?>
                     <a name="<?php echo $sCode ?>"></a>
                     <div class="widget board collapse">
                         <h3 class="title"><?php echo $section['label'] ?></h3>

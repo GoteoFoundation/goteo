@@ -205,9 +205,7 @@ namespace Goteo\Controller {
                         'label' => 'Datos del Nodo',
                         'actions' => array(
                             'list' => array('label' => 'Datos actuales', 'item' => false),
-                            'edit' => array('label' => 'Editando', 'item' => false),
-                            'translate' => array('label' => 'Traduciendo', 'item' => false),
-                            'lang' => array('label' => 'Cambiando idioma traduccion', 'item' => false)
+                            'edit' => array('label' => 'Editando', 'item' => false)
                         )
                     ),
                     'nodes' => array(

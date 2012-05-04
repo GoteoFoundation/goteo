@@ -2,7 +2,8 @@
 
 namespace Goteo\Model\User {
 
-    use Goteo\Model;
+    use Goteo\Core\ACL,
+        Goteo\Model;
 
     class Translate extends \Goteo\Core\Model {
 
@@ -192,8 +193,13 @@ namespace Goteo\Model\User {
 
 			try {
 	            $sql = "REPLACE INTO user_translate (user, type, item) VALUES(:user, :type, :item)";
-				self::query($sql, $values);
-				return true;
+				if (self::query($sql, $values)) {
+                    ACL::allow('/translate/'.$this->type.'/'.$this->item.'/*', '*', 'translator', $this->user);
+    				return true;
+                } else {
+                    $errors[] = 'No se ha creado el registro `user_translate`';
+                    return false;
+                }
 			} catch(\PDOException $e) {
 				$errors[] = "HA FALLADO!!! " . $e->getMessage();
 				return false;
@@ -217,8 +223,11 @@ namespace Goteo\Model\User {
                 );
 
             try {
-                self::query("DELETE FROM user_translate WHERE type = :type AND item = :item AND user = :user", $values);
-				return true;
+                if (self::query("DELETE FROM user_translate WHERE type = :type AND item = :item AND user = :user", $values)) {
+                    ACL::deny('/translate/'.$this->type.'/'.$this->item.'/*', '*', 'translator', $this->user);    				return true;
+                } else {
+                    return false;
+                }
 			} catch(\PDOException $e) {
                 $errors[] = 'HA FALLADO!!! ' . $e->getMessage();
                 return false;

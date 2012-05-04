@@ -3,11 +3,13 @@ use Goteo\Library\Text,
     Goteo\Core\ACL;
 
 $translator = ACL::check('/translate') ? true : false;
+$node = $this['node'];
+$transNode = ACL::check('/translate/node/'.$node) ? true : false;
 ?>
 <a href="/admin/blog/add" class="button">Nueva entrada</a>
 &nbsp;&nbsp;&nbsp;
 <a href="/admin/blog/reorder" class="button">Ordenar la portada</a>
-<?php if (empty($_SESSION['admin_node'])) : ?>
+<?php if ($node == \GOTEO_NODE) : ?>
 &nbsp;&nbsp;&nbsp;
 <a href="/admin/blog/footer" class="button">Ordenar el footer</a>
 <?php endif; ?>
@@ -44,7 +46,7 @@ $translator = ACL::check('/translate') ? true : false;
             </tr>
             <tr>
                 <td><a href="/blog/<?php echo $post->id; ?>?preview=<?php echo $_SESSION['user']->id ?>" target="_blank">[Ver]</a></td>
-                <td><?php if ($post->owner == 'node-'.$_SESSION['admin_node'] || !isset($_SESSION['admin_node'])) : ?>
+                <td><?php if ($post->owner == 'node-'.$node || $node == \GOTEO_NODE) : ?>
                     <a href="/admin/blog/edit/<?php echo $post->id; ?>">[Editar]</a>
                 <?php endif; ?></td>
                 <td><?php if ($post->publish) {
@@ -61,7 +63,10 @@ $translator = ACL::check('/translate') ? true : false;
                             echo '<a href="/admin/blog/add_footer/'.$post->id.'" style="color:blue;">[Poner en footer]</a>';
                     }
                 } ?></td>
-                <td><?php if ($translator) : ?><a href="/translate/post/edit/<?php echo $post->id; ?>" >[Traducir]</a><?php endif; ?></td>
+                <td>
+                <?php if ($translator && $node == \GOTEO_NODE) : ?><a href="/translate/post/edit/<?php echo $post->id; ?>" >[Traducir]</a><?php endif; ?>
+                <?php if ($post->owner == 'node-'.$node && $transNode && $node != \GOTEO_NODE) : ?><a href="/translate/node/<?php echo $node ?>/post/edit/<?php echo $post->id; ?>" target="_blank">[Traducir]</a><?php endif; ?>
+                </td>
                 <td><?php if (!$post->publish && ($post->owner == 'node-'.$_SESSION['admin_node'] || !isset($_SESSION['admin_node']))) : ?>
                     <a href="/admin/blog/remove/<?php echo $post->id; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Eliminar]</a>
                 <?php endif; ?></td>

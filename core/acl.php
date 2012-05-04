@@ -7,7 +7,7 @@ namespace Goteo\Core {
     class ACL {
         protected $resources = array();
 
-        public static function check ($url = \GOTEO_REQUEST_URI, $user = null) {
+        public static function check ($url = \GOTEO_REQUEST_URI, $user = null, $node = \GOTEO_NODE) {
             $url = static::fixURL($url);
 
             if(is_null($user)) {
@@ -41,7 +41,7 @@ namespace Goteo\Core {
                 LIMIT 1
                 ",
                 array(
-                    ':node'   => \GOTEO_NODE,
+                    ':node'   => $node,
                     ':roles'  => implode(', ', $roles),
                     ':user'   => $id,
                     ':url'    => $url
@@ -57,7 +57,7 @@ namespace Goteo\Core {
 
         protected function addperms ($url, $node = \GOTEO_NODE, $role = '*', $user = '*', $allow = true) {
 
-            $url = static::fixURL($url);
+//            $url = static::fixURL($url);
 
             if($user instanceof User) {
                 $user = $user->id;
@@ -88,6 +88,9 @@ namespace Goteo\Core {
         }
 
         public static function deny($url, $node = \GOTEO_NODE, $role = '*', $user = '*') {
+
+            //@TODO Ojo, si ya tiene un permiso, se elimina el permiso en vez de añadir una denegacion
+
             return static::addperms($url, $node, $role, $user, false);
         }
 

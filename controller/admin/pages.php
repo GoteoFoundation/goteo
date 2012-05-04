@@ -75,7 +75,8 @@ namespace Goteo\Controller\Admin {
                         array(
                             'folder' => 'pages',
                             'file' => 'list',
-                            'pages' => $pages
+                            'pages' => $pages,
+                            'node' => $node
                         )
                     );
                     break;

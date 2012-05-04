@@ -18,24 +18,27 @@ namespace Goteo\Model {
         /*
          *  Devuelve datos de un banner de proyecto
          */
-        public static function get ($id) {
+        public static function get ($id, $lang = null) {
                 $query = static::query("
                     SELECT  
                         banner.id as id,
                         banner.node as node,
                         banner.project as project,
                         project.name as name,
-                        banner.title as title,
-                        banner.description as description,
+                        IFNULL(banner_lang.title, banner.title) as title,
+                        IFNULL(banner_lang.description, banner.description) as description,
                         banner.url as url,
                         banner.image as image,
                         banner.order as `order`,
                         banner.active as `active`
                     FROM    banner
+                    LEFT JOIN banner_lang
+                        ON  banner_lang.id = banner.id
+                        AND banner_lang.lang = :lang
                     LEFT JOIN project
                         ON project.id = banner.project
                     WHERE banner.id = :id
-                    ", array(':id'=>$id));
+                    ", array(':id'=>$id, ':lang' => $lang));
                 $banner = $query->fetchObject(__CLASS__);
 
                 $banner->image = Image::get($banner->image);

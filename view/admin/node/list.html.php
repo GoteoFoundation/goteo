@@ -10,7 +10,7 @@ if (!$node instanceof Model\Node) {
     throw new Redirection('/admin');
 }
 ?>
-<a href="/admin/node/edit" class="button">Editar</a>&nbsp;&nbsp;&nbsp;<a href="/admin/node/translate" class="button">Traducir</a>
+<a href="/admin/node/edit" class="button">Editar</a>&nbsp;&nbsp;&nbsp;<a href="/translate/node/<?php echo $node->id ?>/data/edit" class="button" target="_blank">Traducir</a>
 <div class="widget">
     <table>
         <tr>

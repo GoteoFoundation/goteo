@@ -1003,6 +1003,13 @@ namespace Goteo\Controller {
             $calls    = Model\User\Translate::getMyCalls($user->id);
             $nodes    = Model\User\Translate::getMyNodes($user->id);
 
+            foreach ($nodes as $node) {
+                // compruebo que puedo traducir todos los nodos asignados
+                if (!ACL::check('/translate/node/'.$node->id.'/*')) {
+                    ACL::allow('/translate/node/'.$node->id.'/*', '*', 'translator', $user->id);
+                }
+            }
+
             // al seleccionar controlamos: translate_type y translateproject/translate_call
             if ($action == 'select' && !empty($_POST['type'])) {
                 unset($_SESSION['translate_project']); // quitamos el proyecto de traducción
@@ -1316,31 +1323,10 @@ namespace Goteo\Controller {
                     $node->lang_name = $langs['es']->name;
                     unset($langs['es']);
 
-//// Control de traduccion de convocatoria
-                    // tratar lo que llega por post para guardar los datos
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    // la traducción de contenidos se hace en /traslate/node/list/id-nodo
 
-                        switch ($option) {
-                            case 'overview':
-                                if ($action == 'save') {
-                                    $node->lang_lang = $_SESSION['translate_lang'];
-                                    $node->subtitle_lang = $_POST['subtitle'];
-                                    $node->description_lang = $_POST['description'];
-                                    if ($node->updateLang($errors)) {
-                                        $node->subtitle = $_POST['subtitle'];
-                                        $node->description = $_POST['description'];
-                                    }
-                                }
-                            break;
-                        }
-                    }
-
-                    if ($option == 'overview') {
-                        $viewData['option'] = 'node_overview';
-                    }
-
+                    $viewData['option'] = 'node_overview';
                     $viewData['node'] = $node;
-//// FIN Control de traduccion de nodo
                      break;
                 default: // profile
                     $viewData['option'] = 'profile';
@@ -1629,10 +1615,7 @@ namespace Goteo\Controller {
                 $menu['translates'] = array(
                     'label' => Text::get('dashboard-menu-translates'),
                     'options' => array (
-                        'overview'  => Text::get('step-3'),
-                        'pages'  => 'Páginas institucionales',
-                        'banners'  => 'Banners',
-                        'posts'  => 'Entradas de blog'
+                        'overview'  => 'Contenidos de nodo'
                     )
                 );
             } else {

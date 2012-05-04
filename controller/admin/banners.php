@@ -148,7 +148,8 @@ namespace Goteo\Controller\Admin {
                 array(
                     'folder' => 'banners',
                     'file' => 'list',
-                    'bannered' => $bannered
+                    'bannered' => $bannered,
+                    'node' => $node
                 )
             );
             

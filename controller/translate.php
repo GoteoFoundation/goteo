@@ -15,12 +15,13 @@ namespace Goteo\Controller {
 
 	class Translate extends \Goteo\Core\Controller {
 
-        public function index ($table = '', $action = 'list', $id = null) {
+        /*
+         * Para traducir contenidos de nodo, especial: $action = id del nodo; $id = tabla, $auxAction = action, $contentId = registro
+         */
+        public function index ($table = '', $action = 'list', $id = null, $auxAction = 'list', $contentId = null) {
 
             if (empty($_SESSION['translate_lang'])) {
                 $_SESSION['translate_lang'] = 'en';
-//                $errors[] = 'Selecciona el idioma de traducción';
-//                return new View('view/translate/index.html.php', array('menu'=>self::menu()));
             }
 
             if ($table == '') {
@@ -30,12 +31,23 @@ namespace Goteo\Controller {
             // para el breadcrumbs segun el contenido
             $section = ($table == 'news' || $table == 'promote') ? 'home' : 'contents';
 
-            $BC = self::menu(array(
-                'section' => $section,
-                'option' => $table,
-                'action' => $action,
-                'id' => $id
-            ));
+            // muy especial para traducción de nodo
+            if ($table == 'node') {
+                $BC = self::menu(array(
+                    'section' => 'node',
+                    'node' => $action,
+                    'option' => $id,
+                    'action' => $auxAction,
+                    'id' => $contentId
+                ));
+            } else {
+                $BC = self::menu(array(
+                    'section' => $section,
+                    'option' => $table,
+                    'action' => $action,
+                    'id' => $id
+                ));
+            }
 
             define('ADMIN_BCPATH', $BC);
 
@@ -108,6 +120,119 @@ namespace Goteo\Controller {
                             'errors'  => $errors
                         )
                      );
+                    break;
+
+                case 'node':
+                    // parametros especiales
+                    $node = $action;
+                    $action = $auxAction;
+                    $contentTable = $id;
+
+                    // si llega post, vamos a guardar los cambios
+                    if ($action == 'edit' && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
+
+                        switch ($contentTable) {
+                            case 'banner':
+                                if (Content::save(array(
+                                                'id'   => $contentId,
+                                                'table' => $contentTable,
+                                                'title' => $_POST['title'],
+                                                'description' => $_POST['description'],
+                                                'lang' => $_POST['lang']
+                                            ), $errors)) {
+                                    Message::Info('El Banner <strong>'.$contentId.'</strong> del nodo <strong>'.$node.'</strong> traducido correctamente al <strong>'.Lang::get($_POST['lang'])->name.'</strong>');
+                                    throw new Redirection("/translate/node/$node/$contentTable/list");
+                                } else {
+                                    Message::Error('Ha habido algun ERROR al traducir el Banner <strong>'.$contentId.'</strong> del nodo <strong>'.$node.'</strong> al <strong>'.Lang::get($_POST['lang'])->name.'</strong><br />' . implode('<br />', $errors));
+                                }
+                                break;
+                            case 'page':
+                                $page = Page::get($contentId, $node);
+                                if ($page->update(
+                                        $contentId, $_POST['lang'], $node,
+                                        $_POST['name'], $_POST['description'], $_POST['content'],
+                                        $errors)) {
+                                    Message::Info('La página <strong>'.$contentId.'</strong> del nodo <strong>'.$node.'</strong> traducido correctamente al <strong>'.Lang::get($_POST['lang'])->name.'</strong>');
+                                    throw new Redirection("/translate/node/$node/$contentTable/list");
+                                } else {
+                                    Message::Error('Ha habido algun ERROR al traducir la página <strong>'.$contentId.'</strong> del nodo <strong>'.$node.'</strong> al <strong>'.Lang::get($_POST['lang'])->name.'</strong><br />' . implode('<br />', $errors));
+                                }
+                                break;
+                            case 'post':
+                                if (Content::save(array(
+                                                'id'   => $contentId,
+                                                'table' => $contentTable,
+                                                'title' => $_POST['title'],
+                                                'text' => $_POST['text'],
+                                                'legend' => $_POST['legend'],
+                                                'lang' => $_POST['lang']
+                                            ), $errors)) {
+                                    Message::Info('La entrada <strong>'.$contentId.'</strong> del nodo <strong>'.$node.'</strong> traducido correctamente al <strong>'.Lang::get($_POST['lang'])->name.'</strong>');
+                                    throw new Redirection("/translate/node/$node/$contentTable/list");
+                                } else {
+                                    Message::Error('Ha habido algun ERROR al traducir la Entrada <strong>'.$contentId.'</strong> del nodo <strong>'.$node.'</strong> al <strong>'.Lang::get($_POST['lang'])->name.'</strong><br />' . implode('<br />', $errors));
+                                }
+                                break;
+                            default:
+                                $node = Model\Node::get($node);
+                                $node->lang_lang = $_SESSION['translate_lang'];
+                                $node->subtitle_lang = $_POST['subtitle'];
+                                $node->description_lang = $_POST['description'];
+                                if ($node->updateLang($errors)) {
+                                    Message::Info('La Descripción del nodo <strong>'.$node->id.'</strong> traducido correctamente al <strong>'.Lang::get($_POST['lang'])->name.'</strong>');
+                                    throw new Redirection("/translate/node/$node->id");
+                                } else {
+                                    Message::Error('Ha habido algun ERROR al traducir la Descripción del nodo <strong>'.$node->id.'</strong> al <strong>'.Lang::get($_POST['lang'])->name.'</strong><br />' . implode('<br />', $errors));
+                                }
+                                
+                        }
+
+                        return new View(
+                            'view/translate/index.html.php',
+                            array(
+                                'section' => 'node',
+                                'action'  => 'edit_'.$contentTable,
+                                'option'  => $contentTable,
+                                'id'      => $contentId,
+                                'node'    => $node
+                            )
+                         );
+
+                    } elseif ($action == 'edit') {
+                        return new View(
+                            'view/translate/index.html.php',
+                            array(
+                                'section' => 'node',
+                                'action'  => 'edit_'.$contentTable,
+                                'option'  => $contentTable,
+                                'id'      => $contentId,
+                                'node'    => $node
+                            )
+                         );
+                    } elseif ($contentTable == 'data') {
+                        return new View(
+                            'view/translate/index.html.php',
+                            array(
+                                'section' => 'node',
+                                'action'  => 'edit_'.$contentTable,
+                                'option'  => $contentTable,
+                                'id'      => $node,
+                                'node'    => $node
+                            )
+                         );
+                    } else {
+                        // sino, mostramos la lista
+                        return new View(
+                            'view/translate/index.html.php',
+                            array(
+                                'section' => 'node',
+                                'action'  => 'list_'.$contentTable,
+                                'option'  => $contentTable,
+                                'node'    => $node
+                            )
+                         );
+                    }
+
                     break;
                 case 'pages':
                     // si llega post, vamos a guardar los cambios
@@ -243,11 +368,15 @@ namespace Goteo\Controller {
             return new View('view/translate/index.html.php', array('menu'=>self::menu()));
         }
 
-        public function select ($section = '', $action = '', $id = null) {
+        public function select ($section = '', $action = '', $id = null, $extraAction = null, $extraId = null) {
 
             $_SESSION['translate_lang'] = isset($_POST['lang']) ? $_POST['lang'] : null;
 
             if (!empty($section) && !empty($action)) {
+
+                if ($section == 'node') {
+                    throw new Redirection("/translate/$section/$action/$id/$extraAction/$extraId");
+                }
 
                 $filter = "?type={$_GET['type']}&text={$_GET['text']}";
 
@@ -256,50 +385,6 @@ namespace Goteo\Controller {
                 return new View('view/translate/index.html.php', array('menu'=>self::menu()));
             }
         }
-
-        /*
-         * Gestión de páginas institucionales
-         */
-
-        /*
-         * Gestión de textos de interficie
-         */
-
-        /*
-         * proyectos destacados
-         */
-
-        /*
-         * preguntas frecuentes
-         */
-
-        /*
-         * criterios de puntuación Goteo
-         */
-
-        /*
-         * Tipos de Retorno/Recompensa (iconos)
-         */
-
-        /*
-         * Licencias
-         */
-
-        /*
-         *  categorias de proyectos / intereses usuarios
-         */
-
-        /*
-         *  Gestión de tags de blog
-         */
-
-        /*
-         * Gestión de entradas de blog
-         */
-
-        /*
-         *  Gestión de noticias
-         */
 
         /*
          *  Menu de secciones, opciones, acciones y config para el panel Translate
@@ -442,6 +527,39 @@ namespace Goteo\Controller {
                             )
                         )
                     )
+                ),
+                'node' => array(
+                    'label'   => 'Nodo',
+                    'options' => array (
+                        'data' => array(
+                            'label' => 'Descripción',
+                            'actions' => array(
+                                'list' => array('label' => 'Listando', 'item' => false),
+                                'edit' => array('label' => 'Traduciendo', 'item' => false)
+                            )
+                        ),
+                        'banner' => array(
+                            'label' => 'Banners',
+                            'actions' => array(
+                                'list' => array('label' => 'Listando', 'item' => false),
+                                'edit' => array('label' => 'Traduciendo banner', 'item' => true)
+                            )
+                        ),
+                        'post' => array(
+                            'label' => 'Blog',
+                            'actions' => array(
+                                'list' => array('label' => 'Listando', 'item' => false),
+                                'edit' => array('label' => 'Traduciendo entrada', 'item' => true)
+                            )
+                        ),
+                        'page' => array(
+                            'label' => 'Páginas institucionales',
+                            'actions' => array(
+                                'list' => array('label' => 'Listando', 'item' => false),
+                                'edit' => array('label' => 'Traduciendo página', 'item' => true)
+                            )
+                        )
+                    )
                 )
             );
 
@@ -479,11 +597,27 @@ namespace Goteo\Controller {
                     if ($BC['action'] == 'list') {
                         $path = " &gt; <strong>{$option['label']}</strong>";
                     } else {
-                        $path = ' &gt; <a href="/translate/'.$BC['option'].''.$BC['filter'].'">'.$option['label'].'</a>'.$path;
+                        if (!empty($BC['node'])) {
+                            $path = ' &gt; <a href="/translate/node/'.$BC['node'].'/'.$BC['option'].'">'.$option['label'].'</a>'.$path;
+                        } else {
+                            $path = ' &gt; <a href="/translate/'.$BC['option'].''.$BC['filter'].'">'.$option['label'].'</a>'.$path;
+                        }
                     }
                 }
 
-                $path = '<a href="/translate">Traductor</a>' . $path;
+                if (empty($BC['option'])) {
+                    if (!empty($BC['node'])) {
+                        $path = 'Traduciendo nodo <strong>'.$BC['node'].'</strong>';
+                    } else {
+                        $path = '<strong>Traductor</strong>';
+                    }
+                } else {
+                    if (!empty($BC['node'])) {
+                        $path = '<a href="/translate/node/'.$BC['node'].'">Traduciendo nodo <strong>'.$BC['node'].'</strong></a>' . $path;
+                    } else {
+                        $path = '<a href="/translate">Traductor</a>' . $path;
+                    }
+                }
                 
                 return $path;
             }

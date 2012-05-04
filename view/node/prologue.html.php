@@ -11,7 +11,7 @@
         <meta name="copyright" content="<?php echo NODE_META_COPYRIGHT ?>" />
         <meta name="robots" content="all" />
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/nodesys/<?php echo NODE_ID ?>/view/css/goteo.min.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/nodesys/<?php echo NODE_ID ?>/view/css/goteo.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/nodesys/<?php echo NODE_ID ?>/view/css/config.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/nodesys/<?php echo NODE_ID ?>/view/css/node.css" />
 
