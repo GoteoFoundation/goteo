@@ -5,7 +5,7 @@ use Goteo\Library\Page,
 $nodes = Node::getList();
 $node = $this['node'];
 
-$pages = Page::getAll($_SESSION['translate_lang'], $node);
+$pages = Page::getAll('es', $node);
 ?>
 <div class="widget board">
     <table>

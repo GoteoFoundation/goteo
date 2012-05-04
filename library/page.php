@@ -23,16 +23,13 @@ namespace Goteo\Library {
 
             // buscamos la página para este nodo en este idioma
 			$sql = "SELECT  page.id as id,
-                            IFNULL(page_lang.name, IFNULL(page_node.name, page.name)) as name,
-                            IFNULL(page_lang.description, IFNULL(page_node.description, page.description)) as description,
+                            IFNULL(page_node.name, IFNULL(original.name, page.name)) as name,
+                            IFNULL(page_node.description, IFNULL(original.description, page.description)) as description,
                             page.url as url,
                             IFNULL(page_node.lang, '$lang') as lang,
                             IFNULL(page_node.node, '$node') as node,
                             IFNULL(page_node.content, original.content) as content
                      FROM page
-                     LEFT JOIN page_lang
-                        ON  page_lang.id = page.id
-                        AND page_lang.lang = :lang
                      LEFT JOIN page_node
                         ON  page_node.page = page.id
                         AND page_node.lang = :lang
@@ -70,18 +67,19 @@ namespace Goteo\Library {
 
                 $sql = "SELECT
                             page.id as id,
-                            IFNULL(page_lang.name, IFNULL(page_node.name, page.name)) as name,
-                            IFNULL(page_lang.description, IFNULL(page_node.description, page.description)) as description,
+                            IFNULL(page_node.name, IFNULL(original.name, page.name)) as name,
+                            IFNULL(page_node.description, IFNULL(original.description, page.description)) as description,
                             IF(page_node.content IS NULL, 1, 0) as pendiente,
                             page.url as url
                         FROM page
-                        LEFT JOIN page_lang
-                            ON  page_lang.id = page.id
-                            AND page_lang.lang = :lang
                         LEFT JOIN page_node
                             ON  page_node.page = page.id
                             AND page_node.lang = :lang
                             AND page_node.node = :node
+                         LEFT JOIN page_node as original
+                            ON  original.page = page.id
+                            AND original.node = :node
+                            AND original.lang = 'es'
                         $sqlFilter
                         ORDER BY pendiente DESC, name ASC
                         ";
