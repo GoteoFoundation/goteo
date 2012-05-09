@@ -156,7 +156,7 @@ namespace Goteo\Model {
             $values = array(':id'=>$this->id);
 
             try {
-                $sql = "DELETE task WHERE id = :id";
+                $sql = "DELETE FROM task WHERE id = :id";
                 if (self::query($sql, $values)) {
                     return true;
                 } else {

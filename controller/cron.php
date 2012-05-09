@@ -248,7 +248,20 @@ namespace Goteo\Controller {
                             self::toOwner('r2_pass', $project);
                             //Email de proyecto final segunda ronda a los inversores
                             self::toInvestors('r2_pass', $project);
-                            
+
+                            // Tarea para el admin
+                            // calculamos fecha de passed+90 días
+                            $passtime = strtotime($project->passed);
+                            $limsec = date('d/m/Y', \mktime(0, 0, 0, date('m', $passtime), date('d', $passtime)+89, date('Y', $passtime)));
+
+                            $task = new Model\Task();
+                            $task->node = \GOTEO_NODE;
+                            $task->text = "Hacer los pagos secundarios al proyecto <strong>{$project->name}</strong> antes del día <strong>{$limsec}</strong>";
+                            $task->url = "/admin/accounts/?projects={$project->id}";
+                            $task->done = null;
+                            $task->save();
+
+
                             echo '<br />';
                         } elseif (empty($project->passed)) {
 
