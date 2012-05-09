@@ -45,7 +45,12 @@ $side_availables = $this['side_availables'];
             <?php foreach ($side_items as $item) : ?>
             <tr>
                 <td><?php echo $item->order; ?></td>
-                <td><?php echo $the_side_items[$item->item]; ?></td>
+                <td><?php
+                if (isset(Home::$admins[$item->item])) {
+                    echo '<a href="'.Home::$admins[$item->item].'" style="text-decoration: underline;">'.$the_side_items[$item->item].'</a>';
+                } else { 
+                    echo $the_side_items[$item->item]; }
+                ?></td>
                 <td><a href="/admin/home/up/<?php echo $item->item; ?>/side">[&uarr;]</a></td>
                 <td><a href="/admin/home/down/<?php echo $item->item; ?>/side">[&darr;]</a></td>
                 <td><a href="/admin/home/remove/<?php echo $item->item; ?>/side">[Quitar]</a></td>
@@ -98,7 +103,12 @@ $side_availables = $this['side_availables'];
             <?php foreach ($items as $item) : ?>
             <tr>
                 <td><?php echo $item->order; ?></td>
-                <td><?php echo $the_items[$item->item]; ?></td>
+                <td><?php
+                if (isset(Home::$admins[$item->item])) {
+                    echo '<a href="'.Home::$admins[$item->item].'" style="text-decoration: underline;">'.$the_items[$item->item].'</a>';
+                } else {
+                    echo $the_items[$item->item]; }
+                ?></td>
                 <td><a href="/admin/home/up/<?php echo $item->item; ?>/main">[&uarr;]</a></td>
                 <td><a href="/admin/home/down/<?php echo $item->item; ?>/main">[&darr;]</a></td>
                 <td><a href="/admin/home/remove/<?php echo $item->item; ?>/main">[Quitar]</a></td>

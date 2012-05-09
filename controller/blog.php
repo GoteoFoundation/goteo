@@ -58,8 +58,7 @@ namespace Goteo\Controller {
                 array(
                     'blog' => $blog,
                     'show' => $show,
-                    'tag'  => $tag,
-                    'author'=> $author,
+                    'filters'  => $filters,
                     'post' => $post,
                     'owner' => \GOTEO_NODE
                 )

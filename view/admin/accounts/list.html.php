@@ -30,8 +30,8 @@ $emails = Invest::emails(true);
         'label' => 'Extra',
         'first' => 'Todos'),
     'issue' => array (
-        'label' => 'Incidencia',
-        'first' => 'Todos')
+        'label' => 'Mostrar',
+        'first' => 'Todos los aportes')
 ); ?>
 <a href="/admin/accounts/add" class="button">Generar aporte manual</a>
 <a href="http://ppcalc.com/es" target="_blank" class="button">Calculadora PayPal</a>&nbsp;&nbsp;&nbsp;

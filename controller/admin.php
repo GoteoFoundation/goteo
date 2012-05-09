@@ -36,7 +36,8 @@ namespace Goteo\Controller {
                     ),
                 'merxxx' => array(
                         'users',
-                        'accounts'
+                        'accounts',
+                        'recent'
                     )
                 );
 
@@ -216,7 +217,7 @@ namespace Goteo\Controller {
                             'edit' => array('label' => 'Gestionando Nodo', 'item' => true),
                             'admins' => array('label' => 'Asignando administradores del Nodo', 'item' => true)
                         ),
-                        'filters' => array('status'=>'active', 'admin'=>'', 'name'=>'')
+                        'filters' => array('status'=>'', 'admin'=>'', 'name'=>'')
                     ),
                     'pages' => array(
                         'label' => 'Páginas',

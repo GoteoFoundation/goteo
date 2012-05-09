@@ -5,7 +5,11 @@ use Goteo\Library\Text,
 
 $blog = $this['blog'];
 $posts = $blog->posts;
-$tag = $this['tag'];
+$filters = $this['filters'];
+$the_filters = '';
+foreach ($filters as $key=>$value) {
+    $the_filters = "&{$key}={$value}";
+}
 if (!empty($this['post'])) {
     $post = Post::get($this['post'], LANG);
 }
@@ -58,7 +62,7 @@ include 'view/header.html.php';
 					<?php endwhile; ?>
                     <ul id="pagination">
                         <?php   $pagedResults->setLayout(new DoubleBarLayout());
-                                echo $pagedResults->fetchPagedNavigation(); ?>
+                                echo $pagedResults->fetchPagedNavigation($the_filters); ?>
                     </ul>
 				<?php else : ?>
 					<p>No hay entradas</p>

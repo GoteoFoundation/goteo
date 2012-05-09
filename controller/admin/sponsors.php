@@ -170,9 +170,11 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'up':
                     $model::up($id, $node);
+                    throw new Redirection($url);
                     break;
                 case 'down':
                     $model::down($id, $node);
+                    throw new Redirection($url);
                     break;
                 case 'remove':
                     if ($model::delete($id)) {

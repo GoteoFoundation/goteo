@@ -35,6 +35,14 @@ namespace Goteo\Model {
              'summary' => 'Resumen proyectos',
              'sumcalls' => 'Resumen convocatorias',
              'sponsors' => 'Patrocinadores'
+         ),
+         $admins = array(
+             'promotes' => '/admin/promote',
+             'drops' => '/admin/calls',
+             'calls' => '/admin/campaigns',
+             'posts' => '/admin/blog',
+             'patrons' => '/admin/patron',
+             'sponsors' => '/admin/sponsors'
          );
 
 

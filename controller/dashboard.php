@@ -55,12 +55,12 @@ namespace Goteo\Controller {
 
                 // compruebo que puedo editar mis proyectos
                 if (!ACL::check('/project/edit/'.$project->id)) {
-                    ACL::allow('/project/edit/'.$project->id, '*', 'user', $user);
+                    ACL::allow('/project/edit/'.$project->id.'/', '*', 'user', $user);
                 }
 
                 // y borrarlos
                 if (!ACL::check('/project/delete/'.$project->id)) {
-                    ACL::allow('/project/delete/'.$project->id, '*', 'user', $user);
+                    ACL::allow('/project/delete/'.$project->id.'/', '*', 'user', $user);
                 }
             }
 
@@ -1376,12 +1376,12 @@ namespace Goteo\Controller {
 
                     // compruebo que puedo editar mis proyectos
                     if (!ACL::check('/call/edit/'.$call->id)) {
-                        ACL::allow('/call/edit/'.$call->id, '*', 'caller', $user);
+                        ACL::allow('/call/edit/'.$call->id.'/', '*', 'caller', $user);
                     }
 
                     // y borrarlos
                     if (!ACL::check('/call/delete/'.$call->id)) {
-                        ACL::allow('/call/delete/'.$call->id, '*', 'caller', $user);
+                        ACL::allow('/call/delete/'.$call->id.'/', '*', 'caller', $user);
                     }
                 }
             }
@@ -1488,7 +1488,7 @@ namespace Goteo\Controller {
 
                 // compruebo que puedo editar mis proyectos
                 if (!ACL::check('/project/edit/'.$project->id)) {
-                    ACL::allow('/project/edit/'.$project->id, '*', 'user', $_SESSION['user']);
+                    ACL::allow('/project/edit/'.$project->id.'/', '*', 'user', $_SESSION['user']);
                 }
             }
 

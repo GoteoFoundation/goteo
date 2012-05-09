@@ -248,6 +248,7 @@ namespace Goteo\Controller\Admin {
                 $invests = Model\Invest::getAll($id);
                 $project->investors = Model\Invest::investors($id, false, true);
                 $users = $project->agregateInvestors();
+                $investStatus = Model\Invest::status();
 
                 // Datos para el informe de transacciones correctas
                 $reportData = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
@@ -448,8 +449,8 @@ namespace Goteo\Controller\Admin {
             );
 
             $issue = array(
-                'show' => 'Mostrar',
-                'hide' => 'Ocultar'
+                'show' => 'Solamente las incidencias',
+                'hide' => 'Ocultar las incidencias'
             );
 
 

@@ -2,9 +2,24 @@
 use Goteo\Library\Text,
     Goteo\Core\ACL;
 
+// paginacion
+require_once 'library/pagination/pagination.php';
+
 $translator = ACL::check('/translate') ? true : false;
 $node = $this['node'];
 $transNode = ACL::check('/translate/node/'.$node) ? true : false;
+
+$filters = $this['filters'];
+$the_filters = '';
+foreach ($filters as $key=>$value) {
+    $the_filters .= "&{$key}={$value}";
+}
+
+$the_posts = array();
+foreach ($this['posts'] as $apost) {
+    $the_posts[] = $apost;
+}
+$pagedResults = new \Paginated($the_posts, 10, isset($_GET['page']) ? $_GET['page'] : 1);
 ?>
 <a href="/admin/blog/add" class="button">Nueva entrada</a>
 &nbsp;&nbsp;&nbsp;
@@ -27,9 +42,9 @@ $transNode = ACL::check('/translate/node/'.$node) ? true : false;
         </thead>
 
         <tbody>
-            <?php foreach ($this['posts'] as $post) : ?>
+            <?php while ($post = $pagedResults->fetchPagedRow()) : ?>
             <tr>
-                <td><?php echo $post->author->name; ?></td>
+                <td><?php echo $post->user->name; ?></td>
                 <td colspan="3"><?php
                         $style = '';
                         if (isset($this['homes'][$post->id]))
@@ -74,11 +89,14 @@ $transNode = ACL::check('/translate/node/'.$node) ? true : false;
             <tr>
                 <td colspan="6"><hr /></td>
             </tr>
-            <?php endforeach; ?>
+            <?php endwhile; ?>
         </tbody>
-
     </table>
-    <?php else : ?>
-    <p>No se han encontrado registros</p>
-    <?php endif; ?>
 </div>
+<ul id="pagination">
+<?php   $pagedResults->setLayout(new DoubleBarLayout());
+        echo $pagedResults->fetchPagedNavigation(str_replace('?', '&', $the_filters)); ?>
+</ul>
+<?php else : ?>
+<p>No se han encontrado registros</p>
+<?php endif; ?>

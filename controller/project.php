@@ -404,8 +404,8 @@ namespace Goteo\Controller {
                 $_SESSION['stepped'] = array();
                 
                 // permisos para editarlo y borrarlo
-                ACL::allow('/project/edit/'.$project->id, '*', 'user', $_SESSION['user']->id);
-                ACL::allow('/project/delete/'.$project->id, '*', 'user', $_SESSION['user']->id);
+                ACL::allow('/project/edit/'.$project->id.'/', '*', 'user', $_SESSION['user']->id);
+                ACL::allow('/project/delete/'.$project->id.'/', '*', 'user', $_SESSION['user']->id);
 
                 // Evento Feed
                 $log = new Feed();

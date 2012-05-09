@@ -351,7 +351,7 @@ namespace Goteo\Library {
                 $fault->error = $errorData;
 
                 $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
-                @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, 1) . '</pre>');
+                @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . '<br />No se ha podido inicializar la comunicación con Paypal.<br /><pre>' . print_r($fault, 1) . '</pre>');
                 return false;
             }
 

@@ -285,8 +285,8 @@ namespace Goteo\Controller {
                     $_SESSION['stepped'] = array();
 
                     // permisos para editarlo y borrarlo
-                    ACL::allow('/call/edit/'.$call->id, '*', 'caller', $_SESSION['user']->id);
-                    ACL::allow('/call/delete/'.$call->id, '*', 'caller', $_SESSION['user']->id);
+                    ACL::allow('/call/edit/'.$call->id.'/', '*', 'caller', $_SESSION['user']->id);
+                    ACL::allow('/call/delete/'.$call->id.'/', '*', 'caller', $_SESSION['user']->id);
 
                     // Evento Feed
                     $log = new Feed();

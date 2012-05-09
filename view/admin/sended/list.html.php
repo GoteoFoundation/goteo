@@ -7,6 +7,10 @@ require_once 'library/pagination/pagination.php';
 
 $filters = $this['filters'];
 $templates = $this['templates'];
+$the_filters = '';
+foreach ($filters as $key=>$value) {
+    $the_filters .= "&{$key}={$value}";
+}
 
 $pagedResults = new \Paginated($this['sended'], 20, isset($_GET['page']) ? $_GET['page'] : 1);
 ?>
@@ -78,7 +82,7 @@ $pagedResults = new \Paginated($this['sended'], 20, isset($_GET['page']) ? $_GET
 </div>
 <ul id="pagination">
 <?php   $pagedResults->setLayout(new DoubleBarLayout());
-        echo $pagedResults->fetchPagedNavigation(str_replace('?', '&', $filter)); ?>
+        echo $pagedResults->fetchPagedNavigation(str_replace('?', '&', $the_filters)); ?>
 </ul>
 <?php else : ?>
 <p>No se han encontrado registros</p>
