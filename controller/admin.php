@@ -48,6 +48,7 @@ namespace Goteo\Controller {
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false),
                             'details' => array('label' => 'Detalles del aporte', 'item' => true),
+                            'update' => array('label' => 'Cambiando el estado al aporte', 'item' => true),
                             'add'  => array('label' => 'Aporte manual', 'item' => false),
                             'move'  => array('label' => 'Reubicando el aporte', 'item' => true),
                             'execute' => array('label' => 'Ejecución del cargo', 'item' => true),
@@ -55,7 +56,7 @@ namespace Goteo\Controller {
                             'report' => array('label' => 'Informe de proyecto', 'item' => true),
                             'viewer' => array('label' => 'Viendo logs', 'item' => false)
                         ),
-                        'filters' => array('methods'=>'', 'investStatus'=>'all', 'projects'=>'', 'name'=>'', 'calls'=>'', 'review'=>'', 'types'=>'', 'date_from'=>'', 'date_until'=>'', 'issue'=>'all')
+                        'filters' => array('id'=>'', 'methods'=>'', 'investStatus'=>'all', 'projects'=>'', 'name'=>'', 'calls'=>'', 'review'=>'', 'types'=>'', 'date_from'=>'', 'date_until'=>'', 'issue'=>'all')
                     ),
                     'banners' => array(
                         'label' => 'Banners',

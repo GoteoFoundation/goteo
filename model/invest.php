@@ -152,6 +152,10 @@ namespace Goteo\Model {
             $values = array();
 
             $sqlFilter = "";
+            if (!empty($filters['id'])) {
+                $sqlFilter .= " AND invest.id = :id";
+                $values[':id'] = $filters['id'];
+            }
             if (!empty($filters['methods'])) {
                 $sqlFilter .= " AND invest.method = :methods";
                 $values[':methods'] = $filters['methods'];

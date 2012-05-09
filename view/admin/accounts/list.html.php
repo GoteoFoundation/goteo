@@ -72,6 +72,11 @@ $emails = Invest::emails(true);
             <input type="text" id ="date-filter-until" name="date_until" value ="<?php echo $filters['date_until']?>" />
         </div>
 
+        <div style="float:left;margin:5px;">
+            <label for="id-filter">Id:</label><br />
+            <input type="text" id ="id-filter" name="id" value ="<?php echo $filters['id']?>" />
+        </div>
+
         <br clear="both" />
 
         <div style="float:left;margin:5px;">
