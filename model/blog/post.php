@@ -126,6 +126,7 @@ namespace Goteo\Model\Blog {
                 $sql .= " WHERE blog.type = 'node'
                 ";
             }
+            // solo las entradas publicadas
             if ($published) {
                 $sql .= " AND post.publish = 1
                 ";
@@ -227,10 +228,38 @@ namespace Goteo\Model\Blog {
                 $values[':author'] = $filters['author'];
             }
 
-            if ($published) {
+            // solo las publicadas
+            if ($published || $filters['show'] == 'published') {
                 $sql .= " AND post.publish = 1
                 ";
             }
+
+            // solo las del propio blog
+            if ($filters['show'] == 'owned') {
+                $sql .= " AND blog.owner = :node
+                ";
+                $values[':node'] = $filters['node'];
+            }
+
+            // solo las de la portada
+            if ($filters['show'] == 'home') {
+                if ($filters['node'] == \GOTEO_NODE) {
+                    $sql .= " AND post.home = 1
+                    ";
+                } else {
+                    $sql .= " AND post.id IN (SELECT post FROM post_node WHERE node = :node)
+                    ";
+                    $values[':node'] = $filters['node'];
+                }
+            }
+
+            if ($filters['show'] == 'footer') {
+                if ($filters['node'] == \GOTEO_NODE) {
+                    $sql .= " AND post.footer = 1
+                    ";
+                }
+            }
+
             $sql .= "
                 ORDER BY date DESC, post.id DESC
                 ";

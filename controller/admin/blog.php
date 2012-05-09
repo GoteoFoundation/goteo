@@ -12,7 +12,7 @@ namespace Goteo\Controller\Admin {
 
     class Blog {
 
-        public static function process ($action = 'list', $id = null) {
+        public static function process ($action = 'list', $id = null, $filters = array()) {
 
             $errors = array();
 
@@ -158,9 +158,21 @@ namespace Goteo\Controller\Admin {
                 case 'list':
                     // lista de entradas
                     // obtenemos los datos
-                    $posts = Model\Blog\Post::getAll(null, null, false);
+                    $filters['node'] = $node;
+                    $posts = Model\Blog\Post::getList($filters, false);
                     $homes = Model\Post::getList('home', $_SESSION['admin_node']);
                     $footers = Model\Post::getList('footer', $_SESSION['admin_node']);
+
+                    $show = array(
+                        'all' => 'Todas',
+                        'published' => 'Solamente las publicadas',
+                        'owned' => 'Solamente las del propio nodo',
+                        'home' => 'Solamente las de portada'
+                    );
+
+                    if ($node == \GOTEO_NODE) {
+                        $show['footer'] = 'Solamente las del footer';
+                    }
 
                     return new View(
                         'view/admin/index.html.php',
@@ -168,6 +180,8 @@ namespace Goteo\Controller\Admin {
                             'folder' => 'blog',
                             'file' => 'list',
                             'posts' => $posts,
+                            'filters' => $filters,
+                            'show' => $show,
                             'homes' => $homes,
                             'footers' => $footers,
                             'node' => $node

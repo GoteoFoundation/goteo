@@ -74,7 +74,8 @@ namespace Goteo\Controller {
                             'edit' => array('label' => 'Editando Entrada', 'item' => true),
                             'translate' => array('label' => 'Traduciendo Entrada', 'item' => true),
                             'reorder' => array('label' => 'Ordenando las entradas en Portada', 'item' => false)
-                        )
+                        ),
+                        'filters' => array('show'=>'all')
                     ),
                     'calls' => array(
                         'label' => 'Gestión de convocatorias',
@@ -256,7 +257,7 @@ namespace Goteo\Controller {
                             'move' => array('label' => 'Moviendo a otro Nodo el proyecto', 'item' => true),
                             'report' => array('label' => 'Informe Financiero del proyecto', 'item' => true)
                         ),
-                        'filters' => array('status'=>'-1', 'category'=>'', 'owner'=>'', 'name'=>'', 'node'=>\GOTEO_NODE, 'order'=>'')
+                        'filters' => array('status'=>'-1', 'category'=>'', 'owner'=>'', 'name'=>'', 'node'=>'', 'order'=>'')
                     ),
                     'promote' => array(
                         'label' => 'Proyectos destacados',
@@ -646,7 +647,7 @@ namespace Goteo\Controller {
         public function blog ($action = 'list', $id = null) {
             $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-            return Admin\Blog::process($action, $id);
+            return Admin\Blog::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
         /*
