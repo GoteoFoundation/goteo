@@ -192,7 +192,7 @@ namespace Goteo\Library {
 
                                 // Evento Feed
                                 $log = new Feed();
-                                $log->populate('Aporte cancelado por preaproval cancelado por el usuario paypal', '/admin/invests',
+                                $log->populate('Aporte cancelado por preaproval cancelado por el usuario paypal', '/admin/accounts',
                                     \vsprintf('Se ha <span class="red">Cancelado</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s por preapproval cancelado', array(
                                         Feed::item('user', $userData->name, $userData->id),
                                         Feed::item('money', $invest->amount.' &euro;'),
@@ -205,6 +205,82 @@ namespace Goteo\Library {
 
                             }
                             break;
+                        case '569042': // cuenta del proyecto no confirmada en paypal
+                                // Evento Feed
+                                $log = new Feed();
+                                $log->populate('Cuenta del proyecto no confirmada en PayPal', '/admin/accounts',
+                                    \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque la cuenta del proyecto <span class="red">no está confirmada</span> en PayPal', array(
+                                        Feed::item('user', $userData->name, $userData->id),
+                                        Feed::item('money', $invest->amount.' &euro;'),
+                                        Feed::item('system', $invest->id),
+                                        Feed::item('project', $project->name, $project->id),
+                                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                                )));
+                                $log->doAdmin();
+                                unset($log);
+
+                            break;
+                        case '580022': // uno de los mails enviados no es valido
+                        case '589039': // el mail del preaproval no está registrada en paypal
+                                // Evento Feed
+                                $log = new Feed();
+                                $log->populate('El mail del preaproval no esta registrado en PayPal', '/admin/accounts',
+                                    \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque el mail del preaproval <span class="red">no está registrado</span> en PayPal', array(
+                                        Feed::item('user', $userData->name, $userData->id),
+                                        Feed::item('money', $invest->amount.' &euro;'),
+                                        Feed::item('system', $invest->id),
+                                        Feed::item('project', $project->name, $project->id),
+                                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                                )));
+                                $log->doAdmin();
+                                unset($log);
+
+                            break;
+                        case '520009': // la cuenta esta restringida por paypal
+                                // Evento Feed
+                                $log = new Feed();
+                                $log->populate('La cuenta esta restringida por PayPal', '/admin/accounts',
+                                    \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque la cuenta <span class="red">está restringida</span> por PayPal', array(
+                                        Feed::item('user', $userData->name, $userData->id),
+                                        Feed::item('money', $invest->amount.' &euro;'),
+                                        Feed::item('system', $invest->id),
+                                        Feed::item('project', $project->name, $project->id),
+                                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                                )));
+                                $log->doAdmin();
+                                unset($log);
+
+                            break;
+                        case '579033': // misma cuenta que el proyecto
+                                // Evento Feed
+                                $log = new Feed();
+                                $log->populate('Se ha usado la misma cuenta que del proyecto', '/admin/accounts',
+                                    \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque la cuenta <span class="red">es la misma</span> que la del proyecto', array(
+                                        Feed::item('user', $userData->name, $userData->id),
+                                        Feed::item('money', $invest->amount.' &euro;'),
+                                        Feed::item('system', $invest->id),
+                                        Feed::item('project', $project->name, $project->id),
+                                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                                )));
+                                $log->doAdmin();
+                                unset($log);
+
+                            break;
+                        case '579024': // fuera de fechas
+                                // Evento Feed
+                                $log = new Feed();
+                                $log->populate('Está fuera del rango de fechas', '/admin/accounts',
+                                    \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque estamos <span class="red">fuera del rango de fechas</span> del preapproval', array(
+                                        Feed::item('user', $userData->name, $userData->id),
+                                        Feed::item('money', $invest->amount.' &euro;'),
+                                        Feed::item('system', $invest->id),
+                                        Feed::item('project', $project->name, $project->id),
+                                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                                )));
+                                $log->doAdmin();
+                                unset($log);
+
+                            break;
                     }
 
 
@@ -215,6 +291,7 @@ namespace Goteo\Library {
                         $errors[] = "$action $errorMsg [$errorId]";
                     }
                     
+                    Invest::setIssue($invest->id);
                     return false;
                 }
 
