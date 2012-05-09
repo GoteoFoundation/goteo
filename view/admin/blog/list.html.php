@@ -69,7 +69,7 @@ $pagedResults = new \Paginated($the_posts, 10, isset($_GET['page']) ? $_GET['pag
                             
                       echo "<span style=\"{$style}\">{$post->title}</span>";
                 ?></td>
-                <td><?php echo $post->date; ?></td>
+                <td><?php echo $post->fecha; ?></td>
                 <td><?php echo $post->user->name; ?></td>
                 <td><?php if ($post->publish) echo '<strong style="color:#20b2b3;font-size:10px;">Publicada</sttrong>'; ?></td>
             </tr>
@@ -107,7 +107,7 @@ $pagedResults = new \Paginated($the_posts, 10, isset($_GET['page']) ? $_GET['pag
         </tbody>
     </table>
 </div>
-<ul id="pagination">
+<ul id="pagination" style="margin-bottom: 10px; padding-left: 150px;">
 <?php   $pagedResults->setLayout(new DoubleBarLayout());
         echo $pagedResults->fetchPagedNavigation(str_replace('?', '&', $the_filters)); ?>
 </ul>

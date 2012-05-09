@@ -193,7 +193,6 @@ namespace Goteo\Model\Blog {
                     IFNULL(post_lang.legend, post.legend) as `legend`,
                     post.image as `image`,
                     post.media as `media`,
-                    DATE_FORMAT(post.date, '%d-%m-%Y') as date,
                     DATE_FORMAT(post.date, '%d-%m-%Y') as fecha,
                     post.publish as publish,
                     post.home as home,
@@ -206,8 +205,6 @@ namespace Goteo\Model\Blog {
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
-                INNER JOIN post_tag
-                    ON post_tag.post = post.id
                 WHERE blog.type = 'node'
                 ";
             if (!empty($filters['blog'])) {
@@ -217,7 +214,7 @@ namespace Goteo\Model\Blog {
             }
 
             if (!empty($filters['tag'])) {
-                $sql .= " AND post_tag.tag = :tag
+                $sql .= " AND post.id IN (SELECT post FROM post_tag WHERE tag = :tag)
                 ";
                 $values[':tag'] = $filters['tag'];
             }
@@ -261,7 +258,7 @@ namespace Goteo\Model\Blog {
             }
 
             $sql .= "
-                ORDER BY date DESC, post.id DESC
+                ORDER BY post.date DESC, post.id DESC
                 ";
 
             $query = static::query($sql, $values);
