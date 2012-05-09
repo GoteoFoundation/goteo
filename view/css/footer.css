@@ -67,7 +67,12 @@ div#footer div.block h8{
 	color:#59595C;
 }
 
-/* Voy a añadir aqui el carrusel de patronos de la home porque usa los mismos estilos */
+/* Voy a añadir aqui:
+- el carrusel de patronos de la home
+- el carrusel de sponsors de nodo
+porque usan los mismos estilos
+*/
+div#node-main div#side div.sponsors ul,
 div.widget.project-patrons ul,
 div#footer div.block ul{
 	list-style:none;
@@ -75,6 +80,7 @@ div#footer div.block ul{
 	height:115px;
 	overflow:auto;
 }
+div#node-main div#side div.sponsors ul.paginacion,
 div.widget.project-patrons ul.paginacion,
 div#footer div.block ul.paginacion {
 	margin: 8px 0 0 0;
@@ -84,6 +90,18 @@ div#footer div.block ul.paginacion {
 	height:auto;
 }
 
+/* Solo footer, para el salto de linea cada 7 */
+div#footer div.block ul.paginacion {
+    max-width: 126px;
+}
+
+/* Solo portada de nodo, para el salto de linea cada 8 */
+div#node-main div#side div.sponsors ul.paginacion {
+    max-width: 144px;
+}
+
+
+div#node-main div#side div.sponsors ul.paginacion li,
 div.widget.project-patrons ul.paginacion li,
 div#footer div.block ul.paginacion li {
 	cursor:pointer;
@@ -93,6 +111,7 @@ div#footer div.block ul.paginacion li {
 	margin: 0px 4px 5px 4px;
 }
 
+div#node-main div#side div.sponsors ul.paginacion li a,
 div.widget.project-patrons ul.paginacion li a,
 div#footer div.block ul.paginacion li a {
     width: 10px;
@@ -103,12 +122,14 @@ div#footer div.block ul.paginacion li a {
 	display:block;
 }
 
+div#node-main div#side div.sponsors ul.paginacion li a:hover,
 div.widget.project-patrons ul.paginacion li a:hover,
 div#footer div.block ul.paginacion li a:hover {
     background-color: #20b3b2;
     color: #20b3b2;
 }
 
+div#node-main div#side div.sponsors ul.paginacion li.current a,
 div.widget.project-patrons ul.paginacion li.current a,
 div#footer div.block ul.paginacion li.current a {
     background-color: #808184 !important;
@@ -148,7 +169,7 @@ div#slides_patrons .sliderspatrons-ctrl .next:hover,
 div#slides_sponsor .slidersponsors-ctrl .next:hover {
 	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -48px;
 }
-/* fin reutilizacion para carrusel patronos */
+/* fin reutilizacion para carrusel patronos y sponsors nodo */
 
 div#footer div.block ul li{
 	line-height:12px;
@@ -394,7 +415,7 @@ div#sub-footer div.platoniq a.poweredby:hover{
 }
 
 /* Sponsors */
-.slidersponsors-ctrl {
+div#footer div.slidersponsors-ctrl {
 	max-width: 940px;
 	margin: 0 auto;
 	list-style:none;
@@ -403,6 +424,15 @@ div#sub-footer div.platoniq a.poweredby:hover{
     position: absolute;
     top: 110px;
 }
+
+/* Es diferente para el side de home de nodo*/
+div#node-main div#side div.sponsors div.slidersponsors-ctrl {
+	padding:0px !important;
+    margin-top: -15px !important;
+    display: block;
+}
+
+
 
 .slidersponsors-ctrl li {
 	cursor:pointer;

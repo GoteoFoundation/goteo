@@ -825,8 +825,8 @@ ul.lang li:hover>a {
 body.project-show div#sub-header div.nodemark,
 body.user-profile div#sub-header div.nodemark {
     text-align: left;
-    width: 240px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
     overflow: hidden;
 }
 
@@ -838,21 +838,11 @@ body.user-profile div#sub-header div.nodemark {
 
 body.project-show div#sub-header div.nodemark {
 	position: absolute;
-    right: 0px;
-	top: 0px;
+    right: 75px;
+	top: -25px;
 }
 
-body.project-show div#sub-header div.nodemark a,
-body.user-profile div#sub-header div.nodemark a {
-    font-size: 16px;
-    font-weight: bold;
-    color: #B5161E;
-    text-decoration: none;
+body.project-show div#sub-header div.nodemark a img {
+    margin: 0 !important;
 }
-
-body.project-show div#sub-header div.nodemark a:hover,
-body.user-profile div#sub-header div.nodemark a:hover {
-    color: #20B2B3;
-}
-
 /* fin sello nodo */

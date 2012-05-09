@@ -59,7 +59,7 @@ jQuery(document).ready(function($) {
                     <li><a href="/newsletter" target="_blank">Newsletter</a></li>
                 </ul>
             </div>
-			<script>
+			<script type="text/javascript">
 				$(function(){
 					$('#slides_sponsor').slides({
 						container: 'slides_container',
@@ -76,7 +76,7 @@ jQuery(document).ready(function($) {
 				<div class="slides_container">
 					<?php $i = 1; foreach ($sponsors as $sponsor) : ?>
 					<div class="sponsor" id="footer-sponsor-<?php echo $i ?>">
-						<a href="<?php echo $sponsor->url ?>" title="<?php echo $sponsor->name ?>" target="_blank"><img src="<?php echo $sponsor->image->getLink(150, 85) ?>" alt="<?php echo $sponsor->name ?>" /></a>
+						<a href="<?php echo $sponsor->url ?>" title="<?php echo $sponsor->name ?>" target="_blank" rel="nofollow"><img src="<?php echo $sponsor->image->getLink(150, 85) ?>" alt="<?php echo $sponsor->name ?>" /></a>
 					</div>
 					<?php $i++; endforeach; ?>
 				</div>

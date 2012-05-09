@@ -100,7 +100,7 @@ div.side_widget.sponsors{}
 div.side_widget.sponsors p.title{margin:0; text-transform:uppercase}
 div.side_widget.sponsors p.title > span.line{background:#000;margin-bottom:12px}
 div.side_widget.sponsors > div.logo{display:block;margin-top:7px;background:none}
-div.side_widget.sponsors > div.logo > a{background:none}
+div.side_widget.sponsors > div {background-color: transparent !important;}
 /* fin de sponsors */
 
 /* Fin de estilos elementos laterales*/

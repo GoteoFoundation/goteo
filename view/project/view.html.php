@@ -61,14 +61,16 @@ include 'view/prologue.html.php' ?>
                 <div class="project-by"><a href="/user/<?php echo $project->owner; ?>"><?php echo Text::get('regular-by') ?> <?php echo $project->user->name; ?></a></div>
                 <br clear="both" />
 
+                <?php if (!empty($categories)) : ?>
                 <div class="categories"><h3><?php echo Text::get('project-view-categories-title'); ?></h3>
                     <?php $sep = ''; foreach ($categories as $key=>$value) :
                         echo $sep.'<a href="/discover/results/'.$key.'">'.htmlspecialchars($value).'</a>';
                     $sep = ', '; endforeach; ?>
                 </div>
+                <?php endif; ?>
 
                 <?php if (!empty($project->node) && $project->node != \NODE_ID) : ?>
-                <div class="nodemark"><a class="node-jump" href="<?php echo $project->nodeData->url ?>" >NODO: <?php echo $project->nodeData->name ?></a></div>
+                <div class="nodemark"><a class="node-jump" href="<?php echo $project->nodeData->url ?>" ><img src ="/nodesys/<?php echo $project->node ?>/sello.png" alt="<?php echo $project->nodeData->name ?>" title="Nodo <?php echo $project->nodeData->name ?>"/></a></div>
                 <?php endif; ?>
             </div>
 
