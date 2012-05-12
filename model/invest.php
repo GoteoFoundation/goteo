@@ -433,6 +433,58 @@ namespace Goteo\Model {
         }
 
         /*
+         * Para actualizar recompensa (o renuncia) y dirección
+         */
+        public function update (&$errors = array()) {
+
+            self::query("START TRANSACTION");
+
+            try {
+                // si renuncia
+                $sql = "UPDATE invest SET resign = :resign WHERE id = :id";
+                self::query($sql, array(':id'=>$this->id, ':resign'=>$this->resign));
+
+                // borramos als recompensas
+                $sql = "DELETE FROM invest_reward WHERE invest = :invest";
+                self::query($sql, array(':invest'=>$this->id));
+
+                // y grabamos las nuevas
+                foreach ($this->rewards as $reward) {
+                    $sql = "REPLACE INTO invest_reward (invest, reward) VALUES (:invest, :reward)";
+                    self::query($sql, array(':invest'=>$this->id, ':reward'=>$reward));
+                }
+
+                // dirección
+                if (!empty($this->address)) {
+                    $sql = "REPLACE INTO invest_address (invest, user, address, zipcode, location, country, name, nif)
+                        VALUES (:invest, :user, :address, :zipcode, :location, :country, :name, :nif)";
+                    self::query($sql, array(
+                        ':invest'=>$this->id,
+                        ':user'=>$this->user,
+                        ':address'=>$this->address->address,
+                        ':zipcode'=>$this->address->zipcode,
+                        ':location'=>$this->address->location,
+                        ':country'=>$this->address->country,
+                        ':name'=>$this->address->name,
+                        ':nif'=>$this->address->nif
+                        )
+                    );
+                }
+
+                self::query("COMMIT");
+
+                return true;
+
+            } catch (\PDOException $e) {
+                self::query("ROLLBACK");
+                $errors[] = "Envíanos esto: <br />" . $e->getMessage();
+                return false;
+            }
+        }
+
+
+
+        /*
          * Lista de proyectos con aportes
          *
          * @param bool success solo los prroyectos en campaña, financiados o exitosos

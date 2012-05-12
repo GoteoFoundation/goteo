@@ -258,7 +258,6 @@ namespace Goteo\Controller\Admin {
             }
             $status = Model\Project::status();
             $categories = Model\Project\Category::getAll();
-            $owners = Model\User::getOwners();
             // la lista de nodos la hemos cargado arriba
             $orders = array(
                 'name' => 'Nombre',
@@ -274,7 +273,7 @@ namespace Goteo\Controller\Admin {
                     'filters' => $filters,
                     'status' => $status,
                     'categories' => $categories,
-                    'owners' => $owners,
+                    'user' => $user,
                     'nodes' => $nodes,
                     'orders' => $orders
                 )

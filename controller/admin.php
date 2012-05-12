@@ -103,6 +103,13 @@ namespace Goteo\Controller {
                             'translate' => array('label' => 'Traduciendo Categoría', 'item' => true)
                         )
                     ),
+                    'commons' => array(
+                        'label' => 'Retornos colectivos',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false)
+                        ),
+                        'filters' => array('status'=>'', 'icon'=>'')
+                    ),
                     'criteria' => array(
                         'label' => 'Criterios de revisión',
                         'actions' => array(
@@ -258,7 +265,7 @@ namespace Goteo\Controller {
                             'move' => array('label' => 'Moviendo a otro Nodo el proyecto', 'item' => true),
                             'report' => array('label' => 'Informe Financiero del proyecto', 'item' => true)
                         ),
-                        'filters' => array('status'=>'-1', 'category'=>'', 'owner'=>'', 'name'=>'', 'node'=>'', 'order'=>'')
+                        'filters' => array('status'=>'-1', 'category'=>'', 'user'=>'', 'name'=>'', 'node'=>'', 'order'=>'')
                     ),
                     'promote' => array(
                         'label' => 'Proyectos destacados',
@@ -280,11 +287,12 @@ namespace Goteo\Controller {
                         'filters' => array('status'=>'', 'checker'=>'')
                     ),
                     'rewards' => array(
-                        'label' => 'Retornos cumplidos',
+                        'label' => 'Recompensas',
                         'actions' => array(
-                            'list' => array('label' => 'Listando', 'item' => false)
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'edit' => array('label' => 'Gestionando recompensa', 'item' => true)
                         ),
-                        'filters' => array('status'=>'', 'icon'=>'')
+                        'filters' => array('projects'=>'', 'name'=>'')
                     ),
                     'sended' => array(
                         'label' => 'Historial envíos',
@@ -633,8 +641,16 @@ namespace Goteo\Controller {
 
 
         /*
-         * Gestión de retornos, por ahora en el admin pero es una gestión para los responsables de proyectos
-         * Proyectos financiados, puede marcar un retorno cumplido
+         * Gestión de retornos colectivos, para marcar un retorno colectivo como cumplido
+         */
+        public function commons($action = 'list', $id = null, $filters = array()) {
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
+            define('ADMIN_BCPATH', $BC);
+            return Admin\Commons::process($action, $id, self::setFilters(__FUNCTION__));
+        }
+
+        /*
+         * Gestión de recompensas y dirección de los aportes
          */
         public function rewards($action = 'list', $id = null, $filters = array()) {
             $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
@@ -870,6 +886,10 @@ namespace Goteo\Controller {
 
             if ($_GET['reset'] == 'filters') {
                 unset($_SESSION['admin_filters'][$option]);
+                unset($_SESSION['admin_filters']['main']);
+                foreach (self::$options[$option]['filters'] as $field=>$default) {
+                    $filters[$field] = $default;
+                }
                 return $filters;
             }
 
@@ -883,30 +903,51 @@ namespace Goteo\Controller {
                     // si lo tenemos en el get, aplicamos ese a la sesión y al array
                     $filters[$field] = (string) $_GET[$field];
                     $_SESSION['admin_filters'][$option][$field] = (string) $_GET[$field];
+                    if ( ($option == 'projects' && $field == 'user')
+                        || ($option == 'users' && $field == 'name')
+                        || ($option == 'accounts' && $field == 'name')
+                        || ($option == 'rewards' && $field == 'name') ) {
+                        
+                        $_SESSION['admin_filters']['main']['user_name'] = (string) $_GET[$field];
+                    }
                     $filtered = true;
                 } elseif (!empty($_SESSION['admin_filters'][$option][$field])) {
                     // si no lo tenemos en el get, cogemos de la sesion pero no lo pisamos
                     $filters[$field] = $_SESSION['admin_filters'][$option][$field];
                     $filtered = true;
-                } elseif ($field == 'name') {
+                } else {
                     // a ver si tenemos un filtro equivalente
                     switch ($option) {
+                        case 'projects':
+                            if ($field == 'user' && !empty($_SESSION['admin_filters']['main']['user_name'])) {
+                                $filters['user'] = $_SESSION['admin_filters']['main']['user_name'];
+                                $filtered = true;
+                            }
+                            break;
                         case 'users':
-                            if (!empty($_SESSION['admin_filters']['accounts'][$field])) {
-                                $filters[$field] = $_SESSION['admin_filters']['accounts'][$field];
+                            if ($field == 'name' && !empty($_SESSION['admin_filters']['main']['user_name'])) {
+                                $filters['name'] = $_SESSION['admin_filters']['main']['user_name'];
                                 $filtered = true;
                             }
                             break;
                         case 'accounts':
-                            if (!empty($_SESSION['admin_filters']['users'][$field])) {
-                                $filters[$field] = $_SESSION['admin_filters']['users'][$field];
+                            if ($field == 'name' && !empty($_SESSION['admin_filters']['main']['user_name'])) {
+                                $filters['name'] = $_SESSION['admin_filters']['main']['user_name'];
+                                $filtered = true;
+                            }
+                            break;
+                        case 'rewards':
+                            if ($field == 'name' && !empty($_SESSION['admin_filters']['main']['user_name'])) {
+                                $filters['name'] = $_SESSION['admin_filters']['main']['user_name'];
                                 $filtered = true;
                             }
                             break;
                     }
-                } else {
+                    
                     // si no tenemos en sesion, ponemos el valor por defecto
-                    $filters[$field] = $default;
+                    if (empty($filters[$field])) {
+                        $filters[$field] = $default;
+                    }
                 }
             }
 
@@ -1012,7 +1053,8 @@ namespace Goteo\Controller {
                                 'patron' => $options['patron'],
                                 'reviews' => $options['reviews'],
                                 'translates' => $options['translates'],
-                                'rewards' => $options['rewards']
+                                'rewards' => $options['rewards'],
+                                'commons' => $options['commons']
                             )
                         ),
                         'users' => array(

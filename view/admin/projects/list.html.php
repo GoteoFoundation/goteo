@@ -12,13 +12,8 @@ $filters = $this['filters'];
         <table>
             <tr>
                 <td>
-                    <label for="owner-filter">Del autor:</label><br />
-                    <select id="owner-filter" name="owner" onchange="document.getElementById('filter-form').submit();">
-                        <option value="">Cualquier autor</option>
-                    <?php foreach ($this['owners'] as $ownerId=>$ownerName) : ?>
-                        <option value="<?php echo $ownerId; ?>"<?php if ($filters['owner'] == $ownerId) echo ' selected="selected"';?>><?php echo (empty($ownerName)) ? $ownerId : Text::recorta($ownerName, 40); ?></option>
-                    <?php endforeach; ?>
-                    </select>
+                    <label for="user-filter">Alias/Email del autor:</label><br />
+                    <input type="text" id ="user-filter" name="user" value ="<?php echo $filters['user']?>" />
                 </td>
                 <td>
                     <label for="category-filter">De la categoría:</label><br />
@@ -43,7 +38,7 @@ $filters = $this['filters'];
             </tr>
             <tr>
                 <td>
-                    <label for="name-filter">Nombre:</label><br />
+                    <label for="name-filter">Nombre del proyecto:</label><br />
                     <input id="name-filter" name="name" value="<?php echo $filters['name']; ?>" style="width:250px"/>
                 </td>
                 <td>
@@ -71,6 +66,8 @@ $filters = $this['filters'];
             </tr>
         </table>
     </form>
+    <br clear="both" />
+    <a href="/admin/projects/?reset=filters">Quitar filtros</a>
 </div>
 
 <div class="widget board">

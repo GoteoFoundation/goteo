@@ -212,8 +212,8 @@ namespace Goteo\Controller\Admin {
                         $log->doAdmin('money');
                         unset($log);
 
-                        Message::Info('Aporte manual creado correctamente');
-                        throw new Redirection('/admin/accounts');
+                        Message::Info('Aporte manual creado correctamente, seleccionar recompensa y dirección de entrega.');
+                        throw new Redirection('/admin/rewards/edit/'.$invest->id);
                     } else{
                         $errors[] = 'Ha fallado algo al crear el aporte manual';
                     }

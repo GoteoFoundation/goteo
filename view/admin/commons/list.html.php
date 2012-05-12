@@ -8,7 +8,7 @@ $status = Goteo\Model\Project::status();
 
 ?>
 <div class="widget board">
-    <form id="filter-form" action="/admin/rewards" method="get">
+    <form id="filter-form" action="/admin/commons" method="get">
         <label for="status-filter">Mostrar por estado:</label>
         <select id="status-filter" name="status" onchange="document.getElementById('filter-form').submit();">
             <option value="">Todos los estados</option>
