@@ -22,7 +22,7 @@ $nodeText = str_replace(array('[', ']'), array('<span class="blue">', '</span>')
 	   <div id="rightside" style="float:right;">
            <div id="about">
                 <ul>
-                    <li><a class="node-jump" href="<?php echo SITE_URL ?>/about"><?php echo Text::get('regular-header-about'); ?></a></li>
+                    <li><a href="/about"><?php echo str_replace('Goteo', $nodeData->name, Text::get('regular-header-about')); ?></a></li>
                     <li><a href="/blog"><?php echo Text::get('regular-header-blog'); ?></a></li>
                     <li><a href="/faq"><?php echo Text::get('regular-header-faq'); ?></a></li>
                     <li id="lang"><a href="#" ><?php echo Lang::get(LANG)->short ?></a></li>

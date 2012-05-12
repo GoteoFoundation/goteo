@@ -57,8 +57,6 @@ $nodes = Nodesys::activeNodes(\NODE_ID);
                 </form>
             </li>
 
-            <li class="about"><a href="/about"><span><?php echo str_replace('Goteo', $nodeData->name, Text::get('regular-header-about')); ?></span></a></li>
-
             <li class="community"><a href="/community"><span><?php echo Text::get('community-menu-main'); ?></span></a>
                 <div>
                     <ul>

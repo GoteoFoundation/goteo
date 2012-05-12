@@ -1,6 +1,5 @@
 div#super-header div#goteo-logo {
     overflow: hidden;
-	width: 600px;
 	float: left;
 }
 
@@ -111,11 +110,13 @@ div#header div#menu > ul > li.info,div#header div#menu > ul > li.help{float:left
 div#header div#menu > ul > li.dashboard > a{padding-right:50px}
 div#header div#menu > ul > li.dashboard > a > img{position:absolute;left:70px;}
 
-/*botón sobre*/
+/*botón sobre
 div#header div#menu > ul > li.about{height:48px;position:relative}
 div#header div#menu > ul > li.about > a{font-size:12px;height:40px;line-height:40px;display:inline-block;position:relative;padding:.5em 0!important}
 div#header div#menu > ul > li.about:hover{background:#1DB3B2}
 div#header div#menu > ul > li.about a:hover{color:#20B2B3}
+div#header div#menu > ul > li.about:hover,
+*/
 
 /*buscador*/
 div#header div#menu > ul > li.search fieldset{border: 1px solid #fff;}
@@ -123,7 +124,6 @@ div#header div#menu > ul > li.search fieldset input[type="submit"]{background:ur
 div#header div#menu > ul > li.search fieldset input[type="submit"]:hover{background-color:#58A0CD !important}
 
 /*rollover*/
-div#header div#menu > ul > li.about:hover,
 div#header div#menu > ul > li.community:hover,
 div#header div#menu > ul > li.login:hover,
 div#header div#menu > ul > li.dashboard:hover{background-color:#58A0CD !important}

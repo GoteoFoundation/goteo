@@ -46,11 +46,3 @@ div#side div.line{clear:both}
 div#side div.half{width:68px;margin-right:6px;float:left;padding:13px 10px;font-size:10px}
 div#side div.half.last{margin-right:0}
 
-/* Especial para indicador menu pagina proyecto */
-body.project-show div#sub-header {
-    border-bottom: 10px solid #E7E7E7;
-}
-
-body.project-show div#sub-header {
-    margin-bottom: 14px !important;
-}
