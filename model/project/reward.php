@@ -37,7 +37,8 @@ namespace Goteo\Model\Project {
                 $values = array(
                     ':project' => $project,
                     ':type' => $type,
-                    ':lang' => $lang
+                    ':lang' => $lang,
+                    ':web_lang' => \LANG
                 );
 
                 $sqlFilter = "";
@@ -57,7 +58,7 @@ namespace Goteo\Model\Project {
                             IFNULL(reward_lang.description, reward.description) as description,
                             reward.type as type,
                             reward.icon as icon,
-                            reward.other as other,
+                            IFNULL(reward_lang.other, reward.other) as other,
                             reward.license as license,
                             reward.amount as amount,
                             reward.units as units,
@@ -71,7 +72,7 @@ namespace Goteo\Model\Project {
                             AND reward_lang.lang = :lang
                         LEFT JOIN icon_lang
                             ON  icon_lang.id = icon.id
-                            AND icon_lang.lang = :lang
+                            AND icon_lang.lang = :web_lang
                         WHERE   project = :project
                             AND type= :type
                         $sqlFilter
@@ -157,7 +158,8 @@ namespace Goteo\Model\Project {
 				'id'=>'id',
 				'lang'=>'lang',
 				'reward'=>'reward_lang',
-				'description'=>'description_lang'
+				'description'=>'description_lang',
+				'other'=>'other_lang'
 				);
 
 			$set = '';

@@ -75,6 +75,8 @@ namespace Goteo\Controller\Admin {
                             $log->setTarget($userData->id, 'user');
                             $log->doAdmin('admin');
                             unset($log);
+                            
+                            throw new Redirection('/admin/transcalls/edit/'.$call->id);
                         } else {
                             Message::Error(implode('<br />', $errors));
                         }
@@ -111,7 +113,7 @@ namespace Goteo\Controller\Admin {
                                 $log->doAdmin('admin');
                                 unset($log);
 
-                                $action = 'edit';
+                                throw new Redirection('/admin/transcalls/edit/'.$call->id);
                             }
                         } else {
                             Message::Error('Ha fallado al habilitar la traducción de la convocatoria ' . $call->name);
@@ -186,7 +188,8 @@ namespace Goteo\Controller\Admin {
                         $log->doAdmin('admin');
                         unset($log);
 
-                    } else {
+                        throw new Redirection('/admin/transcalls/edit/'.$call->id);
+                 } else {
                         Message::Error('Falló al finalizar la traducción de la convocatoria ' . $call->name);
                     }
                     break;

@@ -1940,13 +1940,13 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND owner = :owner";
                 $values[':owner'] = $filters['owner'];
             }
-            if (!empty($filters['user'])) {
-                $sqlFilter .= " AND owner IN (SELECT id FROM user WHERE (name LIKE :user OR email LIKE :user))";
-                $values[':user'] = "%{$filters['user']}%";
-            }
             if (!empty($filters['name'])) {
+                $sqlFilter .= " AND owner IN (SELECT id FROM user WHERE (name LIKE :user OR email LIKE :user))";
+                $values[':user'] = "%{$filters['name']}%";
+            }
+            if (!empty($filters['proj_name'])) {
                 $sqlFilter .= " AND name LIKE :name";
-                $values[':name'] = "%{$filters['name']}%";
+                $values[':name'] = "%{$filters['proj_name']}%";
             }
             if (!empty($filters['category'])) {
                 $sqlFilter .= " AND id IN (

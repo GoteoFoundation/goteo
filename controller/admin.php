@@ -265,7 +265,7 @@ namespace Goteo\Controller {
                             'move' => array('label' => 'Moviendo a otro Nodo el proyecto', 'item' => true),
                             'report' => array('label' => 'Informe Financiero del proyecto', 'item' => true)
                         ),
-                        'filters' => array('status'=>'-1', 'category'=>'', 'user'=>'', 'name'=>'', 'node'=>'', 'order'=>'')
+                        'filters' => array('status'=>'-1', 'category'=>'', 'proj_name'=>'', 'name'=>'', 'node'=>'', 'order'=>'')
                     ),
                     'promote' => array(
                         'label' => 'Proyectos destacados',
@@ -919,8 +919,8 @@ namespace Goteo\Controller {
                     // a ver si tenemos un filtro equivalente
                     switch ($option) {
                         case 'projects':
-                            if ($field == 'user' && !empty($_SESSION['admin_filters']['main']['user_name'])) {
-                                $filters['user'] = $_SESSION['admin_filters']['main']['user_name'];
+                            if ($field == 'name' && !empty($_SESSION['admin_filters']['main']['user_name'])) {
+                                $filters['name'] = $_SESSION['admin_filters']['main']['user_name'];
                                 $filtered = true;
                             }
                             break;

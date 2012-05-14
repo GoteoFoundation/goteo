@@ -991,7 +991,6 @@ namespace Goteo\Controller {
             $errors = array();
 
             $langs = \Goteo\Library\Lang::getAll();
-            unset($langs['es']);
 
             if ($action == 'lang' && !empty($_POST['lang'])) {
                 $_SESSION['translate_lang'] = $_POST['lang'];
@@ -1061,7 +1060,7 @@ namespace Goteo\Controller {
                     
                     $_SESSION['translate_project'] = $project;
                     $project->lang_name = $langs[$project->lang]->name;
-                    unset($langs[$project->lang]);
+                    unset($viewData['langs'][$project->lang]); // quitamos el idioma original
 
 //// Control de traduccion de proyecto
                     if ($option == 'updates') {
@@ -1122,6 +1121,7 @@ namespace Goteo\Controller {
                                         if (isset($_POST['social_reward-' . $reward->id . '-reward'])) {
                                             $reward->reward_lang = $_POST['social_reward-' . $reward->id . '-reward'];
                                             $reward->description_lang = $_POST['social_reward-' . $reward->id . '-description'];
+                                            $reward->other_lang = $_POST['social_reward-' . $reward->id . '-other'];
                                             $reward->lang = $_SESSION['translate_lang'];
                                             $reward->saveLang($errors);
                                         }
@@ -1130,6 +1130,7 @@ namespace Goteo\Controller {
                                         if (isset($_POST['individual_reward-' . $reward->id .'-reward'])) {
                                             $reward->reward_lang = $_POST['individual_reward-' . $reward->id .'-reward'];
                                             $reward->description_lang = $_POST['individual_reward-' . $reward->id . '-description'];
+                                            $reward->other_lang = $_POST['individual_reward-' . $reward->id . '-other'];
                                             $reward->lang = $_SESSION['translate_lang'];
                                             $reward->saveLang($errors);
                                         }
@@ -1257,7 +1258,7 @@ namespace Goteo\Controller {
                     }
                     $_SESSION['translate_call'] = $call;
                     $call->lang_name = $langs[$call->lang]->name;
-                    unset($langs['es']);
+                    unset($viewData['langs'][$call->lang]); // quitamos el idioma original
 
 //// Control de traduccion de convocatoria
                     // tratar lo que llega por post para guardar los datos
@@ -1321,7 +1322,7 @@ namespace Goteo\Controller {
                     }
                     $_SESSION['translate_node'] = $node;
                     $node->lang_name = $langs['es']->name;
-                    unset($langs['es']);
+                    unset($viewData['langs']['es']); // quitamos el idioma original
 
                     // la traducción de contenidos se hace en /traslate/node/list/id-nodo
 

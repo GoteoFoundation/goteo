@@ -273,7 +273,6 @@ namespace Goteo\Controller\Admin {
                     'filters' => $filters,
                     'status' => $status,
                     'categories' => $categories,
-                    'user' => $user,
                     'nodes' => $nodes,
                     'orders' => $orders
                 )

@@ -63,6 +63,7 @@ namespace Goteo\Controller\Admin {
                                 $what = 'Asignado';
                                 if ($assignation->save($errors)) {
                                     Message::Info('Traducción asignada correctamente');
+                                    throw new Redirection('/admin/translates/edit/'.$project->id);
                                 } else {
                                     Message::Error('La traducción no se ha asignado correctamente<br />'.implode(', ', $errors));
                                 }
@@ -71,7 +72,8 @@ namespace Goteo\Controller\Admin {
                                 $what = 'Desasignado';
                                 if ($assignation->remove($errors)) {
                                     Message::Info('Traducción desasignada correctamente');
-                                } else {
+                                    throw new Redirection('/admin/translates/edit/'.$project->id);
+                            } else {
                                     Message::Error('No se ha podido desasignar la traduccion.<br />'.implode(', ', $errors));
                                 }
                                 break;
@@ -126,7 +128,7 @@ namespace Goteo\Controller\Admin {
                                 $log->doAdmin('admin');
                                 unset($log);
 
-                                $action = 'edit';
+                                throw new Redirection('/admin/translates/edit/'.$project->id);
                             } else {
                                 throw new Redirection('/admin/translates');
                             }

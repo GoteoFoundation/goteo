@@ -58,7 +58,7 @@ function item_select(type) {
     <?php endif; ?>
 
     <?php if ($_SESSION['translate_type'] == 'call' && !empty($_SESSION['translate_call'])) : ?>
-    <p>Est&aacute;s traduciendo la convocatoria <strong><?php echo $_SESSION['translate_call']->name; ?></strong>. El idioma original es <strong>Espa&ntilde;ol</strong></p>
+    <p>Est&aacute;s traduciendo la convocatoria <strong><?php echo $_SESSION['translate_call']->name; ?></strong>. El idioma original es <strong><?php echo $this['call']->lang_name ?></strong></p>
     <?php endif; ?>
 
     <?php if ($_SESSION['translate_type'] == 'node' && !empty($_SESSION['translate_node'])) : ?>

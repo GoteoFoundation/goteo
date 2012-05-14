@@ -12,8 +12,8 @@ $filters = $this['filters'];
         <table>
             <tr>
                 <td>
-                    <label for="user-filter">Alias/Email del autor:</label><br />
-                    <input type="text" id ="user-filter" name="user" value ="<?php echo $filters['user']?>" />
+                    <label for="name-filter">Alias/Email del autor:</label><br />
+                    <input type="text" id ="name-filter" name="name" value ="<?php echo $filters['name']?>" />
                 </td>
                 <td>
                     <label for="category-filter">De la categoría:</label><br />
@@ -38,8 +38,8 @@ $filters = $this['filters'];
             </tr>
             <tr>
                 <td>
-                    <label for="name-filter">Nombre del proyecto:</label><br />
-                    <input id="name-filter" name="name" value="<?php echo $filters['name']; ?>" style="width:250px"/>
+                    <label for="proj_name-filter">Nombre del proyecto:</label><br />
+                    <input id="proj_name-filter" name="proj_name" value="<?php echo $filters['proj_name']; ?>" style="width:250px"/>
                 </td>
                 <td>
                     <label for="status-filter">Mostrar por estado:</label><br />
