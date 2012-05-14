@@ -78,7 +78,7 @@ if ($call->status == 3) {
 
     <?php if (!empty($call->user->webs[0]->url)) : ?>
 	<dl class="">
-		<dt>Web</dt>
+		<dt><?php echo Text::get('regular-web') ?></dt>
 		<dd><a href="<?php echo $call->user->webs[0]->url ?>"><?php echo preg_replace( '^http(?<https>s)?://^', '', $call->user->webs[0]->url ) ?></a></dd>
 	</dl>
     <?php endif; ?>

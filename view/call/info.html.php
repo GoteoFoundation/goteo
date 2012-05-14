@@ -41,12 +41,13 @@ include 'view/call/header.html.php';
                 
                 <h3><?php echo Text::get('call-splash-selected_projects-header') ?></h3>
 
+                <?php $ths = explode('-', Text::get('call-projects_table-head')); ?>
 				<table class="info-table" width="100%">
 					<thead class="task">
 						<tr>
-							<th class="title">Aportaciones:</th>
-							<th class="min"><?php if (!empty($call->amount)) : ?>Campaña<?php endif; ?></th>
-							<th class="max">Usuarios</th>
+							<th class="title"><?php echo $ths[0]; ?></th>
+							<th class="min"><?php if (!empty($call->amount)) echo $ths[1]; ?></th>
+							<th class="max"><?php echo $ths[2]; ?></th>
 						</tr>
 					</thead>
 					<tbody>
