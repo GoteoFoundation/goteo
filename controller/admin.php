@@ -215,7 +215,8 @@ namespace Goteo\Controller {
                         'label' => 'Datos del Nodo',
                         'actions' => array(
                             'list' => array('label' => 'Datos actuales', 'item' => false),
-                            'edit' => array('label' => 'Editando', 'item' => false)
+                            'edit' => array('label' => 'Editando', 'item' => false),
+                            'admins' => array('label' => 'Viendo administradores', 'item' => false)
                         )
                     ),
                     'nodes' => array(

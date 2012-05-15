@@ -28,7 +28,7 @@ namespace Goteo\Controller {
                 $qs = Model\Faq::getAll($id);
                 
                 if (empty($qs)) {
-                    if ($id == $current) {
+                    if ($id == $current && $current != 'node') {
                         throw new \Goteo\Core\Redirection('/faq');
                     }
                     unset($sections[$id]);

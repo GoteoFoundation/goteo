@@ -314,7 +314,7 @@ namespace Goteo\Model {
                 }
 
                 // recomendaciones de padrinos
-                $project->patrons = Patron::getRecos($project->id, NODE_ID);
+                $project->patrons = Patron::getRecos($project->id);
 
 
                 //-----------------------------------------------------------------

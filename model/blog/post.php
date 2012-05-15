@@ -130,6 +130,11 @@ namespace Goteo\Model\Blog {
             if ($published) {
                 $sql .= " AND post.publish = 1
                 ";
+                if (empty($blog)) {
+                $sql .= " AND blog.owner IN (SELECT id FROM node WHERE active = 1)
+                    AND blog.owner != 'testnode'
+                ";
+                }
             }
             $sql .= "ORDER BY post.date DESC, post.id DESC
                 ";
@@ -229,6 +234,11 @@ namespace Goteo\Model\Blog {
             if ($published || $filters['show'] == 'published') {
                 $sql .= " AND post.publish = 1
                 ";
+                if (empty($filters['blog'])) {
+                $sql .= " AND blog.owner IN (SELECT id FROM node WHERE active = 1)
+                    AND blog.owner != 'testnode'
+                ";
+                }
             }
 
             // solo las del propio blog

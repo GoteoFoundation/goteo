@@ -270,6 +270,13 @@ namespace Goteo\Controller\Admin {
 
             // cancelar aporte antes de ejecución, solo aportes no cargados
             if ($action == 'cancel') {
+                $invest = Model\Invest::get($id);
+                if (!$invest instanceof Model\Invest) {
+                    Message::Error('No tenemos objeto para el aporte '.$id);
+                    throw new Redirection('/admin/accounts');
+                }
+                $project = Model\Project::get($invest->project);
+                $userData = Model\User::get($invest->user);
 
                 if ($project->status > 3 && $project->status < 6) {
                     $errors[] = 'No debería poderse cancelar un aporte cuando el proyecto ya está financiado. Si es imprescindible, hacerlo desde el panel de paypal o tpv';
@@ -334,6 +341,14 @@ namespace Goteo\Controller\Admin {
             // ejecutar cargo ahora!!, solo aportes no ejecutados
             // si esta pendiente, ejecutar el cargo ahora (como si fuera final de ronda), deja pendiente el pago secundario
             if ($action == 'execute' && $invest->status == 0) {
+                $invest = Model\Invest::get($id);
+                if (!$invest instanceof Model\Invest) {
+                    Message::Error('No tenemos objeto para el aporte '.$id);
+                    throw new Redirection('/admin/accounts');
+                }
+                $project = Model\Project::get($invest->project);
+                $userData = Model\User::get($invest->user);
+                
                 switch ($invest->method) {
                     case 'paypal':
                         // a ver si tiene cuenta paypal

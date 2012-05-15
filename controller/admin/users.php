@@ -194,6 +194,29 @@ namespace Goteo\Controller\Admin {
                             Message::Info('Ha <strong>' . $log_action . '</strong> al usuario <strong>'.$user->name.'</strong> CORRECTAMENTE');
                             $log_text = 'El admin %s ha %s al usuario %s';
 
+                            if ($node != \GOTEO_NODE) {
+                                $onNode = Model\Node::get($node);
+
+                                switch ($subaction) {
+                                    case 'admin':
+                                        if ($onNode->assign($id)) {
+                                            Message::Info('El nuevo admin se ha asignado a tu nodo.');
+                                        } else{
+                                            Message::Error('El nuevo admin no se ha asignado a tu nodo. Contactar con el superadmin');
+                                        }
+                                        break;
+
+                                    case 'noadmin':
+                                        if ($onNode->unassign($id)) {
+                                            Message::Info('El ex-admin se ha desasignado de tu nodo.');
+                                        } else{
+                                            Message::Error('El ex-admin no se ha desasignado de tu nodo. Contactar con el superadmin');
+                                        }
+                                        break;
+                                }
+                            }
+
+
                         } else {
 
                             // mensaje de error y volvemos a la gestion del usuario

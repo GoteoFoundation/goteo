@@ -502,7 +502,9 @@ namespace Goteo\Controller {
          *
          */
         public function verify () {
-die('Ya no podemos hacer esto a la ligera');
+            // eliminamos feed antiguo
+            $query = Model\Project::query("DELETE FROM `feed` WHERE type != 'goteo' AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`datetime`)), '%j') > 60");
+            die;
             // proyectos en campaña
             $projects = Model\Project::active(true);
 

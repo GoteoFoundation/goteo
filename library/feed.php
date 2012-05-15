@@ -198,6 +198,13 @@ namespace Goteo\Library {
                             //  luego hacemos get del post
                             $post = Post::get($matches[0], LANG);
 
+                            if ($post->owner != 'node-goteo') {
+                                $the_node = \explode('-', $post->owner);
+                                if (!\Goteo\Core\NodeSys::isActive($the_node[1])) {
+                                    continue;
+                                }
+                            }
+
                             // y substituimos el $item->html por el $post->html
                             $item->html = Text::recorta($post->text, 250);
                             $item->title = $post->title;

@@ -118,6 +118,17 @@ namespace Goteo\Controller\Admin {
                     
                     break;
 
+                case 'admins':
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'node',
+                            'file' => 'admins',
+                            'node' => $node
+                        )
+                    );
+                    break;
+
                 default:
                     return new View(
                         'view/admin/index.html.php',

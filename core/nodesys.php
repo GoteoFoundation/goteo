@@ -25,6 +25,27 @@ namespace Goteo\Core {
             return (bool) $query->fetchColumn();
         }
 
+        /*
+         * Comprueba si es un nodo esta activo
+         */
+        public static function isActive ($id) {
+
+            $query = Model::query("
+                SELECT
+                    id
+                FROM node
+                WHERE id = :id
+                AND active = 1
+                AND id != 'testnode'
+                LIMIT 1
+                ",
+                array(
+                    ':id' => $id
+                )
+            );
+            return (bool) $query->fetchColumn();
+        }
+
         /**
          * Solo nodos activos apra el desplegable
          * tampoco sacamos el nodo en el que estamos
