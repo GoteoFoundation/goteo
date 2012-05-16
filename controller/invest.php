@@ -139,6 +139,12 @@ namespace Goteo\Controller {
                 throw new Redirection('/discover', Redirection::TEMPORARY);
             }
 
+            // para evitar las duplicaciones de feed y email
+            if (isset($_SESSION['invest_'.$invest.'_completed'])) {
+                Message::Info(Text::get('invest-process-completed'));
+                throw new Redirection("/project/$project/invest/?confirm=ok");
+            }
+
             $confirm = Model\Invest::get($invest);
             $projectData = Model\Project::getMedium($project);
             if (!empty($confirm->droped)) {
@@ -313,6 +319,9 @@ namespace Goteo\Controller {
                 $log->doPublic('community');
                 unset($log);
             }
+
+            // marcar que ya se ha completado el proceso de aportar
+            $_SESSION['invest_'.$invest.'_completed'] = true;
 
             // mandarlo a la pagina de gracias
             throw new Redirection("/project/$project/invest/?confirm=ok", Redirection::TEMPORARY);
