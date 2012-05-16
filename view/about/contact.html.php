@@ -10,11 +10,13 @@ $page = Page::get('contact', \NODE_ID);
 include 'view/prologue.html.php';
 include 'view/header.html.php';
 ?>
+<?php if (\NODE_ID == \GOTEO_NODE) : ?>
     <div id="sub-header">
         <div>
             <h2><?php echo $page->description; ?></h2>
         </div>
     </div>
+<?php endif; ?>
 
 <?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
 
