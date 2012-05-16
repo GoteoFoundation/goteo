@@ -44,7 +44,7 @@ $ogmeta = array(
     'description' => Text::get('regular-by').' '.$project->user->name,
     'url' => SITE_URL . '/project/'.$project->id
 );
-if (!empty($project->gallery)) {
+if (!empty($project->gallery) && is_array($project->gallery) && $project->gallery[0] instanceof \Goteo\Model\Image) {
     $ogmeta['image'] = $project->gallery[0]->getLink(580, 580);
 }
 

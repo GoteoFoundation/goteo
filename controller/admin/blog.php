@@ -159,16 +159,33 @@ namespace Goteo\Controller\Admin {
                     // lista de entradas
                     // obtenemos los datos
                     $filters['node'] = $node;
-                    $posts = Model\Blog\Post::getList($filters, false);
-                    $homes = Model\Post::getList('home', $_SESSION['admin_node']);
-                    $footers = Model\Post::getList('footer', $_SESSION['admin_node']);
-
                     $show = array(
-                        'all' => 'Todas',
-                        'published' => 'Solamente las publicadas',
+                        'all' => 'Todas las entradas existentes',
+                        'published' => 'Solamente las publicadas en el blog',
                         'owned' => 'Solamente las del propio nodo',
-                        'home' => 'Solamente las de portada'
+                        'home' => 'Solamente las de portada',
+                        'entries' => 'Solamente las de cierto nodo',
+                        'updates' => 'Solamente las de proyectos'
                     );
+
+                    // filtro de blogs de proyectos/nodos
+                    switch ($filters['show']) {
+                        case 'updates':
+                            $blogs = Model\Blog::getListProj();
+                            break;
+
+                        case 'entries':
+                            $blogs = Model\Blog::getListNode();
+                            break;
+                    }
+
+                    if ( !in_array($filters['show'], array('entries', 'updates')) || !isset($blogs[$filters['blog']]) ) {
+                        unset($filters['blog']);
+                    }
+
+                    $posts = Model\Blog\Post::getList($filters, false);
+                    $homes = Model\Post::getList('home', $node);
+                    $footers = Model\Post::getList('footer', $node);
 
                     if ($node == \GOTEO_NODE) {
                         $show['footer'] = 'Solamente las del footer';
@@ -182,6 +199,7 @@ namespace Goteo\Controller\Admin {
                             'posts' => $posts,
                             'filters' => $filters,
                             'show' => $show,
+                            'blogs' => $blogs,
                             'homes' => $homes,
                             'footers' => $footers,
                             'node' => $node
@@ -228,7 +246,7 @@ namespace Goteo\Controller\Admin {
                             Message::Error('La entrada esta corrupta, contacte con nosotros.');
                             $action = 'list';
                             break;
-                        } elseif (!empty($_SESSION['admin_node']) && $post->owner != 'node-'.$_SESSION['admin_node']) {
+                        } elseif ($node != \GOTEO_NODE && $post->owner_type == 'node' && $post->owner_id != $node) {
                             Message::Error('No puedes editar esta entrada.');
                             throw new Redirection('/admin/blog/list');
                         }
@@ -251,9 +269,9 @@ namespace Goteo\Controller\Admin {
                 case 'remove':
                     // eliminar una entrada
                     $tempData = Model\Blog\Post::get($id);
-                    if (!empty($_SESSION['admin_node']) && $tempData->owner != 'node-'.$_SESSION['admin_node']) {
+                    if ($node != \GOTEO_NODE && $tempData->owner_type == 'node' && $tempData->owner_id != $node ) {
                         Message::Error('No puedes eliminar esta entrada.');
-                        throw new Redirection('/admin/blog/list');
+                        throw new Redirection('/admin/blog');
                     }
                     if (Model\Blog\Post::delete($id)) {
                         // Evento Feed
@@ -278,7 +296,7 @@ namespace Goteo\Controller\Admin {
                 case 'reorder':
                     // lista de entradas en portada
                     // obtenemos los datos
-                    $posts = Model\Post::getAll('home', $_SESSION['admin_node']);
+                    $posts = Model\Post::getAll('home', $node);
 
                     return new View(
                         'view/admin/index.html.php',
@@ -290,16 +308,16 @@ namespace Goteo\Controller\Admin {
                     );
                     break;
                 case 'up':
-                    if (!empty($_SESSION['admin_node']) && $_SESSION['admin_node'] != \GOTEO_NODE) {
-                        Model\Post::up_node($id, $_SESSION['admin_node']);
+                    if ($node != \GOTEO_NODE) {
+                        Model\Post::up_node($id, $node);
                     } else {
                         Model\Post::up($id, 'home');
                     }
                     throw new Redirection('/admin/blog/reorder');
                     break;
                 case 'down':
-                    if (!empty($_SESSION['admin_node']) && $_SESSION['admin_node'] != \GOTEO_NODE) {
-                        Model\Post::up_node($id, $_SESSION['admin_node']);
+                    if ($node != \GOTEO_NODE) {
+                        Model\Post::up_node($id, $node);
                     } else {
                         Model\Post::down($id, 'home');
                     }
@@ -307,9 +325,9 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'add_home':
                     // siguiente orden
-                    if (!empty($_SESSION['admin_node']) && $_SESSION['admin_node'] != \GOTEO_NODE) {
-                        $next = Model\Post::next_node($_SESSION['admin_node']);
-                        $data = (object) array('post' => $id, 'node' => $_SESSION['admin_node'], 'order' => $next);
+                    if ($node != \GOTEO_NODE) {
+                        $next = Model\Post::next_node($node);
+                        $data = (object) array('post' => $id, 'node' => $node, 'order' => $next);
                         if (Model\Post::update_node($data, $errors)) {
                             Message::Info('Entrada colocada en la portada correctamente');
                         } else {
@@ -334,8 +352,8 @@ namespace Goteo\Controller\Admin {
                 case 'remove_home':
                     // se quita de la portada solamente
                     $ok = false;
-                    if (!empty($_SESSION['admin_node']) && $_SESSION['admin_node'] != \GOTEO_NODE) {
-                        $ok = Model\Post::remove_node($id, $_SESSION['admin_node']);
+                    if ($node != \GOTEO_NODE) {
+                        $ok = Model\Post::remove_node($id, $node);
                     } else {
                         $ok = Model\Post::remove($id, 'home');
                     }
@@ -349,7 +367,7 @@ namespace Goteo\Controller\Admin {
 
                 // acciones footer (solo para superadmin y admins de goteo
                 case 'footer':
-                    if (empty($_SESSION['admin_node']) || $_SESSION['admin_node'] != \GOTEO_NODE) {
+                    if ($node != \GOTEO_NODE) {
                         // lista de entradas en el footer
                         // obtenemos los datos
                         $posts = Model\Post::getAll('footer');
@@ -367,19 +385,23 @@ namespace Goteo\Controller\Admin {
                     }
                     break;
                 case 'up_footer':
-                    if (empty($_SESSION['admin_node']) || $_SESSION['admin_node'] != \GOTEO_NODE) {
+                    if ($node == \GOTEO_NODE) {
                         Model\Post::up($id, 'footer');
+                        throw new Redirection('/admin/blog/footer');
+                    } else {
+                        throw new Redirection('/admin/blog');
                     }
-                    throw new Redirection('/admin/blog/footer');
                     break;
                 case 'down_footer':
-                    if (empty($_SESSION['admin_node']) || $_SESSION['admin_node'] != \GOTEO_NODE) {
+                    if ($node == \GOTEO_NODE) {
                         Model\Post::down($id, 'footer');
+                        throw new Redirection('/admin/blog/footer');
+                    } else {
+                        throw new Redirection('/admin/blog');
                     }
-                    throw new Redirection('/admin/blog/footer');
                     break;
                 case 'add_footer':
-                    if (empty($_SESSION['admin_node']) || $_SESSION['admin_node'] != \GOTEO_NODE) {
+                    if ($node == \GOTEO_NODE) {
                         // siguiente orden
                         $next = Model\Post::next('footer');
                         $post = new Model\Post(array(
@@ -394,10 +416,10 @@ namespace Goteo\Controller\Admin {
                             Message::Error('Ha habido algun problema:<br />' . \implode('<br />', $errors));
                         }
                     }
-                    throw new Redirection('/admin/blog/list');
+                    throw new Redirection('/admin/blog');
                     break;
                 case 'remove_footer':
-                    if (empty($_SESSION['admin_node']) || $_SESSION['admin_node'] != \GOTEO_NODE) {
+                    if ($node == \GOTEO_NODE) {
                         // se quita del footer solamente
                         if (Model\Post::remove($id, 'footer')) {
                             Message::Info('Entrada quitada del footer correctamente');

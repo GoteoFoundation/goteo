@@ -34,12 +34,36 @@ $pagedResults = new \Paginated($the_posts, 10, isset($_GET['page']) ? $_GET['pag
     <form id="filter-form" action="/admin/blog" method="get">
         <div style="float:left;margin:5px;">
             <label for="show-filter">Mostrar:</label><br />
-            <select id="shhow-filter" name="show" onchange="document.getElementById('filter-form').submit();">
+            <select id="show-filter" name="show" onchange="document.getElementById('filter-form').submit();">
             <?php foreach ($this['show'] as $itemId=>$itemName) : ?>
-                <option value="<?php echo $itemId; ?>"<?php if ($filters['show'] === (string) $itemId) echo ' selected="selected"';?>><?php echo $itemName; ?></option>
+                <option value="<?php echo $itemId; ?>"<?php if ($filters['show'] == $itemId) echo ' selected="selected"';?>><?php echo $itemName; ?></option>
             <?php endforeach; ?>
             </select>
         </div>
+
+        <?php if ($filters['show'] == 'updates') : ?>
+        <div style="float:left;margin:5px;">
+            <label for="blog-filter">Del proyecto:</label><br />
+            <select id="blog-filter" name="blog" onchange="document.getElementById('filter-form').submit();">
+                <option value="">Cualquiera</option>
+            <?php foreach ($this['blogs'] as $itemId=>$itemName) : ?>
+                <option value="<?php echo $itemId; ?>"<?php if ($filters['blog'] == $itemId) echo ' selected="selected"';?>><?php echo $itemName; ?></option>
+            <?php endforeach; ?>
+            </select>
+        </div>
+        <?php endif; ?>
+
+        <?php if ($filters['show'] == 'entries') : ?>
+        <div style="float:left;margin:5px;">
+            <label for="blog-filter">Del nodo:</label><br />
+            <select id="blog-filter" name="blog" onchange="document.getElementById('filter-form').submit();">
+                <option value="">Cualquiera</option>
+            <?php foreach ($this['blogs'] as $itemId=>$itemName) : ?>
+                <option value="<?php echo $itemId; ?>"<?php if ($filters['blog'] == $itemId) echo ' selected="selected"';?>><?php echo $itemName; ?></option>
+            <?php endforeach; ?>
+            </select>
+        </div>
+        <?php endif; ?>
     </form>
 </div>
 
@@ -48,16 +72,17 @@ $pagedResults = new \Paginated($the_posts, 10, isset($_GET['page']) ? $_GET['pag
     <table>
         <thead>
             <tr>
+                <th><!-- published --></th>
                 <th colspan="6">Entrada</th> <!-- title -->
                 <th>Fecha</th> <!-- date -->
                 <th>Autor</th>
-                <th><!-- published --></th>
             </tr>
         </thead>
 
         <tbody>
             <?php while ($post = $pagedResults->fetchPagedRow()) : ?>
             <tr>
+                <td><?php if ($post->publish) echo '<strong style="color:#20b2b3;font-size:10px;">Publicada</sttrong>'; ?></td>
                 <td colspan="6"><?php
                         $style = '';
                         if (isset($this['homes'][$post->id]))
@@ -70,12 +95,11 @@ $pagedResults = new \Paginated($the_posts, 10, isset($_GET['page']) ? $_GET['pag
                       echo "<span style=\"{$style}\">{$post->title}</span>";
                 ?></td>
                 <td><?php echo $post->fecha; ?></td>
-                <td><?php echo $post->user->name; ?></td>
-                <td><?php if ($post->publish) echo '<strong style="color:#20b2b3;font-size:10px;">Publicada</sttrong>'; ?></td>
+                <td><?php echo $post->user->name . ' (' . $post->owner_name . ')'; ?></td>
             </tr>
             <tr>
                 <td><a href="/blog/<?php echo $post->id; ?>?preview=<?php echo $_SESSION['user']->id ?>" target="_blank">[Ver]</a></td>
-                <td><?php if ($post->owner == 'node-'.$node || $node == \GOTEO_NODE) : ?>
+                <td><?php if (($post->owner_type == 'node' && $post->owner_id == $node) || $node == \GOTEO_NODE) : ?>
                     <a href="/admin/blog/edit/<?php echo $post->id; ?>">[Editar]</a>
                 <?php endif; ?></td>
                 <td><?php if (isset($this['homes'][$post->id])) {
@@ -92,12 +116,11 @@ $pagedResults = new \Paginated($the_posts, 10, isset($_GET['page']) ? $_GET['pag
                     } ?></td>
                 <td>
                 <?php if ($translator && $node == \GOTEO_NODE) : ?><a href="/translate/post/edit/<?php echo $post->id; ?>" >[Traducir]</a><?php endif; ?>
-                <?php if ($post->owner == 'node-'.$node && $transNode && $node != \GOTEO_NODE) : ?><a href="/translate/node/<?php echo $node ?>/post/edit/<?php echo $post->id; ?>" target="_blank">[Traducir]</a><?php endif; ?>
+                <?php if ($node != \GOTEO_NODE && $transNode && ($post->owner_type == 'node' && $post->owner_id == $node)) : ?><a href="/translate/node/<?php echo $node ?>/post/edit/<?php echo $post->id; ?>" target="_blank">[Traducir]</a><?php endif; ?>
                 </td>
-                <td><?php if (!$post->publish && ($post->owner == 'node-'.$_SESSION['admin_node'] || !isset($_SESSION['admin_node']))) : ?>
+                <td><?php if (!$post->publish && (($post->owner_type == 'node' && $post->owner_id == $_SESSION['admin_node']) || !isset($_SESSION['admin_node']))) : ?>
                     <a href="/admin/blog/remove/<?php echo $post->id; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Eliminar]</a>
                 <?php endif; ?></td>
-                <td></td>
                 <td></td>
             </tr>
             <tr>

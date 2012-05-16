@@ -76,7 +76,7 @@ namespace Goteo\Controller {
                             'translate' => array('label' => 'Traduciendo Entrada', 'item' => true),
                             'reorder' => array('label' => 'Ordenando las entradas en Portada', 'item' => false)
                         ),
-                        'filters' => array('show'=>'all')
+                        'filters' => array('show'=>'owned', 'blog' => '')
                     ),
                     'calls' => array(
                         'label' => 'Gestión de convocatorias',

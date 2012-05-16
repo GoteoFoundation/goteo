@@ -37,10 +37,6 @@ namespace Goteo\Controller {
             if (isset($order['posts'])) {
                 // entradas en portada
                 $posts     = Post::getAll();
-
-                foreach ($posts as $id=>$title) {
-                    $posts[$id] = Post::get($id);
-                }
             }
 
             // Proyectos destacados
@@ -214,11 +210,7 @@ namespace Goteo\Controller {
             // entradas de blog
             if (isset($order['posts'])) {
                 // entradas en portada
-                $posts     = Post::getList('home', NODE_ID);
-
-                foreach ($posts as $id=>$title) {
-                    $posts[$id] = Post::get($id);
-                }
+                $posts     = Post::getAll('home', NODE_ID);
             }
 
             // Convocatoris destacadas

@@ -5,6 +5,7 @@ namespace Goteo\Model\Blog {
     use \Goteo\Model\Project\Media,
         \Goteo\Model\Image,
         \Goteo\Model\Project,
+        \Goteo\Model\Node,
         \Goteo\Model\User,
         \Goteo\Library\Text,
         \Goteo\Library\Message;
@@ -110,7 +111,8 @@ namespace Goteo\Model\Blog {
                     post.home as home,
                     post.footer as footer,
                     post.author as author,
-                    CONCAT(blog.type, '-', blog.owner) as owner
+                    blog.type as owner_type,
+                    blog.owner as owner_id
                 FROM    post
                 INNER JOIN blog
                     ON  blog.id = post.blog
@@ -161,15 +163,20 @@ namespace Goteo\Model\Blog {
                 // reconocimiento de enlaces y saltos de linea
 //                $post->text = nl2br(Text::urlink($post->text));
 
-                // autor
-                if (!empty($post->author)) $post->user = User::getMini($post->author);
-                // si es novedades de proyecto ponemos al dueño del proyecto como autor
-                if (empty($post->author) && $post->type == 'project') {
-                    $proj_blog = Project::getMini($post->owner);
-                    if ($proj_blog->user instanceof User) {
+                // datos del autor
+                switch ($post->owner_type) {
+                    case 'project':
+                        $proj_blog = Project::getMini($post->owner_id);
                         $post->author = $proj_blog->owner;
                         $post->user   = $proj_blog->user;
-                    }
+                        $post->owner_name = $proj_blog->name;
+                        break;
+
+                    case 'node':
+                        $post->user   = User::getMini($post->author);
+                        $node_blog = Node::get($post->owner_id);
+                        $post->owner_name = $node_blog->name;
+                        break;
                 }
 
                 $list[$post->id] = $post;
@@ -203,15 +210,27 @@ namespace Goteo\Model\Blog {
                     post.home as home,
                     post.footer as footer,
                     post.author as author,
-                    CONCAT(blog.type, '-', blog.owner) as owner
+                    blog.type as owner_type,
+                    blog.owner as owner_id
                 FROM    post
                 INNER JOIN blog
                     ON  blog.id = post.blog
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
-                WHERE blog.type = 'node'
                 ";
+
+            if (in_array($filters['show'], array('all', 'home', 'footer'))) {
+                $sql .= " WHERE blog.id IS NOT NULL
+                ";
+            } elseif ($filters['show'] == 'updates') {
+                $sql .= " WHERE blog.type = 'project'
+                ";
+            } else {
+                $sql .= " WHERE blog.type = 'node'
+                ";
+            }
+
             if (!empty($filters['blog'])) {
                 $sql .= " AND post.blog = :blog
                 ";
@@ -285,9 +304,22 @@ namespace Goteo\Model\Blog {
 
                 $post->num_comments = Post\Comment::getCount($post->id);
 
-                // autor
-                if (!empty($post->author)) $post->user = User::getMini($post->author);
-                
+                // datos del autor del  post
+                switch ($post->owner_type) {
+                    case 'project':
+                        $proj_blog = Project::getMini($post->owner_id);
+                        $post->author = $proj_blog->owner;
+                        $post->user   = $proj_blog->user;
+                        $post->owner_name = $proj_blog->name;
+                        break;
+
+                    case 'node':
+                        $post->user   = User::getMini($post->author);
+                        $node_blog = Node::get($post->owner_id);
+                        $post->owner_name = $node_blog->name;
+                        break;
+                }
+
                 $list[$post->id] = $post;
             }
 

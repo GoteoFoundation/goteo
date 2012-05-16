@@ -4,7 +4,9 @@ namespace Goteo\Model {
 
     use Goteo\Model\Project\Media,
         Goteo\Model\Image,
+        Goteo\Model\Project,
         Goteo\Model\User,
+        Goteo\Model\Node,
         Goteo\Library\Check;
 
     class Post extends \Goteo\Core\Model {
@@ -103,8 +105,12 @@ namespace Goteo\Model {
                     DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                     post.publish as publish,
                     post.home as home,
-                    post.footer as footer
+                    post.footer as footer,
+                    blog.type as owner_type,
+                    blog.owner as owner_id
                 FROM    post
+                INNER JOIN blog
+                    ON  blog.id = post.blog
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
@@ -123,7 +129,24 @@ namespace Goteo\Model {
 
                 $post->type = $post->home == 1 ? 'home' : 'footer';
                 
-                if (!empty($post->author)) $post->user = User::getMini($post->author);
+                // datos del autor
+                switch ($post->owner_type) {
+                    case 'project':
+                        $proj_blog = Project::getMini($post->owner_id);
+                        $post->author = $proj_blog->owner;
+                        $post->user   = $proj_blog->user;
+                        $post->owner_name = $proj_blog->name;
+                        break;
+
+                    case 'node':
+                        $post->user   = User::getMini($post->author);
+                        /*
+                        $node_blog = Node::get($post->owner_id);
+                        $post->owner_name = $node_blog->name;
+                         * 
+                         */
+                        break;
+                }
 
                 $list[$post->id] = $post;
             }
@@ -167,7 +190,6 @@ namespace Goteo\Model {
                 FROM    post
                 INNER JOIN blog
                     ON  blog.id = post.blog
-                    AND blog.type = 'node'
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang

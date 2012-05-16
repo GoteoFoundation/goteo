@@ -51,6 +51,58 @@ namespace Goteo\Model {
                 return $blog;
         }
 
+        /*
+         *  Listado simple de blogs de proyecto
+         */
+        public static function getListProj () {
+
+            $list = array();
+
+            $query = static::query("
+                SELECT
+                    blog.id as id,
+                    project.name as name
+                FROM    blog
+                INNER JOIN post
+                    ON post.blog = blog.id
+                INNER JOIN project
+                    ON project.id = blog.owner
+                WHERE blog.type = 'project'
+                ");
+
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                $list[$item->id] = $item->name;
+            }
+
+            return $list;
+        }
+
+        /*
+         *  Listado simple de blogs de nodo
+         */
+        public static function getListNode () {
+
+            $list = array();
+
+            $query = static::query("
+                SELECT
+                    blog.id as id,
+                    node.name as name
+                FROM    blog
+                INNER JOIN post
+                    ON post.blog = blog.id
+                INNER JOIN node
+                    ON node.id = blog.owner
+                WHERE blog.type = 'node'
+                ");
+
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                $list[$item->id] = $item->name;
+            }
+
+            return $list;
+        }
+
         public function validate (&$errors = array()) {
             return true;
         }

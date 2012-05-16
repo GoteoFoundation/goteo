@@ -198,9 +198,8 @@ namespace Goteo\Library {
                             //  luego hacemos get del post
                             $post = Post::get($matches[0], LANG);
 
-                            if ($post->owner != 'node-goteo') {
-                                $the_node = \explode('-', $post->owner);
-                                if (!\Goteo\Core\NodeSys::isActive($the_node[1])) {
+                            if ($post->owner_type == 'node' && $post->owner_id != \GOTEO_NODE) {
+                                if (!\Goteo\Core\NodeSys::isActive($post->owner_id)) {
                                     continue;
                                 }
                             }

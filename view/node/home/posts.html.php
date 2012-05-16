@@ -35,11 +35,11 @@ if (count($posts) > 1) : ?>
                         <img src="<?php echo $post->image->getLink(330, 175); ?>" alt="Imagen"/>
                     </div>
                 <?php endif; ?>
-                <h3><?php echo $post->title; ?></h3>
+                <h3><?php if ($post->owner_type == 'project') { echo '<span style="color:#20B2B3;">'.Text::get('project-menu-home').' '.$post->owner_name.'</span>: '; } echo $post->title; ?></h3>
                 <?php if (!empty($post->author)) : ?><div class="author"><a href="/blog/?author=<?php echo $post->author ?>"><?php echo Text::get('regular-by') ?> <?php echo $post->user->name ?></a></div><?php endif; ?>
                 <div class="description"><?php echo Text::recorta($post->text, 350) ?><br /></div>
 
-                <div class="read_more"><a href="/blog/<?php echo $post->id; ?>"><?php echo Text::get('regular-read_more') ?></a></div>
+                <div class="read_more"><a href="<?php echo ($post->owner_type == 'project') ? '/project/'.$post->owner_id.'/updates/'.$post->id : '/blog/'.$post->id; ?>"><?php echo Text::get('regular-read_more') ?></a></div>
             </div>
         </div>
         <?php $i++; endforeach; ?>
