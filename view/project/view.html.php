@@ -39,13 +39,42 @@ if (!empty($blog->posts)) {
 $bodyClass = 'project-show';
 
 // metas og: para que al compartir en facebook coja bien el nombre y la imagen
-$ogmeta = array(
-    'title' => $project->name,
-    'description' => Text::get('regular-by').' '.$project->user->name,
-    'url' => SITE_URL . '/project/'.$project->id
-);
-if (!empty($project->gallery) && is_array($project->gallery) && $project->gallery[0] instanceof \Goteo\Model\Image) {
-    $ogmeta['image'] = $project->gallery[0]->getLink(580, 580);
+// si estamos en novedades / en una entrada de novedades / en la portada del proyecto
+if ($show == 'updates') {
+    $ogmeta = array(
+        'title' => $project->name,
+        'description' => Text::get('regular-by').' '.$project->user->name,
+        'url' => SITE_URL . '/project/'.$project->id,
+        'image' => array()
+    );
+    foreach ($blog->posts as $bpost) {
+        if (!empty($post) && $bpost->id != $post)
+            continue;
+        
+        if (is_array($bpost->gallery)) {
+            foreach ($bpost->gallery as $bpimg) {
+                if ($bpimg instanceof \Goteo\Model\Image) {
+                    $ogmeta['image'][] = $bpimg->getLink(500, 285);
+                }
+            }
+        }
+    }
+
+} else {
+    $ogmeta = array(
+        'title' => $project->name,
+        'description' => Text::get('regular-by').' '.$project->user->name,
+        'url' => SITE_URL . '/project/'.$project->id
+    );
+    
+    // todas las imagenes del proyecto
+    if (is_array($project->gallery)) {
+        foreach ($project->gallery as $pgimg) {
+            if ($pgimg instanceof \Goteo\Model\Image) {
+                $ogmeta['image'][] = $pgimg->getLink(580, 580);
+            }
+        }
+    }
 }
 
 

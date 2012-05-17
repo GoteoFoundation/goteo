@@ -22,7 +22,13 @@ if (NODE_ID != GOTEO_NODE) {
         <meta property="og:type" content="activity" />
         <meta property="og:site_name" content="Goteo.org" />
         <meta property="og:description" content="<?php echo $ogmeta['description'] ?>" />
+        <?php if (is_array($ogmeta['image'])) :
+            foreach ($ogmeta['image'] as $ogimg) : ?>
+        <meta property="og:image" content="<?php echo $ogimg ?>" />
+        <?php endforeach;
+        else : ?>
         <meta property="og:image" content="<?php echo $ogmeta['image'] ?>" />
+        <?php endif; ?>
         <meta property="og:url" content="<?php echo $ogmeta['url'] ?>" />
 <?php else : ?>
         <meta property="og:title" content="Goteo.org" />

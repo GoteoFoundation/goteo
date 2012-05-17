@@ -1,9 +1,11 @@
 <?php
 use Goteo\Core\View,
-    Goteo\Library\Text;
+    Goteo\Library\Text,
+    Goteo\Model\Project;
 
 $user    = $_SESSION['user'];
 $project = $this['project'];
+$the_project = Project::getMedium($project->id);
 $level = (int) $this['level'] ?: 3;
 
 $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
@@ -11,13 +13,24 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 $url = SITE_URL . '/widget/project/' . $project->id;
 $widget_code = Text::widget($url . $lsuf);
 $widget_code_investor = Text::widget($url.'/invested/'.$user->id.'/'.$lsuf);
+
+$share_title = Text::get('project-spread-social', $project->name);
+$share_url = SITE_URL . '/project/'.$project->id;
+$facebook_url = 'http://facebook.com/sharer.php?u=' . rawurlencode($share_url) . '&t=' . rawurlencode($share_title);
+$twitter_url = 'http://twitter.com/home?status=' . rawurlencode($share_title . ': ' . $share_url . ' #Goteo');
 ?>
 <div class="widget project-spread">
     
     <h<?php echo $level ?> class="title"><?php echo Text::get('project-spread-header'); ?></h<?php echo $level ?>>
     
-    <div class="widget projects">
-   		 
+        <ul class="share-goteo">
+            <li class="twitter"><a href="<?php echo htmlspecialchars($twitter_url) ?>" target="_blank"><?php echo Text::get('regular-twitter'); ?></a></li>
+            <li class="facebook"><a href="<?php echo htmlspecialchars($facebook_url) ?>" target="_blank"><?php echo Text::get('regular-facebook'); ?></a></li>
+        </ul>
+        <br clear="both" />
+
+        <div class="widget projects">
+
           <div class="left">
               <div class="subtitle" id="s1">
                 <span class="primero"><?php echo Text::get('project-spread-pre_widget')?></span>
@@ -29,7 +42,7 @@ $widget_code_investor = Text::widget($url.'/invested/'.$user->id.'/'.$lsuf);
         
                     // el proyecto de trabajo
                     echo new View('view/project/widget/project.html.php', array(
-                    'project'   => $project));
+                    'project'   => $the_project));
                 ?>
               </div>
               
@@ -52,7 +65,7 @@ $widget_code_investor = Text::widget($url.'/invested/'.$user->id.'/'.$lsuf);
     
                     // el proyecto de trabajo
                     echo new View('view/project/widget/project.html.php', array(
-                    'project'   => $project,
+                    'project'   => $the_project,
                     'investor'  => $user
                     ));
                 ?>

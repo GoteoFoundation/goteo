@@ -142,18 +142,32 @@ div.post-comments div.message blockquote {
     clear: both;
 }
 /** end Comments like messages**/
-/** share goteo **/
+/** share goteo
+Tambien en la página de agradecimiento al cofinanciar **/
+.project-spread ul.share-goteo {
+	margin: 0;
+	padding-left:20px;
+	list-style:none;
+    display: block;
+}
 .project-updates .post ul.share-goteo {
 	margin: 0;
 	padding:0px;
 	list-style:none;
 	float:right;
 }
-.project-updates .post ul.share-goteo li{
+.project-spread ul.share-goteo li {
 	display:inline;
 	float:left;
 	margin: 0 0 0 10px;
 }
+.project-updates .post ul.share-goteo li {
+	display:inline;
+	float:left;
+	margin: 0 0 0 10px;
+}
+.project-spread  ul.share-goteo li.twitter a,
+.project-spread  ul.share-goteo li.facebook a,
 .project-updates .post  ul.share-goteo li.twitter a,
 .project-updates .post  ul.share-goteo li.facebook a,
 .project-updates .post  ul.share-goteo li.rss a{
@@ -169,11 +183,13 @@ div.post-comments div.message blockquote {
 	color: #808285;
 	font-size: 11px;
 }
+.project-spread ul.share-goteo li.twitter a,
 .project-updates .post ul.share-goteo li.twitter a{
 	background: transparent url('/view/css/twitter.png') scroll no-repeat  0 0;
 	color:#13c2ec;
 	text-decoration:none;
 }
+.project-spread ul.share-goteo li.facebook a, 
 .project-updates .post ul.share-goteo li.facebook a{
 	background: transparent url('/view/css/facebook.png') scroll no-repeat  0 0;
 	color:#4a6393;
