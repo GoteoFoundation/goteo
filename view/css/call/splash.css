@@ -126,20 +126,22 @@ li#description.item img {
 
 li#description.item h2.title {
 	color: #1db3b2;
-	font-size: 15px;
+	font-size: 18px;
 	text-transform: uppercase;
+	margin: 20px 0 10px;
 	font-weight: normal;
-	margin: 10px 0;
+	font-style: normal;
 }
 
 li#description.item p.subtitle {
 	color: #95268d;
 	font-weight: normal;
-	font-size: 15px;
+	font-size: 16px;
 	margin: 0 0 1em;
 	float: right;
 	clear: none;
 	width: 277px;
+	line-height: 20px;
 }
 
 li#description.item p.subtitle.red {
@@ -156,7 +158,8 @@ li#description.item p.subtitle strong {
 li#description.item p {
 	clear: both;
 	margin-top: 0;
-	font-size: 11px;
+	font-size: 12px;
+	line-height: 17px;
 }
 
 /* Numbers */
@@ -197,7 +200,7 @@ li#numbers dl.block dt {
 
 li#numbers dl.block dd {
 	min-height: 36px;
-	font-size: 34px;
+	font-size: 31px;
 	font-weight: bold;
 	padding: 0;
 	margin: 0;
@@ -330,8 +333,10 @@ span.euro {
     height: 27px;
     width: 27px;
     line-height: 2000px;
-    margin-bottom: -1px;
     overflow: hidden;
+	margin-bottom: -2px;
+	position: relative;
+	right: 4px;
 }
 
 .light span.euro {
