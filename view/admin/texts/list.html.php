@@ -6,7 +6,6 @@ use Goteo\Library\Text,
 $translator = ACL::check('/translate') ? true : false;
 
 $filters = $this['filters'];
-
 $botones = array(
     'edit' => '[Editar]',
     'remove' => '[Quitar]',
@@ -48,7 +47,9 @@ $per = 100 / $cols;
 
 <!-- lista -->
 <div class="widget board">
-    <?php if (!empty($this['data'])) : ?>
+<?php if ($filters['filtered'] != 'yes') : ?>
+    <p>Es necesario poner algun filtro, hay demasiados registros!</p>
+<?php elseif (!empty($this['data'])) : ?>
     <table>
         <thead>
             <tr>

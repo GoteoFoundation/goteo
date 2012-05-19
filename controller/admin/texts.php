@@ -15,11 +15,9 @@ namespace Goteo\Controller\Admin {
             
 
             // valores de filtro
-            $idfilters = Text::filters();
             $groups    = Text::groups();
 
             // metemos el todos
-            \array_unshift($idfilters, 'Todos los textos');
             \array_unshift($groups, 'Todas las agrupaciones');
 
  //@fixme temporal hasta pasar las agrupaciones a tabal o arreglar en el list.html.php
@@ -43,24 +41,26 @@ namespace Goteo\Controller\Admin {
                             ),
                             'url' => '/admin/texts',
                             'filters' => array(
-                                'idfilter' => array(
-                                        'label'   => 'Filtrar por tipo:',
-                                        'type'    => 'select',
-                                        'options' => $idfilters,
-                                        'value'   => $filters['idfilter']
-                                    ),
+                                'filtered' => $filters['filtered'],
                                 'group' => array(
-                                        'label'   => 'Filtrar por agrupación:',
+                                        'label'   => 'Filtrar:',
                                         'type'    => 'select',
                                         'options' => $groups,
                                         'value'   => $filters['group']
                                     ),
                                 'text' => array(
-                                        'label'   => 'Buscar texto:',
+                                        'label'   => 'Texto:',
                                         'type'    => 'input',
                                         'options' => null,
                                         'value'   => $filters['text']
                                     )
+                                /*,
+                                'idfilter' => array(
+                                        'label'   => 'Id:',
+                                        'type'    => 'input',
+                                        'options' => null,
+                                        'value'   => $filters['idfilter']
+                                    )*/
                             )
                         )
                     );

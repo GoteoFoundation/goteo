@@ -140,6 +140,7 @@ body.admin div#main > div.admin-center > div.widget.feed div.subitem > div.conte
 /* Capando el superform */
 body.admin div#main div.admin-center div.superform {
     float: left;
+    max-width: 750px;
 }
 
 body.admin div#main div.admin-center div.superform > div.elements {

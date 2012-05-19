@@ -117,7 +117,7 @@ namespace Goteo\Model {
                 SELECT
                     *
                 FROM node
-                WHERE id != 'goteo'
+                WHERE id IS NOT NULL
                     $sqlFilter
                 ORDER BY `name` ASC
                 ");

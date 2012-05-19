@@ -194,26 +194,24 @@ namespace Goteo\Controller\Admin {
                             Message::Info('Ha <strong>' . $log_action . '</strong> al usuario <strong>'.$user->name.'</strong> CORRECTAMENTE');
                             $log_text = 'El admin %s ha %s al usuario %s';
 
-                            if ($node != \GOTEO_NODE) {
-                                $onNode = Model\Node::get($node);
+                            $onNode = Model\Node::get($node);
 
-                                switch ($subaction) {
-                                    case 'admin':
-                                        if ($onNode->assign($id)) {
-                                            Message::Info('El nuevo admin se ha asignado a tu nodo.');
-                                        } else{
-                                            Message::Error('El nuevo admin no se ha asignado a tu nodo. Contactar con el superadmin');
-                                        }
-                                        break;
+                            switch ($subaction) {
+                                case 'admin':
+                                    if ($onNode->assign($id)) {
+                                        Message::Info('El nuevo admin se ha asignado al nodo <strong>'.$onNode->name.'</strong>.');
+                                    } else{
+                                        Message::Error('El nuevo admin no se ha asignado al nodo <strong>'.$onNode->name.'</strong>. Contactar con el superadmin');
+                                    }
+                                    break;
 
-                                    case 'noadmin':
-                                        if ($onNode->unassign($id)) {
-                                            Message::Info('El ex-admin se ha desasignado de tu nodo.');
-                                        } else{
-                                            Message::Error('El ex-admin no se ha desasignado de tu nodo. Contactar con el superadmin');
-                                        }
-                                        break;
-                                }
+                                case 'noadmin':
+                                    if ($onNode->unassign($id)) {
+                                        Message::Info('El ex-admin se ha desasignado del nodo <strong>'.$onNode->name.'</strong>.');
+                                    } else{
+                                        Message::Error('El ex-admin no se ha desasignado del nodo <strong>'.$onNode->name.'</strong>. Contactar con el superadmin');
+                                    }
+                                    break;
                             }
 
 
@@ -335,6 +333,12 @@ namespace Goteo\Controller\Admin {
                         'vip' => 'VIP',
                         'user' => 'Solo usuario'
                     );
+                    $types = array(
+                        'creators' => 'Impulsores', // que tienen algun proyecto en campaña, financiado, archivado o caso de éxito
+                        'investors' => 'Cofinanciadores', // que han aportado a algun proyecto en campaña, financiado, archivado o caso de éxito
+                        'supporters' => 'Colaboradores' // que han enviado algun mensaje en respuesta a un mensaje de colaboración
+                        // hay demasiados de estos... 'lurkers' => 'Mirones'
+                    );
                     $orders = array(
                         'created' => 'Fecha de alta',
                         'name' => 'Alias',
@@ -356,6 +360,7 @@ namespace Goteo\Controller\Admin {
                             'status' => $status,
                             'interests' => $interests,
                             'roles' => $roles,
+                            'types' => $types,
                             'nodes' => $nodes,
                             'projects' => $projects,
                             'orders' => $orders

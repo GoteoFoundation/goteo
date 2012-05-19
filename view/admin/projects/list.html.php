@@ -2,7 +2,17 @@
 
 use Goteo\Library\Text;
 
+// paginacion
+require_once 'library/pagination/pagination.php';
+
 $filters = $this['filters'];
+
+$the_filters = '';
+foreach ($filters as $key=>$value) {
+    $the_filters .= "&{$key}={$value}";
+}
+
+$pagedResults = new \Paginated($this['projects'], 20, isset($_GET['page']) ? $_GET['page'] : 1);
 ?>
 <a href="/admin/translates" class="button">Asignar traductores</a>
 
@@ -50,6 +60,11 @@ $filters = $this['filters'];
                     <?php endforeach; ?>
                     </select>
                 </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="filter" value="Buscar">
+                </td>
                 <td>
                     <label for="order-filter">Ver por:</label><br />
                     <select id="order-filter" name="order" onchange="document.getElementById('filter-form').submit();">
@@ -57,11 +72,6 @@ $filters = $this['filters'];
                         <option value="<?php echo $orderId; ?>"<?php if ($filters['order'] == $orderId) echo ' selected="selected"';?>><?php echo $orderName; ?></option>
                     <?php endforeach; ?>
                     </select>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <input type="submit" name="filter" value="Buscar">
                 </td>
             </tr>
         </table>
@@ -85,16 +95,16 @@ $filters = $this['filters'];
                 <th>Días</th> <!-- segun estado -->
                 <th>Conseguido</th> <!-- segun estado -->
                 <th>Mínimo</th> <!-- segun estado -->
-                <th>Cofinanciadores</th> <!-- Usuarios que han completado aportes a este proyecto -->
-                <th>Colaboradores</th> <!-- usuarios de mensaje que no sea el autor -->
+                <th>Cofin.</th> <!-- Usuarios que han completado aportes a este proyecto -->
+                <th>Colab.</th> <!-- usuarios de mensaje que no sea el autor -->
             </tr>
         </thead>
 
         <tbody>
-            <?php foreach ($this['projects'] as $project) : ?>
+            <?php while ($project = $pagedResults->fetchPagedRow()) : ?>
             <tr>
                 <td><a href="/project/<?php echo $project->id; ?>" target="_blank" title="Preview"><?php echo $project->name; ?></a></td>
-                <td><?php echo (empty($project->user->name)) ? $project->owner : Text::recorta($project->user->name, 40); ?></td>
+                <td><a href="mailto:<?php echo $project->user->email; ?>"><?php echo $project->user->email; ?></a></td>
                 <td><?php echo date('d-m-Y', strtotime($project->updated)); ?></td>
                 <td><?php echo $this['status'][$project->status]; ?></td>
                 <td><?php if ($project->status < 3)  echo $project->progress; ?></td>
@@ -107,6 +117,7 @@ $filters = $this['filters'];
             <tr>
                 <td colspan="10">
                     <a href="/project/edit/<?php echo $project->id; ?>" target="_blank">[Editar]</a>
+                    <a href="/admin/users/?id=<?php echo $project->owner; ?>" target="_blank">[Impulsor]</a>
                     <?php if (!isset($_SESSION['admin_node']) || (isset($_SESSION['admin_node']) && $user->node == $_SESSION['admin_node'])) : ?>
                     <a href="/admin/accounts/?projects=<?php echo $project->id; ?>" title="Ver sus aportes">[Aportes]</a>
                     <?php else:  ?>
@@ -133,11 +144,15 @@ $filters = $this['filters'];
             <tr>
                 <td colspan="8"><hr /></td>
             </tr>
-            <?php endforeach; ?>
+            <?php endwhile; ?>
         </tbody>
 
     </table>
-    <?php else : ?>
-    <p>No se han encontrado registros</p>
-    <?php endif; ?>
 </div>
+<ul id="pagination">
+<?php   $pagedResults->setLayout(new DoubleBarLayout());
+        echo $pagedResults->fetchPagedNavigation($the_filters); ?>
+</ul>
+<?php else : ?>
+<p>No se han encontrado registros</p>
+<?php endif; ?>

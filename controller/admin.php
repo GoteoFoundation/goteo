@@ -342,7 +342,7 @@ namespace Goteo\Controller {
                             'edit' => array('label' => 'Editando Original', 'item' => true),
                             'translate' => array('label' => 'Traduciendo Texto', 'item' => true)
                         ),
-                        'filters' => array('idfilter'=>'', 'group'=>'', 'text'=>'')
+                        'filters' => array('group'=>'', 'text'=>'')
                     ),
                     'translates' => array(
                         'label' => 'Traducciones de proyectos',
@@ -381,7 +381,7 @@ namespace Goteo\Controller {
                             'impersonate' => array('label' => 'Suplantando al Usuario', 'item' => true),
                             'move' => array('label' => 'Moviendo a otro Nodo el usuario ', 'item' => true)
                         ),
-                        'filters' => array('status'=>'active', 'interest'=>'', 'role'=>'', 'node'=>'', 'id'=>'', 'name'=>'', 'order'=>'', 'project'=>'')
+                        'filters' => array('status'=>'active', 'interest'=>'', 'role'=>'', 'node'=>'', 'id'=>'', 'name'=>'', 'order'=>'', 'project'=>'', 'type' => '')
                     ),
                     'wordcount' => array(
                         'label' => 'Conteo de palabras',

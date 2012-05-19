@@ -58,14 +58,14 @@ namespace Goteo\Controller {
                 case 'texts':
                     // comprobamos los filtros
                     $filters = array();
-                    $fields = array('idfilter', 'group', 'text');
+                    $fields = array('group', 'text');
                     foreach ($fields as $field) {
                         if (isset($_GET[$field])) {
                             $filters[$field] = $_GET[$field];
                         }
                     }
 
-                    $filter = "?idfilter={$filters['idfilter']}&group={$filters['group']}&text={$filters['text']}";
+                    $filter = "?group={$filters['group']}&text={$filters['text']}";
 
                     // si llega post, vamos a guardar los cambios
                     if ($action == 'edit' && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {

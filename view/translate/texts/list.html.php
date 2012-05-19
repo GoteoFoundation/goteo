@@ -17,29 +17,30 @@ $data = Text::getAll($this['filters'], $_SESSION['translate_lang']);
 $pagedResults = new \Paginated($data, 20, isset($_GET['page']) ? $_GET['page'] : 1);
 
 // valores de filtro
-$idfilters = Text::filters();
 $groups    = Text::groups();
 
 // metemos el todos
-\array_unshift($idfilters, 'Todos los textos');
 \array_unshift($groups, 'Todas las agrupaciones');
 
 
 $filters = array(
+    /*
             'idfilter' => array(
                     'label'   => 'Filtrar por tipo:',
                     'type'    => 'select',
                     'options' => $idfilters,
                     'value'   => $this['filters']['idfilter']
                 ),
+     * 
+     */
             'group' => array(
-                    'label'   => 'Filtrar por agrupación:',
+                    'label'   => 'Filtrar:',
                     'type'    => 'select',
                     'options' => $groups,
                     'value'   => $this['filters']['group']
                 ),
             'text' => array(
-                    'label'   => 'Buscar texto:',
+                    'label'   => 'Texto:',
                     'type'    => 'input',
                     'options' => null,
                     'value'   => $this['filters']['text']

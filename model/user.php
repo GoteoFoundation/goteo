@@ -655,10 +655,59 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND id IN (
                     SELECT user
                     FROM invest
-                    WHERE {$subFilter} invest.status IN ('0', '1', '3')
+                    WHERE {$subFilter} invest.status IN ('0', '1', '3', '4')
                     ) ";
                 if ($filters['project'] != 'any') {
                     $values[':project'] = $filters['project'];
+                }
+            }
+
+            // por tipo de usuario (un usuario puede ser de más de un tipo)
+            if (!empty($filters['type'])) {
+                switch ($filters['type']) {
+                    case 'creators': // crean proyectos que se publican
+                        $sqlFilter .= " AND id IN (
+                            SELECT DISTINCT(owner)
+                            FROM project
+                            WHERE status IN ('3', '4', '5', '6')
+                            ) ";
+                        break;
+                    case 'investos': // aportan correctamente a proyectos
+                        $sqlFilter .= " AND id IN (
+                            SELECT DISTINCT(user)
+                            FROM invest
+                            WHERE status IN ('0', '1', '3', '4')
+                            ) ";
+                        break;
+                    case 'supporters': // colaboran con el proyecto
+                        $sqlFilter .= " AND id IN (
+                            SELECT DISTINCT(user)
+                            FROM message
+                            WHERE thread IN (
+                                SELECT id 
+                                FROM message
+                                WHERE thread IS NULL
+                                AND blocked = 1
+                                )
+                            ) ";
+                        break;
+                    case 'lurkers': // colaboran con el proyecto
+                        $sqlFilter .= " AND id NOT IN (
+                                SELECT DISTINCT(user)
+                                FROM invest
+                                WHERE status IN ('0', '1', '3', '4')
+                            )
+                             AND id NOT IN (
+                                SELECT DISTINCT(user)
+                                FROM invest
+                                WHERE status IN ('0', '1', '3', '4')
+                            )
+                             AND id NOT IN (
+                                SELECT DISTINCT(user)
+                                FROM message
+                            )
+                            ";
+                        break;
                 }
             }
 

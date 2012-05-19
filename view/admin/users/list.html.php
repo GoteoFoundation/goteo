@@ -11,7 +11,7 @@ $filters = $this['filters'];
         <table>
             <tr>
                 <td>
-                    <label for="role-filter">Mostrar usuarios con rol:</label><br />
+                    <label for="role-filter">Con rol:</label><br />
                     <select id="role-filter" name="role" onchange="document.getElementById('filter-form').submit();">
                         <option value="">Cualquier rol</option>
                     <?php foreach ($this['roles'] as $roleId=>$roleName) : ?>
@@ -20,7 +20,7 @@ $filters = $this['filters'];
                     </select>
                 </td>
                 <td><?php if (!isset($_SESSION['admin_node'])) : ?>
-                    <label for="node-filter">Mostrar usuarios del nodo:</label><br />
+                    <label for="node-filter">Del nodo:</label><br />
                     <select id="node-filter" name="node" onchange="document.getElementById('filter-form').submit();">
                         <option value="">Cualquier nodo</option>
                     <?php foreach ($this['nodes'] as $nodeId=>$nodeName) : ?>
@@ -29,19 +29,19 @@ $filters = $this['filters'];
                     </select>
                 <?php endif; ?></td>
                 <td colspan="2">
-                    <label for="project-filter">Aportaron al proyecto:</label><br />
+                    <label for="project-filter">Que aportaron al proyecto:</label><br />
                     <select id="project-filter" name="project" onchange="document.getElementById('filter-form').submit();">
                         <option value="">--</option>
                         <option value="any"<?php if ($filters['project'] == 'any') echo ' selected="selected"';?>>Algún proyecto</option>
                     <?php foreach ($this['projects'] as $projId=>$projName) : ?>
-                        <option value="<?php echo $projId; ?>"<?php if ($filters['project'] == $projId) echo ' selected="selected"';?>><?php echo substr($projName, 0, 20); ?></option>
+                        <option value="<?php echo $projId; ?>"<?php if ($filters['project'] == $projId) echo ' selected="selected"';?>><?php echo substr($projName, 0, 35); ?></option>
                     <?php endforeach; ?>
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label for="id-filter">Id:</label><br />
+                    <label for="id-filter">Id (exacto):</label><br />
                     <input id="id-filter" name="id" value="<?php echo $filters['id']; ?>" />
                 </td>
                 <td>
@@ -49,16 +49,16 @@ $filters = $this['filters'];
                     <input id="name-filter" name="name" value="<?php echo $filters['name']; ?>" />
                 </td>
                 <td>
-                    <label for="status-filter">Mostrar por estado:</label><br />
-                    <select id="status-filter" name="status" onchange="document.getElementById('filter-form').submit();">
-                        <option value="">Todos los estados</option>
-                    <?php foreach ($this['status'] as $statusId=>$statusName) : ?>
-                        <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
+                    <label for="type-filter">Del  tipo:</label><br />
+                    <select id="type-filter" name="type" onchange="document.getElementById('filter-form').submit();">
+                        <option value="">--</option>
+                    <?php foreach ($this['types'] as $type=>$desc) : ?>
+                        <option value="<?php echo $type; ?>"<?php if ($filters['type'] == $type) echo ' selected="selected"';?>><?php echo $desc; ?></option>
                     <?php endforeach; ?>
                     </select>
                 </td>
                 <td>
-                    <label for="interest-filter">Mostrar usuarios interesados en:</label><br />
+                    <label for="interest-filter">Interesados en:</label><br />
                     <select id="interest-filter" name="interest" onchange="document.getElementById('filter-form').submit();">
                         <option value="">Cualquier interés</option>
                     <?php foreach ($this['interests'] as $interestId=>$interestName) : ?>
@@ -91,6 +91,7 @@ $filters = $this['filters'];
 <?php if ($filters['filtered'] != 'yes') : ?>
     <p>Es necesario poner algun filtro, hay demasiados registros!</p>
 <?php elseif (!empty($this['users'])) : ?>
+    <p><strong><?php echo count($this['users']) ?></strong> usuarios cumplen este filtro </p>
     <table>
         <thead>
             <tr>

@@ -1934,7 +1934,7 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND status = :status";
                 $values[':status'] = $filters['status'];
             } else {
-                $sqlFilter .= " AND status > 0";
+                $sqlFilter .= " AND (status > 1  OR (status = 1 AND id NOT REGEXP '[0-9a-f]{5,40}') )";
             }
             if (!empty($filters['owner'])) {
                 $sqlFilter .= " AND owner = :owner";
