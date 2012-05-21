@@ -10,15 +10,9 @@ $filters = $this['filters'];
     'projects' => array (
         'label' => 'Proyecto',
         'first' => 'Todos los proyectos'),
-    'users' => array (
-        'label' => 'Usuario',
-        'first' => 'Todos los usuarios'),
     'methods' => array (
         'label' => 'Método de pago',
         'first' => 'Todos los métodos'),
-    'status' => array (
-        'label' => 'Estado de proyecto',
-        'first' => 'Todos los estados'),
     'investStatus' => array (
         'label' => 'Estado de aporte',
         'first' => 'Todos los estados'),
@@ -39,11 +33,23 @@ $filters = $this['filters'];
             <select id="<?php echo $filter ?>-filter" name="<?php echo $filter ?>" onchange="document.getElementById('filter-form').submit();">
                 <option value="<?php if ($filter == 'investStatus' || $filter == 'status') echo 'all' ?>"<?php if (($filter == 'investStatus' || $filter == 'status') && $filters[$filter] == 'all') echo ' selected="selected"'?>><?php echo $data['first'] ?></option>
             <?php foreach ($this[$filter] as $itemId=>$itemName) : ?>
-                <option value="<?php echo $itemId; ?>"<?php if ($filters[$filter] === (string) $itemId) echo ' selected="selected"';?>><?php echo $itemName; ?></option>
+                <option value="<?php echo $itemId; ?>"<?php if ($filters[$filter] === (string) $itemId) echo ' selected="selected"';?>><?php echo substr($itemName, 0, 50); ?></option>
             <?php endforeach; ?>
             </select>
         </div>
         <?php endforeach; ?>
+        <br clear="both" />
+
+        <div style="float:left;margin:5px;">
+            <label for="name-filter">Alias/Email del usuario:</label><br />
+            <input type="text" id ="name-filter" name="name" value ="<?php echo $filters['name']?>" />
+        </div>
+
+        <br clear="both" />
+
+        <div style="float:left;margin:5px;">
+            <input type="submit" value="filtrar" />
+        </div>
     </form>
     <br clear="both" />
     <a href="/admin/invests/?reset=filters">Quitar filtros</a>

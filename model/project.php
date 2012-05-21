@@ -107,6 +107,7 @@ namespace Goteo\Model {
 
             $round = 0, // para ver si ya está en la fase de los 40 a los 80
             $passed = null, // para ver si hemos hecho los eventos de paso a segunda ronda
+            $willpass = null, // fecha final de primera ronda
 
             $errors = array(), // para los fallos en los datos
             $okeys  = array(), // para los campos que estan ok
@@ -300,6 +301,12 @@ namespace Goteo\Model {
 
                 $project->setDays();
                 $project->setTagmark();
+
+                // fecha final primera ronda (fecha campaña + 40)
+                if (!empty($project->published)) {
+                    $ptime = strtotime($project->published);
+                    $project->willpass = date('Y-m-d', \mktime(0, 0, 0, date('m', $ptime), date('d', $ptime)+40, date('Y', $ptime)));
+                }
 
                 // si está en campaña podría tener riego de alguna convocatoria
                 if ($project->status == 3) {

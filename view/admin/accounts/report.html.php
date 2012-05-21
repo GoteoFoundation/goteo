@@ -159,6 +159,15 @@ foreach ($this['invests'] as $invest) {
     $sumData['restproject'] = $sumData['brute'] - $sumData['goteo'] - $sumData['pp_project'];
     ?>
 <p>
+    <?php if (!empty($project->passed)) {
+        echo 'El proyecto terminó la primera ronda el día <strong>'.date('d/m/Y', strtotime($project->passed)).'</strong>.';
+    } else {
+        echo 'El proyecto terminará la primera ronda el día <strong>'.date('d/m/Y', strtotime($project->willpass)).'</strong>.';
+    } ?>
+
+</p>
+<br />
+
     <table>
         <tr>
             <th style="text-align:left;">Resumen de recaudación</th>
@@ -173,8 +182,8 @@ foreach ($this['invests'] as $invest) {
             <td>- Comisión del 8&#37; para el mantenimiento de Goteo.org (a nombre de la Fundación Fuentes Abiertas): <?php echo \amount_format($sumData['goteo'], 2) ?></td>
         </tr>
     </table>
-</p>
-<p>
+<br />
+
     <table>
         <tr>
             <th style="text-align:left;">Comisiones de bancos</th>
@@ -186,8 +195,8 @@ foreach ($this['invests'] as $invest) {
             <td>- Comisiones cobradas al impulsor por PayPal (estimadas): <?php echo \amount_format($sumData['pp_fee_project'], 2) ?></td>
         </tr>
     </table>
-</p>
-<p>
+<br />
+
     <table>
         <tr>
             <th style="text-align:left;">Transferencias de la Fundación Fuentes Abiertas al impulsor</th>
@@ -199,8 +208,8 @@ foreach ($this['invests'] as $invest) {
             <td>- Enviado a través de cuenta bancaria: <?php echo \amount_format($sumData['restproject'], 2) ?> (/fecha/)</td>
         </tr>
     </table>
-</p>
-<p>
+<br />
+
     <table>
         <tr>
             <th style="text-align:left;">Desglose informativo de lo pagado mediante PayPal</th>
@@ -215,10 +224,9 @@ foreach ($this['invests'] as $invest) {
             <td>- Cantidad aproximada recibida por el impulsor: <?php echo \amount_format($sumData['pp_net_project'], 2) ?></td>
         </tr>
     </table>
-</p>
+<br />
 
 <?php if (!empty($Data['issues'])) : ?>
-    <p>
     <table>
         <tr>
             <th style="text-align:left;"><strong>*</strong> Pagos de usuarios con incidencias</th>
@@ -229,7 +237,8 @@ foreach ($this['invests'] as $invest) {
         </tr>
         <?php endforeach; ?>
     </table>
-    </p>
+<br />
+
 <?php endif; ?>
     <hr>
     

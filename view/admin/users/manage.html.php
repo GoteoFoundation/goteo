@@ -83,7 +83,7 @@ $roles = User::getRolesList();
         <li><a href="/admin/users/edit/<?php echo $user->id; ?>">[Cambiar email/contraseña]</a></li>
         <li><a href="/admin/users/move/<?php echo $user->id; ?>">[Mover a otro Nodo]</a></li>
         <li><a href="/admin/users/impersonate/<?php echo $user->id; ?>">[Suplantar]</a></li>
-        <li><a href="/admin/<?php echo (isset($_SESSION['admin_node'])) ? 'invests' : 'accounts'; ?>/?users=<?php echo $user->id; ?>">[Historial aportes]</a></li>
+        <li><a href="/admin/<?php echo (isset($_SESSION['admin_node'])) ? 'invests' : 'accounts'; ?>/?name=<?php echo $user->email; ?>">[Historial aportes]</a></li>
         <li><a href="/admin/sended/?user=<?php echo $user->email; ?>">[Historial envíos]</a></li>
     </ul>
 

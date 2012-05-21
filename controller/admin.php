@@ -173,7 +173,7 @@ namespace Goteo\Controller {
                             'list' => array('label' => 'Listando', 'item' => false),
                             'details' => array('label' => 'Detalles del aporte', 'item' => true)
                         ),
-                        'filters' => array('methods'=>'', 'status'=>'all', 'investStatus'=>'all', 'projects'=>'', 'users'=>'', 'calls'=>'', 'types'=>'')
+                        'filters' => array('methods'=>'', 'status'=>'all', 'investStatus'=>'all', 'projects'=>'', 'name'=>'', 'calls'=>'', 'types'=>'')
                     ),
                     'licenses' => array(
                         'label' => 'Licencias',

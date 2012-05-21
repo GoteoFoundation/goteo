@@ -7,8 +7,6 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Error,
 		Goteo\Library\Feed,
 		Goteo\Library\Message,
-        Goteo\Library\Paypal,
-        Goteo\Library\Tpv,
         Goteo\Model;
 
     class Invests {
@@ -23,8 +21,6 @@ namespace Goteo\Controller\Admin {
             $investStatus = Model\Invest::status();
             // listado de proyectos
             $projects = Model\Invest::projects(false, $_SESSION['admin_node']);
-            // usuarios cofinanciadores
-            $users = Model\Invest::users(true, $_SESSION['admin_node']);
             // campañas que tienen aportes
             $calls = Model\Invest::calls();
             // extras
@@ -85,12 +81,10 @@ namespace Goteo\Controller\Admin {
                     'file' => 'list',
                     'list'          => $list,
                     'filters'       => $filters,
-//                    'users'         => $users,
                     'projects'      => $projects,
                     'calls'         => $calls,
                     'methods'       => $methods,
                     'types'         => $types,
-//                    'status'        => $status,
                     'investStatus'  => $investStatus
                 );
 

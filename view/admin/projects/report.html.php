@@ -28,6 +28,15 @@ $Data    = $this['reportData'];
     $sumData['restproject'] = $sumData['brute'] - $sumData['goteo'] - $sumData['pp_project'];
     ?>
 <p>
+    <?php if (!empty($project->passed)) {
+        echo 'El proyecto terminó la primera ronda el día <strong>'.date('d/m/Y', strtotime($project->passed)).'</strong>.';
+    } else {
+        echo 'El proyecto terminará la primera ronda el día <strong>'.date('d/m/Y', strtotime($project->willpass)).'</strong>.';
+    } ?>
+
+</p>
+<br />
+
     <table>
         <tr>
             <th style="text-align:left;">Resumen de recaudación</th>
@@ -42,8 +51,8 @@ $Data    = $this['reportData'];
             <td>- Comisión del 8&#37; para el mantenimiento de Goteo.org (a nombre de la Fundación Fuentes Abiertas): <?php echo \amount_format($sumData['goteo'], 2) ?></td>
         </tr>
     </table>
-</p>
-<p>
+<br />
+
     <table>
         <tr>
             <th style="text-align:left;">Comisiones de bancos</th>
@@ -55,8 +64,8 @@ $Data    = $this['reportData'];
             <td>- Comisiones cobradas al impulsor por PayPal (estimadas): <?php echo \amount_format($sumData['pp_fee_project'], 2) ?></td>
         </tr>
     </table>
-</p>
-<p>
+<br />
+
     <table>
         <tr>
             <th style="text-align:left;">Transferencias de la Fundación Fuentes Abiertas al impulsor</th>
@@ -68,8 +77,8 @@ $Data    = $this['reportData'];
             <td>- Enviado a través de cuenta bancaria: <?php echo \amount_format($sumData['restproject'], 2) ?> (/fecha/)</td>
         </tr>
     </table>
-</p>
-<p>
+<br />
+
     <table>
         <tr>
             <th style="text-align:left;">Desglose informativo de lo pagado mediante PayPal</th>
@@ -84,10 +93,9 @@ $Data    = $this['reportData'];
             <td>- Cantidad aproximada recibida por el impulsor: <?php echo \amount_format($sumData['pp_net_project'], 2) ?></td>
         </tr>
     </table>
-</p>
 
 <?php if (!empty($Data['issues'])) : ?>
-    <p>
+    <br />
     <table>
         <tr>
             <th style="text-align:left;"><strong>*</strong> Pagos de usuarios con incidencias</th>
@@ -98,7 +106,6 @@ $Data    = $this['reportData'];
         </tr>
         <?php endforeach; ?>
     </table>
-    </p>
 <?php endif; ?>
 </div>
 

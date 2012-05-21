@@ -51,6 +51,18 @@ $elements = array(
 );
 ?>
 <div class="widget">
+<p>
+    <?php if (!empty($project->passed)) {
+        echo 'El proyecto terminó la primera ronda el día <strong>'.date('d/m/Y', strtotime($project->passed)).'</strong>.';
+        if ($project->passed != $project->willpass) {
+            echo '<br />Aunque debería haberla terminado el día <strong>'.date('d/m/Y', strtotime($project->willpass)).'</strong>.';
+        }
+    } else {
+        echo 'El proyecto terminará la primera ronda el día <strong>'.date('d/m/Y', strtotime($project->willpass)).'</strong>.';
+    } ?>
+
+</p>
+
     <p>Cambiar las fechas puede causar cambios en los días de campaña del proyecto.</p>
 
     <form method="post" action="/admin/projects" >
