@@ -328,6 +328,9 @@ namespace Goteo\Controller {
                 $call->logo = Model\Image::get($the_logo);
                 $the_image = empty($call->image) ? 1 : $call->image;
                 $call->image = Model\Image::get($the_image);
+                if (!empty($call->backimage)) {
+                    $call->backimage = Model\Image::get($call->backimage);
+                }
             }
 
             // solamente se puede ver publicamente si
@@ -575,6 +578,18 @@ namespace Goteo\Controller {
                 $call->image = $_FILES['image_upload'];
             }
             
+            // tratar si quitan la imagen de fondo de las paginas
+            if (!empty($_POST['backimage-' . $call->backimage .  '-remove'])) {
+                $backimage = Model\Image::get($call->backimage);
+                $backimage->remove();
+                $call->backimage = '';
+            }
+
+            // tratar la imagen que suben
+            if(!empty($_FILES['backimage_upload']['name'])) {
+                $call->backimage = $_FILES['backimage_upload'];
+            }
+
             //categorias
             // añadir las que vienen y no tiene
             $tiene = $call->categories;

@@ -185,6 +185,36 @@ $superform = array(
             )
         ),
 
+        'backimage' => array(
+            'type'      => 'group',
+            'required'  => false,
+            'title'     => Text::get('call-field-backimage'),
+            'hint'      => Text::get('tooltip-call-backimage'),
+            'errors'    => !empty($errors['backimage']) ? array($errors['backimage']) : array(),
+            'ok'        => !empty($okeys['backimage']) ? array($okeys['backimage']) : array(),
+            'class'     => 'image',
+            'children'  => array(
+                'backimage_upload'    => array(
+                    'type'  => 'file',
+                    'label' => Text::get('form-image_upload-button'),
+                    'class' => 'inline avatar_upload',
+                    'hint'  => Text::get('tooltip-call-image'),
+                ),
+                'backimage-current' => array(
+                    'type' => 'hidden',
+                    'value' => $call->backimage,
+                ),
+                'backimage-image' => array(
+                    'type'  => 'html',
+                    'class' => 'inline image-image',
+                    'html'  => !empty($call->backimage) ?
+                               '<img src="'.SRC_URL.'/image/' . $call->backimage . '" alt="Imagen" /><button class="image-remove" type="submit" name="backimage-'.$call->backimage.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               ''
+                )
+
+            )
+        ),
+
         'description' => array(            
             'type'      => 'textarea',
             'title'     => Text::get('call-field-description'),

@@ -59,7 +59,8 @@ namespace Goteo\Model {
             $subtitle,
             $lang = 'es',
             $logo,
-            $image,
+            $image, // imagen de fondo para la splash
+            $backimage, //imagen de fondo para el resto de paginas
             $description,
             $whom, // quienes pueden participar
             $apply, // como publicar un convocatoria
@@ -214,14 +215,7 @@ namespace Goteo\Model {
                 // owner
                 $call->user = User::get($call->owner);
 
-                /*
-                 * No vamos a hacer objetos para esto, a ver que pasa
-                // logo
-//                $call->logo = Image::get($call->logo);
-                // imagen
-//                $call->image = Image::get($call->image);
-                 *
-                 */
+                // No vamos a hacer aqui objetos para las imagenes, los hacemos en el controlador
 
 				// categorias
                 $call->categories = Call\Category::get($id);
@@ -365,13 +359,23 @@ namespace Goteo\Model {
                     }
                 }
 
-                // Imagen de fondo
+                // Imagen de fondo splash
                 if (is_array($this->image) && !empty($this->image['name'])) {
                     $image = new Image($this->image);
                     if ($image->save($errors)) {
                         $this->image = $image->id;
                     } else {
                         \Goteo\Library\Message::Error(Text::get('call-image-upload-fail') . implode(', ', $errors));
+                    }
+                }
+
+                // Imagen de fondo resto de páginas
+                if (is_array($this->backimage) && !empty($this->backimage['name'])) {
+                    $backimage = new Image($this->backimage);
+                    if ($backimage->save($errors)) {
+                        $this->backimage = $backimage->id;
+                    } else {
+                        \Goteo\Library\Message::Error(Text::get('call-backimage-upload-fail') . implode(', ', $errors));
                     }
                 }
 
@@ -398,6 +402,7 @@ namespace Goteo\Model {
                     'subtitle',
                     'logo',
                     'image',
+                    'backimage',
                     'description',
                     'whom',
                     'apply',
