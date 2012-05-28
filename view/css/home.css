@@ -131,6 +131,19 @@ body.home div#main div.learn div.slder_container div.slder_slide div.post div.de
 	text-transform:none;
 }
 
+body.node.home div#node-news div.slder_container div.slder_slide div.post h3 a,
+body.home div#main div.learn div.slder_container div.slder_slide div.post h3 a {
+    font-size: 14px;
+    text-decoration: none;
+    color: #20B2B3;
+}
+
+body.node.home div#node-news div.slder_container div.slder_slide div.post h3 a:hover,
+body.home div#main div.learn div.slder_container div.slder_slide div.post h3 a:hover {
+    text-decoration: underline;
+}
+
+
 body.home div#main div.learn div.slder_container div.slder_slide div.post div.embed,
 body.home div#main div.learn div.slder_container div.slder_slide div.post div.image {
 	float:left;
