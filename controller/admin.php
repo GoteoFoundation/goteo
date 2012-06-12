@@ -110,6 +110,14 @@ namespace Goteo\Controller {
                         ),
                         'filters' => array('status'=>'', 'icon'=>'')
                     ),
+                    'contracts' => array(
+                        'label' => 'Contratos',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'edit' => array('label' => 'Gestionando contrato del proyecto', 'item' => false)
+                        ),
+                        'filters' => array('project'=>'')
+                    ),
                     'criteria' => array(
                         'label' => 'Criterios de revisión',
                         'actions' => array(
@@ -234,6 +242,7 @@ namespace Goteo\Controller {
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false),
                             'edit' => array('label' => 'Editando Página', 'item' => true),
+                            'add' => array('label' => 'Nueva Página', 'item' => true),
                             'translate' => array('label' => 'Traduciendo Página', 'item' => true)
                         )
                     ),
@@ -323,6 +332,7 @@ namespace Goteo\Controller {
                         'label' => 'Tareas admin',
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false),
+                            'add' => array('label' => 'Nueva Tarea', 'item' => false),
                             'edit' => array('label' => 'Editando Tarea', 'item' => true)
                         ),
                         'filters' => array('done'=>'', 'user'=>'', 'node'=>'')
@@ -829,6 +839,23 @@ namespace Goteo\Controller {
             if (empty($BC)) {
                 return $menu;
             } else {
+
+                // a ver si puede estar aqui!
+                if ($BC['option'] != 'index') {
+                    $puede = false;
+                    foreach ($menu as $sCode=>$section) {
+                        if (isset($section['options'][$BC['option']])) {
+                            $puede = true;
+                            break;
+                        }
+                    }
+
+                    if (!$puede) {
+                        Message::Error('No tienes permisos para acceder a <strong>'.$options[$BC['option']]['label'].'</strong>');
+                        throw new Redirection('/admin');
+                    }
+                }
+
                 // Los últimos serán los primeros
                 $path = '';
                 
@@ -1019,6 +1046,13 @@ namespace Goteo\Controller {
                             )
                         )
                     );
+
+                    // PIÑONACO!
+                    // a merche le cambiamos la gestion de aportes simple por la buena
+                    if ($_SESSION['user']->id == 'mmtarres') {
+                        unset ($menu['projects']['options']['invests']);
+                        $menu['projects']['options']['accounts'] = $options['accounts'];
+                    }
 
                     if ($_SESSION['admin_node'] == \GOTEO_NODE)  {
                         unset($menu['contents']['options']['node']);

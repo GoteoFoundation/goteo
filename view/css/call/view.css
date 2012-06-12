@@ -590,6 +590,23 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
 	color: red;
 }
 
+/* sponsors */
+#side dl.sponsors dt {
+	text-transform: none !important;
+	font-size: 10px;
+}
+
+#side ul#side-sponsors {
+    padding: 0 !important;
+    list-style: none;
+    margin-bottom: 20px;
+}
+
+#side ul#side-sponsors li {
+    margin: 15px 0;
+}
+
+
 /* Content */
 #content {
 	width: 670px;

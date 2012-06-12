@@ -14,11 +14,15 @@ require_once 'core/common.php';
 
 /*
  * Pagina de en mantenimiento
- *
-if (GOTEO_MAINTENANCE === true && $_SERVER['REQUEST_URI'] != '/about/maintenance' && $_SERVER['REMOTE_ADDR'] != '80.30.12.194') {
+ */
+if (GOTEO_MAINTENANCE === true && $_SERVER['REQUEST_URI'] != '/about/maintenance' 
+     && $_SERVER['REMOTE_ADDR'] != '85.61.251.113' // ivan
+     && $_SERVER['REMOTE_ADDR'] != '95.23.219.238' // susana
+     && $_SERVER['REMOTE_ADDR'] != '83.39.15.146' //julian
+     && !isset($_POST['Num_operacion'])
+    ) {
     header('Location: /about/maintenance');
 }
- */
 
 // Include path
 //set_include_path(GOTEO_PATH . PATH_SEPARATOR . '.');
@@ -102,7 +106,7 @@ try {
 
         //si es un cron (ejecutandose) con los parámetros adecuados, no redireccionamos
         if (strpos($uri, 'cron') !== false && strcmp($_GET[md5(CRON_PARAM)], md5(CRON_VALUE)) === 0) {
-            // proceed
+            define('CRON_EXEC', true);
         } else {
             throw new Redirection("/user/login/?return=".rawurlencode($uri));
         }

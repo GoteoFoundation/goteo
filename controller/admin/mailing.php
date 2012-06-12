@@ -135,7 +135,7 @@ namespace Goteo\Controller\Admin {
                         $_SESSION['mailing']['filters_txt'] .= 'que su contraseña sea igual que su email ';
                     }
 
-                    if (isset($_SESSION['admin_node'])) {
+                    if ($_SESSION['admin_node'] != \GOTEO_NODE) {
                         $sqlFilter .= " AND user.node = :node";
                         $values[':node'] = $_SESSION['admin_node'];
                         if (!empty($sqlInner)) {
@@ -164,12 +164,12 @@ namespace Goteo\Controller\Admin {
                             $_SESSION['mailing']['receivers'][$receiver->id] = $receiver;
                         }
                     } else {
-                        Message::Errors('Fallo el SQL!!!!! <br />' . $sql . '<pre>'.print_r($values, 1).'</pre>');
+                        Message::Error('Fallo el SQL!!!!! <br />' . $sql . '<pre>'.print_r($values, 1).'</pre>');
                     }
 
                     // si no hay destinatarios, salta a la lista con mensaje de error
                     if (empty($_SESSION['mailing']['receivers'])) {
-                        Message::Errors('No se han encontrado destinatarios para ' . $_SESSION['mailing']['filters_txt']);
+                        Message::Error('No se han encontrado destinatarios para ' . $_SESSION['mailing']['filters_txt']);
 
                         throw new Redirection('/admin/mailing/list');
                     }

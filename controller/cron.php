@@ -23,6 +23,13 @@ namespace Goteo\Controller {
          */
         public function execute () {
 
+            if (!\defined('CRON_EXEC')) {
+                @mail('goteo_cron@doukeshi.org', 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
+                    'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
+               echo 'Lanzamiento manual<br />';
+            } else {
+               echo 'Lanzamiento automatico<br />';
+            }
             // debug para supervisar en las fechas clave
 //            $debug = ($_GET['debug'] == 'debug') ? true : false;
             $debug = true;
@@ -43,15 +50,18 @@ namespace Goteo\Controller {
                 if (empty($projectAccount->paypal)) {
 
                     if ($debug) echo 'No tiene cuenta PayPal<br />';
-                    // Evento Feed
-                    $log = new Feed();
-                    $log->populate('proyecto sin cuenta paypal (cron)', '/admin/projects',
-                        \vsprintf('El proyecto %s aun no ha puesto su %s !!!', array(
-                            Feed::item('project', $project->name, $project->id),
-                            Feed::item('relevant', 'cuenta PayPal')
-                    )));
-                    $log->doAdmin('project');
-                    unset($log);
+
+                    // Evento Feed solamente si automático
+                    if (\defined('CRON_EXEC')) {
+                        $log = new Feed();
+                        $log->populate('proyecto sin cuenta paypal (cron)', '/admin/projects',
+                            \vsprintf('El proyecto %s aun no ha puesto su %s !!!', array(
+                                Feed::item('project', $project->name, $project->id),
+                                Feed::item('relevant', 'cuenta PayPal')
+                        )));
+                        $log->doAdmin('project');
+                        unset($log);
+                    }
                 }
 
                 $log_text = null;
@@ -99,40 +109,46 @@ namespace Goteo\Controller {
                 // a los 5, 3, 2, y 1 dia para finalizar ronda
                 if ($round > 0 && in_array((int) $rest, array(5, 3, 2, 1))) {
                     if ($debug) echo 'Feed publico cuando quedan 5, 3, 2, 1 dias<br />';
-                    // Evento Feed
-                    $log = new Feed();
-                    $log->populate('proyecto próximo a finalizar ronda (cron)', '/admin/projects', 
-                        Text::html('feed-project_runout',
-                            Feed::item('project', $project->name, $project->id),
-                            $rest,
-                            $round
-                    ));
-                    $log->doAdmin('project');
 
-                    // evento público
-                    $log->title = $project->name;
-                    $log->url = null;
-                    $log->setTarget($project->id);
-                    $log->doPublic('projects');
-                    
-                    unset($log);
+                    // Evento Feed solo si ejecucion automática
+                    if (\defined('CRON_EXEC')) {
+                        $log = new Feed();
+                        $log->populate('proyecto próximo a finalizar ronda (cron)', '/admin/projects',
+                            Text::html('feed-project_runout',
+                                Feed::item('project', $project->name, $project->id),
+                                $rest,
+                                $round
+                        ));
+                        $log->doAdmin('project');
+
+                        // evento público
+                        $log->title = $project->name;
+                        $log->url = null;
+                        $log->setTarget($project->id);
+                        $log->doPublic('projects');
+
+                        unset($log);
+                    }
                 }
 
                 // pero seguimos trabajando con el numero de dias que lleva para enviar mail al autor
-                // cuando quedan 20 días
-                if ($round == 1 && $rest == 20) {
-                    self::toOwner('20_days', $project);
-                    if ($debug) echo 'Aviso al autor: lleva 20 dias<br />';
-                }
-                // cuando quedan 8 dias y no ha conseguido el minimo
-                if ($round == 1 && $rest == 8 && $amount < $project->mincost) {
-                    self::toOwner('8_days', $project);
-                    if ($debug) echo 'Aviso al autor: faltan 8 dias y no ha conseguido el minimo<br />';
-                }
-                // cuando queda 1 día y no ha conseguido el minimo pero casi
-                if ($round == 1 && $rest == 1 && $amount < $project->mincost && $per_amount > 70) {
-                    self::toOwner('1_day', $project);
-                    if ($debug) echo 'Aviso al autor: falta 1 dia y no supera el 70 el minimo<br />';
+                // solo si ejecucion automática
+                if (\defined('CRON_EXEC')) {
+                    // cuando quedan 20 días
+                    if ($round == 1 && $rest == 20) {
+                        self::toOwner('20_days', $project);
+                        if ($debug) echo 'Aviso al autor: lleva 20 dias<br />';
+                    }
+                    // cuando quedan 8 dias y no ha conseguido el minimo
+                    if ($round == 1 && $rest == 8 && $amount < $project->mincost) {
+                        self::toOwner('8_days', $project);
+                        if ($debug) echo 'Aviso al autor: faltan 8 dias y no ha conseguido el minimo<br />';
+                    }
+                    // cuando queda 1 día y no ha conseguido el minimo pero casi
+                    if ($round == 1 && $rest == 1 && $amount < $project->mincost && $per_amount > 70) {
+                        self::toOwner('1_day', $project);
+                        if ($debug) echo 'Aviso al autor: falta 1 dia y no supera el 70 el minimo<br />';
+                    }
                 }
                 /* Fin verificacion */
 
@@ -159,32 +175,34 @@ namespace Goteo\Controller {
                         }
                         echo '<br />';
                         
-                        // Evento Feed
-                        $log = new Feed();
-                        $log->populate('proyecto archivado (cron)', '/admin/projects', 
-                            \vsprintf($log_text, array(
-                                Feed::item('project', $project->name, $project->id),
-                                Feed::item('relevant', 'caducado sin éxito'),
-                                Feed::item('money', $amount.' &euro; ('.\round($per_amount).'&#37;) de aportes sobre minimo')
-                        )));
-                        $log->doAdmin('project');
+                        // Evento Feed solo si ejecucion automatica
+                        if (\defined('CRON_EXEC')) {
+                            $log = new Feed();
+                            $log->populate('proyecto archivado (cron)', '/admin/projects',
+                                \vsprintf($log_text, array(
+                                    Feed::item('project', $project->name, $project->id),
+                                    Feed::item('relevant', 'caducado sin éxito'),
+                                    Feed::item('money', $amount.' &euro; ('.\round($per_amount).'&#37;) de aportes sobre minimo')
+                            )));
+                            $log->doAdmin('project');
 
-                        // evento público
-                        $log->populate($project->name, null,
-                            Text::html('feed-project_fail',
-                                Feed::item('project', $project->name, $project->id),
-                                $amount,
-                                \round($per_amount)
-                        ));
-                        $log->setTarget($project->id);
-                        $log->doPublic('projects');
+                            // evento público
+                            $log->populate($project->name, null,
+                                Text::html('feed-project_fail',
+                                    Feed::item('project', $project->name, $project->id),
+                                    $amount,
+                                    \round($per_amount)
+                            ));
+                            $log->setTarget($project->id);
+                            $log->doPublic('projects');
 
-                        unset($log);
+                            unset($log);
 
-                        //Email de proyecto fallido al autor
-                        self::toOwner('fail', $project);
-                        //Email de proyecto fallido a los inversores
-                        self::toInvestors('fail', $project);
+                            //Email de proyecto fallido al autor
+                            self::toOwner('fail', $project);
+                            //Email de proyecto fallido a los inversores
+                            self::toInvestors('fail', $project);
+                        }
                         
                         echo '<br />';
                     } else {
@@ -225,42 +243,43 @@ namespace Goteo\Controller {
                                 $log_text = 'El proyecto %s ha fallado al ser, %s obteniendo %s';
                             }
 
-                            // Evento Feed
-                            $log = new Feed();
-                            $log->populate('proyecto supera segunda ronda (cron)', '/admin/projects', 
-                                \vsprintf($log_text, array(
-                                    Feed::item('project', $project->name, $project->id),
-                                    Feed::item('relevant', 'financiado'),
-                                    Feed::item('money', $amount.' &euro; ('.\round($per_amount).'%) de aportes sobre minimo')
-                            )));
-                            $log->doAdmin('project');
+                            // Evento Feed y mails solo si ejecucion automatica
+                            if (\defined('CRON_EXEC')) {
+                                $log = new Feed();
+                                $log->populate('proyecto supera segunda ronda (cron)', '/admin/projects',
+                                    \vsprintf($log_text, array(
+                                        Feed::item('project', $project->name, $project->id),
+                                        Feed::item('relevant', 'financiado'),
+                                        Feed::item('money', $amount.' &euro; ('.\round($per_amount).'%) de aportes sobre minimo')
+                                )));
+                                $log->doAdmin('project');
 
-                            // evento público
-                            $log->populate($project->name, null, Text::html('feed-project_finish',
-                                            Feed::item('project', $project->name, $project->id),
-                                            $amount,
-                                            \round($per_amount)
-                                            ));
-                            $log->doPublic('projects');
-                            unset($log);
+                                // evento público
+                                $log->populate($project->name, null, Text::html('feed-project_finish',
+                                                Feed::item('project', $project->name, $project->id),
+                                                $amount,
+                                                \round($per_amount)
+                                                ));
+                                $log->doPublic('projects');
+                                unset($log);
 
-                            //Email de proyecto final segunda ronda al autor
-                            self::toOwner('r2_pass', $project);
-                            //Email de proyecto final segunda ronda a los inversores
-                            self::toInvestors('r2_pass', $project);
+                                //Email de proyecto final segunda ronda al autor
+                                self::toOwner('r2_pass', $project);
+                                //Email de proyecto final segunda ronda a los inversores
+                                self::toInvestors('r2_pass', $project);
 
-                            // Tarea para el admin
-                            // calculamos fecha de passed+90 días
-                            $passtime = strtotime($project->passed);
-                            $limsec = date('d/m/Y', \mktime(0, 0, 0, date('m', $passtime), date('d', $passtime)+89, date('Y', $passtime)));
+                                // Tarea para el admin
+                                // calculamos fecha de passed+90 días
+                                $passtime = strtotime($project->passed);
+                                $limsec = date('d/m/Y', \mktime(0, 0, 0, date('m', $passtime), date('d', $passtime)+89, date('Y', $passtime)));
 
-                            $task = new Model\Task();
-                            $task->node = \GOTEO_NODE;
-                            $task->text = "Hacer los pagos secundarios al proyecto <strong>{$project->name}</strong> antes del día <strong>{$limsec}</strong>";
-                            $task->url = "/admin/accounts/?projects={$project->id}";
-                            $task->done = null;
-                            $task->save();
-
+                                $task = new Model\Task();
+                                $task->node = \GOTEO_NODE;
+                                $task->text = "Hacer los pagos secundarios al proyecto <strong>{$project->name}</strong> antes del día <strong>{$limsec}</strong>";
+                                $task->url = "/admin/accounts/?projects={$project->id}";
+                                $task->done = null;
+                                $task->save();
+                            }
 
                             echo '<br />';
                         } elseif (empty($project->passed)) {
@@ -284,31 +303,33 @@ namespace Goteo\Controller {
 
                             echo '<br />';
 
-                            // Evento Feed
-                            $log = new Feed();
-                            $log->populate('proyecto supera primera ronda (cron)', '/admin/projects', \vsprintf('El proyecto %s %s en segunda ronda obteniendo %s', array(
-                                Feed::item('project', $project->name, $project->id),
-                                Feed::item('relevant', 'continua en campaña'),
-                                Feed::item('money', $amount.' &euro; ('.\number_format($per_amount, 2).'%) de aportes sobre minimo')
-                            )));
-                            $log->doAdmin('project');
-
-                            // evento público
-                            $log->populate($project->name, null,
-                                Text::html('feed-project_goon',
+                            // Evento Feed solo si ejecucion automatica
+                            if (\defined('CRON_EXEC')) {
+                                $log = new Feed();
+                                $log->populate('proyecto supera primera ronda (cron)', '/admin/projects', \vsprintf('El proyecto %s %s en segunda ronda obteniendo %s', array(
                                     Feed::item('project', $project->name, $project->id),
-                                    $amount,
-                                    \round($per_amount)
-                            ));
-                            $log->doPublic('projects');
-                            unset($log);
+                                    Feed::item('relevant', 'continua en campaña'),
+                                    Feed::item('money', $amount.' &euro; ('.\number_format($per_amount, 2).'%) de aportes sobre minimo')
+                                )));
+                                $log->doAdmin('project');
 
-                            if ($debug) echo 'Email al autor y a los cofinanciadores<br />';
-                            // Email de proyecto pasa a segunda ronda al autor
-                            self::toOwner('r1_pass', $project);
-                            
-                            //Email de proyecto pasa a segunda ronda a los inversores
-                            self::toInvestors('r1_pass', $project);
+                                // evento público
+                                $log->populate($project->name, null,
+                                    Text::html('feed-project_goon',
+                                        Feed::item('project', $project->name, $project->id),
+                                        $amount,
+                                        \round($per_amount)
+                                ));
+                                $log->doPublic('projects');
+                                unset($log);
+
+                                if ($debug) echo 'Email al autor y a los cofinanciadores<br />';
+                                // Email de proyecto pasa a segunda ronda al autor
+                                self::toOwner('r1_pass', $project);
+
+                                //Email de proyecto pasa a segunda ronda a los inversores
+                                self::toInvestors('r1_pass', $project);
+                            }
                             
                         } else {
                             if ($debug) echo 'Lleva más de 40 dias de campaña, debe estar en segunda ronda con fecha marcada<br />';
@@ -383,7 +404,7 @@ namespace Goteo\Controller {
                                     break;
                         }
 
-                            // Evento Feed
+                            // Evento Feed admin
                             $log = new Feed();
                             $log->populate('Preapproval cancelado por proyecto archivado (cron)', '/admin/invests', \vsprintf($log_text, array(
                                 Feed::item('user', $userData->name, $userData->id),
@@ -492,7 +513,10 @@ namespace Goteo\Controller {
             }
 
             // recogemos el buffer para grabar el log
-            \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
+            // solo si ejecucion automática
+//            if (\defined('CRON_EXEC')) {
+                \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
+//            }
         }
 
 
@@ -502,9 +526,16 @@ namespace Goteo\Controller {
          *
          */
         public function verify () {
+            if (!\defined('CRON_EXEC')) {
+                @mail('goteo_cron@doukeshi.org', 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
+                    'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
+               echo 'Lanzamiento manual<br />';
+            } else {
+               echo 'Lanzamiento automatico<br />';
+            }
             // eliminamos feed antiguo
             $query = Model\Project::query("DELETE FROM `feed` WHERE type != 'goteo' AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`datetime`)), '%j') > 60");
-            die;
+            die('Listo!');
             // proyectos en campaña
             $projects = Model\Project::active(true);
 
@@ -590,7 +621,12 @@ namespace Goteo\Controller {
          *
          */
         public function dopay ($project) {
+            if (\defined('CRON_EXEC')) {
+                die('Este proceso no necesitamos lanzarlo automaticamente');
+            }
 
+            @mail('goteo_cron@doukeshi.org', 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
+                'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
             $projectData = Model\Project::getMini($project);
 
             // necesitamos la cuenta del proyecto y que sea la misma que cuando el preapproval
@@ -861,7 +897,12 @@ namespace Goteo\Controller {
          */
         
         public function daily () {
-
+            if (!\defined('CRON_EXEC')) {
+                @mail('goteo_cron@doukeshi.org', 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
+                    'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
+                die('Este proceso no necesitamos lanzarlo manualmente');
+            }
+            
             // proyectos en campaña o financiados
             $projects = Model\Project::active();
 

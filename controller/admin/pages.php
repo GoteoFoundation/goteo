@@ -21,6 +21,31 @@ namespace Goteo\Controller\Admin {
             $errors = array();
 
             switch ($action) {
+                case 'add':
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        $page = new Page();
+                        $page->id = $_POST['id'];
+                        $page->name = $_POST['name'];
+                        if ($page->add($errors)) {
+
+                            Message::Info('La página <strong>'.$page->name. '</strong> se ha creado correctamente, se puede editar ahora.');
+
+                            throw new Redirection("/admin/pages/edit/{$page->id}");
+                        } else {
+                            Message::Error('No se ha creado bien '. implode('<br />', $errors));
+                            throw new Redirection("/admin/pages/add");
+                        }
+                    }
+
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'pages',
+                            'file' => 'add'
+                        )
+                     );
+                    break;
+
                 case 'edit':
                     if ($node != \GOTEO_NODE && !in_array($id, self::$node_pages)) {
                         Message::Info('No puedes gestionar la página <strong>'.$id.'</strong>');
@@ -66,6 +91,7 @@ namespace Goteo\Controller\Admin {
                         )
                      );
                     break;
+
                 case 'list':
                     // si estamos en la lista de páginas
                     $pages = Page::getList($node);

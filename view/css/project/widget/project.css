@@ -257,7 +257,7 @@ div.widget.project div.meter div.obtained {
     display: none;
     position: relative;
     top: -10px;
-    right: -25px;
+    right: -20px;
 }
 div.widget.project div.meter h3.title.obtained {
     padding-left: 5px;
@@ -266,7 +266,7 @@ div.widget.project div.meter div.obtained strong {
     font-size: 26px;
     font-weight: bold;
     color: #96238F;
-    padding-right: 20px;
+    padding-right: 15px;
     border-right: 1px solid #a7a9ac;
 }
 div.widget.project div.meter div.obtained span.euro {
@@ -282,7 +282,7 @@ div.widget.project div.meter div.obtained span.percent {
     font-size: 26px;
     font-weight: bold;
     color: #a7a9ac;
-    padding-left: 15px;
+    padding-left: 10px;
 }
 div.widget.project div.meter h3.title.obtained,
 div.widget.project div.meter.active dl > dd,

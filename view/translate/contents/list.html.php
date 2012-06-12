@@ -40,14 +40,14 @@ $types = Content::$fields[$table]; // por tipo de campo
         <input type="hidden" name="table" value="<?php echo $table ?>" />
 
         <label for="filter-<?php echo $id; ?>">Filtrar por campo:</label>
-        <select id="filter-<?php echo $id; ?>" name="<?php echo $id; ?>" onchange="document.getElementById('filter-form').submit();">
+        <select id="filter-<?php echo $id; ?>" name="type" >
         <?php foreach ($types as $val=>$opt) : ?>
             <option value="<?php echo $val; ?>"<?php if ($this['filters']['type'] == $val) echo ' selected="selected"';?>><?php echo $opt; ?></option>
         <?php endforeach; ?>
         </select>
         
         <label for="filter-<?php echo $id; ?>">Buscar texto:</label>
-        <input name="<?php echo $id; ?>" value="<?php echo (string) $this['filters']['text']; ?>" />
+        <input name="text" value="<?php echo (string) $this['filters']['text']; ?>" />
 
         <input type="submit" name="filter" value="Buscar">
     </form>

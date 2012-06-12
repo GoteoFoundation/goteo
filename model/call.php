@@ -251,6 +251,7 @@ namespace Goteo\Model {
                     }
                 }
 
+                $call->sponsors = Call\Sponsor::getList($id);
 
 				return $call;
 

@@ -2,7 +2,17 @@
 
 use Goteo\Library\Text;
 
+// paginacion
+require_once 'library/pagination/pagination.php';
+
 $filters = $this['filters'];
+
+$the_filters = '';
+foreach ($filters as $key=>$value) {
+    $the_filters .= "&{$key}={$value}";
+}
+
+$pagedResults = new \Paginated($this['users'], 20, isset($_GET['page']) ? $_GET['page'] : 1);
 ?>
 <a href="/admin/users/add" class="button">Crear usuario</a>
 
@@ -105,7 +115,7 @@ $filters = $this['filters'];
         </thead>
 
         <tbody>
-            <?php foreach ($this['users'] as $user) : ?>
+            <?php while ($user = $pagedResults->fetchPagedRow()) : ?>
             <tr>
                 <td><a href="/user/profile/<?php echo $user->id; ?>" target="_blank" title="Ver perfil público"><?php echo substr($user->name, 0, 20); ?></a></td>
                 <td><strong><?php echo substr($user->id, 0, 20); ?></strong></td>
@@ -138,11 +148,15 @@ $filters = $this['filters'];
             <tr>
                 <td colspan="6"><hr /></td>
             </tr>
-            <?php endforeach; ?>
+            <?php endwhile; ?>
         </tbody>
 
     </table>
-    <?php else : ?>
-    <p>No se han encontrado registros</p>
-    <?php endif; ?>
 </div>
+<ul id="pagination">
+<?php   $pagedResults->setLayout(new DoubleBarLayout());
+        echo $pagedResults->fetchPagedNavigation($the_filters); ?>
+</ul>
+<?php else : ?>
+<p>No se han encontrado registros</p>
+<?php endif; ?>

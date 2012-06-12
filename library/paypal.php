@@ -142,8 +142,9 @@ namespace Goteo\Library {
            		$payRequest->preapprovalKey = $invest->preapproval;
                 $payRequest->actionType = 'PAY_PRIMARY';
                 $payRequest->feesPayer = 'EACHRECEIVER';
-                $payRequest->reverseAllParallelPaymentsOnError = true;
-                $payRequest->trackingId = $invest->id;
+                // voy a poner esto a false para investigar los reversalerror
+                $payRequest->reverseAllParallelPaymentsOnError = false;
+//                $payRequest->trackingId = $invest->id;
                 // SENDER no vale para chained payments   (PRIMARYRECEIVER, EACHRECEIVER, SECONDARYONLY)
                 $payRequest->requestEnvelope = new \RequestEnvelope();
                 $payRequest->requestEnvelope->errorLanguage = 'es_ES';

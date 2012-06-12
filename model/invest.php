@@ -660,7 +660,7 @@ namespace Goteo\Model {
         /*
          * Aportes individuales a un proyecto
          */
-        public static function investors ($project, $projNum = true, $showall = false) {
+        public static function investors ($project, $projNum = false, $showall = false) {
             $worth = array();
             $investors = array();
 
@@ -672,7 +672,7 @@ namespace Goteo\Model {
                     invest.amount as amount,
                     DATE_FORMAT(invest.invested, '%d/%m/%Y') as date,
                     ";
-            if ($projNum) {
+/*            if ($projNum) {
                 $sql .= "(SELECT
                         COUNT(DISTINCT(project))
                      FROM invest as invb
@@ -680,7 +680,7 @@ namespace Goteo\Model {
                      AND  invb.status IN ('0', '1', '3')
                      ) as projects,";
             }
-
+*/
             $sql .= "user.hide as hide,
                     invest.droped as droped,
                     invest.campaign as campaign,
@@ -1043,11 +1043,11 @@ namespace Goteo\Model {
         public static function status ($id = null) {
             $array = array (
                 -1 => 'Incompleto',
-                0  => 'Preaprobado',
+                0  => 'Preaprobado (PayPal)',
                 1  => 'Cobrado por Goteo',
                 2  => 'Cancelado',
                 3  => 'Pagado al proyecto',
-                4  => 'Devuelto',
+                4  => 'Devuelto (TPV)',
                 5  => 'Reubicado'
             );
 
@@ -1216,6 +1216,10 @@ namespace Goteo\Model {
 
 
                         // PAYPAL
+                        $inv_paypal = self::getList(array(
+                            'methods' => 'paypal',
+                            'projects' => $project
+                        ));
                         if (!empty($inv_paypal)) {
                             $Data['paypal']['first']['fail'] = 0;
                             foreach ($inv_paypal as $invId => $invest) {

@@ -50,8 +50,9 @@ namespace Goteo\Controller {
         public function edit ($id) {
             $project = Model\Project::get($id, null);
 
+            // si no es su proyecto
             // si es admin de nodo y no es de su nodo no puede estar editando
-            if (isset($_SESSION['admin_node']) && $project->node != $_SESSION['admin_node']) {
+            if ($project->owner != $_SESSION['user']->id && isset($_SESSION['admin_node']) && $project->node != $_SESSION['admin_node']) {
                 Message::Info('No tienes permiso para editar este proyecto');
                 throw new Redirection('/admin/projects');
             }
@@ -945,7 +946,7 @@ namespace Goteo\Controller {
                         $msg->date = date('Y-m-d');
                         $msg->message = "{$support->support}: {$support->description}";
                         $msg->blocked = true;
-                        $msg->save();
+                        $msg->save($errors);
                     } else {
                         // grabar nuevo mensaje
                         $msg = new Model\Message(array(
@@ -955,7 +956,7 @@ namespace Goteo\Controller {
                             'message' => "{$support->support}: {$support->description}",
                             'blocked' => true
                             ));
-                        if ($msg->save()) {
+                        if ($msg->save($errors)) {
                             // asignado a la colaboracion como thread inicial
                             $support->thread = $msg->id;
                         }

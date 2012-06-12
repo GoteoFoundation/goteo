@@ -196,6 +196,36 @@ namespace Goteo\Library {
 
 		}
 
+		/*
+		 *  Esto se usara para la gestión de contenido
+		 */
+		public function add(&$errors = array()) {
+
+  			try {
+                $values = array(
+                    ':id' => $this->id,
+                    ':name' => $this->name
+                );
+
+				$sql = "REPLACE INTO page
+                            (id, name)
+                        VALUES
+                            (:id, :name)
+                        ";
+				if (Model::query($sql, $values)) {
+                    return true;
+                } else {
+                    $errors[] = "Ha fallado $sql con <pre>" . print_r($values, 1) . "</pre>";
+                    return false;
+                }
+
+			} catch(\PDOException $e) {
+                $errors[] = 'Error sql al grabar el contenido de la pagina. ' . $e->getMessage();
+                return false;
+			}
+
+		}
+
         /**
          * PAra actualizar solamente el contenido
          * @param <type> $errors

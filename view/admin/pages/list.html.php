@@ -6,6 +6,10 @@ $translator = ACL::check('/translate') ? true : false;
 $node = $this['node'];
 $transNode = ACL::check('/translate/node/'.$node) ? true : false;
 ?>
+<?php if (!isset($_SESSION['admin_node'])) : ?>
+<a href="/admin/pages/add" class="button">Nueva P&aacute;gina</a>
+<?php endif; ?>
+
 <div class="widget board">
     <?php if (!empty($this['pages'])) : ?>
     <table>

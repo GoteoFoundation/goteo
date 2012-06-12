@@ -29,7 +29,7 @@ switch ($_GET['action']) {
         $query = isset($parts['query']) ? '?'.$parts['query'] : '';
         $fragment = isset($parts['fragment']) ? '#'.$parts['fragment'] : '';
         $dest = "$path$query$fragment";
-        // montar la url del script de llegada:   http://nodo.goteo.org/jumpo.php?action=come&sesid=...&path=...
+        // montar la url del script de llegada
         $url = "http://{$host}/jump.php?action=come&sesid={$sesid}&path=".urlencode($dest);
         // Saltar con header('Location: ');
         header("Location: $url");

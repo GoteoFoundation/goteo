@@ -353,6 +353,21 @@ namespace Goteo\Controller {
                 $call->categories = Model\Call\Category::getNames($call->id);
                 $call->icons = Model\Call\Icon::getNames($call->id);
 
+                // si esta en edicion y viene especificado el estado que se quiere previsualizar
+                    // cambiamos el estado
+                if ($call->status == 1 && isset($_GET['preview'])) {
+                    switch($_GET['preview']) {
+                        case 'apply':
+                            $call->status = 3;
+                            break;
+                        case 'campaign':
+                            $call->status = 4;
+                            break;
+                    }
+
+
+                }
+
                 // lo puede ver
                 return new View('view/call/'.$show.'.html.php', array('call' => $call));
 

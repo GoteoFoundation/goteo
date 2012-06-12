@@ -448,6 +448,10 @@ namespace Goteo\Controller {
                     if (!empty($vip->image)) {
                         $user->avatar = $vip->image;
                     }
+
+                    // pasarle el autodetector de urls por el about
+                    $user->about = nl2br(Text::urlink($user->about));
+
                     return new View ('view/user/patron.html.php', array('user' => $user, 'recos' => $recos));
                 }
             }

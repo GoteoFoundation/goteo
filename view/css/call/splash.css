@@ -148,7 +148,8 @@ li#description.item p.subtitle.red {
 	font-weight: bold;
 	color: red;
 	font-size: 36px;
-	margin: 0 0 .4em;
+	margin: 0 0 .5em;
+	line-height: 32px;
 }
 
 li#description.item p.subtitle strong {
@@ -317,6 +318,20 @@ li#numbers dl.moreinfo dd a.aqua {
 li#numbers dl.moreinfo dd a:hover {
 	color: #58595B;
 }
+
+/* sponsors */
+li#sponsors span {
+    display: block;
+	font-size: 10px;
+	font-weight: normal;
+    margin: 7px 0;
+}
+
+li#sponsors div {
+    float: left;
+    margin-right: 22px;
+}
+
 
 .money {
 	color: #95268d;

@@ -153,6 +153,16 @@ include 'view/call/prologue.html.php';
 				<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/projects" class="button red view"><?php echo Text::get('call-splash-see_projects-button') ?></a>
             <?php endif; ?>
 			</li>
+            <?php if (!empty($call->sponsors)) : ?>
+			<li class="item" id="sponsors">
+                <span><?php echo Text::get('node-header-sponsorby') ?></span>
+                <?php foreach ($call->sponsors as $sponsor) : ?>
+                    <div>
+                        <a href="<?php echo $sponsor->url ?>" target="_blank" title="<?php echo $sponsor->name ?>"><img src="<?php if ($sponsor->image instanceof \Goteo\Model\Image) echo $sponsor->image->getLink(130); ?>" alt="<?php echo $sponsor->name ?>" /></a>
+                    </div>
+                <?php endforeach; ?>
+			</li>
+            <?php endif; ?>
 		</ul>
     </div>
 

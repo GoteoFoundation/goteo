@@ -72,12 +72,17 @@ namespace Goteo\Controller {
             }
 
             if ($option == 'wall') {
+                /*
+                 * Depurar antes de poner esto
+                 *
                 // eventos privados del usuario
                 $items['private'] = Feed::getUserItems($_SESSION['user']->id, 'private');
                 // eventos de proyectos que he cofinanciado
                 $items['supported'] = Feed::getUserItems($_SESSION['user']->id, 'supported');
                 // eventos de proyectos donde he mensajeado o comentado
                 $items['comented'] = Feed::getUserItems($_SESSION['user']->id, 'comented');
+                 *
+                 */
             }
 
             return new View (
@@ -602,8 +607,9 @@ namespace Goteo\Controller {
                                 // Sustituimos los datos
                                 $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
 
-                                $search  = array('%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%');
-                                $replace = array($msg_content, $project->name, SITE_URL."/project/".$project->id);
+                                $search  = array('%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%', '%OWNERURL%', '%OWNERNAME%');
+                                $replace = array($msg_content, $project->name, SITE_URL."/project/".$project->id,
+                                    SITE_URL."/user/profile/".$project->owner, $project->user->name);
                                 $content = \str_replace($search, $replace, $template->text);
 
                                 foreach ($who as $userId) {
@@ -1457,6 +1463,84 @@ namespace Goteo\Controller {
                     }
 
                 break;
+
+                // patrocinadores
+                case 'sponsors':
+
+                    switch ($action) {
+                        case 'add':
+                            $viewData['sponsor'] = (object) array(
+                                'order' => Model\Call\Sponsor::next($call->id)
+                            );
+                            break;
+                        case 'edit':
+                            // gestionar post
+                            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                                $dpost = $_POST;
+                                $dfiles = $_FILES;
+
+                                // instancia
+                                $sponsor = new Model\Call\Sponsor(array(
+                                    'id' => $_POST['id'],
+                                    'name' => $_POST['name'],
+                                    'call' => $call->id,
+                                    'image' => $_POST['prev_image'],
+                                    'url' => $_POST['url'],
+                                    'order' => $_POST['order']
+                                ));
+
+                                // tratar si quitan la imagen
+                                $current = $_POST['prev_image']; // la actual
+                                if (isset($_POST['image-' . $current .  '-remove'])) {
+                                    $image = Model\Image::get($current);
+                                    $image->remove();
+                                    $sponsor->image = '';
+                                    $removed = true;
+                                }
+
+                                // tratar la imagen y ponerla en la propiedad image
+                                if(!empty($_FILES['image']['name'])) {
+                                    $sponsor->image = $_FILES['image'];
+                                }
+
+                                if ($sponsor->save($errors)) {
+                                    Message::Info('Datos grabados correctamente');
+                                    if (!$removed)
+                                        throw new Redirection('/dashboard/calls/sponsors');
+                                } else {
+                                    Message::Error('No se han podido grabar los datos. ' . implode(', ', $errors));
+                                }
+                            } else {
+                                $sponsor = Model\Call\Sponsor::get($id);
+                            }
+
+                            $viewData['sponsor'] = $sponsor;
+                            break;
+                        case 'delete':
+                            //si estamos quitando un patrocinador
+                            if (!empty($id)) {
+
+                                if (Model\Call\Sponsor::delete($id)) {
+                                    Message::Error('El proyecto se ha quitado correctamente de la convocatoria');
+                                } else{
+                                    Message::Error('Falló al quitar el proyecto: ' . implode('<br />', $errors));
+                                }
+                            }
+                            throw new Redirection('/dashboard/calls/sponsors');
+                            break;
+                        case 'up':
+                            Model\Call\Sponsor::up($id, $call->id);
+                            throw new Redirection('/dashboard/calls/sponsors');
+                            break;
+                        case 'down':
+                            Model\Call\Sponsor::down($id, $call->id);
+                            throw new Redirection('/dashboard/calls/sponsors');
+                            break;
+                    }
+
+
+                break;
             }
 
             $viewData['call'] = $call;
@@ -1583,7 +1667,8 @@ namespace Goteo\Controller {
                     'label' => Text::get('dashboard-menu-calls'),
                     'options' => array (
                         'summary'  => Text::get('dashboard-menu-calls-summary'),
-                        'projects'  => Text::get('dashboard-menu-calls-projects')
+                        'projects'  => Text::get('dashboard-menu-calls-projects'),
+                        'sponsors'  => Text::get('dashboard-menu-calls-sponsors')
                     )
                 );
             }

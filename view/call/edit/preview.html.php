@@ -68,11 +68,17 @@ $elements      = array(
     'splash' => array(
         'type'      => 'html',
         'class'     => 'fullwidth',
-        'html'      => '<a href="/call/'.$call->id.'" class="button" target="_blank">'.Text::get('call-see_splash-button').'</a>'
-                        . '&nbsp;&nbsp;&nbsp;'
-                        . '<a href="/call/'.$call->id.'/info" class="button" target="_blank">'.Text::get('call-see_main-button').'</a>'
-                        . '&nbsp;&nbsp;&nbsp;'
+        'html'      =>  '<table><tr><td>'
+                        . '<a href="/call/'.$call->id.'?preview=apply" class="button" target="_blank">'.Text::get('call-see_splash-button').' de aplicaci&oacute;n</a>'
+                        . '</td><td>'
+                        . '<a href="/call/'.$call->id.'/info?preview=apply" class="button" target="_blank">'.Text::get('call-see_main-button').' de aplicaci&oacute;n</a>'
+                        . '</td></tr><tr><td>'
+                        . '<a href="/call/'.$call->id.'?preview=campaign" class="button" target="_blank">'.Text::get('call-see_splash-button').' de campa&ntilde;a</a>'
+                        . '</td><td>'
+                        . '<a href="/call/'.$call->id.'/info?preview=campaign" class="button" target="_blank">'.Text::get('call-see_main-button').' de campa&ntilde;a</a>'
+                        . '</td></tr><tr><td>'
                         . '<a href="/dashboard/calls" class="button">'.Text::get('call-go_dashboard-button').'</a>'
+                        . '</td></tr></table>'
     )
 
 /*

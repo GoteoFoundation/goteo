@@ -88,10 +88,6 @@ namespace Goteo\Model {
                         LEFT JOIN category_lang
                             ON  category_lang.id = category.id
                             AND category_lang.lang = :lang
-                        LEFT JOIN project_category
-                            ON category.id = project_category.category
-                        LEFT JOIN user_interest
-                            ON category.id = user_interest.interest
                         GROUP BY category.id
                         ORDER BY category.order ASC";
 
