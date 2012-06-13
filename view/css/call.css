@@ -171,7 +171,11 @@ div.call div.data li#numbers dl.block {
 }
 
 div.call div.data li#numbers dl.long {
-	width: 155px;
+	width: 160px;
+}
+
+div.call div.data li#numbers dl.last.selected {
+	width: 90px;
 }
 
 div.call div.data li#numbers dl.last {
