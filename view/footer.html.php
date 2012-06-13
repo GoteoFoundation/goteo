@@ -57,6 +57,7 @@ jQuery(document).ready(function($) {
                     <li><a href="/blog/<?php echo $id ?>"><?php echo Text::recorta($title, 50) ?></a></li>
                     <?php endforeach; ?>
                     <li><a href="/newsletter" target="_blank">Newsletter</a></li>
+                    <li><a href="https://github.com/Goteo/Goteo" target="_blank"><?php echo Text::get('footer-resources-source_code') ?></a></li>
                 </ul>
             </div>
 			<script type="text/javascript">

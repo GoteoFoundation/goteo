@@ -83,6 +83,7 @@ namespace Goteo\Model {
 					//si es un archivo que se sube
 					if(is_uploaded_file($this->tmp)) {
 						move_uploaded_file($this->tmp,$this->dir_originals . $this->name);
+                        chmod($this->dir_originals . $this->name, 0777);
 					}
 					//si es un archivo del sistema de archivos o en una URL
 					elseif(@copy($this->tmp, $this->dir_originals . $this->name)) {

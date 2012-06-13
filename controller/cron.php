@@ -1068,14 +1068,11 @@ namespace Goteo\Controller {
             $calls = Model\Call::getActive(3);
             foreach ($calls as $call) {
                 // a ver cuantos días le quedan para que acabe la convocatoria
-                $until = strtotime($call->until);
-//                echo 'convocatoria abierta hasta el '.$call->until.' => '.$until.'<br />';
+                $open = strtotime($call->opened);
+                $until = mktime(0, 0, 0, date('m', $open), date('d', $open)+$call->days, date('Y', $open));
                 $now = strtotime(date('Y-m-d'));
-//                echo 'hoy es '.date('Y-m-d').' => '.$now.'<br />';
                 $diference = $until - $now;
-//                echo 'Faltan' . $diference . '<br />';
                 $days = \round($diference/24/60/60);
-//                echo 'Esto son '.$days.' dias<br />';
 
                 $doFeed = false;
                 switch ($days) {
