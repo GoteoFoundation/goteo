@@ -731,7 +731,7 @@ namespace Goteo\Controller {
         public function calls($action = 'list', $id = null) {
             $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-            return Admin\Calls::process($action, $id);
+            return Admin\Calls::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
         /*
