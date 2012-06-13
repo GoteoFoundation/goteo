@@ -6,15 +6,6 @@ use Goteo\Core\View,
 
 $call = $this['call'];
 
-// fecha hasta
-if ($call->status == 3) {
-    $until = strtotime($call->until);
-    $until_day = date('d', $until);
-    $until_month = strftime('%B', $until);
-    $until_month = ucfirst(substr($until_month, 0, 3));
-    $until_year = date('Y', $until);
-}
-
 $the_logo = empty($call->logo) ? 1 : $call->logo;
 $call->logo = Model\Image::get($the_logo);
 $the_image = empty($call->image) ? 1 : $call->image;
@@ -83,7 +74,7 @@ $tag = array(
                     <?php endif; ?>
                         <dl class="block long expires">
                             <dt><?php echo Text::get('call-splash-valid_until-header') ?></dt>
-                            <dd><strong><?php echo $until_day ?></strong> <?php echo $until_month ?> / <?php echo $until_year ?></dd>
+                            <dd><strong><?php echo $call->until['day'] ?></strong> <?php echo $call->until['month'] ?> / <?php echo $call->until['year'] ?></dd>
                         </dl>
                         <dl class="block last applied">
                             <dt><?php echo Text::get('call-splash-applied_projects-header') ?></dt>

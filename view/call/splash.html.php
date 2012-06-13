@@ -7,21 +7,13 @@ $bodyClass = 'splash';
 
 $call = $this['call'];
 
-if ($call->status == 3) {
-    $until = strtotime($call->until);
-    $until_day = date('d', $until);
-    $until_month = strftime('%B', $until);
-    $until_month = ucfirst(substr($until_month, 0, 3));
-    $until_year = date('Y', $until);
-}
-
 include 'view/call/prologue.html.php';
 ?>
 	
 	<div id="main" class="onecol">
 		<ul id="list">
 			<li class="item" id="description">
-				<img src="<?php if ($call->image instanceof Goteo\Model\Image) echo $call->logo->getLink(155, 200) ?>" alt="<?php echo $call->user->name ?>" />
+				<img src="<?php if ($call->image instanceof Goteo\Model\Image) echo $call->logo->getLink(150) ?>" alt="<?php echo $call->user->name ?>" />
                 <?php echo new View('view/call/widget/title.html.php', $this); ?>
                 
 				<p><?php echo $call->description ?></p>
@@ -42,7 +34,7 @@ include 'view/call/prologue.html.php';
                 <?php endif; ?>
                     <dl class="block long expires">
                         <dt><?php echo Text::get('call-splash-valid_until-header') ?></dt>
-						<dd><strong><?php echo $until_day ?></strong> <?php echo $until_month ?> / <?php echo $until_year ?></dd>
+						<dd><strong><?php echo $call->until['day'] ?></strong> <?php echo $call->until['month'] ?> / <?php echo $call->until['year'] ?></dd>
                     </dl>
                     <dl class="block last applied">
                         <dt><?php echo Text::get('call-splash-applied_projects-header') ?></dt>

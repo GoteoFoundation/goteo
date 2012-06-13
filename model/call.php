@@ -20,6 +20,7 @@ namespace Goteo\Model {
             $maxdrop, // Limite al capital riego que puede provocar cada aporte
             $resources, // Recursos de capital riego
             $days, // Numero de dias para aplicación de proyectos
+            $until = array('day'=>'', 'month'=>'', 'year'=>''), // para visualizar fecha limite en estado aplicación
 
             $user, // owner's user information
 
@@ -243,12 +244,18 @@ namespace Goteo\Model {
 
                 if ($call->status == 3) {
                     // a ver si ya ha expirado
-                    $until = strtotime($call->until);
+                    $open = strtotime($call->opened);
+                    $until = mktime(0, 0, 0, date('m', $open), date('d', $open)+$call->days, date('Y', $open));
                     $hoy = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 
                     if ($hoy > $until) {
                         $call->expired = true;
                     }
+
+                    // rellenamos el array de visualizacion de fecha limite
+                    $call->until['day'] = date('d', $until);
+                    $call->until['month'] = ucfirst(substr(strftime('%B', $until), 0, 3));;
+                    $call->until['year'] = date('Y', $until);
                 }
 
                 $call->sponsors = Call\Sponsor::getList($id);
@@ -559,11 +566,8 @@ namespace Goteo\Model {
          */
         public function open(&$errors = array()) {
 			try {
-                // segun los dias de inscripcion, al abrir ponemos la fecha limite
-                $until = date('Y-m-d', mktime(0,0,0,date('m'),date('d')+$this->days,date('Y')));
-
-                $sql = "UPDATE `call` SET status = :status, opened = :opened, until = :until WHERE id = :id";
-                self::query($sql, array(':status'=>3, ':opened'=>date('Y-m-d'), ':until'=>$until, ':id'=>$this->id));
+                $sql = "UPDATE `call` SET status = :status, opened = :opened WHERE id = :id";
+                self::query($sql, array(':status'=>3, ':opened'=>date('Y-m-d'), ':id'=>$this->id));
 
                 return true;
 
