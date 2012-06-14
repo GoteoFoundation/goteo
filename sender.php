@@ -120,6 +120,7 @@ foreach ($users as $user) {
     $mailHandler->html = true;
     $mailHandler->template = 33; // porsupuesto estamos enviando la plantilla de boletin
     
+    $errors = array();
     if ($mailHandler->send($errors)) {
 
         // Envio correcto
