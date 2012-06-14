@@ -482,6 +482,36 @@ namespace Goteo\Model {
             }
         }
 
+        /*
+         * Para pasar un aporte con incidencia a resuelta, cash y cobrado
+         */
+        public function solve (&$errors = array()) {
+
+            self::query("START TRANSACTION");
+
+            try {
+                // si renuncia
+                $sql = "UPDATE invest SET  method = 'cash', status = 1, issue = 0 WHERE id = :id";
+                self::query($sql, array(':id'=>$this->id));
+
+                // añadir detalle
+                $sql = "INSERT INTO invest_detail (invest, type, log, date)
+                    VALUES (:id, 'solved', :log, NOW())";
+
+                self::query($sql, array(':id'=>$this->id, ':log'=>'Incidencia resuelta por el admin '.$_SESSION['user']->name.', aporte pasado a cash y cobrado'));
+
+
+                self::query("COMMIT");
+
+                return true;
+
+            } catch (\PDOException $e) {
+                self::query("ROLLBACK");
+                $errors[] = $e->getMessage();
+                return false;
+            }
+        }
+
 
 
         /*

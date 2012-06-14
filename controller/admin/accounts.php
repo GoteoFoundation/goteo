@@ -156,6 +156,37 @@ namespace Goteo\Controller\Admin {
                 // fin de la historia actualizar estado
            }
 
+           // resolviendo incidencias
+           if ($action == 'solve') {
+
+                // el aporte original
+                $invest = Model\Invest::get($id);
+                if (!$invest instanceof Model\Invest) {
+                    Message::Error('No tenemos registro del aporte '.$id);
+                    throw new Redirection('/admin/accounts');
+                }
+
+                $errors = array();
+
+                if ($invest->solve($errors)) {
+                    // Evento Feed
+                    $log = new Feed();
+                    $log->populate('Incidencia resuelta (admin)', '/admin/accounts',
+                        \vsprintf("El admin %s ha dado por resuelta la incidencia %s", array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('system', $id, 'accounts/details/'.$id)
+                    )));
+                    $log->doAdmin('admin');
+                    unset($log);
+
+                    Message::Info('La incidencia se ha dado por resuelta, el aporte se ha pasado a manual y cobrado');
+                    throw new Redirection('/admin/accounts');
+                } else {
+                    Message::Error('Ha fallado al resolver la incidencia: ' . implode (',', $errors));
+                    throw new Redirection('/admin/accounts/details/'.$id);
+                }
+           }
+
             // aportes manuales, cargamos la lista completa de usuarios, proyectos y campañas
            if ($action == 'add') {
 
