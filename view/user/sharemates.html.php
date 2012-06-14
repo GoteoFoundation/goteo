@@ -19,16 +19,14 @@ if (empty($categories)) {
     throw new Redirection('/user/profile/' . $this['user']->id);
 }
 
+$limit = empty($this['category']) ? 6 : 20;
+
 $shares = array();
-/* if (!empty($this['category'])) {
-    $shares[$this['category']->id] = Interest::share($user->id, $this['category']->id);
-} else { */
-    foreach ($categories as $catId => $catName) {
-        $gente = Interest::share($user->id, $catId);
-        if (count($gente) == 0) continue;
-        $shares[$catId] = $gente;
-    }
-//}
+foreach ($categories as $catId => $catName) {
+    $gente = Interest::share($user->id, $catId, $limit);
+    if (count($gente) == 0) continue;
+    $shares[$catId] = $gente;
+}
 
 if (empty($shares)) {
     throw new Redirection('/user/profile/' . $this['user']->id);

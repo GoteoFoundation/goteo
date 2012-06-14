@@ -737,9 +737,9 @@ namespace Goteo\Controller {
             );
 
             foreach ($fields as $field) {
-                if (isset($_POST[$field])) {
+//                if (isset($_POST[$field])) {
                     $project->$field = $_POST[$field];
-                }
+//                }
             }
             
             // tratar la imagen que suben

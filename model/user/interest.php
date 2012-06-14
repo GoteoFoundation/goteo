@@ -138,7 +138,7 @@ namespace Goteo\Model\User {
          * Si recibimos una categoría de interés, solamente los que comparten esa categoría
          *
          */
-        public static function share ($user, $category = null) {
+        public static function share ($user, $category = null, $limit = null) {
              $array = array ();
             try {
 
@@ -155,8 +155,13 @@ namespace Goteo\Model\User {
                         WHERE user_interest.user != :me
                         ";
                if (!empty($category)) {
-                   $sql .= "AND user_interest.interest = :interest";
+                   $sql .= "AND user_interest.interest = :interest
+                       ";
                    $values[':interest'] = $category;
+               }
+               $sql .= " ORDER BY RAND()";
+               if (!empty($limit)) {
+                   $sql .= " LIMIT $limit";
                }
 
                 $query = static::query($sql, $values);

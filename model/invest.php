@@ -759,6 +759,20 @@ namespace Goteo\Model {
             return (int) $got->investors;
         }
 
+        public static function my_numInvestors ($owner) {
+            $values = array(':owner' => $owner);
+
+            $sql = "SELECT  COUNT(DISTINCT(user)) as investors
+                FROM    invest
+                WHERE   project IN (SELECT id FROM project WHERE owner = :owner)
+                AND     invest.status IN ('0', '1', '3', '4')
+                ";
+
+            $query = static::query($sql, $values);
+            $got = $query->fetchObject();
+            return (int) $got->investors;
+        }
+
         /*
          *  Aportaciones realizadas por un usaurio
          *  devuelve total y fecha de la última
