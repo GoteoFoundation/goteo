@@ -23,7 +23,8 @@ $campaigns = $this['calls']['campaigns'];
     </script>
     <div id="n-calls" class="callrow">
         <div class="arrow-left"><?php if (count($calls) > 1) : ?><a class="prev">prev</a><?php endif ?></div>
-        <div class="slder_calls"><?php foreach ($calls as $call) : ?>
+        <div class="slder_calls"<?php if (count($calls) == 1) : ?> style="overflow: hidden; position: relative; display: block;"<?php endif ?>>
+        <?php foreach ($calls as $call) : ?>
             <div class="slder_slide">
             <?php echo new View('view/call/widget/call.html.php', array('call' => $call)); ?>
             </div>
@@ -44,7 +45,8 @@ $campaigns = $this['calls']['campaigns'];
     </script>
     <div id="n-campaigns" class="callrow">
         <div class="arrow-left"><?php if (count($campaigns) > 1) : ?><a class="prev">prev</a><?php endif ?></div>
-        <div class="slder_campaigns"><?php foreach ($campaigns as $campaign)  : ?>
+        <div class="slder_campaigns"<?php if (count($campaigns) == 1) : ?> style="overflow: hidden; position: relative; display: block;"<?php endif ?>>
+        <?php foreach ($campaigns as $campaign)  : ?>
             <div class="slder_slide">
             <?php echo new View('view/call/widget/call.html.php', array('call' => $campaign)); ?>
             </div>

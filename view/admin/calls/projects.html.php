@@ -24,6 +24,7 @@ $status = $this['status'];
     <?php if (!empty($projects)) : ?>
     <table>
         <tr>
+            <th></th>
             <th>Proyecto</th>
             <th>Estado</th>
             <th>Localidad</th>
@@ -32,7 +33,8 @@ $status = $this['status'];
         </tr>
         <?php foreach ($projects as $proj) : ?>
         <tr>
-            <td><?php echo $proj->name ?></td>
+            <td><a href="/admin/projects/?proj_name=<?php echo urlencode($proj->name) ?>&status=<?php echo $proj->status ?>&name=&category=&node=" target="_blank" title="Gestionar proyecto">[Gestionar]</a></td>
+            <td><a href="/project/<?php echo $proj->id ?>" target="_blank" title="Ver proyecto"><?php echo $proj->name ?></a></td>
             <td><?php echo $status[$proj->status] ?></td>
             <td><?php echo $proj->location ?></td>
             <td><?php echo $proj->amount ?></td>
@@ -51,6 +53,7 @@ $status = $this['status'];
     <?php if (!empty($available)) : ?>
     <table>
         <tr>
+            <th></th>
             <th>Proyecto</th>
             <th>Estado</th>
             <th>Localidad</th>
@@ -58,7 +61,8 @@ $status = $this['status'];
         </tr>
         <?php foreach ($available as $proj) : ?>
         <tr>
-            <td><?php echo $proj->name ?></td>
+            <td><a href="/admin/projects/?proj_name=<?php echo urlencode($proj->name) ?>&status=<?php echo $proj->status ?>&name=&category=&node=" target="_blank" title="Gestionar proyecto">[Gestionar]</a></td>
+            <td><a href="/project/<?php echo $proj->id ?>" target="_blank" title="Ver proyecto"><?php echo $proj->name ?></a></td>
             <td><?php echo $status[$proj->status] ?></td>
             <td><?php echo $proj->location ?></td>
             <td><a href="#" onclick="assignproj('<?php echo $proj->id ?>')">[Seleccionar]</a></td>
