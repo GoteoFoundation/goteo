@@ -12,7 +12,7 @@ if (count($patrons) > 1) : ?>
 </script>
 <?php endif; ?>
 <div id="slides_patrons" class="widget project-patrons">
-    <h4>Proyecto recomendado por:</h4>
+    <h4><?php echo Text::get('regular-recomended_by'); ?></h4>
     
     <div class="slides_container">
         <?php foreach ($patrons as $patron) : ?>

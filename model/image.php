@@ -389,6 +389,7 @@ namespace Goteo\Model {
 				else $it->fit($width,$height);
 
 				$it->save($cache);
+                chmod($cache, 0777);
             }
 
 			header("Content-type: " . $this->type);

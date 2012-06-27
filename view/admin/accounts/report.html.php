@@ -106,7 +106,7 @@ foreach ($this['invests'] as $invest) {
             <th>Tpv</th>
             <th>Cash</th>
         </tr>
-        <?php foreach ($this['investStatus'] as $id=>$label) : if (in_array($id, array('-1', '2', '4'))) continue;?>
+        <?php foreach ($this['investStatus'] as $id=>$label) : if (in_array($id, array('-1'))) continue;?>
         <tr>
             <td><?php echo $label ?></td>
             <td style="text-align:right;"><?php echo \amount_format($estado[$id]['total']) ?></td>

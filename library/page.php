@@ -204,13 +204,14 @@ namespace Goteo\Library {
   			try {
                 $values = array(
                     ':id' => $this->id,
-                    ':name' => $this->name
+                    ':name' => $this->name,
+                    ':url' => '/about/'.$this->id
                 );
 
-				$sql = "REPLACE INTO page
-                            (id, name)
+				$sql = "INSERT INTO page
+                            (id, name, url)
                         VALUES
-                            (:id, :name)
+                            (:id, :name, :url)
                         ";
 				if (Model::query($sql, $values)) {
                     return true;

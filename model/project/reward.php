@@ -219,7 +219,7 @@ namespace Goteo\Model\Project {
                     FROM invest_reward
                     INNER JOIN invest
                         ON invest.id = invest_reward.invest
-                        AND invest.status IN ('0', '1', '3')
+                        AND invest.status IN ('0', '1', '3', '4')
                         AND invest.project = :project
                     WHERE invest_reward.reward = :reward
                 ";

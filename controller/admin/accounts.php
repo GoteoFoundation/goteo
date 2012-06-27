@@ -168,6 +168,62 @@ namespace Goteo\Controller\Admin {
 
                 $errors = array();
 
+                // primero cancelar
+                switch ($invest->method) {
+                    case 'paypal':
+                        $err = array();
+                        if (Paypal::cancelPreapproval($invest, $err)) {
+                            $errors[] = 'Preaproval paypal cancelado.';
+                            $log_text = "El admin %s ha cancelado aporte y preapproval de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
+                        } else {
+                            $txt_errors = implode('; ', $err);
+                            $errors[] = 'Fallo al cancelar el preapproval en paypal: ' . $txt_errors;
+                            $log_text = "El admin %s ha fallado al cancelar el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                            if ($invest->cancel()) {
+                                $errors[] = 'Aporte cancelado';
+                            } else{
+                                $errors[] = 'Fallo al cancelar el aporte';
+                            }
+                        }
+                        break;
+                    case 'tpv':
+                        $err = array();
+                        if (Tpv::cancelPreapproval($invest, $err)) {
+                            $txt_errors = implode('; ', $err);
+                            $errors[] = 'Aporte cancelado correctamente. ' . $txt_errors;
+                            $log_text = "El admin %s ha anulado el cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s";
+                        } else {
+                            $txt_errors = implode('; ', $err);
+                            $errors[] = 'Fallo en la operación. ' . $txt_errors;
+                            $log_text = "El admin %s ha fallado al solicitar la cancelación del cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                        }
+                        break;
+                    case 'cash':
+                        if ($invest->cancel()) {
+                            $log_text = "El admin %s ha cancelado aporte manual de %s de %s (id: %s) al proyecto %s del dia %s";
+                            $errors[] = 'Aporte cancelado';
+                        } else{
+                            $log_text = "El admin %s ha fallado al cancelar el aporte manual de %s de %s (id: %s) al proyecto %s del dia %s. ";
+                            $errors[] = 'Fallo al cancelar el aporte';
+                        }
+                        break;
+                }
+
+                // Evento Feed
+                $log = new Feed();
+                $log->populate('Cargo cancelado manualmente (admin)', '/admin/accounts',
+                    \vsprintf($log_text, array(
+                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                        Feed::item('user', $userData->name, $userData->id),
+                        Feed::item('money', $invest->amount.' &euro;'),
+                        Feed::item('system', $invest->id),
+                        Feed::item('project', $project->name, $project->id),
+                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                )));
+                $log->doAdmin();
+                unset($log);
+
+                // luego resolver
                 if ($invest->solve($errors)) {
                     // Evento Feed
                     $log = new Feed();
@@ -412,7 +468,7 @@ namespace Goteo\Controller\Admin {
                             $invest->status = 1;
                         } else {
                             $txt_errors = implode('; ', $errors);
-                            $errors[] = 'Fallo al ejecutar cargo paypal: ' . $txt_errors;
+                            $errors[] = 'Fallo al ejecutar cargo paypal: ' . $txt_errors . '<strong>POSIBLE INCIDENCIA NO COMUNICADA Y APORTE NO CANCELADO, HAY QUE TRATARLA MANUALMENTE</strong>';
                             $log_text = "El admin %s ha fallado al ejecutar el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
                         }
                         break;
