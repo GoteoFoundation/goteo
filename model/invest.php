@@ -103,7 +103,7 @@ namespace Goteo\Model {
                 SELECT  *
                 FROM  invest
                 WHERE   invest.project = ?
-                AND invest.status IN ('0', '1', '3')
+                AND invest.status IN ('0', '1', '3', '4')
                 ", array($project));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $invest) {
                 // datos del usuario
@@ -946,10 +946,9 @@ namespace Goteo\Model {
                     $drop = Invest::get($this->droped);
                     // si estan reubicando o caducando
                     // liberamos el capital riego
-                    if ($status == 4 || $status == 5) {
-                        if ($drop->setStatus(2)) {
-                            self::query("UPDATE invest SET droped = NULL WHERE id = :id", array(':id' => $this->id));
-                        }
+                    if (in_array($status, array(2, 4, 5))) {
+                        $drop->setStatus(2);
+                        self::query("UPDATE invest SET droped = NULL WHERE id = :id", array(':id' => $this->id));
                     } else {
                         $drop->setStatus($status);
                     }
@@ -1056,7 +1055,7 @@ namespace Goteo\Model {
 
             $sql = "UPDATE invest SET
                         returned = :returned,
-                        status = 2
+                        status = 4
                     WHERE id = :id";
             
             if (self::query($sql, $values)) {
@@ -1152,7 +1151,6 @@ namespace Goteo\Model {
                             if ($invest->campaign == 1) {
                                 $Data['cash']['total']['fail'] += $invest->amount;
                                 $Data['note'][] = "Aporte de capital riego {$invId} debería estar cancelado. <a href=\"/admin/invests/details/{$invId}\" target=\"_blank\">Abrir detalles</a>";
-                                self::setIssue($invId);
                             }
                         }
                     }
@@ -1169,7 +1167,6 @@ namespace Goteo\Model {
                             if (in_array($invest->investStatus, array(0, 1, 3))) {
                                 $Data['paypal']['total']['fail'] += $invest->amount;
                                 $Data['note'][] = "El aporte PayPal {$invId} no debería estar en estado '" . self::status($invest->investStatus) . "'. <a href=\"/admin/invests/details/{$invId}\" target=\"_blank\">Abrir detalles</a>";
-                                self::setIssue($invId);
                             }
                         }
                     }
@@ -1186,7 +1183,6 @@ namespace Goteo\Model {
                             if ($invest->investStatus == 1) {
                                 $Data['tpv']['total']['fail'] += $invest->amount;
                                 $Data['note'][] = "El aporte TPV {$invId} no debería estar en estado '" . self::status($invest->investStatus) . "'. <a href=\"/admin/invests/details/{$invId}\" target=\"_blank\">Abrir detalles</a>";
-                                self::setIssue($invId);
                             }
                         }
                     }
@@ -1331,7 +1327,6 @@ namespace Goteo\Model {
                                     if ($invest->investStatus == 0 && ($p0 === 'first' || $p0 === 'all')) {
                                         $Data['paypal']['first']['fail'] += $invest->amount;
                                         $Data['note'][] = "El aporte paypal {$invId} no debería estar en estado '".self::status($invest->investStatus)."'. <a href=\"/admin/invests/details/{$invId}\" target=\"_blank\">Abrir detalles</a>";
-                                        self::setIssue($invId);
                                         continue;
                                     }
                                     $Data['paypal']['first']['users'][$invest->user] = $invest->user;
@@ -1398,7 +1393,6 @@ namespace Goteo\Model {
                                         $Data['paypal']['second']['fail'] += $invest->amount;
                                         $Data['paypal']['total']['fail'] += $invest->amount;
                                         $Data['note'][] = "El aporte paypal {$invId} no debería estar en estado '".self::status($invest->investStatus)."'. <a href=\"/admin/invests/details/{$invId}\" target=\"_blank\">Abrir detalles</a>";
-                                        self::setIssue($invId);
                                         continue;
                                     }
                                     $Data['paypal']['second']['users'][$invest->user] = $invest->user;

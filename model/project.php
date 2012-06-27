@@ -1903,7 +1903,7 @@ namespace Goteo\Model {
         }
 
         /*
-         * Lista de proyectos en campaña (para ser revisados por el cron)
+         * Lista de proyectos en campaña o financiados (para ser revisados por el cron/daily)
          */
         public static function active($campaignonly = false)
         {
@@ -1916,6 +1916,36 @@ namespace Goteo\Model {
             }
 
             $sql = "SELECT project.id FROM  project {$sqlFilter} ORDER BY name ASC";
+
+            $query = self::query($sql);
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
+                $projects[] = self::get($proj->id);
+            }
+            return $projects;
+        }
+
+        /*
+         * Lista de proyectos en campaña (para ser revisados por el cron/execute)
+         */
+        public static function getActive()
+        {
+            $projects = array();
+
+            $sql = "
+                SELECT project.id
+                FROM  project
+                WHERE project.status = 3
+                AND (
+                    (DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') >= 40
+                        AND passed IS NULL
+                        )
+                    OR
+                    (DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') >= 80
+                        AND success IS NULL
+                        )
+                    )
+                ORDER BY name ASC
+            ";
 
             $query = self::query($sql);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {

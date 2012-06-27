@@ -35,8 +35,10 @@ namespace Goteo\Controller {
             $debug = true;
 
             // revision de proyectos: dias, conseguido y cambios de estado
-            // proyectos en campaña 
-            $projects = Model\Project::active(true);
+            // proyectos en campaña,
+            // (publicados hace más de 40 días que no tengan fecha de pase)
+            // o (publicados hace mas de 80 días que no tengan fecha de exito)
+            $projects = Model\Project::getActive();
 
             if ($debug) echo 'Comenzamos con los proyectos en campaña<br />';
 
@@ -460,6 +462,42 @@ namespace Goteo\Controller {
                                         $log_text = "Ha fallado al ejecutar el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
                                         if ($debug) echo ' -> ERROR!!';
                                         Model\Invest::setDetail($invest->id, 'execution-failed', 'Fallo al ejecutar el preapproval, no ha iniciado el pago encadenado: ' . $txt_errors . '. Proceso cron/execute');
+                                        // cancelamos el aporte
+                                        $err = array();
+                                        if (Paypal::cancelPreapproval($invest, $err)) {
+                                            Model\Invest::setDetail($invest->id, 'canceled', "Se ha cancelado aporte y preapproval en PayPal");
+                                        } else {
+                                            Model\Invest::setDetail($invest->id, 'cancel-failed', "Ha fallado al cancelar el preapproval en PayPal. ".implode('; ', $err) );
+                                        }
+                                        // Notifiacion al usuario (solo primera ronda)
+//                                        if ($days < 80) {
+                                            // Obtenemos la plantilla para asunto y contenido
+                                            $template = Template::get(37);
+                                            // Sustituimos los datos
+                                            $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+                                            $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%DETAILS%');
+                                            $replace = array($userData->name, $project->name, SITE_URL . '/project/' . $project->id, $invest->amount, '');
+                                            $content = \str_replace($search, $replace, $template->text);
+                                            // iniciamos mail
+                                            $mailHandler = new Mail();
+                                            $mailHandler->to = $userData->email;
+                                            $mailHandler->toName = $userData->name;
+                                            $mailHandler->subject = $subject;
+                                            $mailHandler->content = $content;
+                                            $mailHandler->html = true;
+                                            $mailHandler->template = $template->id;
+                                            if ($mailHandler->send()) {
+                                                Model\Invest::setDetail($invest->id, 'issue-notified', "Se ha notificado la incidencia al usuario");
+                                            } else {
+                                                Model\Invest::setDetail($invest->id, 'issue-notify-failed', "Ha fallado al enviar el mail de notificacion de la incidencia al usuario");
+                                                @mail('goteo_fail@doukeshi.org',
+                                                    'Fallo al enviar email de notificacion de incidencia PayPal' . SITE_URL,
+                                                    'Fallo al enviar email de notificacion de incidencia PayPal: <pre>' . print_r($mailHandler, 1). '</pre>');
+                                            }
+//                                        }
+                                        // completamos la cancelacion (el metodo cancel usado por la libreria paypal lo deja ene stado 4)
+                                        $invest->setStatus('2');
+                                        // fin tratamiento incidencia
                                     }
                                     break;
                                 case 'tpv':
@@ -536,6 +574,8 @@ namespace Goteo\Controller {
             // eliminamos feed antiguo
             $query = Model\Project::query("DELETE FROM `feed` WHERE type != 'goteo' AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`datetime`)), '%j') > 60");
             die('Listo!');
+
+            /*
             // proyectos en campaña
             $projects = Model\Project::active(true);
 
@@ -612,6 +652,8 @@ namespace Goteo\Controller {
 
             // recogemos el buffer para grabar el log
             \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
+
+            */
         }
 
         /*

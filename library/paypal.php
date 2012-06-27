@@ -142,8 +142,7 @@ namespace Goteo\Library {
            		$payRequest->preapprovalKey = $invest->preapproval;
                 $payRequest->actionType = 'PAY_PRIMARY';
                 $payRequest->feesPayer = 'EACHRECEIVER';
-                // voy a poner esto a false para investigar los reversalerror
-                $payRequest->reverseAllParallelPaymentsOnError = false;
+                $payRequest->reverseAllParallelPaymentsOnError = true;
 //                $payRequest->trackingId = $invest->id;
                 // SENDER no vale para chained payments   (PRIMARYRECEIVER, EACHRECEIVER, SECONDARYONLY)
                 $payRequest->requestEnvelope = new \RequestEnvelope();
@@ -171,6 +170,7 @@ namespace Goteo\Library {
 
                 // Check response
                 if(strtoupper($ap->isSuccess) == 'FAILURE') {
+                    $error_txt = '';
                     $soapFault = $ap->getLastError();
                     if(is_array($soapFault->error)) {
                         $errorId = $soapFault->error[0]->errorId;
@@ -202,6 +202,7 @@ namespace Goteo\Library {
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
                                 $log->doAdmin();
+                                $error_txt = $log->title;
                                 unset($log);
 
                             }
@@ -218,6 +219,7 @@ namespace Goteo\Library {
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
                                 $log->doAdmin();
+                                $error_txt = $log->title;
                                 unset($log);
 
                             break;
@@ -234,6 +236,7 @@ namespace Goteo\Library {
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
                                 $log->doAdmin();
+                                $error_txt = $log->title;
                                 unset($log);
 
                             break;
@@ -249,6 +252,7 @@ namespace Goteo\Library {
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
                                 $log->doAdmin();
+                                $error_txt = $log->title;
                                 unset($log);
 
                             break;
@@ -264,6 +268,7 @@ namespace Goteo\Library {
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
                                 $log->doAdmin();
+                                $error_txt = $log->title;
                                 unset($log);
 
                             break;
@@ -279,6 +284,39 @@ namespace Goteo\Library {
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
                                 $log->doAdmin();
+                                $error_txt = $log->title;
+                                unset($log);
+
+                            break;
+                        case '579031': // The total amount of all payments exceeds the maximum total amount for all payments
+                                // Evento Feed
+                                $log = new Feed();
+                                $log->populate('Problema con los importes', '/admin/accounts',
+                                    \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque ha habido <span class="red">algun problema con los importes</span>', array(
+                                        Feed::item('user', $userData->name, $userData->id),
+                                        Feed::item('money', $invest->amount.' &euro;'),
+                                        Feed::item('system', $invest->id),
+                                        Feed::item('project', $project->name, $project->id),
+                                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                                )));
+                                $log->doAdmin();
+                                $error_txt = $log->title;
+                                unset($log);
+
+                            break;
+                        case '520002': // Internal error
+                                // Evento Feed
+                                $log = new Feed();
+                                $log->populate('Error interno de PayPal', '/admin/accounts',
+                                    \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque ha habido <span class="red">un error interno en PayPal</span>', array(
+                                        Feed::item('user', $userData->name, $userData->id),
+                                        Feed::item('money', $invest->amount.' &euro;'),
+                                        Feed::item('system', $invest->id),
+                                        Feed::item('project', $project->name, $project->id),
+                                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                                )));
+                                $log->doAdmin();
+                                $error_txt = $log->title;
                                 unset($log);
 
                             break;
@@ -288,6 +326,8 @@ namespace Goteo\Library {
                     if (empty($errorId)) {
                         $errors[] = 'NO es soapFault pero no es Success: <pre>' . print_r($ap, 1) . '</pre>';
                         @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No es un soap fault pero no es un success.<br /><pre>' . print_r($ap, 1) . '</pre>');
+                    } elseif (!empty($error_txt)) {
+                        $errors[] = $error_txt;
                     } else {
                         $errors[] = "$action $errorMsg [$errorId]";
                     }
@@ -302,7 +342,7 @@ namespace Goteo\Library {
                         if ($response->paymentExecStatus != 'INCOMPLETE') {
                             Invest::setIssue($invest->id);
                             $errors[] = "Obtenido codigo de pago $token pero no ha quedado en estado INCOMPLETE id {$invest->id}.";
-                            @mail('goteo-paypal-API-fault@doukeshi.org', 'El chained payment no ha quedado como incomplete', 'ERROR en ' . __FUNCTION__ . ' No payment status incomplete.<br /><pre>' . print_r($response, 1) . '</pre>');
+                            @mail('goteo-paypal-API-fault@doukeshi.org', 'El chained payment del aporte '.$invest->id.' no ha quedado como incomplete', 'ERROR en ' . __FUNCTION__ . ' No payment status incomplete id: '.$invest->id.'.<br /><pre>' . print_r($response, 1) . '</pre>');
                             return false;
                         }
                         $invest->setStatus(1);
@@ -327,6 +367,7 @@ namespace Goteo\Library {
                 $errorData->message = $ex->getMessage();
                 $fault->error = $errorData;
 
+                Invest::setIssue($invest->id);
                 $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
                 @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, 1) . '</pre>');
                 return false;
