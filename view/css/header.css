@@ -593,7 +593,7 @@ div#header div#menu > ul > li.create > a {
     margin: .68em .2em .6em 0;
     max-width: 7.5em;
     text-align: left;
-	width:80px;
+/*	width:80px; */
 	line-height: 1em;
 }
 
