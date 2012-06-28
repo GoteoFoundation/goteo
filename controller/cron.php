@@ -361,7 +361,9 @@ namespace Goteo\Controller {
                     $project->invests = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
 
                     foreach ($project->invests as $key=>&$invest) {
-
+                        $errors = array();
+                        $log_text = null;
+                        
                         $userData = Model\User::getMini($invest->user);
 
                         if ($invest->invested == date('Y-m-d')) {
@@ -441,10 +443,6 @@ namespace Goteo\Controller {
 
                             }
 
-                            $errors = array();
-
-                            $log_text = null;
-
                             switch ($invest->method) {
                                 case 'paypal':
                                     $invest->account = $projectAccount->paypal;
@@ -459,18 +457,12 @@ namespace Goteo\Controller {
                                         @mail('goteo_fail@doukeshi.org',
                                             'Fallo al ejecutar cargo Paypal ' . SITE_URL,
                                             'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: ' . $txt_errors);
-                                        $log_text = "Ha fallado al ejecutar el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
                                         if ($debug) echo ' -> ERROR!!';
                                         Model\Invest::setDetail($invest->id, 'execution-failed', 'Fallo al ejecutar el preapproval, no ha iniciado el pago encadenado: ' . $txt_errors . '. Proceso cron/execute');
                                         // cancelamos el aporte
-                                        $err = array();
-                                        if (Paypal::cancelPreapproval($invest, $err)) {
-                                            Model\Invest::setDetail($invest->id, 'canceled', "Se ha cancelado aporte y preapproval en PayPal");
-                                        } else {
-                                            Model\Invest::setDetail($invest->id, 'cancel-failed', "Ha fallado al cancelar el preapproval en PayPal. ".implode('; ', $err) );
-                                        }
+                                        Paypal::cancelPreapproval($invest);
                                         // Notifiacion al usuario (solo primera ronda)
-//                                        if ($days < 80) {
+                                        if ($days < 80) {
                                             // Obtenemos la plantilla para asunto y contenido
                                             $template = Template::get(37);
                                             // Sustituimos los datos
@@ -494,7 +486,7 @@ namespace Goteo\Controller {
                                                     'Fallo al enviar email de notificacion de incidencia PayPal' . SITE_URL,
                                                     'Fallo al enviar email de notificacion de incidencia PayPal: <pre>' . print_r($mailHandler, 1). '</pre>');
                                             }
-//                                        }
+                                        }
                                         // completamos la cancelacion (el metodo cancel usado por la libreria paypal lo deja ene stado 4)
                                         $invest->setStatus('2');
                                         // fin tratamiento incidencia

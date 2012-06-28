@@ -320,12 +320,41 @@ namespace Goteo\Library {
                                 unset($log);
 
                             break;
+                        default:
+                            if (empty($errorId)) {
+                                @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No es un soap fault pero no es un success.<br /><pre>' . print_r($ap, 1) . '</pre>');
+                                $log = new Feed();
+                                $log->populate('Error interno de PayPal', '/admin/accounts',
+                                    \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s <span class="red">NO es soapFault pero no es Success</span>, se ha reportado el error.', array(
+                                        Feed::item('user', $userData->name, $userData->id),
+                                        Feed::item('money', $invest->amount.' &euro;'),
+                                        Feed::item('system', $invest->id),
+                                        Feed::item('project', $project->name, $project->id),
+                                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                                )));
+                                $log->doAdmin();
+                                $error_txt = $log->title;
+                                unset($log);
+                            } else {
+                                $log = new Feed();
+                                $log->populate('Error interno de PayPal', '/admin/accounts',
+                                    \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s <span class="red">'.$action.' '.$errorMsg.' ['.$errorId.']</span>', array(
+                                        Feed::item('user', $userData->name, $userData->id),
+                                        Feed::item('money', $invest->amount.' &euro;'),
+                                        Feed::item('system', $invest->id),
+                                        Feed::item('project', $project->name, $project->id),
+                                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                                )));
+                                $log->doAdmin();
+                                $error_txt = $log->title;
+                                unset($log);
+                            }
+                            break;
                     }
 
 
                     if (empty($errorId)) {
                         $errors[] = 'NO es soapFault pero no es Success: <pre>' . print_r($ap, 1) . '</pre>';
-                        @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No es un soap fault pero no es un success.<br /><pre>' . print_r($ap, 1) . '</pre>');
                     } elseif (!empty($error_txt)) {
                         $errors[] = $error_txt;
                     } else {

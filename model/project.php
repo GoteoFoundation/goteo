@@ -1936,11 +1936,11 @@ namespace Goteo\Model {
                 FROM  project
                 WHERE project.status = 3
                 AND (
-                    (DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') >= 40
+                    (DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') >= 35
                         AND passed IS NULL
                         )
                     OR
-                    (DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') >= 80
+                    (DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') >= 75
                         AND success IS NULL
                         )
                     )
