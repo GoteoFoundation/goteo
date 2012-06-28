@@ -61,7 +61,7 @@ include 'view/prologue.html.php';
                     <li><a href="/admin/tasks">Tareas</a></li>
                     <li><a href="/admin/nodes">Nodos</a></li>
                     <li><a href="/admin/contracts">Contratos</a></li>
-                    <li><a href="/admin/reports">Estadística</a></li>
+                    <li><a href="/admin/reports">Informes</a></li>
                     <li><a href="/admin/newsletter">Boletin</a></li>
                 </ul>
             </div>

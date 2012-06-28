@@ -138,12 +138,6 @@ namespace Goteo\Controller {
                         ),
                         'filters' => array('section'=>'node')
                     ),
-                    'recent' => array(
-                        'label' => 'Actividad reciente',
-                        'actions' => array(
-                            'list' => array('label' => 'Listando', 'item' => false)
-                        )
-                    ),
                     'home' => array(
                         'label' => 'Elementos en portada',
                         'actions' => array(
@@ -285,6 +279,20 @@ namespace Goteo\Controller {
                             'edit' => array('label' => 'Editando Destacado', 'item' => true),
                             'translate' => array('label' => 'Traduciendo Destacado', 'item' => true)
                         )
+                    ),
+                    'recent' => array(
+                        'label' => 'Actividad reciente',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false)
+                        )
+                    ),
+                    'reports' => array(
+                        'label' => 'Informes',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'paypal' => array('label' => 'Informe PayPal', 'item' => false)
+                        ),
+                        'filters' => array('from'=>'', 'until'=>'')
                     ),
                     'reviews' => array(
                         'label' => 'Revisiones',
@@ -667,6 +675,15 @@ namespace Goteo\Controller {
             $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
             return Admin\Rewards::process($action, $id, self::setFilters(__FUNCTION__));
+        }
+
+        /*
+         * Visualización de informes generales de goteo
+         */
+        public function reports($action = 'list', $id = null, $filters = array()) {
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
+            define('ADMIN_BCPATH', $BC);
+            return Admin\Reports::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
         /*
@@ -1116,6 +1133,7 @@ namespace Goteo\Controller {
                         'sponsors' => array(
                             'label'   => 'Servicios',
                             'options' => array (
+                                'reports' => $options['reports'],
                                 'newsletter' => $options['newsletter'],
                                 'sponsors' => $options['sponsors'],
                                 'calls' => $options['calls'],
