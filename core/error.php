@@ -11,6 +11,7 @@ namespace Goteo\Core {
             NOT_FOUND       = 404,
             NOT_ACEPTABLE   = 406,
             CONFLICT        = 409,
+            TEAPOT          = 418,
             INTERNAL        = 500,
             UNAVAILABLE     = 503;
         
@@ -53,7 +54,7 @@ namespace Goteo\Core {
                 415 => 'Unsupported Media Type',
                 416 => 'Requested Range Not Satisfiable',
                 417 => 'Expectation Failed',
-                418 => "I'm a teapot", // RFC 2324
+                418 => 'You are a teapot', // RFC 2324
                 422 => 'Unprocessable Entity', // WebDAV
                 423 => 'Locked', // WebDAV
                 424 => 'Failed Dependency', // WebDAV

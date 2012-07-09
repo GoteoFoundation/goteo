@@ -1046,16 +1046,23 @@ namespace Goteo\Model {
         /*
          * Marcar esta aportación como cancelada
          */
-        public function cancel () {
+        public function cancel ($fail = false) {
 
             $values = array(
                 ':id' => $this->id,
                 ':returned' => date('Y-m-d')
             );
 
+            // si es un proyecto fallido el aporte se queda en el termometro
+            if ($fail) {
+                $status = 4;
+            } else {
+                $status = 2;
+            }
+
             $sql = "UPDATE invest SET
                         returned = :returned,
-                        status = 4
+                        status = $status
                     WHERE id = :id";
             
             if (self::query($sql, $values)) {
@@ -1090,7 +1097,7 @@ namespace Goteo\Model {
                 1  => 'Cobrado por Goteo',
                 2  => 'Cancelado',
                 3  => 'Pagado al proyecto',
-                4  => 'Devuelto (TPV)',
+                4  => 'Devuelto (archivado)',
                 5  => 'Reubicado'
             );
 

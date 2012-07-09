@@ -550,6 +550,7 @@ namespace Goteo\Controller {
 
                             // enviar mensaje
                             case 'message':
+                                $who = array();
                                 $filter = $_POST['filter'];
                                 $order  = $_POST['order'];
 
@@ -563,12 +564,14 @@ namespace Goteo\Controller {
 
                                 if (!empty($_POST['msg_all'])) {
                                     // si a todos
-                                    $who = array();
                                     foreach (Model\Invest::investors($project->id, false, true) as $user=>$investor) {
                                         if (!in_array($user, $who)) {
                                             $who[$user] = $investor->user;
                                         }
                                     }
+                                } elseif (!empty($_POST['msg_user'])) {
+                                    //si individual
+                                    $who[] = $_POST['msg_user'];
                                 } else {
                                     $msg_rewards = array();
                                     // estos son msg_reward-[rewardId]
@@ -579,7 +582,6 @@ namespace Goteo\Controller {
                                         }
                                     }
 
-                                    $who = array();
                                     // para cada recompensa
                                     foreach ($msg_rewards as $reward) {
                                         foreach (Model\Invest::choosed($reward) as $user) {
@@ -649,7 +651,9 @@ namespace Goteo\Controller {
                         if ($action == 'save') {
                             $accounts = Model\Project\Account::get($project->id);
                             $accounts->bank = $_POST['bank'];
+                            $accounts->bank_owner = $_POST['bank_owner'];
                             $accounts->paypal = $_POST['paypal'];
+                            $accounts->paypal_owner = $_POST['paypal_owner'];
                             if ($accounts->save($errors)) {
 
                                 $success[] = 'Cuentas actualizadas';

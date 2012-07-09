@@ -156,6 +156,9 @@ switch ($order) {
                     </div>
                    
                     <div class="left recompensas"  style="width:280px;">
+                    <?php if ($investData->issue) : ?>
+                     	<span style="margin-bottom:2px;color:red;"><strong>Incidencia!</strong></span>
+                    <?php endif; ?>
                     <?php if ($investData->resign) : ?>
                      	<span style="margin-bottom:2px;color:red;"><strong>Renuncia a la recompensa</strong></span>
                     <?php else : ?>
@@ -179,7 +182,7 @@ switch ($order) {
                     <div class="left">
 	                    <span class="status"><?php echo $cumplida ? '<span class="cumplida">Cumplida</span>' : '<span class="pendiente">Pendiente</span>'; ?></span>
                         <span class="profile"><a href="/user/profile/<?php echo $investData->user->id ?>" target="_blank"><?php echo Text::get('profile-widget-button'); ?></a> </span>
-                        <span class="contact"><a href="/user/profile/<?php echo $investData->user->id ?>/message" target="_blank"><?php echo Text::get('regular-send_message'); ?></a></span>
+                        <span class="contact"><a onclick="msgto_user('<?php echo $investData->user->id; ?>', '<?php echo $investData->user->name; ?>')" style="cursor: pointer;"><?php echo Text::get('regular-send_message'); ?></a></span>
                     </div>
                     
                     
@@ -203,20 +206,23 @@ switch ($order) {
         	<div id="checks">
                <input type="hidden" name="filter" value="<?php echo $filter; ?>" />
                <input type="hidden" name="order" value="<?php echo $order; ?>" />
+               <input type="hidden"id="msg_user" name="msg_user" value="" />
 
                 <p>
-                    <input type="checkbox" id="msg_all" name="msg_all" value="1" onclick="alert('a todos es a todos, no tiene en cuenta el resto de marcados');" />
+                    <input type="checkbox" id="msg_all" name="msg_all" value="1" onclick="noindiv(); alert('a todos es a todos, no tiene en cuenta el resto de marcados');" />
                     <label for="msg_all">A todos los cofinanciadores de este proyecto</label>
                 </p>
 
                 <p>
                     Por retornos: <br />
                     <?php foreach ($rewards as $rewardId => $rewardData) : ?>
-                        <input type="checkbox" id="msg_reward-<?php echo $rewardId; ?>" name="msg_reward-<?php echo $rewardId; ?>" value="1" />
+                        <input type="checkbox" id="msg_reward-<?php echo $rewardId; ?>" name="msg_reward-<?php echo $rewardId; ?>" value="1" onclick="noindiv();"/>
                         <label for="msg_reward-<?php echo $rewardId; ?>"><?php echo $rewardData->amount; ?> &euro; (<?php echo Text::recorta($rewardData->reward, 40); ?>)</label>
                     <?php endforeach; ?>
 
                 </p>
+
+                <div id="msg_user_name"></div>
     		</div>
 		    <div id="comment">
             <script type="text/javascript">
@@ -249,9 +255,22 @@ switch ($order) {
 
 <?php endif; ?>
 <script type="text/javascript">
+    function noindiv() {
+        $('#msg_user').val('');
+        $('#msg_user_name').html('');
+    }
     function msgto(reward) {
+        noindiv();
         document.getElementById('msg_reward-'+reward).checked = 'checked';
         document.location.href = '#message';
         $("#message").focus();
+    }
+
+    function msgto_user(user, name) {
+        $('#msg_user').val(user);
+        $('#msg_user_name').html('<p>Individual a <strong>'+name+'</strong></p>');
+        document.location.href = '#message';
+        $("#message").focus();
+
     }
 </script>

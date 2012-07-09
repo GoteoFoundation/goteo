@@ -194,6 +194,13 @@ namespace Goteo\Controller {
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['message'])) {
 
+                // verificamos token
+                if (!isset($_POST['msg_token']) || $_POST['msg_token']!=$_SESSION['msg_token']) {
+//                    throw new Error(Error::BAD_REQUEST);
+                    header("HTTP/1.1 418");
+                    die('Temporalmente no disponible');
+                }
+
                 // sacamos el mail del responsable del proyecto
                 $project = Model\Project::getMini($project);
                 $ownerData = Model\User::getMini($project->owner);
@@ -245,10 +252,25 @@ namespace Goteo\Controller {
          * Este metodo envia un mensaje personal
          */
         public function personal ($user = null) {
+            // verificacion de que esté autorizasdo a enviar mensaje
+            if (!isset($_SESSION['message_autorized']) || $_SESSION['message_autorized'] !== true) {
+                \Goteo\Library\Message::Info('Temporalmente no disponible. Disculpen las molestias');
+                throw new Redirection('/');
+            } else {
+                // y quitamos esta autorización
+                unset($_SESSION['message_autorized']);
+            }
+
             if (empty($user))
                 throw new Redirection('/community', Redirection::PERMANENT);
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['message'])) {
+
+                // verificamos token
+                if (!isset($_POST['msg_token']) || $_POST['msg_token']!=$_SESSION['msg_token']) {
+                    header("HTTP/1.1 418");
+                    die('Temporalmente no disponible');
+                }
 
                 // sacamos el mail del responsable del proyecto
                 $user = Model\User::get($user);

@@ -64,7 +64,7 @@ namespace Goteo\Controller {
                             $to = \NODE_MAIL;
                             $toName = \NODE_NAME;
                         } else {
-                            $to = \GOTEO_MAIL;
+                            $to = \GOTEO_CONTACT_MAIL;
                             $toName = 'Goteo';
                         }
 

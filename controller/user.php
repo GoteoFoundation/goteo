@@ -437,6 +437,26 @@ namespace Goteo\Controller {
             }
             //--- el resto pueden seguir ---
 
+            // solamente puede enviar mensaje si es cofinanciador de un proyecto de este usuario
+            if ($show == 'message') {
+                // proyectos que es cofinanciador el usuario logueado
+                $is_investor = false;
+                $user_invested = Model\User::invested($_SESSION['user']->id, true);
+                foreach ($user_invested as $a_project) {
+                    if ($a_project->owner == $id) {
+                        $is_investor = true;
+                        break;
+                    }
+                }
+
+                if (!$is_investor) {
+                    Message::Info(Text::get('user-message-restricted'));
+                    throw new Redirection('/user/profile/' .  $id);
+                } else {
+                    $_SESSION['message_autorized'] = true;
+                }
+            }
+
             /*
              *  Si es un usuario vip y tiene proyectos recomendados activados
              *   mostramos la página especial de patronos
@@ -461,6 +481,7 @@ namespace Goteo\Controller {
             $viewData['user'] = $user;
 
             $projects = Model\Project::ofmine($id, true);
+            $viewData['projects'] = $projects;
 
             //mis cofinanciadores
             // array de usuarios con:

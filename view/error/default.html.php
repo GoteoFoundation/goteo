@@ -3,7 +3,7 @@ use Goteo\Library\Text,
     Goteo\Core\View,
     Goteo\Library\Page;
 
-$page = Page::get('credits');
+$page = Page::get('error');
 
 include 'view/prologue.html.php';
 include 'view/header.html.php';
@@ -14,6 +14,8 @@ include 'view/header.html.php';
             <h2><?php echo $error->getMessage() ?>!</h2>
         </div>
     </div>
+
+<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
 
     <div id="main">
         <div class="widget">

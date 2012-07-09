@@ -106,20 +106,20 @@ namespace Goteo\Library {
 
                 Invest::setDetail($invest->id, 'tpv-conection-fail', 'Ha fallado la comunicacion con el tpv. Proceso libary/tpv::pay');
                 $errors[] = 'Error fatal en la comunicacion con el TPV, se ha reportado la incidencia. Disculpe las molestias.';
-                @mail('goteo-tpv-fault@doukeshi.org', 'Error fatal en comunicacion TPV Sermepa', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, 1) . '</pre>' . $ex->getMessage());
+                @mail('goteo-tpv-fault@doukeshi.org', 'Error fatal en comunicacion TPV Sermepa', 'ERROR en ' . __FUNCTION__ . '<br />' . $ex->getMessage());
                 return false;
 			}
             
         }
 
-        public static function cancelPreapproval ($invest, &$errors = array()) {
-            return static::cancelPay($invest, $errors);
+        public static function cancelPreapproval ($invest, &$errors = array(), $fail = false) {
+            return static::cancelPay($invest, $errors, $fail);
         }
-        public static function cancelPay($invest, &$errors = array()) {
+        public static function cancelPay($invest, &$errors = array(), $fail = false) {
 
 			try {
                 if (empty($invest->payment)) {
-                    $invest->cancel();
+                    $invest->cancel($fail);
                     return true;
                 }
 
@@ -170,11 +170,11 @@ namespace Goteo\Library {
                     $errors[] = 'No se ha podido completar la comunicacion con ceca para procesar la anulación del cargo. ';
                     @mail('goteo-tpv-fault@doukeshi.org', 'Fallo en la comunicacion TPV Sermepa', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($errors, 1) . '</pre>');
                    return false;
-                } else {
+                } elseif (!empty($response)) {
                     $respobj = \htmlentities($response);
                     //echo $respobj . '<hr />';
                     // de cualquier manera el aporte lo cancelamos
-                    $invest->cancel();
+                    $invest->cancel($fail);
                     // buscamos el codigo 900 de anulacion realizada correctamente
                     if (\stripos($response, 'REALIZADA') !== false
                         && \strpos($respobj, '900') !== false ) {
@@ -191,14 +191,15 @@ namespace Goteo\Library {
                         @mail('goteo-tpv-fault@doukeshi.org', 'No encuentra codigo en la comunicacion TPV Sermepa', 'ERROR en ' . __FUNCTION__ . '<hr />' . $response . '<pre>'.print_r($datos, 1).'</pre>');
                         return false;
                     }
+                } else {
+                    @mail('goteo-tpv-fault@doukeshi.org', 'Error fatal en comunicacion TPV Sermepa', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($handler, 1) . '</pre>');
+                    return false;
                 }
-//                echo implode('<br />', $errors);
-//                die;
 			}
 			catch(Exception $ex) {
                 Invest::setDetail($invest->id, 'tpv-cancel-conection-fail', 'Ha fallado la comunicacion con el tpv al anular la operacion. Proceso libary/tpv::cancelPay');
                 $errors[] = 'Error fatal en la comunicación con el TPV, se ha reportado la incidencia. Disculpe las molestias.';
-                @mail('goteo-tpv-fault@doukeshi.org', 'Error fatal en comunicacion TPV Sermepa', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, 1) . '</pre>');
+                @mail('goteo-tpv-fault@doukeshi.org', 'Error fatal en comunicacion TPV Sermepa', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($handler, 1) . '</pre>');
                 return false;
 			}
 

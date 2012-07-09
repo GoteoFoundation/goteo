@@ -46,6 +46,9 @@ include 'view/header.html.php';
         <a class="next">next</a>
     </div>
 </div>
+
+<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+
 <div id="main">
 
     <?php foreach ($this['order'] as $item=>$itemData) {

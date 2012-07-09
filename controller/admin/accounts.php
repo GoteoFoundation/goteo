@@ -130,7 +130,9 @@ namespace Goteo\Controller\Admin {
 
                 if ($invest->issue && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update']) && $_POST['resolve'] == 1) {
                     if (Model\Invest::query("UPDATE invest SET issue = NULL WHERE id=:id", array(':id'=>$id))) {
+                        Model\Invest::setDetail($id, 'issue-solved', 'La incidencia se ha dado por resuelta por el usuario ' . $_SESSION['user']->name);
                         Message::Info('La incidencia se ha dado por resuelta');
+                        throw new Redirection('/admin/accounts');
                     } else {
                         Message::Error('Ha fallado al resolver la incidencia');
                     }
@@ -139,6 +141,7 @@ namespace Goteo\Controller\Admin {
                 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update']) && isset($new) && isset($status[$new]) && $new != $invest->status) {
 
                     if (Model\Invest::query("UPDATE invest SET status=:status WHERE id=:id", array(':id'=>$id, ':status'=>$new))) {
+                        Model\Invest::setDetail($id, 'status-change'.rand(0, 9999), 'El admin ' . $_SESSION['user']->name) . ' ha cambiado el estado del apote a '.$status[$new];
                         Message::Info('Se ha actualizado el estado del aporte');
                         throw new Redirection('/admin/accounts/details/'.$id);
                     } else {

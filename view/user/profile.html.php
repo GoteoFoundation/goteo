@@ -58,7 +58,7 @@ $worthcracy = Worth::getAll();
 
         <?php echo new View('view/user/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $user->worth)) ?>
 
-        <?php echo new View('view/user/widget/about.html.php', array('user' => $user)) ?>
+        <?php echo new View('view/user/widget/about.html.php', array('user' => $user, 'projects' => $this['projects'])) ?>
 
         <?php echo new View('view/user/widget/social.html.php', array('user' => $user)) ?>
 

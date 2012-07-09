@@ -581,10 +581,10 @@ namespace Goteo\Library {
          * Llamada para cancelar un preapproval (si llega a los 40 sin conseguir el mínimo)
          * recibe la instancia del aporte
          */
-        public static function cancelPreapproval ($invest, &$errors = array()) {
+        public static function cancelPreapproval ($invest, &$errors = array(), $fail = false) {
             try {
                 if (empty($invest->preapproval)) {
-                    $invest->cancel();
+                    $invest->cancel($fail);
                     return true;
                 }
 
@@ -605,7 +605,7 @@ namespace Goteo\Library {
                     return false;
                 } else {
                     Invest::setDetail($invest->id, 'paypal-cancel', 'El Preapproval se ha cancelado y con ello el aporte. Proceso libary/paypal::cancelPreapproval');
-                    $invest->cancel();
+                    $invest->cancel($fail);
                     return true;
                 }
             }

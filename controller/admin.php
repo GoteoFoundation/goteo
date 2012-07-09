@@ -399,7 +399,7 @@ namespace Goteo\Controller {
                             'impersonate' => array('label' => 'Suplantando al Usuario', 'item' => true),
                             'move' => array('label' => 'Moviendo a otro Nodo el usuario ', 'item' => true)
                         ),
-                        'filters' => array('status'=>'active', 'interest'=>'', 'role'=>'', 'node'=>'', 'id'=>'', 'name'=>'', 'order'=>'', 'project'=>'', 'type' => '')
+                        'filters' => array('interest'=>'', 'role'=>'', 'node'=>'', 'id'=>'', 'name'=>'', 'order'=>'', 'project'=>'', 'type' => '')
                     ),
                     'wordcount' => array(
                         'label' => 'Conteo de palabras',

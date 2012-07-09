@@ -18,11 +18,23 @@ require_once 'core/common.php';
 if (GOTEO_MAINTENANCE === true && $_SERVER['REQUEST_URI'] != '/about/maintenance' 
      && $_SERVER['REMOTE_ADDR'] != '85.61.251.113' // ivan
      && $_SERVER['REMOTE_ADDR'] != '95.23.219.238' // susana
-     && $_SERVER['REMOTE_ADDR'] != '83.39.15.146' //julian
+     && $_SERVER['REMOTE_ADDR'] != '83.39.9.152' //julian
      && !isset($_POST['Num_operacion'])
     ) {
     header('Location: /about/maintenance');
 }
+
+/*
+ * Antihackers
+ *
+$banned = array('141.101.70.214');
+if (in_array($_SERVER['REMOTE_ADDR'], $banned)) {
+    header("HTTP/1.1 418");
+    echo "<html><h1>418 I'm a teapot</h1><br><p>You, dear robot, are a teapot.</p></html>";
+    die;
+}
+ * 
+ */
 
 // Include path
 //set_include_path(GOTEO_PATH . PATH_SEPARATOR . '.');

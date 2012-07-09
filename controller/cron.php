@@ -24,11 +24,11 @@ namespace Goteo\Controller {
         public function execute () {
 
             if (!\defined('CRON_EXEC')) {
-                @mail('goteo_cron@doukeshi.org', 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
+                @mail('goteo_cron@doukeshi.org', 'Se ha lanzado MANUALMENTE el cron '. __FUNCTION__ .' en ' . SITE_URL,
                     'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
                echo 'Lanzamiento manual<br />';
             } else {
-               echo 'Lanzamiento automatico<br />';
+                if ($debug) echo 'Lanzamiento automatico a las ' . date ('H:i:s') . ' <br />';
             }
             // debug para supervisar en las fechas clave
 //            $debug = ($_GET['debug'] == 'debug') ? true : false;
@@ -42,7 +42,7 @@ namespace Goteo\Controller {
 
             if ($debug) echo 'Comenzamos con los proyectos en campaña<br />';
 
-            foreach ($projects as &$project) {
+            foreach ($projects as $project) {
 
                 if ($debug) echo 'Proyecto '.$project->name.'<br />';
 
@@ -63,36 +63,41 @@ namespace Goteo\Controller {
                         )));
                         $log->doAdmin('project');
                         unset($log);
+
+                        // mail de aviso
+                        $mailHandler = new Mail();
+                        $mailHandler->to = \GOTEO_CONTACT_MAIL;
+                        $mailHandler->toName = 'Goteo.org';
+                        $mailHandler->subject = 'El proyecto '.$project->name.' no tiene cuenta PayPal';
+                        $mailHandler->content = 'Hola Goteo, el proyecto '.$project->name.' no tiene cuenta PayPal y el proceso automatico no podrá tratar los preaprovals al final de ronda.';
+                        $mailHandler->html = false;
+                        $mailHandler->template = null;
+                        $mailHandler->send();
+                        unset($mailHandler);
+
+                        $task = new Model\Task();
+                        $task->node = \GOTEO_NODE;
+                        $task->text = "Poner la cuenta PayPal al proyecto <strong>{$project->name}</strong> urgentemente!";
+                        $task->url = "/admin/projects/accounts/{$project->id}";
+                        $task->done = null;
+                        $task->save();
+
                     }
+
                 }
 
                 $log_text = null;
 
-				// costes y los sumammos
-				$project->costs = Model\Project\Cost::getAll($project->id);
-
-                $project->mincost = 0;
-
-                foreach ($project->costs as $item) {
-                    if ($item->required == 1) {
-                        $project->mincost += $item->amount;
-                    }
-                }
                 if ($debug) echo 'Minimo: '.$project->mincost.' &euro; <br />';
                 
                 $execute = false;
                 $cancelAll = false;
 
-                // conseguido
-                $amount = Model\Invest::invested($project->id);
-                if ($project->invested != $amount) {
-                    \Goteo\Core\Model::query("UPDATE project SET amount = '{$amount}' WHERE id = ?", array($project->id));
-                }
-                if ($debug) echo 'Obtenido: '.$amount.' &euro;<br />';
+                if ($debug) echo 'Obtenido: '.$project->amount.' &euro;<br />';
 
                 // porcentaje alcanzado
                 if ($project->mincost > 0) {
-                    $per_amount = \round(($amount / $project->mincost) * 100);
+                    $per_amount = \round(($project->amount / $project->mincost) * 100);
                 } else {
                     $per_amount = 0;
                 }
@@ -133,36 +138,14 @@ namespace Goteo\Controller {
                     }
                 }
 
-                // pero seguimos trabajando con el numero de dias que lleva para enviar mail al autor
-                // solo si ejecucion automática
-                if (\defined('CRON_EXEC')) {
-                    // cuando quedan 20 días
-                    if ($round == 1 && $rest == 20) {
-                        self::toOwner('20_days', $project);
-                        if ($debug) echo 'Aviso al autor: lleva 20 dias<br />';
-                    }
-                    // cuando quedan 8 dias y no ha conseguido el minimo
-                    if ($round == 1 && $rest == 8 && $amount < $project->mincost) {
-                        self::toOwner('8_days', $project);
-                        if ($debug) echo 'Aviso al autor: faltan 8 dias y no ha conseguido el minimo<br />';
-                    }
-                    // cuando queda 1 día y no ha conseguido el minimo pero casi
-                    if ($round == 1 && $rest == 1 && $amount < $project->mincost && $per_amount > 70) {
-                        self::toOwner('1_day', $project);
-                        if ($debug) echo 'Aviso al autor: falta 1 dia y no supera el 70 el minimo<br />';
-                    }
-                }
-                /* Fin verificacion */
-
-
                 //  (financiado a los 80 o cancelado si a los 40 no llega al minimo)
                 // si ha llegado a los 40 dias: mínimo-> ejecutar ; no minimo proyecto y todos los preapprovals cancelados
                 if ($days >= 40) {
                     // si no ha alcanzado el mínimo, pasa a estado caducado
-                    if ($amount < $project->mincost) {
+                    if ($project->amount < $project->mincost) {
                         if ($debug) echo 'Ha llegado a los 40 dias de campaña sin conseguir el minimo, no pasa a segunda ronda<br />';
 
-                        echo $project->name . ': ha recaudado ' . $amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . '<br />';
+                        echo $project->name . ': ha recaudado ' . $project->amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . '<br />';
                         echo 'No ha conseguido el minimo, cancelamos todos los aportes y lo caducamos:';
                         $cancelAll = true;
                         $errors = array();
@@ -184,7 +167,7 @@ namespace Goteo\Controller {
                                 \vsprintf($log_text, array(
                                     Feed::item('project', $project->name, $project->id),
                                     Feed::item('relevant', 'caducado sin éxito'),
-                                    Feed::item('money', $amount.' &euro; ('.\round($per_amount).'&#37;) de aportes sobre minimo')
+                                    Feed::item('money', $project->amount.' &euro; ('.\round($per_amount).'&#37;) de aportes sobre minimo')
                             )));
                             $log->doAdmin('project');
 
@@ -192,7 +175,7 @@ namespace Goteo\Controller {
                             $log->populate($project->name, null,
                                 Text::html('feed-project_fail',
                                     Feed::item('project', $project->name, $project->id),
-                                    $amount,
+                                    $project->amount,
                                     \round($per_amount)
                             ));
                             $log->setTarget($project->id);
@@ -208,28 +191,11 @@ namespace Goteo\Controller {
                         
                         echo '<br />';
                     } else {
-                        // Si el proyecto no tiene cuenta paypal
-                        if (empty($projectAccount->paypal)) {
-                            // iniciamos mail
-                            $mailHandler = new Mail();
-                            $mailHandler->to = \GOTEO_MAIL;
-                            $mailHandler->toName = 'Goteo.org';
-                            $mailHandler->subject = 'El proyecto '.$project->name.' no tiene cuenta PayPal';
-                            $mailHandler->content = 'Hola Goteo, el proyecto '.$project->name.' no tiene cuenta PayPal y el proceso automatico no podrá tratar los preaprovals al final de ronda.';
-                            $mailHandler->html = false;
-                            $mailHandler->template = null;
-                            $mailHandler->send();
-                            unset($mailHandler);
-
-                            echo 'El proyecto '.$project->name.' no tiene cuenta PayPal';
-                            continue;
-                        }
-
                         // tiene hasta 80 días para conseguir el óptimo (o más)
                         if ($days >= 80) {
                             if ($debug) echo 'Ha llegado a los 80 dias de campaña (final de segunda ronda)<br />';
 
-                            echo $project->name . ': ha recaudado ' . $amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . '<br />';
+                            echo $project->name . ': ha recaudado ' . $project->amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . '<br />';
                             echo 'Ha llegado a los 80 días: financiado. ';
 
                             $execute = true; // ejecutar los cargos de la segunda ronda
@@ -252,14 +218,14 @@ namespace Goteo\Controller {
                                     \vsprintf($log_text, array(
                                         Feed::item('project', $project->name, $project->id),
                                         Feed::item('relevant', 'financiado'),
-                                        Feed::item('money', $amount.' &euro; ('.\round($per_amount).'%) de aportes sobre minimo')
+                                        Feed::item('money', $project->amount.' &euro; ('.\round($per_amount).'%) de aportes sobre minimo')
                                 )));
                                 $log->doAdmin('project');
 
                                 // evento público
                                 $log->populate($project->name, null, Text::html('feed-project_finish',
                                                 Feed::item('project', $project->name, $project->id),
-                                                $amount,
+                                                $project->amount,
                                                 \round($per_amount)
                                                 ));
                                 $log->doPublic('projects');
@@ -288,7 +254,7 @@ namespace Goteo\Controller {
 
                             if ($debug) echo 'Ha llegado a los 40 dias de campaña, pasa a segunda ronda<br />';
 
-                            echo $project->name . ': ha recaudado ' . $amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . '<br />';
+                            echo $project->name . ': ha recaudado ' . $project->amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . '<br />';
                             echo 'El proyecto supera la primera ronda: marcamos fecha';
 
                             $execute = true; // ejecutar los cargos de la primera ronda
@@ -311,7 +277,7 @@ namespace Goteo\Controller {
                                 $log->populate('proyecto supera primera ronda (cron)', '/admin/projects', \vsprintf('El proyecto %s %s en segunda ronda obteniendo %s', array(
                                     Feed::item('project', $project->name, $project->id),
                                     Feed::item('relevant', 'continua en campaña'),
-                                    Feed::item('money', $amount.' &euro; ('.\number_format($per_amount, 2).'%) de aportes sobre minimo')
+                                    Feed::item('money', $project->amount.' &euro; ('.\number_format($per_amount, 2).'%) de aportes sobre minimo')
                                 )));
                                 $log->doAdmin('project');
 
@@ -319,7 +285,7 @@ namespace Goteo\Controller {
                                 $log->populate($project->name, null,
                                     Text::html('feed-project_goon',
                                         Feed::item('project', $project->name, $project->id),
-                                        $amount,
+                                        $project->amount,
                                         \round($per_amount)
                                 ));
                                 $log->doPublic('projects');
@@ -335,7 +301,7 @@ namespace Goteo\Controller {
                             
                         } else {
                             if ($debug) echo 'Lleva más de 40 dias de campaña, debe estar en segunda ronda con fecha marcada<br />';
-                            if ($debug) echo $project->name . ': lleva recaudado ' . $amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . ' y paso a segunda ronda el '.$project->passed.'<br />';
+                            if ($debug) echo $project->name . ': lleva recaudado ' . $project->amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . ' y paso a segunda ronda el '.$project->passed.'<br />';
                         }
                     }
                 }
@@ -343,6 +309,7 @@ namespace Goteo\Controller {
                 // si hay que ejecutar o cancelar
                 if ($cancelAll || $execute) {
                     if ($debug) echo '::::::Comienza tratamiento de aportes:::::::<br />';
+                    if ($debug) echo 'Execute=' . (string) $execute . '  CancelAll=' . (string) $cancelAll . '<br />';
                     // tratamiento de aportes penddientes
                     $query = \Goteo\Core\Model::query("
                         SELECT  *
@@ -360,7 +327,7 @@ namespace Goteo\Controller {
                         ", array($project->id));
                     $project->invests = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
 
-                    foreach ($project->invests as $key=>&$invest) {
+                    foreach ($project->invests as $key=>$invest) {
                         $errors = array();
                         $log_text = null;
                         
@@ -382,7 +349,7 @@ namespace Goteo\Controller {
                             switch ($invest->method) {
                                 case 'paypal':
                                     $err = array();
-                                    if (Paypal::cancelPreapproval($invest, $err)) {
+                                    if (Paypal::cancelPreapproval($invest, $err, true)) {
                                         $log_text = "Se ha cancelado aporte y preapproval de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
                                     } else {
                                         $txt_errors = implode('; ', $err);
@@ -392,7 +359,7 @@ namespace Goteo\Controller {
                                 case 'tpv':
                                     // se habre la operación en optra ventana
                                     $err = array();
-                                    if (Tpv::cancelPreapproval($invest, $err)) {
+                                    if (Tpv::cancelPreapproval($invest, $err, true)) {
                                         $log_text = "Se ha anulado el cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s";
                                     } else {
                                         $txt_errors = implode('; ', $err);
@@ -400,7 +367,7 @@ namespace Goteo\Controller {
                                     }
                                     break;
                                 case 'cash':
-                                    if ($invest->cancel()) {
+                                    if ($invest->cancel(true)) {
                                         $log_text = "Se ha cancelado aporte manual de %s de %s (id: %s) al proyecto %s del dia %s";
                                     } else{
                                         $log_text = "Ha fallado al cancelar el aporte manual de %s de %s (id: %s) al proyecto %s del dia %s. ";
@@ -431,20 +398,14 @@ namespace Goteo\Controller {
                         if ($execute && empty($invest->payment)) {
                             if ($debug) echo 'Ejecutando aporte '.$invest->id.' ['.$invest->method.']';
 
-                            // si estamos aqui y no tiene cuenta paypal es que nos hemos colado en algo
-                            if (empty($projectAccount->paypal)) {
-                                if ($debug) echo '<br /> Al ejecutar nos encontramos que el proyecto '.$project->name.' no tiene cuenta paypal!!<br />';
-                                Model\Invest::setDetail($invest->id, 'no-paypal-account', 'El proyecto no tiene cuenta paypal en el momento de ejecutar el preapproval. Proceso cron/execute');
-                                @mail('goteo_fail@doukeshi.org',
-                                    'El proyecto '.$project->name.' no tiene cuenta paypal ' . SITE_URL,
-                                    'El proyecto '.$project->name.' no tiene cuenta paypal y esto intentaba ejecutarlo :S');
-
-                                break;
-
-                            }
-
                             switch ($invest->method) {
                                 case 'paypal':
+                                    if (empty($projectAccount->paypal)) {
+                                        if ($debug) echo '<br />El proyecto '.$project->name.' no tiene cuenta paypal.<br />';
+                                        Model\Invest::setDetail($invest->id, 'no-paypal-account', 'El proyecto no tiene cuenta paypal en el momento de ejecutar el preapproval. Proceso cron/execute');
+                                        break;
+                                    }
+
                                     $invest->account = $projectAccount->paypal;
                                     $err = array();
                                     if (Paypal::pay($invest, $err)) {
@@ -459,37 +420,32 @@ namespace Goteo\Controller {
                                             'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: ' . $txt_errors);
                                         if ($debug) echo ' -> ERROR!!';
                                         Model\Invest::setDetail($invest->id, 'execution-failed', 'Fallo al ejecutar el preapproval, no ha iniciado el pago encadenado: ' . $txt_errors . '. Proceso cron/execute');
-                                        // cancelamos el aporte
-                                        Paypal::cancelPreapproval($invest);
-                                        // Notifiacion al usuario (solo primera ronda)
-                                        if ($days < 80) {
-                                            // Obtenemos la plantilla para asunto y contenido
-                                            $template = Template::get(37);
-                                            // Sustituimos los datos
-                                            $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
-                                            $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%DETAILS%');
-                                            $replace = array($userData->name, $project->name, SITE_URL . '/project/' . $project->id, $invest->amount, '');
-                                            $content = \str_replace($search, $replace, $template->text);
-                                            // iniciamos mail
-                                            $mailHandler = new Mail();
-                                            $mailHandler->to = $userData->email;
-                                            $mailHandler->toName = $userData->name;
-                                            $mailHandler->subject = $subject;
-                                            $mailHandler->content = $content;
-                                            $mailHandler->html = true;
-                                            $mailHandler->template = $template->id;
-                                            if ($mailHandler->send()) {
-                                                Model\Invest::setDetail($invest->id, 'issue-notified', "Se ha notificado la incidencia al usuario");
-                                            } else {
-                                                Model\Invest::setDetail($invest->id, 'issue-notify-failed', "Ha fallado al enviar el mail de notificacion de la incidencia al usuario");
-                                                @mail('goteo_fail@doukeshi.org',
-                                                    'Fallo al enviar email de notificacion de incidencia PayPal' . SITE_URL,
-                                                    'Fallo al enviar email de notificacion de incidencia PayPal: <pre>' . print_r($mailHandler, 1). '</pre>');
-                                            }
+
+                                        // Notifiacion de incidencia al usuario
+                                        // Obtenemos la plantilla para asunto y contenido
+                                        $template = Template::get(37);
+                                        // Sustituimos los datos
+                                        $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+                                        $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%DETAILS%');
+                                        $replace = array($userData->name, $project->name, SITE_URL . '/project/' . $project->id, $invest->amount, '');
+                                        $content = \str_replace($search, $replace, $template->text);
+                                        // iniciamos mail
+                                        $mailHandler = new Mail();
+                                        $mailHandler->to = $userData->email;
+                                        $mailHandler->toName = $userData->name;
+                                        $mailHandler->subject = $subject;
+                                        $mailHandler->content = $content;
+                                        $mailHandler->html = true;
+                                        $mailHandler->template = $template->id;
+                                        if ($mailHandler->send()) {
+                                            Model\Invest::setDetail($invest->id, 'issue-notified', "Se ha notificado la incidencia al usuario");
+                                        } else {
+                                            Model\Invest::setDetail($invest->id, 'issue-notify-failed', "Ha fallado al enviar el mail de notificacion de la incidencia al usuario");
+                                            @mail('goteo_fail@doukeshi.org',
+                                                'Fallo al enviar email de notificacion de incidencia PayPal' . SITE_URL,
+                                                'Fallo al enviar email de notificacion de incidencia PayPal: <pre>' . print_r($mailHandler, 1). '</pre>');
                                         }
-                                        // completamos la cancelacion (el metodo cancel usado por la libreria paypal lo deja ene stado 4)
-                                        $invest->setStatus('2');
-                                        // fin tratamiento incidencia
+                                        
                                     }
                                     break;
                                 case 'tpv':
@@ -543,10 +499,9 @@ namespace Goteo\Controller {
             }
 
             // recogemos el buffer para grabar el log
-            // solo si ejecucion automática
-//            if (\defined('CRON_EXEC')) {
-                \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
-//            }
+            $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
+            \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
+            \chmod($log_file, 0777);
         }
 
 
@@ -643,7 +598,8 @@ namespace Goteo\Controller {
             }
 
             // recogemos el buffer para grabar el log
-            \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
+            $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
+            \file_put_contents($log_file, \ob_get_contents());
 
             */
         }
@@ -727,7 +683,9 @@ namespace Goteo\Controller {
             }
 
             // recogemos el buffer para grabar el log
-            \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
+            $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
+            \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
+            \chmod($log_file, 0777);
         }
 
         /**
@@ -945,6 +903,28 @@ namespace Goteo\Controller {
 
                 // dias desde la publicacion
                 $from = $project->daysActive();
+
+                // pero seguimos trabajando con el numero de dias que lleva para enviar mail al autor
+                // cuando quedan 20 días
+                if ($project->round == 1 && $project->days == 20) {
+                    self::toOwner('20_days', $project);
+                    echo 'Proyecto: ' . $project->name . ' Aviso al autor: lleva 20 dias<br />';
+                }
+                // cuando quedan 8 dias y no ha conseguido el minimo
+                if ($project->round == 1 && $project->days == 8
+                    && $project->amount < $project->mincost) {
+                    self::toOwner('8_days', $project);
+                    echo 'Proyecto: ' . $project->name . ' Aviso al autor: faltan 8 dias y no ha conseguido el minimo<br />';
+                }
+                // cuando queda 1 día y no ha conseguido el minimo pero casi
+                if ($project->round == 1 && $project->days == 1
+                    && $project->amount < $project->mincost && \round(($project->amount / $project->mincost) * 100) > 70) {
+                    self::toOwner('1_day', $project);
+                    echo 'Proyecto: ' . $project->name . ' Aviso al autor: falta 1 dia y no supera el 70 el minimo<br />';
+                }
+                /* Fin verificacion */
+
+
 
                 // si ya lleva 3 meses de publicacion
                 if ($from > 90) {
@@ -1199,7 +1179,9 @@ namespace Goteo\Controller {
 
 
             // recogemos el buffer para grabar el log
-            \file_put_contents(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log', \ob_get_contents());
+            $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
+            \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
+            \chmod($log_file, 0777);
         }
 
     }

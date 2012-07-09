@@ -1367,7 +1367,7 @@ namespace Goteo\Model {
                     INNER JOIN invest
                         ON project.id = invest.project
                         AND invest.user = ?
-                        AND invest.status IN ('0', '1', '3')
+                        AND invest.status IN ('0', '1', '3', '4')
                     WHERE project.status < 7
                     ";
             if ($publicOnly) {

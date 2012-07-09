@@ -4,6 +4,8 @@ use Goteo\Library\Text;
 $project = $this['project'];
 $level = (int) $this['level'] ?: 3;
 
+$_SESSION['msg_token'] = uniqid(rand(), true);
+
 ?>
 <script type="text/javascript">
 	// Mark DOM as javascript-enabled
@@ -27,6 +29,8 @@ $level = (int) $this['level'] ?: 3;
     <h<?php echo $level ?> class="title"><?php echo Text::get('project-messages-send_direct-header'); ?></h<?php echo $level ?>>
         
     <form method="post" action="/message/direct/<?php echo $project->id; ?>">    	
+        <input type="hidden" name="msg_token" value="<?php echo $_SESSION['msg_token'] ; ?>" />
+        
     	<div id="bocadillo"></div>
         <textarea id="message" name="message" cols="50" rows="5"></textarea>
         

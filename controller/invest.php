@@ -37,6 +37,12 @@ namespace Goteo\Controller {
 
                 $errors = array();
                 $los_datos = $_POST;
+                $method = \strtolower($_POST['method']);
+
+                if (!isset($methods[$method])) {
+                    Message::Error(Text::get('invest-method-error'));
+                    throw new Redirection("/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
+                }
 
                 if (empty($_POST['amount'])) {
                     Message::Error(Text::get('invest-amount-error'));
@@ -78,7 +84,7 @@ namespace Goteo\Controller {
                         'amount' => $_POST['amount'],
                         'user' => $_SESSION['user']->id,
                         'project' => $project,
-                        'method' => $_POST['method'],
+                        'method' => $method,
                         'status' => '-1',               // aporte en proceso
                         'invested' => date('Y-m-d'),
                         'anonymous' => $_POST['anonymous'],
@@ -98,7 +104,7 @@ namespace Goteo\Controller {
                 if ($invest->save($errors)) {
                     Model\Invest::setDetail($invest->id, 'init', 'Se ha creado el registro de aporte, el usuario ha clickado el boton de tpv o paypal. Proceso controller/invest');
 
-                    switch($_POST['method']) {
+                    switch($method) {
                         case 'tpv':
                             // redireccion al tpv
                             if (Tpv::preapproval($invest, $errors)) {

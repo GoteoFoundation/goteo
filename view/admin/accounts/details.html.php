@@ -24,19 +24,19 @@ $user = $this['user'];
         <strong>Usuario: </strong><?php echo $user->name ?> [<?php echo $user->email ?>]
     </p>
     <p>
-        <?php if ($project->status == 3 && ($invest->status < 1 || ($invest->method == 'tpv' && $invest->status < 2) ||($invest->method == 'cash' && $invest->status < 2))) : ?>
+        <?php if ($invest->status < 1 || ($invest->method == 'tpv' && $invest->status < 2) ||($invest->method == 'cash' && $invest->status < 2)) : ?>
         <a href="/admin/accounts/cancel/<?php echo $invest->id ?>"
             onclick="return confirm('¿Estás seguro de querer cancelar este aporte y su preapproval?');"
             class="button">Cancelar este aporte</a>&nbsp;&nbsp;&nbsp;
         <?php endif; ?>
 
-        <?php if ($project->status == 3 && $invest->method == 'paypal' && $invest->status == 0) : ?>
+        <?php if ($invest->method == 'paypal' && $invest->status == 0) : ?>
         <a href="/admin/accounts/execute/<?php echo $invest->id ?>"
             onclick="return confirm('¿Seguro que quieres ejecutar ahora? ¿No quieres esperar a la ejecución automática al final de la ronda? ?');"
             class="button">Ejecutar cargo ahora</a>
         <?php endif; ?>
 
-        <?php if ($project->status == 3 && $invest->method != 'paypal' && $invest->status == 1) : ?>
+        <?php if ($invest->method != 'paypal' && $invest->status == 1) : ?>
         <a href="/admin/accounts/move/<?php echo $invest->id ?>" class="button">Reubicar este aporte</a>
         <?php endif; ?>
     </p>
@@ -123,23 +123,11 @@ $user = $this['user'];
     </dl>
 
     <?php if ($invest->method == 'paypal') : ?>
-        <?php if (!empty($invest->preapproval)) :
-            $details = Paypal::preapprovalDetails($invest->preapproval);
-            ?>
-        <dl>
-            <dt><strong>Detalles del preapproval:</strong></dt>
-            <dd><?php echo \trace($details); ?></dd>
-        </dl>
-        <?php endif ?>
-
-        <?php if (!empty($invest->payment)) :
-            $details = Paypal::paymentDetails($invest->payment);
-            ?>
-        <dl>
-            <dt><strong>Detalles del cargo:</strong></dt>
-            <dd><?php echo \trace($details); ?></dd>
-        </dl>
-        <?php endif ?>
+        <?php if (!isset($_GET['full'])) : ?>
+        <p>
+            <a href="/admin/accounts/details/<?php echo $invest->id; ?>/?full=show">Mostrar detalles técnicos</a>
+        </p>
+        <?php endif; ?>
 
         <?php if (!empty($invest->transaction)) : ?>
         <dl>
@@ -170,3 +158,27 @@ $user = $this['user'];
         echo "{$log->date} : {$log->log} ({$log->type})<br />";
     } ?>
 </div>
+
+<?php if (isset($_GET['full']) && $_GET['full'] == 'show') : ?>
+<div class="widget">
+    <h3>Detalles técnicos de la transaccion</h3>
+    <?php if (!empty($invest->preapproval)) :
+        $details = Paypal::preapprovalDetails($invest->preapproval);
+        ?>
+    <dl>
+        <dt><strong>Detalles del preapproval:</strong></dt>
+        <dd><?php echo \trace($details); ?></dd>
+    </dl>
+    <?php endif ?>
+
+    <?php if (!empty($invest->payment)) :
+        $details = Paypal::paymentDetails($invest->payment);
+        ?>
+    <dl>
+        <dt><strong>Detalles del cargo:</strong></dt>
+        <dd><?php echo \trace($details); ?></dd>
+    </dl>
+    <?php endif; ?>
+</div>
+<?php endif; ?>
+
