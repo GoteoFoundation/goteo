@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Lang;
 
-$langs = Lang::getAll();
+$langs = $_SESSION['user']->translangs;
 unset($langs['es']); // no se puede traducir a español
 
 $actual = Lang::get($_SESSION['translate_lang']);
@@ -30,8 +30,8 @@ if (isset($this['node'])) {
     <?php endif; ?>
     <select id="selector" name="lang" onchange="document.getElementById('selector-form').submit();">
 <!--        <option value="">Seleccionar idioma de traducci&oacute;n</option> -->
-    <?php foreach ($langs as $lang) : ?>
-        <option value="<?php echo $lang->id; ?>"<?php if ($lang->id == $actual->id) echo ' selected="selected"'; ?>><?php echo $lang->name; ?></option>
+    <?php foreach ($langs as $langId=>$langName) : ?>
+        <option value="<?php echo $langId; ?>"<?php if ($langId == $actual->id) echo ' selected="selected"'; ?>><?php echo $langName; ?></option>
     <?php endforeach; ?>
     </select>
     </form>

@@ -337,6 +337,29 @@ namespace Goteo\Model\User {
             }
         }
 
+        /*
+         * Para obtener los idiomas de traducción habilitados para este usuario
+         */
+	 	public static function getLangs ($id) {
+            $array = array ();
+
+            $sql = "SELECT user_translang.lang as id, name
+                FROM user_translang
+                INNER JOIN lang
+                    ON lang.id = user_translang.lang
+                WHERE user_translang.user = :user";
+            $values = array(':user'=>$id);
+
+            $query = static::query($sql, $values);
+            $langs = $query->fetchAll(\PDO::FETCH_OBJ);
+            foreach ($langs as $lang) {
+                $array[$lang->id] = $lang->name;
+            }
+
+            return $array;
+		}
+
+
 	}
     
 }

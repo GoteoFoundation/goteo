@@ -825,8 +825,6 @@ ul.lang li:hover>a {
 body.project-show div#sub-header div.nodemark,
 body.user-profile div#sub-header div.nodemark {
     text-align: left;
-    width: 100px;
-    height: 100px;
     overflow: hidden;
 }
 

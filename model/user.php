@@ -571,6 +571,12 @@ namespace Goteo\Model {
                     $user->nodeData = Node::getMini($user->node);
                 }
 
+                // si es traductor cargamos sus idiomas
+                if (isset($user->roles['translator'])) {
+                    $user->translangs = User\Translate::getLangs($user->id);
+                }
+
+
                 return $user;
             } catch(\PDOException $e) {
                 return false;

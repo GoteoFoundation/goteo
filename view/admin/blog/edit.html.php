@@ -7,8 +7,6 @@ use Goteo\Library\Text,
 
 $post = $this['post'];
 
-if (empty($post->author)) $post->author = $_SESSION['user']->id;
-
 if (!$post instanceof Model\Blog\Post) {
     throw new Redirection('/admin/blog');
 }

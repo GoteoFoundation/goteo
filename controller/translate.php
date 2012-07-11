@@ -20,8 +20,17 @@ namespace Goteo\Controller {
          */
         public function index ($table = '', $action = 'list', $id = null, $auxAction = 'list', $contentId = null) {
 
-            if (empty($_SESSION['translate_lang'])) {
-                $_SESSION['translate_lang'] = 'en';
+            if (empty($_SESSION['user']->translangs)) {
+                Message::Error('No tienes ningún idioma, contacta con el administrador');
+                throw new Redirection('/dashboard');
+            }
+
+            if (empty($_SESSION['translate_lang']) || !isset($_SESSION['user']->translangs[$_SESSION['translate_lang']])) {
+                if (count($_SESSION['user']->translangs) > 1 && isset($_SESSION['user']->translangs['en'])) {
+                    $_SESSION['translate_lang'] = 'en';
+                } else {
+                    $_SESSION['translate_lang'] = $_SESSION['user']->translangs[0];
+                }
             }
 
             if ($table == '') {
@@ -62,6 +71,10 @@ namespace Goteo\Controller {
                     foreach ($fields as $field) {
                         if (isset($_GET[$field])) {
                             $filters[$field] = $_GET[$field];
+                            $_SESSION['translate_filters']['texts'][$field] = (string) $_GET[$field];
+                        } elseif (!empty($_SESSION['translate_filters']['texts'][$field])) {
+                            // si no lo tenemos en el get, cogemos de la sesion pero no lo pisamos
+                            $filters[$field] = $_SESSION['translate_filters']['texts'][$field];
                         }
                     }
 
@@ -77,6 +90,7 @@ namespace Goteo\Controller {
                                     ), $errors)) {
 
                             // Evento Feed
+                            /*
                             $log = new Feed();
                             $log->populate('texto traducido (traductor)', '/translate/texts',
                                 \vsprintf('El traductor %s ha %s el texto %s al %s', array(
@@ -87,7 +101,8 @@ namespace Goteo\Controller {
                             )));
                             $log->doAdmin('admin');
                             unset($log);
-
+                            */
+                            
                             Message::Info('Texto <strong>'.$id.'</strong> traducido correctamente al <strong>'.Lang::get($_POST['lang'])->name.'</strong>');
 
                             throw new Redirection("/translate/texts/$filter&page=".$_GET['page']);
@@ -240,6 +255,7 @@ namespace Goteo\Controller {
                         if (Page::update($id, $_POST['lang'], $_POST['node'], $_POST['name'], $_POST['description'], $_POST['content'], $errors)) {
 
                             // Evento Feed
+                            /*
                             $log = new Feed();
                             $log->populate('pagina traducida (traductor)', '/translate/pages',
                                 \vsprintf('El traductor %s ha %s la página %s del nodo %s al %s', array(
@@ -251,6 +267,7 @@ namespace Goteo\Controller {
                             )));
                             $log->doAdmin('admin');
                             unset($log);
+                            */
 
                             Message::Info('Contenido de la Pagina <strong>'.$id.'</strong> traducido correctamente al <strong>'.Lang::get($_POST['lang'])->name.'</strong>');
 
@@ -296,6 +313,10 @@ namespace Goteo\Controller {
                     foreach ($fields as $field) {
                         if (isset($_GET[$field])) {
                             $filters[$field] = $_GET[$field];
+                            $_SESSION['translate_filters']['contents'][$field] = (string) $_GET[$field];
+                        } elseif (!empty($_SESSION['translate_filters']['contents'][$field])) {
+                            // si no lo tenemos en el get, cogemos de la sesion pero no lo pisamos
+                            $filters[$field] = $_SESSION['translate_filters']['contents'][$field];
                         }
                     }
 
@@ -312,6 +333,7 @@ namespace Goteo\Controller {
                         if (Content::save($_POST, $errors)) {
 
                             // Evento Feed
+                            /*
                             $log = new Feed();
                             $log->populate('contenido traducido (traductor)', '/translate/'.$table,
                                 \vsprintf('El traductor %s ha %s el contenido del registro %s de la tabla %s al %s', array(
@@ -323,6 +345,7 @@ namespace Goteo\Controller {
                             )));
                             $log->doAdmin('admin');
                             unset($log);
+                            */
 
                             Message::Info('Contenido del registro <strong>'.$id.'</strong> de la tabla <strong>'.$table.'</strong> traducido correctamente al <strong>'.Lang::get($_POST['lang'])->name.'</strong>');
 

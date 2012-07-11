@@ -1,10 +1,10 @@
 <?php
 
-use Goteo\Library\Text,
-    Goteo\Model\User;
+use Goteo\Library\Text;
 
 $user = $this['user'];
-$roles = User::getRolesList();
+$roles = $this['roles'];
+$langs = $this['langs'];
 ?>
 <div class="widget">
     <table>
@@ -92,3 +92,22 @@ $roles = User::getRolesList();
 
 </div>
 
+<?php if (isset($user->roles['translator'])) : ?>
+<div class="widget board">
+    <h3>Idiomas de traductor</h3>
+    <?php if (empty($user->translangs)) : ?><p style="font-weight: bold; color:red;">¡No tiene ningún idioma asignado!</p><?php endif; ?>
+    <form method="post" action="/admin/users/translang">
+        <input type="hidden" name="user" value="<?php echo $user->id; ?>" />
+        <table>
+            <?php foreach ($langs as $lang) :
+                $chkckd = (isset($user->translangs[$lang->id])) ? ' checked="checked"' : '';
+                ?>
+            <tr>
+                <td><label><input type="checkbox" name="lang_<?php echo $lang->id; ?>" value="<?php echo $lang->id; ?>"<?php echo $chkckd; ?>/> <?php echo $lang->name; ?></label></td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+        <input type="submit" value="Aplicar">
+    </form>
+</div>
+<?php endif; ?>

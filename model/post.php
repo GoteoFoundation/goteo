@@ -136,6 +136,8 @@ namespace Goteo\Model {
                         $post->author = $proj_blog->owner;
                         $post->user   = $proj_blog->user;
                         $post->owner_name = $proj_blog->name;
+                        $sql = "UPDATE post SET author = '.$proj_blog->owner.' WHERE post.id = ?";
+                        self::query($sql, array($post->id));
                         break;
 
                     case 'node':

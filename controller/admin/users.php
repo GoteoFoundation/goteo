@@ -9,6 +9,7 @@ namespace Goteo\Controller\Admin {
 		Goteo\Library\Feed,
 		Goteo\Library\Template,
         Goteo\Library\Message,
+        Goteo\Library\Lang,
         Goteo\Model;
 
     class Users {
@@ -196,6 +197,7 @@ namespace Goteo\Controller\Admin {
 
                             $onNode = Model\Node::get($node);
 
+                            // procesos adicionales
                             switch ($subaction) {
                                 case 'admin':
                                     if ($onNode->assign($id)) {
@@ -211,6 +213,18 @@ namespace Goteo\Controller\Admin {
                                     } else{
                                         Message::Error('El ex-admin no se ha desasignado del nodo <strong>'.$onNode->name.'</strong>. Contactar con el superadmin');
                                     }
+                                    break;
+
+                                case 'translator':
+                                    // le ponemos todos los idiomas (excepto el español)
+                                    $sql = "INSERT INTO user_translang (user, lang) SELECT '{$id}' as user, id as lang FROM `lang` WHERE id != 'es'";
+                                    Model\User::query($sql);
+                                    break;
+
+                                case 'notranslator':
+                                    // quitamos los idiomas
+                                    $sql = "DELETE FROM user_translang WHERE user = :user";
+                                    Model\User::query($sql, array(':user'=>$id));
                                     break;
                             }
 
@@ -239,18 +253,57 @@ namespace Goteo\Controller\Admin {
 
                     $user = Model\User::get($id);
 
-
-                    // vista de gestión de usuario
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
+                    $viewData = array(
                             'folder' => 'users',
                             'file' => 'manage',
                             'user'=>$user,
                             'nodes'=>$nodes
-                        )
+                        );
+
+                    $viewData['roles'] = Model\User::getRolesList();
+                    $viewData['langs'] = Lang::getAll();
+                    // quitamos el español
+                    unset($viewData['langs']['es']);
+
+                    // vista de gestión de usuario
+                    return new View(
+                        'view/admin/index.html.php',
+                        $viewData
                     );
 
+
+                    break;
+
+                // aplicar idiomas
+                case 'translang':
+
+                    if (!isset($_POST['user'])) {
+                        Message::Error('Hemos perdido de vista al usuario');
+                        throw new Redirection('/admin/users');
+                    } else {
+                        $user = $_POST['user'];
+                    }
+
+                    $sql = "DELETE FROM user_translang WHERE user = :user";
+                    Model\User::query($sql, array(':user'=>$user));
+
+                    $anylang = false;
+                    foreach ($_POST as $key => $value) {
+                        if (\substr($key, 0, \strlen('lang_')) == 'lang_')  {
+                            $sql = "INSERT INTO user_translang (user, lang) VALUES (:user, :lang)";
+                            if (Model\User::query($sql, array(':user'=>$user, ':lang'=>$value))) {
+                                $anylang = true;
+                            }
+                        }
+                    }
+
+                    if (!$anylang) {
+                        Message::Error('No se ha seleccionado ningún idioma, este usuario tendrá problemas en su panel de traducción!');
+                    } else {
+                        Message::Info('Se han aplicado al traductor los idiomas seleccionados');
+                    }
+
+                    throw new Redirection('/admin/users/manage/'.$user);
 
                     break;
                 case 'impersonate':
