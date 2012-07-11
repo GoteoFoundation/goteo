@@ -101,6 +101,7 @@ namespace Goteo\Controller\Admin {
                     } else {
                         Message::Error('La revisión no se ha podido cerrar. '.implode(', ', $errors));
                     }
+                    throw new Redirection('/admin/reviews');
                     break;
                 case 'unready':
                     // se la reabrimos para que pueda seguir editando
@@ -117,6 +118,7 @@ namespace Goteo\Controller\Admin {
                             Message::Error(implode(', ', $errors));
                         }
                     }
+                    throw new Redirection('/admin/reviews');
                     break;
                 case 'assign':
                     // asignamos la revision a este usuario
@@ -152,6 +154,7 @@ namespace Goteo\Controller\Admin {
                             Message::Error(implode(', ', $errors));
                         }
                     }
+                    throw new Redirection('/admin/reviews');
                     break;
                 case 'unassign':
                     // se la quitamos a este revisor
@@ -168,7 +171,7 @@ namespace Goteo\Controller\Admin {
                             $userData = Model\User::getMini($user);
                             $reviewData = Model\Review::getData($id);
 
-                            Message::Info('Revisión asignada correctamente');
+                            Message::Info('Revisión desasignada correctamente');
 
                             // Evento Feed
                             $log = new Feed();
@@ -187,6 +190,7 @@ namespace Goteo\Controller\Admin {
                             Message::Error(implode(', ', $errors));
                         }
                     }
+                    throw new Redirection('/admin/reviews');
                     break;
                 case 'report':
                     // mostramos los detalles de revision

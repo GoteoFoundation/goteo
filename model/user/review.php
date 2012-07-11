@@ -302,6 +302,30 @@ namespace Goteo\Model\User {
             }
         }
 
+        /*
+         * Devuelve true o false si este usuario tiene asignada la revision de este proyecto
+         */
+        public static function is_assigned ($user, $project) {
+            $sql = "
+                SELECT project
+                FROM review
+                WHERE id IN (
+                    SELECT review FROM user_review WHERE user = :user
+                )
+                AND project = :project";
+            $values = array(
+                ':user' => $user,
+                ':project' => $project
+            );
+            $query = static::query($sql, $values);
+            $legal = $query->fetchObject();
+            if ($legal->project == $project) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
 	}
     
 }

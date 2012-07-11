@@ -783,7 +783,7 @@ namespace Goteo\Controller {
         }
 
         /* A los cofinanciadores */
-        static private function toInvestors ($type, $project) {
+        static public function toInvestors ($type, $project) {
 
             // notificación
             $notif = $type == 'update' ? 'updates' : 'rounds';

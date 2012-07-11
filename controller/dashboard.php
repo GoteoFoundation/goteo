@@ -861,6 +861,8 @@ namespace Goteo\Controller {
                                 $log->doPublic('projects');
 
                                 unset($log);
+
+                                \Goteo\Controller\Cron::toInvestors('update', $project->id);
                             }
 
                         } else {
