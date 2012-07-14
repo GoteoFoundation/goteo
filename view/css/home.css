@@ -8,6 +8,11 @@ body.home div#main div.learn {
 body.home div#main div.widget.projects h2.title {
 	margin-left:-47px;
 }
+/* Especial pagina vip */
+body.home div#main div.widget.projects.patron_invests h2.title {
+	margin-left:-15px !important;
+}
+
 body.home div#main div.widget.projects h3.title{
 	margin-left:3px;
 }
@@ -15,10 +20,19 @@ body.home div#main div.widget.projects h3.title{
 body.home div#main div.widget.projects{
 	padding:15px 0 0 75px;	
 }
+/* Especial pagina vip */
+body.home div#main div.widget.projects.patron_invests{
+	padding: 15px !important;
+    margin: 0 0 15px 0 !important;
+}
 
 body.home div#main div.widget.projects div.widget.project{
 	padding:0;
 	margin: 0 40px 42px 0;
+}
+/* Especial pagina vip */
+body.home div#main div.widget.projects.patron_invests div.widget.project{
+	margin: 0 0 20px 30px !important;
 }
 
 /* Estilos para entradas de blog en portada,

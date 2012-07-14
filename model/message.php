@@ -262,6 +262,33 @@ namespace Goteo\Model {
             }
         }
 
+        /*
+         * Lista de usuarios mensajeros de un proyecto
+         */
+        public static function getMessegers ($id) {
+            $list = array();
+
+            $sql = "SELECT 
+                        DISTINCT(message.user) as id, 
+                        user.name as name,
+                        user.avatar as avatar
+                    FROM message
+                    INNER JOIN user
+                        ON user.id = message.user
+                    WHERE project = :id";
+            $query = self::query($sql, array(':id'=>$id));
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $user) {
+                $user->avatar = Image::get($user->avatar);
+                if (empty($user->avatar->id) || !$user->avatar instanceof Image) {
+                    $user->avatar = Image::get(1);
+                }
+
+                $list[] = $user;
+            }
+
+            return $list;
+        }
+
     }
     
 }

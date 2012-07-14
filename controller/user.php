@@ -418,13 +418,12 @@ namespace Goteo\Controller {
                 }
 
 
-                // a menos que este perfil sea de un impulsor, no pueden verlo
-//                $owners = Model\User::getOwners() ;
-//                if (!isset($owners[$id])) {
+                // a menos que este perfil sea de un vip, no pueden verlo
+                if (!isset($user->roles['vip'])) {
                     $_SESSION['jumpto'] = '/user/profile/' .  $id . '/' . $show;
                     Message::Info(Text::get('user-login-required-to_see'));
                     throw new Redirection("/user/login");
-//                }
+                }
 
                 /*
                 // subpágina de cofinanciadores
@@ -472,7 +471,25 @@ namespace Goteo\Controller {
                     // pasarle el autodetector de urls por el about
                     $user->about = nl2br(Text::urlink($user->about));
 
-                    return new View ('view/user/patron.html.php', array('user' => $user, 'recos' => $recos));
+                    // proyectos que cofinancia este vip (que no sean los que recomienda)
+                    $invest_on = Model\User::invested($user->id, true);
+
+                    $recomend = array();
+                    // los proyectos que recomienda
+                    foreach ($recos as $recproj) {
+                        $recomend[] = $recproj->project;
+                    }
+                    // y quitarlos de los que cofinancia
+                    foreach ($invest_on as $key=>$invproj) {
+                        if (in_array($invproj->id, $recos)) {
+                            unset($invest_on[$key]);
+                        }
+                    }
+
+                    // agrupados para carrusel
+                    $invested = Listing::get($invest_on);
+
+                    return new View ('view/user/patron.html.php', array('user' => $user, 'recos' => $recos, 'lists'=>array('invest_on'=>$invested)));
                 }
             }
 

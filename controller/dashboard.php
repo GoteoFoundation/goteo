@@ -520,7 +520,8 @@ namespace Goteo\Controller {
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 
                 switch ($option) {
-                    // gestionar retornos
+                    // gestionar retornos (o mensaje a los mensajeros)
+                    case 'messegers':
                     case 'rewards':
                         // segun action
                         switch ($action) {
@@ -529,7 +530,7 @@ namespace Goteo\Controller {
                                 $filter = $_POST['filter'];
                                 $order  = $_POST['order'];
                             break;
-                        
+
                             // procesar marcas
                             case 'process':
                                 $filter = $_POST['filter'];
@@ -562,8 +563,14 @@ namespace Goteo\Controller {
                                     $msg_content = nl2br($msg_content);
                                 }
 
-                                if (!empty($_POST['msg_all'])) {
-                                    // si a todos
+                                // si a todos los participantes
+                                if ($option == 'messegers' && !empty($_POST['msg_all'])) {
+                                    foreach (Model\Message::getMessegers($project->id) as $messeger) {
+                                        if ($messeger->id == $project->owner) continue;
+                                        $who[$messeger->id] = $messeger->id;
+                                    }
+                                } elseif (!empty($_POST['msg_all'])) {
+                                    // si a todos lso colaboradores
                                     foreach (Model\Invest::investors($project->id, false, true) as $user=>$investor) {
                                         if (!in_array($user, $who)) {
                                             $who[$user] = $investor->user;
@@ -601,7 +608,11 @@ namespace Goteo\Controller {
                                 // segun destinatarios
                                 $allsome = explode('/', Text::get('regular-allsome'));
                                 $enviandoa = !empty($_POST['msg_all']) ? $allsome[0] : $allsome[1];
-                                Message::Info(Text::get('dashboard-investors-mail-sendto', $enviandoa)) ;
+                                if ($option == 'messegers') {
+                                    Message::Info(Text::get('dashboard-messegers-mail-sendto', $enviandoa)) ;
+                                } else {
+                                    Message::Info(Text::get('dashboard-investors-mail-sendto', $enviandoa)) ;
+                                }
 
                                 // Obtenemos la plantilla para asunto y contenido
                                 $template = Template::get(2);
@@ -862,7 +873,7 @@ namespace Goteo\Controller {
 
                                 unset($log);
 
-                                \Goteo\Controller\Cron::toInvestors('update', $project->id);
+                                \Goteo\Controller\Cron::toInvestors('update', $project);
                             }
 
                         } else {
@@ -947,6 +958,11 @@ namespace Goteo\Controller {
                     // ver por (esto son orden y filtros)
                     $viewData['filter'] = $filter;
                     $viewData['order'] = $order;
+                break;
+
+                // listar mensajeadores
+                case 'messegers':
+                    $viewData['messegers'] = Model\Message::getMessegers($_SESSION['project']->id);
                 break;
 
                 // editar colaboraciones
@@ -1662,7 +1678,8 @@ namespace Goteo\Controller {
                         'widgets'  => Text::get('dashboard-menu-projects-widgets'),
                         'contract' => Text::get('dashboard-menu-projects-contract'), 
                         'rewards'  => Text::get('dashboard-menu-projects-rewards'),
-                        'supports' => Text::get('dashboard-menu-projects-supports')
+                        'supports' => Text::get('dashboard-menu-projects-supports'),
+                        'messegers'  => Text::get('dashboard-menu-projects-messegers')
                     )
                 )
             );
