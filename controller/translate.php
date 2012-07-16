@@ -20,6 +20,7 @@ namespace Goteo\Controller {
          */
         public function index ($table = '', $action = 'list', $id = null, $auxAction = 'list', $contentId = null) {
 
+            $_SESSION['user']->translangs = Model\User\Translate::getLangs($_SESSION['user']->id);
             if (empty($_SESSION['user']->translangs)) {
                 Message::Error('No tienes ningún idioma, contacta con el administrador');
                 throw new Redirection('/dashboard');
@@ -29,7 +30,7 @@ namespace Goteo\Controller {
                 if (count($_SESSION['user']->translangs) > 1 && isset($_SESSION['user']->translangs['en'])) {
                     $_SESSION['translate_lang'] = 'en';
                 } else {
-                    $_SESSION['translate_lang'] = $_SESSION['user']->translangs[0];
+                    $_SESSION['translate_lang'] = current(array_keys($_SESSION['user']->translangs));
                 }
             }
 

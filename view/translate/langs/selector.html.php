@@ -29,7 +29,7 @@ if (isset($this['node'])) {
     No has seleccionado un idioma al que traducir. <label for="selector">Traducir a:</label>
     <?php endif; ?>
     <select id="selector" name="lang" onchange="document.getElementById('selector-form').submit();">
-<!--        <option value="">Seleccionar idioma de traducci&oacute;n</option> -->
+        <option value="" disabled="disabled">Seleccionar idioma de traducci&oacute;n</option>
     <?php foreach ($langs as $langId=>$langName) : ?>
         <option value="<?php echo $langId; ?>"<?php if ($langId == $actual->id) echo ' selected="selected"'; ?>><?php echo $langName; ?></option>
     <?php endforeach; ?>

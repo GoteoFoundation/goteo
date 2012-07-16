@@ -146,28 +146,46 @@ div.post-comments div.message blockquote {
 Tambien en la página de agradecimiento al cofinanciar **/
 .project-spread ul.share-goteo {
 	margin: 0;
-	padding-left:20px;
+	padding: 20px 0;
 	list-style:none;
     display: block;
 }
+.project-spread ul.share-goteo li {
+	display:inline;
+	float:left;
+    width: 280px;
+    text-align: center;
+}
+.project-spread ul.share-goteo li.facebook {
+    margin-left: 20px;
+}
+.project-spread ul.share-goteo li a {
+    height: 33px;
+	color: white;
+	text-decoration:none;
+    font-size: 14px;
+}
+.project-spread ul.share-goteo li.twitter a {
+	padding: 9px 21px 8px 60px;
+	background: transparent url('/view/css/project/widget/btn_spread.png') scroll no-repeat  0 0;
+}
+.project-spread ul.share-goteo li.facebook a {
+	padding: 9px 14px 8px 45px;
+	background: transparent url('/view/css/project/widget/btn_spread.png') scroll no-repeat  0 -33px;
+}
+/* fin post aportar */
+
 .project-updates .post ul.share-goteo {
 	margin: 0;
 	padding:0px;
 	list-style:none;
 	float:right;
 }
-.project-spread ul.share-goteo li {
-	display:inline;
-	float:left;
-	margin: 0 0 0 10px;
-}
 .project-updates .post ul.share-goteo li {
 	display:inline;
 	float:left;
 	margin: 0 0 0 10px;
 }
-.project-spread  ul.share-goteo li.twitter a,
-.project-spread  ul.share-goteo li.facebook a,
 .project-updates .post  ul.share-goteo li.twitter a,
 .project-updates .post  ul.share-goteo li.facebook a,
 .project-updates .post  ul.share-goteo li.rss a{
@@ -183,13 +201,11 @@ Tambien en la página de agradecimiento al cofinanciar **/
 	color: #808285;
 	font-size: 11px;
 }
-.project-spread ul.share-goteo li.twitter a,
 .project-updates .post ul.share-goteo li.twitter a{
 	background: transparent url('/view/css/twitter.png') scroll no-repeat  0 0;
 	color:#13c2ec;
 	text-decoration:none;
 }
-.project-spread ul.share-goteo li.facebook a, 
 .project-updates .post ul.share-goteo li.facebook a{
 	background: transparent url('/view/css/facebook.png') scroll no-repeat  0 0;
 	color:#4a6393;

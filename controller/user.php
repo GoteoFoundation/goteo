@@ -481,7 +481,7 @@ namespace Goteo\Controller {
                     }
                     // y quitarlos de los que cofinancia
                     foreach ($invest_on as $key=>$invproj) {
-                        if (in_array($invproj->id, $recos)) {
+                        if (in_array($invproj->id, $recomend)) {
                             unset($invest_on[$key]);
                         }
                     }

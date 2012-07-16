@@ -16,16 +16,16 @@ $widget_code_investor = Text::widget($url.'/invested/'.$user->id.'/'.$lsuf);
 
 $share_title = Text::get('project-spread-social', $project->name);
 $share_url = SITE_URL . '/project/'.$project->id;
-$facebook_url = 'http://facebook.com/sharer.php?u=' . rawurlencode($share_url) . '&t=' . rawurlencode($share_title);
-$twitter_url = 'http://twitter.com/home?status=' . rawurlencode($share_title . ': ' . $share_url . ' #Goteo');
+$facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($share_title);
+$twitter_url = 'http://twitter.com/home?status=' . urlencode($share_title . ': ' . $share_url . ' #Goteo #crowdfunding');
 ?>
 <div class="widget project-spread">
     
     <h<?php echo $level ?> class="title"><?php echo Text::get('project-spread-header'); ?></h<?php echo $level ?>>
     
         <ul class="share-goteo">
-            <li class="twitter"><a href="<?php echo htmlspecialchars($twitter_url) ?>" target="_blank"><?php echo Text::get('regular-twitter'); ?></a></li>
-            <li class="facebook"><a href="<?php echo htmlspecialchars($facebook_url) ?>" target="_blank"><?php echo Text::get('regular-facebook'); ?></a></li>
+            <li class="twitter"><a href="<?php echo htmlspecialchars($twitter_url) ?>" target="_blank"><?php echo Text::get('spread-twitter'); ?></a></li>
+            <li class="facebook"><a href="<?php echo htmlspecialchars($facebook_url) ?>" target="_blank"><?php echo Text::get('spread-facebook'); ?></a></li>
         </ul>
         <br clear="both" />
 

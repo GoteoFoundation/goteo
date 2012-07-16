@@ -222,7 +222,7 @@ namespace Goteo\Library {
             }
 
 			//num finançadors
-			$info .= '<div class="a i"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'/supporters"'.$target.'>' . count($this->project->investors) . '</a></h3><p><a href="'.SITE_URL.'/project/'.$this->project->id.'/supporters"'.$target.'>'.Text::get('project-view-metter-investors').'</a></p></div>';
+			$info .= '<div class="a i"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'/supporters"'.$target.'>' . $this->project->num_investors . '</a></h3><p><a href="'.SITE_URL.'/project/'.$this->project->id.'/supporters"'.$target.'>'.Text::get('project-view-metter-investors').'</a></p></div>';
 
 			//financiacio, data
 			$info .= '<div class="b i"><h3><a href="'.SITE_URL.'/project/'.$this->project->id.'/needs"'.$target.'>' . \amount_format($this->project->invested,0,'',','). '<img src="'.SITE_URL.'/view/css/euro/violet/yl.png" alt="&euro;"></a></h3>';
