@@ -21,6 +21,7 @@ namespace Goteo\Library {
             $date, // fecha y hora del evento
             $html, // contenido del evento en codigo html
             $unique = false, // si es un evento unique, no lo grabamos si ya hay un evento con esa url
+            $unique_issue = false, // si se encuentra con que esta duplicando el feed
             $text,  // id del texto dinamico
             $params,  // (array serializado en bd) parametros para el texto dinamico
             $target_type, // tipo de objetivo del evento (user, project, call, node, etc..) normalmente project
@@ -346,6 +347,7 @@ namespace Goteo\Library {
                     ':type' => $this->type
                 ));
                 if ($query->fetchColumn(0) != false) {
+                    $this->unique_issue = true;
                     return true;
                 }
             }

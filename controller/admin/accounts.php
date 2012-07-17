@@ -343,7 +343,7 @@ namespace Goteo\Controller\Admin {
                 $investStatus = Model\Invest::status();
 
                 // Datos para el informe de transacciones correctas
-                $reportData = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
+                $Data = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
 
                 return new View(
                     'view/admin/index.html.php',
@@ -355,7 +355,7 @@ namespace Goteo\Controller\Admin {
                         'status' => $status,
                         'users' => $users,
                         'investStatus' => $investStatus,
-                        'reportData' => $reportData
+                        'Data' => $Data
                     )
                 );
             }

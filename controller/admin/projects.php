@@ -196,7 +196,7 @@ namespace Goteo\Controller\Admin {
             if ($action == 'report') {
                 // informe financiero
                 // Datos para el informe de transacciones correctas
-                $reportData = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
+                $Data = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
 
                 return new View(
                     'view/admin/index.html.php',
@@ -204,7 +204,7 @@ namespace Goteo\Controller\Admin {
                         'folder' => 'projects',
                         'file' => 'report',
                         'project' => $project,
-                        'reportData' => $reportData
+                        'Data' => $Data
                     )
                 );
             }

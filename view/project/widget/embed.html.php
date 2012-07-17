@@ -1,7 +1,9 @@
 <?php
 	use Goteo\Core\View,
-        Goteo\Library\Text;
+        Goteo\Library\Text,
+        Goteo\Model\Project;
 
+    $project = Project::getMedium($this['project']->id);
 	$url = SITE_URL . '/widget/project/' . $this['project']->id;
     if (LANG != 'es')
         $url .= '?lang=' . LANG;
@@ -25,7 +27,7 @@
 <div id="project-code">
     <?php
         // el proyecto de trabajo
-        echo new View('view/project/widget/project.html.php', $this);
+        echo new View('view/project/widget/project.html.php', array('project'=>$project));
     ?>
 </div>
 <div id="widget-code">

@@ -520,7 +520,8 @@ namespace Goteo\Controller {
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 
                 switch ($option) {
-                    // gestionar retornos
+                    // gestionar retornos (o mensaje a los mensajeros)
+                    case 'messegers':
                     case 'rewards':
                         // segun action
                         switch ($action) {
@@ -529,7 +530,7 @@ namespace Goteo\Controller {
                                 $filter = $_POST['filter'];
                                 $order  = $_POST['order'];
                             break;
-                        
+
                             // procesar marcas
                             case 'process':
                                 $filter = $_POST['filter'];
@@ -562,8 +563,14 @@ namespace Goteo\Controller {
                                     $msg_content = nl2br($msg_content);
                                 }
 
-                                if (!empty($_POST['msg_all'])) {
-                                    // si a todos
+                                // si a todos los participantes
+                                if ($option == 'messegers' && !empty($_POST['msg_all'])) {
+                                    foreach (Model\Message::getMessegers($project->id) as $messeger) {
+                                        if ($messeger->id == $project->owner) continue;
+                                        $who[$messeger->id] = $messeger->id;
+                                    }
+                                } elseif (!empty($_POST['msg_all'])) {
+                                    // si a todos lso colaboradores
                                     foreach (Model\Invest::investors($project->id, false, true) as $user=>$investor) {
                                         if (!in_array($user, $who)) {
                                             $who[$user] = $investor->user;
@@ -571,7 +578,7 @@ namespace Goteo\Controller {
                                     }
                                 } elseif (!empty($_POST['msg_user'])) {
                                     //si individual
-                                    $who[] = $_POST['msg_user'];
+                                    $who[$_POST['msg_user']] = $_POST['msg_user'];
                                 } else {
                                     $msg_rewards = array();
                                     // estos son msg_reward-[rewardId]
@@ -585,9 +592,7 @@ namespace Goteo\Controller {
                                     // para cada recompensa
                                     foreach ($msg_rewards as $reward) {
                                         foreach (Model\Invest::choosed($reward) as $user) {
-                                            if (!in_array($user, $who)) {
-                                                $who[] = $user;
-                                            }
+                                            $who[$user] = $user;
                                         }
                                     }
                                 }
@@ -601,7 +606,11 @@ namespace Goteo\Controller {
                                 // segun destinatarios
                                 $allsome = explode('/', Text::get('regular-allsome'));
                                 $enviandoa = !empty($_POST['msg_all']) ? $allsome[0] : $allsome[1];
-                                Message::Info(Text::get('dashboard-investors-mail-sendto', $enviandoa)) ;
+                                if ($option == 'messegers') {
+                                    Message::Info(Text::get('dashboard-messegers-mail-sendto', $enviandoa)) ;
+                                } else {
+                                    Message::Info(Text::get('dashboard-investors-mail-sendto', $enviandoa)) ;
+                                }
 
                                 // Obtenemos la plantilla para asunto y contenido
                                 $template = Template::get(2);
@@ -860,9 +869,13 @@ namespace Goteo\Controller {
                                 $log->setTarget($project->id);
                                 $log->doPublic('projects');
 
+                                // si no ha encontrado otro, lanzamos el update
+                                if (!$log->unique_issue) {
+                                    \Goteo\Controller\Cron::toInvestors('update', $project);
+                                }
+
                                 unset($log);
 
-                                \Goteo\Controller\Cron::toInvestors('update', $project->id);
                             }
 
                         } else {
@@ -923,8 +936,6 @@ namespace Goteo\Controller {
 
             }
 
-
-
             // view data basico para esta seccion
             $viewData = array(
                     'menu'    => self::menu(),
@@ -938,6 +949,14 @@ namespace Goteo\Controller {
 
 
             switch ($option) {
+                // en la portada del proyecto va el informe
+                case 'summary':
+                    if (!empty($project->passed)) {
+                        $viewData['Data'] = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
+                    }
+                break;
+
+
                 // gestionar retornos
                 case 'rewards':
                     // recompensas ofrecidas
@@ -947,6 +966,11 @@ namespace Goteo\Controller {
                     // ver por (esto son orden y filtros)
                     $viewData['filter'] = $filter;
                     $viewData['order'] = $order;
+                break;
+
+                // listar mensajeadores
+                case 'messegers':
+                    $viewData['messegers'] = Model\Message::getMessegers($_SESSION['project']->id);
                 break;
 
                 // editar colaboraciones
@@ -1640,8 +1664,9 @@ namespace Goteo\Controller {
                 'activity' => array(
                     'label'   => Text::get('dashboard-menu-activity'),
                     'options' => array (
-                        'summary' => Text::get('dashboard-menu-activity-summary'),
-                        'wall'    => Text::get('dashboard-menu-activity-wall')
+                        'summary' => Text::get('dashboard-menu-activity-summary')
+                        /*,
+                        'wall'    => Text::get('dashboard-menu-activity-wall')*/
                     )
                 ),
                 'profile' => array(
@@ -1662,7 +1687,8 @@ namespace Goteo\Controller {
                         'widgets'  => Text::get('dashboard-menu-projects-widgets'),
                         'contract' => Text::get('dashboard-menu-projects-contract'), 
                         'rewards'  => Text::get('dashboard-menu-projects-rewards'),
-                        'supports' => Text::get('dashboard-menu-projects-supports')
+                        'supports' => Text::get('dashboard-menu-projects-supports'),
+                        'messegers'  => Text::get('dashboard-menu-projects-messegers')
                     )
                 )
             );
