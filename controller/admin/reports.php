@@ -5,8 +5,7 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
-		Goteo\Library\Message,
-		Goteo\Library\Feed,
+		Goteo\Library\Reporting,
         Goteo\Model;
 
     class Reports {
@@ -70,13 +69,23 @@ namespace Goteo\Controller\Admin {
                     break;
             }
 
+            $reports = Reporting::getList();
+
+            if (!empty($filters['report'])) {
+                $data = Reporting::getReport($filters['report'], $filters);
+            } else {
+                $data = null;
+            }
+
+
             return new View(
                 'view/admin/index.html.php',
                 array(
                     'folder'  => 'reports',
                     'file'    => 'list',
                     'reports' => $reports,
-                    'filters' => $filters
+                    'filters' => $filters,
+                    'data'    => $data
                 )
             );
 

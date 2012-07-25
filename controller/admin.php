@@ -292,7 +292,7 @@ namespace Goteo\Controller {
                             'list' => array('label' => 'Listando', 'item' => false),
                             'paypal' => array('label' => 'Informe PayPal', 'item' => false)
                         ),
-                        'filters' => array('from'=>'', 'until'=>'')
+                        'filters' => array('report'=>'','from'=>'', 'until'=>'')
                     ),
                     'reviews' => array(
                         'label' => 'Revisiones',
