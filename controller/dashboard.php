@@ -565,9 +565,9 @@ namespace Goteo\Controller {
 
                                 // si a todos los participantes
                                 if ($option == 'messegers' && !empty($_POST['msg_all'])) {
-                                    foreach (Model\Message::getMessegers($project->id) as $messeger) {
-                                        if ($messeger->id == $project->owner) continue;
-                                        $who[$messeger->id] = $messeger->id;
+                                    foreach (Model\Message::getMessegers($project->id) as $messeger=>$msgData) {
+                                        if ($messeger == $project->owner) continue;
+                                        $who[$messeger] = $messeger;
                                     }
                                 } elseif (!empty($_POST['msg_all'])) {
                                     // si a todos lso colaboradores
@@ -648,7 +648,8 @@ namespace Goteo\Controller {
 
                                     unset($mailHandler);
                                 }
-                                
+
+                                throw new Redirection('/dashboard/projects/'.$option);
 
                             break;
                         }
@@ -1686,8 +1687,8 @@ namespace Goteo\Controller {
                         'updates'  => Text::get('dashboard-menu-projects-updates'),
                         'widgets'  => Text::get('dashboard-menu-projects-widgets'),
                         'contract' => Text::get('dashboard-menu-projects-contract'), 
-                        'rewards'  => Text::get('dashboard-menu-projects-rewards'),
                         'supports' => Text::get('dashboard-menu-projects-supports'),
+                        'rewards'  => Text::get('dashboard-menu-projects-rewards'),
                         'messegers'  => Text::get('dashboard-menu-projects-messegers')
                     )
                 )

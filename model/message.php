@@ -269,21 +269,29 @@ namespace Goteo\Model {
             $list = array();
 
             $sql = "SELECT 
-                        DISTINCT(message.user) as id, 
-                        user.name as name,
-                        user.avatar as avatar
+                        message.user as user,
+                        message.message as text,
+                        respond.message as thread_text
                     FROM message
-                    INNER JOIN user
-                        ON user.id = message.user
-                    WHERE project = :id";
+                    LEFT JOIN message as respond
+                        ON respond.id = message.thread
+                    WHERE message.project = :id";
             $query = self::query($sql, array(':id'=>$id));
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $user) {
-                $user->avatar = Image::get($user->avatar);
-                if (empty($user->avatar->id) || !$user->avatar instanceof Image) {
-                    $user->avatar = Image::get(1);
-                }
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $msg) {
 
-                $list[] = $user;
+                $msgData = (object) array(
+                        'text' => $msg->text,
+                        'thread_text' => $msg->thread_text
+                    );
+
+                if (isset($list[$msg->user])) {
+                    $list[$msg->user]->messages[] = $msgData;
+                } else {
+                    $user = User::getMini($msg->user);
+                    $user->messages = array();
+                    $user->messages[] = $msgData;
+                    $list[$msg->user] = $user;
+                }
             }
 
             return $list;

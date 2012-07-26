@@ -5,33 +5,51 @@ use Goteo\Core\View,
 $project = $this['project'];
 $messegers = $this['messegers'];
 
+// participantes ordenados por nombre
+uasort($messegers, function ($a, $b) {
+        if ($a->name == $b->name) return 0;
+        return ($a->name > $b->name) ? 1 : -1;
+        }
+    );
+
 ?>
 <?php if (!empty($messegers)) : ?>
 <div class="widget gestrew">
     <h2 class="title">Usuarios que participan en los mensajes</h2>
     
     <div id="invests-list">
-            <?php foreach ($messegers as $user) :
+            <?php foreach ($messegers as $user=>$userMsg) :
 
                 // al impulsor no lo mostramos
-                if ($user->id == $project->owner) continue;
+                if ($user == $project->owner) continue;
                 ?>
                 
                 <div class="investor">
 
-                	<div class="left">
-                        <a href="/user/<?php echo $user->id; ?>"><img src="<?php echo $user->avatar->getLink(45, 45, true); ?>" /></a>
+                	<div class="left" style="width:50px;">
+                        <a href="/user/<?php echo $user; ?>"><img src="<?php echo $userMsg->avatar->getLink(45, 45, true); ?>" /></a>
                     </div>
                     
                     <div class="left" style="width:120px;">
-						<span class="username"><a href="/user/<?php echo $user->id; ?>"><?php echo $user->name; ?></a></span>
+						<span class="username"><a href="/user/<?php echo $user; ?>"><?php echo $userMsg->name; ?></a></span>
                     </div>
                    
                     <div class="left">
-                        <span class="profile"><a href="/user/profile/<?php echo $user->id ?>" target="_blank"><?php echo Text::get('profile-widget-button'); ?></a> </span>
-                        <span class="contact"><a onclick="msgto_user('<?php echo $user->id; ?>', '<?php echo $user->name; ?>')" style="cursor: pointer;"><?php echo Text::get('regular-send_message'); ?></a></span>
+                        <span class="profile"><a href="/user/profile/<?php echo $user ?>" target="_blank"><?php echo Text::get('profile-widget-button'); ?></a> </span>
+                        <span class="contact"><a onclick="msgto_user('<?php echo $user; ?>', '<?php echo $userMsg->name; ?>')" style="cursor: pointer;"><?php echo Text::get('regular-send_message'); ?></a></span>
                     </div>
                     
+                    <div class="left" style="width:540px;">
+                        <?php foreach ($userMsg->messages as $msg) : ?>
+                        <p><?php if (!empty($msg->thread_text)) {
+                            echo '<strong>'.\substr($msg->thread_text, 0, 40).'...:</strong> '.\substr($msg->text, 0, 50).'...';
+                        } else {
+                            echo '<strong>Inicia hilo:</strong> '.\substr($msg->text, 0, 80).'...';
+                        }
+                        ?></p>
+                        <?php endforeach; ?>
+                    </div>
+
                     
                 </div>
                 
