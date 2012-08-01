@@ -13,6 +13,8 @@ namespace Goteo\Controller\Admin {
 
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
+            $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
+            
             // métodos de pago
             $methods = Model\Invest::methods();
             // estados del proyecto
@@ -20,7 +22,9 @@ namespace Goteo\Controller\Admin {
             // estados de aporte
             $investStatus = Model\Invest::status();
             // listado de proyectos
-            $projects = Model\Invest::projects(false, $_SESSION['admin_node']);
+            $projects = Model\Invest::projects(false, $node);
+            // usuarios cofinanciadores
+            $users = Model\Invest::users(true);
             // campañas que tienen aportes
             $calls = Model\Invest::calls();
             // extras
@@ -45,7 +49,7 @@ namespace Goteo\Controller\Admin {
                     $droped = null;
                 }
 
-                if ($project->node != $_SESSION['admin_node']) {
+                if ($project->node != $node) {
                     throw new Redirection('/admin/invests');
                 }
 
@@ -71,7 +75,7 @@ namespace Goteo\Controller\Admin {
                 if (!empty($filters['calls']))
                     $filters['types'] = '';
 
-                $list = Model\Invest::getList($filters, $_SESSION['admin_node']);
+                $list = Model\Invest::getList($filters, $node);
             } else {
                 $list = array();
             }
@@ -82,6 +86,7 @@ namespace Goteo\Controller\Admin {
                     'list'          => $list,
                     'filters'       => $filters,
                     'projects'      => $projects,
+                    'users'         => $users,
                     'calls'         => $calls,
                     'methods'       => $methods,
                     'types'         => $types,

@@ -1087,6 +1087,11 @@ namespace Goteo\Model {
            self::query("UPDATE invest SET issue = 1 WHERE id = :id", array(':id' => $id));
         }
 
+        /* Para desmarcar incidencia */
+        public static function unsetIssue($id) {
+           self::query("UPDATE invest SET issue = 0 WHERE id = :id", array(':id' => $id));
+        }
+
         /*
          * Estados del aporte
          */

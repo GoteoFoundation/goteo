@@ -129,24 +129,24 @@ namespace Goteo\Controller\Admin {
                 $new = isset($_POST['status']) ? $_POST['status'] : null;
 
                 if ($invest->issue && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update']) && $_POST['resolve'] == 1) {
-                    if (Model\Invest::query("UPDATE invest SET issue = NULL WHERE id=:id", array(':id'=>$id))) {
-                        Model\Invest::setDetail($id, 'issue-solved', 'La incidencia se ha dado por resuelta por el usuario ' . $_SESSION['user']->name);
-                        Message::Info('La incidencia se ha dado por resuelta');
-                        throw new Redirection('/admin/accounts');
-                    } else {
-                        Message::Error('Ha fallado al resolver la incidencia');
-                    }
+                    Model\Invest::unsetIssue($id);
+                    Model\Invest::setDetail($id, 'issue-solved', 'La incidencia se ha dado por resuelta por el usuario ' . $_SESSION['user']->name);
+                    Message::Info('La incidencia se ha dado por resuelta');
                 }
 
-                if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update']) && isset($new) && isset($status[$new]) && $new != $invest->status) {
-
-                    if (Model\Invest::query("UPDATE invest SET status=:status WHERE id=:id", array(':id'=>$id, ':status'=>$new))) {
-                        Model\Invest::setDetail($id, 'status-change'.rand(0, 9999), 'El admin ' . $_SESSION['user']->name) . ' ha cambiado el estado del apote a '.$status[$new];
-                        Message::Info('Se ha actualizado el estado del aporte');
-                        throw new Redirection('/admin/accounts/details/'.$id);
+                if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update']) && isset($new) && isset($status[$new])) {
+                    
+                    if ($new != $invest->status) {
+                        if (Model\Invest::query("UPDATE invest SET status=:status WHERE id=:id", array(':id'=>$id, ':status'=>$new))) {
+                            Model\Invest::setDetail($id, 'status-change'.rand(0, 9999), 'El admin ' . $_SESSION['user']->name) . ' ha cambiado el estado del apote a '.$status[$new];
+                            Message::Info('Se ha actualizado el estado del aporte');
+                        } else {
+                            Message::Error('Ha fallado al actualizar el estado del aporte');
+                        }
                     } else {
-                        Message::Error('Ha fallado al actualizar el estado del aporte');
+                        Message::Error('No se ha cambiado el estado');
                     }
+                    throw new Redirection('/admin/accounts/details/'.$id);
                 }
 
                 return new View('view/admin/index.html.php', array(
@@ -304,6 +304,7 @@ namespace Goteo\Controller\Admin {
                         $log->doAdmin('money');
                         unset($log);
 
+                        Model\Invest::setDetail($invest->id, 'admin-created', 'Este aporte ha sido creado manualmente por el admin ' . $_SESSION['user']->name);
                         Message::Info('Aporte manual creado correctamente, seleccionar recompensa y dirección de entrega.');
                         throw new Redirection('/admin/rewards/edit/'.$invest->id);
                     } else{
@@ -428,6 +429,7 @@ namespace Goteo\Controller\Admin {
                 )));
                 $log->doAdmin();
                 unset($log);
+                Model\Invest::setDetail($invest->id, 'manually-canceled', $log->html);
             }
 
             // ejecutar cargo ahora!!, solo aportes no ejecutados
@@ -469,6 +471,14 @@ namespace Goteo\Controller\Admin {
                             $errors[] = 'Cargo paypal correcto';
                             $log_text = "El admin %s ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
                             $invest->status = 1;
+                            
+                            // si era incidencia la desmarcamos
+                            if ($invest->issue) {
+                                Model\Invest::unsetIssue($invest->id);
+                                Model\Invest::setDetail($invest->id, 'issue-solved', 'La incidencia se ha dado por resuelta al ejecutar el aporte manualmente por el admin ' . $_SESSION['user']->name);
+                            }
+                            
+                            
                         } else {
                             $txt_errors = implode('; ', $errors);
                             $errors[] = 'Fallo al ejecutar cargo paypal: ' . $txt_errors . '<strong>POSIBLE INCIDENCIA NO COMUNICADA Y APORTE NO CANCELADO, HAY QUE TRATARLA MANUALMENTE</strong>';
@@ -508,6 +518,7 @@ namespace Goteo\Controller\Admin {
                     )));
                     $log->doAdmin();
                     unset($log);
+                    Model\Invest::setDetail($invest->id, 'manually-executed', $log->html);
                 }
             }
 

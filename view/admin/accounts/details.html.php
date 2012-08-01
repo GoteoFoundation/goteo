@@ -16,7 +16,7 @@ $user = $this['user'];
 <a href="/admin/rewards/edit/<?php echo $invest->id ?>" class="button">Gestionar recompensa / dirección</a>
 <?php if ($invest->issue) : ?>
 &nbsp;&nbsp;&nbsp;
-<a href="/admin/accounts/solve/<?php echo $invest->id ?>" onclick="return confirm('Esta incidencia se dará por resuelta, el aporte pasará a ser de tipo Cash y en estado Cobrado por goteo, seguimos?')" class="button">Incidencia resuelta</a>
+<a href="/admin/accounts/solve/<?php echo $invest->id ?>" onclick="return confirm('Esta incidencia se dará por resuelta: se va a cancelar el preaproval, el aporte pasará a ser de tipo Cash y en estado Cobrado por goteo, seguimos?')" class="button">Nos han hecho la transferencia</a>
 <?php endif; ?>
 <div class="widget">
     <p>
