@@ -59,25 +59,21 @@ switch ($order) {
         break;
 }
 
-
 ?>
 <div class="widget gestrew">
-    <div class="message">
-        ESTO ES UNA VISUALIZACIÓN DE LAS OPCIONES DE RETORNO QUE ELIGEN TUS COFINANCIADORES.<br />
-        NO TIENES QUE GESTIONAR ESOS RETORNOS HASTA HABER LLEGADO AL MÍNIMO DE LA CANTIDAD DESEADA
-    </div>
+    <div class="message"><?php echo Text::html('dashboard-rewards-notice') ?></div>
     <div class="rewards">
         <?php $num = 1; 
             foreach ($rewards as $rewardId=>$rewardData) : ?>
             <div class="reward <?php if(($num % 4)==0)echo " last"?>">
             	<div class="orden"><?php echo $num; ?></div>
-                <span class="aporte">Aportaciones de <span class="num"><?php echo $rewardData->amount; ?></span> <span class="euro">&nbsp;</span></span>
-                <span class="cofinanciadores">Comprometidas <span class="num"><?php echo $rewardData->getTaken(); ?></span></span>
+                <span class="aporte"><?php echo Text::get('dashboard-rewards-amount_group') ?><span class="num"><?php echo $rewardData->amount; ?></span> <span class="euro">&nbsp;</span></span>
+                <span class="cofinanciadores"><?php echo Text::get('dashboard-rewards-num_taken') ?><span class="num"><?php echo $rewardData->getTaken(); ?></span></span>
                 <div class="tiporec"><ul><li class="<?php echo $rewardData->icon; ?>"><?php echo Text::recorta($rewardData->reward, 40); ?></li></ul></div>
                 <div class="contenedorrecompensa">	
-                	<span class="recompensa"><strong style="color:#666;">Recompensa:</strong><br/> <?php echo Text::recorta($rewardData->description, 100); ?></span>
+                	<span class="recompensa"><strong style="color:#666;"><?php echo Text::get('rewards-field-individual_reward-reward') ?></strong><br/> <?php echo Text::recorta($rewardData->description, 100); ?></span>
                 </div>
-                <a class="button green" onclick="msgto('<?php echo $rewardData->id; ?>')" >mensaje a ese grupo</a>
+                <a class="button green" onclick="msgto('<?php echo $rewardData->id; ?>')" ><?php echo Text::get('dashboard-rewards-group_msg') ?></a>
             </div>
         <?php ++$num;
             endforeach; ?>
@@ -101,21 +97,21 @@ switch ($order) {
     <div class="filters">
         <label>Ver aportaciones: </label><br />
         <ul>			 
-        	<li<?php if ($order == 'amount' || $order == '') echo ' class="current"'; ?>><a href="#" onclick="return set('order', 'amount');">Por importe</a></li>
+        	<li<?php if ($order == 'amount' || $order == '') echo ' class="current"'; ?>><a href="#" onclick="return set('order', 'amount');"><?php echo Text::get('dashboard-rewards-amount_order'); ?></a></li>
             <li>|</li>
-        	<li<?php if ($order == 'date') echo ' class="current"'; ?>><a href="#" onclick="return set('order', 'date');">Por fecha</a></li>
+        	<li<?php if ($order == 'date') echo ' class="current"'; ?>><a href="#" onclick="return set('order', 'date');"><?php echo Text::get('dashboard-rewards-date_order'); ?></a></li>
             <li>|</li>
-            <li<?php if ($order == 'user') echo ' class="current"'; ?>><a href="#" onclick="return set('order', 'user');">Por usuario</a></li>
+            <li<?php if ($order == 'user') echo ' class="current"'; ?>><a href="#" onclick="return set('order', 'user');"><?php echo Text::get('dashboard-rewards-user_order'); ?></a></li>
             <li>|</li>
-            <li<?php if ($order == 'reward') echo ' class="current"'; ?>><a href="#" onclick="return set('order', 'reward');">Por retorno</a></li>
+            <li<?php if ($order == 'reward') echo ' class="current"'; ?>><a href="#" onclick="return set('order', 'reward');"><?php echo Text::get('dashboard-rewards-reward_order'); ?></a></li>
             <li>|</li>
-            <li<?php if ($filter == 'pending') echo ' class="current"'; ?>><a href="#" onclick="return set('filter', 'pending');">Pendientes</a></li>
+            <li<?php if ($filter == 'pending') echo ' class="current"'; ?>><a href="#" onclick="return set('filter', 'pending');"><?php echo Text::get('dashboard-rewards-pending_filter'); ?></a></li>
             <li>|</li>
-            <li<?php if ($filter == 'fulfilled') echo ' class="current"'; ?>><a href="#" onclick="return set('filter', 'fulfilled');">Cumplidas</a></li>
+            <li<?php if ($filter == 'fulfilled') echo ' class="current"'; ?>><a href="#" onclick="return set('filter', 'fulfilled');"><?php echo Text::get('dashboard-rewards-fulfilled_filter'); ?></a></li>
             <li>|</li>
-            <li<?php if ($filter == 'resign') echo ' class="current"'; ?>><a href="#" onclick="return set('filter', 'resign');">Donativos</a></li>
+            <li<?php if ($filter == 'resign') echo ' class="current"'; ?>><a href="#" onclick="return set('filter', 'resign');"><?php echo Text::get('dashboard-rewards-resign_filter'); ?></a></li>
             <li>|</li>
-            <li<?php if ($filter == '') echo ' class="current"'; ?>><a href="#" onclick="return set('filter', '');">Todas</a></li>
+            <li<?php if ($filter == '') echo ' class="current"'; ?>><a href="#" onclick="return set('filter', '');"><?php echo Text::get('dashboard-rewards-all_filter'); ?></a></li>
         </ul>
     </div>
     
@@ -157,12 +153,12 @@ switch ($order) {
                    
                     <div class="left recompensas"  style="width:280px;">
                     <?php if ($investData->issue) : ?>
-                     	<span style="margin-bottom:2px;color:red;"><strong>Incidencia!</strong></span>
+                     	<span style="margin-bottom:2px;color:red;"><strong><?php echo Text::get('dashboard-rewards-issue'); ?></strong></span>
                     <?php endif; ?>
                     <?php if ($investData->resign) : ?>
-                     	<span style="margin-bottom:2px;color:red;"><strong>Renuncia a la recompensa</strong></span>
+                     	<span style="margin-bottom:2px;color:red;"><strong><?php echo Text::get('dashboard-rewards-resigns'); ?></strong></span>
                     <?php else : ?>
-                     	<span style="margin-bottom:2px;" class="<?php echo $estilo;?>"><strong>Recompensas esperadas:</strong></span>
+                     	<span style="margin-bottom:2px;" class="<?php echo $estilo;?>"><strong><?php echo Text::get('dashboard-rewards-choosen'); ?></strong></span>
                         <?php foreach ($investData->rewards as $reward) : ?>
                         <div style="width: 250px; overflow: hidden; height: 18px;" class="<?php echo $estilo;?>">
                         <input type="checkbox"  id="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>" name="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>" value="1" <?php if ($reward->fulfilled == 1) echo ' checked="checked" disabled';?>  />
@@ -173,14 +169,14 @@ switch ($order) {
                     </div>
                     
 					<div class="left" style="width:200px;padding-right:30px;">
-						<span style="margin-bottom:2px;" class="<?php echo $estilo;?>"><strong>Direcci&oacute;n de entrega: </strong></span>
+						<span style="margin-bottom:2px;" class="<?php echo $estilo;?>"><strong><?php echo Text::get('dashboard-rewards-address'); ?></strong></span>
 						<span class="<?php echo $estilo;?>">
                     	<?php echo $address->address; ?>, <?php echo $address->location; ?>, <?php echo $address->zipcode; ?> <?php echo $address->country; ?>
                     	</span>
                     </div>
                     
                     <div class="left">
-	                    <span class="status"><?php echo $cumplida ? '<span class="cumplida">Cumplida</span>' : '<span class="pendiente">Pendiente</span>'; ?></span>
+	                    <span class="status"><?php echo $cumplida ? '<span class="cumplida">'.Text::get('dashboard-rewards-fulfilled_status').'</span>' : '<span class="pendiente">'.Text::get('dashboard-rewards-pending_status').'</span>'; ?></span>
                         <span class="profile"><a href="/user/profile/<?php echo $investData->user->id ?>" target="_blank"><?php echo Text::get('profile-widget-button'); ?></a> </span>
                         <span class="contact"><a onclick="msgto_user('<?php echo $investData->user->id; ?>', '<?php echo $investData->user->name; ?>')" style="cursor: pointer;"><?php echo Text::get('regular-send_message'); ?></a></span>
                     </div>
@@ -191,7 +187,7 @@ switch ($order) {
             <?php endforeach; ?>
 
             <?php if ($project->amount >= $project->mincost) : ?>
-            <input type="submit" name="process" value="Aplicar marcados" class="save" onclick="return confirm('Ojo! Al marcar como cumplida no se puede desmarcar. Continuamos?')"/>
+            <input type="submit" name="process" value="<?php echo Text::get('dashboard-rewards-process'); ?>" class="save" onclick="return confirm('<?php echo Text::get('dashboard-rewards-process_alert'); ?>')"/>
             <?php endif; ?>
         </form>
     </div>
@@ -200,7 +196,7 @@ switch ($order) {
 
 <div class="widget projects" id="colective-messages">
     <a name="message"></a>
-    <h2 class="title">Mensajes colectivos</h2>
+    <h2 class="title"><?php echo Text::get('dashboard-rewards-massive_msg'); ?></h2>
 
         <form name="message_form" method="post" action="<?php echo '/dashboard/'.$this['section'].'/'.$this['option'].'/message'; ?>">
         	<div id="checks">
@@ -209,8 +205,8 @@ switch ($order) {
                <input type="hidden"id="msg_user" name="msg_user" value="" />
 
                 <p>
-                    <input type="checkbox" id="msg_all" name="msg_all" value="1" onclick="noindiv(); alert('a todos es a todos, no tiene en cuenta el resto de marcados');" />
-                    <label for="msg_all">A todos los cofinanciadores de este proyecto</label>
+                    <input type="checkbox" id="msg_all" name="msg_all" value="1" onclick="noindiv(); alert('<?php echo Text::get('dashboard-rewards-massive_msg-all_alert'); ?>');" />
+                    <label for="msg_all"><?php echo Text::get('dashboard-rewards-massive_msg-all'); ?></label>
                 </p>
 
                 <p>
@@ -258,6 +254,7 @@ switch ($order) {
     function noindiv() {
         $('#msg_user').val('');
         $('#msg_user_name').html('');
+        $('#msg_all').val('1');
     }
     function msgto(reward) {
         noindiv();
@@ -267,8 +264,11 @@ switch ($order) {
     }
 
     function msgto_user(user, name) {
+        document.getElementById('msg_all').checked = '';
+        $('#msg_all').val('');
+        
         $('#msg_user').val(user);
-        $('#msg_user_name').html('<p>Individual a <strong>'+name+'</strong></p>');
+        $('#msg_user_name').html('<p><?php echo Text::get('dashboard-rewards-user_msg'); ?><strong>'+name+'</strong></p>');
         document.location.href = '#message';
         $("#message").focus();
 
