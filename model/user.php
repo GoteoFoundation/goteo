@@ -802,7 +802,6 @@ namespace Goteo\Model {
                     user.id as id,
                     user.name as name
                 FROM    user
-                ORDER BY user.name ASC
                 ");
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {

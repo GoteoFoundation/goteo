@@ -2,19 +2,25 @@
 
 use Goteo\Library\Text;
 
+$amount = (isset($_GET['amount'])) ? $_GET['amount'] : null;
+$user   = (isset($_GET['user'])) ? $_GET['user'] : null;
+$proj   = (isset($_GET['proj'])) ? $_GET['proj'] : null;
+
 ?>
 <div class="widget">
     <form id="filter-form" action="/admin/accounts/add" method="post">
         <p>
             <label for="invest-amount">Importe:</label><br />
-            <input type="text" id="invest-amount" name="amount" value="" />
+            <input type="text" id="invest-amount" name="amount" value="<?php echo $amount; ?>" />
         </p>
         <p>
             <label for="invest-user">Usuario:</label><br />
             <select id="invest-user" name="user">
                 <option value="">Seleccionar usuario que hace el aporte</option>
-            <?php foreach ($this['users'] as $userId=>$userName) : ?>
-                <option value="<?php echo $userId; ?>"><?php echo $userName; ?></option>
+            <?php foreach ($this['users'] as $userId=>$userName) : 
+                $selected = $userId == $user ? ' selected="selected"' : '';
+                ?>
+                <option value="<?php echo $userId; ?>"<?php echo $selected; ?>><?php echo $userId . ' :: ' . substr($userName, 0, 20); ?></option>
             <?php endforeach; ?>
             </select>
         </p>
@@ -22,8 +28,10 @@ use Goteo\Library\Text;
             <label for="invest-project">Proyecto:</label><br />
             <select id="invest-project" name="project">
                 <option value="">Seleccionar el proyecto al que se aporta</option>
-            <?php foreach ($this['projects'] as $projectId=>$projectName) : ?>
-                <option value="<?php echo $projectId; ?>"><?php echo $projectName; ?></option>
+            <?php foreach ($this['projects'] as $projectId=>$projectName) : 
+                $selected = $projectId == $proj ? ' selected="selected"' : '';
+                ?>
+                <option value="<?php echo $projectId; ?>"<?php echo $selected; ?>><?php echo $projectName; ?></option>
             <?php endforeach; ?>
             </select>
         </p>
