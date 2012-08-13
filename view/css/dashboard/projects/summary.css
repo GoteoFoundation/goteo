@@ -271,6 +271,10 @@ body.dashboard div#meter-big dl dt.days {
     text-transform: uppercase;
 }
 
+body.dashboard div#meter-big dl dt.days.long {
+    left: 180px !important;
+}
+
 body.dashboard div#meter-big dl dd.days {
     left: 275px;
     font-size: 16px;

@@ -11,7 +11,7 @@ div.widget.project-support dl {
     margin: 0;
     padding: 0 0 0 20px;
     float: left;
-    margin-left: 15px;
+    margin-left: 5px;
 }
 
 body.js div.widget.project-support dl {
@@ -33,7 +33,7 @@ div.widget.project-support dl dd {
     display: block;
     min-height: 1.5em;
     line-height: 1.5em;
-	margin-left: 5.5em;
+    margin-left: 76px;
 }
 
 div.widget.project-support dl dd * {   
@@ -47,7 +47,7 @@ div.widget.project-support dl dt.optimum{
 
 div.widget.project-support dl dt.optimum,
 div.widget.project-support dl dt.minimum {
-    width: 5.5em;
+    width: 76px;
     float: left;
     margin-left: 0;
     line-height: 45px;

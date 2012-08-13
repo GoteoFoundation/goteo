@@ -520,8 +520,19 @@ namespace Goteo\Controller {
                echo 'Lanzamiento automatico<br />';
             }
             // eliminamos feed antiguo
-            $query = Model\Project::query("DELETE FROM `feed` WHERE type != 'goteo' AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`datetime`)), '%j') > 60");
-            die('Listo!');
+            $sql = "DELETE 
+                FROM `feed` 
+                WHERE type != 'goteo' 
+                AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`datetime`)), '%j') > 50
+                AND (url NOT LIKE '%updates%' OR url IS NULL)
+                ";
+            
+            echo $sql . '<br />';
+            $query = Model\Project::query($sql);
+            $count = $query->rowCount();
+            echo "Eliminados $count registros de feed.<br />";
+            echo 'Listo!';
+            die();
 
             /*
             // proyectos en campaña
@@ -617,7 +628,7 @@ namespace Goteo\Controller {
             }
 
             @mail('goteo_cron@doukeshi.org', 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
-                'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
+                'Se ha lanzado manualmente el cron '. __FUNCTION__ .' para el proyecto '.$project.' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
             $projectData = Model\Project::getMini($project);
 
             // necesitamos la cuenta del proyecto y que sea la misma que cuando el preapproval

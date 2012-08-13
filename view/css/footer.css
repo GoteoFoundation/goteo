@@ -357,7 +357,8 @@ div#sub-footer div.platoniq {
 }
 
 div#sub-footer div.platoniq span.text{
-	margin-right:15px;
+    margin-right:15px;
+    text-align: right;
 }
 
 div#sub-footer div.platoniq span.logo {
@@ -404,7 +405,7 @@ div#sub-footer div.platoniq a.poweredby {
     cursor: default;
     position: absolute;
     top: 8px;
-    right: 100px;
+    right: 200px;
     width: 100%;
 }
 

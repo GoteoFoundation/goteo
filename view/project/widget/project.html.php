@@ -86,13 +86,13 @@ if (isset($this['investor']) && is_object($this['investor'])) {
             <li class="<?php echo $social->icon ?> activable">
                 <a href="<?php echo $url ?>/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$social->icon_name}: {$social->reward}") ?>" class="tipsy"<?php echo $blank; ?>><?php echo htmlspecialchars($social->reward) ?></a>
             </li>
-           <?php if ($q >= 5) break; $q++;
+           <?php if ($q >= 4) break; $q++;
                endforeach ?>
-           <?php if ($q < 5) foreach ($project->individual_rewards as $individual): ?>
+           <?php if ($q < 4) foreach ($project->individual_rewards as $individual): ?>
             <li class="<?php echo $individual->icon ?> activable">
                 <a href="<?php echo $url ?>/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$individual->icon_name}: {$individual->reward} {$individual->amount}") ?> &euro;" class="tipsy"<?php echo $blank; ?>><?php echo htmlspecialchars($individual->reward) ?></a>
             </li>
-           <?php if ($q >= 5) break; $q++;
+           <?php if ($q >= 4) break; $q++;
            endforeach ?>
         </ul>
 

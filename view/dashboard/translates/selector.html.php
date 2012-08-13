@@ -1,4 +1,6 @@
 <?php
+use Goteo\Library\Text;
+
 //piñonaco que te crio
 $this['option'] = str_replace(array('call_overview', 'node_overview'), array('overview', 'overview'), $this['option']);
 ?>
@@ -13,9 +15,9 @@ function item_select(type) {
         <input type="hidden" id="selector-type" name="type" value="profile" />
         
     <?php if (!empty($this['projects'])) : ?>
-        <label for="pselector">Proyecto:</label>
+        <label for="pselector"><?php echo Text::get('project-menu-home') ?></label>
         <select id="pselector" name="project" onchange="item_select('project');">
-            <option value="">Selecciona proyecto para traducir</option>
+            <option value=""><?php echo Text::get('dashboard-translate-select_project') ?></option>
         <?php foreach ($this['projects'] as $project) : ?>
             <option value="<?php echo $project->id; ?>"<?php if ($project->id == $_SESSION['translate_project']->id) echo ' selected="selected"'; ?>><?php echo $project->name; ?></option>
         <?php endforeach; ?>
@@ -23,9 +25,9 @@ function item_select(type) {
     <?php endif; ?>
 
     <?php if (!empty($this['calls'])) : ?>
-        <label for="cselector">Convocatoria:</label>
+        <label for="cselector"><?php echo Text::get('call-menu-home') ?></label>
         <select id="cselector" name="call" onchange="item_select('call');">
-            <option value="">Selecciona convocatoria para traducir</option>
+            <option value=""><?php echo Text::get('dashboard-translate-select_call') ?></option>
         <?php foreach ($this['calls'] as $call) : ?>
             <option value="<?php echo $call->id; ?>"<?php if ($call->id == $_SESSION['translate_call']->id) echo ' selected="selected"'; ?>><?php echo $call->name; ?></option>
         <?php endforeach; ?>
@@ -33,9 +35,9 @@ function item_select(type) {
     <?php endif; ?>
 
     <?php if (!empty($this['nodes'])) : ?>
-        <label for="nselector">Nodo:</label>
+        <label for="nselector"><?php echo Text::get('node-menu-home') ?></label>
         <select id="nselector" name="node" onchange="item_select('node');">
-            <option value="">Selecciona nodo para traducir</option>
+            <option value=""><?php echo Text::get('dashboard-translate-select_node') ?></option>
         <?php foreach ($this['nodes'] as $node) : ?>
             <option value="<?php echo $node->id; ?>"<?php if ($node->id == $_SESSION['translate_node']->id) echo ' selected="selected"'; ?>><?php echo $node->name; ?></option>
         <?php endforeach; ?>
@@ -45,7 +47,7 @@ function item_select(type) {
     </form>
 
     <form id="lang-form" name="lang_form" action="<?php echo '/dashboard/'.$this['section'].'/'.$this['option'].'/lang'; ?>" method="post">
-        <label for="selang">Idioma:</label>
+        <label for="selang"><?php echo Text::get('regular-lang') ?></label>
         <select id="selang" name="lang" onchange="document.getElementById('lang-form').submit();" style="width:150px;">
         <?php foreach ($this['langs'] as $lng) : ?>
             <option value="<?php echo $lng->id; ?>"<?php if ($lng->id == $_SESSION['translate_lang']) echo ' selected="selected"'; ?>><?php echo $lng->name; ?></option>
@@ -54,21 +56,21 @@ function item_select(type) {
     </form>
 
     <?php if ($_SESSION['translate_type'] == 'project' && !empty($_SESSION['translate_project'])) : ?>
-    <p>Est&aacute;s traduciendo el proyecto <strong><?php echo $_SESSION['translate_project']->name; ?></strong>. El idioma original es <strong><?php echo $this['project']->lang_name ?></strong></p>
+    <p><?php echo Text::html('dashboard-translate-doing_project', $_SESSION['translate_project']->name, $this['project']->lang_name) ?></p>
     <?php endif; ?>
 
     <?php if ($_SESSION['translate_type'] == 'call' && !empty($_SESSION['translate_call'])) : ?>
-    <p>Est&aacute;s traduciendo la convocatoria <strong><?php echo $_SESSION['translate_call']->name; ?></strong>. El idioma original es <strong><?php echo $this['call']->lang_name ?></strong></p>
+    <p><?php echo Text::html('dashboard-translate-doing_call', $_SESSION['translate_call']->name, $this['call']->lang_name) ?></p>
     <?php endif; ?>
 
     <?php if ($_SESSION['translate_type'] == 'node' && !empty($_SESSION['translate_node'])) : ?>
-    <p>Est&aacute;s traduciendo el nodo <strong><?php echo $_SESSION['translate_node']->name; ?></strong>. El idioma original es <strong>Espa&ntilde;ol</strong></p>
+    <p><?php echo Text::html('dashboard-translate-doing_node', $_SESSION['translate_node']->name) ?></p>
     <?php endif; ?>
 
     <?php if (!empty($_SESSION['translate_type']) && $_SESSION['translate_type'] != 'profile') : ?>
-        <a href="#" name="profile" class="button aqua" onclick="item_select('profile');">Ir a traducir tu perfil personal</a>
+        <a href="#" name="profile" class="button aqua" onclick="item_select('profile');"><?php echo Text::get('dashboard-translate-select_profile') ?></a>
     <?php else : ?>
-        <p>Estas traduciendo tu perfil personal.</p>
+        <p><?php echo Text::get('dashboard-translate-doing_profile') ?></p>
     <?php endif; ?>
 
 </div>

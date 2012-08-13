@@ -428,8 +428,8 @@ namespace Goteo\Controller\Admin {
                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                 )));
                 $log->doAdmin();
-                unset($log);
                 Model\Invest::setDetail($invest->id, 'manually-canceled', $log->html);
+                unset($log);
             }
 
             // ejecutar cargo ahora!!, solo aportes no ejecutados
@@ -517,8 +517,8 @@ namespace Goteo\Controller\Admin {
                             Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                     )));
                     $log->doAdmin();
-                    unset($log);
                     Model\Invest::setDetail($invest->id, 'manually-executed', $log->html);
+                    unset($log);
                 }
             }
 
