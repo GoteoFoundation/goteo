@@ -15,7 +15,7 @@ namespace Goteo\Controller {
     class Cron extends \Goteo\Core\Controller {
         
         public function index () {
-            throw new Redirection('/cron/execute');
+            die('bad request');
         }
 
         /*
@@ -26,10 +26,19 @@ namespace Goteo\Controller {
             if (!\defined('CRON_EXEC')) {
                 @mail('goteo_cron@doukeshi.org', 'Se ha lanzado MANUALMENTE el cron '. __FUNCTION__ .' en ' . SITE_URL,
                     'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
-               echo 'Lanzamiento manual<br />';
+               echo 'Lanzamiento manual a las ' . date ('H:i:s') . ' <br />';
             } else {
-                if ($debug) echo 'Lanzamiento automatico a las ' . date ('H:i:s') . ' <br />';
+                echo 'Lanzamiento automatico a las ' . date ('H:i:s') . ' <br />';
             }
+            
+            // a ver si existe el log
+            if (file_exists(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log')) {
+                echo 'Ya existe un archivo de log '.date('Ymd').'_'.__FUNCTION__.'.log<br />';
+            } else {
+                echo 'No hay log previo para esta fecha <br />';
+            }
+            echo '<hr />';
+            
             // debug para supervisar en las fechas clave
 //            $debug = ($_GET['debug'] == 'debug') ? true : false;
             $debug = true;
@@ -40,7 +49,7 @@ namespace Goteo\Controller {
             // o (publicados hace mas de 80 días que no tengan fecha de exito)
             $projects = Model\Project::getActive();
 
-            if ($debug) echo 'Comenzamos con los proyectos en campaña<br />';
+            if ($debug) echo 'Comenzamos con los proyectos en campaña<br /><br />';
 
             foreach ($projects as $project) {
 
@@ -1015,6 +1024,7 @@ namespace Goteo\Controller {
                                 AND blog.owner = :project
                             WHERE post.publish = 1
                         )
+                        ORDER BY `days` ASC
                         LIMIT 1";
     //                echo str_replace(array(':project', ':owner'), array("'{$project->id}'", "'{$project->owner}'"), $sql) . '<br />';
                     $query = Model\Project::query($sql, array(':project' => $project->id, ':owner' => $project->owner));

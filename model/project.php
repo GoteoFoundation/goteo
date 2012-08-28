@@ -1855,7 +1855,7 @@ namespace Goteo\Model {
                         WHERE status IN ('3', '4', '5')
                         $sqlFilter
                         HAVING getamount >= mincost
-                        ORDER BY name ASC";
+                        ORDER BY RAND(NOW()) ASC";
                     break;
                 case 'available':
                     // ni edicion ni revision ni cancelados, estan disponibles para verse publicamente
@@ -1933,7 +1933,7 @@ namespace Goteo\Model {
             $projects = array();
 
             $sql = "
-                SELECT project.id
+                SELECT project.id as id
                 FROM  project
                 WHERE project.status = 3
                 AND (
@@ -1949,7 +1949,7 @@ namespace Goteo\Model {
             ";
 
             $query = self::query($sql);
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
                 $projects[] = self::get($proj->id);
             }
             return $projects;

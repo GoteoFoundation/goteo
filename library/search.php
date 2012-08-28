@@ -111,7 +111,7 @@ namespace Goteo\Library {
                 $sql .= implode (' ', $where);
             }
 
-            $sql .= " ORDER BY name ASC";
+            $sql .= " ORDER BY status ASC, name ASC";
             // Limite
             if (!empty($limit) && \is_numeric($limit)) {
                 $sql .= " LIMIT $limit";

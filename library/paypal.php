@@ -370,21 +370,21 @@ namespace Goteo\Library {
                     if ($invest->setPayment($token)) {
                         if ($response->paymentExecStatus != 'INCOMPLETE') {
                             Invest::setIssue($invest->id);
-                            $errors[] = "Obtenido codigo de pago $token pero no ha quedado en estado INCOMPLETE id {$invest->id}.";
-                            @mail('goteo-paypal-API-fault@doukeshi.org', 'El chained payment del aporte '.$invest->id.' no ha quedado como incomplete', 'ERROR en ' . __FUNCTION__ . ' No payment status incomplete id: '.$invest->id.'.<br /><pre>' . print_r($response, 1) . '</pre>');
+                            $errors[] = "Error de Fuente de crédito.";
                             return false;
                         }
                         $invest->setStatus(1);
                         return true;
                     } else {
                         Invest::setIssue($invest->id);
-                        $errors[] = "Obtenido codigo de pago $token pero no se ha grabado correctamente en el registro de aporte id {$invest->id}.";
+                        $errors[] = "Obtenido payKey: $token pero no se ha grabado correctamente (paypal::setPayment) en el registro id: {$invest->id}.";
+                        @mail('goteo-paypal-API-fault@doukeshi.org', 'Error al actualizar registro aporte (setPayment)', 'ERROR en ' . __FUNCTION__ . ' Metodo paypal::setPayment ha fallado.<br /><pre>' . print_r($response, 1) . '</pre>');
                         return false;
                     }
                 } else {
                     Invest::setIssue($invest->id);
-                    $errors[] = 'No payment key obtained. <pre>' . print_r($response, 1) . '</pre>';
-                    @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No payment key obtained.<br /><pre>' . print_r($response, 1) . '</pre>');
+                    $errors[] = 'No ha obtenido Payment Key.';
+                    @mail('goteo-paypal-API-fault@doukeshi.org', 'Error en implementacion Paypal API (no payKey)', 'ERROR en ' . __FUNCTION__ . ' No payment key obtained.<br /><pre>' . print_r($response, 1) . '</pre>');
                     return false;
                 }
     
@@ -398,7 +398,7 @@ namespace Goteo\Library {
 
                 Invest::setIssue($invest->id);
                 $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
-                @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, 1) . '</pre>');
+                @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' Exception<br /><pre>' . print_r($fault, 1) . '</pre>');
                 return false;
             }
 
@@ -468,7 +468,7 @@ namespace Goteo\Library {
 
                     if (empty($errorId)) {
                         $errors[] = 'NO es soapFault pero no es Success: <pre>' . print_r($ap, 1) . '</pre>';
-                        @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No es un soap fault pero no es un success.<br /><pre>' . print_r($ap, 1) . '</pre>');
+                        @mail('goteo-paypal-API-fault@doukeshi.org', 'Error en implementacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No es un soap fault pero no es un success.<br /><pre>' . print_r($ap, 1) . '</pre>');
                     } else {
                         $errors[] = "$action $errorMsg [$errorId]";
                     }
@@ -482,11 +482,12 @@ namespace Goteo\Library {
                         return true;
                     } else {
                         $errors[] = "Obtenido estatus de ejecución {$response->paymentExecStatus} pero no se ha actualizado el registro de aporte id {$invest->id}.";
+                        @mail('goteo-paypal-API-fault@doukeshi.org', 'Error al actualizar registro aporte (setStatus)', 'ERROR en ' . __FUNCTION__ . ' Metodo paypal::setStatus ha fallado.<br /><pre>' . print_r($response, 1) . '</pre>');
                         return false;
                     }
                 } else {
-                    $errors[] = 'No se ha completado el pago. <pre>' . print_r($response, 1) . '</pre>';
-                    @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No payment exec status completed.<br /><pre>' . print_r($response, 1) . '</pre>');
+                    $errors[] = 'No se ha completado el pago encadenado, no se ha pagado al proyecto.';
+                    @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' aporte id '.$invest->id.'. No payment exec status completed.<br /><pre>' . print_r($response, 1) . '</pre>');
                     return false;
                 }
 

@@ -37,11 +37,11 @@ namespace Goteo\Library {
                             'sql'   => "SELECT 	(
                                                 SELECT SUM(invest.amount)
                                                 FROM invest
-                                                WHERE invest.status IN (0, 1, 3, 4)
+                                                WHERE invest.status = 4
                                             ) / (
                                                 SELECT SUM(invest.amount)
                                                 FROM invest
-                                                WHERE invest.status = 4
+                                                WHERE invest.status IN (0, 1, 3, 4)
                                             ) * 100 as percent
                                         FROM DUAL
                                         ",
