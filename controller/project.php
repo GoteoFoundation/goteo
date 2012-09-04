@@ -544,7 +544,7 @@ namespace Goteo\Controller {
                     if ($invest == 'start' && !empty($project->called) && !empty($project->called->amount) && $project->called->rest == 0) {
                         Message::Info('La campaña <strong>'.\strtoupper($project->called->name).'</strong> no tiene Capital Riego disponible actualmente');
                     }
-
+                    
 
                     $viewData['invest'] = $invest;
                 }

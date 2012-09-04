@@ -45,22 +45,89 @@ namespace Goteo\Model {
 
             $values = array(':section' => $section, ':lang' => \LANG);
 
-            $sql = "
-                SELECT
-                    faq.id as id,
-                    faq.node as node,
-                    faq.section as section,
-                    IFNULL(faq_lang.title, faq.title) as title,
-                    IFNULL(faq_lang.description, faq.description) as description,
-                    faq.order as `order`
-                FROM faq
-                LEFT JOIN faq_lang
-                    ON  faq_lang.id = faq.id
-                    AND faq_lang.lang = :lang
-                WHERE faq.section = :section
-                ORDER BY `order` ASC
-                ";
+            // piñonaco para sacar alternativos mientras traducen
+            switch (\LANG) {
+                case 'es':
+                    // en español, sacar directamente el original
+                    $sql = "
+                        SELECT
+                            faq.id as id,
+                            faq.node as node,
+                            faq.section as section,
+                            faq.title as title,
+                            faq.description as description,
+                            faq.order as `order`
+                        FROM faq
+                        WHERE faq.section = :section
+                        ORDER BY `order` ASC
+                        ";
 
+                    break;
+
+                case 'en':
+                    // en inglés hay menos preguntas, no sacar original
+                    $sql = "
+                        SELECT
+                            faq.id as id,
+                            faq.node as node,
+                            faq.section as section,
+                            faq_lang.title as title,
+                            faq_lang.description as description,
+                            faq.order as `order`
+                        FROM faq
+                        LEFT JOIN faq_lang
+                            ON  faq_lang.id = faq.id
+                            AND faq_lang.lang = :lang
+                        WHERE faq.section = :section
+                        ORDER BY `order` ASC
+                        ";
+
+                    break;
+
+                case 'fr':
+                    // en francés, sacar el ingles como original
+                    $sql = "
+                        SELECT
+                            faq.id as id,
+                            faq.node as node,
+                            faq.section as section,
+                            IFNULL(faq_lang.title, faq_en.title) as title,
+                            IFNULL(faq_lang.description, faq_en.description) as description,
+                            faq.order as `order`
+                        FROM faq
+                        LEFT JOIN faq_lang
+                            ON  faq_lang.id = faq.id
+                            AND faq_lang.lang = :lang
+                        LEFT JOIN faq_lang as faq_en
+                            ON  faq_en.id = faq.id
+                            AND faq_en.lang = 'en'
+                        WHERE faq.section = :section
+                        ORDER BY `order` ASC
+                        ";
+
+                    break;
+
+                default:
+                    // en catalan y por defecto, sacar los originales en español
+                    $sql = "
+                        SELECT
+                            faq.id as id,
+                            faq.node as node,
+                            faq.section as section,
+                            IFNULL(faq_lang.title, faq.title) as title,
+                            IFNULL(faq_lang.description, faq.description) as description,
+                            faq.order as `order`
+                        FROM faq
+                        LEFT JOIN faq_lang
+                            ON  faq_lang.id = faq.id
+                            AND faq_lang.lang = :lang
+                        WHERE faq.section = :section
+                        ORDER BY `order` ASC
+                        ";
+                    
+                    break;
+            }
+            
             $query = static::query($sql, $values);
             
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);

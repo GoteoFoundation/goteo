@@ -108,9 +108,7 @@ namespace Goteo\Controller\Admin {
                     'calls'         => $calls,
                     'methods'       => $methods,
                     'status'        => $status,
-                    'investStatus'  => $investStatus,
-                    'projects'=>$projects,
-                    'filters' => $filters
+                    'investStatus'  => $investStatus
                 )
             );
 

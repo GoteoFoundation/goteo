@@ -9,21 +9,35 @@ $status = Goteo\Model\Project::status();
 ?>
 <div class="widget board">
     <form id="filter-form" action="/admin/commons" method="get">
-        <label for="status-filter">Mostrar por estado:</label>
-        <select id="status-filter" name="status" onchange="document.getElementById('filter-form').submit();">
-            <option value="">Todos los estados</option>
-        <?php foreach ($this['status'] as $statusId=>$statusName) : ?>
-            <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
-        <?php endforeach; ?>
-        </select>
+        <div style="float:left;margin:5px;">
+            <label for="projects-filter">Proyecto</label><br />
+            <select id="projects-filter" name="project" onchange="document.getElementById('filter-form').submit();">
+                <option value="">Todos los proyectos</option>
+            <?php foreach ($this['projects'] as $project) : ?>
+                <option value="<?php echo $project->id; ?>"<?php if ($filters['project'] === $project->id) echo ' selected="selected"';?>><?php echo $project->name; ?></option>
+            <?php endforeach; ?>
+            </select>
+        </div>
+        
+        <div style="float:left;margin:5px;">
+            <label for="status-filter">Mostrar por estado:</label><br />
+            <select id="status-filter" name="status" onchange="document.getElementById('filter-form').submit();">
+                <option value="">Todos los estados</option>
+            <?php foreach ($this['status'] as $statusId=>$statusName) : ?>
+                <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
+            <?php endforeach; ?>
+            </select>
+        </div>
 
-        <label for="icon-filter">Mostrar retornos del tipo:</label>
-        <select id="icon-filter" name="icon" onchange="document.getElementById('filter-form').submit();">
-            <option value="">Todos los tipos</option>
-        <?php foreach ($this['icons'] as $iconId=>$iconName) : ?>
-            <option value="<?php echo $iconId; ?>"<?php if ($filters['icon'] == $iconId) echo ' selected="selected"';?>><?php echo $iconName; ?></option>
-        <?php endforeach; ?>
-        </select>
+        <div style="float:left;margin:5px;">
+            <label for="icon-filter">Mostrar retornos del tipo:</label><br />
+            <select id="icon-filter" name="icon" onchange="document.getElementById('filter-form').submit();">
+                <option value="">Todos los tipos</option>
+            <?php foreach ($this['icons'] as $iconId=>$iconName) : ?>
+                <option value="<?php echo $iconId; ?>"<?php if ($filters['icon'] == $iconId) echo ' selected="selected"';?>><?php echo $iconName; ?></option>
+            <?php endforeach; ?>
+            </select>
+        </div>
     </form>
 </div>
 
@@ -31,10 +45,19 @@ $status = Goteo\Model\Project::status();
     <?php if (!empty($this['projects'])) : ?>
     <?php foreach ($this['projects'] as $project) : ?>
 
-        <?php if (empty($project->social_rewards)) continue; ?>
+        <?php if (!empty($filters['project']) && $project->id != $filters['project']) {
+                continue;
+            }
+        ?>
 
         <h3><?php echo $project->name; ?></h3>
-        <p><span><?php echo $status[$project->status]; ?></span></p>
+        <p>Estado: <?php echo $status[$project->status]; ?></p>
+        <?php 
+        if (empty($project->social_rewards)) {
+            echo '<p>Este proyecto no tiene retornos colectivos</p><hr />';
+            continue; 
+        }
+        ?>
 
         <table>
             <thead>
@@ -51,11 +74,12 @@ $status = Goteo\Model\Project::status();
                 <tr>
                     <td><?php echo $reward->reward; ?></td>
                     <td><?php echo $this['icons'][$reward->icon]; ?></td>
-                    <td><?php echo $reward->fulsocial ? 'Cumplido' : 'Pendiente'; ?></td>
                     <?php if (!$reward->fulsocial) : ?>
-                    <td><a href="<?php echo "/admin/rewards/fulfill/{$reward->id}"; ?>">[Dar por cumplido]</a></td>
+                    <td style="color: red;" >Pendiente</td>
+                    <td><a href="<?php echo "/admin/commons/fulfill/{$reward->id}"; ?>">[Dar por cumplido]</a></td>
                     <?php else : ?>
-                    <td><a href="<?php echo "/admin/rewards/unfill/{$reward->id}"; ?>">[Dar por pendiente]</a></td>
+                    <td style="color: green;" >Cumplido</td>
+                    <td><a href="<?php echo "/admin/commons/unfill/{$reward->id}"; ?>">[Dar por pendiente]</a></td>
                     <?php endif; ?>
                 </tr>
                 <?php endforeach; ?>

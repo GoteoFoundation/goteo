@@ -31,7 +31,7 @@ $emails = Invest::emails(true);
         </div>
     </form>
     <br clear="both" />
-    <a href="/admin/accounts/?reset=filters">Quitar filtros</a>
+    <a href="/admin/rewards/?reset=filters">Quitar filtros</a>
 </div>
 
 <div class="widget board">
@@ -53,7 +53,7 @@ $emails = Invest::emails(true);
 
         <tbody>
             <?php foreach ($this['list'] as $invest) :
-                if (in_array($invest->status, array('-1', '2', '4'))) continue;
+                if (in_array($invest->investStatus, array('-1', '2', '4'))) continue;
                 ?>
             <tr>
                 <td><a href="/admin/rewards/edit/<?php echo $invest->id ?>" >[Gestionar]</a></td>

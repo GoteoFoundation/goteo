@@ -6,9 +6,9 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\Error,
         Goteo\Library\Text,
-		Goteo\Library\Feed,
-		Goteo\Library\Template,
-		Goteo\Library\Mail,
+        Goteo\Library\Feed,
+        Goteo\Library\Template,
+        Goteo\Library\Mail,
         Goteo\Library\Paypal,
         Goteo\Library\Tpv;
 
@@ -913,7 +913,7 @@ namespace Goteo\Controller {
             if (!\defined('CRON_EXEC')) {
                 @mail('goteo_cron@doukeshi.org', 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
                     'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
-                die('Este proceso no necesitamos lanzarlo manualmente');
+//                die('Este proceso no necesitamos lanzarlo manualmente');
             }
             
             // proyectos en campaña o financiados
@@ -1056,44 +1056,57 @@ namespace Goteo\Controller {
                     }
                 }
 
-                // mirar el tiempo desde la fecha success
-                $sql = "
-                    SELECT
-                        DATE_FORMAT(
-                            from_unixtime(unix_timestamp(now()) - unix_timestamp(success))
-                            , '%j'
-                        ) as days
-                    FROM project
-                    WHERE id = :project
-                    AND success != '0000-00-00'
-                    ";
-//                echo str_replace(':project', "'{$project->id}'", $sql) . '<br />';
-                $query = Model\Project::query($sql, array(':project' => $project->id));
-                // si esta financiado, claro
-                if ($lastsuccess = $query->fetchColumn(0)) {
-                    // si hace más de 2 meses
-                    if ((int) $lastsuccess > 60) {
-                        echo 'Proyecto: ' . $project->name . ' Financiado hace ' . $lastsuccess . ' dias (mas de 2 meses).<br />';
-                        // mirar el ultimo mensaje al email del autor con la plantilla 25
-                        $sql = "
-                            SELECT
-                                DATE_FORMAT(
-                                    from_unixtime(unix_timestamp(now()) - unix_timestamp(date))
-                                    , '%j'
-                                ) as days
-                            FROM mail
-                            WHERE mail.email = :email
-                            AND mail.template = 25
-                            ORDER BY mail.date DESC
-                            LIMIT 1";
-//                        echo str_replace(':email', "'{$project->user->email}'", $sql) . '<br />';
-                        $query = Model\Project::query($sql, array(':email' => $project->user->email));
-                        $lastsend = $query->fetchColumn(0);
-                        // si hace más de 15 días o nunca se le envió
-                        if ($lastsend > 15 || $lastsend === false) {
-                            echo 'Se le envió hace ' . (string) $lastsend . ' dias o nunca<br />';
-                            // enviar email 2m_after
-                            self::toOwner('2m_after', $project);
+                // para los financiados
+                if ($project->status == 4) {
+                    // mirar el tiempo desde la fecha success
+                    $sql = "
+                        SELECT
+                            DATE_FORMAT(
+                                from_unixtime(unix_timestamp(now()) - unix_timestamp(success))
+                                , '%j'
+                            ) as days
+                        FROM project
+                        WHERE id = :project
+                        AND success != '0000-00-00'
+                        ";
+    //                echo str_replace(':project', "'{$project->id}'", $sql) . '<br />';
+                    $query = Model\Project::query($sql, array(':project' => $project->id));
+                    // si esta financiado, claro
+                    if ($lastsuccess = $query->fetchColumn(0)) {
+                        // si hace más de 2 meses
+                        if ((int) $lastsuccess > 60) {
+                            echo 'Proyecto: ' . $project->name . ' Financiado hace ' . $lastsuccess . ' dias (mas de 2 meses).<br />';
+
+                            // mirar si tiene todo cumplido (recompensas y retornos)
+                            if (Model\Project\Reward::areFulfilled($project->id)
+                                && Model\Project\Reward::areFulfilled($project->id, 'social') ) {
+                                echo 'Tiene todo cumplido recompensas/retornos<br />';
+                                continue;
+                            } else {
+                                echo 'Le quedan recompensas/retornos pendientes<br />';
+                            }
+
+                            // mirar el ultimo mensaje al email del autor con la plantilla 25
+                            $sql = "
+                                SELECT
+                                    DATE_FORMAT(
+                                        from_unixtime(unix_timestamp(now()) - unix_timestamp(date))
+                                        , '%j'
+                                    ) as days
+                                FROM mail
+                                WHERE mail.email = :email
+                                AND mail.template = 25
+                                ORDER BY mail.date DESC
+                                LIMIT 1";
+    //                        echo str_replace(':email', "'{$project->user->email}'", $sql) . '<br />';
+                            $query = Model\Project::query($sql, array(':email' => $project->user->email));
+                            $lastsend = $query->fetchColumn(0);
+                            // si hace más de 15 días o nunca se le envió
+                            if ($lastsend > 15 || $lastsend === false) {
+                                echo 'Se le envió hace ' . (string) $lastsend . ' dias o nunca<br />';
+                                // enviar email 2m_after
+                                self::toOwner('2m_after', $project);
+                            }
                         }
                     }
                 }

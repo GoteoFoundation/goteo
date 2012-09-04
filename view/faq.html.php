@@ -63,7 +63,9 @@ $go_up = Text::get('regular-go_up');
 
                 <h3 style="color: <?php echo $this['colors'][$current] ?>;" ><?php echo $this['sections'][$current]; ?></h3>
                 <ol>
-                    <?php foreach ($this['faqs'][$current] as $question)  : ?>
+                    <?php foreach ($this['faqs'][$current] as $question)  : 
+                        if (empty($question->title)) continue;
+                        ?>
                         <li>
                             <h4><a href="#q<?php echo $question->id; ?>" class="faq-question" style="color:<?php echo $this['colors'][$current] ?>;"><?php echo $question->title; ?></a></h4>
                             <div id="q<?php echo $question->id; ?>" style="<?php echo ($this['show'] == $question->id) ? 'display:block;' : 'display:none;' ?>"><?php echo $question->description; ?></div>
