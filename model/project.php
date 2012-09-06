@@ -1855,7 +1855,7 @@ namespace Goteo\Model {
                         WHERE status IN ('3', '4', '5')
                         $sqlFilter
                         HAVING getamount >= mincost
-                        ORDER BY RAND(NOW()) ASC";
+                        ORDER BY published DESC";
                     break;
                 case 'available':
                     // ni edicion ni revision ni cancelados, estan disponibles para verse publicamente

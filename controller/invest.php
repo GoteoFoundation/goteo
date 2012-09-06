@@ -147,108 +147,22 @@ namespace Goteo\Controller {
 
             // para evitar las duplicaciones de feed y email
             if (isset($_SESSION['invest_'.$invest.'_completed'])) {
+                @mail('goteo_fail@doukeshi.org',
+                    'Reconfirmacion aporte ' . $invest,
+                    'Ha llegado a invest/confirm con aporte completado: invest_'.$invest.'_completed = '.$_SESSION['invest_'.$invest.'_completed'].' Aporte ' . $invest);
                 Message::Info(Text::get('invest-process-completed'));
                 throw new Redirection("/project/$project/invest/?confirm=ok");
             }
 
+            // el aporte
             $confirm = Model\Invest::get($invest);
             $projectData = Model\Project::getMedium($project);
-            if (!empty($confirm->droped)) {
-                $drop = Model\Invest::get($confirm->droped);
-
-                $caller = Model\User::get($drop->user);
-                $callData = Model\Call::get($drop->call);
-
-                // texto de capital riego
-                $txt_droped = Text::get('invest-mail_info-drop', $caller->name, $drop->amount, $callData->name);
-            } else {
-                $txt_droped = '';
-            }
-
-            // email de agradecimiento al cofinanciador
-            // primero monto el texto de recompensas
-            if ($confirm->resign) {
-                $txt_rewards = Text::get('invest-resign');
-                // Plantilla de donativo segun la ronda
-                if ($projectData->round == 2) {
-                    $template = Template::get(36); // en segunda ronda
-                } else {
-                    $template = Template::get(28); // en primera ronda
-                }
-            } else {
-                $rewards = $confirm->rewards;
-                array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
-                $txt_rewards = implode(', ', $rewards);
-                // plantilla de agradecimiento segun la ronda
-                if ($projectData->round == 2) {
-                    $template = Template::get(34); // en segunda ronda
-                } else {
-                    $template = Template::get(10); // en primera ronda
-                }
-            }
-
-            // Dirección en el mail
-
-            $txt_address = Text::get('invest-mail_info-address');
-            $txt_address .= '<br> ' . Text::get('invest-address-address-field') . ' ' . $confirm->address->address;
-            $txt_address .= '<br> ' . Text::get('invest-address-zipcode-field') . ' ' . $confirm->address->zipcode;
-            $txt_address .= '<br> ' . Text::get('invest-address-location-field') . ' ' . $confirm->address->location;
-            $txt_address .= '<br> ' . Text::get('invest-address-country-field') . ' ' . $confirm->address->country;
-
-            // Agradecimiento al cofinanciador
-            // Sustituimos los datos
-            $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
-
-            // En el contenido:
-            $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%', '%DROPED%');
-            $replace = array($_SESSION['user']->name, $projectData->name, SITE_URL.'/project/'.$projectData->id, $confirm->amount, $txt_rewards, $txt_address, $txt_droped);
-            $content = \str_replace($search, $replace, $template->text);
-
-            $mailHandler = new Mail();
-
-            $mailHandler->to = $_SESSION['user']->email;
-            $mailHandler->toName = $_SESSION['user']->name;
-            $mailHandler->subject = $subject;
-            $mailHandler->content = $content;
-            $mailHandler->html = true;
-            $mailHandler->template = $template->id;
-            if ($mailHandler->send($errors)) {
-                Message::Info(Text::get('project-invest-thanks_mail-success'));
-            } else {
-                Message::Error(Text::get('project-invest-thanks_mail-fail'));
-                Message::Error(implode('<br />', $errors));
-            }
-
-            unset($mailHandler);
             
-
-            // Notificación al autor
-            $template = Template::get(29);
-            // Sustituimos los datos
-            $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
-
-            // En el contenido:
-            $search  = array('%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%SITEURL%', '%AMOUNT%', '%MESSAGEURL%', '%DROPED%');
-            $replace = array($projectData->user->name, $_SESSION['user']->name, $projectData->name, SITE_URL, $confirm->amount, SITE_URL.'/user/profile/'.$_SESSION['user']->id.'/message', $txt_droped);
-            $content = \str_replace($search, $replace, $template->text);
-
-            $mailHandler = new Mail();
-
-            $mailHandler->to = $projectData->user->email;
-            $mailHandler->toName = $projectData->user->name;
-            $mailHandler->subject = $subject;
-            $mailHandler->content = $content;
-            $mailHandler->html = true;
-            $mailHandler->template = $template->id;
-            $mailHandler->send();
-
-            unset($mailHandler);
-
-
             /*----------------------------------
              * SOLAMENTE DESARROLLO Y PRUEBAS!!!
              -----------------------------------*/
             if ($confirm->method == 'cash') {
+               
                 // Evento Feed
                 $log = new Feed();
                 $log->populate('Aporte '.$confirm->method, '/admin/invests',
@@ -270,6 +184,17 @@ namespace Goteo\Controller {
             /*--------------------------------------
              * FIN SOLAMENTE DESARROLLO Y PRUEBAS!!!
              --------------------------------------*/
+
+            if ($confirm->method == 'tpv') {
+                // si el aporte no está en estado "cobrado por goteo" (1) 
+                if ($confirm->status != '1') {
+                    @mail('goteo_fail@doukeshi.org',
+                        'Aporte tpv no pagado ' . $invest,
+                        'Ha llegado a invest/confirm el aporte '.$invest.' mediante tpv sin estado cobrado (llega con estado '.$confirm->status.')');
+                    // mandarlo a la pagina de aportar para que lo intente de nuevo
+                    throw new Redirection("/project/$project/invest/?confirm=fail");
+                }
+            }
 
             if ($confirm->method == 'paypal') {
 
@@ -325,6 +250,98 @@ namespace Goteo\Controller {
                 $log->doPublic('community');
                 unset($log);
             }
+
+            // datos para el drop
+            if (!empty($confirm->droped)) {
+                $drop = Model\Invest::get($confirm->droped);
+
+                $caller = Model\User::get($drop->user);
+                $callData = Model\Call::get($drop->call);
+
+                // texto de capital riego
+                $txt_droped = Text::get('invest-mail_info-drop', $caller->name, $drop->amount, $callData->name);
+            } else {
+                $txt_droped = '';
+            }
+
+            // email de agradecimiento al cofinanciador
+            // primero monto el texto de recompensas
+            if ($confirm->resign) {
+                $txt_rewards = Text::get('invest-resign');
+                // Plantilla de donativo segun la ronda
+                if ($projectData->round == 2) {
+                    $template = Template::get(36); // en segunda ronda
+                } else {
+                    $template = Template::get(28); // en primera ronda
+                }
+            } else {
+                $rewards = $confirm->rewards;
+                array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
+                $txt_rewards = implode(', ', $rewards);
+                // plantilla de agradecimiento segun la ronda
+                if ($projectData->round == 2) {
+                    $template = Template::get(34); // en segunda ronda
+                } else {
+                    $template = Template::get(10); // en primera ronda
+                }
+            }
+
+            // Dirección en el mail
+
+            $txt_address = Text::get('invest-mail_info-address');
+            $txt_address .= '<br> ' . Text::get('invest-address-address-field') . ' ' . $confirm->address->address;
+            $txt_address .= '<br> ' . Text::get('invest-address-zipcode-field') . ' ' . $confirm->address->zipcode;
+            $txt_address .= '<br> ' . Text::get('invest-address-location-field') . ' ' . $confirm->address->location;
+            $txt_address .= '<br> ' . Text::get('invest-address-country-field') . ' ' . $confirm->address->country;
+
+            // Agradecimiento al cofinanciador
+            // Sustituimos los datos
+            $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
+
+            // En el contenido:
+            $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%', '%DROPED%');
+            $replace = array($_SESSION['user']->name, $projectData->name, SITE_URL.'/project/'.$projectData->id, $confirm->amount, $txt_rewards, $txt_address, $txt_droped);
+            $content = \str_replace($search, $replace, $template->text);
+
+            $mailHandler = new Mail();
+            $mailHandler->from = GOTEO_CONTACT_MAIL;
+            $mailHandler->to = $_SESSION['user']->email;
+            $mailHandler->toName = $_SESSION['user']->name;
+            $mailHandler->subject = $subject;
+            $mailHandler->content = $content;
+            $mailHandler->html = true;
+            $mailHandler->template = $template->id;
+            if ($mailHandler->send($errors)) {
+                Message::Info(Text::get('project-invest-thanks_mail-success'));
+            } else {
+                Message::Error(Text::get('project-invest-thanks_mail-fail'));
+                Message::Error(implode('<br />', $errors));
+            }
+
+            unset($mailHandler);
+            
+
+            // Notificación al autor
+            $template = Template::get(29);
+            // Sustituimos los datos
+            $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
+
+            // En el contenido:
+            $search  = array('%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%SITEURL%', '%AMOUNT%', '%MESSAGEURL%', '%DROPED%');
+            $replace = array($projectData->user->name, $_SESSION['user']->name, $projectData->name, SITE_URL, $confirm->amount, SITE_URL.'/user/profile/'.$_SESSION['user']->id.'/message', $txt_droped);
+            $content = \str_replace($search, $replace, $template->text);
+
+            $mailHandler = new Mail();
+
+            $mailHandler->to = $projectData->user->email;
+            $mailHandler->toName = $projectData->user->name;
+            $mailHandler->subject = $subject;
+            $mailHandler->content = $content;
+            $mailHandler->html = true;
+            $mailHandler->template = $template->id;
+            $mailHandler->send();
+
+            unset($mailHandler);
 
             // marcar que ya se ha completado el proceso de aportar
             $_SESSION['invest_'.$invest.'_completed'] = true;

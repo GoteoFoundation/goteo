@@ -1,5 +1,6 @@
 <?php
 use Goteo\Library\Text,
+    Goteo\Core\View,
     Goteo\Model\Invest;
 
 $filters = $this['filters'];
@@ -63,13 +64,13 @@ $emails = Invest::emails(true);
             <input type="text" id ="name-filter" name="name" value ="<?php echo $filters['name']?>" />
         </div>
 
-        <div style="float:left;margin:5px;">
+        <div style="float:left;margin:5px;" id="date-filter-from">
             <label for="date-filter-from">Fecha desde</label><br />
-            <input type="text" id ="date-filter-from" name="date_from" value ="<?php echo $filters['date_from']?>" />
+            <?php echo new View('library/superform/view/element/datebox.html.php', array('value'=>$filters['date_from'], 'id'=>'date-filter-from', 'name'=>'date_from')); ?>
         </div>
-        <div style="float:left;margin:5px;">
+        <div style="float:left;margin:5px;" id="date-filter-until">
             <label for="date-filter-until">Fecha hasta</label><br />
-            <input type="text" id ="date-filter-until" name="date_until" value ="<?php echo $filters['date_until']?>" />
+            <?php echo new View('library/superform/view/element/datebox.html.php', array('value'=>$filters['date_until'], 'id'=>'date-filter-until', 'name'=>'date_until')); ?>
         </div>
 
         <div style="float:left;margin:5px;">

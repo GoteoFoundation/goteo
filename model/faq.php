@@ -62,6 +62,8 @@ namespace Goteo\Model {
                         ORDER BY `order` ASC
                         ";
 
+                    unset($values[':lang']);
+                    
                     break;
 
                 case 'en':

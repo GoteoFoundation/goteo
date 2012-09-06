@@ -1,6 +1,7 @@
 <?php
-if (empty($banners)) return;
+if (empty($banners)) return '';
 
+if (count($banners) > 1) :
 ?>
 <script type="text/javascript">
     $(function(){
@@ -11,6 +12,7 @@ if (empty($banners)) return;
         });
     });
 </script>
+<?php endif; ?>
 <div id="node-banners" class="rounded-corners-bottom">
     <div class="node-banners-container rounded-corners-bottom">
         <?php foreach ($banners as $banner) : ?>
@@ -21,5 +23,7 @@ if (empty($banners)) return;
         </div>
         <?php endforeach; ?>
     </div>
+<?php if (count($banners) > 1) : ?>
 <div id="node-banners-controler"><ul class="bannerspage"></ul></div>
+<?php endif; ?>
 </div>

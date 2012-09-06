@@ -22,7 +22,7 @@ $sponsors = $this['sponsors'];
         <span class="line"></span>
         <?php echo Text::get('node-header-sponsorby'); ?>
     </p>
-    <div class="slides_container">
+    <div class="slides_container" style="min-height: 47px;">
         <?php $i = 1; foreach ($sponsors as $sponsor) : ?>
         <div class="logo" id="footer-sponsor-<?php echo $i ?>">
             <a href="<?php echo $sponsor->url ?>" title="<?php echo $sponsor->name ?>" target="_blank" rel="nofollow"><img src="<?php echo $sponsor->image->getLink(150, 85) ?>" alt="<?php echo $sponsor->name ?>" /></a>

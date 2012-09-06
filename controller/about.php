@@ -41,7 +41,7 @@ namespace Goteo\Controller {
             if ( empty($id) ||
                  $id == 'about' ||
                 ( NODE_ID != \GOTEO_NODE
-                 && !\in_array($id, array('about', 'contact', 'press', 'service', 'maintenance'))
+                 && !\in_array($id, array('about', 'contact', 'press', 'service', 'maintenance', 'donations'))
                  )
                 ) {
                 $id = 'about';
