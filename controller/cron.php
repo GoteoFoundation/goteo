@@ -421,6 +421,11 @@ namespace Goteo\Controller {
                                         $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
                                         if ($debug) echo ' -> Ok';
                                         Model\Invest::setDetail($invest->id, 'executed', 'Se ha ejecutado el preapproval, ha iniciado el pago encadenado. Proceso cron/execute');
+                                        // si era incidencia la desmarcamos
+                                        if ($invest->issue) {
+                                            Model\Invest::unsetIssue($invest->id);
+                                            Model\Invest::setDetail($invest->id, 'issue-solved', 'La incidencia se ha dado por resuelta al ejecutarse correctamente en el proceso automático');
+                                        }
                                     } else {
                                         $txt_errors = implode('; ', $err);
                                         echo 'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: ' . $txt_errors . '<br />';

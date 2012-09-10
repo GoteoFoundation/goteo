@@ -74,7 +74,8 @@ namespace Goteo\Controller {
                             'add'  => array('label' => 'Nueva Entrada', 'item' => false),
                             'edit' => array('label' => 'Editando Entrada', 'item' => true),
                             'translate' => array('label' => 'Traduciendo Entrada', 'item' => true),
-                            'reorder' => array('label' => 'Ordenando las entradas en Portada', 'item' => false)
+                            'reorder' => array('label' => 'Ordenando las entradas en Portada', 'item' => false),
+                            'footer' => array('label' => 'Ordenando las entradas en el Footer', 'item' => false)
                         ),
                         'filters' => array('show'=>'owned', 'blog' => '')
                     ),

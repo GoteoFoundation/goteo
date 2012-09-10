@@ -367,7 +367,7 @@ namespace Goteo\Controller\Admin {
 
                 // acciones footer (solo para superadmin y admins de goteo
                 case 'footer':
-                    if ($node != \GOTEO_NODE) {
+                    if ($node == \GOTEO_NODE) {
                         // lista de entradas en el footer
                         // obtenemos los datos
                         $posts = Model\Post::getAll('footer');

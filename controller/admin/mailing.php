@@ -18,6 +18,8 @@ namespace Goteo\Controller\Admin {
 
             $errors = array();
 
+            $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
+
             // Valores de filtro
 //            $projects = Model\Project::getAll();
             $interests = Model\User\Interest::getAll();
@@ -135,9 +137,9 @@ namespace Goteo\Controller\Admin {
                         $_SESSION['mailing']['filters_txt'] .= 'que su contraseña sea igual que su email ';
                     }
 
-                    if ($_SESSION['admin_node'] != \GOTEO_NODE) {
+                    if ($node != \GOTEO_NODE) {
                         $sqlFilter .= " AND user.node = :node";
-                        $values[':node'] = $_SESSION['admin_node'];
+                        $values[':node'] = $node;
                         if (!empty($sqlInner)) {
                             $sqlFilter .= " AND project.node = :node";
                         }
