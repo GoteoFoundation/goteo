@@ -1,19 +1,19 @@
 <?php
 if (empty($banners)) return '';
 
-if (count($banners) > 1) :
 ?>
 <script type="text/javascript">
     $(function(){
         $('#node-banners').slides({
             container: 'node-banners-container',
             paginationClass: 'bannerspage',
-            generatePagination: true
+            generatePagination: true,
+            effect: 'fade',
+            fadeSpeed: 200
         });
     });
 </script>
-<?php endif; ?>
-<div id="node-banners" class="rounded-corners-bottom">
+<div id="node-banners" class="rounded-corners-bottom"<?php if ($bodyClass == 'home') echo ' style="width: 940px; margin: 0px auto;"'; ?>>
     <div class="node-banners-container rounded-corners-bottom">
         <?php foreach ($banners as $banner) : ?>
         <div class="node-banner<?php if (!empty($banner->url)) : ?> activable<?php endif; ?>"<?php if ($banner->image instanceof \Goteo\Model\Image) : ?> style="background: url('<?php echo $banner->image->getLink(940, 270); ?>') no-repeat right bottom;"<?php endif; ?>>
@@ -23,7 +23,5 @@ if (count($banners) > 1) :
         </div>
         <?php endforeach; ?>
     </div>
-<?php if (count($banners) > 1) : ?>
-<div id="node-banners-controler"><ul class="bannerspage"></ul></div>
-<?php endif; ?>
+<div id="node-banners-controler"<?php if ($bodyClass == 'home') echo ' style="width: 940px;"'; ?>><ul class="bannerspage"></ul></div>
 </div>

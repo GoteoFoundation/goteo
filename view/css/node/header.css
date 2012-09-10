@@ -145,10 +145,10 @@ div#header div#menu > ul > li.info > a.close:hover{background:url('/view/css/hea
 /* Fin de pestaña de información/cerrar banner */
 
 /* Banners de nodo */
-div#header div#node-banners{width: 100%; height:270px; margin: 0; background:url('/view/css/header/node-banner-bg.jpg');overflow:hidden /*NO CAMBIAR*/;border:#dee2e6 1px solid;border-top:none;border:#000 1px transparent !important /*no tocar o el contenido se alinea de forma extraña dentro del carrousel*/;
+div#header div#node-banners{width: 100%; height:270px; margin: 0; background:url('/view/css/header/node-banner-bg.jpg');/*overflow:hidden; NO CAMBIAR... pero es que en firefox descuadra todo el banner */border:#dee2e6 1px solid;border-top:none;border:#000 1px transparent !important /*no tocar o el contenido se alinea de forma extraña dentro del carrousel*/;
 -webkit-box-shadow:0px 2px 3px rgba(44, 50, 51, 0.4);-moz-box-shadow:0px 2px 3px rgba(44, 50, 51, 0.4);box-shadow:0px 2px 3px rgba(44, 50, 51, 0.4);}
 div#header div#node-banners div.node-banners-container{width:940px;height:270px;margin:0 auto;overflow:visible !important/*NO CAMBIAR*/}
-div.node-banners-container div.node-banner{width:940px;height:270px;overflow:hidden}
+div.node-banners-container div.node-banner{width:940px;height:270px;/*overflow:hidden; NO CAMBIAR... pero es que en firefox descuadra todo el banner */}
 div.node-banners-container div.node-banner > div.title{padding-top: 25px; margin-left: 50px;line-height:25px;font-size:25px;color:#585a5c}
 div.node-banners-container div.node-banner > div.short-desc{margin-top: 25px; margin-left: 50px; line-height:30px;font-size:20px;color:#1f81bb; max-width: 450px;}
 div.node-banners-container div.node-banner.active > div.title{color:#20B2B3 !important;}
@@ -165,7 +165,9 @@ ul.bannerspage li a:hover{ background-color:#808184;  color:#808184}
 ul.bannerspage li.current a{ background-color:#1f81bb !important;  color:#1f81bb !important}
 /* fin paginación de los banners*/
 
+/*
 body.node.home div#node-banners{width: 940px !important; margin: 0 auto !important;}
 body.node.home div#node-banners-controler{width: 940px !important;}
+*/
 
 /* Fin banners de nodo */
