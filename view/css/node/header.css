@@ -106,10 +106,10 @@ div#header div#menu > ul > li.community, div#header div#menu > ul > li.dashboard
 div#header div#menu > ul > li.community > a, div#header div#menu > ul > li.dashboard > a{top:0}
 div#header div#menu > ul > li.info,div#header div#menu > ul > li.help{float:left}
 
-/*botón dashboard*/
+/*botón dashboard
 div#header div#menu > ul > li.dashboard > a{padding-right:50px}
 div#header div#menu > ul > li.dashboard > a > img{position:absolute;left:70px;}
-
+*/
 /*botón sobre
 div#header div#menu > ul > li.about{height:48px;position:relative}
 div#header div#menu > ul > li.about > a{font-size:12px;height:40px;line-height:40px;display:inline-block;position:relative;padding:.5em 0!important}

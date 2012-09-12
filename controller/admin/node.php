@@ -32,7 +32,8 @@ namespace Goteo\Controller\Admin {
                             'name',
                             'subtitle',
                             'location',
-                            'description'
+                            'description',
+                            'logo'
                         );
 
                         foreach ($fields as $field) {

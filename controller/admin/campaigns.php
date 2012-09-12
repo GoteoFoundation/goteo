@@ -38,7 +38,7 @@ namespace Goteo\Controller\Admin {
 				if ($campaign->save($errors)) {
                     switch ($_POST['action']) {
                         case 'add':
-                            Message::Info('Campaña destacada correctamente');
+                            Message::Info('Convocatoria destacada correctamente');
 
                             $callData = Model\Call::getMini($_POST['call']);
 
@@ -52,7 +52,7 @@ namespace Goteo\Controller\Admin {
 
                     Message::Error(implode(', ', $errors));
 
-                    // campañas disponibles disponibles
+                    // Convocatorias disponibles
                     $calls = Model\campaign::available($campaign->call, $node);
 
 
@@ -101,19 +101,19 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'remove':
                     if (Model\Campaign::delete($id)) {
-                        Message::Info('Campaña quitada correctamente');
+                        Message::Info('Convocatoria quitada correctamente');
                     } else {
-                        Message::Error('No se ha podido quitar la campaña destacada');
+                        Message::Error('No se ha podido quitar la convocatoria');
                     }
                     break;
                 case 'add':
                     // siguiente orden
                     $next = Model\Campaign::next($node);
 
-                    // campañas disponibles disponibles
+                    // Convocatorias disponibles disponibles
                     $calls = Model\Campaign::available(null, $node);
                     if (empty($calls)) {
-                        Message::Info('No hay más campañas disponibles para destacar');
+                        Message::Info('No hay más convocatorias disponibles para destacar');
                         throw new Redirection('/admin/campaigns');
                     }
 
@@ -131,7 +131,7 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'edit':
                     $campaign = Model\Campaign::get($id);
-                    // campañas disponibles disponibles
+                    // Convocatorias disponibles
                     $calls = Model\Campaign::available($campaign->call, $node);
 
                     return new View(

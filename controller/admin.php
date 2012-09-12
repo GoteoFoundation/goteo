@@ -89,10 +89,10 @@ namespace Goteo\Controller {
                         'filters' => array('status'=>'', 'category'=>'', 'owner'=>'', 'name'=>'', 'order'=>'')
                     ),
                     'campaigns' => array(
-                        'label' => 'Campañas',
+                        'label' => 'Convocatorias',
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false),
-                            'add'  => array('label' => 'Nueva campaña en portada', 'item' => false)
+                            'add'  => array('label' => 'Nueva convocatoria destacada', 'item' => false)
                         )
                     ),
                     'categories' => array(
@@ -1060,7 +1060,8 @@ namespace Goteo\Controller {
                                 'promote' => $options['promote'],   // seleccion de proyectos destacados
                                 'campaigns' => $options['campaigns'],          // convocatorias en portada
                                 'blog' => $options['blog'],          // entradas de blog (en la gestion de blog)
-                                'sponsors' => $options['sponsors'] // patrocinadores del nodo
+                                'sponsors' => $options['sponsors'], // patrocinadores del nodo
+                                'recent' => $options['recent']
                             )
                         )
                     );

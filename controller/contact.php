@@ -14,7 +14,7 @@ namespace Goteo\Controller {
         
         public function index () {
 
-            $page = Page::get('contact', \NODE_ID);
+            $page = Page::get('contact');
 
                 $errors = array();
 

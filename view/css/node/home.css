@@ -212,6 +212,8 @@ body.node.home div.node-projects ul li .author {
 	font-size: 10px;
 	color: #a7a9ac;
 	text-transform: none !important;
+    height: 26px;
+    overflow: hidden;
 }
 
 body.node.home div.node-projects ul li .author a {
@@ -254,7 +256,7 @@ body.node.home div.node-projects ul li span.obtained {
 	font-size: 11px;
 	padding-top: 10px;
 	border-top: 1px solid #a7a9ac;
-	margin: 10px 0 5px;
+	margin: 5px 0;
     display: block;
 }
 

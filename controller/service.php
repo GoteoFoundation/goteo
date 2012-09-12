@@ -11,11 +11,11 @@ namespace Goteo\Controller {
         
         public function index ($id = null) {
 
-            if (empty($id) || NODE_ID != \GOTEO_NODE) {
+            if (empty($id)) {
                 $id = 'service';
             }
 
-            $page = Page::get($id, \NODE_ID);
+            $page = Page::get($id);
 
             return new View(
                 'view/about/sample.html.php',

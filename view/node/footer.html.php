@@ -7,7 +7,11 @@ use Goteo\Library\Text,
 
 $lang = (LANG != 'es') ? '?lang='.LANG : '';
 
-$posts      = Post::getList('footer');
+$posts = Post::getList('footer');
+unset($posts[566]);
+
+// la entrada de tutorial paso a paso
+$steps = Post::get(566);
 ?>
 
    <div id="footer">
@@ -24,13 +28,14 @@ $posts      = Post::getList('footer');
             </div>
 
             <div class="block help">
-                <span class="title"><?php echo Text::get('node-footer-title-help') ?></span>
+                <span class="title"><?php echo Text::get('footer-header-resources') ?></span>
                 <div>
                 	<ul class="scroll-pane">
-                    <li><a href="#"><?php echo Text::get('node-footer-help-what') ?></a></li>
-                    <li><a href="#"><?php echo Text::get('node-footer-help-why') ?></a></li>
                     <li><a href="/faq"><?php echo Text::get('regular-header-faq') ?></a></li>
                     <li><a href="/glossary"><?php echo Text::get('footer-resources-glossary') ?></a></li>
+                    <li><a href="/service/resources"><?php echo Text::get('footer-service-resources') ?></a></li>
+                    <li><a href="/service/workshop"><?php echo Text::get('footer-service-workshop') ?></a></li>
+                    <li><a href="https://github.com/Goteo/Goteo" target="_blank"><?php echo Text::get('footer-resources-source_code') ?></a></li>
                     </ul>
                 </div>
             </div>
@@ -47,10 +52,11 @@ $posts      = Post::getList('footer');
             <div class="block investors">
                 <span class="title"><?php echo Text::get('node-footer-title-investors') ?></span>
                 <ul class="scroll-pane">
-                    <li><a href="#"><?php echo Text::get('node-footer-investors-invest') ?></a></li>
-                    <li><a href="#"><?php echo Text::get('node-footer-investors-payment') ?></a></li>
+                    <?php if ($steps instanceof Post) : ?>
+                    <li><a href="/blog/566"><?php echo $steps->title ?></a></li>
+                    <?php endif; ?>
                     <li><a href="/about/donations"><?php echo Text::get('node-footer-investors-donate') ?></a></li>
-                    </ul>
+                 </ul>
             </div>
 
             <div class="block social">

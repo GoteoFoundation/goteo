@@ -159,7 +159,7 @@ namespace Goteo\Library {
          * @param string $scope ambito de eventos (public | admin)
          * @return array list of items
 		 */
-		public static function getAll($type = 'all', $scope = 'public', $limit = '99') {
+		public static function getAll($type = 'all', $scope = 'public', $limit = '99', $node = null) {
 
             $list = array();
 

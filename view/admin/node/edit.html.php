@@ -51,6 +51,11 @@ if (!$node instanceof Model\Node) {
             ),
 
             'logo' => array(
+                'type' => 'hidden',
+                'value' => $node->logo->id,
+            ),
+            
+            'thelogo' => array(
                 'type'      => 'group',
                 'title'     => 'Logo',
                 'class'     => 'user_avatar',
@@ -59,10 +64,6 @@ if (!$node instanceof Model\Node) {
                         'type'  => 'file',
                         'label' => Text::get('form-image_upload-button'),
                         'class' => 'inline avatar_upload'
-                    ),
-                    'logo-current' => array(
-                        'type' => 'hidden',
-                        'value' => $node->logo->id,
                     ),
                     'logo-image' => array(
                         'type'  => 'html',

@@ -20,9 +20,9 @@ $node = $_SESSION['admin_node'];
     <input type="hidden" name="id" value="<?php echo $campaign->id; ?>" />
 
 <p>
-    <label for="campaign-call">Campaña:</label><br />
+    <label for="campaign-call">Convocatoria:</label><br />
     <select id="campaign-call" name="call">
-        <option value="" >Seleccionar la campaña a destacar</option>
+        <option value="" >Seleccionar la convocatoria a destacar</option>
     <?php foreach ($calls as $call) : ?>
         <option value="<?php echo $call->id; ?>"<?php if ($campaign->call == $call->id) echo' selected="selected"';?>><?php echo substr($call->name, 0, 100) . ' ('. $status[$call->status] . ')'; ?></option>
     <?php endforeach; ?>

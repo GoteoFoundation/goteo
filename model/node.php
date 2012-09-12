@@ -524,6 +524,7 @@ namespace Goteo\Model {
                     COUNT(project.id)
                 FROM    project
                 WHERE node = :node
+                AND status IN (3, 4, 5)
                 ", $values);
             $data['projects'] = $query->fetchColumn();
 

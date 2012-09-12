@@ -15,6 +15,8 @@ if (!isset($_SESSION['admin_menu'])) {
     $_SESSION['admin_menu'] = Admin::menu();
 }
 
+$node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
+
 // piñones usuarios
 $allowed = Admin::$supervisors[$_SESSION['user']->id];
 
@@ -78,9 +80,8 @@ include 'view/prologue.html.php';
                     echo new View ($path, $this);
                else :
         /* PORTADA ADMIN */
-        $pending = array('1', '2', '3'); //@TODO
         $feed = empty($_GET['feed']) ? 'all' : $_GET['feed'];
-        $items = Feed::getAll($feed, 'admin');
+        $items = Feed::getAll($feed, 'admin', 50, $node);
 
         // Central pendientes
     ?>
