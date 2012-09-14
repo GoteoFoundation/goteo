@@ -23,7 +23,9 @@ if (count($posts) > 1) : ?>
     <div class="slder_container">
 
         <?php if (count($posts)==1) echo '<div style="position:relative; height: 175px;">'; ?>
-        <?php $i = 1; foreach ($posts as $post) : ?>
+        <?php $i = 1; foreach ($posts as $post) : 
+            if ($post->id == 728) $post->title = Text::recorta($post->title, 150);
+            ?>
         <div class="slder_slide">
             <div class="post" id="home-post-<?php echo $i; ?>" style="display:block;">
                 <?php  if (!empty($post->media->url)) : ?>
@@ -37,7 +39,7 @@ if (count($posts) > 1) : ?>
                 <?php endif; ?>
                 <h3><?php if ($post->owner_type == 'project') { echo '<a href="/project/'.$post->owner_id.'">'.Text::get('project-menu-home').' '.$post->owner_name.'</a>: '; } echo $post->title; ?></h3>
                 <?php if (!empty($post->author)) : ?><div class="author"><a href="/user/profile/<?php echo $post->author ?>"><?php echo Text::get('regular-by') ?> <?php echo $post->user->name ?></a></div><?php endif; ?>
-                <div class="description"><?php echo Text::recorta($post->text, 350) ?><br /></div>
+                <div class="description"><?php if ($post->id == 728) echo Text::recorta($post->text, 200); else echo Text::recorta($post->text, 350); ?><br /></div>
 
                 <div class="read_more"><a href="<?php echo ($post->owner_type == 'project') ? '/project/'.$post->owner_id.'/updates/'.$post->id : '/blog/'.$post->id; ?>"><?php echo Text::get('regular-read_more') ?></a></div>
             </div>

@@ -32,6 +32,7 @@ namespace Goteo\Model {
          ),
          $node_side_items = array(
              'searcher' => 'Selector proyectos',
+             'categories' => 'Categorias de proyectos',
              'summary' => 'Resumen proyectos',
              'sumcalls' => 'Resumen convocatorias',
              'sponsors' => 'Patrocinadores'

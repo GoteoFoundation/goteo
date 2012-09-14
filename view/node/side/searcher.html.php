@@ -4,31 +4,6 @@ use Goteo\Library\Text,
 
 $icons  = $this['icons'];
 ?>
-<!-- funcion jquery para mostrar uno y ocultar el resto
-si no es $this['hide_promotes']  vamos a mostrar el promotes y ponerlo como current
--->
-<script type="text/javascript">
-    $(function(){
-        $(".show_cat").click(function (event) {
-            event.preventDefault();
-
-            if ($("#node-projects-"+$(this).attr('href')).is(":visible")) {
-                $(".button").removeClass('current');
-                $(".rewards").removeClass('current');
-                $(".node-projects").hide();
-            } else {
-                $(".button").removeClass('current');
-                $(".rewards").removeClass('current');
-                $(".node-projects").hide();
-                $(this).parents('div').addClass('current');
-                $("#node-projects-"+$(this).attr('href')).show();
-            }
-
-        });
-    });
-
-
-</script>
 <div class="side_widget">
     <?php foreach ($this['searcher'] as $cat => $label) :
         if ($cat == 'byreward') : ?>

@@ -123,7 +123,7 @@ namespace Goteo\Controller {
         
 
         public function comunication () {
-            @mail('goteo-tpv-fault@doukeshi.org', 'Comunicacion online', 'Este GET<pre>' . print_r($_GET, 1) . '</pre> y este POST:<pre>' . print_r($_POST, 1) . '</pre>');
+//            @mail('goteo-tpv-fault@doukeshi.org', 'Comunicacion online', 'Este GET<pre>' . print_r($_GET, 1) . '</pre> y este POST:<pre>' . print_r($_POST, 1) . '</pre>');
             
             if (isset($_POST['Num_operacion'])) {
                 $_POST['invest'] = $id = \substr($_POST['Num_operacion'], 0, -4);

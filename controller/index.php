@@ -14,6 +14,7 @@ namespace Goteo\Controller {
         Goteo\Model\Campaign, // convocatorias en portada
         Goteo\Model\User,
         Goteo\Model\Icon,
+        Goteo\Model\Category,
         Goteo\Library\Text,
         Goteo\Library\Feed,
         Goteo\Library\Page; // para sacar el contenido de about
@@ -124,6 +125,7 @@ namespace Goteo\Controller {
             $side_order = Home::getAllSide(NODE_ID);
 
             $icons = Icon::getAll();
+            $cats  = Category::getList();  // categorias que se usan en proyectos
             $hide_promotes = false;
 
             // Proyectos destacados primero para saber si lo meto en el buscador o no
@@ -193,6 +195,18 @@ namespace Goteo\Controller {
 
             }
 
+            if (isset($side_order['categories'])) {
+                // Proyectos por categorías
+                $categories = array();
+                foreach ($cats as $cat=>$catName) {
+                    $cat_projs = \Goteo\Library\Search::params(array('category'=>array("'$cat'"), 'node'=>true), false);
+                    if (!empty($cat_projs)) {
+                        $categories[$cat]['name'] = $catName;
+                        $categories[$cat]['projects'] = $cat_projs;
+                    }
+                }
+            }
+
             if (isset($side_order['summary'])) {
                 $summary = $node->getSummary();
             }
@@ -239,7 +253,7 @@ namespace Goteo\Controller {
                     // laterales
                     'side_order' => $side_order,
                         'searcher' => $searcher,
-                        'searcher' => $searcher,
+                        'categories' => $categories,
                         'summary'  => $summary,
                         'sumcalls' => $sumcalls,
                         'sponsors' => $sponsors,
