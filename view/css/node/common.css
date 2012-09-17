@@ -40,7 +40,7 @@ a.product{background-image:url('/view/css/icon/m/product.png')}
 a.design{background-image:url('/view/css/icon/m/design.png')}
 a.other{background-image:url('/view/css/icon/m/other.png')}
 
-span.euro{ text-indent:-9999px;overflow:hidden}
+div#node-main div#side span.euro{ text-indent:-9999px;overflow:hidden}
 
 div#side div.line{clear:both}
 div#side div.half{width:68px;margin-right:6px;float:left;padding:13px 10px;font-size:10px}
