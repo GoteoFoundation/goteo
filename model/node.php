@@ -524,7 +524,7 @@ namespace Goteo\Model {
                     COUNT(project.id)
                 FROM    project
                 WHERE node = :node
-                AND status IN (3, 4, 5)
+                AND status IN (3, 4, 5, 6)
                 ", $values);
             $data['projects'] = $query->fetchColumn();
 
@@ -568,7 +568,7 @@ namespace Goteo\Model {
                 INNER JOIN project
                     ON project.id = invest.project
                 WHERE project.node = :node
-                AND invest.status IN ('0', '1', '3')
+                AND invest.status IN ('0', '1', '3', '4')
                 ", $values);
             $data['investors'] = $query->fetchColumn();
 

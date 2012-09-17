@@ -19,5 +19,6 @@ foreach ($this['categories'] as $cat => $catData) : ?>
         } ?>
     </ul>
 
+    <div class="see_more"><a href="/discover"><?php echo Text::get('regular-see_more') ?></a></div>
 </div>
 <?php endforeach; ?>

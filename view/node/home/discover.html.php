@@ -21,6 +21,7 @@ foreach ($this['discover'] as $cat => $projects) :
         } ?>
     </ul>
 
+    <div class="see_more"><a href="/discover"><?php echo Text::get('regular-see_more') ?></a></div>
 </div>
     <?php endforeach;
     else : ?>
@@ -37,6 +38,7 @@ foreach ($this['discover'] as $cat => $projects) :
         } ?>
     </ul>
 
+    <div class="see_more"><a href="/discover"><?php echo Text::get('regular-see_more') ?></a></div>
 </div>
     <?php endif; ?>
 <?php endforeach; ?>

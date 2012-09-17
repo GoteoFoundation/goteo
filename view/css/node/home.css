@@ -145,12 +145,31 @@ body.node.home div#node-news div.slder_container div.slder_slide div.post div.re
     right: 25px;
     position: absolute;
 }
+
+body.home div#node-main div.see_more {
+    right: 20px;
+    position: relative;
+    margin: 5px 0px;
+    display: block;
+    text-align: right;
+}
+body.home div#node-main div.see_more a {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+body.home div#node-main div.see_more a:hover {
+    color: #20B3B2;
+}
+
+
 /* Proyectos destacados (y resultado de fast-searcher del lateral)
 Los estilos son como los de la pagina de proyectos de convocatoria
 pero como esa carga css especificos, vamos a copiar aqui los de div#project-list de /view/css/call/view.css
 */
 body.node.home div.node-projects h2 {
-    margin-bottom: 25px;
+    margin-bottom: 10px;
 }
 
 body.node.home div.node-projects ul {
