@@ -17,12 +17,17 @@ namespace Goteo\Controller\Admin {
 
             switch ($action) {
                 case 'add':
+                    if (isset($_GET['word'])) {
+                        $item = (object) array('name'=>$_GET['word']);
+                    } else {
+                        $item = (object) array();
+                    }
                     return new View(
                         'view/admin/index.html.php',
                         array(
                             'folder' => 'base',
                             'file' => 'edit',
-                            'data' => (object) array(),
+                            'data' => $item,
                             'form' => array(
                                 'action' => "$url/edit/",
                                 'submit' => array(
@@ -125,6 +130,19 @@ namespace Goteo\Controller\Admin {
                         throw new Redirection($url);
                     }
                     break;
+                case 'keywords':
+                    
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'keywords',
+                            'file' => 'list',
+                            'categories' => $model::getList(),
+                            'words' => $model::getKeyWords()
+                        )
+                    );
+                    
+                    break;
             }
 
             return new View(
@@ -134,6 +152,7 @@ namespace Goteo\Controller\Admin {
                     'file' => 'list',
                     'model' => 'category',
                     'addbutton' => 'Nueva categoría',
+                    'otherbutton' => '<a href="/admin/categories/keywords" class="button">Ver Palabras clave</a>',
                     'data' => $model::getAll(),
                     'columns' => array(
                         'edit' => '',

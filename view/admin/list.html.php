@@ -23,6 +23,9 @@ $per = 100 / $cols;
 <?php if (!empty($this['addbutton'])) : ?>
 <a href="<?php echo $this['url'] ?>/add" class="button"><?php echo $this['addbutton'] ?></a>
 <?php endif; ?>
+<?php if (!empty($this['otherbutton'])) : ?>
+<?php echo $this['otherbutton'] ?>
+<?php endif; ?>
 <!-- Filtro -->
 <?php if (!empty($filters)) : ?>
 <div class="widget board">

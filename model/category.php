@@ -184,6 +184,55 @@ namespace Goteo\Model {
             return ++$order;
 
         }
+        
+        /**
+         * Get a list of used keywords
+         *
+         * can be of users, projects or  all
+         * 
+         */
+		public static function getKeyWords () {
+            $array = array ();
+            try {
+                
+                $sql = "SELECT 
+                            keywords
+                        FROM project
+                        WHERE status > 1
+                        AND keywords IS NOT NULL
+                        AND keywords != ''
+                        ";
+/*
+                     UNION
+                        SELECT 
+                            keywords
+                        FROM user
+                        WHERE keywords IS NOT NULL
+                        AND keywords != ''
+* 
+ */
+                $query = static::query($sql);
+                $keywords = $query->fetchAll(\PDO::FETCH_ASSOC);
+                foreach ($keywords as $keyw) {
+                    $kw = $keyw['keywords'];
+//                    $kw = str_replace('|', ',', $keyw['keywords']);
+//                    $kw = str_replace(array(' ','|'), ',', $keyw['keywords']);
+//                    $kw = str_replace(array('-','.'), '', $kw);
+                    $kwrds = explode(',', $kw);
+                    
+                    foreach ($kwrds as $word) {
+                        $array[] = strtolower(trim($word));
+                    }
+                }
+
+                asort($array);
+                
+                return $array;
+            } catch(\PDOException $e) {
+				throw new \Goteo\Core\Exception($e->getMessage());
+            }
+		}
+        
     }
     
 }

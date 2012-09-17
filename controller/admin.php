@@ -101,7 +101,8 @@ namespace Goteo\Controller {
                             'list' => array('label' => 'Listando', 'item' => false),
                             'add'  => array('label' => 'Nueva Categoría', 'item' => false),
                             'edit' => array('label' => 'Editando Categoría', 'item' => true),
-                            'translate' => array('label' => 'Traduciendo Categoría', 'item' => true)
+                            'translate' => array('label' => 'Traduciendo Categoría', 'item' => true),
+                            'keywords' => array('label' => 'Palabras clave', 'item' => false)
                         )
                     ),
                     'commons' => array(
