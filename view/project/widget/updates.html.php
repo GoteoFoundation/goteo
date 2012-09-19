@@ -40,7 +40,7 @@ if ($this['show'] == 'list') {
 // uso la libreria blog para sacar los datos adecuados para esta vista
 
 $level = (int) $this['level'] ?: 3;
-
+$URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
 ?>
 <div class="project-updates"> 
     <!-- una entrada -->
@@ -57,7 +57,7 @@ $level = (int) $this['level'] ?: 3;
             <?php while ($post = $pagedResults->fetchPagedRow()) :
                 
                     $share_title = $post->title;
-                    $share_url = SITE_URL . '/project/'.$project->id.'/updates/' . $post->id;
+                    $share_url = $URL . '/project/'.$project->id.'/updates/' . $post->id;
                     $facebook_url = 'http://facebook.com/sharer.php?u=' . rawurlencode($share_url) . '&t=' . rawurlencode($share_title);
                     $twitter_url = 'http://twitter.com/home?status=' . rawurlencode($share_title . ': ' . $share_url . ' #Goteo');
                 ?>

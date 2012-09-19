@@ -1,11 +1,12 @@
 <?php
 use Goteo\Library\Text;
+$URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>NODO.goteo.org Mailer</title>
+<title>goteo.org Mailer</title>
 <style type="text/css">
 <!--
 body {
@@ -180,9 +181,9 @@ color:#20B3B2;
   
 <div class="disclaimer"><?php echo Text::get('mailer-disclaimer') ?></div>
 
-<div class="goteo-url"><a href="<?php echo SITE_URL ?>">www.goteo.org</a></div>
-<div class="descubre"><a href="<?php echo SITE_URL . '/discover' ?>"><?php echo Text::get('regular-discover'); ?></a></div>
-<div class="crea"><a href="<?php echo SITE_URL . '/project/create' ?>"><?php echo Text::get('regular-create'); ?></a></div>
+<div class="goteo-url"><a href="<?php echo $URL ?>">euskadi.goteo.org</a></div>
+<div class="descubre"><a href="<?php echo $URL . '/discover' ?>"><?php echo Text::get('regular-discover'); ?></a></div>
+<div class="crea"><a href="<?php echo $URL . '/project/create' ?>"><?php echo Text::get('regular-create'); ?></a></div>
 
 <div class="follow">Síguenos en:<br />
   <span class="facebook"><a href="<?php echo Text::get('social-account-facebook') ?>">facebook</a></span> |  <span class="twitter"><a href="<?php echo Text::get('social-account-twitter') ?>">twitter</a></span> |   <span class="rss"><a rel="alternate" type="application/rss+xml" title="RSS" href="<?php echo SITE_URL. '/rss' ?>">RSS</a></span></div>

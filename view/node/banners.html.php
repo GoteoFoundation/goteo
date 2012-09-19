@@ -14,7 +14,7 @@ if (empty($banners)) return '';
     });
 </script>
 <div id="node-banners" class="rounded-corners-bottom"<?php if ($bodyClass == 'home') echo ' style="width: 940px; margin: 0px auto;"'; ?>>
-    <div class="node-banners-container rounded-corners-bottom">
+    <div class="node-banners-container rounded-corners-bottom"<?php if ($bodyClass == 'home') echo ' style="width: 940px;"'; ?>>
         <?php foreach ($banners as $banner) : ?>
         <div class="node-banner<?php if (!empty($banner->url)) : ?> activable<?php endif; ?>"<?php if ($banner->image instanceof \Goteo\Model\Image) : ?> style="background: url('<?php echo $banner->image->getLink(940, 270); ?>') no-repeat right bottom;"<?php endif; ?>>
             <?php if (!empty($banner->url)) : ?><a href="<?php echo $banner->url; ?>" class="expand" target="_blank"></a><?php endif; ?>

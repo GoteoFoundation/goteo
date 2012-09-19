@@ -202,6 +202,7 @@ namespace Goteo\Controller\Admin {
                     $subject = $_POST['subject'];
                     $templateId = !empty($_POST['template']) ? $_POST['template'] : 11;
 
+                    $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
 
                     // Contenido para newsletter
                     if ($templateId == 33) {
@@ -235,10 +236,10 @@ namespace Goteo\Controller\Admin {
                                     $usr,
                                     $userData->email,
                                     $userData->name,
-                                    SITE_URL,
+                                    $URL,
                                     $userData->projectId,
                                     $userData->project,
-                                    SITE_URL.'/project/'.$userData->projectId
+                                    $URL.'/project/'.$userData->projectId
                                 ),
                                 $content);
                         }

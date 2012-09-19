@@ -34,7 +34,7 @@ if (!empty($blog->posts)) {
     $updates = '';
 }
 
-
+$URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
 
 $bodyClass = 'project-show';
 
@@ -44,7 +44,7 @@ if ($show == 'updates') {
     $ogmeta = array(
         'title' => $project->name,
         'description' => Text::get('regular-by').' '.$project->user->name,
-        'url' => SITE_URL . '/project/'.$project->id,
+        'url' => $URL . '/project/'.$project->id,
         'image' => array()
     );
     foreach ($blog->posts as $bpost) {
@@ -64,7 +64,7 @@ if ($show == 'updates') {
     $ogmeta = array(
         'title' => $project->name,
         'description' => Text::get('regular-by').' '.$project->user->name,
-        'url' => SITE_URL . '/project/'.$project->id
+        'url' => $URL . '/project/'.$project->id
     );
     
     // todas las imagenes del proyecto

@@ -81,7 +81,7 @@ $steps = Post::get(566);
                     <li><a href="<?php echo SITE_URL ?>/about">Goteo.org</a></li>
                     <li><a href="/user/login"><?php echo Text::get('regular-login'); ?></a></li>
                     <li><a href="/blog"><?php echo Text::get('regular-header-blog'); ?></a></li> 
-                    <li><a href="/about/press"><?php echo Text::get('footer-resources-press'); ?></a></li>
+                    <li><a href="/press"><?php echo Text::get('footer-resources-press'); ?></a></li>
                     <li><a href="/legal/privacy"><?php echo Text::get('regular-footer-privacy'); ?></a></li>
                     <li><a href="/contact"><?php echo Text::get('regular-footer-contact'); ?></a></li>
                 </ul>

@@ -829,7 +829,8 @@ namespace Goteo\Controller {
                     invest.user as id,
                     user.name as name,
                     user.email as email,
-                    invest.method as method
+                    invest.method as method,
+                    IFNULL(user.lang, 'es') as lang
                 FROM  invest
                 INNER JOIN user
                     ON user.id = invest.user
@@ -872,7 +873,8 @@ namespace Goteo\Controller {
 
                     if (!empty($tpl)) {
                         // Obtenemos la plantilla para asunto y contenido
-                        $template = Template::get($tpl);
+                        // en el idioma del usuario
+                        $template = Template::get($tpl, $investor->lang);
                         // Sustituimos los datos
                         $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
                         $content = \str_replace($search, $replace, $template->text);

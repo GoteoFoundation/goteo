@@ -291,8 +291,9 @@ namespace Goteo\Controller {
                 }
             }
 
+            $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+            
             // Dirección en el mail
-
             $txt_address = Text::get('invest-mail_info-address');
             $txt_address .= '<br> ' . Text::get('invest-address-address-field') . ' ' . $confirm->address->address;
             $txt_address .= '<br> ' . Text::get('invest-address-zipcode-field') . ' ' . $confirm->address->zipcode;
@@ -305,7 +306,7 @@ namespace Goteo\Controller {
 
             // En el contenido:
             $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%', '%DROPED%');
-            $replace = array($_SESSION['user']->name, $projectData->name, SITE_URL.'/project/'.$projectData->id, $confirm->amount, $txt_rewards, $txt_address, $txt_droped);
+            $replace = array($_SESSION['user']->name, $projectData->name, $URL.'/project/'.$projectData->id, $confirm->amount, $txt_rewards, $txt_address, $txt_droped);
             $content = \str_replace($search, $replace, $template->text);
 
             $mailHandler = new Mail();
@@ -333,7 +334,7 @@ namespace Goteo\Controller {
 
             // En el contenido:
             $search  = array('%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%SITEURL%', '%AMOUNT%', '%MESSAGEURL%', '%DROPED%');
-            $replace = array($projectData->user->name, $_SESSION['user']->name, $projectData->name, SITE_URL, $confirm->amount, SITE_URL.'/user/profile/'.$_SESSION['user']->id.'/message', $txt_droped);
+            $replace = array($projectData->user->name, $_SESSION['user']->name, $projectData->name, $URL, $confirm->amount, $URL.'/user/profile/'.$_SESSION['user']->id.'/message', $txt_droped);
             $content = \str_replace($search, $replace, $template->text);
 
             $mailHandler = new Mail();

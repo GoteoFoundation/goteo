@@ -9,13 +9,14 @@ $the_project = Project::getMedium($project->id);
 $level = (int) $this['level'] ?: 3;
 
 $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
+$URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
 
-$url = SITE_URL . '/widget/project/' . $project->id;
+$url = $URL . '/widget/project/' . $project->id;
 $widget_code = Text::widget($url . $lsuf);
 $widget_code_investor = Text::widget($url.'/invested/'.$user->id.'/'.$lsuf);
 
 $share_title = Text::get('project-spread-social', $project->name);
-$share_url = SITE_URL . '/project/'.$project->id;
+$share_url = $URL . '/project/'.$project->id;
 $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($share_title);
 $twitter_url = 'http://twitter.com/home?status=' . urlencode($share_title . ': ' . $share_url . ' #Goteo #crowdfunding');
 ?>

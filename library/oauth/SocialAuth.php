@@ -62,8 +62,9 @@ class SocialAuth {
 	 * @param $provider : 'twitter', 'facebook', 'linkedin', 'any_openid_server'
 	 * */
 	function __construct($provider='') {
+        $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
 		$this->host = SITE_URL;
-		$this->callback_url = SITE_URL . '/user/oauth?return=' . $provider;
+		$this->callback_url = $URL . '/user/oauth?return=' . $provider;
 
 		$this->twitter_id = OAUTH_TWITTER_ID;
 		$this->twitter_secret = OAUTH_TWITTER_SECRET;

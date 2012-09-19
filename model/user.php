@@ -111,6 +111,7 @@ namespace Goteo\Model {
 					//active = 1 si no se quiere comprovar
 					if(in_array('active',$skip_validations) && $this->active) $data[':active'] = 1;
 					else {
+                        $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
 						// Obtenemos la plantilla para asunto y contenido
 						$template = Template::get(5);
 
@@ -119,7 +120,7 @@ namespace Goteo\Model {
 
 						// En el contenido:
 						$search  = array('%USERNAME%', '%USERID%', '%ACTIVATEURL%');
-						$replace = array($this->name, $this->id, SITE_URL . '/user/activate/' . $token);
+						$replace = array($this->name, $this->id, $URL . '/user/activate/' . $token);
 						$content = \str_replace($search, $replace, $template->text);
 
 						// Activación
@@ -1002,6 +1003,7 @@ namespace Goteo\Model {
 		 * @return boolean true|false  Correctos y mail enviado
 		 */
 		public static function recover ($username = null, $email = null) {
+            $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
             $query = self::query("
                     SELECT
                         id,
@@ -1030,7 +1032,7 @@ namespace Goteo\Model {
 
                 // En el contenido:
                 $search  = array('%USERNAME%', '%USERID%', '%RECOVERURL%');
-                $replace = array($row->name, $row->id, SITE_URL . '/user/recover/' . base64_encode($token));
+                $replace = array($row->name, $row->id, $URL . '/user/recover/' . base64_encode($token));
                 $content = \str_replace($search, $replace, $template->text);
                 // Email de recuperacion
                 $mail = new Mail();
@@ -1054,6 +1056,7 @@ namespace Goteo\Model {
 		 * @return boolean true|false  Correctos y mail enviado
 		 */
 		public static function leaving ($email, $message = null) {
+            $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
             $query = self::query("
                     SELECT
                         id,
@@ -1082,7 +1085,7 @@ namespace Goteo\Model {
 
                 // En el contenido:
                 $search  = array('%USERNAME%', '%URL%');
-                $replace = array($row->name, SITE_URL . '/user/leave/' . base64_encode($token));
+                $replace = array($row->name, $URL . '/user/leave/' . base64_encode($token));
                 $content = \str_replace($search, $replace, $template->text);
                 // Email de recuperacion
                 $mail = new Mail();
@@ -1124,6 +1127,7 @@ namespace Goteo\Model {
     	 * @return type bool
     	 */
     	private function setToken ($token) {
+            $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
             if(count($tmp = explode('¬', $token)) > 1) {
                 $email = $tmp[1];
                 if(Check::mail($email)) {
@@ -1136,7 +1140,7 @@ namespace Goteo\Model {
 
                     // En el contenido:
                     $search  = array('%USERNAME%', '%CHANGEURL%');
-                    $replace = array($this->name, SITE_URL . '/user/changeemail/' . base64_encode($token));
+                    $replace = array($this->name, $URL . '/user/changeemail/' . base64_encode($token));
                     $content = \str_replace($search, $replace, $template->text);
 
 
