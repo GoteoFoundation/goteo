@@ -35,6 +35,8 @@ include 'view/node/header.html.php';
 </script>
 <?php endif; ?>
 
+<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+
 <div id="node-main">
     <div id="side">
     <?php foreach ($this['side_order'] as $sideitem=>$sideitemName) {
@@ -49,7 +51,7 @@ include 'view/node/header.html.php';
     if (isset($this['side_order']['categories'])) echo new View("view/node/home/discat.html.php", $this);
     if (!empty($this['page']->content)) {
         if (isset($this['searcher']['promote'])) echo new View("view/node/home/promotes.html.php", $this);
-        echo $this['page']->content;
+        echo '<div id="node-about-content" class="widget">' . $this['page']->content . '</div>';
     } else {
         foreach ($this['order'] as $item=>$itemName) {
             if (!empty($this[$item])) echo new View("view/node/home/{$item}.html.php", $this);

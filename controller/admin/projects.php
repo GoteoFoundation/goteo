@@ -165,6 +165,7 @@ namespace Goteo\Controller\Admin {
             if (isset($log_text)) {
                 // Evento Feed
                 $log = new Feed();
+                $log->setTarget($project->id);
                 $log->populate('Cambio estado/fechas/cuentas/nodo de un proyecto desde el admin', '/admin/projects',
                     \vsprintf($log_text, array(
                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -180,7 +181,6 @@ namespace Goteo\Controller\Admin {
                 if ($action == 'publish') {
                     // si es publicado, hay un evento público
                     $log->populate($project->name, '/project/'.$project->id, Text::html('feed-new_project'), $project->gallery[0]->id);
-                    $log->setTarget($project->id);
                     $log->doPublic('projects');
                 }
 

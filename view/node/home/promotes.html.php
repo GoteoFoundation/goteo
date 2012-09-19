@@ -18,4 +18,5 @@ $promotes = $this['promotes'];
         }?>
     </ul>
 
+    <div class="see_more"><a href="/discover"><?php echo Text::get('regular-see_more') ?></a></div>
 </div>

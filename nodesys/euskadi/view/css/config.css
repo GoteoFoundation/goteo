@@ -27,6 +27,10 @@ body.project-show div.project-menu ul li a {
   background-image: url('regular_menu.png') !important;
 }
 
+body.node div.invest-message {
+    background-image: url("/nodesys/euskadi/view/css/message_beak.png") !important;
+}
+
 /*
 * beaks
 */

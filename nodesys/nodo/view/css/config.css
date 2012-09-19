@@ -12,11 +12,11 @@ body.node.home > div.widget > div.title-line {
 }
 
 div#node-header div.logos div.node-home > a {
-    background: url('goteo-logo.png') no-repeat left top;
+    background: url('/nodesys/euskadi/view/css/goteo-logo.png') no-repeat left top;
 }
 
 div#node-header div.logos div.node-home > a:hover {
-    background: url('goteo-logo.png') no-repeat right top;
+    background: url('/nodesys/euskadi/view/css/goteo-logo.png') no-repeat right top;
 }
 
 body.project-show div.project-menu ul li.show a {
@@ -25,6 +25,10 @@ body.project-show div.project-menu ul li.show a {
 
 body.project-show div.project-menu ul li a {
   background-image: url('regular_menu.png') !important;
+}
+
+body.node div.invest-message {
+    background-image: url("/nodesys/euskadi/view/css/message_beak.png") !important;
 }
 
 /*

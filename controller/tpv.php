@@ -164,7 +164,7 @@ namespace Goteo\Controller {
                     $errTxt = self::$errcode[$Cerr];
                     Invest::setDetail($invest->id, 'tpv-response-error', 'El tpv ha comunicado el siguiente Codigo error: '.$Cerr.' - '.$errTxt.'. El aporte a quedado \'En proceso\'. Proceso controller/tpv');
                     @mail('goteo-tpv-fault@doukeshi.org', 'Error en TPV', 'Codigo error: '.$Cerr.' '.$errTxt.'<br /><pre>' . print_r($_POST, 1) . '</pre>');
-                    $invest->cancel();
+                    $invest->cancel('ERR '.$Cerr);
                     $_POST['result'] = 'Fail';
 
                     $log_text = 'Ha habido un <span class="red">ERROR de TPV (Codigo: '.$Cerr.' '.$errTxt.')</span> en el aporte de %s de %s al proyecto %s mediante TPV';
