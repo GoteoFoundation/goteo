@@ -77,6 +77,7 @@ namespace Goteo\Controller\Admin {
                         if ($original->setStatus('5')) {
                             // Evento Feed
                             $log = new Feed();
+                            $log->setTarget($projectData->id);
                             $log->populate('Aporte reubicado', '/admin/accounts',
                                 \vsprintf("%s ha aportado %s al proyecto %s en nombre de %s", array(
                                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -168,6 +169,7 @@ namespace Goteo\Controller\Admin {
                     Message::Error('No tenemos registro del aporte '.$id);
                     throw new Redirection('/admin/accounts');
                 }
+                $projectData = Model\Project::getMini($invest->project);
 
                 $errors = array();
 
@@ -214,13 +216,14 @@ namespace Goteo\Controller\Admin {
 
                 // Evento Feed
                 $log = new Feed();
+                $log->setTarget($projectData->id);
                 $log->populate('Cargo cancelado manualmente (admin)', '/admin/accounts',
                     \vsprintf($log_text, array(
                         Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                         Feed::item('user', $userData->name, $userData->id),
                         Feed::item('money', $invest->amount.' &euro;'),
                         Feed::item('system', $invest->id),
-                        Feed::item('project', $project->name, $project->id),
+                        Feed::item('project', $projectData->name, $projectData->id),
                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                 )));
                 $log->doAdmin();
@@ -230,6 +233,7 @@ namespace Goteo\Controller\Admin {
                 if ($invest->solve($errors)) {
                     // Evento Feed
                     $log = new Feed();
+                    $log->setTarget($projectData->id);
                     $log->populate('Incidencia resuelta (admin)', '/admin/accounts',
                         \vsprintf("El admin %s ha dado por resuelta la incidencia %s", array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -294,6 +298,7 @@ namespace Goteo\Controller\Admin {
                     if ($invest->save($errors)) {
                         // Evento Feed
                         $log = new Feed();
+                        $log->setTarget($projectData->id);
                         $log->populate('Aporte manual (admin)', '/admin/accounts',
                             \vsprintf("%s ha aportado %s al proyecto %s en nombre de %s", array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -418,6 +423,7 @@ namespace Goteo\Controller\Admin {
 
                 // Evento Feed
                 $log = new Feed();
+                $log->setTarget($project->id);
                 $log->populate('Cargo cancelado manualmente (admin)', '/admin/accounts',
                     \vsprintf($log_text, array(
                         Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -455,6 +461,7 @@ namespace Goteo\Controller\Admin {
 
                             // Evento Feed
                             $log = new Feed();
+                            $log->setTarget($project->id);
                             $log->populate('proyecto sin cuenta paypal (admin)', '/admin/projects',
                                 \vsprintf('El proyecto %s aun no ha puesto su %s !!!', array(
                                     Feed::item('project', $project->name, $project->id),
@@ -507,6 +514,7 @@ namespace Goteo\Controller\Admin {
                 if (!empty($log_text)) {
                     // Evento Feed
                     $log = new Feed();
+                    $log->setTarget($project->id);
                     $log->populate('Cargo ejecutado manualmente (admin)', '/admin/accounts',
                         \vsprintf($log_text, array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),

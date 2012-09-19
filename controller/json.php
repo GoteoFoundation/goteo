@@ -45,6 +45,7 @@ namespace Goteo\Controller {
 
                     // Evento feed
                     $log = new Feed();
+                    $log->setTarget($projectData->id);
                     $log->populate('proyecto asignado a convocatoria por convocador', 'admin/calls/'.$_SESSION['call']->id.'/projects',
                         \vsprintf('El convocador %s ha asignado el proyecto %s a la convocatoria %s', array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -56,7 +57,6 @@ namespace Goteo\Controller {
                         \vsprintf('Ha sido seleccionado en la convocatoria %s', array(
                             Feed::item('call', $_SESSION['call']->name, $_SESSION['call']->id))
                         ), $projectData->gallery[0]->id);
-                    $log->setTarget($projectData->id);
                     $log->doPublic('projects');
                     unset($log);
                 }

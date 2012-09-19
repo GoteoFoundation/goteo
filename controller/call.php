@@ -53,6 +53,7 @@ namespace Goteo\Controller {
             if (isset($_GET['from']) && $_GET['from'] == 'dashboard') {
                 // Evento Feed
                 $log = new Feed();
+                $log->setTarget($call->id, 'call');
                 $log->populate('El convocador entra a editar desde dashboard', '/admin/calls/'.$id,
                     \vsprintf('El convocador %s ha entrado a editar su convocatoria %s desde su dashboard', array(
                         Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -179,6 +180,7 @@ namespace Goteo\Controller {
 
                         // Evento Feed
                         $log = new Feed();
+                        $log->setTarget($call->id, 'call');
                         $log->populate('convocatoria enviada a revision', '/admin/calls',
                             \vsprintf('%s ha completado la edición de la convocatoria %s, se dispone a <span class="red">asignar proyectos</span>', array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -290,6 +292,7 @@ namespace Goteo\Controller {
 
                     // Evento Feed
                     $log = new Feed();
+                    $log->setTarget($call->id, 'call');
                     $log->populate('usuario admin/convocador crea convocatoria', 'admin/calls',
                         \vsprintf('El usuario %s ha creado una nueva convocatoria, %s', array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),

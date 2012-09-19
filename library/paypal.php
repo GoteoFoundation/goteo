@@ -194,6 +194,7 @@ namespace Goteo\Library {
 
                                 // Evento Feed
                                 $log = new Feed();
+                                $log->setTarget($project->id);
                                 $log->populate('Aporte cancelado por preaproval cancelado por el usuario paypal', '/admin/accounts',
                                     \vsprintf('Se ha <span class="red">Cancelado</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s por preapproval cancelado', array(
                                         Feed::item('user', $userData->name, $userData->id),
@@ -202,7 +203,7 @@ namespace Goteo\Library {
                                         Feed::item('project', $project->name, $project->id),
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
-                                $log->doAdmin();
+                                $log->doAdmin('system');
                                 $error_txt = $log->title;
                                 unset($log);
 
@@ -211,6 +212,7 @@ namespace Goteo\Library {
                         case '569042': // cuenta del proyecto no confirmada en paypal
                                 // Evento Feed
                                 $log = new Feed();
+                                $log->setTarget($project->id);
                                 $log->populate('Cuenta del proyecto no confirmada en PayPal', '/admin/accounts',
                                     \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque la cuenta del proyecto <span class="red">no está confirmada</span> en PayPal', array(
                                         Feed::item('user', $userData->name, $userData->id),
@@ -219,7 +221,7 @@ namespace Goteo\Library {
                                         Feed::item('project', $project->name, $project->id),
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
-                                $log->doAdmin();
+                                $log->doAdmin('system');
                                 $error_txt = $log->title;
                                 unset($log);
 
@@ -228,6 +230,7 @@ namespace Goteo\Library {
                         case '589039': // el mail del preaproval no está registrada en paypal
                                 // Evento Feed
                                 $log = new Feed();
+                                $log->setTarget($project->id);
                                 $log->populate('El mail del preaproval no esta registrado en PayPal', '/admin/accounts',
                                     \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque el mail del preaproval <span class="red">no está registrado</span> en PayPal', array(
                                         Feed::item('user', $userData->name, $userData->id),
@@ -236,7 +239,7 @@ namespace Goteo\Library {
                                         Feed::item('project', $project->name, $project->id),
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
-                                $log->doAdmin();
+                                $log->doAdmin('system');
                                 $error_txt = $log->title;
                                 unset($log);
 
@@ -244,6 +247,7 @@ namespace Goteo\Library {
                         case '520009': // la cuenta esta restringida por paypal
                                 // Evento Feed
                                 $log = new Feed();
+                                $log->setTarget($project->id);
                                 $log->populate('La cuenta esta restringida por PayPal', '/admin/accounts',
                                     \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque la cuenta <span class="red">está restringida</span> por PayPal', array(
                                         Feed::item('user', $userData->name, $userData->id),
@@ -252,7 +256,7 @@ namespace Goteo\Library {
                                         Feed::item('project', $project->name, $project->id),
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
-                                $log->doAdmin();
+                                $log->doAdmin('system');
                                 $error_txt = $log->title;
                                 unset($log);
 
@@ -260,6 +264,7 @@ namespace Goteo\Library {
                         case '579033': // misma cuenta que el proyecto
                                 // Evento Feed
                                 $log = new Feed();
+                                $log->setTarget($project->id);
                                 $log->populate('Se ha usado la misma cuenta que del proyecto', '/admin/accounts',
                                     \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque la cuenta <span class="red">es la misma</span> que la del proyecto', array(
                                         Feed::item('user', $userData->name, $userData->id),
@@ -268,7 +273,7 @@ namespace Goteo\Library {
                                         Feed::item('project', $project->name, $project->id),
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
-                                $log->doAdmin();
+                                $log->doAdmin('system');
                                 $error_txt = $log->title;
                                 unset($log);
 
@@ -276,6 +281,7 @@ namespace Goteo\Library {
                         case '579024': // fuera de fechas
                                 // Evento Feed
                                 $log = new Feed();
+                                $log->setTarget($project->id);
                                 $log->populate('Está fuera del rango de fechas', '/admin/accounts',
                                     \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque estamos <span class="red">fuera del rango de fechas</span> del preapproval', array(
                                         Feed::item('user', $userData->name, $userData->id),
@@ -284,7 +290,7 @@ namespace Goteo\Library {
                                         Feed::item('project', $project->name, $project->id),
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
-                                $log->doAdmin();
+                                $log->doAdmin('system');
                                 $error_txt = $log->title;
                                 unset($log);
 
@@ -292,6 +298,7 @@ namespace Goteo\Library {
                         case '579031': // The total amount of all payments exceeds the maximum total amount for all payments
                                 // Evento Feed
                                 $log = new Feed();
+                                $log->setTarget($project->id);
                                 $log->populate('Problema con los importes', '/admin/accounts',
                                     \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque ha habido <span class="red">algun problema con los importes</span>', array(
                                         Feed::item('user', $userData->name, $userData->id),
@@ -300,7 +307,7 @@ namespace Goteo\Library {
                                         Feed::item('project', $project->name, $project->id),
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
-                                $log->doAdmin();
+                                $log->doAdmin('system');
                                 $error_txt = $log->title;
                                 unset($log);
 
@@ -308,6 +315,7 @@ namespace Goteo\Library {
                         case '520002': // Internal error
                                 // Evento Feed
                                 $log = new Feed();
+                                $log->setTarget($project->id);
                                 $log->populate('Error interno de PayPal', '/admin/accounts',
                                     \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque ha habido <span class="red">un error interno en PayPal</span>', array(
                                         Feed::item('user', $userData->name, $userData->id),
@@ -316,7 +324,7 @@ namespace Goteo\Library {
                                         Feed::item('project', $project->name, $project->id),
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
-                                $log->doAdmin();
+                                $log->doAdmin('system');
                                 $error_txt = $log->title;
                                 unset($log);
 
@@ -325,6 +333,7 @@ namespace Goteo\Library {
                             if (empty($errorId)) {
                                 @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No es un soap fault pero no es un success.<br /><pre>' . print_r($ap, 1) . '</pre>');
                                 $log = new Feed();
+                                $log->setTarget($project->id);
                                 $log->populate('Error interno de PayPal', '/admin/accounts',
                                     \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s <span class="red">NO es soapFault pero no es Success</span>, se ha reportado el error.', array(
                                         Feed::item('user', $userData->name, $userData->id),
@@ -333,11 +342,12 @@ namespace Goteo\Library {
                                         Feed::item('project', $project->name, $project->id),
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
-                                $log->doAdmin();
+                                $log->doAdmin('system');
                                 $error_txt = $log->title;
                                 unset($log);
                             } else {
                                 $log = new Feed();
+                                $log->setTarget($project->id);
                                 $log->populate('Error interno de PayPal', '/admin/accounts',
                                     \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s <span class="red">'.$action.' '.$errorMsg.' ['.$errorId.']</span>', array(
                                         Feed::item('user', $userData->name, $userData->id),
@@ -346,7 +356,7 @@ namespace Goteo\Library {
                                         Feed::item('project', $project->name, $project->id),
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
-                                $log->doAdmin();
+                                $log->doAdmin('system');
                                 $error_txt = $log->title;
                                 unset($log);
                             }
@@ -451,6 +461,7 @@ namespace Goteo\Library {
 
                                 // Evento Feed
                                 $log = new Feed();
+                                $log->setTarget($project->id);
                                 $log->populate('Aporte cancelado por preaproval cancelado por el usuario paypal', '/admin/invests',
                                     \vsprintf('Se ha <span class="red">Cancelado</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s por preapproval cancelado', array(
                                         Feed::item('user', $userData->name, $userData->id),

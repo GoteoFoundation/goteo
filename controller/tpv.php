@@ -173,6 +173,7 @@ namespace Goteo\Controller {
 
                 // Evento Feed
                 $log = new Feed();
+                $log->setTarget($projectData->id);
                 $log->populate('Aporte TPV', '/admin/invests',
                     \vsprintf($log_text, $log_items = array(
                         Feed::item('user', $userData->name, $userData->id),

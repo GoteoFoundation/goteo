@@ -110,6 +110,7 @@ namespace Goteo\Controller {
                         } else {
                             // Evento Feed
                             $log = new Feed();
+                            $log->setTarget($_SESSION['user']->id, 'user');
                             $log->populate('texto traducido (traductor)', '/translate/texts',
                                 \vsprintf('Al traductor %s  le ha %s el texto %s al %s', array(
                                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -280,6 +281,7 @@ namespace Goteo\Controller {
                         } else {
                             // Evento Feed
                             $log = new Feed();
+                            $log->setTarget($_SESSION['user']->id, 'user');
                             $log->populate('pagina traducida (traductor)', '/translate/pages',
                                 \vsprintf('Al traductor %s le ha %s la página %s del nodo %s al %s', array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -358,6 +360,7 @@ namespace Goteo\Controller {
                         } else {
                             // Evento Feed
                             $log = new Feed();
+                            $log->setTarget($_SESSION['user']->id, 'user');
                             $log->populate('contenido traducido (traductor)', '/translate/'.$table,
                                 \vsprintf('El traductor %s le ha %s el contenido del registro %s de la tabla %s al %s', array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),

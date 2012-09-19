@@ -581,13 +581,13 @@ namespace Goteo\Controller {
 
                         // Evento Feed
                         $log = new Feed();
+                        $log->setTarget($user->id, 'user');
                         $log->populate('nuevo usuario registrado (confirmado)', '/admin/users', Text::html('feed-new_user', Feed::item('user', $user->name, $user->id)));
                         $log->doAdmin('user');
 
                         // evento público
                         $log->title = $user->name;
                         $log->url = null;
-                        $log->setTarget($user->id, 'user');
                         $log->doPublic('community');
 
                         unset($log);

@@ -42,6 +42,7 @@ namespace Goteo\Controller\Admin {
 
                             // Evento Feed
                             $log = new Feed();
+                            $log->setTarget($projectData->id);
                             $log->populate('nuevo proyecto apadrinado (admin)', '/admin/patron',
                                 \vsprintf('El admin %s ha hecho al usuario %s padrino del proyecto %s', array(
                                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -109,6 +110,7 @@ namespace Goteo\Controller\Admin {
 
                         // Evento Feed
                         $log = new Feed();
+                        $log->setTarget($projectData->id);
                         $log->populate('proyecto desapadrinado (admin)', '/admin/promote',
                             \vsprintf('El admin %s ha %s del proyecto %s', array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),

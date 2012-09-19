@@ -85,12 +85,12 @@ namespace Goteo\Controller\Admin {
 
                             // Evento Feed
                             $log = new Feed();
+                            $log->setTarget($user->id, 'user');
                             $log->populate('Operación sobre usuario (admin)', '/admin/users', \vsprintf('El admin %s ha %s del usuario %s', array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                 Feed::item('relevant', 'Tocado ' . implode (' y ', $tocado)),
                                 Feed::item('user', $user->name, $user->id)
                             )));
-                            //$log->setTarget($user->id, 'user');
                             $log->doAdmin('user');
                             unset($log);
 
@@ -239,6 +239,7 @@ namespace Goteo\Controller\Admin {
 
                         // Evento Feed
                         $log = new Feed();
+                        $log->setTarget($user->id, 'user');
                         $log->populate('Operación sobre usuario (admin)', '/admin/users',
                             \vsprintf($log_text, array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -336,6 +337,7 @@ namespace Goteo\Controller\Admin {
                             }
                             // Evento Feed
                             $log = new Feed();
+                            $log->setTarget($user->id, 'user');
                             $log->populate('User cambiado de nodo (admin)', '/admin/users',
                                 \vsprintf($log_text, array(
                                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),

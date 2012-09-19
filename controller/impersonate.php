@@ -42,6 +42,7 @@ namespace Goteo\Controller {
 
                 // Evento Feed
                 $log = new Feed();
+                $log->setTarget($_SESSION['user']->id, 'user');
                 $log->populate('Suplantación usuario (admin)', '/admin/users', \vsprintf('El admin %s ha %s al usuario %s', array(
                     Feed::item('user', $admin->name, $admin->id),
                     Feed::item('relevant', 'Suplantado'),

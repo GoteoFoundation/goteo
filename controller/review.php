@@ -113,6 +113,7 @@ namespace Goteo\Controller {
 
                     // Evento Feed
                     $log = new Feed();
+                    $log->setTarget($review->project, 'project');
                     $log->populate('revisión cerrada (revisor)', '/review/reviews',
                         \vsprintf('El revisor %s ha %s la revisión de %s', array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -120,7 +121,6 @@ namespace Goteo\Controller {
                             Feed::item('project', $review->name, $review->project)
                         ))
                     );
-                    $log->setTarget($_SESSION['user']->id, 'user');
                     $log->doAdmin('admin');
                     unset($log);
 

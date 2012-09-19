@@ -165,6 +165,7 @@ namespace Goteo\Controller {
                
                 // Evento Feed
                 $log = new Feed();
+                $log->setTarget($projectData->id);
                 $log->populate('Aporte '.$confirm->method, '/admin/invests',
                     \vsprintf("%s ha aportado %s al proyecto %s mediante Cash", array(
                         Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -203,6 +204,7 @@ namespace Goteo\Controller {
 
                 // Evento Feed
                 $log = new Feed();
+                $log->setTarget($projectData->id);
                 $log->populate('Aporte PayPal', '/admin/invests',
                     \vsprintf("%s ha aportado %s al proyecto %s mediante PayPal",
                         array(
@@ -226,11 +228,14 @@ namespace Goteo\Controller {
 
             // Feed del aporte de la campaña
             if (!empty($confirm->droped) && $drop instanceof Model\Invest && !empty($drop->campaign)) {
+                
+                $callData = Model\Call::getMini($drop->campaign);
                 // Evento Feed
                 $log = new Feed();
+                $log->setTarget($projectData->id);
                 $log->populate('Aporte riego '.$drop->method, '/admin/invests',
                     \vsprintf("%s ha aportado %s de %s al proyecto %s a través de la campaña %s", array(
-                        Feed::item('user', $caller->name, $caller->id),
+                        Feed::item('user', $callData->user->name, $callData->user->id),
                         Feed::item('money', $drop->amount.' &euro;'),
                         Feed::item('drop', 'Capital Riego', '/service/resources'),
                         Feed::item('project', $projectData->name, $projectData->id),
@@ -238,7 +243,7 @@ namespace Goteo\Controller {
                     )));
                 $log->doAdmin('money');
                 // evento público
-                $log->populate($caller->name, '/user/profile/'.$caller->id,
+                $log->populate($callData->user->name, '/user/profile/'.$callData->user->id,
                             Text::html('feed-invest',
                                     Feed::item('money', $drop->amount.' &euro;')
                                         . ' de '
@@ -246,7 +251,7 @@ namespace Goteo\Controller {
                                     Feed::item('project', $projectData->name, $projectData->id)
                                         . ' a través de la campaña '
                                         . Feed::item('call', $callData->name, $callData->id)
-                            ), $caller->avatar->id);
+                            ), $callData->user->avatar->id);
                 $log->doPublic('community');
                 unset($log);
             }

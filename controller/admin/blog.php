@@ -130,6 +130,7 @@ namespace Goteo\Controller\Admin {
                         if ((bool) $post->publish) {
                             // Evento Feed
                             $log = new Feed();
+                            $log->setTarget('goteo', 'blog');
                             $log->populate('nueva entrada blog Goteo (admin)', '/admin/blog',
                                 \vsprintf('El admin %s ha %s en el blog Goteo la entrada "%s"', array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -276,6 +277,7 @@ namespace Goteo\Controller\Admin {
                     if (Model\Blog\Post::delete($id)) {
                         // Evento Feed
                         $log = new Feed();
+                        $log->setTarget('goteo', 'blog');
                         $log->populate('Quita entrada de blog (admin)', '/admin/blog',
                             \vsprintf('El admin %s ha %s la entrada "%s" del blog de Goteo', array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),

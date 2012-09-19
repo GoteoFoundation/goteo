@@ -350,6 +350,7 @@ namespace Goteo\Controller {
                 if (!empty($log_action)) {
                     // Evento Feed
                     $log = new Feed();
+                    $log->setTarget($user->id, 'user');
                     $log->populate('usuario '.$log_action.' (dashboard)', '/admin/users',
                         \vsprintf('%s ha %s desde su dashboard', array(
                             Feed::item('user', $user->name, $user->id),
@@ -670,6 +671,7 @@ namespace Goteo\Controller {
 
                                 // Evento Feed
                                 $log = new Feed();
+                                $log->setTarget($project->id);
                                 $log->populate('usuario cambia las cuentas de su proyecto (dashboard)', '/admin/projects',
                                     \vsprintf('%s ha modificado la cuenta bancaria/paypal del proyecto %s', array(
                                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -720,6 +722,7 @@ namespace Goteo\Controller {
 
                                             // Evento Feed
                                             $log = new Feed();
+                                            $log->setTarget($project->id);
                                             $log->populate('usuario pone una nueva colaboracion en su proyecto (dashboard)', '/admin/projects',
                                                 \vsprintf('%s ha publicado una nueva %s en el proyecto %s, con el título "%s"', array(
                                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -737,7 +740,6 @@ namespace Goteo\Controller {
                                                                 Feed::item('update', $support->support, $project->id.'/messages#message'.$msg->id)
                                                                 ), 
                                                     $_SESSION['user']->avatar->id);
-                                                $log->setTarget($project->id);
                                                 $log->doPublic('community');
                                             }
                                             unset($log);
@@ -849,6 +851,7 @@ namespace Goteo\Controller {
                             if ((bool) $post->publish) {
                                 // Evento Feed
                                 $log = new Feed();
+                                $log->setTarget($project->id);
                                 $log->populate('usuario publica una novedad en su proyecto (dashboard)', '/admin/projects', 
                                     \vsprintf('%s ha publicado un nuevo post en %s sobre el proyecto %s, con el título "%s"', array(
                                         Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -867,7 +870,6 @@ namespace Goteo\Controller {
                                                 Feed::item('project', $project->name, $project->id)
                                                 ), 
                                     $post->gallery[0]->id);
-                                $log->setTarget($project->id);
                                 $log->doPublic('projects');
 
                                 // si no ha encontrado otro, lanzamos el update

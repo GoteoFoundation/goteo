@@ -61,6 +61,7 @@ namespace Goteo\Controller\Admin {
                         if (empty($errors)) {
                             // Evento Feed
                             $log = new Feed();
+                            $log->setTarget($userData->id, 'user');
                             $log->populate($what . ' traduccion de nodo (admin)', '/admin/transnodes',
                                 \vsprintf('El admin %s ha %s a %s la traducción del nodo %s', array(
                                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -68,7 +69,6 @@ namespace Goteo\Controller\Admin {
                                     Feed::item('user', $userData->name, $userData->id),
                                     Feed::item('node', $node->name, $node->id)
                             )));
-                            $log->setTarget($userData->id, 'user');
                             $log->doAdmin('admin');
                             unset($log);
                         } else {

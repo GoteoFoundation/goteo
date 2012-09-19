@@ -46,6 +46,7 @@ namespace Goteo\Controller\Admin {
 
                                     // Evento Feed
                                     $log = new Feed();
+                                    $log->setTarget($project->id);
                                     $log->populate('valoración iniciada (admin)', '/admin/reviews',
                                         \vsprintf('El admin %s ha %s la valoración de %s', array(
                                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -89,6 +90,7 @@ namespace Goteo\Controller\Admin {
 
                         // Evento Feed
                         $log = new Feed();
+                        $log->setTarget($review->project);
                         $log->populate('valoración finalizada (admin)', '/admin/reviews',
                             \vsprintf('El admin %s ha dado por %s la valoración de %s', array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -139,6 +141,7 @@ namespace Goteo\Controller\Admin {
 
                             // Evento Feed
                             $log = new Feed();
+                            $log->setTarget($userData->id, 'user');
                             $log->populate('asignar revision (admin)', '/admin/reviews',
                                 \vsprintf('El admin %s ha %s a %s la revisión de %s', array(
                                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -175,6 +178,7 @@ namespace Goteo\Controller\Admin {
 
                             // Evento Feed
                             $log = new Feed();
+                            $log->setTarget($userData->id, 'user');
                             $log->populate('Desasignar revision (admin)', '/admin/reviews',
                                 \vsprintf('El admin %s ha %s a %s la revisión de %s', array(
                                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -182,7 +186,6 @@ namespace Goteo\Controller\Admin {
                                     Feed::item('user', $userData->name, $userData->id),
                                     Feed::item('project', $reviewData->name, $reviewData->project)
                             )));
-                            $log->setTarget($userData->id, 'user');
                             $log->doAdmin('admin');
                             unset($log);
 

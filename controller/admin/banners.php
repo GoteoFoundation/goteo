@@ -46,6 +46,7 @@ namespace Goteo\Controller\Admin {
 
                         // Evento Feed
                         $log = new Feed();
+                        $log->setTarget($projectData->id);
                         $log->populate('nuevo banner de proyecto destacado en portada (admin)', '/admin/promote',
                             \vsprintf('El admin %s ha %s', array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),

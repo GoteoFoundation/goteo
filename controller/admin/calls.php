@@ -91,6 +91,7 @@ namespace Goteo\Controller\Admin {
 
                                 // Evento feed
                                 $log = new Feed();
+                                $log->setTarget($projectData->id);
                                 $log->populate('proyecto asignado a convocatoria desde admin', 'admin/calls/'.$call->id.'/projects',
                                     \vsprintf('El admin %s ha asignado el proyecto %s a la convocatoria %s', array(
                                         Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -133,6 +134,7 @@ namespace Goteo\Controller\Admin {
             if (isset($log_text)) {
                 // Evento Feed
                 $log = new Feed();
+                $log->setTarget($call->id, 'call');
                 $log_html = \vsprintf($log_text, array(
                         Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                         Feed::item('call', $call->name, $call->id))

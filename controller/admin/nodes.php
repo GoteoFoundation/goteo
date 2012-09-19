@@ -37,11 +37,12 @@ namespace Goteo\Controller\Admin {
 
                     // Evento feed
                     $log = new Feed();
+                    $log->setTarget($node->id, 'node');
                     $log->populate('Nodo gestionado desde admin', 'admin/nodes',
                         \vsprintf('El admin %s ha %s el Nodo %s', array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                             Feed::item('relevant', $txt_log),
-                            Feed::item('project', $_POST['name']))
+                            Feed::item('project', $node->name))
                         ));
                     $log->doAdmin('admin');
                     unset($log);

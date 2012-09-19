@@ -171,6 +171,34 @@ namespace Goteo\Library {
                     $sqlType = " AND feed.type = :type";
                     $values[':type'] = $type;
                 }
+                
+                $sqlNode = '';
+                if ($node != \GOTEO_NODE) {
+                    /* segun el objetivo del feed sea:
+                     * proyectos del nodo
+                     * usuarios del nodo
+                     * convocatorias destacadas por el nodo (aunque inactivas)
+                     * el propio nodo
+                     * el blog
+                     */
+                    $sqlNode = " AND (
+                        (feed.target_type = 'project' AND feed.target_id IN (
+                            SELECT id FROM project WHERE node = :node
+                            )
+                        )
+                        OR (feed.target_type = 'user' AND feed.target_id IN (
+                            SELECT id FROM user WHERE node = :node
+                            )
+                        )
+                        OR (feed.target_type = 'call' AND feed.target_id IN (
+                            SELECT `call` FROM campaign WHERE node = :node
+                            )
+                        )
+                        OR (feed.target_type = 'node' AND feed.target_id = :node)
+                        OR (feed.target_type = 'blog')
+                    )";
+                    $values[':node'] = $node;
+                }
 
                 $sql = "SELECT
                             feed.id as id,
@@ -181,7 +209,9 @@ namespace Goteo\Library {
                             feed.datetime as timer,
                             feed.html as html
                         FROM feed
-                        WHERE feed.scope = :scope $sqlType
+                        WHERE feed.scope = :scope 
+                        $sqlType
+                        $sqlNode
                         ORDER BY datetime DESC
                         LIMIT $limit
                         ";

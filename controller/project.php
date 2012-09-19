@@ -206,12 +206,12 @@ namespace Goteo\Controller {
 
                         // Evento Feed
                         $log = new Feed();
+                        $log->setTarget($project->id);
                         $log->populate('El proyecto '.$project->name.' se ha enviado a revision', '/project/'.$project->id, \vsprintf('%s ha inscrito el proyecto %s para <span class="red">revisión</span>, el estado global de la información es del %s', array(
                             Feed::item('user', $project->user->name, $project->user->id),
                             Feed::item('project', $project->name, $project->id),
                             Feed::item('relevant', $project->progress.'%')
                         )));
-                        $log->setTarget($project->id);
                         $log->doAdmin('project');
                         unset($log);
 
@@ -410,6 +410,7 @@ namespace Goteo\Controller {
 
                 // Evento Feed
                 $log = new Feed();
+                $log->setTarget($_SESSION['user']->id, 'user');
                 $log->populate('usuario crea nuevo proyecto', 'admin/projects',
                     \vsprintf('%s ha creado un nuevo proyecto, %s', array(
                         Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -431,6 +432,7 @@ namespace Goteo\Controller {
 
                         // Evento feed
                         $log = new Feed();
+                        $log->setTarget($call, 'call');
                         $log->populate('nuevo proyecto asignado a convocatoria ' . $call, 'admin/calls/'.$call.'/projects',
                             \vsprintf('Nuevo proyecto %s asignado automaticamente a la convocatoria %s', array(
                                 Feed::item('project', $project->name, $project->id),

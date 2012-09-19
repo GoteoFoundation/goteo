@@ -65,6 +65,7 @@ namespace Goteo\Controller {
                     // Evento Feed solamente si automático
                     if (\defined('CRON_EXEC')) {
                         $log = new Feed();
+                        $log->setTarget($project->id);
                         $log->populate('proyecto sin cuenta paypal (cron)', '/admin/projects',
                             \vsprintf('El proyecto %s aun no ha puesto su %s !!!', array(
                                 Feed::item('project', $project->name, $project->id),
@@ -129,6 +130,7 @@ namespace Goteo\Controller {
                     // Evento Feed solo si ejecucion automática
                     if (\defined('CRON_EXEC')) {
                         $log = new Feed();
+                        $log->setTarget($project->id);
                         $log->populate('proyecto próximo a finalizar ronda (cron)', '/admin/projects',
                             Text::html('feed-project_runout',
                                 Feed::item('project', $project->name, $project->id),
@@ -140,7 +142,6 @@ namespace Goteo\Controller {
                         // evento público
                         $log->title = $project->name;
                         $log->url = null;
-                        $log->setTarget($project->id);
                         $log->doPublic('projects');
 
                         unset($log);
@@ -172,6 +173,7 @@ namespace Goteo\Controller {
                         // Evento Feed solo si ejecucion automatica
                         if (\defined('CRON_EXEC')) {
                             $log = new Feed();
+                            $log->setTarget($project->id);
                             $log->populate('proyecto archivado (cron)', '/admin/projects',
                                 \vsprintf($log_text, array(
                                     Feed::item('project', $project->name, $project->id),
@@ -187,7 +189,6 @@ namespace Goteo\Controller {
                                     $project->amount,
                                     \round($per_amount)
                             ));
-                            $log->setTarget($project->id);
                             $log->doPublic('projects');
 
                             unset($log);
@@ -223,6 +224,7 @@ namespace Goteo\Controller {
                             // Evento Feed y mails solo si ejecucion automatica
                             if (\defined('CRON_EXEC')) {
                                 $log = new Feed();
+                                $log->setTarget($project->id);
                                 $log->populate('proyecto supera segunda ronda (cron)', '/admin/projects',
                                     \vsprintf($log_text, array(
                                         Feed::item('project', $project->name, $project->id),
@@ -283,6 +285,7 @@ namespace Goteo\Controller {
                             // Evento Feed solo si ejecucion automatica
                             if (\defined('CRON_EXEC')) {
                                 $log = new Feed();
+                                $log->setTarget($project->id);
                                 $log->populate('proyecto supera primera ronda (cron)', '/admin/projects', \vsprintf('El proyecto %s %s en segunda ronda obteniendo %s', array(
                                     Feed::item('project', $project->name, $project->id),
                                     Feed::item('relevant', 'continua en campaña'),
@@ -386,6 +389,7 @@ namespace Goteo\Controller {
 
                             // Evento Feed admin
                             $log = new Feed();
+                            $log->setTarget($project->id);
                             $log->populate('Preapproval cancelado por proyecto archivado (cron)', '/admin/invests', \vsprintf($log_text, array(
                                 Feed::item('user', $userData->name, $userData->id),
                                 Feed::item('money', $invest->amount.' &euro;'),
@@ -490,6 +494,7 @@ namespace Goteo\Controller {
                             if (!empty($log_text)) {
                                 // Evento Feed
                                 $log = new Feed();
+                                $log->setTarget($project->id);
                                 $log->populate('Cargo ejecutado (cron)', '/admin/invests', \vsprintf($log_text, array(
                                     Feed::item('user', $userData->name, $userData->id),
                                     Feed::item('money', $invest->amount.' &euro;'),
@@ -694,6 +699,7 @@ namespace Goteo\Controller {
 
                 // Evento Feed
                 $log = new Feed();
+                $log->setTarget($projectData->id);
                 $log->populate('Pago al proyecto encadenado-secundario (cron)', '/admin/accounts',
                     \vsprintf($log_text, array(
                     Feed::item('money', $invest->amount.' &euro;'),
@@ -918,7 +924,7 @@ namespace Goteo\Controller {
             if (!\defined('CRON_EXEC')) {
                 @mail('goteo_cron@doukeshi.org', 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
                     'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
-//                die('Este proceso no necesitamos lanzarlo manualmente');
+                die('Este proceso no necesitamos lanzarlo manualmente');
             }
             
             // proyectos en campaña o financiados
@@ -1150,6 +1156,7 @@ namespace Goteo\Controller {
                 // feed
                 if ($doFeed) {
                     $log = new Feed();
+                    $log->setTarget($call->id, 'call');
                     $log->unique = true;
                     $log->populate('Convocatoria terminando (cron)', '/admin/calls/'.$call->id.'?days='.$days,
                         \vsprintf($log_text, array(
@@ -1196,6 +1203,7 @@ namespace Goteo\Controller {
                 // feed
                 if ($doFeed) {
                     $log = new Feed();
+                    $log->setTarget($campaign->id, 'call');
                     $log->unique = true;
                     $log->populate('Campaña terminando (cron)', '/admin/calls/'.$campaign->id.'?rest='.$amount,
                         \vsprintf('Quedan menos de %s en la campaña %s', array(

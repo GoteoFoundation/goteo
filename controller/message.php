@@ -39,6 +39,7 @@ namespace Goteo\Controller {
                     
                     // Evento Feed
                     $log = new Feed();
+                    $log->setTarget($projectData->id);
                     if (empty($_POST['thread'])) {
                         // nuevo hilo
                         $log_html = \vsprintf('%s ha creado un tema en %s del proyecto %s', array(
@@ -87,7 +88,6 @@ namespace Goteo\Controller {
                         }
                     }
                     $log->populate($_SESSION['user']->name, '/user/profile/'.$_SESSION['user']->id, $log_html, $_SESSION['user']->avatar->id);
-                    $log->setTarget($projectData->id);
                     $log->doPublic('community');
                     unset($log);
 
@@ -344,6 +344,7 @@ namespace Goteo\Controller {
                     $log = new Feed();
                     if (!empty($project)) {
                         $projectData = Model\Project::getMini($project);
+                        $log->setTarget($projectData->id);
                         $log_html = \vsprintf('%s ha escrito un %s en la entrada "%s" en las %s del proyecto %s', array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                             Feed::item('message', 'Comentario'),
@@ -352,6 +353,7 @@ namespace Goteo\Controller {
                             Feed::item('project', $projectData->name, $projectData->id)
                         ));
                     } else {
+                        $log->setTarget('goteo', 'blog');
                         $log_html = \vsprintf('%s ha escrito un %s en la entrada "%s" del blog de %s', array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                             Feed::item('message', 'Comentario'),
@@ -370,7 +372,6 @@ namespace Goteo\Controller {
                                             Feed::item('update-comment', 'Novedades', $projectData->id.'/updates/'),
                                             Feed::item('project', $projectData->name, $projectData->id)
                                             );
-                        $log->setTarget($projectData->id);
                     } else {
                         $log_html = Text::html('feed-blog-comment',
                                             Feed::item('blog', $postData->title, $postData->id.'#comment'.$comment->id),

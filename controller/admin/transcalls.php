@@ -65,6 +65,7 @@ namespace Goteo\Controller\Admin {
                         if (empty($errors)) {
                             // Evento Feed
                             $log = new Feed();
+                            $log->setTarget($userData->id, 'user');
                             $log->populate($what . ' traduccion de convocatoria (admin)', '/admin/transcalls',
                                 \vsprintf('El admin %s ha %s a %s la traducción de la convocatoria %s', array(
                                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -72,7 +73,6 @@ namespace Goteo\Controller\Admin {
                                     Feed::item('user', $userData->name, $userData->id),
                                     Feed::item('call', $call->name, $call->id)
                             )));
-                            $log->setTarget($userData->id, 'user');
                             $log->doAdmin('admin');
                             unset($log);
                             
@@ -104,6 +104,7 @@ namespace Goteo\Controller\Admin {
 
                                 // Evento Feed
                                 $log = new Feed();
+                                $log->setTarget($call->id, 'call');
                                 $log->populate('convocatoria habilitada para traducirse (admin)', '/admin/transcalls',
                                     \vsprintf('El admin %s ha %s la traducción de la convocatoria %s', array(
                                         Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -179,6 +180,7 @@ namespace Goteo\Controller\Admin {
 
                         // Evento Feed
                         $log = new Feed();
+                        $log->setTarget($call->id, 'call');
                         $log->populate('traducción convocatoria finalizada (admin)', '/admin/transcalls',
                             \vsprintf('El admin %s ha dado por %s la traducción de la convocatoria %s', array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
