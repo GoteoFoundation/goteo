@@ -211,7 +211,7 @@ body.node.home div.node-projects ul li .categories {
 	text-align: left;
     color: #ffffff;
     background-color: #19b5b3;
-    font-size: 0.8em;
+    font-size: 8px;
     text-transform: uppercase;
     padding: 2px 8px;
     opacity: 0.8;
@@ -333,36 +333,37 @@ body.node.home div.node-projects ul li div.image div.tagmark {
     z-index: 899;
     text-align: left;
     color: #ffffff;
-    font-size: 1.0em;
+    font-size: 10px;
     font-weight: normal;
     text-transform: uppercase;
-    width: 226px;
-    height: 31px;
+    width: 160px;
+    height: 27px;
 	font-style: normal;
-	letter-spacing: 1px;
+	letter-spacing: 0;
 	margin-top: 8px;
-	line-height: 32px;
-	padding: 1px 0px 0px 30px;
+	line-height: 27px;
+	padding: 0;
+    padding-left: 25px;
 }
 
 body.node.home div.node-projects ul li div.image div.tagmark.green {
-    background:url('/view/css/project/tagmark_green.png') 0 0 no-repeat;
+    background:url('/view/css/node/tagmark_green.png') 0 0 no-repeat;
 }
 
 body.node.home div.node-projects ul li div.image div.tagmark.red {
-    background:url('/view/css/project/tagmark_red.png') 0 0 no-repeat;
+    background:url('/view/css/node/tagmark_red.png') 0 0 no-repeat;
 }
 
 body.node.home div.node-projects ul li div.image div.tagmark.violet {
-    background:url('/view/css/project/tagmark_violet.png') 0 0 no-repeat;
+    background:url('/view/css/node/tagmark_violet.png') 0 0 no-repeat;
 }
 
 body.node.home div.node-projects ul li div.image div.tagmark.grey {
-    background:url('/view/css/project/tagmark_grey.png') 0 0 no-repeat;
+    background:url('/view/css/node/tagmark_grey.png') 0 0 no-repeat;
 }
 
 body.node.home div.node-projects ul li div.image div.tagmark span.small {
-    font-size: 0.8em !important;
+    font-size: 8px !important;
 	line-height: normal;
 }
 

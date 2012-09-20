@@ -104,6 +104,7 @@ namespace Goteo\Model {
                     DATE_FORMAT(post.date, '%d-%m-%Y') as date,
                     DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                     post.publish as publish,
+                    post.author as author,
                     post.home as home,
                     post.footer as footer,
                     blog.type as owner_type,

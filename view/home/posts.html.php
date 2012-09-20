@@ -31,7 +31,9 @@ $posts = $this['posts'];
                 <?php endif; ?>
                 <h3><?php if ($post->owner_type == 'project') { echo '<a href="/project/'.$post->owner_id.'/updates/'.$post->id.'">'.Text::get('project-menu-home').' '.$post->owner_name.'</a>: ' . $post->title; } 
                 else { echo '<a href="/blog/'.$post->id.'">'.$post->title.'</a>'; } ?></h3>
-                <?php if (!empty($post->author)) : ?><div class="author"><a href="/user/profile/<?php echo $post->author ?>"><?php echo Text::get('regular-by') ?> <?php echo $post->user->name ?></a></div><?php endif; ?>
+                <?php if (!empty($post->author)) : ?>
+                    <div class="author"><a href="/user/profile/<?php echo $post->author ?>"><?php echo Text::get('regular-by') ?> <?php echo $post->user->name ?></a></div>
+                <?php endif; ?>
                 <div class="description"><?php if ($post->id == 728) echo Text::recorta($post->text, 400); else echo Text::recorta($post->text, 600); ?></div>
 
                 <div class="read_more"><a href="<?php echo ($post->owner_type == 'project') ? '/project/'.$post->owner_id.'/updates/'.$post->id : '/blog/'.$post->id; ?>"><?php echo Text::get('regular-read_more') ?></a></div>

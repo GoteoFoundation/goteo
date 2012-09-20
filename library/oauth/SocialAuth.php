@@ -63,7 +63,7 @@ class SocialAuth {
 	 * */
 	function __construct($provider='') {
         $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
-		$this->host = SITE_URL;
+		$this->host = $URL;
 		$this->callback_url = $URL . '/user/oauth?return=' . $provider;
 
 		$this->twitter_id = OAUTH_TWITTER_ID;
