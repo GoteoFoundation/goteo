@@ -84,22 +84,16 @@ namespace Goteo\Library {
 
             // si lo estan cambiando, ponemos el que llega
             if (isset($_GET['lang'])) {
-/*                // si está activo, sino default
- *
- *  Aunque no esté activo!!
- *
-                if (Lang::is_active($_GET['lang'])) {
- *
- */
-                    $_SESSION['lang'] = $_GET['lang'];
-   /*             } else {
-                    $_SESSION['lang'] = \GOTEO_DEFAULT_LANG;
-                }
-    * 
-    */
+    			setcookie("goteo_lang", $_GET['lang'], time() + 3600*24*365);
+                $_SESSION['lang'] = $_GET['lang'];
             } elseif (empty($_SESSION['lang'])) {
-                // si no hay uno de session ponemos el default
-                $_SESSION['lang'] = defined('NODE_DEFAULT_LANG') ? \NODE_DEFAULT_LANG : \GOTEO_DEFAULT_LANG;
+                //primero miramos si tiene cookie
+                if (isset($_COOKIE['goteo_lang'])) {
+                    $_SESSION['lang'] = $_COOKIE['goteo_lang'];
+                } else {
+                    // si no hay uno de session ponemos el default
+                    $_SESSION['lang'] = defined('NODE_DEFAULT_LANG') ? \NODE_DEFAULT_LANG : \GOTEO_DEFAULT_LANG;
+                }
             }
             // establecemos la constante
             define('LANG', $_SESSION['lang']);

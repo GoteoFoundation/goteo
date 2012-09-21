@@ -26,8 +26,9 @@
         <meta property="og:url" content="<?php echo $ogmeta['url'] ?>" />
 <?php else : ?>
         <meta property="og:title" content="<?php echo NODE_NAME ?>" />
-        <meta property="og:description" content="<?php echo NODE_META_DESCRIPTION ?>" />
+        <meta property="og:description" content="<?php echo utf8_decode(NODE_META_DESCRIPTION) ?>" />
         <meta property="og:image" content="<?php echo NODE_URL ?>/nodesys/<?php echo NODE_ID; ?>/view/css/logo.png" />
+        <meta property="og:url" content="<?php echo NODE_URL ?>" />
 <?php endif; ?>
         <link rel="stylesheet" type="text/css" href="<?php echo NODE_URL ?>/nodesys/<?php echo NODE_ID ?>/view/css/goteo.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo NODE_URL ?>/nodesys/<?php echo NODE_ID ?>/view/css/config.css" />
