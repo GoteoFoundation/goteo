@@ -63,6 +63,7 @@
 		  <script type="text/javascript" src="/view/js/nodejump.js"></script>
 
         <?php endif ?>
+        <?php if (defined('NODE_ANALYTICS_TRACKER')) echo NODE_ANALYTICS_TRACKER; ?>
     </head>
 
     <body class="node <?php if (isset($bodyClass)) echo ' ' . htmlspecialchars($bodyClass) ?>">
