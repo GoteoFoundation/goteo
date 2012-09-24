@@ -699,6 +699,7 @@ namespace Goteo\Model {
                     invest.user as user,
                     user.name as name,
                     user.avatar as avatar,
+                    user.worth as worth,
                     invest.amount as amount,
                     DATE_FORMAT(invest.invested, '%d/%m/%Y') as date,
                     ";
@@ -743,7 +744,7 @@ namespace Goteo\Model {
                         'name' => Text::get('regular-anonymous'),
                         'projects' => null,
                         'avatar' => Image::get(1),
-                        'worth' => null,
+                        'worth' => $investor->worth,
                         'amount' => $investor->amount,
                         'date' => $investor->date,
                         'droped' => $investor->droped,

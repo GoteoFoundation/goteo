@@ -70,6 +70,9 @@ namespace Goteo\Model {
 	        if($name == "worth") {
 	            return $this->getWorth();
 	        }
+	        if($name == "projects") {
+	            return $this->getProjects();
+	        }
             return $this->$name;
         }
 
@@ -1198,6 +1201,17 @@ namespace Goteo\Model {
             return $worth;
         }
 
+	    /**
+    	 * Número de proyectos publicados
+    	 *
+    	 * @return type int	Count(id)
+    	 */
+    	private function getProjects () {
+            $query = self::query('SELECT COUNT(id) FROM project WHERE owner = ? AND status > 2', array($this->id));
+            $num_proj = $query->fetchColumn(0);
+            return $num_proj;
+        }
+
         /**
          * Valores por defecto actuales para datos personales
          *
@@ -1386,6 +1400,13 @@ namespace Goteo\Model {
             $sql .= "GROUP BY project.id
                     ORDER BY name ASC
                     ";
+/*
+            if ($_SESSION['user']->id == 'root') {
+                echo $sql . '<br />';
+                echo \trace($user);
+            }
+ * 
+ */
 
             /*
              * Restriccion de que no aparecen los que cofinancio que esten en edicion

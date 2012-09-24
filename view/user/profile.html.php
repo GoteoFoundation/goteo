@@ -5,6 +5,11 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Model\User\Interest;
 
+$dbg = false;
+//if ($_SESSION['user']->id == 'root') $dbg = true;
+
+if ($dbg) $ti = microtime(true);
+
 $bodyClass = 'user-profile';
 include 'view/prologue.html.php';
 include 'view/header.html.php';
@@ -113,6 +118,14 @@ $worthcracy = Worth::getAll();
 
 </div>
 
-<?php include 'view/footer.html.php' ?>
+<?php 
+include 'view/footer.html.php';
+include 'view/epilogue.html.php';
 
-<?php include 'view/epilogue.html.php' ?>
+if ($dbg) {
+    $tf = microtime(true);
+    $tp = $tf - $ti;
+    echo 'Tiempo de pintado = '.$tp.' segundos<br />';
+}
+
+?>

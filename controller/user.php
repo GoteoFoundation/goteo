@@ -401,9 +401,21 @@ namespace Goteo\Controller {
             if (!in_array($show, array('profile', 'investors', 'sharemates', 'message'))) {
                 $show = 'profile';
             }
-
+            
+            $dbg = false;
+//            if ($_SESSION['user']->id == 'root') $dbg = true;
+            
+            if ($dbg) $ti = microtime(true);
+            
             $user = Model\User::get($id, LANG);
 
+            if ($dbg) {
+                $tf = microtime(true);
+                $tp = $tf - $ti;
+                $tt = $tp;
+                echo 'Tiempo de User::get = '.$tp.' segundos<br />';
+            }
+            
             if (!$user instanceof Model\User || $user->hide) {
                 throw new Redirection('/', Redirection::PERMANENT);
             }
@@ -497,6 +509,9 @@ namespace Goteo\Controller {
             $viewData = array();
             $viewData['user'] = $user;
 
+            /* para sacar cofinanciadores */
+            if ($dbg) $ti = microtime(true);
+            
             $projects = Model\Project::ofmine($id, true);
             $viewData['projects'] = $projects;
 
@@ -538,18 +553,47 @@ namespace Goteo\Controller {
 
             $viewData['investors'] = $investors;
 
+            if ($dbg) {
+                $tf = microtime(true);
+                $tp = $tf - $ti;
+                $tt += $tp;
+                echo 'Tiempo de sacar mis cofinanciadores = '.$tp.' segundos<br />';
+            }
+            
+            /* para sacar sharemates */
+            if ($dbg) $ti = microtime(true);
+            
             // comparten intereses
             $viewData['shares'] = Model\User\Interest::share($id, $category);
             if ($show == 'sharemates' && empty($viewData['shares'])) {
                 $show = 'profile';
             }
+            
+            if ($dbg) {
+                $tf = microtime(true);
+                $tp = $tf - $ti;
+                $tt += $tp;
+                echo 'Tiempo de sacar mis sharemates = '.$tp.' segundos. '.$tf.' - '.$ti.'<br />';
+            }
+            
 
             if (!empty($category)) {
                 $viewData['category'] = $category;
             }
 
+            /* para sacar proyectos que cofinancio */
+            if ($dbg) $ti = microtime(true);
+            
             // proyectos que cofinancio
             $invested = Model\User::invested($id, true);
+            
+            if ($dbg) {
+                $tf = microtime(true);
+                $tp = $tf - $ti;
+                $tt += $tp;
+                echo 'Tiempo de sacar proyectos que cofinancio = '.$tp.' segundos<br />';
+            }
+            
 
             // agrupacion de proyectos que cofinancia y proyectos suyos
             $viewData['lists'] = array();
@@ -560,6 +604,9 @@ namespace Goteo\Controller {
                 $viewData['lists']['my_projects'] = Listing::get($projects, 2);
             }
 
+            if ($dbg) die('Tiempo total antes de saltar a la vista '.$tt.' segundos');
+            
+            
             return new View ('view/user/'.$show.'.html.php', $viewData);
         }
 

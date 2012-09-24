@@ -144,7 +144,10 @@ namespace Goteo\Model\User {
 
                 $values = array(':me'=>$user);
 
-               $sql = "SELECT DISTINCT(user_interest.user) as id
+               $sql = "SELECT 
+                            DISTINCT(user_interest.user) as id, 
+                            user.name as name,
+                            user.avatar as avatar
                         FROM user_interest
                         INNER JOIN user_interest as mine
                             ON user_interest.interest = mine.interest
@@ -163,27 +166,30 @@ namespace Goteo\Model\User {
                if (!empty($limit)) {
                    $sql .= " LIMIT $limit";
                }
+               
+               /*
+               if ($_SESSION['user']->id == 'root') {
+                   echo $sql . '<br />';
+                   echo \trace($values);
+               }
+                */
 
                 $query = static::query($sql, $values);
                 $shares = $query->fetchAll(\PDO::FETCH_ASSOC);
                 foreach ($shares as $share) {
 
-                    // nombre i avatar
-                    $user = \Goteo\Model\User::get($share['id']);
-                    if (empty($user->avatar)) $user->avatar = Image::get(1);
-                    // meritocracia
-                    $support = (object) $user->support;
-                    // proyectos publicados
-                    $query = self::query('SELECT COUNT(id) FROM project WHERE owner = ? AND status > 2', array($share['id']));
-                    $projects = $query->fetchColumn(0);
-
-                    $array[] = (object) array(
-                        'user' => $share['id'],
-                        'avatar' => $user->avatar,
-                        'name' => $user->name,
-                        'projects' => $projects,
-                        'invests' => $support->invests
-                    );
+                    // nombre i avatar vienen en la sentencia, hay que sacar la imagen
+                    $share['user'] = $share['id'];
+                    $queryI = static::query("SELECT COUNT(DISTINCT(project)) FROM invest WHERE user = ? AND status IN ('0', '1', '3')", array($share['id']));
+                    $share['invests'] = $queryI->fetchColumn(0);
+                    $queryP = static::query('SELECT COUNT(id) FROM project WHERE owner = ? AND status > 2', array($share['id']));
+                    $share['projects'] = $queryP->fetchColumn(0);
+                    $share['avatar'] = (empty($share['avatar'])) ? Image::get(1) : Image::get($share['avatar']);
+                    if (!$share['avatar'] instanceof Image) {
+                        $share['avatar'] = Image::get(1);
+                    }
+                    
+                    $array[] = (object) $share;
                 }
 
                 return $array;
