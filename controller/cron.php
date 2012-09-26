@@ -942,19 +942,19 @@ namespace Goteo\Controller {
                 // cuando quedan 20 días
                 if ($project->round == 1 && $project->days == 20) {
                     self::toOwner('20_days', $project);
-                    echo 'Proyecto: ' . $project->name . ' Aviso al autor: lleva 20 dias<br />';
+                    echo 'Enviado Aviso al autor  del proyecto ' . $project->name . ', lleva 20 dias de campaña<br />';
                 }
                 // cuando quedan 8 dias y no ha conseguido el minimo
                 if ($project->round == 1 && $project->days == 8
                     && $project->amount < $project->mincost) {
                     self::toOwner('8_days', $project);
-                    echo 'Proyecto: ' . $project->name . ' Aviso al autor: faltan 8 dias y no ha conseguido el minimo<br />';
+                    echo 'Enviado Aviso al autor del Proyecto: ' . $project->name . ', le faltan 8 dias y no ha conseguido el minimo<br />';
                 }
                 // cuando queda 1 día y no ha conseguido el minimo pero casi
                 if ($project->round == 1 && $project->days == 1
                     && $project->amount < $project->mincost && \round(($project->amount / $project->mincost) * 100) > 70) {
                     self::toOwner('1_day', $project);
-                    echo 'Proyecto: ' . $project->name . ' Aviso al autor: falta 1 dia y no supera el 70 el minimo<br />';
+                    echo 'Enviado Aviso al autor del proyecto ' . $project->name . ', falta 1 dia y no supera el 70 el minimo<br />';
                 }
                 /* Fin verificacion */
 
@@ -982,7 +982,6 @@ namespace Goteo\Controller {
                     $lastupdate = $query->fetchColumn(0);
                     // si hace más de 3 meses, o nunca a posteado
                     if ((int) $lastupdate > 90 || $lastupdate === false) {
-                        echo 'Proyecto: ' . $project->name . ' Publicado hace ' . $from . ' dias (mas de 3 meses). Ultima novedad hace ' . $lastupdate . ' dias o nunca<br />';
                         // mirar el ultimo mensaje al email del autor con la plantilla 23
                         $sql = "
                             SELECT
@@ -1000,9 +999,9 @@ namespace Goteo\Controller {
                         $lastsend = $query->fetchColumn(0);
                         // si hace más de un mes o nunca se le envió
                         if ($lastsend > 30 || $lastsend === false) {
-                            echo 'Se le envió aviso hace ' . $lastsend . ' dias o nunca<br />';
                             // enviar email no_updates
                             self::toOwner('no_updates', $project);
+                            echo 'Enviado Aviso (sin novedades: plantilla 23) al autor del proyecto ' . $project->name . ', la última novedad es de hace ' . $lastupdate . ' dias, el último aviso se le envió hace ' . $lastsend . ' dias<br />';
                         }
                     }
                 }
@@ -1025,10 +1024,10 @@ namespace Goteo\Controller {
                                     , '%j'
                                 )
                             ) as days
-                        FROM message, `comment`
-                        WHERE message.project = :project
-                        AND comment.user = :owner
-                        AND comment.post IN (
+                        FROM message
+						LEFT JOIN `comment` 
+							ON comment.user = :owner
+							AND comment.post IN (
                             SELECT post.id
                             FROM post
                             INNER JOIN blog
@@ -1036,7 +1035,9 @@ namespace Goteo\Controller {
                                 AND blog.type = 'project'
                                 AND blog.owner = :project
                             WHERE post.publish = 1
-                        )
+							) 
+                        WHERE message.project = :project
+							AND message.user = :owner
                         ORDER BY `days` ASC
                         LIMIT 1";
     //                echo str_replace(array(':project', ':owner'), array("'{$project->id}'", "'{$project->owner}'"), $sql) . '<br />';
@@ -1044,7 +1045,6 @@ namespace Goteo\Controller {
                     $lastactivity = $query->fetchColumn(0);
                     // si hace más de 3 meses, o nunca ha dicho nada
                     if ((int) $lastactivity > 90 || ($lastactivity === false && $from > 90)) {
-                        echo 'Proyecto: ' . $project->name . ' Publicado hace ' . $from . ' dias (mas de 3 meses). Ultima actividad hace ' . $lastactivity . ' dias o nunca<br />';
                         // mirar el ultimo mensaje al email del autor con la plantilla 24
                         $sql = "
                             SELECT
@@ -1062,9 +1062,9 @@ namespace Goteo\Controller {
                         $lastsend = $query->fetchColumn(0);
                         // si hace más de 15 días o nunca se le envió
                         if ($lastsend > 15 || $lastsend === false) {
-                            echo 'Se le envió hace ' . $lastsend . ' dias o nunca<br />';
                             // enviar email no_activity
                             self::toOwner('no_activity', $project);
+                            echo 'Enviado Aviso (sin mensajes ni comentarios: plantilla 24) al autor del proyecto ' . $project->name . ', la última actividad es de hace ' . $lastactivity . ' dias, el último aviso se le envió hace ' . $lastsend . ' dias<br />';
                         }
                     }
                 }
@@ -1088,15 +1088,14 @@ namespace Goteo\Controller {
                     if ($lastsuccess = $query->fetchColumn(0)) {
                         // si hace más de 2 meses
                         if ((int) $lastsuccess > 60) {
-                            echo 'Proyecto: ' . $project->name . ' Financiado hace ' . $lastsuccess . ' dias (mas de 2 meses).<br />';
 
                             // mirar si tiene todo cumplido (recompensas y retornos)
                             if (Model\Project\Reward::areFulfilled($project->id)
                                 && Model\Project\Reward::areFulfilled($project->id, 'social') ) {
-                                echo 'Tiene todo cumplido recompensas/retornos<br />';
+                                $msg = 'Tiene todo cumplido recompensas/retornos<br />';
                                 continue;
                             } else {
-                                echo 'Le quedan recompensas/retornos pendientes<br />';
+                                $msg = 'Le quedan recompensas/retornos pendientes<br />';
                             }
 
                             // mirar el ultimo mensaje al email del autor con la plantilla 25
@@ -1116,9 +1115,9 @@ namespace Goteo\Controller {
                             $lastsend = $query->fetchColumn(0);
                             // si hace más de 15 días o nunca se le envió
                             if ($lastsend > 15 || $lastsend === false) {
-                                echo 'Se le envió hace ' . (string) $lastsend . ' dias o nunca<br />';
                                 // enviar email 2m_after
                                 self::toOwner('2m_after', $project);
+                                echo 'Enviado Aviso (recompensas pendientes: plantilla 25) al autor del proyecto ' . $project->name . ', '.$msg.', financiado hace ' . $lastsuccess . ' dias, el último aviso se le envió hace ' . $lastsend . ' dias<br />';
                             }
                         }
                     }
