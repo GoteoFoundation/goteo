@@ -511,8 +511,7 @@ namespace Goteo\Library {
                             'label' => 'Proyectos enviados a revisión',
                             'sql'   => "SELECT COUNT(project.id)
                                         FROM project
-                                        WHERE (project.updated IS NOT NULL AND project.published != '0000-00-00')
-                                        AND project.status > 0
+                                        WHERE (project.updated IS NOT NULL AND project.updated != '0000-00-00')
                                         "
                         ),
                         array(

@@ -64,9 +64,11 @@ namespace Goteo\Controller\Admin {
             switch ($action) {
                 case 'up':
                     Model\Faq::up($id);
+                    throw new Redirection('/admin/faq');
                     break;
                 case 'down':
                     Model\Faq::down($id);
+                    throw new Redirection('/admin/faq');
                     break;
                 case 'add':
                     $next = Model\Faq::next($filters['section']);

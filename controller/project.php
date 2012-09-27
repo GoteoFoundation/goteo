@@ -50,6 +50,8 @@ namespace Goteo\Controller {
         public function edit ($id) {
             $project = Model\Project::get($id, null);
 
+            $project->gallery = Model\Image::getAll($id, 'project');
+            
             // si no es su proyecto
             // si es admin de nodo y no es de su nodo no puede estar editando
             if ($project->owner != $_SESSION['user']->id && isset($_SESSION['admin_node']) && $project->node != $_SESSION['admin_node']) {
