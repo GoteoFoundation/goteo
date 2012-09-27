@@ -91,6 +91,10 @@ uasort($messegers, function ($a, $b) {
                 });
             </script>
             <div id="bocadillo"></div>
+            <label for="contact-subject"><?php echo Text::get('contact-subject-field'); ?></label>
+            <input id="contact-subject" type="text" name="subject" value="" placeholder="" />
+            
+            <label for="message"><?php echo Text::get('contact-message-field'); ?></label>
             <textarea rows="5" cols="50" name="message" id="message"></textarea>
             <a class="preview" href="#preview" id="a-preview" target="_blank">&middot;<?php echo Text::get('regular-preview'); ?></a>
             <div style="display:none">

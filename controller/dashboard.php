@@ -617,8 +617,15 @@ namespace Goteo\Controller {
                                 $template = Template::get(2);
                                 
                                 // Sustituimos los datos
-                                $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+                                if (isset($_POST['subject']) && !empty($_POST['subject'])) {
+                                    $subject = $_POST['subject'];
+                                } else {
+                                    $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+                                }
 
+                                $remite = $project->name . ' ' . Text::get('regular-from') . ' ';
+                                $remite .= (NODE_ID != GOTEO_NODE) ? NODE_NAME : GOTEO_MAIL_NAME;
+                                
                                 $search  = array('%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%', '%OWNERURL%', '%OWNERNAME%');
                                 $replace = array($msg_content, $project->name, SITE_URL."/project/".$project->id,
                                     SITE_URL."/user/profile/".$project->owner, $project->user->name);
@@ -631,6 +638,7 @@ namespace Goteo\Controller {
 
                                     // iniciamos el objeto mail
                                     $mailHandler = new Mail();
+                                    $mailHandler->fromName = $remite;
                                     $mailHandler->to = $data->email;
                                     $mailHandler->toName = $data->name;
                                     // blind copy a goteo desactivado durante las verificaciones
@@ -1133,6 +1141,7 @@ namespace Goteo\Controller {
                                     $project->about_lang = $_POST['about'];
                                     $project->goal_lang = $_POST['goal'];
                                     $project->related_lang = $_POST['related'];
+                                    $project->reward_lang = $_POST['reward'];
                                     $project->keywords_lang = $_POST['keywords'];
                                     $project->media_lang = $_POST['media'];
                                     $project->subtitle_lang = $_POST['subtitle'];

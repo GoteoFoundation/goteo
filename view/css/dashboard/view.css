@@ -267,13 +267,15 @@ body.dashboard div#colective-messages input[type=checkbox]:disabled + label,body
 input[type=checkbox]:disabled:checked + label,input[type=checkbox]:hover:disabled:checked + label,input[type=checkbox]:focus:disabled:checked + label,input[type=checkbox]:disabled:checked + label:hover,body.dashboard div#colective-messages input[type=checkbox]:disabled:checked + label:hover:active{background-position:0 -141px}
 
 
-body.dashboard div#colective-messages  div#checks{height:auto;overflow:auto;margin: 0 0 25px 25px;}
-body.dashboard div#colective-messages  div#comment{width:657px;margin-left:20px;}
+body.dashboard div#colective-messages div#checks{height:auto;overflow:auto;margin: 0 0 25px 25px;}
+body.dashboard div#colective-messages div#comment{width:657px;margin-left:20px;}
 
-body.dashboard div#colective-messages  div#checks p{height: auto;line-height: 20px;margin-bottom: 3px;overflow: auto;font-size:8pt;}
+body.dashboard div#colective-messages div#checks p{height: auto;line-height: 20px;margin-bottom: 3px;overflow: auto;font-size:8pt;}
 
 /*comment box*/
 body.dashboard div#colective-messages div#bocadillo{background: url('/view/css/bocadillo.jpg') no-repeat scroll 0 0 transparent;height: 51px;position: absolute;width: 56px;}
-body.dashboard div#colective-messages textarea{background-color: #DCEEDF;border: 1px solid #2EAB58;clear: right;display: block;float: left;margin: -1px;margin-left:55px;height: 50px;padding: 0.3em 0;resize: none;width: 600px;}
-body.dashboard div#colective-messages a.preview{clear: left;color: #2EAB58;float: left;font-weight: bold;left: 52px;position: relative;text-decoration: none;text-transform: uppercase;top: 10px;}
-body.dashboard div#colective-messages button{font-weight: bold;padding: 5px 20px;float: right;margin-top:20px;}
+body.dashboard div#colective-messages div#comment label {margin-left:55px;background: none !important; padding: 0 !important;}
+body.dashboard div#colective-messages div#comment input[type=text] {margin-left:55px;margin-bottom: 10px;width: 600px;background-color: #DCEEDF;border: 1px solid #2EAB58;}
+body.dashboard div#colective-messages div#comment textarea{background-color: #DCEEDF;border: 1px solid #2EAB58;clear: right;display: block;float: left;margin: -1px;margin-left:55px;height: 50px;padding: 0.3em 0;resize: none;width: 600px;}
+body.dashboard div#colective-messages div#comment a.preview{clear: left;color: #2EAB58;float: left;font-weight: bold;left: 52px;position: relative;text-decoration: none;text-transform: uppercase;top: 10px;}
+body.dashboard div#colective-messages div#comment button{font-weight: bold;padding: 5px 20px;float: right;margin-top:20px;}

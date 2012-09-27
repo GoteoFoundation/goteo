@@ -46,7 +46,10 @@ $_SESSION['msg_token'] = uniqid(rand(), true);
         <form method="post" action="/message/personal/<?php echo $user->id; ?>">
             <input type="hidden" name="msg_token" value="<?php echo $_SESSION['msg_token'] ; ?>" />
             
-            <div id="bocadillo"></div>
+            <label for="contact-subject"><?php echo Text::get('contact-subject-field'); ?></label>
+            <input id="contact-subject" type="text" name="subject" value="" placeholder="" />
+            
+            <label for="message"><?php echo Text::get('contact-message-field'); ?></label>
             <textarea id="message" name="message" cols="50" rows="5"></textarea>
 
             <a target="_blank" id="a-preview" href="#preview" class="preview">&middot;<?php echo Text::get('regular-preview'); ?></a>

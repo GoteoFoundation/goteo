@@ -286,9 +286,16 @@ namespace Goteo\Controller {
                 $template = Template::get(4);
 
                 // Sustituimos los datos
-                // En el asunto: %USERNAME% por $_SESSION['user']->name
-                $subject = str_replace('%USERNAME%', $_SESSION['user']->name, $template->title);
+                if (isset($_POST['subject']) && !empty($_POST['subject'])) {
+                    $subject = $_POST['subject'];
+                } else {
+                    // En el asunto por defecto: %USERNAME% por $_SESSION['user']->name
+                    $subject = str_replace('%USERNAME%', $_SESSION['user']->name, $template->title);
+                }
 
+                $remite = $_SESSION['user']->name . ' ' . Text::get('regular-from') . ' ';
+                $remite .= (NODE_ID != GOTEO_NODE) ? NODE_NAME : GOTEO_MAIL_NAME;
+                
                 $response_url = SITE_URL . '/user/profile/' . $_SESSION['user']->id . '/message';
                 $profile_url = SITE_URL."/user/profile/{$user->id}/sharemates";
                 // En el contenido:  nombre del destinatario -> %TONAME% por $user->name
@@ -299,9 +306,8 @@ namespace Goteo\Controller {
                 $replace = array($msg_content, $user->name, $_SESSION['user']->name, $profile_url, $response_url);
                 $content = \str_replace($search, $replace, $template->text);
 
-
                 $mailHandler = new Mail();
-
+                $mailHandler->fromName = $remite;
                 $mailHandler->to = $user->email;
                 $mailHandler->toName = $user->name;
                 // blind copy a goteo desactivado durante las verificaciones

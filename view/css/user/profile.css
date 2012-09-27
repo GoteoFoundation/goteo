@@ -140,10 +140,11 @@ div.center > div.widget.user-mates > h3.title{padding: 9px 0 7px 5px;font-size: 
 
 
 
-div.center div.widget.user-message{position:relative;z-index:99;}
-div.center div.widget.user-message textarea{display:block;margin-left:50px;width:510px;}
-div.center div.widget.user-message #bocadillo{background:url('/view/css/bocadillo.jpg') no-repeat;position:absolute;
-width:56px;	height:51px;z-index:100;}
+div.center div.widget.user-message{padding-left:70px;background:url('/view/css/bocadillo.jpg') no-repeat 10px 50px white;}
+div.center div.widget.user-message h3 {margin-left: -70px !important;}
+div.center div.widget.user-message input {margin-bottom: 6px;}
+div.center div.widget.user-message input,
+div.center div.widget.user-message textarea{display:block;width:510px;}
 div.center div.widget.user-message #a-preview{color: #2EAB58;
-font-weight: bold;left: 52px;position: relative;text-decoration: none;text-transform: uppercase;top: 10px;}
+font-weight: bold;left: 0px;position: relative;text-decoration: none;text-transform: uppercase;top: 10px;}
 div.center div.widget.user-message button{float:right;margin-right:8px;}
