@@ -191,6 +191,20 @@ if (!empty($project->video->url)) {
                     'errors'    => array(),
                     'ok'        => array(),
                     'value'     => $project->related
+                ),
+                'reward-orig' => array(
+                    'type'      => 'html',
+                    'title'     => Text::get('overview-field-reward'),
+                    'html'     => nl2br($original->reward)
+                ),
+                'reward' => array(
+                    'type'      => 'textarea',
+                    'title'     => '',
+                    'class'     => 'inline',
+                    'hint'      => Text::get('tooltip-project-reward'),
+                    'errors'    => array(),
+                    'ok'        => array(),
+                    'value'     => $project->reward
                 )
             )
         ),

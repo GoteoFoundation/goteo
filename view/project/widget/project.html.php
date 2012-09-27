@@ -58,8 +58,8 @@ if (isset($this['investor']) && is_object($this['investor'])) {
             <div class="investor"><img src="<?php echo $investor->avatar->getLink(34, 34, 1) ?>" alt="<?php echo $investor->name ?>" /><div class="invest">Mi aporte<br /><span class="amount"><?php echo $invest->total ?></span></div></div>
         <?php endif; ?>
 
-        <?php if (!empty($project->gallery) && (current($project->gallery) instanceof Image)): ?>
-        <a href="<?php echo $url ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><img alt="<?php echo $project->name ?>" src="<?php echo current($project->gallery)->getLink(255, 130, true) ?>" /></a>
+        <?php if ($project->image instanceof Image): ?>
+        <a href="<?php echo $url ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><img alt="<?php echo $project->name ?>" src="<?php echo $project->image->getLink(255, 130, true) ?>" /></a>
         <?php endif ?>
         <?php if (!empty($project->categories)): ?>
         <div class="categories">

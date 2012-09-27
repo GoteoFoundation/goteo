@@ -732,6 +732,7 @@ namespace Goteo\Controller {
                 'about',
                 'goal',
                 'related',
+                'reward',
                 'keywords',
                 'media',
                 'media_usubs',

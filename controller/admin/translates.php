@@ -22,7 +22,7 @@ namespace Goteo\Controller\Admin {
             switch ($action) {
                 case 'add':
                     // proyectos que están más allá de edición y con traducción deshabilitada
-                    $availables = Model\User\Translate::getAvailables('project', $node);
+                    $availables = Model\User\Translate::getAvailables('project', $_SESSION['admin_node']);
                     if (empty($availables)) {
                         Message::Error('No hay más proyectos disponibles para traducir');
                         throw new Redirection('/admin/translates');

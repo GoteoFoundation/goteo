@@ -70,6 +70,7 @@ namespace Goteo\Model {
              $about,
              $goal,
              $related,
+             $reward, // nueva sección, solo editable por admines y traductores
             $categories = array(),
             $media, // video principal
              $media_usubs, // universal subtitles para el video principal
@@ -228,6 +229,7 @@ namespace Goteo\Model {
                             IFNULL(project_lang.about, project.about) as about,
                             IFNULL(project_lang.goal, project.goal) as goal,
                             IFNULL(project_lang.related, project.related) as related,
+                            IFNULL(project_lang.reward, project.reward) as reward,
                             IFNULL(project_lang.keywords, project.keywords) as keywords,
                             IFNULL(project_lang.media, project.media) as media,
                             IFNULL(project_lang.subtitle, project.subtitle) as subtitle
@@ -253,11 +255,15 @@ namespace Goteo\Model {
                 // owner
                 $project->user = User::get($project->owner, $lang);
 
-                // imagen
-                $project->image = Image::get($project->image);
-
                 // galeria
-                $project->gallery = Image::getAll($project->id, 'project');
+                $project->gallery = Project\Image::getGallery($project->id);
+
+                // imágenes por sección
+                foreach (Project\Image::sections() as $sec => $val) {
+                    foreach(Project\Image::get($project->id, $sec) as $img) {
+                        $project->secGallery[$sec][] = $img->imageData;
+                    }
+                }
 
 				// categorias
                 $project->categories = Project\Category::get($id);
@@ -393,8 +399,8 @@ namespace Goteo\Model {
                 // owner
                 $project->user = User::getMini($project->owner);
 
-                // galeria
-                $project->gallery = Image::getAll($project->id, 'project');
+                // imagen
+                $project->image = Project\Image::getFirst($project->id);
 
 				// categorias
                 $project->categories = Project\Category::getNames($id, 2);
@@ -626,6 +632,7 @@ namespace Goteo\Model {
                     'about',
                     'goal',
                     'related',
+                    'reward',
                     'keywords',
                     'media',
                     'media_usubs',
@@ -822,6 +829,7 @@ namespace Goteo\Model {
                     'about'=>'about_lang',
                     'goal'=>'goal_lang',
                     'related'=>'related_lang',
+                    'reward'=>'reward_lang',
                     'keywords'=>'keywords_lang',
                     'media'=>'media_lang'
                     );

@@ -160,6 +160,20 @@ namespace Goteo\Controller\Admin {
                         $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Retorno cumplido</span>';
                     }
                     break;
+                    
+                /* Acciones de imagenes */
+                case 'image_section':
+                    Model\Project\Image::setSection($id, $_POST['image'], $_POST['section']);
+                    throw new Redirection('/admin/projects/images/'.$id);
+                    break;
+                case 'image_up':
+                    Model\Project\Image::up($id, $filters['image']);
+                    throw new Redirection('/admin/projects/images/'.$id);
+                    break;
+                case 'image_down':
+                    Model\Project\Image::down($id, $filters['image']);
+                    throw new Redirection('/admin/projects/images/'.$id);
+                    break;
             }
 
             if (isset($log_text)) {
@@ -233,6 +247,26 @@ namespace Goteo\Controller\Admin {
                         'file' => 'accounts',
                         'project' => $project,
                         'accounts' => $accounts
+                    )
+                );
+            }
+
+            if ($action == 'images') {
+                
+                // imágenes
+                $images = Model\Project\Image::get($project->id);
+                
+                // secciones
+                $sections = Model\Project\Image::sections();
+
+                return new View(
+                    'view/admin/index.html.php',
+                    array(
+                        'folder' => 'projects',
+                        'file' => 'images',
+                        'project' => $project,
+                        'images' => $images,
+                        'sections' => $sections
                     )
                 );
             }

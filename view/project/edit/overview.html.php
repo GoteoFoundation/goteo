@@ -81,6 +81,31 @@ if (!empty($project->video->url)) {
     );
 }
 
+// nueva sección de contenido recompensas
+if ( isset($_SESSION['user']->roles['admin'])
+  || isset($_SESSION['user']->roles['superadmin'])
+  || isset($_SESSION['user']->roles['translator'])
+  || isset($_SESSION['user']->roles['checker']) ) {
+    // es admin o similar
+    $reward = array(
+        'type'      => 'textarea',
+        'title'     => Text::get('overview-field-reward'),
+        'hint'      => Text::get('tooltip-project-reward'),
+        'errors'    => !empty($errors['reward']) ? array($errors['reward']) : array(),
+        'ok'        => !empty($okeys['reward']) ? array($okeys['reward']) : array(),
+        'value'     => $project->reward
+    );
+} else {
+    // es user
+    $reward = array (
+        'type' => 'hidden',
+        'name' => 'reward',
+        'value' => $project->reward
+    );
+}
+
+
+
 
 $superform = array(
     'level'         => $this['level'],
@@ -219,6 +244,9 @@ $superform = array(
                     'ok'        => !empty($okeys['related']) ? array($okeys['related']) : array(),
                     'value'     => $project->related
                 ),
+
+                'reward' => $reward
+                
             )
         ),
        

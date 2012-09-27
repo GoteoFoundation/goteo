@@ -268,10 +268,11 @@ namespace Goteo\Controller {
                             'list' => array('label' => 'Listando', 'item' => false),
                             'dates' => array('label' => 'Fechas del proyecto', 'item' => true),
                             'accounts' => array('label' => 'Cuentas del proyecto', 'item' => true),
+                            'images' => array('label' => 'Imágenes del proyecto', 'item' => true),
                             'move' => array('label' => 'Moviendo a otro Nodo el proyecto', 'item' => true),
                             'report' => array('label' => 'Informe Financiero del proyecto', 'item' => true)
                         ),
-                        'filters' => array('status'=>'-1', 'category'=>'', 'proj_name'=>'', 'name'=>'', 'node'=>'', 'order'=>'')
+                        'filters' => array('status'=>'-1', 'category'=>'', 'proj_name'=>'', 'name'=>'', 'node'=>'', 'order'=>'', 'image'=>'')
                     ),
                     'promote' => array(
                         'label' => 'Proyectos destacados',

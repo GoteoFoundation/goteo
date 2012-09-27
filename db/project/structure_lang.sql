@@ -14,3 +14,7 @@ CREATE TABLE IF NOT EXISTS `project_lang` (
 
 -- video motivacion
 ALTER TABLE `project_lang` ADD `video` VARCHAR( 256 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL AFTER `motivation` ;
+
+-- nueva seccion contenido
+ALTER TABLE `project_lang` ADD `reward` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL AFTER `related` ;
+
