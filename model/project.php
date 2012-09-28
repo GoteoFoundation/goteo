@@ -260,9 +260,7 @@ namespace Goteo\Model {
 
                 // imágenes por sección
                 foreach (Project\Image::sections() as $sec => $val) {
-                    foreach(Project\Image::get($project->id, $sec) as $img) {
-                        $project->secGallery[$sec][] = $img->imageData;
-                    }
+                    $project->secGallery[$sec] = Project\Image::get($project->id, $sec);
                 }
 
 				// categorias

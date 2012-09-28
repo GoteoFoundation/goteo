@@ -97,6 +97,33 @@ namespace Goteo\Controller\Admin {
                         
                     }
 
+                } elseif ($action == 'images') {
+                    
+                    $todook = true;
+                    
+                    if (!empty($_POST['move'])) {
+                        $direction = $_POST['action'];
+                        Model\Project\Image::$direction($id, $_POST['move']);
+                    }
+                    
+                    foreach ($_POST as $key=>$value) {
+                        $parts = explode('_', $key);
+                        
+                        if ($parts[1] == 'image' && in_array($parts[0], array('section', 'url'))) {
+                            if (Model\Project\Image::update($id, $parts[2], $parts[0], $value)) {
+                                // OK
+                            } else {
+                                $todook = false;
+                                Message::Error("No se ha podido actualizar campo {$parts[0]} al valor {$value}");
+                            }
+                        }
+                    }
+                    
+                    if ($todook) {
+                        Message::Info('Se han actualizado los datos');
+                    }
+                    
+                    throw new Redirection('/admin/projects/images/'.$id);
                 }
 
             }
@@ -159,20 +186,6 @@ namespace Goteo\Controller\Admin {
                     } else {
                         $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Retorno cumplido</span>';
                     }
-                    break;
-                    
-                /* Acciones de imagenes */
-                case 'image_section':
-                    Model\Project\Image::setSection($id, $_POST['image'], $_POST['section']);
-                    throw new Redirection('/admin/projects/images/'.$id);
-                    break;
-                case 'image_up':
-                    Model\Project\Image::up($id, $filters['image']);
-                    throw new Redirection('/admin/projects/images/'.$id);
-                    break;
-                case 'image_down':
-                    Model\Project\Image::down($id, $filters['image']);
-                    throw new Redirection('/admin/projects/images/'.$id);
                     break;
             }
 
@@ -254,10 +267,16 @@ namespace Goteo\Controller\Admin {
             if ($action == 'images') {
                 
                 // imágenes
-                $images = Model\Project\Image::get($project->id);
+                $images = array();
                 
                 // secciones
                 $sections = Model\Project\Image::sections();
+                foreach ($sections as $sec=>$secName) {
+                    $secImages = Model\Project\Image::get($project->id, $sec);
+                    foreach ($secImages as $img) {
+                        $images[$sec][] = $img;
+                    }
+                }
 
                 return new View(
                     'view/admin/index.html.php',

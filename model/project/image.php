@@ -30,6 +30,10 @@ namespace Goteo\Model\Project {
          * @return array of categories identifiers
          */
 	 	public static function get ($id, $section = null) {
+            
+            $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+            
+            
             $array = array ();
             try {
                 $values = array(':id' => $id);
@@ -37,6 +41,8 @@ namespace Goteo\Model\Project {
                 if (!empty($section)) {
                     $sqlFilter = " AND section = :section";
                     $values[':section'] = $section;
+                } elseif (isset($section) && $section == '') {
+                    $sqlFilter = " AND (section = '' OR section IS NULL)";
                 }
                 
                 $sql = "SELECT * 
@@ -49,6 +55,10 @@ namespace Goteo\Model\Project {
                 $images = $query->fetchAll(\PDO::FETCH_OBJ);
                 foreach ($images as $image) {
                     $image->imageData = Model\Image::get($image->image);
+                    if (!empty($image->url)) {
+                        $image->link = (substr($image->url, 0, strlen('http://')) == 'http://') ? $image->url : $URL.'/'.$image->url;
+                    }
+                    
                     $array[] = $image;
                 }
 
@@ -64,7 +74,7 @@ namespace Goteo\Model\Project {
         public static function getFirst ($id) {
 
             try {
-                $sql = "SELECT image FROM project_image WHERE project = ? ORDER BY `order` ASC LIMIT 1";
+                $sql = "SELECT image FROM project_image WHERE project = ? AND (section = '' OR section IS NULL) ORDER BY `order` ASC LIMIT 1";
                 $query = self::query($sql, array($id));
                 $first = $query->fetchColumn(0);
                 return Model\Image::get($first);
@@ -98,12 +108,12 @@ namespace Goteo\Model\Project {
         
         
         /*
-         * Para ubicar en una sección
+         * Para aplicar una seccion o un enlace
          */
-        public static function setSection ($project, $image, $section) {
+        public static function update ($project, $image, $field, $value) {
             
-            $sql = "UPDATE project_image SET section = :section WHERE project = :project AND image = :image";
-            if (self::query($sql, array(':project'=>$project, ':image'=>$image, ':section'=>$section))) {
+            $sql = "UPDATE project_image SET `$field` = :val WHERE project = :project AND image = :image";
+            if (self::query($sql, array(':project'=>$project, ':image'=>$image, ':val'=>$value))) {
                 return true;
             } else {
                 return false;
@@ -138,7 +148,7 @@ namespace Goteo\Model\Project {
 
         public static function sections () {
             return array(
-                '' => 'Sin ubicar',
+                '' => 'Galería',
                 'about' => Text::get('overview-field-about'),
                 'motivation' => Text::get('overview-field-motivation'),
                 'goal' => Text::get('overview-field-goal'),

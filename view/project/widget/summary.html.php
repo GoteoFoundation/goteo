@@ -20,9 +20,16 @@ function putImages ($images) {
 
     if (!empty($images)) {
         foreach ($images as $image) { 
-            $code .= '<div class="gallery-image">
-                <img src="'.$image->getLink(580, 580).'" alt="image" />
-            </div>';
+            if (!empty($image->link)) {
+                $code .= '<div class="free-image">
+                    <a href="'.$image->link.'"><img src="'.$image->imageData->getLink(580, 580).'" alt="image" /></a>
+                </div>';
+            } else {
+                $code .= '<div class="free-image">
+                    <img src="'.$image->imageData->getLink(580, 580).'" alt="image" />
+                </div>';
+            }
+            
         }
     }
 
@@ -127,7 +134,10 @@ function putImages ($images) {
         <?php echo $project->reward ?>
     </div>
     <?php echo putImages($project->secGallery['reward']); ?>
-    <?php endif ?>
+    <?php elseif ((empty($project->reward) && !empty($project->secGallery['reward']))) : ?>
+        <h<?php echo $level + 1?> style="margin-bottom: 5px;"><?php echo Text::get('overview-field-reward'); ?></h<?php echo $level + 1?>>
+        <?php echo putImages($project->secGallery['reward']); ?>
+    <?php endif; ?>
 
     
 </div>
