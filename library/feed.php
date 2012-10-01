@@ -173,7 +173,7 @@ namespace Goteo\Library {
                 }
                 
                 $sqlNode = '';
-                if ($node != \GOTEO_NODE) {
+                if (!empty($node) && $node != \GOTEO_NODE) {
                     /* segun el objetivo del feed sea:
                      * proyectos del nodo
                      * usuarios del nodo

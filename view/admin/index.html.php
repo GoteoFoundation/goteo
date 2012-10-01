@@ -15,8 +15,6 @@ if (!isset($_SESSION['admin_menu'])) {
     $_SESSION['admin_menu'] = Admin::menu();
 }
 
-$node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
-
 // piñones usuarios
 $allowed = Admin::$supervisors[$_SESSION['user']->id];
 
@@ -27,8 +25,8 @@ if (isset($allowed) && !empty($this['folder']) && !in_array($this['folder'], $al
 $bodyClass = 'admin';
 
 include 'view/prologue.html.php';
-
-    include 'view/header.html.php'; ?>
+include 'view/header.html.php'; 
+?>
 
         <div id="sub-header" style="margin-bottom: 10px;">
             <div class="breadcrumbs"><?php echo ADMIN_BCPATH; ?></div>
@@ -70,18 +68,21 @@ include 'view/prologue.html.php';
             <?php endif; ?>
 
 
-        <?php if (!empty($this['folder']) && !empty($this['file'])) : 
-                if ($this['folder'] == 'base') {
-                    $path = 'view/admin/'.$this['file'].'.html.php';
-                } else {
-                    $path = 'view/admin/'.$this['folder'].'/'.$this['file'].'.html.php';
-                }
+<?php if (!empty($this['folder']) && !empty($this['file'])) : 
+        if ($this['folder'] == 'base') {
+            $path = 'view/admin/'.$this['file'].'.html.php';
+        } else {
+            $path = 'view/admin/'.$this['folder'].'/'.$this['file'].'.html.php';
+        }
 
-                    echo new View ($path, $this);
-               else :
-        /* PORTADA ADMIN */
-        $feed = empty($_GET['feed']) ? 'all' : $_GET['feed'];
-        $items = Feed::getAll($feed, 'admin', 50, $node);
+            echo new View ($path, $this);
+       else :
+           
+            /* PORTADA ADMIN */
+            $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
+
+            $feed = empty($_GET['feed']) ? 'all' : $_GET['feed'];
+            $items = Feed::getAll($feed, 'admin', 50, $node);
 
         // Central pendientes
     ?>
@@ -148,7 +149,7 @@ include 'view/prologue.html.php';
             </div>
 
 
-            <?php endif; ?>
+        <?php endif; ?>
 
             </div> <!-- fin center -->
 

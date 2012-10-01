@@ -31,8 +31,8 @@ $url = '';
                 break;
         } ?>
 
-        <?php if (!empty($project->gallery) && (current($project->gallery) instanceof Image)): ?>
-        <a href="<?php echo $url ?>/project/<?php echo $project->id ?>"><img src="<?php echo current($project->gallery)->getLink(150, 98, true) ?>" alt="<?php echo $project->name ?>"/></a>
+        <?php if ($project->image instanceof Image): ?>
+        <a href="<?php echo $url ?>/project/<?php echo $project->id ?>"><img src="<?php echo $project->image->getLink(150, 98, true) ?>" alt="<?php echo $project->name ?>"/></a>
         <?php endif ?>
         <?php if (!empty($project->categories)): ?>
         <div class="categories"><?php $sep = ''; foreach ($project->categories as $key=>$value) :

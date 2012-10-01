@@ -10,4 +10,5 @@ define('NODE_DEFAULT_LANG', 'es');
 define('NODE_URL', 'http://euskadi.goteo.org');
 define('NODE_NAME', 'GoteoEuskadi');
 define('NODE_MAIL', 'aupa@euskadi.goteo.org');
+define('NODE_ANALYTICS_TRACKER', '');
 
