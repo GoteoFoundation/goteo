@@ -320,7 +320,7 @@ namespace Goteo\Controller {
                         'actions' => array(
                             'list' => array('label' => 'Emails enviados', 'item' => false)
                         ),
-                        'filters' => array('user'=>'', 'template'=>'', 'node'=>\GOTEO_NODE)
+                        'filters' => array('user'=>'', 'template'=>'', 'node'=>'')
                     ),
                     'sponsors' => array(
                         'label' => 'Apoyos institucionales',

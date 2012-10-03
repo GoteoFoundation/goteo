@@ -273,15 +273,14 @@ namespace Goteo\Library {
          *
          * @param array $filters    user (nombre o email),  template
          */
-        public function getSended($filters = array(), $node = null, $limit = 999) {
+        public static function getSended($filters = array(), $node = null, $limit = 9) {
 
             $values = array();
             $sqlFilter = '';
             $and = " WHERE";
 
             if (!empty($filters['user'])) {
-                $sqlFilter .= $and . " ( user.id LIKE :user OR user.name LIKE :user OR user.email LIKE :user  OR mail.email LIKE :user )";
-                $and = " AND";
+                $sqlSubFilter .= "AND user.email LIKE :user";
                 $values[':user'] = "%{$filters['user']}%";
             }
 
@@ -291,7 +290,7 @@ namespace Goteo\Library {
                 $values[':template'] = $filters['template'];
             }
 
-            if (!empty($node)) {
+            if ($node != \GOTEO_NODE) {
                 $sqlFilter .= $and . " mail.node = :node";
                 $and = " AND";
                 $values[':node'] = $node;
@@ -308,8 +307,9 @@ namespace Goteo\Library {
                         mail.template as template,
                         DATE_FORMAT(mail.date, '%d/%m/%Y %H:%i') as date
                     FROM mail
-                    LEFT JOIN user
+                    INNER JOIN user
                         ON user.email = mail.email
+                    $sqlSubFilter
                     $sqlFilter
                     ORDER BY mail.date DESC
                     LIMIT {$limit}";

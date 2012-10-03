@@ -13,11 +13,15 @@ namespace Goteo\Controller\Admin {
     class Sended {
 
         public static function process ($action = 'list', $id = null, $filters = array()) {
-
             $templates = Template::getAllMini();
             $nodes = Node::getList();
+            $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
 
-            $sended = Mail::getSended($filters, $_SESSION['admin_node'], 99);
+            if ($filters['filtered'] == 'yes'){
+                $sended = Mail::getSended($filters, $node, 99);
+            } else {
+                $sended = array();
+            }
 
             return new View(
                 'view/admin/index.html.php',
