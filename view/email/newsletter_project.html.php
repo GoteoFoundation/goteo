@@ -40,8 +40,8 @@ if ($q < 5) foreach ($project->individual_rewards as $individual) {
     </div>
     
     <div style="width: 226px; padding-bottom:10px;">
-        <?php if (!empty($project->gallery) && (current($project->gallery) instanceof Image)): ?>
-        <a href="<?php echo $url ?>"><img alt="<?php echo $project->name ?>" src="<?php echo current($project->gallery)->getLink(255, 130, true) ?>" width="255" height="130" /></a>
+        <?php if (!empty($project->image) && ($project->image instanceof Image)): ?>
+        <a href="<?php echo $url ?>"><img alt="<?php echo $project->name ?>" src="<?php echo $project->image->getLink(255, 130, true) ?>" width="255" height="130" /></a>
         <?php endif ?>
     </div>
     
