@@ -116,7 +116,7 @@ namespace Goteo\Controller {
                         'label' => 'Contratos',
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false),
-                            'edit' => array('label' => 'Gestionando contrato del proyecto', 'item' => false)
+                            'edit' => array('label' => 'Gestionando contrato', 'item' => false)
                         ),
                         'filters' => array('project'=>'')
                     ),
@@ -652,6 +652,15 @@ namespace Goteo\Controller {
         }
 
         /*
+         *  Gestión de contratos de proyectos
+         */
+        public function contracts($action = 'list', $id = null) {
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
+            define('ADMIN_BCPATH', $BC);
+            return Admin\Contracts::process($action, $id, self::setFilters(__FUNCTION__));
+        }
+
+        /*
          *  Gestión transacciones (tpv/paypal)
          * 
          */
@@ -1044,7 +1053,8 @@ namespace Goteo\Controller {
                                 'projects' => $options['projects'],     // proyectos del nodo
                                 'reviews' => $options['reviews'],       // revisiones de proyectos del nodo
                                 'translates' => $options['translates'], // traducciones de proyectos del nodo
-                                'invests' => $options['invests']
+                                'invests' => $options['invests'],
+                                'contracts' => $options['contracts']
                             )
                         ),
                         'users' => array(
@@ -1105,6 +1115,7 @@ namespace Goteo\Controller {
                             'options' => array (
                                 'projects' => $options['projects'],
                                 'accounts' => $options['accounts'],
+                                'contracts' => $options['contracts'],
                                 'patron' => $options['patron'],
                                 'reviews' => $options['reviews'],
                                 'translates' => $options['translates'],

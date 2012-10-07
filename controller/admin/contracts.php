@@ -9,14 +9,14 @@ namespace Goteo\Controller\Admin {
 		Goteo\Library\Message,
         Goteo\Model;
 
-    class Invests {
+    class Contracts {
 
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
             // edición
             if ($action == 'edit') {
 
-//                $contract = Model\Contract::get($id);
+                $contract = Model\Contract::get($id);
 
                 return new View(
                     'view/admin/index.html.php',
@@ -28,16 +28,16 @@ namespace Goteo\Controller\Admin {
                 );
             }
 
-            // previsualización
+            // previsualizar y crear pdf
             if ($action == 'preview') {
 
-//                $contract = Model\Contract::get($id);
+                $contract = Model\Contract::get($id);
 
                 return new View(
                     'view/admin/index.html.php',
                     array(
-                        'folder' => 'contracts',
-                        'file' => 'edit',
+                        'folder'   => 'contracts',
+                        'file'     => 'preview',
                         'contract' => $contract
                     )
                 );
@@ -45,17 +45,19 @@ namespace Goteo\Controller\Admin {
 
             // listado de contratos
             if ($filters['filtered'] == 'yes') {
-//                $list = Model\Contract::getAll($filters, $_SESSION['admin_node']);
-                $list = array(1, 2, 3);
+                $list = Model\Contract::getAll($filters);
             } else {
                 $list = array();
             }
 
+            $projects = Model\Contract::getProjects();
+            
              $viewData = array(
-                    'folder' => 'contracts',
-                    'file' => 'list',
-                    'list'          => $list,
-                    'filters'       => $filters
+                    'folder'   => 'contracts',
+                    'file'     => 'list',
+                    'list'     => $list,
+                    'projects' => $projects,
+                    'filters'  => $filters
                 );
 
             return new View(
