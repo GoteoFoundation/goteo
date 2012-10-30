@@ -2,6 +2,7 @@
 
 use Goteo\Core\View,
     Goteo\Model\User,
+    Goteo\Model\Image,
     Goteo\Model\Project\Cost,
     Goteo\Model\Project\Support,
     Goteo\Model\Project\Category,
@@ -38,40 +39,34 @@ $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
 
 $bodyClass = 'project-show';
 
-// metas og: para que al compartir en facebook coja bien el nombre y la imagen
-// si estamos en novedades / en una entrada de novedades / en la portada del proyecto
+// metas og: para que al compartir en facebook coja bien el nombre y la imagen (todas las de proyecto y las novedades
+$ogmeta = array(
+    'title' => $project->name,
+    'description' => Text::get('regular-by').' '.$project->user->name,
+    'url' => $URL . '/project/'.$project->id
+);
+
 if ($show == 'updates') {
-    $ogmeta = array(
-        'title' => $project->name,
-        'description' => Text::get('regular-by').' '.$project->user->name,
-        'url' => $URL . '/project/'.$project->id,
-        'image' => array()
-    );
-    foreach ($blog->posts as $bpost) {
-        if (!empty($post) && $bpost->id != $post)
-            continue;
-        
-        if (is_array($bpost->gallery)) {
-            foreach ($bpost->gallery as $bpimg) {
-                if ($bpimg instanceof \Goteo\Model\Image) {
-                    $ogmeta['image'][] = $bpimg->getLink(500, 285);
-                }
-            }
+    $ogmeta['url'] .= '/updates';
+    if (!empty($post)) {
+        $ogmeta['url'] .= '/'.$post;
+    }
+}
+
+// todas las imagenes del proyecto
+if (is_array($project->gallery)) {
+    foreach ($project->gallery as $pgimg) {
+        if ($pgimg instanceof Image) {
+            $ogmeta['image'][] = $pgimg->getLink(580, 580);
         }
     }
+}
 
-} else {
-    $ogmeta = array(
-        'title' => $project->name,
-        'description' => Text::get('regular-by').' '.$project->user->name,
-        'url' => $URL . '/project/'.$project->id
-    );
-    
-    // todas las imagenes del proyecto
-    if (is_array($project->gallery)) {
-        foreach ($project->gallery as $pgimg) {
-            if ($pgimg instanceof \Goteo\Model\Image) {
-                $ogmeta['image'][] = $pgimg->getLink(580, 580);
+foreach ($blog->posts as $bpost) {
+    if (is_array($bpost->gallery)) {
+        foreach ($bpost->gallery as $bpimg) {
+            if ($bpimg instanceof Image) {
+                $ogmeta['image'][] = $bpimg->getLink(500, 285);
             }
         }
     }

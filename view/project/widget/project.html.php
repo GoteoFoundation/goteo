@@ -6,12 +6,14 @@ use Goteo\Core\View,
     Goteo\Model\Invest,
     Goteo\Model\Image;
 
+$URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+
 $project = $this['project'];
 $level = $this['level'] ?: 3;
 
 if ($this['global'] === true) {
     $blank = ' target="_blank"';
-    $url = empty($project->nodeData->url) ? \SITE_URL : $project->nodeData->url;
+    $url = $URL;
 } else {
     $blank = '';
     $url = '';

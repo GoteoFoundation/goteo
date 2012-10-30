@@ -90,6 +90,7 @@ function putImages ($images) {
 
 
     <?php if (!empty($project->about)): ?>
+    <a name="about"></a>
     <div class="about">
         <h<?php echo $level + 1?>><?php echo Text::get('overview-field-about'); ?></h<?php echo $level + 1?>>
         <?php echo $project->about; ?>
@@ -98,6 +99,7 @@ function putImages ($images) {
     <?php endif ?>
     
     <?php if (!empty($project->motivation)): ?>
+    <a name="motivation"></a>
     <div class="motivation">
         <h<?php echo $level + 1?>><?php echo Text::get('overview-field-motivation'); ?></h<?php echo $level + 1?>>
         <?php echo $project->motivation; ?>
@@ -113,6 +115,7 @@ function putImages ($images) {
     <?php endif ?>
 
     <?php if (!empty($project->goal)): ?>
+    <a name="goal"></a>
     <div class="goal">
         <h<?php echo $level + 1?>><?php echo Text::get('overview-field-goal'); ?></h<?php echo $level + 1?>>
         <?php echo $project->goal; ?>
@@ -120,24 +123,27 @@ function putImages ($images) {
     <?php echo putImages($project->secGallery['goal']); ?>
     <?php endif ?>
     
-    <?php if (!empty($project->related)): ?>
-    <div class="related">
-        <h<?php echo $level + 1?>><?php echo Text::get('overview-field-related'); ?></h<?php echo $level + 1?>>
-        <?php echo $project->related ?>
-    </div>
-    <?php echo putImages($project->secGallery['related']); ?>
-    <?php endif ?>
-
     <?php if (!empty($project->reward)): ?>
+    <a name="reward"></a>
     <div class="reward">
         <h<?php echo $level + 1?>><?php echo Text::get('overview-field-reward'); ?></h<?php echo $level + 1?>>
         <?php echo $project->reward ?>
     </div>
     <?php echo putImages($project->secGallery['reward']); ?>
     <?php elseif ((empty($project->reward) && !empty($project->secGallery['reward']))) : ?>
+        <a name="reward"></a>
         <h<?php echo $level + 1?> style="margin-bottom: 5px;"><?php echo Text::get('overview-field-reward'); ?></h<?php echo $level + 1?>>
         <?php echo putImages($project->secGallery['reward']); ?>
     <?php endif; ?>
+
+    <?php if (!empty($project->related)): ?>
+    <a name="related"></a>
+    <div class="related">
+        <h<?php echo $level + 1?>><?php echo Text::get('overview-field-related'); ?></h<?php echo $level + 1?>>
+        <?php echo $project->related ?>
+    </div>
+    <?php echo putImages($project->secGallery['related']); ?>
+    <?php endif ?>
 
     
 </div>

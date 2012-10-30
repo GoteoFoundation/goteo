@@ -33,11 +33,6 @@ namespace Goteo\Controller {
                         'glossary',
                         'info',
                         'mailing' // para testeo newsletter
-                    ),
-                'merxxx' => array(
-                        'users',
-                        'accounts',
-                        'recent'
                     )
                 );
 
