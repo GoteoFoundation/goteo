@@ -16,7 +16,7 @@ foreach ($Data['issues'] as $issue) {
     td {padding: 3px 10px;}
 </style>
 <div class="widget report">
-    <h3 class="title">Informe de financiación para del proyecto<br /><span style="color:#20B2B3;"><?php echo $project->name ?></span></h3>
+    <h3 class="title">Informe de financiación del proyecto<br /><span style="color:#20B2B3;"><?php echo $project->name ?></span></h3>
 
     <?php
     $sumData['total'] = $Data['tpv']['total']['amount'] + $Data['paypal']['total']['amount'] + $Data['cash']['total']['amount'];
@@ -37,13 +37,13 @@ foreach ($Data['issues'] as $issue) {
     ?>
 <p>
     <?php if (!empty($project->passed)) {
-        echo 'El proyecto pasó a segunda ronda el día <strong>'.date('d/m/Y', strtotime($project->passed)).'</strong>.<br />';
+        echo 'El proyecto terminó la primera ronda el día <strong>'.date('d/m/Y', strtotime($project->passed)).'</strong>.<br />';
     } else {
         echo 'El proyecto terminará la primera ronda el día <strong>'.date('d/m/Y', strtotime($project->willpass)).'</strong>.<br />';
     } ?>
 
     <?php if (!empty($project->success)) {
-        echo 'La campaña terminó el día <strong>'.date('d/m/Y', strtotime($project->success)).'</strong>.';
+        echo 'El proyecto terminó la segunda ronda el día <strong>'.date('d/m/Y', strtotime($project->success)).'</strong>.';
     } ?>
 
 </p>
@@ -128,7 +128,7 @@ foreach ($Data['issues'] as $issue) {
             <th style="text-align:left;">* Listado de usuarios/as con incidencias en su cuenta PayPal.</th>
         </tr>
         <tr>
-            <td>Estas son los aportes con problemas en payPal que no se han conseguido cobrar y se han cancelado.</td>
+            <td>Estos son los aportes con problemas en payPal que no se han conseguido cobrar y se han cancelado.</td>
         </tr>
     </table>
 
@@ -139,7 +139,7 @@ foreach ($Data['issues'] as $issue) {
 <?php if ($admin) : ?>
             <td><?php echo '<a href="/admin/accounts/details/'.$issue->invest.'" target="_blank">[Ir al aporte]</a> Usuario <a href="/admin/users/manage/' . $issue->user . '" target="_blank">' . $issue->userName . '</a> [<a href="mailto:'.$issue->userEmail.'">'.$issue->userEmail.'</a>], ' . $issue->statusName . ', ' . $issue->amount . ' euros.'; ?></td>
 <?php else: ?>
-            <td>Usuario <?php echo $issue->userName; ?>,  <?php echo $issue->statusName; ?>, <?php echo $issue->amount . ' euros'; ?></td>
+            <td>Usuario/a <?php echo $issue->userName; ?>,  <?php echo $issue->statusName; ?>, <?php echo $issue->amount . ' euros'; ?></td>
 <?php endif; ?>
         </tr>
         <?php endforeach; ?>

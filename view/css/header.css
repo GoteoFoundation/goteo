@@ -140,6 +140,10 @@ div#sub-header > div > div.slides_container > div.slides_control > div.subhead-b
     margin: 2px 0;
     color:#1eb2b2;
 	display:block;
+    overflow: hidden;
+    white-space: nowrap;    
+    width: 240px;
+    text-overflow: ellipsis;
 }
 
 div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .col-return{
@@ -160,6 +164,10 @@ div#sub-header > div > div.slides_container > div.slides_control > div.subhead-b
 div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .col-return p{
     margin: 0px 0px 4px 0px;
 	font: normal 11px Helvetica, Arial, Geneva, sans-serif;
+    overflow: hidden;
+    white-space: nowrap;    
+    width: 240px;
+    text-overflow: ellipsis;
 }
 
 div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info .col-return ul{

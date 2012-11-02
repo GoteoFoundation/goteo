@@ -300,11 +300,23 @@ foreach ($this['invests'] as $invest) {
         </tr>
         <tr>
             <?php
+            $Data['paypal']['first']['fee_total']  = ($Data['paypal']['first']['invests'] * 0.35) + ($Data['paypal']['first']['ok'] * 0.034);
+            $Data['paypal']['second']['fee_total'] = ($Data['paypal']['second']['invests'] * 0.35) + ($Data['paypal']['second']['ok'] * 0.034);
+            $Data['paypal']['total']['fee_total']  = ($Data['paypal']['total']['invests'] * 0.35) + ($Data['paypal']['total']['ok'] * 0.034);
+            ?>
+            <th>Comisión Total</th>
+            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['first']['fee_total'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['second']['fee_total'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['total']['fee_total'], 2) ?></td>
+            <td>0,35 por operacion + 3,4&#37; del importe total (100&#37; del correcto)</td>
+        </tr>
+        <tr>
+            <?php
             $Data['paypal']['first']['fee_goteo']  = ($Data['paypal']['first']['invests'] * 0.35) + ($Data['paypal']['first']['goteo'] * 0.034);
             $Data['paypal']['second']['fee_goteo'] = ($Data['paypal']['second']['invests'] * 0.35) + ($Data['paypal']['second']['goteo'] * 0.034);
             $Data['paypal']['total']['fee_goteo']  = ($Data['paypal']['total']['invests'] * 0.35) + ($Data['paypal']['total']['goteo'] * 0.034);
             ?>
-            <th>Fee a Goteo</th>
+            <th>Comisión parte Goteo</th>
             <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['first']['fee_goteo'], 2) ?></td>
             <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['second']['fee_goteo'], 2) ?></td>
             <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['total']['fee_goteo'], 2) ?></td>
@@ -316,7 +328,7 @@ foreach ($this['invests'] as $invest) {
             $Data['paypal']['second']['fee_project'] = ($Data['paypal']['second']['invests'] * 0.35) + ($Data['paypal']['second']['project'] * 0.034);
             $Data['paypal']['total']['fee_project']  = ($Data['paypal']['total']['invests'] * 0.35) + ($Data['paypal']['total']['project'] * 0.034);
             ?>
-            <th>Fee al Promotor</th>
+            <th>Comisión al Promotor</th>
             <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['first']['fee_project'], 2) ?></td>
             <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['second']['fee_project'], 2) ?></td>
             <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['total']['fee_project'], 2) ?></td>

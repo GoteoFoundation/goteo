@@ -18,7 +18,7 @@ $widget_code_investor = Text::widget($url.'/invested/'.$user->id.'/'.$lsuf);
 $share_title = Text::get('project-spread-social', $project->name);
 $share_url = $URL . '/project/'.$project->id;
 $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($share_title);
-$twitter_url = 'http://twitter.com/home?status=' . urlencode($share_title . ': ' . $share_url . ' #Goteo #crowdfunding');
+$twitter_url = 'http://twitter.com/home?status=' . urlencode($share_title . ': ' . $share_url);
 ?>
 <div class="widget project-spread">
     
