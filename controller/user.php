@@ -43,8 +43,6 @@ namespace Goteo\Controller {
                         // posible admin de nodo
                         if ($node = Model\Node::getAdminNode($user->id)) {
                             $_SESSION['admin_node'] = $node;
-                        } else {
-                            unset($user->roles['admin']);
                         }
                     } else {
                         unset($_SESSION['admin_node']);

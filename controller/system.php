@@ -12,6 +12,10 @@ namespace Goteo\Controller {
 	class System extends \Goteo\Core\Controller {
 
 
+        public function whoami () {
+            die(\trace($_SESSION['user']));
+        }
+
         public function index ($tool = 'index') {
 
             switch ($tool) {
