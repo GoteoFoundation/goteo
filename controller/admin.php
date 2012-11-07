@@ -113,7 +113,7 @@ namespace Goteo\Controller {
                             'list' => array('label' => 'Listando', 'item' => false),
                             'edit' => array('label' => 'Gestionando contrato', 'item' => false)
                         ),
-                        'filters' => array('project'=>'')
+                        'filters' => array('project'=>'all', 'contract'=>'all')
                     ),
                     'criteria' => array(
                         'label' => 'Criterios de revisión',

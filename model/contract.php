@@ -7,7 +7,9 @@ namespace Goteo\Model {
         public
             $id,
             $project,
-            $number,
+            $number, //numero de contrato
+            $date, // día anterior a la publicación
+            $fullnum, // numero+fecha de publicación
             $type,
                 
             // datos del representante
@@ -88,7 +90,7 @@ namespace Goteo\Model {
                     $projData = \Goteo\Model\Project::get($id);
                     if (empty($contract->number) && !empty($projData->published)) {
                         $date = strtotime($projData->published);
-                        $contract->number = 'XX-'. date('dmY', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)));
+                        $contract->date = date('dmY', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)));
                     }
                     $contract->type = (int) $projData->contract_entity; // segun si el proyecto tiene marcado persona fisica/juridica
                     
@@ -159,9 +161,9 @@ namespace Goteo\Model {
 			try {
                 
                 $fields = array(
-                    'id',
                     'project',
                     'number',
+                    'date',
                     'type',
                     'name',
                     'nif',
@@ -238,7 +240,7 @@ namespace Goteo\Model {
                 ");
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
-                $list[] = $item;
+                $list[$item->id] = $item;
             }
 
             return $list;

@@ -43,20 +43,22 @@ namespace Goteo\Controller\Admin {
                 );
             }
 
-            // listado de contratos
-            if ($filters['filtered'] == 'yes') {
-                $list = Model\Contract::getAll($filters);
-            } else {
-                $list = array();
-            }
+            
+            // proyectos en campaña o financiados
+            $list  = Model\Project::active();
 
-            $projects = Model\Contract::getProjects();
+            // estados de proyecto
+            $status = Model\Project::status();
+            
+            // contratos
+            $contracts = Model\Contract::getAll();
             
              $viewData = array(
                     'folder'   => 'contracts',
                     'file'     => 'list',
                     'list'     => $list,
-                    'projects' => $projects,
+                    'status'   => $status,
+                    'contracts'=> $contracts,
                     'filters'  => $filters
                 );
 

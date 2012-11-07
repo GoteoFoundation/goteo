@@ -12,7 +12,7 @@ $fields = array(
     // persona
     'name' => 'Nombre y apellidos (propios o representante)',
     'nif' => 'NIF (propio o representante)',
-    'office' => 'Cargo (en la asociaci&oacute;n o entidad mercantil, solo si representa a una asociaci&oacute;n o entidad mercantil)',
+    'office' => 'Cargo en la asociaci&oacute;n o entidad mercantil<br /> (solo si representa a una asociaci&oacute;n o entidad mercantil)',
     'address' => 'Domicilio (propio o representante)',
     'location' => 'Municipio (propio o representante)',
     'region' => 'Provincia (propio o representante)',
@@ -27,9 +27,9 @@ $fields = array(
     'entity_country' => 'Pa&iacute;s (de la asociaci&oacute;n o entidad mercantil)',
     
     // registro
-    'reg_name' => 'Registro en el que se inscribi&oacute; la asociaci&oacute;n (si asociaci&oacute;n)<br />Nombre  del notario que  otorg&oacute; la escritura p&uacute;blica de la empresa (si entidad mercantil)',
-    'reg_number' => 'N&uacute;mero de Registro (si asociaci&oacute;n)<br />N&uacute;mero del protocolo del notario (si entidad mercantil)',
-    'reg_id' => 'Numero de inscripci&oacute;n en el Registro Mercantil (solo si entidad mercantil'
+    'reg_name' => 'Registro en el que se inscribi&oacute; la asociaci&oacute;n (si asociaci&oacute;n)<br /> / Nombre  del notario que  otorg&oacute; la escritura p&uacute;blica de la empresa (si entidad mercantil)',
+    'reg_number' => 'N&uacute;mero de Registro (si asociaci&oacute;n)<br /> / N&uacute;mero del protocolo del notario (si entidad mercantil)',
+    'reg_id' => 'Numero de inscripci&oacute;n en el Registro Mercantil (solo si entidad mercantil)'
 );
 
 
