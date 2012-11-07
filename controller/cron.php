@@ -31,11 +31,30 @@ namespace Goteo\Controller {
                 echo 'Lanzamiento automatico a las ' . date ('H:i:s') . ' <br />';
             }
             
-            // a ver si existe el log
-            if (file_exists(GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log')) {
+            // a ver si existe el bloqueo
+            $block_file = GOTEO_PATH.'logs/cron-'.__FUNCTION__.'.block';
+            if (file_exists($block_file)) {
                 echo 'Ya existe un archivo de log '.date('Ymd').'_'.__FUNCTION__.'.log<br />';
+                $block_content = \file_get_contents($block_file);
+                echo 'El contenido del bloqueo es: '.$block_content;
+                // lo escribimos en el log
+                $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
+                \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
+                \chmod($log_file, 0777);
+                @mail('goteo_cron@doukeshi.org', 'Cron '. __FUNCTION__ .' bloqueado en ' . SITE_URL,
+                    'Se ha encontrado con que el cron '. __FUNCTION__ .' está bloqueado el '.date('d-m-Y').' a las ' . date ('H:i:s') . '
+                        El contenido del bloqueo es: '. $block_content);
+                die;
             } else {
-                echo 'No hay log previo para esta fecha <br />';
+                $block = 'Bloqueo del '.$block_file.' activado el '.date('d-m-Y').' a las '.date ('H:i:s').'<br />';
+                if (\file_put_contents($block_file, $block, FILE_APPEND)) {
+                    \chmod($block_file, 0777);
+                    echo $block;
+                } else {
+                    echo 'No se ha podido crear el archivo de bloqueo<br />';
+                    @mail('goteo_cron@doukeshi.org', 'Cron '. __FUNCTION__ .' no se ha podido bloquear en ' . SITE_URL,
+                        'No se ha podido crear el archivo '.$block_file.' el '.date('d-m-Y').' a las ' . date ('H:i:s'));
+                }
             }
             echo '<hr />';
             
@@ -518,6 +537,19 @@ namespace Goteo\Controller {
                 if ($debug) echo 'Fin tratamiento Proyecto '.$project->name.'<hr />';
             }
 
+            // desbloqueamos
+            if (unlink($block_file)) {
+                echo 'Cron '. __FUNCTION__ .' desbloqueado<br />';
+            } else {
+                echo 'ALERT! Cron '. __FUNCTION__ .' no se ha podido desbloquear<br />';
+                if(file_exists($block_file)) {
+                    echo 'El archivo '.$block_file.' aun existe!<br />';
+                } else {
+                    echo 'No hay archivo de bloqueo '.$block_file.'!<br />';
+                }
+            }
+            
+            
             // recogemos el buffer para grabar el log
             $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
@@ -648,6 +680,33 @@ namespace Goteo\Controller {
 
             @mail('goteo_cron@doukeshi.org', 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
                 'Se ha lanzado manualmente el cron '. __FUNCTION__ .' para el proyecto '.$project.' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
+            
+            // a ver si existe el bloqueo
+            $block_file = GOTEO_PATH.'logs/cron-'.__FUNCTION__.'.block';
+            if (file_exists($block_file)) {
+                echo 'Ya existe un archivo de log '.date('Ymd').'_'.__FUNCTION__.'.log<br />';
+                $block_content = \file_get_contents($block_file);
+                echo 'El contenido del bloqueo es: '.$block_content;
+                // lo escribimos en el log
+                $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
+                \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
+                \chmod($log_file, 0777);
+                @mail('goteo_cron@doukeshi.org', 'Cron '. __FUNCTION__ .' bloqueado en ' . SITE_URL,
+                    'Se ha encontrado con que el cron '. __FUNCTION__ .' está bloqueado el '.date('d-m-Y').' a las ' . date ('H:i:s') . '
+                        El contenido del bloqueo es: '. $block_content);
+                die;
+            } else {
+                $block = 'Bloqueo '.$block_file.' activado el '.date('d-m-Y').' a las '.date ('H:i:s').'<br />';
+                if (\file_put_contents($block_file, $block, FILE_APPEND)) {
+                    \chmod($block_file, 0777);
+                    echo $block;
+                } else {
+                    echo 'No se ha podido crear el archivo de bloqueo<br />';
+                    @mail('goteo_cron@doukeshi.org', 'Cron '. __FUNCTION__ .' no se ha podido bloquear en ' . SITE_URL,
+                        'No se ha podido crear el archivo '.$block_file.' el '.date('d-m-Y').' a las ' . date ('H:i:s'));
+                }
+            }
+            
             $projectData = Model\Project::getMini($project);
 
             // necesitamos la cuenta del proyecto y que sea la misma que cuando el preapproval
@@ -714,6 +773,18 @@ namespace Goteo\Controller {
                 echo '<hr />';
             }
 
+            // desbloqueamos
+            if (unlink($block_file)) {
+                echo 'Cron '. __FUNCTION__ .' desbloqueado<br />';
+            } else {
+                echo 'ALERT! Cron '. __FUNCTION__ .' no se ha podido desbloquear<br />';
+                if(file_exists($block_file)) {
+                    echo 'El archivo '.$block_file.' aun existe!<br />';
+                } else {
+                    echo 'No hay archivo de bloqueo '.$block_file.'!<br />';
+                }
+            }
+            
             // recogemos el buffer para grabar el log
             $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
