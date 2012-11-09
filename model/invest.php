@@ -350,6 +350,18 @@ namespace Goteo\Model {
 
                     // si es de convocatoria,
                     if (isset($this->called) && $this->called instanceof Call) {
+                        
+                        // si no tiene ya el máximo por proyecto
+                        // primeo saber cuanto ha conseguido
+                        $got = static::invested($this->project, 'call', $this->called->id);
+                        if ($this->called->maxproj > 0 && $got >= $this->called->maxproj) {
+                            $errors[] = 'No puede conseguir más capital riego, máximo '.$this->called->maxproj.' &euro; por proyecto.';
+                            unset($this->called);
+                        } elseif ($this->called->maxproj > 0 && ($got + $drop_amount) > $this->called->maxproj) {
+                            $drop_amount = $this->called->maxproj - $got;
+                        }
+
+                        
                         // si queda capital riego
                         if ($this->called->rest > 0) {
 
@@ -371,7 +383,7 @@ namespace Goteo\Model {
                                     'amount' => $drop_amount,
                                     'user' => $this->called->owner,
                                     'project' => $this->project,
-                                    'method' => 'cash',
+                                    'method' => 'drop',
                                     'status' => $this->status,
                                     'invested' => date('Y-m-d'),
                                     'anonymous' => null,
@@ -666,10 +678,10 @@ namespace Goteo\Model {
             if (isset ($only) && in_array($only, array('users', 'call'))) {
                 switch ($only) {
                     case 'users':
-                        $sql .= " AND (invest.campaign = 0 OR invest.campaign IS NULL)";
+                        $sql .= " AND invest.method != 'drop'";
                         break;
                     case 'call':
-                        $sql .= " AND invest.campaign = 1";
+                        $sql .= " AND invest.method = 'drop'";
                         if (isset($call)) {
                             $sql .= " AND invest.call = :call";
                             $values['call'] = $call;
@@ -1118,6 +1130,7 @@ namespace Goteo\Model {
             return array (
                 'paypal' => 'Paypal',
                 'tpv'    => 'Tarjeta',
+                'drop'   => 'Riego',
                 'cash'   => 'Manual'
             );
         }

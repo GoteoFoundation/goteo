@@ -18,6 +18,7 @@ namespace Goteo\Model {
             $status,
             $amount, // Presupuesto
             $maxdrop, // Limite al capital riego que puede provocar cada aporte
+            $maxproj, // Limite al capital riego que puede conseguir un proyecto
             $resources, // Recursos de capital riego
             $days, // Numero de dias para aplicación de proyectos
             $until = array('day'=>'', 'month'=>'', 'year'=>''), // para visualizar fecha limite en estado aplicación
@@ -421,6 +422,7 @@ namespace Goteo\Model {
                     'scope',
                     'amount',
                     'maxdrop',
+                    'maxproj',
                     'days'
                     );
 
