@@ -96,8 +96,9 @@ namespace Goteo\Controller {
                 }
                 $invest->address = (object) $address;
 
-                // si obtiene dinero de convocatoria
-                if (isset($projectData->called)) {
+                // si está en primera ronda
+                // y obtiene dinero de convocatoria
+                if ($projectData->round == 1 && isset($projectData->called)) {
                     $invest->called = $projectData->called;
                 }
 

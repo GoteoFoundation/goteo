@@ -351,9 +351,9 @@ namespace Goteo\Model {
                     // si es de convocatoria,
                     if (isset($this->called) && $this->called instanceof Call) {
                         
-                        // si no tiene ya el máximo por proyecto
                         // primeo saber cuanto ha conseguido
                         $got = static::invested($this->project, 'call', $this->called->id);
+                        // si ha superado el máximo por proyecto
                         if ($this->called->maxproj > 0 && $got >= $this->called->maxproj) {
                             $errors[] = 'No puede conseguir más capital riego, máximo '.$this->called->maxproj.' &euro; por proyecto.';
                             unset($this->called);
