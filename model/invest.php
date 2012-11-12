@@ -1294,6 +1294,22 @@ namespace Goteo\Model {
                             $Data['paypal']['total'] = $Data['paypal']['first'];
                         }
 
+                        // DROP
+                        $inv_drop = self::getList(array(
+                            'methods' => 'drop',
+                            'projects' => $project,
+                            'investStatus' => '1'
+                        ));
+                        if (!empty($inv_drop)) {
+                            $Data['drop']['first']['fail'] = 0;
+                            foreach ($inv_drop as $invId => $invest) {
+                                $Data['drop']['first']['users'][$invest->user] = $invest->user;
+                                $Data['drop']['first']['invests']++;
+                                $Data['drop']['first']['amount'] += $invest->amount;
+                            }
+                            $Data['drop']['total'] = $Data['drop']['first'];
+                        }
+
                     } elseif ($act_eq === 'sum') {
                         // complicado: primero los de primera ronda, luego los de segunda ronda sumando al total
                         // calcular ultimo dia de primera ronda segun la fecha de pase
@@ -1359,6 +1375,25 @@ namespace Goteo\Model {
                             $Data['paypal']['total'] = $Data['paypal']['first'];
                         }
 
+                        // DROP first
+                        $inv_drop = self::getList(array(
+                            'methods' => 'drop',
+                            'projects' => $project,
+                            'investStatus' => '1',
+                            'date_until' => $last_day
+                        ));
+                        if (!empty($inv_drop)) {
+                            $Data['drop']['first']['fail'] = 0;
+                            foreach ($inv_drop as $invId => $invest) {
+                                $Data['drop']['first']['users'][$invest->user] = $invest->user;
+                                $Data['drop']['first']['invests']++;
+                                $Data['drop']['first']['amount'] += $invest->amount;
+                            }
+                            $Data['drop']['total'] = $Data['drop']['first'];
+                        }
+
+                        // -- Los de segunda
+                        
                         // CASH  second
                         $inv_cash = self::getList(array(
                             'methods' => 'cash',
@@ -1427,7 +1462,25 @@ namespace Goteo\Model {
                             $Data['paypal']['total']['amount'] += $Data['paypal']['second']['amount'];
                         }
 
-                        
+                        // DROP second
+                        $inv_drop = self::getList(array(
+                            'methods' => 'drop',
+                            'projects' => $project,
+                            'investStatus' => '1',
+                            'date_from' => $passed
+                        ));
+                        if (!empty($inv_drop)) {
+                            $Data['drop']['second']['fail'] = 0;
+                            foreach ($inv_drop as $invId => $invest) {
+                                $Data['drop']['second']['users'][$invest->user] = $invest->user;
+                                $Data['drop']['second']['invests']++;
+                                $Data['drop']['second']['amount'] += $invest->amount;
+                                $Data['drop']['total']['invests']++;
+                                $Data['drop']['second']['amount'] += $invest->amount;
+                            }
+                            $Data['drop']['total']['amount'] += $Data['drop']['second']['amount'];
+                        }
+
                     } else {
                         $Data['note'][] = 'ERROR INFORME!! No se ha calculado bien el parametro $act_eq';
                     }
