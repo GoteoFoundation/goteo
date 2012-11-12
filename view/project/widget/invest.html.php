@@ -33,7 +33,7 @@ $action = '/invest/' . $project->id;
     <label><input type="text" id="amount" name="amount" class="amount" value="<?php echo $amount ?>" /><?php echo Text::get('invest-amount-tooltip') ?></label>
 </div>
 
-<?php if ($project->called && $project->called->rest > 0) : ?>
+<?php if ($project->round == 1 && $project->called && $project->called->rest > 0) : ?>
 <div class="widget project-invest project-called">
     <input type="hidden" id="rest" name="rest" value="<?php echo $project->called->rest ?>" />
     <p><?php echo Text::html('call-splash-invest_explain_this', $project->called->user->name) ?>
