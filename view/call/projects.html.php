@@ -19,7 +19,7 @@ foreach ($call->projects as $key=>$proj) {
         unset($call->projects[$key]);
     }
 
-    if ($proj->status == 4 || $proj->status == 5) {
+    if ($proj->round > 1 || $proj->status == 4 || $proj->status == 5) {
         $final[$proj->id] = $proj;
         unset($call->projects[$key]);
     }
