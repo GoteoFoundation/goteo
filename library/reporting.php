@@ -423,8 +423,8 @@ namespace Goteo\Library {
                                         AND   ( contribution IS NULL OR contribution = '')
                                         AND   ( twitter IS NULL      OR twitter = '')
                                         AND   ( facebook IS NULL     OR facebook = '')
-                                        AND   (SELECT COUNT(user_web.url) FROM user_web WHERE user_web.user = user.id) = 0
                                         "
+//                                        AND   (SELECT COUNT(user_web.url) FROM user_web WHERE user_web.user = user.id) = 0
                         ),
                         array(
                             'label' => 'Núm. usuarios con algo rellenado',
@@ -437,8 +437,8 @@ namespace Goteo\Library {
                                         OR    ( contribution IS NOT NULL AND contribution != '')
                                         OR    ( twitter IS NOT NULL      AND twitter != '')
                                         OR    ( facebook IS NOT NULL     AND facebook != '')
-                                        OR    (SELECT COUNT(user_web.url) FROM user_web WHERE user_web.user = user.id) > 0
                                         "
+//                                        OR    (SELECT COUNT(user_web.url) FROM user_web WHERE user_web.user = user.id) > 0
                         ),
                         array(
                             'label' => 'Núm. impulsores que cofinancian a otros',
@@ -549,7 +549,10 @@ namespace Goteo\Library {
                                                 (
                                                 SELECT COUNT(project.id)
                                                 FROM project
-                                                WHERE (project.published IS NOT NULL AND project.published != '0000-00-00')
+                                                WHERE (
+                                                    (project.passed IS NOT NULL AND project.passed != '0000-00-00')
+                                                    OR (project.closed IS NOT NULL AND project.closed != '0000-00-00')
+                                                    )
                                                 AND project.status > 0
                                             ) * 100 as percent
                                         FROM DUAL
