@@ -113,7 +113,7 @@ namespace Goteo\Controller\Admin {
                     // Convocatorias disponibles disponibles
                     $calls = Model\Campaign::available(null, $node);
                     if (empty($calls)) {
-                        Message::Info('No hay más convocatorias disponibles para destacar');
+                        Message::Info('No hay convocatorias disponibles para destacar');
                         throw new Redirection('/admin/campaigns');
                     }
 

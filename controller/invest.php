@@ -368,9 +368,9 @@ namespace Goteo\Controller {
             if (empty($id))
                 throw new Redirection("/project/$project/invest", Redirection::TEMPORARY);
 
-            // quitar el preapproval y cancelar el aporte
+            // dejamos el aporte como en proceso
             $invest = Model\Invest::get($id);
-            $invest->cancel();
+            $invest->setStatus(-1);
 
             // mandarlo a la pagina de aportar para que lo intente de nuevo
             throw new Redirection("/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);

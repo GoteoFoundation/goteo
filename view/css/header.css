@@ -131,8 +131,11 @@ div#sub-header > div > div.slides_container > div.slides_control > div.subhead-b
 div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info h2{
 	font: bold 14px Helvetica, Arial, Geneva, sans-serif;
     margin: 0px;
+    overflow: hidden;
     text-transform: uppercase;
-    width: 255px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 250px;
 }
 
 div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info small{
