@@ -34,6 +34,7 @@ foreach ($Data['issues'] as $issue) {
     $sumData['goteo'] = $sumData['cash_goteo'] + $sumData['tpv_goteo'] + $sumData['pp_goteo'];
     $sumData['tpv_project'] = $sumData['total'] - $sumData['fee_goteo'] - $sumData['goteo'] - $sumData['pp_project'];
     $sumData['project'] = $sumData['total'] - $sumData['fee_goteo'] - $sumData['goteo'];
+    $sumData['drop'] = $Data['drop']['total']['amount'];
     ?>
 <p>
     <?php if (!empty($project->passed)) {
@@ -65,6 +66,11 @@ foreach ($Data['issues'] as $issue) {
         <tr>
             <td>-&nbsp;&nbsp;&nbsp;&nbsp;Comisión del 8&#37; de Goteo.org: <strong><?php echo \amount_format($sumData['goteo'], 2).' &euro;'; ?></strong> (factura que se emitirá por la Fundación Fuentes Abiertas a nombre de la persona o entidad que firma el contrato)</td>
         </tr>
+        <?php if (isset($project->called)) : ?>
+        <tr>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Capital riego de la campa&ntilde; <?php echo $project->called->name ?>: <strong><?php echo \amount_format($sumData['drop']).' &euro;'; ?></strong> (Transferencia de <?php echo $project->called->user->name ?> directamente al impulsor)</td>
+        </tr>
+        <?php endif; ?>
     </table>
 <br />
 
