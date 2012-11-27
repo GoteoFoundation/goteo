@@ -27,6 +27,9 @@ define('DEVGOTEO_LOCAL', true);
 //Estoy en mantenimiento
 define('GOTEO_MAINTENANCE', null);
 
+//Estoy en alto rendimiento
+define('GOTEO_EASY', null);
+
 // Nodo actual
 define('GOTEO_NODE', 'goteo');
 

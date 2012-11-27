@@ -42,9 +42,12 @@ namespace Goteo\Controller {
                 $viewData['title']['others'] = Text::get('discover-group-others-header');
             }
 
+            // si estamos en easy-mode limitamos a 3 proyectos por grupo (en la portada)
+            $limit = (defined('GOTEO_EASY') && \GOTEO_EASY === true) ? 3 : null;
+            
             // cada tipo tiene sus grupos
             foreach ($types as $type) {
-                $projects = Model\Project::published($type);
+                $projects = Model\Project::published($type, $limit);
                 if (empty($projects)) continue;
                 $viewData['lists'][$type] = Listing::get($projects);
             }

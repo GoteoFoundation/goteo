@@ -5,6 +5,7 @@ namespace Goteo\Controller {
     use Goteo\Library\Page,
         Goteo\Library\Feed,
         Goteo\Core\View,
+        Goteo\Core\Redirection,
         Goteo\Model\User\Interest,
         Goteo\Model\Invest;
 
@@ -12,6 +13,10 @@ namespace Goteo\Controller {
 
         public function index ($show = 'activity', $category = null) {
 
+            if (defined('GOTEO_EASY') && \GOTEO_EASY === true) {
+                throw new Redirection('/');
+            }
+            
             $page = Page::get('community');
 
             $items = array();
