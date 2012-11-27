@@ -266,7 +266,7 @@ namespace Goteo\Controller {
                                 //Email de proyecto final segunda ronda a los inversores
                                 self::toInvestors('r2_pass', $project);
 
-                                // Tarea para el admin
+                                // Tareas para gestionar
                                 // calculamos fecha de passed+90 días
                                 $passtime = strtotime($project->passed);
                                 $limsec = date('d/m/Y', \mktime(0, 0, 0, date('m', $passtime), date('d', $passtime)+89, date('Y', $passtime)));
@@ -277,6 +277,20 @@ namespace Goteo\Controller {
                                 $task->url = "/admin/accounts/?projects={$project->id}";
                                 $task->done = null;
                                 $task->save();
+
+                                // y preparar contrato
+                                $task = new Model\Task();
+                                $task->node = \GOTEO_NODE;
+                                $task->text = date('d/m/Y').": Enviar datos contrato <strong>{$project->name}</strong>, {$project->user->name}";
+                                //@TODO enlace a gestión de contrato
+                                $task->url = "/admin/projects?proj_name={$project->name}";
+                                $task->done = null;
+                                $task->save();
+                                
+                                // + mail a mercè
+                                @mail(\GOTEO_CONTACT_MAIL,
+                                    'Preparar contrato ' . $project->name,
+                                    'El proyecto '.$project->name.' ha pasado la primera ronda, enviarle los datos de contrato. Se ha creado una tarea para esto.');
                             }
 
                             echo '<br />';
@@ -328,6 +342,19 @@ namespace Goteo\Controller {
 
                                 //Email de proyecto pasa a segunda ronda a los inversores
                                 self::toInvestors('r1_pass', $project);
+                                
+                                // Tarea para hacer los pagos
+                                $task = new Model\Task();
+                                $task->node = \GOTEO_NODE;
+                                $task->text = date('d/m/Y').": Pagar a <strong>{$project->name}</strong>, {$project->user->name}";
+                                $task->url = "/admin/projects/report/{$project->id}";
+                                $task->done = null;
+                                $task->save();
+                                
+                                // + mail a susana
+                                @mail('susana@goteo.org',
+                                    'Pagar al proyecto ' . $project->name,
+                                    'El proyecto '.$project->name.' ha terminado la segunda ronda, hacer los pagos. Se ha creado una tarea para esto.');
                             }
                             
                         } else {
@@ -581,7 +608,39 @@ namespace Goteo\Controller {
             echo $sql . '<br />';
             $query = Model\Project::query($sql);
             $count = $query->rowCount();
-            echo "Eliminados $count registros de feed.<br />";
+            echo "Eliminados $count registros de feed.<br /><br />";
+            
+            // eliminamos mail antiguo
+            $sql2 = "DELETE
+                FROM `mail` 
+                WHERE (template != 33 OR template IS NULL)
+                AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`date`)), '%j') > 60
+                ";
+            
+            echo $sql2 . '<br />';
+            $query2 = Model\Project::query($sql2);
+            $count2 = $query2->rowCount();
+            echo "Eliminados $count2 registros de mail.<br /><br />";
+            
+            // eliminamos registros de imágenes cuyo archivo no esté en el directorio de imágenes
+            
+            
+            // eliminamos aportes incompletos
+            $sql4 = "DELETE
+                FROM `invest` 
+                WHERE status = -1
+                AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`datetime`)), '%j') > 30
+                ";
+            
+            echo $sql4 . '<br />';
+            $query4 = Model\Project::query($sql4);
+            $count4 = $query4->rowCount();
+            // -- eliminamos registros relativos a aportes no existentes
+            Model\Project::query("DELETE FROM `invest_address` WHERE invest NOT IN (SELECT id FROM `invest`)");
+            Model\Project::query("DELETE FROM `invest_detail`  WHERE invest NOT IN (SELECT id FROM `invest`)");
+            Model\Project::query("DELETE FROM `invest_reward`  WHERE invest NOT IN (SELECT id FROM `invest`)");
+            echo "Eliminados $count4 aportes incompletos y sus registros (recompensa, dirección, detalles) relacionados.<br /><br />";
+            
             echo 'Listo!';
             die();
 
