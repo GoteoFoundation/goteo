@@ -1136,7 +1136,9 @@ namespace Goteo\Controller {
                     }
                 }
 
-                
+                /*
+                 * Ya no enviamos más el aviso de sin actuividad por mensajes/comentarios
+                 * 
                 // si ya lleva 3 meses de publicacion
                 if ($from > 90) {
                     if ($project->id == 'tuderechoasaber.es') break;
@@ -1198,7 +1200,8 @@ namespace Goteo\Controller {
                         }
                     }
                 }
-
+                */
+                
                 // para los financiados
                 if ($project->status == 4) {
                     // mirar el tiempo desde la fecha success
