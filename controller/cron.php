@@ -1090,8 +1090,8 @@ namespace Goteo\Controller {
 
 
 
-                // si ya lleva 3 meses de publicacion
-                if ($from > 90) {
+                // si ya lleva 3 meses de publicacion, hasta máximo un año
+                if ($from > 90 && $from < 360) {
                     //   mirar el tiempo desde la última actualización,
                     $sql = "
                         SELECT
@@ -1247,7 +1247,7 @@ namespace Goteo\Controller {
                             $query = Model\Project::query($sql, array(':email' => $project->user->email));
                             $lastsend = $query->fetchColumn(0);
                             // si hace más de 15 días o nunca se le envió
-                            if ($lastsend > 15 || $lastsend === false) {
+                            if ($lastsend > 30 || $lastsend === false) {
                                 // enviar email 2m_after
                                 self::toOwner('2m_after', $project);
                                 echo 'Enviado Aviso (recompensas pendientes: plantilla 25) al autor del proyecto ' . $project->name . ', '.$msg.', financiado hace ' . $lastsuccess . ' dias, el último aviso se le envió hace ' . $lastsend . ' dias<br />';

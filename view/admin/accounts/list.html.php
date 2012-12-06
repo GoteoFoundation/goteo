@@ -18,8 +18,8 @@ $emails = Invest::emails(true);
     'investStatus' => array (
         'label' => 'Estado del aporte',
         'first' => 'Todos los estados'),
-    'investStatus' => array (
-        'label' => 'Estado de aporte',
+    'procStatus' => array (
+        'label' => 'Estado de financiacion',
         'first' => 'Todos los estados'),
     'calls' => array (
         'label' => 'De la convocatoria',
@@ -50,13 +50,19 @@ $emails = Invest::emails(true);
         <div style="float:left;margin:5px;">
             <label for="<?php echo $filter ?>-filter"><?php echo $data['label'] ?></label><br />
             <select id="<?php echo $filter ?>-filter" name="<?php echo $filter ?>" onchange="document.getElementById('filter-form').submit();">
-                <option value="<?php if ($filter == 'investStatus' || $filter == 'status' || $filter == 'issue') echo 'all' ?>"<?php if (($filter == 'investStatus' || $filter == 'status') && $filters[$filter] == 'all') echo ' selected="selected"'?>><?php echo $data['first'] ?></option>
+                <option value="<?php if ($filter == 'procStatus' || $filter == 'investStatus' || $filter == 'status' || $filter == 'issue') echo 'all' ?>"<?php if (($filter == 'investStatus' || $filter == 'status') && $filters[$filter] == 'all') echo ' selected="selected"'?>><?php echo $data['first'] ?></option>
             <?php foreach ($this[$filter] as $itemId=>$itemName) : ?>
                 <option value="<?php echo $itemId; ?>"<?php if ($filters[$filter] === (string) $itemId) echo ' selected="selected"';?>><?php echo $itemName; ?></option>
             <?php endforeach; ?>
             </select>
         </div>
         <?php endforeach; ?>
+        
+        <div style="float:left;margin:5px;">
+            <label for="amount-filter">Importe desde:</label><br />
+            <input type="text" id ="amount-filter" name="amount" value ="<?php echo $filters['amount']?>" />
+        </div>
+
         <br clear="both" />
         
         <div style="float:left;margin:5px;">

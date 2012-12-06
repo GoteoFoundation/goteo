@@ -51,7 +51,7 @@ namespace Goteo\Controller {
                             'report' => array('label' => 'Informe de proyecto', 'item' => true),
                             'viewer' => array('label' => 'Viendo logs', 'item' => false)
                         ),
-                        'filters' => array('id'=>'', 'methods'=>'', 'investStatus'=>'all', 'projects'=>'', 'name'=>'', 'calls'=>'', 'review'=>'', 'types'=>'', 'date_from'=>'', 'date_until'=>'', 'issue'=>'all')
+                        'filters' => array('id'=>'', 'methods'=>'', 'investStatus'=>'all', 'projects'=>'', 'name'=>'', 'calls'=>'', 'review'=>'', 'types'=>'', 'date_from'=>'', 'date_until'=>'', 'issue'=>'all', 'procStatus'=>'all', 'amount'=>'')
                     ),
                     'banners' => array(
                         'label' => 'Banners',
@@ -288,7 +288,8 @@ namespace Goteo\Controller {
                         'label' => 'Informes',
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false),
-                            'paypal' => array('label' => 'Informe PayPal', 'item' => false)
+                            'paypal' => array('label' => 'Informe PayPal', 'item' => false),
+                            'projects' => array('label' => 'Informe Impulsores', 'item' => true)
                         ),
                         'filters' => array('report'=>'','from'=>'', 'until'=>'')
                     ),

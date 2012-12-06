@@ -2170,6 +2170,17 @@ namespace Goteo\Model {
         }
 
         /*
+         * Estados de proceso de un proyecto
+         */
+        public static function procStatus () {
+            return array(
+                'first' => 'En primera ronda',
+                'second' => 'En segunda ronda',
+                'completed' => 'Terminada segunda ronda'
+                );
+        }
+
+        /*
          * Siguiente etapa en la vida del proyeto
          */
         public static function waitfor () {

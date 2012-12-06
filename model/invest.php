@@ -172,6 +172,10 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND invest.project = :projects";
                 $values[':projects'] = $filters['projects'];
             }
+            if (!empty($filters['amount'])) {
+                $sqlFilter .= " AND invest.amount >= :amount";
+                $values[':amount'] = $filters['amount'];
+            }
             if (!empty($filters['users'])) {
                 $sqlFilter .= " AND invest.user = :users";
                 $values[':users'] = $filters['users'];
@@ -191,6 +195,19 @@ namespace Goteo\Model {
                         break;
                     case 'hide':
                         $sqlFilter .= " AND (invest.issue = 0 OR invest.issue IS NULL)";
+                        break;
+                }
+            }
+            if (!empty($filters['procStatus'])) {
+                switch ($filters['procStatus']) {
+                    case 'first': // en primera ronda
+                        $sqlFilter .= " AND project.status = 3 AND (project.passed IS NULL OR project.passed = '0000-00-00' )";
+                        break;
+                    case 'second': // en segunda ronda
+                        $sqlFilter .= " AND project.status = 3 AND (project.passed IS NOT NULL AND project.passed != '0000-00-00' )";
+                        break;
+                    case 'completed': // financiados
+                        $sqlFilter .= " AND project.status = 4";
                         break;
                 }
             }

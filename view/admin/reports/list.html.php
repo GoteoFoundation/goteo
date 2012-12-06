@@ -6,6 +6,8 @@ $reports = $this['reports'];
 $filters = $this['filters'];
 $data    = $this['data'];
 ?>
+<a href="/admin/reports/projects" class="button">impulsores</a>
+&nbsp;&nbsp;&nbsp;
 <a href="/admin/reports/paypal" class="button">Estado actual PayPal</a>
 
 <div class="widget board">

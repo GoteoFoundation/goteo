@@ -549,6 +549,7 @@ namespace Goteo\Controller\Admin {
             $methods = Model\Invest::methods();
             // estados del proyecto
             $status = Model\Project::status();
+            $procStatus = Model\Project::procStatus();
             // estados de aporte
             $investStatus = Model\Invest::status();
             // listado de proyectos
@@ -619,6 +620,7 @@ namespace Goteo\Controller\Admin {
                     'methods'       => $methods,
                     'types'         => $types,
                     'status'        => $status,
+                    'procStatus'    => $procStatus,
                     'issue'         => $issue,
                     'investStatus'  => $investStatus
                 );
