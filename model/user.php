@@ -154,7 +154,7 @@ namespace Goteo\Model {
                         else {
                             $query = self::query('SELECT email FROM user WHERE id = ?', array($this->id));
                             if($this->email !== $query->fetchColumn()) {
-                                $this->token = md5(uniqid()) . '¬' . $this->email;
+                                $this->token = md5(uniqid()).'¬'.$this->email.'¬'.date('Y-m-d');
                             }
                         }
                     }
@@ -1024,7 +1024,7 @@ namespace Goteo\Model {
 			if($row = $query->fetchObject()) {
                 // tenemos id, nombre, email
                 // genero el token
-                $token = md5(uniqid()) . '¬' . $row->email;
+                $token = md5(uniqid()).'¬'.$row->email.'¬'.date('Y-m-d');
                 self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $row->id, ':token' => $token));
 
                 // Obtenemos la plantilla para asunto y contenido
@@ -1077,7 +1077,7 @@ namespace Goteo\Model {
 			if($row = $query->fetchObject()) {
                 // tenemos id, nombre, email
                 // genero el token
-                $token = md5(uniqid()) . '¬' . $row->email;
+                $token = md5(uniqid()).'¬'.$row->email.'¬'.date('Y-m-d');
                 self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $row->id, ':token' => $token));
 
                 // Obtenemos la plantilla para asunto y contenido

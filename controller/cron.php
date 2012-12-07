@@ -605,10 +605,10 @@ namespace Goteo\Controller {
                 AND (url NOT LIKE '%updates%' OR url IS NULL)
                 ";
             
-            echo $sql . '<br />';
+            // echo $sql . '<br />';
             $query = Model\Project::query($sql);
             $count = $query->rowCount();
-            echo "Eliminados $count registros de feed.<br /><br />";
+            echo "Eliminados $count registros de feed.<br />";
             
             // eliminamos mail antiguo
             $sql2 = "DELETE
@@ -617,10 +617,10 @@ namespace Goteo\Controller {
                 AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`date`)), '%j') > 60
                 ";
             
-            echo $sql2 . '<br />';
+            // echo $sql2 . '<br />';
             $query2 = Model\Project::query($sql2);
             $count2 = $query2->rowCount();
-            echo "Eliminados $count2 registros de mail.<br /><br />";
+            echo "Eliminados $count2 registros de mail.<br />";
             
             // eliminamos registros de imágenes cuyo archivo no esté en el directorio de imágenes
             
@@ -632,16 +632,50 @@ namespace Goteo\Controller {
                 AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`datetime`)), '%j') > 30
                 ";
             
-            echo $sql4 . '<br />';
+            //echo $sql4 . '<br />';
             $query4 = Model\Project::query($sql4);
             $count4 = $query4->rowCount();
             // -- eliminamos registros relativos a aportes no existentes
             Model\Project::query("DELETE FROM `invest_address` WHERE invest NOT IN (SELECT id FROM `invest`)");
             Model\Project::query("DELETE FROM `invest_detail`  WHERE invest NOT IN (SELECT id FROM `invest`)");
             Model\Project::query("DELETE FROM `invest_reward`  WHERE invest NOT IN (SELECT id FROM `invest`)");
-            echo "Eliminados $count4 aportes incompletos y sus registros (recompensa, dirección, detalles) relacionados.<br /><br />";
+            echo "Eliminados $count4 aportes incompletos y sus registros (recompensa, dirección, detalles) relacionados.<br />";
             
+            
+            echo "<hr /> Iniciamos caducidad de tokens<br/>";
+            // eliminamos los tokens que tengan más de 4 días
+            $sql5 = "SELECT id, token FROM user WHERE token IS NOT NULL AND token != '' AND token LIKE '%¬%'";
+            $query5 = Model\Project::query($sql5);
+            foreach ($query5->fetchAll(\PDO::FETCH_OBJ) as $row) {
+                $parts = explode('¬', $row->token);
+                $datepart = strtotime($parts[2]);
+                $today = date('Y-m-d');
+                $datedif = strtotime($today) - $datepart;
+                $days = round($datedif / 86400);
+                if ($days > 4 || !isset($parts[2])) {
+                    echo "User: $row->id  ;  Token: $row->token  ; ";
+                    echo "Datepart: $parts[2]   =>  $datepart  ; ";
+                    echo "Compare: $today  =>  $datedif  ;  ";
+                    echo "Days: $days  ;   ";
+                    
+                    if (Model\Project::query("UPDATE user SET token = '' WHERE id = ?", array($row->id))) {
+                        echo "Token borrado.";
+                    } else {
+                        echo "Fallo al borrar Token!!!";
+                    }
+                    echo "<br />";
+                }
+                
+            }
+            
+            echo "<br />";
+                
             echo 'Listo!';
+            // recogemos el buffer para grabar el log
+            $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
+            \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
+            \chmod($log_file, 0777);
+            
             die();
 
             /*
@@ -719,9 +753,6 @@ namespace Goteo\Controller {
                 }
             }
 
-            // recogemos el buffer para grabar el log
-            $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
-            \file_put_contents($log_file, \ob_get_contents());
 
             */
         }
