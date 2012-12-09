@@ -124,6 +124,22 @@ namespace Goteo\Controller\Admin {
                     }
                     
                     throw new Redirection('/admin/projects/images/'.$id);
+                    
+                } elseif ($action == 'rebase') {
+                    
+                    $todook = true;
+                    
+                    if ($_POST['proceed'] == 'rebase' && !empty($_POST['newid'])) {
+                        $newid = $_POST['newid'];
+                        if (Model\Project::rebase($newid)) {
+                            Message::Info('Verificar el proyecto -> <a href="http://'.SITE_URL.'/project/'.$newid.'" target="_blank">'.$projData->name.'</a>');
+                            throw new Redirection('/admin/projects');
+                        } else {
+                            Message::Info('Ha fallado algo en el rebase, verificar el proyecto -> <a href="http://'.SITE_URL.'/project/'.$this->id.'" target="_blank">'.$projData->name.' ('.$id.')</a>');
+                            throw new Redirection('/admin/projects/rebase/'.$id);
+                        }
+                    }
+                    
                 }
 
             }
@@ -142,17 +158,17 @@ namespace Goteo\Controller\Admin {
                     // pasar un proyecto a revision
                     if ($project->ready($errors)) {
                         $redir = '/admin/reviews/add/'.$project->id;
-                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Revisión</span>';
+                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">RevisiÃ³n</span>';
                     } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Revisión</span>';
+                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">RevisiÃ³n</span>';
                     }
                     break;
                 case 'publish':
-                    // poner un proyecto en campaña
+                    // poner un proyecto en campaÃ±a
                     if ($project->publish($errors)) {
-                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">en Campaña</span>';
+                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">en CampaÃ±a</span>';
                     } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">en Campaña</span>';
+                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">en CampaÃ±a</span>';
                     }
                     break;
                 case 'cancel':
@@ -164,11 +180,11 @@ namespace Goteo\Controller\Admin {
                     }
                     break;
                 case 'enable':
-                    // si no está en edición, recuperarlo
+                    // si no estÃ¡ en ediciÃ³n, recuperarlo
                     if ($project->enable($errors)) {
-                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Edición</span>';
+                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">EdiciÃ³n</span>';
                     } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Edición</span>';
+                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">EdiciÃ³n</span>';
                     }
                     break;
                 case 'complete':
@@ -206,7 +222,7 @@ namespace Goteo\Controller\Admin {
                 }
 
                 if ($action == 'publish') {
-                    // si es publicado, hay un evento público
+                    // si es publicado, hay un evento pÃºblico
                     $log->populate($project->name, '/project/'.$project->id, Text::html('feed-new_project'), $project->gallery[0]->id);
                     $log->doPublic('projects');
                 }
@@ -266,7 +282,7 @@ namespace Goteo\Controller\Admin {
 
             if ($action == 'images') {
                 
-                // imágenes
+                // imÃ¡genes
                 $images = array();
                 
                 // secciones
@@ -299,6 +315,19 @@ namespace Goteo\Controller\Admin {
                         'file' => 'move',
                         'project' => $project,
                         'nodes' => $nodes
+                    )
+                );
+            }
+
+
+            if ($action == 'rebase') {
+                // cambiar la id
+                return new View(
+                    'view/admin/index.html.php',
+                    array(
+                        'folder' => 'projects',
+                        'file' => 'rebase',
+                        'project' => $project
                     )
                 );
             }

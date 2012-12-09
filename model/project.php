@@ -1612,7 +1612,7 @@ namespace Goteo\Model {
          * Para cambiar el id temporal a idealiza
          * solo si es md5
          */
-        public function rebase() {
+        public function rebase($newid = null) {
             try {
                 if (preg_match('/^[A-Fa-f0-9]{32}$/',$this->id)) {
                     // idealizar el nombre
@@ -1648,6 +1648,46 @@ namespace Goteo\Model {
                     } else {
                         throw new Goteo\Core\Exception('Fallo al iniciar transaccion rebase. ' . \trace($e));
                     }
+                } elseif (!empty ($newid)) {
+                    die("Cambiando id proyecto: de {$this->id} a {$newid}");
+                    
+                    // si hay que modificar feed mail
+                    /**
+                     * 
+                     * **/
+                    
+                    
+                    $fail = false;
+                    if (self::query("START TRANSACTION")) {
+                        try {
+                            self::query("UPDATE project_category SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE cost SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE reward SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE support SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE message SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE project_image SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE project_account SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE call_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            // borro los permisos, el dashboard los creará de nuevo
+                            self::query("DELETE FROM acl WHERE url like ?", array('%'.$this->id.'%'));
+
+                            // si todo va bien, commit y cambio el id de la instancia
+                            self::query("COMMIT");
+                            $this->id = $newid;
+                            return true;
+
+                        } catch (\PDOException $e) {
+                            self::query("ROLLBACK");
+                            return false;
+                        }
+                    } else {
+                        throw new Goteo\Core\Exception('Fallo al iniciar transaccion rebase. ' . \trace($e));
+                    }
+                    
+                    
+                    
                 }
 
                 return true;
