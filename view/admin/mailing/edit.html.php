@@ -6,7 +6,7 @@ use Goteo\Library\Text,
 //$templates = Template::getAllMini();
 $templates = array(
     '11' => 'Base',
-    '27' => 'Aviso a los talleristas',
+    '27' => 'Aviso a los donantes',
     '33' => 'Boletin'
 );
 // lista de destinatarios segun filtros recibidos, todos marcados por defecto

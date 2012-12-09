@@ -132,9 +132,16 @@ namespace Goteo\Controller\Admin {
                         $_SESSION['mailing']['filters_txt'] .= 'que su nombre o email contenga <strong>\'' . $filters['name'] . '\'</strong> ';
                     }
 
-                    if (!empty($filters['workshopper'])) {
-                        $sqlFilter .= " AND user.password = SHA1(user.email) ";
-                        $_SESSION['mailing']['filters_txt'] .= 'que su contraseña sea igual que su email ';
+                    if (!empty($filters['donant'])) {
+                        if ($filters['type'] == 'investor') {
+                            $sqlFilter .= " AND invest.resign = 1
+                                AND invest.status IN (1, 3)
+                                AND invest.invested >= '2012-01-01'
+                                AND invest.invested < '2013-01-01'";
+                            $_SESSION['mailing']['filters_txt'] .= 'que haya hecho algun donativo ';
+                        } else {
+                            Message::Error('Solo se filtran donantes si se envia "A los: Cofinanciadores"');
+                        }
                     }
 
                     if ($node != \GOTEO_NODE) {
@@ -159,7 +166,7 @@ namespace Goteo\Controller\Admin {
                             ORDER BY user.name ASC
                             ";
 
-//                        echo '<pre>'.$sql . '<br />'.print_r($values, 1).'</pre>';
+//                        die('<pre>'.$sql . '<br />'.print_r($values, 1).'</pre>');
 
                     if ($query = Model\User::query($sql, $values)) {
                         foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {

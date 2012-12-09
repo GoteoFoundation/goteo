@@ -65,8 +65,8 @@ $filters = $this['filters'];
                     </select>
                 </td>
                 <td>
-                    <label for="work-filter">Talleristas</label><br />
-                    <input type="checkbox" id="work-filter" name="workshopper" value="1" <?php if (!empty($filters['workshopper'])) echo 'checked="checked"';?> />
+                    <label for="donant-filter">Donantes</label><br />
+                    <input type="checkbox" id="donant-filter" name="donant" value="1" <?php if (!empty($filters['donant'])) echo 'checked="checked"';?> />
                 </td>
             </tr>
             <tr>

@@ -84,6 +84,55 @@ namespace Goteo\Controller {
                  *
                  */
             }
+            
+            if ($option == 'donor') {
+                // ver si es donante, cargando sus datos
+                $donation = Model\User\Donor::get($user->id);
+                if (!$donation || !$donation instanceof Model\User\Donor) {
+                    Message::Error(Text::get('dashboard-donor-no_donor'));
+                    throw new Redirection('/dashboard/activity');
+                }
+                
+                if ($action == 'edit' && $donation->confirmed) {
+                    Message::Error(Text::get('dashboard-donor-confirmed'));
+                    throw new Redirection('/dashboard/activity/donor');
+                }
+                
+                // si están guardando, actualizar los datos y guardar
+                if ($action == 'save' && $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['save'] == 'donation') {
+                    $donation->edited   = 1;
+                    $donation->confirmed= 0;
+                    $donation->name     = $_POST['name'];
+                    $donation->nif      = $_POST['nif'];
+                    $donation->address  = $_POST['address'];
+                    $donation->zipcode  = $_POST['zipcode'];
+                    $donation->location = $_POST['location'];
+                    $donation->country  = $_POST['country'];
+                    
+                    if ($donation->save()) {
+                        Message::Info(Text::get('dashboard-donor-saved'));
+                        throw new Redirection('/dashboard/activity/donor');
+                    } else {
+                        Message::Error(Text::get('dashboard-donor-save_fail'));
+                        throw new Redirection('/dashboard/activity/donor/edit');
+                    }
+                }
+                
+                if ($action == 'download')  {
+                    // preparamos los datos para el pdf
+                    // marcamos que los datos estan confirmados
+                    Model\User\Donor::setConfirmed($user->id);
+                    // generamos el pdf y lo mosteramos con la vista específica
+                    
+                    return new View (
+                        'view/dashboard/donor_certificate.html.php',
+                        array(
+                            'donation'  => $donation,
+                            'data'  => $data
+                        )
+                    );
+                }
+            }
 
             return new View (
                 'view/dashboard/index.html.php',
@@ -95,6 +144,7 @@ namespace Goteo\Controller {
                     'message' => $message,
                     'lists'   => $lists,
                     'items'   => $items,
+                    'donation'=> $donation,
                     'status'  => $status,
                     'errors'  => $errors,
                     'success' => $success
@@ -1758,6 +1808,11 @@ namespace Goteo\Controller {
                 );
             }
 
+            // si es donante, ponemos la opción
+            if (Model\User\Donor::get($_SESSION['user']->id) instanceof Model\User\Donor) {
+                $menu['activity']['options']['donor'] = Text::get('dashboard-menu-activity-donor');
+            }
+                
             /*
              * Piñonaco para ricardo amaste para edicion de proyectos de esukadi
              */
@@ -1769,7 +1824,6 @@ namespace Goteo\Controller {
                     )
                 );
             }
-
 
 /*
             // si tiene permiso para ir al admin
