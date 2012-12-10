@@ -5,7 +5,7 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
-		Goteo\Library\Reporting,
+	Goteo\Library\Reporting,
         Goteo\Model;
 
     class Reports {
@@ -13,6 +13,23 @@ namespace Goteo\Controller\Admin {
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
             switch ($action)  {
+                case 'donors':
+
+                    $year = (!empty($filters['year'])) ? $filters['year'] : 2012;
+
+                    $data = Model\User\Donor::getList($year);
+
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'reports',
+                            'file'   => 'donors',
+                            'data'   => $data
+                        )
+                    );
+
+                    break;
+
                 case 'projects':
                     if (empty($id)) {
                     // si no tenemos id,

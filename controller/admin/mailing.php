@@ -16,6 +16,13 @@ namespace Goteo\Controller\Admin {
 
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
+            // año fiscal, esta primera vez es desde 2011
+            $year = '2012';
+            // ESTA PRIMERA VEZ ESESPECIAL  porque el cif no lo tuvimos hasta el 2012
+            $year0 = '2011';
+            $year1 = '2013';
+            
+
             $errors = array();
 
             $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
@@ -136,8 +143,8 @@ namespace Goteo\Controller\Admin {
                         if ($filters['type'] == 'investor') {
                             $sqlFilter .= " AND invest.resign = 1
                                 AND invest.status IN (1, 3)
-                                AND invest.invested >= '2012-01-01'
-                                AND invest.invested < '2013-01-01'";
+                                AND invest.invested >= '{$year0}-01-01'
+                                AND invest.invested < '{$year1}-01-01'";
                             $_SESSION['mailing']['filters_txt'] .= 'que haya hecho algun donativo ';
                         } else {
                             Message::Error('Solo se filtran donantes si se envia "A los: Cofinanciadores"');
