@@ -130,14 +130,30 @@ namespace Goteo\Controller\Admin {
                     $todook = true;
                     
                     if ($_POST['proceed'] == 'rebase' && !empty($_POST['newid'])) {
+
                         $newid = $_POST['newid'];
-                        if (Model\Project::rebase($newid)) {
-                            Message::Info('Verificar el proyecto -> <a href="http://'.SITE_URL.'/project/'.$newid.'" target="_blank">'.$projData->name.'</a>');
-                            throw new Redirection('/admin/projects');
-                        } else {
-                            Message::Info('Ha fallado algo en el rebase, verificar el proyecto -> <a href="http://'.SITE_URL.'/project/'.$this->id.'" target="_blank">'.$projData->name.' ('.$id.')</a>');
+
+                        // pimero miramos que no hay otro proyecto con esa id
+                        $test = Model\Project::getMini($newid);
+                        if ($test->id == $newid) {
+                            Message::Error('Ya hay un proyecto con ese Id.');
                             throw new Redirection('/admin/projects/rebase/'.$id);
                         }
+
+                        if ($projData->status >= 3 && $_POST['force'] != 1) {
+                            Message::Error('El proyecto no está ni en Edición ni en Revisión, no se modifica nada.');
+                            throw new Redirection('/admin/projects/rebase/'.$id);
+                        }
+
+                        if ($projData->rebase($newid)) {
+                            Message::Info('Verificar el proyecto -> <a href="'.SITE_URL.'/project/'.$newid.'" target="_blank">'.$projData->name.'</a>');
+                            throw new Redirection('/admin/projects');
+                        } else {
+                            Message::Info('Ha fallado algo en el rebase, verificar el proyecto -> <a href="'.SITE_URL.'/project/'.$this->id.'" target="_blank">'.$projData->name.' ('.$id.')</a>');
+                            throw new Redirection('/admin/projects/rebase/'.$id);
+                        }
+
+                        
                     }
                     
                 }

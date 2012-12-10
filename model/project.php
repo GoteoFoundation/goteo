@@ -1649,34 +1649,76 @@ namespace Goteo\Model {
                         throw new Goteo\Core\Exception('Fallo al iniciar transaccion rebase. ' . \trace($e));
                     }
                 } elseif (!empty ($newid)) {
-                    die("Cambiando id proyecto: de {$this->id} a {$newid}");
-                    
-                    // si hay que modificar feed mail
-                    /**
-                     * 
-                     * **/
-                    
-                    
+//                   echo "Cambiando id proyecto: de {$this->id} a {$newid}<br /><br />";
                     $fail = false;
+
                     if (self::query("START TRANSACTION")) {
                         try {
-                            self::query("UPDATE project_category SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+
+//                            echo 'en transaccion <br />';
+
+                            // acls
+                            $acls = self::query("SELECT * FROM acl WHERE url like :id", array(':id'=>"%{$this->id}%"));
+                            foreach ($acls->fetchAll(\PDO::FETCH_OBJ) as $rule) {
+                                $url = str_replace($this->id, $newid, $rule->url);
+                                self::query("UPDATE `acl` SET `url` = :url WHERE id = :id", array(':url'=>$url, ':id'=>$rule->id));
+                                
+                            }
+//                            echo 'acls listos <br />';
+
+                            // mails
+                            $mails = self::query("SELECT * FROM mail WHERE html like :id", array(':id'=>"%{$this->id}%"));
+                            foreach ($mails->fetchAll(\PDO::FETCH_OBJ) as $mail) {
+                                $html = str_replace($this->id, $newid, $mail->html);
+                                self::query("UPDATE `mail` SET `html` = :html WHERE id = :id;", array(':html'=>$html, ':id'=>$mail->id));
+
+                            }
+//                            echo 'mails listos <br />';
+
+                            // feed
+                            $feeds = self::query("SELECT * FROM feed WHERE url like :id", array(':id'=>"%{$this->id}%"));
+                            foreach ($feeds->fetchAll(\PDO::FETCH_OBJ) as $feed) {
+                                $title = str_replace($this->id, $newid, $feed->title);
+                                $html = str_replace($this->id, $newid, $feed->html);
+                               self::query("UPDATE `feed` SET `title` = :title, `html` = :html  WHERE id = :id", array(':title'=>$title, ':html'=>$html, ':id'=>$feed->id));
+
+                            }
+
+                            // feed
+                            $feeds2 = self::query("SELECT * FROM feed WHERE target_type = 'project' AND target_id = :id", array(':id'=>$this->id));
+                            foreach ($feeds2->fetchAll(\PDO::FETCH_OBJ) as $feed2) {
+                                self::query("UPDATE `feed` SET `target_id` = '{$newid}'  WHERE id = '{$feed2->id}';");
+
+                            }
+                            
+                            // traductores
+                            $sql = "UPDATE `user_translate` SET `item` = '{$newid}' WHERE `user_translate`.`type` = 'project' AND `user_translate`.`item` = :id;";
+                            self::query($sql, array(':id'=>$this->id));
+
                             self::query("UPDATE cost SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE message SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE project_category SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE project_image SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE project_lang SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE reward SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE support SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE message SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE project_image SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project_account SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE call_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE promote SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            // borro los permisos, el dashboard los creará de nuevo
-                            self::query("DELETE FROM acl WHERE url like ?", array('%'.$this->id.'%'));
+
 
                             // si todo va bien, commit y cambio el id de la instancia
-                            self::query("COMMIT");
-                            $this->id = $newid;
-                            return true;
+                            if (!$fail) {
+                                self::query("COMMIT");
+                                $this->id = $newid;
+                                return true;
+                            } else {
+                                self::query("ROLLBACK");
+                                return false;
+                            }
 
                         } catch (\PDOException $e) {
                             self::query("ROLLBACK");

@@ -17,7 +17,7 @@ if (!$project instanceof Model\Project) {
 ?>
 <script type="text/javascript">
     function idverify() {
-        if ($('#sub-header').val() == '') {
+        if ($('#newid').val() == '') {
             alert('No has puesto la nueva id');
             return false;
         } else {
@@ -26,30 +26,29 @@ if (!$project instanceof Model\Project) {
     }
 </script>
 <div class="widget">
-<p>
-    <?php if (!empty($project->passed)) {
-        echo 'El proyecto terminó la primera ronda el día <strong>'.date('d/m/Y', strtotime($project->passed)).'</strong>.';
-        if ($project->passed != $project->willpass) {
-            echo '<br />Aunque debería haberla terminado el día <strong>'.date('d/m/Y', strtotime($project->willpass)).'</strong>.';
-        }
-    } else {
-        echo 'El proyecto terminará la primera ronda el día <strong>'.date('d/m/Y', strtotime($project->willpass)).'</strong>.';
-    } ?>
-
-</p>
-
-    <p>Cambiar las fechas puede causar cambios en los días de campaña del proyecto.</p>
+    <p>OJO! Cambiar la Id del proyecto afecta a <strong>TODO</strong> lo referente al proyecto!.</p>
 
     <form method="post" action="/admin/projects/rebase/<?php echo $project->id; ?>" onsubmit="return idverify();">
         <input type="hidden" name="id" value="<?php echo $project->id ?>" />
         <input type="hidden" name="oldid" value="<?php echo $project->id ?>" />
 
         <p>
-            <label>
+            <label>Nueva ID para el proyecto:<br />
                 <input type="text" name="newid"  id="newid"
                        
             </label>
         </p>
+
+        <?php if ($project->status >= 3) : ?>
+        <h3>OJO!! El proyecto est&aacute; publicado</h3>
+        <p>
+            Debes marcar expresamente la siguiente casilla, sino dar&aacute; error por estado de proyecto.<br />
+            <label>Marcar que se quiere aplicar aunque el proyecto que no est&aacute; ni en Edici&oacute;n ni en Revisi&oacute;n:<br />
+                <input type="checkbox" name="force" value="1" />
+            </label>
+
+        </p>
+        <?php endif; ?>
         <input type="submit" name="proceed" value="rebase" />
 
     </form>

@@ -265,7 +265,8 @@ namespace Goteo\Controller {
                             'accounts' => array('label' => 'Cuentas del proyecto', 'item' => true),
                             'images' => array('label' => 'Imágenes del proyecto', 'item' => true),
                             'move' => array('label' => 'Moviendo a otro Nodo el proyecto', 'item' => true),
-                            'report' => array('label' => 'Informe Financiero del proyecto', 'item' => true)
+                            'report' => array('label' => 'Informe Financiero del proyecto', 'item' => true),
+                            'rebase' => array('label' => 'Cambiando Id de proyecto', 'item' => true)
                         ),
                         'filters' => array('status'=>'-1', 'category'=>'', 'proj_name'=>'', 'name'=>'', 'node'=>'', 'order'=>'')
                     ),
