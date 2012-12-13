@@ -1124,7 +1124,7 @@ namespace Goteo\Model {
         public static function status ($id = null) {
             $array = array (
                 -1 => 'Incompleto',
-                0  => 'Preaprobado (PayPal)',
+                0  => 'Preaprobado',
                 1  => 'Cobrado por Goteo',
                 2  => 'Cancelado',
                 3  => 'Pagado al proyecto',
