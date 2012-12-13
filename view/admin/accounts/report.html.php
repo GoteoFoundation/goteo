@@ -91,10 +91,16 @@ foreach ($this['invests'] as $invest) {
             <td style="text-align:right;"><?php echo \amount_format($proyecto['cash'], 2) ?></td>
         </tr>
         <tr>
+            <td>Riego</td>
+            <td style="text-align:right;"><?php echo \amount_format($desglose['drop']) ?></td>
+            <td style="text-align:right;">0</td>
+            <td style="text-align:right;"><?php echo \amount_format($desglose['drop'], 2) ?></td>
+        </tr>
+        <tr>
             <td>TOTAL</td>
-            <td style="text-align:right;"><?php echo \amount_format(($desglose['paypal'] + $desglose['tpv'] + $desglose['cash']), 2) ?></td>
+            <td style="text-align:right;"><?php echo \amount_format(($desglose['paypal'] + $desglose['tpv'] + $desglose['cash'] + $desglose['drop']), 2) ?></td>
             <td style="text-align:right;"><?php echo \amount_format(($goteo['paypal'] + $goteo['tpv'] + $goteo['cash']), 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format(($proyecto['paypal'] + $proyecto['tpv'] + $proyecto['cash']), 2) ?></td>
+            <td style="text-align:right;"><?php echo \amount_format(($proyecto['paypal'] + $proyecto['tpv'] + $proyecto['cash'] + $desglose['drop']), 2) ?></td>
         </tr>
     </table>
 
@@ -106,6 +112,7 @@ foreach ($this['invests'] as $invest) {
             <th>PayPal</th>
             <th>Tpv</th>
             <th>Cash</th>
+            <th>Riego</th>
         </tr>
         <?php foreach ($this['investStatus'] as $id=>$label) : if (in_array($id, array('-1'))) continue;?>
         <tr>
@@ -114,6 +121,7 @@ foreach ($this['invests'] as $invest) {
             <td style="text-align:right;"><?php echo \amount_format($estado[$id]['paypal']) ?></td>
             <td style="text-align:right;"><?php echo \amount_format($estado[$id]['tpv']) ?></td>
             <td style="text-align:right;"><?php echo \amount_format($estado[$id]['cash']) ?></td>
+            <td style="text-align:right;"><?php echo \amount_format($estado[$id]['drop']) ?></td>
         </tr>
         <?php endforeach; ?>
     </table>
@@ -126,6 +134,7 @@ foreach ($this['invests'] as $invest) {
             <th>PayPal</th>
             <th>Tpv</th>
             <th>Cash</th>
+            <th>Riego</th>
         </tr>
         <?php foreach ($this['users'] as $user) : ?>
         <tr>
@@ -134,6 +143,7 @@ foreach ($this['invests'] as $invest) {
             <td style="text-align:right;"><?php echo \amount_format($usuario[$user->user]['paypal']) ?></td>
             <td style="text-align:right;"><?php echo \amount_format($usuario[$user->user]['tpv']) ?></td>
             <td style="text-align:right;"><?php echo \amount_format($usuario[$user->user]['cash']) ?></td>
+            <td style="text-align:right;"><?php echo \amount_format($usuario[$user->user]['drop']) ?></td>
         </tr>
         <?php endforeach; ?>
     </table>
@@ -396,7 +406,7 @@ foreach ($this['invests'] as $invest) {
             <td style="text-align:right;"><?php echo \amount_format($Data['cash']['first']['fail']) ?></td>
             <td style="text-align:right;"><?php echo \amount_format($Data['cash']['second']['fail']) ?></td>
             <td style="text-align:right;"><?php echo \amount_format($Data['cash']['total']['fail']) ?></td>
-            <td>Aportes mediante PayPal, TPV o de Capital Riego activos</td>
+            <td>Aportes manuales con incidencia (?)</td>
         </tr>
         <tr>
             <th>Importe</th>
@@ -428,6 +438,77 @@ foreach ($this['invests'] as $invest) {
             <td style="text-align:right;"><?php echo \amount_format($Data['cash']['second']['project']) ?></td>
             <td style="text-align:right;"><?php echo \amount_format($Data['cash']['total']['project']) ?></td>
             <td>92&#37; del importe</td>
+        </tr>
+    </table>
+<?php endif; ?>
+
+<?php if (!empty($Data['drop'])) : ?>
+    <h4>RIEGO</h4>
+    <?php
+        $users_ok = count($usuarios['drop']['users']);
+        $invests_ok = $usuarios['drop']['invests'];
+        $incidencias = 0;
+        $correcto = $desglose['drop'] - $incidencias;
+    ?>
+    <table>
+        <tr>
+            <th></th>
+            <th>1a Ronda</th>
+            <th>2a Ronda</th>
+            <th>Total</th>
+            <th></th>
+        </tr>
+        <tr>
+            <th>Nº Usuarios</th>
+            <td style="text-align:right;"><?php echo count($Data['drop']['first']['users']) ?></td>
+            <td style="text-align:right;"><?php echo count($Data['drop']['second']['users']) ?></td>
+            <td style="text-align:right;"><?php echo count($Data['drop']['total']['users']) ?></td>
+            <td></td>
+        </tr>
+        <tr>
+            <th>Nº Operaciones</th>
+            <td style="text-align:right;"><?php echo $Data['drop']['first']['invests'] ?></td>
+            <td style="text-align:right;"><?php echo $Data['drop']['second']['invests'] ?></td>
+            <td style="text-align:right;"><?php echo $Data['drop']['total']['invests'] ?></td>
+            <td></td>
+        </tr>
+        <tr>
+            <th>Incidencias</th>
+            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['first']['fail']) ?></td>
+            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['second']['fail']) ?></td>
+            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['total']['fail']) ?></td>
+            <td>Aportes de Capital Riego activos en campaña cerrada (o o algo así)</td>
+        </tr>
+        <tr>
+            <th>Importe</th>
+            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['first']['amount']) ?></td>
+            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['second']['amount']) ?></td>
+            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['total']['amount']) ?></td>
+            <td>Capital riego conseguido</td>
+        </tr>
+        <tr>
+            <?php
+            $Data['drop']['first']['goteo']  = 0;
+            $Data['drop']['second']['goteo'] = 0;
+            $Data['drop']['total']['goteo']  = 0;
+            ?>
+            <th>Goteo</th>
+            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['first']['goteo']) ?></td>
+            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['second']['goteo']) ?></td>
+            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['total']['goteo']) ?></td>
+            <td>El riego no tiene comisi&oacute;n Goteo</td>
+        </tr>
+        <tr>
+            <?php
+            $Data['drop']['first']['project']  = $Data['drop']['first']['amount'];
+            $Data['drop']['second']['project'] = $Data['drop']['second']['amount'];
+            $Data['drop']['total']['project']  = $Data['drop']['total']['amount'];
+            ?>
+            <th>Proyecto</th>
+            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['first']['project']) ?></td>
+            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['second']['project']) ?></td>
+            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['total']['project']) ?></td>
+            <td>Todo el riego</td>
         </tr>
     </table>
 <?php endif; ?>

@@ -570,7 +570,7 @@ namespace Goteo\Controller {
                     Message::Info(Text::get('project-messages-closed'));
                 }
 
-                return new View('view/project/public.html.php', $viewData);
+                return new View('view/project/view.html.php', $viewData);
 
             } else {
                 // no lo puede ver

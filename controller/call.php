@@ -562,6 +562,7 @@ namespace Goteo\Controller {
                 'scope',
                 'amount',
                 'maxdrop',
+                'maxproj',
                 'days'
             );
 

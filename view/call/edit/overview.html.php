@@ -361,6 +361,18 @@ $superform = array(
             'value'     => $call->maxdrop
         ),
 
+        'maxproj' => array(
+            'type'      => 'textbox',
+            'required'  => false,
+            'title'     => Text::get('call-field-maxproj'),
+            'size'      => 8,
+            'class'     => 'amount',
+            'hint'      => Text::get('tooltip-call-maxproj'),
+            'errors'    => !empty($errors['maxproj']) ? array($errors['maxproj']) : array(),
+            'ok'        => !empty($okeys['maxproj']) ? array($okeys['maxproj']) : array(),
+            'value'     => $call->maxproj
+        ),
+
         'footer' => array(
             'type'      => 'group',
             'children'  => array(
