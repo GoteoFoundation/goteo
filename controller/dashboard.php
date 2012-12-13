@@ -718,6 +718,42 @@ namespace Goteo\Controller {
                     // contrato
                     case 'contract':
                         if ($action == 'save') {
+                            $contract = Model\Contract::get($_SESSION['project']->id);
+                            
+                            foreach ($_POST as $key=>$value) {
+                                if (isset($contract->$key)) {
+                                    $contract->$key = $value;
+                                }
+                            }
+                            
+                            if ($contract->save($errors)) {
+
+                                $success[] = 'Datos de contrato actualizados';
+
+                                if (!empty($_POST['close_owner'])) {
+                                    $contract->setStatus('owner', true);
+                                    
+                                    // Evento Feed
+                                    $log = new Feed();
+                                    $log->setTarget($project->id);
+                                    $log->populate('usuario cambia los datos del contrato de su proyecto (dashboard)', '/admin/projects',
+                                        \vsprintf('%s ha modificado los datos del contrato del proyecto %s', array(
+                                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                        Feed::item('project', $project->name, $project->id)
+                                    )));
+                                    $log->doAdmin('user');
+                                    unset($log);
+                                }
+                                
+                                
+                            }
+                        }
+                        // fin contrato
+                    break;
+                        
+                    // cuentas
+                    case 'account':
+                        if ($action == 'save') {
                             $accounts = Model\Project\Account::get($project->id);
                             $accounts->bank = $_POST['bank'];
                             $accounts->bank_owner = $_POST['bank_owner'];
@@ -1063,6 +1099,16 @@ namespace Goteo\Controller {
                     $viewData['posts'] = $posts;
                     $viewData['post'] = $post;
                     break;
+                
+                // cuentas
+                case 'account':
+                    $viewData['account'] = Model\Project\Account::get($_SESSION['project']->id);
+                break;
+                
+                // datos de contrato
+                case 'contract':
+                    $viewData['contract'] = Model\Contract::get($_SESSION['project']->id);
+                break;
             }
 
             $viewData['project'] = $project;
@@ -1747,6 +1793,7 @@ namespace Goteo\Controller {
                         'summary'  => Text::get('dashboard-menu-projects-summary'),
                         'updates'  => Text::get('dashboard-menu-projects-updates'),
                         'widgets'  => Text::get('dashboard-menu-projects-widgets'),
+                        'account' => Text::get('dashboard-menu-projects-account'), 
                         'contract' => Text::get('dashboard-menu-projects-contract'), 
                         'supports' => Text::get('dashboard-menu-projects-supports'),
                         'rewards'  => Text::get('dashboard-menu-projects-rewards'),

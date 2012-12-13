@@ -7,7 +7,9 @@ namespace Goteo\Model\Project {
         public
             $project,
             $bank,
-            $paypal;
+            $bank_owner,
+            $paypal,
+            $paypal_owner;
 
 
         /**

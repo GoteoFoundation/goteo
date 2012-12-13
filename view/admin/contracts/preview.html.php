@@ -1,11 +1,9 @@
 <?php
-
-use Goteo\Library\Text;
-
 $contract = $this['contract'];
 ?>
 <div class="widget">
+    <h2>Previsualización datos del contrato</h2>
     <p>
-        Previsualización del contrato
+        <?php echo \trace($contract); ?>
     </p>
 </div>

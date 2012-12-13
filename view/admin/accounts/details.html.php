@@ -39,6 +39,10 @@ $user = $this['user'];
         <?php if ($invest->method != 'paypal' && $invest->status == 1) : ?>
         <a href="/admin/accounts/move/<?php echo $invest->id ?>" class="button">Reubicar este aporte</a>
         <?php endif; ?>
+
+        <?php if (!$invest->resign && $invest->status == 1 && $invest->status == 3) : ?>
+        <a href="/admin/accounts/resign/<?php echo $invest->id ?>" class="button">Es donativo</a>
+        <?php endif; ?>
     </p>
     
     <h3>Detalles de la transaccion</h3>

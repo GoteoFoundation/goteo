@@ -139,6 +139,7 @@ $pagedResults = new \Paginated($this['projects'], 20, isset($_GET['page']) ? $_G
                     <?php if ($project->status == 4) : ?><a href="<?php echo "/admin/projects/fulfill/{$project->id}"; ?>" onclick="return confirm('El proyecto pasara a ser un caso de éxito, ok?');">[Retorno Cumplido]</a><?php endif; ?>
                     <?php if ($project->status < 3 && $project->status > 0) : ?><a href="<?php echo "/admin/projects/cancel/{$project->id}"; ?>" onclick="return confirm('El proyecto va a desaparecer del admin, solo se podra recuperar desde la base de datos, Ok?');">[Descartar]</a><?php endif; ?>
                     <a href="<?php echo "/admin/projects/accounts/{$project->id}"; ?>">[Cuentas]</a>
+                    <?php if (isset($this['contracts'][$project->id])) : ?><a href="<?php echo "/admin/contracts/preview/{$project->id}"; ?>">[Contrato]</a><?php endif; ?>
                     <a href="<?php echo "/admin/projects/move/{$project->id}"; ?>">[Mover]</a>
                     <?php if ($project->status < 4) : ?><a href="<?php echo "/admin/projects/rebase/{$project->id}"; ?>" onclick="return confirm('Esto es MUY DELICADO, seguimos?');">[Cambiar Id]</a><?php endif; ?>
                 </td>

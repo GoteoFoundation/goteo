@@ -3,48 +3,31 @@ use Goteo\Library\Text,
     Goteo\Model\Invest;
 
 $filters = $this['filters'];
-
 ?>
-<!-- filtros -->
-<?php $the_filters = array(
-    'projects' => array (
-        'label' => 'Proyecto',
-        'first' => 'Todos los proyectos'),
-    'methods' => array (
-        'label' => 'Método de pago',
-        'first' => 'Todos los métodos'),
-    'investStatus' => array (
-        'label' => 'Estado de aporte',
-        'first' => 'Todos los estados'),
-    'calls' => array (
-        'label' => 'De la convocatoria',
-        'first' => 'Ninguna'),
-    'types' => array (
-        'label' => 'Extra',
-        'first' => 'Todos')
-); ?>
 <div class="widget board">
     <h3 class="title">Filtros</h3>
-    <form id="filter-form" action="/admin/invests" method="get">
+    <form id="filter-form" action="/admin/contracts" method="get">
         <input type="hidden" name="filtered" value="yes" />
-        <?php foreach ($the_filters as $filter=>$data) : ?>
         <div style="float:left;margin:5px;">
-            <label for="<?php echo $filter ?>-filter"><?php echo $data['label'] ?></label><br />
-            <select id="<?php echo $filter ?>-filter" name="<?php echo $filter ?>" onchange="document.getElementById('filter-form').submit();">
-                <option value="<?php if ($filter == 'investStatus' || $filter == 'status') echo 'all' ?>"<?php if (($filter == 'investStatus' || $filter == 'status') && $filters[$filter] == 'all') echo ' selected="selected"'?>><?php echo $data['first'] ?></option>
-            <?php foreach ($this[$filter] as $itemId=>$itemName) : ?>
-                <option value="<?php echo $itemId; ?>"<?php if ($filters[$filter] === (string) $itemId) echo ' selected="selected"';?>><?php echo substr($itemName, 0, 50); ?></option>
-            <?php endforeach; ?>
+            <label for="projects-filter">Segun estado del proyecto</label><br />
+            <select id="projects-filter" name="project" onchange="document.getElementById('filter-form').submit();">
+                <option value="all"<?php echo ($filters['project'] == 'all') ? ' selected="selected"' : ''; ?>>En campaña o financiados</option>
+                <option value="goingon"<?php echo ($filters['project'] == 'goingon') ? ' selected="selected"' : ''; ?>>En campa&ntilde;a</option>
+                <option value="passed"<?php echo ($filters['project'] == 'passed') ? ' selected="selected"' : ''; ?>>Pasado la primera ronda</option>
+                <option value="succed"<?php echo ($filters['project'] == 'succed') ? ' selected="selected"' : ''; ?>>Terminado la segunda ronda</option>
             </select>
         </div>
-        <?php endforeach; ?>
-        <br clear="both" />
-
         <div style="float:left;margin:5px;">
-            <label for="name-filter">Alias/Email del usuario:</label><br />
-            <input type="text" id ="name-filter" name="name" value ="<?php echo $filters['name']?>" />
+            <label for="contract-filter">Segun estado del contrato</label><br />
+            <select id="contract-filter" name="contract" onchange="document.getElementById('filter-form').submit();">
+                <option value="all"<?php echo ($filters['contract'] == 'all') ? ' selected="selected"' : ''; ?>>En cualquier estado</option>
+                <option value="none"<?php echo ($filters['contract'] == 'none') ? ' selected="selected"' : ''; ?>>Sin rellenar</option>
+                <option value="filled"<?php echo ($filters['contract'] == 'filled') ? ' selected="selected"' : ''; ?>>Contrato rellenado</option>
+                <option value="sended"<?php echo ($filters['contract'] == 'sended') ? ' selected="selected"' : ''; ?>>Contrato enviado</option>
+                <option value="checked"<?php echo ($filters['contract'] == 'checked') ? ' selected="selected"' : ''; ?>>Contrato revisado</option>
+                <option value="ready"<?php echo ($filters['contract'] == 'ready') ? ' selected="selected"' : ''; ?>>Documento generado</option>
+            </select>
         </div>
-
         <br clear="both" />
 
         <div style="float:left;margin:5px;">
@@ -52,53 +35,81 @@ $filters = $this['filters'];
         </div>
     </form>
     <br clear="both" />
-    <a href="/admin/invests/?reset=filters">Quitar filtros</a>
+    <a href="/admin/contracts/?reset=filters">Quitar filtros</a>
 </div>
 
 <div class="widget board">
-<?php if ($filters['filtered'] != 'yes') : ?>
-    <p>Es necesario poner algun filtro, hay demasiados registros!</p>
-<?php elseif (!empty($this['list'])) : ?>
-<?php $Total = 0; foreach ($this['list'] as $invest) { $Total += $invest->amount; } ?>
-    <p><strong>TOTAL:</strong>  <?php echo number_format($Total, 0, '', '.') ?> &euro;</p>
-    
-    <table width="100%">
+<?php if (!empty($this['list'])) : ?>
+    <table>
         <thead>
             <tr>
                 <th></th>
-                <th>Aporte ID</th>
-                <th>Fecha</th>
-                <th>Cofinanciador</th>
-                <th>Proyecto</th>
-                <th>Metodo</th>
-                <th>Estado</th>
-                <th>Importe</th>
+                <th styles="min-width:20%;">Proyecto</th>
+                <th styles="min-width:20%;">Estado del Proyecto</th>
+                <th styles="min-width:20%;">Impulsor</th>
+                <th styles="min-width:20%;">Estado del Contrato</th>
+                <th>Número</th>
+                <th>Documento</th>
             </tr>
         </thead>
 
         <tbody>
-            <?php foreach ($this['list'] as $invest) : ?>
+            <?php foreach ($this['list'] as $item) : 
+                
+                // objeto contrato
+                $contract = $this['contracts'][$item->id];
+                
+                // filtro segun estado de proyecto y/o estadod e contrato
+                $filtered = false;
+                
+                if ($filters['project'] != 'all') {
+                    if ( ($filters['project'] == 'goingon' && $item->status != 3) 
+                        || ($filters['project'] == 'passed' && empty($item->passed)) 
+                        || ($filters['project'] == 'succed' && $item->status != 4) 
+                            ) {
+                        continue;
+                    }
+                }
+            
+                if ($filters['contract'] != 'all') {
+                    if ( ($filters['contract'] == 'none' && empty($contract) )
+                        || ($filters['contract'] == 'filled' && !empty($contract) ) 
+                        || ($filters['contract'] == 'sended' && (empty($contract) || !$contract->status_owner )) 
+                        || ($filters['contract'] == 'checked' && (empty($contract) || !$contract->status_admin )) 
+                        || ($filters['contract'] == 'ready' && (empty($contract) || empty($contract->status_pdf) )) 
+                            ) {
+                        continue;
+                    }
+                }
+            
+                ?>
             <tr>
-                <td><a href="/admin/invests/details/<?php echo $invest->id ?>" title="<?php
-                    if ($invest->anonymous == 1)  echo 'Anónimo ';
-                    if ($invest->resign == 1)  echo 'Donativo ';
-                    if (!empty($invest->admin)) echo 'Manual ';
-                    if (!empty($invest->campaign)) echo 'Riego ';
-                    if (!empty($invest->droped)) echo 'Regado (<strong>'.$invest->droped.'</strong>)';
-                   ?>">[Detalles]</a></td>
-                <td><?php echo $invest->id ?></td>
-                <td><?php echo $invest->invested ?></td>
-                <td><a href="/admin/users?id=<?php echo $invest->user ?>" target="_blank"><?php echo $this['users'][$invest->user]; ?></a><?php if (!empty($invest->call)) echo '<br />(<strong>'.$this['calls'][$invest->call].'</strong>)'; ?></td>
-                <td><a href="/admin/projects/?name=<?php echo $this['projects'][$invest->project] ?>" target="_blank"><?php echo $this['projects'][$invest->project] ?></a></td>
-                <td><?php echo $this['methods'][$invest->method] ?></td>
-                <td><?php echo $this['investStatus'][$invest->investStatus] ?></td>
-                <td><?php echo $invest->amount ?></td>
+                <td><?php if (!empty($contract)) : ?><a href="/admin/contracts/edit/<?php echo $item->id ?>">[Revisar]<?php endif; ?></a></td>
+                <td><?php echo Text::recorta($item->name, 20) ?></td>
+                <td><?php if ($item->status == 3 && !empty($item->passed)) 
+                    echo 'Pasado la primera ronda';
+                else
+                    echo $this['status'][$item->status] ?></td>
+                <td><a href="/admin/users/manage/<?php echo $item->owner ?>"><?php echo Text::recorta($item->user->name, 20) ?></a></td>
+                <td><a href="/admin/contracts/preview/<?php echo $item->id ?>"><?php 
+                    if (empty($contract)) {
+                        echo 'Pendiente';
+                    } elseif (!$contract->status_owner) {
+                        echo  'No enviado';
+                    } elseif (!$contract->status_admin) {
+                        echo  'No revisado';
+                    } elseif (!$contract->status_pdf) {
+                        echo  'Sin documento';
+                    }
+                ?></a></td>
+                <td><?php echo $contract->number ?></td>
+                <td><?php if (!empty($contract->status_pdf)) echo $contract->status_pdf ?></td>
             </tr>
             <?php endforeach; ?>
         </tbody>
 
     </table>
 <?php else : ?>
-    <p>No hay aportes que cumplan con los filtros.</p>
+    <p>No hay ningun proyecto con contrato en curso.</p>
 <?php endif;?>
 </div>
