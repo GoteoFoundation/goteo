@@ -75,6 +75,13 @@ $user = $this['user'];
     </dl>
 
     <dl>
+        <dt>Donativo:</dt>
+        <dd>
+            <?php echo ($invest->resign) ? 'SI' : 'NO'; ?>
+        </dd>
+    </dl>
+
+    <dl>
         <dt>Método de pago:</dt>
         <dd><?php echo $invest->method . '   '; ?>
             <?php

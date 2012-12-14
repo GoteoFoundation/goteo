@@ -11,9 +11,6 @@ $rewards = array();
 foreach ($invest->rewards as $key => $data) {
     $rewards[$data->id] = $data->id;
 }
-if (empty($rewards)) {
-    $invest->resign = true;
-}
 ?>
 <div class="widget">
     <p>
@@ -26,10 +23,18 @@ if (empty($rewards)) {
 <form method="post" action="/admin/rewards/edit/<?php echo  $invest->id; ?>" >
     <h3>Recompensa</h3>
     <ul style="list-style: none;">
+
         <li>
             <label>
-                <input class="individual_reward" type="radio" id="resign_reward" name="selected_reward" value="0" amount="0" <?php if ($invest->resign) echo ' checked="checked"'; ?>/>
-                <?php echo Text::get('invest-resign') ?>
+                <input class="individual_reward" type="checkbox" id="resign" name="resign" value="1" <?php if ($invest->resign) echo ' checked="checked"'; ?>/>
+                Donativo
+            </label>
+        </li>
+        <li><hr /></li>
+        <li>
+            <label>
+                <input class="individual_reward" type="radio" id="no_reward" name="selected_reward" value="0" amount="0" <?php if (empty($ewards)) echo ' checked="checked"'; ?>/>
+                Ninguna recompensa.
             </label>
         </li>
         <!-- <span class="chkbox"></span> -->
