@@ -541,6 +541,15 @@ namespace Goteo\Controller\Admin {
                 );
             }
 
+            if ($action == 'resign' && !empty($id) && $_GET['token'] == md5('resign')) {
+                if ($invest->setResign(true)) {
+                    Model\Invest::setDetail($invest->id, 'manually-resigned', 'Se ha marcado como donativo independientemente de las recompensas');
+                    throw new Redirection('/admin/accounts/detail/'.$invest->id);
+                } else {
+                    $errors[] = 'Ha fallado al marcar donativo';
+                }
+            }
+
             if (!empty($errors)) {
                 Message::Error(implode('<br />', $errors));
             }

@@ -1038,6 +1038,25 @@ namespace Goteo\Model {
         }
 
         /*
+         *  Modifica el campo resign para marcar/desmarcar donativo (independientemente de la recompensa)
+         */
+        public function setResign ($resign) {
+
+            $values = array(
+                ':id' => $this->id,
+                ':resign' => $resign
+            );
+
+            $sql = "UPDATE invest SET resign = :resign WHERE id = :id";
+            if (self::query($sql, $values)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+        /*
          *  marca un aporte como devuelto (devuelto el dinero despues de haber sido cargado)
          */
         public function returnPayment () {
