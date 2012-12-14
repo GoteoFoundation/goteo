@@ -87,12 +87,40 @@ namespace Goteo\Model\User {
             }
         }
 
-        public function getList($year) {
+        public function getList($filters = array()) {
 
+            $year = empty($filter['year']) ? '2012' : $filter['year'];
             $year0 = $year == 2012 ? $year - 1 : $year; // solo para el 2012
             $year1 = $year + 1;
 
+            $values = array();
+
             $list = array();
+
+            $sqlFilter = '';
+            if (!empty($filters['user'])) {
+                $user = $filters['user'];
+                $sqlFilter .= " AND (user.id LIKE :user OR user.name LIKE :user OR user.email LIKE :user)";
+                $values[':user'] = "%{$user}%";
+            }
+
+            if (!empty($filters['status'])) {
+                switch ($filters['status']) {
+                    case 'pending': // Pendientes de confirmar
+                        $sqlFilter .= " AND user_donation.user IS NOT NULL";
+                        break;
+                    case 'confirmed': // Confirmados
+                        $sqlFilter .= " AND user_donation.edited = 1";
+                        break;
+                    case 'emited': // Certificado emitido
+                        $sqlFilter .= " AND user_donation.confirmed = 1";
+                        break;
+                    case 'notemited': //Confirmado pero no emitido
+                        $sqlFilter .= " AND user_donation.edited = 1 AND (user_donation.confirmed = 0 OR user_donation.confirmed IS NULL)";
+                        break;
+                }
+                $values[':user'] = "%{$user}%";
+            }
 
             $sql = "SELECT
                         user.id as id,
@@ -106,7 +134,7 @@ namespace Goteo\Model\User {
                         IFNULL(user_donation.amount, SUM(invest.amount)) as amount,
                         IFNULL(user_donation.numproj, COUNT(invest.project)) as numproj,
                         IFNULL(user_donation.year, '{$year}') as year,
-                        IFNULL(user_donation.user, 'Pendiente datos') as pending,
+                        IFNULL(user_donation.user, 'Pendiente') as pending,
                         user_donation.edited as edited,
                         user_donation.confirmed as confirmed
                 FROM  invest
@@ -117,10 +145,11 @@ namespace Goteo\Model\User {
                 AND invest.status IN ('1', '3')
                 AND invest.invested >= '{$year0}-01-01'
                 AND invest.invested < '{$year1}-01-01'
+                $sqlFilter
                 GROUP BY invest.user
                 ORDER BY user.email ASC";
 
-
+//die ($sql);
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
                 $list[] = $item;

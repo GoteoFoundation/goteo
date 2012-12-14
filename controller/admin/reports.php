@@ -15,15 +15,16 @@ namespace Goteo\Controller\Admin {
             switch ($action)  {
                 case 'donors':
 
-                    $year = (!empty($filters['year'])) ? $filters['year'] : 2012;
+                    $filters['year'] = (!empty($filters['year'])) ? $filters['year'] : 2012;
 
-                    $data = Model\User\Donor::getList($year);
+                    $data = Model\User\Donor::getList($filters);
 
                     return new View(
                         'view/admin/index.html.php',
                         array(
                             'folder' => 'reports',
                             'file'   => 'donors',
+                            'filters'=> $filters,
                             'data'   => $data
                         )
                     );

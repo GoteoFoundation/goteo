@@ -3,22 +3,39 @@
 use Goteo\Library\Text;
 
 $data = $this['data'];
+$filters = $this['filters'];
 ?>
 <div class="widget board">
     <form id="filter-form" action="/admin/reports/donors" method="get">
 
         <div style="float:left;margin:5px;">
             <label for="year-filter">A&ntilde;o fiscal:</label><br />
-            <select id ="year-filter" name="Year">
-                <option value="2012">Hasta 2012</option>
-                <option value="2013">2013</option>
+            <select id ="year-filter" name="year">
+                <option value="2012"<?php if ($filters['year']=='2012') echo ' selected="selected"'; ?>>Hasta 2012</option>
+                <option value="2013"<?php if ($filters['year']=='2013') echo ' selected="selected"'; ?>>2013</option>
             </select>
+        </div>
+
+        <div style="float:left;margin:5px;">
+            <label for="status-filter">Estado datos:</label><br />
+            <select id ="status-filter" name="status">
+                <option value=""<?php if ($filters['status']=='') echo ' selected="selected"'; ?>>Todos</option>
+                <option value="pending"<?php if ($filters['status']=='pending') echo ' selected="selected"'; ?>>Pendientes de confirmar</option>
+                <option value="confirmed"<?php if ($filters['status']=='confirmed') echo ' selected="selected"'; ?>>Confirmados</option>
+                <option value="emited"<?php if ($filters['status']=='emited') echo ' selected="selected"'; ?>>Certificado emitido</option>
+                <option value="notemited"<?php if ($filters['status']=='notemited') echo ' selected="selected"'; ?>>Confirmado pero no emitido</option>
+            </select>
+        </div>
+
+        <div style="float:left;margin:5px;">
+            <label for="user-filter">Usuario (id/alias/email):</label><br />
+            <input id="user-filter" name="user" value="<?php echo $filters['user']; ?>" />
         </div>
 
         <br clear="both" />
 
         <div style="float:left;margin:5px;">
-            <input type="submit" value="Ver donantes" />
+            <input type="submit" value="Filtrar" />
         </div>
     </form>
 </div>
@@ -29,41 +46,32 @@ $data = $this['data'];
         <thead>
             <tr>
                 <th>Usuario</th>
-                <th>Nombre</th>
-                <th>Nif</th>
+                <th>Datos</th>
                 <th>Cantidad</th>
                 <th>Proyectos</th>
-                <th></th>
-                <th>Datos</th>
-                <th>Certificado</th>
-            </tr>
-            <tr>
-                <th colspan="3">Direcci&oacute;n</th>
+                <th style="max-width: 20px;"></th>
+                <th>Direcci&oacute;n</th>
                 <th>CP</th>
-                <th colspan="2">Localidad</th>
-                <th colpsan="2">Pa&iacute;s</th>
+                <th>Localidad</th>
+                <th>Pa&iacute;s</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($data as $row) : ?>
             <tr>
                 <td><a href="/admin/users/?id=<?php echo $row->id; ?>"><?php echo $row->email; ?></a></td>
-                <td><?php echo $row->name; ?></td>
-                <td><?php echo $row->nif; ?></td>
+                <td><?php echo "{$row->name} "; ?> <?php echo $row->nif; ?></td>
                 <td><?php echo $row->amount; ?></td>
                 <td><?php echo $row->numproj; ?></td>
-                <td><?php echo ($row->pending == $row->id) ? '' : $row->pending; ?></td>
-                <td><?php echo ($row->edited) ? 'Confirmados' : ''; ?></td>
-                <td><?php echo ($row->confirmed) ? 'Emitido' : ''; ?></td>
-            </tr>
-            <tr>
+                <td>
+                    <?php echo ($row->pending == $row->id) ? '' : $row->pending; ?>
+                    <?php if ($row->confirmed) echo ' Emitido';
+                    elseif ($row->edited) echo ' Confirmado'; ?>
+                </td>
                 <td><?php echo $row->address; ?></td>
                 <td><?php echo $row->zipcode; ?></td>
                 <td><?php echo $row->location; ?></td>
                 <td><?php echo $row->country; ?></td>
-            </tr>
-            <tr>
-                <td colspan="8"><hr /></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

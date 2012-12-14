@@ -290,9 +290,10 @@ namespace Goteo\Controller {
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false),
                             'paypal' => array('label' => 'Informe PayPal', 'item' => false),
-                            'projects' => array('label' => 'Informe Impulsores', 'item' => true)
+                            'projects' => array('label' => 'Informe Impulsores', 'item' => true),
+                            'donors' => array('label' => 'Informe Donantes', 'item' => false)
                         ),
-                        'filters' => array('report'=>'','from'=>'', 'until'=>'')
+                        'filters' => array('report'=>'','from'=>'', 'until'=>'', 'year'=>'2012', 'status'=>'', 'user'=>'')
                     ),
                     'reviews' => array(
                         'label' => 'Revisiones',
@@ -948,7 +949,8 @@ namespace Goteo\Controller {
                     // si lo tenemos en el get, aplicamos ese a la sesión y al array
                     $filters[$field] = (string) $_GET[$field];
                     $_SESSION['admin_filters'][$option][$field] = (string) $_GET[$field];
-                    if ( ($option == 'projects' && $field == 'user')
+                    if ( ($option == 'reports' && $field == 'user')
+                        || ($option == 'projects' && $field == 'user')
                         || ($option == 'users' && $field == 'name')
                         || ($option == 'accounts' && $field == 'name')
                         || ($option == 'rewards' && $field == 'name') ) {
