@@ -9,7 +9,7 @@ switch ($this['action']) :
     case 'edit':
 ?>
 <div class="widget">
-    <h3><?php echo Text::get('dashboard-menu-activity-donor'); ?></h3>
+    <h3><?php echo Text::get('dashboard-activity-donor-header'); ?></h3>
     <p><?php echo Text::get('dashboard-donor-edit_guide') ?></p>
 </div>
     

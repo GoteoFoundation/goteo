@@ -41,7 +41,7 @@ $user = $this['user'];
         <?php endif; ?>
 
         <?php if (!$invest->resign && $invest->status == 1 && $invest->status == 3) : ?>
-        <a href="/admin/accounts/resign/<?php echo $invest->id ?>" class="button">Es donativo</a>
+        <a href="/admin/accounts/resign/<?php echo $invest->id ?>/?token=<?php echo md5('resign'); ?>" class="button">Es donativo</a>
         <?php endif; ?>
     </p>
     
