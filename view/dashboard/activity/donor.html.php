@@ -79,7 +79,8 @@ switch ($this['action']) :
     case 'view':
 ?>
 <div class="widget">
-    <h3><?php echo Text::get('dashboard-menu-activity-donor'); ?></h3>
+    <h3><?php echo Text::get('dashboard-activity-donor-header'); ?></h3>
+    <p><?php echo Text::get('dashboard-donor-edit_guide') ?></p>
     <dl>
         <dt><?php echo Text::get('donor-field-amount') ?></dt>
         <dd><?php echo \amount_format($donation->amount) ?> &euro;</dd>
@@ -115,7 +116,7 @@ switch ($this['action']) :
 
     <p>
       <?php if (!$donation->confirmed) : ?><a class="button" href="/dashboard/activity/donor/edit"><?php echo Text::get('dashboard-donor-edit_data'); ?></a><?php endif; ?>        
-      <?php if ($donation->edited) : ?><a class="button" href="/dashboard/activity/donor/download" onclick="return confirm('<?php echo Text::get('dashboard-donor-confirm_data'); ?>')" target="_blank"><?php echo Text::get('dashboard-donor-download_certificate'); ?></a><?php endif; ?>
+      <?php if ($donation->edited) : ?><a class="button" href="/dashboard/activity/donor/download" <?php if (!$donation->confirmed) : ?>onclick="return confirm('<?php echo Text::get('dashboard-donor-confirm_data'); ?>')"<?php endif; ?> target="_blank"><?php echo Text::get('dashboard-donor-download_certificate'); ?></a><?php endif; ?>
     </p>
 </div>
 <?php       

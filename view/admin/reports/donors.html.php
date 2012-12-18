@@ -5,6 +5,7 @@ use Goteo\Library\Text;
 $data = $this['data'];
 $filters = $this['filters'];
 ?>
+<a href="/sacaexcel/donors" target="_blank">Sacaexcel</a>
 <div class="widget board">
     <form id="filter-form" action="/admin/reports/donors" method="get">
 

@@ -22,7 +22,7 @@ namespace Goteo\Controller {
         }
 
         /*
-         * Sección, Mi actividad
+         * SecciÃ³n, Mi actividad
          * Opciones:
          *      'projects' los proyectos del usuario y a los que ha aportado,
          *      'comunity' relacion con la comunidad
@@ -98,7 +98,7 @@ namespace Goteo\Controller {
                     throw new Redirection('/dashboard/activity/donor');
                 }
                 
-                // si están guardando, actualizar los datos y guardar
+                // si estÃ¡n guardando, actualizar los datos y guardar
                 if ($action == 'save' && $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['save'] == 'donation') {
                     $donation->edited   = 1;
                     $donation->confirmed= 0;
@@ -120,18 +120,51 @@ namespace Goteo\Controller {
                 
                 if ($action == 'download')  {
                     // preparamos los datos para el pdf
+                    $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year);
+                    $donation->userData = Model\User::getMini($donation->user);
                     // marcamos que los datos estan confirmados
                     Model\User\Donor::setConfirmed($user->id);
-                    // generamos el pdf y lo mosteramos con la vista específica
-                    
-                    return new View (
-                        'view/dashboard/donor_certificate.html.php',
-                        array(
-                            'donation'  => $donation,
-                            'data'  => $data
-                        )
-                    );
+                    // generamos el pdf y lo mosteramos con la vista especÃ­fica
+
+                    // estos pdf se guardan en /data/pdfs/donativos
+                    // el formato del archivo es: Ymd_nif_userid
+                    // se genera una vez, si ya estÃ¡ generado se abre directamente
+                    if (!empty($donation->pdf) && file_exists('data/pdfs/donativos/'.$donation->pdf)) {
+
+                        // cargar y abrir
+        		header('Content-type: application/pdf');
+                        echo file_get_contents('data/pdfs/donativos/'.$donation->pdf);
+                        die();
+                        
+                    } else {
+
+                        $objeto = new \Goteo\Library\Num2char($donation->amount, null);
+                        $donation->amount_char = $objeto->getLetra();
+
+                        $filename = date('Ymd')."_{$donation->nif}_{$donation->user}.pdf";
+
+
+                        $debug = false;
+
+                        if ($debug)
+                            header('Content-type: text/html');
+
+                        require_once 'library/pdf.php';  // Libreria pdf
+                        $pdf = donativeCert($donation);
+
+                        if ($debug) {
+                            echo 'FIN';
+                            echo '<hr><pre>' . print_r($pdf, 1) . '</pre>';
+                        } else {
+                            $pdf->Output('data/pdfs/donativos/' . $filename, 'F');
+//POR AHORA NO                            $donation->setPdf($filename);
+                            $pdf->Output();
+                            die;
+                        }
+                        
+                    }
                 }
+                // fin action download
             }
 
             return new View (
@@ -156,9 +189,9 @@ namespace Goteo\Controller {
         /*
          * Seccion, Mi perfil
          * Opciones:
-         *      'public' perfil público (paso 1), 
+         *      'public' perfil pÃºblico (paso 1), 
          *      'personal' datos personales (paso 2),
-         *      'access' configuracion (cambio de email y contraseña)
+         *      'access' configuracion (cambio de email y contraseÃ±a)
          *
          */
         public function profile ($option = 'profile', $action = 'edit') {
@@ -261,7 +294,7 @@ namespace Goteo\Controller {
                             ));
                         }
 
-                        /// este es el único save que se lanza desde un metodo process_
+                        /// este es el Ãºnico save que se lanza desde un metodo process_
                         if ($user->save($errors)) {
                             Message::Info(Text::get('user-profile-saved'));
                             $user = Model\User::flush();
@@ -299,7 +332,7 @@ namespace Goteo\Controller {
                         }
                     break;
 
-                    //cambio de email y contraseña
+                    //cambio de email y contraseÃ±a
                     case 'access':
                         // E-mail
                         if(!empty($_POST['user_nemail']) || !empty($_POST['user_remail'])) {
@@ -324,10 +357,10 @@ namespace Goteo\Controller {
                                 $log_action = 'Cambiado su email'; //feed admin
                             }
                         }
-                        // Contraseña
+                        // ContraseÃ±a
                         if(!empty($_POST['user_npassword']) ||!empty($_POST['user_rpassword'])) {
-                    // Ya no checkeamos más la contraseña actual (ni en recover ni en normal)
-                    // porque los usuarios que acceden mediante servicio no tienen contraseña
+                    // Ya no checkeamos mÃ¡s la contraseÃ±a actual (ni en recover ni en normal)
+                    // porque los usuarios que acceden mediante servicio no tienen contraseÃ±a
                             /*
                             if(!isset($_SESSION['recovering']) && empty($_POST['user_password'])) {
                                 $errors['password'] = Text::get('error-user-password-empty');
@@ -356,11 +389,11 @@ namespace Goteo\Controller {
                                 unset($_POST['user_rpassword']);
                                 $success[] = Text::get('user-password-changed');
 
-                                $log_action = 'Cambiado su contraseña'; //feed admin
+                                $log_action = 'Cambiado su contraseÃ±a'; //feed admin
                             }
                         }
                         if(empty($errors) && $user->save($errors)) {
-                            // Refresca la sesión.
+                            // Refresca la sesiÃ³n.
                             $user = Model\User::flush();
                             if (isset($_SESSION['recovering'])) unset($_SESSION['recovering']);
                         } else {
@@ -368,7 +401,7 @@ namespace Goteo\Controller {
                         }
                     break;
 
-                    // preferencias de notificación
+                    // preferencias de notificaciÃ³n
                     case 'preferences':
                         // campos de preferencias
                         $fields = array(
@@ -390,7 +423,7 @@ namespace Goteo\Controller {
                         if (!empty ($preferences)) {
                             if (Model\User::setPreferences($user->id, $preferences, $errors)) {
                                 Message::Info(Text::get('user-prefer-saved'));
-                                $log_action = 'Modificado las preferencias de notificación'; //feed admin
+                                $log_action = 'Modificado las preferencias de notificaciÃ³n'; //feed admin
                             }
                         }
                     break;
@@ -454,7 +487,7 @@ namespace Goteo\Controller {
                         $viewData['preferences'] = Model\User::getPreferences($user->id);
                         break;
                     case 'access':
-                        // si es recover, en contraseña actual tendran que poner el username
+                        // si es recover, en contraseÃ±a actual tendran que poner el username
                         if ($action == 'recover') {
                             $viewData['message'] = Text::get('dashboard-password-recover-advice');
                         }
@@ -474,10 +507,10 @@ namespace Goteo\Controller {
          * Opciones:
          *      'actualizaciones' blog del proyecto (ahora son como mensajes),
          *      'editar colaboraciones' para modificar los mensajes de colaboraciones (no puede editar el proyecto y ya estan publicados)
-         *      'widgets' ofrece el código para poner su proyecto en otras páginas (vertical y horizontal)
+         *      'widgets' ofrece el cÃ³digo para poner su proyecto en otras pÃ¡ginas (vertical y horizontal)
          *      'licencia' el acuerdo entre goteo y el usuario, licencia cc-by-nc-nd, enlace al pdf
          *      'gestionar retornos' resumen recompensas/cofinanciadores/conseguido  y lista de cofinanciadores y recompensas esperadas
-         *      'pagina publica' enlace a la página pública del proyecto
+         *      'pagina publica' enlace a la pÃ¡gina pÃºblica del proyecto
          *
          */
         public function projects ($option = 'summary', $action = 'list', $id = null) {
@@ -520,7 +553,7 @@ namespace Goteo\Controller {
             }
 
             // aqui necesito tener un proyecto de trabajo,
-            // si no hay ninguno ccoge el último
+            // si no hay ninguno ccoge el Ãºltimo
             if ($project instanceof  \Goteo\Model\Project) {
                 $_SESSION['project'] = $project;
             } else {
@@ -818,15 +851,15 @@ namespace Goteo\Controller {
                                             $log = new Feed();
                                             $log->setTarget($project->id);
                                             $log->populate('usuario pone una nueva colaboracion en su proyecto (dashboard)', '/admin/projects',
-                                                \vsprintf('%s ha publicado una nueva %s en el proyecto %s, con el título "%s"', array(
+                                                \vsprintf('%s ha publicado una nueva %s en el proyecto %s, con el tÃ­tulo "%s"', array(
                                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                                Feed::item('message', 'Colaboración'),
+                                                Feed::item('message', 'ColaboraciÃ³n'),
                                                 Feed::item('project', $project->name, $project->id),
                                                 Feed::item('update', $support->support, $project->id.'/messages#message'.$msg->id)
                                             )));
                                             $log->doAdmin('user');
 
-                                            // evento público, si el proyecto es público
+                                            // evento pÃºblico, si el proyecto es pÃºblico
                                             if ($project->status > 2) {
                                                 $log->populate($_SESSION['user']->name, '/user/profile/'.$_SESSION['user']->id, 
                                                     Text::html('feed-new_support',
@@ -845,12 +878,12 @@ namespace Goteo\Controller {
 
                             }
 
-                            // añadir nueva colaboracion (no hacemos lo del mensaje porque esta sin texto)
+                            // aÃ±adir nueva colaboracion (no hacemos lo del mensaje porque esta sin texto)
                             if (!empty($_POST['support-add'])) {
 
                                 $new_support = new Model\Project\Support(array(
                                     'project'       => $project->id,
-                                    'support'       => 'Nueva colaboración',
+                                    'support'       => 'Nueva colaboraciÃ³n',
                                     'type'          => 'task',
                                     'description'   => ''
                                 ));
@@ -863,7 +896,7 @@ namespace Goteo\Controller {
                                 } else {
                                     $project->supports[] = new Model\Project\Support(array(
                                         'project'       => $project->id,
-                                        'support'       => 'Nueva colaboración',
+                                        'support'       => 'Nueva colaboraciÃ³n',
                                         'type'          => 'task',
                                         'description'   => ''
                                     ));
@@ -928,10 +961,10 @@ namespace Goteo\Controller {
                             $post->media = new Model\Project\Media($post->media);
                         }
 
-                        // el blog de proyecto no tiene tags?¿?
+                        // el blog de proyecto no tiene tags?Â¿?
                         // $post->tags = $_POST['tags'];
 
-                        /// este es el único save que se lanza desde un metodo process_
+                        /// este es el Ãºnico save que se lanza desde un metodo process_
                         if ($post->save($errors)) {
                             $id = $post->id;
                             if ($action == 'edit') {
@@ -947,7 +980,7 @@ namespace Goteo\Controller {
                                 $log = new Feed();
                                 $log->setTarget($project->id);
                                 $log->populate('usuario publica una novedad en su proyecto (dashboard)', '/admin/projects', 
-                                    \vsprintf('%s ha publicado un nuevo post en %s sobre el proyecto %s, con el título "%s"', array(
+                                    \vsprintf('%s ha publicado un nuevo post en %s sobre el proyecto %s, con el tÃ­tulo "%s"', array(
                                         Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                         Feed::item('blog', Text::get('project-menu-updates')),
                                         Feed::item('project', $project->name, $project->id),
@@ -955,7 +988,7 @@ namespace Goteo\Controller {
                                 )));
                                 $log->doAdmin('user');
 
-                                // evento público
+                                // evento pÃºblico
                                 $log->unique = true;
                                 $log->populate($post->title, '/project/'.$project->id.'/updates/'.$post->id, 
                                     Text::html('feed-new_update',
@@ -1154,9 +1187,9 @@ namespace Goteo\Controller {
 
             // al seleccionar controlamos: translate_type y translateproject/translate_call
             if ($action == 'select' && !empty($_POST['type'])) {
-                unset($_SESSION['translate_project']); // quitamos el proyecto de traducción
-                unset($_SESSION['translate_call']); // quitamos la convocatoria de traducción
-                unset($_SESSION['translate_node']); // quitamos el nodo de traducción
+                unset($_SESSION['translate_project']); // quitamos el proyecto de traducciÃ³n
+                unset($_SESSION['translate_call']); // quitamos la convocatoria de traducciÃ³n
+                unset($_SESSION['translate_node']); // quitamos el nodo de traducciÃ³n
 
                 $type = $_POST['type'];
                 if (!empty($_POST[$type])) {
@@ -1468,7 +1501,7 @@ namespace Goteo\Controller {
                     $node->lang_name = $langs['es']->name;
                     unset($viewData['langs']['es']); // quitamos el idioma original
 
-                    // la traducción de contenidos se hace en /traslate/node/list/id-nodo
+                    // la traducciÃ³n de contenidos se hace en /traslate/node/list/id-nodo
 
                     $viewData['option'] = 'node_overview';
                     $viewData['node'] = $node;
@@ -1504,7 +1537,7 @@ namespace Goteo\Controller {
         /*
          * Seccion, Mis convocatorias
          * Opciones:
-         *      'proyectos' visualización de los proyectos que tienen capital riego de la convocatoria
+         *      'proyectos' visualizaciÃ³n de los proyectos que tienen capital riego de la convocatoria
          *
          */
         public function calls ($option = 'summary', $action = 'list', $id = null) {
@@ -1546,7 +1579,7 @@ namespace Goteo\Controller {
             }
 
             // aqui necesito tener una convocatoria de trabajo,
-            // si no hay ninguna ccoge la última
+            // si no hay ninguna ccoge la Ãºltima
             if ($call instanceof  \Goteo\Model\Call) {
                 $_SESSION['call'] = $call;
             } else {
@@ -1594,7 +1627,7 @@ namespace Goteo\Controller {
                             Message::Error('El proyecto se ha quitado correctamente de la convocatoria');
                             $call->projects = Model\Call\Project::get($call->id);
                         } else{
-                            Message::Error('Falló al quitar el proyecto: ' . implode('<br />', $errors));
+                            Message::Error('FallÃ³ al quitar el proyecto: ' . implode('<br />', $errors));
                         }
                     } elseif ($action == 'unassign') {
                         Message::Error('No se puede quitar este proyecto ahora');
@@ -1662,7 +1695,7 @@ namespace Goteo\Controller {
                                 if (Model\Call\Sponsor::delete($id)) {
                                     Message::Error('El proyecto se ha quitado correctamente de la convocatoria');
                                 } else{
-                                    Message::Error('Falló al quitar el proyecto: ' . implode('<br />', $errors));
+                                    Message::Error('FallÃ³ al quitar el proyecto: ' . implode('<br />', $errors));
                                 }
                             }
                             throw new Redirection('/dashboard/calls/sponsors');
@@ -1688,8 +1721,8 @@ namespace Goteo\Controller {
 
 
         /*
-         * Página especial para Ricardo amaste para editar proyectos euskadi
-         * Es un apaño temporal pre-nodos
+         * PÃ¡gina especial para Ricardo amaste para editar proyectos euskadi
+         * Es un apaÃ±o temporal pre-nodos
          */
         public function editor ($option = 'main', $action = 'view') {
 
@@ -1846,7 +1879,7 @@ namespace Goteo\Controller {
                     )
                 );
             } else {
-                // si está traduciendo su perfil
+                // si estÃ¡ traduciendo su perfil
                 $menu['translates'] = array(
                     'label' => Text::get('dashboard-menu-translates'),
                     'options' => array (
@@ -1855,13 +1888,13 @@ namespace Goteo\Controller {
                 );
             }
 
-            // si es donante, ponemos la opción
+            // si es donante, ponemos la opciÃ³n
             if (Model\User\Donor::get($_SESSION['user']->id) instanceof Model\User\Donor) {
                 $menu['activity']['options']['donor'] = Text::get('dashboard-menu-activity-donor');
             }
                 
             /*
-             * Piñonaco para ricardo amaste para edicion de proyectos de esukadi
+             * PiÃ±onaco para ricardo amaste para edicion de proyectos de esukadi
              */
             if ($_SESSION['user']->id == 'ricardo-amaste') {
                 $menu['editor'] = array(

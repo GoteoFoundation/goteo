@@ -16,7 +16,9 @@ namespace Goteo\Model\User {
         $numproj,
         $year = 2012,
         $edited = 0,
-        $confirmed = 0;
+        $confirmed = 0,
+        $pdf = null,
+        $dates = array();
 
         /**
          * Get invest data if a user is a donor
@@ -216,7 +218,52 @@ namespace Goteo\Model\User {
             }
         }
         
-        
-	}
+        /*
+         * Nombre del archivo de certificado generado
+         */
+        public function setPdf($filename) {
+            try {
+                $sql = "UPDATE user_donation SET pdf = :pdf WHERE user = :user AND year = :year";
+                if (self::query($sql, array(':pdf'=>$filename,':user' => $this->user, 'year' => $this->year))) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (\PDOException $e) {
+                $errors[] = "Los datos no se han guardado correctamente. Por favor, revise los datos." . $e->getMessage();
+                return false;
+            }
+        }
+
+
+        static public function getDates ($user, $year = '2012') {
+
+            $year0 = $year == 2012 ? $year - 1 : $year; // solo para el 2012
+            $year1 = $year + 1;
+
+            $fechas = array();
+
+            // primero saber si es donante
+            $sql = "SELECT 
+                        DATE_FORMAT(invest.invested, '%d-%m-%Y') as date,
+                        invest.amount as amount
+                    FROM invest
+                    WHERE   invest.resign = 1
+                    AND invest.status IN ('1', '3')
+                    AND invest.invested >= '{$year0}-01-01'
+                    AND invest.invested < '{$year1}-01-01'
+                    AND invest.user = :id
+                    ORDER BY invest.invested ASC
+                    ";
+//                    echo($sql . '<br />' . $user);
+            $query = static::query($sql, array(':id' => $user));
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $row) {
+                $fechas[] = $row;
+            }
+
+            return $fechas;
+        }
+
+    }
 
 }

@@ -17,3 +17,6 @@ CREATE TABLE IF NOT EXISTS `user_donation` (
 ALTER TABLE `user_donation` 
 	ADD `edited` INT( 1 ) NULL DEFAULT '0' COMMENT 'Revisados por el usuario',
 	ADD `confirmed` INT( 1 ) NULL DEFAULT '0' COMMENT 'Certificado generado';
+	
+-- el archivo del certificado asociado
+ALTER TABLE `user_donation` ADD `pdf` VARCHAR( 255 ) NULL COMMENT 'nombre del archivo de certificado';
