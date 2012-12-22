@@ -245,9 +245,12 @@ namespace Goteo\Model\User {
 
             // primero saber si es donante
             $sql = "SELECT 
-                        DATE_FORMAT(invest.invested, '%d-%m-%Y') as date,
-                        invest.amount as amount
+                        DATE_FORMAT(invest.charged, '%d-%m-%Y') as date,
+                        invest.amount as amount,
+                        project.name as project
                     FROM invest
+                    INNER JOIN project
+                        ON project.id = invest.project
                     WHERE   invest.resign = 1
                     AND invest.status IN ('1', '3')
                     AND invest.invested >= '{$year0}-01-01'

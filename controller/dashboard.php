@@ -88,6 +88,9 @@ namespace Goteo\Controller {
             if ($option == 'donor') {
                 // ver si es donante, cargando sus datos
                 $donation = Model\User\Donor::get($user->id);
+                $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year);
+                $donation->userData = Model\User::getMini($donation->user);
+
                 if (!$donation || !$donation instanceof Model\User\Donor) {
                     Message::Error(Text::get('dashboard-donor-no_donor'));
                     throw new Redirection('/dashboard/activity');
@@ -118,12 +121,15 @@ namespace Goteo\Controller {
                     }
                 }
                 
-                if ($action == 'download')  {
-                    // preparamos los datos para el pdf
-                    $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year);
-                    $donation->userData = Model\User::getMini($donation->user);
+                if ($action == 'confirm')  {
                     // marcamos que los datos estan confirmados
                     Model\User\Donor::setConfirmed($user->id);
+                    Message::Info(Text::get('dashboard-donor-confirmed'));
+                    throw new Redirection('/dashboard/activity/donor');
+                }
+
+                if ($action == 'download')  {
+                    // preparamos los datos para el pdf
                     // generamos el pdf y lo mosteramos con la vista especÃ­fica
 
                     // estos pdf se guardan en /data/pdfs/donativos
@@ -157,7 +163,7 @@ namespace Goteo\Controller {
                             echo '<hr><pre>' . print_r($pdf, 1) . '</pre>';
                         } else {
                             $pdf->Output('data/pdfs/donativos/' . $filename, 'F');
-//POR AHORA NO                            $donation->setPdf($filename);
+                            $donation->setPdf($filename);
                             $pdf->Output();
                             die;
                         }
@@ -1889,7 +1895,8 @@ namespace Goteo\Controller {
             }
 
             // si es donante, ponemos la opciÃ³n
-            if (Model\User\Donor::get($_SESSION['user']->id) instanceof Model\User\Donor) {
+            if (date('Y') != '2012' && Model\User\Donor::get($_SESSION['user']->id) instanceof Model\User\Donor
+                ) {
                 $menu['activity']['options']['donor'] = Text::get('dashboard-menu-activity-donor');
             }
                 

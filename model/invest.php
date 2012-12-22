@@ -404,7 +404,7 @@ namespace Goteo\Model {
                                     'status' => $this->status,
                                     'invested' => date('Y-m-d'),
                                     'anonymous' => null,
-                                    'resign' => true,
+                                    'resign' => false,
                                     'campaign' => true,
                                     'drops' => $this->id,
                                     'call' => $this->called->id
