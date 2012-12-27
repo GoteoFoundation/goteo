@@ -143,8 +143,10 @@ namespace Goteo\Controller\Admin {
                         if ($filters['type'] == 'investor') {
                             $sqlFilter .= " AND invest.resign = 1
                                 AND invest.status IN (1, 3)
-                                AND invest.invested >= '{$year0}-01-01'
-                                AND invest.invested < '{$year1}-01-01'";
+                                AND invest.charged >= '{$year0}-01-01'
+                                AND invest.charged < '{$year1}-01-01'
+                                AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
+                                ";
                             $_SESSION['mailing']['filters_txt'] .= 'que haya hecho algun donativo ';
                         } else {
                             Message::Error('Solo se filtran donantes si se envia "A los: Cofinanciadores"');

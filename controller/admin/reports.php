@@ -13,6 +13,14 @@ namespace Goteo\Controller\Admin {
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
             switch ($action)  {
+                case 'resetpdf':
+                    if (!empty($id)) {
+                        Model\User\Donor::resetPdf($id);
+                    }
+                    throw new Redirection('/admin/reports/donors');
+                    
+                    break;
+
                 case 'donors':
 
                     $filters['year'] = (!empty($filters['year'])) ? $filters['year'] : 2012;

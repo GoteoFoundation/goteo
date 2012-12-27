@@ -30,13 +30,12 @@ namespace Goteo\Controller\Admin {
                     $chosen = $_POST['selected_reward'];
                     if (empty($chosen)) {
                         // renuncia a las recompensas, bien por el/ella!
-                        $invest->resign = true;
                         $invest->rewards = array();
                     } else {
-                        $invest->resign = false;
                         $invest->rewards = array($chosen);
                     }
 
+                    $invest->resign = $_POST['resign'];
 
                     // dirección de envio para la recompensa
                     // y datos fiscales por si fuera donativo

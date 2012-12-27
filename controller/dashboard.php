@@ -137,8 +137,10 @@ namespace Goteo\Controller {
                     // se genera una vez, si ya estÃ¡ generado se abre directamente
                     if (!empty($donation->pdf) && file_exists('data/pdfs/donativos/'.$donation->pdf)) {
 
-                        // cargar y abrir
+                        // forzar descarga
         		header('Content-type: application/pdf');
+                        header("Content-disposition: attachment; filename={$donation->pdf}");
+                        header("Content-Transfer-Encoding: binary");
                         echo file_get_contents('data/pdfs/donativos/'.$donation->pdf);
                         die();
                         
@@ -164,7 +166,11 @@ namespace Goteo\Controller {
                         } else {
                             $pdf->Output('data/pdfs/donativos/' . $filename, 'F');
                             $donation->setPdf($filename);
-                            $pdf->Output();
+//                            throw new Redirection('/dashboard/activity/donor/download/'.$donation->pdf);
+                            header('Content-type: application/pdf');
+                            header("Content-disposition: attachment; filename={$donation->pdf}");
+                            header("Content-Transfer-Encoding: binary");
+                            echo $pdf->Output('','S');
                             die;
                         }
                         
@@ -1895,8 +1901,7 @@ namespace Goteo\Controller {
             }
 
             // si es donante, ponemos la opciÃ³n
-            if (date('Y') != '2012' && Model\User\Donor::get($_SESSION['user']->id) instanceof Model\User\Donor
-                ) {
+            if (Model\User\Donor::get($_SESSION['user']->id) instanceof Model\User\Donor) {
                 $menu['activity']['options']['donor'] = Text::get('dashboard-menu-activity-donor');
             }
                 

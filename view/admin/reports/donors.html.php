@@ -21,7 +21,8 @@ $filters = $this['filters'];
             <label for="status-filter">Estado datos:</label><br />
             <select id ="status-filter" name="status">
                 <option value=""<?php if ($filters['status']=='') echo ' selected="selected"'; ?>>Todos</option>
-                <option value="pending"<?php if ($filters['status']=='pending') echo ' selected="selected"'; ?>>Pendientes de confirmar</option>
+                <option value="pending"<?php if ($filters['status']=='pending') echo ' selected="selected"'; ?>>Pendientes de revision</option>
+                <option value="edited"<?php if ($filters['status']=='edited') echo ' selected="selected"'; ?>>Revisados pero no confirmados</option>
                 <option value="confirmed"<?php if ($filters['status']=='confirmed') echo ' selected="selected"'; ?>>Confirmados</option>
                 <option value="emited"<?php if ($filters['status']=='emited') echo ' selected="selected"'; ?>>Certificado emitido</option>
                 <option value="notemited"<?php if ($filters['status']=='notemited') echo ' selected="selected"'; ?>>Confirmado pero no emitido</option>
@@ -66,8 +67,12 @@ $filters = $this['filters'];
                 <td><?php echo $row->numproj; ?></td>
                 <td>
                     <?php echo ($row->pending == $row->id) ? '' : $row->pending; ?>
-                    <?php if ($row->confirmed) echo ' Emitido';
-                    elseif ($row->edited) echo ' Confirmado'; ?>
+                    <?php if ($row->confirmed) echo ' Confirmado';
+                    elseif ($row->edited) echo ' Revisado'; ?>
+                    <?php if ($row->pdf) : ?>
+                        <br /><a href="/data/pdfs/donativos/<?php echo $row->pdf; ?>" target="_blank">[Ver pdf]</a><br />
+                        <a href="/admin/reports/resetpdf/<?php echo md5($row->pdf); ?>" onclick="return confirm('Seguro que eliminamos este pdf de certificado?');">[Eliminar pdf]</a>
+                    <?php endif; ?>
                 </td>
                 <td><?php echo $row->address; ?></td>
                 <td><?php echo $row->zipcode; ?></td>

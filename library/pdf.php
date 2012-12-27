@@ -101,22 +101,22 @@ function donativeCert($data) {
     $pdf->Ln($lh);
     $pdf->cell($w1,10,"CIF {$data->ffa->cif}");
     $pdf->cell($s);
-    $pdf->cell(0,10,"NIF {$data->nif}"); //$data->name
+    $pdf->cell(0,10,$data->name);
 
     $pdf->Ln($lh);
     $pdf->cell($w1,10,$data->ffa->address);
     $pdf->cell($s);
-    $pdf->cell(0,10,$data->address);
+    $pdf->cell(0,10,"NIF {$data->nif}");
 
     $pdf->Ln($lh);
     $pdf->cell($w1,10,"{$data->ffa->zipcode} - {$data->ffa->location} -");
     $pdf->cell($s);
-    $pdf->cell(0,10,"{$data->zipcode} - {$data->location} ({$data->country})");
+    $pdf->cell(0,10,$data->address);
 
     $pdf->Ln($lh);
     $pdf->cell($w1,10,"Tel. {$data->ffa->phone}");
     $pdf->cell($s);
-    $pdf->cell(0,10,'');
+    $pdf->cell(0,10,"{$data->zipcode} - {$data->location} ({$data->country})");
 
     $pdf->Ln($lh);
     $pdf->cell($w1,10,$data->ffa->email . ' - ' . $data->ffa->site);
@@ -148,9 +148,9 @@ function donativeCert($data) {
     $pdf->Write(5,trim($data->name));
     $pdf->regular();
 
+    $pdf->Write(5,' ha donado ');
     // segun cantidad de donativos
-//    if (count($data->dates) > 1) {
-        $pdf->Write(5,'ha donado ');
+    if (count($data->dates) <= 10) {
         foreach ($data->dates as $invest) {
             $pdf->Write(5,'en fecha ');
             $pdf->bold();
@@ -162,21 +162,16 @@ function donativeCert($data) {
             $pdf->regular();
             $pdf->Write(5,', ');
         }
-/*    } else {
-        $pdf->Write(5,' ha donado en fecha ');
-        $pdf->bold();
-        $pdf->Write(5,$data->dates[0]->date . ' ');
-        $pdf->regular();
-    } */
+    } 
 
-    $pdf->Write(5,'con carácter irrevocable −sin perjuicio de lo establecido en las normas imperativas civiles que regulan la revocación de donaciones− un total de donaciones dinerarias a la Fundación Fuentes Abiertas de');
+    $pdf->Write(5,'con carácter irrevocable -sin perjuicio de lo establecido en las normas imperativas civiles que regulan la revocación de donaciones- donación dineraria a la Fundación Fuentes Abiertas de');
     $pdf->bold();
     $pdf->Write(5,$data->amount_char."euros (".$data->amount." euros)");
     $pdf->regular();
     $pdf->Write(5,'.');
 
     $pdf->Ln(10);
-    $pdf->Write(5,'La Fundación destinará la donación recibida a las ayudas concedidas al proyecto o proyectos gestionados desde la plataforma Goteo.org y seleccionados por el donante registrado con el email "');
+    $pdf->Write(5,'La Fundación destinará la donación recibida a las ayudas concedidas al proyecto o proyectos gestionados desde la plataforma Goteo.org y seleccionados por el/la donante registrado/a con el email "');
     $pdf->bold();
     $pdf->Write(5,$data->userData->email);
     $pdf->regular();
@@ -189,7 +184,7 @@ function donativeCert($data) {
     $pdf->Write(5,').');
 
     $pdf->Ln(10);
-    $pdf->Write(5,'En virtud de lo previsto en los artículos 19 y 20 de la citada Ley 49/2002 -y siempre en la forma y con los límites previstos en dicha Ley- con el presente certificado los contribuyentes del Impuesto sobre la Renta de las Personas Físicas tendrán derecho a deducir de la cuota íntegra el 25 por 100 del importe de la donación, mientras que los sujetos pasivos del Impuesto sobre Sociedades tendrán derecho a deducir de la cuota íntegra el 35 por 100 del importe de la donación.');
+    $pdf->Write(5,'En virtud de lo previsto en los artículos 19 y 20 de la citada Ley 49/2002 -y siempre en la forma y con los límites previstos en dicha Ley- con el presente certificado los/as contribuyentes del Impuesto sobre la Renta de las Personas Físicas tendrán derecho a deducir de la cuota íntegra el 25 por 100 del importe de la donación, mientras que los sujetos pasivos del Impuesto sobre Sociedades tendrán derecho a deducir de la cuota íntegra el 35 por 100 del importe de la donación.');
     
     $pdf->Ln(15);
         $pdf->Write(5,'En Palma de Mallorca, a ');
