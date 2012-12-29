@@ -44,7 +44,22 @@ namespace Goteo\Controller\Admin {
                     // si no tenemos id,
                         // lista de proyectos que han pasado la primera ronda
                         $data = array();
-                        
+
+                        // filtro
+                        switch ($filters['status']) {
+                            case 'first':
+                                $sqlFilter = "WHERE project.status = 3 AND (project.passed IS NULL OR project.passed = '0000-00-00')";
+                                break;
+                            case 'second':
+                                $sqlFilter = "WHERE project.status = 3 AND (project.passed IS NOT NULL OR project.passed != '0000-00-00')";
+                                break;
+                            case 'completed':
+                                $sqlFilter = "WHERE project.status IN (4, 5)";
+                                break;
+                            default:
+                                $sqlFilter = "WHERE project.status IN (3, 4, 5)";
+                        }
+
                         $sql = "SELECT 
                             project.id as id,
                             project.name as name,
@@ -52,7 +67,7 @@ namespace Goteo\Controller\Admin {
                             date_format(project.passed, '%d/%m/%Y') as fin_1a,
                             date_format(project.success, '%d/%m/%Y') as fin_2a
                         FROM project
-                        WHERE (project.passed IS NOT NULL AND project.passed != '0000-00-00' )
+                        $sqlFilter
                         ORDER BY project.published DESC
                         ";
                         
@@ -219,7 +234,8 @@ namespace Goteo\Controller\Admin {
                         array(
                             'folder' => 'reports',
                             'file'   => 'projects',
-                            'data'   => $data
+                            'data'   => $data,
+                            'filters'   => $filters
                         )
                     );
 

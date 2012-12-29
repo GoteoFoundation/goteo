@@ -3,9 +3,32 @@
 use Goteo\Library\Text;
 
 $data = $this['data'];
+$filters = $this['filters'];
 
 // lista de proyectos y su estado de financiación
 if (is_array($data)) : ?>
+<div class="widget board">
+    <form id="filter-form" action="/admin/reports/projects" method="get">
+
+        <div style="float:left;margin:5px;">
+            <label for="status-filter">Estado de financiacion:</label><br />
+            <select id="status-filter" name="status" onchange="document.getElementById('filter-form').submit();">
+                <option value=""<?php if (empty($filters['status'])) echo ' selected="selected"';?>>Cualquier estado</option>
+                <option value="first"<?php if ($filters['status'] == 'first') echo ' selected="selected"';?>>En primera ronda</option>
+                <option value="second"<?php if ($filters['status'] == 'second') echo ' selected="selected"';?>>En segunda ronda</option>
+                <option value="completed"<?php if ($filters['status'] == 'completed') echo ' selected="selected"';?>>Terminada segunda ronda</option>
+            </select>
+        </div>
+<!--
+        <br clear="both" />
+
+        <div style="float:left;margin:5px;">
+            <input type="submit" value="Ver" />
+        </div>
+-->
+    </form>
+</div>
+
 <div class="widget board">
     <table>
         <thead>
@@ -28,7 +51,7 @@ if (is_array($data)) : ?>
                 <td><?php echo $row['init']; ?></td>
                 <td><?php echo $row['fin_1a']; ?></td>
                 <td><?php echo $row['fin_2a']; ?></td>
-                <td><a href="/admin/contracts/<?php echo $id; ?>" target="_blank">[Contrato]</td>
+                <td><?php if (!empty($row['fin_1a'])) : ?><a href="/admin/contracts/<?php echo $id; ?>" target="_blank">[Contrato]<?php endif; ?></td>
                 <td><a href="/admin/projects/?proj_name=<?php echo substr($row['name'], 0, 10); ?>" target="_blank">[Proyecto]</td>
                 <td><a href="/project/<?php echo $id; ?>" target="_blank">[Ver]</td>
             </tr>
