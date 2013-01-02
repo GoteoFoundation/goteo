@@ -39,7 +39,8 @@ namespace Goteo\Controller {
                         'year' => 'A&ntilde;o',
                         'pending' => 'Pendiente',
                         'edited' => 'Editados',
-                        'confirmed' => 'Confirmados'
+                        'confirmed' => 'Confirmados',
+                        'pdf' => 'Certificado'
                     );
                     break;
                 default:
