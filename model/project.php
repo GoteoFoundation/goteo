@@ -1956,6 +1956,10 @@ namespace Goteo\Model {
                 case 'others':
                     // todos los que estan 'en campaña', en otro nodo
                     if (!empty($sqlFilter)) $sqlFilter = \str_replace('=', '!=', $sqlFilter);
+                    // cambio de criterio, en otros nodos no filtramos por followers,
+                    //   mostramos todos los que estan en campaña (los nuevos primero)
+                    //  limitamos a 40
+                    /*
                     $sql = "SELECT project.id as id,
                                     (SELECT COUNT(DISTINCT(invest.user))
                                         FROM    invest
@@ -1972,6 +1976,14 @@ namespace Goteo\Model {
                             $sqlFilter
                             HAVING followers > 20
                             ORDER BY followers DESC";
+                    */
+                    $limit = 40;
+                    $sql = "SELECT
+                                project.id as id
+                            FROM project
+                            WHERE project.status = 3
+                            $sqlFilter
+                            ORDER BY published DESC";
                     break;
                 default: 
                     // todos los que estan 'en campaña', en cualquier nodo
