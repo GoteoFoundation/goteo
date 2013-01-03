@@ -9,18 +9,20 @@ $user = $this['user'];
 $worthcracy = Worth::getAll();
 ?>
 <div class="supporterContainer">
-	<?php if ($user->user != 'anonymous') { ?>
+	<?php if ($user->campaign) : ?>
+	<a class="expand" href="/call/<?php echo $user->call ?>" target="_blank">&nbsp;</a>
+	<?php elseif ($user->user != 'anonymous') : ?>
 	<a class="expand" href="/user/<?php echo htmlspecialchars($user->user) ?>">&nbsp;</a>
-	<?php } ?>
+	<?php endif; ?>
     <?php if ($user->droped || $user->campaign) : ?>
     <div class="droped">&nbsp;</div>
     <?php endif; ?>
 	<div class="supporter">
 		<span class="avatar"><img src="<?php echo $user->avatar->getLink(43, 43, true); ?>" /></span>
-	    <?php if ($user->user != 'anonymous') : ?>
+	    <?php if ($user->user == 'anonymous') : ?>
 	    <h4><?php echo $user->name; ?></h4>
 	    <?php else : ?>
-	    <h4 class="aqua"><?php echo Text::recorta($user->name,40); ?></h4>
+	    <h4 class="aqua"<?php if ($user->campaign) echo 'style="color: #96238F;"'; ?>><?php echo Text::recorta($user->name,40); ?></h4>
 	    <?php endif; ?>
 	    <dl>
 	        <?php  if (isset($user->projects))  : ?>
