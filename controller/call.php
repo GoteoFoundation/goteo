@@ -320,7 +320,7 @@ namespace Goteo\Controller {
 
         }
 
-        private function view ($id, $show) {
+        private function view ($id, $show = 'index') {
             $call = Model\Call::get($id, LANG);
 
             if (!$call instanceof Model\Call) {
@@ -345,8 +345,8 @@ namespace Goteo\Controller {
                 ACL::check('/call/edit/todos') ||
                 ACL::check('/call/view/todos')) {
 
-                if (!\in_array($show, array('splash', 'info', 'projects', 'terms'))) {
-                    $show = 'info';
+                if (!\in_array($show, array('index', 'splash', 'info', 'projects', 'terms'))) {
+                    $show = 'index';
                 }
 
                 if ($show == 'projects' && $call->status < 4) {
