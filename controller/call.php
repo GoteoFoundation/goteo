@@ -15,7 +15,7 @@ namespace Goteo\Controller {
 
     class Call extends \Goteo\Core\Controller {
 
-        public function index($id, $show = 'splash') {
+        public function index($id, $show = 'index') {
             if ($id !== null) {
                 if ($show == 'apply') {
                     // Preparamos la sesión para que al crear proyecto se asigne a esta convocatoria
@@ -345,8 +345,8 @@ namespace Goteo\Controller {
                 ACL::check('/call/edit/todos') ||
                 ACL::check('/call/view/todos')) {
 
-                if (!\in_array($show, array('splash', 'info', 'projects', 'terms'))) {
-                    $show = 'info';
+                if (!\in_array($show, array('index', 'splash', 'info', 'projects', 'terms'))) {
+                    $show = 'index';
                 }
 
                 if ($show == 'projects' && $call->status < 4) {
