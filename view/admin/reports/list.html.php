@@ -10,6 +10,8 @@ $data    = $this['data'];
 &nbsp;&nbsp;&nbsp;
 <a href="/admin/reports/projects" class="button">Impulsores</a>
 &nbsp;&nbsp;&nbsp;
+<a href="/admin/reports/calls" class="button">Convocadores</a>
+&nbsp;&nbsp;&nbsp;
 <a href="/admin/reports/paypal" class="button">Estado actual PayPal</a>
 
 <div class="widget board">
