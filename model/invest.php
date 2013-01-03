@@ -740,6 +740,7 @@ namespace Goteo\Model {
             $sql .= "user.hide as hide,
                     invest.droped as droped,
                     invest.campaign as campaign,
+                    invest.call as `call`,
                     invest.anonymous as anonymous
                 FROM    invest
                 INNER JOIN user
@@ -773,7 +774,8 @@ namespace Goteo\Model {
                         'amount' => $investor->amount,
                         'date' => $investor->date,
                         'droped' => $investor->droped,
-                        'campaign' => $investor->campaign
+                        'campaign' => $investor->campaign,
+                        'call' => $investor->call
                     );
 
                 } else {
@@ -791,7 +793,8 @@ namespace Goteo\Model {
                         'amount' => $investor->amount,
                         'date' => $investor->date,
                         'droped' => $investor->droped,
-                        'campaign' => $investor->campaign
+                        'campaign' => $investor->campaign,
+                        'call' => $investor->call
                     );
 
                 }
