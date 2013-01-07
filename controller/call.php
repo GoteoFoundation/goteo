@@ -356,7 +356,7 @@ namespace Goteo\Controller {
 
         }
 
-        private function view ($id, $show) {
+        private function view ($id, $show = 'index') {
             $call = Model\Call::get($id, LANG);
 
             if (!$call instanceof Model\Call) {
