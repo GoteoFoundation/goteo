@@ -388,7 +388,7 @@ $superform = array(
                     'children' => array(
                         'next' => array(
                             'type'  => 'submit',
-                            'name'  => 'view-step-preview',
+                            'name'  => 'view-step-supports',
                             'label' => Text::get('form-next-button'),
                             'class' => 'next'
                         )
