@@ -14,3 +14,6 @@ ALTER TABLE `call_lang` ADD `dossier` tinytext;
 
 -- Recursos de capital riego
 ALTER TABLE `call_lang` ADD `resources` TEXT NULL DEFAULT NULL COMMENT 'Recursos de capital riego';
+
+-- Texto para el tweet
+ALTER TABLE `call_lang` ADD `tweet` tinytext DEFAULT NULL AFTER `dossier` ;
