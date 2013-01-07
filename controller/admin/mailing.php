@@ -232,6 +232,7 @@ namespace Goteo\Controller\Admin {
                         if (!isset($_POST[$usr])) {
                             $campo = 'receiver_'.str_replace('.', '_', $usr);
                             if (!isset($_POST[$campo])) {
+                                $_SESSION['mailing']['receivers'][$usr]->ok = null;
                                 continue;
                             }
                         }
