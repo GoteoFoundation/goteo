@@ -12,76 +12,71 @@ namespace Goteo\Model {
     class Call extends \Goteo\Core\Model {
 
         public
-            $id = null,
-            $owner, // User who created it
-            $node, // Node this call belongs to
-            $status,
-            $amount, // Presupuesto
-            $maxdrop, // Limite al capital riego que puede provocar cada aporte
-            $maxproj, // Limite al capital riego que puede conseguir un proyecto
-            $resources, // Recursos de capital riego
-            $days, // Numero de dias para aplicación de proyectos
-            $until = array('day'=>'', 'month'=>'', 'year'=>''), // para visualizar fecha limite en estado aplicación
+        $id = null,
+        $owner, // User who created it
+        $node, // Node this call belongs to
+        $status,
+        $amount, // Presupuesto
+        $maxdrop, // Limite al capital riego que puede provocar cada aporte
+        $maxproj, // Limite al capital riego que puede conseguir un proyecto
+        $resources, // Recursos de capital riego
+        $days, // Numero de dias para aplicación de proyectos
+        $until = array('day' => '', 'month' => '', 'year' => ''), // para visualizar fecha limite en estado aplicación
 
-            $user, // owner's user information
+        $user, // owner's user information
+        // Register contract data
+        $contract_name, // Nombre y apellidos del responsable del convocatoria
+        $contract_nif, // Guardar sin espacios ni puntos ni guiones
+        $contract_email, // cuenta paypal
+        $phone, // guardar sin espacios ni puntos
+        // Para marcar física o jurídica
+        $contract_entity = false, // false = física (persona)  true = jurídica (entidad)
+        // Para persona física
+        $contract_birthdate,
+        // Para entidad jurídica
+        $entity_office, // cargo del responsable dentro de la entidad
+        $entity_name, // denomincion social de la entidad
+        $entity_cif, // CIF de la entidad
+        // Campos de Domicilio: Igual para persona o entidad
+        $address,
+        $zipcode,
+        $location, // owner's location
+        $country,
+        // Domicilio postal
+        $secondary_address = false, // si es diferente al domicilio fiscal
+        $post_address = null,
+        $post_zipcode = null,
+        $post_location = null,
+        $post_country = null,
+        // Edit call description
+        $name,
+        $subtitle,
+        $lang = 'es',
+        $logo,
+        $image, // imagen de fondo para la splash
+        $backimage, //imagen de fondo para el resto de paginas
+        $description,
+        $whom, // quienes pueden participar
+        $apply, // como publicar un convocatoria
+        $legal, // terminos y condiciones
+        $dossier, // url del dosier informativo
+        $tweet, // texto con los hashtags en twitter
+        $fbappid = null, // id de la app de facebook
+        $categories = array(),
+        $icons = array(),
+        $call_location, // call execution location
+        $scope, // ambito
 
-            // Register contract data
-            $contract_name, // Nombre y apellidos del responsable del convocatoria
-            $contract_nif, // Guardar sin espacios ni puntos ni guiones
-            $contract_email, // cuenta paypal
-            $phone, // guardar sin espacios ni puntos
+        $errors = array(), // para los fallos en los datos
+        $okeys = array(), // para los campos que estan ok
 
-            // Para marcar física o jurídica
-            $contract_entity = false, // false = física (persona)  true = jurídica (entidad)
+        $translate, // si se puede traducir (bool)
 
-            // Para persona física
-            $contract_birthdate,
+        $projects = array(), // proyectos seleccionados en la convocatoria
+        $sponsors = array(), // patrocinadores de la convocatoria
+        $banners  = array(), // banners de la convocatoria
 
-            // Para entidad jurídica
-            $entity_office, // cargo del responsable dentro de la entidad
-            $entity_name,  // denomincion social de la entidad
-            $entity_cif,  // CIF de la entidad
-
-            // Campos de Domicilio: Igual para persona o entidad
-            $address,
-            $zipcode,
-            $location, // owner's location
-            $country,
-
-            // Domicilio postal
-            $secondary_address = false, // si es diferente al domicilio fiscal
-            $post_address = null,
-            $post_zipcode = null,
-            $post_location = null,
-            $post_country = null,
-
-
-            // Edit call description
-            $name,
-            $subtitle,
-            $lang = 'es',
-            $logo,
-            $image, // imagen de fondo para la splash
-            $backimage, //imagen de fondo para el resto de paginas
-            $description,
-            $whom, // quienes pueden participar
-            $apply, // como publicar un convocatoria
-            $legal, // terminos y condiciones
-            $dossier, // url del dosier informativo
-            $categories = array(),
-            $icons = array(),
-            $call_location, // call execution location
-            $scope, // ambito
-
-            $errors = array(), // para los fallos en los datos
-            $okeys  = array(), // para los campos que estan ok
-
-            $translate,  // si se puede traducir (bool)
-
-            $projects = array(), // convocatorias relacionados a la convocatoria
-
-            $expired = false; // si ha finalizado el tiempo de inscripcion
-
+        $expired = false; // si ha finalizado el tiempo de inscripcion
 
         /**
          * Sobrecarga de métodos 'getter'.
@@ -89,7 +84,8 @@ namespace Goteo\Model {
          * @param type string $name
          * @return type mixed
          */
-        public function __get ($name) {
+
+        public function __get($name) {
             switch ($name) {
                 case "rest":
                     return $this->getRest();
@@ -103,18 +99,15 @@ namespace Goteo\Model {
             }
         }
 
-
-
         /**
          * Inserta un convocatoria con los datos mínimos
          *
          * @param array $data
          * @return boolean
          */
-        public function create ($name, $owner, &$errors = array()) {
+        public function create($name, $owner, &$errors = array()) {
 
             // El autor no tiene porque ser el que la edita
-            
             // datos del usuario que van por defecto: name->contract_name,  location->location
             $userProfile = User::get($owner);
             // datos del userpersonal por defecto a los cammpos del paso 2
@@ -128,29 +121,30 @@ namespace Goteo\Model {
             }
 
             $values = array(
-                ':id'   => $id,
+                ':id' => $id,
                 ':name' => $name,
                 ':lang' => 'es',
-                ':status'   => 1,
+                ':status' => 1,
                 ':owner' => $owner,
                 ':amount' => 0,
                 ':contract_name' => ($userPersonal->contract_name) ?
-                                    $userPersonal->contract_name :
-                                    $userProfile->name,
+                        $userPersonal->contract_name :
+                        $userProfile->name,
                 ':contract_nif' => $userPersonal->contract_nif,
                 ':phone' => $userPersonal->phone,
                 ':address' => $userPersonal->address,
                 ':zipcode' => $userPersonal->zipcode,
                 ':location' => ($userPersonal->location) ?
-                                $userPersonal->location :
-                                $userProfile->location,
+                        $userPersonal->location :
+                        $userProfile->location,
                 ':country' => ($userPersonal->country) ?
-                                $userPersonal->country :
-                                Check::country(),
+                        $userPersonal->country :
+                        Check::country(),
                 ':call_location' => ($userPersonal->location) ?
-                                $userPersonal->location :
-                                $userProfile->location,
-                );
+                        $userPersonal->location :
+                        $userProfile->location,
+                ':tweet' => $name,
+            );
 
             $campos = array();
             foreach (\array_keys($values) as $campo) {
@@ -160,7 +154,7 @@ namespace Goteo\Model {
             $sql = "REPLACE INTO `call` (" . implode(',', $campos) . ")
                  VALUES (" . implode(',', \array_keys($values)) . ")";
             try {
-				self::query($sql, $values);
+                self::query($sql, $values);
 
                 foreach ($campos as $campo) {
                     $this->$campo = $values[":$campo"];
@@ -178,12 +172,13 @@ namespace Goteo\Model {
         /*
          *  Cargamos los datos del convocatoria
          */
+
         public static function get($id, $lang = null) {
 
             try {
-				// metemos los datos del convocatoria en la instancia
-				$query = self::query("SELECT * FROM `call` WHERE id = :id", array(':id'=>$id));
-				$call = $query->fetchObject(__CLASS__);
+                // metemos los datos del convocatoria en la instancia
+                $query = self::query("SELECT * FROM `call` WHERE id = :id", array(':id' => $id));
+                $call = $query->fetchObject(__CLASS__);
 
                 if (!$call instanceof \Goteo\Model\Call) {
                     throw new \Goteo\Core\Error('404', Text::html('fatal-error-call'));
@@ -201,15 +196,16 @@ namespace Goteo\Model {
                             IFNULL(call_lang.apply, call.apply) as apply,
                             IFNULL(call_lang.legal, call.legal) as legal,
                             IFNULL(call_lang.dossier, call.dossier) as dossier,
-                            IFNULL(call_lang.resources, call.resources) as resources
+                            IFNULL(call_lang.resources, call.resources) as resources,
+                            IFNULL(call_lang.tweet, call.tweet) as tweet
                         FROM `call`
                         LEFT JOIN call_lang
                             ON  call_lang.id = call.id
                             AND call_lang.lang = :lang
                         WHERE call.id = :id
                         ";
-                    $query = self::query($sql, array(':id'=>$id, ':lang'=>$lang));
-                    foreach ($query->fetch(\PDO::FETCH_ASSOC) as $field=>$value) {
+                    $query = self::query($sql, array(':id' => $id, ':lang' => $lang));
+                    foreach ($query->fetch(\PDO::FETCH_ASSOC) as $field => $value) {
                         $call->$field = $value;
                     }
                 }
@@ -218,15 +214,14 @@ namespace Goteo\Model {
                 $call->user = User::get($call->owner);
 
                 // No vamos a hacer aqui objetos para las imagenes, los hacemos en el controlador
-
-				// categorias
+                // categorias
                 $call->categories = Call\Category::get($id);
 
-				// iconos de retorno
+                // iconos de retorno
                 $call->icons = Call\Icon::get($id);
 
-				// proyectos
-				$call->projects = Call\Project::get($id);
+                // proyectos
+                $call->projects = Call\Project::get($id);
 
                 // cuantos en campaña (status 3) y cuantos exitosos
                 $call->runing_projects = 0;
@@ -246,7 +241,7 @@ namespace Goteo\Model {
                 if ($call->status == 3) {
                     // a ver si ya ha expirado
                     $open = strtotime($call->opened);
-                    $until = mktime(0, 0, 0, date('m', $open), date('d', $open)+$call->days, date('Y', $open));
+                    $until = mktime(0, 0, 0, date('m', $open), date('d', $open) + $call->days, date('Y', $open));
                     $hoy = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 
                     if ($hoy > $until) {
@@ -255,45 +250,46 @@ namespace Goteo\Model {
 
                     // rellenamos el array de visualizacion de fecha limite
                     $call->until['day'] = date('d', $until);
-                    $call->until['month'] = ucfirst(substr(strftime('%B', $until), 0, 3));;
+                    $call->until['month'] = ucfirst(substr(strftime('%B', $until), 0, 3));
+                    ;
                     $call->until['year'] = date('Y', $until);
                 }
 
                 $call->sponsors = Call\Sponsor::getList($id);
+                $call->banners  = Call\Banner::getList($id);
 
-				return $call;
-
-			} catch(\PDOException $e) {
-				throw \Goteo\Core\Exception($e->getMessage());
-			} catch(\Goteo\Core\Error $e) {
+                return $call;
+            } catch (\PDOException $e) {
+                throw \Goteo\Core\Exception($e->getMessage());
+            } catch (\Goteo\Core\Error $e) {
                 throw new \Goteo\Core\Error('404', Text::html('fatal-error-call'));
-			}
-		}
+            }
+        }
 
         /*
          *  Cargamos los datos mínimos de un convocatoria
          *  para pintar en otras páginas
          */
+
         public static function getMini($id) {
 
             try {
-				// metemos los datos del convocatoria en la instancia
-				$query = self::query("SELECT id, name, owner, lang FROM `call` WHERE id = ?", array($id));
-				$call = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
-
+                // metemos los datos del convocatoria en la instancia
+                $query = self::query("SELECT id, name, owner, lang FROM `call` WHERE id = ?", array($id));
+                $call = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
                 // owner
                 $call->user = User::getMini($call->owner);
 
-				return $call;
-
-			} catch(\PDOException $e) {
-				throw \Goteo\Core\Exception($e->getMessage());
-			}
-		}
+                return $call;
+            } catch (\PDOException $e) {
+                throw \Goteo\Core\Exception($e->getMessage());
+            }
+        }
 
         /*
          * Listado simple de todos los convocatorias
          */
+
         public static function getAll() {
 
             $list = array();
@@ -316,26 +312,27 @@ namespace Goteo\Model {
         /*
          *  Para validar los campos del convocatoria que son NOT NULL en la tabla
          */
+
         public function validate(&$errors = array()) {
 
             // Estos son errores que no permiten continuar
             if (empty($this->id))
                 $errors[] = 'El convocatoria no tiene id';
-                //Text::get('validate-call-noid');
+            //Text::get('validate-call-noid');
 
             if (empty($this->name))
                 $errors[] = 'El convocatoria no tiene nombre';
-                //Text::get('validate-call-noname');
+            //Text::get('validate-call-noname');
 
             if (empty($this->lang))
                 $this->lang = 'es';
 
             if (empty($this->status))
                 $this->status = 1;
-            
+
             if (empty($this->owner))
                 $errors[] = 'El convocatoria no tiene usuario dueño';
-            
+
             //cualquiera de estos errores hace fallar la validación
             if (!empty($errors))
                 return false;
@@ -347,10 +344,12 @@ namespace Goteo\Model {
          * actualiza en la tabla los datos del convocatoria
          * @param array $call->errors para guardar los errores de datos del formulario, los errores de proceso se guardan en $call->errors['process']
          */
-        public function save (&$errors = array()) {
-            if(!$this->validate($errors)) { return false; }
+        public function save(&$errors = array()) {
+            if (!$this->validate($errors)) {
+                return false;
+            }
 
-  			try {
+            try {
                 // fail para pasar por todo antes de devolver false
                 $fail = false;
 
@@ -417,6 +416,8 @@ namespace Goteo\Model {
                     'apply',
                     'legal',
                     'dossier',
+                    'tweet',
+                    'fbappid',
                     'call_location',
                     'resources',
                     'scope',
@@ -424,13 +425,14 @@ namespace Goteo\Model {
                     'maxdrop',
                     'maxproj',
                     'days'
-                    );
+                );
 
                 $set = '';
                 $values = array();
 
                 foreach ($fields as $field) {
-                    if ($set != '') $set .= ', ';
+                    if ($set != '')
+                        $set .= ', ';
                     $set .= "$field = :$field";
                     $values[":$field"] = $this->$field;
                 }
@@ -438,10 +440,10 @@ namespace Goteo\Model {
                 // Solamente marcamos updated cuando se envia a revision desde el superform o el admin
 //				$set .= ", updated = :updated";
 //				$values[':updated'] = date('Y-m-d');
-				$values[':id'] = $this->id;
+                $values[':id'] = $this->id;
 
-				$sql = "UPDATE `call` SET " . $set . " WHERE id = :id";
-				if (!self::query($sql, $values)) {
+                $sql = "UPDATE `call` SET " . $set . " WHERE id = :id";
+                if (!self::query($sql, $values)) {
                     $errors[] = $sql . '<pre>' . print_r($values, 1) . '</pre>';
                     $fail = true;
                 }
@@ -451,22 +453,21 @@ namespace Goteo\Model {
                 // cada una con sus save, sus new y sus remove
                 // quitar las que tiene y no vienen
                 // añadir las que vienen y no tiene
-
                 //categorias
                 $tiene = Call\Category::get($this->id);
                 $viene = $this->categories;
                 $quita = array_diff_assoc($tiene, $viene);
                 $guarda = array_diff_assoc($viene, $tiene);
-                foreach ($quita as $key=>$item) {
+                foreach ($quita as $key => $item) {
                     $category = new Call\Category(
-                        array(
-                            'id'=>$item,
-                            'call'=>$this->id)
+                                    array(
+                                        'id' => $item,
+                                        'call' => $this->id)
                     );
                     if (!$category->remove($errors))
                         $fail = true;
                 }
-                foreach ($guarda as $key=>$item) {
+                foreach ($guarda as $key => $item) {
                     if (!$item->save($errors))
                         $fail = true;
                 }
@@ -479,16 +480,16 @@ namespace Goteo\Model {
                 $viene = $this->icons;
                 $quita = array_diff_assoc($tiene, $viene);
                 $guarda = array_diff_assoc($viene, $tiene);
-                foreach ($quita as $key=>$item) {
+                foreach ($quita as $key => $item) {
                     $icon = new Call\Icon(
-                        array(
-                            'id'=>$item,
-                            'call'=>$this->id)
+                                    array(
+                                        'id' => $item,
+                                        'call' => $this->id)
                     );
                     if (!$icon->remove($errors))
                         $fail = true;
                 }
-                foreach ($guarda as $key=>$item) {
+                foreach ($guarda as $key => $item) {
                     if (!$item->save($errors))
                         $fail = true;
                 }
@@ -496,69 +497,124 @@ namespace Goteo\Model {
                 if (!empty($quita) || !empty($guarda))
                     $this->icons = Call\Icon::get($this->id);
 
+                //banners
+                $tiene = Call\Banner::getList($this->id);
+                $viene = $this->banners;
+                $quita = array_diff_key($tiene, $viene);
+                $guarda = array_diff_key($viene, $tiene);
+                foreach ($quita as $key=>$item) {
+                    if (!Call\Banner::delete($item->id)) {
+                        $fail = true;
+                    } else {
+                        unset($tiene[$key]);
+                    }
+                }
+                foreach ($guarda as $key=>$item) {
+                    if (!$item->save($errors))
+                        $fail = true;
+                }
+                /* Ahora, los que tiene y vienen. Si el contenido es diferente, hay que guardarlo*/
+                foreach ($tiene as $key => $row) {
+                    // a ver la diferencia con el que viene
+                    if ($row != $viene[$key]) {
+                        if (!$viene[$key]->save($errors))
+                            $fail = true;
+                        $guarda = true;
+                    }
+                }
+
+                if (!empty($quita) || !empty($guarda))
+                    $this->banners = Call\Banner::getList($this->id);
+
+
+                //sponsors
+                $tiene = Call\Sponsor::getList($this->id);
+                $viene = $this->sponsors;
+                $quita = array_diff_key($tiene, $viene);
+                $guarda = array_diff_key($viene, $tiene);
+                foreach ($quita as $key=>$item) {
+                    if (!Call\Sponsor::delete($item->id)) {
+                        $fail = true;
+                    } else {
+                        unset($tiene[$key]);
+                    }
+                }
+                foreach ($guarda as $key=>$item) {
+                    if (!$item->save($errors))
+                        $fail = true;
+                }
+                /* Ahora, los que tiene y vienen. Si el contenido es diferente, hay que guardarlo*/
+                foreach ($tiene as $key => $row) {
+                    // a ver la diferencia con el que viene
+                    if ($row != $viene[$key]) {
+                        if (!$viene[$key]->save($errors))
+                            $fail = true;
+                        $guarda = true;
+                    }
+                }
+
+                if (!empty($quita) || !empty($guarda))
+                    $this->sponsors = Call\Sponsor::getList($this->id);
+
 
                 //listo
                 return !$fail;
-			} catch(\PDOException $e) {
+            } catch (\PDOException $e) {
                 $errors[] = 'Error sql al grabar el convocatoria.' . $e->getMessage();
-                //Text::get('save-call-fail');
                 return false;
-			}
-
+            }
         }
 
+        public function saveLang(&$errors = array()) {
 
-        public function saveLang (&$errors = array()) {
-
-  			try {
+            try {
                 $fields = array(
-                    'id'=>'id',
-                    'lang'=>'lang_lang',
-                    'subtitle'=>'subtitle_lang',
-                    'description'=>'description_lang',
-                    'whom'=>'whom_lang',
-                    'apply'=>'apply_lang',
-                    'legal'=>'legal_lang',
-                    'resources'=>'resources_lang',
-                    'dossier'=>'dossier_lang'
-                    );
+                    'id' => 'id',
+                    'lang' => 'lang_lang',
+                    'subtitle' => 'subtitle_lang',
+                    'description' => 'description_lang',
+                    'whom' => 'whom_lang',
+                    'apply' => 'apply_lang',
+                    'legal' => 'legal_lang',
+                    'resources' => 'resources_lang',
+                    'dossier' => 'dossier_lang',
+                    'tweet' => 'tweet_lang'
+                );
 
                 $set = '';
                 $values = array();
 
-                foreach ($fields as $field=>$ffield) {
-                    if ($set != '') $set .= ', ';
+                foreach ($fields as $field => $ffield) {
+                    if ($set != '')
+                        $set .= ', ';
                     $set .= "$field = :$field";
                     $values[":$field"] = $this->$ffield;
                 }
 
-				$sql = "REPLACE INTO call_lang SET " . $set;
-				if (self::query($sql, $values)) {
+                $sql = "REPLACE INTO call_lang SET " . $set;
+                if (self::query($sql, $values)) {
                     return true;
                 } else {
                     $errors[] = $sql . '<pre>' . print_r($values, 1) . '</pre>';
                     return false;
                 }
-			} catch(\PDOException $e) {
+            } catch (\PDOException $e) {
                 $errors[] = 'Error sql al grabar la traduccion de la convocatoria.' . $e->getMessage();
                 return false;
-			}
-
+            }
         }
 
         /*
          * Listo para revision
          */
         public function ready(&$errors = array()) {
-			try {
+            try {
                 $sql = "UPDATE `call` SET status = :status, updated = :updated WHERE id = :id";
-                self::query($sql, array(':status'=>2, ':updated'=>date('Y-m-d'), ':id'=>$this->id));
-                
+                self::query($sql, array(':status' => 2, ':updated' => date('Y-m-d'), ':id' => $this->id));
+
                 return true;
-                
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al finalizar la edicion. ' . $e->getMessage();
-                //Text::get('send-call-review-fail');
                 return false;
             }
         }
@@ -567,15 +623,13 @@ namespace Goteo\Model {
          * Listo para postulación
          */
         public function open(&$errors = array()) {
-			try {
+            try {
                 $sql = "UPDATE `call` SET status = :status, opened = :opened WHERE id = :id";
-                self::query($sql, array(':status'=>3, ':opened'=>date('Y-m-d'), ':id'=>$this->id));
+                self::query($sql, array(':status' => 3, ':opened' => date('Y-m-d'), ':id' => $this->id));
 
                 return true;
-
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al abrir la postulacion. ' . $e->getMessage();
-                //Text::get('send-call-review-fail');
                 return false;
             }
         }
@@ -584,13 +638,12 @@ namespace Goteo\Model {
          * Devuelto al estado de edición o selección propia de proyectos
          */
         public function enable(&$errors = array()) {
-			try {
-				$sql = "UPDATE `call` SET status = :status WHERE id = :id";
-				self::query($sql, array(':status'=>1, ':id'=>$this->id));
+            try {
+                $sql = "UPDATE `call` SET status = :status WHERE id = :id";
+                self::query($sql, array(':status' => 1, ':id' => $this->id));
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al habilitar para edición. ' . $e->getMessage();
-                //Text::get('send-call-reedit-fail');
                 return false;
             }
         }
@@ -600,9 +653,9 @@ namespace Goteo\Model {
          *  Ya aparecen los proyectos seleccionados para aportarles
          */
         public function publish(&$errors = array()) {
-			try {
-				$sql = "UPDATE `call` SET status = :status, published = :published WHERE id = :id";
-				self::query($sql, array(':status'=>4, ':published'=>date('Y-m-d'), ':id'=>$this->id));
+            try {
+                $sql = "UPDATE `call` SET status = :status, published = :published WHERE id = :id";
+                self::query($sql, array(':status' => 4, ':published' => date('Y-m-d'), ':id' => $this->id));
 
                 return true;
             } catch (\PDOException $e) {
@@ -616,9 +669,9 @@ namespace Goteo\Model {
          *  parada de emergencia antes de terminar el dinero
          */
         public function fail(&$errors = array()) {
-			try {
-				$sql = "UPDATE `call` SET status = :status, closed = :closed WHERE id = :id";
-				self::query($sql, array(':status'=>6, ':closed'=>date('Y-m-d'), ':id'=>$this->id));
+            try {
+                $sql = "UPDATE `call` SET status = :status, closed = :closed WHERE id = :id";
+                self::query($sql, array(':status' => 6, ':closed' => date('Y-m-d'), ':id' => $this->id));
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al cerrar la convocatoria. ' . $e->getMessage();
@@ -631,9 +684,9 @@ namespace Goteo\Model {
          *  no queda más dinero.
          */
         public function succeed(&$errors = array()) {
-			try {
-				$sql = "UPDATE `call` SET status = :status, success = :success WHERE id = :id";
-				self::query($sql, array(':status'=>5, ':success'=>date('Y-m-d'), ':id'=>$this->id));
+            try {
+                $sql = "UPDATE `call` SET status = :status, success = :success WHERE id = :id";
+                self::query($sql, array(':status' => 5, ':success' => date('Y-m-d'), ':id' => $this->id));
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al dar por financiado la convocatoria. ' . $e->getMessage();
@@ -656,16 +709,18 @@ namespace Goteo\Model {
                 self::query("DELETE FROM call_category WHERE `call` = ?", array($this->id));
                 self::query("DELETE FROM call_icon WHERE `call` = ?", array($this->id));
                 self::query("DELETE FROM call_project WHERE `call` = ?", array($this->id));
+                self::query("DELETE FROM call_banner WHERE `call` = ?", array($this->id));
+                self::query("DELETE FROM call_sponsor WHERE `call` = ?", array($this->id));
                 self::query("DELETE FROM `call` WHERE id = ?", array($this->id));
                 // y los permisos
-                self::query("DELETE FROM acl WHERE url LIKE :call AND url LIKE :id", array(':call'=>'%/call/%',':id'=>'%'.$this->id.'%'));
+                self::query("DELETE FROM acl WHERE url LIKE :call AND url LIKE :id", array(':call' => '%/call/%', ':id' => '%' . $this->id . '%'));
                 // si todo va bien, commit y cambio el id de la instancia
                 self::query("COMMIT");
                 return true;
             } catch (\PDOException $e) {
                 self::query("ROLLBACK");
-				$sql = "UPDATE `call` SET status = :status WHERE id = :id";
-				self::query($sql, array(':status'=>0, ':id'=>$this->id));
+                $sql = "UPDATE `call` SET status = :status WHERE id = :id";
+                self::query($sql, array(':status' => 0, ':id' => $this->id));
                 return false;
             }
         }
@@ -681,14 +736,13 @@ namespace Goteo\Model {
          *  Para verificar id única
          */
         public static function checkId($id, $num = 1) {
-            try
-            {
-                $query = self::query("SELECT id FROM `call` WHERE id = :id", array(':id'=>$id));
+            try {
+                $query = self::query("SELECT id FROM `call` WHERE id = :id", array(':id' => $id));
                 $exist = $query->fetchObject();
                 // si  ya existe, cambiar las últimas letras por un número
                 if (!empty($exist->id)) {
                     $sufix = (string) $num;
-                    if ((strlen($id)+strlen($sufix)) > 49)
+                    if ((strlen($id) + strlen($sufix)) > 49)
                         $id = substr($id, 0, (strlen($id) - strlen($sufix))) . $sufix;
                     else
                         $id = $id . $sufix;
@@ -696,8 +750,7 @@ namespace Goteo\Model {
                     $id = self::checkId($id, $num);
                 }
                 return $id;
-            }
-            catch (\PDOException $e) {
+            } catch (\PDOException $e) {
                 throw new Goteo\Core\Exception('Fallo al verificar id única para la convocatoria. ' . $e->getMessage());
             }
         }
@@ -705,8 +758,7 @@ namespace Goteo\Model {
         /*
          * Lista de convocatorias de un usuario
          */
-        public static function ofmine($owner, $published = false)
-        {
+        public static function ofmine($owner, $published = false) {
             $calls = array();
 
             $sql = "SELECT * FROM `call` WHERE owner = ?";
@@ -720,15 +772,14 @@ namespace Goteo\Model {
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
                 $calls[] = self::get($proj->id);
             }
-            
+
             return $calls;
         }
 
         /*
          * Lista de convocatorias en campaña (para la portada)
          */
-        public static function getActive($status = null, $all = false)
-        {
+        public static function getActive($status = null, $all = false) {
             $calls = array();
             $values = array();
 
@@ -804,13 +855,13 @@ namespace Goteo\Model {
                 switch ($filters['order']) {
                     case 'updated':
                         $sqlOrder .= " ORDER BY updated DESC";
-                    break;
+                        break;
                     case 'name':
                         $sqlOrder .= " ORDER BY name ASC";
-                    break;
+                        break;
                     default:
                         $sqlOrder .= " ORDER BY {$filters['order']}";
-                    break;
+                        break;
                 }
             }
 
@@ -873,19 +924,18 @@ namespace Goteo\Model {
             return $projects;
         }
 
-
         /*
          * comprueba errores de datos y actualiza la puntuación
          */
         public function check() {
             //primero resetea los errores y los okeys
             $this->errors = self::blankErrors();
-            $this->okeys  = self::blankErrors();
+            $this->okeys = self::blankErrors();
 
             $errors = &$this->errors;
-            $okeys  = &$this->okeys ;
+            $okeys = &$this->okeys;
 
-            /***************** Revisión de campos del paso 1, PERFIL *****************/
+            /*             * *************** Revisión de campos del paso 1, PERFIL **************** */
             // obligatorios: nombre, email, ciudad
             if (empty($this->user->name)) {
                 $errors['userProfile']['name'] = Text::get('validate-user-field-name');
@@ -899,7 +949,7 @@ namespace Goteo\Model {
                 $okeys['userProfile']['location'] = 'ok';
             }
 
-            if(!empty($this->user->avatar) && $this->user->avatar->id != 1) {
+            if (!empty($this->user->avatar) && $this->user->avatar->id != 1) {
                 $okeys['userProfile']['avatar'] = 'ok';
             }
 
@@ -932,11 +982,11 @@ namespace Goteo\Model {
 
                 $anyerror = false;
                 foreach ($this->user->webs as $web) {
-                    if (trim(str_replace('http://','',$web->url)) == '') {
-                        $anyerror = !$anyerror ?: true;
-                        $errors['userProfile']['web-'.$web->id.'-url'] = Text::get('validate-user-field-web');
+                    if (trim(str_replace('http://', '', $web->url)) == '') {
+                        $anyerror = !$anyerror ? : true;
+                        $errors['userProfile']['web-' . $web->id . '-url'] = Text::get('validate-user-field-web');
                     } else {
-                        $okeys['userProfile']['web-'.$web->id.'-url'] = 'ok';
+                        $okeys['userProfile']['web-' . $web->id . '-url'] = 'ok';
                     }
                 }
 
@@ -958,14 +1008,14 @@ namespace Goteo\Model {
                 $okeys['userProfile']['linkedin'] = 'ok';
             }
 
-            /***************** FIN Revisión del paso 1, PERFIL *****************/
+            /*             * *************** FIN Revisión del paso 1, PERFIL **************** */
 
-            /***************** Revisión de campos del paso 2,DATOS PERSONALES *****************/
+            /*             * *************** Revisión de campos del paso 2,DATOS PERSONALES **************** */
             // obligatorios: todos
             if (empty($this->contract_name)) {
                 $errors['userPersonal']['contract_name'] = Text::get('mandatory-project-field-contract_name');
             } else {
-                 $okeys['userPersonal']['contract_name'] = 'ok';
+                $okeys['userPersonal']['contract_name'] = 'ok';
             }
 
             if (empty($this->contract_nif)) {
@@ -973,7 +1023,7 @@ namespace Goteo\Model {
             } elseif (!Check::nif($this->contract_nif)) {
                 $errors['userPersonal']['contract_nif'] = Text::get('validate-project-value-contract_nif');
             } else {
-                 $okeys['userPersonal']['contract_nif'] = 'ok';
+                $okeys['userPersonal']['contract_nif'] = 'ok';
             }
 
             if (empty($this->contract_email)) {
@@ -981,7 +1031,7 @@ namespace Goteo\Model {
             } elseif (!Check::mail($this->contract_email)) {
                 $errors['userPersonal']['contract_email'] = Text::get('validate-project-value-contract_email');
             } else {
-                 $okeys['userPersonal']['contract_email'] = 'ok';
+                $okeys['userPersonal']['contract_email'] = 'ok';
             }
 
             // Segun persona física o jurídica
@@ -989,13 +1039,13 @@ namespace Goteo\Model {
                 if (empty($this->entity_office)) {
                     $errors['userPersonal']['entity_office'] = Text::get('mandatory-project-field-entity_office');
                 } else {
-                     $okeys['userPersonal']['entity_office'] = 'ok';
+                    $okeys['userPersonal']['entity_office'] = 'ok';
                 }
 
                 if (empty($this->entity_name)) {
                     $errors['userPersonal']['entity_name'] = Text::get('mandatory-project-field-entity_name');
                 } else {
-                     $okeys['userPersonal']['entity_name'] = 'ok';
+                    $okeys['userPersonal']['entity_name'] = 'ok';
                 }
 
                 if (empty($this->entity_cif)) {
@@ -1003,14 +1053,13 @@ namespace Goteo\Model {
                 } elseif (!Check::nif($this->entity_cif)) {
                     $errors['userPersonal']['entity_cif'] = Text::get('validate-project-value-entity_cif');
                 } else {
-                     $okeys['userPersonal']['entity_cif'] = 'ok';
+                    $okeys['userPersonal']['entity_cif'] = 'ok';
                 }
-
             } else { // FISICA
                 if (empty($this->contract_birthdate)) {
                     $errors['userPersonal']['contract_birthdate'] = Text::get('mandatory-project-field-contract_birthdate');
                 } else {
-                     $okeys['userPersonal']['contract_birthdate'] = 'ok';
+                    $okeys['userPersonal']['contract_birthdate'] = 'ok';
                 }
             }
 
@@ -1020,107 +1069,107 @@ namespace Goteo\Model {
             } elseif (!Check::phone($this->phone)) {
                 $errors['userPersonal']['phone'] = Text::get('validate-project-value-phone');
             } else {
-                 $okeys['userPersonal']['phone'] = 'ok';
+                $okeys['userPersonal']['phone'] = 'ok';
             }
 
             if (empty($this->address)) {
                 $errors['userPersonal']['address'] = Text::get('mandatory-project-field-address');
             } else {
-                 $okeys['userPersonal']['address'] = 'ok';
-                 ++$score;
+                $okeys['userPersonal']['address'] = 'ok';
+                ++$score;
             }
 
             if (empty($this->zipcode)) {
                 $errors['userPersonal']['zipcode'] = Text::get('mandatory-project-field-zipcode');
             } else {
-                 $okeys['userPersonal']['zipcode'] = 'ok';
+                $okeys['userPersonal']['zipcode'] = 'ok';
             }
 
             if (empty($this->location)) {
                 $errors['userPersonal']['location'] = Text::get('mandatory-project-field-residence');
             } else {
-                 $okeys['userPersonal']['location'] = 'ok';
+                $okeys['userPersonal']['location'] = 'ok';
             }
 
             if (empty($this->country)) {
                 $errors['userPersonal']['country'] = Text::get('mandatory-project-field-country');
             } else {
-                 $okeys['userPersonal']['country'] = 'ok';
+                $okeys['userPersonal']['country'] = 'ok';
             }
 
-            /***************** FIN Revisión del paso 2, DATOS PERSONALES *****************/
+            /*             * *************** FIN Revisión del paso 2, DATOS PERSONALES **************** */
 
-            /***************** Revisión de campos del paso 3, DESCRIPCION *****************/
+            /*             * *************** Revisión de campos del paso 3, DESCRIPCION **************** */
             if (empty($this->name)) {
                 $errors['overview']['name'] = Text::get('mandatory-call-field-name');
             } else {
-                 $okeys['overview']['name'] = 'ok';
+                $okeys['overview']['name'] = 'ok';
             }
 
             if (empty($this->subtitle)) {
                 $errors['overview']['subtitle'] = Text::get('mandatory-call-field-subtitle');
             } else {
-                 $okeys['overview']['subtitle'] = 'ok';
+                $okeys['overview']['subtitle'] = 'ok';
             }
 
             if (empty($this->logo)) {
                 $errors['overview']['logo'] = Text::get('mandatory-call-field-logo');
             } else {
-                 $okeys['overview']['logo'] = 'ok';
+                $okeys['overview']['logo'] = 'ok';
             }
 
             if (empty($this->image)) {
                 $errors['overview']['image'] = Text::get('mandatory-call-field-image');
             } else {
-                 $okeys['overview']['image'] = 'ok';
+                $okeys['overview']['image'] = 'ok';
             }
 
             if (empty($this->description)) {
                 $errors['overview']['description'] = Text::get('mandatory-call-field-description');
             } else {
-                 $okeys['overview']['description'] = 'ok';
+                $okeys['overview']['description'] = 'ok';
             }
 
             if (empty($this->whom)) {
                 $errors['overview']['whom'] = Text::get('mandatory-call-field-whom');
-             } else {
-                 $okeys['overview']['whom'] = 'ok';
+            } else {
+                $okeys['overview']['whom'] = 'ok';
             }
 
             if (empty($this->apply)) {
                 $errors['overview']['apply'] = Text::get('mandatory-call-field-apply');
             } else {
-                 $okeys['overview']['apply'] = 'ok';
+                $okeys['overview']['apply'] = 'ok';
             }
 
             if (empty($this->legal)) {
                 $errors['overview']['legal'] = Text::get('mandatory-call-field-legal');
             } else {
-                 $okeys['overview']['legal'] = 'ok';
+                $okeys['overview']['legal'] = 'ok';
             }
 
             if (empty($this->categories)) {
                 $errors['overview']['categories'] = Text::get('mandatory-call-field-category');
             } else {
-                 $okeys['overview']['categories'] = 'ok';
+                $okeys['overview']['categories'] = 'ok';
             }
 
             if (empty($this->icons)) {
                 $errors['overview']['icons'] = Text::get('mandatory-call-field-icons');
             } else {
-                 $okeys['overview']['icons'] = 'ok';
+                $okeys['overview']['icons'] = 'ok';
             }
 
             if (empty($this->call_location)) {
                 $errors['overview']['call_location'] = Text::get('mandatory-call-field-location');
             } else {
-                 $okeys['overview']['call_location'] = 'ok';
+                $okeys['overview']['call_location'] = 'ok';
             }
 
             if (empty($this->scope)) {
                 $errors['overview']['scope'] = Text::get('mandatory-call-field-scope');
             } else {
-                 $okeys['overview']['scope'] = 'ok';
+                $okeys['overview']['scope'] = 'ok';
             }
 
             // si no tiene presupuesto tiene que tener recursos
@@ -1132,7 +1181,7 @@ namespace Goteo\Model {
                 $okeys['overview']['resources'] = 'ok';
             }
 
-            /***************** FIN Revisión del paso 3, DESCRIPCION *****************/
+            /*             * *************** FIN Revisión del paso 3, DESCRIPCION **************** */
 
             return true;
         }
@@ -1142,8 +1191,7 @@ namespace Goteo\Model {
          *
          * @param id call
          */
-        private function getRest($getUsed = false)
-        {
+        private function getRest($getUsed = false) {
             // cogemos la cantidad de presupuesto y la cantidad de aportes activos para esta campaña
             $sql = "
                 SELECT SUM(invest.amount)
@@ -1154,7 +1202,8 @@ namespace Goteo\Model {
             $query = self::query($sql, array($this->id));
             $used = $query->fetchColumn();
 
-            if ($getUsed) return $used;
+            if ($getUsed)
+                return $used;
 
             return ($this->amount - $used);
         }
@@ -1162,14 +1211,13 @@ namespace Goteo\Model {
         /*
          * Mira si hay que pasarla a estado exitosa
          */
-        public function setSuccess()
-        {
+        public function setSuccess() {
             // tiene que tener presupuesto
             if (empty($this->amount))
                 return false;
-            
+
             // dame los proyectos que tienen capital riego y aun no han conseguido el mínimo
-                $sql = "SELECT
+            $sql = "SELECT
                             COUNT(id),
                             (SELECT  SUM(amount)
                             FROM    cost
@@ -1191,7 +1239,7 @@ namespace Goteo\Model {
                     )
                     HAVING getamount < mincost
                     ";
-                echo \str_replace('?', "'$this->id'", $sql) . '<br />';
+            echo \str_replace('?', "'$this->id'", $sql) . '<br />';
             $query = self::query($sql, array($this->id));
             if ($query->fetchColumn() > 0) {
                 // si alguno, nada
@@ -1207,27 +1255,30 @@ namespace Goteo\Model {
         /*
          * Estados de publicación de un convocatoria
          */
-        public static function status () {
+
+        public static function status() {
             return array(
 //                0=>Text::get('form-call_status-cancelled'),
-                1=>Text::get('form-call_status-edit'),              // edicion
-                2=>Text::get('form-call_status-review'),            // en revisión
-                3=>Text::get('form-call_status-apply'),             // en campaña de inscripción
-                4=>Text::get('form-call_status-published'),         // en campaña de repartir dinero
-                5=>Text::get('form-call_status-success'),           // se acabo el dinero
-                6=>Text::get('form-call_status-expired'));          // la hemos cancelado
+                1 => Text::get('form-call_status-edit'), // edicion
+                2 => Text::get('form-call_status-review'), // en revisión
+                3 => Text::get('form-call_status-apply'), // en campaña de inscripción
+                4 => Text::get('form-call_status-published'), // en campaña de repartir dinero
+                5 => Text::get('form-call_status-success'), // se acabo el dinero
+                6 => Text::get('form-call_status-expired'));          // la hemos cancelado
         }
 
-         public static function blankErrors() {
+        public static function blankErrors() {
             // para guardar los fallos en los datos
             $errors = array(
-                'userProfile'  => array(),  // Errores en el paso 1
-                'userPersonal' => array(),  // Errores en el paso 2
-                'overview'     => array()   // Errores en el paso 3
+                'userProfile' => array(), // Errores en el paso 1
+                'userPersonal' => array(), // Errores en el paso 2
+                'overview' => array(),   // Errores en el paso 3
+                'supports' => array()   // Errores en el paso 4
             );
 
             return $errors;
         }
-   }
+
+    }
 
 }

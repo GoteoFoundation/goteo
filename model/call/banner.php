@@ -6,7 +6,7 @@ namespace Goteo\Model\Call {
         Goteo\Model\Image;
 
 
-    class Sponsor extends \Goteo\Core\Model {
+    class Banner extends \Goteo\Core\Model {
 
         public
             $id,
@@ -28,16 +28,16 @@ namespace Goteo\Model\Call {
                         url,
                         image,
                         `order`
-                    FROM    call_sponsor
+                    FROM    call_banner
                     WHERE id = :id
                     ", array(':id' => $id));
-                $sponsor = $sql->fetchObject(__CLASS__);
+                $banner = $sql->fetchObject(__CLASS__);
 
-                if (!empty($sponsor->image)) {
-                    $sponsor->image = Image::get($sponsor->image);
+                if (!empty($banner->image)) {
+                    $banner->image = Image::get($banner->image);
                 }
 
-                return $sponsor;
+                return $banner;
         }
 
         /*
@@ -55,13 +55,13 @@ namespace Goteo\Model\Call {
                     url,
                     image,
                     `order`
-                FROM    call_sponsor
+                FROM    call_banner
                 WHERE `call` = :call
                 ORDER BY `order` ASC, name ASC
                 ", array(':call'=>$call));
 
-            foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $sponsor) {
-                $list[] = $sponsor;
+            foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $banner) {
+                $list[] = $banner;
             }
 
             return $list;
@@ -82,18 +82,18 @@ namespace Goteo\Model\Call {
                     url,
                     image,
                     `order`
-                FROM    call_sponsor
+                FROM    call_banner
                 WHERE `call` = :call
                 ORDER BY `order` ASC, name ASC
                 ", array(':call'=>$call));
 
-            foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $sponsor) {
+            foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $banner) {
                 // imagen
-                if (!empty($sponsor->image)) {
-                    $sponsor->image = Image::get($sponsor->image);
+                if (!empty($banner->image)) {
+                    $banner->image = Image::get($banner->image);
                 }
 
-                $list[] = $sponsor;
+                $list[] = $banner;
             }
 
             return $list;
@@ -150,7 +150,7 @@ namespace Goteo\Model\Call {
             }
 
             try {
-                $sql = "REPLACE INTO call_sponsor SET " . $set;
+                $sql = "REPLACE INTO call_banner SET " . $set;
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
 
@@ -166,7 +166,7 @@ namespace Goteo\Model\Call {
          */
         public static function delete ($id) {
 
-            $sql = "DELETE FROM call_sponsor WHERE id = :id";
+            $sql = "DELETE FROM call_banner WHERE id = :id";
             if (self::query($sql, array(':id'=>$id))) {
                 return true;
             } else {
@@ -182,7 +182,7 @@ namespace Goteo\Model\Call {
             $extra = array (
                     'call' => $call
                 );
-            return Check::reorder($id, 'up', 'call_sponsor', 'id', 'order', $extra);
+            return Check::reorder($id, 'up', 'call_banner', 'id', 'order', $extra);
         }
 
         /*
@@ -192,14 +192,14 @@ namespace Goteo\Model\Call {
             $extra = array (
                     'call' => $call
                 );
-            return Check::reorder($id, 'down', 'call_sponsor', 'id', 'order', $extra);
+            return Check::reorder($id, 'down', 'call_banner', 'id', 'order', $extra);
         }
 
         /*
          * Orden para añadirlo al final
          */
         public static function next ($call) {
-            $sql = self::query('SELECT MAX(`order`) FROM call_sponsor WHERE `call` = :call', array(':call' => $call));
+            $sql = self::query('SELECT MAX(`order`) FROM call_banner WHERE `call` = :call', array(':call' => $call));
             $order = $sql->fetchColumn(0);
             return ++$order;
 
