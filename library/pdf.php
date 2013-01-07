@@ -123,18 +123,18 @@ function donativeCert($data) {
     $pdf->cell($s);
     $pdf->cell(0,10,'');
 
-    $pdf->Ln(12);
+    $pdf->Ln(10);
 
     $pdf->hr(true);
 
-    $pdf->Ln(10);
+    $pdf->Ln(5);
 
     $pdf->bold();
     $pdf->Write(5,'Alfonso Pachecho Cifuentes');
     $pdf->regular();
     $pdf->Write(5,', como Secretario de la Fundación Fuentes Abiertas, inscrita con el número 1438 en el Registro de Fundaciones del Ministerio de Educación, Cultura y Deportes, a los efectos previstos en el art. 24 de la Ley 49/2002, de 23 de diciembre, de Régimen Fiscal de Entidades Sin Fines Lucrativos e Incentivos Fiscales al Mecenazgo,');
 
-    $pdf->Ln(15);
+    $pdf->Ln(10);
     
     $pdf->regular(14);
     $pdf->Write(5,'CERTIFICA:');
@@ -169,6 +169,9 @@ function donativeCert($data) {
     $pdf->Write(5,$data->amount_char."euros (".$data->amount." euros)");
     $pdf->regular();
     $pdf->Write(5,'.');
+
+    $pdf->Ln(10);
+    $pdf->Write(5,'La Fundación donataria es una entidad sin fines lucrativos a la que resulta de aplicación el régimen fiscal establecido en el Título II la Ley 49/2002, de 23 de diciembre, ya citada.');
 
     $pdf->Ln(10);
     $pdf->Write(5,'La Fundación destinará la donación recibida a las ayudas concedidas al proyecto o proyectos gestionados desde la plataforma Goteo.org y seleccionados por el/la donante registrado/a con el email "');
