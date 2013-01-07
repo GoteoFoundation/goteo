@@ -11,6 +11,7 @@ namespace Goteo\Controller {
         Goteo\Library\Template,
         Goteo\Library\Message,
         Goteo\Library\Feed,
+        Goteo\Library\Buzz,
         Goteo\Model;
 
     class Call extends \Goteo\Core\Controller {
@@ -411,7 +412,8 @@ namespace Goteo\Controller {
                     'fbappid' => $call->fbappid, // Id de la campaña en faceboook
                     'tweet' => $call->tweet, // texto de tweet para el boton "tweet"
                     'author' => '',  // id twitter del convocador
-                    'tags' => array() // hashtags de la campaña (obtenidos del texto de tweet)
+                    'tags' => array(), // hashtags de la campaña (obtenidos del texto de tweet)
+                    'buzz' => array() // lista de items de buzz en twitter
                 );
                 $social->author = str_replace(
                         array(
@@ -422,15 +424,28 @@ namespace Goteo\Controller {
                             '#!/',
                             '@'
                         ), '', $call->user->twitter);
-                $matches = array();
-                preg_match_all('/(#[a-zA-Z0-9_\-]+)/', $call->tweet, $matches);
-                if (!empty($matches)) {
-                    $social->tags = $matches[0];
-                }
-                
-                // lo puede ver
-                return new View('view/call/'.$show.'.html.php', array('call' => $call, 'social' => $social));
 
+                // para el buzz en la portada
+                if ($show == 'index') {
+                    $matches = array();
+                    preg_match_all('/(#[a-zA-Z0-9_\-]+)/', $call->tweet, $matches);
+                    if (!empty($matches)) {
+                        $social->tags = $matches[0];
+                    }
+
+                    // tweets con alguno de los hastags o mencionando al convocador
+                    // también los tweets del convocador
+                    $tsQuery = implode(', OR ', $social->tags);
+                    $tsQuery .= ($tsQuery == '') ? '@' . $social->author : ' OR @' . $social->author;
+                    $tsQuery .= ($tsQuery == '') ? 'from:' . $social->author : ' OR from:' . $social->author;
+                    
+                    $tsUrl = "http://search.twitter.com/search?q=".  urlencode($tsQuery);
+                    $social->buzz_debug = '<a href="'.$tsUrl.'" target="_blank">SEARCH</a>';
+
+                    $social->buzz = Buzz::getTweets($tsQuery, true);
+                }
+
+                return new View('view/call/'.$show.'.html.php', array('call' => $call, 'social' => $social));
             } else {
                 // no lo puede ver
                 throw new Redirection("/");
