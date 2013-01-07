@@ -24,7 +24,17 @@ namespace Goteo\Controller {
             // obtenemos las cabeceras y los datos
             switch ($cual) {
                 case 'donors':
-                    $data = Model\User\Donor::getList(array('year'=>'2012'));
+
+                    $filters = array(
+                        'year' => $_GET['year'],
+                        'status' => $_GET['status'],
+                        'user' => $_GET['user']
+                    );
+                    
+                    if (empty($filters['year']))
+                        $filters['year'] = 2012;
+
+                    $data = Model\User\Donor::getList($filters);
                     $columns = array(
                         'id' => 'Usuario',
                         'email' => 'Email',
