@@ -12,6 +12,9 @@ $oks = array();
 $fails = array();
 $new_receivers = array();
 foreach ($users as $usr) {
+    if (!isset($receivers[$usr]->ok))
+        continue;
+    
     if ($receivers[$usr]->ok) {
         $oks[] = $usr;
     } else {
