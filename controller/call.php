@@ -68,7 +68,8 @@ namespace Goteo\Controller {
                 $_SESSION['stepped'] = array(
                      'userProfile'  => 'userProfile',
                      'userPersonal' => 'userPersonal',
-                     'overview'     => 'overview'
+                     'overview'     => 'overview',
+                     'supports'     => 'supports'
                 );
 
             // aqui uno que pueda entrar a editar siempre puede ir a todos los pasos
@@ -103,6 +104,10 @@ namespace Goteo\Controller {
                     'overview' => array(
                         'name' => Text::get('step-3'),
                         'title' => Text::get('step-overview')
+                    ),
+                    'supports' => array(
+                        'name' => Text::get('step-6'),
+                        'title' => Text::get('step-supports')
                     ),
                     'preview' => array(
                         'name' => Text::get('step-7'),
@@ -245,6 +250,36 @@ namespace Goteo\Controller {
                     $viewData['scope'] = Model\Project::scope();
                     break;
 
+                case 'supports':
+                    if ($_POST) {
+                        foreach ($_POST as $k => $v) {
+                            if (!empty($v) && preg_match('/banner-(\d+)-edit/', $k, $r)) {
+                                $viewData[$k] = true;
+                            }
+                        }
+
+                        if (!empty($_POST['banner-add'])) {
+                            $last = end($call->banners);
+                            if ($last !== false) {
+                                $viewData["banner-{$last->id}-edit"] = true;
+                            }
+                        }
+                        
+                        foreach ($_POST as $k => $v) {
+                            if (!empty($v) && preg_match('/sponsor-(\d+)-edit/', $k, $r)) {
+                                $viewData[$k] = true;
+                            }
+                        }
+
+                        if (!empty($_POST['sponsor-add'])) {
+                            $last = end($call->sponsors);
+                            if ($last !== false) {
+                                $viewData["sponsor-{$last->id}-edit"] = true;
+                            }
+                        }
+                    }
+                    break;
+
                 case 'preview':
                     break;
             }
@@ -371,8 +406,30 @@ namespace Goteo\Controller {
 
                 }
 
+                // array de datos en redes sociales (algunos están en $call directamente)
+                $social = (object) array(
+                    'fbappid' => $call->fbappid, // Id de la campaña en faceboook
+                    'tweet' => $call->tweet, // texto de tweet para el boton "tweet"
+                    'author' => '',  // id twitter del convocador
+                    'tags' => array() // hashtags de la campaña (obtenidos del texto de tweet)
+                );
+                $social->author = str_replace(
+                        array(
+                            'https://',
+                            'http://',
+                            'www.',
+                            'twitter.com/',
+                            '#!/',
+                            '@'
+                        ), '', $call->user->twitter);
+                $matches = array();
+                preg_match_all('/(#[a-zA-Z0-9_\-]+)/', $call->tweet, $matches);
+                if (!empty($matches)) {
+                    $social->tags = $matches[0];
+                }
+                
                 // lo puede ver
-                return new View('view/call/'.$show.'.html.php', array('call' => $call));
+                return new View('view/call/'.$show.'.html.php', array('call' => $call, 'social' => $social));
 
             } else {
                 // no lo puede ver
@@ -541,7 +598,6 @@ namespace Goteo\Controller {
          *
          *
          */
-
         private function process_overview(&$call, &$errors) {
             if (!isset($_POST['process_overview'])) {
                 return false;
@@ -653,7 +709,106 @@ namespace Goteo\Controller {
         }
 
         /*
-         * Paso 4 - PREVIEW
+         * Paso 4 - Colaboradores (banners y sponsors)
+         */
+        private function process_supports(&$call, &$errors) {
+            if (!isset($_POST['process_supports'])) {
+                return false;
+            }
+
+            // campos que guarda este paso: texto para el tweet, el Id de la app de facebook
+            $fields = array(
+                'tweet',
+                'fbappid'
+            );
+
+            foreach ($fields as $field) {
+                if (isset($_POST[$field])) {
+                    $call->$field = $_POST[$field];
+                }
+            }
+
+            // tratar banners existentes
+            foreach ($call->banners as $key => $banner) {
+
+                // quitar las colaboraciones marcadas para quitar
+                if (!empty($_POST["banner-{$banner->id}-remove"])) {
+                    unset($call->banners[$key]);
+                    continue;
+                }
+
+                if (isset($_POST['banner-' . $banner->id . '-name'])) {
+                    $banner->name = $_POST['banner-' . $banner->id . '-name'];
+                    $banner->url = $_POST['banner-' . $banner->id . '-url'];
+                    $banner->order = $_POST['banner-' . $banner->id . '-order'];
+                }
+
+                // si quitan la imagen
+                if (!empty($_POST["banner-{$banner->id}-image_remove"])) {
+                    $banner->image = '';
+                }
+
+                // tratar la imagen que suben
+                if(!empty($_FILES['banner-' . $banner->id . '-image_upload']['name'])) {
+                    $banner->image = $_FILES['banner-' . $banner->id . '-image_upload'];
+                }
+
+            }
+
+            // tratar sponsors existentes
+            foreach ($call->sponsors as $key => $sponsor) {
+
+                // quitar las colaboraciones marcadas para quitar
+                if (!empty($_POST["sponsor-{$sponsor->id}-remove"])) {
+                    unset($call->sponsors[$key]);
+                    continue;
+                }
+
+                if (isset($_POST['sponsor-' . $sponsor->id . '-name'])) {
+                    $sponsor->name = $_POST['sponsor-' . $sponsor->id . '-name'];
+                    $sponsor->url = $_POST['sponsor-' . $sponsor->id . '-url'];
+                    $sponsor->order = $_POST['sponsor-' . $sponsor->id . '-order'];
+                }
+
+                // si quitan la imagen
+                if (!empty($_POST["sponsor-{$sponsor->id}-image_remove"])) {
+                    $sponsor->image = '';
+                }
+
+                // tratar la imagen que suben
+                if(!empty($_FILES['sponsor-' . $sponsor->id . '-image_upload']['name'])) {
+                    $sponsor->image = $_FILES['sponsor-' . $sponsor->id . '-image_upload'];
+                }
+
+            }
+
+            // añadir nuevo banner
+            if (!empty($_POST['banner-add'])) {
+                $call->banners[] = new Model\Call\Banner(array(
+                    'call'  => $call->id,
+                    'name'  => 'Nuevo banner',
+                    'url'   => '',
+                    'image' => '',
+                    'order' => Model\Call\Banner::next($call->id)
+                ));
+            }
+
+            // añadir nuevo sponsor
+            if (!empty($_POST['sponsor-add'])) {
+                $call->sponsors[] = new Model\Call\Sponsor(array(
+                    'call'  => $call->id,
+                    'name'  => 'Nuevo patrocinador',
+                    'url'   => '',
+                    'image' => '',
+                    'order' => Model\Call\Sponsor::next($call->id)
+                ));
+            }
+
+            return true;
+        }
+
+        /*
+         * Paso 5 - PREVIEW
          * No hay nada que tratar porque aq este paso no se le envia nada por post
          */
         private function process_preview(&$call) {

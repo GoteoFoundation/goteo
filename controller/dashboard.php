@@ -1472,6 +1472,7 @@ namespace Goteo\Controller {
                                     $call->apply_lang = $_POST['apply'];
                                     $call->legal_lang = $_POST['legal'];
                                     $call->dossier_lang = $_POST['dossier'];
+                                    $call->tweet_lang = $_POST['tweet'];
                                     $call->resources_lang = $_POST['resources'];
                                     $call->subtitle_lang = $_POST['subtitle'];
                                     $call->lang_lang = $_SESSION['translate_lang'];
