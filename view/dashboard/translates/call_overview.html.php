@@ -187,6 +187,22 @@ $original = \Goteo\Model\Call::get($call->id);
         ),
 
 
+        'tweet-orig' => array(
+            'type'      => 'html',
+            'title'     => Text::get('call-field-tweet'),
+            'html'     => $original->tweet
+        ),
+        'tweet' => array(
+            'type'      => 'textbox',
+            'title'     => '',
+            'class'     => 'inline',
+            'hint'      => Text::get('tooltip-call-tweet'),
+            'errors'    => array(),
+            'ok'        => array(),
+            'value'     => $call->tweet
+        ),
+
+
     )
 
 ));
