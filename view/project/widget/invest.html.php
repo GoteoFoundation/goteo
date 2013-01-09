@@ -80,7 +80,7 @@ $action = '/invest/' . $project->id;
 <div class="widget project-invest address">
     <h<?php echo $level ?> class="beak" id="address-header"><?php echo Text::get('invest-address-header') ?></h<?php echo $level ?>>
     <table>
-        <tr id="donation-data" style="display:none;">
+        <tr>
             <td><label for="fullname"><?php echo Text::get('invest-address-name-field') ?></label></td>
             <td colspan="3"><input type="text" id="fullname" name="fullname" value="<?php echo $personal->contract_name; ?>" /></td>
             <td><label for="nif"><?php echo Text::get('invest-address-nif-field') ?></label></td>
@@ -238,11 +238,9 @@ $action = '/invest/' . $project->id;
             // si es renuncio
             if ($('#resign_reward').attr('checked') == 'checked') {
                 $("#address-header").html('<?php echo Text::slash('invest-donation-header') ?>');
-                $("#donation-data").show();
                 reset_reward(i);
             } else {
                 $("#address-header").html('<?php echo Text::slash('invest-address-header') ?>');
-                $("#donation-data").hide();
                 reset_reward(i);
             }
             
@@ -290,7 +288,6 @@ $action = '/invest/' . $project->id;
                     if (confirm('<?php echo Text::slash('invest-alert-noreward') ?>')) {
                         if (confirm('<?php echo Text::slash('invest-alert-noreward_renounce') ?>')) {
                             $("#address-header").html('<?php echo Text::get('invest-donation-header') ?>');
-                            $("#donation-data").show();
                             $('#resign_reward').click();
                             $('#nif').focus();
                             return false;
