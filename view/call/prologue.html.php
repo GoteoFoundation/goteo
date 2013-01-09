@@ -10,7 +10,12 @@
         <meta name="author" content="<?php echo GOTEO_META_AUTHOR ?>" />
         <meta name="copyright" content="<?php echo GOTEO_META_COPYRIGHT ?>" />
         <meta name="robots" content="all" />
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />	
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+        
+        <meta property="og:title" content="<?php echo $call->name; ?>" />
+        <meta property="og:description" content="<?php echo $call->subtitle; ?>" />
+        <meta property="og:image" content="<?php echo SITE_URL ?>/image/<?php echo $call->logo->id; ?>" />
+        <meta property="og:url" content="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>" />
 
 		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/tipsy/tipsy.css" />
         <?php if ($bodyClass == 'splash') : ?>
