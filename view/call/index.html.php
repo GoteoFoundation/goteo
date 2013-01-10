@@ -23,6 +23,7 @@ include 'view/call/header.html.php';
 
     <div id="content">
         <?php echo new View('view/call/widget/title.html.php', $this); ?>
+        <?php echo new View('view/call/widget/buzz.html.php', $this); ?>
 
         <div class="freetext">
 
