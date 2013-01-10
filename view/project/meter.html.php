@@ -34,6 +34,26 @@ if ($reached >= $minimum) {
     }
 }
 
+if (!$horizontal) {
+    // si aun no ha alcanzado el optimo controlamos la visualización para que no confunda
+    // $minimum_done es el % de heigth del mercurio
+    // si no ha alcanzado el óptimo, el máximo será 120%
+    if ($reached < $optimum && $minimum_done > 120)
+        $minimum_done = 120;
+
+    // y si es menos del doble del optimo, que se mantenga en 140
+    if ($reached > $optimum && $reached <= $optimum*1.5) {
+        $minimum_done = 140;
+    }
+
+    // y si es menos de 1.5 del optimo, que se mantenga en 140
+    if ($reached > $optimum && $reached <= $optimum*1.2) {
+        $minimum_done = 135;
+    }
+}
+
+
+
 $more  = $optimum - $minimum;
 $over = $reached - $minimum;
 

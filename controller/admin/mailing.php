@@ -228,10 +228,14 @@ namespace Goteo\Controller\Admin {
 
                     // ahora, envio, el contenido a cada usuario
                     foreach ($_SESSION['mailing']['receivers'] as $usr=>$userData) {
+
+                        $errors = array();
+
                         $users[] = $usr;
                         if (!isset($_POST[$usr])) {
                             $campo = 'receiver_'.str_replace('.', '_', $usr);
                             if (!isset($_POST[$campo])) {
+                                $_SESSION['mailing']['receivers'][$usr]->ok = null;
                                 continue;
                             }
                         }

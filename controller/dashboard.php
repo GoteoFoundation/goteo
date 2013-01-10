@@ -149,7 +149,7 @@ namespace Goteo\Controller {
                         $objeto = new \Goteo\Library\Num2char($donation->amount, null);
                         $donation->amount_char = $objeto->getLetra();
 
-                        $filename = date('Ymd')."_{$donation->nif}_{$donation->user}.pdf";
+                        $filename = "certificado_".date('Ymd')."_{$donation->nif}_{$donation->user}.pdf";
 
 
                         $debug = false;
