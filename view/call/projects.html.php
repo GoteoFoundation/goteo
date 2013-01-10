@@ -8,8 +8,6 @@ use Goteo\Library\Text,
 $bodyClass = 'projects';
 
 $call = $this['call'];
-$bgimage = $call->image->getLink(5000, 5000);
-
 // reordenar proyectos: random pero si ya no está en campaña sale al final
 $final = array();
 

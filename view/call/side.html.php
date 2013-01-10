@@ -4,6 +4,7 @@ use Goteo\Library\Text,
     Goteo\Core\View;
 
 $call = $this['call'];
+$filter = $this['filter'];
 ?>
 <div id="side">
 	<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"><img src="<?php echo $call->logo->getLink(150) ?>" alt="<?php echo $call->user->name ?>" class="logo" /></a>
@@ -55,7 +56,19 @@ $call = $this['call'];
 	</dl>
 	<dl class="block category">
 		<dt><?php echo Text::get('call-splash-categories-header') ?></dt>
-		<dd><?php echo implode(', ', $call->categories) ?></dd>
+		<dd><?php
+                    $c = 1;
+                    foreach ($call->categories as $catId => $catName) {
+                        if ($catId == $filter) {
+                            echo '<a href="/call/'.$call->id.'/projects" class="current">'.$catName.'</a>';
+                        } else {
+                            echo '<a href="/call/'.$call->id.'/projects/?filter='.$catId.'">'.$catName.'</a>';
+                        }
+                        if ($c < count($call->categories))
+                            echo ', ';
+                        $c++;
+                    }
+                ?></dd>
 	</dl>
     
 <?php if ($call->status == 3) : //inscripcion ?>

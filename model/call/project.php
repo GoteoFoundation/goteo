@@ -16,9 +16,21 @@ namespace Goteo\Model\Call {
          * @param varcahr(50) $id  Call identifier
          * @return array of categories identifiers
          */
-		public static function get ($call) {
+		public static function get ($call, $filter =  null) {
             $array = array ();
             try {
+
+                $values = array(':call'=>$call);
+
+                if (!empty($filter)) {
+                    $sqlFilter = "INNER JOIN project_category
+                        ON project_category.project = call_project.project
+                        AND project_category.category = :filter";
+                    $values[':filter'] = $filter;
+                } else {
+                    $sqlFilter = "";
+                }
+
                 $sql = "SELECT
                             project.id as id,
                             project.name as name,
@@ -30,9 +42,12 @@ namespace Goteo\Model\Call {
                         JOIN call_project
                             ON  call_project.project = project.id
                             AND call_project.call = :call
+                        $sqlFilter
+                        GROUP BY project.id
                         ORDER BY project.name ASC
                         ";
-                $query = static::query($sql, array(':call'=>$call));
+                
+                $query = static::query($sql, $values);
                 $items = $query->fetchAll(\PDO::FETCH_OBJ);
 
                 foreach ($items as $item) {

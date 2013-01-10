@@ -445,7 +445,16 @@ namespace Goteo\Controller {
                     $social->buzz = Buzz::getTweets($tsQuery, true);
                 }
 
-                return new View('view/call/'.$show.'.html.php', array('call' => $call, 'social' => $social));
+                // filtro proyectos por categoria
+                $filter = null;
+                if ($show == 'projects') {
+                    if (isset($_GET['filter']) && is_numeric($_GET['filter'])) {
+                        $filter = $_GET['filter'];
+                        $call->projects = Model\Call\Project::get($call->id, $filter);
+                        }
+                }
+
+                echo new View('view/call/'.$show.'.html.php', array ('call' => $call, 'social' => $social, 'filter' => $filter));
             } else {
                 // no lo puede ver
                 throw new Redirection("/");
