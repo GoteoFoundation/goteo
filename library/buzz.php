@@ -30,10 +30,6 @@ namespace Goteo\Library {
             curl_close( $curl );
             $return =json_decode( $result );
 
-            // avatar por defecto
-            $def_image = Model\Image::get(1);
-            $def_avatar = $def_image->getLink(48, 48, true);
-
             // parsear los resultados para devolver un array simple
             foreach ($return->results as $item) {
 
@@ -41,7 +37,7 @@ namespace Goteo\Library {
                 $the_user = $item->from_user_name;
                 $the_avatar = $item->profile_image_url;
                 $the_profile = 'https://twitter.com/'.$the_author;
-                $twitter_user = "{$the_author} : {$the_user}";
+                $twitter_user = $item->from_user;
                 $gUser = false;
 
                 if ($matchusers) {
@@ -54,11 +50,7 @@ namespace Goteo\Library {
                             $image = Model\Image::get($user->avatar);
                             if ($image instanceof Model\Image) {
                                 $the_avatar = $image->getLink(48, 48, true);
-                            } else {
-                                $the_avatar = $def_avatar;
                             }
-                        } else {
-                            $the_avatar = $def_avatar;
                         }
                         $the_profile = 'http://goteo.org/user/profile/'.$the_author;
                         $gUser = true;
@@ -76,7 +68,7 @@ namespace Goteo\Library {
                     'profile' => $the_profile,
                     'text' => $item->text,
                     'es_usuario' => $gUser,
-                    'usuario_twitter' => $twitter_user
+                    'twitter_user' => $twitter_user
                 );
             }
 
