@@ -72,6 +72,8 @@ namespace Goteo\Model\Call {
          * Los que corresponden a los criterios de la convocatoria (como en discover/call) pero tambien si estan en edicion
          * @FIXME no tiene en cuenta la localidad por la problematica de varias localidades y ámbito
          *
+         * Que no tenga en cuenta los proyectos numeraco
+         *
          * @param void
          * @return array
          */
@@ -87,7 +89,7 @@ namespace Goteo\Model\Call {
                         project.status as status,
                         project.project_location as location
                     FROM project
-                    WHERE project.status > 0
+                    WHERE (status > 1  OR (status = 1 AND id NOT REGEXP '[0-9a-f]{5,40}') )
                     AND project.status < 4
                     AND project.id IN (
                                         SELECT distinct(project)

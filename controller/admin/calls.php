@@ -99,11 +99,13 @@ namespace Goteo\Controller\Admin {
                                         Feed::item('call', $call->name, $call->id))
                                     ));
                                 $log->doAdmin('call');
+                                /*
                                 $log->populate($projectData->name, '/project/'.$projectData->id,
                                     \vsprintf('Ha sido seleccionado en la convocatoria %s', array(
                                         Feed::item('call', $call->name, $call->id))
                                     ), $projectData->gallery[0]->id);
                                 $log->doPublic('projects');
+                                 */
                                 unset($log);
 
                             } else {
