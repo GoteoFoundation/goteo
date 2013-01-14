@@ -69,9 +69,7 @@ div.widget.project-invest.address table {
     width: 100%;
 }
 div.widget.project-invest.address table tr td label {
-    text-align: right;
-    padding-right: 5px;
-    padding-left: 10px;
+    padding-bottom: 5px;
 }
 div.widget.project-invest #amount {
     background: url('/view/css/euro/violet/l.png') no-repeat left center #E7E7E7;
@@ -84,21 +82,14 @@ div.widget.project-invest #amount {
     margin-right: 20px;
 }
 div.widget.project-invest #fullname,
-div.widget.project-invest #address {
-    width: 266px;
+div.widget.project-invest #address,
+div.widget.project-invest #location {
+    width: 300px;
 }
 div.widget.project-invest #nif, 
-div.widget.project-invest #zipcode {
-    width: 100px;
-}
-div.widget.project-invest #location {
-    width: 100px;
-}
+div.widget.project-invest #zipcode,
 div.widget.project-invest #country {
-    width: 100px;
-}
-div.widget.project-invest #email {
-    width: 350px;
+    width: 140px;
 }
 
 div.widget.project-invest div.individual ul li label.amount span.amount {

@@ -81,23 +81,34 @@ $action = '/invest/' . $project->id;
     <h<?php echo $level ?> class="beak" id="address-header"><?php echo Text::get('invest-address-header') ?></h<?php echo $level ?>>
     <table>
         <tr>
-            <td><label for="fullname"><?php echo Text::get('invest-address-name-field') ?></label></td>
-            <td colspan="3"><input type="text" id="fullname" name="fullname" value="<?php echo $personal->contract_name; ?>" /></td>
-            <td><label for="nif"><?php echo Text::get('invest-address-nif-field') ?></label></td>
-            <td><input type="text" id="nif" name="nif" value="<?php echo $personal->contract_nif; ?>" /></td>
+            <td>
+                <label for="fullname"><?php echo Text::get('invest-address-name-field') ?></label><br />
+                <input type="text" id="fullname" name="fullname" value="<?php echo $personal->contract_name; ?>" />
+            </td>
+            <td><?php /* Para ocultar el campo nif:  id="donation-data" style="display:none;"  */ ?>
+                <label for="nif"><?php echo Text::get('invest-address-nif-field') ?></label><br />
+                <input type="text" id="nif" name="nif" value="<?php echo $personal->contract_nif; ?>" />
+            </td>
         </tr>
         <tr>
-            <td><label for="address"><?php echo Text::get('invest-address-address-field') ?></label></td>
-            <td colspan="3"><input type="text" id="address" name="address" value="<?php echo $personal->address; ?>" /></td>
-            <td><label for="zipcode"><?php echo Text::get('invest-address-zipcode-field') ?></label></td>
-            <td><input type="text" id="zipcode" name="zipcode" value="<?php echo $personal->zipcode; ?>" /></td>
+            <td>
+                <label for="address"><?php echo Text::get('invest-address-address-field') ?></label><br />
+                <input type="text" id="address" name="address" value="<?php echo $personal->address; ?>" />
+            </td>
+            <td>
+                <label for="zipcode"><?php echo Text::get('invest-address-zipcode-field') ?></label><br />
+                <input type="text" id="zipcode" name="zipcode" value="<?php echo $personal->zipcode; ?>" />
+            </td>
         </tr>
         <tr>
-            <td><label for="location"><?php echo Text::get('invest-address-location-field') ?></label></td>
-            <td><input type="text" id="location" name="location" value="<?php echo $personal->location; ?>" /></td>
-            <td><label for="country"><?php echo Text::get('invest-address-country-field') ?></label></td>
-            <td><input type="text" id="country" name="country" value="<?php echo $personal->country; ?>" /></td>
-            <td colspan="2"></td>
+            <td>
+                <label for="location"><?php echo Text::get('invest-address-location-field') ?></label><br />
+                <input type="text" id="location" name="location" value="<?php echo $personal->location; ?>" />
+            </td>
+            <td>
+                <label for="country"><?php echo Text::get('invest-address-country-field') ?></label><br />
+                <input type="text" id="country" name="country" value="<?php echo $personal->country; ?>" />
+            </td>
         </tr>
     </table>
 
@@ -238,9 +249,11 @@ $action = '/invest/' . $project->id;
             // si es renuncio
             if ($('#resign_reward').attr('checked') == 'checked') {
                 $("#address-header").html('<?php echo Text::slash('invest-donation-header') ?>');
+                /*$("#donation-data").show();*/
                 reset_reward(i);
             } else {
                 $("#address-header").html('<?php echo Text::slash('invest-address-header') ?>');
+                /*$("#donation-data").hide();*/
                 reset_reward(i);
             }
             
@@ -288,6 +301,7 @@ $action = '/invest/' . $project->id;
                     if (confirm('<?php echo Text::slash('invest-alert-noreward') ?>')) {
                         if (confirm('<?php echo Text::slash('invest-alert-noreward_renounce') ?>')) {
                             $("#address-header").html('<?php echo Text::get('invest-donation-header') ?>');
+                            /*$("#donation-data").show();*/
                             $('#resign_reward').click();
                             $('#nif').focus();
                             return false;
