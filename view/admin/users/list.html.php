@@ -130,7 +130,7 @@ $pagedResults = new \Paginated($this['users'], 20, isset($_GET['page']) ? $_GET[
                     if (!isset($_SESSION['admin_node']) || (isset($_SESSION['admin_node']) && $user->node == $_SESSION['admin_node'])) : ?>
                 <a href="/admin/accounts/?name=<?php echo $user->email; ?>" title="Ver sus aportes">[Aportes]</a>
                 <?php else:  ?>
-                <a href="/admin/invests/?users=<?php echo $user->id; ?>" title="Ver sus aportes">[Aportes]</a>
+                <a href="/admin/invests/?name=<?php echo $user->email; ?>" title="Ver sus aportes">[Aportes]</a>
                 <?php endif; } ?></td>
                 <td colspan="5" style="color:blue;">
                     <?php echo (!$user->active && $user->hide) ? ' Baja ' : ''; ?>
