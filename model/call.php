@@ -1211,11 +1211,7 @@ namespace Goteo\Model {
         /*
          * Mira si hay que pasarla a estado exitosa
          */
-        public function setSuccess() {
-            // tiene que tener presupuesto
-            if (empty($this->amount))
-                return false;
-
+        public function checkSuccess() {
             // dame los proyectos que tienen capital riego y aun no han conseguido el mínimo
             $sql = "SELECT
                             COUNT(id),
@@ -1239,17 +1235,11 @@ namespace Goteo\Model {
                     )
                     HAVING getamount < mincost
                     ";
-            echo \str_replace('?', "'$this->id'", $sql) . '<br />';
+            
             $query = self::query($sql, array($this->id));
-            if ($query->fetchColumn() > 0) {
-                // si alguno, nada
-                return false;
-            } else {
-                // si ninguno, exitosa
-                return $this->succeed();
-            }
-
-            return true;
+            // si alguno, nada
+            // si ninguno, exitosa
+            return ($query->fetchColumn() > 0) ? false : true;
         }
 
         /*
