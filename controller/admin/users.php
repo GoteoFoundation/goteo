@@ -389,7 +389,7 @@ namespace Goteo\Controller\Admin {
                         'user' => 'Solo usuario'
                     );
                     $types = array(
-                        'creators' => 'Impulsores', // que tienen algun proyecto en campaña, financiado, archivado o caso de éxito
+                        'creators' => 'Impulsores', // que tienen algun proyecto 
                         'investors' => 'Cofinanciadores', // que han aportado a algun proyecto en campaña, financiado, archivado o caso de éxito
                         'supporters' => 'Colaboradores' // que han enviado algun mensaje en respuesta a un mensaje de colaboración
                         // hay demasiados de estos... 'lurkers' => 'Mirones'

@@ -125,9 +125,7 @@ $pagedResults = new \Paginated($this['users'], 20, isset($_GET['page']) ? $_GET[
                 <td><?php echo $user->register_date; ?></td>
             </tr>
             <tr>
-                <td><?php if (!isset($_SESSION['admin_node']) || (isset($_SESSION['admin_node']) && $user->node == $_SESSION['admin_node'])) : ?>
-                <a href="/admin/users/manage/<?php echo $user->id; ?>" title="Gestionar">[Gestionar]</a>
-                <?php endif; ?></td>
+                <td><a href="/admin/users/manage/<?php echo $user->id; ?>" title="Gestionar">[Gestionar]</a></td>
                 <td><?php if ($user->projects > 0) {
                     if (!isset($_SESSION['admin_node']) || (isset($_SESSION['admin_node']) && $user->node == $_SESSION['admin_node'])) : ?>
                 <a href="/admin/accounts/?name=<?php echo $user->email; ?>" title="Ver sus aportes">[Aportes]</a>
