@@ -11,7 +11,7 @@ $status = Goteo\Model\Project::status();
     <form id="filter-form" action="/admin/commons" method="get">
         <div style="float:left;margin:5px;">
             <label for="projects-filter">Proyecto</label><br />
-            <select id="projects-filter" name="project" onchange="document.getElementById('filter-form').submit();">
+            <select id="projects-filter" name="project" >
                 <option value="">Todos los proyectos</option>
             <?php foreach ($this['projects'] as $project) : ?>
                 <option value="<?php echo $project->id; ?>"<?php if ($filters['project'] === $project->id) echo ' selected="selected"';?>><?php echo $project->name; ?></option>
@@ -21,7 +21,7 @@ $status = Goteo\Model\Project::status();
         
         <div style="float:left;margin:5px;">
             <label for="status-filter">Mostrar por estado:</label><br />
-            <select id="status-filter" name="status" onchange="document.getElementById('filter-form').submit();">
+            <select id="status-filter" name="status" >
                 <option value="">Todos los estados</option>
             <?php foreach ($this['status'] as $statusId=>$statusName) : ?>
                 <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
@@ -31,18 +31,27 @@ $status = Goteo\Model\Project::status();
 
         <div style="float:left;margin:5px;">
             <label for="icon-filter">Mostrar retornos del tipo:</label><br />
-            <select id="icon-filter" name="icon" onchange="document.getElementById('filter-form').submit();">
+            <select id="icon-filter" name="icon" >
                 <option value="">Todos los tipos</option>
             <?php foreach ($this['icons'] as $iconId=>$iconName) : ?>
                 <option value="<?php echo $iconId; ?>"<?php if ($filters['icon'] == $iconId) echo ' selected="selected"';?>><?php echo $iconName; ?></option>
             <?php endforeach; ?>
             </select>
         </div>
+        <br clear="both" />
+
+        <div style="float:left;margin:5px;">
+            <input type="submit" value="filtrar" />
+        </div>
     </form>
+    <br clear="both" />
+    <a href="/admin/commons/?reset=filters">Quitar filtros</a>
 </div>
 
 <div class="widget board">
-    <?php if (!empty($this['projects'])) : ?>
+<?php if ($filters['filtered'] != 'yes') : ?>
+    <p>Es necesario poner algun filtro, hay demasiados registros!</p>
+<?php elseif (!empty($this['projects'])) : ?>
     <?php foreach ($this['projects'] as $project) : ?>
 
         <?php if (!empty($filters['project']) && $project->id != $filters['project']) {
