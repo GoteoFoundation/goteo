@@ -1,22 +1,22 @@
 /* configuración de colores del nodo */
 body.node {
-    background-color: #F0F4F9 !important;
+    background-color: #E6F0ED !important;
 }
 
 div#node-header span.blue {
-    color: #1F81BB !important;
+    color: #27AD7A !important;
 }
 
 body.node.home > div.widget > div.title-line {
-    border-color: #1F81BB !important;
+    border-color: #27AD7A !important;
 }
 
 div#node-header div.logos div.node-home > a {
-    background: url('/nodesys/euskadi/view/css/goteo-logo.png') no-repeat left top;
+    background: url('/nodesys/andalucia/view/css/goteo-logo.png') no-repeat left top;
 }
 
 div#node-header div.logos div.node-home > a:hover {
-    background: url('/nodesys/euskadi/view/css/goteo-logo.png') no-repeat right top;
+    background: url('/nodesys/andalucia/view/css/goteo-logo.png') no-repeat right top;
 }
 
 body.project-show div.project-menu ul li.show a {
@@ -28,7 +28,7 @@ body.project-show div.project-menu ul li a {
 }
 
 body.node div.invest-message {
-    background-image: url("/nodesys/euskadi/view/css/message_beak.png") !important;
+    background-image: url("/nodesys/andalucia/view/css/message_beak.png") !important;
 }
 
 /*

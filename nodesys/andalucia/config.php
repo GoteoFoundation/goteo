@@ -9,6 +9,6 @@ define('NODE_META_COPYRIGHT', 'Platoniq');
 define('NODE_DEFAULT_LANG', 'es');
 define('NODE_URL', 'http://andalucia.goteo.org');
 define('NODE_NAME', 'GoteoAndalucia');
-define('NODE_MAIL', 'hola@goteo.org');
+define('NODE_MAIL', 'andalucia@goteo.org');
 define('NODE_ANALYTICS_TRACKER', '');
 
