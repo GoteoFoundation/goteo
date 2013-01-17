@@ -54,11 +54,17 @@ body {
 }
 
 
+#banners-social, #title, #info, #supporters-links {
+	background-color: #fff;
+	clear: both;
+	overflow: hidden;
+}
+
 /* Main */
 div#main {
     clear: both;
-	width: 950px;
-	margin: 25px auto 0px;
+	width: 770px;
+	margin: 30px auto;
     overflow: hidden;
 }
 
@@ -76,6 +82,112 @@ div#main ul#list>li {
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
+}
+
+/* Title container */
+
+#title {
+	background-color: rgba(255,255,255,.75);
+}
+
+#title h2.title {
+	color: #666;
+	font-size: 22px;
+	line-height: 1.2em;
+	padding-top: 35px;
+	margin: 0;
+	font-weight: bold;
+	float: right;
+	width: 500px;
+}
+
+#title img.logo {
+	-moz-box-shadow: -6px 0 22px #333;
+	-webkit-box-shadow: -6px 0 22px #333;
+	box-shadow: -6px 0 22px #333;
+}
+
+/* Banners social container */
+
+#banners-social {
+	margin-top: 6px;
+	overflow: hidden;
+}
+
+#banners-social a#capital {
+	width: 91px;
+	height: 122px;
+	display: block;
+	text-indent: -10000px;
+	background: url('/view/css/call/logo-capital_medium.png') no-repeat;
+	float: right;
+	margin: 10px 0 0 0;
+}
+
+#social-logo {
+	overflow: hidden;
+}
+
+#social-logo .title {
+    display: none;
+}
+
+#social-logo ul {
+    list-style: none;
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+	width: 100px;
+	float: left;
+	margin-top: 20px;
+}
+
+#social-logo li {
+    display: block;
+    padding-left: 30px;
+    float: left;    
+    min-height: 2em;
+    line-height: 2em;
+    background: no-repeat left center;
+    min-width: 20%;
+}
+
+#social-logo li a {
+    text-decoration: none;
+}
+
+#social-logo li.facebook {
+    background-image: url('/view/css/social/facebook.png');
+}
+
+#social-logo li.google {
+    background-image: url('/view/css/social/google.png');
+}
+
+#social-logo li.twitter {
+    background-image: url('/view/css/social/twitter.png');    
+}
+
+#social-logo li.identica {
+    background-image: url('/view/css/social/identica.png');
+}
+
+#social-logo li.linkedin {
+    background-image: url('/view/css/social/linkedin.png');
+}
+
+
+/* Info container */
+
+#info {
+	margin-top: 6px;
+}
+
+/* Supporters links container */
+
+#supporters-links {
+	margin-top: 6px;
+	padding: 15px;
 }
 
 /* Background Image */
@@ -477,9 +589,8 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
 
 /* Side */
 #side {
-	width: 175px;
+	width: 185px;
 	float: left; 
-	background-color: #f5f1f2;
 	padding: 20px 0 20px 15px;
     margin: 0;
 }
@@ -498,7 +609,6 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
 
 #side p {
 	font-size: 10px;
-	margin-top: 25px;
 	padding-right: 25px;
 }
 
@@ -519,6 +629,10 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
 #side .money {
 	font-size: 34px;
 	font-weight: bold;
+}
+
+#side .category {
+	padding-right: 45px;
 }
 
 #side .category dd,
@@ -568,16 +682,6 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
 	font-size: 11px;
 }
 
-#side a#capital {
-	width: 91px;
-	height: 122px;
-	display: block;
-	text-indent: -10000px;
-	background: url('/view/css/call/logo-capital.png') no-repeat;
-	margin: 0 auto;
-	padding-right: 10px;
-}
-
 #side a {
 	text-decoration: none;
 }
@@ -609,7 +713,7 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
 
 /* Content */
 #content {
-	width: 670px;
+	width: 540px;
 	padding: 20px 0px 20px 30px;
 	float: left;
 	background-color: #fff;
@@ -832,7 +936,7 @@ p.subtitle.red {
 }
 
 .freetext {
-	padding: 0 65px 25px 15px;
+	padding: 0 15px 25px 0;
 }
 
 .freetext h3.title {

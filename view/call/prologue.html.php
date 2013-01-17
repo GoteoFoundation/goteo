@@ -22,6 +22,7 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/splash.css" />
         <?php else : ?>
 		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/view.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/banners.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/extra.css" />
         <?php endif; ?>
 
@@ -39,6 +40,7 @@
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery-1.6.4.min.js"></script>
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.tipsy.min.js"></script>
         <?php endif ?>
+		<script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.slides.min.js"></script>
         <!-- Google analytics -->
         <script type="text/javascript">
 

@@ -1,3 +1,4 @@
+<div id="side">
 <?php
 # if ($_SESSION['user']->id == 'root' && !empty($social->buzz_debug)) echo '<p>DEBUG:: '. $social->buzz_debug . '</p>';
 # if ($_SESSION['user']->id == 'root' && !empty($social->buzz)) echo \trace($social->buzz);
@@ -20,3 +21,4 @@ foreach ($social->buzz as $item) : ?>
     <blockquote><?php echo $item->text ?></blockquote>
 </div>
 <?php endforeach; ?>
+</div>

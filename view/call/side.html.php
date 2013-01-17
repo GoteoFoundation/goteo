@@ -7,7 +7,6 @@ $call = $this['call'];
 $filter = $this['filter'];
 ?>
 <div id="side">
-	<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"><img src="<?php echo $call->logo->getLink(150) ?>" alt="<?php echo $call->user->name ?>" class="logo" /></a>
 	<p class="block"><?php echo $call->subtitle ?></p>
     
 <?php if ($call->status == 3) : //inscripcion ?>
@@ -95,27 +94,4 @@ $filter = $this['filter'];
 		<dd><a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/terms"><?php echo Text::get('call-splash-legal-link') ?></a></dd>
 	</dl>
 
-    <?php if (!empty($call->sponsors)) : ?>
-	<dl class="block">
-		<dd><a href="<?php echo SITE_URL ?>/service/resources" id="capital" target="_blank"><?php echo Text::get('footer-service-resources') ?></a></dd>
-	</dl>
-
-	<dl class="sponsors">
-        <dt><?php echo Text::get('node-header-sponsorby') ?></dt>
-		<dd>
-            <ul id="side-sponsors">
-            <?php foreach ($call->sponsors as $sponsor) : ?>
-                <li>
-                    <a href="<?php echo $sponsor->url ?>" target="_blank" title="<?php echo $sponsor->name ?>"><img src="<?php if ($sponsor->image instanceof \Goteo\Model\Image) echo $sponsor->image->getLink(130); ?>" alt="<?php echo $sponsor->name ?>" /></a>
-                <li>
-            <?php endforeach; ?>
-            </ul>
-        </dd>
-	</dl>
-
-    <?php else : ?>
-    	<a href="<?php echo SITE_URL ?>/service/resources" id="capital" target="_blank"><?php echo Text::get('footer-service-resources') ?></a>
-    <?php endif; ?>
-
-	
 </div>
