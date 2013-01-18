@@ -59,6 +59,11 @@ body.project-edit div#main.rewards div.superform li.element.reward div.design {
     background-image: url('/view/css/icon/m/design.png');
 }
 
+body.project-edit div#main.overview div.superform li.element.icon.thanks,
+body.project-edit div#main.rewards div.superform li.element.reward div.thanks {
+    background-image: url('/view/css/icon/m/thanks.png');
+}
+
 body.project-edit div#main.overview div.superform li.element.icon.other,
 body.project-edit div#main.rewards div.superform li.element.reward div.other {
     background-image: url('/view/css/icon/m/other.png');
@@ -192,6 +197,11 @@ body.project-edit div#main.rewards div.superform li.element.editindividual_rewar
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward li.reward_design div.contents,
 body.project-edit div#main.rewards div.superform li.element.editindividual_reward li.reward_design div.contents {
     background-image: url('/view/css/icon/m/design.png');
+}
+
+body.project-edit div#main.rewards div.superform li.element.editsocial_reward li.reward_thanks div.contents,
+body.project-edit div#main.rewards div.superform li.element.editindividual_reward li.reward_thanks div.contents {
+    background-image: url('/view/css/icon/m/thanks.png');
 }
 
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward li.reward_other div.contents,

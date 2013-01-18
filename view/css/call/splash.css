@@ -424,6 +424,10 @@ span.euro {
     background-image: url('/view/css/icon/s/design.png');
 }
 
+.return ul li.thanks {
+    background-image: url('/view/css/icon/s/thanks.png');
+}
+
 .return ul li.other {
     background-image: url('/view/css/icon/s/other.png');
 }

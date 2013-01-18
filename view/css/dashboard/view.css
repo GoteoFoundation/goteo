@@ -200,6 +200,7 @@ body.dashboard div#main div.widget.gestrew div.reward div.tiporec ul li.service 
 body.dashboard div#main div.widget.gestrew div.reward div.tiporec ul li.manual { background-image: url('/view/css/icon/s/manual.png'); }
 body.dashboard div#main div.widget.gestrew div.reward div.tiporec ul li.product { background-image: url('/view/css/icon/s/product.png'); }
 body.dashboard div#main div.widget.gestrew div.reward div.tiporec ul li.design { background-image: url('/view/css/icon/s/design.png'); }
+body.dashboard div#main div.widget.gestrew div.reward div.tiporec ul li.thanks { background-image: url('/view/css/icon/s/thanks.png'); }
 body.dashboard div#main div.widget.gestrew div.reward div.tiporec ul li.other { background-image: url('/view/css/icon/s/other.png'); }
 body.dashboard div#main div.widget.gestrew div.reward span.recompensa{color:#8D878E;font-size:12px;}
 body.dashboard div#main div.widget.gestrew div.reward a.green{bottom:5px;left:13px;width:160px;padding: 0.3em 1.3em;}

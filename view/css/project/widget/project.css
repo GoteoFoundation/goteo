@@ -583,6 +583,10 @@ div.widget.project div.rewards ul li.design {
     background-image: url('/view/css/icon/s/design.png');
 }
 
+div.widget.project div.rewards ul li.thanks {
+    background-image: url('/view/css/icon/s/thanks.png');
+}
+
 div.widget.project div.rewards ul li.other {
     background-image: url('/view/css/icon/s/other.png');
 }

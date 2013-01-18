@@ -356,6 +356,10 @@ div.call div.data .return ul li.design {
     background-image: url('/view/css/icon/s/design.png');
 }
 
+div.call div.data .return ul li.thanks {
+    background-image: url('/view/css/icon/s/thanks.png');
+}
+
 div.call div.data .return ul li.other {
     background-image: url('/view/css/icon/s/other.png');
 }
