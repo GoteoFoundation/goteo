@@ -626,10 +626,11 @@ namespace Goteo\Controller {
             
             
             // eliminamos aportes incompletos
+            /*
             $sql4 = "DELETE
                 FROM `invest` 
                 WHERE status = -1
-                AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`datetime`)), '%j') > 30
+                AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`datetime`)), '%j') > 120
                 ";
             
             //echo $sql4 . '<br />';
@@ -640,7 +641,7 @@ namespace Goteo\Controller {
             Model\Project::query("DELETE FROM `invest_detail`  WHERE invest NOT IN (SELECT id FROM `invest`)");
             Model\Project::query("DELETE FROM `invest_reward`  WHERE invest NOT IN (SELECT id FROM `invest`)");
             echo "Eliminados $count4 aportes incompletos y sus registros (recompensa, dirección, detalles) relacionados.<br />";
-            
+            */
             
             echo "<hr /> Iniciamos caducidad de tokens<br/>";
             // eliminamos los tokens que tengan más de 4 días
