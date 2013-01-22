@@ -13,9 +13,16 @@ include 'view/call/prologue.html.php';
 <div id="main" class="onecol">
     <ul id="list">
         <li class="item" id="description">
-            <img src="<?php if ($call->image instanceof Goteo\Model\Image)
-    echo $call->logo->getLink(150) ?>" alt="<?php echo $call->user->name ?>" />
-                 <?php echo new View('view/call/widget/title.html.php', $this); ?>
+            <img src="<?php if ($call->image instanceof Goteo\Model\Image) echo $call->logo->getLink(150) ?>" alt="<?php echo $call->user->name ?>" />
+                <h2 class="title"><?php echo Text::get('call-splash-campaign_title') ?><br /><?php echo $call->name ?></h2>
+
+                <?php if ($call->status == 3) : //inscripcion ?>
+                <p class="subtitle red"><?php echo Text::get('call-splash-searching_projects') ?></p>
+                <?php elseif (!empty($call->amount)) : //en campaña con dinero ?>
+                <!--p class="subtitle"><?php echo Text::html('call-splash-invest_explain', $call->user->name) ?></p-->
+                <?php else : //en campaña sin dinero, con recursos ?>
+                <p class="subtitle"><?php echo Text::recorta($call->resources, 200) ?></p>
+                <?php endif; ?>
 
             <p><?php echo $call->description ?></p>
         </li>
