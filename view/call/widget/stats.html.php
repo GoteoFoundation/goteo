@@ -6,6 +6,7 @@ use Goteo\Library\Text,
 $call = $this['call'];
 
 ?>
+		<div id="stats">
                 <?php if ($call->status == 3) : //inscripcion  ?>
                 <div class="row">
     <?php if (!empty($call->amount)) : //con dinero  ?>
@@ -131,3 +132,4 @@ $call = $this['call'];
                 <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="button aqua info"><?php echo Text::get('call-splash-more_info-button') ?></a>
                 <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/projects" class="button red view"><?php echo Text::get('call-splash-see_projects-button') ?></a>
         <?php endif; ?>
+		</div>
