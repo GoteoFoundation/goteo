@@ -16,8 +16,15 @@ include 'view/call/header.html.php';
 
 	<div id="main">
 
-		<?php echo new View('view/call/side.html.php', $this); ?>
+        <?php echo new View('view/call/widget/title.html.php', $this); ?>
+    <div id="banners-social">
+        <?php echo new View('view/call/widget/banners.html.php', $this) ?>
+        <div id="social-logo">
+            <?php echo new View('view/call/widget/social.html.php', $this) ?>
+        </div>
+    </div>
 	
+    <div id="info">
 		<div id="content">
             <?php echo new View('view/call/widget/title.html.php', $this); ?>
 
@@ -52,6 +59,7 @@ include 'view/call/header.html.php';
 		</div>	
 	
 	</div>
+</div>
 
 <?php 
 
