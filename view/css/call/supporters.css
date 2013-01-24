@@ -1,0 +1,13 @@
+#supporters-sponsors ul#supporters {
+	width: 470px;
+	float: left;
+	overflow: hidden;
+	padding: 0;
+	margin: 0;
+}
+
+#supporters-sponsors ul#supporters > li {
+	list-style-type: none;
+	display: inline-block;
+	float: left;
+}

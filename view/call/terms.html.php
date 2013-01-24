@@ -56,11 +56,8 @@ include 'view/call/header.html.php';
         <?php echo new View('view/call/side.html.php', $this); ?>
     </div>
 
-    <div id="supporters-links">
-        <span><?php echo Text::get('call-header-supporters', 67) ?></span>
+    <div id="supporters-sponsors">
         <?php echo new View('view/call/widget/supporters.html.php', $this); ?>
-
-        <span><?php echo Text::get('node-header-sponsorby') ?></span>
         <?php echo new View('view/call/widget/sponsors.html.php', $this); ?>
     </div>
 </div>

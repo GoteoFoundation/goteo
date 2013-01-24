@@ -54,7 +54,7 @@ body {
 }
 
 
-#banners-social, #title, #info, #supporters-links {
+#banners-social, #title, #info, #supporters-sponsors {
 	background-color: #fff;
 	clear: both;
 	overflow: hidden;
@@ -183,11 +183,12 @@ div#main ul#list>li {
 	margin-top: 6px;
 }
 
-/* Supporters links container */
+/* Supporters sponsors container */
 
-#supporters-links {
+#supporters-sponsors {
 	margin-top: 6px;
 	padding: 15px;
+	overflow: hidden;
 }
 
 /* Background Image */
