@@ -1242,6 +1242,35 @@ namespace Goteo\Model {
             return ($query->fetchColumn() > 0) ? false : true;
         }
 
+
+        /*
+         * Lista de usuarios que han capturado riego de esta convocatoria
+         */
+        public function getSupporters($justCount = false) {
+
+            $values = array(':id' => $this->id);
+
+            $sqlS = ($justCount) ? 'DISTINCT(invest.user) as id' : 'COUNT(DISTINCT(invest.user))';
+            $sql = "SELECT $sqlS
+                    FROM  invest
+                    WHERE invest.campaign = :id
+                    AND invest.status IN ('0', '1', '3')";
+
+            if ($justCount) {
+                $query = self::query($sql, $values);
+                return $query->fetchColumn();
+            } else {
+                $list = array();
+                $query = self::query($sql, $values);
+                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                    $list[] = User::getMini($item->id);
+                }
+                return $list;
+            }
+
+        }
+
+
         /*
          * Estados de publicación de un convocatoria
          */
