@@ -6,5 +6,8 @@ use Goteo\Library\Text,
 
 $call = $this['call'];
 ?>
-<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"><img src="<?php echo $call->logo->getLink(250, 124, true) ?>" alt="<?php echo $call->user->name ?>" class="logo" /></a>
-<h2 class="title"><?php echo Text::get('call-splash-campaign_title') ?><br /><?php echo $call->name ?></h2>
+
+<div id="title">
+	<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"><img src="<?php echo $call->logo->getLink(250, 124, true) ?>" alt="<?php echo $call->user->name ?>" class="logo" /></a>
+	<h2 class="title"><?php echo Text::get('call-splash-campaign_title') ?><br /><?php echo $call->name ?></h2>
+</div>
