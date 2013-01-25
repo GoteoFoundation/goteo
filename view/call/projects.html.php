@@ -41,13 +41,15 @@ include 'view/call/header.html.php';
 
     <div id="info">
         <div id="content">
-            <div id="campaign-desc">
-                <?php echo new View('view/call/widget/title.html.php', $this); ?>
+            <h2 class="title"><?php echo Text::get('call-splash-selected_projects-header') ?></h2>
 
-                <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="button long"><?php echo Text::get('call-splash-more_info-button') ?></a>
-
-                <h2 class="title"><?php echo Text::get('call-splash-selected_projects-header') ?></h2>
-            </div>
+            <?php if ($call->status == 3) : //inscripcion ?>
+                <p class="subtitle red"><?php echo Text::get('call-splash-searching_projects') ?></p>
+            <?php elseif (!empty($call->amount)) : //en campaña con dinero ?>
+                <p class="subtitle"><?php echo Text::html('call-splash-invest_explain', $call->user->name) ?></p>
+            <?php else : //en campaña sin dinero, con recursos ?>
+                <p class="subtitle"><?php echo Text::recorta($call->resources, 200) ?></p>
+            <?php endif; ?>
 
             <ul id="project-list">
                 <?php
