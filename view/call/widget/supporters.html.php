@@ -1,6 +1,7 @@
 <?php
 
 use Goteo\Library\Text,
+    Goteo\Model\Image,
     Goteo\Core\View;
 
 $call = $this['call'];
@@ -10,48 +11,10 @@ $supporters = $call->getSupporters();
 ?>
 <p><?php echo Text::get('call-header-supporters', $cuantos) ?></p>
 <ul id="supporters">
-	<li><a href="#"><img src="/data/images/cara1.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara2.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara3.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara4.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara5.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara3.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara1.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara4.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara2.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara1.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara5.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara2.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara1.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara3.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara1.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara2.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara3.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara4.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara5.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara3.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara1.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara4.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara2.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara1.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara1.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara5.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara2.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara1.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara2.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara3.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara4.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara5.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara3.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara1.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara4.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara2.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara1.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara1.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara5.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara2.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara1.jpg" alt="supporter" /></a></li>
-	<li><a href="#"><img src="/data/images/cara3.jpg" alt="supporter" /></a></li>
-	
+<?php foreach ($supporters as $item) :
+    if (!$item->avatar instanceof Image) continue;  // quitamos los que tengan la imagen rota
+//    if ($item->avatar->id == 1) continue;  // por ahora no quitamos las gotas
+    ?>
+    <li><a href="<?php echo '/user/profile/'.$item->id ?>" target="_blank"><img src="<?php echo $item->avatar->getLink(32, 32, true); ?>" alt="[G]" title="<?php echo $item->name; ?>" /></a></li>
+<?php endforeach; ?>
 </ul>
-<?php # echo \trace($supporters); ?>

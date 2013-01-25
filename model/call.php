@@ -1250,7 +1250,7 @@ namespace Goteo\Model {
 
             $values = array(':id' => $this->id);
 
-            $sqlS = ($justCount) ? 'DISTINCT(invest.user) as id' : 'COUNT(DISTINCT(invest.user))';
+            $sqlS = ($justCount) ? 'COUNT(DISTINCT(invest.user))' : 'DISTINCT(invest.user) as id';
             $sql = "SELECT $sqlS
                     FROM  invest
                     WHERE invest.campaign = :id
