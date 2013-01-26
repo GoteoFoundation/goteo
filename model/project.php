@@ -312,8 +312,8 @@ namespace Goteo\Model {
                     $project->willpass = date('Y-m-d', \mktime(0, 0, 0, date('m', $ptime), date('d', $ptime)+40, date('Y', $ptime)));
                 }
 
-                // si está en campaña podría tener riego de alguna convocatoria
-                if ($project->status == 3) {
+                // podría estar asignado a alguna convocatoria
+                if (in_array($project->status, array(1, 2, 3))) {
                     $project->called = Call\Project::called($id);
                 } else {
                     $project->called = false;
@@ -437,12 +437,20 @@ namespace Goteo\Model {
                 $project->setDays();
                 $project->setTagmark();
 
-				return $project;
+                // podría estar asignado a alguna convocatoria
+                if (in_array($project->status, array(1, 2, 3))) {
+                    $project->called = Call\Project::called($id);
+                } else {
+                    $project->called = false;
+                }
 
-			} catch(\PDOException $e) {
-				throw \Goteo\Core\Exception($e->getMessage());
-			}
-		}
+
+                return $project;
+
+            } catch(\PDOException $e) {
+                    throw \Goteo\Core\Exception($e->getMessage());
+            }
+        }
 
         /*
          * Listado simple de todos los proyectos

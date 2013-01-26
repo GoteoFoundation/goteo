@@ -142,6 +142,7 @@ $pagedResults = new \Paginated($this['projects'], 20, isset($_GET['page']) ? $_G
                     <?php if (isset($this['contracts'][$project->id])) : ?><a href="<?php echo "/admin/contracts/preview/{$project->id}"; ?>">[Contrato]</a><?php endif; ?>
                     <a href="<?php echo "/admin/projects/move/{$project->id}"; ?>">[Mover]</a>
                     <?php if ($project->status < 4) : ?><a href="<?php echo "/admin/projects/rebase/{$project->id}"; ?>" onclick="return confirm('Esto es MUY DELICADO, seguimos?');">[Cambiar Id]</a><?php endif; ?>
+                    <?php if (in_array($project->status, array('1', '2', '3')) && !$project->called) : ?><a href="<?php echo "/admin/projects/assign/{$project->id}"; ?>">[Asignarlo a una convocatoria]</a><?php endif; ?>
                 </td>
             </tr>
             <tr>

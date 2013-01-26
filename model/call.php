@@ -784,11 +784,11 @@ namespace Goteo\Model {
             $values = array();
 
             if (in_array($status, array(3, 4, 5))) {
-                $sqlFilter .= " WHERE call.status = $status";
+                $sqlFilter .= " WHERE call.status = $status"; // solo cierto estado
             } elseif ($all) {
-                $sqlFilter .= " WHERE call.status IN ('3', '4', '5')";
+                $sqlFilter .= " WHERE call.status IN ('3', '4', '5')"; // desde aplicacion hasta exitosa
             } else {
-                $sqlFilter .= " WHERE call.status IN ('3', '4')";
+                $sqlFilter .= " WHERE call.status IN ('3', '4')"; // solo aplicacion y campaña
             }
 
             if (\NODE_ID != \GOTEO_NODE) {
@@ -802,8 +802,28 @@ namespace Goteo\Model {
                     ORDER BY name ASC";
 
             $query = self::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $call) {
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $call) {
                 $calls[] = self::get($call->id);
+            }
+            return $calls;
+        }
+
+        /*
+         * Lista de convocatorias a las que se le puede asignar otro proyecto
+         */
+        public static function getAvailable() {
+            $calls = array();
+
+            $sqlFilter .= " WHERE call.status IN ('1', '2', '3', '4')"; // desde edicion hasta en campaña
+
+            $sql = "SELECT call.id, call.name
+                    FROM  `call`
+                    $sqlFilter
+                    ORDER BY name ASC";
+
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $call) {
+                $calls[$call->id] = $call->name;
             }
             return $calls;
         }
