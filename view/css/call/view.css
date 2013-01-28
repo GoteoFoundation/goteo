@@ -64,7 +64,7 @@ body {
 div#main {
     clear: both;
 	width: 770px;
-	margin: 31px auto;
+	margin: 31px auto 36px;
     overflow: hidden;
 }
 
@@ -102,9 +102,9 @@ div#main ul#list>li {
 }
 
 #title img.logo {
-	-moz-box-shadow: -6px 0 22px #333;
-	-webkit-box-shadow: -6px 0 22px #333;
-	box-shadow: -6px 0 22px #333;
+	-moz-box-shadow: 7px 0px 22px #ccc;
+	-webkit-box-shadow: 7px 0px 22px #ccc;
+	box-shadow: 7px 0px 22px #ccc;
 }
 
 /* Banners social container */
@@ -189,6 +189,10 @@ div#main ul#list>li {
 	margin-top: 6px;
 	padding: 15px;
 	overflow: hidden;
+}
+
+#supporters-sponsors .title {
+	text-transform: uppercase;
 }
 
 /* Background Image */
@@ -283,7 +287,7 @@ div#super-header ul > li.home > a:hover {
 div#super-header ul > li.campanya {
 	text-transform: uppercase;
 	font-weight: bold;
-	line-height: 20px;
+	line-height: 1.83em;
     overflow: hidden;
 }
 

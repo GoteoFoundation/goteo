@@ -1,12 +1,16 @@
-#supporters-sponsors ul#supporters {
+#supporters-sponsors #supporters {
 	width: 470px;
 	float: left;
 	overflow: hidden;
-	padding: 0;
-	margin: 0;
 }
 
-#supporters-sponsors ul#supporters > li {
+#supporters-sponsors #supporters ul {
+	padding: 0;
+	overflow: hidden;
+	margin: 15px 0;
+}
+
+#supporters-sponsors #supporters ul > li {
 	list-style-type: none;
 	display: inline-block;
 	float: left;
