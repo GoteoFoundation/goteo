@@ -302,6 +302,65 @@ namespace Goteo\Model\Project {
             }
         }
         
+        public static function getChossen($filters = array()) {
+            try {
+                $array = array();
+
+                $values = array();
+
+                $sqlFilter = "";
+                if (!empty($filters['project'])) {
+                    $sqlFilterProj = " AND project.id = :project";
+                    $values[':project'] = $filters['project'];
+                }
+                if (!empty($filters['name'])) {
+                    $sqlFilterUser = " AND (user.name LIKE :name OR user.email LIKE :name)";
+                    $values[':name'] = "%{$filters['name']}%";
+                }
+                if (!empty($filters['status'])) {
+                    $sqlFilter = " WHERE invest_reward.fulfilled = :status";
+                    $values[':status'] = $filters['status'] == 'ok' ? 1 : 0;
+                }
+
+                $sql = "SELECT
+                            invest_reward.invest as invest,
+                            reward.reward as reward_name,
+                            user.id as user,
+                            user.name as name,
+                            user.email as email,
+                            reward.project as project,
+                            invest_reward.fulfilled as fulfilled,
+                            invest_reward.reward as reward,
+                            invest.amount as amount
+                        FROM invest_reward
+                        INNER JOIN invest
+                            ON invest.id = invest_reward.invest
+                            AND invest.status IN (0, 1, 3)
+                        INNER JOIN user
+                            ON user.id = invest.user
+                            $sqlFilterUser
+                        INNER JOIN project
+                            ON project.id = invest.project
+                            AND project.status IN (3, 4, 5)
+                            $sqlFilterProj
+                        INNER JOIN reward
+                            ON reward.id = invest_reward.reward
+                        $sqlFilter
+                        ";
+
+                $sql .= " ORDER BY user.name ASC";
+
+                $query = self::query($sql, $values);
+                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+
+                    $array[$item->invest] = $item;
+                }
+                return $array;
+            } catch (\PDOException $e) {
+                throw new \Goteo\Core\Exception($e->getMessage());
+            }
+        }
+
         
     }
 

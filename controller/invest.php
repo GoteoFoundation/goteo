@@ -72,7 +72,9 @@ namespace Goteo\Controller {
                     $resign = true;
                     $reward = false;
                 } else {
-                    $resign = false;
+                    // mirar: si la recompensa es de tipo Reconocimiento, también es donativo
+                    $rewardData = Model\Project\Reward::get($chosen);
+                    $resign = ($rewardData->icon == 'thanks') ? true : false;
                     $reward = true;
                 }
 

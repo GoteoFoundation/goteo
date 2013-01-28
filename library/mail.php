@@ -290,11 +290,14 @@ namespace Goteo\Library {
                 $values[':template'] = $filters['template'];
             }
 
+            /*
             if ($node != \GOTEO_NODE) {
                 $sqlFilter .= $and . " mail.node = :node";
                 $and = " AND";
                 $values[':node'] = $node;
-            } elseif (!empty($filters['node'])) {
+            } else
+            */
+            if (!empty($filters['node'])) {
                 $sqlFilter .= $and . " mail.node = :node";
                 $and = " AND";
                 $values[':node'] = $filters['node'];

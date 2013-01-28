@@ -668,13 +668,24 @@ namespace Goteo\Controller {
             echo "Eliminados $count2 registros de mail.<br />";
             
             // eliminamos registros de imágenes cuyo archivo no esté en el directorio de imágenes
+
+
+            // busco aportes incompletos con codigo de autorización
+            $sql5 = "SELECT * FROM invest WHERE status = -1 AND transaction IS NOT NULL";
+            $query5 = Model\Project::query($sql5);
+            foreach ($query5->fetchAll(\PDO::FETCH_OBJ) as $row) {
+                @mail('goteo_fail@doukeshi.org',
+                    'Aporte Incompleto con numero de autorización. En ' . SITE_URL,
+                    'Aporte Incompleto con numero de autorización: <pre>' . print_r($row, 1). '</pre>');
+            }
             
             
             // eliminamos aportes incompletos
+            /*
             $sql4 = "DELETE
                 FROM `invest` 
                 WHERE status = -1
-                AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`datetime`)), '%j') > 30
+                AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`datetime`)), '%j') > 120
                 ";
             
             //echo $sql4 . '<br />';
@@ -685,7 +696,7 @@ namespace Goteo\Controller {
             Model\Project::query("DELETE FROM `invest_detail`  WHERE invest NOT IN (SELECT id FROM `invest`)");
             Model\Project::query("DELETE FROM `invest_reward`  WHERE invest NOT IN (SELECT id FROM `invest`)");
             echo "Eliminados $count4 aportes incompletos y sus registros (recompensa, dirección, detalles) relacionados.<br />";
-            
+            */
             
             echo "<hr /> Iniciamos caducidad de tokens<br/>";
             // eliminamos los tokens que tengan más de 4 días

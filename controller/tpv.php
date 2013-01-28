@@ -147,9 +147,34 @@ namespace Goteo\Controller {
 
 
                 if (!empty($_POST['Referencia'])) {
-                    $invest->setPayment($_POST['Referencia']);
-                    $invest->setTransaction($_POST['Num_aut']);
-                    $invest->setStatus(1);
+
+                    try {
+                        $tpvRef = $_POST['Referencia'];
+                        $tpvAut = $_POST['Num_aut'];
+
+                        $values = array(
+                            ':id' => $invest->id,
+                            ':payment' => $tpvRef,
+                            ':transaction' => $tpvAut,
+                            ':charged' => date('Y-m-d')
+                        );
+
+                        $sql = "UPDATE  invest
+                                SET
+                                    status = 1,
+                                    payment = :payment,
+                                    charged = :charged,
+                                    transaction = :transaction
+                                WHERE id = :id";
+                        Invest::query($sql, $values);
+
+                        // si tiene capital riego asociado pasa al mismo estado
+                        if (!empty($invest->droped)) {
+                            Invest::query("UPDATE invest SET status = 1 WHERE id = :id", array(':id' => $invest->droped));
+                        }
+                    } catch (\PDOException $e) {
+                        @mail('goteo-tpv-fault@doukeshi.org', 'Error db en comunicacion online', 'En la grabación de referencia, num auth. y estado. Ha dado un PDO::Exception<br /><pre>' . print_r($invest, 1) . '</pre>');
+                    }
                     $_POST['result'] = 'Transaccion ok';
 
                     $log_text = "%s ha aportado %s al proyecto %s mediante TPV";
