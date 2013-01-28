@@ -7,6 +7,8 @@ $donation = $this['donation'];
 
 switch ($this['action']) :
     case 'edit':
+        /*
+* Ya no dejamos editar los datos
 ?>
 <div class="widget">
     <h3><?php echo Text::get('dashboard-activity-donor-header'); ?></h3>
@@ -74,7 +76,8 @@ switch ($this['action']) :
 
 ?>
 </form>
-<?php break;
+<?php */
+        break;
 
     case 'view':
 ?>
@@ -119,8 +122,8 @@ switch ($this['action']) :
     </dl>
 
     <p>
-      <?php if (!$donation->confirmed) : ?><a class="button" href="/dashboard/activity/donor/edit"><?php echo Text::get('dashboard-donor-edit_data'); ?></a><?php endif; ?>
-      <?php /* date('Y') == '2012' && */ if ($donation->edited && !$donation->confirmed) : ?><a class="button" href="/dashboard/activity/donor/confirm" <?php if (!$donation->confirmed) : ?>onclick="return confirm('<?php echo Text::get('dashboard-donor-confirm_data'); ?>')"<?php endif; ?> ><?php echo Text::get('dashboard-donor-confirm_button'); ?></a><?php endif; ?>
+      <?php /* if (!$donation->confirmed) : ?><a class="button" href="/dashboard/activity/donor/edit"><?php echo Text::get('dashboard-donor-edit_data'); ?></a><?php endif; */ ?>
+      <?php /* if ($donation->edited && !$donation->confirmed) : ?><a class="button" href="/dashboard/activity/donor/confirm" <?php if (!$donation->confirmed) : ?>onclick="return confirm('<?php echo Text::get('dashboard-donor-confirm_data'); ?>')"<?php endif; ?> ><?php echo Text::get('dashboard-donor-confirm_button'); ?></a><?php endif; */ ?>
       <?php if ($donation->confirmed) : ?><a class="button" href="/dashboard/activity/donor/download" target="_blank"><?php echo Text::get('dashboard-donor-download_certificate'); ?></a><?php endif; ?>
     </p>
 </div>
