@@ -84,6 +84,8 @@ namespace Goteo\Library {
         static public function set() {
             //echo 'Session: ' . $_SESSION['lang'] . '<br />';
             //echo 'Get: ' . $_GET['lang'] . '<br />';
+            //definido por navegador =
+            $nav = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
             // si lo estan cambiando, ponemos el que llega
             if (isset($_GET['lang'])) {
                 setcookie("goteo_lang", $_GET['lang'], time() + 3600 * 24 * 365);
@@ -92,8 +94,10 @@ namespace Goteo\Library {
                 //primero miramos si tiene cookie
                 if (isset($_COOKIE['goteo_lang'])) {
                     $_SESSION['lang'] = $_COOKIE['goteo_lang'];
+                } elseif ($nav != 'es' && self::is_active($nav)) {
+                    // si el definido por navegador no es español y está activo
+                    $_SESSION['lang'] = $nav;
                 } else {
-                    // si no hay uno de session ponemos el default
                     $_SESSION['lang'] = defined('NODE_DEFAULT_LANG') ? \NODE_DEFAULT_LANG : \GOTEO_DEFAULT_LANG;
                 }
             }
