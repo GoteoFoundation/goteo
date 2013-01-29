@@ -123,12 +123,12 @@ $call = $this['call'];
     <?php endif; ?>
 
     <?php if ($call->status == 3) : //inscripcion   ?>
-        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="button aqua info long" ><?php echo Text::get('call-splash-more_info-button') ?></a>
+        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="button info long" ><?php echo Text::get('call-splash-more_info-button') ?></a>
         <?php if (!$call->expired) : // sigue abierta   ?>
             <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/apply" class="button red join" target="_blank"><?php echo Text::get('call-splash-apply-button') ?></a>
         <?php endif; ?>
     <?php else : // ver proyectos  ?>
-        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="button aqua info"><?php echo Text::get('call-splash-more_info-button') ?></a>
+        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="button info"><?php echo Text::get('call-splash-more_info-button') ?></a>
         <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/projects" class="button red view"><?php echo Text::get('call-splash-see_projects-button') ?></a>
     <?php endif; ?>
 </div>
