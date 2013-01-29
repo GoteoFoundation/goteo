@@ -7,6 +7,7 @@
 }
 
 #sponsors .slides_container {
+	min-height: 85px;
 	margin: 15px 0;
 }
 

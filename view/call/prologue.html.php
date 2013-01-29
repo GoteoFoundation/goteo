@@ -22,6 +22,7 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/splash.css" />
         <?php else : ?>
 		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/view.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/projects.css" />
         <?php if ($bodyClass == 'info') : ?>
 		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/stats.css" />
 		<?php endif; ?>		

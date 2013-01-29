@@ -41,6 +41,7 @@ include 'view/call/header.html.php';
 
     <div id="info">
         <div id="content">
+			
             <h2 class="title"><?php echo Text::get('call-splash-selected_projects-header') ?></h2>
 
             <?php if ($call->status == 3) : //inscripcion ?>
