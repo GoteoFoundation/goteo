@@ -314,7 +314,7 @@ namespace Goteo\Model {
 
                 // podría estar asignado a alguna convocatoria
                 if (in_array($project->status, array(1, 2, 3))) {
-                    $project->called = Call\Project::called($id);
+                    $project->called = Call\Project::called($id, $project->mincost);
                 } else {
                     $project->called = false;
                 }
@@ -439,7 +439,7 @@ namespace Goteo\Model {
 
                 // podría estar asignado a alguna convocatoria
                 if (in_array($project->status, array(1, 2, 3))) {
-                    $project->called = Call\Project::called($id);
+                    $project->called = Call\Project::called($id, $project->mincost);
                 } else {
                     $project->called = false;
                 }

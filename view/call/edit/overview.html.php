@@ -44,6 +44,16 @@ foreach ($this['scope'] as $value => $label) {
         );
 }
 
+$maxp_modes = array(
+    'imp' => array(
+        'value' => 'imp',
+        'label' => Text::get('call-field-options-modemaxp_imp')
+    ),
+    'per' => array(
+        'value' => 'per',
+        'label' => Text::get('call-field-options-modemaxp_per')
+    )
+);
 
 /*
 <script type="text/javascript" src="/view/js/ckeditor/ckeditor.js"></script>
@@ -366,11 +376,23 @@ $superform = array(
             'required'  => false,
             'title'     => Text::get('call-field-maxproj'),
             'size'      => 8,
-            'class'     => 'amount',
+            'class'     => 'days',
             'hint'      => Text::get('tooltip-call-maxproj'),
             'errors'    => !empty($errors['maxproj']) ? array($errors['maxproj']) : array(),
             'ok'        => !empty($okeys['maxproj']) ? array($okeys['maxproj']) : array(),
             'value'     => $call->maxproj
+        ),
+
+        'modemaxp' => array(
+            'title'     => Text::get('call-field-modemaxp'),
+            'type'      => 'slider',
+            'required'  => false,
+            'options'   => $maxp_modes,
+            'class'     => 'inline scope cols_2',
+            'hint'      => Text::get('tooltip-call-modemaxp'),
+            'errors'    => !empty($errors['modemaxp']) ? array($errors['modemaxp']) : array(),
+            'ok'        => !empty($okeys['modemaxp']) ? array($okeys['modemaxp']) : array(),
+            'value'     => $call->modemaxp
         ),
 
         'footer' => array(

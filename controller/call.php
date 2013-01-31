@@ -644,6 +644,7 @@ namespace Goteo\Controller {
                 'amount',
                 'maxdrop',
                 'maxproj',
+                'modemaxp',
                 'days'
             );
 

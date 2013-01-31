@@ -372,7 +372,7 @@ namespace Goteo\Model {
                         $got = static::invested($this->project, 'call', $this->called->id);
                         // si ha superado el máximo por proyecto
                         if ($this->called->maxproj > 0 && $got >= $this->called->maxproj) {
-                            $errors[] = 'No puede conseguir más capital riego, máximo '.$this->called->maxproj.' &euro; por proyecto.';
+                            $errors[] = 'No puede conseguir más capital riego, máximo '.$this->called->maxproj.' &euro;';
                             unset($this->called);
                         } elseif ($this->called->maxproj > 0 && ($got + $drop_amount) > $this->called->maxproj) {
                             $drop_amount = $this->called->maxproj - $got;

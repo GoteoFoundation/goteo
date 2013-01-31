@@ -193,7 +193,7 @@ namespace Goteo\Model\Call {
          * @param varchar50 $project proyecto
          * @return Model\Call $call convocatoria
          */
-        public static function called ($project) {
+        public static function called ($project, $mincost) {
 
             try {
                 $sql = "SELECT
@@ -211,6 +211,13 @@ namespace Goteo\Model\Call {
                 $called = $query->fetchColumn();
                 if (!empty ($called)) {
                     $call = Model\Call::get($called);
+
+                    // recalculo de maxproj si es modalidad porcentaje
+                    if (empty($mincost)) {
+                        $call->maxproj = false;
+                    } elseif (!empty($call->maxproj) && $call->modemaxp == 'per') {
+                        $call->maxproj = $mincost * $call->maxproj / 100;
+                    }
 
                     return $call;
                 }

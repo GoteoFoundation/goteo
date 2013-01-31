@@ -19,6 +19,7 @@ namespace Goteo\Model {
         $amount, // Presupuesto
         $maxdrop, // Limite al capital riego que puede provocar cada aporte
         $maxproj, // Limite al capital riego que puede conseguir un proyecto
+        $modemaxp, // Modalidad del máximo por proyecto (importe o porcentaje sobre mínimo)
         $resources, // Recursos de capital riego
         $days, // Numero de dias para aplicación de proyectos
         $until = array('day' => '', 'month' => '', 'year' => ''), // para visualizar fecha limite en estado aplicación
@@ -424,6 +425,7 @@ namespace Goteo\Model {
                     'amount',
                     'maxdrop',
                     'maxproj',
+                    'modemaxp',
                     'days'
                 );
 
@@ -955,7 +957,7 @@ namespace Goteo\Model {
             $errors = &$this->errors;
             $okeys = &$this->okeys;
 
-            /*             * *************** Revisión de campos del paso 1, PERFIL **************** */
+            /* *************** Revisión de campos del paso 1, PERFIL **************** */
             // obligatorios: nombre, email, ciudad
             if (empty($this->user->name)) {
                 $errors['userProfile']['name'] = Text::get('validate-user-field-name');
@@ -1028,9 +1030,9 @@ namespace Goteo\Model {
                 $okeys['userProfile']['linkedin'] = 'ok';
             }
 
-            /*             * *************** FIN Revisión del paso 1, PERFIL **************** */
+            /* *************** FIN Revisión del paso 1, PERFIL **************** */
 
-            /*             * *************** Revisión de campos del paso 2,DATOS PERSONALES **************** */
+            /* *************** Revisión de campos del paso 2,DATOS PERSONALES **************** */
             // obligatorios: todos
             if (empty($this->contract_name)) {
                 $errors['userPersonal']['contract_name'] = Text::get('mandatory-project-field-contract_name');
@@ -1117,9 +1119,9 @@ namespace Goteo\Model {
                 $okeys['userPersonal']['country'] = 'ok';
             }
 
-            /*             * *************** FIN Revisión del paso 2, DATOS PERSONALES **************** */
+            /* *************** FIN Revisión del paso 2, DATOS PERSONALES **************** */
 
-            /*             * *************** Revisión de campos del paso 3, DESCRIPCION **************** */
+            /* *************** Revisión de campos del paso 3, DESCRIPCION **************** */
             if (empty($this->name)) {
                 $errors['overview']['name'] = Text::get('mandatory-call-field-name');
             } else {
@@ -1192,6 +1194,12 @@ namespace Goteo\Model {
                 $okeys['overview']['scope'] = 'ok';
             }
 
+            if (!in_array($this->modemaxp, array('imp', 'per'))) {
+                $errors['overview']['modemaxp'] = Text::get('mandatory-call-field-modemaxp');
+            } else {
+                $okeys['overview']['modemaxp'] = 'ok';
+            }
+
             // si no tiene presupuesto tiene que tener recursos
             if (empty($this->amount) && empty($this->resources)) {
                 $errors['overview']['amount'] = Text::get('mandatory-call-field-amount');
@@ -1201,7 +1209,7 @@ namespace Goteo\Model {
                 $okeys['overview']['resources'] = 'ok';
             }
 
-            /*             * *************** FIN Revisión del paso 3, DESCRIPCION **************** */
+            /* *************** FIN Revisión del paso 3, DESCRIPCION **************** */
 
             return true;
         }
@@ -1273,7 +1281,7 @@ namespace Goteo\Model {
             $sqlS = ($justCount) ? 'COUNT(DISTINCT(invest.user))' : 'DISTINCT(invest.user) as id';
             $sql = "SELECT $sqlS
                     FROM  invest
-                    WHERE invest.campaign = :id
+                    WHERE invest.call = :id
                     AND invest.status IN ('0', '1', '3')";
 
             if ($justCount) {

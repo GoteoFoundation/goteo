@@ -4,6 +4,10 @@ use Goteo\Library\Text;
 
 $call = $this['call'];
 $got  = $this['got'];
+
+// si el `modemaxp` es 'per', hay que calcular el maxdrop para pintar...
+// o bien calcularlo al sacar el called para este proyecto   (substituyento el importe de $this->called->maxproj)
+
 ?>
 <div class="widget project-called collapsable activable" id="project-called">
     <div class="explain">
