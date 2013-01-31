@@ -124,6 +124,12 @@ div#main ul#list>li {
 	margin: 10px 0 0 0;
 }
 
+#social {
+	float: right;
+	width: 200px;
+	padding-left: 25px;
+}
+
 #social-logo {
 	overflow: hidden;
 }
@@ -176,6 +182,16 @@ div#main ul#list>li {
     background-image: url('/view/css/social/linkedin.png');
 }
 
+#social-actions h2 {
+	margin: 5px 0;
+	color: #1db3b2;
+}
+
+#social-actions .fb-like {
+	float: right;
+	width: 80px;
+}
+
 
 /* Info container */
 
@@ -187,7 +203,6 @@ div#main ul#list>li {
 
 #supporters-sponsors {
 	margin-top: 6px;
-	padding: 15px;
 	overflow: hidden;
 }
 
@@ -594,10 +609,11 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
 
 /* Side */
 #side {
-	width: 185px;
-	float: left; 
+	border-left: 1px solid #CCCCCC;
+	float: right;
+	margin: 0;
 	padding: 20px 0 20px 15px;
-    margin: 0;
+	width: 210px;
 }
 
 #side img.logo {
@@ -718,7 +734,7 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
 
 /* Content */
 #content {
-	width: 540px;
+	width: 500px;
 	padding: 20px 0px 20px 30px;
 	float: left;
 	background-color: #fff;
@@ -933,15 +949,14 @@ p.subtitle {
 	color: #95268d;
 	font-weight: normal;
 	font-size: 16px;
-	margin: 0 0 35px;
+	margin: 0 0 10px;
 	line-height: 1.2em;
-	padding: 0 60px 0 0;
+	padding: 0 60px 5px 15px;
 }
 
 p.subtitle.red {
 	font-weight: bold;
 	color: red;
-	font-size: 32px;
 }
 
 .freetext {

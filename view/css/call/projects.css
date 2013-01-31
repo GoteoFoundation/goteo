@@ -3,7 +3,7 @@
 .projects #content {
 	background-color: transparent;
 	padding: 0;
-	width: 570px;
+	width: 540px;
 }
 
 #project-list {
@@ -17,7 +17,7 @@
 	margin: 0 10px 10px 0;
 	list-style-type: none;
 	background-color: #ebe9e9;
-	width: 160px;
+	width: 155px;
 	float: left;
 	min-height: 245px;
 	position: relative;
@@ -79,6 +79,10 @@
 	color: #20b3b2;
 }
 
+#project-list li .title {
+	height: 20px;
+}
+
 #project-list li .title a {
 	text-transform: uppercase;
 	text-decoration: none;
@@ -91,7 +95,7 @@
 #project-list li .description {
 	margin: 5px 0;
 	font-size: .9em;
-	height: 40px;
+	height: 50px;
     overflow: hidden;
 }
 

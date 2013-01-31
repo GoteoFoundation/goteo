@@ -2,12 +2,14 @@
 	width: 470px;
 	float: left;
 	overflow: hidden;
+	padding: 15px 0 0 15px;
 }
 
 #supporters-sponsors #supporters ul {
 	padding: 0;
 	overflow: hidden;
 	margin: 15px 0;
+	height: 105px;
 }
 
 #supporters-sponsors #supporters ul > li {
