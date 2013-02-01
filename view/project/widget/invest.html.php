@@ -3,10 +3,13 @@
 use Goteo\Core\View,
     Goteo\Library\Worth,
     Goteo\Model\Invest,
+    Goteo\Model\Call,
     Goteo\Library\Text,
     Goteo\Model\License;
 
 $project = $this['project'];
+$call = ($project->called instanceof Call) ? $project->called : null;
+$rest = $call->rest;
 $personal = $this['personal'];
 $amount = !empty($_GET['amount']) ? $_GET['amount'] : 0;
 
@@ -22,8 +25,6 @@ foreach (License::getAll() as $l) {
 }
 
 $action = '/invest/' . $project->id;
-
-
 ?>
 <div class="widget project-invest project-invest-amount">
     <h<?php echo $level ?> class="title"><?php echo Text::get('invest-amount') ?></h<?php echo $level ?>>
@@ -33,13 +34,17 @@ $action = '/invest/' . $project->id;
     <label><input type="text" id="amount" name="amount" class="amount" value="<?php echo $amount ?>" /><?php echo Text::get('invest-amount-tooltip') ?></label>
 </div>
 
-<?php if ($project->round == 1 && $project->called && $project->called->rest > 0) : ?>
+<?php if ($call && $project->round == 1 && !empty($call->amount)) : ?>
 <div class="widget project-invest project-called">
-    <input type="hidden" id="rest" name="rest" value="<?php echo $project->called->rest ?>" />
-    <p><?php echo Text::html('call-splash-invest_explain_this', $project->called->user->name) ?>
-    <?php if (!empty($project->called->maxdrop)) : ?> Hasta un m&aacute;ximo de <strong><?php echo $project->called->maxdrop ?> &euro;</strong><?php endif; ?>
-    </p>
-    <p>Solo quedan <strong><?php echo $project->called->rest ?> &euro;</strong> de <span class="riego">Capital Riego</span> en la campa&ntilde;a <span class="call"><?php echo $project->called->name ?></span></p>
+<?php if ($call->project_got >= $call->maxproj) : ?>
+    <p><?php echo Text::html('invest-called-maxproj', $call->name) ?></p>
+<?php elseif ($rest > 0) : ?>
+    <input type="hidden" id="rest" name="rest" value="<?php echo $rest ?>" />
+    <p><?php echo Text::html('call-splash-invest_explain_this', $call->user->name) ?><br /><?php echo Text::html('invest-called-maxdrop', $call->curr_maxdrop) ?></p>
+    <p><?php echo Text::html('invest-called-rest', \amount_format($rest), $call->name) ?></p>
+<?php else: ?>
+    <p><?php echo Text::html('invest-called-nodrop', $call->name) ?></p>
+<?php endif; ?>
 </div>
 <?php endif; ?>
 
@@ -266,7 +271,7 @@ $action = '/invest/' . $project->id;
         $('button.process').click(function () {
 
             var amount = $('#amount').val();
-            var rest = $('#rest');
+            var rest = $('#rest').val();
 
             if (parseFloat(amount) == 0 || isNaN(amount)) {
                 alert('<?php echo Text::slash('invest-amount-error') ?>');
@@ -318,8 +323,8 @@ $action = '/invest/' . $project->id;
                 }
             }
 
-            if (rest && greater(amount, rest.val())) {
-                if (!confirm('No queda suficiente Capital riego para cubrir tu aportacion, solamente quedan '+rest.val()+' EUR, ok?')) {
+            if (rest > 0 && greater(amount, rest)) {
+                if (!confirm('<?php echo Text::slash('invest-alert-lackdrop') ?> '+rest+' EUR, ok?')) {
                     return false;
                 }
             }

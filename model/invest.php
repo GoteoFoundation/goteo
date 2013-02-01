@@ -367,33 +367,12 @@ namespace Goteo\Model {
 
                     // si es de convocatoria,
                     if (isset($this->called) && $this->called instanceof Call) {
-                        
-                        // primeo saber cuanto ha conseguido
-                        $got = static::invested($this->project, 'call', $this->called->id);
-                        // si ha superado el máximo por proyecto
-                        if ($this->called->maxproj > 0 && $got >= $this->called->maxproj) {
-                            $errors[] = 'No puede conseguir más capital riego, máximo '.$this->called->maxproj.' &euro;';
-                            unset($this->called);
-                        } elseif ($this->called->maxproj > 0 && ($got + $drop_amount) > $this->called->maxproj) {
-                            $drop_amount = $this->called->maxproj - $got;
-                        }
 
-                        
+                        // si el aporte es más de lo que puede 
+                        $drop_amount = ($this->amount > $this->called->curr_maxdrop) ? $this->called->curr_maxdrop : $this->amount;
+
                         // si queda capital riego
-                        if ($this->called->rest > 0) {
-
-                            $drop_amount = $this->amount;
-
-                            // limite de riego
-                            if ($this->called->maxdrop > 0 && $drop_amount > $this->called->maxdrop) {
-                                $drop_amount = $this->called->maxdrop;
-                            }
-
-                            // no queda suficiente
-                            if ($this->called->rest < $this->amount)  {
-                                $drop_amount = $this->called->rest;
-                            }
-
+                        if ($drop_amount > 0) {
                             // se crea el aporte paralelo
                             $drop = new Invest(
                                 array(
@@ -415,12 +394,9 @@ namespace Goteo\Model {
                             if ($drop->save($errors)) {
                                 self::query("UPDATE invest SET droped=".$drop->id." WHERE id=".$this->id);
                                 $this->droped = $drop->id;
-                            } else {
-                                $errors[] = 'No se ha podido actualizar el aporte con el capital riego que ha generado';
                             }
                             
                         } else {
-                            $errors[] = 'No queda capital riego';
                             unset($this->called);
                         }
                     }

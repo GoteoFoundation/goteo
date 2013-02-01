@@ -100,7 +100,7 @@ namespace Goteo\Controller {
 
                 // si está en primera ronda
                 // y obtiene dinero de convocatoria
-                if ($projectData->round == 1 && isset($projectData->called)) {
+                if ($projectData->round == 1 && isset($projectData->called) && $projectData->called->project_got < $projectData->called->maxproj) {
                     $invest->called = $projectData->called;
                 }
 
@@ -160,7 +160,20 @@ namespace Goteo\Controller {
             // el aporte
             $confirm = Model\Invest::get($invest);
             $projectData = Model\Project::getMedium($project);
-            
+
+            // datos para el drop
+            if (!empty($confirm->droped)) {
+                $drop = Model\Invest::get($confirm->droped);
+                $callData = Model\Call::getMini($drop->call);
+
+                // texto de capital riego
+                $txt_droped = Text::get('invest-mail_info-drop', $callData->user->name, $drop->amount, $callData->name);
+            } else {
+                $txt_droped = '';
+            }
+
+
+            // segun método
             /*----------------------------------
              * SOLAMENTE DESARROLLO Y PRUEBAS!!!
              -----------------------------------*/
@@ -228,11 +241,10 @@ namespace Goteo\Controller {
                 $log->doPublic('community');
                 unset($log);
             }
+            // fin segun metodo
 
             // Feed del aporte de la campaña
-            if (!empty($confirm->droped) && $drop instanceof Model\Invest && !empty($drop->campaign)) {
-                
-                $callData = Model\Call::getMini($drop->campaign);
+            if (!empty($confirm->droped) && $drop instanceof Model\Invest && is_object($callData)) {
                 // Evento Feed
                 $log = new Feed();
                 $log->setTarget($projectData->id);
@@ -257,19 +269,6 @@ namespace Goteo\Controller {
                             ), $callData->user->avatar->id);
                 $log->doPublic('community');
                 unset($log);
-            }
-
-            // datos para el drop
-            if (!empty($confirm->droped)) {
-                $drop = Model\Invest::get($confirm->droped);
-
-                $caller = Model\User::get($drop->user);
-                $callData = Model\Call::get($drop->call);
-
-                // texto de capital riego
-                $txt_droped = Text::get('invest-mail_info-drop', $caller->name, $drop->amount, $callData->name);
-            } else {
-                $txt_droped = '';
             }
 
             // email de agradecimiento al cofinanciador

@@ -219,11 +219,32 @@ namespace Goteo\Model\Call {
                         $call->maxproj = $mincost * $call->maxproj / 100;
                     }
 
+                    // calcular el obtenido por este proyecto
+                    $call->project_got = Model\Invest::invested($project, 'call', $call->id);
+
+                    // calcular cuanto puede obtener por un aporte
+                    $call->curr_maxdrop = 99999999; // limite actual base
+                    // si establecido un máximo por aporte
+                    if (!empty($call->maxdrop)) {
+                        $call->curr_maxdrop = $call->maxdrop;
+                    }
+                    
+                    // * si establecido un máximo por proyecto y lo que la diferencia es menos que el limite actual
+                    if (!empty($call->maxproj)) {
+                        $new_maxdrop = $call->maxproj - $call->project_got;
+                        if ($new_maxdrop < $call->curr_maxdrop)
+                            $call->curr_maxdrop = $new_maxdrop;
+                    }
+
+                    // * si a la convocatoria le queda menos que el limite actual
+                    if ($call->rest < $call->curr_maxdrop)
+                        $call->curr_maxdrop = $call->rest;
+
                     return $call;
                 }
 
             } catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
+                return null;
             }
 
             return false;

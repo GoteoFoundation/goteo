@@ -2,12 +2,8 @@
 
 use Goteo\Library\Text;
 
-$call = $this['call'];
-$got  = $this['got'];
-
-// si el `modemaxp` es 'per', hay que calcular el maxdrop para pintar...
-// o bien calcularlo al sacar el called para este proyecto   (substituyento el importe de $this->called->maxproj)
-
+$project = $this['project'];
+$call = $project->called;
 ?>
 <div class="widget project-called collapsable activable" id="project-called">
     <div class="explain">
@@ -16,7 +12,7 @@ $got  = $this['got'];
             <dt><?php echo Text::get('call-project-get') ?></dt>
             <dd><?php echo $call->name ?></dd>
         </dl>
-        <p><?php echo Text::html('call-project-got_explain', \amount_format($got), $call->user->name) ?></p>
+        <p><?php echo Text::html('call-project-got_explain', \amount_format($call->project_got), $call->user->name) ?></p>
     </div>
     <div class="amount">
         <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="expand" target="_blank"></a>
