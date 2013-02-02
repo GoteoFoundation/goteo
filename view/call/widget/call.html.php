@@ -8,6 +8,7 @@ $call = $this['call'];
 
 $the_logo = empty($call->logo) ? 1 : $call->logo;
 $call->logo = Model\Image::get($the_logo);
+// la imagen es el campo image
 $the_image = empty($call->image) ? 1 : $call->image;
 $call->image = Model\Image::get($the_image);
 

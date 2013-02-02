@@ -365,11 +365,9 @@ namespace Goteo\Controller {
             } else {
                 $the_logo = empty($call->logo) ? 1 : $call->logo;
                 $call->logo = Model\Image::get($the_logo);
-                $the_image = empty($call->image) ? 1 : $call->image;
+                // el fondo es el campo  backimage
+                $the_image = empty($call->backimage) ? 1 : $call->backimage;
                 $call->image = Model\Image::get($the_image);
-                if (!empty($call->backimage)) {
-                    $call->backimage = Model\Image::get($call->backimage);
-                }
             }
 
             // solamente se puede ver publicamente si

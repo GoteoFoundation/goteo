@@ -53,9 +53,9 @@ namespace Goteo\Model {
         $name,
         $subtitle,
         $lang = 'es',
-        $logo,
-        $image, // imagen de fondo para la splash
-        $backimage, //imagen de fondo para el resto de paginas
+        $logo,  // imagen de cabecera
+        $image, // imagen para el widget
+        $backimage, //imagen de fondo
         $description,
         $whom, // quienes pueden participar
         $apply, // como publicar un convocatoria

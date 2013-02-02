@@ -97,13 +97,9 @@
 
         <noscript><!-- Please enable JavaScript --></noscript>
 
-		<div id="bgimage">
-<?php if ($bodyClass == 'splash' || ($bodyClass != 'splash' && empty($call->backimage))) : ?>
+        <div id="bgimage">
             <div><img alt="<?php echo $call->name ?>" src="<?php if ($call->image instanceof Goteo\Model\Image) echo $call->image->getLink(5000, 5000) ?>" /></div>
-<?php else : ?>
-            <div><img alt="<?php echo $call->name ?>" src="<?php if ($call->backimage instanceof Goteo\Model\Image) echo $call->backimage->getLink(5000, 5000) ?>" /></div>
-<?php endif; ?>
-		</div>
+        </div>
 
         <div id="wrapper">
 			
