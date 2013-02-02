@@ -49,7 +49,7 @@ foreach ($social->buzz as $item) : ?>
             </a>
         </div>
         <div class="text">
-            <a href="<?php echo $item->profile ?>" target="_blank"><?php echo $item->user ?></a>
+            <strong><a href="<?php echo $item->profile ?>" target="_blank"><?php echo $item->user ?></a></strong>
             <br />
             <a href="<?php echo 'https://twitter.com/'.$item->twitter_user ?>" target="_blank"><?php echo '@'.$item->twitter_user ?></a>
                 <blockquote><?php echo $item->text ?></blockquote>
