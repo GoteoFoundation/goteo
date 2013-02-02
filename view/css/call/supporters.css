@@ -9,11 +9,18 @@
 	padding: 0;
 	overflow: hidden;
 	margin: 15px 0;
-	height: 105px;
+	height: 96px;
 }
 
 #supporters-sponsors #supporters ul > li {
 	list-style-type: none;
 	display: inline-block;
 	float: left;
+	height: 32px;
+	width: 32px;
+}
+
+#supporters-sponsors #supporters ul > li img {
+	height: 32px;
+	width: 32px;
 }
