@@ -2,8 +2,16 @@ div#side.twitter h2{
 	margin: 0;
 }
 
+div#side.twitter {
+	max-height: 300px;	
+	overflow-y: auto;
+}
+
 div#side.twitter .tweet {
+	border-bottom: 1px solid #999;
+	margin-right: 15px;
 	margin-top: 15px;
+	padding-bottom: 15px;
 	overflow: hidden;
 }
 
@@ -16,7 +24,16 @@ div#side.twitter .tweet .avatar {
 div#side.twitter .tweet .text {
 	float: right;
 	width: 130px;
-	padding-right: 20px;
+	font-size: 0.95em;
+}
+
+div#side.twitter .tweet .text a {
+	color: #666;
+	font-size: 0.95em;
+}
+
+div#side.twitter .tweet .text strong a {
+	color:#333;
 }
 
 div#side.twitter .tweet blockquote {

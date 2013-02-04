@@ -183,20 +183,33 @@ div#main ul#list>li {
 }
 
 #social-actions h2 {
-	margin: 5px 0;
+	margin: 0 0 10px;
 	color: #1db3b2;
+	font-size: 130%;
+	text-align: center;
 }
 
 #social-actions .fb-like {
-	float: right;
-	width: 80px;
+/*	float: right;
+	width: 130px;*/
+margin-left: 25px;	
+float: left;
+margin-right: 55px;
+width: 14%;
+	
 }
+
+div .uiIconText {display:none;}
 
 
 /* Info container */
 
 #info {
 	margin-top: 6px;
+}
+
+#info #content {
+	padding: 0;
 }
 
 /* Supporters sponsors container */

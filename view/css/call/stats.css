@@ -1,5 +1,7 @@
 #stats {
 	width: 500px;
+	background: transparent url(bg-stats.png) repeat-x top left;
+	padding: 22px;
 }
 
 #stats div.row {
