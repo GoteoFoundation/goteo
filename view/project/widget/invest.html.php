@@ -11,8 +11,17 @@ $project = $this['project'];
 $call = ($project->called instanceof Call) ? $project->called : null;
 $rest = $call->rest;
 $personal = $this['personal'];
-$amount = !empty($_GET['amount']) ? $_GET['amount'] : 0;
+$step = $this['step'];
 
+// cantidad de aporte
+if (isset($_SESSION['invest-amount'])) {
+    $amount = $_SESSION['invest-amount'];
+    unset($_SESSION['invest-amount']);
+} elseif (!empty($_GET['amount'])) {
+    $amount = $_GET['amount'];
+} else {
+    $amount = 0;
+}
 
 $level = (int) $this['level'] ?: 3;
 
@@ -24,7 +33,7 @@ foreach (License::getAll() as $l) {
     $licenses[$l->id] = $l;
 }
 
-$action = '/invest/' . $project->id;
+$action = ($step == 'start') ? '/user/login' : '/invest/' . $project->id;
 ?>
 <div class="widget project-invest project-invest-amount">
     <h<?php echo $level ?> class="title"><?php echo Text::get('invest-amount') ?></h<?php echo $level ?>>
@@ -82,6 +91,20 @@ $action = '/invest/' . $project->id;
 
 </div>
 
+<?php
+// si es el primer paso, mostramos el botón para ir a login
+if ($step == 'start') : ?>
+<div class="widget project-invest method">
+    <h<?php echo $level ?> class="beak"><?php echo Text::get('user-login-required-to_invest') ?></h<?php echo $level ?>>
+
+    <div class="buttons">
+        <button type="submit" class="button red" name="login" value="login"><?php echo Text::get('regular-login'); ?></button>
+    </div>
+
+    <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span id="amount-reminder"><?php echo $amount ?></span></div>
+
+</div>
+<?php else : ?>
 <div class="widget project-invest address">
     <h<?php echo $level ?> class="beak" id="address-header"><?php echo Text::get('invest-address-header') ?></h<?php echo $level ?>>
     <table>
@@ -135,8 +158,10 @@ $action = '/invest/' . $project->id;
 
     <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span id="amount-reminder"><?php echo $amount ?></span></div>
 
-</form>
 </div>
+<?php endif; ?>
+
+</form>
 
 <?php echo new View('view/project/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $_SESSION['user']->worth)) ?>
 
@@ -251,6 +276,9 @@ $action = '/invest/' . $project->id;
             var a = $(this).attr('amount');
             var i = $(this).attr('id');
 
+            <?php if ($step == 'start') : ?>
+                reset_reward(i);
+            <?php else : ?>
             // si es renuncio
             if ($('#resign_reward').attr('checked') == 'checked') {
                 $("#address-header").html('<?php echo Text::slash('invest-donation-header') ?>');
@@ -261,13 +289,14 @@ $action = '/invest/' . $project->id;
                 /*$("#donation-data").hide();*/
                 reset_reward(i);
             }
+            <?php endif; ?>
             
             if (greater(a, curr)) {
                 reset_reminder(a);
             }
         });
 
-/* Verificacion */
+/* Verificacion, no tenemos en cuenta el paso porque solo son los botones de pago en el paso confirm */
         $('button.process').click(function () {
 
             var amount = $('#amount').val();
@@ -301,7 +330,7 @@ $action = '/invest/' . $project->id;
                    alert('<?php echo Text::slash('invest-alert-lackamount') ?>');
                    return false;
                }
-               
+
                 if (reward == '') {
                     if (confirm('<?php echo Text::slash('invest-alert-noreward') ?>')) {
                         if (confirm('<?php echo Text::slash('invest-alert-noreward_renounce') ?>')) {

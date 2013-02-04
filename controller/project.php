@@ -493,36 +493,9 @@ namespace Goteo\Controller {
                     $viewData['non-economic'] = true;
                 }
 
-                // -- ojo a los usuarios publicos
-                if (empty($_SESSION['user'])) {
-
-                    // Ya no ocultamos los cofinanciadores a los usuarios públicos.
-                    /*
-                    if ($show == 'supporters') {
-                        Message::Info(Text::get('user-login-required-to_see-supporters'));
-                        throw new Redirection('/project/' .  $id);
-                    }
-                     *
-                     */
-
-                    // --- loguearse para aportar
-                    if ($show == 'invest') {
-                        $_SESSION['jumpto'] = '/project/' .  $id . '/invest';
-                        if (isset($_GET['amount'])) {
-                            $_SESSION['jumpto'] .= '?amount='.$_GET['amount'];
-                        }
-                        Message::Info(Text::get('user-login-required-to_invest'));
-                        throw new Redirection("/user/login");
-                    }
-
-                    // -- Mensaje azul molesto para usuarios no registrados
-                    if ($show == 'messages' || $show == 'updates') {
-                        $_SESSION['jumpto'] = '/project/' .  $id . '/'.$show;
-                        if (isset($_GET['msgto'])) {
-                            $_SESSION['jumpto'] .= '?msgto='.$_GET['msgto'];
-                        }
-                        Message::Info(Text::get('user-login-required'));
-                    }
+                // -- Mensaje azul molesto para usuarios no registrados
+                if (($show == 'messages' || $show == 'updates') && empty($_SESSION['user'])) {
+                    Message::Info(Text::get('user-login-required'));
                 }
 
                 //tenemos que tocar esto un poquito para gestionar los pasos al aportar
@@ -535,17 +508,61 @@ namespace Goteo\Controller {
                     }
 
                     $viewData['show'] = 'supporters';
-                    if (isset($_GET['confirm'])) {
-                        if (\in_array($_GET['confirm'], array('ok', 'fail'))) {
-                            $invest = $_GET['confirm'];
-                        } else {
-                            $invest = 'start';
-                        }
-                    } else {
-                        $invest = 'start';
+
+                    /* pasos de proceso aporte
+                     *
+                     * 1, 'start': ver y seleccionar recompensa (y cantidad)
+                     * 2, 'login': loguear con usuario/contraseña o con email (que crea el usuario automáticamente)
+                     * 3, 'confirm': confirmar los datos y saltar a la pasarela de pago
+                     * 4, 'ok'/'fail': al volver de la pasarela de pago, la confirmación nos dice si todo bien o algo mal
+                     * 5, 'continue': recuperar aporte incompleto (variante de confirm)
+                     */
+
+                    // usamos la variable de url $post para movernos entre los pasos
+                    $step = (isset($post) && in_array($post, array('start', 'login', 'confirm', 'continue'))) ? $post : 'start';
+
+                    // si llega confirm ya es el último paso
+                    if (isset($_GET['confirm']) && \in_array($_GET['confirm'], array('ok', 'fail'))) {
+                        unset($_SESSION['invest-amount']);
+                        // confirmación
+                        $step = $_GET['confirm'];
                     }
 
-                    $viewData['invest'] = $invest;
+                    if (isset($_GET['amount']))
+                        $_SESSION['invest-amount'] = $_GET['amount'];
+
+                    // si el usuario está validado, recuperamos posible amount y mostramos
+                    if ($_SESSION['user'] instanceof Model\User) {
+                        $step = 'confirm';
+                    } elseif ($step != 'start' && empty($_SESSION['user'])) {
+                        // si no está validado solo puede estar en start
+                        Message::Info(Text::get('user-login-required-to_invest'));
+                        $step = 'start';
+                    } elseif ($step == 'start') {
+                        // para cuando salte
+                        $_SESSION['jumpto'] = '/project/' .  $id . '/invest';
+                    } else {
+                        $step = 'start';
+                    }
+
+                    /*
+                    elseif (isset($_SESSION['pre-invest'])) {
+                        // aporte incompleto, puede ser que aun no esté logueado
+                        if (empty($_SESSION['user'])) {
+                            $step = 'login';
+                        } else {
+                            $step = 'confirm';
+                        }
+                    }
+                     *
+                     */
+
+                    /*
+                        Message::Info(Text::get('user-login-required-to_invest'));
+                        throw new Redirection("/user/login");
+                     */
+                    
+                    $viewData['step'] = $step;
                 }
 
                 if ($show == 'updates') {
