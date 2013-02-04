@@ -30,6 +30,11 @@ namespace Goteo\Controller {
          */
         public function login () {
 
+            // si venimos de la página de aportar
+            if (isset($_POST['amount'])) {
+                $_SESSION['invest-amount'] = $_POST['amount'];
+            }
+
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['login'])) {
                 $username = \strtolower($_POST['username']);
                 $password = $_POST['password'];
