@@ -1,10 +1,17 @@
 <?php
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Model;
 
 // aviso para el usuario, puede ser start->hola , ok->gracias o fail->lo sentimos
 
 $user = $this['user'];
-$name = $user->name ? $user->name : Text::get('project-invest-guest');
+if (!$user instanceof Model\User) {
+    $name = Text::get('project-invest-guest');
+    $avatar = Model\Image::get(1);
+} else {
+    $name = $user->name;
+    $avatar = ($user->avatar instanceof Model\Image) ? $user->avatar : Model\Image::get(1);
+}
 
 switch ($this['message']) {
     case 'start':
@@ -37,7 +44,7 @@ $level = (int) $this['level'] ?: 3;
 
 ?>
 <div class="widget invest-message">
-    <h2><img src="<?php echo $user->avatar->getLink(50, 50, true); ?>" /><span><?php echo $title; ?></span><br />
+    <h2><img src="<?php echo $avatar->getLink(50, 50, true); ?>" /><span><?php echo $title; ?></span><br />
     <span class="message"><?php echo $message; ?></span></h2>
 
 

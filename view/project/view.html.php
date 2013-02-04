@@ -16,6 +16,7 @@ $post    = $this['post'];
 $blog    = $this['blog'];
 
 $user    = $_SESSION['user'];
+$personalData = ($user instanceof User) ? User::getPersonal($user->id) : new stdClass();
 
 $categories = Category::getNames($project->id);
 
@@ -176,22 +177,22 @@ include 'view/prologue.html.php' ?>
                                 case 'start':
                                     echo
                                         new View('view/project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
-                                        new View('view/project/widget/invest.html.php', array('project' => $project, 'personal' => User::getPersonal($user->id), 'step' => $step));
+                                        new View('view/project/widget/invest.html.php', array('project' => $project, 'personal' => $personalData, 'step' => $step));
                                     break;
                                 case 'confirm':
                                     echo
                                         new View('view/project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
-                                        new View('view/project/widget/invest.html.php', array('project' => $project, 'personal' => User::getPersonal($user->id), 'step' => $step));
+                                        new View('view/project/widget/invest.html.php', array('project' => $project, 'personal' => $personalData, 'step' => $step));
                                     break;
                                 case 'login':
                                     echo
                                         new View('view/project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
-                                        new View('view/project/widget/invest.html.php', array('project' => $project, 'personal' => User::getPersonal($user->id), 'step' => $step));
+                                        new View('view/project/widget/invest.html.php', array('project' => $project, 'personal' => $personalData, 'step' => $step));
                                     break;
                                 case 'continue':
                                     echo
                                         new View('view/project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
-                                        new View('view/project/widget/invest_redirect.html.php', array('project' => $project, 'personal' => User::getPersonal($user->id), 'step' => $step));
+                                        new View('view/project/widget/invest_redirect.html.php', array('project' => $project, 'personal' => $personalData, 'step' => $step));
                                     break;
 									
                                 case 'ok':
