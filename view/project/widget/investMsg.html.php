@@ -11,6 +11,14 @@ switch ($this['message']) {
         $title   = Text::get('regular-hello') . " $name";
         $message = Text::get('project-invest-start');
         break;
+    case 'login':
+        $title   = Text::get('regular-hello') . " $name";
+        $message = Text::get('project-invest-start');
+        break;
+    case 'confirm':
+        $title   = Text::get('regular-hello') . " $name";
+        $message = Text::get('project-invest-start');
+        break;
     case 'continue':
         $title   = Text::get('regular-hello') . " $name";
         $message = Text::get('project-invest-continue');
