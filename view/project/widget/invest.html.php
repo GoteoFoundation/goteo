@@ -2,14 +2,26 @@
 
 use Goteo\Core\View,
     Goteo\Library\Worth,
+    Goteo\Model\User,
     Goteo\Model\Invest,
     Goteo\Model\Call,
     Goteo\Library\Text,
     Goteo\Model\License;
 
 $project = $this['project'];
-$call = ($project->called instanceof Call) ? $project->called : null;
-$rest = $call->rest;
+if ($project->called instanceof Call) {
+    $call = $project->called;
+    $rest = $call->rest;
+    // a ver si este usuario ya ha regado este proyecto
+    if ($_SESSION['user'] instanceof User) {
+        $allready = $call->getSupporters(true, $_SESSION['user']->id, $project->id);
+    } else {
+        $allready = false;
+    }
+} else {
+    $call = null;
+}
+
 $personal = $this['personal'];
 $step = $this['step'];
 
@@ -43,7 +55,7 @@ $action = ($step == 'start') ? '/user/login' : '/invest/' . $project->id;
     <label><input type="text" id="amount" name="amount" class="amount" value="<?php echo $amount ?>" /><?php echo Text::get('invest-amount-tooltip') ?></label>
 </div>
 
-<?php if ($call && $project->round == 1 && !empty($call->amount)) : ?>
+<?php if ($call && !empty($call->amount)) : ?>
 <div class="widget project-invest project-called">
 <?php if ($call->project_got >= $call->maxproj) : ?>
     <p><?php echo Text::html('invest-called-maxproj', $call->name) ?></p>
@@ -51,6 +63,8 @@ $action = ($step == 'start') ? '/user/login' : '/invest/' . $project->id;
     <input type="hidden" id="rest" name="rest" value="<?php echo $rest ?>" />
     <p><?php echo Text::html('call-splash-invest_explain_this', $call->user->name) ?><br /><?php echo Text::html('invest-called-maxdrop', $call->curr_maxdrop) ?></p>
     <p><?php echo Text::html('invest-called-rest', \amount_format($rest), $call->name) ?></p>
+<?php elseif ($allready) : ?>
+    <p><?php echo Text::html('invest-called-allready', $call->name) ?></p>
 <?php else: ?>
     <p><?php echo Text::html('invest-called-nodrop', $call->name) ?></p>
 <?php endif; ?>

@@ -1274,15 +1274,28 @@ namespace Goteo\Model {
         /*
          * Lista de usuarios que han capturado riego de esta convocatoria
          */
-        public function getSupporters($justCount = false) {
+        public function getSupporters($justCount = false, $user = null, $project = null) {
 
             $values = array(':id' => $this->id);
 
+            // si solo contamos
             $sqlS = ($justCount) ? 'COUNT(DISTINCT(invest.user))' : 'DISTINCT(invest.user) as id';
             $sql = "SELECT $sqlS
                     FROM  invest
                     WHERE invest.call = :id
                     AND invest.status IN ('0', '1', '3')";
+
+            // si estamos filtrando cierto usuario
+            if (!empty($user)) {
+                $sql .= " AND invest.user = :user";
+                $values[':user'] = $user;
+            }
+
+            // si estamos filtrando cierto proyecto
+            if (!empty($project)) {
+                $sql .= " AND invest.project = :project";
+                $values[':project'] = $project;
+            }
 
             if ($justCount) {
                 $query = self::query($sql, $values);

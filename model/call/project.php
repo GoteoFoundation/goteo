@@ -193,7 +193,14 @@ namespace Goteo\Model\Call {
          * @param varchar50 $project proyecto
          * @return Model\Call $call convocatoria
          */
-        public static function called ($project, $mincost) {
+        public static function called ($project) {
+
+            // fallo directo: si no está en uno de los estados, si no está en primera ronda, si ha llegado al óptimo
+            if (!in_array($project->status, array(1, 2, 3))
+                || $project->round > 1
+                || $project->invested >= $project->maxcost) {
+                return false;
+            }
 
             try {
                 $sql = "SELECT
@@ -205,22 +212,21 @@ namespace Goteo\Model\Call {
                         AND call.status > 3 AND call.status < 6
                         LIMIT 1
                         ";
-//                die(str_replace(':project', "'$project'", $sql));
 
-                $query = static::query($sql, array(':project'=>$project));
+                $query = static::query($sql, array(':project'=>$project->id));
                 $called = $query->fetchColumn();
                 if (!empty ($called)) {
                     $call = Model\Call::get($called);
 
                     // recalculo de maxproj si es modalidad porcentaje
-                    if (empty($mincost)) {
+                    if (empty($project->mincost)) {
                         $call->maxproj = false;
                     } elseif (!empty($call->maxproj) && $call->modemaxp == 'per') {
-                        $call->maxproj = $mincost * $call->maxproj / 100;
+                        $call->maxproj = $project->mincost * $call->maxproj / 100;
                     }
 
                     // calcular el obtenido por este proyecto
-                    $call->project_got = Model\Invest::invested($project, 'call', $call->id);
+                    $call->project_got = Model\Invest::invested($project->id, 'call', $call->id);
 
                     // calcular cuanto puede obtener por un aporte
                     $call->curr_maxdrop = 99999999; // limite actual base
@@ -236,9 +242,15 @@ namespace Goteo\Model\Call {
                             $call->curr_maxdrop = $new_maxdrop;
                     }
 
+                    // * si lo que le falta para el óptimo es menos que el limite actual
+                    $new_maxdrop = $project->maxcost - $project->invested;
+                    if ($new_maxdrop < $call->curr_maxdrop)
+                        $call->curr_maxdrop = $new_maxdrop;
+
                     // * si a la convocatoria le queda menos que el limite actual
                     if ($call->rest < $call->curr_maxdrop)
                         $call->curr_maxdrop = $call->rest;
+                    
 
                     return $call;
                 }

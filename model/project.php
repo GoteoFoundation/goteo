@@ -313,11 +313,7 @@ namespace Goteo\Model {
                 }
 
                 // podría estar asignado a alguna convocatoria
-                if (in_array($project->status, array(1, 2, 3))) {
-                    $project->called = Call\Project::called($id, $project->mincost);
-                } else {
-                    $project->called = false;
-                }
+                $project->called = Call\Project::called($project);
 
                 // datos del nodo
                 if (!empty($project->node)) {
@@ -438,11 +434,7 @@ namespace Goteo\Model {
                 $project->setTagmark();
 
                 // podría estar asignado a alguna convocatoria
-                if (in_array($project->status, array(1, 2, 3))) {
-                    $project->called = Call\Project::called($id, $project->mincost);
-                } else {
-                    $project->called = false;
-                }
+                $project->called = Call\Project::called($project);
 
 
                 return $project;
