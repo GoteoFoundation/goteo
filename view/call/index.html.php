@@ -17,7 +17,7 @@ include 'view/call/header.html.php';
         <?php echo new View('view/call/widget/social.html.php', $this) ?>
     </div>
 
-    <div id="info">
+    <div id="info" class="stats-container">
         <div id="content">
             <?php if ($call->status == 3) : //inscripcion ?>
                 <p class="subtitle red"><?php echo Text::get('call-splash-searching_projects') ?></p>
