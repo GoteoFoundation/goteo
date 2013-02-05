@@ -57,14 +57,14 @@ $action = ($step == 'start') ? '/user/login' : '/invest/' . $project->id;
 
 <?php if ($call && !empty($call->amount)) : ?>
 <div class="widget project-invest project-called">
-<?php if ($call->project_got >= $call->maxproj) : ?>
+<?php if ($allready > 0) : ?>
+    <p><?php echo Text::html('invest-called-allready', $call->name) ?></p>
+<?php elseif ($call->project_got >= $call->maxproj) : ?>
     <p><?php echo Text::html('invest-called-maxproj', $call->name) ?></p>
 <?php elseif ($rest > 0) : ?>
     <input type="hidden" id="rest" name="rest" value="<?php echo $rest ?>" />
     <p><?php echo Text::html('call-splash-invest_explain_this', $call->user->name) ?><br /><?php echo Text::html('invest-called-maxdrop', $call->curr_maxdrop) ?></p>
     <p><?php echo Text::html('invest-called-rest', \amount_format($rest), $call->name) ?></p>
-<?php elseif ($allready) : ?>
-    <p><?php echo Text::html('invest-called-allready', $call->name) ?></p>
 <?php else: ?>
     <p><?php echo Text::html('invest-called-nodrop', $call->name) ?></p>
 <?php endif; ?>

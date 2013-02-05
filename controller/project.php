@@ -521,28 +521,29 @@ namespace Goteo\Controller {
                     // usamos la variable de url $post para movernos entre los pasos
                     $step = (isset($post) && in_array($post, array('start', 'login', 'confirm', 'continue'))) ? $post : 'start';
 
-                    // si llega confirm ya es el último paso
+                    // si llega confirm ya ha terminado el proceso de aporte
                     if (isset($_GET['confirm']) && \in_array($_GET['confirm'], array('ok', 'fail'))) {
                         unset($_SESSION['invest-amount']);
                         // confirmación
                         $step = $_GET['confirm'];
-                    }
-
-                    if (isset($_GET['amount']))
-                        $_SESSION['invest-amount'] = $_GET['amount'];
-
-                    // si el usuario está validado, recuperamos posible amount y mostramos
-                    if ($_SESSION['user'] instanceof Model\User) {
-                        $step = 'confirm';
-                    } elseif ($step != 'start' && empty($_SESSION['user'])) {
-                        // si no está validado solo puede estar en start
-                        Message::Info(Text::get('user-login-required-to_invest'));
-                        $step = 'start';
-                    } elseif ($step == 'start') {
-                        // para cuando salte
-                        $_SESSION['jumpto'] = '/project/' .  $id . '/invest';
                     } else {
-                        $step = 'start';
+                        // si no, a ver en que paso estamos
+                        if (isset($_GET['amount']))
+                            $_SESSION['invest-amount'] = $_GET['amount'];
+
+                        // si el usuario está validado, recuperamos posible amount y mostramos
+                        if ($_SESSION['user'] instanceof Model\User) {
+                            $step = 'confirm';
+                        } elseif ($step != 'start' && empty($_SESSION['user'])) {
+                            // si no está validado solo puede estar en start
+                            Message::Info(Text::get('user-login-required-to_invest'));
+                            $step = 'start';
+                        } elseif ($step == 'start') {
+                            // para cuando salte
+                            $_SESSION['jumpto'] = '/project/' .  $id . '/invest';
+                        } else {
+                            $step = 'start';
+                        }
                     }
 
                     /*
