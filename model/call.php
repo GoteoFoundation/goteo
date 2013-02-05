@@ -1283,7 +1283,9 @@ namespace Goteo\Model {
             $sql = "SELECT $sqlS
                     FROM  invest
                     WHERE invest.call = :id
-                    AND invest.status IN ('0', '1', '3')";
+                    AND invest.status IN ('0', '1', '3')
+                    AND invest.campaign IS NULL
+            ";
 
             // si estamos filtrando cierto usuario
             if (!empty($user)) {

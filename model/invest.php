@@ -392,8 +392,10 @@ namespace Goteo\Model {
 
                             // se actualiza el registro de convocatoria
                             if ($drop->save($errors)) {
-                                self::query("UPDATE invest SET droped=".$drop->id." WHERE id=".$this->id);
+                                self::query("UPDATE invest SET droped = :drop, call= :call WHERE id = :id",
+                                        array(':id' => $this->id, ':drop' => $drop->id, ':call' => $this->called->id));
                                 $this->droped = $drop->id;
+                                $this->call = $this->called->id;
                             }
                             
                         } else {
