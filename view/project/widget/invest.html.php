@@ -98,7 +98,7 @@ if ($step == 'start') : ?>
     <h<?php echo $level ?> class="beak"><?php echo Text::get('user-login-required-to_invest') ?></h<?php echo $level ?>>
 
     <div class="buttons">
-        <button type="submit" class="button red" name="login" value="login"><?php echo Text::get('regular-login'); ?></button>
+        <button type="submit" class="button red" name="go-login" value=""><?php echo Text::get('regular-login'); ?></button>
     </div>
 
     <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span id="amount-reminder"><?php echo $amount ?></span></div>
