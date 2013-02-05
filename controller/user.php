@@ -33,6 +33,9 @@ namespace Goteo\Controller {
             // si venimos de la página de aportar
             if (isset($_POST['amount'])) {
                 $_SESSION['invest-amount'] = $_POST['amount'];
+                $msg = Text::get('user-login-required-to_invest');
+                $msg .= (!empty($_POST['amount'])) ? '. '.Text::get('invest-alert-investing').' '.$_POST['amount'].'&euro;' : '';
+                Message::Info($msg);
             }
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['login'])) {
