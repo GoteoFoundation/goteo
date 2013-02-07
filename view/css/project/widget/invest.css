@@ -49,12 +49,16 @@ div.invest-message img{
     margin-right: 20px;
 }
 
-div.invest-message span.message {
+div.invest-message span.message,
+div.invest-message span.message a {
     padding: 0px;
     font-size: 0.9em !important;
     text-transform: none !important;
     font-weight: normal !important;
     color: #57595b !important;
+}
+div.invest-message span.message a {
+
 }
 
 div.widget.project-invest h3.beak {
