@@ -540,7 +540,7 @@ namespace Goteo\Controller {
                             $step = 'start';
                         } elseif ($step == 'start') {
                             // para cuando salte
-                            $_SESSION['jumpto'] = '/project/' .  $id . '/invest';
+                            $_SESSION['jumpto'] = '/project/' .  $id . '/invest/#continue';
                         } else {
                             $step = 'start';
                         }
