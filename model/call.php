@@ -112,7 +112,7 @@ namespace Goteo\Model {
             // datos del usuario que van por defecto: name->contract_name,  location->location
             $userProfile = User::get($owner);
             // datos del userpersonal por defecto a los cammpos del paso 2
-            $userPersonal = User::getPersonal($owner);
+//            $userPersonal = User::getPersonal($owner); // no hay más paso 2 en este formulario
 
             // debe verificar que puede conseguir un id único a partir del nombre
             $id = self::checkId(self::idealiza($name));
@@ -128,6 +128,7 @@ namespace Goteo\Model {
                 ':status' => 1,
                 ':owner' => $owner,
                 ':amount' => 0,
+                /*
                 ':contract_name' => ($userPersonal->contract_name) ?
                         $userPersonal->contract_name :
                         $userProfile->name,
@@ -144,6 +145,8 @@ namespace Goteo\Model {
                 ':call_location' => ($userPersonal->location) ?
                         $userPersonal->location :
                         $userProfile->location,
+                 */
+                ':call_location' => $userProfile->location,
                 ':tweet' => $name,
             );
 

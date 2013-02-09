@@ -97,11 +97,11 @@ namespace Goteo\Controller {
                         'title' => Text::get('step-userProfile'),
                         'offtopic' => true
                     ),
-                    'userPersonal' => array(
+                    /* 'userPersonal' => array(
                         'name' => Text::get('step-2'),
                         'title' => Text::get('step-userPersonal'),
                         'offtopic' => true
-                    ),
+                    ), */
                     'overview' => array(
                         'name' => Text::get('step-3'),
                         'title' => Text::get('step-overview')
@@ -338,7 +338,7 @@ namespace Goteo\Controller {
                     unset($log);
 
                 } else {
-                    Message::Error('No se ha podido crear la convocatoria,  intente otro identificador');
+                    Message::Error(Text::get('call-create-fail'));
                     $error = true;
                 }
 
@@ -562,7 +562,8 @@ namespace Goteo\Controller {
 
         /*
          * Paso 2 - DATOS PERSONALES
-         */
+         * No hay más paso 2
+         *
         private function process_userPersonal(&$call, &$errors) {
             if (!isset($_POST['process_userPersonal'])) {
                 return false;
@@ -613,6 +614,8 @@ namespace Goteo\Controller {
 
             return true;
         }
+         *
+         */
 
         /*
          * Paso 3 - DESCRIPCIÓN

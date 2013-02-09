@@ -26,6 +26,9 @@ namespace Goteo\Controller {
 
             // en estos casos se usa el contenido de goteo
             if ($id == 'howto' || $id == 'call') {
+                if (!$_SESSION['user'] instanceof Model\User) {
+                    throw new Redirection('/');
+                }
                 $page = Page::get($id);
                 return new View(
                     'view/about/howto.html.php',
