@@ -11,13 +11,12 @@ $call = $this['call'];
 // reordenar proyectos: random pero si ya no está en campaña sale al final
 $final = array();
 
+
 foreach ($call->projects as $key => $proj) {
 
-    if ($proj->status < 3 || $proj->status > 5) {
+    if ($proj->status < 3) {
         unset($call->projects[$key]);
-    }
-
-    if ($proj->round > 1 || $proj->status == 4 || $proj->status == 5) {
+    } elseif ($proj->status > 3) {
         $final[$proj->id] = $proj;
         unset($call->projects[$key]);
     }

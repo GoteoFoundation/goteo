@@ -23,7 +23,7 @@ namespace Goteo\Model\Call {
                 $values = array(':call'=>$call);
 
                 if (!empty($filter)) {
-                    $sqlFilter = "INNER JOIN project_category
+                    $sqlFilter = "LEFT JOIN project_category
                         ON project_category.project = call_project.project
                         AND project_category.category = :filter";
                     $values[':filter'] = $filter;
@@ -39,7 +39,7 @@ namespace Goteo\Model\Call {
                             project.subtitle as subtitle,
                             project.description as description
                         FROM project
-                        JOIN call_project
+                        INNER JOIN call_project
                             ON  call_project.project = project.id
                             AND call_project.call = :call
                         $sqlFilter

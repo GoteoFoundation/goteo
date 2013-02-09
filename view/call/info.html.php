@@ -9,11 +9,10 @@ $call = $this['call'];
 
 foreach ($call->projects as $key => $proj) {
 
-    if ($proj->status < 3 || $proj->status > 5) {
+    if ($proj->status < 3) {
         unset($call->projects[$key]);
     }
 }
-
 
 include 'view/call/prologue.html.php';
 include 'view/call/header.html.php';

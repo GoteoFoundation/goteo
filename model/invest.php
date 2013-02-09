@@ -678,7 +678,7 @@ namespace Goteo\Model {
                     case 'call':
                         $sql .= " AND invest.method = 'drop'";
                         if (isset($call)) {
-                            $sql .= " AND invest.call = :call";
+                            $sql .= " AND invest.campaign = 1 AND invest.call = :call";
                             $values['call'] = $call;
                         }
                         break;
