@@ -1,14 +1,13 @@
 <?php
 use Goteo\Library\Text;
+
+$social = $this['social'];
 ?>
 <div id="side" class="twitter">
     <h2><?php echo Text::get('call-header-buzz'); ?></h2>
 <?php
 // Petición a twitter se desconecta en la Linea 448 en controller/call.php
-# if ($_SESSION['user']->id == 'root' && !empty($social->buzz_debug)) echo '<p>DEBUG:: '. $social->buzz_debug . '</p>';
-# if ($_SESSION['user']->id == 'root' && !empty($social->buzz)) echo \trace($social->buzz);
-
-$social = $this['social'];
+if ($_SESSION['user']->id == 'root') echo '<!-- BUZZ_DEBUG:: '. $social->buzz_debug . ' -->';
 
 foreach ($social->buzz as $item) : ?>
     <div class="tweet">
