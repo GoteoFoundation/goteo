@@ -99,16 +99,16 @@ namespace Goteo\Core {
             }
         }
 
-		/**
-		 * Formato.
-		 * Formatea una cadena para ser usada como id varchar(50)
-		 *
-		 * @param string $value
-		 * @return string $id
-		 */
-		public static function idealiza ($value) {
-			$id = trim(strtolower($value));
-			// Acentos
+        /**
+         * Formato.
+         * Formatea una cadena para ser usada como id varchar(50)
+         *
+         * @param string $value
+         * @return string $id
+         */
+        public static function idealiza ($value) {
+            $id = trim(strtolower($value));
+            // Acentos
             $table = array(
                 'Š'=>'S', 'š'=>'s', 'Đ'=>'Dj', 'đ'=>'dj', 'Ž'=>'Z', 'ž'=>'z', 'Č'=>'C', 'č'=>'c', 'Ć'=>'C', 'ć'=>'c',
                 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
@@ -119,17 +119,19 @@ namespace Goteo\Core {
                 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ü'=>'u', 'ý'=>'y', 'ý'=>'y',
                 'þ'=>'b', 'ÿ'=>'y', 'Ŕ'=>'R', 'ŕ'=>'r', 'ª' => 'a', 'º' => 'o',
                 '!' => '', '¡' => '', '?' => '', '¿' => '', '@' => '', '^' => '', '|' => '', '#' => '', '~' => '',
-                '%' => '', '$' => '', '*' => '', '+' => '', '-' => '', '`' => '', '´' => ''
+                '%' => '', '$' => '', '*' => '', '+' => '', '.' => '-', '`' => '', '´' => ''
             );
 
             $id = strtr($id, $table);
 
             // Separadores
-			$id = preg_replace("/[\s\,\(\)\[\]\:\;\_\/\"\'\{\}]+/", "-", $id);
-			$id = substr($id, 0, 50);
+            $id = preg_replace("/[\s\,\(\)\[\]\:\;\_\/\"\'\{\}]+/", "-", $id);
+            $id = substr($id, 0, 50);
 
-			return $id;
-		}
+            $id = trim($id, '-');
+
+            return $id;
+        }
 
     }
 

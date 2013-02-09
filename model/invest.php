@@ -185,7 +185,7 @@ namespace Goteo\Model {
                 $values[':name'] = "%{$filters['name']}%";
             }
             if (!empty($filters['calls'])) {
-                $sqlFilter .= " AND invest.campaign = 1 AND invest.call = :calls";
+                $sqlFilter .= " AND invest.campaign = 1 AND invest.`call` = :calls";
                 $values[':calls'] = $filters['calls'];
             }
             if (!empty($filters['issue'])) {
@@ -392,7 +392,7 @@ namespace Goteo\Model {
 
                             // se actualiza el registro de convocatoria
                             if ($drop->save($errors)) {
-                                self::query("UPDATE invest SET droped = :drop, call= :call WHERE id = :id",
+                                self::query("UPDATE invest SET droped = :drop, `call`= :call WHERE id = :id",
                                         array(':id' => $this->id, ':drop' => $drop->id, ':call' => $this->called->id));
                                 $this->droped = $drop->id;
                                 $this->call = $this->called->id;

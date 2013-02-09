@@ -8,6 +8,7 @@ $node = $this['node'];
 ?>
 <form method="post" action="/admin/nodes" >
     <input type="hidden" name="action" value="<?php echo $this['action'] ?>" />
+    <input type="hidden" name="url" value="<?php echo $node->url; ?>" />
     <input type="hidden" name="id" value="<?php echo $node->id; ?>" />
 
 <p>
