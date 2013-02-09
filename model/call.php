@@ -215,7 +215,7 @@ namespace Goteo\Model {
                 }
 
                 // owner
-                $call->user = User::getMini($call->owner);
+                $call->user = User::get($call->owner);
 
                 // No vamos a hacer aqui objetos para las imagenes, los hacemos en el controlador
                 // categorias

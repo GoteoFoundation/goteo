@@ -431,14 +431,19 @@ namespace Goteo\Controller {
                         $social->tags = $matches[0];
                     }
 
-                    // tweets con alguno de los hastags o mencionando al convocador
-                    // también los tweets del convocador
-                    $tsQuery = implode(', OR ', $social->tags);
-                    $tsQuery .= ($tsQuery == '') ? '@' . $social->author : ' OR @' . $social->author;
-                    $tsQuery .= ($tsQuery == '') ? 'from:' . $social->author : ' OR from:' . $social->author;
-                    
+                    $tsQuery = '';
+                    // tweets con alguno de los hastags
+                    if (!empty($social->tags)) {
+                        $tsQuery .= implode(', OR ', $social->tags);
+                    }
+                    if (!empty($social->author)) {
+                        // mencionando al convocador
+                        $tsQuery .= ($tsQuery == '') ? '@' . $social->author : ' OR @' . $social->author;
+                        // del convocador
+                        $tsQuery .= ($tsQuery == '') ? 'from:' . $social->author : ' OR from:' . $social->author;
+                    }
                     $tsUrl = "http://search.twitter.com/search?q=".  urlencode($tsQuery);
-                    $social->buzz_debug = '<a href="'.$tsUrl.'" target="_blank">SEARCH</a>';
+                    $social->buzz_debug = $tsUrl;
 
                     $social->buzz = Buzz::getTweets($tsQuery, true);
 //                      $social->buzz = array();  // para desconectar la petición: descomentar esta linea y comentar la de arriba

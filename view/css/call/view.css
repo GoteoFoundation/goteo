@@ -126,7 +126,7 @@ div#main ul#list>li {
 
 #social {
 	float: right;
-	width: 200px;
+	width: 198px;
 	padding-left: 25px;
 }
 
@@ -182,24 +182,28 @@ div#main ul#list>li {
     background-image: url('/view/css/social/linkedin.png');
 }
 
+#social-actions {
+    width: 180px;
+    overflow: hidden;
+}
 #social-actions h2 {
-	margin: 0 0 10px;
-	color: #1db3b2;
-	font-size: 130%;
-	text-align: center;
+    margin: 0;
+    margin-bottom: 10px;
+    color: #1db3b2;
+    font-size: 16px;
+    text-align: left;
+}
+
+#social-actions .twitter-share-button {
 }
 
 #social-actions .fb-like {
-/*	float: right;
-	width: 130px;*/
-margin-left: 25px;	
-float: left;
-margin-right: 55px;
-width: 14%;
-	
+    float: right;
+    margin-right: 55px;
+    width: 10%;
 }
 
-div .uiIconText {display:none;}
+.uiIconText {display:none;}
 
 
 /* Info container */
