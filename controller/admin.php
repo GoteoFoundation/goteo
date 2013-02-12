@@ -1052,7 +1052,8 @@ namespace Goteo\Controller {
                             'options' => array (
                                 'users' => $options['users'],     // usuarios asociados al nodo
                                 'mailing' => $options['mailing'], // comunicaciones del nodoc on sus usuarios / promotores
-                                'sended' => $options['sended']    // historial de envios realizados por el nodo
+                                'sended' => $options['sended'],    // historial de envios realizados por el nodo
+                                'tasks' => $options['tasks']  // gestión de tareas
                             )
                         ),
                         'home' => array(
