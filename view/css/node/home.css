@@ -50,7 +50,7 @@ div.side_widget > div.button.current > p > a{background-position:right}
 div.side_widget > div.rewards p.title, div.side_widget > div.categories p.title{color:#929394}
 div.side_widget > div.categories.current p.title, div.side_widget > div.rewards.current p.title{font-size:14px !important}
 div.side_widget > div.rewards a{display:block;float:left;margin:0 8px 5px 0;height:32px;width:32px; text-indent:-9999px;overflow:hidden;
-                                -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";filter: alpha(opacity=50);  -moz-opacity: 0.5; -khtml-opacity: 0.5;  opacity: 0.5;}
+-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";filter: alpha(opacity=50);  -moz-opacity: 0.5; -khtml-opacity: 0.5;  opacity: 0.5;}
 div.side_widget > div.rewards a:hover{-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";filter: alpha(opacity=100);  -moz-opacity: 1; -khtml-opacity: 1;  opacity: 1;}
 div.side_widget > div.rewards > p.items{padding-left:8px}
 div.side_widget > div.categories > ul {list-style: none;padding-left: 6px;}

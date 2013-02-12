@@ -10,6 +10,8 @@ $calls = $this['calls'];
 $droped = $this['droped'];
 $user = $this['user'];
 
+$rewards = $invest->rewards;
+array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
 ?>
 <a href="/admin/accounts/update/<?php echo $invest->id ?>" onclick="return confirm('Seguro que deseas cambiarle el estado a este aporte?, esto es delicado')" class="button">Cambiarle el estado</a>
 &nbsp;&nbsp;&nbsp;

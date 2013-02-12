@@ -116,7 +116,7 @@ namespace Goteo\Model {
                         ON invest_reward.reward = reward.id
                     WHERE   invest_reward.invest = ?
                     ", array($invest->id));
-				$invest->rewards = $query->fetchAll(\PDO::FETCH_CLASS);
+				$invest->rewards = $query->fetchAll(\PDO::FETCH_OBJ);
 
 				$query = static::query("
                     SELECT  address, zipcode, location, country

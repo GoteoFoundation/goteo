@@ -7,8 +7,8 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model,
-		Goteo\Library\Message,
-		Goteo\Library\Feed,
+        Goteo\Library\Message,
+        Goteo\Library\Feed,
         Goteo\Library\Page,
         Goteo\Library\Mail,
         Goteo\Library\Text,
@@ -17,24 +17,25 @@ namespace Goteo\Controller {
 
     class Dashboard extends \Goteo\Core\Controller {
 
-        public function index ($section = null) {
+        public function index($section = null) {
             throw new Redirection('/dashboard/activity');
         }
 
         /*
-         * SecciÃ³n, Mi actividad
+         * Sección, Mi actividad
          * Opciones:
          *      'projects' los proyectos del usuario y a los que ha aportado,
          *      'comunity' relacion con la comunidad
          * 
          */
-        public function activity ($option = 'summary', $action = 'view') {
+
+        public function activity($option = 'summary', $action = 'view') {
 
             // quitamos el stepped para que no nos lo coja para el siguiente proyecto que editemos
             if (isset($_SESSION['stepped'])) {
                 unset($_SESSION['stepped']);
             }
-            
+
             $user = $_SESSION['user'];
             $status = Model\Project::status();
 
@@ -54,13 +55,13 @@ namespace Goteo\Controller {
             foreach ($projects as $project) {
 
                 // compruebo que puedo editar mis proyectos
-                if (!ACL::check('/project/edit/'.$project->id)) {
-                    ACL::allow('/project/edit/'.$project->id.'/', '*', 'user', $user);
+                if (!ACL::check('/project/edit/' . $project->id)) {
+                    ACL::allow('/project/edit/' . $project->id . '/', '*', 'user', $user);
                 }
 
                 // y borrarlos
-                if (!ACL::check('/project/delete/'.$project->id)) {
-                    ACL::allow('/project/delete/'.$project->id.'/', '*', 'user', $user);
+                if (!ACL::check('/project/delete/' . $project->id)) {
+                    ACL::allow('/project/delete/' . $project->id . '/', '*', 'user', $user);
                 }
             }
 
@@ -75,16 +76,16 @@ namespace Goteo\Controller {
                 /*
                  * Depurar antes de poner esto
                  *
-                // eventos privados del usuario
-                $items['private'] = Feed::getUserItems($_SESSION['user']->id, 'private');
-                // eventos de proyectos que he cofinanciado
-                $items['supported'] = Feed::getUserItems($_SESSION['user']->id, 'supported');
-                // eventos de proyectos donde he mensajeado o comentado
-                $items['comented'] = Feed::getUserItems($_SESSION['user']->id, 'comented');
+                  // eventos privados del usuario
+                  $items['private'] = Feed::getUserItems($_SESSION['user']->id, 'private');
+                  // eventos de proyectos que he cofinanciado
+                  $items['supported'] = Feed::getUserItems($_SESSION['user']->id, 'supported');
+                  // eventos de proyectos donde he mensajeado o comentado
+                  $items['comented'] = Feed::getUserItems($_SESSION['user']->id, 'comented');
                  *
                  */
             }
-            
+
             if ($option == 'donor') {
                 // ver si es donante, cargando sus datos
                 $donation = Model\User\Donor::get($user->id);
@@ -95,23 +96,23 @@ namespace Goteo\Controller {
                     Message::Error(Text::get('dashboard-donor-no_donor'));
                     throw new Redirection('/dashboard/activity');
                 }
-                
+
                 if ($action == 'edit' && $donation->confirmed) {
                     Message::Error(Text::get('dashboard-donor-confirmed'));
                     throw new Redirection('/dashboard/activity/donor');
                 }
-                
-                // si estÃ¡n guardando, actualizar los datos y guardar
+
+                // si están guardando, actualizar los datos y guardar
                 if ($action == 'save' && $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['save'] == 'donation') {
-                    $donation->edited   = 1;
-                    $donation->confirmed= 0;
-                    $donation->name     = $_POST['name'];
-                    $donation->nif      = $_POST['nif'];
-                    $donation->address  = $_POST['address'];
-                    $donation->zipcode  = $_POST['zipcode'];
+                    $donation->edited = 1;
+                    $donation->confirmed = 0;
+                    $donation->name = $_POST['name'];
+                    $donation->nif = $_POST['nif'];
+                    $donation->address = $_POST['address'];
+                    $donation->zipcode = $_POST['zipcode'];
                     $donation->location = $_POST['location'];
-                    $donation->country  = $_POST['country'];
-                    
+                    $donation->country = $_POST['country'];
+
                     if ($donation->save()) {
                         Message::Info(Text::get('dashboard-donor-saved'));
                         throw new Redirection('/dashboard/activity/donor');
@@ -120,36 +121,34 @@ namespace Goteo\Controller {
                         throw new Redirection('/dashboard/activity/donor/edit');
                     }
                 }
-                
-                if ($action == 'confirm')  {
+
+                if ($action == 'confirm') {
                     // marcamos que los datos estan confirmados
                     Model\User\Donor::setConfirmed($user->id);
                     Message::Info(Text::get('dashboard-donor-confirmed'));
                     throw new Redirection('/dashboard/activity/donor');
                 }
 
-                if ($action == 'download')  {
+                if ($action == 'download') {
                     // preparamos los datos para el pdf
-                    // generamos el pdf y lo mosteramos con la vista especÃ­fica
-
+                    // generamos el pdf y lo mosteramos con la vista específica
                     // estos pdf se guardan en /data/pdfs/donativos
                     // el formato del archivo es: Ymd_nif_userid
-                    // se genera una vez, si ya estÃ¡ generado se abre directamente
-                    if (!empty($donation->pdf) && file_exists('data/pdfs/donativos/'.$donation->pdf)) {
+                    // se genera una vez, si ya está generado se abre directamente
+                    if (!empty($donation->pdf) && file_exists('data/pdfs/donativos/' . $donation->pdf)) {
 
                         // forzar descarga
-        		header('Content-type: application/pdf');
+                        header('Content-type: application/pdf');
                         header("Content-disposition: attachment; filename={$donation->pdf}");
                         header("Content-Transfer-Encoding: binary");
-                        echo file_get_contents('data/pdfs/donativos/'.$donation->pdf);
+                        echo file_get_contents('data/pdfs/donativos/' . $donation->pdf);
                         die();
-                        
                     } else {
 
                         $objeto = new \Goteo\Library\Num2char($donation->amount, null);
                         $donation->amount_char = $objeto->getLetra();
 
-                        $filename = "certificado_".date('Ymd')."_{$donation->nif}_{$donation->user}.pdf";
+                        $filename = "certificado_" . date('Ymd') . "_{$donation->nif}_{$donation->user}.pdf";
 
 
                         $debug = false;
@@ -170,60 +169,59 @@ namespace Goteo\Controller {
                             header('Content-type: application/pdf');
                             header("Content-disposition: attachment; filename={$donation->pdf}");
                             header("Content-Transfer-Encoding: binary");
-                            echo $pdf->Output('','S');
+                            echo $pdf->Output('', 'S');
                             die;
                         }
-                        
                     }
                 }
                 // fin action download
             }
 
-            return new View (
-                'view/dashboard/index.html.php',
-                array(
-                    'menu'    => self::menu(),
-                    'section' => __FUNCTION__,
-                    'option'  => $option,
-                    'action'  => $action,
-                    'message' => $message,
-                    'lists'   => $lists,
-                    'items'   => $items,
-                    'donation'=> $donation,
-                    'status'  => $status,
-                    'errors'  => $errors,
-                    'success' => $success
-                )
+            return new View(
+                            'view/dashboard/index.html.php',
+                            array(
+                                'menu' => self::menu(),
+                                'section' => __FUNCTION__,
+                                'option' => $option,
+                                'action' => $action,
+                                'message' => $message,
+                                'lists' => $lists,
+                                'items' => $items,
+                                'donation' => $donation,
+                                'status' => $status,
+                                'errors' => $errors,
+                                'success' => $success
+                            )
             );
-
         }
 
         /*
          * Seccion, Mi perfil
          * Opciones:
-         *      'public' perfil pÃºblico (paso 1), 
+         *      'public' perfil público (paso 1),
          *      'personal' datos personales (paso 2),
-         *      'access' configuracion (cambio de email y contraseÃ±a)
+         *      'access' configuracion (cambio de email y contraseña)
          *
          */
-        public function profile ($option = 'profile', $action = 'edit') {
+
+        public function profile($option = 'profile', $action = 'edit') {
 
             // tratamos el post segun la opcion y la acion
             $user = $_SESSION['user'];
 
             if ($option == 'public') {
-                throw new Redirection('/user/profile/'.$user->id);
+                throw new Redirection('/user/profile/' . $user->id);
             }
 
             if (isset($user->roles['vip'])) {
                 $vip = Model\User\Vip::get($user->id);
             }
 
-			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $log_action = null;
 
-			    $errors = array();
+                $errors = array();
                 switch ($option) {
                     // perfil publico
                     case 'profile':
@@ -231,32 +229,32 @@ namespace Goteo\Controller {
                         // __FILES__
 
                         $fields = array(
-                            'user_name'=>'name',
-                            'user_location'=>'location',
-                            'user_avatar'=>'avatar',
-                            'user_about'=>'about',
-                            'user_keywords'=>'keywords',
-                            'user_contribution'=>'contribution',
-                            'user_facebook'=>'facebook',
-                            'user_google'=>'google',
-                            'user_twitter'=>'twitter',
-                            'user_identica'=>'identica',
-                            'user_linkedin'=>'linkedin'
+                            'user_name' => 'name',
+                            'user_location' => 'location',
+                            'user_avatar' => 'avatar',
+                            'user_about' => 'about',
+                            'user_keywords' => 'keywords',
+                            'user_contribution' => 'contribution',
+                            'user_facebook' => 'facebook',
+                            'user_google' => 'google',
+                            'user_twitter' => 'twitter',
+                            'user_identica' => 'identica',
+                            'user_linkedin' => 'linkedin'
                         );
 
-                        foreach ($fields as $fieldPost=>$fieldTable) {
+                        foreach ($fields as $fieldPost => $fieldTable) {
                             if (isset($_POST[$fieldPost])) {
                                 $user->$fieldTable = $_POST[$fieldPost];
                             }
                         }
 
                         // Avatar
-                        if(!empty($_FILES['avatar_upload']['name'])) {
+                        if (!empty($_FILES['avatar_upload']['name'])) {
                             $user->avatar = $_FILES['avatar_upload'];
                         }
 
                         // tratar si quitan la imagen
-                        if (!empty($_POST['avatar-' . $user->avatar->id .  '-remove'])) {
+                        if (!empty($_POST['avatar-' . $user->avatar->id . '-remove'])) {
                             $user->avatar->remove();
                             $user->avatar = '';
                         }
@@ -267,13 +265,13 @@ namespace Goteo\Controller {
                          */
                         if (isset($user->roles['vip'])) {
                             $files = $_FILES;
-                            if(!empty($_FILES['vip_image_upload']['name'])) {
+                            if (!empty($_FILES['vip_image_upload']['name'])) {
                                 $vip->image = $_FILES['vip_image_upload'];
                                 $vip->save();
                             }
 
                             // tratar si quitan la imagen vip
-                            if ($vip->image instanceof Image && !empty($_POST['vip_image-' . $vip->image->id .  '-remove'])) {
+                            if ($vip->image instanceof Image && !empty($_POST['vip_image-' . $vip->image->id . '-remove'])) {
                                 $vip->image->remove();
                                 $vip->remove();
                             }
@@ -288,31 +286,30 @@ namespace Goteo\Controller {
                         foreach ($user->webs as $i => &$web) {
                             // luego aplicar los cambios
 
-                            if (isset($_POST['web-'. $web->id . '-url'])) {
-                                $web->url = $_POST['web-'. $web->id . '-url'];
+                            if (isset($_POST['web-' . $web->id . '-url'])) {
+                                $web->url = $_POST['web-' . $web->id . '-url'];
                             }
 
                             //quitar las que quiten
-                            if (!empty($_POST['web-' . $web->id .  '-remove'])) {
+                            if (!empty($_POST['web-' . $web->id . '-remove'])) {
                                 unset($user->webs[$i]);
                             }
-
                         }
 
                         //tratar nueva web
                         if (!empty($_POST['web-add'])) {
                             $user->webs[] = new Model\User\Web(array(
-                                'url'   => 'http://'
-                            ));
+                                        'url' => 'http://'
+                                    ));
                         }
 
-                        /// este es el Ãºnico save que se lanza desde un metodo process_
+                        /// este es el único save que se lanza desde un metodo process_
                         if ($user->save($errors)) {
                             Message::Info(Text::get('user-profile-saved'));
                             $user = Model\User::flush();
                         }
-                    break;
-                    
+                        break;
+
                     // datos personales
                     case 'personal':
                         // campos que guarda este paso
@@ -335,32 +332,28 @@ namespace Goteo\Controller {
                         }
 
                         // actualizamos estos datos en los personales del usuario
-                        if (!empty ($personalData)) {
+                        if (!empty($personalData)) {
                             if (Model\User::setPersonal($user->id, $personalData, true, $errors)) {
                                 Message::Info(Text::get('user-personal-saved'));
 
                                 $log_action = 'Modificado sus datos personales'; //feed admin
                             }
                         }
-                    break;
+                        break;
 
-                    //cambio de email y contraseÃ±a
+                    //cambio de email y contraseña
                     case 'access':
                         // E-mail
-                        if(!empty($_POST['user_nemail']) || !empty($_POST['user_remail'])) {
-                            if(empty($_POST['user_nemail'])) {
+                        if (!empty($_POST['user_nemail']) || !empty($_POST['user_remail'])) {
+                            if (empty($_POST['user_nemail'])) {
                                 $errors['email'] = Text::get('error-user-email-empty');
-                            }
-                            elseif(!\Goteo\Library\Check::mail($_POST['user_nemail'])) {
+                            } elseif (!\Goteo\Library\Check::mail($_POST['user_nemail'])) {
                                 $errors['email'] = Text::get('error-user-email-invalid');
-                            }
-                            elseif(empty($_POST['user_remail'])) {
+                            } elseif (empty($_POST['user_remail'])) {
                                 $errors['email_retry'] = Text::get('error-user-email-empty');
-                            }
-                            elseif (strcmp($_POST['user_nemail'], $_POST['user_remail']) !== 0) {
+                            } elseif (strcmp($_POST['user_nemail'], $_POST['user_remail']) !== 0) {
                                 $errors['email_retry'] = Text::get('error-user-email-confirm');
-                            }
-                            else {
+                            } else {
                                 $user->email = $_POST['user_nemail'];
                                 unset($_POST['user_nemail']);
                                 unset($_POST['user_remail']);
@@ -369,51 +362,48 @@ namespace Goteo\Controller {
                                 $log_action = 'Cambiado su email'; //feed admin
                             }
                         }
-                        // ContraseÃ±a
-                        if(!empty($_POST['user_npassword']) ||!empty($_POST['user_rpassword'])) {
-                    // Ya no checkeamos mÃ¡s la contraseÃ±a actual (ni en recover ni en normal)
-                    // porque los usuarios que acceden mediante servicio no tienen contraseÃ±a
+                        // Contraseña
+                        if (!empty($_POST['user_npassword']) || !empty($_POST['user_rpassword'])) {
+                            // Ya no checkeamos más la contraseña actual (ni en recover ni en normal)
+                            // porque los usuarios que acceden mediante servicio no tienen contraseña
                             /*
-                            if(!isset($_SESSION['recovering']) && empty($_POST['user_password'])) {
-                                $errors['password'] = Text::get('error-user-password-empty');
-                            }
-                            elseif(!isset($_SESSION['recovering']) && !Model\User::login($user->id, $_POST['user_password'])) {
-                                $errors['password'] = Text::get('error-user-wrong-password');
-                            }
-                            else
-                            */
-                            if(empty($_POST['user_npassword'])) {
+                              if(!isset($_SESSION['recovering']) && empty($_POST['user_password'])) {
+                              $errors['password'] = Text::get('error-user-password-empty');
+                              }
+                              elseif(!isset($_SESSION['recovering']) && !Model\User::login($user->id, $_POST['user_password'])) {
+                              $errors['password'] = Text::get('error-user-wrong-password');
+                              }
+                              else
+                             */
+                            if (empty($_POST['user_npassword'])) {
                                 $errors['password_new'] = Text::get('error-user-password-empty');
-                            }
-                            elseif(!\Goteo\Library\Check::password($_POST['user_npassword'])) {
+                            } elseif (!\Goteo\Library\Check::password($_POST['user_npassword'])) {
                                 $errors['password_new'] = Text::get('error-user-password-invalid');
-                            }
-                            elseif(empty($_POST['user_rpassword'])) {
+                            } elseif (empty($_POST['user_rpassword'])) {
                                 $errors['password_retry'] = Text::get('error-user-password-empty');
-                            }
-                            elseif(strcmp($_POST['user_npassword'], $_POST['user_rpassword']) !== 0) {
+                            } elseif (strcmp($_POST['user_npassword'], $_POST['user_rpassword']) !== 0) {
                                 $errors['password_retry'] = Text::get('error-user-password-confirm');
-                            }
-                            else {
+                            } else {
                                 $user->password = $_POST['user_npassword'];
                                 unset($_POST['user_password']);
                                 unset($_POST['user_npassword']);
                                 unset($_POST['user_rpassword']);
                                 $success[] = Text::get('user-password-changed');
 
-                                $log_action = 'Cambiado su contraseÃ±a'; //feed admin
+                                $log_action = 'Cambiado su contraseña'; //feed admin
                             }
                         }
-                        if(empty($errors) && $user->save($errors)) {
-                            // Refresca la sesiÃ³n.
+                        if (empty($errors) && $user->save($errors)) {
+                            // Refresca la sesión.
                             $user = Model\User::flush();
-                            if (isset($_SESSION['recovering'])) unset($_SESSION['recovering']);
+                            if (isset($_SESSION['recovering']))
+                                unset($_SESSION['recovering']);
                         } else {
                             $errors[] = Text::get('user-save-fail');
                         }
-                    break;
+                        break;
 
-                    // preferencias de notificaciÃ³n
+                    // preferencias de notificación
                     case 'preferences':
                         // campos de preferencias
                         $fields = array(
@@ -432,102 +422,99 @@ namespace Goteo\Controller {
                         }
 
                         // actualizamos estos datos en los personales del usuario
-                        if (!empty ($preferences)) {
+                        if (!empty($preferences)) {
                             if (Model\User::setPreferences($user->id, $preferences, $errors)) {
                                 Message::Info(Text::get('user-prefer-saved'));
-                                $log_action = 'Modificado las preferencias de notificaciÃ³n'; //feed admin
+                                $log_action = 'Modificado las preferencias de notificación'; //feed admin
                             }
                         }
-                    break;
-
+                        break;
                 }
 
                 if (!empty($log_action)) {
                     // Evento Feed
                     $log = new Feed();
                     $log->setTarget($user->id, 'user');
-                    $log->populate('usuario '.$log_action.' (dashboard)', '/admin/users',
-                        \vsprintf('%s ha %s desde su dashboard', array(
-                            Feed::item('user', $user->name, $user->id),
-                            Feed::item('relevant', $log_action)
-                    )));
+                    $log->populate('usuario ' . $log_action . ' (dashboard)', '/admin/users', \vsprintf('%s ha %s desde su dashboard', array(
+                                Feed::item('user', $user->name, $user->id),
+                                Feed::item('relevant', $log_action)
+                            )));
                     $log->doAdmin('user');
                     unset($log);
                 }
-
-			}
+            }
 
             $viewData = array(
-                    'menu'    => self::menu(),
-                    'section' => __FUNCTION__,
-                    'option'  => $option,
-                    'action'  => $action,
-                    'errors'  => $errors,
-                    'success' => $success,
-                    'user'    => $user
-                );
+                'menu' => self::menu(),
+                'section' => __FUNCTION__,
+                'option' => $option,
+                'action' => $action,
+                'errors' => $errors,
+                'success' => $success,
+                'user' => $user
+            );
 
-                switch ($option) {
-                    case 'profile':
-                        $viewData['interests'] = Model\User\Interest::getAll();
+            switch ($option) {
+                case 'profile':
+                    $viewData['interests'] = Model\User\Interest::getAll();
 
-                        if ($_POST) {
-                            foreach ($_POST as $k => $v) {
-                                if (!empty($v) && preg_match('/web-(\d+)-edit/', $k, $r)) {
-                                    $viewData[$k] = true;
-                                    break;
-                                }
+                    if ($_POST) {
+                        foreach ($_POST as $k => $v) {
+                            if (!empty($v) && preg_match('/web-(\d+)-edit/', $k, $r)) {
+                                $viewData[$k] = true;
+                                break;
                             }
                         }
+                    }
 
-                        if (!empty($_POST['web-add'])) {
-                            $last = end($user->webs);
-                            if ($last !== false) {
-                                $viewData["web-{$last->id}-edit"] = true;
-                            }
+                    if (!empty($_POST['web-add'])) {
+                        $last = end($user->webs);
+                        if ($last !== false) {
+                            $viewData["web-{$last->id}-edit"] = true;
                         }
+                    }
 
-                        if (isset($user->roles['vip'])) {
-                            $viewData['vip'] = Model\User\Vip::get($user->id);
-                        }
+                    if (isset($user->roles['vip'])) {
+                        $viewData['vip'] = Model\User\Vip::get($user->id);
+                    }
 
-                        break;
-                    case 'personal':
-                        $viewData['personal'] = Model\User::getPersonal($user->id);
-                        break;
-                    case 'preferences':
-                        $viewData['preferences'] = Model\User::getPreferences($user->id);
-                        break;
-                    case 'access':
-                        // si es recover, en contraseÃ±a actual tendran que poner el username
-                        if ($action == 'recover') {
-                            $viewData['message'] = Text::get('dashboard-password-recover-advice');
-                        }
-                        break;
-                }
+                    break;
+                case 'personal':
+                    $viewData['personal'] = Model\User::getPersonal($user->id);
+                    break;
+                case 'preferences':
+                    $viewData['preferences'] = Model\User::getPreferences($user->id);
+                    break;
+                case 'access':
+                    // si es recover, en contraseña actual tendran que poner el username
+                    if ($action == 'recover') {
+                        $viewData['message'] = Text::get('dashboard-password-recover-advice');
+                    }
+                    break;
+            }
 
 
-            return new View (
-                'view/dashboard/index.html.php',
-                $viewData
+            return new View(
+                            'view/dashboard/index.html.php',
+                            $viewData
             );
         }
-
 
         /*
          * Seccion, Mis proyectos
          * Opciones:
          *      'actualizaciones' blog del proyecto (ahora son como mensajes),
          *      'editar colaboraciones' para modificar los mensajes de colaboraciones (no puede editar el proyecto y ya estan publicados)
-         *      'widgets' ofrece el cÃ³digo para poner su proyecto en otras pÃ¡ginas (vertical y horizontal)
+         *      'widgets' ofrece el código para poner su proyecto en otras páginas (vertical y horizontal)
          *      'licencia' el acuerdo entre goteo y el usuario, licencia cc-by-nc-nd, enlace al pdf
          *      'gestionar retornos' resumen recompensas/cofinanciadores/conseguido  y lista de cofinanciadores y recompensas esperadas
-         *      'pagina publica' enlace a la pÃ¡gina pÃºblica del proyecto
+         *      'pagina publica' enlace a la página pública del proyecto
          *
          */
-        public function projects ($option = 'summary', $action = 'list', $id = null) {
-            
-            $user    = $_SESSION['user'];
+
+        public function projects($option = 'summary', $action = 'list', $id = null) {
+
+            $user = $_SESSION['user'];
 
             $errors = array();
 
@@ -539,13 +526,13 @@ namespace Goteo\Controller {
                 foreach ($projects as $proj) {
 
                     // compruebo que puedo editar mis proyectos
-                    if (!ACL::check('/project/edit/'.$proj->id)) {
-                        ACL::allow('/project/edit/'.$proj->id, '*', 'user', $user);
+                    if (!ACL::check('/project/edit/' . $proj->id)) {
+                        ACL::allow('/project/edit/' . $proj->id, '*', 'user', $user);
                     }
 
                     // y borrarlos
-                    if (!ACL::check('/project/delete/'.$proj->id)) {
-                        ACL::allow('/project/delete/'.$proj->id, '*', 'user', $user);
+                    if (!ACL::check('/project/delete/' . $proj->id)) {
+                        ACL::allow('/project/delete/' . $proj->id, '*', 'user', $user);
                     }
                 }
             }
@@ -553,11 +540,9 @@ namespace Goteo\Controller {
             if ($action == 'select' && !empty($_POST['project'])) {
                 // otro proyecto de trabajo
                 $project = Model\Project::get($_POST['project']);
-            } else {
+            } elseif (!empty($_SESSION['project']->id)) {
                 // si tenemos ya proyecto, mantener los datos actualizados
-                if (!empty($_SESSION['project']->id)) {
-                    $project = Model\Project::get($_SESSION['project']->id);
-                }
+                $project = Model\Project::get($_SESSION['project']->id);
             }
 
             if (empty($project) && !empty($projects)) {
@@ -565,8 +550,8 @@ namespace Goteo\Controller {
             }
 
             // aqui necesito tener un proyecto de trabajo,
-            // si no hay ninguno ccoge el Ãºltimo
-            if ($project instanceof  \Goteo\Model\Project) {
+            // si no hay ninguno ccoge el último
+            if ($project instanceof \Goteo\Model\Project) {
                 $_SESSION['project'] = $project;
             } else {
                 unset($project);
@@ -582,24 +567,24 @@ namespace Goteo\Controller {
                 $blog = Model\Blog::get($project->id);
                 if (!$blog instanceof \Goteo\Model\Blog) {
                     $blog = new Model\Blog(
-                            array(
-                                'id' => '',
-                                'type' => 'project',
-                                'owner' => $project->id,
-                                'active' => true,
-                                'project' => $project->id,
-                                'posts' => array()
-                            )
-                        );
+                                    array(
+                                        'id' => '',
+                                        'type' => 'project',
+                                        'owner' => $project->id,
+                                        'active' => true,
+                                        'project' => $project->id,
+                                        'posts' => array()
+                                    )
+                    );
                     if (!$blog->save($errors)) {
                         $errors[] = Text::get('dashboard-project-blog-fail');
                         $option = 'summary';
                         $action = 'none';
                     }
                 } elseif (!$blog->active) {
-                        $errors[] = Text::get('dashboard-project-blog-inactive');
-                        $action = 'none';
-                    }
+                    $errors[] = Text::get('dashboard-project-blog-inactive');
+                    $action = 'none';
+                }
 
                 // primero comprobar que tenemos blog
                 if (!$blog instanceof Model\Blog) {
@@ -608,13 +593,12 @@ namespace Goteo\Controller {
                     $action = 'none';
                     break;
                 }
-
             }
 
 
 
-			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
                 switch ($option) {
                     // gestionar retornos (o mensaje a los mensajeros)
                     case 'messegers':
@@ -624,32 +608,32 @@ namespace Goteo\Controller {
                             // filtro
                             case 'filter':
                                 $filter = $_POST['filter'];
-                                $order  = $_POST['order'];
-                            break;
+                                $order = $_POST['order'];
+                                break;
 
                             // procesar marcas
                             case 'process':
                                 $filter = $_POST['filter'];
-                                $order  = $_POST['order'];
+                                $order = $_POST['order'];
                                 // todos los checkboxes
                                 $fulfill = array();
                                 // se marcan con Model/Invest con el id del aporte y el id de la recompensa
                                 // estos son ful_reward-[investid]-[rewardId]
                                 // no se pueden descumplir porque viene sin value (un admin en todo caso?)
                                 // o cuando sea con ajax @FIXME
-                                foreach ($_POST as $key=>$value) {
+                                foreach ($_POST as $key => $value) {
                                     $parts = explode('-', $key);
                                     if ($parts[0] == 'ful_reward') {
                                         Model\Invest::setFulfilled($parts[1], $parts[2]);
                                     }
                                 }
-                            break;
+                                break;
 
                             // enviar mensaje
                             case 'message':
                                 $who = array();
                                 $filter = $_POST['filter'];
-                                $order  = $_POST['order'];
+                                $order = $_POST['order'];
 
                                 if (empty($_POST['message'])) {
                                     $errors[] = Text::get('dashboard-investors-mail-text-required');
@@ -661,13 +645,14 @@ namespace Goteo\Controller {
 
                                 // si a todos los participantes
                                 if ($option == 'messegers' && !empty($_POST['msg_all'])) {
-                                    foreach (Model\Message::getMessegers($project->id) as $messeger=>$msgData) {
-                                        if ($messeger == $project->owner) continue;
+                                    foreach (Model\Message::getMessegers($project->id) as $messeger => $msgData) {
+                                        if ($messeger == $project->owner)
+                                            continue;
                                         $who[$messeger] = $messeger;
                                     }
                                 } elseif (!empty($_POST['msg_all'])) {
                                     // si a todos lso colaboradores
-                                    foreach (Model\Invest::investors($project->id, false, true) as $user=>$investor) {
+                                    foreach (Model\Invest::investors($project->id, false, true) as $user => $investor) {
                                         if (!in_array($user, $who)) {
                                             $who[$user] = $investor->user;
                                         }
@@ -678,7 +663,7 @@ namespace Goteo\Controller {
                                 } else {
                                     $msg_rewards = array();
                                     // estos son msg_reward-[rewardId]
-                                    foreach ($_POST as $key=>$value) {
+                                    foreach ($_POST as $key => $value) {
                                         $parts = explode('-', $key);
                                         if ($parts[0] == 'msg_reward' && $value == 1) {
                                             $msg_rewards[] = $parts[1];
@@ -703,14 +688,14 @@ namespace Goteo\Controller {
                                 $allsome = explode('/', Text::get('regular-allsome'));
                                 $enviandoa = !empty($_POST['msg_all']) ? $allsome[0] : $allsome[1];
                                 if ($option == 'messegers') {
-                                    Message::Info(Text::get('dashboard-messegers-mail-sendto', $enviandoa)) ;
+                                    Message::Info(Text::get('dashboard-messegers-mail-sendto', $enviandoa));
                                 } else {
-                                    Message::Info(Text::get('dashboard-investors-mail-sendto', $enviandoa)) ;
+                                    Message::Info(Text::get('dashboard-investors-mail-sendto', $enviandoa));
                                 }
 
                                 // Obtenemos la plantilla para asunto y contenido
                                 $template = Template::get(2);
-                                
+
                                 // Sustituimos los datos
                                 if (isset($_POST['subject']) && !empty($_POST['subject'])) {
                                     $subject = $_POST['subject'];
@@ -720,10 +705,10 @@ namespace Goteo\Controller {
 
                                 $remite = $project->name . ' ' . Text::get('regular-from') . ' ';
                                 $remite .= (NODE_ID != GOTEO_NODE) ? NODE_NAME : GOTEO_MAIL_NAME;
-                                
-                                $search  = array('%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%', '%OWNERURL%', '%OWNERNAME%');
-                                $replace = array($msg_content, $project->name, SITE_URL."/project/".$project->id,
-                                    SITE_URL."/user/profile/".$project->owner, $project->user->name);
+
+                                $search = array('%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%', '%OWNERURL%', '%OWNERNAME%');
+                                $replace = array($msg_content, $project->name, SITE_URL . "/project/" . $project->id,
+                                    SITE_URL . "/user/profile/" . $project->owner, $project->user->name);
                                 $content = \str_replace($search, $replace, $template->text);
 
                                 foreach ($who as $userId) {
@@ -746,56 +731,52 @@ namespace Goteo\Controller {
                                     if ($mailHandler->send($errors)) {
                                         Message::Info(Text::get('dashboard-investors-mail-sended', $data->name));
                                     } else {
-                                        Message::Error(Text::get('dashboard-investors-mail-fail', $data->name) . ' : '. implode (', ', $errors));
-
+                                        Message::Error(Text::get('dashboard-investors-mail-fail', $data->name) . ' : ' . implode(', ', $errors));
                                     }
 
                                     unset($mailHandler);
                                 }
 
-                                throw new Redirection('/dashboard/projects/'.$option);
+                                throw new Redirection('/dashboard/projects/' . $option);
 
-                            break;
+                                break;
                         }
                         // fin segun action
-                    break;
+                        break;
 
                     // contrato
                     case 'contract':
                         if ($action == 'save') {
-                            $contract = Model\Contract::get($_SESSION['project']->id);
-                            
-                            foreach ($_POST as $key=>$value) {
+                            $contract = Model\Contract::get($project->id);
+
+                            foreach ($_POST as $key => $value) {
                                 if (isset($contract->$key)) {
                                     $contract->$key = $value;
                                 }
                             }
-                            
+
                             if ($contract->save($errors)) {
 
                                 $success[] = 'Datos de contrato actualizados';
 
                                 if (!empty($_POST['close_owner'])) {
                                     $contract->setStatus('owner', true);
-                                    
+
                                     // Evento Feed
                                     $log = new Feed();
                                     $log->setTarget($project->id);
-                                    $log->populate('usuario cambia los datos del contrato de su proyecto (dashboard)', '/admin/projects',
-                                        \vsprintf('%s ha modificado los datos del contrato del proyecto %s', array(
-                                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                        Feed::item('project', $project->name, $project->id)
-                                    )));
+                                    $log->populate('usuario cambia los datos del contrato de su proyecto (dashboard)', '/admin/projects', \vsprintf('%s ha modificado los datos del contrato del proyecto %s', array(
+                                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                                Feed::item('project', $project->name, $project->id)
+                                            )));
                                     $log->doAdmin('user');
                                     unset($log);
                                 }
-                                
-                                
                             }
                         }
                         // fin contrato
-                    break;
-                        
+                        break;
+
                     // cuentas
                     case 'account':
                         if ($action == 'save') {
@@ -811,11 +792,10 @@ namespace Goteo\Controller {
                                 // Evento Feed
                                 $log = new Feed();
                                 $log->setTarget($project->id);
-                                $log->populate('usuario cambia las cuentas de su proyecto (dashboard)', '/admin/projects',
-                                    \vsprintf('%s ha modificado la cuenta bancaria/paypal del proyecto %s', array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                    Feed::item('project', $project->name, $project->id)
-                                )));
+                                $log->populate('usuario cambia las cuentas de su proyecto (dashboard)', '/admin/projects', \vsprintf('%s ha modificado la cuenta bancaria/paypal del proyecto %s', array(
+                                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                            Feed::item('project', $project->name, $project->id)
+                                        )));
                                 $log->doAdmin('user');
                                 unset($log);
                             }
@@ -849,12 +829,12 @@ namespace Goteo\Controller {
                                     } else {
                                         // grabar nuevo mensaje
                                         $msg = new Model\Message(array(
-                                            'user'    => $project->owner,
-                                            'project' => $project->id,
-                                            'date'    => date('Y-m-d'),
-                                            'message' => "{$support->support}: {$support->description}",
-                                            'blocked' => true
-                                            ));
+                                                    'user' => $project->owner,
+                                                    'project' => $project->id,
+                                                    'date' => date('Y-m-d'),
+                                                    'message' => "{$support->support}: {$support->description}",
+                                                    'blocked' => true
+                                                ));
                                         if ($msg->save()) {
                                             // asignado a la colaboracion como thread inicial
                                             $support->thread = $msg->id;
@@ -862,56 +842,47 @@ namespace Goteo\Controller {
                                             // Evento Feed
                                             $log = new Feed();
                                             $log->setTarget($project->id);
-                                            $log->populate('usuario pone una nueva colaboracion en su proyecto (dashboard)', '/admin/projects',
-                                                \vsprintf('%s ha publicado una nueva %s en el proyecto %s, con el tÃ­tulo "%s"', array(
-                                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                                Feed::item('message', 'ColaboraciÃ³n'),
-                                                Feed::item('project', $project->name, $project->id),
-                                                Feed::item('update', $support->support, $project->id.'/messages#message'.$msg->id)
-                                            )));
+                                            $log->populate('usuario pone una nueva colaboracion en su proyecto (dashboard)', '/admin/projects', \vsprintf('%s ha publicado una nueva %s en el proyecto %s, con el título "%s"', array(
+                                                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                                        Feed::item('message', 'Colaboración'),
+                                                        Feed::item('project', $project->name, $project->id),
+                                                        Feed::item('update', $support->support, $project->id . '/messages#message' . $msg->id)
+                                                    )));
                                             $log->doAdmin('user');
 
-                                            // evento pÃºblico, si el proyecto es pÃºblico
+                                            // evento público, si el proyecto es público
                                             if ($project->status > 2) {
-                                                $log->populate($_SESSION['user']->name, '/user/profile/'.$_SESSION['user']->id, 
-                                                    Text::html('feed-new_support',
-                                                                Feed::item('project', $project->name, $project->id),
-                                                                Feed::item('update', $support->support, $project->id.'/messages#message'.$msg->id)
-                                                                ), 
-                                                    $_SESSION['user']->avatar->id);
+                                                $log->populate($_SESSION['user']->name, '/user/profile/' . $_SESSION['user']->id, Text::html('feed-new_support', Feed::item('project', $project->name, $project->id), Feed::item('update', $support->support, $project->id . '/messages#message' . $msg->id)
+                                                        ), $_SESSION['user']->avatar->id);
                                                 $log->doPublic('community');
                                             }
                                             unset($log);
-
                                         }
                                     }
-
                                 }
-
                             }
 
-                            // aÃ±adir nueva colaboracion (no hacemos lo del mensaje porque esta sin texto)
+                            // añadir nueva colaboracion (no hacemos lo del mensaje porque esta sin texto)
                             if (!empty($_POST['support-add'])) {
 
                                 $new_support = new Model\Project\Support(array(
-                                    'project'       => $project->id,
-                                    'support'       => 'Nueva colaboraciÃ³n',
-                                    'type'          => 'task',
-                                    'description'   => ''
-                                ));
+                                            'project' => $project->id,
+                                            'support' => 'Nueva colaboración',
+                                            'type' => 'task',
+                                            'description' => ''
+                                        ));
 
                                 if ($new_support->save($errors)) {
 
                                     $project->supports[] = $new_support;
-                                    $_POST['support-'.$new_support->id.'-edit'] = true;
-
+                                    $_POST['support-' . $new_support->id . '-edit'] = true;
                                 } else {
                                     $project->supports[] = new Model\Project\Support(array(
-                                        'project'       => $project->id,
-                                        'support'       => 'Nueva colaboraciÃ³n',
-                                        'type'          => 'task',
-                                        'description'   => ''
-                                    ));
+                                                'project' => $project->id,
+                                                'support' => 'Nueva colaboración',
+                                                'type' => 'task',
+                                                'description' => ''
+                                            ));
                                 }
                             }
 
@@ -919,7 +890,7 @@ namespace Goteo\Controller {
                             $project->save($errors);
                         }
 
-                    break;
+                        break;
 
                     case 'updates':
                         if (empty($_POST['blog'])) {
@@ -952,13 +923,13 @@ namespace Goteo\Controller {
                         }
 
                         // tratar la imagen y ponerla en la propiedad image
-                        if(!empty($_FILES['image_upload']['name'])) {
+                        if (!empty($_FILES['image_upload']['name'])) {
                             $post->image = $_FILES['image_upload'];
                             $editing = true;
                         }
 
                         // tratar las imagenes que quitan
-                        foreach ($post->gallery as $key=>$image) {
+                        foreach ($post->gallery as $key => $image) {
                             if (!empty($_POST["gallery-{$image->id}-remove"])) {
                                 $image->remove('post');
                                 unset($post->gallery[$key]);
@@ -975,8 +946,7 @@ namespace Goteo\Controller {
 
                         // el blog de proyecto no tiene tags?Â¿?
                         // $post->tags = $_POST['tags'];
-
-                        /// este es el Ãºnico save que se lanza desde un metodo process_
+                        /// este es el único save que se lanza desde un metodo process_
                         if ($post->save($errors)) {
                             $id = $post->id;
                             if ($action == 'edit') {
@@ -991,24 +961,18 @@ namespace Goteo\Controller {
                                 // Evento Feed
                                 $log = new Feed();
                                 $log->setTarget($project->id);
-                                $log->populate('usuario publica una novedad en su proyecto (dashboard)', '/admin/projects', 
-                                    \vsprintf('%s ha publicado un nuevo post en %s sobre el proyecto %s, con el tÃ­tulo "%s"', array(
-                                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                        Feed::item('blog', Text::get('project-menu-updates')),
-                                        Feed::item('project', $project->name, $project->id),
-                                        Feed::item('update', $post->title, $project->id.'/updates/'.$post->id)
-                                )));
+                                $log->populate('usuario publica una novedad en su proyecto (dashboard)', '/admin/projects', \vsprintf('%s ha publicado un nuevo post en %s sobre el proyecto %s, con el título "%s"', array(
+                                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                            Feed::item('blog', Text::get('project-menu-updates')),
+                                            Feed::item('project', $project->name, $project->id),
+                                            Feed::item('update', $post->title, $project->id . '/updates/' . $post->id)
+                                        )));
                                 $log->doAdmin('user');
 
-                                // evento pÃºblico
+                                // evento público
                                 $log->unique = true;
-                                $log->populate($post->title, '/project/'.$project->id.'/updates/'.$post->id, 
-                                    Text::html('feed-new_update',
-                                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                                Feed::item('blog', Text::get('project-menu-updates')),
-                                                Feed::item('project', $project->name, $project->id)
-                                                ), 
-                                    $post->gallery[0]->id);
+                                $log->populate($post->title, '/project/' . $project->id . '/updates/' . $post->id, Text::html('feed-new_update', Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id), Feed::item('blog', Text::get('project-menu-updates')), Feed::item('project', $project->name, $project->id)
+                                        ), $post->gallery[0]->id);
                                 $log->doPublic('projects');
 
                                 // si no ha encontrado otro, lanzamos el update
@@ -1017,9 +981,7 @@ namespace Goteo\Controller {
                                 }
 
                                 unset($log);
-
                             }
-
                         } else {
                             $errors[] = Text::get('dashboard-project-updates-fail');
                         }
@@ -1034,13 +996,13 @@ namespace Goteo\Controller {
                         break;
                     case 'add':
                         $post = new Model\Blog\Post(
-                                array(
-                                    'blog' => $blog->id,
-                                    'date' => date('Y-m-d'),
-                                    'publish' => false,
-                                    'allow' => true
-                                )
-                            );
+                                        array(
+                                            'blog' => $blog->id,
+                                            'date' => date('Y-m-d'),
+                                            'publish' => false,
+                                            'allow' => true
+                                        )
+                        );
 
                         break;
                     case 'edit':
@@ -1075,19 +1037,18 @@ namespace Goteo\Controller {
                         $action = 'list';
                         break;
                 }
-
             }
 
             // view data basico para esta seccion
             $viewData = array(
-                    'menu'    => self::menu(),
-                    'section' => __FUNCTION__,
-                    'option'  => $option,
-                    'action'  => $action,
-                    'projects'=> $projects,
-                    'errors'  => $errors,
-                    'success' => $success
-                );
+                'menu' => self::menu(),
+                'section' => __FUNCTION__,
+                'option' => $option,
+                'action' => $action,
+                'projects' => $projects,
+                'errors' => $errors,
+                'success' => $success
+            );
 
 
             switch ($option) {
@@ -1096,24 +1057,24 @@ namespace Goteo\Controller {
                     if (!empty($project->passed)) {
                         $viewData['Data'] = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
                     }
-                break;
+                    break;
 
 
                 // gestionar retornos
                 case 'rewards':
                     // recompensas ofrecidas
-                    $viewData['rewards'] = Model\Project\Reward::getAll($_SESSION['project']->id, 'individual', LANG);
+                    $viewData['rewards'] = Model\Project\Reward::getAll($project->id, 'individual', LANG);
                     // aportes para este proyecto
-                    $viewData['invests'] = Model\Invest::getAll($_SESSION['project']->id);
+                    $viewData['invests'] = Model\Invest::getAll($project->id);
                     // ver por (esto son orden y filtros)
                     $viewData['filter'] = $filter;
                     $viewData['order'] = $order;
-                break;
+                    break;
 
                 // listar mensajeadores
                 case 'messegers':
-                    $viewData['messegers'] = Model\Message::getMessegers($_SESSION['project']->id);
-                break;
+                    $viewData['messegers'] = Model\Message::getMessegers($project->id);
+                    break;
 
                 // editar colaboraciones
                 case 'supports':
@@ -1131,12 +1092,12 @@ namespace Goteo\Controller {
                     if (!empty($_POST['support-add'])) {
                         $last = end($project->supports);
                         if ($last !== false) {
-                            $viewData['support-'.$last->id.'-edit'] = true;
+                            $viewData['support-' . $last->id . '-edit'] = true;
                         }
                     }
 
-                    $project->supports = Model\Project\Support::getAll($_SESSION['project']->id);
-                break;
+                    $project->supports = Model\Project\Support::getAll($project->id);
+                    break;
 
                 // publicar actualizaciones
                 case 'updates':
@@ -1144,21 +1105,21 @@ namespace Goteo\Controller {
                     $viewData['posts'] = $posts;
                     $viewData['post'] = $post;
                     break;
-                
+
                 // cuentas
                 case 'account':
-                    $viewData['account'] = Model\Project\Account::get($_SESSION['project']->id);
-                break;
-                
+                    $viewData['account'] = Model\Project\Account::get($project->id);
+                    break;
+
                 // datos de contrato
                 case 'contract':
-                    $viewData['contract'] = Model\Contract::get($_SESSION['project']->id);
-                break;
+                    $viewData['contract'] = Model\Contract::get($project->id);
+                    break;
             }
 
             $viewData['project'] = $project;
 
-            return new View ('view/dashboard/index.html.php', $viewData);
+            return new View('view/dashboard/index.html.php', $viewData);
         }
 
         /*
@@ -1172,9 +1133,10 @@ namespace Goteo\Controller {
          *      'updates'
          *
          */
-        public function translates ($option = 'overview', $action = 'list', $id = null) {
 
-            $user    = $_SESSION['user'];
+        public function translates($option = 'overview', $action = 'list', $id = null) {
+
+            $user = $_SESSION['user'];
 
             $errors = array();
 
@@ -1187,26 +1149,26 @@ namespace Goteo\Controller {
             }
 
             $projects = Model\User\Translate::getMyProjects($user->id);
-            $calls    = Model\User\Translate::getMyCalls($user->id);
-            $nodes    = Model\User\Translate::getMyNodes($user->id);
+            $calls = Model\User\Translate::getMyCalls($user->id);
+            $nodes = Model\User\Translate::getMyNodes($user->id);
 
             foreach ($nodes as $node) {
                 // compruebo que puedo traducir todos los nodos asignados
-                if (!ACL::check('/translate/node/'.$node->id.'/*')) {
-                    ACL::allow('/translate/node/'.$node->id.'/*', '*', 'translator', $user->id);
+                if (!ACL::check('/translate/node/' . $node->id . '/*')) {
+                    ACL::allow('/translate/node/' . $node->id . '/*', '*', 'translator', $user->id);
                 }
             }
 
             // al seleccionar controlamos: translate_type y translateproject/translate_call
             if ($action == 'select' && !empty($_POST['type'])) {
-                unset($_SESSION['translate_project']); // quitamos el proyecto de traducciÃ³n
-                unset($_SESSION['translate_call']); // quitamos la convocatoria de traducciÃ³n
-                unset($_SESSION['translate_node']); // quitamos el nodo de traducciÃ³n
+                unset($_SESSION['translate_project']); // quitamos el proyecto de traducción
+                unset($_SESSION['translate_call']); // quitamos la convocatoria de traducción
+                unset($_SESSION['translate_node']); // quitamos el nodo de traducción
 
                 $type = $_POST['type'];
                 if (!empty($_POST[$type])) {
                     $_SESSION['translate_type'] = $type;
-                    $_SESSION['translate_'.$type] = $_POST[$type];
+                    $_SESSION['translate_' . $type] = $_POST[$type];
                 } else {
                     $_SESSION['translate_type'] = 'profile';
                 }
@@ -1214,17 +1176,17 @@ namespace Goteo\Controller {
 
             // view data basico para esta seccion
             $viewData = array(
-                    'menu'    => self::menu(),
-                    'section' => __FUNCTION__,
-                    'option'  => $option,
-                    'action'  => $action,
-                    'langs'   => $langs,
-                    'projects'=> $projects,
-                    'calls'   => $calls,
-                    'nodes'   => $nodes,
-                    'errors'  => $errors,
-                    'success' => $success
-                );
+                'menu' => self::menu(),
+                'section' => __FUNCTION__,
+                'option' => $option,
+                'action' => $action,
+                'langs' => $langs,
+                'projects' => $projects,
+                'calls' => $calls,
+                'nodes' => $nodes,
+                'errors' => $errors,
+                'success' => $success
+            );
 
             // aqui, segun lo que este traduciendo, necesito tener un proyecto de trabajo, una convocatoria o mi perfil personal
             switch ($_SESSION['translate_type']) {
@@ -1245,11 +1207,10 @@ namespace Goteo\Controller {
                         $_SESSION['translate_type'] = 'profile';
                         throw new Redirection('/dashboard/translates');
                     }
-                    
+
                     $_SESSION['translate_project'] = $project;
                     $project->lang_name = $langs[$project->lang]->name;
                     unset($viewData['langs'][$project->lang]); // quitamos el idioma original
-
 //// Control de traduccion de proyecto
                     if ($option == 'updates') {
                         // sus novedades
@@ -1272,7 +1233,7 @@ namespace Goteo\Controller {
                                     $user->lang = $_SESSION['translate_lang'];
                                     $user->saveLang($errors);
                                 }
-                            break;
+                                break;
 
                             case 'overview':
                                 if ($action == 'save') {
@@ -1289,20 +1250,20 @@ namespace Goteo\Controller {
                                     $project->lang_lang = $_SESSION['translate_lang'];
                                     $project->saveLang($errors);
                                 }
-                            break;
+                                break;
 
                             case 'costs':
                                 if ($action == 'save') {
                                     foreach ($project->costs as $key => $cost) {
                                         if (isset($_POST['cost-' . $cost->id . '-cost'])) {
                                             $cost->cost_lang = $_POST['cost-' . $cost->id . '-cost'];
-                                            $cost->description_lang = $_POST['cost-' . $cost->id .'-description'];
+                                            $cost->description_lang = $_POST['cost-' . $cost->id . '-description'];
                                             $cost->lang = $_SESSION['translate_lang'];
                                             $cost->saveLang($errors);
                                         }
                                     }
                                 }
-                            break;
+                                break;
 
                             case 'rewards':
                                 if ($action == 'save') {
@@ -1316,17 +1277,16 @@ namespace Goteo\Controller {
                                         }
                                     }
                                     foreach ($project->individual_rewards as $k => $reward) {
-                                        if (isset($_POST['individual_reward-' . $reward->id .'-reward'])) {
-                                            $reward->reward_lang = $_POST['individual_reward-' . $reward->id .'-reward'];
+                                        if (isset($_POST['individual_reward-' . $reward->id . '-reward'])) {
+                                            $reward->reward_lang = $_POST['individual_reward-' . $reward->id . '-reward'];
                                             $reward->description_lang = $_POST['individual_reward-' . $reward->id . '-description'];
                                             $reward->other_lang = $_POST['individual_reward-' . $reward->id . '-other'];
                                             $reward->lang = $_SESSION['translate_lang'];
                                             $reward->saveLang($errors);
                                         }
-
                                     }
                                 }
-                            break;
+                                break;
 
                             case 'supports':
                                 if ($action == 'save') {
@@ -1347,7 +1307,7 @@ namespace Goteo\Controller {
                                         }
                                     }
                                 }
-                            break;
+                                break;
 
                             case 'updates':
                                 if (empty($_POST['blog']) || empty($_POST['id'])) {
@@ -1364,17 +1324,17 @@ namespace Goteo\Controller {
                                 $post->saveLang($errors);
 
                                 $action = 'edit';
-                            break;
+                                break;
                         }
                     }
 
                     switch ($option) {
                         case 'profile':
                             $viewData['user'] = Model\User::get($project->owner, $_SESSION['translate_lang']);
-                        break;
+                            break;
 
                         case 'overview':
-                        break;
+                            break;
 
                         case 'costs':
                             if ($_POST) {
@@ -1384,7 +1344,7 @@ namespace Goteo\Controller {
                                     }
                                 }
                             }
-                        break;
+                            break;
 
                         case 'rewards':
                             if ($_POST) {
@@ -1395,7 +1355,7 @@ namespace Goteo\Controller {
                                     }
                                 }
                             }
-                        break;
+                            break;
 
                         case 'supports':
                             if ($_POST) {
@@ -1406,7 +1366,7 @@ namespace Goteo\Controller {
                                     }
                                 }
                             }
-                        break;
+                            break;
 
                         // publicar actualizaciones
                         case 'updates':
@@ -1422,7 +1382,7 @@ namespace Goteo\Controller {
                                 }
                                 $viewData['posts'] = $posts;
                             }
-                        break;
+                            break;
                     }
 
                     $viewData['project'] = $project;
@@ -1448,7 +1408,6 @@ namespace Goteo\Controller {
                     $_SESSION['translate_call'] = $call;
                     $call->lang_name = $langs[$call->lang]->name;
                     unset($viewData['langs'][$call->lang]); // quitamos el idioma original
-
 //// Control de traduccion de convocatoria
                     // tratar lo que llega por post para guardar los datos
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -1463,7 +1422,7 @@ namespace Goteo\Controller {
                                     $user->lang = $_SESSION['translate_lang'];
                                     $user->saveLang($errors);
                                 }
-                            break;
+                                break;
 
                             case 'overview':
                                 if ($action == 'save') {
@@ -1478,7 +1437,7 @@ namespace Goteo\Controller {
                                     $call->lang_lang = $_SESSION['translate_lang'];
                                     $call->saveLang($errors);
                                 }
-                            break;
+                                break;
                         }
                     }
 
@@ -1494,7 +1453,7 @@ namespace Goteo\Controller {
 //// FIN Control de traduccion de convocatoria
                     break;
 
-                 case 'node':
+                case 'node':
                     try {
                         // si lo que tenemos en sesion no es una instancia de convocatoria (es una id de convocatoria)
                         if ($_SESSION['translate_node'] instanceof Model\Node) {
@@ -1513,12 +1472,11 @@ namespace Goteo\Controller {
                     $_SESSION['translate_node'] = $node;
                     $node->lang_name = $langs['es']->name;
                     unset($viewData['langs']['es']); // quitamos el idioma original
-
-                    // la traducciÃ³n de contenidos se hace en /traslate/node/list/id-nodo
+                    // la traducción de contenidos se hace en /traslate/node/list/id-nodo
 
                     $viewData['option'] = 'node_overview';
                     $viewData['node'] = $node;
-                     break;
+                    break;
                 default: // profile
                     $viewData['option'] = 'profile';
                     unset($langs['es']);
@@ -1533,29 +1491,28 @@ namespace Goteo\Controller {
                             $user->lang = $_SESSION['translate_lang'];
                             $user->saveLang($errors);
                         }
-                        
                     }
 
                     $viewData['user'] = Model\User::get($user->id, $_SESSION['translate_lang']);
             }
 
             if (!empty($errors)) {
-                Message::Error('HA HABIDO ERRORES: <br />'. implode('<br />', $errors));
+                Message::Error('HA HABIDO ERRORES: <br />' . implode('<br />', $errors));
             }
 
-            return new View ('view/dashboard/index.html.php', $viewData);
+            return new View('view/dashboard/index.html.php', $viewData);
         }
-
 
         /*
          * Seccion, Mis convocatorias
          * Opciones:
-         *      'proyectos' visualizaciÃ³n de los proyectos que tienen capital riego de la convocatoria
+         *      'proyectos' visualización de los proyectos que tienen capital riego de la convocatoria
          *
          */
-        public function calls ($option = 'summary', $action = 'list', $id = null) {
 
-            $user    = $_SESSION['user'];
+        public function calls($option = 'summary', $action = 'list', $id = null) {
+
+            $user = $_SESSION['user'];
 
             $errors = array();
 
@@ -1566,13 +1523,13 @@ namespace Goteo\Controller {
                 foreach ($calls as $call) {
 
                     // compruebo que puedo editar mis proyectos
-                    if (!ACL::check('/call/edit/'.$call->id)) {
-                        ACL::allow('/call/edit/'.$call->id.'/', '*', 'caller', $user);
+                    if (!ACL::check('/call/edit/' . $call->id)) {
+                        ACL::allow('/call/edit/' . $call->id . '/', '*', 'caller', $user);
                     }
 
                     // y borrarlos
-                    if (!ACL::check('/call/delete/'.$call->id)) {
-                        ACL::allow('/call/delete/'.$call->id.'/', '*', 'caller', $user);
+                    if (!ACL::check('/call/delete/' . $call->id)) {
+                        ACL::allow('/call/delete/' . $call->id . '/', '*', 'caller', $user);
                     }
                 }
             }
@@ -1592,8 +1549,8 @@ namespace Goteo\Controller {
             }
 
             // aqui necesito tener una convocatoria de trabajo,
-            // si no hay ninguna ccoge la Ãºltima
-            if ($call instanceof  \Goteo\Model\Call) {
+            // si no hay ninguna ccoge la última
+            if ($call instanceof \Goteo\Model\Call) {
                 $_SESSION['call'] = $call;
             } else {
                 unset($call);
@@ -1602,14 +1559,14 @@ namespace Goteo\Controller {
 
             // view data basico para esta seccion
             $viewData = array(
-                    'menu'    => self::menu(),
-                    'section' => __FUNCTION__,
-                    'option'  => $option,
-                    'action'  => $action,
-                    'calls'   => $calls,
-                    'errors'  => $errors,
-                    'success' => $success
-                );
+                'menu' => self::menu(),
+                'section' => __FUNCTION__,
+                'option' => $option,
+                'action' => $action,
+                'calls' => $calls,
+                'errors' => $errors,
+                'success' => $success
+            );
 
 
             switch ($option) {
@@ -1631,7 +1588,7 @@ namespace Goteo\Controller {
                     }
 
                     //si estamos quitando un proyecto
-                    if ($action == 'unassign' && !empty($id) && isset($call->projects[$id]) && $call->projects[$id]->amount <= 0 ) {
+                    if ($action == 'unassign' && !empty($id) && isset($call->projects[$id]) && $call->projects[$id]->amount <= 0) {
 
                         $registry = new Model\Call\Project;
                         $registry->id = $id;
@@ -1639,14 +1596,14 @@ namespace Goteo\Controller {
                         if ($registry->remove($errors)) {
                             Message::Error('El proyecto se ha quitado correctamente de la convocatoria');
                             $call->projects = Model\Call\Project::get($call->id);
-                        } else{
-                            Message::Error('FallÃ³ al quitar el proyecto: ' . implode('<br />', $errors));
+                        } else {
+                            Message::Error('Falló al quitar el proyecto: ' . implode('<br />', $errors));
                         }
                     } elseif ($action == 'unassign') {
                         Message::Error('No se puede quitar este proyecto ahora');
                     }
 
-                break;
+                    break;
 
                 // patrocinadores
                 case 'sponsors':
@@ -1654,7 +1611,7 @@ namespace Goteo\Controller {
                     switch ($action) {
                         case 'add':
                             $viewData['sponsor'] = (object) array(
-                                'order' => Model\Call\Sponsor::next($call->id)
+                                        'order' => Model\Call\Sponsor::next($call->id)
                             );
                             break;
                         case 'edit':
@@ -1666,17 +1623,17 @@ namespace Goteo\Controller {
 
                                 // instancia
                                 $sponsor = new Model\Call\Sponsor(array(
-                                    'id' => $_POST['id'],
-                                    'name' => $_POST['name'],
-                                    'call' => $call->id,
-                                    'image' => $_POST['prev_image'],
-                                    'url' => $_POST['url'],
-                                    'order' => $_POST['order']
-                                ));
+                                            'id' => $_POST['id'],
+                                            'name' => $_POST['name'],
+                                            'call' => $call->id,
+                                            'image' => $_POST['prev_image'],
+                                            'url' => $_POST['url'],
+                                            'order' => $_POST['order']
+                                        ));
 
                                 // tratar si quitan la imagen
                                 $current = $_POST['prev_image']; // la actual
-                                if (isset($_POST['image-' . $current .  '-remove'])) {
+                                if (isset($_POST['image-' . $current . '-remove'])) {
                                     $image = Model\Image::get($current);
                                     $image->remove();
                                     $sponsor->image = '';
@@ -1684,7 +1641,7 @@ namespace Goteo\Controller {
                                 }
 
                                 // tratar la imagen y ponerla en la propiedad image
-                                if(!empty($_FILES['image']['name'])) {
+                                if (!empty($_FILES['image']['name'])) {
                                     $sponsor->image = $_FILES['image'];
                                 }
 
@@ -1707,8 +1664,8 @@ namespace Goteo\Controller {
 
                                 if (Model\Call\Sponsor::delete($id)) {
                                     Message::Error('El proyecto se ha quitado correctamente de la convocatoria');
-                                } else{
-                                    Message::Error('FallÃ³ al quitar el proyecto: ' . implode('<br />', $errors));
+                                } else {
+                                    Message::Error('Falló al quitar el proyecto: ' . implode('<br />', $errors));
                                 }
                             }
                             throw new Redirection('/dashboard/calls/sponsors');
@@ -1724,20 +1681,20 @@ namespace Goteo\Controller {
                     }
 
 
-                break;
+                    break;
             }
 
             $viewData['call'] = $call;
 
-            return new View ('view/dashboard/index.html.php', $viewData);
+            return new View('view/dashboard/index.html.php', $viewData);
         }
 
-
         /*
-         * PÃ¡gina especial para Ricardo amaste para editar proyectos euskadi
-         * Es un apaÃ±o temporal pre-nodos
+         * Página especial para Ricardo amaste para editar proyectos euskadi
+         * Es un apaño temporal pre-nodos
          */
-        public function editor ($option = 'main', $action = 'view') {
+
+        public function editor($option = 'main', $action = 'view') {
 
             if ($_SESSION['user']->id != 'ricardo-amaste') {
                 throw new Redirection('/dashboard');
@@ -1756,31 +1713,31 @@ namespace Goteo\Controller {
             foreach ($projects as $project) {
 
                 // compruebo que puedo editar mis proyectos
-                if (!ACL::check('/project/edit/'.$project->id)) {
-                    ACL::allow('/project/edit/'.$project->id.'/', '*', 'user', $_SESSION['user']);
+                if (!ACL::check('/project/edit/' . $project->id)) {
+                    ACL::allow('/project/edit/' . $project->id . '/', '*', 'user', $_SESSION['user']);
                 }
             }
 
-            return new View (
-                'view/dashboard/index.html.php',
-                array(
-                    'menu'    => self::menu(),
-                    'section' => __FUNCTION__,
-                    'option'  => $option,
-                    'action'  => $action,
-                    'projects'   => $projects,
-                    'errors'  => $errors,
-                    'success' => $success
-                )
+            return new View(
+                            'view/dashboard/index.html.php',
+                            array(
+                                'menu' => self::menu(),
+                                'section' => __FUNCTION__,
+                                'option' => $option,
+                                'action' => $action,
+                                'projects' => $projects,
+                                'errors' => $errors,
+                                'success' => $success
+                            )
             );
-
         }
 
         /*
          * Salto al admin
          *
          */
-        public function admin ($option = 'board') {
+
+        public function admin($option = 'board') {
             if (ACL::check('/admin')) {
                 throw new Redirection('/admin', Redirection::TEMPORARY);
             } else {
@@ -1792,7 +1749,8 @@ namespace Goteo\Controller {
          * Salto al panel de revisor
          *
          */
-        public function review ($option = 'board') {
+
+        public function review($option = 'board') {
             if (ACL::check('/review')) {
                 throw new Redirection('/review', Redirection::TEMPORARY);
             } else {
@@ -1804,7 +1762,8 @@ namespace Goteo\Controller {
          * Salto al panel de traductor
          *
          */
-        public function translate ($option = 'board') {
+
+        public function translate($option = 'board') {
             if (ACL::check('/translate')) {
                 throw new Redirection('/translate', Redirection::TEMPORARY);
             } else {
@@ -1816,34 +1775,34 @@ namespace Goteo\Controller {
             // todos los textos del menu dashboard
             $menu = array(
                 'activity' => array(
-                    'label'   => Text::get('dashboard-menu-activity'),
-                    'options' => array (
+                    'label' => Text::get('dashboard-menu-activity'),
+                    'options' => array(
                         'summary' => Text::get('dashboard-menu-activity-summary')
-                        /*,
-                        'wall'    => Text::get('dashboard-menu-activity-wall')*/
+                    /* ,
+                      'wall'    => Text::get('dashboard-menu-activity-wall') */
                     )
                 ),
                 'profile' => array(
-                    'label'   => Text::get('dashboard-menu-profile'),
-                    'options' => array (
-                        'profile'  => Text::get('dashboard-menu-profile-profile'),
+                    'label' => Text::get('dashboard-menu-profile'),
+                    'options' => array(
+                        'profile' => Text::get('dashboard-menu-profile-profile'),
                         'personal' => Text::get('dashboard-menu-profile-personal'),
-                        'access'   => Text::get('dashboard-menu-profile-access'),
+                        'access' => Text::get('dashboard-menu-profile-access'),
                         'preferences' => Text::get('dashboard-menu-profile-preferences'),
-                        'public'   => Text::get('dashboard-menu-profile-public')
+                        'public' => Text::get('dashboard-menu-profile-public')
                     )
                 ),
                 'projects' => array(
                     'label' => Text::get('dashboard-menu-projects'),
-                    'options' => array (
-                        'summary'  => Text::get('dashboard-menu-projects-summary'),
-                        'updates'  => Text::get('dashboard-menu-projects-updates'),
-                        'widgets'  => Text::get('dashboard-menu-projects-widgets'),
-                        'account' => Text::get('dashboard-menu-projects-account'), 
-                        'contract' => Text::get('dashboard-menu-projects-contract'), 
+                    'options' => array(
+                        'summary' => Text::get('dashboard-menu-projects-summary'),
+                        'updates' => Text::get('dashboard-menu-projects-updates'),
+                        'widgets' => Text::get('dashboard-menu-projects-widgets'),
+                        'account' => Text::get('dashboard-menu-projects-account'),
+//                        'contract' => Text::get('dashboard-menu-projects-contract'),
                         'supports' => Text::get('dashboard-menu-projects-supports'),
-                        'rewards'  => Text::get('dashboard-menu-projects-rewards'),
-                        'messegers'  => Text::get('dashboard-menu-projects-messegers')
+                        'rewards' => Text::get('dashboard-menu-projects-rewards'),
+                        'messegers' => Text::get('dashboard-menu-projects-messegers')
                     )
                 )
             );
@@ -1852,10 +1811,10 @@ namespace Goteo\Controller {
             if (ACL::check('/call/create')) {
                 $menu['calls'] = array(
                     'label' => Text::get('dashboard-menu-calls'),
-                    'options' => array (
-                        'summary'  => Text::get('dashboard-menu-calls-summary'),
-                        'projects'  => Text::get('dashboard-menu-calls-projects'),
-                        'sponsors'  => Text::get('dashboard-menu-calls-sponsors')
+                    'options' => array(
+                        'summary' => Text::get('dashboard-menu-calls-summary'),
+                        'projects' => Text::get('dashboard-menu-calls-projects'),
+                        'sponsors' => Text::get('dashboard-menu-calls-sponsors')
                     )
                 );
             }
@@ -1865,21 +1824,21 @@ namespace Goteo\Controller {
                 // si esta traduciendo un proyecto
                 $menu['translates'] = array(
                     'label' => Text::get('dashboard-menu-translates'),
-                    'options' => array (
-                        'profile'  => Text::get('step-1'),
+                    'options' => array(
+                        'profile' => Text::get('step-1'),
                         'overview' => Text::get('step-3'),
-                        'costs'    => Text::get('step-4'),
-                        'rewards'  => Text::get('step-5'),
+                        'costs' => Text::get('step-4'),
+                        'rewards' => Text::get('step-5'),
                         'supports' => Text::get('step-6'),
-                        'updates'  => Text::get('project-menu-updates')
+                        'updates' => Text::get('project-menu-updates')
                     )
                 );
             } elseif ($_SESSION['translate_type'] == 'call') {
                 // si esta traduciendo una convocatoria
                 $menu['translates'] = array(
                     'label' => Text::get('dashboard-menu-translates'),
-                    'options' => array (
-                        'profile'  => Text::get('step-1'),
+                    'options' => array(
+                        'profile' => Text::get('step-1'),
                         'overview' => Text::get('step-3')
                     )
                 );
@@ -1887,74 +1846,71 @@ namespace Goteo\Controller {
                 // si esta traduciendo un nodo
                 $menu['translates'] = array(
                     'label' => Text::get('dashboard-menu-translates'),
-                    'options' => array (
-                        'overview'  => 'Contenidos de nodo'
+                    'options' => array(
+                        'overview' => 'Contenidos de nodo'
                     )
                 );
             } else {
-                // si estÃ¡ traduciendo su perfil
+                // si está traduciendo su perfil
                 $menu['translates'] = array(
                     'label' => Text::get('dashboard-menu-translates'),
-                    'options' => array (
-                        'profile'  => Text::get('step-1')
+                    'options' => array(
+                        'profile' => Text::get('step-1')
                     )
                 );
             }
 
-            // si es donante, ponemos la opciÃ³n
+            // si es donante, ponemos la opción
             if (Model\User\Donor::get($_SESSION['user']->id) instanceof Model\User\Donor) {
                 $menu['activity']['options']['donor'] = Text::get('dashboard-menu-activity-donor');
             }
-                
+
             /*
-             * PiÃ±onaco para ricardo amaste para edicion de proyectos de esukadi
+             * Piñonaco para ricardo amaste para edicion de proyectos de esukadi
              */
             if ($_SESSION['user']->id == 'ricardo-amaste') {
                 $menu['editor'] = array(
-                    'label'   => 'Editor Euskadi',
+                    'label' => 'Editor Euskadi',
                     'options' => array(
                         'main' => 'Editor de proyectos de Euskadi'
                     )
                 );
             }
 
-/*
-            // si tiene permiso para ir al admin
-            if (ACL::check('/admin')) {
-                $menu['admin'] = array(
-                    'label'   => Text::get('dashboard-menu-admin_board'),
-                    'options' => array(
-                        'board' => Text::get('dashboard-menu-admin_board')
-                    )
-                );
-            }
+            /*
+              // si tiene permiso para ir al admin
+              if (ACL::check('/admin')) {
+              $menu['admin'] = array(
+              'label'   => Text::get('dashboard-menu-admin_board'),
+              'options' => array(
+              'board' => Text::get('dashboard-menu-admin_board')
+              )
+              );
+              }
 
-            // si tiene permiso para ir a las revisiones
-            if (ACL::check('/review')) {
-                $menu['review'] = array(
-                    'label'   => Text::get('dashboard-menu-review_board'),
-                    'options' => array(
-                        'board' => Text::get('dashboard-menu-review_board')
-                    )
-                );
-            }
+              // si tiene permiso para ir a las revisiones
+              if (ACL::check('/review')) {
+              $menu['review'] = array(
+              'label'   => Text::get('dashboard-menu-review_board'),
+              'options' => array(
+              'board' => Text::get('dashboard-menu-review_board')
+              )
+              );
+              }
 
-            // si tiene permiso para ir a las traducciones
-            if (ACL::check('/translate')) {
-                $menu['translate'] = array(
-                    'label'   => Text::get('dashboard-menu-translate_board'),
-                    'options' => array(
-                        'board' => Text::get('dashboard-menu-translate_board')
-                    )
-                );
-            }
-*/
+              // si tiene permiso para ir a las traducciones
+              if (ACL::check('/translate')) {
+              $menu['translate'] = array(
+              'label'   => Text::get('dashboard-menu-translate_board'),
+              'options' => array(
+              'board' => Text::get('dashboard-menu-translate_board')
+              )
+              );
+              }
+             */
             return $menu;
-
         }
 
-
-
-        }
+    }
 
 }
