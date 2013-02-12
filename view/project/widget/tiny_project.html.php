@@ -2,11 +2,11 @@
 
 use Goteo\Core\View,
     Goteo\Library\Text,
+    Goteo\Library\Check,
     Goteo\Model\Image;
 
 $project = $this['project'];
 $url = '';
-// die(\trace($project));
 ?>
 <li>
     <a href="<?php echo $url ?>/project/<?php echo $project->id ?>" class="expand" target="_blank"></a>
