@@ -33,14 +33,13 @@ include 'view/call/header.html.php';
 
                 <div id="call-description"><?php echo nl2br(Text::urlink($call->description)) ?></div>
 
-                <h3 class="title"><?php echo Text::get('call-info-whom-header') ?></h3>
+                <h3 class="title"><?php echo Text::get('call-field-whom'); // re-usa el copy del formulario ?></h3>
                 <p><?php echo nl2br(Text::urlink($call->whom)) ?></p>
 
-                <?php if ($call->status == 3) : //inscripcion ?>
-                    <h3 class="title"><?php echo Text::get('call-info-apply-header') ?></h3>
-                    <p><?php echo nl2br(Text::urlink($call->apply)) ?></p>
-                <?php elseif (count($call->projects) > 0) : //en campaña ?>
+                <h3 class="title"><?php echo Text::get('call-field-apply'); // re-usa el copy del formulario ?></h3>
+                <p><?php echo nl2br(Text::urlink($call->apply)) ?></p>
 
+                <?php if (count($call->projects) > 0) : //en campaña ?>
                     <h3><?php echo Text::get('call-splash-selected_projects-header') ?></h3>
 
                     <?php $ths = explode('-', Text::get('call-projects_table-head')); ?>
