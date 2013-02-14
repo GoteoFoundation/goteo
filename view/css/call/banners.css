@@ -1,6 +1,6 @@
 /* Banners */
 div#banners-social div#call-banners{width: 545px; height:198px; margin: 0; /*overflow:hidden; NO CAMBIAR... pero es que en firefox descuadra todo el banner */border:#000 1px transparent !important /*no tocar o el contenido se alinea de forma extraña dentro del carrousel*/; position: relative; float: left;}
-div#banners-social div#call-banners div.call-banners-container{width:545px;height:198px;margin:0 auto;overflow:visible !important/*NO CAMBIAR*/}
+div#banners-social div#call-banners div.call-banners-container{width:545px;height:198px;margin:0 auto;}
 div.call-banners-container div.call-banner{width:545px;height:198px;/*overflow:hidden; NO CAMBIAR... pero es que en firefox descuadra todo el banner */}
 div.call-banners-container div.call-banner > div.title{padding-top: 25px; margin-left: 50px;line-height:25px;font-size:25px;color:#585a5c}
 div.call-banners-container div.call-banner > div.short-desc{margin-top: 25px; margin-left: 50px; line-height:30px;font-size:20px;color:#1f81bb; max-width: 450px;}

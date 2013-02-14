@@ -283,7 +283,7 @@ div#main ul#list>li {
 
 div#header div#menu {
     overflow: hidden;
-	width: 600px;
+/*	width: 600px; */
 	float: left;
 }
 
@@ -325,7 +325,7 @@ div#super-header ul > li.campanya {
 
 div#super-header div#rightside {
 	float: right;
-	width: 340px;
+	width: 400px;
 }
 
 div#super-header div#rightside {
