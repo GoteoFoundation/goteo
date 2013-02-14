@@ -1,160 +1,160 @@
 #stats {
-	width: 500px;
-	background: transparent url(bg-stats.png) repeat-x top left;
-	padding: 22px;
+    width: 500px;
+    background: transparent url(bg-stats.png) repeat-x top left;
+    padding: 22px;
 }
 
 #stats div.row {
-	border-bottom: solid 1px #cbcbcc;
-	overflow: hidden;
-	margin: 0 0 20px;
-	padding: 0 0 10px 0;
-	clear: both;
+    border-bottom: solid 1px #cbcbcc;
+    overflow: hidden;
+    margin: 0 0 20px;
+    padding: 0 0 10px 0;
+    clear: both;
 }
 
 #stats dl.block {
-	float: left;
-	overflow: hidden;
-	width: 97px;
-	margin: 0;
-	padding-right: 15px;
-	overflow: hidden;
+    float: left;
+    overflow: hidden;
+    width: 97px;
+    margin: 0;
+    padding-right: 15px;
+    overflow: hidden;
 }
 
 #stats dl.long {
-	width: 160px;
+    width: 160px;
 }
 
 #stats dl.last {
-	padding-right: 0;
+    padding-right: 0;
 }
 
 #stats dl.block dt {
-	height: 33px;
-	font-size: 11px;
-	text-transform: uppercase;
+    height: 33px;
+    font-size: 11px;
+    text-transform: uppercase;
 }
 
 #stats dl.block dd {
-	min-height: 36px;
-	font-size: 31px;
-	font-weight: bold;
-	padding: 0;
-	margin: 0;
+    min-height: 36px;
+    font-size: 31px;
+    font-weight: bold;
+    padding: 0;
+    margin: 0;
 }
 
 #stats dl.category {
-	width: 125px;
+    width: 125px;
 }
 
 #stats dl.category dd,
 #stats dl.category dd a {
-	color: #1db3b2;
-	text-decoration: none;
-	font-size: 11px;
-	font-weight: normal;
+    color: #1db3b2;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: normal;
 }
 
 #stats dl.category dd a:hover {
-	color: #58595B;
+    color: #58595B;
 }
 
 #stats dl.selected dd,
 #stats dl.processing dd,
 #stats dl.success dd {
-	line-height: 42px;
-	font-size: 48px;
-	vertical-align: top;
+    line-height: 42px;
+    font-size: 48px;
+    vertical-align: top;
 }
 
 #stats dl.selected dd {
-	color: #1db3b2;
+    color: #1db3b2;
 }
 
 #stats dl.applied dd {
-	color: #1db3b2;
-	font-size: 34px;
+    color: #1db3b2;
+    font-size: 34px;
 }
 
 #stats dl.processing dd {
 }
 
 #stats dl.success dd {
-	color: #fe4848;
+    color: #fe4848;
 }
 
 #stats dl.return {
-	min-height: 80px;
-	width: 120px;
+    min-height: 80px;
+    width: 120px;
 } 
 
 #stats dl.return dd {
-	font-size: 11px;
+    font-size: 11px;
 }
 
 #stats dl.return ul {
-	padding: 5px 0 0;
+    padding: 5px 0 0;
 }
 
 #stats dl.location {
-	width: 138px;
-	margin-bottom: 0;
-	border-bottom: 0;
-	padding: 0 10px 0 0;
+    width: 160px;
+    margin-bottom: 0;
+    border-bottom: 0;
+    padding: 0 10px 0 0;
 }
 
 #stats dl.location dt {
-	height: 28px;
+    height: 20px;
 }
 
 #stats dl.location dd {
-	font-size: 10px;
-	font-weight: normal;
-	padding-left: 12px;
-	padding-top: 3px;
+    font-size: 10px;
+    font-weight: normal;
+    padding-left: 12px;
+    padding-top: 3px;
     background: url('/view/css/location/s.png') no-repeat left top;
     text-indent: .5em;    
 }
 
 #stats dl.location dd a {
-	font-size: 10px;
-	text-decoration: none;
-	color: #58595b;
+    font-size: 10px;
+    text-decoration: none;
+    color: #58595b;
 }
 
 #stats dl.location dd a:hover {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 
 #stats dl.expires dd {
-	color: red;
-	font-size: 20px;
+    color: red;
+    font-size: 20px;
 }
 
 #stats dl.expires dd strong {
-	font-size: 34px;
+    font-size: 34px;
 }
 
 #stats dl.moreinfo {
-	width: 180px;
+    width: 180px;
 }
 
 #stats dl.moreinfo dd a {
-	display: block;
-	text-decoration: none;
-	font-size: 11px;
-	font-weight: normal;
-	margin-bottom: 2px;
+    display: block;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: normal;
+    margin-bottom: 2px;
 }
 
 #stats dl.moreinfo dd a.red {
-	color: #f00;
+    color: #f00;
 }
 
 #stats dl.moreinfo dd a.aqua {
-	color: #1db3b2;
+    color: #1db3b2;
 }
 
 #stats dl.moreinfo dd a:hover {
-	color: #58595B;
+    color: #58595B;
 }
