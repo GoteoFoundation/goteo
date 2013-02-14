@@ -3,8 +3,7 @@ div#side.twitter h2{
 }
 
 div#side.twitter {
-	max-height: 300px;	
-	overflow-y: auto;
+	max-height: 377px;
 }
 
 div#side.twitter .tweet {
