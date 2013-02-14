@@ -3,8 +3,89 @@ use Goteo\Library\Text;
 
 $social = $this['social'];
 ?>
+
+<script>
+
+/*
+Slider vertical
+autor: coyr
+Sitio: www.xoyaz.com
+*/ 
+	velocidad = 1500;
+	tiempoEspera = 3000;
+	verificar = 1;
+	dif=0;
+	timer=0
+	
+	function moverSlider() {
+		console.log('vamos');
+		sliderAltura = $(".tweets").height();
+		moduloAltura = $(".tweet").height() + parseFloat($(".tweet").css("padding-top")) + parseFloat($(".tweet").css("padding-bottom"));
+		sliderTop = parseFloat($(".tweets").css("top"));
+		dif = sliderAltura + sliderTop;
+		
+		if (verificar==1) {
+				if( dif>moduloAltura ) {			
+					$(".tweets").animate({top: "-="+moduloAltura } , velocidad);
+					timer = setTimeout('moverSlider()',tiempoEspera);
+				}	
+				else {
+					clearTimeout(timer);
+					$(".tweets").css({ top: 0});			
+					timer = setTimeout('moverSlider()',0);				
+				}
+		}		
+		else {	
+		timer = setTimeout('moverSlider()',1000);
+		}
+	}	
+	function bajarSlider() {
+		if(dif>=moduloAltura*2) {
+					$(".tweets").animate({top: "-="+moduloAltura }, velocidad);
+				}
+				else {
+					$(".tweets").css({ top: 0});
+					$(".tweets").animate({top: "-="+moduloAltura }, velocidad);		
+				} 
+	}
+	function subirSlider() {
+		if(sliderTop<=-moduloAltura) {
+					$(".tweets").animate({top: "+="+moduloAltura }, velocidad);	
+				}
+				else {
+					$(".tweets").css({ top: -sliderAltura+moduloAltura});
+					$(".tweets").animate({top: "+="+moduloAltura }, velocidad);						
+				} 
+	}
+	
+	
+	
+	
+	$(document).ready(function() {
+		moverSlider();
+		$(".bajar-slider").click(function(){
+			bajarSlider();
+		});
+
+		$(".subir-slider").click(function(){
+			subirSlider();
+		});
+
+		$(".slider-vertical").mouseover(function(){
+			verificar = 0;
+		});
+
+		$(".slider-vertical").mouseout(function(){
+			verificar = 1;
+		});
+	});
+	
+	
+</script>
 <div id="side" class="twitter">
     <h2><?php echo Text::get('call-header-buzz'); ?></h2>
+	<div class="tweets-container">
+	<div class="tweets">
 <?php
 // Petición a twitter se desconecta en la Linea 448 en controller/call.php
 if ($_SESSION['user']->id == 'root') echo '<!-- BUZZ_DEBUG:: '. $social->buzz_debug . ' -->';
@@ -25,34 +106,7 @@ foreach ($social->buzz as $item) : ?>
     </div>
 <?php endforeach;
 ?>
-	<!-- estaticos para maquetar
-	<div class="tweet">
-	    <div class="avatar">
-	        <a href="https://twitter.com/ACS_Arquisocial" target="_blank">
-	            <img src="http://a0.twimg.com/profile_images/2602026186/r2vhs8x0azj4zrve1tv2_normal.jpeg" alt="ACS_Arquisocial" title="Arq_CompromisoSocial">
-	        </a>
-	    </div>
-	    <div class="text">
-	        <strong><a href="https://twitter.com/ACS_Arquisocial" target="_blank">Arq_CompromisoSocial</a></strong>
-	        <br>
-	        <a href="https://twitter.com/ACS_Arquisocial" target="_blank">@ACS_Arquisocial</a>
-		    <blockquote>RT @platoniq: Una Plaza procomún: cúpula en el Campo de Cebada @campodecebada http://t.co/XtBfhSP1 Riégalo por #goteo http://t.co/u5npJEek</blockquote>
-	    </div>
 	</div>
-	
-	<div class="tweet">
-	    <div class="avatar">
-	        <a href="https://twitter.com/ACS_Arquisocial" target="_blank">
-	            <img src="http://a0.twimg.com/profile_images/2309950436/ACS_logo__normal.jpg" alt="ACS_Arquisocial" title="Arq_CompromisoSocial">
-	        </a>
-	    </div>
-	    <div class="text">
-	        <strong><a href="https://twitter.com/ACS_Arquisocial" target="_blank">Arq_CompromisoSocial</a></strong>
-	        <br>
-	        <a href="https://twitter.com/ACS_Arquisocial" target="_blank">@ACS_Arquisocial</a>
-		    <blockquote>MagmaCultura News is out! http://t.co/4l5Irl7r ▸ Top stories today via @hoyesarte_com @platoniq</blockquote>
-	    </div>
 	</div>
-        -->
 </div>
 

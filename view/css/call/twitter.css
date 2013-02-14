@@ -1,16 +1,26 @@
 div#side.twitter h2{
-	margin: 0;
+	margin: 0 0 10px;
 }
 
 div#side.twitter {
 	max-height: 377px;
+	overflow-y: none;
+}
+
+div#side.twitter .tweets-container {
+      margin: 0;
+      overflow: hidden;
+      position: relative;
+}
+
+div#side.twitter .tweets {
+	position:relative;
 }
 
 div#side.twitter .tweet {
-	border-bottom: 1px solid #999;
 	margin-right: 15px;
-	margin-top: 15px;
-	padding-bottom: 15px;
+	padding: 10px 0 0;
+	border-bottom: 1px solid #999;
 	overflow: hidden;
 }
 
