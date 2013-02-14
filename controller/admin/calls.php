@@ -182,7 +182,7 @@ namespace Goteo\Controller\Admin {
                 if (empty($call)) {
                     throw new Redirection('/admin/calls/list');
                 }
-                $projects   = Model\Call\Project::get($call->id);
+                $projects   = Model\Call\Project::get($call->id, null, true);
                 $status     = Model\Project::status();
 
                 // los available son los que aparecen en el discover/call pero tambien los que estan en esdicion

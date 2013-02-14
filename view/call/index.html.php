@@ -19,13 +19,15 @@ include 'view/call/header.html.php';
 
     <div id="info" class="stats-container">
         <div id="content">
-            <?php if ($call->status == 3) : //inscripcion ?>
+            <?php if ($call->status == 3 || $_GET['preview'] == 'apply') : //inscripcion ?>
                 <p class="subtitle red"><?php echo Text::get('call-splash-searching_projects') ?></p>
-            <?php elseif (!empty($call->amount)) : //en campaña con dinero ?>
-                <!--p class="subtitle"><?php echo Text::html('call-splash-invest_explain', $call->user->name) ?></p-->
+            <?php elseif (!empty($call->amount) || $_GET['preview'] == 'campaign') : //en campaña con dinero ?>
+                <p class="subtitle violet"><?php echo Text::html('call-splash-invest_explain', $call->user->name) ?></p>
             <?php else : //en campaña sin dinero, con recursos ?>
                 <p class="subtitle"><?php echo Text::recorta($call->resources, 200) ?></p>
             <?php endif; ?>
+            
+            <!-- p class="subtitle"><?php echo $call->subtitle ?></p -->
 
             <?php echo new View('view/call/widget/stats.html.php', $this); ?>
         </div>

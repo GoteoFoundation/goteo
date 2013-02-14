@@ -383,8 +383,8 @@ namespace Goteo\Controller {
                     $show = 'index';
                 }
 
-                if ($show == 'projects' && $call->status < 4) {
-                    $show = 'info';
+                if ($show == 'projects' && $call->status < 4 && $_GET['preview'] != 'campaign') {
+                    throw new Redirection("/call/".$call->id);
                 }
 
                 $call->categories = Model\Call\Category::getNames($call->id);
