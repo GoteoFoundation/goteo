@@ -1231,7 +1231,7 @@ namespace Goteo\Model {
     	 * @return type int	Count(id)
     	 */
     	private function getAmount () {
-            $query = self::query("SELECT SUM(invest.amount) FROM invest WHERE invest.user = ? AND invest.status IN ('0', '1', '3')) as amount", array($this->id));
+            $query = self::query("SELECT SUM(invest.amount) FROM invest WHERE user = ? AND status IN ('0', '1', '3')", array($this->id));
             $amount = $query->fetchColumn(0);
             return $amount;
         }

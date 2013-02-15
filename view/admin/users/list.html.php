@@ -115,18 +115,20 @@ $pagedResults = new \Paginated($this['users'], 20, isset($_GET['page']) ? $_GET[
         </thead>
 
         <tbody>
-            <?php while ($user = $pagedResults->fetchPagedRow()) : ?>
+            <?php while ($user = $pagedResults->fetchPagedRow()) :
+                $projects = count($user->support['projects']);
+                ?>
             <tr>
                 <td><a href="/user/profile/<?php echo $user->id; ?>" target="_blank" title="Ver perfil público"><?php echo substr($user->name, 0, 20); ?></a></td>
                 <td><strong><?php echo substr($user->id, 0, 20); ?></strong></td>
                 <td><a href="mailto:<?php echo $user->email; ?>"><?php echo $user->email; ?></a></td>
-                <td><?php echo (int) $user->projects; ?></td>
-                <td><?php echo (int) $user->amount; ?> &euro;</td>
+                <td><?php echo $projects; ?></td>
+                <td><?php echo \amount_format($user->amount); ?> &euro;</td>
                 <td><?php echo $user->register_date; ?></td>
             </tr>
             <tr>
                 <td><a href="/admin/users/manage/<?php echo $user->id; ?>" title="Gestionar">[Gestionar]</a></td>
-                <td><?php if ($user->projects > 0) {
+                <td><?php if ($projects > 0) {
                     if (!isset($_SESSION['admin_node']) || (isset($_SESSION['admin_node']) && $user->node == $_SESSION['admin_node'])) : ?>
                 <a href="/admin/accounts/?name=<?php echo $user->email; ?>" title="Ver sus aportes">[Aportes]</a>
                 <?php else:  ?>
