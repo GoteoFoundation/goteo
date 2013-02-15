@@ -181,7 +181,7 @@ switch ($order) {
                     <div class="left">
 	                    <span class="status"><?php echo $cumplida ? '<span class="cumplida">'.Text::get('dashboard-rewards-fulfilled_status').'</span>' : '<span class="pendiente">'.Text::get('dashboard-rewards-pending_status').'</span>'; ?></span>
                         <span class="profile"><a href="/user/profile/<?php echo $investData->user->id ?>" target="_blank"><?php echo Text::get('profile-widget-button'); ?></a> </span>
-                        <span class="contact"><a onclick="msgto_user('<?php echo $investData->user->id; ?>', '<?php echo $investData->user->name; ?>')" style="cursor: pointer;"><?php echo Text::get('regular-send_message'); ?></a></span>
+                        <span class="contact"><a onclick="msgto_user('<?php echo $investData->user->id; ?>', '<?php echo addslashes($investData->user->name); ?>')" style="cursor: pointer;"><?php echo Text::get('regular-send_message'); ?></a></span>
                     </div>
                     
                     
