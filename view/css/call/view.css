@@ -125,9 +125,8 @@ div#main ul#list>li {
 }
 
 #social {
-	float: right;
-	width: 198px;
-	padding-left: 25px;
+    float: right;
+    width: 198px;
 }
 
 #social-logo {
@@ -194,18 +193,31 @@ div#main ul#list>li {
     text-align: left;
 }
 
-#social-actions .twitter-share-button {
-}
+#social-actions .twitter-share-button {}
 
 #social-actions .fb-like {
     float: right;
-    margin-right: 55px;
-    width: 12%;
 }
 
-.uiIconText {display:none;}
+#social-actions .fb-like span {
+    display: block;
+    overflow: hidden;
+    position: relative;
+}
+
+#social-actions .fb-like iframe {
+    height: 62px;
+    overflow: hidden;
+    position: absolute;
+    top: -41px;
+    width: 55px;
+}
 
 
+.connect_widget_not_connected_text {
+  display:none !important;
+}
+ 
 /* Info container */
 
 #info {
@@ -963,20 +975,23 @@ h2.title {
 }
 
 p.subtitle {
-	font-weight: normal;
-	font-size: 16px;
-	margin: 15px 10px 10px;
-	line-height: 1.2em;
-	padding: 0 60px 5px 15px;
+    font-weight: normal;
+    font-size: 16px;
+    margin: 15px 10px 10px;
+    line-height: 1.2em;
+    padding: 0 60px 5px 15px;
+    color: #95268d;
 }
-
-p.subtitle.violet {
-	color: #95268d;
+p.subtitle a {
+    font-weight: normal;
+    font-size: 16px;
+    text-decoration: none;
+    color: #95268d;
 }
 
 p.subtitle.red {
-	font-weight: bold;
-	color: red;
+    font-weight: bold;
+    color: red;
 }
 
 .freetext {

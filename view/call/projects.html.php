@@ -43,13 +43,21 @@ include 'view/call/header.html.php';
 			
             <h2 class="title"><?php echo Text::get('call-splash-selected_projects-header') ?></h2>
 
-            <?php if ($call->status == 3) : //inscripcion ?>
-                <p class="subtitle red"><?php echo Text::get('call-splash-searching_projects') ?></p>
-            <?php elseif (!empty($call->amount)) : //en campaña con dinero ?>
-                <p class="subtitle"><?php echo Text::html('call-splash-invest_explain', $call->user->name) ?></p>
-            <?php else : //en campaña sin dinero, con recursos ?>
-                <p class="subtitle"><?php echo Text::recorta($call->resources, 200) ?></p>
-            <?php endif; ?>
+            <p class="subtitle">
+                <a href="/call/<?php echo $call->id ?>/terms"><?php
+            if ($call->status == 3 || $_GET['preview'] == 'apply') {
+                // inscripción
+                echo Text::get('call-splash-searching_projects');
+            } elseif (!empty($call->amount) || $_GET['preview'] == 'campaign') {
+                //en campaña con dinero
+                echo Text::html('call-splash-invest_explain', $call->user->name);
+            } else {
+                //en campaña sin dinero, con recursos
+                echo Text::recorta($call->resources, 200);
+            } ?></a>
+            </p>
+
+            <p class="subtitle" style="color: #58595b;"><?php echo $call->subtitle ?></p>
 
             <ul id="project-list">
                 <?php

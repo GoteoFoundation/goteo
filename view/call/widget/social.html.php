@@ -41,7 +41,7 @@ $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&
 
         <?php
          if (!empty($social->fbappid)) : 
-             echo Text::widget($social->fbappid, 'fb-nocount'); ?>
+             echo Text::widget($social->fbappid, 'fb-nocount', 'height:20px;'); ?>
             <div id="fb-root"></div>
             <script>(function(d, s, id) {
               var js, fjs = d.getElementsByTagName(s)[0];
@@ -60,6 +60,7 @@ $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&
            data-text="<?php echo $share_title; ?>"
            data-lang="<?php echo \LANG; ?>"
            data-count="none"
+           data-counturl="<?php echo SITE_URL . '/call/' . $call->id; ?>"
            target="_blank"><?php echo Text::get('regular-twitter'); ?></a>
         <script>!function(d,s,id){
             var js,fjs=d.getElementsByTagName(s)[0];

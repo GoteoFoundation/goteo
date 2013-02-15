@@ -405,14 +405,16 @@ namespace Goteo\Library {
         /*
          * Devuelve el código embed de un widget de proyecto
          */
-        static public function widget ($url, $type = 'project') {
+        static public function widget ($url, $type = 'project', $styles = null) {
+
+            $style = (isset($styles)) ? ' style="'.$styles.'"' : '';
             
             switch ($type) {
                 case 'fb':
                     $code = '<div class="fb-like" data-href="'.$url.'" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>';
                     break;
                 case 'fb-nocount':
-                    $code = '<div class="fb-like" data-href="'.$url.'" data-send="false" data-layout="standard" data-width="450" data-show-faces="false"></div>';
+                    $code = '<div class="fb-like"'.$style.' data-href="'.$url.'" data-send="false" data-layout="box_count" data-width="0" data-height="0" data-show-faces="false"></div>';
                     break;
                 case 'wof':
                     $code = '<iframe frameborder="0" height="100%" src="'.$url.'" width="630px" scrolling="no"></iframe>';
