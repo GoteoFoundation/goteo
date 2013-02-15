@@ -70,6 +70,9 @@ namespace Goteo\Model {
 	        if($name == "worth") {
 	            return $this->getWorth();
 	        }
+	        if($name == "amount") {
+	            return $this->getAmount();
+	        }
 	        if($name == "projects") {
 	            return $this->getProjects();
 	        }
@@ -765,9 +768,7 @@ namespace Goteo\Model {
                         hide,
                         DATE_FORMAT(created, '%d/%m/%Y %H:%i:%s') as register_date,
                         node,
-                        (SELECT COUNT(role_id) FROM user_role WHERE user_id = user.id) as roles,
-                        (SELECT SUM(invest.amount) FROM invest WHERE invest.user = user.id AND invest.status IN ('0', '1', '3')) as amount,
-                        (SELECT COUNT(DISTINCT(invest.project)) FROM invest WHERE invest.user = user.id AND invest.status IN ('0', '1', '3')) as projects
+                        (SELECT COUNT(role_id) FROM user_role WHERE user_id = user.id) as roles
                     FROM user
                     WHERE id != 'root'
                         $sqlFilter
@@ -1213,7 +1214,7 @@ namespace Goteo\Model {
             return $worth;
         }
 
-	    /**
+        /**
     	 * Número de proyectos publicados
     	 *
     	 * @return type int	Count(id)
@@ -1222,6 +1223,17 @@ namespace Goteo\Model {
             $query = self::query('SELECT COUNT(id) FROM project WHERE owner = ? AND status > 2', array($this->id));
             $num_proj = $query->fetchColumn(0);
             return $num_proj;
+        }
+
+        /**
+    	 * Cantidad aportada
+    	 *
+    	 * @return type int	Count(id)
+    	 */
+    	private function getAmount () {
+            $query = self::query("SELECT SUM(invest.amount) FROM invest WHERE invest.user = ? AND invest.status IN ('0', '1', '3')) as amount", array($this->id));
+            $amount = $query->fetchColumn(0);
+            return $amount;
         }
 
         /**
