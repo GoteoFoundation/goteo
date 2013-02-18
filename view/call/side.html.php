@@ -90,6 +90,13 @@ $filter = $this['filter'];
 		<dd class="location"><?php echo Text::GmapsLink($call->call_location); ?></dd>
 	</dl>
     <?php endif; ?>
+
+    <?php if (!empty($call->dossier)) : ?>
+	<dl class="block category">
+		<dd><a href="<?php echo $call->dossier ?>" target="_blank"><?php echo Text::get('call-splash-dossier-link') ?></a></dd>
+	</dl>
+    <?php endif; ?>
+
 	<dl class="block category">
 		<dd><a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/terms"><?php echo Text::get('call-splash-legal-link') ?></a></dd>
 	</dl>
