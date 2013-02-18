@@ -197,6 +197,7 @@ div#main ul#list>li {
 
 #social-actions .fb-like {
     float: right;
+    margin-right: 5px;
 }
 
 #social-actions .fb-like span {
