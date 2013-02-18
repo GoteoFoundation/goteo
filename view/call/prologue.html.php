@@ -48,6 +48,7 @@
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.tipsy.min.js"></script>
         <?php endif ?>
 		<script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.slides.min.js"></script>
+		<script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/carousel.js"></script>
         <!-- Google analytics -->
         <script type="text/javascript">
 

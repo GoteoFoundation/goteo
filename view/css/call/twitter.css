@@ -21,6 +21,7 @@ div#side.twitter .tweet {
 	margin-right: 15px;
 	padding: 10px 0 0;
 	border-bottom: 1px solid #999;
+	height: 120px;
 	overflow: hidden;
 }
 
