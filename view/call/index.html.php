@@ -27,6 +27,9 @@ include 'view/call/header.html.php';
             } elseif (!empty($call->amount) || $_GET['preview'] == 'campaign') {
                 //en campaña con dinero
                 echo Text::html('call-splash-invest_explain', $call->user->name);
+                if (!empty($call->maxdrop)) {
+                    echo Text::html('call-splash-drop_limit', $call->maxdrop);
+                }
             } else {
                 //en campaña sin dinero, con recursos
                 echo Text::recorta($call->resources, 200);
@@ -40,10 +43,12 @@ include 'view/call/header.html.php';
         <?php echo new View('view/call/widget/buzz.html.php', $this); ?>
     </div>
 
+    <?php if ($call->status > 3 || $_GET['preview'] == 'campaign' ) : ?>
     <div id="supporters-sponsors">
         <?php echo new View('view/call/widget/supporters.html.php', $this); ?>
         <?php echo new View('view/call/widget/sponsors.html.php', $this); ?>
     </div>
+    <?php endif; ?>
 </div>
 
 <?php

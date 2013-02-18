@@ -31,7 +31,7 @@ namespace Goteo\Model\Call {
                 }
 
                 if (!$all) {
-                    $sqlFilter .= " WHERE project.status > 1";
+                    $sqlFilter .= " WHERE (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
                 }
 
                 $sql = "SELECT

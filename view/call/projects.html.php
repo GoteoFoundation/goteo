@@ -51,6 +51,9 @@ include 'view/call/header.html.php';
             } elseif (!empty($call->amount) || $_GET['preview'] == 'campaign') {
                 //en campaña con dinero
                 echo Text::html('call-splash-invest_explain', $call->user->name);
+                if (!empty($call->maxdrop)) {
+                    echo Text::html('call-splash-drop_limit', $call->maxdrop);
+                }
             } else {
                 //en campaña sin dinero, con recursos
                 echo Text::recorta($call->resources, 200);
