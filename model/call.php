@@ -260,7 +260,7 @@ namespace Goteo\Model {
                 }
 
                 $call->sponsors = Call\Sponsor::getList($id);
-                $call->banners  = Call\Banner::getList($id);
+                $call->banners  = Call\Banner::getList($id, $lang);
 
                 return $call;
             } catch (\PDOException $e) {

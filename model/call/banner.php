@@ -49,18 +49,18 @@ namespace Goteo\Model\Call {
 
             $sql = static::query("
                 SELECT
-                    id,
-                    `call`,
+                    call_banner.id,
+                    call_banner.call,
                     IFNULL(call_banner_lang.name, call_banner.name) as name,
-                    url,
-                    image,
-                    `order`
+                    call_banner.url,
+                    call_banner.image,
+                    call_banner.order
                 FROM    call_banner
                 LEFT JOIN call_banner_lang
                     ON  call_banner_lang.id = call_banner.id
                     AND call_banner_lang.lang = :lang
-                WHERE `call` = :call
-                ORDER BY `order` ASC, name ASC
+                WHERE call_banner.call = :call
+                ORDER BY call_banner.order ASC, call_banner.id ASC
                 ", array(':call'=>$call, ':lang'=>$lang));
 
             foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $banner) {
@@ -73,22 +73,25 @@ namespace Goteo\Model\Call {
         /*
          * Lista de patrocinadores
          */
-        public static function getList ($call) {
+        public static function getList ($call, $lang = null) {
 
             $list = array();
 
             $sql = static::query("
                 SELECT
-                    id,
-                    `call`,
-                    name,
-                    url,
-                    image,
-                    `order`
+                    call_banner.id,
+                    call_banner.call,
+                    IFNULL(call_banner_lang.name, call_banner.name) as name,
+                    call_banner.url,
+                    call_banner.image,
+                    call_banner.order
                 FROM    call_banner
-                WHERE `call` = :call
-                ORDER BY `order` ASC, name ASC
-                ", array(':call'=>$call));
+                LEFT JOIN call_banner_lang
+                    ON  call_banner_lang.id = call_banner.id
+                    AND call_banner_lang.lang = :lang
+                WHERE call_banner.call = :call
+                ORDER BY call_banner.order ASC, call_banner.id ASC
+                ", array(':call'=>$call, ':lang'=>$lang));
 
             foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $banner) {
                 // imagen

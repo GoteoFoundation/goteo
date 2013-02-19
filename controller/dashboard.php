@@ -1445,7 +1445,7 @@ namespace Goteo\Controller {
                                     foreach ($call->banners as $key => $banner) {
                                         if (isset($_POST['banner-' . $banner->id . '-name'])) {
                                             // guardamos los datos traducidos
-                                            $banner->name_lang = $_POST['banner-' . $support->id . '-name'];
+                                            $banner->name_lang = $_POST['banner-' . $banner->id . '-name'];
                                             $banner->lang = $_SESSION['translate_lang'];
                                             $banner->saveLang($errors);
                                         }

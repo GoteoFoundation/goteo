@@ -25,7 +25,7 @@ if (!empty($call->banners)) {
                 'class'     => 'banner editbanner',
                 'children'  => array(
                     "banner-{$banner->id}-banner-orig" => array(
-                        'title'     => Text::get('banners-field-banner'),
+                        'title'     => Text::get('call-field-banner-name'),
                         'type'      => 'html',
                         'html'      => $original->name
                     ),
@@ -37,7 +37,7 @@ if (!empty($call->banners)) {
                         'value'     => $banner->name,
                         'errors'    => !empty($errors["banner-{$banner->id}-banner"]) ? array($errors["banner-{$banner->id}-banner"]) : array(),
                         'ok'        => !empty($okeys["banner-{$banner->id}-banner"]) ? array($okeys["banner-{$banner->id}-banner"]) : array(),
-                        'hint'      => Text::get('tooltip-call-banner-banner')
+                        'hint'      => Text::get('tooltip-call-banner-name')
                     ),
                     "banner-{$banner->id}-buttons" => array(
                         'type' => 'group',
