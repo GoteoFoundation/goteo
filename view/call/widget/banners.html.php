@@ -12,7 +12,7 @@ $call = $this['call'];
             paginationClass: 'bannerspage',
             generatePagination: true,
             effect: 'fade',
-            fadeSpeed: 200
+            fadeSpeed: 50
         });
     });
 </script>
