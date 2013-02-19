@@ -43,7 +43,7 @@ namespace Goteo\Model\Call {
         /*
          * Lista de patrocinadores
          */
-        public static function getAll ($call) {
+        public static function getAll ($call, $lang = null) {
 
             $list = array();
 
@@ -51,14 +51,17 @@ namespace Goteo\Model\Call {
                 SELECT
                     id,
                     `call`,
-                    name,
+                    IFNULL(call_banner_lang.name, call_banner.name) as name,
                     url,
                     image,
                     `order`
                 FROM    call_banner
+                LEFT JOIN call_banner_lang
+                    ON  call_banner_lang.id = call_banner.id
+                    AND call_banner_lang.lang = :lang
                 WHERE `call` = :call
                 ORDER BY `order` ASC, name ASC
-                ", array(':call'=>$call));
+                ", array(':call'=>$call, ':lang'=>$lang));
 
             foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $banner) {
                 $list[] = $banner;
@@ -161,8 +164,35 @@ namespace Goteo\Model\Call {
             }
         }
 
+        public function saveLang (&$errors = array()) {
+                $fields = array(
+                        'id'=>'id',
+                        'lang'=>'lang',
+                        'name'=>'name_lang'
+                        );
+
+                $set = '';
+                $values = array();
+
+                foreach ($fields as $field=>$ffield) {
+                        if ($set != '') $set .= ", ";
+                        $set .= "$field = :$field ";
+                        $values[":$field"] = $this->$ffield;
+                }
+
+                try {
+                        $sql = "REPLACE INTO call_banner_lang SET " . $set;
+                        self::query($sql, $values);
+
+                        return true;
+                } catch(\PDOException $e) {
+                        $errors[] = "El banner no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
+        return false;
+                }
+        }
+
         /*
-         * Para quitar una pregunta
+         * Para quitar un banner
          */
         public static function delete ($id) {
 

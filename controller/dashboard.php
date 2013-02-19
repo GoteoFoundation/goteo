@@ -1438,6 +1438,21 @@ namespace Goteo\Controller {
                                     $call->saveLang($errors);
                                 }
                                 break;
+
+                            case 'banners':
+                                if ($action == 'save') {
+                                    // tratar colaboraciones existentes
+                                    foreach ($call->banners as $key => $banner) {
+                                        if (isset($_POST['banner-' . $banner->id . '-name'])) {
+                                            // guardamos los datos traducidos
+                                            $banner->name_lang = $_POST['banner-' . $support->id . '-name'];
+                                            $banner->lang = $_SESSION['translate_lang'];
+                                            $banner->saveLang($errors);
+                                        }
+                                    }
+                                }
+                                break;
+
                         }
                     }
 
@@ -1448,6 +1463,19 @@ namespace Goteo\Controller {
                     if ($option == 'overview') {
                         $viewData['option'] = 'call_overview';
                     }
+
+                    if ($option == 'banners') {
+                        $viewData['option'] = 'call_banners';
+                        if ($_POST) {
+                            foreach ($_POST as $k => $v) {
+                                if (!empty($v) && preg_match('/banner-(\d+)-edit/', $k, $r)) {
+                                    $viewData[$k] = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
 
                     $viewData['call'] = $call;
 //// FIN Control de traduccion de convocatoria
@@ -1839,7 +1867,8 @@ namespace Goteo\Controller {
                     'label' => Text::get('dashboard-menu-translates'),
                     'options' => array(
                         'profile' => Text::get('step-1'),
-                        'overview' => Text::get('step-3')
+                        'overview' => Text::get('step-3'),
+                        'banners' => 'Banners'
                     )
                 );
             } elseif ($_SESSION['translate_type'] == 'node') {
