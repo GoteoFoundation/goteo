@@ -181,10 +181,13 @@ div#main ul#list>li {
     background-image: url('/view/css/social/linkedin.png');
 }
 
+/*
 #social-actions {
     width: 180px;
     overflow: hidden;
 }
+*/
+
 #social-actions h2 {
     margin: 0;
     margin-bottom: 10px;
@@ -197,7 +200,7 @@ div#main ul#list>li {
 
 #social-actions .fb-like {
     float: right;
-    margin-right: 5px;
+    margin-right: 20px;
 }
 
 #social-actions .fb-like span {
@@ -980,7 +983,7 @@ p.subtitle {
     font-size: 16px;
     margin: 15px 10px 10px;
     line-height: 1.2em;
-    padding: 0 60px 5px 15px;
+    padding: 0 15px 5px 15px;
     color: #95268d;
 }
 p.subtitle a {

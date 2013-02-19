@@ -383,16 +383,9 @@ namespace Goteo\Controller {
                     $show = 'index';
                 }
 
-                if ($show == 'projects' && $call->status < 4 && $_GET['preview'] != 'campaign') {
-                    throw new Redirection("/call/".$call->id);
-                }
-
-                $call->categories = Model\Call\Category::getNames($call->id);
-                $call->icons = Model\Call\Icon::getNames($call->id);
-
-                // si esta en edicion y viene especificado el estado que se quiere previsualizar
+                // si viene especificado el estado que se quiere previsualizar
+                if (isset($_GET['preview'])) {
                     // cambiamos el estado
-                if ($call->status == 1 && isset($_GET['preview'])) {
                     switch($_GET['preview']) {
                         case 'apply':
                             $call->status = 3;
@@ -404,6 +397,13 @@ namespace Goteo\Controller {
 
 
                 }
+
+                if ($show == 'projects' && $call->status < 4) {
+                    throw new Redirection("/call/".$call->id);
+                }
+
+                $call->categories = Model\Call\Category::getNames($call->id);
+                $call->icons = Model\Call\Icon::getNames($call->id);
 
                 // array de datos en redes sociales (algunos están en $call directamente)
                 $social = (object) array(

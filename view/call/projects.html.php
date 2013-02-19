@@ -44,10 +44,10 @@ include 'view/call/header.html.php';
             <h2 class="title"><?php echo Text::get('call-splash-selected_projects-header') ?></h2>
 
             <p class="subtitle">
-                <a href="/call/<?php echo $call->id ?>/terms"><?php
+                <a href="/call/<?php echo $call->id ?>/info"><?php
             if ($call->status == 3 || $_GET['preview'] == 'apply') {
                 // inscripción
-                echo Text::get('call-splash-searching_projects');
+                echo Text::get('call-splash-searching_projects', $call->user->name);
             } elseif (!empty($call->amount) || $_GET['preview'] == 'campaign') {
                 //en campaña con dinero
                 echo Text::html('call-splash-invest_explain', $call->user->name);
@@ -59,8 +59,6 @@ include 'view/call/header.html.php';
                 echo Text::recorta($call->resources, 200);
             } ?></a>
             </p>
-
-            <p class="subtitle" style="color: #58595b;"><?php echo $call->subtitle ?></p>
 
             <ul id="project-list">
                 <?php
@@ -76,10 +74,12 @@ include 'view/call/header.html.php';
 <?php echo new View('view/call/side.html.php', $this); ?>
     </div>
 
+    <?php if ($call->status > 3) : ?>
     <div id="supporters-sponsors">
         <?php echo new View('view/call/widget/supporters.html.php', $this); ?>
         <?php echo new View('view/call/widget/sponsors.html.php', $this); ?>
     </div>
+    <?php endif; ?>
 </div>
 
 <?php

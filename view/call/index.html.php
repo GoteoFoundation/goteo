@@ -18,13 +18,13 @@ include 'view/call/header.html.php';
     </div>
 
     <div id="info" class="stats-container">
-        <div id="content">
+        <div id="content" style="width: 540px;">
             <p class="subtitle">
-                <a href="/call/<?php echo $call->id ?>/terms"><?php
-            if ($call->status == 3 || $_GET['preview'] == 'apply') {
+                <a href="/call/<?php echo $call->id ?>/info"><?php
+            if ($call->status == 3) {
                 // inscripción
-                echo Text::get('call-splash-searching_projects');
-            } elseif (!empty($call->amount) || $_GET['preview'] == 'campaign') {
+                echo Text::get('call-splash-searching_projects', $call->user->name);
+            } elseif (!empty($call->amount)) {
                 //en campaña con dinero
                 echo Text::html('call-splash-invest_explain', $call->user->name);
                 if (!empty($call->maxdrop)) {
@@ -36,14 +36,14 @@ include 'view/call/header.html.php';
             } ?></a>
             </p>
             
-            <p class="subtitle" style="color: #58595b;"><?php echo $call->subtitle ?></p>
+            <p class="subtitle" style="color: #58595b; font-size: 12px;"><?php echo $call->subtitle ?></p>
 
             <?php echo new View('view/call/widget/stats.html.php', $this); ?>
         </div>
         <?php echo new View('view/call/widget/buzz.html.php', $this); ?>
     </div>
 
-    <?php if ($call->status > 3 || $_GET['preview'] == 'campaign' ) : ?>
+    <?php if ($call->status > 3) : ?>
     <div id="supporters-sponsors">
         <?php echo new View('view/call/widget/supporters.html.php', $this); ?>
         <?php echo new View('view/call/widget/sponsors.html.php', $this); ?>
