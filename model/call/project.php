@@ -38,6 +38,7 @@ namespace Goteo\Model\Call {
                             project.id as id,
                             project.name as name,
                             project.status as status,
+                            project.owner as owner,
                             project.project_location as location,
                             project.subtitle as subtitle,
                             project.description as description
@@ -60,6 +61,8 @@ namespace Goteo\Model\Call {
                     // de la convocatoria
                     $item->amount_call = Model\Invest::invested($item->id, 'call', $call);
 
+                    $item->user = Model\User::getMini($item->owner);
+                    
                     $array[$item->id] = $item;
                 }
 
@@ -265,6 +268,30 @@ namespace Goteo\Model\Call {
             return false;
         }
 
-	}
+        /*
+         * Devuelve true o false si este proyecto está seleccionado en alguna de las convocatorias del usuario
+         */
+        public static function is_assigned ($user, $project) {
+            $sql = "
+                SELECT project
+                FROM call_project
+                WHERE `call` IN (
+                    SELECT id FROM `call`WHERE owner = :user
+                )
+                AND project = :project";
+            $values = array(
+                ':user' => $user,
+                ':project' => $project
+            );
+            $query = static::query($sql, $values);
+            $legal = $query->fetchObject();
+            if ($legal->project == $project) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    
+    }
     
 }

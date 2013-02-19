@@ -467,18 +467,23 @@ namespace Goteo\Controller {
             }
 
 
-            // solamente se puede ver publicamente si
-            // - es el dueño
-            // - es un admin con permiso
-            // - es otro usuario y el proyecto esta available: en campaña, financiado, retorno cumplido o caducado (que no es desechado)
-            if ($project->status > 2 ||
-                $project->owner == $_SESSION['user']->id ||
-                ACL::check('/project/edit/todos') ||
-                ACL::check('/project/view/todos') ||
-                Model\User\Review::is_assigned($_SESSION['user']->id, $project->id)
-                ) {
-                // lo puede ver
+            // solamente se puede ver publicamente si...
+            $grant = false;
+            if ($project->status > 2) // está publicado
+                $grant = true;
+            elseif ($project->owner == $_SESSION['user']->id)  // es el dueño
+                $grant = true;
+            elseif (ACL::check('/project/edit/todos'))  // es un admin
+                $grant = true;
+            elseif (ACL::check('/project/view/todos'))  // es un usuario con permiso
+                $grant = true;
+            elseif (isset($_SESSION['user']->roles['checker']) && Model\User\Review::is_assigned($_SESSION['user']->id, $project->id)) // es un revisor y lo tiene asignado
+                $grant = true;
+            elseif (isset($_SESSION['user']->roles['caller']) && Model\Call\Project::is_asigned($_SESSION['user']->id, $project->id)) // es un convocador y lo tiene seleccionado en su convocatoria
+                $grant = true;
 
+            // si lo puede ver
+            if ($grant) {
                 $viewData = array(
                         'project' => $project,
                         'show' => $show

@@ -43,6 +43,7 @@ $status = Project::status();
     <table>
         <tr>
             <th></th>
+            <th>Impulsor</th>
             <th>Proyecto</th>
             <th>Estado</th>
             <th>Riego</th>
@@ -51,6 +52,7 @@ $status = Project::status();
         <?php foreach ($call->projects as $proj) : ?>
         <tr>
             <td><a href="/project/<?php echo $proj->id ?>" target="_blank">[Ver]</a></td>
+            <td><?php echo $proj->user->name ?></td>
             <td><a href="/project/<?php echo $proj->id ?>" target="_blank"><?php echo $proj->name ?></a></td>
             <td><?php echo $status[$proj->status] ?></td>
             <td><?php echo $proj->amount ?></td>
