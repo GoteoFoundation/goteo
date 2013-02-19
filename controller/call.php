@@ -769,7 +769,7 @@ namespace Goteo\Controller {
                     continue;
                 }
 
-                if (isset($_POST['banner-' . $banner->id . '-name'])) {
+                if (isset($_POST['banner-' . $banner->id . '-id'])) {
                     $banner->name = $_POST['banner-' . $banner->id . '-name'];
                     $banner->url = $_POST['banner-' . $banner->id . '-url'];
                     $banner->order = $_POST['banner-' . $banner->id . '-order'];

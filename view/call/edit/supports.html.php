@@ -24,6 +24,10 @@ foreach ($call->banners as $banner) {
                         'type'      => 'hidden',
                         'value'     => '1'
                     ),
+                    "banner-{$banner->id}-id" => array(
+                        'type'      => 'hidden',
+                        'value'     => $banner->id
+                    ),
                     "banner-{$banner->id}-order" => array(
                         'type'      => 'hidden',
                         'value'     => $banner->order

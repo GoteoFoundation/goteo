@@ -12,16 +12,17 @@ $call = $this['call'];
             paginationClass: 'bannerspage',
             generatePagination: true,
             effect: 'fade',
-            fadeSpeed: 50
+            fadeSpeed: 200
         });
     });
 </script>
 <div id="call-banners" class="rounded-corners-bottom">
-    <div class="call-banners-container rounded-corners-bottom">
+    <div class="call-banners-container rounded-corners-bottom" style="background: url('/view/css/call/banner_background.png') no-repeat right bottom;">
 
         <?php foreach ($call->banners as $banner) : ?>
             <div class="call-banner<?php if (!empty($banner->url)) echo ' activable'; ?>"<?php if ($banner->image instanceof \Goteo\Model\Image) : ?> style="background: url('/data/images/<?php echo $banner->image->name; ?>') no-repeat right bottom;"<?php endif; ?>>
                 <?php if (!empty($banner->url)) : ?><a href="<?php echo $banner->url; ?>" class="expand" target="_blank"></a><?php endif; ?>
+                <div class="title"><?php echo htmlspecialchars($banner->name) ?></div>
             </div>
         <?php endforeach; ?>
 
