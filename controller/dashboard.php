@@ -1813,8 +1813,8 @@ namespace Goteo\Controller {
                     'label' => Text::get('dashboard-menu-calls'),
                     'options' => array(
                         'summary' => Text::get('dashboard-menu-calls-summary'),
-                        'projects' => Text::get('dashboard-menu-calls-projects'),
-                        'sponsors' => Text::get('dashboard-menu-calls-sponsors')
+//                        'projects' => Text::get('dashboard-menu-calls-projects'),
+//                        'sponsors' => Text::get('dashboard-menu-calls-sponsors')
                     )
                 );
             }
