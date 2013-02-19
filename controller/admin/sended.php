@@ -18,7 +18,7 @@ namespace Goteo\Controller\Admin {
             $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
 
             if ($filters['filtered'] == 'yes'){
-                $sended = Mail::getSended($filters, $node, 99);
+                $sended = Mail::getSended($filters, $node);
             } else {
                 $sended = array();
             }

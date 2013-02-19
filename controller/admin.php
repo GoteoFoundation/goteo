@@ -319,7 +319,7 @@ namespace Goteo\Controller {
                         'actions' => array(
                             'list' => array('label' => 'Emails enviados', 'item' => false)
                         ),
-                        'filters' => array('user'=>'', 'template'=>'', 'node'=>'')
+                        'filters' => array('user'=>'', 'template'=>'', 'node'=>'', 'date_from'=>'', 'date_until'=>'')
                     ),
                     'sponsors' => array(
                         'label' => 'Apoyos institucionales',
