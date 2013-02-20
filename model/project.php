@@ -153,7 +153,7 @@ namespace Goteo\Model {
 
             $values = array(
                 ':id'   => md5($user.'-'.$num),
-                ':name' => "Mi proyecto $num",
+                ':name' => "El nuevo proyecto de {$userProfile->name}",
                 ':lang' => 'es',
                 ':status'   => 1,
                 ':progress' => 0,

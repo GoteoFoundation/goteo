@@ -430,20 +430,49 @@ namespace Goteo\Controller {
                     $registry->call = $call;
                     if ($registry->save($errors)) {
 
-                        Message::Info(Text::get('assign-call-success'));
+                        $callData = Model\Call::getMini($call);
+                        // email al autor
+                        // Obtenemos la plantilla para asunto y contenido
+                        $template = Template::get(39);
+
+                        // Sustituimos los datos
+                        $subject = str_replace('%CALLNAME%', $callData->name, $template->title);
+
+                        // En el contenido:
+                        $search  = array('%USERNAME%', '%CALLNAME%', '%CALLERNAME%', '%CALLURL%');
+                        $replace = array($_SESSION['user']->name, $callData->name, $callData->user->name, SITE_URL.'/call/'.$call);
+                        $content = \str_replace($search, $replace, $template->text);
+
+
+                        $mailHandler = new Mail();
+
+                        $mailHandler->to = $_SESSION['user']->email;
+                        $mailHandler->toName = $_SESSION['user']->name;
+                        $mailHandler->subject = $subject;
+                        $mailHandler->content = $content;
+                        $mailHandler->html = true;
+                        $mailHandler->template = $template->id;
+                        if ($mailHandler->send($errors)) {
+                            Message::Info(Text::get('assign-call-success', $callData->name));
+                        } else {
+                            Message::Error(Text::get('project-review-confirm_mail-fail'));
+                            \mail('goteo_fail@doukeshi.org', 'Fallo al enviar mail al crear proyecto asignando a convocatoria', 'Teniamos que enviar email a ' . $_SESSION['user']->email . ' con esta instancia <pre>'.print_r($mailHandler, 1).'</pre> y ha dado estos errores: <pre>' . print_r($errors, 1) . '</pre>');
+                        }
+
+                        unset($mailHandler);
 
                         // Evento feed
                         $log = new Feed();
                         $log->setTarget($call, 'call');
                         $log->populate('nuevo proyecto asignado a convocatoria ' . $call, 'admin/calls/'.$call.'/projects',
-                            \vsprintf('Nuevo proyecto %s asignado automaticamente a la convocatoria %s', array(
+                            \vsprintf('Nuevo proyecto %s aplicado a la convocatoria %s', array(
                                 Feed::item('project', $project->name, $project->id),
                                 Feed::item('call', $call, $call))
                             ));
                         $log->doAdmin('project');
                         unset($log);
                     } else {
-                        \mail(GOTEO_MAIL, 'Fallo al asignar a convocatoria al crear proyecto', 'Teniamos que asignar el nuevo proyecto ' . $project->id . ' a la convocatoria ' . $call . ' con esta instancia <pre>'.print_r($register, 1).'</pre> y ha dado estos errores: <pre>' . print_r($errors, 1) . '</pre>');
+                        \mail('goteo_fail@doukeshi.org', 'Fallo al asignar a convocatoria al crear proyecto', 'Teniamos que asignar el nuevo proyecto ' . $project->id . ' a la convocatoria ' . $call . ' con esta instancia <pre>'.print_r($register, 1).'</pre> y ha dado estos errores: <pre>' . print_r($errors, 1) . '</pre>');
                     }
                 }
 
