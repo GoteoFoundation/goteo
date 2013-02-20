@@ -54,7 +54,7 @@ namespace Goteo\Controller {
             
             // si no es su proyecto
             // si es admin de nodo y no es de su nodo no puede estar editando
-            if ($project->owner != $_SESSION['user']->id && isset($_SESSION['admin_node']) && $project->node != $_SESSION['admin_node']) {
+            if ($project->owner != $_SESSION['user']->id && (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] != \GOTEO_NODE) && $project->node != $_SESSION['admin_node']) {
                 Message::Info('No tienes permiso para editar este proyecto');
                 throw new Redirection('/admin/projects');
             }

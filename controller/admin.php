@@ -1069,15 +1069,12 @@ namespace Goteo\Controller {
                         )
                     );
 
-                    // PIÑONACO!
-                    // a merche le cambiamos la gestion de aportes simple por la buena
-                    if ($_SESSION['user']->id == 'mmtarres') {
-                        unset ($menu['projects']['options']['invests']);
-                        $menu['projects']['options']['accounts'] = $options['accounts'];
-                    }
-
+                    // para admines de central
                     if ($_SESSION['admin_node'] == \GOTEO_NODE)  {
                         unset($menu['contents']['options']['node']);
+                        unset ($menu['projects']['options']['invests']);
+                        $menu['projects']['options']['accounts'] = $options['accounts']; // gestion completa de aportes
+                        $menu['projects']['options']['reports'] = $options['reports']; // informes
                     }
                     
                     break;

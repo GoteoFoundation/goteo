@@ -34,7 +34,7 @@ $pagedResults = new \Paginated($this['projects'], 20, isset($_GET['page']) ? $_G
                     <?php endforeach; ?>
                     </select>
                 </td>
-                <?php if (!isset($_SESSION['admin_node'])) : ?>
+                <?php if (!isset($_SESSION['admin_node']) || $_SESSION['admin_node'] == \GOTEO_NODE) : ?>
                 <td>
                     <label for="node-filter">Del nodo:</label><br />
                     <select id="node-filter" name="node" onchange="document.getElementById('filter-form').submit();">
@@ -118,7 +118,9 @@ $pagedResults = new \Paginated($this['projects'], 20, isset($_GET['page']) ? $_G
                 <td colspan="10">
                     <a href="/project/edit/<?php echo $project->id; ?>" target="_blank">[Editar]</a>
                     <a href="/admin/users/?id=<?php echo $project->owner; ?>" target="_blank">[Impulsor]</a>
-                    <?php if (!isset($_SESSION['admin_node']) || (isset($_SESSION['admin_node']) && $user->node == $_SESSION['admin_node'])) : ?>
+                    <?php if (!isset($_SESSION['admin_node']) 
+                            || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE)
+                            || (isset($_SESSION['admin_node']) && $user->node == $_SESSION['admin_node'])) : ?>
                     <a href="/admin/accounts/?projects=<?php echo $project->id; ?>" title="Ver sus aportes">[Aportes]</a>
                     <?php else:  ?>
                     <a href="/admin/invests/?projects=<?php echo $project->id; ?>" title="Ver sus aportes">[Aportes]</a>

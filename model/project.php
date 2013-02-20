@@ -2094,12 +2094,12 @@ namespace Goteo\Model {
                     )";
                 $values[':category'] = $filters['category'];
             }
-            if (!empty($node)) {
-                $sqlFilter .= " AND node = :node";
-                $values[':node'] = $node;
-            } elseif (!empty($filters['node'])) {
+            if (!empty($filters['node'])) {
                 $sqlFilter .= " AND node = :node";
                 $values[':node'] = $filters['node'];
+            } elseif (!empty($node) && $node != \GOTEO_NODE) {
+                $sqlFilter .= " AND node = :node";
+                $values[':node'] = $node;
             }
 
             //el Order

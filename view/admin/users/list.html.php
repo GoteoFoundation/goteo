@@ -29,7 +29,7 @@ $pagedResults = new \Paginated($this['users'], 20, isset($_GET['page']) ? $_GET[
                     <?php endforeach; ?>
                     </select>
                 </td>
-                <td><?php if (!isset($_SESSION['admin_node'])) : ?>
+                <td><?php if (!isset($_SESSION['admin_node']) || $_SESSION['admin_node'] == \GOTEO_NODE) : ?>
                     <label for="node-filter">Del nodo:</label><br />
                     <select id="node-filter" name="node" onchange="document.getElementById('filter-form').submit();">
                         <option value="">Cualquier nodo</option>
