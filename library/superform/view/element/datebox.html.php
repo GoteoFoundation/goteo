@@ -10,7 +10,7 @@
             format: 'Y-m-d',
             date: '<?php echo $this['value'] ?>',
             current: '<?php echo $this['value'] ?>',
-            starts: 1,
+            starts: 0,
             position: 'bottom',      
             eventName: 'click',
             onBeforeShow: function(){
