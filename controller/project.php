@@ -50,11 +50,17 @@ namespace Goteo\Controller {
         public function edit ($id) {
             $project = Model\Project::get($id, null);
 
+            // para que tenga todas las imágenes
             $project->gallery = Model\Image::getAll($id, 'project');
             
-            // si no es su proyecto
-            // si es admin de nodo y no es de su nodo no puede estar editando
-            if ($project->owner != $_SESSION['user']->id && (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] != \GOTEO_NODE) && $project->node != $_SESSION['admin_node']) {
+            // aunque pueda acceder edit, no lo puede editar si
+            if ($project->owner != $_SESSION['user']->id // no es su proyecto
+                && (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] != \GOTEO_NODE) // es admin pero no es admin de central
+                && (isset($_SESSION['admin_node']) && $project->node != $_SESSION['admin_node']) // no es de su nodo
+                && !isset($_SESSION['user']->roles['superadmin']) // no es superadmin
+                && !isset($_SESSION['user']->roles['root']) // no es root
+                && (isset($_SESSION['user']->roles['checker']) && !Model\User\Review::is_assigned($_SESSION['user']->id, $project->id)) // no lo tiene asignado
+                ) {
                 Message::Info('No tienes permiso para editar este proyecto');
                 throw new Redirection('/admin/projects');
             }
