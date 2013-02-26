@@ -11,7 +11,7 @@ $share_url = $URL . '/call/' . $call->id;
 if (LANG != 'es')
     $share_url .= '?lang=' . LANG;
 
-$shate_title = (!empty($social->tweet)) ? $social->tweet : $call->name;
+$share_title = (!empty($social->tweet)) ? $social->tweet : $call->name;
 $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($share_title);
 ?>
 <div id="social">

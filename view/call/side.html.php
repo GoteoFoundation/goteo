@@ -68,16 +68,9 @@ $filter = $this['filter'];
         ?></dd>
     </dl>
 
-<?php if ($call->status == 3 && !empty($call->dossier)) : ?>
-    <dl class="">
-        <dt><?php echo Text::get('call-splash-more_info-header') ?></dt>
-        <dd><a class="red" href="<?php echo $call->dossier ?>" target="_blank"><?php echo Text::get('call-splash-dossier-link') ?></a></dd>
-    </dl>
-<?php endif; ?>
-
 <?php if (!empty($call->user->webs[0]->url)) : ?>
     <dl class="">
-        <dt><?php echo Text::get('regular-web') ?></dt>
+        <dt><?php echo Text::get('call-splash-more_info-header') ?></dt>
         <dd><a href="<?php echo $call->user->webs[0]->url ?>"><?php echo preg_replace( '^http(?<https>s)?://^', '', $call->user->webs[0]->url ) ?></a></dd>
     </dl>
 <?php endif; ?>
@@ -88,8 +81,14 @@ $filter = $this['filter'];
     </dl>
 <?php endif; ?>
 
-    <dl class="block category">
-        <dd><a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/terms"><?php echo Text::get('call-splash-legal-link') ?></a></dd>
+<?php if (!empty($call->dossier)) : ?>
+    <dl class="">
+        <dd><a class="red" href="<?php echo $call->dossier ?>" target="_blank"><?php echo Text::get('call-splash-dossier-link') ?></a></dd>
     </dl>
+<?php endif; ?>
+
+    <!-- dl class="block category">
+        <dd><a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/terms"><?php echo Text::get('call-splash-legal-link') ?></a></dd>
+    </dl -->
 
 </div>
