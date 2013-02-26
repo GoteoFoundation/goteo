@@ -3,6 +3,8 @@ if (empty($banners)) return '';
 
 ?>
 <script type="text/javascript">
+    var stopSlides;
+    var startSlides;
     $(function(){
         $('#node-banners').slides({
             container: 'node-banners-container',
@@ -11,6 +13,9 @@ if (empty($banners)) return '';
             effect: 'fade',
             fadeSpeed: 200
         });
+
+        stopSlides = $('#node-banners').data("stop");
+        startSlides = $('#node-banners').data("start");
     });
 </script>
 <div id="node-banners" class="rounded-corners-bottom"<?php if ($bodyClass == 'home') echo ' style="width: 940px; margin: 0px auto;"'; ?>>
