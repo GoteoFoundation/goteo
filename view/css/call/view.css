@@ -181,6 +181,19 @@ div#main ul#list>li {
     background-image: url('/view/css/social/linkedin.png');
 }
 
+#social-logo li.email {
+    padding-left: 0px !important;
+}
+
+#social-logo li.email a {
+    font-size: 11px !important;
+    color: #20B2B3 !important;
+}
+
+#social-logo li.email a:hover {
+    text-decoration: underline !important;
+}
+
 /*
 #social-actions {
     width: 180px;

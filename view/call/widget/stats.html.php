@@ -51,7 +51,8 @@ $call = $this['call'];
                 <dd>
                     <?php if (!empty($call->pdf)) : ?><a class="red" href="<?php echo $call->pdf ?>" target="_blank"><?php echo Text::get('call-splash-dossier-link') ?></a><?php endif; ?>
                     <?php if (!empty($call->user->webs[0]->url)) : ?><a href="<?php echo $call->user->webs[0]->url ?>" target="_blank"><?php echo preg_replace('^http(?<https>s)?://^', '', $call->user->webs[0]->url) ?></a><?php endif; ?>
-                    <a class="aqua" href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/terms" ><?php echo Text::get('call-splash-legal-link') ?></a>
+                    <a class="red" href="<?php echo $call->dossier ?>" target="_blank"><?php echo Text::get('call-splash-dossier-link') ?></a>
+                    <!-- a class="aqua" href="/call/<?php echo $call->id ?>/terms" ><?php echo Text::get('call-splash-legal-link') ?></a -->
                 </dd>
             </dl>
         </div>

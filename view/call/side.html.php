@@ -87,8 +87,9 @@ $filter = $this['filter'];
     </dl>
 <?php endif; ?>
 
-    <!-- dl class="block category">
-        <dd><a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/terms"><?php echo Text::get('call-splash-legal-link') ?></a></dd>
-    </dl -->
+    <dl class="block category">
+        <dt><?php echo Text::get('call-side-contact_header') ?></dt>
+        <dd><a href="mailto:<?php echo $call->user->email ?>" target="_blank"><?php echo $call->user->email ?></a></dd>
+    </dl>
 
 </div>

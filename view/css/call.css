@@ -140,7 +140,7 @@ div.call div.data li#description.item p.subtitle {
 	color: #95268d;
 	font-weight: normal;
 	font-size: 15px;
-	margin: 0 0 20px;
+	margin: 0 0 10px;
 }
 
 div.call div.data li#description.item p.subtitle.red {
@@ -151,6 +151,7 @@ div.call div.data li#description.item p.subtitle.red {
 }
 
 div.call div.data li#description.item p.subtitle strong {
+	font-weight: bold;
 	text-transform: uppercase;
 }
 
@@ -371,6 +372,7 @@ body.home div#main div.widget.calls a.all {
     text-transform: uppercase;
     position:relative;
     right: -840px;
+    top: 5px;
     font-size: 0.9em;
 }
 
