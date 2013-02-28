@@ -206,7 +206,7 @@ function donativeCert($data) {
         $pdf->cell(0,10,'Con el visto bueno de la presidenta', 0, 0, 'R');
     $pdf->Ln(5);
         $pdf->cell(80,10,'Secretario del Patronato y de la Fundación');
-        $pdf->cell(0,10,'Susana Noguero García, representante', 0, 0, 'R');
+        $pdf->cell(0,10,'Susana García Noguero, representante', 0, 0, 'R');
     $pdf->Ln(5);
         $pdf->cell(80,10,'');
         $pdf->cell(0,10,'de Platoniq Sistema Cultural en el Patronato', 0, 0, 'R');
