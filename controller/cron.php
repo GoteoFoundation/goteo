@@ -41,9 +41,11 @@ namespace Goteo\Controller {
                 $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
                 \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
                 \chmod($log_file, 0777);
+                /*
                 @mail('goteo_cron@doukeshi.org', 'Cron '. __FUNCTION__ .' bloqueado en ' . SITE_URL,
                     'Se ha encontrado con que el cron '. __FUNCTION__ .' está bloqueado el '.date('d-m-Y').' a las ' . date ('H:i:s') . '
                         El contenido del bloqueo es: '. $block_content);
+                 */
                 die;
             } else {
                 $block = 'Bloqueo del '.$block_file.' activado el '.date('d-m-Y').' a las '.date ('H:i:s').'<br />';
@@ -837,9 +839,11 @@ namespace Goteo\Controller {
                 $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
                 \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
                 \chmod($log_file, 0777);
+                /*
                 @mail('goteo_cron@doukeshi.org', 'Cron '. __FUNCTION__ .' bloqueado en ' . SITE_URL,
                     'Se ha encontrado con que el cron '. __FUNCTION__ .' está bloqueado el '.date('d-m-Y').' a las ' . date ('H:i:s') . '
                         El contenido del bloqueo es: '. $block_content);
+                 */
                 die;
             } else {
                 $block = 'Bloqueo '.$block_file.' activado el '.date('d-m-Y').' a las '.date ('H:i:s').'<br />';
