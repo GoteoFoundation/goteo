@@ -2094,6 +2094,14 @@ namespace Goteo\Model {
                     )";
                 $values[':category'] = $filters['category'];
             }
+            if (!empty($filters['called'])) {
+                $sqlFilter .= " AND id IN (
+                    SELECT project
+                    FROM call_project
+                    WHERE `call` = :called
+                    )";
+                $values[':called'] = $filters['called'];
+            }
             if (!empty($filters['node'])) {
                 $sqlFilter .= " AND node = :node";
                 $values[':node'] = $filters['node'];

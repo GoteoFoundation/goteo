@@ -816,10 +816,15 @@ namespace Goteo\Model {
         /*
          * Lista de convocatorias a las que se le puede asignar otro proyecto
          */
-        public static function getAvailable() {
+        public static function getAvailable($wProj = false) {
             $calls = array();
 
-            $sqlFilter .= " WHERE call.status IN ('1', '2', '3', '4')"; // desde edicion hasta en campaña
+            // en aplicación, en campaña o finalizadas
+            if ($wProj) {
+                $sqlFilter .= " WHERE call.status > 2";
+            } else {
+                $sqlFilter .= " WHERE call.status IN ('1', '2', '3', '4')"; // desde edicion hasta en campaña
+            }
 
             $sql = "SELECT call.id, call.name
                     FROM  `call`

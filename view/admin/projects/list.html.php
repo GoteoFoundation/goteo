@@ -60,6 +60,15 @@ $pagedResults = new \Paginated($this['projects'], 20, isset($_GET['page']) ? $_G
                     <?php endforeach; ?>
                     </select>
                 </td>
+                <td>
+                    <label for="call-filter">En la convocatoria:</label><br />
+                    <select id="call-filter" name="called" onchange="document.getElementById('filter-form').submit();">
+                        <option value="">--</option>
+                    <?php foreach ($this['calls'] as $callId=>$callName) : ?>
+                        <option value="<?php echo $callId; ?>"<?php if ($filters['called'] == $callId) echo ' selected="selected"';?>><?php echo $callName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>

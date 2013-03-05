@@ -514,7 +514,7 @@ namespace Goteo\Controller {
                 $grant = true;
             elseif (isset($_SESSION['user']->roles['checker']) && Model\User\Review::is_assigned($_SESSION['user']->id, $project->id)) // es un revisor y lo tiene asignado
                 $grant = true;
-            elseif (isset($_SESSION['user']->roles['caller']) && Model\Call\Project::is_asigned($_SESSION['user']->id, $project->id)) // es un convocador y lo tiene seleccionado en su convocatoria
+            elseif (isset($_SESSION['user']->roles['caller']) && Model\Call\Project::is_assigned($_SESSION['user']->id, $project->id)) // es un convocador y lo tiene seleccionado en su convocatoria
                 $grant = true;
 
             // si lo puede ver
