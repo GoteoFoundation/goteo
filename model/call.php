@@ -816,10 +816,14 @@ namespace Goteo\Model {
         /*
          * Lista de convocatorias a las que se le puede asignar otro proyecto
          */
-        public static function getAvailable() {
+        public static function getAvailable($wProj = false) {
             $calls = array();
 
             $sqlFilter .= " WHERE call.status IN ('1', '2', '3', '4')"; // desde edicion hasta en campaña
+            // pero solo las que tengan algun proyecto asignado
+            if ($wProj) {
+                $sqlFilter .= " AND call.id IN (SELECT DISTINCT(call_project.call) FROM call_project)";
+            }
 
             $sql = "SELECT call.id, call.name
                     FROM  `call`

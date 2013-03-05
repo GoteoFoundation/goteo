@@ -394,6 +394,7 @@ namespace Goteo\Controller\Admin {
             $status = Model\Project::status();
             $categories = Model\Project\Category::getAll();
             $contracts = Model\Contract::getProjects();
+            $calls = Model\Call::getAvailable(true);
             // la lista de nodos la hemos cargado arriba
             $orders = array(
                 'name' => 'Nombre',
@@ -410,6 +411,7 @@ namespace Goteo\Controller\Admin {
                     'status' => $status,
                     'categories' => $categories,
                     'contracts' => $contracts,
+                    'calls' => $calls,
                     'nodes' => $nodes,
                     'orders' => $orders
                 )
