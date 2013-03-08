@@ -304,7 +304,7 @@ namespace Goteo\Controller {
                             'edit' => array('label' => 'Editando briefing', 'item' => true),
                             'report' => array('label' => 'Informe', 'item' => true)
                         ),
-                        'filters' => array('status'=>'', 'checker'=>'')
+                        'filters' => array('project'=>'', 'status'=>'open', 'checker'=>'')
                     ),
                     'rewards' => array(
                         'label' => 'Recompensas',

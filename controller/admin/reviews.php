@@ -56,13 +56,13 @@ namespace Goteo\Controller\Admin {
                                     $log->doAdmin('admin');
                                     unset($log);
 
+                                    throw new Redirection('/admin/reviews/?project='.  urlencode($project->id));
                                     break;
                                 case 'edit':
                                     Message::Info('Datos editados correctamente');
+                                    throw new Redirection('/admin/reviews');
                                     break;
                             }
-
-                            throw new Redirection('/admin/reviews');
                         } else {
                             Message::Error('No se han podido grabar los datos. ', implode(', ', $errors));
                         }
@@ -220,10 +220,12 @@ namespace Goteo\Controller\Admin {
                     break;
             }
 
-            $projects = Model\Review::getList($filters, $node);
+            $list = Model\Review::getList($filters, $node);
+            $projects = Model\Review::getProjects($node);
             $status = array(
-                'open' => 'Abiertas',
-                'closed' => 'Cerradas'
+                'unstarted' => 'No iniciada',
+                'open' => 'Abierta',
+                'closed' => 'Cerrada'
             );
             $checkers = Model\User::getAll(array('role'=>'checker'));
 
@@ -232,8 +234,9 @@ namespace Goteo\Controller\Admin {
                 array(
                     'folder' => 'reviews',
                     'file' => 'list',
-                    'projects' => $projects,
+                    'list' => $list,
                     'filters' => $filters,
+                    'projects' => $projects,
                     'status' => $status,
                     'checkers' => $checkers
                 )

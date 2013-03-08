@@ -7,6 +7,17 @@ $filters = $this['filters'];
 ?>
 <div class="widget board">
 <form id="filter-form" action="/admin/reviews" method="get">
+   
+    <label for="project-filter">Del proyecto:</label>
+    <select id="project-filter" name="project" onchange="document.getElementById('filter-form').submit();">
+        <option value="">--</option>
+        <?php foreach ($this['projects'] as $projId=>$projName) : ?>
+            <option value="<?php echo $projId; ?>"<?php if ($filters['project'] == $projId) echo ' selected="selected"';?>><?php echo substr($projName, 0, 100); ?></option>
+        <?php endforeach; ?>
+    </select>
+
+    <br />
+
     <label for="status-filter">Mostrar por estado:</label>
     <select id="status-filter" name="status" onchange="document.getElementById('filter-form').submit();">
         <option value="">Todas</option>
@@ -25,8 +36,8 @@ $filters = $this['filters'];
 </form>
 </div>
 
-<?php if (!empty($this['projects'])) : ?>
-    <?php foreach ($this['projects'] as $project) : ?>
+<?php if (!empty($this['list'])) : ?>
+    <?php foreach ($this['list'] as $project) : ?>
         <div class="widget board">
             <table>
                 <thead>
