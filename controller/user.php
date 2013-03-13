@@ -13,13 +13,19 @@ namespace Goteo\Controller {
 
 	class User extends \Goteo\Core\Controller {
 
-	    /**
-	     * Atajo al perfil de usuario.
-	     * @param string $id   Nombre de usuario
-	     */
-		public function index ($id, $show = '') {
-		    throw new Redirection('/user/profile/' .  $id . '/' . $show, Redirection::PERMANENT);
-		}
+        /**
+         * Atajo al perfil de usuario.
+         * @param string $id   Nombre de usuario
+         */
+        public function index ($id, $show = '') {
+            throw new Redirection('/user/profile/' .  $id . '/' . $show, Redirection::PERMANENT);
+        }
+
+        public function raw ($id) {
+            $user = Model\User::get($id, LANG);
+            \trace($user);
+            die;
+        }
 
         /**
          * Inicio de sesión.
@@ -296,9 +302,9 @@ namespace Goteo\Controller {
         public function edit () {
             $user = $_SESSION['user'];
 
-			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-			    $errors = array();
+                $errors = array();
                 // E-mail
                 if($_POST['change_email']) {
                     if(empty($_POST['user_nemail'])) {
