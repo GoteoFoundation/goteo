@@ -183,6 +183,16 @@ namespace Goteo\Controller {
                         ),
                         'filters' => array('group'=>'', 'icon'=>'')
                     ),
+                    'locations' => array(
+                        'label' => 'Geolocalización',
+                        'actions' => array(
+                            'list' => array('label' => 'Listando', 'item' => false),
+                            'add' => array('label' => 'Nueva Localización', 'item' => false),
+                            'edit' => array('label' => 'Editando Localización', 'item' => true),
+                            'check' => array('label' => 'Verificando Localizaciones', 'item' => true)
+                        ),
+                        'filters' => array('valid'=>'all', 'name'=>'', 'location'=>'', 'region'=>'', 'country'=>'', 'used'=>'all')
+                    ),
                     'mailing' => array(
                         'label' => 'Comunicaciones',
                         'actions' => array(

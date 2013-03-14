@@ -1,0 +1,168 @@
+<?php
+
+namespace Goteo\Controller\Admin {
+
+    use Goteo\Core\View,
+        Goteo\Core\Redirection,
+        Goteo\Core\Error,
+        Goteo\Library\Text,
+        Goteo\Library\Feed,
+        Goteo\Library\Template,
+        Goteo\Library\Message,
+        Goteo\Model;
+
+    class Locations {
+
+        public static function process ($action = 'list', $id = null, $filters = array()) {
+
+            $errors = array();
+
+            switch ($action)  {
+                case 'add':
+
+                    // si llega post: creamos
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
+
+                        // para crear se usa el mismo método save del modelo, hay que montar el objeto
+                        $location = new Model\Location();
+                        $location->location = $_POST['location'];
+                        $location->region = $_POST['region'];
+                        $location->country = $_POST['country'];
+                        $location->lon = $_POST['lon'];
+                        $location->lat = $_POST['lat'];
+                        $location->valid = $_POST['valid'];
+                        if($location->save($errors)) {
+                          // mensaje de ok y volvemos a la lista de tareas
+                          Message::Info('Nueva localizacion creada correctamente');
+                          throw new Redirection('/admin/locations');
+                        } else {
+                            // si hay algun error volvemos a poner los datos en el formulario
+                            $location = (object) $_POST;
+                            Message::Error(implode('<br />', $errors));
+                        }
+                    } else {
+                        $location = (object) array('country'=>'España');
+                    }
+
+                    // vista de crear
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'locations',
+                            'file'  => 'edit',
+                            'location'  => $location,
+                            'action' => 'add'
+                        )
+                    );
+
+                    break;
+                case 'edit':
+
+                    $location = Model\Location::get($id);
+
+                    // si llega post: actualizamos
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
+                        $location->location = $_POST['location'];
+                        $location->region = $_POST['region'];
+                        $location->country = $_POST['country'];
+                        $location->lon = $_POST['lon'];
+                        $location->lat = $_POST['lat'];
+                        $location->valid = $_POST['valid'];
+                        if($location->save($errors)) {
+
+                            // mensaje de ok y volvemos a la lista
+                            Message::Info('Localización actualizada');
+                            throw new Redirection('/admin/locations');
+
+                        } else {
+                            // si hay algun error volvemos a poner los datos en el formulario
+                            Message::Error(implode('<br />', $errors));
+                        }
+                    }
+
+                    // vista de editar
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'locations',
+                            'file' => 'edit',
+                            'location'=>$location,
+                            'action' => 'edit'
+                        )
+                    );
+
+                    break;
+
+                case 'check':
+
+                    // tipos de registro
+                    $type = array(
+                                'user' => 'Usuarios',
+                                'project' => 'Proyectos',
+                                'node' => 'Nodos',
+                                'call' => 'Convocatorias'
+                            );
+
+                    $type = in_array($_GET['type'], $types) ? $_GET['type'] : 'user';
+                    
+                    // cargar la lista de registros a checkear  (segun tipo de registro)
+                    // son los no asignados a una localizacion
+                    $list = Model\Location::getCheck($type, 10);
+
+                    // vista de editar
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'locations',
+                            'file' => 'check',
+                            'list' => $list,
+                            'types' => $types,
+                            'action' => 'edit'
+                        )
+                    );
+
+                    break;
+
+                case 'list':
+                default:
+
+                    // si hay filtro de localidad solo la region y pais de la localidad
+                    // si hay de region, solo el pais de la region
+
+                    $list = Model\Location::getAll($filters);
+                    $countries = Model\Location::getList(); // distintos paises ya existentes
+                    $regions = Model\Location::getList('region'); // distintas regiones ya existentes (si hay filtro de pais, filtramos estas por pais)
+                    $locations = Model\Location::getList('location'); // distintas localizaciones ya existentes (si hay filtro de region, filtramos estas por region; si no hay filtro de region pero hay filtro de pais, filtramos  estas por pais)
+                    $valid = array(
+                                'all' => 'Todas',
+                                '0' => 'No revisadas',
+                                '1' => 'Revisadas'
+                            );
+                    $used = array(
+                                'all' => 'Todas',
+                                '0' => 'No usadas',
+                                '1' => 'En uso'
+                            );
+
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'locations',
+                            'file' => 'list',
+                            'list' => $list,
+                            'countries' => $countries,
+                            'regions' => $regions,
+                            'locations' => $locations,
+                            'filters' => $filters,
+                            'valid' => $valid,
+                            'used' => $used
+                        )
+                    );
+                break;
+            }
+            
+        }
+
+    }
+
+}
