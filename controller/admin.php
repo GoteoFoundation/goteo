@@ -1156,6 +1156,7 @@ namespace Goteo\Controller {
                             'label'   => 'Servicios',
                             'options' => array (
                                 'reports' => $options['reports'],
+                                'locations' => $options['locations'],
                                 'newsletter' => $options['newsletter'],
                                 'sponsors' => $options['sponsors'],
                                 'calls' => $options['calls'],
