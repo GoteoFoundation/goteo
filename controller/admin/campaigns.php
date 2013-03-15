@@ -11,7 +11,7 @@ namespace Goteo\Controller\Admin {
 
     class Campaigns {
 
-        public static function process ($action = 'list', $id = null, $flag = null) {
+        public static function process ($action = 'list', $id = null, $filters = array(), $flag = null) {
 
             $status = Model\Call::status();
 

@@ -189,7 +189,8 @@ namespace Goteo\Controller {
                             'list' => array('label' => 'Listando', 'item' => false),
                             'add' => array('label' => 'Nueva Localización', 'item' => false),
                             'edit' => array('label' => 'Editando Localización', 'item' => true),
-                            'check' => array('label' => 'Verificando Localizaciones', 'item' => true)
+                            'check' => array('label' => 'Verificando Localizaciones', 'item' => false),
+                            'search' => array('label' => 'Buscando registros por localización', 'item' => false)
                         ),
                         'filters' => array('valid'=>'all', 'name'=>'', 'location'=>'', 'region'=>'', 'country'=>'', 'used'=>'all')
                     ),
@@ -540,7 +541,7 @@ namespace Goteo\Controller {
         public function promote($action = 'list', $id = null, $flag = null) {
             $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-            return Admin\Promote::process($action, $id, $flag);
+            return Admin\Promote::process($action, $id, self::setFilters(__FUNCTION__), $flag);
         }
 
         /*
@@ -549,7 +550,7 @@ namespace Goteo\Controller {
         public function patron($action = 'list', $id = null, $flag = null) {
             $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-            return Admin\Patron::process($action, $id, $flag);
+            return Admin\Patron::process($action, $id, self::setFilters(__FUNCTION__), $flag);
         }
 
         /*
@@ -558,7 +559,7 @@ namespace Goteo\Controller {
         public function banners($action = 'list', $id = null, $flag = null) {
             $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-            return Admin\Banners::process($action, $id, $flag);
+            return Admin\Banners::process($action, $id, self::setFilters(__FUNCTION__), $flag);
         }
 
         /*
@@ -595,6 +596,15 @@ namespace Goteo\Controller {
             $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
             return Admin\Licenses::process($action, $id, self::setFilters(__FUNCTION__));
+        }
+
+        /*
+         * Localizaciones
+         */
+        public function licenses($action = 'list', $id = null) {
+            $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
+            define('ADMIN_BCPATH', $BC);
+            return Admin\Locations::process($action, $id, self::setFilters(__FUNCTION__));
         }
 
         /*
@@ -645,10 +655,10 @@ namespace Goteo\Controller {
         /*
          *  administración de usuarios para superadmin
          */
-        public function users($action = 'list', $id = null, $subaction = '') {
+        public function users($action = 'list', $id = null, $subaction = null) {
             $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-            return Admin\Users::process($action, $id, $subaction, self::setFilters(__FUNCTION__));
+            return Admin\Users::process($action, $id, self::setFilters(__FUNCTION__), $subaction);
         }
 
         /*
@@ -769,7 +779,7 @@ namespace Goteo\Controller {
         public function campaigns($action = 'list', $id = null, $flag = null) {
             $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-            return Admin\Campaigns::process($action, $id, $flag);
+            return Admin\Campaigns::process($action, $id, self::setFilters(__FUNCTION__), $flag);
         }
 
         /*
@@ -832,7 +842,7 @@ namespace Goteo\Controller {
         public function home($action = 'list', $id = null, $type = 'main') {
             $BC = self::menu(array('option'=>__FUNCTION__, 'action' => $action, 'id' => $id));
             define('ADMIN_BCPATH', $BC);
-            return Admin\Home::process($action, $id, $type);
+            return Admin\Home::process($action, $id, self::setFilters(__FUNCTION__), $type);
         }
 
         /*
