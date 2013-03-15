@@ -5,12 +5,6 @@ use Goteo\Library\Text;
 $filters = $this['filters'];
 ?>
 <a href="/admin/locations/add" class="button">Nueva Localización</a>
-&nbsp;&nbsp;&nbsp;
-<a href="/admin/locations/search" class="button">Buscar por Localización</a>
-&nbsp;&nbsp;&nbsp;
-<a href="/admin/locations/check" class="button">Revisar Localizaciones</a>
-&nbsp;&nbsp;&nbsp;
-<a href="/admin/locations/autocheck" class="button">Revisión automática</a>
 
 <div class="widget board">
     <form id="filter-form" action="/admin/locations" method="get">

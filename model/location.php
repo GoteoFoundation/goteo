@@ -79,6 +79,17 @@ namespace Goteo\Model {
                 $values[':name'] = "%".$filters['name']."%";
                 $and = " AND";
             }
+            /*
+            if (isset($filters['used']) && $filters['used'] != 'all') {
+                if ($filters['used']) {
+                    $sqlFilter .= "$and id IN (SELECT DISTINCT(location) FROM user_location, project_location, node_location, call_location)";
+                    $and = " AND";
+                } else {
+                    $sqlFilter .= "$and id NOT IN (SELECT DISTINCT(location) FROM user_location, project_location, node_location, call_location)";
+                    $and = " AND";
+                }
+            }
+             */
 
             $sql = "SELECT *, CONCAT(location, region, country) as name
                     FROM location
@@ -191,9 +202,6 @@ namespace Goteo\Model {
         public static function getCheck ($type = 'user', $limit) {
 
             $list = array();
-
-            return $list;
-
             $values = array();
 
             if (!empty($filter['type']) && !empty($filter['value'])) {
@@ -211,6 +219,55 @@ namespace Goteo\Model {
 
             foreach ($sql->fetchAll(\PDO::FETCH_OBJ) as $item) {
                 $list[] = $item->name;
+            }
+
+            return $list;
+        }
+
+
+        /*
+         * Lista de elementos encontrados por localización
+         */
+        public static function getSearch ($type = 'user', $filters = array()) {
+
+            $list = array();
+            return false();
+            $values = array();
+
+            $sqlFilter = "";
+            $and = " WHERE";
+            if (!empty($filters['location'])) {
+                $sqlFilter .= "$and location LIKE :location";
+                $values[':location'] = $filters['location'];
+                $and = " AND";
+            }
+            if (!empty($filters['region'])) {
+                $sqlFilter .= "$and region LIKE :region";
+                $values[':region'] = $filters['region'];
+                $and = " AND";
+            }
+            if (!empty($filters['country'])) {
+                $sqlFilter .= "$and country LIKE :country";
+                $values[':country'] = $filters['country'];
+                $and = " AND";
+            }
+
+            if (!empty($filters['name'])) {
+                $sqlFilter .= "$and (location LIKE :name OR region LIKE :name OR country LIKE :name)";
+                $values[':name'] = "%".$filters['name']."%";
+                $and = " AND";
+            }
+
+            $sql = "SELECT *, CONCAT(location, region, country) as name
+                    FROM {$type}_location
+                    $sqlFilter
+                    )
+                    ORDER BY name ASC
+                    ";
+
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                $list[] = $item;
             }
 
             return $list;

@@ -18,7 +18,18 @@ namespace Goteo\Controller\Admin {
             $errors = array();
 
             switch ($action)  {
+                
+                // proceso automático para actualizar localidades de registros, auto-crear localizaciones y asignar
+                case 'autocheck':
+                    Message::Info('Aun no esta listo');
+                    throw new Redirection('/admin/locations');
+                    
+
+                    break;
+
+                // crear nueva
                 case 'add':
+
 
                     // si llega post: creamos
                     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
@@ -56,6 +67,8 @@ namespace Goteo\Controller\Admin {
                     );
 
                     break;
+
+                // editar
                 case 'edit':
 
                     $location = Model\Location::get($id);
@@ -93,10 +106,11 @@ namespace Goteo\Controller\Admin {
 
                     break;
 
+                // para revisar registros no asignados a localización
                 case 'check':
 
                     // tipos de registro
-                    $type = array(
+                    $types = array(
                                 'user' => 'Usuarios',
                                 'project' => 'Proyectos',
                                 'node' => 'Nodos',
@@ -116,6 +130,45 @@ namespace Goteo\Controller\Admin {
                             'folder' => 'locations',
                             'file' => 'check',
                             'list' => $list,
+                            'types' => $types,
+                            'action' => 'edit'
+                        )
+                    );
+
+                    break;
+
+                // para encontrar registros por filtros de localización
+                case 'find':
+
+                    // tipos de registro
+                    $types = array(
+                                'user' => 'Usuarios',
+                                'project' => 'Proyectos',
+                                'node' => 'Nodos',
+                                'call' => 'Convocatorias'
+                            );
+
+                    $type = in_array($_GET['type'], $types) ? $_GET['type'] : 'user';
+
+                    // cargar la lista de registros a checkear  (segun tipo de registro)
+                    // son los no asignados a una localizacion
+                    $list = Model\Location::getSearch($type, $filters);
+
+                    $countries = Model\Location::getList(); // distintos paises ya existentes
+                    $regions = Model\Location::getList('region'); // distintas regiones ya existentes (si hay filtro de pais, filtramos estas por pais)
+                    $locations = Model\Location::getList('location'); // distintas localizaciones ya existentes (si hay filtro de region, filtramos estas por region; si no hay filtro de region pero hay filtro de pais, filtramos  estas por pais)
+
+                    // vista de editar
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'locations',
+                            'file' => 'check',
+                            'list' => $list,
+                            'countries' => $countries,
+                            'regions' => $regions,
+                            'locations' => $locations,
+                            'filters' => $filters,
                             'types' => $types,
                             'action' => 'edit'
                         )
