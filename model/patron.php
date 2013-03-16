@@ -212,13 +212,12 @@ namespace Goteo\Model {
         public static function available ($current = null, $node = \GOTEO_NODE) {
 
             $values = array();
-            /*
             if (!empty($current)) {
-                $sqlCurr = " AND project != '$current'";
+                $sqlCurr = " OR project.id = :id";
+                $values[':id'] = $current;
             } else {
                 $sqlCurr = "";
             }
-            */
 
             if ($node != \GOTEO_NODE) {
                 $sqlFilter = " AND project.node = :node";
@@ -235,6 +234,7 @@ namespace Goteo\Model {
                 FROM    project
                 WHERE status = 3
                 $sqlFilter
+                $sqlCurr
                 ORDER BY name ASC
                 ";
 //                AND project.id NOT IN (SELECT project FROM patron WHERE patron.node = :node{$sqlCurr} )
