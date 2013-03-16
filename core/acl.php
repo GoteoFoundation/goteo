@@ -94,7 +94,7 @@ namespace Goteo\Core {
                     ':user' => $user,
                     ':url' => $url
                 );
-                $sql = "SELECT FROM acl WHERE user_id = :user AND url = :url AND allow = 1";
+                $sql = "SELECT id FROM acl WHERE user_id = :user AND url = :url AND allow = 1";
                 $query = Model::query($sql, $values);
                 if ($query->rowCount() > 0)
                     return (bool) Model::query("DELETE FROM acl WHERE user_id = :user AND url = :url", $values);
