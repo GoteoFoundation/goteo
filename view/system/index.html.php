@@ -32,7 +32,6 @@ include 'view/prologue.html.php';
             <div class="widget">
                 <?php foreach ($this['data'] as $item) {
                     echo \trace($item);
-                    //sdklkhjsafkh
                 } ?>
             </div>
 

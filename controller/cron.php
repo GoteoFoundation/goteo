@@ -1393,10 +1393,6 @@ namespace Goteo\Controller {
                     unset($log);
                     echo \vsprintf($log_text, array($call->name)).'<br />';
                 }
-
-
-
-
             }
 
 
