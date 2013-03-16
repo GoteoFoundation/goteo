@@ -436,6 +436,24 @@ namespace Goteo\Controller {
             $tasks = Model\Task::getAll(array(), $node, true);
             return new View('view/admin/index.html.php', array('tasks'=>$tasks));
         }
+        /*
+        public function index ($option = 'index', $action = 'list', $id = null, $subaction = null) {
+            if ($option == 'index') {
+                $BC = self::menu(array('option'=>$option, 'action'=>null, 'id' => null));
+                define('ADMIN_BCPATH', $BC);
+                $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
+                $tasks = Model\Task::getAll(array(), $node, true);
+                return new View('view/admin/index.html.php', array('tasks'=>$tasks));
+            } else {
+                $BC = self::menu(array('option'=>$option, 'action'=>$action, 'id' => $id));
+                define('ADMIN_BCPATH', $BC);
+                $SubC = 'Goteo\Controller\Admin' . \chr(92) . \ucfirst($option);
+                return $SubC::process($action, $id, self::setFilters($option), $subaction);
+            }
+        }
+         *
+         */
+
 
         public function done ($id) {
             $errors = array();
