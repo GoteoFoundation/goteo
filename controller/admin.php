@@ -425,6 +425,7 @@ namespace Goteo\Controller {
         }
 
         /*
+         * // preparado para index unificado
           public function index ($option = 'index', $action = 'list', $id = null, $subaction = null) {
           if ($option == 'index') {
           $BC = self::menu(array('option'=>$option, 'action'=>null, 'id' => null));
@@ -442,20 +443,7 @@ namespace Goteo\Controller {
          *
          */
 
-        public function done($id) {
-            $errors = array();
-            if (!empty($id) && isset($_SESSION['user']->id)) {
-                $task = Model\Task::get($id);
-                if ($task->setDone($errors)) {
-                    Message::Info('La tarea se ha marcado como realizada');
-                } else {
-                    Message::Error(implode('<br />', $errors));
-                }
-            } else {
-                Message::Error('Faltan datos');
-            }
-            throw new Redirection('/admin');
-        }
+        /* Todos estos métodos de a continuación se podrán borrar una vez unificado el index */
 
         /*
          * Info de Actividad reciente para los administradores
@@ -889,6 +877,25 @@ namespace Goteo\Controller {
             define('ADMIN_BCPATH', $BC);
             return Admin\Home::process($action, $id, self::setFilters(__FUNCTION__), $type);
         }
+
+        /* Hasta aquí se `podrá borrar una vez unificado el index */
+
+        // Para marcar tareas listas
+        public function done($id) {
+            $errors = array();
+            if (!empty($id) && isset($_SESSION['user']->id)) {
+                $task = Model\Task::get($id);
+                if ($task->setDone($errors)) {
+                    Message::Info('La tarea se ha marcado como realizada');
+                } else {
+                    Message::Error(implode('<br />', $errors));
+                }
+            } else {
+                Message::Error('Faltan datos');
+            }
+            throw new Redirection('/admin');
+        }
+
 
         /*
          * Menu de secciones, opciones, acciones y config para el panel Admin
