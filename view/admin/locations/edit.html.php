@@ -48,7 +48,7 @@ $location = $this['location'];
             <label><input type="checkbox" name="valid" value="1" <?php if ($location->valid) echo 'checked="checked";' ?>/>Dar por revisada</label>
         </p>
 
-        <input type="cancel" name="cancel" value="Cancelar / Salir sin guardar" />
+        <a class="button" href="/admin/locations">Cancelar / Salir sin guardar</a>
         <input type="submit" name="save" value="Guardar / Aplicar los cambios" />
 
     </form>

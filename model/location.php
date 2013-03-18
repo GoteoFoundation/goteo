@@ -18,6 +18,12 @@ namespace Goteo\Model {
             $lat,
             $valid = 1;
 
+        public static $type = array(
+            'user' => 'Usuario',
+            'project' => 'Proyecto',
+            'node' => 'Nodo',
+            'call' => 'Convocatoria',
+        );
 
         /**
          * Obtener datos de una localizacion (longitud, latitud, nombre completo(montado), poblacion, provincia, pais y si está validada )
@@ -59,17 +65,17 @@ namespace Goteo\Model {
                 }
             }
             if (!empty($filters['location'])) {
-                $sqlFilter .= "$and location LIKE :location";
+                $sqlFilter .= "$and MD5(location) = :location";
                 $values[':location'] = $filters['location'];
                 $and = " AND";
             }
             if (!empty($filters['region'])) {
-                $sqlFilter .= "$and region LIKE :region";
+                $sqlFilter .= "$and MD5(region) = :region";
                 $values[':region'] = $filters['region'];
                 $and = " AND";
             }
             if (!empty($filters['country'])) {
-                $sqlFilter .= "$and country LIKE :country";
+                $sqlFilter .= "$and MD5(country) = :country";
                 $values[':country'] = $filters['country'];
                 $and = " AND";
             }
@@ -175,20 +181,27 @@ namespace Goteo\Model {
             $values = array();
 
             if (!empty($filter['type']) && !empty($filter['value'])) {
-                $sqlFilter = " WHERE {$filter['type']} LIKE :fVal";
+                $sqlFilter = " AND MD5({$filter['type']}) LIKE :fVal";
                 $values[':fVal'] = $filter['value'];
+            }
+
+            if ($filter['type'] == 'name' && !empty($filter['value'])) {
+                $sqlFilter = " AND {$filter['type']} LIKE :fVal";
+                $values[':fVal'] = "%".$filter['value']."%";
             }
 
             $sql = static::query("
                 SELECT
                     DISTINCT({$type}) as name
                 FROM  location
+                WHERE {$type} IS NOT NULL
+                AND {$type} != ''
                 $sqlFilter
                 ORDER BY name ASC
                 ", $values);
 
             foreach ($sql->fetchAll(\PDO::FETCH_OBJ) as $item) {
-                $list[] = $item->name;
+                $list[md5($item->name)] = $item->name;
             }
 
             return $list;
@@ -198,6 +211,8 @@ namespace Goteo\Model {
 
         /*
          * Lista de elementos a checkear
+         * segun el tipo:
+         *      . los que no estén asignados a una geoloc
          */
         public static function getCheck ($type = 'user', $limit) {
 
@@ -218,7 +233,10 @@ namespace Goteo\Model {
                 ", $values);
 
             foreach ($sql->fetchAll(\PDO::FETCH_OBJ) as $item) {
-                $list[] = $item->name;
+                $SubM = 'Goteo\Model' . \chr(92) . \ucfirst($type);
+                $item->$type = $SubM::get($item->item);
+
+                $list[] = $item;
             }
 
             return $list;
@@ -231,35 +249,46 @@ namespace Goteo\Model {
         public static function getSearch ($type = 'user', $filters = array()) {
 
             $list = array();
-            return false();
-            $values = array();
+            $values = array(':type'=>$type);
 
             $sqlFilter = "";
             $and = " WHERE";
             if (!empty($filters['location'])) {
-                $sqlFilter .= "$and location LIKE :location";
+                $sqlFilter .= "$and location.location LIKE :location";
                 $values[':location'] = $filters['location'];
                 $and = " AND";
             }
             if (!empty($filters['region'])) {
-                $sqlFilter .= "$and region LIKE :region";
+                $sqlFilter .= "$and location.region LIKE :region";
                 $values[':region'] = $filters['region'];
                 $and = " AND";
             }
             if (!empty($filters['country'])) {
-                $sqlFilter .= "$and country LIKE :country";
+                $sqlFilter .= "$and location.country LIKE :country";
                 $values[':country'] = $filters['country'];
                 $and = " AND";
             }
 
             if (!empty($filters['name'])) {
-                $sqlFilter .= "$and (location LIKE :name OR region LIKE :name OR country LIKE :name)";
+                $sqlFilter .= "$and (location.location LIKE :name OR location.region LIKE :name OR location.country LIKE :name)";
                 $values[':name'] = "%".$filters['name']."%";
                 $and = " AND";
             }
 
-            $sql = "SELECT *, CONCAT(location, region, country) as name
-                    FROM {$type}_location
+            // solo las de cierto elemento
+            if (!empty($filters['item'])) {
+                $sqlFilter .= "$and location_item.item = :item";
+                $values[':item'] = $filters['item'];
+                $and = " AND";
+            }
+
+            $sql = "SELECT 
+                        *,
+                        CONCAT(location, region, country) as name
+                    FROM location
+                    INNER JOIN location_item
+                        ON location_item.location = location.id
+                        AND location_item.type = :type
                     $sqlFilter
                     )
                     ORDER BY name ASC
@@ -267,6 +296,9 @@ namespace Goteo\Model {
 
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                $SubM = 'Goteo\Model' . \chr(92) . \ucfirst($type);
+                $item->$type = $SubM::get($item->item);
+                
                 $list[] = $item;
             }
 

@@ -191,7 +191,7 @@ namespace Goteo\Controller {
                     'check' => array('label' => 'Verificando Localizaciones', 'item' => false),
                     'search' => array('label' => 'Buscando registros por localización', 'item' => false)
                 ),
-                'filters' => array('valid' => 'all', 'name' => '', 'location' => '', 'region' => '', 'country' => '', 'used' => 'all')
+                'filters' => array('valid' => '0', 'name' => '', 'location' => '', 'region' => '', 'country' => '', 'used' => '1')
             ),
             'mailing' => array(
                 'label' => 'Comunicaciones',

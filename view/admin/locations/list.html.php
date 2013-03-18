@@ -24,8 +24,8 @@ $filters = $this['filters'];
         <div style="float:left;margin:5px;">
             <label for="valid-filter">Por validez:</label><br />
             <select id="valid-filter" name="valid">
-            <?php foreach ($this['valid'] as $Id=>$Name) : ?>
-                <option value="<?php echo $Id; ?>"<?php if ($filters['valid'] == $Id) echo ' selected="selected"';?>><?php echo $Name; ?></option>
+            <?php foreach ($this['valid'] as $vId=>$vName) : ?>
+                <option value="<?php echo $vId; ?>"<?php if ($filters['valid'] === $vId) echo ' selected="selected"';?>><?php echo $vName; ?></option>
             <?php endforeach; ?>
             </select>
         </div>
@@ -33,8 +33,8 @@ $filters = $this['filters'];
         <div style="float:left;margin:5px;">
             <label for="used-filter">Por uso:</label><br />
             <select id="used-filter" name="used">
-            <?php foreach ($this['used'] as $Id=>$Name) : ?>
-                <option value="<?php echo $Id; ?>"<?php if ($filters['used'] == $Id) echo ' selected="selected"';?>><?php echo $Name; ?></option>
+            <?php foreach ($this['used'] as $uId=>$uName) : ?>
+                <option value="<?php echo $uId; ?>"<?php if ($filters['used'] === $uId) echo ' selected="selected"';?>><?php echo $uName; ?></option>
             <?php endforeach; ?>
             </select>
         </div>
@@ -44,27 +44,30 @@ $filters = $this['filters'];
 
         <div style="float:left;margin:5px;">
             <label for="country-filter">Por pais:</label><br />
-            <select id="country-filter" name="used">
-            <?php foreach ($this['countries'] as $Id=>$Name) : ?>
-                <option value="<?php echo $Id; ?>"<?php if ($filters['country'] == $Id) echo ' selected="selected"';?>><?php echo $Name; ?></option>
+            <select id="country-filter" name="country">
+                <option value="">--</option>
+            <?php foreach ($this['countries'] as $cId=>$cName) : ?>
+                <option value="<?php echo $cId; ?>"<?php if ($filters['country'] == $cId) echo ' selected="selected"';?>><?php echo $cName; ?></option>
             <?php endforeach; ?>
             </select>
         </div>
 
         <div style="float:left;margin:5px;">
             <label for="region-filter">Por provincia:</label><br />
-            <select id="region-filter" name="used">
-            <?php foreach ($this['regions'] as $Id=>$Name) : ?>
-                <option value="<?php echo $Id; ?>"<?php if ($filters['region'] == $Id) echo ' selected="selected"';?>><?php echo $Name; ?></option>
+            <select id="region-filter" name="region">
+                <option value="">--</option>
+            <?php foreach ($this['regions'] as $rId=>$rName) : ?>
+                <option value="<?php echo $rId; ?>"<?php if ($filters['region'] == $rId) echo ' selected="selected"';?>><?php echo $rName; ?></option>
             <?php endforeach; ?>
             </select>
         </div>
 
         <div style="float:left;margin:5px;">
             <label for="location-filter">Por poblacion:</label><br />
-            <select id="location-filter" name="used">
-            <?php foreach ($this['locations'] as $Id=>$Name) : ?>
-                <option value="<?php echo $Id; ?>"<?php if ($filters['location'] == $Id) echo ' selected="selected"';?>><?php echo $Name; ?></option>
+            <select id="location-filter" name="location">
+                <option value="">--</option>
+            <?php foreach ($this['locations'] as $lId=>$lName) : ?>
+                <option value="<?php echo $lId; ?>"<?php if ($filters['location'] == $lId) echo ' selected="selected"';?>><?php echo $lName; ?></option>
             <?php endforeach; ?>
             </select>
         </div>

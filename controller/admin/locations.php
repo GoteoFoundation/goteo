@@ -108,6 +108,9 @@ namespace Goteo\Controller\Admin {
 
                 // para revisar registros no asignados a localización
                 case 'check':
+                    Message::Info('Aun no esta listo');
+                    throw new Redirection('/admin/locations');
+
 
                     // tipos de registro
                     $types = array(
@@ -140,23 +143,53 @@ namespace Goteo\Controller\Admin {
                 // para encontrar registros por filtros de localización
                 case 'find':
 
-                    // tipos de registro
-                    $types = array(
-                                'user' => 'Usuarios',
-                                'project' => 'Proyectos',
-                                'node' => 'Nodos',
-                                'call' => 'Convocatorias'
-                            );
+                    Message::Info('Aun no esta listo');
+                    throw new Redirection('/admin/locations');
 
-                    $type = in_array($_GET['type'], $types) ? $_GET['type'] : 'user';
+                    // tipos de registro
+                    $types = Model\Location::$type;
+
+                    $type = array_key_exists($_GET['type'], $types) ? $_GET['type'] : 'user';
 
                     // cargar la lista de registros a checkear  (segun tipo de registro)
                     // son los no asignados a una localizacion
                     $list = Model\Location::getSearch($type, $filters);
 
-                    $countries = Model\Location::getList(); // distintos paises ya existentes
-                    $regions = Model\Location::getList('region'); // distintas regiones ya existentes (si hay filtro de pais, filtramos estas por pais)
-                    $locations = Model\Location::getList('location'); // distintas localizaciones ya existentes (si hay filtro de region, filtramos estas por region; si no hay filtro de region pero hay filtro de pais, filtramos  estas por pais)
+                    $countries = Model\Location::getList('country'); // distintos paises ya existentes
+
+                    // filtro pais sobre regiones
+                    if (empty($filters['region']) && !empty($filters['country'])) {
+                        $regionFilter = array(
+                            'type' => 'country',
+                            'value' => md5($filters['country'])
+                        );
+                        $locationFilter = array(
+                            'type' => 'country',
+                            'value' => md5($filters['country'])
+                        );
+                    } else {
+                        $regionFilter = null;
+                    }
+
+                    // regiones (si hay filtro de pais, filtramos estas por pais)
+                    $regions = Model\Location::getList('region', $regionFilter); 
+
+                    // filtro region sobre localizacion
+                    if (empty($filters['location']) && !empty($filters['region'])) {
+                        $locationFilter = array(
+                            'type' => 'region',
+                            'value' => md5($filters['region'])
+                        );
+                    } elseif (empty($filters['location']) && !empty($filters['country'])) {
+                        $locationFilter = array(
+                            'type' => 'country',
+                            'value' => md5($filters['country'])
+                        );
+                    } else {
+                        $locationFilter = null;
+                    }
+
+                    $locations = Model\Location::getList('location', $locationFilter); // distintas localizaciones ya existentes (si hay filtro de region, filtramos estas por region; si no hay filtro de region pero hay filtro de pais, filtramos  estas por pais)
 
                     // vista de editar
                     return new View(
@@ -183,9 +216,43 @@ namespace Goteo\Controller\Admin {
                     // si hay de region, solo el pais de la region
 
                     $list = Model\Location::getAll($filters);
-                    $countries = Model\Location::getList(); // distintos paises ya existentes
-                    $regions = Model\Location::getList('region'); // distintas regiones ya existentes (si hay filtro de pais, filtramos estas por pais)
-                    $locations = Model\Location::getList('location'); // distintas localizaciones ya existentes (si hay filtro de region, filtramos estas por region; si no hay filtro de region pero hay filtro de pais, filtramos  estas por pais)
+
+                    $countries = Model\Location::getList('country'); // distintos paises ya existentes
+
+                    // filtro pais sobre regiones
+                    if (empty($filters['region']) && !empty($filters['country'])) {
+                        $regionFilter = array(
+                            'type' => 'country',
+                            'value' => $filters['country']
+                        );
+                        $locationFilter = array(
+                            'type' => 'country',
+                            'value' => $filters['country']
+                        );
+                    } else {
+                        $regionFilter = null;
+                    }
+
+                    // regiones (si hay filtro de pais, filtramos estas por pais)
+                    $regions = Model\Location::getList('region', $regionFilter);
+
+                    // filtro region sobre localizacion
+                    if (empty($filters['location']) && !empty($filters['region'])) {
+                        $locationFilter = array(
+                            'type' => 'region',
+                            'value' => $filters['region']
+                        );
+                    } elseif (empty($filters['location']) && !empty($filters['country'])) {
+                        $locationFilter = array(
+                            'type' => 'country',
+                            'value' => $filters['country']
+                        );
+                    } else {
+                        $locationFilter = null;
+                    }
+
+                    $locations = Model\Location::getList('location', $locationFilter); // distintas localizaciones ya existentes (si hay filtro de region, filtramos estas por region; si no hay filtro de region pero hay filtro de pais, filtramos  estas por pais)
+
                     $valid = array(
                                 'all' => 'Todas',
                                 '0' => 'No revisadas',
