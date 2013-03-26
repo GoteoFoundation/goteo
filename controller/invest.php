@@ -6,8 +6,8 @@ namespace Goteo\Controller {
         Goteo\Core\Error,
         Goteo\Core\Redirection,
         Goteo\Model,
-		Goteo\Library\Feed,
-		Goteo\Library\Text,
+        Goteo\Library\Feed,
+        Goteo\Library\Text,
         Goteo\Library\Mail,
         Goteo\Library\Template,
         Goteo\Library\Message,
@@ -26,14 +26,20 @@ namespace Goteo\Controller {
             $message = '';
 
             $projectData = Model\Project::get($project);
-            $methods = Model\Invest::methods();
+            //$methods = Model\Invest::methods();
+            // Métodos habilitados en este entorno
+            // en real solamente tpv, en beta también cash
+            $methods = array(
+                'tpv' => 'tpv',
+                'cash' => 'cash'
+            );
 
             // si no está en campaña no pueden esta qui ni de coña
             if ($projectData->status != 3) {
                 throw new Redirection('/project/'.$project, Redirection::TEMPORARY);
             }
 
-			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $errors = array();
                 $los_datos = $_POST;
@@ -213,6 +219,9 @@ namespace Goteo\Controller {
                 }
             }
 
+            /*----------------------------------
+             * CODIGO PAYPAL DESACTIVADO!!!
+             -----------------------------------*/
             if ($confirm->method == 'paypal') {
 
                 // hay que cambiarle el status a 0
@@ -241,6 +250,9 @@ namespace Goteo\Controller {
                 $log->doPublic('community');
                 unset($log);
             }
+            /*--------------------------------------
+             * FIN CODIGO PAYPAL DESACTIVADO!!!
+             --------------------------------------*/
             // fin segun metodo
 
             // Feed del aporte de la campaña
