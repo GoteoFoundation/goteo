@@ -65,9 +65,9 @@ namespace Goteo\Model\Project {
             if (!empty($this->url)) {
 
                 if ($universalSubtitles) {
-                    return '<script type="text/javascript" src="http://s3.www.universalsubtitles.org/embed.js">
+                    return '<script type="text/javascript" src="http://s3.amazonaws.com/s3.www.universalsubtitles.org/embed.js">
 ({
-    "video_url": "'. trim($this->url) . ' ",
+    "video_url": "'. trim($this->url) . '",
     "base_state": {"language": "'.$lang.'"},
     "video_config": {"width": "620", "height": "380"}
 })
