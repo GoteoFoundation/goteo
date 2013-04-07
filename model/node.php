@@ -184,11 +184,12 @@ namespace Goteo\Model {
             if (!$this->validate($errors)) return false;
 
             $fields = array(
-                'name'
+                'name',
+                'active'
                 );
 
             $set = '';
-            $values = array();
+            $values = array(':id' => $this->id);
 
             foreach ($fields as $field) {
                 if ($set != '') $set .= ", ";
@@ -197,7 +198,7 @@ namespace Goteo\Model {
             }
 
             try {
-                $sql = "REPLACE INTO node SET " . $set;
+                $sql = "UPDATE node SET " . $set . " WHERE id = :id";
                 self::query($sql, $values);
 
                 return true;
@@ -218,6 +219,7 @@ namespace Goteo\Model {
             $fields = array(
                 'id',
                 'name',
+                'url',
                 'active'
                 );
 
@@ -231,7 +233,7 @@ namespace Goteo\Model {
             }
 
             try {
-                $sql = "REPLACE INTO node SET " . $set;
+                $sql = "INSERT INTO node SET " . $set;
                 self::query($sql, $values);
 
                 return true;

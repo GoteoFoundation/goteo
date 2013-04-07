@@ -47,29 +47,29 @@ if (NODE_ID != GOTEO_NODE) {
 			document.write ('<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/mac.css" />');
 		}
 	    </script>
-        <?php if (!isset($useJQuery) || !empty($useJQuery)): ?>
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery-1.6.4.min.js"></script>
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.tipsy.min.js"></script>
-          <!-- custom scrollbars -->
-          <link type="text/css" href="<?php echo SRC_URL ?>/view/css/jquery.jscrollpane.min.css" rel="stylesheet" media="all" />
-          <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.mousewheel.min.js"></script>
-          <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.jscrollpane.min.js"></script>
-          <!-- end custom scrollbars -->
-		  <!-- sliders -->
-		  <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.slides.min.js"></script>
-		  <!-- end sliders -->
-          <!-- fancybox-->   
-		  <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.fancybox.min.js"></script>
-		  <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/fancybox/jquery.fancybox.min.css" media="screen" />
-          <!-- end custom fancybox-->          
+        <!-- custom scrollbars -->
+        <link type="text/css" href="<?php echo SRC_URL ?>/view/css/jquery.jscrollpane.min.css" rel="stylesheet" media="all" />
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.mousewheel.min.js"></script>
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.jscrollpane.min.js"></script>
+        <!-- end custom scrollbars -->
 
-		  <!-- vigilante de sesion -->
-		  <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/watchdog.js"></script>
+        <!-- sliders -->
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.slides.min.js"></script>
+        <!-- end sliders -->
 
-		  <!-- saltos entre nodos -->
-		  <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/nodejump.js"></script>
+        <!-- fancybox-->
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.fancybox.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/fancybox/jquery.fancybox.min.css" media="screen" />
+        <!-- end custom fancybox-->
 
-        <?php endif ?>
+        <!-- vigilante de sesion -->
+        <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/watchdog.js"></script>
+
+        <!-- saltos entre nodos -->
+        <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/nodejump.js"></script>
+
     </head>
 
     <body<?php if (isset($bodyClass)) echo ' class="' . htmlspecialchars($bodyClass) . '"' ?> style="background-color:#B5DADC;">

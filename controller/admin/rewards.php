@@ -13,6 +13,27 @@ namespace Goteo\Controller\Admin {
 
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
+            switch ($action)  {
+                case 'fulfill':
+                    $sql = "UPDATE invest_reward SET fulfilled = 1 WHERE invest = ?";
+                    if (Model\Invest::query($sql, array($id))) {
+                        Message::Info('La recompensa se ha marcado como cumplido');
+                    } else {
+                        Message::Error('Ha fallado al marcar la recompensa');
+                    }
+                    throw new Redirection('/admin/rewards');
+                    break;
+                case 'unfill':
+                    $sql = "UPDATE invest_reward SET fulfilled = 0 WHERE invest = ?";
+                    if (Model\Invest::query($sql, array($id))) {
+                        Message::Info('La recompensa se ha desmarcado, ahora está pendiente');
+                    } else {
+                        message::Error('Ha fallado al desmarcar');
+                    }
+                    throw new Redirection('/admin/rewards');
+                    break;
+            }
+
             // edicion
             if ($action == 'edit' && !empty($id)) {
 
@@ -30,13 +51,12 @@ namespace Goteo\Controller\Admin {
                     $chosen = $_POST['selected_reward'];
                     if (empty($chosen)) {
                         // renuncia a las recompensas, bien por el/ella!
-                        $invest->resign = true;
                         $invest->rewards = array();
                     } else {
-                        $invest->resign = false;
                         $invest->rewards = array($chosen);
                     }
 
+                    $invest->resign = $_POST['resign'];
 
                     // dirección de envio para la recompensa
                     // y datos fiscales por si fuera donativo
@@ -77,20 +97,18 @@ namespace Goteo\Controller\Admin {
 
 
 
-            // listado
-
-            // métodos de pago
-            $methods = Model\Invest::methods();
-            // estados de aporte
-            $investStatus = Model\Invest::status();
             // listado de proyectos
             $projects = Model\Invest::projects();
-            // campañas que tienen aportes
-            $calls = Model\Invest::calls();
+
+            $status = array(
+                        'nok' => 'Pendiente',
+                        'ok'  => 'Cumplida'
+
+                    );
 
             // listado de aportes
             if ($filters['filtered'] == 'yes') {
-                $list = Model\Invest::getList($filters);
+                $list = Model\Project\Reward::getChossen($filters);
             } else {
                 $list = array();
             }
@@ -103,12 +121,8 @@ namespace Goteo\Controller\Admin {
                     'file' => 'list',
                     'list'          => $list,
                     'filters'       => $filters,
-                    'users'         => $users,
                     'projects'      => $projects,
-                    'calls'         => $calls,
-                    'methods'       => $methods,
-                    'status'        => $status,
-                    'investStatus'  => $investStatus
+                    'status'        => $status
                 )
             );
 

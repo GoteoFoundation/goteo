@@ -7,6 +7,7 @@ $nodes = $this['nodes'];
 ?>
 <div class="widget">
     <form action="/admin/tasks/<?php echo ($this['action'] == 'add') ? 'add' : 'edit/'.$task->id ?>" method="post">
+        <?php if (!isset($_SESSION['admin_node']) && $_SESSION['admin_node'] != \GOTEO_NODE) : ?>
         <p>
             <label for="task-node">Nodo:</label><br />
             <select id="task-node" name="node" >
@@ -15,6 +16,9 @@ $nodes = $this['nodes'];
             <?php endforeach; ?>
             </select>
         </p>
+        <?php else : ?>
+        <input type="hidden" name="node" value="<?php echo $_SESSION['admin_node'] ?>" />
+        <?php endif; ?>
         <p>
             <label for="task-text">Explicación:</label><br />
             <textarea id="task-text" name="text" style="width:500px;height:200px;" ><?php echo $task->text ?></textarea>

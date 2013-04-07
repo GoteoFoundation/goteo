@@ -1,17 +1,14 @@
 <?php
 
 use Goteo\Library\Text,
+    Goteo\Library\Buzz,
     Goteo\Core\View;
 
 $call = $this['call'];
-
+$URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
 ?>
-<h2 class="title"><?php echo Text::get('call-splash-campaign_title') ?><br /><?php echo $call->name ?></h2>
 
-<?php if ($call->status == 3) : //inscripcion ?>
-<p class="subtitle red"><?php echo Text::get('call-splash-searching_projects') ?></p>
-<?php elseif (!empty($call->amount)) : //en campaña con dinero ?>
-<p class="subtitle"><?php echo Text::html('call-splash-invest_explain', $call->user->name) ?></p>
-<?php else : //en campaña sin dinero, con recursos ?>
-<p class="subtitle"><?php echo Text::recorta($call->resources, 200) ?></p>
-<?php endif; ?>
+<div id="title">
+	<a href="<?php echo $URL ?>/call/<?php echo $call->id ?>"><img src="/data/images/<?php echo $call->logo->name /*$call->logo->getLink(250, 124, true)*/ ?>" alt="<?php echo $call->user->name ?>" class="logo" /></a>
+	<h2 class="title"><?php echo Text::get('call-splash-campaign_title') ?><br /><?php echo $call->name ?></h2>
+</div>

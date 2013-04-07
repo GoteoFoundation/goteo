@@ -50,11 +50,17 @@ namespace Goteo\Controller {
         public function edit ($id) {
             $project = Model\Project::get($id, null);
 
+            // para que tenga todas las imágenes
             $project->gallery = Model\Image::getAll($id, 'project');
             
-            // si no es su proyecto
-            // si es admin de nodo y no es de su nodo no puede estar editando
-            if ($project->owner != $_SESSION['user']->id && isset($_SESSION['admin_node']) && $project->node != $_SESSION['admin_node']) {
+            // aunque pueda acceder edit, no lo puede editar si
+            if ($project->owner != $_SESSION['user']->id // no es su proyecto
+                && (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] != \GOTEO_NODE) // es admin pero no es admin de central
+                && (isset($_SESSION['admin_node']) && $project->node != $_SESSION['admin_node']) // no es de su nodo
+                && !isset($_SESSION['user']->roles['superadmin']) // no es superadmin
+                && !isset($_SESSION['user']->roles['root']) // no es root
+                && (isset($_SESSION['user']->roles['checker']) && !Model\User\Review::is_assigned($_SESSION['user']->id, $project->id)) // no lo tiene asignado
+                ) {
                 Message::Info('No tienes permiso para editar este proyecto');
                 throw new Redirection('/admin/projects');
             }
@@ -430,20 +436,49 @@ namespace Goteo\Controller {
                     $registry->call = $call;
                     if ($registry->save($errors)) {
 
-                        Message::Info(Text::get('assign-call-success'));
+                        $callData = Model\Call::getMini($call);
+                        // email al autor
+                        // Obtenemos la plantilla para asunto y contenido
+                        $template = Template::get(39);
+
+                        // Sustituimos los datos
+                        $subject = str_replace('%CALLNAME%', $callData->name, $template->title);
+
+                        // En el contenido:
+                        $search  = array('%USERNAME%', '%CALLNAME%', '%CALLERNAME%', '%CALLURL%');
+                        $replace = array($_SESSION['user']->name, $callData->name, $callData->user->name, SITE_URL.'/call/'.$call);
+                        $content = \str_replace($search, $replace, $template->text);
+
+
+                        $mailHandler = new Mail();
+
+                        $mailHandler->to = $_SESSION['user']->email;
+                        $mailHandler->toName = $_SESSION['user']->name;
+                        $mailHandler->subject = $subject;
+                        $mailHandler->content = $content;
+                        $mailHandler->html = true;
+                        $mailHandler->template = $template->id;
+                        if ($mailHandler->send($errors)) {
+                            Message::Info(Text::get('assign-call-success', $callData->name));
+                        } else {
+                            Message::Error(Text::get('project-review-confirm_mail-fail'));
+                            \mail('goteo_fail@doukeshi.org', 'Fallo al enviar mail al crear proyecto asignando a convocatoria', 'Teniamos que enviar email a ' . $_SESSION['user']->email . ' con esta instancia <pre>'.print_r($mailHandler, 1).'</pre> y ha dado estos errores: <pre>' . print_r($errors, 1) . '</pre>');
+                        }
+
+                        unset($mailHandler);
 
                         // Evento feed
                         $log = new Feed();
                         $log->setTarget($call, 'call');
                         $log->populate('nuevo proyecto asignado a convocatoria ' . $call, 'admin/calls/'.$call.'/projects',
-                            \vsprintf('Nuevo proyecto %s asignado automaticamente a la convocatoria %s', array(
+                            \vsprintf('Nuevo proyecto %s aplicado a la convocatoria %s', array(
                                 Feed::item('project', $project->name, $project->id),
                                 Feed::item('call', $call, $call))
                             ));
                         $log->doAdmin('project');
                         unset($log);
                     } else {
-                        \mail(GOTEO_MAIL, 'Fallo al asignar a convocatoria al crear proyecto', 'Teniamos que asignar el nuevo proyecto ' . $project->id . ' a la convocatoria ' . $call . ' con esta instancia <pre>'.print_r($register, 1).'</pre> y ha dado estos errores: <pre>' . print_r($errors, 1) . '</pre>');
+                        \mail('goteo_fail@doukeshi.org', 'Fallo al asignar a convocatoria al crear proyecto', 'Teniamos que asignar el nuevo proyecto ' . $project->id . ' a la convocatoria ' . $call . ' con esta instancia <pre>'.print_r($register, 1).'</pre> y ha dado estos errores: <pre>' . print_r($errors, 1) . '</pre>');
                     }
                 }
 
@@ -467,18 +502,23 @@ namespace Goteo\Controller {
             }
 
 
-            // solamente se puede ver publicamente si
-            // - es el dueño
-            // - es un admin con permiso
-            // - es otro usuario y el proyecto esta available: en campaña, financiado, retorno cumplido o caducado (que no es desechado)
-            if ($project->status > 2 ||
-                $project->owner == $_SESSION['user']->id ||
-                ACL::check('/project/edit/todos') ||
-                ACL::check('/project/view/todos') ||
-                Model\User\Review::is_assigned($_SESSION['user']->id, $project->id)
-                ) {
-                // lo puede ver
+            // solamente se puede ver publicamente si...
+            $grant = false;
+            if ($project->status > 2) // está publicado
+                $grant = true;
+            elseif ($project->owner == $_SESSION['user']->id)  // es el dueño
+                $grant = true;
+            elseif (ACL::check('/project/edit/todos'))  // es un admin
+                $grant = true;
+            elseif (ACL::check('/project/view/todos'))  // es un usuario con permiso
+                $grant = true;
+            elseif (isset($_SESSION['user']->roles['checker']) && Model\User\Review::is_assigned($_SESSION['user']->id, $project->id)) // es un revisor y lo tiene asignado
+                $grant = true;
+            elseif (isset($_SESSION['user']->roles['caller']) && Model\Call\Project::is_assigned($_SESSION['user']->id, $project->id)) // es un convocador y lo tiene seleccionado en su convocatoria
+                $grant = true;
 
+            // si lo puede ver
+            if ($grant) {
                 $viewData = array(
                         'project' => $project,
                         'show' => $show
@@ -493,36 +533,9 @@ namespace Goteo\Controller {
                     $viewData['non-economic'] = true;
                 }
 
-                // -- ojo a los usuarios publicos
-                if (empty($_SESSION['user'])) {
-
-                    // Ya no ocultamos los cofinanciadores a los usuarios públicos.
-                    /*
-                    if ($show == 'supporters') {
-                        Message::Info(Text::get('user-login-required-to_see-supporters'));
-                        throw new Redirection('/project/' .  $id);
-                    }
-                     *
-                     */
-
-                    // --- loguearse para aportar
-                    if ($show == 'invest') {
-                        $_SESSION['jumpto'] = '/project/' .  $id . '/invest';
-                        if (isset($_GET['amount'])) {
-                            $_SESSION['jumpto'] .= '?amount='.$_GET['amount'];
-                        }
-                        Message::Info(Text::get('user-login-required-to_invest'));
-                        throw new Redirection("/user/login");
-                    }
-
-                    // -- Mensaje azul molesto para usuarios no registrados
-                    if ($show == 'messages' || $show == 'updates') {
-                        $_SESSION['jumpto'] = '/project/' .  $id . '/'.$show;
-                        if (isset($_GET['msgto'])) {
-                            $_SESSION['jumpto'] .= '?msgto='.$_GET['msgto'];
-                        }
-                        Message::Info(Text::get('user-login-required'));
-                    }
+                // -- Mensaje azul molesto para usuarios no registrados
+                if (($show == 'messages' || $show == 'updates') && empty($_SESSION['user'])) {
+                    Message::Info(Text::html('user-login-required'));
                 }
 
                 //tenemos que tocar esto un poquito para gestionar los pasos al aportar
@@ -535,22 +548,62 @@ namespace Goteo\Controller {
                     }
 
                     $viewData['show'] = 'supporters';
-                    if (isset($_GET['confirm'])) {
-                        if (\in_array($_GET['confirm'], array('ok', 'fail'))) {
-                            $invest = $_GET['confirm'];
-                        } else {
-                            $invest = 'start';
-                        }
+
+                    /* pasos de proceso aporte
+                     *
+                     * 1, 'start': ver y seleccionar recompensa (y cantidad)
+                     * 2, 'login': loguear con usuario/contraseña o con email (que crea el usuario automáticamente)
+                     * 3, 'confirm': confirmar los datos y saltar a la pasarela de pago
+                     * 4, 'ok'/'fail': al volver de la pasarela de pago, la confirmación nos dice si todo bien o algo mal
+                     * 5, 'continue': recuperar aporte incompleto (variante de confirm)
+                     */
+
+                    // usamos la variable de url $post para movernos entre los pasos
+                    $step = (isset($post) && in_array($post, array('start', 'login', 'confirm', 'continue'))) ? $post : 'start';
+
+                    // si llega confirm ya ha terminado el proceso de aporte
+                    if (isset($_GET['confirm']) && \in_array($_GET['confirm'], array('ok', 'fail'))) {
+                        unset($_SESSION['invest-amount']);
+                        // confirmación
+                        $step = $_GET['confirm'];
                     } else {
-                        $invest = 'start';
+                        // si no, a ver en que paso estamos
+                        if (isset($_GET['amount']))
+                            $_SESSION['invest-amount'] = $_GET['amount'];
+
+                        // si el usuario está validado, recuperamos posible amount y mostramos
+                        if ($_SESSION['user'] instanceof Model\User) {
+                            $step = 'confirm';
+                        } elseif ($step != 'start' && empty($_SESSION['user'])) {
+                            // si no está validado solo puede estar en start
+                            Message::Info(Text::get('user-login-required-to_invest'));
+                            $step = 'start';
+                        } elseif ($step == 'start') {
+                            // para cuando salte
+                            $_SESSION['jumpto'] = '/project/' .  $id . '/invest/#continue';
+                        } else {
+                            $step = 'start';
+                        }
                     }
 
-                    if ($invest == 'start' && !empty($project->called) && !empty($project->called->amount) && $project->called->rest == 0) {
-                        Message::Info('La campaña <strong>'.\strtoupper($project->called->name).'</strong> no tiene Capital Riego disponible actualmente');
+                    /*
+                    elseif (isset($_SESSION['pre-invest'])) {
+                        // aporte incompleto, puede ser que aun no esté logueado
+                        if (empty($_SESSION['user'])) {
+                            $step = 'login';
+                        } else {
+                            $step = 'confirm';
+                        }
                     }
+                     *
+                     */
+
+                    /*
+                        Message::Info(Text::get('user-login-required-to_invest'));
+                        throw new Redirection("/user/login");
+                     */
                     
-
-                    $viewData['invest'] = $invest;
+                    $viewData['step'] = $step;
                 }
 
                 if ($show == 'updates') {
@@ -570,7 +623,7 @@ namespace Goteo\Controller {
                     Message::Info(Text::get('project-messages-closed'));
                 }
 
-                return new View('view/project/public.html.php', $viewData);
+                return new View('view/project/view.html.php', $viewData);
 
             } else {
                 // no lo puede ver

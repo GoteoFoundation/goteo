@@ -34,7 +34,7 @@ namespace Goteo\Controller\Admin {
                     break;
             }
 
-            $projects = Model\Project::published('success');
+            $projects = Model\Project::getList(array('status'=>4));
 
             foreach ($projects as $kay=>&$project) {
                 $project->social_rewards = Model\Project\Reward::getAll($project->id, 'social', LANG, $filters['status'], $filters['icon']);

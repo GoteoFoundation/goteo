@@ -20,7 +20,7 @@ if (!$project instanceof  Goteo\Model\Project) {
 
 <div class="status">
 
-    <div id="project-status">
+    <div id="project-status" style="width: 280px;">
         <h3><?php echo Text::get('form-project-status-title'); ?></h3>
         <ul>
             <?php foreach (Project::status() as $i => $s): ?>

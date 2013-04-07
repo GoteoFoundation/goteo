@@ -5,12 +5,22 @@ use Goteo\Library\Text,
 $project = $this['project'];
 $level = (int) $this['level'] ?: 3;
 
-$share_title = $project->name;
-
 $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
 $share_url = $URL . '/project/' . $project->id;
 if (LANG != 'es')
     $share_url .= '?lang=' . LANG;
+
+$author_twitter = str_replace(
+                        array(
+                            'https://',
+                            'http://',
+                            'www.',
+                            'twitter.com/',
+                            '#!/',
+                            '@'
+                        ), '', $project->user->twitter);
+$author = !empty($author_twitter) ? ' '.Text::get('regular-by').' @'.$author_twitter.' ' : '';
+$share_title = $project->name . $author;
 
 $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($share_title);
 $twitter_url = 'http://twitter.com/home?status=' . urlencode($share_title . ': ' . $share_url . ' #Goteo');

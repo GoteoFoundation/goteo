@@ -102,13 +102,13 @@ namespace Goteo\Model\Call {
         public function validate (&$errors = array()) {
             if (empty($this->call))
                 $errors[] = 'Falta convocatoria';
-
+/*
             if (empty($this->name))
                 $errors[] = 'Falta nombre';
 
             if (empty($this->url))
                 $errors[] = 'Falta enlace';
-
+*/
             if (empty($errors))
                 return true;
             else
@@ -127,6 +127,8 @@ namespace Goteo\Model\Call {
                     \Goteo\Library\Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
                     $this->image = '';
                 }
+            } elseif ($this->image instanceof Image) {
+                $this->image = $this->image->id;
             }
 
             $fields = array(
@@ -151,8 +153,6 @@ namespace Goteo\Model\Call {
                 $sql = "REPLACE INTO call_sponsor SET " . $set;
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
-
-                Check::reorder($this->id, 'up', 'call_sponsor');
 
                 return true;
             } catch(\PDOException $e) {

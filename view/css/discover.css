@@ -133,6 +133,7 @@ div.navi-bar ul.navi li {
     height: 1em;
     overflow: hidden;
     margin-right: .5em;
+    margin-bottom: .5em;
 }
 
 div.navi-bar ul.navi li > * {

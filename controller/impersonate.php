@@ -24,8 +24,12 @@ namespace Goteo\Controller {
                 && !empty($_POST['id'])
                 && !empty($_POST['impersonate'])) {
 
+                $impersonator = $_SESSION['user']->id;
+
                 session_unset();
                 $_SESSION['user'] = User::get($_POST['id']);
+                $_SESSION['impersonating'] = true;
+                $_SESSION['impersonator'] = $impersonator;
 
                 unset($_SESSION['admin_menu']);
                 // si es administrador de nodo cargamos tambien su nodo

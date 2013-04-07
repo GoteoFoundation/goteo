@@ -116,7 +116,7 @@ namespace Goteo\Model {
                         ON invest_reward.reward = reward.id
                     WHERE   invest_reward.invest = ?
                     ", array($invest->id));
-				$invest->rewards = $query->fetchAll(\PDO::FETCH_CLASS);
+				$invest->rewards = $query->fetchAll(\PDO::FETCH_OBJ);
 
 				$query = static::query("
                     SELECT  address, zipcode, location, country
@@ -185,7 +185,7 @@ namespace Goteo\Model {
                 $values[':name'] = "%{$filters['name']}%";
             }
             if (!empty($filters['calls'])) {
-                $sqlFilter .= " AND invest.campaign = 1 AND invest.call = :calls";
+                $sqlFilter .= " AND invest.campaign = 1 AND invest.`call` = :calls";
                 $values[':calls'] = $filters['calls'];
             }
             if (!empty($filters['issue'])) {
@@ -367,32 +367,23 @@ namespace Goteo\Model {
 
                     // si es de convocatoria,
                     if (isset($this->called) && $this->called instanceof Call) {
+
+                        // si el aporte es más de lo que puede 
+                        $drop_amount = ($this->amount > $this->called->curr_maxdrop) ? $this->called->curr_maxdrop : $this->amount;
+
                         // si queda capital riego
-                        if ($this->called->rest > 0) {
-
-                            $drop_amount = $this->amount;
-
-                            // limite de riego
-                            if ($this->called->maxdrop > 0 && $drop_amount > $this->called->maxdrop) {
-                                $drop_amount = $this->called->maxdrop;
-                            }
-
-                            // no queda suficiente
-                            if ($this->called->rest < $this->amount)  {
-                                $drop_amount = $this->called->rest;
-                            }
-
+                        if ($drop_amount > 0) {
                             // se crea el aporte paralelo
                             $drop = new Invest(
                                 array(
                                     'amount' => $drop_amount,
                                     'user' => $this->called->owner,
                                     'project' => $this->project,
-                                    'method' => 'cash',
+                                    'method' => 'drop',
                                     'status' => $this->status,
                                     'invested' => date('Y-m-d'),
                                     'anonymous' => null,
-                                    'resign' => true,
+                                    'resign' => false,
                                     'campaign' => true,
                                     'drops' => $this->id,
                                     'call' => $this->called->id
@@ -401,14 +392,13 @@ namespace Goteo\Model {
 
                             // se actualiza el registro de convocatoria
                             if ($drop->save($errors)) {
-                                self::query("UPDATE invest SET droped=".$drop->id." WHERE id=".$this->id);
+                                self::query("UPDATE invest SET droped = :drop, `call`= :call WHERE id = :id",
+                                        array(':id' => $this->id, ':drop' => $drop->id, ':call' => $this->called->id));
                                 $this->droped = $drop->id;
-                            } else {
-                                $errors[] = 'No se ha podido actualizar el aporte con el capital riego que ha generado';
+                                $this->call = $this->called->id;
                             }
                             
                         } else {
-                            $errors[] = 'No queda capital riego';
                             unset($this->called);
                         }
                     }
@@ -683,12 +673,12 @@ namespace Goteo\Model {
             if (isset ($only) && in_array($only, array('users', 'call'))) {
                 switch ($only) {
                     case 'users':
-                        $sql .= " AND (invest.campaign = 0 OR invest.campaign IS NULL)";
+                        $sql .= " AND invest.method != 'drop'";
                         break;
                     case 'call':
-                        $sql .= " AND invest.campaign = 1";
+                        $sql .= " AND invest.method = 'drop'";
                         if (isset($call)) {
-                            $sql .= " AND invest.call = :call";
+                            $sql .= " AND invest.campaign = 1 AND invest.call = :call";
                             $values['call'] = $call;
                         }
                         break;
@@ -728,6 +718,7 @@ namespace Goteo\Model {
             $sql .= "user.hide as hide,
                     invest.droped as droped,
                     invest.campaign as campaign,
+                    invest.call as `call`,
                     invest.anonymous as anonymous
                 FROM    invest
                 INNER JOIN user
@@ -761,7 +752,8 @@ namespace Goteo\Model {
                         'amount' => $investor->amount,
                         'date' => $investor->date,
                         'droped' => $investor->droped,
-                        'campaign' => $investor->campaign
+                        'campaign' => $investor->campaign,
+                        'call' => $investor->call
                     );
 
                 } else {
@@ -779,7 +771,8 @@ namespace Goteo\Model {
                         'amount' => $investor->amount,
                         'date' => $investor->date,
                         'droped' => $investor->droped,
-                        'campaign' => $investor->campaign
+                        'campaign' => $investor->campaign,
+                        'call' => $investor->call
                     );
 
                 }
@@ -1026,6 +1019,25 @@ namespace Goteo\Model {
         }
 
         /*
+         *  Modifica el campo resign para marcar/desmarcar donativo (independientemente de la recompensa)
+         */
+        public function setResign ($resign) {
+
+            $values = array(
+                ':id' => $this->id,
+                ':resign' => $resign
+            );
+
+            $sql = "UPDATE invest SET resign = :resign WHERE id = :id";
+            if (self::query($sql, $values)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+        /*
          *  marca un aporte como devuelto (devuelto el dinero despues de haber sido cargado)
          */
         public function returnPayment () {
@@ -1112,7 +1124,7 @@ namespace Goteo\Model {
         public static function status ($id = null) {
             $array = array (
                 -1 => 'Incompleto',
-                0  => 'Preaprobado (PayPal)',
+                0  => 'Preaprobado',
                 1  => 'Cobrado por Goteo',
                 2  => 'Cancelado',
                 3  => 'Pagado al proyecto',
@@ -1135,6 +1147,7 @@ namespace Goteo\Model {
             return array (
                 'paypal' => 'Paypal',
                 'tpv'    => 'Tarjeta',
+                'drop'   => 'Riego',
                 'cash'   => 'Manual'
             );
         }
@@ -1298,6 +1311,22 @@ namespace Goteo\Model {
                             $Data['paypal']['total'] = $Data['paypal']['first'];
                         }
 
+                        // DROP
+                        $inv_drop = self::getList(array(
+                            'methods' => 'drop',
+                            'projects' => $project,
+                            'investStatus' => '1'
+                        ));
+                        if (!empty($inv_drop)) {
+                            $Data['drop']['first']['fail'] = 0;
+                            foreach ($inv_drop as $invId => $invest) {
+                                $Data['drop']['first']['users'][$invest->user] = $invest->user;
+                                $Data['drop']['first']['invests']++;
+                                $Data['drop']['first']['amount'] += $invest->amount;
+                            }
+                            $Data['drop']['total'] = $Data['drop']['first'];
+                        }
+
                     } elseif ($act_eq === 'sum') {
                         // complicado: primero los de primera ronda, luego los de segunda ronda sumando al total
                         // calcular ultimo dia de primera ronda segun la fecha de pase
@@ -1363,6 +1392,25 @@ namespace Goteo\Model {
                             $Data['paypal']['total'] = $Data['paypal']['first'];
                         }
 
+                        // DROP first
+                        $inv_drop = self::getList(array(
+                            'methods' => 'drop',
+                            'projects' => $project,
+                            'investStatus' => '1',
+                            'date_until' => $last_day
+                        ));
+                        if (!empty($inv_drop)) {
+                            $Data['drop']['first']['fail'] = 0;
+                            foreach ($inv_drop as $invId => $invest) {
+                                $Data['drop']['first']['users'][$invest->user] = $invest->user;
+                                $Data['drop']['first']['invests']++;
+                                $Data['drop']['first']['amount'] += $invest->amount;
+                            }
+                            $Data['drop']['total'] = $Data['drop']['first'];
+                        }
+
+                        // -- Los de segunda
+                        
                         // CASH  second
                         $inv_cash = self::getList(array(
                             'methods' => 'cash',
@@ -1431,7 +1479,25 @@ namespace Goteo\Model {
                             $Data['paypal']['total']['amount'] += $Data['paypal']['second']['amount'];
                         }
 
-                        
+                        // DROP second
+                        $inv_drop = self::getList(array(
+                            'methods' => 'drop',
+                            'projects' => $project,
+                            'investStatus' => '1',
+                            'date_from' => $passed
+                        ));
+                        if (!empty($inv_drop)) {
+                            $Data['drop']['second']['fail'] = 0;
+                            foreach ($inv_drop as $invId => $invest) {
+                                $Data['drop']['second']['users'][$invest->user] = $invest->user;
+                                $Data['drop']['second']['invests']++;
+                                $Data['drop']['second']['amount'] += $invest->amount;
+                                $Data['drop']['total']['invests']++;
+                                $Data['drop']['second']['amount'] += $invest->amount;
+                            }
+                            $Data['drop']['total']['amount'] += $Data['drop']['second']['amount'];
+                        }
+
                     } else {
                         $Data['note'][] = 'ERROR INFORME!! No se ha calculado bien el parametro $act_eq';
                     }

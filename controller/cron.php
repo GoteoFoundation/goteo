@@ -41,9 +41,11 @@ namespace Goteo\Controller {
                 $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
                 \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
                 \chmod($log_file, 0777);
+                /*
                 @mail('goteo_cron@doukeshi.org', 'Cron '. __FUNCTION__ .' bloqueado en ' . SITE_URL,
                     'Se ha encontrado con que el cron '. __FUNCTION__ .' está bloqueado el '.date('d-m-Y').' a las ' . date ('H:i:s') . '
                         El contenido del bloqueo es: '. $block_content);
+                 */
                 die;
             } else {
                 $block = 'Bloqueo del '.$block_file.' activado el '.date('d-m-Y').' a las '.date ('H:i:s').'<br />';
@@ -564,6 +566,51 @@ namespace Goteo\Controller {
                 if ($debug) echo 'Fin tratamiento Proyecto '.$project->name.'<hr />';
             }
 
+
+            // checkeamos campañas activas
+            $campaigns = Model\Call::getActive(4);
+            foreach ($campaigns as $campaign) {
+                $errors = array();
+
+                // tiene que tener presupuesto
+                if (empty($campaign->amount)) {
+                    continue;
+                }
+
+                // si le quedan cero
+                // -> terminar la campaña exitosamente
+                if ($campaign->rest == 0 && !empty($campaign->amount))  {
+                    echo 'La convocatoria '.$campaign->name.': ';
+                    if ($campaign->checkSuccess($errors)) {
+                        if ($campaign->succeed($errors)) {
+                            echo 'Ha terminado exitosamente.<br />';
+
+                            $log = new Feed();
+                            $log->setTarget($campaign->id, 'call');
+                            $log->unique = true;
+                            $log->populate('Campaña terminada (cron)', '/admin/calls/'.$campaign->id.'?rest='.$amount,
+                                \vsprintf('La campaña %s ha terminado con exito', array(
+                                    Feed::item('call', $campaign->name, $campaign->id))
+                                ));
+                            $log->doAdmin('call');
+                            $log->populate($campaign->name, '/call/'.$campaign->id.'?rest='.$amount,
+                                \vsprintf('La campaña %s ha terminado con éxito', array(
+                                    Feed::item('call', $campaign->name, $campaign->id))
+                                ), $call->logo);
+                            $log->doPublic('projects');
+                            unset($log);
+
+                        } else {
+                            echo 'Ha fallado al marcar exitosa.<br />'.implode('<br />', $errors);
+                        }
+                    } else {
+                        echo 'Le Queda algun proyecto en primera ronda.<br />';
+                    }
+                }
+
+            }
+
+
             // desbloqueamos
             if (unlink($block_file)) {
                 echo 'Cron '. __FUNCTION__ .' desbloqueado<br />';
@@ -623,13 +670,24 @@ namespace Goteo\Controller {
             echo "Eliminados $count2 registros de mail.<br />";
             
             // eliminamos registros de imágenes cuyo archivo no esté en el directorio de imágenes
+
+
+            // busco aportes incompletos con codigo de autorización
+            $sql5 = "SELECT * FROM invest WHERE status = -1 AND transaction IS NOT NULL";
+            $query5 = Model\Project::query($sql5);
+            foreach ($query5->fetchAll(\PDO::FETCH_OBJ) as $row) {
+                @mail('goteo_fail@doukeshi.org',
+                    'Aporte Incompleto con numero de autorización. En ' . SITE_URL,
+                    'Aporte Incompleto con numero de autorización: <pre>' . print_r($row, 1). '</pre>');
+            }
             
             
             // eliminamos aportes incompletos
+            /*
             $sql4 = "DELETE
                 FROM `invest` 
                 WHERE status = -1
-                AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`datetime`)), '%j') > 30
+                AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`datetime`)), '%j') > 120
                 ";
             
             //echo $sql4 . '<br />';
@@ -640,7 +698,7 @@ namespace Goteo\Controller {
             Model\Project::query("DELETE FROM `invest_detail`  WHERE invest NOT IN (SELECT id FROM `invest`)");
             Model\Project::query("DELETE FROM `invest_reward`  WHERE invest NOT IN (SELECT id FROM `invest`)");
             echo "Eliminados $count4 aportes incompletos y sus registros (recompensa, dirección, detalles) relacionados.<br />";
-            
+            */
             
             echo "<hr /> Iniciamos caducidad de tokens<br/>";
             // eliminamos los tokens que tengan más de 4 días
@@ -781,9 +839,11 @@ namespace Goteo\Controller {
                 $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
                 \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
                 \chmod($log_file, 0777);
+                /*
                 @mail('goteo_cron@doukeshi.org', 'Cron '. __FUNCTION__ .' bloqueado en ' . SITE_URL,
                     'Se ha encontrado con que el cron '. __FUNCTION__ .' está bloqueado el '.date('d-m-Y').' a las ' . date ('H:i:s') . '
                         El contenido del bloqueo es: '. $block_content);
+                 */
                 die;
             } else {
                 $block = 'Bloqueo '.$block_file.' activado el '.date('d-m-Y').' a las '.date ('H:i:s').'<br />';
@@ -1333,26 +1393,26 @@ namespace Goteo\Controller {
                     unset($log);
                     echo \vsprintf($log_text, array($call->name)).'<br />';
                 }
+
+
+
+
             }
 
 
 
-            // campañas activas
+            // campañas dando dinero
             $campaigns = Model\Call::getActive(4);
             foreach ($campaigns as $campaign) {
+                $errors = array();
+
+                // tiene que tener presupuesto
+                if (empty($campaign->amount)) {
+                    continue;
+                }
+
                 // a ver cuanto le queda de capital riego
                 $rest = $campaign->rest;
-                echo 'A la campaña '.$campaign->name.' le quedan '.$rest.' euros<br />';
-
-                // si le quedan cero
-                // -> terminar la campaña exitosamente
-                if ($rest == 0 && !empty($campaign->amount))  {
-                    if ($campaign->setSuccess()) {
-                        echo 'Se ha dado por exitosa.<br />';
-                    } else {
-                        echo 'Queda algun proyecto en primera ronda.<br />';
-                    }
-                }
 
                 $doFeed = false;
                 if ($rest < 100) {

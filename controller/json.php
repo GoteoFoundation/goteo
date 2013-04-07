@@ -53,11 +53,15 @@ namespace Goteo\Controller {
                             Feed::item('call', $_SESSION['call']->name, $_SESSION['call']->id))
                         ));
                     $log->doAdmin('call');
-                    $log->populate($projectData->name, '/project/'.$projectData->id,
-                        \vsprintf('Ha sido seleccionado en la convocatoria %s', array(
-                            Feed::item('call', $_SESSION['call']->name, $_SESSION['call']->id))
-                        ), $projectData->gallery[0]->id);
-                    $log->doPublic('projects');
+
+                    // si la convocatoria está en campaña, feed público
+                    if ($_SESSION['call']->status == 4) {
+                        $log->populate($projectData->name, '/project/'.$projectData->id,
+                            \vsprintf('Ha sido seleccionado en la convocatoria %s', array(
+                                Feed::item('call', $_SESSION['call']->name, $_SESSION['call']->id))
+                            ), $projectData->gallery[0]->id);
+                        $log->doPublic('projects');
+                    }
                     unset($log);
                 }
 			}

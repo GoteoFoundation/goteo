@@ -10,6 +10,8 @@ $calls = $this['calls'];
 $droped = $this['droped'];
 $user = $this['user'];
 
+$rewards = $invest->rewards;
+array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
 ?>
 <a href="/admin/accounts/update/<?php echo $invest->id ?>" onclick="return confirm('Seguro que deseas cambiarle el estado a este aporte?, esto es delicado')" class="button">Cambiarle el estado</a>
 &nbsp;&nbsp;&nbsp;
@@ -39,6 +41,10 @@ $user = $this['user'];
         <?php if ($invest->method != 'paypal' && $invest->status == 1) : ?>
         <a href="/admin/accounts/move/<?php echo $invest->id ?>" class="button">Reubicar este aporte</a>
         <?php endif; ?>
+
+        <?php if (!$invest->resign && $invest->status == 1 && $invest->status == 3) : ?>
+        <a href="/admin/accounts/resign/<?php echo $invest->id ?>/?token=<?php echo md5('resign'); ?>" class="button">Es donativo</a>
+        <?php endif; ?>
     </p>
     
     <h3>Detalles de la transaccion</h3>
@@ -67,6 +73,13 @@ $user = $this['user'];
                 if (!empty($invest->returned))
                     echo 'Dinero devuelto el: ' . $invest->returned;
             ?>
+        </dd>
+    </dl>
+
+    <dl>
+        <dt>Donativo:</dt>
+        <dd>
+            <?php echo ($invest->resign) ? 'SI' : 'NO'; ?>
         </dd>
     </dl>
 

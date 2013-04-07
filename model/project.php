@@ -153,7 +153,7 @@ namespace Goteo\Model {
 
             $values = array(
                 ':id'   => md5($user.'-'.$num),
-                ':name' => "Mi proyecto $num",
+                ':name' => "El nuevo proyecto de {$userProfile->name}",
                 ':lang' => 'es',
                 ':status'   => 1,
                 ':progress' => 0,
@@ -312,12 +312,8 @@ namespace Goteo\Model {
                     $project->willpass = date('Y-m-d', \mktime(0, 0, 0, date('m', $ptime), date('d', $ptime)+40, date('Y', $ptime)));
                 }
 
-                // si está en campaña podría tener riego de alguna convocatoria
-                if ($project->status == 3) {
-                    $project->called = Call\Project::called($id);
-                } else {
-                    $project->called = false;
-                }
+                // podría estar asignado a alguna convocatoria
+                $project->called = Call\Project::called($project);
 
                 // datos del nodo
                 if (!empty($project->node)) {
@@ -437,12 +433,16 @@ namespace Goteo\Model {
                 $project->setDays();
                 $project->setTagmark();
 
-				return $project;
+                // podría estar asignado a alguna convocatoria
+                $project->called = Call\Project::called($project);
 
-			} catch(\PDOException $e) {
-				throw \Goteo\Core\Exception($e->getMessage());
-			}
-		}
+
+                return $project;
+
+            } catch(\PDOException $e) {
+                    throw \Goteo\Core\Exception($e->getMessage());
+            }
+        }
 
         /*
          * Listado simple de todos los proyectos
@@ -1631,7 +1631,9 @@ namespace Goteo\Model {
                             self::query("UPDATE project_image SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project_account SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE review SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE call_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE project_lang SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             // borro los permisos, el dashboard los creará de nuevo
                             self::query("DELETE FROM acl WHERE url like ?", array('%'.$this->id.'%'));
@@ -1956,6 +1958,10 @@ namespace Goteo\Model {
                 case 'others':
                     // todos los que estan 'en campaña', en otro nodo
                     if (!empty($sqlFilter)) $sqlFilter = \str_replace('=', '!=', $sqlFilter);
+                    // cambio de criterio, en otros nodos no filtramos por followers,
+                    //   mostramos todos los que estan en campaña (los nuevos primero)
+                    //  limitamos a 40
+                    /*
                     $sql = "SELECT project.id as id,
                                     (SELECT COUNT(DISTINCT(invest.user))
                                         FROM    invest
@@ -1972,6 +1978,14 @@ namespace Goteo\Model {
                             $sqlFilter
                             HAVING followers > 20
                             ORDER BY followers DESC";
+                    */
+                    $limit = 40;
+                    $sql = "SELECT
+                                project.id as id
+                            FROM project
+                            WHERE project.status = 3
+                            $sqlFilter
+                            ORDER BY published DESC";
                     break;
                 default: 
                     // todos los que estan 'en campaña', en cualquier nodo
@@ -2082,12 +2096,20 @@ namespace Goteo\Model {
                     )";
                 $values[':category'] = $filters['category'];
             }
-            if (!empty($node)) {
-                $sqlFilter .= " AND node = :node";
-                $values[':node'] = $node;
-            } elseif (!empty($filters['node'])) {
+            if (!empty($filters['called'])) {
+                $sqlFilter .= " AND id IN (
+                    SELECT project
+                    FROM call_project
+                    WHERE `call` = :called
+                    )";
+                $values[':called'] = $filters['called'];
+            }
+            if (!empty($filters['node'])) {
                 $sqlFilter .= " AND node = :node";
                 $values[':node'] = $filters['node'];
+            } elseif (!empty($node) && $node != \GOTEO_NODE) {
+                $sqlFilter .= " AND node = :node";
+                $values[':node'] = $node;
             }
 
             //el Order

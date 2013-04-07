@@ -15,7 +15,19 @@ $url = $URL . '/widget/project/' . $project->id;
 $widget_code = Text::widget($url . $lsuf);
 $widget_code_investor = Text::widget($url.'/invested/'.$user->id.'/'.$lsuf);
 
-$share_title = Text::get('project-spread-social', $project->name);
+$author_twitter = str_replace(
+                        array(
+                            'https://',
+                            'http://',
+                            'www.',
+                            'twitter.com/',
+                            '#!/',
+                            '@'
+                        ), '', $project->user->twitter);
+$author = !empty($author_twitter) ? ' '.Text::get('regular-by').' @'.$author_twitter : '';
+$share_title = Text::get('project-spread-social', $project->name . $author);
+if (NODE_ID != GOTEO_NODE)
+    $share_title = str_replace ('#goteo', '#'.strtolower (NODE_NAME), $share_title);
 $share_url = $URL . '/project/'.$project->id;
 $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($share_title);
 $twitter_url = 'http://twitter.com/home?status=' . urlencode($share_title . ': ' . $share_url);

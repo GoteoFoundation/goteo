@@ -19,6 +19,7 @@ $filters = $this['filters'];
                     <?php endforeach; ?>
                     </select>
                 </td>
+                <?php if (!isset($_SESSION['admin_node']) && $_SESSION['admin_node'] != \GOTEO_NODE) : ?>
                 <td>
                     <label for="node-filter">Del nodo:</label><br />
                     <select id="node-filter" name="node" onchange="document.getElementById('filter-form').submit();">
@@ -28,6 +29,7 @@ $filters = $this['filters'];
                     <?php endforeach; ?>
                     </select>
                 </td>
+                <?php endif; ?>
                 <td>
                     <label for="user-filter">Realizadas por:</label><br />
                     <select id="user-filter" name="user" onchange="document.getElementById('filter-form').submit();">

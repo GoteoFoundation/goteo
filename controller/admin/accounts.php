@@ -235,7 +235,7 @@ namespace Goteo\Controller\Admin {
                     $log = new Feed();
                     $log->setTarget($projectData->id);
                     $log->populate('Incidencia resuelta (admin)', '/admin/accounts',
-                        \vsprintf("El admin %s ha dado por resuelta la incidencia %s", array(
+                        \vsprintf("El admin %s ha dado por resuelta la incidencia con el botón \"Nos han hecho la transferencia\" para el aporte %s", array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                             Feed::item('system', $id, 'accounts/details/'.$id)
                     )));
@@ -245,6 +245,17 @@ namespace Goteo\Controller\Admin {
                     Message::Info('La incidencia se ha dado por resuelta, el aporte se ha pasado a manual y cobrado');
                     throw new Redirection('/admin/accounts');
                 } else {
+                    // Evento Feed
+                    $log = new Feed();
+                    $log->setTarget($projectData->id);
+                    $log->populate('Fallo al resolver incidencia (admin)', '/admin/accounts',
+                        \vsprintf("Al admin %s le ha fallado el botón \"Nos han hecho la transferencia\" para el aporte %s", array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('system', $id, 'accounts/details/'.$id)
+                    )));
+                    $log->doAdmin('admin');
+                    unset($log);
+
                     Message::Error('Ha fallado al resolver la incidencia: ' . implode (',', $errors));
                     throw new Redirection('/admin/accounts/details/'.$id);
                 }
@@ -539,6 +550,15 @@ namespace Goteo\Controller\Admin {
                         'file' => 'viewer'
                     )
                 );
+            }
+
+            if ($action == 'resign' && !empty($id) && $_GET['token'] == md5('resign')) {
+                if ($invest->setResign(true)) {
+                    Model\Invest::setDetail($invest->id, 'manually-resigned', 'Se ha marcado como donativo independientemente de las recompensas');
+                    throw new Redirection('/admin/accounts/detail/'.$invest->id);
+                } else {
+                    $errors[] = 'Ha fallado al marcar donativo';
+                }
             }
 
             if (!empty($errors)) {

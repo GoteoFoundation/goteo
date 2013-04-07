@@ -11,11 +11,12 @@ namespace Goteo\Controller {
         Goteo\Library\Template,
         Goteo\Library\Message,
         Goteo\Library\Feed,
+        Goteo\Library\Buzz,
         Goteo\Model;
 
     class Call extends \Goteo\Core\Controller {
 
-        public function index($id, $show = 'splash') {
+        public function index($id, $show = 'index') {
             if ($id !== null) {
                 if ($show == 'apply') {
                     // Preparamos la sesión para que al crear proyecto se asigne a esta convocatoria
@@ -68,7 +69,8 @@ namespace Goteo\Controller {
                 $_SESSION['stepped'] = array(
                      'userProfile'  => 'userProfile',
                      'userPersonal' => 'userPersonal',
-                     'overview'     => 'overview'
+                     'overview'     => 'overview',
+                     'supports'     => 'supports'
                 );
 
             // aqui uno que pueda entrar a editar siempre puede ir a todos los pasos
@@ -95,14 +97,18 @@ namespace Goteo\Controller {
                         'title' => Text::get('step-userProfile'),
                         'offtopic' => true
                     ),
-                    'userPersonal' => array(
+                    /* 'userPersonal' => array(
                         'name' => Text::get('step-2'),
                         'title' => Text::get('step-userPersonal'),
                         'offtopic' => true
-                    ),
+                    ), */
                     'overview' => array(
                         'name' => Text::get('step-3'),
                         'title' => Text::get('step-overview')
+                    ),
+                    'supports' => array(
+                        'name' => Text::get('step-6'),
+                        'title' => Text::get('step-supports')
                     ),
                     'preview' => array(
                         'name' => Text::get('step-7'),
@@ -245,6 +251,36 @@ namespace Goteo\Controller {
                     $viewData['scope'] = Model\Project::scope();
                     break;
 
+                case 'supports':
+                    if ($_POST) {
+                        foreach ($_POST as $k => $v) {
+                            if (!empty($v) && preg_match('/banner-(\d+)-edit/', $k, $r)) {
+                                $viewData[$k] = true;
+                            }
+                        }
+
+                        if (!empty($_POST['banner-add'])) {
+                            $last = end($call->banners);
+                            if ($last !== false) {
+                                $viewData["banner-{$last->id}-edit"] = true;
+                            }
+                        }
+                        
+                        foreach ($_POST as $k => $v) {
+                            if (!empty($v) && preg_match('/sponsor-(\d+)-edit/', $k, $r)) {
+                                $viewData[$k] = true;
+                            }
+                        }
+
+                        if (!empty($_POST['sponsor-add'])) {
+                            $last = end($call->sponsors);
+                            if ($last !== false) {
+                                $viewData["sponsor-{$last->id}-edit"] = true;
+                            }
+                        }
+                    }
+                    break;
+
                 case 'preview':
                     break;
             }
@@ -302,7 +338,7 @@ namespace Goteo\Controller {
                     unset($log);
 
                 } else {
-                    Message::Error('No se ha podido crear la convocatoria,  intente otro identificador');
+                    Message::Error(Text::get('call-create-fail'));
                     $error = true;
                 }
 
@@ -320,7 +356,7 @@ namespace Goteo\Controller {
 
         }
 
-        private function view ($id, $show) {
+        private function view ($id, $show = 'index') {
             $call = Model\Call::get($id, LANG);
 
             if (!$call instanceof Model\Call) {
@@ -329,11 +365,9 @@ namespace Goteo\Controller {
             } else {
                 $the_logo = empty($call->logo) ? 1 : $call->logo;
                 $call->logo = Model\Image::get($the_logo);
-                $the_image = empty($call->image) ? 1 : $call->image;
+                // el fondo es el campo  backimage
+                $the_image = empty($call->backimage) ? 1 : $call->backimage;
                 $call->image = Model\Image::get($the_image);
-                if (!empty($call->backimage)) {
-                    $call->backimage = Model\Image::get($call->backimage);
-                }
             }
 
             // solamente se puede ver publicamente si
@@ -345,20 +379,13 @@ namespace Goteo\Controller {
                 ACL::check('/call/edit/todos') ||
                 ACL::check('/call/view/todos')) {
 
-                if (!\in_array($show, array('splash', 'info', 'projects', 'terms'))) {
-                    $show = 'info';
+                if (!\in_array($show, array('index', 'splash', 'info', 'projects', 'terms'))) {
+                    $show = 'index';
                 }
 
-                if ($show == 'projects' && $call->status < 4) {
-                    $show = 'info';
-                }
-
-                $call->categories = Model\Call\Category::getNames($call->id);
-                $call->icons = Model\Call\Icon::getNames($call->id);
-
-                // si esta en edicion y viene especificado el estado que se quiere previsualizar
+                // si viene especificado el estado que se quiere previsualizar
+                if (isset($_GET['preview'])) {
                     // cambiamos el estado
-                if ($call->status == 1 && isset($_GET['preview'])) {
                     switch($_GET['preview']) {
                         case 'apply':
                             $call->status = 3;
@@ -371,9 +398,67 @@ namespace Goteo\Controller {
 
                 }
 
-                // lo puede ver
-                return new View('view/call/'.$show.'.html.php', array('call' => $call));
+                if ($show == 'projects' && $call->status < 4) {
+                    throw new Redirection("/call/".$call->id);
+                }
 
+                $call->categories = Model\Call\Category::getNames($call->id);
+                $call->icons = Model\Call\Icon::getNames($call->id);
+
+                // array de datos en redes sociales (algunos están en $call directamente)
+                $social = (object) array(
+                    'fbappid' => $call->fbappid, // Id de la campaña en faceboook
+                    'tweet' => $call->tweet, // texto de tweet para el boton "tweet"
+                    'author' => '',  // id twitter del convocador
+                    'tags' => array(), // hashtags de la campaña (obtenidos del texto de tweet)
+                    'buzz' => array() // lista de items de buzz en twitter
+                );
+                $social->author = str_replace(
+                        array(
+                            'https://',
+                            'http://',
+                            'www.',
+                            'twitter.com/',
+                            '#!/',
+                            '@'
+                        ), '', $call->user->twitter);
+
+                // para el buzz en la portada
+                if ($show == 'index') {
+                    $matches = array();
+                    preg_match_all('/(#[a-zA-Z0-9_\-]+)/', $call->tweet, $matches);
+                    if (!empty($matches)) {
+                        $social->tags = $matches[0];
+                    }
+
+                    $tsQuery = '';
+                    // tweets con alguno de los hastags
+                    if (!empty($social->tags)) {
+                        $tsQuery .= implode(', OR ', $social->tags);
+                    }
+                    if (!empty($social->author)) {
+                        // mencionando al convocador
+                        $tsQuery .= ($tsQuery == '') ? '@' . $social->author : ' OR @' . $social->author;
+                        // del convocador
+                        $tsQuery .= ($tsQuery == '') ? 'from:' . $social->author : ' OR from:' . $social->author;
+                    }
+                    $tsUrl = "http://search.twitter.com/search?q=".  urlencode($tsQuery);
+                    $social->buzz_debug = $tsUrl;
+
+                    $social->buzz = Buzz::getTweets($tsQuery, true);
+//                      $social->buzz = array();  // para desconectar la petición: descomentar esta linea y comentar la de arriba
+                }
+
+                // filtro proyectos por categoria
+                $filter = null;
+                if ($show == 'projects') {
+                    if (isset($_GET['filter']) && is_numeric($_GET['filter'])) {
+                        $filter = $_GET['filter'];
+                        $call->projects = Model\Call\Project::get($call->id, $filter);
+                        }
+                }
+
+                echo new View('view/call/'.$show.'.html.php', array ('call' => $call, 'social' => $social, 'filter' => $filter));
             } else {
                 // no lo puede ver
                 throw new Redirection("/");
@@ -482,7 +567,8 @@ namespace Goteo\Controller {
 
         /*
          * Paso 2 - DATOS PERSONALES
-         */
+         * No hay más paso 2
+         *
         private function process_userPersonal(&$call, &$errors) {
             if (!isset($_POST['process_userPersonal'])) {
                 return false;
@@ -533,6 +619,8 @@ namespace Goteo\Controller {
 
             return true;
         }
+         *
+         */
 
         /*
          * Paso 3 - DESCRIPCIÓN
@@ -541,7 +629,6 @@ namespace Goteo\Controller {
          *
          *
          */
-
         private function process_overview(&$call, &$errors) {
             if (!isset($_POST['process_overview'])) {
                 return false;
@@ -562,6 +649,8 @@ namespace Goteo\Controller {
                 'scope',
                 'amount',
                 'maxdrop',
+                'maxproj',
+                'modemaxp',
                 'days'
             );
 
@@ -652,7 +741,106 @@ namespace Goteo\Controller {
         }
 
         /*
-         * Paso 4 - PREVIEW
+         * Paso 4 - Colaboradores (banners y sponsors)
+         */
+        private function process_supports(&$call, &$errors) {
+            if (!isset($_POST['process_supports'])) {
+                return false;
+            }
+
+            // campos que guarda este paso: texto para el tweet, el Id de la app de facebook
+            $fields = array(
+                'tweet',
+                'fbappid'
+            );
+
+            foreach ($fields as $field) {
+                if (isset($_POST[$field])) {
+                    $call->$field = $_POST[$field];
+                }
+            }
+
+            // tratar banners existentes
+            foreach ($call->banners as $key => $banner) {
+
+                // quitar las colaboraciones marcadas para quitar
+                if (!empty($_POST["banner-{$banner->id}-remove"])) {
+                    unset($call->banners[$key]);
+                    continue;
+                }
+
+                if (isset($_POST['banner-' . $banner->id . '-id'])) {
+                    $banner->name = $_POST['banner-' . $banner->id . '-name'];
+                    $banner->url = $_POST['banner-' . $banner->id . '-url'];
+                    $banner->order = $_POST['banner-' . $banner->id . '-order'];
+                }
+
+                // si quitan la imagen
+                if (!empty($_POST["banner-{$banner->id}-image_remove"])) {
+                    $banner->image = '';
+                }
+
+                // tratar la imagen que suben
+                if(!empty($_FILES['banner-' . $banner->id . '-image_upload']['name'])) {
+                    $banner->image = $_FILES['banner-' . $banner->id . '-image_upload'];
+                }
+
+            }
+
+            // tratar sponsors existentes
+            foreach ($call->sponsors as $key => $sponsor) {
+
+                // quitar las colaboraciones marcadas para quitar
+                if (!empty($_POST["sponsor-{$sponsor->id}-remove"])) {
+                    unset($call->sponsors[$key]);
+                    continue;
+                }
+
+                if (isset($_POST['sponsor-' . $sponsor->id . '-name'])) {
+                    $sponsor->name = $_POST['sponsor-' . $sponsor->id . '-name'];
+                    $sponsor->url = $_POST['sponsor-' . $sponsor->id . '-url'];
+                    $sponsor->order = $_POST['sponsor-' . $sponsor->id . '-order'];
+                }
+
+                // si quitan la imagen
+                if (!empty($_POST["sponsor-{$sponsor->id}-image_remove"])) {
+                    $sponsor->image = '';
+                }
+
+                // tratar la imagen que suben
+                if(!empty($_FILES['sponsor-' . $sponsor->id . '-image_upload']['name'])) {
+                    $sponsor->image = $_FILES['sponsor-' . $sponsor->id . '-image_upload'];
+                }
+
+            }
+
+            // añadir nuevo banner
+            if (!empty($_POST['banner-add'])) {
+                $call->banners[] = new Model\Call\Banner(array(
+                    'call'  => $call->id,
+                    'name'  => 'Nuevo banner',
+                    'url'   => '',
+                    'image' => '',
+                    'order' => Model\Call\Banner::next($call->id)
+                ));
+            }
+
+            // añadir nuevo sponsor
+            if (!empty($_POST['sponsor-add'])) {
+                $call->sponsors[] = new Model\Call\Sponsor(array(
+                    'call'  => $call->id,
+                    'name'  => 'Nuevo patrocinador',
+                    'url'   => '',
+                    'image' => '',
+                    'order' => Model\Call\Sponsor::next($call->id)
+                ));
+            }
+
+            return true;
+        }
+
+        /*
+         * Paso 5 - PREVIEW
          * No hay nada que tratar porque aq este paso no se le envia nada por post
          */
         private function process_preview(&$call) {

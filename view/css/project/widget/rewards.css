@@ -195,6 +195,12 @@ div.widget.project-rewards ul li.design,
     background-image: url('/view/css/icon/m/design.png');
 }
 
+div.widget.project-invest ul li.thanks,
+div.widget.project-rewards ul li.thanks,
+#rewards-summary ul li.thanks {
+    background-image: url('/view/css/icon/m/thanks.png');
+}
+
 div.widget.project-invest ul li.other,
 div.widget.project-rewards ul li.other,
 #rewards-summary ul li.other {

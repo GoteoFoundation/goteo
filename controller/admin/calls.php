@@ -99,11 +99,15 @@ namespace Goteo\Controller\Admin {
                                         Feed::item('call', $call->name, $call->id))
                                     ));
                                 $log->doAdmin('call');
-                                $log->populate($projectData->name, '/project/'.$projectData->id,
-                                    \vsprintf('Ha sido seleccionado en la convocatoria %s', array(
-                                        Feed::item('call', $call->name, $call->id))
-                                    ), $projectData->gallery[0]->id);
-                                $log->doPublic('projects');
+
+                                // si la convocatoria está en campaña, feed público
+                                if ($call->status == 4) {
+                                    $log->populate($projectData->name, '/project/'.$projectData->id,
+                                        \vsprintf('Ha sido seleccionado en la convocatoria %s', array(
+                                            Feed::item('call', $call->name, $call->id))
+                                        ), $projectData->gallery[0]->id);
+                                    $log->doPublic('projects');
+                                }
                                 unset($log);
 
                             } else {
@@ -178,7 +182,7 @@ namespace Goteo\Controller\Admin {
                 if (empty($call)) {
                     throw new Redirection('/admin/calls/list');
                 }
-                $projects   = Model\Call\Project::get($call->id);
+                $projects   = Model\Call\Project::get($call->id, null, true);
                 $status     = Model\Project::status();
 
                 // los available son los que aparecen en el discover/call pero tambien los que estan en esdicion

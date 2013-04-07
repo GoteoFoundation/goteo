@@ -265,10 +265,11 @@ namespace Goteo\Controller {
                             'accounts' => array('label' => 'Cuentas del proyecto', 'item' => true),
                             'images' => array('label' => 'Imágenes del proyecto', 'item' => true),
                             'move' => array('label' => 'Moviendo a otro Nodo el proyecto', 'item' => true),
+                            'assign' => array('label' => 'Asignando a una Convocatoria el proyecto', 'item' => true),
                             'report' => array('label' => 'Informe Financiero del proyecto', 'item' => true),
                             'rebase' => array('label' => 'Cambiando Id de proyecto', 'item' => true)
                         ),
-                        'filters' => array('status'=>'-1', 'category'=>'', 'proj_name'=>'', 'name'=>'', 'node'=>'', 'order'=>'')
+                        'filters' => array('status'=>'-1', 'category'=>'', 'proj_name'=>'', 'name'=>'', 'node'=>'', 'called'=>'','order'=>'')
                     ),
                     'promote' => array(
                         'label' => 'Proyectos destacados',
@@ -290,9 +291,10 @@ namespace Goteo\Controller {
                         'actions' => array(
                             'list' => array('label' => 'Listando', 'item' => false),
                             'paypal' => array('label' => 'Informe PayPal', 'item' => false),
-                            'projects' => array('label' => 'Informe Impulsores', 'item' => true)
+                            'projects' => array('label' => 'Informe Impulsores', 'item' => true),
+                            'donors' => array('label' => 'Informe Donantes', 'item' => false)
                         ),
-                        'filters' => array('report'=>'','from'=>'', 'until'=>'')
+                        'filters' => array('report'=>'','from'=>'', 'until'=>'', 'year'=>'2012', 'status'=>'', 'user'=>'')
                     ),
                     'reviews' => array(
                         'label' => 'Revisiones',
@@ -302,7 +304,7 @@ namespace Goteo\Controller {
                             'edit' => array('label' => 'Editando briefing', 'item' => true),
                             'report' => array('label' => 'Informe', 'item' => true)
                         ),
-                        'filters' => array('status'=>'', 'checker'=>'')
+                        'filters' => array('project'=>'', 'status'=>'open', 'checker'=>'')
                     ),
                     'rewards' => array(
                         'label' => 'Recompensas',
@@ -310,14 +312,14 @@ namespace Goteo\Controller {
                             'list' => array('label' => 'Listando', 'item' => false),
                             'edit' => array('label' => 'Gestionando recompensa', 'item' => true)
                         ),
-                        'filters' => array('projects'=>'', 'name'=>'')
+                        'filters' => array('project'=>'', 'name'=>'', 'status'=>'')
                     ),
                     'sended' => array(
                         'label' => 'Historial envíos',
                         'actions' => array(
                             'list' => array('label' => 'Emails enviados', 'item' => false)
                         ),
-                        'filters' => array('user'=>'', 'template'=>'', 'node'=>'')
+                        'filters' => array('user'=>'', 'template'=>'', 'node'=>'', 'date_from'=>'', 'date_until'=>'')
                     ),
                     'sponsors' => array(
                         'label' => 'Apoyos institucionales',
@@ -948,7 +950,8 @@ namespace Goteo\Controller {
                     // si lo tenemos en el get, aplicamos ese a la sesión y al array
                     $filters[$field] = (string) $_GET[$field];
                     $_SESSION['admin_filters'][$option][$field] = (string) $_GET[$field];
-                    if ( ($option == 'projects' && $field == 'user')
+                    if ( ($option == 'reports' && $field == 'user')
+                        || ($option == 'projects' && $field == 'user')
                         || ($option == 'users' && $field == 'name')
                         || ($option == 'accounts' && $field == 'name')
                         || ($option == 'rewards' && $field == 'name') ) {
@@ -1041,8 +1044,7 @@ namespace Goteo\Controller {
                                 'projects' => $options['projects'],     // proyectos del nodo
                                 'reviews' => $options['reviews'],       // revisiones de proyectos del nodo
                                 'translates' => $options['translates'], // traducciones de proyectos del nodo
-                                'invests' => $options['invests'],
-                                'reports' => $options['reports']
+                                'invests' => $options['invests']
                             )
                         ),
                         'users' => array(
@@ -1050,7 +1052,8 @@ namespace Goteo\Controller {
                             'options' => array (
                                 'users' => $options['users'],     // usuarios asociados al nodo
                                 'mailing' => $options['mailing'], // comunicaciones del nodoc on sus usuarios / promotores
-                                'sended' => $options['sended']    // historial de envios realizados por el nodo
+                                'sended' => $options['sended'],    // historial de envios realizados por el nodo
+                                'tasks' => $options['tasks']  // gestión de tareas
                             )
                         ),
                         'home' => array(
@@ -1066,15 +1069,12 @@ namespace Goteo\Controller {
                         )
                     );
 
-                    // PIÑONACO!
-                    // a merche le cambiamos la gestion de aportes simple por la buena
-                    if ($_SESSION['user']->id == 'mmtarres') {
-                        unset ($menu['projects']['options']['invests']);
-                        $menu['projects']['options']['accounts'] = $options['accounts'];
-                    }
-
+                    // para admines de central
                     if ($_SESSION['admin_node'] == \GOTEO_NODE)  {
                         unset($menu['contents']['options']['node']);
+                        unset ($menu['projects']['options']['invests']);
+                        $menu['projects']['options']['accounts'] = $options['accounts']; // gestion completa de aportes
+                        $menu['projects']['options']['reports'] = $options['reports']; // informes
                     }
                     
                     break;

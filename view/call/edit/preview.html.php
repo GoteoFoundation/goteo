@@ -7,17 +7,6 @@ use Goteo\Core\View,
 
 $call = $this['call'];
 
-$the_logo = empty($call->logo) ? 1 : $call->logo;
-$call->logo = Model\Image::get($the_logo);
-$the_image = empty($call->image) ? 1 : $call->image;
-$call->image = Model\Image::get($the_image);
-
-$call->categories = Model\Call\Category::getNames($call->id);
-$call->icons = Model\Call\Icon::getNames($call->id);
-
-$types   = $this['types'];
-$errors = $call->errors ?: array();
-
 $finishable = true;
 
 // miramos el pruimer paso con errores para mandarlo a ese
@@ -69,30 +58,13 @@ $elements      = array(
         'type'      => 'html',
         'class'     => 'fullwidth',
         'html'      =>  '<table><tr><td>'
-                        . '<a href="/call/'.$call->id.'?preview=apply" class="button" target="_blank">'.Text::get('call-see_splash-button').' de aplicaci&oacute;n</a>'
+                        . '<a href="/call/'.$call->id.'/?preview=apply" class="button" target="_blank">'.Text::get('call-see_apply-button').'</a>'
                         . '</td><td>'
-                        . '<a href="/call/'.$call->id.'/info?preview=apply" class="button" target="_blank">'.Text::get('call-see_main-button').' de aplicaci&oacute;n</a>'
-                        . '</td></tr><tr><td>'
-                        . '<a href="/call/'.$call->id.'?preview=campaign" class="button" target="_blank">'.Text::get('call-see_splash-button').' de campa&ntilde;a</a>'
-                        . '</td><td>'
-                        . '<a href="/call/'.$call->id.'/info?preview=campaign" class="button" target="_blank">'.Text::get('call-see_main-button').' de campa&ntilde;a</a>'
+                        . '<a href="/call/'.$call->id.'/?preview=campaign" class="button" target="_blank">'.Text::get('call-see_campaign-button').'</a>'
                         . '</td></tr><tr><td>'
                         . '<a href="/dashboard/calls" class="button">'.Text::get('call-go_dashboard-button').'</a>'
                         . '</td></tr></table>'
     )
-
-/*
-    'preview' => array(
-        'type'      => 'html',
-        'class'     => 'fullwidth',
-        'html'      =>   '<div class="project-preview" style="position: relative"><div>'
-                       . '<div class="overlay" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 999"></div>'
-                       . '<div style="z-index: 0">'
-                       . '</div>'
-                       . '</div></div>'
-    )
- *
- */
 );
 
 // Footer

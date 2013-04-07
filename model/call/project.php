@@ -16,23 +16,42 @@ namespace Goteo\Model\Call {
          * @param varcahr(50) $id  Call identifier
          * @return array of categories identifiers
          */
-		public static function get ($call) {
+		public static function get ($call, $filter =  null, $all = false) {
             $array = array ();
             try {
+
+                $values = array(':call'=>$call);
+
+                $sqlFilter = "";
+                if (!empty($filter)) {
+                    $sqlFilter .= "LEFT JOIN project_category
+                        ON project_category.project = call_project.project
+                        AND project_category.category = :filter";
+                    $values[':filter'] = $filter;
+                }
+
+                if (!$all) {
+                    $sqlFilter .= " WHERE (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
+                }
+
                 $sql = "SELECT
                             project.id as id,
                             project.name as name,
                             project.status as status,
+                            project.owner as owner,
                             project.project_location as location,
                             project.subtitle as subtitle,
                             project.description as description
                         FROM project
-                        JOIN call_project
+                        INNER JOIN call_project
                             ON  call_project.project = project.id
                             AND call_project.call = :call
+                        $sqlFilter
+                        GROUP BY project.id
                         ORDER BY project.name ASC
                         ";
-                $query = static::query($sql, array(':call'=>$call));
+                
+                $query = static::query($sql, $values);
                 $items = $query->fetchAll(\PDO::FETCH_OBJ);
 
                 foreach ($items as $item) {
@@ -42,6 +61,8 @@ namespace Goteo\Model\Call {
                     // de la convocatoria
                     $item->amount_call = Model\Invest::invested($item->id, 'call', $call);
 
+                    $item->user = Model\User::getMini($item->owner);
+                    
                     $array[$item->id] = $item;
                 }
 
@@ -56,6 +77,8 @@ namespace Goteo\Model\Call {
          *
          * Los que corresponden a los criterios de la convocatoria (como en discover/call) pero tambien si estan en edicion
          * @FIXME no tiene en cuenta la localidad por la problematica de varias localidades y ámbito
+         *
+         * Que no tenga en cuenta los proyectos numeraco
          *
          * @param void
          * @return array
@@ -72,7 +95,7 @@ namespace Goteo\Model\Call {
                         project.status as status,
                         project.project_location as location
                     FROM project
-                    WHERE project.status > 0
+                    WHERE (status > 1  OR (status = 1 AND id NOT REGEXP '[0-9a-f]{5,40}') )
                     AND project.status < 4
                     AND project.id IN (
                                         SELECT distinct(project)
@@ -178,6 +201,13 @@ namespace Goteo\Model\Call {
          */
         public static function called ($project) {
 
+            // fallo directo: si no está en uno de los estados, si no está en primera ronda, si ha llegado al óptimo
+            if (!in_array($project->status, array(1, 2, 3))
+                || $project->round > 1
+                || $project->invested >= $project->maxcost) {
+                return false;
+            }
+
             try {
                 $sql = "SELECT
                             call_project.call as id
@@ -188,23 +218,80 @@ namespace Goteo\Model\Call {
                         AND call.status > 3 AND call.status < 6
                         LIMIT 1
                         ";
-//                die(str_replace(':project', "'$project'", $sql));
 
-                $query = static::query($sql, array(':project'=>$project));
+                $query = static::query($sql, array(':project'=>$project->id));
                 $called = $query->fetchColumn();
                 if (!empty ($called)) {
                     $call = Model\Call::get($called);
+
+                    // recalculo de maxproj si es modalidad porcentaje
+                    if (empty($project->mincost)) {
+                        $call->maxproj = false;
+                    } elseif (!empty($call->maxproj) && $call->modemaxp == 'per') {
+                        $call->maxproj = $project->mincost * $call->maxproj / 100;
+                    }
+
+                    // calcular el obtenido por este proyecto
+                    $call->project_got = Model\Invest::invested($project->id, 'call', $call->id);
+
+                    // calcular cuanto puede obtener por un aporte
+                    $call->curr_maxdrop = 99999999; // limite actual base
+                    // si establecido un máximo por aporte
+                    if (!empty($call->maxdrop)) {
+                        $call->curr_maxdrop = $call->maxdrop;
+                    }
+                    
+                    // * si establecido un máximo por proyecto y lo que la diferencia es menos que el limite actual
+                    if (!empty($call->maxproj)) {
+                        $new_maxdrop = $call->maxproj - $call->project_got;
+                        if ($new_maxdrop < $call->curr_maxdrop)
+                            $call->curr_maxdrop = $new_maxdrop;
+                    }
+
+                    // * si lo que le falta para el óptimo es menos que el limite actual
+                    $new_maxdrop = $project->maxcost - $project->invested;
+                    if ($new_maxdrop < $call->curr_maxdrop)
+                        $call->curr_maxdrop = $new_maxdrop;
+
+                    // * si a la convocatoria le queda menos que el limite actual
+                    if ($call->rest < $call->curr_maxdrop)
+                        $call->curr_maxdrop = $call->rest;
+                    
 
                     return $call;
                 }
 
             } catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
+                return null;
             }
 
             return false;
         }
 
-	}
+        /*
+         * Devuelve true o false si este proyecto está seleccionado en alguna de las convocatorias del usuario
+         */
+        public static function is_assigned ($user, $project) {
+            $sql = "
+                SELECT project
+                FROM call_project
+                WHERE `call` IN (
+                    SELECT id FROM `call`WHERE owner = :user
+                )
+                AND project = :project";
+            $values = array(
+                ':user' => $user,
+                ':project' => $project
+            );
+            $query = static::query($sql, $values);
+            $legal = $query->fetchObject();
+            if ($legal->project == $project) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    
+    }
     
 }

@@ -19,6 +19,37 @@ div#node-header div.logos div.node-home > a:hover {
     background: url('/nodesys/euskadi/view/css/goteo-logo.png') no-repeat right top;
 }
 
+div#header div#menu{background:none repeat scroll 0 0 #2895CB !important}
+div#header div#menu > ul > li.search fieldset input[type="submit"]:hover{background-color:#58A0CD !important}
+
+/*rollover*/
+div#header div#menu > ul > li.community:hover,
+div#header div#menu > ul > li.login:hover,
+div#header div#menu > ul > li.dashboard:hover{background-color:#58A0CD !important}
+
+/*submenus*/
+div#header div#menu > ul > li.community > div > ul, div#header div#menu > ul > li.dashboard > div > ul{background-color:#2895CB}
+div#header div#menu > ul > li.community > div > ul > li > a:hover,
+div#header div#menu > ul > li.dashboard > div > ul > li > a:hover {
+    background-color: #58A0CD;
+}
+
+/* Pestaña de información/cerrar banner */
+div#header div#menu > ul > li.info > a.open{background:url('/nodesys/euskadi/view/css/node_info_close.png') no-repeat left center transparent} /*si está abierto mostrar cerrar*/
+div#header div#menu > ul > li.info > a.open:hover{background:url('/nodesys/euskadi/view/css/node_info_close.png') no-repeat right center transparent}
+div#header div#menu > ul > li.info > a.close{background:url('/nodesys/euskadi/view/css/node_info.png') no-repeat left center transparent}/*si está cerrado mostrar abrir*/
+div#header div#menu > ul > li.info > a.close:hover{background:url('/nodesys/euskadi/view/css/node_info.png') no-repeat right center transparent}
+/* Fin de pestaña de información/cerrar banner */
+
+div.node-banners-container div.node-banner > div.short-desc{color:#1f81bb;}
+ul.bannerspage li.current a{ background-color:#1f81bb !important;  color:#1f81bb !important}
+
+/*widget de buscador*/
+div.side_widget > div.button.current{color:#1f81bb}
+div.side_widget > div.button.current > p > a{color:#1f81bb;}
+div.side_widget > div.categories.current p.title, div.side_widget > div.rewards.current p.title{color:#1F81BB;}
+/*fin de widget de buscador*/
+
 body.project-show div.project-menu ul li.show a {
     background-image: url('active_menu.png') !important;
 }

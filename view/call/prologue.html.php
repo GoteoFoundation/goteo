@@ -10,13 +10,26 @@
         <meta name="author" content="<?php echo GOTEO_META_AUTHOR ?>" />
         <meta name="copyright" content="<?php echo GOTEO_META_COPYRIGHT ?>" />
         <meta name="robots" content="all" />
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />	
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+        
+        <meta property="og:title" content="<?php echo $call->name; ?>" />
+        <meta property="og:description" content="<?php echo $call->subtitle; ?>" />
+        <meta property="og:image" content="<?php echo SITE_URL ?>/image/<?php echo $call->logo->id; ?>" />
+        <meta property="og:url" content="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>" />
 
 		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/tipsy/tipsy.css" />
         <?php if ($bodyClass == 'splash') : ?>
 		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/splash.css" />
         <?php else : ?>
+		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/twitter.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/view.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/projects.css" />
+        <?php if ($bodyClass == 'info') : ?>
+		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/stats.css" />
+		<?php endif; ?>		
+		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/banners.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/supporters.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/sponsors.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/extra.css" />
         <?php endif; ?>
 
@@ -34,6 +47,8 @@
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery-1.6.4.min.js"></script>
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.tipsy.min.js"></script>
         <?php endif ?>
+		<script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.slides.min.js"></script>
+		<script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/carousel.js"></script>
         <!-- Google analytics -->
         <script type="text/javascript">
 
@@ -83,13 +98,9 @@
 
         <noscript><!-- Please enable JavaScript --></noscript>
 
-		<div id="bgimage">
-<?php if ($bodyClass == 'splash' || ($bodyClass != 'splash' && empty($call->backimage))) : ?>
+        <div id="bgimage">
             <div><img alt="<?php echo $call->name ?>" src="<?php if ($call->image instanceof Goteo\Model\Image) echo $call->image->getLink(5000, 5000) ?>" /></div>
-<?php else : ?>
-            <div><img alt="<?php echo $call->name ?>" src="<?php if ($call->backimage instanceof Goteo\Model\Image) echo $call->backimage->getLink(5000, 5000) ?>" /></div>
-<?php endif; ?>
-		</div>
+        </div>
 
         <div id="wrapper">
 			

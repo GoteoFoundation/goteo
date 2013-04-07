@@ -280,7 +280,8 @@ namespace Goteo\Library {
             $and = " WHERE";
 
             if (!empty($filters['user'])) {
-                $sqlSubFilter .= "AND user.email LIKE :user";
+                $sqlFilter .= $and . " mail.email LIKE :user";
+                $and = " AND";
                 $values[':user'] = "%{$filters['user']}%";
             }
 
@@ -290,26 +291,36 @@ namespace Goteo\Library {
                 $values[':template'] = $filters['template'];
             }
 
+            /*
             if ($node != \GOTEO_NODE) {
                 $sqlFilter .= $and . " mail.node = :node";
                 $and = " AND";
                 $values[':node'] = $node;
-            } elseif (!empty($filters['node'])) {
+            } else
+            */
+            if (!empty($filters['node'])) {
                 $sqlFilter .= $and . " mail.node = :node";
                 $and = " AND";
                 $values[':node'] = $filters['node'];
             }
 
+            if (!empty($filters['date_from'])) {
+                $sqlFilter .= $and . " mail.date >= :date_from";
+                $and = " AND";
+                $values[':date_from'] = $filters['date_from'];
+            }
+            if (!empty($filters['date_until'])) {
+                $sqlFilter .= $and . " mail.date <= :date_until";
+                $and = " AND";
+                $values[':date_until'] = $filters['date_until'];
+            }
+
             $sql = "SELECT
                         mail.id as id,
-                        user.name as user,
                         mail.email as email,
                         mail.template as template,
                         DATE_FORMAT(mail.date, '%d/%m/%Y %H:%i') as date
                     FROM mail
-                    INNER JOIN user
-                        ON user.email = mail.email
-                    $sqlSubFilter
                     $sqlFilter
                     ORDER BY mail.date DESC
                     LIMIT {$limit}";

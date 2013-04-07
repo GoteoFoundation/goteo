@@ -156,6 +156,20 @@ namespace Goteo\Controller\Admin {
                         
                     }
                     
+                } elseif (isset($_POST['assign-to-call'])) {
+
+                    $values = array(':project' => $projData->id, ':call' => $_POST['call']);
+                    try {
+                        $sql = "REPLACE INTO call_project (`call`, `project`) VALUES (:call, :project)";
+                        if (Model\Project::query($sql, $values)) {
+                            $log_text = 'El admin %s ha <span class="red">asignado a la convocatoria call/'.$_POST['call'].'</span> el proyecto '.$projData->name.' %s';
+                        } else {
+                            $log_text = 'Al admin %s le ha <span class="red">fallado al asignar a la convocatoria call/'.$_POST['call'].'</span> el proyecto '.$projData->name.' %s';
+                        }
+                    } catch(\PDOException $e) {
+                        Message::Error("Ha fallado! " . $e->getMessage());
+                    }
+
                 }
 
             }
@@ -349,6 +363,29 @@ namespace Goteo\Controller\Admin {
             }
 
 
+            if ($action == 'assign') {
+                // asignar a una convocatoria solo si
+                //   está en edición a campaña
+                //   y no está asignado
+                if (!in_array($project->status, array('1', '2', '3')) || $project->called) {
+                    Message::Error("No se puede asignar en este estado o ya está asignado a una convocatoria");
+                    throw new Redirection('/admin/projects/list');
+                }
+                // disponibles
+                $available = Model\Call::getAvailable();
+
+                return new View(
+                    'view/admin/index.html.php',
+                    array(
+                        'folder' => 'projects',
+                        'file' => 'assign',
+                        'project' => $project,
+                        'available' => $available
+                    )
+                );
+            }
+
+
             if (!empty($filters['filtered'])) {
                 $projects = Model\Project::getList($filters, $_SESSION['admin_node']);
             } else {
@@ -357,6 +394,7 @@ namespace Goteo\Controller\Admin {
             $status = Model\Project::status();
             $categories = Model\Project\Category::getAll();
             $contracts = Model\Contract::getProjects();
+            $calls = Model\Call::getAvailable(true);
             // la lista de nodos la hemos cargado arriba
             $orders = array(
                 'name' => 'Nombre',
@@ -373,6 +411,7 @@ namespace Goteo\Controller\Admin {
                     'status' => $status,
                     'categories' => $categories,
                     'contracts' => $contracts,
+                    'calls' => $calls,
                     'nodes' => $nodes,
                     'orders' => $orders
                 )

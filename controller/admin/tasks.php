@@ -113,7 +113,7 @@ namespace Goteo\Controller\Admin {
 
                 case 'list':
                 default:
-                    $tasks = Model\Task::getAll($filters);
+                    $tasks = Model\Task::getAll($filters, $_SESSION['admin_node']);
                     $status = array(
                                 'done' => 'Realizadas',
                                 'undone' => 'Pendientes'

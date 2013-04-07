@@ -18,21 +18,41 @@ $days       = $project->days;
 
 // PHP la pifia (y mucho) con los cálculos en coma flotante
 if ($reached >= $minimum) {
-    $minimum_done = round(($reached / $minimum) * 100);
-    $minimum_done_per = round(($reached / $minimum) * 100);
+    $minimum_done = floor(($reached / $minimum) * 100);
+    $minimum_done_per = floor(($reached / $minimum) * 100);
     $minimum_left = 0;
     
 } else {
     
-    $minimum_done = min(100, round(($reached / $minimum) * 100));
-    $minimum_done_per = round(($reached / $minimum) * 100);
-    $minimum_left = max(0, round((1 - $reached / $minimum) * 100));
+    $minimum_done = min(100, floor(($reached / $minimum) * 100));
+    $minimum_done_per = floor(($reached / $minimum) * 100);
+    $minimum_left = max(0, floor((1 - $reached / $minimum) * 100));
     
     if ($minimum_done >= 100) {
         // No muestres 100 si falta aunque sea un céntimo
         $minimum_done = 99;
     }
 }
+
+if (!$horizontal) {
+    // si aun no ha alcanzado el optimo controlamos la visualización para que no confunda
+    // $minimum_done es el % de heigth del mercurio
+    // si no ha alcanzado el óptimo, el máximo será 120%
+    if ($reached < $optimum && $minimum_done > 120)
+        $minimum_done = 120;
+
+    // y si es menos del doble del optimo, que se mantenga en 140
+    if ($reached > $optimum && $reached <= $optimum*1.5) {
+        $minimum_done = 140;
+    }
+
+    // y si es menos de 1.5 del optimo, que se mantenga en 140
+    if ($reached > $optimum && $reached <= $optimum*1.2) {
+        $minimum_done = 135;
+    }
+}
+
+
 
 $more  = $optimum - $minimum;
 $over = $reached - $minimum;
@@ -42,7 +62,7 @@ if ($over > 0) {
     if ($over >= $more) {
         $optimum_done = 100;
     } else {
-        $optimum_done = min(100, round($over / ($optimum - $minimum)));
+        $optimum_done = min(100, floor($over / ($optimum - $minimum)));
         
         if ($optimum_done >= 100) {
             $optimum_done = 99;
@@ -55,7 +75,7 @@ if ($over > 0) {
 
 $optimum_left = 100 - $optimum_done;
 
-$minimum_ratio =  min(100, round(($minimum / $optimum) * 100));
+$minimum_ratio =  min(100, floor(($minimum / $optimum) * 100));
 
 ?>        
     <div class="meter <?php echo $horizontal ? 'hor' : 'ver'; echo $big ? ' big' : ''; echo $activable ? ' activable' : ''; ?>">

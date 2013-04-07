@@ -132,15 +132,15 @@ switch ($order) {
                 }
 
                 // filtro
-                if ($filter == 'pending' && ($cumplida != false || $investData->resign || empty($investData->rewards))) continue;
-                if ($filter == 'fulfilled' && ($cumplida != true || $investData->resign)) continue;
+                if ($filter == 'pending' && ($cumplida != false || empty($investData->rewards))) continue;
+                if ($filter == 'fulfilled' && ($cumplida != true)) continue;
                 if ($filter == 'resign' && !$investData->resign) continue;
                 if ($order  == 'reward' && empty($investData->rewards)) continue;
                 ?>
                 
                 <div class="investor">
 
-                	<div class="left">
+                    <div class="left" style="width:45px;">
                         <a href="/user/<?php echo $investData->user->id; ?>"><img src="<?php echo $investData->user->avatar->getLink(45, 45, true); ?>" /></a>
                     </div>
                     
@@ -152,19 +152,22 @@ switch ($order) {
                     </div>
                    
                     <div class="left recompensas"  style="width:280px;">
-                    <?php if ($investData->issue) : ?>
-                     	<span style="margin-bottom:2px;color:red;"><strong><?php echo Text::get('dashboard-rewards-issue'); ?></strong></span>
-                    <?php endif; ?>
-                    <?php if ($investData->resign) : ?>
+                     	<span style="margin-bottom:2px;" class="<?php echo $estilo;?>"><strong><?php echo Text::get('dashboard-rewards-choosen'); ?></strong></span>
+                    <?php if (empty($investData->rewards)) : // si no hay recompensas es renuncia ?>
                      	<span style="margin-bottom:2px;color:red;"><strong><?php echo Text::get('dashboard-rewards-resigns'); ?></strong></span>
                     <?php else : ?>
-                     	<span style="margin-bottom:2px;" class="<?php echo $estilo;?>"><strong><?php echo Text::get('dashboard-rewards-choosen'); ?></strong></span>
                         <?php foreach ($investData->rewards as $reward) : ?>
-                        <div style="width: 250px; overflow: hidden; height: 18px;" class="<?php echo $estilo;?>">
+                        <div style="width: 250px; overflow: hidden; height: 18px; margin-bottom:2px;" class="<?php echo $estilo;?>">
                         <input type="checkbox"  id="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>" name="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>" value="1" <?php if ($reward->fulfilled == 1) echo ' checked="checked" disabled';?>  />
                         <label for="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>"><?php echo Text::recorta($reward->reward, 40); ?></label>
                         </div>
                         <?php endforeach; ?>
+                    <?php endif; ?>
+                    <?php if ($investData->resign) : // donativo o reconocimiento/agradecimiento ?>
+                     	<span style="margin-bottom:2px;color:green;"><?php echo Text::get('dashboard-rewards-thanks'); ?></span>
+                    <?php endif; ?>
+                    <?php if ($investData->issue) : // si es incidencia ?>
+                     	<span style="margin-bottom:2px;color:red;"><strong><?php echo Text::get('dashboard-rewards-issue'); ?></strong></span>
                     <?php endif; ?>
                     </div>
                     
@@ -178,7 +181,7 @@ switch ($order) {
                     <div class="left">
 	                    <span class="status"><?php echo $cumplida ? '<span class="cumplida">'.Text::get('dashboard-rewards-fulfilled_status').'</span>' : '<span class="pendiente">'.Text::get('dashboard-rewards-pending_status').'</span>'; ?></span>
                         <span class="profile"><a href="/user/profile/<?php echo $investData->user->id ?>" target="_blank"><?php echo Text::get('profile-widget-button'); ?></a> </span>
-                        <span class="contact"><a onclick="msgto_user('<?php echo $investData->user->id; ?>', '<?php echo $investData->user->name; ?>')" style="cursor: pointer;"><?php echo Text::get('regular-send_message'); ?></a></span>
+                        <span class="contact"><a onclick="msgto_user('<?php echo $investData->user->id; ?>', '<?php echo addslashes($investData->user->name); ?>')" style="cursor: pointer;"><?php echo Text::get('regular-send_message'); ?></a></span>
                     </div>
                     
                     

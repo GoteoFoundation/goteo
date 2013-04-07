@@ -1,6 +1,7 @@
 <?php
 use Goteo\Library\Text,
     Goteo\Core\View,
+    Goteo\Model\Image,
     Goteo\Model\Blog\Post;
 
 $blog = $this['blog'];
@@ -14,6 +15,44 @@ if (!empty($this['post'])) {
     $post = Post::get($this['post'], LANG);
 }
 $bodyClass = 'blog';
+
+// metas og: para que al compartir en facebook coja bien el nombre y las imagenes del blog
+if ($this['show'] == 'list') {
+    $ogmeta = array(
+        'title' => 'Goteo Blog',
+        'description' => Text::get('regular-by').' Goteo',
+        'url' => SITE_URL . '/blog'
+    );
+
+    foreach ($posts as $post) {
+        if (count($post->gallery) > 1) {
+            foreach ($post->gallery as $pbimg) {
+                if ($pbimg instanceof Image) {
+                    $ogmeta['image'][] = $pbimg->getLink(500, 285);
+                }
+            }
+        } elseif (!empty($post->image)) {
+            $ogmeta['image'][] = $post->image->getLink(500, 285);
+        }
+    }
+} elseif ($this['show'] == 'post') {
+    $ogmeta = array(
+        'title' => $post->title,
+        'description' => Text::get('regular-by').' '.$post->user->name,
+        'url' => SITE_URL . '/blog/'.$post->id
+    );
+
+    if (count($post->gallery) > 1) {
+        foreach ($post->gallery as $pbimg) {
+            if ($pbimg instanceof Image) {
+                $ogmeta['image'][] = $pbimg->getLink(500, 285);
+            }
+        }
+    } elseif (!empty($post->image)) {
+        $ogmeta['image'] = $post->image->getLink(500, 285);
+    }
+}
+
 
 // paginacion
 require_once 'library/pagination/pagination.php';

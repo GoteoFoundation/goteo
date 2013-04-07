@@ -70,6 +70,9 @@ namespace Goteo\Model {
 	        if($name == "worth") {
 	            return $this->getWorth();
 	        }
+	        if($name == "amount") {
+	            return $this->getAmount();
+	        }
 	        if($name == "projects") {
 	            return $this->getProjects();
 	        }
@@ -615,7 +618,8 @@ namespace Goteo\Model {
         /**
          * Lista de usuarios.
          *
-         * @param  bool $visible    true|false
+         * @param  array $filters  Filtros
+         * @param  string $node    true|false
          * @return mixed            Array de objetos de usuario activos|todos.
          */
         public static function getAll ($filters = array(), $node = null) {
@@ -653,11 +657,23 @@ namespace Goteo\Model {
                     ) ";
                 $values[':role'] = $filters['role'];
             }
+
+            // un admin de central puede filtrar usuarios de nodo
             if (!empty($filters['node'])) {
                 $sqlFilter .= " AND node = :node";
                 $values[':node'] = $filters['node'];
             } elseif (!empty($node) && $node != \GOTEO_NODE) {
-                $sqlFilter .= " AND node = :node";
+                // un admin de nodo puede ver sus usuarios y los que hayan aportado a sus proyectos
+                $sqlFilter .= " AND (node = :node
+                    OR id IN (
+                        SELECT user
+                        FROM invest
+                        INNER JOIN project
+                            ON project.id = invest.project
+                            AND project.node = :node
+                        GROUP BY invest.user
+                        )
+                    )";
                 $values[':node'] = $node;
             }
             if (!empty($filters['project'])) {
@@ -679,7 +695,6 @@ namespace Goteo\Model {
                         $sqlFilter .= " AND id IN (
                             SELECT DISTINCT(owner)
                             FROM project
-                            WHERE status IN ('3', '4', '5', '6')
                             ) ";
                         break;
                     case 'investos': // aportan correctamente a proyectos
@@ -753,9 +768,7 @@ namespace Goteo\Model {
                         hide,
                         DATE_FORMAT(created, '%d/%m/%Y %H:%i:%s') as register_date,
                         node,
-                        (SELECT COUNT(role_id) FROM user_role WHERE user_id = user.id) as roles,
-                        (SELECT SUM(invest.amount) FROM invest WHERE invest.user = user.id AND invest.status IN ('0', '1', '3')) as amount,
-                        (SELECT COUNT(DISTINCT(invest.project)) FROM invest WHERE invest.user = user.id AND invest.status IN ('0', '1', '3')) as projects
+                        (SELECT COUNT(role_id) FROM user_role WHERE user_id = user.id) as roles
                     FROM user
                     WHERE id != 'root'
                         $sqlFilter
@@ -1201,7 +1214,7 @@ namespace Goteo\Model {
             return $worth;
         }
 
-	    /**
+        /**
     	 * Número de proyectos publicados
     	 *
     	 * @return type int	Count(id)
@@ -1210,6 +1223,17 @@ namespace Goteo\Model {
             $query = self::query('SELECT COUNT(id) FROM project WHERE owner = ? AND status > 2', array($this->id));
             $num_proj = $query->fetchColumn(0);
             return $num_proj;
+        }
+
+        /**
+    	 * Cantidad aportada
+    	 *
+    	 * @return type int	Count(id)
+    	 */
+    	private function getAmount () {
+            $query = self::query("SELECT SUM(invest.amount) FROM invest WHERE user = ? AND status IN ('0', '1', '3')", array($this->id));
+            $amount = $query->fetchColumn(0);
+            return $amount;
         }
 
         /**

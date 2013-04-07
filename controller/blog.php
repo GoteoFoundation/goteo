@@ -16,7 +16,7 @@ namespace Goteo\Controller {
                 // -- Mensaje azul molesto para usuarios no registrados
                 if (empty($_SESSION['user'])) {
                     $_SESSION['jumpto'] = '/blog/' .  $post;
-                    Message::Info(Text::get('user-login-required'));
+                    Message::Info(Text::html('user-login-required'));
                 }
             } else {
                 $show = 'list';

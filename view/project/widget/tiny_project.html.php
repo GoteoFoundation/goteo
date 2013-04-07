@@ -2,6 +2,7 @@
 
 use Goteo\Core\View,
     Goteo\Library\Text,
+    Goteo\Library\Check,
     Goteo\Model\Image;
 
 $project = $this['project'];
@@ -48,5 +49,50 @@ $url = '';
         <strong><?php echo \amount_format($project->amount) ?> <span class="euro">&euro;</span></strong>
         <span class="percent"><?php echo $project->per_amount ?> &#37;</span>
     </div>
+    <?php
+    switch ($project->status) {
+        case 1: // en edicion
+        ?>
+    <div class="days"><span><?php echo Text::get('project-view-metter-day_created'); ?></span> <?php echo date('d / m / Y', strtotime($project->created)) ?></div>
+        <?php
+        break;
+
+        case 2: // enviado a revision
+        ?>
+    <div class="days"><span><?php echo Text::get('project-view-metter-day_updated'); ?></span> <?php echo date('d / m / Y', strtotime($project->updated)) ?></div>
+        <?php
+        break;
+
+        case 4: // financiado
+        case 5: // caso de exito
+        ?>
+    <div class="days"><span><?php echo Text::get('project-view-metter-day_success'); ?></span> <?php echo date('d / m / Y', strtotime($project->success)) ?></div>
+        <?php
+        break;
+
+        case 6: // archivado
+        ?>
+    <div class="days"><span><?php echo Text::get('project-view-metter-day_closed'); ?></span> <?php echo date('d / m / Y', strtotime($project->closed)) ?></div>
+        <?php
+        break;
+
+        default:
+            if ($project->days > 2 || $project->days == 0) :
+        ?>
     <div class="days"><span><?php echo Text::get('project-view-metter-days'); ?></span> <?php echo $project->days ?> <?php echo Text::get('regular-days'); ?></div>
+        <?php
+            else :
+                $part = strtotime($project->published);
+                // si primera ronda: published + 40
+                // si segunda ronda: published + 80
+                $plus = 40 * $project->round;
+                $final_day = date('Y-m-d', mktime(0, 0, 0, date('m', $part), date('d', $part)+$plus, date('Y', $part)));
+                $timeTogo = Check::time_togo($final_day,1);
+        ?>
+    <div class="days"><span><?php echo Text::get('project-view-metter-days'); ?></span> <?php echo $timeTogo ?></div>
+        <?php
+            endif;
+        break;
+    }
+    ?>
 </li>

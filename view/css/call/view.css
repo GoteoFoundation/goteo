@@ -54,11 +54,17 @@ body {
 }
 
 
+#banners-social, #title, #info, #supporters-sponsors {
+	background-color: #fff;
+	clear: both;
+	overflow: hidden;
+}
+
 /* Main */
 div#main {
     clear: both;
-	width: 950px;
-	margin: 25px auto 0px;
+	width: 770px;
+	margin: 31px auto 36px;
     overflow: hidden;
 }
 
@@ -76,6 +82,178 @@ div#main ul#list>li {
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
+}
+
+/* Title container */
+
+#title {
+	background-color: rgba(255,255,255,.75);
+}
+
+#title h2.title {
+	color: #666;
+	font-size: 22px;
+	line-height: 1.2em;
+	padding-top: 35px;
+	margin: 0;
+	font-weight: bold;
+	float: right;
+	width: 500px;
+}
+
+#title img.logo {
+	-moz-box-shadow: 7px 0px 22px #ccc;
+	-webkit-box-shadow: 7px 0px 22px #ccc;
+	box-shadow: 7px 0px 22px #ccc;
+}
+
+/* Banners social container */
+
+#banners-social {
+	margin-top: 6px;
+	overflow: hidden;
+}
+
+#banners-social a#capital {
+	width: 91px;
+	height: 122px;
+	display: block;
+	text-indent: -10000px;
+	background: url('/view/css/call/logo-capital_medium.png') no-repeat;
+	float: right;
+	margin: 10px 0 0 0;
+}
+
+#social {
+    float: right;
+    width: 198px;
+}
+
+#social-logo {
+	overflow: hidden;
+}
+
+#social-logo .title {
+    display: none;
+}
+
+#social-logo ul {
+    list-style: none;
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+	width: 100px;
+	float: left;
+	margin-top: 20px;
+}
+
+#social-logo li {
+    display: block;
+    padding-left: 30px;
+    float: left;    
+    min-height: 2em;
+    line-height: 2em;
+    background: no-repeat left center;
+    min-width: 20%;
+}
+
+#social-logo li a {
+    text-decoration: none;
+}
+
+#social-logo li.facebook {
+    background-image: url('/view/css/social/facebook.png');
+}
+
+#social-logo li.google {
+    background-image: url('/view/css/social/google.png');
+}
+
+#social-logo li.twitter {
+    background-image: url('/view/css/social/twitter.png');    
+}
+
+#social-logo li.identica {
+    background-image: url('/view/css/social/identica.png');
+}
+
+#social-logo li.linkedin {
+    background-image: url('/view/css/social/linkedin.png');
+}
+
+#social-logo li.email {
+    padding-left: 0px !important;
+}
+
+#social-logo li.email a {
+    font-size: 11px !important;
+    color: #20B2B3 !important;
+}
+
+#social-logo li.email a:hover {
+    text-decoration: underline !important;
+}
+
+/*
+#social-actions {
+    width: 180px;
+    overflow: hidden;
+}
+*/
+
+#social-actions h2 {
+    margin: 0;
+    margin-bottom: 10px;
+    color: #1db3b2;
+    font-size: 16px;
+    text-align: left;
+}
+
+#social-actions .twitter-share-button {}
+
+#social-actions .fb-like {
+    float: right;
+    margin-right: 20px;
+}
+
+#social-actions .fb-like span {
+    display: block;
+    overflow: hidden;
+    position: relative;
+}
+
+#social-actions .fb-like iframe {
+    height: 62px;
+    overflow: hidden;
+    position: absolute;
+    top: -41px;
+    width: 55px;
+}
+
+
+.connect_widget_not_connected_text {
+  display:none !important;
+}
+ 
+/* Info container */
+
+#info {
+	margin-top: 6px;
+}
+
+.stats-container #content {
+	padding: 0;
+}
+
+/* Supporters sponsors container */
+
+#supporters-sponsors {
+	margin-top: 6px;
+	overflow: hidden;
+}
+
+#supporters-sponsors .title {
+	text-transform: uppercase;
 }
 
 /* Background Image */
@@ -134,7 +312,7 @@ div#main ul#list>li {
 
 div#header div#menu {
     overflow: hidden;
-	width: 600px;
+/*	width: 600px; */
 	float: left;
 }
 
@@ -170,13 +348,13 @@ div#super-header ul > li.home > a:hover {
 div#super-header ul > li.campanya {
 	text-transform: uppercase;
 	font-weight: bold;
-	line-height: 20px;
+	line-height: 1.83em;
     overflow: hidden;
 }
 
 div#super-header div#rightside {
 	float: right;
-	width: 340px;
+	width: 400px;
 }
 
 div#super-header div#rightside {
@@ -477,11 +655,11 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
 
 /* Side */
 #side {
-	width: 175px;
-	float: left; 
-	background-color: #f5f1f2;
+	border-left: 1px solid #CCCCCC;
+	float: right;
+	margin: 0;
 	padding: 20px 0 20px 15px;
-    margin: 0;
+	width: 210px;
 }
 
 #side img.logo {
@@ -498,7 +676,6 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
 
 #side p {
 	font-size: 10px;
-	margin-top: 25px;
 	padding-right: 25px;
 }
 
@@ -519,6 +696,10 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
 #side .money {
 	font-size: 34px;
 	font-weight: bold;
+}
+
+#side .category {
+	padding-right: 45px;
 }
 
 #side .category dd,
@@ -568,16 +749,6 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
 	font-size: 11px;
 }
 
-#side a#capital {
-	width: 91px;
-	height: 122px;
-	display: block;
-	text-indent: -10000px;
-	background: url('/view/css/call/logo-capital.png') no-repeat;
-	margin: 0 auto;
-	padding-right: 10px;
-}
-
 #side a {
 	text-decoration: none;
 }
@@ -609,7 +780,7 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
 
 /* Content */
 #content {
-	width: 670px;
+	width: 500px;
 	padding: 20px 0px 20px 30px;
 	float: left;
 	background-color: #fff;
@@ -721,6 +892,10 @@ span.euro {
     background-image: url('/view/css/icon/s/design.png');
 }
 
+.return ul li.thanks {
+    background-image: url('/view/css/icon/s/thanks.png');
+}
+
 .return ul li.other {
     background-image: url('/view/css/icon/s/other.png');
 }
@@ -817,22 +992,27 @@ h2.title {
 }
 
 p.subtitle {
-	color: #95268d;
-	font-weight: normal;
-	font-size: 16px;
-	margin: 0 0 35px;
-	line-height: 1.2em;
-	padding: 0 60px 0 0;
+    font-weight: normal;
+    font-size: 16px;
+    margin: 15px 10px 10px;
+    line-height: 1.2em;
+    padding: 0 15px 5px 15px;
+    color: #95268d;
+}
+p.subtitle a {
+    font-weight: normal;
+    font-size: 16px;
+    text-decoration: none;
+    color: #95268d;
 }
 
 p.subtitle.red {
-	font-weight: bold;
-	color: red;
-	font-size: 32px;
+    font-weight: bold;
+    color: red;
 }
 
 .freetext {
-	padding: 0 65px 25px 15px;
+	padding: 0 15px 25px 0;
 }
 
 .freetext h3.title {
@@ -935,240 +1115,3 @@ table.info-table tfoot tr > * {
 .info .freetext .button {
 	margin: 15px 0;
 }
-
-/* Projects */
-/*
-.projects #wrapper {
-	background-color: #f5f1f2;
-    background-image: none;
-    background-position: top right;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
-*/
-
-.projects #content {
-	background-color: transparent;
-	padding: 0;
-	width: 760px;
-/*	position: relative;*/
-}
-
-#campaign-desc {
-	background-color: #fff;
-	width: 315px;
-	padding-bottom: 30000px;
-	margin-bottom: -30000px;
-	padding-left: 35px;
-}
-
-#campaign-desc * {
-	margin-top: 0;
-}
-
-#campaign-desc .title {
-	padding-top: 1em;
-}
-
-#project-list {
-	padding: 0 0 50px 35px;
-	margin: 0;
-	overflow: hidden;
-}
-
-#project-list li {
-	padding: 5px;
-	margin: 0 10px 10px 0;
-	list-style-type: none;
-	background-color: #ebe9e9;
-	width: 160px;
-	float: left;
-	min-height: 245px;
-	position: relative;
-	overflow: hidden;
-}
-
-#project-list li.active {
-	background-color: #f8f8f8 !important;
-}
-
-#project-list li .image {
-    height: 79px;
-    text-align: center;
-    background-color: #deddde;
-    padding: 0 !important;
-	overflow: hidden;
-    position: relative;
-}
-
-#project-list li img {
-	width: 160px;
-}
-
-#project-list li .categories {
-	text-align: left;
-    color: #ffffff;
-    background-color: #19b5b3;
-    font-size: 0.8em;
-    text-transform: uppercase;    
-    padding: 2px 8px;
-    opacity: 0.8;
-    filter: alpha(opacity=80);
-    cursor: default;
-    position: absolute;
-    bottom: 0;
-    right: 0;    
-    left: 0;
-}
-
-#project-list li .title {
-    height: 22px;
-    overflow: hidden;
-	margin: 10px 0 5px;
-	line-height: .8em;
-}
-
-#project-list li .author {
-	margin: 0;
-	font-size: 10px;
-	color: #a7a9ac;
-}
-
-#project-list li .author a {
-	text-decoration: none;
-	font-size: 10px;
-	color: #a7a9ac;
-    position: relative;
-    z-index: 999;
-}
-
-#project-list li.active .author a:hover {
-	color: #20b3b2;
-}
-
-#project-list li .title a {
-	text-transform: uppercase;
-	text-decoration: none;
-}
-
-#project-list li.active .title a {
-	color: #20b3b2;
-}
-
-#project-list li .description {
-	margin: 5px 0;
-	font-size: .9em;
-	height: 40px;
-    overflow: hidden;
-}
-
-#project-list li div.obtained {
-    position: relative;
-	padding-left: 10px;
-	padding-bottom: 10px;
-	border-bottom: 1px solid #a7a9ac;
-}
-
-#project-list li span.obtained {
-	text-transform: uppercase;
-	font-size: 11px;
-	padding-top: 10px;
-	border-top: 1px solid #a7a9ac;
-	margin: 10px 0 5px;
-    display: block;
-}
-
-#project-list li div.obtained strong {
-    font-size: 18px;
-    font-weight: bold;
-    color: #96238F;
-    padding-right: 10px;
-    border-right: 1px solid #a7a9ac;
-}
-
-#project-list li div.obtained span.euro {
-    width: 16px;
-    height: 16px;
-    line-height: 2000px;
-    overflow: hidden;
-    display: inline-block;
-    background:  url('/view/css/euro/violet/s.png') no-repeat center;
-    margin-bottom: -1px;
-}
-
-#project-list li div.obtained span.percent {
-    font-size: 18px;
-    font-weight: bold;
-    color: #a7a9ac;
-    padding-left: 5px;
-}
-
-#project-list li .days {
-	font-size: 11px;
-	margin: 1em 0 .5em;
-}
-
-#project-list li .days.red span {
-	color: #ff0000;
-	font-weight: bold;
-}
-
-#project-list li .days span {
-	text-transform: uppercase;
-}
-
-a.expand {
-	position:absolute;
-	top:0;bottom:0;left:0;right:0;
-	width:100%;
-	z-index:99;
-    padding: 0px;	
-}
-
-/** Tagmarks widget **/
-#project-list li div.image div.tagmark {
-    position: absolute;
-    z-index: 899;
-    text-align: left;
-    color: #ffffff;
-    font-size: 1.0em;
-    font-weight: normal;
-    text-transform: uppercase;
-    width: 226px;
-    height: 31px;
-	font-style: normal;
-	letter-spacing: 1px;
-	margin-top: 8px;
-	line-height: 32px;
-	padding: 1px 0px 0px 30px;
-}
-
-#project-list li div.image div.tagmark.green {
-    background:url('/view/css/project/tagmark_green.png') 0 0 no-repeat;
-}
-
-#project-list li div.image div.tagmark.red {
-    background:url('/view/css/project/tagmark_red.png') 0 0 no-repeat;
-}
-
-#project-list li div.image div.tagmark.violet {
-    background:url('/view/css/project/tagmark_violet.png') 0 0 no-repeat;
-}
-
-#project-list li div.image div.tagmark.grey {
-    background:url('/view/css/project/tagmark_grey.png') 0 0 no-repeat;
-}
-
-/* tipografia pequeña para que quepa todo */
-#project-list li div.image div.tagmark span.small {
-    font-size: 0.8em !important;
-	line-height: normal;
-}
-
-/* Dos lineas para el en marcha y aun puedes */
-#project-list li div.image div.tagmark.twolines {
-    padding-top: 4px !important;
-	font-weight: normal;
-	font-style: normal;
-}
-/** Fin tagmarks **/

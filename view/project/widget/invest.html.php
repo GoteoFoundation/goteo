@@ -2,14 +2,38 @@
 
 use Goteo\Core\View,
     Goteo\Library\Worth,
+    Goteo\Model\User,
     Goteo\Model\Invest,
+    Goteo\Model\Call,
     Goteo\Library\Text,
     Goteo\Model\License;
 
 $project = $this['project'];
-$personal = $this['personal'];
-$amount = !empty($_GET['amount']) ? $_GET['amount'] : 0;
+if ($project->called instanceof Call) {
+    $call = $project->called;
+    $rest = $call->rest;
+    // a ver si este usuario ya ha regado este proyecto
+    if ($_SESSION['user'] instanceof User) {
+        $allready = $call->getSupporters(true, $_SESSION['user']->id, $project->id);
+    } else {
+        $allready = false;
+    }
+} else {
+    $call = null;
+}
 
+$personal = $this['personal'];
+$step = $this['step'];
+
+// cantidad de aporte
+if (isset($_SESSION['invest-amount'])) {
+    $amount = $_SESSION['invest-amount'];
+    unset($_SESSION['invest-amount']);
+} elseif (!empty($_GET['amount'])) {
+    $amount = $_GET['amount'];
+} else {
+    $amount = 0;
+}
 
 $level = (int) $this['level'] ?: 3;
 
@@ -21,9 +45,7 @@ foreach (License::getAll() as $l) {
     $licenses[$l->id] = $l;
 }
 
-$action = '/invest/' . $project->id;
-
-
+$action = ($step == 'start') ? '/user/login' : '/invest/' . $project->id;
 ?>
 <div class="widget project-invest project-invest-amount">
     <h<?php echo $level ?> class="title"><?php echo Text::get('invest-amount') ?></h<?php echo $level ?>>
@@ -33,13 +55,19 @@ $action = '/invest/' . $project->id;
     <label><input type="text" id="amount" name="amount" class="amount" value="<?php echo $amount ?>" /><?php echo Text::get('invest-amount-tooltip') ?></label>
 </div>
 
-<?php if ($project->called && $project->called->rest > 0) : ?>
+<?php if ($call && !empty($call->amount)) : ?>
 <div class="widget project-invest project-called">
-    <input type="hidden" id="rest" name="rest" value="<?php echo $project->called->rest ?>" />
-    <p><?php echo Text::html('call-splash-invest_explain_this', $project->called->user->name) ?>
-    <?php if (!empty($project->called->maxdrop)) : ?> Hasta un m&aacute;ximo de <strong><?php echo $project->called->maxdrop ?> &euro;</strong><?php endif; ?>
-    </p>
-    <p>Solo quedan <strong><?php echo $project->called->rest ?> &euro;</strong> de <span class="riego">Capital Riego</span> en la campa&ntilde;a <span class="call"><?php echo $project->called->name ?></span></p>
+<?php if ($allready > 0) : ?>
+    <p><?php echo Text::html('invest-called-allready', $call->name) ?></p>
+<?php elseif ($call->project_got >= $call->maxproj) : ?>
+    <p><?php echo Text::html('invest-called-maxproj', $call->name) ?></p>
+<?php elseif ($rest > 0) : ?>
+    <input type="hidden" id="rest" name="rest" value="<?php echo $rest ?>" />
+    <p><?php echo Text::html('call-splash-invest_explain_this', $call->user->name) ?><br /><?php echo Text::html('invest-called-maxdrop', $call->curr_maxdrop) ?></p>
+    <p><?php echo Text::html('invest-called-rest', \amount_format($rest), $call->name) ?></p>
+<?php else: ?>
+    <p><?php echo Text::html('invest-called-nodrop', $call->name) ?></p>
+<?php endif; ?>
 </div>
 <?php endif; ?>
 
@@ -77,27 +105,53 @@ $action = '/invest/' . $project->id;
 
 </div>
 
+<?php
+// si es el primer paso, mostramos el botón para ir a login
+if ($step == 'start') : ?>
+<div class="widget project-invest method">
+    <h<?php echo $level ?> class="beak"><?php echo Text::get('user-login-required-to_invest') ?></h<?php echo $level ?>>
+
+    <div class="buttons">
+        <button type="submit" class="button red" name="go-login" value=""><?php echo Text::get('imperative-register'); ?></button>
+    </div>
+
+    <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span id="amount-reminder"><?php echo $amount ?></span></div>
+
+</div>
+<?php else : ?>
+<a name="continue"></a>
 <div class="widget project-invest address">
     <h<?php echo $level ?> class="beak" id="address-header"><?php echo Text::get('invest-address-header') ?></h<?php echo $level ?>>
     <table>
-        <tr id="donation-data" style="display:none;">
-            <td><label for="fullname"><?php echo Text::get('invest-address-name-field') ?></label></td>
-            <td colspan="3"><input type="text" id="fullname" name="fullname" value="<?php echo $personal->contract_name; ?>" /></td>
-            <td><label for="nif"><?php echo Text::get('invest-address-nif-field') ?></label></td>
-            <td><input type="text" id="nif" name="nif" value="<?php echo $personal->contract_nif; ?>" /></td>
+        <tr>
+            <td>
+                <label for="fullname"><?php echo Text::get('invest-address-name-field') ?></label><br />
+                <input type="text" id="fullname" name="fullname" value="<?php echo $personal->contract_name; ?>" />
+            </td>
+            <td><?php /* Para ocultar el campo nif:  id="donation-data" style="display:none;"  */ ?>
+                <label for="nif"><?php echo Text::get('invest-address-nif-field') ?></label><br />
+                <input type="text" id="nif" name="nif" value="<?php echo $personal->contract_nif; ?>" />
+            </td>
         </tr>
         <tr>
-            <td><label for="address"><?php echo Text::get('invest-address-address-field') ?></label></td>
-            <td colspan="3"><input type="text" id="address" name="address" value="<?php echo $personal->address; ?>" /></td>
-            <td><label for="zipcode"><?php echo Text::get('invest-address-zipcode-field') ?></label></td>
-            <td><input type="text" id="zipcode" name="zipcode" value="<?php echo $personal->zipcode; ?>" /></td>
+            <td>
+                <label for="address"><?php echo Text::get('invest-address-address-field') ?></label><br />
+                <input type="text" id="address" name="address" value="<?php echo $personal->address; ?>" />
+            </td>
+            <td>
+                <label for="zipcode"><?php echo Text::get('invest-address-zipcode-field') ?></label><br />
+                <input type="text" id="zipcode" name="zipcode" value="<?php echo $personal->zipcode; ?>" />
+            </td>
         </tr>
         <tr>
-            <td><label for="location"><?php echo Text::get('invest-address-location-field') ?></label></td>
-            <td><input type="text" id="location" name="location" value="<?php echo $personal->location; ?>" /></td>
-            <td><label for="country"><?php echo Text::get('invest-address-country-field') ?></label></td>
-            <td><input type="text" id="country" name="country" value="<?php echo $personal->country; ?>" /></td>
-            <td colspan="2"></td>
+            <td>
+                <label for="location"><?php echo Text::get('invest-address-location-field') ?></label><br />
+                <input type="text" id="location" name="location" value="<?php echo $personal->location; ?>" />
+            </td>
+            <td>
+                <label for="country"><?php echo Text::get('invest-address-country-field') ?></label><br />
+                <input type="text" id="country" name="country" value="<?php echo $personal->country; ?>" />
+            </td>
         </tr>
     </table>
 
@@ -119,8 +173,10 @@ $action = '/invest/' . $project->id;
 
     <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span id="amount-reminder"><?php echo $amount ?></span></div>
 
-</form>
 </div>
+<?php endif; ?>
+
+</form>
 
 <?php echo new View('view/project/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $_SESSION['user']->worth)) ?>
 
@@ -235,27 +291,31 @@ $action = '/invest/' . $project->id;
             var a = $(this).attr('amount');
             var i = $(this).attr('id');
 
+            <?php if ($step == 'start') : ?>
+                reset_reward(i);
+            <?php else : ?>
             // si es renuncio
             if ($('#resign_reward').attr('checked') == 'checked') {
                 $("#address-header").html('<?php echo Text::slash('invest-donation-header') ?>');
-                $("#donation-data").show();
+                /*$("#donation-data").show();*/
                 reset_reward(i);
             } else {
                 $("#address-header").html('<?php echo Text::slash('invest-address-header') ?>');
-                $("#donation-data").hide();
+                /*$("#donation-data").hide();*/
                 reset_reward(i);
             }
+            <?php endif; ?>
             
             if (greater(a, curr)) {
                 reset_reminder(a);
             }
         });
 
-/* Verificacion */
+/* Verificacion, no tenemos en cuenta el paso porque solo son los botones de pago en el paso confirm */
         $('button.process').click(function () {
 
             var amount = $('#amount').val();
-            var rest = $('#rest');
+            var rest = $('#rest').val();
 
             if (parseFloat(amount) == 0 || isNaN(amount)) {
                 alert('<?php echo Text::slash('invest-amount-error') ?>');
@@ -285,12 +345,12 @@ $action = '/invest/' . $project->id;
                    alert('<?php echo Text::slash('invest-alert-lackamount') ?>');
                    return false;
                }
-               
+
                 if (reward == '') {
                     if (confirm('<?php echo Text::slash('invest-alert-noreward') ?>')) {
                         if (confirm('<?php echo Text::slash('invest-alert-noreward_renounce') ?>')) {
                             $("#address-header").html('<?php echo Text::get('invest-donation-header') ?>');
-                            $("#donation-data").show();
+                            /*$("#donation-data").show();*/
                             $('#resign_reward').click();
                             $('#nif').focus();
                             return false;
@@ -307,8 +367,8 @@ $action = '/invest/' . $project->id;
                 }
             }
 
-            if (rest && greater(amount, rest.val())) {
-                if (!confirm('No queda suficiente Capital riego para cubrir tu aportacion, solamente quedan '+rest.val()+' EUR, ok?')) {
+            if (rest > 0 && greater(amount, rest)) {
+                if (!confirm('<?php echo Text::slash('invest-alert-lackdrop') ?> '+rest+' EUR, ok?')) {
                     return false;
                 }
             }
