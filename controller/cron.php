@@ -111,7 +111,7 @@ namespace Goteo\Controller {
                         $task->text = "Poner la cuenta PayPal al proyecto <strong>{$project->name}</strong> urgentemente!";
                         $task->url = "/admin/projects/accounts/{$project->id}";
                         $task->done = null;
-                        $task->save();
+                        $task->saveUnique();
 
                     }
 
