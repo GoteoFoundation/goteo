@@ -11,10 +11,10 @@ namespace Goteo\Controller\Admin {
 
     class Home {
 
-        public static function process ($action = 'list', $id = null, $type = 'main') {
+        public static function process ($action = 'list', $id = null, $filters = array(), $type = 'main') {
 
             $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
-            if ($node == \GOTEO_NODE) {
+            if ($node == \GOTEO_NODE || empty($type)) {
                 $type = 'main';
             }
 

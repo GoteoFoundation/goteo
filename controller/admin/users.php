@@ -14,7 +14,7 @@ namespace Goteo\Controller\Admin {
 
     class Users {
 
-        public static function process ($action = 'list', $id = null, $subaction = '', $filters = array()) {
+        public static function process ($action = 'list', $id = null, $filters = array(), $subaction = '') {
 
             // multiples usos
             $nodes = Model\Node::getList();
