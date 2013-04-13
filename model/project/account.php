@@ -9,7 +9,8 @@ namespace Goteo\Model\Project {
             $bank,
             $bank_owner,
             $paypal,
-            $paypal_owner;
+            $paypal_owner,
+            $allowpp; // para permitir usar el boton paypal
 
 
         /**
@@ -27,6 +28,7 @@ namespace Goteo\Model\Project {
                 } else {
                     $accounts = new Account();
                     $accounts->project = $id;
+                    $accounts->allowpp = false;
                     return $accounts;
                 }
             } catch(\PDOException $e) {
@@ -49,8 +51,8 @@ namespace Goteo\Model\Project {
             if (!$this->validate($errors)) return false;
 
 			try {
-	            $sql = "REPLACE INTO project_account (project, bank, bank_owner, paypal, paypal_owner) VALUES(:project, :bank, :bank_owner, :paypal, :paypal_owner)";
-                $values = array(':project'=>$this->project, ':bank'=>$this->bank, ':bank_owner'=>$this->bank_owner, ':paypal'=>$this->paypal, ':paypal_owner'=>$this->paypal_owner);
+	            $sql = "REPLACE INTO project_account (project, bank, bank_owner, paypal, paypal_owner, allowpp) VALUES(:project, :bank, :bank_owner, :paypal, :paypal_owner, :allowpp)";
+                $values = array(':project'=>$this->project, ':bank'=>$this->bank, ':bank_owner'=>$this->bank_owner, ':paypal'=>$this->paypal, ':paypal_owner'=>$this->paypal_owner, ':allowpp'=>$this->allowpp);
 				self::query($sql, $values);
 				return true;
 			} catch(\PDOException $e) {
@@ -60,6 +62,19 @@ namespace Goteo\Model\Project {
 
 		}
 
+        // comprobar permiso para usar PayPal
+        public static function getAllowpp ($id) {
+            try {
+                $query = static::query("SELECT allowpp FROM project_account WHERE project = ?", array($id));
+                $allowpp = $query->fetchColumn(0);
+                return $allowpp;
+            } catch(\PDOException $e) {
+				throw new \Goteo\Core\Exception($e->getMessage());
+                return false;
+            }
+        }
+        
+        
 	}
     
 }

@@ -8,3 +8,7 @@ PRIMARY KEY ( `project` )
 -- Alters
 ALTER TABLE `project_account` ADD `bank_owner` TINYTEXT NULL AFTER `bank` ;
 ALTER TABLE `project_account` ADD `paypal_owner` TINYTEXT NULL AFTER `paypal` ;
+
+
+-- flag para permitir paypal
+ALTER TABLE `project_account` ADD `allowpp` INT(1) ;
