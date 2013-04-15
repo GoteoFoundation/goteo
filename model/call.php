@@ -234,7 +234,7 @@ namespace Goteo\Model {
                 foreach ($call->projects as $proj) {
                     if (\Goteo\Model\Project::isSuccessful($proj->id)) {
                         $call->success_projects++;
-                    } else {
+                    } elseif ($proj->status == 3) {
                         $call->runing_projects++;
                     }
                 }
