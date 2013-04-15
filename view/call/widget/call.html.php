@@ -29,7 +29,7 @@ $tag = array(
 ?>
 
 <div class="call activable">
-	<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>" class="expand"<?php echo $blank; ?>></a>
+	<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/projects" class="expand"<?php echo $blank; ?>></a>
 
     <div class="image">
         <div class="tagmark <?php echo $color[$call->status] ?>"><?php echo $tag[$call->status] ?></div>
@@ -108,7 +108,7 @@ $tag = array(
 
                 <?php if (!empty($call->call_location)) : ?>
                 <dl class="block long location">
-                    <dt><?php echo Text::get('call-splash-location-header') ?></dt>
+                    <dt><?php echo ($call->status == 3) ? Text::get('call-splash-location-header') : Text::get('call-splash-location-header'); ?></dt>
                     <dd><?php echo Text::GmapsLink($call->call_location); ?></dd>
                 </dl>
                 <?php endif; ?>
