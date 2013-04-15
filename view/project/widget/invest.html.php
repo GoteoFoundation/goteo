@@ -177,7 +177,7 @@ if ($step == 'start') : ?>
     
     <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span id="amount-reminder"><?php echo $amount ?></span></div>
 
-    <?php if (!$allowpp) : ?><p><?php echo Text::html('invest-paypal_disabled') ?></p><?php endif; ?>
+    <?php if (!$allowpp) : ?><div class="reminder"><?php echo Text::html('invest-paypal_disabled') ?></div><?php endif; ?>
 
 </div>
 <?php endif; ?>
