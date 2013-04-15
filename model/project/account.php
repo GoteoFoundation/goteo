@@ -64,6 +64,19 @@ namespace Goteo\Model\Project {
 
         // comprobar permiso para usar PayPal
         public static function getAllowpp ($id) {
+            
+            // piñon temporal, funciona al reves: si es uno de estos proyectos no lo permitimos
+            $notAllowed = array(
+                'fab-movil-00',
+                'adtlantida-tv',
+                'redetejas',
+                'arquitecturas-colectivas',
+                'picnic'
+            );
+            
+            return (in_array($id, $notAllowed)) ? false : true;
+            
+            /*
             try {
                 $query = static::query("SELECT allowpp FROM project_account WHERE project = ?", array($id));
                 $allowpp = $query->fetchColumn(0);
@@ -72,6 +85,7 @@ namespace Goteo\Model\Project {
 				throw new \Goteo\Core\Exception($e->getMessage());
                 return false;
             }
+            */
         }
         
         
