@@ -121,9 +121,9 @@ div.widget.project-invest.method button {
 }
 
 div.widget.project-invest.method button.pay-tpv {
-    background: url('/view/css/button/tpv.gif') no-repeat 0 0 transparent;
-    width: 178px;
-    height: 35px;
+    background: url('/view/css/button/logos_tarjetas.png') no-repeat 0 0 transparent;
+    width: 253px;
+    height: 38px;
     text-indent: 2000px;
     padding: 3px;
 }

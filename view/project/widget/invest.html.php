@@ -22,6 +22,9 @@ if ($project->called instanceof Call) {
     $call = null;
 }
 
+// si permite paypal
+$allowpp = $this['allowpp'];
+
 $personal = $this['personal'];
 $step = $this['step'];
 
@@ -167,13 +170,14 @@ if ($step == 'start') : ?>
 
     <div class="buttons">
         <button type="submit" class="process pay-tpv" name="method"  value="tpv">TPV</button>
-        <!-- button type="submit" class="process pay-paypal" name="method"  value="paypal">PAYPAL</button -->
+        <?php if ($allowpp) : ?><button type="submit" class="process pay-paypal" name="method"  value="paypal">PAYPAL</button><?php endif; ?>
         <!-- button type="submit" class="process pay-cash" name="method"  value="cash">Ca$h</button -->
     </div>
-
+<br />
+    
     <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span id="amount-reminder"><?php echo $amount ?></span></div>
 
-    <p><?php echo Text::html('invest-paypal_disabled') ?></p>
+    <?php if (!$allowpp) : ?><div class="reminder"><?php echo Text::html('invest-paypal_disabled') ?></div><?php endif; ?>
 
 </div>
 <?php endif; ?>
@@ -351,7 +355,7 @@ if ($step == 'start') : ?>
                 if (reward == '') {
                     if (confirm('<?php echo Text::slash('invest-alert-noreward') ?>')) {
                         if (confirm('<?php echo Text::slash('invest-alert-noreward_renounce') ?>')) {
-                            $("#address-header").html('<?php echo Text::get('invest-donation-header') ?>');
+                            $("#address-header").html('<?php echo Text::slash('invest-donation-header') ?>');
                             /*$("#donation-data").show();*/
                             $('#resign_reward').click();
                             $('#nif').focus();

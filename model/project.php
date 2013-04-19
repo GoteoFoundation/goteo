@@ -1593,6 +1593,10 @@ namespace Goteo\Model {
                 self::query("DELETE FROM image WHERE id IN (SELECT image FROM project_image WHERE project = ?)", array($this->id));
                 self::query("DELETE FROM project_image WHERE project = ?", array($this->id));
                 self::query("DELETE FROM message WHERE project = ?", array($this->id));
+                self::query("DELETE FROM project_account WHERE project = ?", array($this->id));
+                self::query("DELETE FROM review WHERE project = ?", array($this->id));
+                self::query("DELETE FROM call_project WHERE project = ?", array($this->id));
+                self::query("DELETE FROM project_lang WHERE id = ?", array($this->id));
                 self::query("DELETE FROM project WHERE id = ?", array($this->id));
                 // y los permisos
                 self::query("DELETE FROM acl WHERE url like ?", array('%'.$this->id.'%'));

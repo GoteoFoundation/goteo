@@ -219,10 +219,8 @@ namespace Goteo\Controller {
                 }
             }
 
-            /*----------------------------------
-             * CODIGO PAYPAL DESACTIVADO!!!
-             -----------------------------------*/
-            if ($confirm->method == 'paypal') {
+            // Paypal solo disponible si activado
+            if ($confirm->method == 'paypal' && Model\Project\Account::getAllowpp($project)) {
 
                 // hay que cambiarle el status a 0
                 $confirm->setStatus('0');
@@ -250,9 +248,6 @@ namespace Goteo\Controller {
                 $log->doPublic('community');
                 unset($log);
             }
-            /*--------------------------------------
-             * FIN CODIGO PAYPAL DESACTIVADO!!!
-             --------------------------------------*/
             // fin segun metodo
 
             // Feed del aporte de la campaña

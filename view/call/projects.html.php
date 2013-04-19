@@ -70,6 +70,10 @@ include 'view/call/header.html.php';
                 ?>
             </ul>
 
+            <p style="padding-left: 15px;">
+                <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="button info"><?php echo Text::get('call-splash-more_info-button') ?></a>
+            </p>
+            
         </div>
 <?php echo new View('view/call/side.html.php', $this); ?>
     </div>

@@ -9,7 +9,7 @@ define('NODE_META_COPYRIGHT', 'Platoniq');
 define('NODE_DEFAULT_LANG', 'es');
 define('NODE_URL', 'http://guadalinfo.goteo.org');
 define('NODE_NAME', 'Guadalinfo Goteo');
-define('NODE_MAIL', 'andalucia@goteo.org');
+define('NODE_MAIL', 'guadalinfo@goteo.org');
 define('NODE_ANALYTICS_TRACKER', "<script type=\"text/javascript\">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-17744816-8']);

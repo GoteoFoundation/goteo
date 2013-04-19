@@ -71,6 +71,7 @@ namespace Goteo\Controller\Admin {
                     $accounts->bank_owner = $_POST['bank_owner'];
                     $accounts->paypal = $_POST['paypal'];
                     $accounts->paypal_owner = $_POST['paypal_owner'];
+                    $accounts->allowpp = $_POST['allowpp'];
                     if ($accounts->save($errors)) {
                         Message::Info('Se han actualizado las cuentas del proyecto '.$projData->name);
                     } else {
