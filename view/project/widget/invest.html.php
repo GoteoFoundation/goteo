@@ -355,7 +355,7 @@ if ($step == 'start') : ?>
                 if (reward == '') {
                     if (confirm('<?php echo Text::slash('invest-alert-noreward') ?>')) {
                         if (confirm('<?php echo Text::slash('invest-alert-noreward_renounce') ?>')) {
-                            $("#address-header").html('<?php echo Text::get('invest-donation-header') ?>');
+                            $("#address-header").html('<?php echo Text::slash('invest-donation-header') ?>');
                             /*$("#donation-data").show();*/
                             $('#resign_reward').click();
                             $('#nif').focus();
