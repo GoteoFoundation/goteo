@@ -70,7 +70,7 @@ namespace Goteo\Model {
                 $and = " AND";
             }
             if ($undoneOnly) {
-                $sqlFilter .= "$and done IS NULL";
+                $sqlFilter .= "$and (done IS NULL OR done = '')";
                 $and = " AND";
             }
 

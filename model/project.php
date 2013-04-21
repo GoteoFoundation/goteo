@@ -331,7 +331,7 @@ namespace Goteo\Model {
 				return $project;
 
 			} catch(\PDOException $e) {
-				throw \Goteo\Core\Exception($e->getMessage());
+				throw new \Goteo\Core\Exception($e->getMessage());
 			} catch(\Goteo\Core\Error $e) {
                 throw new \Goteo\Core\Error('404', Text::html('fatal-error-project'));
 			}
@@ -353,7 +353,7 @@ namespace Goteo\Model {
 				return $project;
 
 			} catch(\PDOException $e) {
-				throw \Goteo\Core\Exception($e->getMessage());
+				throw new \Goteo\Core\Exception($e->getMessage());
 			}
 		}
 
@@ -440,7 +440,7 @@ namespace Goteo\Model {
                 return $project;
 
             } catch(\PDOException $e) {
-                    throw \Goteo\Core\Exception($e->getMessage());
+				throw new \Goteo\Core\Exception($e->getMessage());
             }
         }
 
@@ -1652,7 +1652,7 @@ namespace Goteo\Model {
                             return false;
                         }
                     } else {
-                        throw new Goteo\Core\Exception('Fallo al iniciar transaccion rebase. ' . \trace($e));
+                        throw new \Goteo\Core\Exception('Fallo al iniciar transaccion rebase. ' . \trace($e));
                     }
                 } elseif (!empty ($newid)) {
 //                   echo "Cambiando id proyecto: de {$this->id} a {$newid}<br /><br />";
@@ -1740,7 +1740,7 @@ namespace Goteo\Model {
 
                 return true;
             } catch (\PDOException $e) {
-                throw new Goteo\Core\Exception('Fallo rebase id temporal. ' . \trace($e));
+                throw new \Goteo\Core\Exception('Fallo rebase id temporal. ' . \trace($e));
             }
 
         }
@@ -2044,11 +2044,11 @@ namespace Goteo\Model {
                 WHERE project.status = 3
                 AND (
                     (DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') >= 35
-                        AND passed IS NULL
+                        AND (passed IS NULL OR passed = '0000-00-00')
                         )
                     OR
                     (DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') >= 75
-                        AND success IS NULL
+                        AND (success IS NULL OR success = '0000-00-00')
                         )
                     )
                 ORDER BY name ASC

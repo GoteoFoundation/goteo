@@ -1183,6 +1183,7 @@ namespace Goteo\Controller {
 
                 // si ya lleva 3 meses de publicacion, hasta máximo un año
                 if ($from > 90 && $from < 360) {
+                    if ($project->id == 'tuderechoasaber.es') break;
                     //   mirar el tiempo desde la última actualización,
                     $sql = "
                         SELECT
