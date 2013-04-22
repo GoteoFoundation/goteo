@@ -129,7 +129,7 @@ include 'view/header.html.php';
 		<div id="blog-sidebar">
 			<?php echo new View('view/blog/side.html.php', array('blog'=>$this['blog'], 'type'=>'posts')) ; ?>
 			<?php echo new View('view/blog/side.html.php', array('blog'=>$this['blog'], 'type'=>'tags')) ; ?>
-			<?php echo new View('view/blog/side.html.php', array('blog'=>$this['blog'], 'type'=>'comments')) ; ?>
+			<?php echo new View('view/blog/side.html.php', array('blog'=>$this['blog'], 'type'=>'feed')) ; ?>
 		</div>
 
 	</div>

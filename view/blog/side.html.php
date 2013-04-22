@@ -1,7 +1,8 @@
 <?php
 
 use Goteo\Library\Text,
-    Goteo\Model\Blog\Post;
+    Goteo\Model\Blog\Post,
+    Goteo\Library\Feed;
 
 $blog = $this['blog'];
 
@@ -43,9 +44,23 @@ switch ($this['type']) {
 				</div>";
             }
         break;
+    case 'feed':  // actividad reciente de proyectos
+        $title = Text::get('feed-head-projects');
+        $list = Feed::getAll('projects', 'public', 10);
+        break;
 }
 
 if (!empty($list)) : ?>
+<?php if ($this['type'] == 'feed') : ?>
+<div class="widget blog-sidebar-module feed">
+    <h3 class="supertitle" style="margin-bottom: 0px;"><?php echo $title; ?></h3>
+    <ul id="blog-side-comments" style="width: 260px;">
+        <?php foreach ($list as $item) : ?>
+        <li><?php echo Feed::subItem($item); ?></li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+<?php else : ?>
 <div class="widget blog-sidebar-module">
     <h3 class="supertitle"><?php echo $title; ?></h3>
     <ul id="blog-side-<?php echo $this['type']; ?>">
@@ -54,4 +69,5 @@ if (!empty($list)) : ?>
         <?php endforeach; ?>
     </ul>
 </div>
+<?php endif; ?>
 <?php endif; ?>
