@@ -278,10 +278,14 @@ namespace Goteo\Controller {
                 unset($log);
             }
 
+            // texto recompensa
+            $rewards = $confirm->rewards;
+            array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
+            $txt_rewards = implode(', ', $rewards);
+
             // email de agradecimiento al cofinanciador
             // primero monto el texto de recompensas
             if ($confirm->resign) {
-                $txt_rewards = Text::get('invest-resign');
                 // Plantilla de donativo segun la ronda
                 if ($projectData->round == 2) {
                     $template = Template::get(36); // en segunda ronda
@@ -289,9 +293,6 @@ namespace Goteo\Controller {
                     $template = Template::get(28); // en primera ronda
                 }
             } else {
-                $rewards = $confirm->rewards;
-                array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
-                $txt_rewards = implode(', ', $rewards);
                 // plantilla de agradecimiento segun la ronda
                 if ($projectData->round == 2) {
                     $template = Template::get(34); // en segunda ronda
