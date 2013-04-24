@@ -39,7 +39,7 @@ $status = $this['status'];
             <td><?php echo $proj->location ?></td>
             <td><?php echo $proj->amount ?></td>
             <td><?php if ($proj->amount <= 0) : ?>
-                <a href="#" onclick="if (confirm('Seguro que quitamos el proyecto \'<?php echo $proj->name ?>\' de la convocatoria \'<?php echo $call->name ?>\' ?')) { unassignproj('<?php echo $proj->id ?>') }">[Quitar]</a>
+                <a href="#" onclick="if (confirm('Seguro que quitamos el proyecto, <?php echo addslashes(str_replace('"', "'", $proj->name)) ?>, de la convocatoria, <?php echo addslashes(str_replace('"', "'", $call->name)) ?> ?')) { unassignproj('<?php echo $proj->id ?>') }">[Quitar]</a>
             <?php endif; ?></td>
         </tr>
         <?php endforeach; ?>
