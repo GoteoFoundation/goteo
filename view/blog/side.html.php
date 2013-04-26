@@ -46,7 +46,7 @@ switch ($this['type']) {
         break;
     case 'feed':  // actividad reciente de proyectos
         $title = Text::get('feed-head-projects');
-        $list = Feed::getAll('projects', 'public', 10);
+        $list = Feed::getProjUpdates(10);
         break;
 }
 

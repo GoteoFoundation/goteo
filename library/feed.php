@@ -157,6 +157,7 @@ namespace Goteo\Library {
          *
          * @param string $type  tipo de evento (public: columnas goteo, proyectos, comunidad;  admin: categorias de filtro)
          * @param string $scope ambito de eventos (public | admin)
+         * @param numeric $limit limite de elementos
          * @return array list of items
 		 */
 		public static function getAll($type = 'all', $scope = 'public', $limit = '99', $node = null) {
@@ -249,6 +250,47 @@ namespace Goteo\Library {
                     //hace tanto
                     $item->timeago = self::time_ago($item->timer);
 
+
+                    $list[] = $item;
+                }
+                return $list;
+            } catch (\PDOException $e) {
+                throw new Exception('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
+            }
+		}
+
+        /**
+		 *  Metodo para sacar los eventos de novedades de proyecto (solo)
+         *
+         * @param string $limit limite de elementos
+         * @return array list of items
+		 */
+		public static function getProjUpdates($limit = '99') {
+
+            $list = array();
+
+            try {
+                $sql = "SELECT
+                            feed.id as id,
+                            feed.title as title,
+                            feed.url as url,
+                            feed.image as image,
+                            DATE_FORMAT(feed.datetime, '%H:%i %d|%m|%Y') as date,
+                            feed.datetime as timer,
+                            feed.html as html
+                        FROM feed
+                        WHERE feed.scope = 'public' 
+                        AND feed.type = 'projects'
+                        AND feed.url LIKE '%updates%'
+                        ORDER BY datetime DESC
+                        LIMIT $limit
+                        ";
+
+                $query = Model::query($sql, $values);
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
+
+                    //hace tanto
+                    $item->timeago = self::time_ago($item->timer);
 
                     $list[] = $item;
                 }
