@@ -99,20 +99,19 @@ $recos = $this['recos'];
 
     <div class="widget projects">
 
-        <?php foreach ($recos as $reco) : ?>
-
-                <?php echo new View('view/project/widget/project.html.php', array(
-                    'project' => $reco->projectData,
-                    'balloon' => '<h4>' . htmlspecialchars($reco->title) . '</h4>' .
-                                 '<blockquote>' . $reco->description . '</blockquote>'
-                )) ?>
-
-        <?php endforeach ?>
+    <?php foreach ($recos as $reco) : 
+            echo new View('view/project/widget/project.html.php', array(
+                'project' => $reco->projectData,
+                'balloon' => '<h4>' . htmlspecialchars($reco->title) . '</h4>' .
+                             '<blockquote>' . $reco->description . '</blockquote>', 
+                'investor' => $user
+            ));
+    endforeach ?>
 
     </div>
 
     <?php foreach ($this['lists'] as $type=>$list) :
-        if (array_empty($list))
+        if (\array_empty($list))
             continue;
         ?>
         <div class="widget projects patron_invests">
