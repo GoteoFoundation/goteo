@@ -2,9 +2,14 @@
 
 /*
  * Este modelo es para la geo localizacion
+ * 
+ * Usamos la libreria geoloc
+ * 
  */
 
 namespace Goteo\Model {
+    
+    use Goteo\Library\Geoloc;
     
     class Location extends \Goteo\Core\Model {
     
@@ -207,7 +212,29 @@ namespace Goteo\Model {
             return $list;
         }
 
+        /**
+         * Metodo para sacar las que hay en proyectos
+         * @return array strings
+         */
+		public static function getProjLocs () {
 
+            $results = array();
+
+            $sql = "SELECT distinct(project_location) as location
+                    FROM project
+                    WHERE status > 2
+                    ORDER BY location ASC";
+
+            try {
+                $query = self::query($sql);
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                    $results[md5($item->location)] = $item->location;
+                }
+                return $results;
+            } catch (\PDOException $e) {
+                throw new Exception('Fallo la lista de localizaciones');
+            }
+		}
 
         /*
          * Lista de elementos a checkear
