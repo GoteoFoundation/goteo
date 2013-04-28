@@ -64,6 +64,13 @@ echo new NormalForm(array(
             'options'   => $allow,
             'class'     => 'currently cols_' . count($allow),
             'value'     => (int) $preferences->mailing
+        ),
+        'email' => array(
+            'title'     => Text::get('user-preferences-email'),
+            'type'      => 'slider',
+            'options'   => $allow,
+            'class'     => 'currently cols_' . count($allow),
+            'value'     => (int) $preferences->email
         )
 
     )

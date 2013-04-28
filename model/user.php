@@ -1327,7 +1327,8 @@ namespace Goteo\Model {
                                       updates,
                                       threads,
                                       rounds,
-                                      mailing
+                                      mailing,
+                                      email
                                   FROM user_prefer
                                   WHERE user = ?'
                 , array($id));

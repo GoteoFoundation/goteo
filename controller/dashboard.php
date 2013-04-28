@@ -412,7 +412,8 @@ namespace Goteo\Controller {
                             'updates',
                             'threads',
                             'rounds',
-                            'mailing'
+                            'mailing',
+                            'email'
                         );
 
                         $preferences = array();
