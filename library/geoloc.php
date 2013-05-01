@@ -260,9 +260,83 @@ namespace Goteo\Library {
             "ZW"=>"Zimbabwe"
         );
         
+        
         /**
          * Obtiene los datos de la dirección IP
-         * @param type $ip Dirección IP a buscar
+         * @param mixed $input array de datos
+         */
+        public static function searchLoc($input = array()) {
+            
+            $result = array();
+            
+            echo 'Recibe:<br />';
+            echo \trace($input);
+            if (!empty($input['latlng'])) {
+                // peticion a gmaps API
+                $url = "http://maps.googleapis.com/maps/api/geocode/json?latlng={$input['latlng']}&sensor=false";
+                echo 'URL: '.$url.'<br />';
+                $meta = file_get_contents($url);
+                $data = json_decode($meta);
+                
+            } if (!empty($input['address'])) {
+                $url = "http://maps.googleapis.com/maps/api/geocode/json?address=".  urlencode($input['address'])."&sensor=false";
+                echo 'URL: '.$url.'<br />';
+                $meta = file_get_contents($url);
+                $data = json_decode($meta);
+            }
+            
+            if (!empty($data->results)) {
+                echo 'Data:<br />';
+                echo \trace($data);
+                
+                foreach($data->results as $res) {
+
+                    echo "Formated: {$res->formatted_address}<br />";
+                    
+                    foreach($res->address_components as $comp) {
+
+                        // segun el tipo lo guardo 
+                        foreach ($comp->types as $type) {
+                            if ($type == 'locality') {
+                                echo \trace($comp)."<br />";
+                                $result['location'] = $comp->long_name;
+                                continue;
+                            } elseif ($type == 'country') {
+                                echo \trace($comp)."<br />";
+                                $result['country'] = $comp->long_name;
+                                continue;
+                            } elseif (substr($type, 0, strlen('administrative_area')) == 'administrative_area') {
+                                echo \trace($comp)."<br />";
+                                if (empty($result['location'])) {
+                                    $result['location'] = $comp->long_name;
+                                } else {
+                                    $result['region'] = $comp->long_name;
+                                }
+                                continue;
+                            }
+                        }
+                        
+                        if (!empty($result['location']) && !empty($result['region']) && !empty($result['country'])) break;
+
+                    }
+
+                    if (!isset($input['latlng'])) {
+                        $result['lat'] = $res->geometry->location->lat;
+                        $result['lon'] = $res->geometry->location->lng;
+                    }
+
+                    if (!empty($result['location']) && !empty($result['region']) && !empty($result['country'])) break;
+                }
+
+                return $result;
+            }
+            
+            return null;
+        }        
+        
+        /**
+         * Obtiene los datos de la dirección IP
+         * @param string $ip Dirección IP a buscar
          */
         public static function getIpData($ip) {
 //            die(file_get_contents('http://freegeoip.appspot.com/json/'.$ip));
