@@ -6,6 +6,7 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Model,
+		Goteo\Library\Geoloc,
 		Goteo\Library\Text,
 		Goteo\Library\Feed;
 
@@ -14,6 +15,18 @@ namespace Goteo\Controller {
 
         public function whoami () {
             die(\trace($_SESSION['user']));
+        }
+
+        public function whereami () {
+            echo new View('view/prologue.html.php');
+            echo new View('view/system/geoloc.html.php');
+            echo new View('view/epilogue.html.php');
+            die;
+//            echo \trace($_SERVER);
+//            $myip = \myip();
+//            echo 'My IP is: ' . $myip;
+//            $geodata = Geoloc::getIpData($myip);
+//            echo \trace($geodata);
         }
 
         public function index ($tool = 'index') {
