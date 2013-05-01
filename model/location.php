@@ -3,7 +3,7 @@
 /*
  * Este modelo es para la geo localizacion
  * 
- * Usamos la libreria geoloc
+ * Usamos la libreria geoloc para todas las funcionalidades de webservices
  * 
  */
 
@@ -17,13 +17,13 @@ namespace Goteo\Model {
             $id,
             $name,
             $location,
-            $region,
-            $country = 'España',
+            $region, 
+            $country = 'ES',  // codigo pais  ISO 3166-1 alpha-2
             $lon,
             $lat,
             $valid = 1;
 
-        public static $type = array(
+        public static $items = array(
             'user' => 'Usuario',
             'project' => 'Proyecto',
             'node' => 'Nodo',
@@ -37,7 +37,7 @@ namespace Goteo\Model {
          */
         static public function get ($id) {
             try {
-                $query = static::query("SELECT *, CONCAT(location, region, country) as name FROM location WHERE id = ?", array($id));
+                $query = static::query("SELECT *, CONCAT(location, ', ', region, ', ', country) as name FROM location WHERE id = ?", array($id));
                 $item = $query->fetchObject(__CLASS__);
 
                 return $item;
@@ -47,9 +47,9 @@ namespace Goteo\Model {
         }
 
         /**
-         * Lista de tareas
+         * Lista de Geolocalizaciones (tabla maestra `location`)
          *
-         * @param  bool $visible    true|false
+         * @param  mixed $filters array de filtros
          * @return mixed            Array de objetos de tareas
          */
         public static function getAll ($filters = array()) {
@@ -102,7 +102,7 @@ namespace Goteo\Model {
             }
              */
 
-            $sql = "SELECT *, CONCAT(location, region, country) as name
+            $sql = "SELECT *, CONCAT(location, ', ', region, ', ', country) as name
                     FROM location
                     $sqlFilter
                     ORDER BY name ASC
@@ -215,6 +215,9 @@ namespace Goteo\Model {
         /**
          * Metodo para sacar las que hay en proyectos
          * @return array strings
+         * 
+         * Cerca de la obsolitud
+         * 
          */
 		public static function getProjLocs () {
 
@@ -331,7 +334,6 @@ namespace Goteo\Model {
 
             return $list;
         }
-
 
 
     }
