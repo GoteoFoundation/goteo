@@ -1,3 +1,13 @@
+<?php
+/*
+ * //@TODO: Pasar esto a una vista de usuario para incluirlo facilmente si al loguear no tiene geoloc asignada
+ * //@TODO: que el envio de datos a /ws/geologin sea con ajax
+ * 
+ * Cambio temporalmente a /system/whereami para reverse geolocate
+ * 
+ * 
+ */
+?>
 <form action="/ws/geologin" method="POST" id="gl_form">
     <input type="hidden" name="geologin" value="record" />
     <input type="text" id="gl_msg" name="msg" value="" style="width: 500px;" /><br />
