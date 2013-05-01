@@ -127,6 +127,36 @@ EOD;
             die;
         }
 
+        /**
+         * Recibe por post datos de login del usuario
+         * @param type $user id usuario
+         */
+        public function geologin() {
+            
+            $errors = array();
+            //
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['geologin'] == 'record') {
+                echo \trace($_POST);
+                if (Model\User\Location::loginRec(array(
+                    ':user' => isset($_SESSION['user']) ? $_SESSION['user']->id : '',
+                    ':ip'   => \myip(),
+                    ':lon'  => $_POST['lon'],
+                    ':lat'  => $_POST['lat'],
+                    ':msg'  => $_POST['msg']
+                ), $errors)) {
+                    echo 'OK';
+                } else {
+                    echo 'FAIL <br />'.implode(',', $errors);
+                }
+                
+                header ('HTTP/1.1 200 Ok');
+                die;
+            } else {
+                header ('HTTP/1.1 403 Forbidden');
+                die;
+            }
+        }
+
 
     }
     
