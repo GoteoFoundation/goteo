@@ -95,6 +95,11 @@ namespace Goteo\Model {
                     return $this->getRest(true);
                     break;
 
+                case "applied":
+                    // número de proyectos presentados a la campaña
+                    return $this->getApplied();
+                    break;
+
                 default:
                     return $this->$name;
             }
@@ -314,9 +319,29 @@ namespace Goteo\Model {
         }
 
         /*
+         *  Devuelve simplemente el número de proyectos asignados a esta convocatoria
+         *  No cuentan los draft
+         */
+        public function getApplied() {
+                $sql = "SELECT
+                            COUNT(project.id) as cuantos
+                        FROM project
+                        INNER JOIN call_project
+                            ON  call_project.project = project.id
+                            AND call_project.call = :call
+                        WHERE (project.status != 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )
+                        ";
+                
+                $query = static::query($sql, array(':call'=>$this->id));
+                $cuantos = $query->fetchColumn();
+                
+                return $cuantos;
+        }
+        
+        
+        /*
          *  Para validar los campos del convocatoria que son NOT NULL en la tabla
          */
-
         public function validate(&$errors = array()) {
 
             // Estos son errores que no permiten continuar
