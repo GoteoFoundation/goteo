@@ -79,7 +79,7 @@ $tag = array(
                         </dl>
                         <dl class="block last applied">
                             <dt><?php echo Text::get('call-splash-applied_projects-header') ?></dt>
-                            <dd><?php echo count($call->projects) ?></dd>
+                            <dd><?php echo $call->applied ?></dd>
                         </dl>
                     </div>
                 <?php else : //en campaña ?>
@@ -101,7 +101,7 @@ $tag = array(
                     <?php endif; ?>
                         <dl class="block last selected">
                             <dt><?php echo Text::get('call-splash-selected_projects-header') ?></dt>
-                            <dd><?php echo count($call->projects) ?></dd>
+                            <dd><?php echo $call->applied ?></dd>
                         </dl>
                     </div>
                 <?php endif; ?>
