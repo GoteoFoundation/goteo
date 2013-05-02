@@ -1,9 +1,9 @@
 <?php
+//@NOTE Julián 02/05/2013 :: quito el lanzamiento automático de filtro en los desplegables >>onchange="document.getElementById('filter-form').submit();"<<
 use Goteo\Library\Text,
     Goteo\Model\Invest;
 
 $filters = $this['filters'];
-
 ?>
 <!-- filtros -->
 <?php $the_filters = array(
@@ -30,7 +30,7 @@ $filters = $this['filters'];
         <?php foreach ($the_filters as $filter=>$data) : ?>
         <div style="float:left;margin:5px;">
             <label for="<?php echo $filter ?>-filter"><?php echo $data['label'] ?></label><br />
-            <select id="<?php echo $filter ?>-filter" name="<?php echo $filter ?>" onchange="document.getElementById('filter-form').submit();">
+            <select id="<?php echo $filter ?>-filter" name="<?php echo $filter ?>">
                 <option value="<?php if ($filter == 'investStatus' || $filter == 'status') echo 'all' ?>"<?php if (($filter == 'investStatus' || $filter == 'status') && $filters[$filter] == 'all') echo ' selected="selected"'?>><?php echo $data['first'] ?></option>
             <?php foreach ($this[$filter] as $itemId=>$itemName) : ?>
                 <option value="<?php echo $itemId; ?>"<?php if ($filters[$filter] === (string) $itemId) echo ' selected="selected"';?>><?php echo substr($itemName, 0, 50); ?></option>
@@ -61,6 +61,7 @@ $filters = $this['filters'];
 <?php elseif (!empty($this['list'])) : ?>
 <?php $Total = 0; foreach ($this['list'] as $invest) { $Total += $invest->amount; } ?>
     <p><strong>TOTAL:</strong>  <?php echo number_format($Total, 0, '', '.') ?> &euro;</p>
+    <p><strong>OJO!</strong> Resultado limitado a 999 registros como máximo.</p>
     
     <table width="100%">
         <thead>
