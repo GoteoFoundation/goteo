@@ -23,13 +23,83 @@ namespace Goteo\Controller\Admin {
                 // proceso automático para actualizar localidades de registros, auto-crear localizaciones y asignar
                 case 'autocheck':
                     
+                    // por ahora se recibe post mientras desarrollo, luego será realmente automático (y estará en otra parte...)
+                    
                     // si llega post, grabo eso que llega y sigo ccheckeando
                     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['apply'])) {
-                        echo \trace($_POST);
-                        echo 'No grabado aun.';
-                        die;
-                        // grabo esta geolocation
-                        // la asigno a todos los usuarios que tengan esta localidad
+//                        echo \trace($_POST);
+                        $location = $_POST['location'];
+                        $geoloc = (!empty($_POST['geoloc'])) ? $_POST['geoloc'] : null;
+                        $geodata = (!empty($_POST['geodata'])) ? unserialize($_POST['geodata']) : null;
+                        $create = (isset($_POST['create'])) ? true : false;
+                        $assign = (isset($_POST['assign'])) ? true : false;
+                        $unlocable = (isset($_POST['unlocable'])) ? true : false;
+                        
+                        if (empty($location)) {
+                            echo 'No hay localidad de registros de usuarios. FIN<br />';
+                            die;
+                        }
+                        
+                        if ($unlocable) {
+                            // marcamos a los usuarios como ilocalizables y listo
+                            $sql = "INSERT INTO unlocable (`user`) SELECT id FROM user WHERE location LIKE :location";
+                            if (Model\Location::query($sql, array(':location'=>$location))) {
+                                    // ok
+                                } else {
+                                    echo 'ERROR<br />'. $sql.'<br />'.$location;
+                                    die;
+                                }
+                        } else {
+
+                            // grabo esta geolocation en la tabla maestra
+                            if ($create && !isset($geoloc)) {
+                                $errors = array();
+
+                                // con los datos obtenidos de la API gmaps
+                                $newloc = new Model\Location(array(
+                                    'location'=>$geodata['location'],
+                                    'region'=>$geodata['region'],
+                                    'country'=>$geodata['country'],
+                                    'lat'=>$geodata['lat'],
+                                    'lon'=>$geodata['lon'],
+                                    'valid'=>1
+                                ));
+
+                                if ($newloc->save($errors)) {
+                                    // OK
+                                    // echo 'Localización creada correctamente<br />';
+                                } else {
+                                    echo 'ERROR al crear, no se asignará. <br />'. implode('<br />', $errors).'<br />';
+                                    $assign = false;
+                                    die;
+                                }
+                            }
+
+
+                            // la asigno a todos los usuarios que tengan esta localidad
+                            if ($assign) {
+                                if (isset($geoloc)) {
+                                    // a una localización existente
+                                    $sql = "INSERT INTO location_item (`location`, `item`, `type`) SELECT CONCAT('{$geoloc}'), id, CONCAT('user') FROM user WHERE location LIKE :location";
+                                    if (Model\Location::query($sql, array(':location'=>$location))) {
+                                        // ok
+                                    } else {
+                                        echo 'ERROR<br />'. $sql.'<br />'.$location;
+                                        die;
+                                    }
+                                } elseif (!empty($newloc->id)) {
+                                    // a la nueva localización recien creada
+                                    $sql = "INSERT INTO location_item (`location`, `item`, `type`) SELECT CONCAT('{$newloc->id}'), id, CONCAT('user') FROM user WHERE location LIKE :location";
+                                    if (Model\Location::query($sql, array(':location'=>$location))) {
+                                        // OK
+                                    } else {
+                                        echo 'ERROR<br />'. $sql.'<br />'.$location;
+                                        die;
+                                    }
+                                }
+                            }
+                        
+                        }
                     }                    
                     
                     /*
@@ -42,31 +112,34 @@ namespace Goteo\Controller\Admin {
                      * *
                      */
                     // Busco la localización que comparten más usuarios
-                    // esta consulta no será así en el proceso automático
+                    // esta consulta no será así en el proceso automático, será con INNER por lo menos...
                     $sql = "SELECT 
                                 location, count(id) as cuantos 
                             FROM user
                             WHERE user.id not IN (SELECT item FROM location_item WHERE type = 'user')
+                            AND user.id not IN (SELECT user FROM unlocable)
                             AND location IS NOT NULL
                             AND TRIM(location) != ''
                             GROUP BY location
-                            HAVING cuantos > 1
                             ORDER BY cuantos DESC
+                            LIMIT 1
                             ";
                     $query = Model\Location::query($sql);
                     $row = $query->fetchObject();
                     $user = $row->cuantos;
                     $location = $row->location;
                     /*
-                     * Para cada localidad
-                     * -------------------
-                     * Reglas:
+                     * PRETRATAMIENTO
                      * * Una sola palabra (seguramente pais), miro si esta en el array de paises, geolocalizo el pais
                      * * Coordenadas
                      * * coordenadas geográficas (º'")
                      * * 
                      */
-                    $geodata = Geoloc::searchLoc(array('address'=>$location));
+                    if (strlen($location) == 2 && isset(Geoloc::$countries[$location])) {
+                        $geodata = Geoloc::searchLoc(array('address'=>Geoloc::$countries[$location]));
+                    } else {
+                        $geodata = Geoloc::searchLoc(array('address'=>$location));
+                    }
                     
                     // vista de autocheck
                     return new View(

@@ -37,8 +37,9 @@ namespace Goteo\Model {
          */
         static public function get ($id) {
             try {
-                $query = static::query("SELECT *, CONCAT(location, ', ', region, ', ', country) as name FROM location WHERE id = ?", array($id));
+                $query = static::query("SELECT * FROM location WHERE id = ?", array($id));
                 $item = $query->fetchObject(__CLASS__);
+                $item->name = "{$item->location}, {$item->region}, {$item->country}";
 
                 return $item;
             } catch(\PDOException $e) {
@@ -102,16 +103,43 @@ namespace Goteo\Model {
             }
              */
 
-            $sql = "SELECT *, CONCAT(location, ', ', region, ', ', country) as name
+            $sql = "SELECT * 
                     FROM location
                     $sqlFilter
-                    ORDER BY name ASC
+                    ORDER BY country, region, location
                     ";
 
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
+                $item->name = "{$item->location}, {$item->region}, {$item->country}";
                 $list[] = $item;
             }
+            return $list;
+        }
+
+        /**
+         * Lista simple de Geolocalizaciones, solo nombre y silo validas
+         * y ordenada
+         * 
+         * @param  mixed $filters array de filtros
+         * @return mixed            Array de objetos de tareas
+         */
+        public static function getAllMini () {
+
+            $list = array();
+
+            $sql = "SELECT id, location, region, country
+                    FROM location
+                    WHERE valid = 1
+                    ";
+
+            $query = self::query($sql);
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
+                $list[$item->id] = "{$item->location}, {$item->region}, {$item->country}";
+            }
+            
+            asort($list);
+
             return $list;
         }
 
@@ -170,6 +198,10 @@ namespace Goteo\Model {
             if (empty($this->lat))
                 $errors[] = 'Falta latitud';
 
+            // por otra parte, no se puede crear si esta localidad-region-pais ya existe en la tabla
+            // o si, estas coordenadas latitud-longitud ya existen en la tabla
+            
+            
             if (empty($errors))
                 return true;
             else

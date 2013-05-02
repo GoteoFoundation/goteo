@@ -287,7 +287,7 @@ namespace Goteo\Library {
                 $data = json_decode($meta);
                 
             } if (!empty($input['address'])) {
-                $url = "http://maps.googleapis.com/maps/api/geocode/json?address=".  urlencode($input['address'])."&sensor=false&language=es";
+                $url = "http://maps.googleapis.com/maps/api/geocode/json?address=".  urlencode($input['address'])."&sensor=false&language=es&region=es";
 //                echo 'URL: '.$url.'<br />';
                 $meta = file_get_contents($url);
                 $data = json_decode($meta);
@@ -332,11 +332,14 @@ namespace Goteo\Library {
                                 continue;
                             } elseif (substr($type, 0, strlen('administrative_area')) == 'administrative_area') {
 //                                echo \trace($comp)."<br />";
+                                /*
                                 if (empty($result['location'])) {
                                     $result['location'] = $comp->long_name;
                                 } else {
+                                 * 
+                                 */
                                     $result['region'] = $comp->long_name;
-                                }
+                                //}
                                 continue;
                             }
                         }
