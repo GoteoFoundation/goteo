@@ -75,7 +75,7 @@ namespace Goteo\Controller\Admin {
                 if (!empty($filters['calls']))
                     $filters['types'] = '';
 
-                $list = Model\Invest::getList($filters, $node);
+                $list = Model\Invest::getList($filters, $node, 999);
             } else {
                 $list = array();
             }

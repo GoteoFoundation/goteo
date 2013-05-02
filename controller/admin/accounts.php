@@ -623,7 +623,7 @@ namespace Goteo\Controller\Admin {
 
             // listado de aportes
             if ($filters['filtered'] == 'yes') {
-                $list = Model\Invest::getList($filters);
+                $list = Model\Invest::getList($filters, null, 999);
             } else {
                 $list = array();
             }
