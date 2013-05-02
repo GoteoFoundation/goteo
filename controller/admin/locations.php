@@ -5,10 +5,11 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
-        Goteo\Library\Text,
         Goteo\Library\Feed,
-        Goteo\Library\Template,
+		Goteo\Library\Geoloc,
         Goteo\Library\Message,
+        Goteo\Library\Template,
+        Goteo\Library\Text,
         Goteo\Model;
 
     class Locations {
@@ -21,9 +22,64 @@ namespace Goteo\Controller\Admin {
                 
                 // proceso automático para actualizar localidades de registros, auto-crear localizaciones y asignar
                 case 'autocheck':
-                    Message::Info('Aun no esta listo');
-                    throw new Redirection('/admin/locations');
                     
+                    // si llega post, grabo eso que llega y sigo ccheckeando
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['apply'])) {
+                        echo \trace($_POST);
+                        echo 'No grabado aun.';
+                        die;
+                        // grabo esta geolocation
+                        // la asigno a todos los usuarios que tengan esta localidad
+                    }                    
+                    
+                    /*
+                     * PROCESO
+                     **********
+                     * 
+                     * Primero, busco la localización más compartida por usurios (más de un usuario)
+                     * Cuando no quedan, busco localización específica de usuario no dado por ilocalizable
+                     * 
+                     * *
+                     */
+                    // Busco la localización que comparten más usuarios
+                    // esta consulta no será así en el proceso automático
+                    $sql = "SELECT 
+                                location, count(id) as cuantos 
+                            FROM user
+                            WHERE user.id not IN (SELECT item FROM location_item WHERE type = 'user')
+                            AND location IS NOT NULL
+                            AND TRIM(location) != ''
+                            GROUP BY location
+                            HAVING cuantos > 1
+                            ORDER BY cuantos DESC
+                            ";
+                    $query = Model\Location::query($sql);
+                    $row = $query->fetchObject();
+                    $user = $row->cuantos;
+                    $location = $row->location;
+                    /*
+                     * Para cada localidad
+                     * -------------------
+                     * Reglas:
+                     * * Una sola palabra (seguramente pais), miro si esta en el array de paises, geolocalizo el pais
+                     * * Coordenadas
+                     * * coordenadas geográficas (º'")
+                     * * 
+                     */
+                    $geodata = Geoloc::searchLoc(array('address'=>$location));
+                    
+                    // vista de autocheck
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder'    => 'locations',
+                            'file'      => 'autocheck',
+                            'user'      => $user,
+                            'location'  => $location,
+                            'geodata'   => $geodata,
+                            'action'    => 'list'
+                        )
+                    );
 
                     break;
 

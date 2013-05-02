@@ -130,6 +130,10 @@ EOD;
         /**
          * Recibe por post datos de login del usuario
          * @param type $user id usuario
+         * 
+         * //@TODO: grabar la localidad y asignar al usuario
+         * //@TODO: verificar que la localidad no existe
+         * 
          */
         public function geologin() {
             

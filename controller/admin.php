@@ -189,6 +189,7 @@ namespace Goteo\Controller {
                     'add' => array('label' => 'Nueva Localización', 'item' => false),
                     'edit' => array('label' => 'Editando Localización', 'item' => true),
                     'check' => array('label' => 'Verificando Localizaciones', 'item' => false),
+                    'autocheck' => array('label' => 'Proceso automático', 'item' => false),
                     'search' => array('label' => 'Buscando registros por localización', 'item' => false)
                 ),
                 'filters' => array('valid' => '0', 'name' => '', 'location' => '', 'region' => '', 'country' => '', 'used' => '1')
@@ -1002,7 +1003,7 @@ namespace Goteo\Controller {
             // arary de fltros para el sub controlador
             $filters = array();
 
-            if ($_GET['reset'] == 'filters') {
+            if (isset($_GET['reset']) && $_GET['reset'] == 'filters') {
                 unset($_SESSION['admin_filters'][$option]);
                 unset($_SESSION['admin_filters']['main']);
                 foreach (self::$options[$option]['filters'] as $field => $default) {

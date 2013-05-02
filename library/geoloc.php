@@ -260,6 +260,14 @@ namespace Goteo\Library {
             "ZW"=>"Zimbabwe"
         );
         
+        private static $gmaps_api_statuses = array(
+            "OK" => 'No errors occurred; the address was successfully parsed and at least one geocode was returned.',
+            "ZERO_RESULTS" => 'The geocode was successful but returned no results. This may occur if the geocode was passed a non-existent address or a latlng in a remote location.',
+            "OVER_QUERY_LIMIT" => 'You are over your quota.',
+            "REQUEST_DENIED" => 'Your request was denied, generally because of lack of a sensor parameter.',
+            "INVALID_REQUEST" => 'Generally, the query (address or latlng) is missing.',
+            "UNKNOWN_ERROR" => 'The request could not be processed due to a server error. The request may succeed if you try again.'
+        );
         
         /**
          * Obtiene los datos de la dirección IP
@@ -269,44 +277,61 @@ namespace Goteo\Library {
             
             $result = array();
             
-            echo 'Recibe:<br />';
-            echo \trace($input);
+//            echo 'Recibe:<br />';
+//            echo \trace($input);
             if (!empty($input['latlng'])) {
                 // peticion a gmaps API
-                $url = "http://maps.googleapis.com/maps/api/geocode/json?latlng={$input['latlng']}&sensor=false";
-                echo 'URL: '.$url.'<br />';
+                $url = "http://maps.googleapis.com/maps/api/geocode/json?latlng={$input['latlng']}&sensor=false&language=es";
+//                echo 'URL: '.$url.'<br />';
                 $meta = file_get_contents($url);
                 $data = json_decode($meta);
                 
             } if (!empty($input['address'])) {
-                $url = "http://maps.googleapis.com/maps/api/geocode/json?address=".  urlencode($input['address'])."&sensor=false";
-                echo 'URL: '.$url.'<br />';
+                $url = "http://maps.googleapis.com/maps/api/geocode/json?address=".  urlencode($input['address'])."&sensor=false&language=es";
+//                echo 'URL: '.$url.'<br />';
                 $meta = file_get_contents($url);
                 $data = json_decode($meta);
             }
             
-            if (!empty($data->results)) {
-                echo 'Data:<br />';
-                echo \trace($data);
+            // checkeo el status
+            if ($data->status != 'OK') {
+/*                
+                echo "Error {$data->status} ".self::$gmaps_api_statuses[$data->status]."<br />
+                    URL: {$url}<br />
+                    RESPONSE:<br />" . print_r($data, 1)."<br />";
+*/                
+                @mail('gmaps_api_fail@doukehsi.org', 'Error en la petición a la api gmaps en ' . SITE_URL, "Error {$data->status} ".self::$gmaps_api_statuses[$data->status]."
+                    URL: {$url}
+                    INPUT:
+                    " . print_r($input, 1)."
+                    RESPONSE:
+                    " . print_r($data, 1));
+                    
+            } else {
+                $_SESSION['last_gmaps_response_data'] = $data;
                 
+                // OK
                 foreach($data->results as $res) {
 
-                    echo "Formated: {$res->formatted_address}<br />";
+                    // PAso de todo lo que sea rooftop o poligonichungo
+                    if ($res->geometry->location_type != "APPROXIMATE") continue;
+                    
+//                    echo "Formated: {$res->formatted_address}<br />";
                     
                     foreach($res->address_components as $comp) {
 
                         // segun el tipo lo guardo 
                         foreach ($comp->types as $type) {
                             if ($type == 'locality') {
-                                echo \trace($comp)."<br />";
+//                                echo \trace($comp)."<br />";
                                 $result['location'] = $comp->long_name;
                                 continue;
                             } elseif ($type == 'country') {
-                                echo \trace($comp)."<br />";
+//                                echo \trace($comp)."<br />";
                                 $result['country'] = $comp->long_name;
                                 continue;
                             } elseif (substr($type, 0, strlen('administrative_area')) == 'administrative_area') {
-                                echo \trace($comp)."<br />";
+//                                echo \trace($comp)."<br />";
                                 if (empty($result['location'])) {
                                     $result['location'] = $comp->long_name;
                                 } else {

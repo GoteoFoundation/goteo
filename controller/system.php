@@ -28,7 +28,7 @@ namespace Goteo\Controller {
 
                 case 'a':
                     //  POR DIRECCION
-                    $geoloc = Geoloc::searchLoc(array('address'=>"EX-208, 10380 Torrejón el Rubio, Cáceres, Spain"));
+                    $geoloc = Geoloc::searchLoc(array('address'=>"España"));
                     echo \trace($geoloc);
                     break;
                 
