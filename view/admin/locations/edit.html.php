@@ -29,12 +29,12 @@ $location = $this['location'];
             </tr>
             <tr>
                 <td>
-                    <label>Longitud:</label>
-                    <input type="text" name="lon" id="locLg" readonly="readonly" value="<?php echo $location->lon ?>" />
+                    <label>Latitud:</label>
+                    <input type="text" name="lat" id="locLt" value="<?php echo $location->lat ?>" />
                 </td>
                 <td>
-                    <label>Latitud:</label>
-                    <input type="text" name="lat" id="locLt" readonly="readonly" value="<?php echo $location->lat ?>" />
+                    <label>Longitud:</label>
+                    <input type="text" name="lon" id="locLg" value="<?php echo $location->lon ?>" />
                 </td>
             </tr>
         </table>

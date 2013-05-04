@@ -39,6 +39,11 @@ $filters = $this['filters'];
             </select>
         </div>
 
+        <div style="float:left;margin:5px;">
+            <label for="coordinates-filter">Mostrar coordenadas:</label><br />
+            <input type="checkbox" id="coordinates-filter" name="coordinates" value="show" <?php if ($filters['coordinates'] == 'show') echo ' checked="checked"';?> />
+        </div>
+
 
         <br clear="both" />
 
@@ -92,6 +97,10 @@ $filters = $this['filters'];
                 <th>Localidad</th>
                 <th>Provincia</th>
                 <th>Pais</th>
+                <?php if ($filters['coordinates'] == 'show') : ?>
+                <th>Latitud</th>
+                <th>Longitud</th>
+                <?php endif; ?>
                 <th></th>
             </tr>
         </thead>
@@ -103,6 +112,10 @@ $filters = $this['filters'];
                 <td><?php echo $item->location; ?></td>
                 <td><?php echo $item->region; ?></td>
                 <td><?php echo $item->country; ?></td>
+                <?php if ($filters['coordinates'] == 'show') : ?>
+                <td><?php echo $item->lat; ?></td>
+                <td><?php echo $item->lon; ?></td>
+                <?php endif; ?>
                 <td><?php echo (empty($item->valid)) ? '<span style="color: red;">Revisar</span>' : '';?></td>
             </tr>
             <?php endforeach; ?>

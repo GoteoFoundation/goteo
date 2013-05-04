@@ -80,7 +80,7 @@ namespace Goteo\Controller\Admin {
                             if ($assign) {
                                 if (isset($geoloc)) {
                                     // a una localización existente
-                                    $sql = "INSERT INTO location_item (`location`, `item`, `type`) SELECT CONCAT('{$geoloc}'), id, CONCAT('user') FROM user WHERE location LIKE :location";
+                                    $sql = "INSERT INTO location_item (`location`, `item`, `type`) SELECT CONCAT('{$geoloc}'), id, CONCAT('user') FROM user WHERE location LIKE :location AND id NOT IN (SELECT item FROM location_item WHERE type = 'user')";
                                     if (Model\Location::query($sql, array(':location'=>$location))) {
                                         // ok
                                     } else {
@@ -89,7 +89,7 @@ namespace Goteo\Controller\Admin {
                                     }
                                 } elseif (!empty($newloc->id)) {
                                     // a la nueva localización recien creada
-                                    $sql = "INSERT INTO location_item (`location`, `item`, `type`) SELECT CONCAT('{$newloc->id}'), id, CONCAT('user') FROM user WHERE location LIKE :location";
+                                    $sql = "INSERT INTO location_item (`location`, `item`, `type`) SELECT CONCAT('{$newloc->id}'), id, CONCAT('user') FROM user WHERE location LIKE :location AND id NOT IN (SELECT item FROM location_item WHERE type = 'user')";
                                     if (Model\Location::query($sql, array(':location'=>$location))) {
                                         // OK
                                     } else {
@@ -100,7 +100,22 @@ namespace Goteo\Controller\Admin {
                             }
                         
                         }
-                    }                    
+                    }
+                    
+                    // Otra operación: Cmbiar la localidad
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['change'])) {
+//                        echo \trace($_POST);
+                        $location = $_POST['location'];
+                        $newlocation = $_POST['newlocation'];
+                        
+                        $sql = "UPDATE user SET location = :new WHERE location LIKE :location";
+                        if (Model\Location::query($sql, array(':new'=>$newlocation , ':location'=>$location))) {
+                                // ok
+                            } else {
+                                echo 'ERROR<br />'. $sql.'<br />'.$location.' a '.$newlocation;
+                                die;
+                            }
+                    }
                     
                     /*
                      * PROCESO
@@ -126,8 +141,36 @@ namespace Goteo\Controller\Admin {
                             ";
                     $query = Model\Location::query($sql);
                     $row = $query->fetchObject();
-                    $user = $row->cuantos;
+                    
+                    // si no hay resultados no hay nada que hacer
+                    if (empty($row)) {
+                        Message::Info('No quedan usuarios que se puedan localizar');
+                        throw new Redirection('/admin/locations');
+                    }
+                    
+                    $cuantos = $row->cuantos;
                     $location = $row->location;
+                    
+                    // si solo es uno, podemos asignar directamente por id, en vez de asignar los de esta localidad44
+                    if ($cuantos == 1) {
+                        $sql = "SELECT 
+                                   id
+                                FROM user
+                                WHERE user.id not IN (SELECT item FROM location_item WHERE type = 'user')
+                                AND user.id not IN (SELECT user FROM unlocable)
+                                AND location = :location
+                                LIMIT 1
+                                ";
+                        $query = Model\Location::query($sql, array(':location'=>$location));
+                        if ($rw = $query->fetchObject()) {
+                            $user = Model\User::getMini($rw->id);
+                        } else {
+                            $user = null;
+                        }
+                    } else {
+                        $user = null;
+                    }
+                    
                     /*
                      * PRETRATAMIENTO
                      * * Una sola palabra (seguramente pais), miro si esta en el array de paises, geolocalizo el pais
@@ -137,6 +180,8 @@ namespace Goteo\Controller\Admin {
                      */
                     if (strlen($location) == 2 && isset(Geoloc::$countries[$location])) {
                         $geodata = Geoloc::searchLoc(array('address'=>Geoloc::$countries[$location]));
+                    } elseif (Geoloc::is_latlng($location)) {
+                        $geodata = Geoloc::searchLoc(array('latlng'=>$location));
                     } else {
                         $geodata = Geoloc::searchLoc(array('address'=>$location));
                     }
@@ -147,6 +192,7 @@ namespace Goteo\Controller\Admin {
                         array(
                             'folder'    => 'locations',
                             'file'      => 'autocheck',
+                            'cuantos'   => $cuantos,
                             'user'      => $user,
                             'location'  => $location,
                             'geodata'   => $geodata,
@@ -344,17 +390,11 @@ namespace Goteo\Controller\Admin {
                     // si hay filtro de localidad solo la region y pais de la localidad
                     // si hay de region, solo el pais de la region
 
-                    $list = Model\Location::getAll($filters);
-
                     $countries = Model\Location::getList('country'); // distintos paises ya existentes
 
                     // filtro pais sobre regiones
-                    if (empty($filters['region']) && !empty($filters['country'])) {
+                    if (!empty($filters['country'])) {
                         $regionFilter = array(
-                            'type' => 'country',
-                            'value' => $filters['country']
-                        );
-                        $locationFilter = array(
                             'type' => 'country',
                             'value' => $filters['country']
                         );
@@ -365,22 +405,33 @@ namespace Goteo\Controller\Admin {
                     // regiones (si hay filtro de pais, filtramos estas por pais)
                     $regions = Model\Location::getList('region', $regionFilter);
 
+                    if (isset($filters['region']) && !isset($regions[$filters['region']])) {
+                        unset($filters['region']);
+                    }
+                    
                     // filtro region sobre localizacion
-                    if (empty($filters['location']) && !empty($filters['region'])) {
+                    $locationFilter = null;
+                    if (!empty($filters['region'])) {
                         $locationFilter = array(
                             'type' => 'region',
                             'value' => $filters['region']
                         );
-                    } elseif (empty($filters['location']) && !empty($filters['country'])) {
+                    } elseif (!empty($filters['country'])) {
+                    // filtro de pais sobre localizaciones
                         $locationFilter = array(
                             'type' => 'country',
                             'value' => $filters['country']
                         );
-                    } else {
-                        $locationFilter = null;
-                    }
+                    }                    
+                    
 
                     $locations = Model\Location::getList('location', $locationFilter); // distintas localizaciones ya existentes (si hay filtro de region, filtramos estas por region; si no hay filtro de region pero hay filtro de pais, filtramos  estas por pais)
+
+                    if (isset($filters['location']) && !isset($locations[$filters['location']])) {
+                        unset($filters['location']);
+                    }
+                    
+                    $list = Model\Location::getAll($filters);
 
                     $valid = array(
                                 'all' => 'Todas',

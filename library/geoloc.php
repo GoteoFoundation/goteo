@@ -313,8 +313,8 @@ namespace Goteo\Library {
                 // OK
                 foreach($data->results as $res) {
 
-                    // PAso de todo lo que sea rooftop o poligonichungo
-                    if ($res->geometry->location_type != "APPROXIMATE") continue;
+                    // Paso de todo lo que sea rooftop o poligonichungo (si hay más de un resultado) 
+                    if (count($data->results) > 1 && $res->geometry->location_type != "APPROXIMATE") continue;
                     
 //                    echo "Formated: {$res->formatted_address}<br />";
                     
@@ -401,47 +401,54 @@ namespace Goteo\Library {
             
         }
      
-        
-        
-	private static function parseLocationData($xmlData)
-	{
-		// Use of Simple XML extension of PHP 5
-		$xml = simplexml_load_string($xmlData);
 
-		if (!is_object($xml))
-		    throw new Exception('Error reading XML');
-		
-		$infoHost = $xml->xpath('//gml:featureMember');
-		$city = $xml->xpath('//gml:featureMember//gml:name');
+        /*
+         *  Para saber si una cadena son coordenadas
+         */
+        public static function is_latlng($location) {
+            return (bool) preg_match('^-?\d+.\d+,-?\d+.\d+$', $location);
+        }
 
-		$coordinates = $infoHost[0]->xpath('//gml:coordinates');
-		$coordinates = split(',', (string) $coordinates[0]);				
-		
-		$info = array (
-			"City"  			=> (string) $city[0],
-			"CountryName" 		=> (string)	$infoHost[0]->Hostip->countryName,
-			"CountryCode" => (string)	$infoHost[0]->Hostip->countryAbbrev,
-			"Longitude"			=> $coordinates[0],
-			"Latitude"			=> $coordinates[1]
-		);
-		
-		return $info;
-	}
 
-	private static function file_get_contents_curl($url) 
-	{
-		$ch = curl_init();
-	
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_URL, $url);
-	
-		$data = curl_exec($ch);
-		curl_close($ch);
-	
-		return $data;
-	}
-        
+
+        private static function parseLocationData($xmlData) {
+            // Use of Simple XML extension of PHP 5
+            $xml = simplexml_load_string($xmlData);
+
+            if (!is_object($xml))
+                throw new Exception('Error reading XML');
+
+            $infoHost = $xml->xpath('//gml:featureMember');
+            $city = $xml->xpath('//gml:featureMember//gml:name');
+
+            $coordinates = $infoHost[0]->xpath('//gml:coordinates');
+            $coordinates = split(',', (string) $coordinates[0]);				
+
+            $info = array (
+                "City"  			=> (string) $city[0],
+                "CountryName" 		=> (string)	$infoHost[0]->Hostip->countryName,
+                "CountryCode" => (string)	$infoHost[0]->Hostip->countryAbbrev,
+                "Longitude"			=> $coordinates[0],
+                "Latitude"			=> $coordinates[1]
+            );
+
+            return $info;
+        }
+
+        private static function file_get_contents_curl($url) {
+            $ch = curl_init();
+
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_URL, $url);
+
+            $data = curl_exec($ch);
+            curl_close($ch);
+
+            return $data;
+        }
+
+
 	}
 
 }

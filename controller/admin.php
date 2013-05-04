@@ -192,7 +192,7 @@ namespace Goteo\Controller {
                     'autocheck' => array('label' => 'Proceso automático', 'item' => false),
                     'search' => array('label' => 'Buscando registros por localización', 'item' => false)
                 ),
-                'filters' => array('valid' => '0', 'name' => '', 'location' => '', 'region' => '', 'country' => '', 'used' => '1')
+                'filters' => array('valid' => '0', 'name' => '', 'location' => '', 'region' => '', 'country' => '', 'used' => '1', 'coordinates' => 'hide')
             ),
             'mailing' => array(
                 'label' => 'Comunicaciones',
