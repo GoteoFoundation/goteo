@@ -16,6 +16,11 @@ namespace Goteo\Controller\Admin {
 
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
+            if ($_SESSION['user']->id != 'root') {
+                Message::Info('Por ahora solo ROOT, gracias');
+                throw new Redirection('\admin');
+            }
+            
             $errors = array();
 
             switch ($action)  {
@@ -52,7 +57,7 @@ namespace Goteo\Controller\Admin {
                         } else {
 
                             // grabo esta geolocation en la tabla maestra
-                            if ($create && !isset($geoloc)) {
+                            if ($create && !isset($geoloc) && !empty($geodata)) {
                                 $errors = array();
 
                                 // con los datos obtenidos de la API gmaps
