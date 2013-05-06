@@ -189,17 +189,17 @@ namespace Goteo\Controller\Admin {
                     // pasar un proyecto a revision
                     if ($project->ready($errors)) {
                         $redir = '/admin/reviews/add/'.$project->id;
-                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">RevisiÃ³n</span>';
+                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Revision</span>';
                     } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">RevisiÃ³n</span>';
+                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Revision</span>';
                     }
                     break;
                 case 'publish':
-                    // poner un proyecto en campaÃ±a
+                    // poner un proyecto en campa�a
                     if ($project->publish($errors)) {
-                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">en CampaÃ±a</span>';
+                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">en Campa�a</span>';
                     } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">en CampaÃ±a</span>';
+                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">en Campa�a</span>';
                     }
                     break;
                 case 'cancel':
@@ -211,11 +211,11 @@ namespace Goteo\Controller\Admin {
                     }
                     break;
                 case 'enable':
-                    // si no estÃ¡ en ediciÃ³n, recuperarlo
+                    // si no esta en edicion, recuperarlo
                     if ($project->enable($errors)) {
-                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">EdiciÃ³n</span>';
+                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Edicion</span>';
                     } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">EdiciÃ³n</span>';
+                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Edicion</span>';
                     }
                     break;
                 case 'complete':
@@ -253,7 +253,7 @@ namespace Goteo\Controller\Admin {
                 }
 
                 if ($action == 'publish') {
-                    // si es publicado, hay un evento pÃºblico
+                    // si es publicado, hay un evento publico
                     $log->populate($project->name, '/project/'.$project->id, Text::html('feed-new_project'), $project->gallery[0]->id);
                     $log->doPublic('projects');
                 }
@@ -313,7 +313,7 @@ namespace Goteo\Controller\Admin {
 
             if ($action == 'images') {
                 
-                // imÃ¡genes
+                // imagenes
                 $images = array();
                 
                 // secciones
@@ -369,7 +369,7 @@ namespace Goteo\Controller\Admin {
                 //   está en edición a campaña
                 //   y no está asignado
                 if (!in_array($project->status, array('1', '2', '3')) || $project->called) {
-                    Message::Error("No se puede asignar en este estado o ya está asignado a una convocatoria");
+                    Message::Error("No se puede asignar en este estado o ya esta asignado a una convocatoria");
                     throw new Redirection('/admin/projects/list');
                 }
                 // disponibles
