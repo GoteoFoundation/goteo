@@ -11,6 +11,7 @@ include 'view/header.html.php';
 
 $errors = $this['errors'];
 extract($_POST);
+if (empty($username) && isset($this['username'])) $username = $this['username'];
 ?>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
@@ -79,7 +80,7 @@ jQuery(document).ready(function($) {
 
                     <div class="password">
                         <label><?php echo Text::get('login-access-password-field'); ?>
-                        <input type="password" name="password" value="<?php echo $username?>" /></label>
+                        <input type="password" name="password" value="" /></label>
                     </div>
 
                     <input type="submit" name="login" value="<?php echo Text::get('login-access-button'); ?>" />

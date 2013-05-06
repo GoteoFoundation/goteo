@@ -16,7 +16,6 @@ require_once 'core/common.php';
  * Pagina de en mantenimiento
  */
 if (GOTEO_MAINTENANCE === true && $_SERVER['REQUEST_URI'] != '/about/maintenance' 
-     && $_SERVER['REMOTE_ADDR'] != '83.39.9.152' //julian
      && !isset($_POST['Num_operacion'])
     ) {
     header('Location: /about/maintenance');
