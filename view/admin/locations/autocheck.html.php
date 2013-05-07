@@ -31,7 +31,7 @@ $location = $this['location'];
         </p>
             
         <p>
-            <label>Crear: <input type="checkbox" name="create" value="1" checked="checked" /></label> Desmarcar si no parece una localizacion valida o si hay que asignar a una lozacion existente.<br />
+            <label>Crear: <input type="checkbox" name="create" value="1" checked="checked" /></label> <strong>No se tiene en cuenta si se selecciona una lozacion existente</strong><br />
         </p>
             
         <p>
@@ -39,7 +39,7 @@ $location = $this['location'];
         </p>
             
         <p>
-            <label>Dar por ilocalizable: <input type="checkbox" name="unlocable" value="1"<?php if (empty($geodata)) echo ' checked="checked"'; ?> /></label> Marcar si devuelve error irrecuperable, no grabara la localización y dara a esos usuarios por ilocalizables.<br />
+            <label>Dar por ilocalizable: <input type="checkbox" name="unlocable" value="1"<?php if (empty($geodata)) echo ' checked="checked"'; ?> /></label> <strong>Si esto está marcado ni crea ni asigna</strong><br />
         </p>
         
         <input type="submit" name="apply" value="Aplicar" />
