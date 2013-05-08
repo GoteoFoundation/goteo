@@ -728,6 +728,21 @@ namespace Goteo\Controller {
             
             echo "<br />";
                 
+            //----------------------------------
+            // Localizar usuarios con geologin -
+            //----------------------------------
+            // (basicamente el mismo proceso que el autocheck pero con click automático)
+            // para cada usuario que tiene geologin con coordenadas (hasta 999)
+            // petición por coordenadas a la API
+            // si encuentra localidad
+                // crea localidad si no existe (no revisada)
+                // pone la localidad en el campo de la tabla user (si estuviera vacio)
+                // asigna al usuario
+                // borra de unlocable
+                // borra el geologin
+            
+            
+
             echo 'Listo!';
             // recogemos el buffer para grabar el log
             $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
@@ -735,7 +750,7 @@ namespace Goteo\Controller {
             \chmod($log_file, 0777);
             
             die();
-
+            
             /*
             // proyectos en campaña
             $projects = Model\Project::active(true);
