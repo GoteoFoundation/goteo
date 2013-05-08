@@ -80,7 +80,10 @@ namespace Goteo\Model {
 	            return $this->getProjects();
 	        }
 	        if($name == "geoloc") {
-	            return $this->getGeoloc();
+	            return User\Location::get($this->id);
+	        }
+	        if($name == "geologed") {
+	            return User\Location::is_geologed($this->id);
 	        }
             return $this->$name;
         }
@@ -1212,15 +1215,6 @@ namespace Goteo\Model {
                 @mail('geoloc_fail@doukeshi.org', 'Geoloc fail en ' . SITE_URL, 'Error al asignar location a usuario en ' . __FUNCTION__ . '. '. implode (', ', $errors));
                 return false;
             }
-    	}
-
-    	/**
-    	 * Recupera la Geolocalización asignada al usuario
-    	 *
-    	 * @return type int (id geolocation)
-    	 */
-    	private function getGeoloc () {
-            return User\Location::get($this->id);
     	}
 
         /**

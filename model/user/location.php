@@ -87,6 +87,50 @@ namespace Goteo\Model\User {
 
 		}
 
+		/*
+		 *  Elimina geologin
+		 */
+		public static function loginDel ($user, &$errors = array()) {
+            try {
+                self::query("DELETE FROM geologin WHERE user = ?", array($user));
+				return true;
+			} catch(\PDOException $e) {
+                $errors[] = 'No se ha podido borrar geologin usuario ' . $user . '.<br />' . $e->getMessage();
+                return false;
+			}
+		}
+
+        /**
+         * Recupera geologin
+         * @param varcahr(50) $id  user identifier
+         * @return mixed (geologin row)
+         */
+	 	public static function getLogin ($user) {
+            
+            try {
+                $query = static::query("SELECT * FROM geologin WHERE user = ?", array($user));
+                return $query->fetchObject();
+            } catch(\PDOException $e) {
+                return null;
+            }
+		}
+        
+        /**
+         * Si tiene ya un registro de geologin
+         * @param varcahr(50) $id  user identifier
+         * @return int (have a geologin register)
+         */
+	 	public static function is_geologed ($user) {
+            
+            try {
+                $query = static::query("SELECT user FROM geologin WHERE user = ?", array($user));
+                $gl = $query->fetchColumn();
+                return ($gl == $user) ? true : false;
+            } catch(\PDOException $e) {
+                return false;
+            }
+		}
+
 		/**
 		 * Borrar de unlocable
 		 *
@@ -120,7 +164,7 @@ namespace Goteo\Model\User {
                 return false;
 			}
 		}
-
+        
 	}
 
 }

@@ -70,6 +70,11 @@ if (NODE_ID != GOTEO_NODE) {
         <!-- saltos entre nodos -->
         <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/nodejump.js"></script>
 
+        <?php if (!isset($_SESSION['impersonating']) && $_SESSION['user'] instanceof \Goteo\Model\User && empty($_SESSION['user']->location) && empty($_SESSION['user']->geoloc) && !$_SESSION['user']->geologed) : ?>
+        <!-- geologin -->
+        <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/geologin.js"></script>
+        <?php endif; ?>
+        
     </head>
 
     <body<?php if (isset($bodyClass)) echo ' class="' . htmlspecialchars($bodyClass) . '"' ?> style="background-color:#B5DADC;">
