@@ -1,6 +1,7 @@
 <?php
 
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Core\View;
 
 $location = $this['location'];
 ?>
@@ -37,19 +38,18 @@ $location = $this['location'];
                     <input type="text" name="lon" id="locLg" value="<?php echo $location->lon ?>" />
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <a class="button" href="/admin/locations">CANCELAR / Salir sin guardar</a>
+                </td>
+                <td>
+                    <input type="submit" name="save" value="GUARDAR / Aplicar los cambios" />
+                </td>
+            </tr>
         </table>
-
-        <!-- mapa -->
-        <p>Al mover el iconito se modificará la longitud y la latitud.</p>
-
-        <div id="map-canvas">Aqui ira el mapa</div>
-
-        <p>
-            <label><input type="checkbox" name="valid" value="1" <?php if ($location->valid) echo 'checked="checked";' ?>/>Dar por revisada</label>
-        </p>
-
-        <a class="button" href="/admin/locations">Cancelar / Salir sin guardar</a>
-        <input type="submit" name="save" value="Guardar / Aplicar los cambios" />
-
     </form>
+
+    <!-- mapa -->
+    <?php echo new View('view/widget/map.html.php', array('lat'=>$location->lat,'lon'=>$location->lon, 'name'=>$location->name)); ?>
+
 </div>

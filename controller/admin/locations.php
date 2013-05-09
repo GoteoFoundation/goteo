@@ -221,7 +221,7 @@ namespace Goteo\Controller\Admin {
                         $location->country = $_POST['country'];
                         $location->lon = $_POST['lon'];
                         $location->lat = $_POST['lat'];
-                        $location->valid = $_POST['valid'];
+                        $location->valid = true;
                         if($location->save($errors)) {
                           // mensaje de ok y volvemos a la lista de tareas
                           Message::Info('Nueva localizacion creada correctamente');
