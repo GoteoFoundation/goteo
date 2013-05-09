@@ -85,6 +85,9 @@ namespace Goteo\Model {
 	        if($name == "geologed") {
 	            return User\Location::is_geologed($this->id);
 	        }
+	        if($name == "unlocable") {
+	            return User\Location::is_unlocable($this->id);
+	        }
             return $this->$name;
         }
 

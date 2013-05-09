@@ -165,6 +165,23 @@ namespace Goteo\Model\User {
 			}
 		}
         
+        
+        /**
+         * Si está como ilocalizable
+         * @param varcahr(50) $id  user identifier
+         * @return int (have an unlocable register)
+         */
+	 	public static function is_unlocable ($user) {
+            
+            try {
+                $query = static::query("SELECT user FROM unlocable WHERE user = ?", array($user));
+                $gl = $query->fetchColumn();
+                return ($gl == $user) ? true : false;
+            } catch(\PDOException $e) {
+                return false;
+            }
+		}
+
 	}
 
 }
