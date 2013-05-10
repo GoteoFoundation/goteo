@@ -13,6 +13,11 @@ namespace Goteo\Controller {
 	class System extends \Goteo\Core\Controller {
 
 
+        public function test () {
+            
+            echo new View('view/system/test.html.php');
+        }
+
         public function whoami () {
             die(\trace($_SESSION['user']));
         }
