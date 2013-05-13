@@ -1,14 +1,14 @@
 /* configuración de colores del nodo */
 body.node {
-    background-color: #E6F0ED !important;
+    background-color: #CCCCCC !important;
 }
 
 div#node-header span.blue {
-    color: #27AD7A !important;
+    color: #336699 !important;
 }
 
 body.node.home > div.widget > div.title-line {
-    border-color: #27AD7A !important;
+    border-color: #336699 !important;
 }
 
 div#node-header div.logos div.node-home > a {
@@ -19,19 +19,19 @@ div#node-header div.logos div.node-home > a:hover {
     background: url('/nodesys/andalucia/view/css/goteo-logo.png') no-repeat right top;
 }
 
-div#header div#menu{background:none repeat scroll 0 0 #27AD7A !important}
-div#header div#menu > ul > li.search fieldset input[type="submit"]:hover{background-color:#5AB891 !important}
+div#header div#menu{background:none repeat scroll 0 0 #2895CB !important}
+div#header div#menu > ul > li.search fieldset input[type="submit"]:hover{background-color:#58A0CD !important}
 
 /*rollover*/
 div#header div#menu > ul > li.community:hover,
 div#header div#menu > ul > li.login:hover,
-div#header div#menu > ul > li.dashboard:hover{background-color:#5AB891 !important}
+div#header div#menu > ul > li.dashboard:hover{background-color:#58A0CD !important}
 
 /*submenus*/
-div#header div#menu > ul > li.community > div > ul, div#header div#menu > ul > li.dashboard > div > ul{background-color:#27AD7A}
+div#header div#menu > ul > li.community > div > ul, div#header div#menu > ul > li.dashboard > div > ul{background-color:#2895CB}
 div#header div#menu > ul > li.community > div > ul > li > a:hover,
 div#header div#menu > ul > li.dashboard > div > ul > li > a:hover {
-    background-color: #5AB891;
+    background-color: #58A0CD;
 }
 
 /* Pestaña de información/cerrar banner */
@@ -41,13 +41,13 @@ div#header div#menu > ul > li.info > a.close{background:url('/nodesys/andalucia/
 div#header div#menu > ul > li.info > a.close:hover{background:url('/nodesys/andalucia/view/css/node_info.png') no-repeat right center transparent}
 /* Fin de pestaña de información/cerrar banner */
 
-div.node-banners-container div.node-banner > div.short-desc{color:#27AD7A;}
-ul.bannerspage li.current a{ background-color:#27AD7A !important;  color:#27AD7A !important}
+div.node-banners-container div.node-banner > div.short-desc{color:#336699;}
+ul.bannerspage li.current a{ background-color:#336699 !important;  color:#336699 !important}
 
 /*widget de buscador*/
-div.side_widget > div.button.current{color:#27AD7A}
-div.side_widget > div.button.current > p > a{color:#27AD7A;}
-div.side_widget > div.categories.current p.title, div.side_widget > div.rewards.current p.title{color:#27AD7A;}
+div.side_widget > div.button.current{color:#336699}
+div.side_widget > div.button.current > p > a{color:#336699;}
+div.side_widget > div.categories.current p.title, div.side_widget > div.rewards.current p.title{color:#336699;}
 /*fin de widget de buscador*/
 
 body.project-show div.project-menu ul li.show a {
