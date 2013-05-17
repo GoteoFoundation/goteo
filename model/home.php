@@ -28,7 +28,8 @@ namespace Goteo\Model {
          $node_items = array(
              'posts' => 'Novedades',
              'promotes' => 'Proyectos',
-             'calls' => 'Convocatorias'
+             'calls' => 'Convocatorias',
+             'patrons' => 'Padrinos'
          ),
          $node_side_items = array(
              'searcher' => 'Selector proyectos',
